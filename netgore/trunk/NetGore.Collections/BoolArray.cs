@@ -237,7 +237,7 @@ namespace NetGore.Collections
         ///                    A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         ///                
         ///</returns>
-        ///<filterpriority>1</filterpriority>
+        ///
         public IEnumerator<bool> GetEnumerator()
         {
             return new Enumerator(this);
@@ -254,7 +254,7 @@ namespace NetGore.Collections
         ///                    An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -291,7 +291,7 @@ namespace NetGore.Collections
             ///                    Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             ///                
             ///</summary>
-            ///<filterpriority>2</filterpriority>
+            ///
             public void Dispose()
             {
             }
@@ -309,7 +309,7 @@ namespace NetGore.Collections
             ///
             ///<exception cref="T:System.InvalidOperationException">
             ///                    The collection was modified after the enumerator was created. 
-            ///                </exception><filterpriority>2</filterpriority>
+            ///                </exception>
             public bool MoveNext()
             {
                 // Make sure the BoolArray has not changed
@@ -334,7 +334,7 @@ namespace NetGore.Collections
             ///
             ///<exception cref="T:System.InvalidOperationException">
             ///                    The collection was modified after the enumerator was created. 
-            ///                </exception><filterpriority>2</filterpriority>
+            ///                </exception>
             public void Reset()
             {
                 _index = 0;
@@ -372,7 +372,7 @@ namespace NetGore.Collections
             ///
             ///<exception cref="T:System.InvalidOperationException">
             ///                    The enumerator is positioned before the first element of the collection or after the last element.
-            ///                </exception><filterpriority>2</filterpriority>
+            ///                </exception>
             object IEnumerator.Current
             {
                 get { return Current; }

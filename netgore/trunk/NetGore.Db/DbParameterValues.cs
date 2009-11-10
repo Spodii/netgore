@@ -18,7 +18,7 @@ namespace NetGore.Db
         readonly DbParameterCollection _collection;
 
         /// <summary>
-        /// DbParameterValues constructor.
+        /// Initializes a new instance of the <see cref="DbParameterValues"/> class.
         /// </summary>
         /// <param name="dbParameterCollection">DbParameterCollection to wrap around.</param>
         public DbParameterValues(DbParameterCollection dbParameterCollection)
@@ -92,7 +92,7 @@ namespace NetGore.Db
         ///                    A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         ///                
         ///</returns>
-        ///<filterpriority>1</filterpriority>
+        ///
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
             foreach (DbParameter parameter in _collection)
@@ -112,7 +112,7 @@ namespace NetGore.Db
         ///                    An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

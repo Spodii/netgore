@@ -139,7 +139,7 @@ namespace DemoGame.Server
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
+        
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);

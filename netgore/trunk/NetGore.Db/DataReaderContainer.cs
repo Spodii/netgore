@@ -59,7 +59,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public string GetName(int i)
         {
             return _dataReader.GetName(i);
@@ -82,7 +82,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public string GetDataTypeName(int i)
         {
             return _dataReader.GetDataTypeName(i);
@@ -105,7 +105,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public Type GetFieldType(int i)
         {
             return _dataReader.GetFieldType(i);
@@ -128,7 +128,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public object GetValue(int i)
         {
             return _dataReader.GetValue(i);
@@ -148,7 +148,7 @@ namespace NetGore.Db
         ///
         ///<param name="values">
         ///                    An array of <see cref="T:System.Object" /> to copy the attribute fields into. 
-        ///                </param><filterpriority>2</filterpriority>
+        ///                </param>
         public int GetValues(object[] values)
         {
             return _dataReader.GetValues(values);
@@ -168,7 +168,7 @@ namespace NetGore.Db
         ///
         ///<param name="name">
         ///                    The name of the field to find. 
-        ///                </param><filterpriority>2</filterpriority>
+        ///                </param>
         public int GetOrdinal(string name)
         {
             return _dataReader.GetOrdinal(name);
@@ -191,7 +191,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public bool GetBoolean(int i)
         {
             return _dataReader.GetBoolean(i);
@@ -214,7 +214,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public byte GetByte(int i)
         {
             return _dataReader.GetByte(i);
@@ -249,7 +249,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
         {
             return _dataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
@@ -272,7 +272,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public char GetChar(int i)
         {
             return _dataReader.GetChar(i);
@@ -307,7 +307,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
         {
             return _dataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
@@ -330,7 +330,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public Guid GetGuid(int i)
         {
             return _dataReader.GetGuid(i);
@@ -353,7 +353,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public short GetInt16(int i)
         {
             return _dataReader.GetInt16(i);
@@ -376,7 +376,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public int GetInt32(int i)
         {
             return _dataReader.GetInt32(i);
@@ -399,7 +399,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public long GetInt64(int i)
         {
             return _dataReader.GetInt64(i);
@@ -422,7 +422,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public float GetFloat(int i)
         {
             return _dataReader.GetFloat(i);
@@ -445,7 +445,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public double GetDouble(int i)
         {
             return _dataReader.GetDouble(i);
@@ -468,7 +468,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public string GetString(int i)
         {
             return _dataReader.GetString(i);
@@ -491,7 +491,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public decimal GetDecimal(int i)
         {
             return _dataReader.GetDecimal(i);
@@ -514,7 +514,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public DateTime GetDateTime(int i)
         {
             return _dataReader.GetDateTime(i);
@@ -537,7 +537,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public IDataReader GetData(int i)
         {
             return _dataReader.GetData(i);
@@ -559,7 +559,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public bool IsDBNull(int i)
         {
             return _dataReader.IsDBNull(i);
@@ -576,7 +576,7 @@ namespace NetGore.Db
         ///                    When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         public int FieldCount
         {
             get { return _dataReader.FieldCount; }
@@ -599,7 +599,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public object this[int i]
         {
             get { return _dataReader[i]; }
@@ -622,7 +622,7 @@ namespace NetGore.Db
         ///                </param>
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    No column with the specified name was found. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public object this[string name]
         {
             get { return _dataReader[name]; }
@@ -633,7 +633,7 @@ namespace NetGore.Db
         ///                    Closes the <see cref="T:System.Data.IDataReader" /> Object.
         ///                
         ///</summary>
-        ///<filterpriority>2</filterpriority>
+        ///
         public void Close()
         {
             _dataReader.Close();
@@ -653,7 +653,7 @@ namespace NetGore.Db
         ///
         ///<exception cref="T:System.InvalidOperationException">
         ///                    The <see cref="T:System.Data.IDataReader" /> is closed. 
-        ///                </exception><filterpriority>2</filterpriority>
+        ///                </exception>
         public DataTable GetSchemaTable()
         {
             return _dataReader.GetSchemaTable();
@@ -669,7 +669,7 @@ namespace NetGore.Db
         ///true if there are more rows; otherwise, false.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         public bool NextResult()
         {
             return _dataReader.NextResult();
@@ -685,7 +685,7 @@ namespace NetGore.Db
         ///true if there are more rows; otherwise, false.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         public bool Read()
         {
             return _dataReader.Read();
@@ -702,7 +702,7 @@ namespace NetGore.Db
         ///                    The level of nesting.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         public int Depth
         {
             get { return _dataReader.Depth; }
@@ -718,7 +718,7 @@ namespace NetGore.Db
         ///true if the data reader is closed; otherwise, false.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         public bool IsClosed
         {
             get { return _dataReader.IsClosed; }
@@ -735,7 +735,7 @@ namespace NetGore.Db
         ///                    The number of rows changed, inserted, or deleted; 0 if no rows were affected or the statement failed; and -1 for SELECT statements.
         ///                
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         public int RecordsAffected
         {
             get { return _dataReader.RecordsAffected; }
