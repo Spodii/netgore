@@ -148,6 +148,8 @@ namespace DemoGame.Client
         {
             log.Info("Starting client...");
 
+            ThreadAsserts.IsMainThread();
+
             using (var game = new DemoGame())
             {
                 game.Run();

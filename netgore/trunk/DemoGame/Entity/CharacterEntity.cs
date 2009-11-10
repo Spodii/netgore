@@ -189,6 +189,7 @@ namespace DemoGame
         /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         public override void Update(IMap imap, float deltaTime)
         {
+            ThreadAsserts.IsMainThread();
             Debug.Assert(imap != null, "How the hell is a null Map updating?");
             Debug.Assert(deltaTime >= 0, "Unless we're going back in time, deltaTime < 0 makes no sense at all.");
 

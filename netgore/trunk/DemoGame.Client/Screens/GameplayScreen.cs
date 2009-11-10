@@ -236,6 +236,8 @@ namespace DemoGame.Client
         /// <param name="gameTime">Current GameTime</param>
         public override void Draw(GameTime gameTime)
         {
+            ThreadAsserts.IsMainThread();
+
             // Don't draw if we don't know who our character is
             if (UserChar == null)
                 return;
@@ -464,6 +466,8 @@ namespace DemoGame.Client
         /// <param name="gameTime">Current GameTime</param>
         public override void Update(GameTime gameTime)
         {
+            ThreadAsserts.IsMainThread();
+
             // Get the current time
             _currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
 
