@@ -253,7 +253,6 @@ namespace NetGore.Graphics
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             string name;
