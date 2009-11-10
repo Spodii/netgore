@@ -33,6 +33,8 @@ namespace DemoGame.Server
         /// <param name="text">The output text from the command. Will not be null or empty.</param>
         protected override void HandleCommandOutput(User user, string text)
         {
+            ThreadAsserts.IsMainThread();
+
             using (PacketWriter pw = ServerPacket.Chat(text))
             {
                 user.Send(pw);
@@ -46,6 +48,8 @@ namespace DemoGame.Server
         /// <param name="text">The text that wasn't a command.</param>
         protected override void HandleNonCommand(User user, string text)
         {
+            ThreadAsserts.IsMainThread();
+
             using (PacketWriter pw = ServerPacket.ChatSay(user.Name, user.MapEntityIndex, text))
             {
                 user.Map.SendToArea(user.Center, pw);

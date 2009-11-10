@@ -330,6 +330,8 @@ namespace DemoGame.Server
         /// </summary>
         public override void Update()
         {
+            ThreadAsserts.IsMainThread();
+
             ProcessDisposeStack();
             UpdateRespawnables();
 

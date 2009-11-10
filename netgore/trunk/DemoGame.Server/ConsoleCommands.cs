@@ -139,6 +139,8 @@ namespace DemoGame.Server
 
         public string ExecuteCommand(string commandString)
         {
+            ThreadAsserts.IsMainThread();
+
             string result;
             _parser.TryParse(this, commandString, out result);
 

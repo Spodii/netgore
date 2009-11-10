@@ -198,6 +198,8 @@ namespace DemoGame.Server
         /// </summary>
         void GameLoop()
         {
+            ThreadAsserts.IsMainThread();
+
             UpdateServerTimeQuery updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
             ServerTimeUpdater serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
 

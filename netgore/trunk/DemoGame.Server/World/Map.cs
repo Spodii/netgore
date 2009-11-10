@@ -549,6 +549,9 @@ namespace DemoGame.Server
 
         public override void Update(int deltaTime)
         {
+            // NOTE: This assert will have to be removed once we add support for multithreaded World updates
+            ThreadAsserts.IsMainThread();
+
             // If there are no Users on the Map, update the inactive counter or skip updating if already inactive
             if (_users.Count == 0)
             {

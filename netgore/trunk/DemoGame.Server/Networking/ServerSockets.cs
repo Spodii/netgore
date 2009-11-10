@@ -29,6 +29,8 @@ namespace DemoGame.Server
         /// </summary>
         public void Heartbeat()
         {
+            ThreadAsserts.IsMainThread();
+
             // Process received data
             var recvData = GetReceivedData();
             _packetHandler.Process(recvData);
@@ -43,6 +45,8 @@ namespace DemoGame.Server
         /// <param name="timeOut">Minimum amount of time a connection has to be established</param>
         public void RemoveInactiveConnections(int timeOut)
         {
+            ThreadAsserts.IsMainThread();
+
             int currTime = Environment.TickCount;
             Remove(conn => (conn.Tag == null) && (currTime - conn.TimeCreated > timeOut));
 
