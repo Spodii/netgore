@@ -41,6 +41,7 @@ namespace NetGore
 
             // Parse
             string output;
+            // TODO: This is really lame how we are handling the parsing... there has got to be a better way to pass along what User the command came from
             lock (_sayCommands)
             {
                 _sayCommands.User = user;
