@@ -52,7 +52,7 @@ namespace DemoGame.Server
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
         /// <param name="other">Another object to compare to. 
-        /// </param><filterpriority>2</filterpriority>
+        /// </param>
         public bool Equals(CharacterTemplateID other)
         {
             return other._value == _value;
@@ -65,7 +65,7 @@ namespace DemoGame.Server
         /// True if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
         /// <param name="obj">Another object to compare to. 
-        /// </param><filterpriority>2</filterpriority>
+        /// </param>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -81,7 +81,7 @@ namespace DemoGame.Server
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
+        
         public override int GetHashCode()
         {
             return _value.GetHashCode();
@@ -194,7 +194,7 @@ namespace DemoGame.Server
         /// </returns>
         /// <param name="obj">An object to compare with this instance. 
         ///                 </param><exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. 
-        ///                 </exception><filterpriority>2</filterpriority>
+        ///                 </exception>
         public int CompareTo(object obj)
         {
             return _value.CompareTo(obj);
@@ -235,7 +235,7 @@ namespace DemoGame.Server
         /// <returns>
         /// The enumerated constant that is the <see cref="T:System.TypeCode"/> of the class or value type that implements this interface.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
+        
         public TypeCode GetTypeCode()
         {
             return _value.GetTypeCode();
@@ -248,7 +248,7 @@ namespace DemoGame.Server
         /// A Boolean value equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         bool IConvertible.ToBoolean(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToBoolean(provider);
@@ -261,7 +261,7 @@ namespace DemoGame.Server
         /// A Unicode character equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         char IConvertible.ToChar(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToChar(provider);
@@ -274,7 +274,7 @@ namespace DemoGame.Server
         /// An 8-bit signed integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         sbyte IConvertible.ToSByte(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToSByte(provider);
@@ -287,7 +287,7 @@ namespace DemoGame.Server
         /// An 8-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         byte IConvertible.ToByte(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToByte(provider);
@@ -300,7 +300,7 @@ namespace DemoGame.Server
         /// An 16-bit signed integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         short IConvertible.ToInt16(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt16(provider);
@@ -313,7 +313,7 @@ namespace DemoGame.Server
         /// An 16-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         ushort IConvertible.ToUInt16(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt16(provider);
@@ -326,7 +326,7 @@ namespace DemoGame.Server
         /// An 32-bit signed integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         int IConvertible.ToInt32(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt32(provider);
@@ -339,7 +339,7 @@ namespace DemoGame.Server
         /// An 32-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         uint IConvertible.ToUInt32(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt32(provider);
@@ -352,7 +352,7 @@ namespace DemoGame.Server
         /// An 64-bit signed integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         long IConvertible.ToInt64(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt64(provider);
@@ -365,7 +365,7 @@ namespace DemoGame.Server
         /// An 64-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         ulong IConvertible.ToUInt64(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt64(provider);
@@ -378,7 +378,7 @@ namespace DemoGame.Server
         /// A single-precision floating-point number equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         float IConvertible.ToSingle(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToSingle(provider);
@@ -391,7 +391,7 @@ namespace DemoGame.Server
         /// A double-precision floating-point number equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         double IConvertible.ToDouble(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDouble(provider);
@@ -404,7 +404,7 @@ namespace DemoGame.Server
         /// A <see cref="T:System.Decimal"/> number equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         decimal IConvertible.ToDecimal(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDecimal(provider);
@@ -417,7 +417,7 @@ namespace DemoGame.Server
         /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDateTime(provider);
@@ -430,7 +430,7 @@ namespace DemoGame.Server
         /// A <see cref="T:System.String"/> instance equivalent to the value of this instance.
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         public string ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
@@ -444,7 +444,7 @@ namespace DemoGame.Server
         /// </returns>
         /// <param name="conversionType">The <see cref="T:System.Type"/> to which the value of this instance is converted. 
         ///                 </param><param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
             return ((IConvertible)_value).ToType(conversionType, provider);
@@ -483,7 +483,7 @@ namespace DemoGame.Server
         ///                 </param><param name="formatProvider">The <see cref="T:System.IFormatProvider"/> to use to format the value.
         ///                     -or- 
         ///                 null to obtain the numeric format information from the current locale setting of the operating system. 
-        ///                 </param><filterpriority>2</filterpriority>
+        ///                 </param>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return _value.ToString(format, formatProvider);

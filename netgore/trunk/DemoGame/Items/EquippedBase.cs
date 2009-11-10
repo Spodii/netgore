@@ -321,7 +321,7 @@ namespace DemoGame
         ///<returns>
         ///A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         ///</returns>
-        ///<filterpriority>1</filterpriority>
+        ///
         public IEnumerator<KeyValuePair<EquipmentSlot, T>> GetEnumerator()
         {
             for (int i = 0; i < _equipped.Length; i++)
@@ -339,7 +339,7 @@ namespace DemoGame
         ///<returns>
         /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         ///</returns>
-        ///<filterpriority>2</filterpriority>
+        ///
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

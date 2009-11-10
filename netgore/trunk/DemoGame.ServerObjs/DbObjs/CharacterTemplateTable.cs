@@ -758,7 +758,7 @@ namespace DemoGame.Server.DbObjs
             /// <returns>
             /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
             /// </returns>
-            /// <filterpriority>1</filterpriority>
+            
             public IEnumerator<KeyValuePair<StatType, Int32>> GetEnumerator()
             {
                 for (int i = 0; i < _values.Length; i++)
@@ -773,7 +773,7 @@ namespace DemoGame.Server.DbObjs
             /// <returns>
             /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
             /// </returns>
-            /// <filterpriority>2</filterpriority>
+            
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();

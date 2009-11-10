@@ -61,7 +61,6 @@ private class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collec
     /// <returns>
     /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
     /// </returns>
-    /// <filterpriority>1</filterpriority>
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>> GetEnumerator()
     {
         for (int i = 0; i < _values.Length; i++)
@@ -76,7 +75,6 @@ private class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collec
     /// <returns>
     /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
     /// </returns>
-    /// <filterpriority>2</filterpriority>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
