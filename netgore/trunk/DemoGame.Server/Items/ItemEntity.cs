@@ -23,21 +23,19 @@ namespace DemoGame.Server
     /// </summary>
     public class ItemEntity : ItemEntityBase, IItemTable
     {
-        static readonly IDbController _dbController = DbControllerBase.GetInstance();
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        readonly ItemStats _baseStats;
-        readonly ItemID _id;
-        readonly ItemStats _reqStats;
-
         byte _amount = 1;
+        readonly ItemStats _baseStats;
+        static readonly IDbController _dbController = DbControllerBase.GetInstance();
         string _description;
         GrhIndex _graphicIndex;
         SPValueType _hp;
+        readonly ItemID _id;
         SPValueType _mp;
         string _name;
+        readonly ItemStats _reqStats;
         ItemType _type;
         int _value;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.
@@ -49,88 +47,8 @@ namespace DemoGame.Server
         /// </summary>
         public override event EntityEventHandler<CharacterEntity> OnPickup;
 
-        static DeleteItemQuery DeleteItem
-        {
-            get { return _dbController.GetQuery<DeleteItemQuery>(); }
-        }
-
-        static ItemIDCreator IDCreator
-        {
-            get { return _dbController.GetQuery<ItemIDCreator>(); }
-        }
-
-        static ReplaceItemQuery ReplaceItem
-        {
-            get { return _dbController.GetQuery<ReplaceItemQuery>(); }
-        }
-
-        static UpdateItemFieldQuery UpdateItemField
-        {
-            get { return _dbController.GetQuery<UpdateItemFieldQuery>(); }
-        }
-
-        public ItemStats BaseStats
-        {
-            get { return _baseStats; }
-        }
-
-        /// <summary>
-        /// Gets or sets the index of the graphic that is used for this ItemEntity.
-        /// </summary>
-        public override GrhIndex GraphicIndex
-        {
-            get { return _graphicIndex; }
-            set
-            {
-                if (_graphicIndex == value)
-                    return;
-
-                _graphicIndex = value;
-
-                if (OnChangeGraphicOrAmount != null)
-                    OnChangeGraphicOrAmount(this);
-
-                SynchronizeField("graphic", _graphicIndex);
-            }
-        }
-
-        public ItemStats ReqStats
-        {
-            get { return _reqStats; }
-        }
-
         public ItemEntity(IItemTemplateTable t, byte amount) : this(t, Vector2.Zero, amount)
         {
-        }
-
-        /// <summary>
-        /// Validates the given <paramref name="position"/> by attempting to make it a legal position if it is not
-        /// one already.
-        /// </summary>
-        /// <param name="map">The map that the <see cref="ItemEntity"/> is on or will be on.</param>
-        /// <param name="position">The position to validate.</param>
-        /// <returns>If the <paramref name="position"/> was already valid, or no valid position was found, contains
-        /// the same value as the <paramref name="position"/>; otherwise, contains the corrected valid position.</returns>
-        Vector2 ValidatePosition(MapBase map, Vector2 position)
-        {
-            if (map == null)
-                return position;
-
-            Vector2 closestLegalPosition;
-            bool isClosestPositionValid;
-            if (!map.IsValidPlacementPosition(CB, out closestLegalPosition, out isClosestPositionValid))
-            {
-                if (isClosestPositionValid)
-                {
-                    return closestLegalPosition;
-                }
-                else
-                {
-                    // TODO: Could not find a valid position for the Character
-                }
-            }
-
-            return position;
         }
 
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map) : this(t, pos, amount)
@@ -201,6 +119,56 @@ namespace DemoGame.Server
                 s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
                 s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
+        }
+
+        public ItemStats BaseStats
+        {
+            get { return _baseStats; }
+        }
+
+        static DeleteItemQuery DeleteItem
+        {
+            get { return _dbController.GetQuery<DeleteItemQuery>(); }
+        }
+
+        /// <summary>
+        /// Gets or sets the index of the graphic that is used for this ItemEntity.
+        /// </summary>
+        public override GrhIndex GraphicIndex
+        {
+            get { return _graphicIndex; }
+            set
+            {
+                if (_graphicIndex == value)
+                    return;
+
+                _graphicIndex = value;
+
+                if (OnChangeGraphicOrAmount != null)
+                    OnChangeGraphicOrAmount(this);
+
+                SynchronizeField("graphic", _graphicIndex);
+            }
+        }
+
+        static ItemIDCreator IDCreator
+        {
+            get { return _dbController.GetQuery<ItemIDCreator>(); }
+        }
+
+        static ReplaceItemQuery ReplaceItem
+        {
+            get { return _dbController.GetQuery<ReplaceItemQuery>(); }
+        }
+
+        public ItemStats ReqStats
+        {
+            get { return _reqStats; }
+        }
+
+        static UpdateItemFieldQuery UpdateItemField
+        {
+            get { return _dbController.GetQuery<UpdateItemFieldQuery>(); }
         }
 
         void BaseStatChangeReceiver(IStat stat)
@@ -438,6 +406,34 @@ namespace DemoGame.Server
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);
+        }
+
+        /// <summary>
+        /// Validates the given <paramref name="position"/> by attempting to make it a legal position if it is not
+        /// one already.
+        /// </summary>
+        /// <param name="map">The map that the <see cref="ItemEntity"/> is on or will be on.</param>
+        /// <param name="position">The position to validate.</param>
+        /// <returns>If the <paramref name="position"/> was already valid, or no valid position was found, contains
+        /// the same value as the <paramref name="position"/>; otherwise, contains the corrected valid position.</returns>
+        Vector2 ValidatePosition(MapBase map, Vector2 position)
+        {
+            if (map == null)
+                return position;
+
+            Vector2 closestLegalPosition;
+            bool isClosestPositionValid;
+            if (!map.IsValidPlacementPosition(CB, out closestLegalPosition, out isClosestPositionValid))
+            {
+                if (isClosestPositionValid)
+                    return closestLegalPosition;
+                else
+                {
+                    // TODO: Could not find a valid position for the Character
+                }
+            }
+
+            return position;
         }
 
         #region IItemTable Members
