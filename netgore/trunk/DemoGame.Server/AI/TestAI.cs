@@ -26,10 +26,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, updates the AI. This is called at most once per frame, and only
-        /// called whe the Actor is alive and active.
+        /// Handles the real updating of the AI.
         /// </summary>
-        public override void Update()
+        protected override void DoUpdate()
         {
             Character target = GetClosestHostile();
 

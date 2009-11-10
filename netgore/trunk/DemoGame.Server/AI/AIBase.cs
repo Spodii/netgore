@@ -124,6 +124,11 @@ namespace DemoGame.Server
             return _rand.Next(min, max);
         }
 
+        /// <summary>
+        /// Handles the real updating of the AI.
+        /// </summary>
+        protected abstract void DoUpdate();
+
         #region IAI Members
 
         /// <summary>
@@ -138,7 +143,13 @@ namespace DemoGame.Server
         /// When overridden in the derived class, updates the AI. This is called at most once per frame, and only
         /// called whe the <see cref="Actor"/> is alive and active.
         /// </summary>
-        public abstract void Update();
+        public void Update()
+        {
+            if (!Actor.IsAlive || Actor.Map == null)
+                return;
+
+            DoUpdate();
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the ID of this AI.

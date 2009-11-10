@@ -279,6 +279,8 @@ namespace DemoGame.Server
 
             HP = ModStats[StatType.MaxHP];
             MP = ModStats[StatType.MaxMP];
+
+            IsAlive = true;
         }
 
         /// <summary>

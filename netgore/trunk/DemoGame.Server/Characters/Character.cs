@@ -471,7 +471,7 @@ namespace DemoGame.Server
         /// Tries to attacks a specific target Character. The attack can fail if the target is an invalid
         /// Character for this Character to attack.
         /// </summary>
-        /// <param name="target">Character to attack</param>
+        /// <param name="target">Character to attack.</param>
         void Attack(Character target)
         {
             if (target == null)
@@ -1755,14 +1755,14 @@ namespace DemoGame.Server
         {
             UpdateModStats();
 
-            // Restore the NPC's stats
+            // Restore the Character's stats
             HP = ModStats[StatType.MaxHP];
             MP = ModStats[StatType.MaxMP];
 
-            // Set the NPC's new location
+            // Set the Character's new location
             Teleport(RespawnPosition);
 
-            // Set the NPC as alive
+            // Set the Character as alive
             IsAlive = true;
 
             // Set the map
@@ -1770,7 +1770,7 @@ namespace DemoGame.Server
             {
                 // If the respawn map is invalid, there is nothing we can do to spawn it, so dispose of it
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Disposing character `{0}` since they had no respawn map.");
+                    log.InfoFormat("Disposing Character `{0}` since they had no respawn map.");
 
                 Debug.Assert(!IsDisposed);
                 DelayedDispose();
