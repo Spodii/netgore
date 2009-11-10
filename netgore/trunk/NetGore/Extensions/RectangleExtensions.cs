@@ -22,27 +22,27 @@ namespace NetGore.Extensions
         {
             Alignment alignment;
 
-            if (a.X + a.Width < b.X)
+            if (a.Right < b.X)
             {
                 // a is to the left of b
-                if (a.Y + a.Height < b.Y)
+                if (a.Bottom < b.Y)
                     alignment = Alignment.TopLeft;
                 else if (a.Y > b.Y + b.Height)
                     alignment = Alignment.BottomLeft;
                 else
                     alignment = Alignment.Left;
             }
-            else if (a.X > b.X + b.Width)
+            else if (a.X > b.Right)
             {
                 // a is to the right of b
-                if (a.Y + a.Height < b.Y)
+                if (a.Bottom < b.Y)
                     alignment = Alignment.TopRight;
                 else if (a.Y > b.Y + b.Height)
                     alignment = Alignment.BottomRight;
                 else
                     alignment = Alignment.Right;
             }
-            else if (a.Y + a.Height < b.Y)
+            else if (a.Bottom < b.Y)
                 alignment = Alignment.Top;
             else if (a.Y > b.Y + b.Height)
                 alignment = Alignment.Bottom;
@@ -55,36 +55,36 @@ namespace NetGore.Extensions
             switch (alignment)
             {
                 case Alignment.TopLeft:
-                    cx = (a.X + a.Width) - b.X;
-                    cy = (a.Y + a.Height) - b.Y;
+                    cx = a.Right - b.X;
+                    cy = a.Bottom - b.Y;
                     return -(cx + cy);
 
                 case Alignment.Top:
-                    return -((a.Y + a.Height) - b.Y);
+                    return -(a.Bottom - b.Y);
 
                 case Alignment.TopRight:
-                    cx = (b.X + b.Width) - a.X;
-                    cy = (a.Y + a.Height) - b.Y;
+                    cx = b.Right - a.X;
+                    cy = a.Bottom - b.Y;
                     return -(cx + cy);
 
                 case Alignment.Right:
-                    return -((b.X + b.Width) - a.X);
+                    return -(b.Bottom - a.X);
 
                 case Alignment.BottomRight:
-                    cx = (b.X + b.Width) - a.X;
-                    cy = (b.Y + b.Height) - a.Y;
+                    cx = b.Right - a.X;
+                    cy = b.Bottom - a.Y;
                     return -(cx + cy);
 
                 case Alignment.Bottom:
-                    return -((b.Y + b.Height) - a.Y);
+                    return -(b.Bottom - a.Y);
 
                 case Alignment.BottomLeft:
-                    cx = (a.X + a.Width) - b.X;
-                    cy = (b.Y + b.Height) - a.Y;
+                    cx = a.Right - b.X;
+                    cy = b.Bottom - a.Y;
                     return -(cx + cy);
 
                 case Alignment.Left:
-                    return -((a.X + a.Width) - b.X);
+                    return -(a.Right - b.X);
 
                 default:
                     return 0;

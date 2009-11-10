@@ -95,11 +95,11 @@ namespace DemoGame.Server
             _maps.Trim();
 
 #if true
-            // Create some test items
+            // NOTE: Create some test items
             Random rand = new Random();
             foreach (Map m in Maps)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
