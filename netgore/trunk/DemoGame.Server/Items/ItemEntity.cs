@@ -103,8 +103,43 @@ namespace DemoGame.Server
         {
         }
 
+        /// <summary>
+        /// Validates the given <paramref name="position"/> by attempting to make it a legal position if it is not
+        /// one already.
+        /// </summary>
+        /// <param name="map">The map that the <see cref="ItemEntity"/> is on or will be on.</param>
+        /// <param name="position">The position to validate.</param>
+        /// <returns>If the <paramref name="position"/> was already valid, or no valid position was found, contains
+        /// the same value as the <paramref name="position"/>; otherwise, contains the corrected valid position.</returns>
+        Vector2 ValidatePosition(MapBase map, Vector2 position)
+        {
+            if (map == null)
+                return position;
+
+            Vector2 closestLegalPosition;
+            bool isClosestPositionValid;
+            if (!map.IsValidPlacementPosition(CB, out closestLegalPosition, out isClosestPositionValid))
+            {
+                if (isClosestPositionValid)
+                {
+                    return closestLegalPosition;
+                }
+                else
+                {
+                    // TODO: Could not find a valid position for the Character
+                }
+            }
+
+            return position;
+        }
+
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map) : this(t, pos, amount)
         {
+            // Since the item is spawning on a map, ensure that the position is valid for the map
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Teleport(ValidatePosition(map, pos));
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             map.AddEntity(this);
         }
 
