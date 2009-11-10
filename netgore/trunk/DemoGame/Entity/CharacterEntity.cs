@@ -11,6 +11,11 @@ namespace DemoGame
     /// </summary>
     public abstract class CharacterEntity : DynamicEntity
     {
+        /// <summary>
+        /// The maximum distance, in pixels, a character can pick up an item.
+        /// </summary>
+        public const int MaxPickupDistance = 32;
+
         Direction _heading = Direction.East;
         CharacterState _state = CharacterState.Idle;
 
@@ -121,6 +126,30 @@ namespace DemoGame
         protected abstract IMap GetIMap();
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> representing the region a <see cref="CharacterEntity"/> can pick up
+        /// <see cref="IPickupableEntity"/> entities from.
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> representing the region a <see cref="CharacterEntity"/> can pick up
+        /// <see cref="IPickupableEntity"/> entities from.</returns>
+        public Rectangle GetPickupRegion()
+        {
+            return new Rectangle((int)Position.X - MaxPickupDistance, (int)Position.Y - MaxPickupDistance,
+                                 (int)Size.X + (MaxPickupDistance * 2), (int)Size.Y + (MaxPickupDistance * 2));
+        }
+
+        /// <summary>
+        /// Checks if the given <paramref name="toPickup"/> is close enough to the <see cref="CharacterEntity"/>
+        /// to be picked up.
+        /// </summary>
+        /// <param name="toPickup">The <see cref="Entity"/> to be picked up.</param>
+        /// <returns>True if the <paramref name="toPickup"/> is close enough to be picked up; otherwise false.</returns>
+        public bool IsInPickupRegion(Entity toPickup)
+        {
+            var dist = toPickup.CB.GetDistance(CB);
+            return (dist <= MaxPickupDistance);
+        }
+
+        /// <summary>
         /// Sets the character's heading.
         /// </summary>
         /// <param name="newHeading">New heading for the character.</param>
@@ -201,35 +230,6 @@ namespace DemoGame
         {
             // Update velocity
             UpdateVelocity(deltaTime);
-        }
-
-        /// <summary>
-        /// The maximum distance, in pixels, a character can pick up an item.
-        /// </summary>
-        public const int MaxPickupDistance = 32;
-
-        /// <summary>
-        /// Gets a <see cref="Rectangle"/> representing the region a <see cref="CharacterEntity"/> can pick up
-        /// <see cref="IPickupableEntity"/> entities from.
-        /// </summary>
-        /// <returns>A <see cref="Rectangle"/> representing the region a <see cref="CharacterEntity"/> can pick up
-        /// <see cref="IPickupableEntity"/> entities from.</returns>
-        public Rectangle GetPickupRegion()
-        {
-            return new Rectangle((int)Position.X - MaxPickupDistance, (int)Position.Y - MaxPickupDistance,
-                (int)Size.X + (MaxPickupDistance * 2), (int)Size.Y + (MaxPickupDistance * 2));
-        }
-
-        /// <summary>
-        /// Checks if the given <paramref name="toPickup"/> is close enough to the <see cref="CharacterEntity"/>
-        /// to be picked up.
-        /// </summary>
-        /// <param name="toPickup">The <see cref="Entity"/> to be picked up.</param>
-        /// <returns>True if the <paramref name="toPickup"/> is close enough to be picked up; otherwise false.</returns>
-        public bool IsInPickupRegion(Entity toPickup)
-        {
-            var dist = toPickup.CB.GetDistance(CB);
-            return (dist <= MaxPickupDistance);
         }
 
         /// <summary>
