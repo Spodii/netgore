@@ -99,7 +99,7 @@ namespace DemoGame.Server
             Random rand = new Random();
             foreach (Map m in Maps)
             {
-                for (int i = 0; i < 50; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
