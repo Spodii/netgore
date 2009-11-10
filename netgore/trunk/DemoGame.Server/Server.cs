@@ -43,11 +43,7 @@ namespace DemoGame.Server
         const long _serverUpdateRate = 5; // 200 FPS
 
         readonly ConsoleCommands _consoleCommands;
-
-        /// <summary>
-        /// Queue of the inputs from the console that need to be handled.
-        /// </summary>
-        readonly Queue<string> _consoleInputBuffer = new Queue<string>();
+        ConsoleInputBuffer _consoleInputBuffer;
 
         readonly IDbController _dbController;
         bool _disposed;
@@ -56,11 +52,6 @@ namespace DemoGame.Server
         /// Stopwatch to track the total elapsed time the game has been running
         /// </summary>
         readonly Stopwatch _gameTimer = new Stopwatch();
-
-        /// <summary>
-        /// Thread for managing console input
-        /// </summary>
-        readonly Thread _inputThread;
 
         /// <summary>
         /// If the server is running
@@ -120,8 +111,6 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.Info("Server loaded.");
-
-            _inputThread = new Thread(HandleInput) { Name = "Input Handler", IsBackground = true };
         }
 
         /// <summary>
@@ -236,15 +225,11 @@ namespace DemoGame.Server
                 ServerSockets.Heartbeat();
 
                 // Handle input from the console
-                lock (_consoleInputBuffer)
+                foreach (var inputStr in _consoleInputBuffer.GetBuffer())
                 {
-                    while (_consoleInputBuffer.Count > 0)
-                    {
-                        string inputStr = _consoleInputBuffer.Dequeue();
-                        var resultStr = _consoleCommands.ExecuteCommand(inputStr);
-                        if (!string.IsNullOrEmpty(resultStr))
-                            Console.WriteLine(resultStr);
-                    }
+                    var resultStr = _consoleCommands.ExecuteCommand(inputStr);
+                    if (!string.IsNullOrEmpty(resultStr))
+                        Console.WriteLine(resultStr);
                 }
 
                 // Update the world
@@ -326,24 +311,6 @@ namespace DemoGame.Server
             using (PacketWriter pw = ServerPacket.LoginUnsuccessful(loginFailureGameMessage))
             {
                 conn.Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// Handles the server console input.
-        /// </summary>
-        void HandleInput()
-        {
-            while (_isRunning)
-            {
-                string input = Console.ReadLine();
-                if (!string.IsNullOrEmpty(input))
-                {
-                    lock (_consoleInputBuffer)
-                    {
-                        _consoleInputBuffer.Enqueue(input);
-                    }
-                }
             }
         }
 
@@ -435,8 +402,10 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Starting server...");
 
-            // Start the input thread
-            _inputThread.Start();
+            // Create the console input buffer
+            if (_consoleInputBuffer != null)
+                _consoleInputBuffer.Dispose();
+            _consoleInputBuffer = new ConsoleInputBuffer();
 
             // Start the main game loop
             GameLoop();
@@ -470,6 +439,9 @@ namespace DemoGame.Server
 
             _disposed = true;
 
+            if (_consoleInputBuffer != null)
+                _consoleInputBuffer.Dispose();
+
             _world.Dispose();
             _dbController.Dispose();
         }
@@ -488,5 +460,76 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        class ConsoleInputBuffer : IDisposable
+        {
+            readonly Queue<string> _buffer = new Queue<string>();
+            bool _isRunning = true;
+            readonly object _syncObj = new object();
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ConsoleInputBuffer"/> class.
+            /// </summary>
+            public ConsoleInputBuffer()
+            {
+                Thread inputThread = new Thread(ReceiveInputLoop) { IsBackground = true, Name = "Console Input" };
+                inputThread.Start();
+            }
+
+            /// <summary>
+            /// Gets an IEnumerable of the input strings since the last call to this method.
+            /// </summary>
+            /// <returns>An IEnumerable of the input strings since the last call to this method.</returns>
+            public IEnumerable<string> GetBuffer()
+            {
+                if (_buffer.Count == 0)
+                    return Enumerable.Empty<string>();
+
+                IEnumerable<string> ret;
+                lock (_syncObj)
+                {
+                    if (_buffer.Count == 0)
+                        ret = Enumerable.Empty<string>();
+                    else
+                    {
+                        ret = _buffer.ToArray();
+                        _buffer.Clear();
+                    }
+                }
+
+                return ret;
+            }
+
+            /// <summary>
+            /// The thread that does the actual reading from the console.
+            /// </summary>
+            void ReceiveInputLoop()
+            {
+                while (_isRunning)
+                {
+                    string input = Console.ReadLine();
+
+                    if (!string.IsNullOrEmpty(input))
+                    {
+                        lock (_syncObj)
+                        {
+                            _buffer.Enqueue(input);
+                        }
+                    }
+                }
+            }
+
+            #region IDisposable Members
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            public void Dispose()
+            {
+                _isRunning = false;
+            }
+
+            #endregion
+        }
     }
 }
