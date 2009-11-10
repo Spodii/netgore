@@ -158,7 +158,6 @@ namespace NetGore.Collections
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>1</filterpriority>
         public IEnumerator<T> GetEnumerator()
         {
             // Update the buffer for a non-readonly source
@@ -179,7 +178,6 @@ namespace NetGore.Collections
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -198,7 +196,7 @@ namespace NetGore.Collections
             int _index;
 
             /// <summary>
-            /// Enumerator constructor.
+            /// Initializes a new instance of the <see cref="SafeEnumerator&lt;T&gt;.Enumerator"/> class.
             /// </summary>
             /// <param name="array">Array to be enumerated over.</param>
             /// <param name="endIndex">Index to stop at when reached. Synonymous with Array.Length.</param>
@@ -217,7 +215,6 @@ namespace NetGore.Collections
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
-            /// <filterpriority>2</filterpriority>
             public void Dispose()
             {
             }
