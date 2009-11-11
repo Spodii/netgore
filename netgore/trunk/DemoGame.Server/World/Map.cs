@@ -437,15 +437,6 @@ namespace DemoGame.Server
                 ServerPacket.SetMap(pw, Index);
                 user.Send(pw);
 
-                // NOTE: !! Temp
-                Debug.Print("Map: " + Index);
-                foreach (var de in DynamicEntities)
-                    Debug.Print(de.MapEntityIndex + " - " + de);
-
-                if (DynamicEntities.HasDuplicates())
-                {
-                }
-
                 // Send dynamic entities
                 foreach (DynamicEntity dynamicEntity in DynamicEntities)
                 {
