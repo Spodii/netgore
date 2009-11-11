@@ -792,9 +792,9 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Removes an entity from the map
+        /// Removes an entity from the map.
         /// </summary>
-        /// <param name="entity">Entity to remove from the map</param>
+        /// <param name="entity">Entity to remove from the map.</param>
         public void RemoveEntity(Entity entity)
         {
             if (entity == null)
