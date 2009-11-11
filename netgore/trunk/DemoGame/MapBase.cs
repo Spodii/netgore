@@ -710,7 +710,7 @@ namespace DemoGame
         /// <summary>
         /// Loads the map.
         /// </summary>
-        /// <param name="filePath">Path to the file to load</param>
+        /// <param name="filePath">Path to the file to load.</param>
         /// <param name="loadDynamicEntities">If true, the DynamicEntities will be loaded from the file. If false,
         /// all DynamicEntities will be skipped.</param>
         protected virtual void Load(string filePath, bool loadDynamicEntities)
@@ -745,9 +745,9 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Loads the header information for the map
+        /// Loads the header information for the map.
         /// </summary>
-        /// <param name="r">XmlReader used to load the map file</param>
+        /// <param name="r">XmlReader used to load the map file.</param>
         void LoadHeader(IValueReader r)
         {
             if (r == null)
@@ -774,9 +774,9 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Loads the wall information for the map
+        /// Loads the wall information for the map.
         /// </summary>
-        /// <param name="r">XmlReader used to load the map file</param>
+        /// <param name="r">XmlReader used to load the map file.</param>
         void LoadWalls(IValueReader r)
         {
             if (r == null)
