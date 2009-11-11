@@ -16,8 +16,8 @@ namespace DemoGame.Server
     public class Alliance
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly AllianceID[] _attackable;
-        readonly AllianceID[] _hostile;
+        readonly IEnumerable<AllianceID> _attackable;
+        readonly IEnumerable<AllianceID> _hostile;
         readonly AllianceID _id;
         readonly string _name;
 
@@ -71,8 +71,8 @@ namespace DemoGame.Server
 
             _id = id;
             _name = name;
-            _attackable = attackables.Select(x => x.AttackableID).ToArray();
-            _hostile = hostiles.Select(x => x.HostileID).ToArray();
+            _attackable = attackables.Select(x => x.AttackableID).ToCompact();
+            _hostile = hostiles.Select(x => x.HostileID).ToCompact();
         }
 
         /// <summary>

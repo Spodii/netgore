@@ -16,8 +16,8 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly CharacterTemplateEquipmentItem[] _equipment;
-        readonly CharacterTemplateInventoryItem[] _inventory;
+        readonly IEnumerable<CharacterTemplateEquipmentItem> _equipment;
+        readonly IEnumerable<CharacterTemplateInventoryItem> _inventory;
         readonly ICharacterTemplateTable _templateTable;
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace DemoGame.Server
             Debug.Assert(!inventory.Any(x => x == null));
             Debug.Assert(!equipment.Any(x => x == null));
 
-            _inventory = inventory.ToArray();
-            _equipment = equipment.ToArray();
+            _inventory = inventory.ToCompact();
+            _equipment = equipment.ToCompact();
 
             _templateTable = templateTable;
 

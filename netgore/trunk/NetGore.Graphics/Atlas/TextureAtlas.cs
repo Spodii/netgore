@@ -427,7 +427,7 @@ namespace NetGore.Graphics
                 _height = height;
 
                 // Since we won't be altering the collection, use the smallest footprint possible
-                _nodes = nodes.Where(x => x.ITextureAtlasable != null).ToArray();
+                _nodes = nodes.Where(x => x.ITextureAtlasable != null).ToCompact();
             }
 
             /// <summary>
