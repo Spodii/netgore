@@ -24,11 +24,6 @@ namespace DemoGame
         /// </summary>
         List<Entity>[,] _entityGrid;
 
-        public Point GridSize
-        {
-            get { return new Point(_entityGrid.GetLength(0), _entityGrid.GetLength(1)); }
-        }
-
         protected IEnumerable<Entity> this[int x, int y]
         {
             get
@@ -43,6 +38,11 @@ namespace DemoGame
         protected IEnumerable<Entity> this[Point gridIndex]
         {
             get { return this[gridIndex.X, gridIndex.Y]; }
+        }
+
+        public Point GridSize
+        {
+            get { return new Point(_entityGrid.GetLength(0), _entityGrid.GetLength(1)); }
         }
 
         public void Add(IEnumerable<Entity> entities)
@@ -112,6 +112,11 @@ namespace DemoGame
             return retGrid;
         }
 
+        static bool EmptyPred<T>(T e)
+        {
+            return true;
+        }
+
         /// <summary>
         /// Gets the grid segment for each intersection on the entity grid.
         /// </summary>
@@ -176,6 +181,62 @@ namespace DemoGame
             return new Point((int)x, (int)y);
         }
 
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        IEnumerable<Entity> MutableGetEntities(Rectangle rect, Predicate<Entity> condition)
+        {
+            var gridSegments = GetEntityGrids(rect);
+            var matches = gridSegments.SelectMany(x => x).Where(x => x.CB.Intersect(rect) && condition(x)).Distinct();
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets all entities at the given point.
+        /// </summary>
+        /// <param name="p">The point to find the entities at.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <returns>All entities containing the given point that are of the given type.</returns>
+        IEnumerable<T> MutableGetEntities<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        {
+            var gridSegment = this[MapPositionToGridIndex(p)];
+            var matches = gridSegment.OfType<T>().Where(x => x.CB.HitTest(p) && condition(x));
+            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        IEnumerable<T> MutableGetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            var gridSegments = GetEntityGrids(rect);
+            var matches = gridSegments.SelectMany(x => x).OfType<T>().Where(x => x.CB.Intersect(rect) && condition(x)).Distinct();
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets all entities containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the entities at.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>All of the entities at the given point.</returns>
+        IEnumerable<Entity> MutableGetEntities(Vector2 p, Predicate<Entity> condition)
+        {
+            var gridSegment = this[MapPositionToGridIndex(p)];
+            var matches = gridSegment.Where(x => x.CB.HitTest(p) && condition(x));
+            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
+            return matches;
+        }
+
         public void Remove(Entity entity)
         {
             foreach (var gridSegment in _entityGrid)
@@ -238,6 +299,97 @@ namespace DemoGame
 
         #region IMapEntityCollection Members
 
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// </summary>
+        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
+        public T GetEntity<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            return MutableGetEntities(rect, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// </summary>
+        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
+        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
+        public Entity GetEntity(Rectangle rect, Predicate<Entity> condition)
+        {
+            return MutableGetEntities(rect, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        {
+            return MutableGetEntities(p, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p) where T : Entity
+        {
+            return MutableGetEntities<T>(p, EmptyPred).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public Entity GetEntity(Vector2 p)
+        {
+            return MutableGetEntities(p, EmptyPred).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public Entity GetEntity(Vector2 p, Predicate<Entity> condition)
+        {
+            return MutableGetEntities(p, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first Entity found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the Entity</param>
+        /// <returns>First Entity found at the given point, or null if none found</returns>
+        public Entity GetEntity(Rectangle rect)
+        {
+            return MutableGetEntities(rect, EmptyPred).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first Entity found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the Entity</param>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <returns>First Entity found at the given point, or null if none found</returns>
+        public T GetEntity<T>(Rectangle rect) where T : Entity
+        {
+            return MutableGetEntities<T>(rect, EmptyPred).FirstOrDefault();
+        }
+
         /// <summary>
         /// Gets if the specified area or location contains any entities.
         /// </summary>
@@ -245,7 +397,18 @@ namespace DemoGame
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities(Rectangle rect)
         {
-            return GetEntityGrids(rect).SelectMany(x => x).Any(x => x.CB.Intersect(rect));
+            return ContainsEntities(rect, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities(Rectangle rect, Predicate<Entity> condition)
+        {
+            return GetEntityGrids(rect).SelectMany(x => x).Any(x => x.CB.Intersect(rect) && condition(x));
         }
 
         /// <summary>
@@ -257,7 +420,20 @@ namespace DemoGame
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities<T>(Rectangle rect) where T : Entity
         {
-            return GetEntityGrids(rect).SelectMany(x => x).OfType<T>().Any(x => x.CB.Intersect(rect));
+            return ContainsEntities<T>(rect, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            return GetEntityGrids(rect).SelectMany(x => x).OfType<T>().Any(x => x.CB.Intersect(rect) && condition(x));
         }
 
         /// <summary>
@@ -267,8 +443,19 @@ namespace DemoGame
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities(Vector2 point)
         {
+            return ContainsEntities(point, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities(Vector2 point, Predicate<Entity> condition)
+        {
             var gridSegment = this[MapPositionToGridIndex(point)];
-            return gridSegment.Any(x => x.CB.HitTest(point));
+            return gridSegment.Any(x => x.CB.HitTest(point) && condition(x));
         }
 
         /// <summary>
@@ -280,8 +467,21 @@ namespace DemoGame
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities<T>(Vector2 point) where T : Entity
         {
+            return ContainsEntities<T>(point, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition) where T : Entity
+        {
             var gridSegment = this[MapPositionToGridIndex(point)];
-            return gridSegment.OfType<T>().Any(x => x.CB.HitTest(point));
+            return gridSegment.OfType<T>().Any(x => x.CB.HitTest(point) && condition(x));
         }
 
         /// <summary>
@@ -291,9 +491,18 @@ namespace DemoGame
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<Entity> GetEntities(Rectangle rect)
         {
-            var gridSegments = GetEntityGrids(rect);
-            var matches = gridSegments.SelectMany(x => x).Where(x => x.CB.Intersect(rect)).Distinct();
-            return matches.ToImmutable();
+            return GetEntities(rect, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
+        {
+            return MutableGetEntities(rect, condition).ToImmutable();
         }
 
         /// <summary>
@@ -304,10 +513,19 @@ namespace DemoGame
         /// <returns>All entities containing the given point that are of the given type.</returns>
         public IEnumerable<T> GetEntities<T>(Vector2 p) where T : Entity
         {
-            var gridSegment = this[MapPositionToGridIndex(p)];
-            var matches = gridSegment.OfType<T>().Where(x => x.CB.HitTest(p));
-            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
-            return matches.ToImmutable();
+            return GetEntities<T>(p, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets all entities at the given point.
+        /// </summary>
+        /// <param name="p">The point to find the entities at.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <returns>All entities containing the given point that are of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        {
+            return MutableGetEntities(p, condition).ToImmutable();
         }
 
         /// <summary>
@@ -318,9 +536,19 @@ namespace DemoGame
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<T> GetEntities<T>(Rectangle rect) where T : Entity
         {
-            var gridSegments = GetEntityGrids(rect);
-            var matches = gridSegments.SelectMany(x => x).OfType<T>().Where(x => x.CB.Intersect(rect)).Distinct();
-            return matches.ToImmutable();
+            return GetEntities<T>(rect, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            return MutableGetEntities(rect, condition).ToImmutable();
         }
 
         /// <summary>
@@ -330,10 +558,18 @@ namespace DemoGame
         /// <returns>All of the entities at the given point.</returns>
         public IEnumerable<Entity> GetEntities(Vector2 p)
         {
-            var gridSegment = this[MapPositionToGridIndex(p)];
-            var matches = gridSegment.Where(x => x.CB.HitTest(p));
-            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
-            return matches.ToImmutable();
+            return GetEntities(p, EmptyPred);
+        }
+
+        /// <summary>
+        /// Gets all entities containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the entities at.</param>
+        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <returns>All of the entities at the given point.</returns>
+        public IEnumerable<Entity> GetEntities(Vector2 p, Predicate<Entity> condition)
+        {
+            return MutableGetEntities(p, condition).ToImmutable();
         }
 
         #endregion
