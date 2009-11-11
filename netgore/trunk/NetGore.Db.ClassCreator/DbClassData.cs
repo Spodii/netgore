@@ -57,7 +57,7 @@ namespace NetGore.Db.ClassCreator
                     x =>
                     x.Columns.Count() > 0 &&
                     (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
-                    ToArray();
+                    ToCompact();
 
             // Column collections filter
             ColumnCollections =
@@ -65,7 +65,7 @@ namespace NetGore.Db.ClassCreator
                     x =>
                     x.Columns.Count() > 0 &&
                     (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
-                    ToArray();
+                    ToCompact();
 
             // Populate the external types dictionary
             foreach (var column in columns)

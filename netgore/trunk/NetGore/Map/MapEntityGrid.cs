@@ -293,7 +293,7 @@ namespace DemoGame
         {
             var gridSegments = GetEntityGrids(rect);
             var matches = gridSegments.SelectMany(x => x).Where(x => x.CB.Intersect(rect)).Distinct();
-            return matches;
+            return matches.ToImmutable();
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace DemoGame
             var gridSegment = this[MapPositionToGridIndex(p)];
             var matches = gridSegment.OfType<T>().Where(x => x.CB.HitTest(p));
             Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
-            return matches;
+            return matches.ToImmutable();
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace DemoGame
         {
             var gridSegments = GetEntityGrids(rect);
             var matches = gridSegments.SelectMany(x => x).OfType<T>().Where(x => x.CB.Intersect(rect)).Distinct();
-            return matches;
+            return matches.ToImmutable();
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace DemoGame
             var gridSegment = this[MapPositionToGridIndex(p)];
             var matches = gridSegment.Where(x => x.CB.HitTest(p));
             Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
-            return matches;
+            return matches.ToImmutable();
         }
 
         #endregion

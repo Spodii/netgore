@@ -264,13 +264,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an array of all the Users in the world.
+        /// Gets all the Users in the world.
         /// </summary>
         /// <returns>An array of all the Users in the world.</returns>
-        public User[] GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            // We MUST use ToArray() instead of returning the IEnumerable to avoid issues with the collection changing
-            return _users.Values.ToArray();
+            return _users.Values.ToImmutable();
         }
 
         /// <summary>

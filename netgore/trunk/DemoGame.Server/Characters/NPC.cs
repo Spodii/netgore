@@ -414,6 +414,10 @@ namespace DemoGame.Server
             if (!IsAlive)
                 return;
 
+            // NOTE: !! Enum safety: Modifies the Entity collection during the loop
+            //if (Rand.Next(0, 50) == 25)
+            //    Kill();
+
             // Update the AI
             var ai = AI;
             if (ai != null)

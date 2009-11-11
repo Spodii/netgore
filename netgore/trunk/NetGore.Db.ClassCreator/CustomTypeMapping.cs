@@ -34,7 +34,7 @@ namespace NetGore.Db.ClassCreator
         public CustomTypeMapping(IEnumerable<string> tables, IEnumerable<string> columns, string customType)
         {
             Tables = tables;
-            Columns = columns.ToArray();
+            Columns = columns.ToCompact();
             CustomType = customType;
         }
 

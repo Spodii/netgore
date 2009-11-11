@@ -347,7 +347,7 @@ namespace DemoGame.Server
 
             Load(ContentPaths.Build, true);
 
-            _npcSpawners = NPCSpawner.LoadSpawners(this).ToArray();
+            _npcSpawners = NPCSpawner.LoadSpawners(this).ToCompact();
 
             // Spawn persistent NPCs
             var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(Index);

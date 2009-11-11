@@ -1213,7 +1213,7 @@ namespace DemoGame
             // ensure that any logic in CollideInto and CollideFrom in the Entity updating that moves the Entity will
             // not break the enumeration by changing the underlying collection.
             var rectCollisionEntities =
-                _entityGrid.GetEntities(entity.CB.ToRectangle(), x => x.CollisionType != CollisionType.None).ToArray();
+                _entityGrid.GetEntities(entity.CB.ToRectangle(), x => x.CollisionType != CollisionType.None).ToImmutable();
 
             // Do real collision detection on the entities, and handle it if the collision test passes
             foreach (var collideEntity in rectCollisionEntities)
