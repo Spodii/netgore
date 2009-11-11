@@ -299,7 +299,6 @@ namespace DemoGame
 
         #region IMapEntityCollection Members
 
-
         /// <summary>
         /// Gets the first <see cref="Entity"/> found in the given region.
         /// </summary>

@@ -66,11 +66,6 @@ namespace DemoGame.Server
     public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable
     {
         /// <summary>
-        /// HACK: This is just a temporary const used until we have variable speeds.
-        /// </summary>
-        public const float CharacterMoveSpeed = 0.18f;
-
-        /// <summary>
         /// Amount of time the character must wait between attacks
         /// </summary>
         const int _attackTimeout = 500;
@@ -80,26 +75,10 @@ namespace DemoGame.Server
         /// </summary>
         const int _spRecoveryRate = 3000;
 
-        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
-        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
-
         /// <summary>
-        /// Random number generator for Characters
+        /// HACK: This is just a temporary const used until we have variable speeds.
         /// </summary>
-        static readonly Random _rand = new Random();
-
-        static readonly ShopManager _shopManager = ShopManager.Instance;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly CharacterStatsBase _baseStats;
-        readonly CharacterEquipped _equipped;
-        readonly CharacterInventory _inventory;
-        readonly bool _isPersistent;
-        readonly CharacterStatsBase _modStats;
-        readonly CharacterSPSynchronizer _spSync;
-        readonly CharacterStatusEffects _statusEffects;
-
-        readonly World _world;
+        public const float CharacterMoveSpeed = 0.18f;
 
         /// <summary>
         /// The account ID of this Character, or null if they don't have an account. Normally, a User should always have
@@ -112,10 +91,16 @@ namespace DemoGame.Server
         /// </summary>
         Alliance _alliance;
 
+        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
+        readonly CharacterStatsBase _baseStats;
+
         int _cash;
+        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
+        readonly CharacterEquipped _equipped;
         int _exp;
         SPValueType _hp;
         CharacterID _id;
+        readonly CharacterInventory _inventory;
 
         /// <summary>
         /// If the character is alive or not.
@@ -123,6 +108,7 @@ namespace DemoGame.Server
         bool _isAlive = false;
 
         bool _isLoaded = false;
+        readonly bool _isPersistent;
 
         /// <summary>
         /// Time at which the character last performed an attack.
@@ -136,6 +122,8 @@ namespace DemoGame.Server
         /// </summary>
         Map _map;
 
+        readonly CharacterStatsBase _modStats;
+
         SPValueType _mp;
 
         /// <summary>
@@ -146,19 +134,31 @@ namespace DemoGame.Server
         int _nextLevelExp;
 
         /// <summary>
+        /// Random number generator for Characters
+        /// </summary>
+        static readonly Random _rand = new Random();
+
+        /// <summary>
         /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
         /// called back-to-back without any values changing in-between.
         /// </summary>
         bool _saved = false;
+
+        static readonly ShopManager _shopManager = ShopManager.Instance;
 
         /// <summary>
         /// The time that the SP will next be recovered.
         /// </summary>
         int _spRecoverTime;
 
+        readonly CharacterSPSynchronizer _spSync;
+
         int _statPoints;
+        readonly CharacterStatusEffects _statusEffects;
 
         CharacterTemplateID? _templateID;
+        readonly World _world;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
@@ -221,35 +221,34 @@ namespace DemoGame.Server
         public event CharacterItemEventHandler OnUseItem;
 
         /// <summary>
-        /// Gets the <see cref="AllianceManager"/> instance to be used by the <see cref="Character"/>s.
+        /// Character constructor.
         /// </summary>
-        protected static AllianceManager AllianceManager
+        /// <param name="world">World that the character belongs to.</param>
+        /// <param name="isPersistent">If the Character's state is persistent. If true, Load() MUST be called
+        /// at some point during the Character's constructor!</param>
+        protected Character(World world, bool isPersistent)
         {
-            get { return _allianceManager; }
-        }
+            _world = world;
+            _isPersistent = isPersistent;
 
-        /// <summary>
-        /// Gets the <see cref="CharacterTemplateManager"/> instance to be used by the <see cref="Character"/>s.
-        /// </summary>
-        protected static CharacterTemplateManager CharacterTemplateManager
-        {
-            get { return _characterTemplateManager; }
-        }
+            if (IsPersistent)
+                _statusEffects = new PersistentCharacterStatusEffects(this);
+            else
+                _statusEffects = new NonPersistentCharacterStatusEffects(this);
 
-        /// <summary>
-        /// Gets a random number generator to be used for Characters.
-        /// </summary>
-        protected static Random Rand
-        {
-            get { return _rand; }
-        }
+            _statusEffects.OnAdd += StatusEffects_HandleOnAdd;
+            _statusEffects.OnRemove += StatusEffects_HandleOnRemove;
 
-        /// <summary>
-        /// Gets the <see cref="ShopManager"/> instance to be used by the <see cref="Character"/>s.
-        /// </summary>
-        protected static ShopManager ShopManager
-        {
-            get { return _shopManager; }
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            _baseStats = CreateStats(StatCollectionType.Base);
+            _modStats = CreateStats(StatCollectionType.Modified);
+            _spSync = CreateSPSynchronizer();
+            _inventory = CreateInventory();
+            _equipped = CreateEquipped();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
+            ModStats.GetStat(StatType.MaxHP).OnChange += ModStats_MaxHP_OnChange;
+            ModStats.GetStat(StatType.MaxMP).OnChange += ModStats_MaxMP_OnChange;
         }
 
         /// <summary>
@@ -266,9 +265,25 @@ namespace DemoGame.Server
             protected set { _alliance = value; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="AllianceManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static AllianceManager AllianceManager
+        {
+            get { return _allianceManager; }
+        }
+
         public CharacterStatsBase BaseStats
         {
             get { return _baseStats; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplateManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static CharacterTemplateManager CharacterTemplateManager
+        {
+            get { return _characterTemplateManager; }
         }
 
         /// <summary>
@@ -366,6 +381,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets a random number generator to be used for Characters.
+        /// </summary>
+        protected static Random Rand
+        {
+            get { return _rand; }
+        }
+
+        /// <summary>
         /// Gets or sets the index of the Map the Character will respawn on.
         /// </summary>
         public MapIndex? RespawnMapIndex { get; set; }
@@ -381,6 +404,14 @@ namespace DemoGame.Server
         /// </summary>
         public abstract Shop Shop { get; }
 
+        /// <summary>
+        /// Gets the <see cref="ShopManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static ShopManager ShopManager
+        {
+            get { return _shopManager; }
+        }
+
         public CharacterStatusEffects StatusEffects
         {
             get { return _statusEffects; }
@@ -392,37 +423,6 @@ namespace DemoGame.Server
         public World World
         {
             get { return _world; }
-        }
-
-        /// <summary>
-        /// Character constructor.
-        /// </summary>
-        /// <param name="world">World that the character belongs to.</param>
-        /// <param name="isPersistent">If the Character's state is persistent. If true, Load() MUST be called
-        /// at some point during the Character's constructor!</param>
-        protected Character(World world, bool isPersistent)
-        {
-            _world = world;
-            _isPersistent = isPersistent;
-
-            if (IsPersistent)
-                _statusEffects = new PersistentCharacterStatusEffects(this);
-            else
-                _statusEffects = new NonPersistentCharacterStatusEffects(this);
-
-            _statusEffects.OnAdd += StatusEffects_HandleOnAdd;
-            _statusEffects.OnRemove += StatusEffects_HandleOnRemove;
-
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            _baseStats = CreateStats(StatCollectionType.Base);
-            _modStats = CreateStats(StatCollectionType.Modified);
-            _spSync = CreateSPSynchronizer();
-            _inventory = CreateInventory();
-            _equipped = CreateEquipped();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
-            ModStats.GetStat(StatType.MaxHP).OnChange += ModStats_MaxHP_OnChange;
-            ModStats.GetStat(StatType.MaxMP).OnChange += ModStats_MaxMP_OnChange;
         }
 
         /// <summary>
@@ -1135,35 +1135,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Validates the given <paramref name="position"/> by attempting to make it a legal position if it is not
-        /// one already.
-        /// </summary>
-        /// <param name="position">The position to validate.</param>
-        /// <returns>If the <paramref name="position"/> was already valid, or no valid position was found, contains
-        /// the same value as the <paramref name="position"/>; otherwise, contains the corrected valid position.</returns>
-        Vector2 ValidatePosition(Vector2 position)
-        {
-            if (Map == null)
-                return position;
-
-            Vector2 closestLegalPosition;
-            bool isClosestPositionValid;
-            if (!Map.IsValidPlacementPosition(CB, out closestLegalPosition, out isClosestPositionValid))
-            {
-                if (isClosestPositionValid)
-                {
-                    return closestLegalPosition;
-                }
-                else
-                {
-                    // TODO: Could not find a valid position for the Character
-                }
-            }
-
-            return position;
-        }
-
-        /// <summary>
         /// Teleports the character to a new position and informs clients in the area of
         /// interest that the character has teleported.
         /// </summary>
@@ -1385,6 +1356,33 @@ namespace DemoGame.Server
             }
 
             return successful;
+        }
+
+        /// <summary>
+        /// Validates the given <paramref name="position"/> by attempting to make it a legal position if it is not
+        /// one already.
+        /// </summary>
+        /// <param name="position">The position to validate.</param>
+        /// <returns>If the <paramref name="position"/> was already valid, or no valid position was found, contains
+        /// the same value as the <paramref name="position"/>; otherwise, contains the corrected valid position.</returns>
+        Vector2 ValidatePosition(Vector2 position)
+        {
+            if (Map == null)
+                return position;
+
+            Vector2 closestLegalPosition;
+            bool isClosestPositionValid;
+            if (!Map.IsValidPlacementPosition(CB, out closestLegalPosition, out isClosestPositionValid))
+            {
+                if (isClosestPositionValid)
+                    return closestLegalPosition;
+                else
+                {
+                    // TODO: Could not find a valid position for the Character
+                }
+            }
+
+            return position;
         }
 
         #region ICharacterTable Members
