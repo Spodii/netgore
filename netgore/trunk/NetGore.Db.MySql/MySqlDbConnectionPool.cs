@@ -10,7 +10,7 @@ namespace NetGore.Db.MySql
     public class MySqlDbConnectionPool : DbConnectionPool
     {
         /// <summary>
-        /// MySqlDbConnectionPool constructor.
+        /// Initializes a new instance of the <see cref="MySqlDbConnectionPool"/> class.
         /// </summary>
         /// <param name="connectionString">ConnectionString to create the MySqlConnections with.</param>
         public MySqlDbConnectionPool(string connectionString) : base(connectionString)
