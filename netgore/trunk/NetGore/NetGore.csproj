@@ -65,6 +65,7 @@
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="ConsoleInputBuffer.cs" />
     <Compile Include="Entities\CollisionTypeHelper.cs" />
+    <Compile Include="Entities\IUpdateableEntity.cs" />
     <Compile Include="Entities\IUsableEntity.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Extensions\ClampExtensions.cs" />

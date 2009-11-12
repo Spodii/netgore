@@ -368,11 +368,11 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Updates this <see cref="Entity"/>.
+        /// Handles updating this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="imap">The map that this <see cref="Entity"/> is on.</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        public virtual void Update(IMap imap, float deltaTime)
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected virtual void HandleUpdate(IMap imap, float deltaTime)
         {
             // If the Y velocity is non-zero, assume not on the ground
             if (Velocity.Y != 0)

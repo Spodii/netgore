@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using DemoGame;
 using Microsoft.Xna.Framework;
@@ -8,7 +9,7 @@ namespace DemoGame
     /// <summary>
     /// Defines the basics of a single item.
     /// </summary>
-    public abstract class ItemEntityBase : DynamicEntity, IPickupableEntity
+    public abstract class ItemEntityBase : DynamicEntity, IPickupableEntity, IUpdateableEntity
     {
         /// <summary>
         /// Maximum number of items allowed in a single item stack.
@@ -99,11 +100,11 @@ namespace DemoGame
         public abstract ItemEntityBase DeepCopy();
 
         /// <summary>
-        /// Updates the Entity
+        /// Handles updating this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="imap">Map that the Entity is on</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update</param>
-        public override void Update(IMap imap, float deltaTime)
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
         {
             // For items, once they hit the ground, they no longer update
             if (OnGround)
@@ -111,7 +112,7 @@ namespace DemoGame
 
             // Perform typical collision detection/etc
             UpdateVelocity(deltaTime);
-            base.Update(imap, deltaTime);
+            base.HandleUpdate(imap, deltaTime);
         }
 
         #region IPickupableEntity Members
@@ -137,5 +138,15 @@ namespace DemoGame
         public abstract bool Pickup(CharacterEntity charEntity);
 
         #endregion
+
+        /// <summary>
+        /// Updates the <see cref="IUpdateableEntity"/>.
+        /// </summary>
+        /// <param name="imap">The map that this <see cref="IUpdateableEntity"/> is on.</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
+        public void Update(IMap imap, float deltaTime)
+        {
+            HandleUpdate(imap, deltaTime);
+        }
     }
 }

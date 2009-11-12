@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace DemoGame
     /// <summary>
     /// Abstract class for an Entity that is a Character.
     /// </summary>
-    public abstract class CharacterEntity : DynamicEntity
+    public abstract class CharacterEntity : DynamicEntity, IUpdateableEntity
     {
         /// <summary>
         /// The maximum distance, in pixels, a character can pick up an item.
@@ -183,11 +184,11 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Updates the Entity.
+        /// Handles updating this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="imap">Map that this Entity is on.</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        public override void Update(IMap imap, float deltaTime)
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
         {
             ThreadAsserts.IsMainThread();
             Debug.Assert(imap != null, "How the hell is a null Map updating?");
@@ -197,7 +198,7 @@ namespace DemoGame
             UpdatePreCollision(deltaTime);
 
             // Performs basic entity updating
-            base.Update(imap, deltaTime);
+            base.HandleUpdate(imap, deltaTime);
 
             // Perform post-collision detection updating
             UpdatePostCollision(deltaTime);
@@ -287,6 +288,16 @@ namespace DemoGame
 
             // Set the new state
             _state = newState;
+        }
+
+        /// <summary>
+        /// Updates the <see cref="IUpdateableEntity"/>.
+        /// </summary>
+        /// <param name="imap">The map that this <see cref="IUpdateableEntity"/> is on.</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
+        public void Update(IMap imap, float deltaTime)
+        {
+            HandleUpdate(imap, deltaTime);
         }
     }
 }

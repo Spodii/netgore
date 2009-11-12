@@ -55,12 +55,14 @@ namespace DemoGame
         /// <summary>
         /// Collection of DynamicEntities on this map.
         /// </summary>
-        readonly DArray<DynamicEntity> _dynamicEntities;
+        readonly DArray<DynamicEntity> _dynamicEntities = new DArray<DynamicEntity>(true);
 
         /// <summary>
         /// List of entities in the map
         /// </summary>
-        readonly List<Entity> _entities;
+        readonly List<Entity> _entities = new List<Entity>();
+
+        readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
 
         readonly MapEntityGrid _entityGrid = new MapEntityGrid();
 
@@ -107,10 +109,10 @@ namespace DemoGame
         public event MapBaseEventHandler OnSave;
 
         /// <summary>
-        /// MapBase constructor
+        /// Initializes a new instance of the <see cref="MapBase"/> class.
         /// </summary>
-        /// <param name="mapIndex">Index of the map</param>
-        /// <param name="getTime">Interface used to get the time</param>
+        /// <param name="mapIndex">Index of the map.</param>
+        /// <param name="getTime">Interface used to get the time.</param>
         protected MapBase(MapIndex mapIndex, IGetTime getTime)
         {
             if (getTime == null)
@@ -119,24 +121,20 @@ namespace DemoGame
             _getTime = getTime;
             _mapIndex = mapIndex;
             _updateStopWatch.Start();
-
-            _entities = new List<Entity>();
-            _dynamicEntities = new DArray<DynamicEntity>(true);
         }
 
         /// <summary>
-        /// Gets a thread-safe IEnumerable of all the DynamicEntities on the Map.
+        /// Gets an IEnumerable of all the DynamicEntities on the Map.
         /// </summary>
         public IEnumerable<DynamicEntity> DynamicEntities
         {
             get { return _dynamicEntities; }
         }
 
-        public MapEntityGrid EntityGrid
+        public IMapEntityCollection EntityCollection
         {
             get
             {
-                // NOTE: This is only temporary. Should have an interface that only allows looking for entities (IMapEntityCollection?)
                 return _entityGrid;
             }
         }
@@ -249,6 +247,8 @@ namespace DemoGame
 
             // Add to the one-dimensional entity list
             _entities.Add(entity);
+            if (entity is IUpdateableEntity)
+                _updateableEntities.Add((IUpdateableEntity)entity);
 
             // Also add the entity to the grid
             _entityGrid.Add(entity);
@@ -807,7 +807,13 @@ namespace DemoGame
             if (!_entities.Remove(entity))
             {
                 // Entity must have already been removed, since it wasn't in the entities list
-                Debug.Fail("entity was not in the Entities list");
+                Debug.Fail("entity was not in the entities list");
+            }
+
+            var asUpdateable = entity as IUpdateableEntity;
+            if (asUpdateable != null && !_updateableEntities.Remove(asUpdateable))
+            {
+                Debug.Fail("Updateable entity was not in the updateable entities list");
             }
 
             // If a DynamicEntity, remove it from the DynamicEntities list
@@ -1132,23 +1138,23 @@ namespace DemoGame
 
             // Update the Entities
             // We use a for loop because entities might be added/removed when they update
-            Entity current;
+            IUpdateableEntity current;
             int i = 0;
             while (true)
             {
                 // Check if we hit the end
-                if (i >= _entities.Count)
+                if (i >= _updateableEntities.Count)
                     break;
 
                 // Get and update the current entity
-                current = _entities[i];
+                current = _updateableEntities[i];
 
                 if (current != null)
                     current.Update(this, deltaTime);
 
                 // Only increment if the current has not changed
                 // This way we can be sure to update everyone even if the entities collection changed
-                if (i < _entities.Count && current == _entities[i])
+                if (i < _entities.Count && current == _updateableEntities[i])
                     i++;
             }
         }
@@ -1164,7 +1170,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets a thrad-safe IEnumerable of all the Entities on the Map.
+        /// Gets an IEnumerable of all the Entities on the Map.
         /// </summary>
         public IEnumerable<Entity> Entities
         {

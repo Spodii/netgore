@@ -467,13 +467,13 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Updates the Entity.
+        /// Handles updating this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="imap">Map that this Entity is on.</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        public override void Update(IMap imap, float deltaTime)
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
         {
-            base.Update(imap, deltaTime);
+            base.HandleUpdate(imap, deltaTime);
 
             // If the velocity has changed direction, force update
             if (VelocityChangedDirection())

@@ -460,7 +460,7 @@ namespace DemoGame.Server
 
             // Damage all hit characters
             Rectangle hitRect = BodyInfo.GetHitRect(this, BodyInfo.PunchRect);
-            var hitChars = Map.EntityGrid.GetEntities<Character>(hitRect);
+            var hitChars = Map.EntityCollection.GetEntities<Character>(hitRect);
             foreach (Character c in hitChars)
             {
                 Attack(c);
@@ -1173,11 +1173,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Updates the Entity.
+        /// Handles updating this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="imap">Map that this Entity is on.</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        public override void Update(IMap imap, float deltaTime)
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
         {
             Debug.Assert(imap == Map, "Character.Update()'s imap is, for whatever reason, not equal to the set Map.");
 
@@ -1198,7 +1198,7 @@ namespace DemoGame.Server
             UpdateSPRecovery();
             StatusEffects.Update();
 
-            base.Update(imap, deltaTime);
+            base.HandleUpdate(imap, deltaTime);
 
             _spSync.Synchronize();
         }
