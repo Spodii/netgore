@@ -22,12 +22,12 @@ namespace DemoGame.Server.Queries
         /// When overridden in the derived class, creates a DbConnectionPool for this DbController.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-        /// <returns>
-        /// A DbConnectionPool for this DbController.
-        /// </returns>
+        /// <returns>A DbConnectionPool for this DbController.</returns>
         protected override DbConnectionPool CreateConnectionPool(string connectionString)
         {
-            return new MySqlDbConnectionPool(connectionString);
+            var pool = new MySqlDbConnectionPool(connectionString);
+
+            return pool;
         }
     }
 }
