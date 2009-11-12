@@ -158,7 +158,7 @@
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\SelectCharacterStatusEffectsQuery.cs" />
-    <Compile Include="Queries\DbController.cs" />
+    <Compile Include="Queries\ServerDbController.cs" />
     <Compile Include="Queries\Item\Template\SelectItemTemplateIDsQuery.cs" />
     <Compile Include="Queries\Item\Template\SelectItemTemplateQuery.cs" />
     <Compile Include="Queries\Misc\SelectServerSettingsQuery.cs" />
