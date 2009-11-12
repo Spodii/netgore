@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DatabaseConnectionException.cs" />
+    <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="DataReaderContainer.cs" />
     <Compile Include="Connections\DbConnectionPool.cs" />
     <Compile Include="DbControllerQueryAttributeChecker.cs" />
