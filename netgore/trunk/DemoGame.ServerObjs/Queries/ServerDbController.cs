@@ -13,13 +13,14 @@ namespace DemoGame.Server.Queries
     /// <summary>
     /// The <see cref="DbControllerBase"/> implementation used by the server.
     /// </summary>
-    public class DbController : MySqlDbController
+    public class ServerDbController : MySqlDbController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbControllerBase"/> class.
+        /// Initializes a new instance of the <see cref="ServerDbController"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-        public DbController(string connectionString) : base(connectionString)
+        public ServerDbController(string connectionString)
+            : base(connectionString)
         {
         }
     }
