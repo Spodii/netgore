@@ -1131,15 +1131,25 @@ namespace DemoGame
                 return;
 
             // Update the Entities
-            foreach (var entity in Entities)
+            // We use a for loop because entities might be added/removed when they update
+            Entity current;
+            int i = 0;
+            while (true)
             {
-                if (entity == null)
-                {
-                    Debug.Fail("Entity is null... didn't think this would ever hit. o.O");
-                    return;
-                }
+                // Check if we hit the end
+                if (i >= _entities.Count)
+                    break;
 
-                entity.Update(this, deltaTime);
+                // Get and update the current entity
+                current = _entities[i];
+
+                if (current != null)
+                    current.Update(this, deltaTime);
+
+                // Only increment if the current has not changed
+                // This way we can be sure to update everyone even if the entities collection changed
+                if (i < _entities.Count && current == _entities[i])
+                    i++;
             }
         }
 
