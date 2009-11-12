@@ -2,7 +2,7 @@
 <Settings>
   <MySql>
     <User>root</User>
-    <Pass>a</Pass>
+    <Pass></Pass>
     <Host>localhost</Host>
 	<Database>demogame</Database>
   </MySql>
