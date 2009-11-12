@@ -26,7 +26,7 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// DbManager constructor.
+        /// Initializes a new instance of the <see cref="DbManager"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to create the connections managed by this DbManager.</param>
         public DbManager(DbConnectionPool connectionPool)
