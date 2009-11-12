@@ -39,7 +39,7 @@ namespace NetGore.Db
             }
             catch (Exception ex)
             {
-                const string msg = "Failed to create connection to MySql database.";
+                const string msg = "Failed to create connection to database.";
                 Debug.Fail(msg);
                 if (log.IsFatalEnabled)
                     log.Fatal(msg, ex);
