@@ -67,6 +67,7 @@
     <Compile Include="Query\IDbQueryNonReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\IDbQueryReader.cs" />
+    <Compile Include="Special Queries\FindForeignKeysQuery.cs" />
     <Compile Include="TableColumnPair.cs" />
   </ItemGroup>
   <ItemGroup>

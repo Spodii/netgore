@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
+using NetGore.Collections;
 
 namespace NetGore.Db
 {
@@ -33,22 +34,86 @@ namespace NetGore.Db
             // Create the connection pool
             try
             {
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 _connectionPool = CreateConnectionPool(connectionString);
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             catch (DbException ex)
             {
-                const string errmsg = "Failed to create connection to database. Reason: ";
-                string msg = errmsg + ex;
-                if (log.IsFatalEnabled)
-                    log.Fatal(msg, ex);
-                Debug.Fail(msg);
-                throw new DatabaseConnectionException(msg, ex);
+                throw CreateConnectionException(connectionString, ex);
             }
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Database connection pool created.");
+
+            // Test the connection
+            TestConnectionPool(connectionString, _connectionPool);
+
+            // Create the query objects
+            PopulateQueryObjects();
+
+            // Add this connection to the list of instances
+            lock (_instances)
+                _instances.Add(this);
+        }
+
+        static DatabaseConnectionException CreateConnectionException(string connectionString, Exception innerException)
+        {
+            const string errmsg = "Failed to create connection to database: {0}{1}{0}{0}Connection string:{0}{2}";
+            string msg = string.Format(errmsg, Environment.NewLine, innerException.Message, connectionString);
+            if (log.IsFatalEnabled)
+                log.Fatal(msg, innerException);
+            Debug.Fail(msg);
+            throw new DatabaseConnectionException(msg, innerException);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a <see cref="DbConnectionPool"/> for this
+        /// <see cref="DbControllerBase"/>.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns>A DbConnectionPool for this <see cref="DbControllerBase"/>.</returns>
+        protected abstract DbConnectionPool CreateConnectionPool(string connectionString);
+
+        /// <summary>
+        /// Gets an implementation of the <see cref="FindForeignKeysQuery"/> that works for this
+        /// <see cref="DbControllerBase"/>.
+        /// </summary>
+        /// <param name="dbConnectionPool">The <see cref="DbConnectionPool"/> to use when creating the query.</param>
+        /// <returns>The <see cref="FindForeignKeysQuery"/> to execute the query.</returns>
+        protected abstract FindForeignKeysQuery GetFindForeignKeysQuery(DbConnectionPool dbConnectionPool);
+
+        /// <summary>
+        /// Gets an instance of the <see cref="DbControllerBase"/>. A <see cref="DbControllerBase"/> must have already
+        /// been constructed for this to work.
+        /// </summary>
+        /// <returns>An available instance of the <see cref="DbControllerBase"/>.</returns>
+        /// <exception cref="MemberAccessException">No <see cref="DbControllerBase"/>s have been created yet, or
+        /// all created <see cref="DbControllerBase"/>s have already been disposed.</exception>
+        public static DbControllerBase GetInstance()
+        {
+            lock (_instances)
+            {
+                if (_instances.Count == 0)
+                    throw new MemberAccessException("Constructor on the DbController has not yet been called!");
+
+                return _instances[_instances.Count - 1];
+            }
+        }
+
+        /// <summary>
+        /// Gets the SQL query string used for when testing if the database connection is valid. This string should
+        /// be very simple and fool-proof, and work no matter what contents are in the database since this is just
+        /// to test if the connection is working.
+        /// </summary>
+        /// <returns>The SQL query string used for when testing if the database connection is valid.</returns>
+        protected abstract string GetTestQueryCommand();
+
+        /// <summary>
+        /// Populates the <see cref="_queryObjects"/> with the query objects.
+        /// </summary>
+        void PopulateQueryObjects()
+        {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Creating query objects for database connection.");
 
             // Find the classes marked with our attribute
             var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
@@ -76,49 +141,44 @@ namespace NetGore.Db
 
             if (log.IsInfoEnabled)
                 log.Info("DbController successfully initialized all queries.");
-
-            lock (_instances)
-            {
-                _instances.Add(this);
-            }
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a DbConnectionPool for this DbController.
+        /// Tests the database connection to make sure it works.
         /// </summary>
-        /// <param name="connectionString">The connection string.</param>
-        /// <returns>
-        /// A DbConnectionPool for this DbController.
-        /// </returns>
-        protected abstract DbConnectionPool CreateConnectionPool(string connectionString);
-
-        /// <summary>
-        /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
-        /// </summary>
-        /// <returns>An instance of the DbController.</returns>
-        public static DbControllerBase GetInstance()
+        /// <param name="connectionString">The connection string used.</param>
+        /// <param name="pool">The pool of connections.</param>
+        static void TestConnectionPool(string connectionString, ObjectPool<PooledDbConnection> pool)
         {
-            lock (_instances)
+            try
             {
-                if (_instances.Count == 0)
-                    throw new MemberAccessException("Constructor on the DbController has not yet been called!");
-
-                return _instances[_instances.Count - 1];
+                using (var poolableConn = pool.Create())
+                {
+                    using (var cmd = poolableConn.Connection.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT 1+1";
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (DbException ex)
+            {
+                throw CreateConnectionException(connectionString, ex);
             }
         }
 
         #region IDbController Members
 
         /// <summary>
-        /// Gets the name of the table and column that reference a the given primary key.
+        /// Gets the name of the tables and columns that reference the given primary key. In other words, the foreign
+        /// keys for a given primary key.
         /// </summary>
-        /// <param name="database">Database of the <paramref name="table"/>.</param>
-        /// <param name="table">The table of the primary key.</param>
-        /// <param name="column">The column of the primary key.</param>
         /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
         public IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column)
         {
-            return GetQuery<FindReferencedTableColumnsQuery>().Execute(database, table, column);
+            var query = GetFindForeignKeysQuery(_connectionPool);
+            var results = query.Execute(database, table, column);
+            return results;
         }
 
         /// <summary>
@@ -195,99 +255,5 @@ namespace NetGore.Db
         }
 
         #endregion
-
-        [DbControllerQuery]
-        // ReSharper disable ClassNeverInstantiated.Local
-            class FindReferencedTableColumnsQuery : DbQueryReader<FindReferencedTableColumnsQuery.QueryArgs>
-            // ReSharper restore ClassNeverInstantiated.Local
-        {
-            const string _queryStr =
-                "SELECT `TABLE_NAME`, `COLUMN_NAME`" + " FROM information_schema.KEY_COLUMN_USAGE" +
-                " WHERE `TABLE_SCHEMA` = @db AND" + " `REFERENCED_TABLE_SCHEMA` = @db AND" +
-                " `REFERENCED_TABLE_NAME` = @table AND" + " `REFERENCED_COLUMN_NAME` = @column;";
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="FindReferencedTableColumnsQuery"/> class.
-            /// </summary>
-            /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-            public FindReferencedTableColumnsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
-            {
-            }
-
-            public IEnumerable<TableColumnPair> Execute(string database, string table, string column)
-            {
-                var ret = new List<TableColumnPair>();
-
-                var args = new QueryArgs(database, table, column);
-                using (var r = ExecuteReader(args))
-                {
-                    while (r.Read())
-                    {
-                        var retTable = r.GetString("TABLE_NAME");
-                        var retColumn = r.GetString("COLUMN_NAME");
-                        ret.Add(new TableColumnPair(retTable, retColumn));
-                    }
-                }
-
-                return ret;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-            /// </summary>
-            /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-            /// no parameters will be used.</returns>
-            protected override IEnumerable<DbParameter> InitializeParameters()
-            {
-                return CreateParameters("@db", "@table", "@column");
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
-            /// based on the values specified in the given <paramref name="item"/> parameter.
-            /// </summary>
-            /// <param name="p">Collection of database parameters to set the values for.</param>
-            /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-            protected override void SetParameters(DbParameterValues p, QueryArgs item)
-            {
-                p["@db"] = item.Database;
-                p["@table"] = item.Table;
-                p["@column"] = item.Column;
-            }
-
-            /// <summary>
-            /// Contains the arguments for executing the <see cref="FindReferencedTableColumnsQuery"/> query.
-            /// </summary>
-            public struct QueryArgs
-            {
-                /// <summary>
-                /// The column.
-                /// </summary>
-                public readonly string Column;
-
-                /// <summary>
-                /// The database.
-                /// </summary>
-                public readonly string Database;
-
-                /// <summary>
-                /// The table.
-                /// </summary>
-                public readonly string Table;
-
-                /// <summary>
-                /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
-                /// </summary>
-                /// <param name="database">The database.</param>
-                /// <param name="table">The table.</param>
-                /// <param name="column">The column.</param>
-                public QueryArgs(string database, string table, string column)
-                {
-                    Database = database;
-                    Table = table;
-                    Column = column;
-                }
-            }
-        }
     }
 }
