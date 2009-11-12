@@ -23,6 +23,8 @@ namespace DemoGame.Server
     /// </summary>
     public class Server : IDisposable, IGetTime
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The minimum number of milliseconds a connection should be inactive to be considered dead.
         /// </summary>
@@ -43,23 +45,15 @@ namespace DemoGame.Server
         const long _serverUpdateRate = 5; // 200 FPS
 
         readonly ConsoleCommands _consoleCommands;
-        ConsoleInputBuffer _consoleInputBuffer;
 
         readonly IDbController _dbController;
-        bool _disposed;
 
         /// <summary>
         /// Stopwatch to track the total elapsed time the game has been running
         /// </summary>
         readonly Stopwatch _gameTimer = new Stopwatch();
 
-        /// <summary>
-        /// If the server is running
-        /// </summary>
-        bool _isRunning = true;
-
         readonly List<string> _motd = new List<string>();
-        IServerSettingTable _serverSettings;
 
         readonly ServerSockets _sockets;
 
@@ -70,7 +64,15 @@ namespace DemoGame.Server
         /// </summary>
         readonly World _world;
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        ConsoleInputBuffer _consoleInputBuffer;
+        bool _disposed;
+
+        /// <summary>
+        /// If the server is running
+        /// </summary>
+        bool _isRunning = true;
+
+        IServerSettingTable _serverSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
