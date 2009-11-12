@@ -22,6 +22,28 @@ namespace DemoGame.Server
         readonly string _name;
 
         /// <summary>
+        /// Alliance constructor
+        /// </summary>
+        /// <param name="id">The ID of this Alliance.</param>
+        /// <param name="name">Name of the Alliance.</param>
+        /// <param name="attackables">Information for Alliances that this Alliance can attack.</param>
+        /// <param name="hostiles">Information for Alliances that this Alliance is hostile towards.</param>
+        public Alliance(AllianceID id, string name, IEnumerable<AllianceAttackableTable> attackables,
+                        IEnumerable<AllianceHostileTable> hostiles)
+        {
+            Debug.Assert(attackables.All(x => x.AllianceID == id));
+            Debug.Assert(hostiles.All(x => x.AllianceID == id));
+
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
+            _id = id;
+            _name = name;
+            _attackable = attackables.Select(x => x.AttackableID).ToCompact();
+            _hostile = hostiles.Select(x => x.HostileID).ToCompact();
+        }
+
+        /// <summary>
         /// Gets the list of Alliance IDs that this Alliance can attack
         /// </summary>
         public IEnumerable<AllianceID> Attackable
@@ -51,28 +73,6 @@ namespace DemoGame.Server
         public string Name
         {
             get { return _name; }
-        }
-
-        /// <summary>
-        /// Alliance constructor
-        /// </summary>
-        /// <param name="id">The ID of this Alliance.</param>
-        /// <param name="name">Name of the Alliance.</param>
-        /// <param name="attackables">Information for Alliances that this Alliance can attack.</param>
-        /// <param name="hostiles">Information for Alliances that this Alliance is hostile towards.</param>
-        public Alliance(AllianceID id, string name, IEnumerable<AllianceAttackableTable> attackables,
-                        IEnumerable<AllianceHostileTable> hostiles)
-        {
-            Debug.Assert(attackables.All(x => x.AllianceID == id));
-            Debug.Assert(hostiles.All(x => x.AllianceID == id));
-
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-
-            _id = id;
-            _name = name;
-            _attackable = attackables.Select(x => x.AttackableID).ToCompact();
-            _hostile = hostiles.Select(x => x.HostileID).ToCompact();
         }
 
         /// <summary>
@@ -139,7 +139,6 @@ namespace DemoGame.Server
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);

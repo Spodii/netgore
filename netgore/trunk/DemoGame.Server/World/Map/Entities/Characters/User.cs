@@ -34,6 +34,49 @@ namespace DemoGame.Server
         readonly UserStats _userStatsMod;
 
         /// <summary>
+        /// User constructor.
+        /// </summary>
+        /// <param name="conn">Connection to the user's client.</param>
+        /// <param name="world">World the user belongs to.</param>
+        /// <param name="characterID">User's CharacterID.</param>
+        public User(IIPSocket conn, World world, CharacterID characterID) : base(world, true)
+        {
+            // Set the connection information
+            _conn = conn;
+
+            // Create some objects
+            _shoppingState = new UserShoppingState(this);
+            _chatState = new UserChatDialogState(this);
+            _userStatsBase = (UserStats)BaseStats;
+            _userStatsMod = (UserStats)ModStats;
+            _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
+
+            // Load the character data
+            Load(characterID);
+
+            // Ensure the correct Alliance is being used
+            Alliance = AllianceManager["user"];
+
+            // Attach to some events
+            OnKillCharacter += User_OnKillCharacter;
+            OnChangeStatPoints += User_OnChangeStatPoints;
+            OnChangeExp += User_OnChangeExp;
+            OnChangeCash += User_OnChangeCash;
+            OnChangeLevel += User_OnChangeLevel;
+
+            _userInventory = (UserInventory)Inventory;
+
+            // Activate the user
+            IsAlive = true;
+
+            // Send the initial information
+            User_OnChangeLevel(this, Level, Level);
+            User_OnChangeCash(this, Cash, Cash);
+            User_OnChangeExp(this, Exp, Exp);
+            User_OnChangeStatPoints(this, StatPoints, StatPoints);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
         /// </summary>
         public override IAI AI
@@ -76,49 +119,6 @@ namespace DemoGame.Server
         public UserShoppingState ShoppingState
         {
             get { return _shoppingState; }
-        }
-
-        /// <summary>
-        /// User constructor.
-        /// </summary>
-        /// <param name="conn">Connection to the user's client.</param>
-        /// <param name="world">World the user belongs to.</param>
-        /// <param name="characterID">User's CharacterID.</param>
-        public User(IIPSocket conn, World world, CharacterID characterID) : base(world, true)
-        {
-            // Set the connection information
-            _conn = conn;
-
-            // Create some objects
-            _shoppingState = new UserShoppingState(this);
-            _chatState = new UserChatDialogState(this);
-            _userStatsBase = (UserStats)BaseStats;
-            _userStatsMod = (UserStats)ModStats;
-            _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
-
-            // Load the character data
-            Load(characterID);
-
-            // Ensure the correct Alliance is being used
-            Alliance = AllianceManager["user"];
-
-            // Attach to some events
-            OnKillCharacter += User_OnKillCharacter;
-            OnChangeStatPoints += User_OnChangeStatPoints;
-            OnChangeExp += User_OnChangeExp;
-            OnChangeCash += User_OnChangeCash;
-            OnChangeLevel += User_OnChangeLevel;
-
-            _userInventory = (UserInventory)Inventory;
-
-            // Activate the user
-            IsAlive = true;
-
-            // Send the initial information
-            User_OnChangeLevel(this, Level, Level);
-            User_OnChangeCash(this, Cash, Cash);
-            User_OnChangeExp(this, Exp, Exp);
-            User_OnChangeStatPoints(this, StatPoints, StatPoints);
         }
 
         /// <summary>
@@ -263,6 +263,31 @@ namespace DemoGame.Server
             var account = World.GetUserAccount(Conn);
             if (account != null)
                 account.CloseUser();
+        }
+
+        /// <summary>
+        /// Handles updating this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
+        {
+            // Don't allow movement while chatting
+            if (!GameData.AllowMovementWhileChattingToNPC)
+            {
+                if (ChatState.IsChatting && Velocity != Vector2.Zero)
+                    SetVelocity(Vector2.Zero);
+            }
+
+            // Perform the general character updating
+            base.HandleUpdate(imap, deltaTime);
+
+            // Synchronize the User's stats
+            _userStatsBase.UpdateClient();
+            _userStatsMod.UpdateClient();
+
+            // Synchronize the Inventory
+            _userInventory.UpdateClient();
         }
 
         /// <summary>
@@ -647,31 +672,6 @@ namespace DemoGame.Server
             return true;
         }
 
-        /// <summary>
-        /// Handles updating this <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
-        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
-        {
-            // Don't allow movement while chatting
-            if (!GameData.AllowMovementWhileChattingToNPC)
-            {
-                if (ChatState.IsChatting && Velocity != Vector2.Zero)
-                    SetVelocity(Vector2.Zero);
-            }
-
-            // Perform the general character updating
-            base.HandleUpdate(imap, deltaTime);
-
-            // Synchronize the User's stats
-            _userStatsBase.UpdateClient();
-            _userStatsMod.UpdateClient();
-
-            // Synchronize the Inventory
-            _userInventory.UpdateClient();
-        }
-
         public void UseInventoryItem(InventorySlot slot)
         {
             // Get the ItemEntity to use
@@ -758,6 +758,14 @@ namespace DemoGame.Server
             DynamicEntity _shopOwner;
             Shop _shoppingAt;
 
+            public UserShoppingState(User user)
+            {
+                if (user == null)
+                    throw new ArgumentNullException("user");
+
+                _user = user;
+            }
+
             public DynamicEntity ShopOwner
             {
                 get { return _shopOwner; }
@@ -771,14 +779,6 @@ namespace DemoGame.Server
             public User User
             {
                 get { return _user; }
-            }
-
-            public UserShoppingState(User user)
-            {
-                if (user == null)
-                    throw new ArgumentNullException("user");
-
-                _user = user;
             }
 
             bool IsValidDistance(Entity shopKeeper)
@@ -799,29 +799,6 @@ namespace DemoGame.Server
                 using (var pw = ServerPacket.StopShopping())
                 {
                     User.Send(pw);
-                }
-            }
-
-            /// <summary>
-            /// Performs validation checks on the shop to ensure it is valid. If the shop is invalid,
-            /// <see cref="_shoppingAt"/> and other values will be set to null.
-            /// </summary>
-            void ValidateShop()
-            {
-                ThreadAsserts.IsMainThread();
-
-                // Check for a valid shop
-                if (_shoppingAt == null || _shopOwner == null || _shopMap == null)
-                    return;
-
-                // Check for a valid distance
-                if (!IsValidDistance(_shopOwner))
-                {
-                    // Stop shopping
-                    SendStopShopping();
-                    _shoppingAt = null;
-                    _shopOwner = null;
-                    _shopMap = null;
                 }
             }
 
@@ -896,6 +873,29 @@ namespace DemoGame.Server
                 SendStartShopping(shop);
 
                 return true;
+            }
+
+            /// <summary>
+            /// Performs validation checks on the shop to ensure it is valid. If the shop is invalid,
+            /// <see cref="_shoppingAt"/> and other values will be set to null.
+            /// </summary>
+            void ValidateShop()
+            {
+                ThreadAsserts.IsMainThread();
+
+                // Check for a valid shop
+                if (_shoppingAt == null || _shopOwner == null || _shopMap == null)
+                    return;
+
+                // Check for a valid distance
+                if (!IsValidDistance(_shopOwner))
+                {
+                    // Stop shopping
+                    SendStopShopping();
+                    _shoppingAt = null;
+                    _shopOwner = null;
+                    _shopMap = null;
+                }
             }
         }
     }

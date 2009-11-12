@@ -21,30 +21,6 @@ namespace DemoGame.Server
         readonly ICharacterTemplateTable _templateTable;
 
         /// <summary>
-        /// Gets the <see cref="CharacterTemplate"/>'s equipment items.
-        /// </summary>
-        public IEnumerable<CharacterTemplateEquipmentItem> Equipment
-        {
-            get { return _equipment; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="CharacterTemplate"/>'s inventory items.
-        /// </summary>
-        public IEnumerable<CharacterTemplateInventoryItem> Inventory
-        {
-            get { return _inventory; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="CharacterTemplate"/>'s values.
-        /// </summary>
-        public ICharacterTemplateTable TemplateTable
-        {
-            get { return _templateTable; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CharacterTemplate"/> class.
         /// </summary>
         /// <param name="templateTable">The template table.</param>
@@ -70,6 +46,30 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded CharacterTemplate `{0}`.", this);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplate"/>'s equipment items.
+        /// </summary>
+        public IEnumerable<CharacterTemplateEquipmentItem> Equipment
+        {
+            get { return _equipment; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplate"/>'s inventory items.
+        /// </summary>
+        public IEnumerable<CharacterTemplateInventoryItem> Inventory
+        {
+            get { return _inventory; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplate"/>'s values.
+        /// </summary>
+        public ICharacterTemplateTable TemplateTable
+        {
+            get { return _templateTable; }
         }
 
         /// <summary>

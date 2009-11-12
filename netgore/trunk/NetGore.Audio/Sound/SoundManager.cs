@@ -11,8 +11,8 @@ namespace NetGore.Audio
     /// </summary>
     public sealed class SoundManager : AudioManagerBase<ISound, SoundID>
     {
-        static SoundManager _instance;
         static readonly object _instanceLock = new object();
+        static SoundManager _instance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundManager"/> class.

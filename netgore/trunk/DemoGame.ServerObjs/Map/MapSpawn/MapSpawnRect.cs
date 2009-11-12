@@ -14,12 +14,12 @@ namespace DemoGame.Server
     /// </summary>
     public struct MapSpawnRect
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The height of the rectangle. If null, the rectangle will be stretched to fit the height of the Map.
         /// </summary>
         public ushort? Height;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// The width of the rectangle. If null, the rectangle will be stretched to fit the width of the Map.

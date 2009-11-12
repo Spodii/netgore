@@ -21,11 +21,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "character_status_effect";
 
         /// <summary>
-        /// The field that maps onto the database column `character_id`.
-        /// </summary>
-        Int32 _characterID;
-
-        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[] { "character_id", "id", "power", "status_effect_id", "time_left_secs" };
@@ -39,6 +34,11 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[] { "character_id", "power", "status_effect_id", "time_left_secs" };
+
+        /// <summary>
+        /// The field that maps onto the database column `character_id`.
+        /// </summary>
+        Int32 _characterID;
 
         /// <summary>
         /// The field that maps onto the database column `id`.

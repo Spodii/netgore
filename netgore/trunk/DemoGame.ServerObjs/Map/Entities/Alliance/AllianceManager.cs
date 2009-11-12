@@ -27,11 +27,19 @@ namespace DemoGame.Server
         SelectAllianceQuery _selectAllianceQuery;
 
         /// <summary>
-        /// Gets an instance of the <see cref="AllianceManager"/>.
+        /// Initializes the <see cref="AllianceManager"/> class.
         /// </summary>
-        public static AllianceManager Instance
+        static AllianceManager()
         {
-            get { return _instance; }
+            _instance = new AllianceManager(DbControllerBase.GetInstance());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AllianceManager"/> class.
+        /// </summary>
+        /// <param name="dbController">The IDbController.</param>
+        AllianceManager(IDbController dbController) : base(dbController)
+        {
         }
 
         /// <summary>
@@ -51,19 +59,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Initializes the <see cref="AllianceManager"/> class.
+        /// Gets an instance of the <see cref="AllianceManager"/>.
         /// </summary>
-        static AllianceManager()
+        public static AllianceManager Instance
         {
-            _instance = new AllianceManager(DbControllerBase.GetInstance());
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AllianceManager"/> class.
-        /// </summary>
-        /// <param name="dbController">The IDbController.</param>
-        AllianceManager(IDbController dbController) : base(dbController)
-        {
+            get { return _instance; }
         }
 
         /// <summary>

@@ -14,12 +14,12 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CreateAccountQuery : DbQueryReader<CreateAccountQuery.QueryArgs>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly string _queryStr =
             string.Format(
                 "INSERT INTO `{0}` (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`)" +
                 " VALUES (@id,@name,@password,@email,NOW(),NOW())", AccountTable.TableName);
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountQuery"/> class.

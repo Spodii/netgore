@@ -13,32 +13,6 @@ namespace NetGore
     public static class IEnumerableExtensions
     {
         /// <summary>
-        /// Creates an immutable IEnumerable from the given IEnumerable. At the point this method is called, the
-        /// given IEnumerable will be digested and the returned IEnumerable will be safe from the underlying
-        /// collection changing.
-        /// </summary>
-        /// <typeparam name="T">The Type of element.</typeparam>
-        /// <param name="e">The IEnumerable to make immutable.</param>
-        /// <returns>The given IEnumerable as an immutable IEnumerable.</returns>
-        public static IEnumerable<T> ToImmutable<T>(this IEnumerable<T> e)
-        {
-            return e.ToArray();
-        }
-
-        /// <summary>
-        /// Creates a compact IEnumerable from the given IEnumerable. The created IEnumerable is intended to have as
-        /// small of a memory footprint as possible while retaining the ability to quickly iterate over. This method is
-        /// intended for being used on an unchanging IEnumerable that will remain in memory for a while.
-        /// </summary>
-        /// <typeparam name="T">The Type of element.</typeparam>
-        /// <param name="e">The IEnumerable to make compact.</param>
-        /// <returns>The given IEnumerable as a compact IEnumerable.</returns>
-        public static IEnumerable<T> ToCompact<T>(this IEnumerable<T> e)
-        {
-            return e.ToArray();
-        }
-
-        /// <summary>
         /// Checks if two IEnumerables contain the exact same elements. Order does not matter.
         /// </summary>
         /// <typeparam name="T">The Type of object.</typeparam>
@@ -253,6 +227,32 @@ namespace NetGore
             }
 
             return maxItem;
+        }
+
+        /// <summary>
+        /// Creates a compact IEnumerable from the given IEnumerable. The created IEnumerable is intended to have as
+        /// small of a memory footprint as possible while retaining the ability to quickly iterate over. This method is
+        /// intended for being used on an unchanging IEnumerable that will remain in memory for a while.
+        /// </summary>
+        /// <typeparam name="T">The Type of element.</typeparam>
+        /// <param name="e">The IEnumerable to make compact.</param>
+        /// <returns>The given IEnumerable as a compact IEnumerable.</returns>
+        public static IEnumerable<T> ToCompact<T>(this IEnumerable<T> e)
+        {
+            return e.ToArray();
+        }
+
+        /// <summary>
+        /// Creates an immutable IEnumerable from the given IEnumerable. At the point this method is called, the
+        /// given IEnumerable will be digested and the returned IEnumerable will be safe from the underlying
+        /// collection changing.
+        /// </summary>
+        /// <typeparam name="T">The Type of element.</typeparam>
+        /// <param name="e">The IEnumerable to make immutable.</param>
+        /// <returns>The given IEnumerable as an immutable IEnumerable.</returns>
+        public static IEnumerable<T> ToImmutable<T>(this IEnumerable<T> e)
+        {
+            return e.ToArray();
         }
     }
 }

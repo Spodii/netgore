@@ -17,13 +17,13 @@ namespace DemoGame.Server
     /// </summary>
     public class MapSpawnValues : IMapSpawnTable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly MapSpawnValuesID _id;
         CharacterTemplateID _characterTemplateID;
         IDbController _dbController;
-        readonly MapSpawnValuesID _id;
         MapIndex _mapIndex;
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// MapSpawnValues constructor.

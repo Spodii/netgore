@@ -15,12 +15,11 @@ namespace NetGore.Db
     /// </summary>
     public abstract class DbControllerBase : IDbController
     {
-        readonly DbConnectionPool _connectionPool;
-
-        bool _disposed;
-        static readonly List<DbControllerBase> _instances = new List<DbControllerBase>();
-        readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly List<DbControllerBase> _instances = new List<DbControllerBase>();
+        readonly DbConnectionPool _connectionPool;
+        readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
+        bool _disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbControllerBase"/> class.

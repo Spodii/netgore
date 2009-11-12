@@ -22,16 +22,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "map_spawn";
 
         /// <summary>
-        /// The field that maps onto the database column `amount`.
-        /// </summary>
-        Byte _amount;
-
-        /// <summary>
-        /// The field that maps onto the database column `character_template_id`.
-        /// </summary>
-        UInt16 _characterTemplateID;
-
-        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
@@ -47,6 +37,16 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         { "amount", "character_template_id", "height", "map_id", "width", "x", "y" };
+
+        /// <summary>
+        /// The field that maps onto the database column `amount`.
+        /// </summary>
+        Byte _amount;
+
+        /// <summary>
+        /// The field that maps onto the database column `character_template_id`.
+        /// </summary>
+        UInt16 _characterTemplateID;
 
         /// <summary>
         /// The field that maps onto the database column `height`.

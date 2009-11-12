@@ -21,11 +21,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "account";
 
         /// <summary>
-        /// The field that maps onto the database column `current_ip`.
-        /// </summary>
-        uint? _currentIp;
-
-        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
@@ -41,6 +36,11 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         { "current_ip", "email", "name", "password", "time_created", "time_last_login" };
+
+        /// <summary>
+        /// The field that maps onto the database column `current_ip`.
+        /// </summary>
+        uint? _currentIp;
 
         /// <summary>
         /// The field that maps onto the database column `email`.

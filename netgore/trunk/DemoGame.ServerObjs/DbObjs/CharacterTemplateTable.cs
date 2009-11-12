@@ -23,21 +23,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "character_template";
 
         /// <summary>
-        /// The field that maps onto the database column `ai_id`.
-        /// </summary>
-        ushort? _aIID;
-
-        /// <summary>
-        /// The field that maps onto the database column `alliance_id`.
-        /// </summary>
-        Byte _allianceID;
-
-        /// <summary>
-        /// The field that maps onto the database column `body_id`.
-        /// </summary>
-        UInt16 _bodyID;
-
-        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
@@ -60,6 +45,32 @@ namespace DemoGame.Server.DbObjs
             "ai_id", "alliance_id", "body_id", "exp", "give_cash", "give_exp", "level", "name", "respawn", "shop_id", "stat_agi",
             "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints"
         };
+
+        /// <summary>
+        /// The fields that are used in the column collection `Stat`.
+        /// </summary>
+        static readonly String[] _statColumns = new string[]
+        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
+
+        /// <summary>
+        /// Dictionary containing the values for the column collection `Stat`.
+        /// </summary>
+        readonly StatConstDictionary _stat = new StatConstDictionary();
+
+        /// <summary>
+        /// The field that maps onto the database column `ai_id`.
+        /// </summary>
+        ushort? _aIID;
+
+        /// <summary>
+        /// The field that maps onto the database column `alliance_id`.
+        /// </summary>
+        Byte _allianceID;
+
+        /// <summary>
+        /// The field that maps onto the database column `body_id`.
+        /// </summary>
+        UInt16 _bodyID;
 
         /// <summary>
         /// The field that maps onto the database column `exp`.
@@ -100,17 +111,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `shop_id`.
         /// </summary>
         ushort? _shopID;
-
-        /// <summary>
-        /// Dictionary containing the values for the column collection `Stat`.
-        /// </summary>
-        readonly StatConstDictionary _stat = new StatConstDictionary();
-
-        /// <summary>
-        /// The fields that are used in the column collection `Stat`.
-        /// </summary>
-        static readonly String[] _statColumns = new string[]
-        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
 
         /// <summary>
         /// The field that maps onto the database column `statpoints`.

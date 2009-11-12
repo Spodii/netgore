@@ -21,11 +21,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "shop";
 
         /// <summary>
-        /// The field that maps onto the database column `can_buy`.
-        /// </summary>
-        Boolean _canBuy;
-
-        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[] { "can_buy", "id", "name" };
@@ -39,6 +34,11 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[] { "can_buy", "name" };
+
+        /// <summary>
+        /// The field that maps onto the database column `can_buy`.
+        /// </summary>
+        Boolean _canBuy;
 
         /// <summary>
         /// The field that maps onto the database column `id`.

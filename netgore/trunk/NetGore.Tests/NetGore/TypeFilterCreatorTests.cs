@@ -14,39 +14,6 @@ namespace NetGore.Tests
     [TestFixture]
     public class TypeFilterCreatorTests
     {
-        class AttribA : Attribute
-        {
-        }
-
-        class AttribB : Attribute
-        {
-        }
-
-        interface Ia
-        {
-        }
-
-        interface Ib
-        {
-        }
-
-        [AttribA]
-        [AttribB]
-        class A : baseClass, Ia, Ib
-        {
-            public A(object a, string b)
-            {
-            }
-
-            A()
-            {
-            }
-        }
-
-        abstract class baseClass
-        {
-        }
-
         [Test]
         public void AttributeFailTest()
         {
@@ -251,6 +218,39 @@ namespace NetGore.Tests
 
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
             Assert.IsTrue(f2.GetFilter()(typeof(A)));
+        }
+
+        [AttribA]
+        [AttribB]
+        class A : baseClass, Ia, Ib
+        {
+            public A(object a, string b)
+            {
+            }
+
+            A()
+            {
+            }
+        }
+
+        class AttribA : Attribute
+        {
+        }
+
+        class AttribB : Attribute
+        {
+        }
+
+        abstract class baseClass
+        {
+        }
+
+        interface Ia
+        {
+        }
+
+        interface Ib
+        {
         }
     }
 }

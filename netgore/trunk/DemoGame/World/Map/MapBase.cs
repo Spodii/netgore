@@ -28,6 +28,13 @@ namespace DemoGame
     /// </summary>
     public abstract class MapBase : IMap, IMapTable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// The suffix used for map files. Does not include the period prefix.
+        /// </summary>
+        public const string MapFileSuffix = "xml";
+
         const string _dynamicEntitiesNodeName = "DynamicEntities";
 
         /// <summary>
@@ -48,11 +55,6 @@ namespace DemoGame
         const string _wallsNodeName = "Walls";
 
         /// <summary>
-        /// The suffix used for map files. Does not include the period prefix.
-        /// </summary>
-        public const string MapFileSuffix = "xml";
-
-        /// <summary>
         /// Collection of DynamicEntities on this map.
         /// </summary>
         readonly DArray<DynamicEntity> _dynamicEntities = new DArray<DynamicEntity>(true);
@@ -62,14 +64,24 @@ namespace DemoGame
         /// </summary>
         readonly List<Entity> _entities = new List<Entity>();
 
-        readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
-
         readonly MapEntityGrid _entityGrid = new MapEntityGrid();
 
         /// <summary>
         /// Interface used to get the time
         /// </summary>
         readonly IGetTime _getTime;
+
+        /// <summary>
+        /// Index of the map
+        /// </summary>
+        readonly MapIndex _mapIndex;
+
+        readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
+
+        /// <summary>
+        /// StopWatch used to update the map
+        /// </summary>
+        readonly Stopwatch _updateStopWatch = new Stopwatch();
 
         /// <summary>
         /// Height of the map in pixels
@@ -82,26 +94,14 @@ namespace DemoGame
         bool _isUpdating = true;
 
         /// <summary>
-        /// Index of the map
-        /// </summary>
-        readonly MapIndex _mapIndex;
-
-        /// <summary>
         /// Name of the map
         /// </summary>
         string _name = null;
 
         /// <summary>
-        /// StopWatch used to update the map
-        /// </summary>
-        readonly Stopwatch _updateStopWatch = new Stopwatch();
-
-        /// <summary>
         /// Width of the map in pixels
         /// </summary>
         float _width = float.MinValue;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners that the Map has been saved.
@@ -133,10 +133,7 @@ namespace DemoGame
 
         public IMapEntityCollection EntityCollection
         {
-            get
-            {
-                return _entityGrid;
-            }
+            get { return _entityGrid; }
         }
 
         /// <summary>
@@ -812,9 +809,7 @@ namespace DemoGame
 
             var asUpdateable = entity as IUpdateableEntity;
             if (asUpdateable != null && !_updateableEntities.Remove(asUpdateable))
-            {
                 Debug.Fail("Updateable entity was not in the updateable entities list");
-            }
 
             // If a DynamicEntity, remove it from the DynamicEntities list
             DynamicEntity dynamicEntity;
