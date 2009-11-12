@@ -46,14 +46,14 @@
     <Compile Include="IAudioHelper.cs" />
     <Compile Include="AudioManagerBase.cs" />
     <Compile Include="IAudio.cs" />
-    <Compile Include="IMusic.cs" />
-    <Compile Include="ISound.cs" />
-    <Compile Include="Music.cs" />
-    <Compile Include="MusicManager.cs" />
+    <Compile Include="Music\IMusic.cs" />
+    <Compile Include="Sound\ISound.cs" />
+    <Compile Include="Music\Music.cs" />
+    <Compile Include="Music\MusicManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sound.cs" />
-    <Compile Include="SoundEffectInstance3D.cs" />
-    <Compile Include="SoundManager.cs" />
+    <Compile Include="Sound\Sound.cs" />
+    <Compile Include="Sound\SoundEffectInstance3D.cs" />
+    <Compile Include="Sound\SoundManager.cs" />
     <Compile Include="StaticAudioEmitter.cs" />
   </ItemGroup>
   <ItemGroup>
