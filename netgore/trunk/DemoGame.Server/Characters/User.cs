@@ -648,11 +648,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Updates the Entity.
+        /// Handles updating this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="imap">Map that this Entity is on.</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        public override void Update(IMap imap, float deltaTime)
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
         {
             // Don't allow movement while chatting
             if (!GameData.AllowMovementWhileChattingToNPC)
@@ -662,7 +662,7 @@ namespace DemoGame.Server
             }
 
             // Perform the general character updating
-            base.Update(imap, deltaTime);
+            base.HandleUpdate(imap, deltaTime);
 
             // Synchronize the User's stats
             _userStatsBase.UpdateClient();
