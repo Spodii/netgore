@@ -55,10 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BatchRenameTextureForm.cs">
+    <Compile Include="Forms\BatchRenameTextureForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BatchRenameTextureForm.Designer.cs">
+    <Compile Include="Forms\BatchRenameTextureForm.Designer.cs">
       <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CommandLineSwitch.cs" />
@@ -68,50 +68,50 @@
     <Compile Include="Cursors\EntityCursor.cs" />
     <Compile Include="Cursors\GrhCursor.cs" />
     <Compile Include="Cursors\WallCursor.cs" />
-    <Compile Include="EditGrhForm.cs">
+    <Compile Include="Forms\EditGrhForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditGrhForm.Designer.cs">
+    <Compile Include="Forms\EditGrhForm.Designer.cs">
       <DependentUpon>EditGrhForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameScreenControl.cs">
+    <Compile Include="Forms\Controls\GameScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ListBoxes\BackgroundItemListBox.cs">
+    <Compile Include="Forms\Controls\ListBoxes\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ListBoxes\EntityListBox.cs">
+    <Compile Include="Forms\Controls\ListBoxes\EntityListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ListBoxes\PersistentNPCListBox.cs">
+    <Compile Include="Forms\Controls\ListBoxes\PersistentNPCListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ListBoxes\WallListBox.cs">
+    <Compile Include="Forms\Controls\ListBoxes\WallListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ListboxWall.cs" />
     <Compile Include="MapGrhWalls.cs" />
-    <Compile Include="ListBoxes\NPCSpawnsListBox.cs">
+    <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MapSpawnDrawer.cs" />
-    <Compile Include="ScreenForm.cs">
+    <Compile Include="Forms\ScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ScreenForm.Designer.cs">
+    <Compile Include="Forms\ScreenForm.Designer.cs">
       <DependentUpon>ScreenForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="BatchRenameTextureForm.resx">
+    <EmbeddedResource Include="Forms\BatchRenameTextureForm.resx">
       <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditGrhForm.resx">
+    <EmbeddedResource Include="Forms\EditGrhForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EditGrhForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ScreenForm.resx">
+    <EmbeddedResource Include="Forms\ScreenForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ScreenForm.cs</DependentUpon>
     </EmbeddedResource>
