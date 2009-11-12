@@ -16,22 +16,6 @@ namespace NetGore.IO
         readonly string _value;
 
         /// <summary>
-        /// Gets the name of the node item.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets the value of the node item.
-        /// </summary>
-        public string Value
-        {
-            get { return _value; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NodeItem"/> struct.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -71,6 +55,22 @@ namespace NetGore.IO
 
             _name = name;
             _value = value;
+        }
+
+        /// <summary>
+        /// Gets the name of the node item.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets the value of the node item.
+        /// </summary>
+        public string Value
+        {
+            get { return _value; }
         }
 
         public void Write(IValueWriter writer)

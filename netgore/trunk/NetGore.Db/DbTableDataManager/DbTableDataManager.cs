@@ -16,9 +16,9 @@ namespace NetGore.Db
     /// <typeparam name="TItem">The Type of item.</typeparam>
     public abstract class DbTableDataManager<TID, TItem> : IEnumerable<TItem>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IDbController _dbController;
         readonly DArray<TItem> _items = new DArray<TItem>(32, false);
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbTableDataManager&lt;TID, TItem&gt;"/> class.

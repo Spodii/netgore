@@ -1,10 +1,5 @@
-using System.Data.Common;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore;
-using NetGore.Collections;
 using NetGore.Db;
 using NetGore.Db.MySql;
 
@@ -19,8 +14,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="ServerDbController"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-        public ServerDbController(string connectionString)
-            : base(connectionString)
+        public ServerDbController(string connectionString) : base(connectionString)
         {
         }
     }

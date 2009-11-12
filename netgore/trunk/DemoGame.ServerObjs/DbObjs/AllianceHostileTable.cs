@@ -21,11 +21,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "alliance_hostile";
 
         /// <summary>
-        /// The field that maps onto the database column `alliance_id`.
-        /// </summary>
-        Byte _allianceID;
-
-        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[] { "alliance_id", "hostile_id", "placeholder" };
@@ -39,6 +34,11 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[] { "placeholder" };
+
+        /// <summary>
+        /// The field that maps onto the database column `alliance_id`.
+        /// </summary>
+        Byte _allianceID;
 
         /// <summary>
         /// The field that maps onto the database column `hostile_id`.

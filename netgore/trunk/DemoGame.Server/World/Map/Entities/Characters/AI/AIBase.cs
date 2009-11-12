@@ -16,18 +16,10 @@ namespace DemoGame.Server
     /// </summary>
     public abstract class AIBase : IAI
     {
-        static readonly Random _rand = new Random();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly Random _rand = new Random();
 
         readonly Character _actor;
-
-        /// <summary>
-        /// Gets the Character that this AI module controls.
-        /// </summary>
-        public Character Actor
-        {
-            get { return _actor; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AIBase"/> class.
@@ -40,6 +32,19 @@ namespace DemoGame.Server
 
             _actor = actor;
         }
+
+        /// <summary>
+        /// Gets the Character that this AI module controls.
+        /// </summary>
+        public Character Actor
+        {
+            get { return _actor; }
+        }
+
+        /// <summary>
+        /// Handles the real updating of the AI.
+        /// </summary>
+        protected abstract void DoUpdate();
 
         /// <summary>
         /// Gets the closest Character to this Actor that the Actor is hostile towards (as defined by
@@ -123,11 +128,6 @@ namespace DemoGame.Server
         {
             return _rand.Next(min, max);
         }
-
-        /// <summary>
-        /// Handles the real updating of the AI.
-        /// </summary>
-        protected abstract void DoUpdate();
 
         #region IAI Members
 

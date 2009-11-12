@@ -190,6 +190,32 @@ namespace DemoGame.MapEditor
 
         public event MapChangeEventHandler OnChangeMap;
 
+        public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
+        {
+            _switches = switches;
+
+            InitializeComponent();
+            GameScreen.Screen = this;
+
+            // Set up some of the OnChangeMap events for objects that need to reference the Map
+            OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
+            OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DbController, newMap));
+            OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DbController, newMap));
+            OnChangeMap += SetMapGUITexts;
+
+            // Set up the EntityTypes
+            cmbEntityTypes.Items.Clear();
+            cmbEntityTypes.Items.AddRange(MapFileEntityAttribute.GetTypes().ToArray());
+            cmbEntityTypes.SelectedIndex = 0;
+
+            // Read the settings
+            _settings = new MapEditorSettings(this);
+            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev);
+
+            // Create the world
+            _world = new World(this, _camera);
+        }
+
         public AddGrhCursor AddGrhCursor
         {
             get { return _addGrhCursor; }
@@ -348,32 +374,6 @@ namespace DemoGame.MapEditor
         public WallCursor WallCursor
         {
             get { return _wallCursor; }
-        }
-
-        public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
-        {
-            _switches = switches;
-
-            InitializeComponent();
-            GameScreen.Screen = this;
-
-            // Set up some of the OnChangeMap events for objects that need to reference the Map
-            OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
-            OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DbController, newMap));
-            OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DbController, newMap));
-            OnChangeMap += SetMapGUITexts;
-
-            // Set up the EntityTypes
-            cmbEntityTypes.Items.Clear();
-            cmbEntityTypes.Items.AddRange(MapFileEntityAttribute.GetTypes().ToArray());
-            cmbEntityTypes.SelectedIndex = 0;
-
-            // Read the settings
-            _settings = new MapEditorSettings(this);
-            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev);
-
-            // Create the world
-            _world = new World(this, _camera);
         }
 
         void BeginEditGrhData(TreeNode node, GrhData gd)
@@ -1420,15 +1420,16 @@ namespace DemoGame.MapEditor
             readonly ScreenForm _screenForm;
 
             // ReSharper disable MemberCanBePrivate.Local
-            public static string FilePath // ReSharper restore MemberCanBePrivate.Local
-            {
-                get { return ContentPaths.Build.Settings.Join("MapEditorSettings.xml"); }
-            }
 
             public MapEditorSettings(ScreenForm screenForm)
             {
                 _screenForm = screenForm;
                 Load();
+            }
+
+            public static string FilePath // ReSharper restore MemberCanBePrivate.Local
+            {
+                get { return ContentPaths.Build.Settings.Join("MapEditorSettings.xml"); }
             }
 
             // ReSharper disable MemberCanBePrivate.Local

@@ -15,6 +15,22 @@ namespace DemoGame.Server
         readonly string _sqlUser;
 
         /// <summary>
+        /// ServerSettings constructor.
+        /// </summary>
+        public DbConnectionSettings()
+        {
+            var dic = XmlInfoReader.ReadFile("DbSettings.xml")[0];
+            _sqlUser = dic["MySql.User"];
+            _sqlHost = dic["MySql.Host"];
+            _sqlDatabase = dic["MySql.Database"];
+
+            if (dic.ContainsKey("MySql.Pass"))
+                _sqlPass = dic["MySql.Pass"];
+            else
+                _sqlPass = string.Empty;
+        }
+
+        /// <summary>
         /// Gets the Sql database name containing the game information.
         /// </summary>
         public string SqlDatabase
@@ -44,22 +60,6 @@ namespace DemoGame.Server
         public string SqlUser
         {
             get { return _sqlUser; }
-        }
-
-        /// <summary>
-        /// ServerSettings constructor.
-        /// </summary>
-        public DbConnectionSettings()
-        {
-            var dic = XmlInfoReader.ReadFile("DbSettings.xml")[0];
-            _sqlUser = dic["MySql.User"];
-            _sqlHost = dic["MySql.Host"];
-            _sqlDatabase = dic["MySql.Database"];
-
-            if (dic.ContainsKey("MySql.Pass"))
-                _sqlPass = dic["MySql.Pass"];
-            else
-                _sqlPass = string.Empty;
         }
 
         /// <summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NetGore.Db.MySql
+﻿namespace NetGore.Db.MySql
 {
     /// <summary>
     /// A <see cref="DbControllerBase"/> for MySql.
@@ -28,17 +24,6 @@ namespace NetGore.Db.MySql
         }
 
         /// <summary>
-        /// Gets the SQL query string used for when testing if the database connection is valid. This string should
-        /// be very simple and fool-proof, and work no matter what contents are in the database since this is just
-        /// to test if the connection is working.
-        /// </summary>
-        /// <returns>The SQL query string used for when testing if the database connection is valid.</returns>
-        protected override string GetTestQueryCommand()
-        {
-            return "SELECT 1+5";
-        }
-
-        /// <summary>
         /// Gets an implementation of the <see cref="FindForeignKeysQuery"/> that works for this
         /// <see cref="DbControllerBase"/>.
         /// </summary>
@@ -47,6 +32,17 @@ namespace NetGore.Db.MySql
         protected override FindForeignKeysQuery GetFindForeignKeysQuery(DbConnectionPool dbConnectionPool)
         {
             return new MySqlFindForeignKeysQuery(dbConnectionPool);
+        }
+
+        /// <summary>
+        /// Gets the SQL query string used for when testing if the database connection is valid. This string should
+        /// be very simple and fool-proof, and work no matter what contents are in the database since this is just
+        /// to test if the connection is working.
+        /// </summary>
+        /// <returns>The SQL query string used for when testing if the database connection is valid.</returns>
+        protected override string GetTestQueryCommand()
+        {
+            return "SELECT 1+5";
         }
     }
 }

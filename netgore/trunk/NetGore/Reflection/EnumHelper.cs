@@ -14,14 +14,13 @@ namespace NetGore
     public abstract class EnumHelper<T> : IEnumValueReader<T>, IEnumValueWriter<T>
         where T : struct, IComparable, IConvertible, IFormattable
     {
-        readonly int _bitsRequired;
-        readonly int _maxValue;
-        readonly int _minValue;
-
         static readonly Type[] _supportedTypes = new Type[]
         { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
 
         static readonly T[] _values;
+        readonly int _bitsRequired;
+        readonly int _maxValue;
+        readonly int _minValue;
 
         /// <summary>
         /// Initializes the <see cref="EnumHelper&lt;T&gt;"/> class.

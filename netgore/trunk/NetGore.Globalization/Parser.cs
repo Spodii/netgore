@@ -23,12 +23,12 @@ namespace NetGore.Globalization
         const NumberStyles _nsUInt = NumberStyles.Integer;
         const NumberStyles _nsULong = NumberStyles.Integer;
         const NumberStyles _nsUShort = NumberStyles.Integer;
+        static readonly Parser _parserCurrent;
+        static readonly Parser _parserInvariant;
 
         readonly CultureInfo _culture;
         readonly DateTimeFormatInfo _dateTimeInfo;
         readonly NumberFormatInfo _info;
-        static readonly Parser _parserCurrent;
-        static readonly Parser _parserInvariant;
 
         /// <summary>
         /// Initializes the <see cref="Parser"/> class.

@@ -10,9 +10,9 @@ namespace NetGore.Audio
     /// </summary>
     public class SoundEffectInstance3D
     {
-        IAudioEmitter _emitter;
         static readonly Stack<SoundEffectInstance3D> _freeObjects = new Stack<SoundEffectInstance3D>();
         static readonly object _freeObjectsSync = new object();
+        IAudioEmitter _emitter;
 
         SoundEffectInstance _sound;
 

@@ -16,6 +16,11 @@ namespace NetGore.IO
     public class BitStream : IValueReader, IValueWriter
     {
         /// <summary>
+        /// Default maximum length of a string when the maximum length is not specified.
+        /// </summary>
+        public const ushort DefaultStringMaxLength = ushort.MaxValue - 1;
+
+        /// <summary>
         /// The number of bits in a byte.
         /// </summary>
         const int _bitsByte = sizeof(byte) * 8;
@@ -51,9 +56,16 @@ namespace NetGore.IO
         const int _highBit = (sizeof(byte) * 8) - 1;
 
         /// <summary>
-        /// Default maximum length of a string when the maximum length is not specified.
+        /// Default BitStreamBufferMode for reading
         /// </summary>
-        public const ushort DefaultStringMaxLength = ushort.MaxValue - 1;
+        static BitStreamBufferMode _defaultBufferReadMode = BitStreamBufferMode.Dynamic;
+
+        /// <summary>
+        /// Default BitStreamBufferMode for writing
+        /// </summary>
+        static BitStreamBufferMode _defaultBufferWriteMode = BitStreamBufferMode.Dynamic;
+
+        readonly bool _useEnumNames = false;
 
         /// <summary>
         /// Data buffer
@@ -65,16 +77,6 @@ namespace NetGore.IO
         /// buffer came from. When writing, this is where the work buffer will go.
         /// </summary>
         int _bufferPos = 0;
-
-        /// <summary>
-        /// Default BitStreamBufferMode for reading
-        /// </summary>
-        static BitStreamBufferMode _defaultBufferReadMode = BitStreamBufferMode.Dynamic;
-
-        /// <summary>
-        /// Default BitStreamBufferMode for writing
-        /// </summary>
-        static BitStreamBufferMode _defaultBufferWriteMode = BitStreamBufferMode.Dynamic;
 
         /// <summary>
         /// Highest index that has been written to
@@ -90,8 +92,6 @@ namespace NetGore.IO
         /// How the buffer is handled when using reading operations 
         /// </summary>
         BitStreamBufferMode _readMode = _defaultBufferReadMode;
-
-        readonly bool _useEnumNames = false;
 
         /// <summary>
         /// Buffer used to read and write the current bits from. Even though

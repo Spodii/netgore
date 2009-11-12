@@ -14,21 +14,21 @@ namespace NetGore.Db
     /// </summary>
     public abstract class DbQueryBase : IDbQueryHandler
     {
-        const string _disposedErrorMessage = "Can not access methods on a disposed object.";
-        const int _initialStackSize = 2;
-
         /// <summary>
         /// The prefix character for database query parameters.
         /// </summary>
         public const string ParameterPrefix = "@";
 
+        const string _disposedErrorMessage = "Can not access methods on a disposed object.";
+        const int _initialStackSize = 2;
+
         readonly Stack<DbCommand> _commands = new Stack<DbCommand>(_initialStackSize);
         readonly object _commandsLock = new object();
         readonly string _commandText;
         readonly DbConnectionPool _connectionPool;
-        bool _disposed;
         readonly bool _hasParameters;
         readonly IEnumerable<DbParameter> _parameters;
+        bool _disposed;
 
         protected DbQueryBase(DbConnectionPool connectionPool, string commandText)
         {

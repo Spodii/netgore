@@ -9,8 +9,8 @@ namespace DemoGame.Server
     /// </summary>
     public class ShopItem : IShopItemTable
     {
-        readonly IItemTemplateTable _itemTemplate;
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
+        readonly IItemTemplateTable _itemTemplate;
         readonly ShopID _shopID;
 
         /// <summary>

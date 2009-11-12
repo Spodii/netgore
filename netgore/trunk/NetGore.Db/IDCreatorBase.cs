@@ -23,9 +23,9 @@ namespace NetGore.Db
         // FUTURE: Use the CriticalSize, which will automatically get the next free values asynchronously in the background
 
         readonly Stack<int> _freeIndices;
-        bool _isRefilling;
         readonly SelectIDQuery _selectIDQuery;
         readonly object _stackLock;
+        bool _isRefilling;
 
         /// <summary>
         /// IDCreatorBase constructor.

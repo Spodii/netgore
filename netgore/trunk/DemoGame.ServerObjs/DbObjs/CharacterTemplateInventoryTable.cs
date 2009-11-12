@@ -21,16 +21,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "character_template_inventory";
 
         /// <summary>
-        /// The field that maps onto the database column `chance`.
-        /// </summary>
-        UInt16 _chance;
-
-        /// <summary>
-        /// The field that maps onto the database column `character_template_id`.
-        /// </summary>
-        UInt16 _characterTemplateID;
-
-        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
@@ -46,6 +36,16 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         { "chance", "character_template_id", "item_template_id", "max", "min" };
+
+        /// <summary>
+        /// The field that maps onto the database column `chance`.
+        /// </summary>
+        UInt16 _chance;
+
+        /// <summary>
+        /// The field that maps onto the database column `character_template_id`.
+        /// </summary>
+        UInt16 _characterTemplateID;
 
         /// <summary>
         /// The field that maps onto the database column `id`.

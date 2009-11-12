@@ -12,9 +12,9 @@ namespace NetGore.Audio
     /// </summary>
     public sealed class MusicManager : AudioManagerBase<IMusic, MusicID>
     {
-        IMusic _currentlyPlaying;
-        static MusicManager _instance;
         static readonly object _instanceLock = new object();
+        static MusicManager _instance;
+        IMusic _currentlyPlaying;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MusicManager"/> class.

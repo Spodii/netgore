@@ -48,6 +48,27 @@ namespace DemoGame.Server.DbObjs
         };
 
         /// <summary>
+        /// The fields that are used in the column collection `ReqStat`.
+        /// </summary>
+        static readonly String[] _reqStatColumns = new string[] { "stat_req_agi", "stat_req_int", "stat_req_str" };
+
+        /// <summary>
+        /// The fields that are used in the column collection `Stat`.
+        /// </summary>
+        static readonly String[] _statColumns = new string[]
+        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
+
+        /// <summary>
+        /// Dictionary containing the values for the column collection `ReqStat`.
+        /// </summary>
+        readonly ReqStatConstDictionary _reqStat = new ReqStatConstDictionary();
+
+        /// <summary>
+        /// Dictionary containing the values for the column collection `Stat`.
+        /// </summary>
+        readonly StatConstDictionary _stat = new StatConstDictionary();
+
+        /// <summary>
         /// The field that maps onto the database column `description`.
         /// </summary>
         String _description;
@@ -81,27 +102,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `name`.
         /// </summary>
         String _name;
-
-        /// <summary>
-        /// Dictionary containing the values for the column collection `ReqStat`.
-        /// </summary>
-        readonly ReqStatConstDictionary _reqStat = new ReqStatConstDictionary();
-
-        /// <summary>
-        /// The fields that are used in the column collection `ReqStat`.
-        /// </summary>
-        static readonly String[] _reqStatColumns = new string[] { "stat_req_agi", "stat_req_int", "stat_req_str" };
-
-        /// <summary>
-        /// Dictionary containing the values for the column collection `Stat`.
-        /// </summary>
-        readonly StatConstDictionary _stat = new StatConstDictionary();
-
-        /// <summary>
-        /// The fields that are used in the column collection `Stat`.
-        /// </summary>
-        static readonly String[] _statColumns = new string[]
-        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
 
         /// <summary>
         /// The field that maps onto the database column `type`.
