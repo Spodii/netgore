@@ -37,14 +37,14 @@ namespace NetGore.Db
                 _connectionPool = CreateConnectionPool(connectionString);
                 // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
-                const string msg = "Failed to create connection to database.";
-                Debug.Fail(msg);
+                const string errmsg = "Failed to create connection to database. Reason: ";
+                string msg = errmsg + ex;
                 if (log.IsFatalEnabled)
                     log.Fatal(msg, ex);
-                Dispose();
-                return;
+                Debug.Fail(msg);
+                throw new DatabaseConnectionException(msg, ex);
             }
 
             if (log.IsInfoEnabled)
@@ -61,11 +61,10 @@ namespace NetGore.Db
                 if (instance == null)
                 {
                     const string errmsg = "Failed to create instance of Type `{0}`.";
-                    var err = string.Format(errmsg, type);
                     if (log.IsFatalEnabled)
-                        log.Fatal(err);
-                    Debug.Fail(err);
-                    throw new Exception(err);
+                        log.Fatal(string.Format(errmsg, type));
+                    Debug.Fail(string.Format(errmsg, type));
+                    throw new InstantiateTypeException(type);
                 }
 
                 // Add the instance to the collection

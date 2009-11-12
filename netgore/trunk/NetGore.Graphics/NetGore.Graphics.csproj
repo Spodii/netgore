@@ -64,6 +64,8 @@
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
     <Compile Include="Camera2D.cs" />
+    <Compile Include="Exceptions\GrhDataException.cs" />
+    <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
     <Compile Include="Grh\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />
     <Compile Include="Grh\AnimType.cs" />
