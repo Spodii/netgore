@@ -210,7 +210,7 @@ namespace DemoGame.MapEditor
 
             // Read the settings
             _settings = new MapEditorSettings(this);
-            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev);
+            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev, CreateWallEntity);
 
             // Create the world
             _world = new World(this, _camera);
@@ -304,7 +304,7 @@ namespace DemoGame.MapEditor
                 _map.OnSave += Map_OnSave;
 
                 // Remove all of the walls previously created from the MapGrhs
-                var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
+                var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
                 var dupeWalls = Map.FindDuplicateWalls(grhWalls);
                 foreach (var dupeWall in dupeWalls)
                 {
@@ -396,7 +396,7 @@ namespace DemoGame.MapEditor
             _editGrhCamera.Zoom(pos, GameData.ScreenSize, 4f);
             _editGrh = new Grh(_editGrhData.GrhIndex, AnimType.Loop, GetTime());
 
-            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls) { Location = new Point(0, 0) };
+            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls, CreateWallEntity) { Location = new Point(0, 0) };
             f.FormClosed += EditGrhForm_Close;
             AddOwnedForm(f);
             f.Show();
@@ -514,6 +514,39 @@ namespace DemoGame.MapEditor
             SetMap(newMapPath);
         }
 
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
+        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
+        /// <param name="collisionType">The <see cref="CollisionType"/> to give the <see cref="WallEntityBase"/>.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size, CollisionType collisionType)
+        {
+            return new WallEntity(position, size, collisionType);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
+        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size)
+        {
+            return new WallEntity(position, size);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the creation values from.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(IValueReader reader)
+        {
+            return new WallEntity(reader);
+        }
+
         void cmdSave_Click(object sender, EventArgs e)
         {
             if (Map == null)
@@ -523,7 +556,7 @@ namespace DemoGame.MapEditor
             Enabled = false;
 
             // Add the MapGrh-bound walls
-            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
+            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
             foreach (WallEntityBase wall in extraWalls)
             {
                 Map.AddEntity(wall);

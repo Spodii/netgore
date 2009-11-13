@@ -57,26 +57,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutomaticGrhDataUpdater.cs" />
+    <Compile Include="CreateWallEntity\CreateWallEntityFromReaderHandler.cs" />
+    <Compile Include="Grh\AutomaticGrhData\AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
-    <Compile Include="GrhImageList.cs" />
-    <Compile Include="GrhImageListCache.cs" />
-    <Compile Include="GrhImageListCacheItem.cs" />
-    <Compile Include="ListBoxExtensions.cs" />
+    <Compile Include="Grh\GrhImageList\GrhImageList.cs" />
+    <Compile Include="Grh\GrhImageList\GrhImageListCache.cs" />
+    <Compile Include="Grh\GrhImageList\GrhImageListCacheItem.cs" />
+    <Compile Include="CreateWallEntity\CreateWallEntityHandler.cs" />
+    <Compile Include="CreateWallEntity\CreateWallEntityWithCollisionTypeHandler.cs" />
+    <Compile Include="Grh\GrhTreeView\EditGrhForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Grh\GrhTreeView\EditGrhForm.Designer.cs">
+      <DependentUpon>EditGrhForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\ListBoxExtensions.cs" />
+    <Compile Include="Grh\MapGrhWalls.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GrhTreeView\GrhTreeNodeMouseClickEventArgs.cs" />
-    <Compile Include="GrhTreeView\GrhTreeView.cs">
+    <Compile Include="Grh\GrhTreeView\GrhTreeNodeMouseClickEventArgs.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GrhTreeView\GrhTreeNode.cs" />
-    <Compile Include="GrhTreeView\GrhTreeViewCancelEventArgs.cs" />
-    <Compile Include="GrhTreeView\GrhTreeViewEventArgs.cs" />
-    <Compile Include="MissingTexturesForm.cs">
+    <Compile Include="Grh\GrhTreeView\GrhTreeNode.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeViewCancelEventArgs.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeViewEventArgs.cs" />
+    <Compile Include="Grh\AutomaticGrhData\MissingTexturesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MissingTexturesForm.Designer.cs">
+    <Compile Include="Grh\AutomaticGrhData\MissingTexturesForm.Designer.cs">
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollectionChangeHandler.cs" />
@@ -116,10 +126,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TextureHashCollection.cs" />
+    <Compile Include="Grh\AutomaticGrhData\TextureHashCollection.cs" />
     <Compile Include="ImageHelper.cs" />
-    <Compile Include="TreeNodeCollectionExtensions.cs" />
-    <Compile Include="TreeNodeExtensions.cs" />
+    <Compile Include="Extensions\TreeNodeCollectionExtensions.cs" />
+    <Compile Include="Extensions\TreeNodeExtensions.cs" />
     <Compile Include="WinForms\GraphicsDeviceControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -154,8 +164,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GrhTreeView\Folder.png" />
-    <EmbeddedResource Include="MissingTexturesForm.resx">
+    <None Include="Grh\GrhTreeView\Folder.png" />
+    <EmbeddedResource Include="Grh\GrhTreeView\EditGrhForm.resx">
+      <DependentUpon>EditGrhForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Grh\AutomaticGrhData\MissingTexturesForm.resx">
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -169,7 +183,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GrhTreeView\folderopen.png" />
+    <None Include="Grh\GrhTreeView\folderopen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

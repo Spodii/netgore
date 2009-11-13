@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DemoGame.Client;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace DemoGame.MapEditor
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Contains information on what WallEntities are bound to the given MapGrh
@@ -56,17 +55,21 @@ namespace DemoGame.MapEditor
         /// Initializes a new instance of the <see cref="MapGrhWalls"/> class.
         /// </summary>
         /// <param name="contentPath">The content path.</param>
-        public MapGrhWalls(ContentPaths contentPath)
+        /// <param name="createWall">Delegate describing how to create the <see cref="WallEntityBase"/>
+        /// from an <see cref="IValueReader"/>.</param>
+        public MapGrhWalls(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
         {
-            Load(contentPath);
+            Load(contentPath, createWall);
         }
 
         /// <summary>
-        /// Creates a List of the WallEntities used for a set of MapGrhs
+        /// Creates a List of the <see cref="WallEntityBase"/>s used for a set of <see cref="MapGrh"/>s.
         /// </summary>
-        /// <param name="mapGrhs">Set of MapGrhs to get the walls for</param>
-        /// <returns>List of each bound wall for all the MapGrhs</returns>
-        public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs)
+        /// <param name="mapGrhs">Set of <see cref="MapGrh"/>s to get the walls for</param>
+        /// <param name="createWall">Delegate that describes how to create the <see cref="WallEntityBase"/>
+        /// instances.</param>
+        /// <returns>List of each bound wall for all the <see cref="MapGrh"/>s.</returns>
+        public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs, CreateWallEntityWithCollisionTypeHandler createWall)
         {
             var ret = new List<WallEntityBase>();
 
@@ -75,14 +78,18 @@ namespace DemoGame.MapEditor
             {
                 // Grab the List for the given MapGrh
                 var mgWalls = this[mg.Grh.GrhData];
-                if (mgWalls != null)
+                if (mgWalls == null)
+                    continue;
+
+                // Create a new instance of each of the walls and add it to the return List
+                foreach (WallEntityBase wall in mgWalls)
                 {
-                    // Create a new instance of each of the walls and add it to the return List
-                    foreach (WallEntityBase wall in mgWalls)
-                    {
-                        WallEntity w = new WallEntity(mg.Destination + wall.Position, wall.CB.Size, wall.CollisionType);
-                        ret.Add(w);
-                    }
+                    var position = mg.Destination + wall.Position;
+                    var size = wall.CB.Size;
+                    var type = wall.CollisionType;
+
+                    var newWallEntity = createWall(position, size, type);
+                    ret.Add(newWallEntity);
                 }
             }
 
@@ -94,7 +101,7 @@ namespace DemoGame.MapEditor
             return contentPath.Data.Join("grhdatawalls.xml");
         }
 
-        public void Load(ContentPaths contentPath)
+        public void Load(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
         {
             string filePath = GetFilePath(contentPath);
 
@@ -106,7 +113,7 @@ namespace DemoGame.MapEditor
 
             // Read the values
             XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
-            var loadedWalls = reader.ReadManyNodes<KeyValuePair<GrhIndex, List<WallEntityBase>>>(_rootNodeName, ReadWalls);
+            var loadedWalls = reader.ReadManyNodes(_rootNodeName, x => ReadWalls(x, createWall));
 
             foreach (var wall in loadedWalls)
             {
@@ -114,10 +121,10 @@ namespace DemoGame.MapEditor
             }
         }
 
-        static KeyValuePair<GrhIndex, List<WallEntityBase>> ReadWalls(IValueReader r)
+        static KeyValuePair<GrhIndex, List<WallEntityBase>> ReadWalls(IValueReader r, CreateWallEntityFromReaderHandler createWall)
         {
             GrhIndex grhIndex = r.ReadGrhIndex(_grhIndexValueKey);
-            var walls = r.ReadManyNodes<WallEntityBase>(_wallsNodeName, x => new WallEntity(x));
+            var walls = r.ReadManyNodes(_wallsNodeName, x => createWall(x));
 
             return new KeyValuePair<GrhIndex, List<WallEntityBase>>(grhIndex, walls.ToList());
         }

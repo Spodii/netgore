@@ -7,12 +7,12 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace DemoGame.Client
+namespace NetGore.Graphics
 {
     /// <summary>
-    /// A Grh instance bound to the map. Although it inherits the IDrawableEntity interface,
-    /// it is not actually an Entity. It is simply a container for a map-bound Grh with no behavior
-    /// besides rendering and updating.
+    /// A Grh instance bound to the map. Although it inherits the <see cref="IDrawable"/> interface,
+    /// it is not actually an <see cref="Entity"/>. It is simply a container for a map-bound Grh with no behavior
+    /// besides rendering and updating, and resides completely on the Client.
     /// </summary>
     public class MapGrh : IDrawable
     {
@@ -21,7 +21,7 @@ namespace DemoGame.Client
         bool _isForeground;
 
         /// <summary>
-        /// Gets or sets the destination to draw the MapGrh
+        /// Gets or sets the destination to draw the <see cref="MapGrh"/>.
         /// </summary>
         public Vector2 Destination
         {
@@ -30,7 +30,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the Grh for the MapGrh
+        /// Gets the <see cref="Grh"/> for the <see cref="MapGrh"/>.
         /// </summary>
         public Grh Grh
         {
@@ -38,7 +38,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets or sets if the MapGrh is in the foreground.
+        /// Gets or sets if the <see cref="MapGrh"/> is in the foreground.
         /// </summary>
         public bool IsForeground
         {
@@ -94,10 +94,10 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Checks if the given point is over the MapGrh
+        /// Checks if the given point is over the <see cref="MapGrh"/>.
         /// </summary>
-        /// <param name="p">World point to check</param>
-        /// <returns>True if the point is at the MapGrh, else false</returns>
+        /// <param name="p">World point to check.</param>
+        /// <returns>True if the point is at the <see cref="MapGrh"/>, else false.</returns>
         public bool HitTest(Vector2 p)
         {
             return (Destination.X <= p.X && Destination.X + Grh.Width >= p.X && Destination.Y <= p.Y &&
@@ -105,7 +105,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Updates the MapGrh.
+        /// Updates the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         public void Update(int currentTime)
@@ -141,7 +141,6 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
-        /// <value></value>
         public MapRenderLayer MapRenderLayer
         {
             get

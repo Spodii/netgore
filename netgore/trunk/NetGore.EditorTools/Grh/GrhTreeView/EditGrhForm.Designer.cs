@@ -3,7 +3,7 @@
 // ReSharper disable RedundantDelegateCreation
 // ReSharper disable RedundantCast
 
-namespace DemoGame.MapEditor
+namespace NetGore.EditorTools
 {
     partial class EditGrhForm
     {
@@ -561,8 +561,8 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.TextBox txtWallX;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
-        internal System.Windows.Forms.ListBox lstWalls;
         private System.Windows.Forms.CheckBox chkAutoSize;
+        public System.Windows.Forms.ListBox lstWalls;
 
     }
 }

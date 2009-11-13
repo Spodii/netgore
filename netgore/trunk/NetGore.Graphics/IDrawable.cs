@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 
-namespace DemoGame.Client
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Interface for an object that support drawing itself.

@@ -12,7 +12,7 @@ using NetGore.Globalization;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace DemoGame.MapEditor
+namespace NetGore.EditorTools
 {
     public partial class EditGrhForm : Form
     {
@@ -23,11 +23,21 @@ namespace DemoGame.MapEditor
 
         readonly GrhData _gd;
         readonly MapGrhWalls _mapGrhWalls;
+        readonly CreateWallEntityHandler _createWall;
 
-        public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls)
+        public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall)
         {
+            if (gd == null)
+                throw new ArgumentNullException("gd");
+            if (mapGrhWalls == null)
+                throw new ArgumentNullException("mapGrhWalls");
+            if (createWall == null)
+                throw new ArgumentNullException("createWall");
+
+            _createWall = createWall;
             _gd = gd;
             _mapGrhWalls = mapGrhWalls;
+
             InitializeComponent();
             ShowGrhInfo();
         }
@@ -152,7 +162,7 @@ namespace DemoGame.MapEditor
 
         void btnAdd_Click(object sender, EventArgs e)
         {
-            WallEntity wall = new WallEntity(Vector2.Zero, new Vector2(16));
+            var wall = _createWall(Vector2.Zero, new Vector2(16));
             lstWalls.AddItemAndReselect(wall);
             lstWalls.SelectedItem = wall;
         }
