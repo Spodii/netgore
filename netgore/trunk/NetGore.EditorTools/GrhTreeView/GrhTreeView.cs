@@ -42,11 +42,6 @@ namespace NetGore.EditorTools
         readonly ContextMenu _contextMenu = new ContextMenu();
 
         /// <summary>
-        /// Image list for the treeGrhs
-        /// </summary>
-        readonly ImageList _grhImageList = new ImageList();
-
-        /// <summary>
         /// Track the elapsed time for Grh animating
         /// </summary>
         readonly Stopwatch _watch = new Stopwatch();
@@ -388,10 +383,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Finds the GrhData for a given TreeNode
+        /// Finds the <see cref="GrhData"/> for a given <see cref="TreeNode"/>.
         /// </summary>
-        /// <param name="n">TreeNode to get the GrhData from</param>
-        /// <returns>GrhData for the TreeNode, null if none</returns>
+        /// <param name="node"><see cref="TreeNode"/> to get the <see cref="GrhData"/> from.</param>
+        /// <returns><see cref="GrhData"/> for the <see cref="TreeNode"/>, null if none.</returns>
         public static GrhData GetGrhData(TreeNode node)
         {
             // If a null n, or the n is not a leaf (which means its a folder), return null
@@ -485,10 +480,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets a unique text for a n, based off an existing n
+        /// Gets a unique text for a node, based off an existing node.
         /// </summary>
-        /// <param name="n">Node to base the text off of</param>
-        /// <returns>Unique n text</returns>
+        /// <param name="node"><see cref="TreeNode"/> to base the text off of.</param>
+        /// <returns>Unique node text.</returns>
         static string GetUniqueNodeText(TreeNode node)
         {
             int copyNum = 1;
@@ -701,7 +696,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Checks if a n contains a Grh, or is a folder
         /// </summary>
-        /// <param name="n">Node to check</param>
+        /// <param name="node">Node to check</param>
         /// <returns>True if a Grh, false if a folder</returns>
         static bool IsGrhNode(TreeNode node)
         {
@@ -776,8 +771,8 @@ namespace NetGore.EditorTools
 
             if (e.KeyCode == Keys.Delete)
             {
-                const string txt = "Are you sure you wish to delete this n?";
-                if (MessageBox.Show(txt, "Delete n?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                const string txt = "Are you sure you wish to delete this GrhData?";
+                if (MessageBox.Show(txt, "Delete GrhData?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     DeleteNode(SelectedNode);
             }
         }
@@ -821,11 +816,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// If a TreeNode contains a n with the given text already
+        /// If a TreeNode contains a node with the given text already
         /// </summary>
-        /// <param name="n">Node to check for texts</param>
+        /// <param name="node">Node to check for texts</param>
         /// <param name="text">Text to check against</param>
-        /// <returns>True if the text exists in the <paramref name="n"/>, else false</returns>
+        /// <returns>True if the text exists in the <paramref name="node"/>, else false</returns>
         static bool TreeContainsText(TreeNode node, string text)
         {
             foreach (TreeNode child in node.Nodes)
@@ -839,7 +834,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Finds the GrhData for a given TreeNode
         /// </summary>
-        /// <param name="n">TreeNode to get the GrhData from</param>
+        /// <param name="node">TreeNode to get the GrhData from</param>
         /// <param name="gd">GrhData returned, or null if invalid</param>
         /// <returns>True if a valid GrhData was found, or false if not</returns>
         public static bool TryGetGrhData(TreeNode node, out GrhData gd)
@@ -876,7 +871,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Finds the GrhData for a given TreeNode
         /// </summary>
-        /// <param name="n">TreeNode to get the GrhData from</param>
+        /// <param name="node">TreeNode to get the GrhData from</param>
         /// <returns>True if a valid GrhData was found, or false if not</returns>
         public static bool TryGetGrhData(TreeNode node)
         {
