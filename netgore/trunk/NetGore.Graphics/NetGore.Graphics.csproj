@@ -66,25 +66,29 @@
     <Compile Include="Camera2D.cs" />
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
-    <Compile Include="Grh\GrhConverter.cs" />
+    <Compile Include="IDrawable.cs" />
+    <Compile Include="MapGrh.cs" />
+    <Compile Include="MapRenderLayer.cs" />
+    <Compile Include="MapRenderLayerChange.cs" />
+    <Compile Include="Sprite\Grh\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />
-    <Compile Include="Grh\AnimType.cs" />
-    <Compile Include="Grh\ChangeCategorizationHandler.cs" />
-    <Compile Include="Grh\GrhDataEventHandler.cs" />
+    <Compile Include="Sprite\Grh\AnimType.cs" />
+    <Compile Include="Sprite\Grh\ChangeCategorizationHandler.cs" />
+    <Compile Include="Sprite\Grh\GrhDataEventHandler.cs" />
     <Compile Include="MapBorderDrawer.cs" />
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
     <Compile Include="Skeleton\SkeletonBodyItemInfo.cs" />
     <Compile Include="Skeleton\SkeletonFrame.cs" />
     <Compile Include="SpriteBatchExtensions.cs" />
-    <Compile Include="XNAArrow.cs" />
-    <Compile Include="XNARectangle.cs" />
+    <Compile Include="Primitives\XNAArrow.cs" />
+    <Compile Include="Primitives\XNARectangle.cs" />
     <Compile Include="FrameCounter.cs" />
-    <Compile Include="Grh\Grh.cs">
+    <Compile Include="Sprite\Grh\Grh.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Grh\GrhData.cs" />
-    <Compile Include="Grh\GrhInfo.cs" />
-    <Compile Include="ISprite.cs" />
+    <Compile Include="Sprite\Grh\GrhData.cs" />
+    <Compile Include="Sprite\Grh\GrhInfo.cs" />
+    <Compile Include="Sprite\ISprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenGrid.cs" />
     <Compile Include="Skeleton\Skeleton.cs" />
@@ -95,9 +99,9 @@
     <Compile Include="Skeleton\SkeletonManager.cs" />
     <Compile Include="Skeleton\SkeletonNode.cs" />
     <Compile Include="Skeleton\SkeletonSet.cs" />
-    <Compile Include="Sprite.cs" />
-    <Compile Include="XNALine.cs" />
-    <Compile Include="XNATriangle.cs" />
+    <Compile Include="Sprite\Sprite.cs" />
+    <Compile Include="Primitives\XNALine.cs" />
+    <Compile Include="Primitives\XNATriangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">

@@ -1,7 +1,7 @@
 using System.Linq;
 using NetGore;
 
-namespace DemoGame.Client
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Enum consisting of the layer at which map entities are rendered

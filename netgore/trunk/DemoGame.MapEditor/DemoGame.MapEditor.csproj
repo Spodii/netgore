@@ -62,12 +62,6 @@
     <Compile Include="Cursors\EntityCursor.cs" />
     <Compile Include="Cursors\GrhCursor.cs" />
     <Compile Include="Cursors\WallCursor.cs" />
-    <Compile Include="Forms\EditGrhForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\EditGrhForm.Designer.cs">
-      <DependentUpon>EditGrhForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Controls\GameScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -84,7 +78,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ListboxWall.cs" />
-    <Compile Include="MapGrhWalls.cs" />
     <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -97,10 +90,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\EditGrhForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>EditGrhForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScreenForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ScreenForm.cs</DependentUpon>
