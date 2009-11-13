@@ -12,7 +12,7 @@
         <Name>Map.Platform.Grass</Name>
         <Title>Top-Left</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Map/Platform/Grass/Top-Left</Name>
         <Source>0,0,32,32</Source>
@@ -28,7 +28,7 @@
         <Name>Map.Platform.Grass</Name>
         <Title>Top-Mid</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Map/Platform/Grass/Top-Mid</Name>
         <Source>0,0,32,32</Source>
@@ -44,7 +44,7 @@
         <Name>Map.Platform.Grass</Name>
         <Title>Top-Right</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Map/Platform/Grass/Top-Right</Name>
         <Source>0,0,32,32</Source>
@@ -60,7 +60,7 @@
         <Name>Map.Platform.Grass</Name>
         <Title>Mid-Left</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Map/Platform/Grass/Mid-Left</Name>
         <Source>0,0,32,32</Source>
@@ -76,7 +76,7 @@
         <Name>Map.Platform.Grass</Name>
         <Title>Mid-Mid</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Map/Platform/Grass/Mid-Mid</Name>
         <Source>0,0,32,32</Source>
@@ -92,7 +92,7 @@
         <Name>Map.Platform.Grass</Name>
         <Title>Mid-Right</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Map/Platform/Grass/Mid-Right</Name>
         <Source>0,0,32,32</Source>
@@ -108,7 +108,7 @@
         <Name>Map.Platform.Grass</Name>
         <Title>Bottom</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Map/Platform/Grass/Bottom</Name>
         <Source>0,0,32,1</Source>
@@ -956,10 +956,10 @@
         <Name>GUI</Name>
         <Title>AddStat</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>gui/addstat</Name>
-        <Source>1,1,12,12</Source>
+        <Source>0,0,16,16</Source>
       </Texture>
     </Item59>
     <Item60>
@@ -972,10 +972,10 @@
         <Name>System</Name>
         <Title>Blank</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Blank</Name>
-        <Source>1,1,2,2</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item60>
     <Item61>
@@ -988,10 +988,10 @@
         <Name>System</Name>
         <Title>Joint</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Joint</Name>
-        <Source>1,1,6,6</Source>
+        <Source>0,0,8,8</Source>
       </Texture>
     </Item61>
     <Item62>
@@ -1004,10 +1004,10 @@
         <Name>System</Name>
         <Title>Triangle</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Triangle</Name>
-        <Source>0,0,32,32</Source>
+        <Source>0,0,30,30</Source>
       </Texture>
     </Item62>
     <Item63>
@@ -1020,10 +1020,10 @@
         <Name>System</Name>
         <Title>Move</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Move</Name>
-        <Source>1,1,15,15</Source>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item63>
     <Item64>
@@ -1036,10 +1036,10 @@
         <Name>System</Name>
         <Title>Resize</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Resize</Name>
-        <Source>1,1,6,6</Source>
+        <Source>0,0,8,8</Source>
       </Texture>
     </Item64>
     <Item65>
@@ -1052,7 +1052,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>1</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/1</Name>
         <Source>0,0,32,64</Source>
@@ -1068,7 +1068,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>2</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/2</Name>
         <Source>0,0,32,64</Source>
@@ -1084,7 +1084,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>3</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/3</Name>
         <Source>0,0,32,64</Source>
@@ -1100,7 +1100,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>4</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/4</Name>
         <Source>0,0,32,64</Source>
@@ -1116,7 +1116,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>5</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/5</Name>
         <Source>0,0,32,64</Source>
@@ -1132,7 +1132,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>6</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/6</Name>
         <Source>0,0,32,64</Source>
@@ -1148,7 +1148,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>7</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/7</Name>
         <Source>0,0,32,64</Source>
@@ -1164,7 +1164,7 @@
         <Name>Effect._Teleport_frames_400</Name>
         <Title>8</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Effect/_Teleport_frames_400/8</Name>
         <Source>0,0,32,64</Source>
@@ -1180,10 +1180,10 @@
         <Name>Item.Melee</Name>
         <Title>TitaniumSword</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>item/melee/titaniumsword</Name>
-        <Source>0,0,24,24</Source>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item73>
     <Item74>
@@ -1196,10 +1196,10 @@
         <Name>Item.Potion</Name>
         <Title>Red</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Potion/Red</Name>
-        <Source>1,1,9,16</Source>
+        <Source>0,0,16,32</Source>
       </Texture>
     </Item74>
     <Item75>
@@ -1212,10 +1212,10 @@
         <Name>Item.Potion</Name>
         <Title>Blue</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Potion/Blue</Name>
-        <Source>1,1,9,16</Source>
+        <Source>0,0,16,32</Source>
       </Texture>
     </Item75>
     <Item76>
@@ -1228,10 +1228,10 @@
         <Name>Item.Back</Name>
         <Title>Crystal</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Back/Crystal</Name>
-        <Source>0,0,15,25</Source>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item76>
     <Item77>
@@ -1244,10 +1244,10 @@
         <Name>Item.Body</Name>
         <Title>Crystal</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Body/Crystal</Name>
-        <Source>0,0,22,22</Source>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item77>
     <Item78>
@@ -1260,10 +1260,10 @@
         <Name>Item.Feet</Name>
         <Title>Crystal</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Feet/Crystal</Name>
-        <Source>0,0,15,14</Source>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item78>
     <Item79>
@@ -1276,10 +1276,10 @@
         <Name>Item.Head</Name>
         <Title>Crystal</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Head/Crystal</Name>
-        <Source>0,0,11,16</Source>
+        <Source>0,0,16,32</Source>
       </Texture>
     </Item79>
     <Item80>
@@ -1292,7 +1292,7 @@
         <Name>GUI.Default.Toolbar</Name>
         <Title>Equipped</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
@@ -1308,7 +1308,7 @@
         <Name>GUI.Default.Toolbar</Name>
         <Title>Inventory</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
@@ -1324,7 +1324,7 @@
         <Name>GUI.Default.Toolbar</Name>
         <Title>Skills</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
@@ -1340,7 +1340,7 @@
         <Name>GUI.Default</Name>
         <Title>item_slot</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
@@ -1356,7 +1356,7 @@
         <Name>Background</Name>
         <Title>sky</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Background/sky</Name>
         <Source>0,0,1024,238</Source>
@@ -1372,7 +1372,7 @@
         <Name>Background.trees</Name>
         <Title>dense</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Background/trees/dense</Name>
         <Source>0,0,1024,512</Source>
@@ -1388,7 +1388,7 @@
         <Name>Background.trees</Name>
         <Title>sparse</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Background/trees/sparse</Name>
         <Source>0,0,1024,512</Source>
@@ -1404,7 +1404,7 @@
         <Name>SkillIcon</Name>
         <Title>heal</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
@@ -1420,7 +1420,7 @@
         <Name>StatusIcon</Name>
         <Title>strengthen</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
@@ -1436,7 +1436,7 @@
         <Name>SkillIcon</Name>
         <Title>strengthen</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
@@ -1452,7 +1452,7 @@
         <Name>GUI.Default</Name>
         <Title>status icon border</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
@@ -1468,7 +1468,7 @@
         <Name>GUI.Default.Toolbar</Name>
         <Title>Stats</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
@@ -1484,10 +1484,10 @@
         <Name>Character.Zombie</Name>
         <Title>Head</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Head</Name>
-        <Source>0,0,19,19</Source>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item92>
     <Item93>
@@ -1500,10 +1500,10 @@
         <Name>Character.Zombie</Name>
         <Title>Neck</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Neck</Name>
-        <Source>0,0,5,9</Source>
+        <Source>0,0,8,16</Source>
       </Texture>
     </Item93>
     <Item94>
@@ -1516,10 +1516,10 @@
         <Name>Character.Zombie</Name>
         <Title>Torso</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Torso</Name>
-        <Source>0,0,16,28</Source>
+        <Source>0,0,16,32</Source>
       </Texture>
     </Item94>
     <Item95>
@@ -1532,10 +1532,10 @@
         <Name>Character.Zombie</Name>
         <Title>ArmUpper</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/ArmUpper</Name>
-        <Source>0,0,6,10</Source>
+        <Source>0,0,8,16</Source>
       </Texture>
     </Item95>
     <Item96>
@@ -1548,10 +1548,10 @@
         <Name>Character.Zombie</Name>
         <Title>ArmLower</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/ArmLower</Name>
-        <Source>0,0,5,21</Source>
+        <Source>0,0,8,32</Source>
       </Texture>
     </Item96>
     <Item97>
@@ -1564,10 +1564,10 @@
         <Name>Character.Zombie</Name>
         <Title>LegUpper</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/LegUpper</Name>
-        <Source>0,0,12,22</Source>
+        <Source>0,0,16,32</Source>
       </Texture>
     </Item97>
     <Item98>
@@ -1580,10 +1580,10 @@
         <Name>Character.Zombie</Name>
         <Title>LegLower</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/LegLower</Name>
-        <Source>0,0,13,19</Source>
+        <Source>0,0,16,32</Source>
       </Texture>
     </Item98>
     <Item99>
@@ -1596,10 +1596,10 @@
         <Name>Character.Zombie</Name>
         <Title>Shoe</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Shoe</Name>
-        <Source>0,0,6,17</Source>
+        <Source>0,0,8,32</Source>
       </Texture>
     </Item99>
   </Stationary>
