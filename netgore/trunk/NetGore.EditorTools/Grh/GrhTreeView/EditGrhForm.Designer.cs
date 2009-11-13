@@ -562,7 +562,7 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox chkAutoSize;
-        public System.Windows.Forms.ListBox lstWalls;
+        private System.Windows.Forms.ListBox lstWalls;
 
     }
 }

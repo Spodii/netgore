@@ -7,11 +7,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Globalization;
 using NetGore.Graphics;
 using NetGore.IO;
+using Point=System.Drawing.Point;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace NetGore.EditorTools
@@ -49,13 +52,6 @@ namespace NetGore.EditorTools
         public event GrhTreeViewCancelEvent GrhBeforeSelect;
 
         /// <summary>
-        /// Occurs when context menu item "Edit" is clicked.
-        /// </summary>
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuEditClick;
-
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuNewGrhClick;
-
-        /// <summary>
         /// Occurs when a Grh n is clicked
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseClick;
@@ -65,11 +61,29 @@ namespace NetGore.EditorTools
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
 
+        readonly Vector2 _gameScreenSize;
+
+        readonly CreateWallEntityHandler _createWall;
+
+        readonly MapGrhWalls _mapGrhWalls;
+
         /// <summary>
-        /// GrhTreeView constructor
+        /// Initializes a new instance of the <see cref="GrhTreeView"/> class.
         /// </summary>
-        public GrhTreeView()
+        /// <param name="gameScreenSize">The size of the game screen.</param>
+        /// <param name="createWall">Delegate used to create a <see cref="WallEntityBase"/>.</param>
+        /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance to use.</param>
+        public GrhTreeView(Vector2 gameScreenSize, CreateWallEntityHandler createWall, MapGrhWalls mapGrhWalls)
         {
+            if (createWall == null)
+                throw new ArgumentNullException("createWall");
+            if (mapGrhWalls == null)
+                throw new ArgumentNullException("mapGrhWalls");
+
+            _gameScreenSize = gameScreenSize;
+            _createWall = createWall;
+            _mapGrhWalls = mapGrhWalls;
+
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
             AllowDrop = true;
@@ -101,8 +115,9 @@ namespace NetGore.EditorTools
             DragDrop += GrhTreeView_DragDrop;
             DragOver += GrhTreeView_DragOver;
             AfterLabelEdit += GrhTreeView_AfterLabelEdit;
+            GrhMouseDoubleClick += GrhTreeView_GrhMouseDoubleClick;
 
-            //Set up the context menu for the GrhTreeView
+            // Set up the context menu for the GrhTreeView
             _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
             _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
             _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
@@ -110,6 +125,12 @@ namespace NetGore.EditorTools
             ContextMenu = _contextMenu;
 
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        void GrhTreeView_GrhMouseDoubleClick(object sender, GrhTreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                BeginEditGrhData(e.Node);
         }
 
         /// <summary>
@@ -175,7 +196,7 @@ namespace NetGore.EditorTools
             node.ToolTipText = GetToolTipText(gd);
         }
 
-        void CheckForMissingTextures(ContentManager cm)
+        void CheckForMissingTextures()
         {
             // We must create the hash collection since its constructor has the updating goodies, and we want
             // to make sure that is called
@@ -189,7 +210,7 @@ namespace NetGore.EditorTools
             // Display a form showing which textures need to be fixed
             // The GrhTreeView will be disabled until the MissingTexturesForm is closed
             Enabled = false;
-            MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing, cm);
+            MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing, _contentManager);
             frm.FormClosed += delegate
                               {
                                   RebuildTree();
@@ -199,13 +220,43 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Adds a n to a tree n collection with support of recursively adding nodes
-        /// to pre-existing nodes under the same branch
+        /// Gets the category to use from the given <paramref name="node"/>.
         /// </summary>
-        /// <param name="name">Unique name of the n</param>
-        /// <param name="path">Complete path of the n from the root</param>
-        /// <param name="separator">Character used to separate the individual nodes of the tree list</param>
-        /// <returns>Node added to the tree</returns>
+        /// <param name="node">The <see cref="TreeNode"/> to get the category from.</param>
+        /// <returns>The category to use from the given <paramref name="node"/>.</returns>
+        public string GetCategoryFromTreeNode(TreeNode node)
+        {
+            string category = "Uncategorized";
+
+            // Check for a valid node
+            if (node != null)
+            {
+                // Try and get the GrhData
+                GrhData tmpGrhData = GetGrhData(node);
+
+                if (tmpGrhData != null)
+                {
+                    // GrhData found, so use the category from that
+                    category = tmpGrhData.Category;
+                }
+                else if (node.Name.Length == 0)
+                {
+                    // No GrhData found, so if the n has no name (is a folder), use its filePath
+                    category = node.FullPath.Replace(PathSeparator, ".");
+                }
+            }
+
+            return category;
+        }
+
+        /// <summary>
+        /// Adds a <see cref="TreeNode"/> to a <see cref="TreeNodeCollection"/> with support of recursively adding nodes
+        /// to pre-existing nodes under the same branch.
+        /// </summary>
+        /// <param name="name">Unique name of the <see cref="TreeNode"/>.</param>
+        /// <param name="path">Complete path of the <see cref="TreeNode"/> from the root</param>
+        /// <param name="separator">Character used to separate the individual <see cref="TreeNode"/>s.</param>
+        /// <returns>The <see cref="TreeNode"/> that was created.</returns>
         TreeNode CreateNode(string name, string path, char separator)
         {
             // Split up the category by the separator
@@ -377,26 +428,8 @@ namespace NetGore.EditorTools
         /// <returns><see cref="GrhData"/> for the <see cref="TreeNode"/>, null if none.</returns>
         public static GrhData GetGrhData(TreeNode node)
         {
-            // If a null n, or the n is not a leaf (which means its a folder), return null
-            if (node == null || !IsGrhNode(node))
-                return null;
-
-            // Get the index
-            GrhIndex grhIndex;
-            if (!Parser.Current.TryParse(node.Name, out grhIndex))
-            {
-                Debug.Fail("Failed to parse GrhIndex of the n.");
-                return null;
-            }
-
-            // Get the data
-            GrhData grhData = GrhInfo.GetData(grhIndex);
-            if (grhData == null || grhData.GrhIndex == 0)
-            {
-                Debug.Fail("Failed to find the GrhData associated with the n.");
-                return null;
-            }
-
+            GrhData grhData;
+            TryGetGrhData(node, out grhData);
             return grhData;
         }
 
@@ -663,18 +696,22 @@ namespace NetGore.EditorTools
             }
         }
 
+        ContentManager _contentManager;
+
         /// <summary>
-        /// Generates the tree information. Must be called after GrhInfo.Read().
+        /// Initializes the <see cref="GrhTreeView"/>.
         /// </summary>
         public void Initialize(ContentManager cm)
         {
-            // Check for missing textures
-            CheckForMissingTextures(cm);
+            _contentManager = cm;
 
-            // Iterate through all the grhs
-            foreach (GrhData grh in GrhInfo.GrhDatas)
+            // Check for missing textures
+            CheckForMissingTextures();
+
+            // Iterate through all the GrhDatas
+            foreach (GrhData grhData in GrhInfo.GrhDatas)
             {
-                AddGrhToTree(grh);
+                AddGrhToTree(grhData);
             }
 
             // Perform the initial sort
@@ -682,10 +719,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Checks if a n contains a Grh, or is a folder
+        /// Checks if a <see cref="TreeNode"/> contains a <see cref="GrhData"/>, or is a folder.
         /// </summary>
-        /// <param name="node">Node to check</param>
-        /// <returns>True if a Grh, false if a folder</returns>
+        /// <param name="node">The <see cref="TreeNode"/> to check.</param>
+        /// <returns>True if a Grh, false if a folder.</returns>
         static bool IsGrhNode(TreeNode node)
         {
             return (node.Name.Length > 0);
@@ -738,12 +775,121 @@ namespace NetGore.EditorTools
 
         void MenuClickEdit(object sender, EventArgs e)
         {
-            GrhContextMenuEditClick(sender, e);
+            TreeNode node = SelectedNode;
+
+            if (node == null)
+                return;
+
+            GrhData gd = GetGrhData(node);
+
+            if (gd != null && node.Nodes.Count == 0)
+            {
+                // The TreeNode is a GrhData
+                BeginEditGrhData(node);
+            }
+            else if (gd == null)
+            {
+                // The TreeNode is a folder
+                node.BeginEdit();
+            }
+        }
+
+        EditGrhForm _editGrhDataForm;
+
+        /// <summary>
+        /// Attempts to begin the editing of a <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="TreeNode"/> containing the <see cref="GrhData"/> to edit.</param>
+        /// <returns>True if the editing started successfully; otherwise false.</returns>
+        public bool BeginEditGrhData(TreeNode node)
+        {
+            return BeginEditGrhData(node, GetGrhData(node));
+        }
+
+        /// <summary>
+        /// Attempts to begin the editing of a <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="gd">The <see cref="GrhData"/> to edit.</param>
+        /// <returns>True if the editing started successfully; otherwise false.</returns>
+        public bool BeginEditGrhData(GrhData gd)
+        {
+            return BeginEditGrhData(GetTreeNode(gd), gd);
+        }
+
+        /// <summary>
+        /// Attempts to begin the editing of a <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="TreeNode"/> containing the <see cref="GrhData"/> to edit.</param>
+        /// <param name="gd">The <see cref="GrhData"/> to edit.</param>
+        /// <returns>True if the editing started successfully; otherwise false.</returns>
+        bool BeginEditGrhData(TreeNode node, GrhData gd)
+        {
+            if ((_editGrhDataForm != null && !_editGrhDataForm.IsDisposed) || node == null || gd == null)
+                return false;
+
+            _editGrhDataForm = new EditGrhForm(gd, _mapGrhWalls, _createWall , _gameScreenSize);
+            _editGrhDataForm.FormClosed += delegate
+            {
+                if (_editGrhDataForm == null)
+                    return;
+
+                node.Remove();
+                UpdateGrhData(gd);
+
+                _editGrhDataForm = null;
+            };
+
+            // NOTE: AddOwnedForm(_editGrhDataForm);
+            _editGrhDataForm.Show();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets if the form for editing a <see cref="GrhData"/> is currently visible.
+        /// </summary>
+        public bool IsEditingGrhData { get { return _editGrhDataForm != null; } }
+
+        /// <summary>
+        /// Gets if this <see cref="GrhTreeView"/> needs to draw.
+        /// </summary>
+        public bool NeedsToDraw { get { return _editGrhDataForm != null; } }
+
+        /// <summary>
+        /// Draws the <see cref="GrhTreeView"/>.
+        /// </summary>
+        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
+        public void Draw(SpriteBatch sb)
+        {
+            if (_editGrhDataForm != null)
+                _editGrhDataForm.Draw(sb);
+        }
+
+        public TreeNode GetTreeNode(GrhData grhData)
+        {
+            var nodes = Nodes.Find(grhData.GrhIndex.ToString(), true);
+            var node = nodes.FirstOrDefault();
+
+            if (node != null)
+            {
+                Debug.Assert(GetGrhData(node) == grhData, "Huh, this should have passed...");
+            }
+
+            return node;
         }
 
         void MenuClickNewGrh(object sender, EventArgs e)
         {
-            GrhContextMenuNewGrhClick(sender, e);
+            if (_contentManager == null)
+                return;
+
+            // Create the new GrhData
+            string category = GetCategoryFromTreeNode(SelectedNode);
+            GrhData gd = GrhInfo.CreateGrhData(_contentManager, category);
+            UpdateGrhData(gd);
+
+            // Begin edit
+            BeginEditGrhData(gd);
         }
 
         /// <summary>
