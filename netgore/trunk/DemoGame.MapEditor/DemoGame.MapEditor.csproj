@@ -55,12 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\BatchRenameTextureForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\BatchRenameTextureForm.Designer.cs">
-      <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Cursors\AddGrhCursor.cs" />
     <Compile Include="Cursors\AddWallCursor.cs" />
@@ -103,10 +97,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\BatchRenameTextureForm.resx">
-      <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditGrhForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EditGrhForm.cs</DependentUpon>

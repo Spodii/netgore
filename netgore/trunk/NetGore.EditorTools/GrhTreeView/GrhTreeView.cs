@@ -56,8 +56,6 @@ namespace NetGore.EditorTools
         /// </summary>
         public event GrhTreeViewCancelEvent GrhBeforeSelect;
 
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuBatchChangeTextureClick;
-
         /// <summary>
         /// Occurs when context menu item "Edit" is clicked.
         /// </summary>
@@ -116,7 +114,6 @@ namespace NetGore.EditorTools
             _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
             _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
             _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
-            _contextMenu.MenuItems.Add(new MenuItem("Batch Change Texture", MenuClickBatchChangeTexture));
             _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
             ContextMenu = _contextMenu;
 
@@ -719,11 +716,6 @@ namespace NetGore.EditorTools
             }
             else
                 MessageBox.Show("No new GrhDatas automatically added - everything is already up to date.");
-        }
-
-        void MenuClickBatchChangeTexture(object sender, EventArgs e)
-        {
-            GrhContextMenuBatchChangeTextureClick(sender, e);
         }
 
         void MenuClickDuplicate(object sender, EventArgs e)
