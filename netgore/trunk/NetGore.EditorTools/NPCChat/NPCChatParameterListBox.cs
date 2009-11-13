@@ -9,14 +9,12 @@ using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
 {
-    public delegate void NPCChatParameterListBoxChangeSelectedHandler(
-        NPCChatParameterListBox source, NPCChatConditionalParameter parameter);
-
     public class NPCChatParameterListBox : ListBox
     {
         EditorNPCChatConditionalCollectionItem _conCollectionItem;
         bool _doNotUpdateParameterValue;
         TextBox _valueTextBox;
+
         public event NPCChatParameterListBoxChangeSelectedHandler OnChangeSelectedParameter;
 
         [Browsable(false)]
@@ -165,17 +163,17 @@ namespace NetGore.EditorTools.NPCChat
         {
             readonly NPCChatConditionalParameter _parameter;
 
-            public NPCChatConditionalParameter Parameter
-            {
-                get { return _parameter; }
-            }
-
             public ParameterListItem(NPCChatConditionalParameter parameter)
             {
                 if (parameter == null)
                     throw new ArgumentNullException("parameter");
 
                 _parameter = parameter;
+            }
+
+            public NPCChatConditionalParameter Parameter
+            {
+                get { return _parameter; }
             }
 
             public override string ToString()
