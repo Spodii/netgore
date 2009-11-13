@@ -914,7 +914,6 @@ namespace DemoGame.MapEditor
 
             // Hook GrhTreeView context menu click events
             treeGrhs.GrhContextMenuEditClick += treeGrhs_mnuEdit;
-            treeGrhs.GrhContextMenuDuplicateClick += treeGrhs_mnuDuplicate;
             treeGrhs.GrhContextMenuBatchChangeTextureClick += treeGrhs_mnuBatchChangeTexture;
             treeGrhs.GrhContextMenuNewGrhClick += treeGrhs_mnuNewGrh;
 
@@ -1200,18 +1199,6 @@ namespace DemoGame.MapEditor
             Enabled = false;
             frm.FormClosed += delegate { Enabled = true; };
             frm.Show();
-        }
-
-        void treeGrhs_mnuDuplicate(object sender, EventArgs e)
-        {
-            TreeNode node = treeGrhs.SelectedNode;
-
-            // Confirm the duplicate request
-            string text = string.Format("Are you sure you wish to duplicate these {0} nodes?", GrhTreeView.NodeCount(node));
-            if (MessageBox.Show(text, "Duplicate nodes?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            treeGrhs.DuplicateNodes(node);
         }
 
         void treeGrhs_mnuEdit(object sender, EventArgs e)
