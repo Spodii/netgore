@@ -57,7 +57,6 @@ namespace NetGore.EditorTools
         public event GrhTreeViewCancelEvent GrhBeforeSelect;
 
         public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuBatchChangeTextureClick;
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuDuplicateClick;
 
         /// <summary>
         /// Occurs when context menu item "Edit" is clicked.
@@ -729,7 +728,28 @@ namespace NetGore.EditorTools
 
         void MenuClickDuplicate(object sender, EventArgs e)
         {
-            GrhContextMenuDuplicateClick(sender, e);
+            TreeNode node = SelectedNode;
+
+            if (node == null)
+                return;
+
+            // Confirm the duplicate request
+            int count = NodeCount(node);
+            string text;
+            if (count <= 0)
+            {
+                Debug.Fail(string.Format("Somehow, we have a count of `{0}` nodes...", count));
+                return;
+            }
+
+            if (count == 1)
+                text = "Are you sure you wish to duplicate this node?";
+            else
+                text = string.Format("Are you sure you wish to duplicate these {0} nodes?", NodeCount(node));
+            if (MessageBox.Show(text, "Duplicate nodes?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            DuplicateNodes(node);
         }
 
         void MenuClickEdit(object sender, EventArgs e)
