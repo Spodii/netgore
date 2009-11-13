@@ -23,49 +23,6 @@ namespace NetGore.Scripting
         bool _compilationFailed = false;
 
         /// <summary>
-        /// Gets if the compilation of one or more of the scripts has failed.
-        /// </summary>
-        public bool CompilationFailed
-        {
-            get { return _compilationFailed; }
-        }
-
-        /// <summary>
-        /// Gets the compiler errors and warnings generated from the compilation.
-        /// </summary>
-        public IEnumerable<CompilerError> CompilerErrors
-        {
-            get { return _compilerErrors; }
-        }
-
-        /// <summary>
-        /// Gets a Type by its name.
-        /// </summary>
-        /// <param name="typeName">Name of the Type.</param>
-        /// <returns>The Type with the specified name.</returns>
-        public Type this[string typeName]
-        {
-            get { return _types[typeName]; }
-        }
-
-        /// <summary>
-        /// Gets the name of this ScriptTypeCollection.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of all of the types in this ScriptCollection. This contains each Type defined in the
-        /// scripts loaded into this ScriptCollection.
-        /// </summary>
-        public IEnumerable<Type> Types
-        {
-            get { return _types.Values; }
-        }
-
-        /// <summary>
         /// ScriptTypeCollection constructor.
         /// </summary>
         /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
@@ -100,6 +57,49 @@ namespace NetGore.Scripting
 
             if (vbErrors != null)
                 _compilerErrors.AddRange(vbErrors.Cast<CompilerError>());
+        }
+
+        /// <summary>
+        /// Gets a Type by its name.
+        /// </summary>
+        /// <param name="typeName">Name of the Type.</param>
+        /// <returns>The Type with the specified name.</returns>
+        public Type this[string typeName]
+        {
+            get { return _types[typeName]; }
+        }
+
+        /// <summary>
+        /// Gets if the compilation of one or more of the scripts has failed.
+        /// </summary>
+        public bool CompilationFailed
+        {
+            get { return _compilationFailed; }
+        }
+
+        /// <summary>
+        /// Gets the compiler errors and warnings generated from the compilation.
+        /// </summary>
+        public IEnumerable<CompilerError> CompilerErrors
+        {
+            get { return _compilerErrors; }
+        }
+
+        /// <summary>
+        /// Gets the name of this ScriptTypeCollection.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all of the types in this ScriptCollection. This contains each Type defined in the
+        /// scripts loaded into this ScriptCollection.
+        /// </summary>
+        public IEnumerable<Type> Types
+        {
+            get { return _types.Values; }
         }
 
         /// <summary>
@@ -213,7 +213,6 @@ namespace NetGore.Scripting
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        
         public IEnumerator<Type> GetEnumerator()
         {
             return _types.Values.GetEnumerator();
@@ -225,7 +224,6 @@ namespace NetGore.Scripting
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

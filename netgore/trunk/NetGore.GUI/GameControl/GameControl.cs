@@ -22,6 +22,15 @@ namespace NetGore.Graphics.GUI
         public event GameControlEventHandler OnInvoke;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="keys">The GameControlKeys.</param>
+        public GameControl(GameControlKeys keys)
+        {
+            GameControlKeys = keys;
+        }
+
+        /// <summary>
         /// Gets or sets a Func containing any additional requirements for this <see cref="GameControl"/> to be invoked.
         /// If value must return true for <see cref="OnInvoke"/> to be raised. If this value is false,
         /// <see cref="OnInvoke"/> will not be raised and the internal delay counter wil not be altered. If this value
@@ -69,15 +78,6 @@ namespace NetGore.Graphics.GUI
         {
             get { return _isEnabled; }
             set { _isEnabled = value; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="keys">The GameControlKeys.</param>
-        public GameControl(GameControlKeys keys)
-        {
-            GameControlKeys = keys;
         }
 
         /// <summary>

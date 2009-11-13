@@ -16,13 +16,13 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatDialogItem : NPCChatDialogItemBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         NPCChatConditionalCollectionBase _conditionals;
         ushort _index;
         bool _isBranch;
-        readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         string _text;
         string _title;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners when any of the object's property values have changed.

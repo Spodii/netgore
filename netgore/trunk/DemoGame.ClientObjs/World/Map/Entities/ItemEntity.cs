@@ -38,6 +38,37 @@ namespace DemoGame.Client
             remove { }
         }
 
+        public ItemEntity()
+        {
+            _grh = new Grh(null);
+        }
+
+        public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
+        {
+            // NOTE: Can I get rid of this constructor?
+            _amount = amount;
+
+            _name = string.Empty;
+            _description = string.Empty;
+            _value = 0;
+
+            _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
+        }
+
+        public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, int currentTime)
+            : base(pos, size)
+        {
+            // NOTE: Can I get rid of this constructor?
+            MapEntityIndex = mapEntityIndex;
+
+            _amount = 0;
+            _name = string.Empty;
+            _description = string.Empty;
+            _value = 0;
+
+            _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
+        }
+
         /// <summary>
         /// Gets or sets the size of this item cluster (1 for a single item)
         /// </summary>
@@ -98,37 +129,6 @@ namespace DemoGame.Client
         {
             get { return _value; }
             set { _value = value; }
-        }
-
-        public ItemEntity()
-        {
-            _grh = new Grh(null);
-        }
-
-        public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
-        {
-            // NOTE: Can I get rid of this constructor?
-            _amount = amount;
-
-            _name = string.Empty;
-            _description = string.Empty;
-            _value = 0;
-
-            _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
-        }
-
-        public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, int currentTime)
-            : base(pos, size)
-        {
-            // NOTE: Can I get rid of this constructor?
-            MapEntityIndex = mapEntityIndex;
-
-            _amount = 0;
-            _name = string.Empty;
-            _description = string.Empty;
-            _value = 0;
-
-            _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
         /// <summary>

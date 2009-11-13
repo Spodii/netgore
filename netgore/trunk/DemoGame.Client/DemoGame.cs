@@ -18,8 +18,8 @@ namespace DemoGame.Client
     /// </summary>
     public class DemoGame : Game
     {
-        IEnumerable<TextureAtlas> _globalAtlases;
         readonly GraphicsDeviceManager graphics;
+        IEnumerable<TextureAtlas> _globalAtlases;
         ScreenManager screenManager;
 
         /// <summary>

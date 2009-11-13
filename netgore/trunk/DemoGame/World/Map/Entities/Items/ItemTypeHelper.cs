@@ -8,14 +8,6 @@ namespace DemoGame
         static readonly ItemTypeHelper _instance;
 
         /// <summary>
-        /// Gets the <see cref="ItemTypeHelper"/> instance.
-        /// </summary>
-        public static ItemTypeHelper Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="ItemTypeHelper"/> class.
         /// </summary>
         static ItemTypeHelper()
@@ -28,6 +20,14 @@ namespace DemoGame
         /// </summary>
         ItemTypeHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ItemTypeHelper"/> instance.
+        /// </summary>
+        public static ItemTypeHelper Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

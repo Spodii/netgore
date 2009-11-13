@@ -47,6 +47,11 @@ namespace NetGore.Graphics
         /// </summary>
         public static event GrhDataEventHandler OnRemove;
 
+        static GrhInfo()
+        {
+            _catDic = new Dictionary<string, Dictionary<string, GrhData>>(_comparer);
+        }
+
         /// <summary>
         /// Gets an IEnumerable of all of the GrhDatas.
         /// </summary>
@@ -59,11 +64,6 @@ namespace NetGore.Graphics
 
                 return _grhDatas;
             }
-        }
-
-        static GrhInfo()
-        {
-            _catDic = new Dictionary<string, Dictionary<string, GrhData>>(_comparer);
         }
 
         /// <summary>

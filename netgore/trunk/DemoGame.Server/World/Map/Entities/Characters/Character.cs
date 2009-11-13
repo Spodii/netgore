@@ -65,6 +65,13 @@ namespace DemoGame.Server
     /// </summary>
     public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// HACK: This is just a temporary const used until we have variable speeds.
+        /// </summary>
+        public const float CharacterMoveSpeed = 0.18f;
+
         /// <summary>
         /// Amount of time the character must wait between attacks
         /// </summary>
@@ -75,10 +82,24 @@ namespace DemoGame.Server
         /// </summary>
         const int _spRecoveryRate = 3000;
 
+        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
+        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
+
         /// <summary>
-        /// HACK: This is just a temporary const used until we have variable speeds.
+        /// Random number generator for Characters
         /// </summary>
-        public const float CharacterMoveSpeed = 0.18f;
+        static readonly Random _rand = new Random();
+
+        static readonly ShopManager _shopManager = ShopManager.Instance;
+        readonly CharacterStatsBase _baseStats;
+
+        readonly CharacterEquipped _equipped;
+        readonly CharacterInventory _inventory;
+        readonly bool _isPersistent;
+        readonly CharacterStatsBase _modStats;
+        readonly CharacterSPSynchronizer _spSync;
+        readonly CharacterStatusEffects _statusEffects;
+        readonly World _world;
 
         /// <summary>
         /// The account ID of this Character, or null if they don't have an account. Normally, a User should always have
@@ -91,16 +112,11 @@ namespace DemoGame.Server
         /// </summary>
         Alliance _alliance;
 
-        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
-        readonly CharacterStatsBase _baseStats;
-
         int _cash;
-        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
-        readonly CharacterEquipped _equipped;
+
         int _exp;
         SPValueType _hp;
         CharacterID _id;
-        readonly CharacterInventory _inventory;
 
         /// <summary>
         /// If the character is alive or not.
@@ -108,7 +124,6 @@ namespace DemoGame.Server
         bool _isAlive = false;
 
         bool _isLoaded = false;
-        readonly bool _isPersistent;
 
         /// <summary>
         /// Time at which the character last performed an attack.
@@ -122,8 +137,6 @@ namespace DemoGame.Server
         /// </summary>
         Map _map;
 
-        readonly CharacterStatsBase _modStats;
-
         SPValueType _mp;
 
         /// <summary>
@@ -134,31 +147,19 @@ namespace DemoGame.Server
         int _nextLevelExp;
 
         /// <summary>
-        /// Random number generator for Characters
-        /// </summary>
-        static readonly Random _rand = new Random();
-
-        /// <summary>
         /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
         /// called back-to-back without any values changing in-between.
         /// </summary>
         bool _saved = false;
-
-        static readonly ShopManager _shopManager = ShopManager.Instance;
 
         /// <summary>
         /// The time that the SP will next be recovered.
         /// </summary>
         int _spRecoverTime;
 
-        readonly CharacterSPSynchronizer _spSync;
-
         int _statPoints;
-        readonly CharacterStatusEffects _statusEffects;
 
         CharacterTemplateID? _templateID;
-        readonly World _world;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
@@ -827,6 +828,37 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles updating this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
+        {
+            Debug.Assert(imap == Map, "Character.Update()'s imap is, for whatever reason, not equal to the set Map.");
+
+            // Update shouldn't be called on disposed Characters since they shouldn't be referenced
+            // by the Map anymore
+            if (IsDisposed)
+            {
+                const string errmsg = "Update called on disposed Character `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, Name);
+                return;
+            }
+
+            // Set the Character as not saved
+            _saved = false;
+
+            UpdateModStats();
+            UpdateSPRecovery();
+            StatusEffects.Update();
+
+            base.HandleUpdate(imap, deltaTime);
+
+            _spSync.Synchronize();
+        }
+
+        /// <summary>
         /// Checks if the given string is a valid string for a character name.
         /// </summary>
         /// <param name="s">The string to test.</param>
@@ -1170,37 +1202,6 @@ namespace DemoGame.Server
         public override string ToString()
         {
             return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
-        }
-
-        /// <summary>
-        /// Handles updating this <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
-        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
-        {
-            Debug.Assert(imap == Map, "Character.Update()'s imap is, for whatever reason, not equal to the set Map.");
-
-            // Update shouldn't be called on disposed Characters since they shouldn't be referenced
-            // by the Map anymore
-            if (IsDisposed)
-            {
-                const string errmsg = "Update called on disposed Character `{0}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, Name);
-                return;
-            }
-
-            // Set the Character as not saved
-            _saved = false;
-
-            UpdateModStats();
-            UpdateSPRecovery();
-            StatusEffects.Update();
-
-            base.HandleUpdate(imap, deltaTime);
-
-            _spSync.Synchronize();
         }
 
         protected void UpdateModStats()

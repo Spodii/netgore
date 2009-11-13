@@ -8,6 +8,10 @@ namespace NetGore.Graphics.GUI
     {
         static FormSettings _default = null;
 
+        public FormSettings(Color foreColor, ControlBorder border) : base(foreColor, border)
+        {
+        }
+
         public static FormSettings Default
         {
             get
@@ -16,10 +20,6 @@ namespace NetGore.Graphics.GUI
                     new FormSettings(Color.Black, null);
                 return _default;
             }
-        }
-
-        public FormSettings(Color foreColor, ControlBorder border) : base(foreColor, border)
-        {
         }
     }
 }

@@ -17,6 +17,17 @@ namespace NetGore.Collections
         bool _isActivated = false;
 
         /// <summary>
+        /// PoolData constructor
+        /// </summary>
+        /// <param name="node">LinkedListNode for this item in the pool</param>
+        /// <param name="index">Index of the item in the pool</param>
+        internal PoolData(LinkedListNode<T> node, int index)
+        {
+            _poolIndex = index;
+            _poolNode = node;
+        }
+
+        /// <summary>
         /// Gets if the pool item is currently activated
         /// </summary>
         public bool IsActivated
@@ -46,17 +57,6 @@ namespace NetGore.Collections
         internal LinkedListNode<T> PoolNode
         {
             get { return _poolNode; }
-        }
-
-        /// <summary>
-        /// PoolData constructor
-        /// </summary>
-        /// <param name="node">LinkedListNode for this item in the pool</param>
-        /// <param name="index">Index of the item in the pool</param>
-        internal PoolData(LinkedListNode<T> node, int index)
-        {
-            _poolIndex = index;
-            _poolNode = node;
         }
 
         /// <summary>

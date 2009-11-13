@@ -41,6 +41,18 @@ namespace DemoGame.Client
         /// </summary>
         public event SocketEventHandler<string> OnLoginUnsuccessful;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
+        /// </summary>
+        /// <param name="socketSender">The socket sender.</param>
+        /// <param name="gameplayScreen">The gameplay screen.</param>
+        public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen)
+        {
+            _socketSender = socketSender;
+            _gameplayScreen = gameplayScreen;
+            _ppManager = new MessageProcessorManager(this, ServerPacketIDHelper.Instance.BitsRequired);
+        }
+
         public AccountCharacterInfos AccountCharacterInfos
         {
             get { return _accountCharacterInfos; }
@@ -63,6 +75,11 @@ namespace DemoGame.Client
             set { GameplayScreen.World.Map = value; }
         }
 
+        SoundManager SoundManager
+        {
+            get { return GameplayScreen.SoundManager; }
+        }
+
         /// <summary>
         /// Gets the user's character
         /// </summary>
@@ -82,18 +99,6 @@ namespace DemoGame.Client
         public World World
         {
             get { return GameplayScreen.World; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
-        /// </summary>
-        /// <param name="socketSender">The socket sender.</param>
-        /// <param name="gameplayScreen">The gameplay screen.</param>
-        public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen)
-        {
-            _socketSender = socketSender;
-            _gameplayScreen = gameplayScreen;
-            _ppManager = new MessageProcessorManager(this, ServerPacketIDHelper.Instance.BitsRequired);
         }
 
         static List<StyledText> CreateChatText(string name, string method, string message)
@@ -152,8 +157,6 @@ namespace DemoGame.Client
             SoundManager.TryPlay("punch");
             chr.Attack();
         }
-
-        SoundManager SoundManager { get { return GameplayScreen.SoundManager; } }
 
         [MessageHandler((byte)ServerPacketID.CharDamage)]
         void RecvCharDamage(IIPSocket conn, BitStream r)

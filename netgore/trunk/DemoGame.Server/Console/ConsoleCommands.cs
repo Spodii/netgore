@@ -19,6 +19,15 @@ namespace DemoGame.Server
         readonly ConsoleCommandParser _parser = new ConsoleCommandParser();
         readonly Server _server;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleCommands"/> class.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        public ConsoleCommands(Server server)
+        {
+            _server = server;
+        }
+
         public IDbController DbController
         {
             get { return Server.DbController; }
@@ -27,15 +36,6 @@ namespace DemoGame.Server
         public Server Server
         {
             get { return _server; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleCommands"/> class.
-        /// </summary>
-        /// <param name="server">The server.</param>
-        public ConsoleCommands(Server server)
-        {
-            _server = server;
         }
 
         [ConsoleCommand("AddUser")]
@@ -58,40 +58,6 @@ namespace DemoGame.Server
                 sb.Append(s);
                 sb.Append(delimiter);
             }
-            return sb.ToString();
-        }
-
-        [ConsoleCommand("Help")]
-        public string Help()
-        {
-            StringBuilder sb = new StringBuilder();
-            var cmdsSorted = _parser.GetCommands().OrderBy(x => x.Key);
-
-            sb.AppendLine("Server console commands:");
-
-            foreach (var cmd in cmdsSorted)
-            {
-                sb.Append(" * ");
-                sb.Append(cmd.Key);
-                sb.Append("(");
-
-                var first = cmd.Value.FirstOrDefault();
-                if (first != null)
-                    sb.Append(ConsoleCommandParser.GetParameterInfo(first));
-
-                sb.Append(")");
-
-                int count = cmd.Value.Count();
-                if (count > 1)
-                {
-                    sb.Append(" [+");
-                    sb.Append(count - 1);
-                    sb.Append(" overload(s)]");
-                }
-
-                sb.AppendLine();
-            }
-
             return sb.ToString();
         }
 
@@ -240,6 +206,40 @@ namespace DemoGame.Server
         static string GetCommandHeader(string header, params object[] args)
         {
             return _separator + _newLine + string.Format(header, args) + _newLine + _separator + _newLine;
+        }
+
+        [ConsoleCommand("Help")]
+        public string Help()
+        {
+            StringBuilder sb = new StringBuilder();
+            var cmdsSorted = _parser.GetCommands().OrderBy(x => x.Key);
+
+            sb.AppendLine("Server console commands:");
+
+            foreach (var cmd in cmdsSorted)
+            {
+                sb.Append(" * ");
+                sb.Append(cmd.Key);
+                sb.Append("(");
+
+                var first = cmd.Value.FirstOrDefault();
+                if (first != null)
+                    sb.Append(ConsoleCommandParser.GetParameterInfo(first));
+
+                sb.Append(")");
+
+                int count = cmd.Value.Count();
+                if (count > 1)
+                {
+                    sb.Append(" [+");
+                    sb.Append(count - 1);
+                    sb.Append(" overload(s)]");
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
 
         [ConsoleCommand("Quit")]

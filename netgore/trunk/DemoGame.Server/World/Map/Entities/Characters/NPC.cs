@@ -34,66 +34,6 @@ namespace DemoGame.Server
         Shop _shop;
 
         /// <summary>
-        /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
-        /// </summary>
-        public override IAI AI
-        {
-            get { return _ai; }
-        }
-
-        /// <summary>
-        /// Gets the NPC's chat dialog if they have one, or null if they don't.
-        /// </summary>
-        public override NPCChatDialogBase ChatDialog
-        {
-            get { return _chatDialog; }
-        }
-
-        /// <summary>
-        /// Gets the amount of cash that the NPC gives upon being killed.
-        /// </summary>
-        public ushort GiveCash
-        {
-            get { return _giveCash; }
-            protected set { _giveCash = value; }
-        }
-
-        /// <summary>
-        /// Gets the amount of experience that the NPC gives upon being killed.
-        /// </summary>
-        public ushort GiveExp
-        {
-            get { return _giveExp; }
-            protected set { _giveExp = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn.
-        /// </summary>
-        public ushort RespawnSecs
-        {
-            get { return _respawnSecs; }
-            protected set { _respawnSecs = value; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
-        /// </summary>
-        public override Shop Shop
-        {
-            get { return _shop; }
-        }
-
-        /// <summary>
-        /// Gets if this NPC will respawn after dieing.
-        /// </summary>
-        // ReSharper disable MemberCanBeMadeStatic.Global
-        public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
-        {
-            get { return RespawnMapIndex.HasValue; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NPC"/> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
@@ -152,6 +92,66 @@ namespace DemoGame.Server
             Teleport(position);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
             ChangeMap(map);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
+        /// </summary>
+        public override IAI AI
+        {
+            get { return _ai; }
+        }
+
+        /// <summary>
+        /// Gets the NPC's chat dialog if they have one, or null if they don't.
+        /// </summary>
+        public override NPCChatDialogBase ChatDialog
+        {
+            get { return _chatDialog; }
+        }
+
+        /// <summary>
+        /// Gets the amount of cash that the NPC gives upon being killed.
+        /// </summary>
+        public ushort GiveCash
+        {
+            get { return _giveCash; }
+            protected set { _giveCash = value; }
+        }
+
+        /// <summary>
+        /// Gets the amount of experience that the NPC gives upon being killed.
+        /// </summary>
+        public ushort GiveExp
+        {
+            get { return _giveExp; }
+            protected set { _giveExp = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn.
+        /// </summary>
+        public ushort RespawnSecs
+        {
+            get { return _respawnSecs; }
+            protected set { _respawnSecs = value; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
+        /// </summary>
+        public override Shop Shop
+        {
+            get { return _shop; }
+        }
+
+        /// <summary>
+        /// Gets if this NPC will respawn after dieing.
+        /// </summary>
+        // ReSharper disable MemberCanBeMadeStatic.Global
+        public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
+        {
+            get { return RespawnMapIndex.HasValue; }
         }
 
         /// <summary>
@@ -221,6 +221,26 @@ namespace DemoGame.Server
                     _shop = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles updating this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
+        {
+            // Check for spawning if dead
+            if (!IsAlive)
+                return;
+
+            // Update the AI
+            var ai = AI;
+            if (ai != null)
+                ai.Update();
+
+            // Perform the base update of the character
+            base.HandleUpdate(imap, deltaTime);
         }
 
         /// <summary>
@@ -403,26 +423,6 @@ namespace DemoGame.Server
             _ai = newAI;
 
             return true;
-        }
-
-        /// <summary>
-        /// Handles updating this <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
-        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
-        {
-            // Check for spawning if dead
-            if (!IsAlive)
-                return;
-
-            // Update the AI
-            var ai = AI;
-            if (ai != null)
-                ai.Update();
-
-            // Perform the base update of the character
-            base.HandleUpdate(imap, deltaTime);
         }
     }
 }

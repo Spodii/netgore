@@ -43,39 +43,6 @@ namespace NetGore.Graphics.GUI
         float _width;
 
         /// <summary>
-        /// Gets the <see cref="Color"/> to use to denote that the <see cref="StyledText"/> should use the
-        /// specified default color when drawing.
-        /// </summary>
-        public static Color ColorForDefault
-        {
-            get { return _colorForDefault; }
-        }
-
-        /// <summary>
-        /// Gets the preferred chars that are used to split lines of text apart at.
-        /// </summary>
-        public static IEnumerable<char> SplitChars
-        {
-            get { return _splitChars; }
-        }
-
-        /// <summary>
-        /// Gets the color of the text.
-        /// </summary>
-        public Color Color
-        {
-            get { return _color; }
-        }
-
-        /// <summary>
-        /// Gets the text.
-        /// </summary>
-        public string Text
-        {
-            get { return _text; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="StyledText"/> class.
         /// </summary>
         /// <param name="text">The text.</param>
@@ -103,6 +70,39 @@ namespace NetGore.Graphics.GUI
         {
             _text = text;
             _color = sourceStyle.Color;
+        }
+
+        /// <summary>
+        /// Gets the color of the text.
+        /// </summary>
+        public Color Color
+        {
+            get { return _color; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Color"/> to use to denote that the <see cref="StyledText"/> should use the
+        /// specified default color when drawing.
+        /// </summary>
+        public static Color ColorForDefault
+        {
+            get { return _colorForDefault; }
+        }
+
+        /// <summary>
+        /// Gets the preferred chars that are used to split lines of text apart at.
+        /// </summary>
+        public static IEnumerable<char> SplitChars
+        {
+            get { return _splitChars; }
+        }
+
+        /// <summary>
+        /// Gets the text.
+        /// </summary>
+        public string Text
+        {
+            get { return _text; }
         }
 
         /// <summary>
@@ -168,6 +168,29 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Finds the 0-based index of the first character that will fit into a single line when starting
+        /// from the end of the line and working backwards.
+        /// </summary>
+        /// <param name="text">The text to check.</param>
+        /// <param name="font">The SpriteFont used to measure the length.</param>
+        /// <param name="maxLineLength">The maximum allowed line length in pixels.</param>
+        /// <returns>The 0-based index of the first character that will fit into a single line.</returns>
+        public static int FindFirstFittingChar(string text, SpriteFont font, int maxLineLength)
+        {
+            StringBuilder sb = new StringBuilder(text);
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                float length = font.MeasureString(sb).X;
+                if (length <= maxLineLength)
+                    return text.Length - sb.Length;
+                sb.Remove(0, 1);
+            }
+
+            return 0;
+        }
+
+        /// <summary>
         /// Finds the index of a string to split it at.
         /// </summary>
         /// <param name="text">Text to split.</param>
@@ -209,29 +232,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Finds the 0-based index of the first character that will fit into a single line when starting
-        /// from the end of the line and working backwards.
-        /// </summary>
-        /// <param name="text">The text to check.</param>
-        /// <param name="font">The SpriteFont used to measure the length.</param>
-        /// <param name="maxLineLength">The maximum allowed line length in pixels.</param>
-        /// <returns>The 0-based index of the first character that will fit into a single line.</returns>
-        public static int FindFirstFittingChar(string text, SpriteFont font, int maxLineLength)
-        {
-            StringBuilder sb = new StringBuilder(text);
-
-            for (int i = 0; i < text.Length; i++)
-            {
-                float length = font.MeasureString(sb).X;
-                if (length <= maxLineLength)
-                    return text.Length - sb.Length;
-                sb.Remove(0, 1);
-            }
-
-            return 0;
-        }
-
-        /// <summary>
         /// Gets the width of this StyledText for the given <paramref name="font"/>.
         /// </summary>
         /// <param name="font">The SpriteFont to use to measure.</param>
@@ -259,37 +259,6 @@ namespace NetGore.Graphics.GUI
         public bool HasSameStyle(StyledText other)
         {
             return Color == other.Color;
-        }
-
-        /// <summary>
-        /// Splits the StyledText at the given index into two parts. The character at the given
-        /// <paramref name="charIndex"/> will end up in the <paramref name="right"/> side.
-        /// </summary>
-        /// <param name="charIndex">The 0-based character index to split at.</param>
-        /// <param name="left">The left side of the split.</param>
-        /// <param name="right">The right side of the split.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="charIndex"/> is less than 0 or greater
-        /// than the length of the <see cref="Text"/>.</exception>
-        public void SplitAt(int charIndex, out StyledText left, out StyledText right)
-        {
-            if (charIndex < 0 || charIndex > Text.Length)
-                throw new ArgumentOutOfRangeException("charIndex");
-
-            if (charIndex == 0)
-            {
-                left = new StyledText(string.Empty, this);
-                right = this;
-            }
-            else if (charIndex == Text.Length)
-            {
-                left = this;
-                right = new StyledText(string.Empty, this);
-            }
-            else
-            {
-                left = Substring(0, charIndex);
-                right = Substring(charIndex);
-            }
         }
 
         /// <summary>
@@ -446,6 +415,37 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Splits the StyledText at the given index into two parts. The character at the given
+        /// <paramref name="charIndex"/> will end up in the <paramref name="right"/> side.
+        /// </summary>
+        /// <param name="charIndex">The 0-based character index to split at.</param>
+        /// <param name="left">The left side of the split.</param>
+        /// <param name="right">The right side of the split.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="charIndex"/> is less than 0 or greater
+        /// than the length of the <see cref="Text"/>.</exception>
+        public void SplitAt(int charIndex, out StyledText left, out StyledText right)
+        {
+            if (charIndex < 0 || charIndex > Text.Length)
+                throw new ArgumentOutOfRangeException("charIndex");
+
+            if (charIndex == 0)
+            {
+                left = new StyledText(string.Empty, this);
+                right = this;
+            }
+            else if (charIndex == Text.Length)
+            {
+                left = this;
+                right = new StyledText(string.Empty, this);
+            }
+            else
+            {
+                left = Substring(0, charIndex);
+                right = Substring(charIndex);
+            }
+        }
+
+        /// <summary>
         /// Retrieves a substring from this instance. The substring starts at a specified character position.
         /// </summary>
         /// <param name="startIndex">The zero-based starting character position of a substring in this instance.</param>
@@ -522,7 +522,8 @@ namespace NetGore.Graphics.GUI
 
                         if (splitAt + 1 == current.Text.Length)
                         {
-                            const string errmsg = "Splitting string `{0}` at index `{1}` results in the right side of the split" +
+                            const string errmsg =
+                                "Splitting string `{0}` at index `{1}` results in the right side of the split" +
                                 " being an empty string. This will lead to an infinite recusion of split attempts...";
                             log.FatalFormat(errmsg, s, splitAt);
                             Debug.Fail(string.Format(errmsg, s, splitAt));
@@ -556,7 +557,8 @@ namespace NetGore.Graphics.GUI
                 }
             }
 
-            Debug.Assert(ret.All(x => font.MeasureString(ToString(x)).X <= maxLineLength), "One or more lines were greater than the max length.");
+            Debug.Assert(ret.All(x => font.MeasureString(ToString(x)).X <= maxLineLength),
+                         "One or more lines were greater than the max length.");
 
             return ret;
         }
@@ -640,6 +642,16 @@ namespace NetGore.Graphics.GUI
             return new StyledText(newText, Color);
         }
 
+        public static string ToString(IEnumerable<StyledText> texts)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var text in texts)
+            {
+                sb.Append(text);
+            }
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
@@ -649,14 +661,6 @@ namespace NetGore.Graphics.GUI
         public override string ToString()
         {
             return _text;
-        }
-
-        public static string ToString(IEnumerable<StyledText> texts)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var text in texts)
-                sb.Append(text);
-            return sb.ToString();
         }
 
         /// <summary>

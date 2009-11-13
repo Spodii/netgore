@@ -16,83 +16,6 @@ namespace NetGore.Tests
     [TestFixture]
     public class DynamicEntityTests
     {
-        class DE : DynamicEntity
-        {
-            [SyncValue]
-            public bool A { get; set; }
-
-            [SyncValue]
-            public byte B { get; set; }
-
-            [SyncValue]
-            public sbyte C { get; set; }
-
-            [SyncValue]
-            public short D { get; set; }
-
-            [SyncValue]
-            public ushort E { get; set; }
-
-            [SyncValue]
-            public int F { get; set; }
-
-            [SyncValue]
-            public uint G { get; set; }
-
-            [SyncValue]
-            public float H { get; set; }
-
-            [SyncValue]
-            public long I { get; set; }
-
-            [SyncValue]
-            public ulong J { get; set; }
-
-            [SyncValue]
-            public double K { get; set; }
-
-            [SyncValue]
-            public Vector2 L { get; set; }
-
-            [SyncValue]
-            public GrhIndex M { get; set; }
-
-            [SyncValue]
-            public string N { get; set; }
-
-            [SyncValue]
-            public Color O { get; set; }
-
-            [SyncValue]
-            public Alignment P { get; set; }
-
-            public int SkipA { get; set; }
-            public byte SkipB { get; set; }
-
-            [SyncValue(SkipNetworkSync = true)]
-            public short SkipC { get; set; }
-
-            public DE()
-            {
-                A = true;
-                B = 5;
-                C = 9;
-                D = 10;
-                E = 1001;
-                F = 24;
-                G = 109312213;
-                H = 10213.989f;
-                I = 1209812;
-                J = 1098123091;
-                K = 12312.10329812;
-                L = new Vector2(120312, 12039);
-                M = new GrhIndex(101);
-                N = "afoiwurekj sadfoiwerkjl asdfa1309813";
-                O = new Color(13, 124, 11, 12);
-                P = Alignment.Center;
-            }
-        }
-
         [Test]
         public void TestSkipNonSyncNetworkValues()
         {
@@ -608,6 +531,83 @@ namespace NetGore.Tests
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+        }
+
+        class DE : DynamicEntity
+        {
+            public DE()
+            {
+                A = true;
+                B = 5;
+                C = 9;
+                D = 10;
+                E = 1001;
+                F = 24;
+                G = 109312213;
+                H = 10213.989f;
+                I = 1209812;
+                J = 1098123091;
+                K = 12312.10329812;
+                L = new Vector2(120312, 12039);
+                M = new GrhIndex(101);
+                N = "afoiwurekj sadfoiwerkjl asdfa1309813";
+                O = new Color(13, 124, 11, 12);
+                P = Alignment.Center;
+            }
+
+            [SyncValue]
+            public bool A { get; set; }
+
+            [SyncValue]
+            public byte B { get; set; }
+
+            [SyncValue]
+            public sbyte C { get; set; }
+
+            [SyncValue]
+            public short D { get; set; }
+
+            [SyncValue]
+            public ushort E { get; set; }
+
+            [SyncValue]
+            public int F { get; set; }
+
+            [SyncValue]
+            public uint G { get; set; }
+
+            [SyncValue]
+            public float H { get; set; }
+
+            [SyncValue]
+            public long I { get; set; }
+
+            [SyncValue]
+            public ulong J { get; set; }
+
+            [SyncValue]
+            public double K { get; set; }
+
+            [SyncValue]
+            public Vector2 L { get; set; }
+
+            [SyncValue]
+            public GrhIndex M { get; set; }
+
+            [SyncValue]
+            public string N { get; set; }
+
+            [SyncValue]
+            public Color O { get; set; }
+
+            [SyncValue]
+            public Alignment P { get; set; }
+
+            public int SkipA { get; set; }
+            public byte SkipB { get; set; }
+
+            [SyncValue(SkipNetworkSync = true)]
+            public short SkipC { get; set; }
         }
     }
 }

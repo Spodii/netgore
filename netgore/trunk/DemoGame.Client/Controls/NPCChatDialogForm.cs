@@ -18,8 +18,8 @@ namespace DemoGame.Client
 
     class NPCChatDialogForm : Form, IRestorableSettings
     {
-        const int _numDisplayedResponses = 4;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const int _numDisplayedResponses = 4;
 
         readonly TextBox _dialogTextControl;
         readonly ResponseText[] _responseTextControls = new ResponseText[_numDisplayedResponses];
@@ -39,14 +39,6 @@ namespace DemoGame.Client
         /// Notifies listeners when a dialog response was chosen.
         /// </summary>
         public event ChatDialogSelectResponseHandler OnSelectResponse;
-
-        /// <summary>
-        /// Gets if a dialog is currently open.
-        /// </summary>
-        public bool IsChatting
-        {
-            get { return _dialog != null; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogForm"/> class.
@@ -77,6 +69,14 @@ namespace DemoGame.Client
                 r.OnClick += ResponseText_OnClick;
                 _responseTextControls[i] = r;
             }
+        }
+
+        /// <summary>
+        /// Gets if a dialog is currently open.
+        /// </summary>
+        public bool IsChatting
+        {
+            get { return _dialog != null; }
         }
 
         public void EndDialog()
@@ -189,13 +189,13 @@ namespace DemoGame.Client
         {
             NPCChatResponseBase _response;
 
+            public ResponseText(Vector2 position, Control parent) : base(string.Empty, position, parent)
+            {
+            }
+
             public NPCChatResponseBase Response
             {
                 get { return _response; }
-            }
-
-            public ResponseText(Vector2 position, Control parent) : base(string.Empty, position, parent)
-            {
             }
 
             public void SetResponse(NPCChatResponseBase response, int index)

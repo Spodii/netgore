@@ -7,7 +7,6 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
 
@@ -31,10 +30,10 @@ namespace DemoGame.Client
     /// </summary>
     public class Map : MapBase, IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
         const string _usedIndiciesNodeName = "UsedIndicies";
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// List of BackgroundImages on this map.
@@ -95,6 +94,34 @@ namespace DemoGame.Client
         /// </summary>
         public event MapDrawEventHandler OnStartDrawLayer;
 
+        static Map()
+        {
+            DrawBackground = true;
+            DrawCharacters = true;
+            DrawItems = true;
+            DrawMapGrhs = true;
+        }
+
+        /// <summary>
+        /// Map constructor.
+        /// </summary>
+        /// <param name="mapIndex">Index of the map.</param>
+        /// <param name="parent">World the map belongs to.</param>
+        /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
+        public Map(MapIndex mapIndex, World parent, GraphicsDevice graphics) : base(mapIndex, parent)
+        {
+            _graphics = graphics;
+            _world = parent;
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the BackgroundImages on the Map.
+        /// </summary>
+        public IEnumerable<BackgroundImage> BackgroundImages
+        {
+            get { return _backgroundImages; }
+        }
+
         /// <summary>
         /// Gets or sets if the background items are drawn.
         /// </summary>
@@ -116,14 +143,6 @@ namespace DemoGame.Client
         public static bool DrawMapGrhs { get; set; }
 
         /// <summary>
-        /// Gets an IEnumerable of all the BackgroundImages on the Map.
-        /// </summary>
-        public IEnumerable<BackgroundImage> BackgroundImages
-        {
-            get { return _backgroundImages; }
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of all the MapGrhs on the Map.
         /// </summary>
         public IEnumerable<MapGrh> MapGrhs
@@ -137,26 +156,6 @@ namespace DemoGame.Client
         public World World
         {
             get { return _world; }
-        }
-
-        static Map()
-        {
-            DrawBackground = true;
-            DrawCharacters = true;
-            DrawItems = true;
-            DrawMapGrhs = true;
-        }
-
-        /// <summary>
-        /// Map constructor.
-        /// </summary>
-        /// <param name="mapIndex">Index of the map.</param>
-        /// <param name="parent">World the map belongs to.</param>
-        /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
-        public Map(MapIndex mapIndex, World parent, GraphicsDevice graphics) : base(mapIndex, parent)
-        {
-            _graphics = graphics;
-            _world = parent;
         }
 
         public void AddBackgroundImage(BackgroundImage bgImage)

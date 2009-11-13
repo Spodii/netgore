@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
@@ -10,26 +9,6 @@ namespace DemoGame.Client
     class GameplayScreenControls : GameControlCollection
     {
         readonly GameplayScreen _gameplayScreen;
-
-        public GameplayScreen GameplayScreen
-        {
-            get { return _gameplayScreen; }
-        }
-
-        Map Map
-        {
-            get { return GameplayScreen.Map; }
-        }
-
-        ClientSockets Socket
-        {
-            get { return GameplayScreen.Socket; }
-        }
-
-        Character UserChar
-        {
-            get { return GameplayScreen.UserChar; }
-        }
 
         public GameplayScreenControls(GameplayScreen gameplayScreen)
         {
@@ -64,6 +43,26 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.TalkToNPC, minNPCChatRate, CanUserMove, HandleGameControl_TalkToNPC);
 
             CreateAndAdd(GameControlsKeys.PickUp, minPickupRate, CanUserMove, HandleGameControl_PickUp);
+        }
+
+        public GameplayScreen GameplayScreen
+        {
+            get { return _gameplayScreen; }
+        }
+
+        Map Map
+        {
+            get { return GameplayScreen.Map; }
+        }
+
+        ClientSockets Socket
+        {
+            get { return GameplayScreen.Socket; }
+        }
+
+        Character UserChar
+        {
+            get { return GameplayScreen.UserChar; }
         }
 
         /// <summary>

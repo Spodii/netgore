@@ -95,24 +95,24 @@ namespace DemoGame.Client
 
         class SkillLabel : Label
         {
-            public SkillInfo SkillInfo { get; private set; }
-
             public SkillLabel(Control parent, SkillInfo skillInfo, Vector2 position) : base(skillInfo.Name, position, parent)
             {
                 SkillInfo = skillInfo;
             }
+
+            public SkillInfo SkillInfo { get; private set; }
         }
 
         class SkillPictureBox : PictureBox
         {
-            public SkillInfo SkillInfo { get; private set; }
-
             public SkillPictureBox(Control parent, SkillInfo skillInfo, Vector2 position)
                 : base(new Grh(GrhInfo.GetData(skillInfo.Icon)), position, parent)
             {
                 SkillInfo = skillInfo;
                 Size = _iconSize;
             }
+
+            public SkillInfo SkillInfo { get; private set; }
         }
     }
 }

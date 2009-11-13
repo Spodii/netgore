@@ -12,14 +12,6 @@ namespace DemoGame.Server
         static readonly AIFactory _instance;
 
         /// <summary>
-        /// Gets the <see cref="AIFactory"/> instance.
-        /// </summary>
-        public static AIFactory Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="AIFactory"/> class.
         /// </summary>
         static AIFactory()
@@ -32,6 +24,14 @@ namespace DemoGame.Server
         /// </summary>
         AIFactory() : base(typeof(AIBase))
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="AIFactory"/> instance.
+        /// </summary>
+        public static AIFactory Instance
+        {
+            get { return _instance; }
         }
     }
 }

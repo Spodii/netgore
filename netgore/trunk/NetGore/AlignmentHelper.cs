@@ -13,14 +13,6 @@ namespace NetGore
         static readonly AlignmentHelper _instance;
 
         /// <summary>
-        /// Gets the <see cref="AlignmentHelper"/> instance.
-        /// </summary>
-        public static AlignmentHelper Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="AlignmentHelper"/> class.
         /// </summary>
         static AlignmentHelper()
@@ -33,6 +25,14 @@ namespace NetGore
         /// </summary>
         AlignmentHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="AlignmentHelper"/> instance.
+        /// </summary>
+        public static AlignmentHelper Instance
+        {
+            get { return _instance; }
         }
 
         public static Vector2 FindOffset(Alignment alignment, Vector2 itemSize, Vector2 targetSize)

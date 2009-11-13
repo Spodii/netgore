@@ -25,11 +25,6 @@ namespace DemoGame.Client.Controls
         ShopInfo _shopInfo;
         public event ShopFormPurchaseHandler OnPurchase;
 
-        public ShopInfo ShopInfo
-        {
-            get { return _shopInfo; }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopForm"/> class.
         /// </summary>
@@ -46,6 +41,11 @@ namespace DemoGame.Client.Controls
             Size = itemsSize + paddingSize + borderSize;
 
             CreateItemSlots();
+        }
+
+        public ShopInfo ShopInfo
+        {
+            get { return _shopInfo; }
         }
 
         void CreateItemSlots()
@@ -108,11 +108,26 @@ namespace DemoGame.Client.Controls
 
         class ShopItemPB : PictureBox
         {
-            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
             static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
             readonly ShopItemIndex _index;
             readonly ShopForm _shopForm;
             Grh _grh;
+
+            public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
+                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException("parent");
+
+                _shopForm = parent;
+                _index = index;
+                Tooltip = _tooltipHandler;
+                OnMouseUp += _shopForm.ShopItemPB_OnMouseUp;
+
+                Skin.OnChange += Skin_OnChange;
+                LoadSprite();
+            }
 
             public ShopItemIndex Index
             {
@@ -134,21 +149,6 @@ namespace DemoGame.Client.Controls
             ShopInfo ShopInfo
             {
                 get { return _shopForm.ShopInfo; }
-            }
-
-            public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
-                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
-            {
-                if (parent == null)
-                    throw new ArgumentNullException("parent");
-
-                _shopForm = parent;
-                _index = index;
-                Tooltip = _tooltipHandler;
-                OnMouseUp += _shopForm.ShopItemPB_OnMouseUp;
-
-                Skin.OnChange += Skin_OnChange;
-                LoadSprite();
             }
 
             protected override void DrawControl(SpriteBatch spriteBatch)

@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using DemoGame;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -15,6 +13,23 @@ namespace DemoGame
         /// Maximum number of items allowed in a single item stack.
         /// </summary>
         public const byte MaxStackSize = 99;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
+        /// </summary>
+        /// <param name="pos">Position to place the item.</param>
+        /// <param name="size">Size of the item's CollisionBox.</param>
+        protected ItemEntityBase(Vector2 pos, Vector2 size)
+        {
+            CB = new CollisionBox(pos, size.X, size.Y);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
+        /// </summary>
+        protected ItemEntityBase()
+        {
+        }
 
         /// <summary>
         /// Gets or sets the size of this item cluster (1 for a single item).
@@ -51,23 +66,6 @@ namespace DemoGame
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
         public abstract int Value { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
-        /// </summary>
-        /// <param name="pos">Position to place the item.</param>
-        /// <param name="size">Size of the item's CollisionBox.</param>
-        protected ItemEntityBase(Vector2 pos, Vector2 size)
-        {
-            CB = new CollisionBox(pos, size.X, size.Y);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
-        /// </summary>
-        protected ItemEntityBase()
-        {
-        }
 
         /// <summary>
         /// Checks if this item can be stacked with another item. To stack, both items must contain the same
@@ -139,6 +137,8 @@ namespace DemoGame
 
         #endregion
 
+        #region IUpdateableEntity Members
+
         /// <summary>
         /// Updates the <see cref="IUpdateableEntity"/>.
         /// </summary>
@@ -148,5 +148,7 @@ namespace DemoGame
         {
             HandleUpdate(imap, deltaTime);
         }
+
+        #endregion
     }
 }

@@ -8,14 +8,6 @@ namespace DemoGame
         static readonly StatusEffectTypeHelper _instance;
 
         /// <summary>
-        /// Gets the <see cref="StatusEffectTypeHelper"/> instance.
-        /// </summary>
-        public static StatusEffectTypeHelper Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="StatusEffectTypeHelper"/> class.
         /// </summary>
         static StatusEffectTypeHelper()
@@ -28,6 +20,14 @@ namespace DemoGame
         /// </summary>
         StatusEffectTypeHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="StatusEffectTypeHelper"/> instance.
+        /// </summary>
+        public static StatusEffectTypeHelper Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

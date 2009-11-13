@@ -16,6 +16,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class TextureAtlas : IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The number of pixels to pad around each item inserted into the atlas.
         /// </summary>
@@ -33,8 +35,6 @@ namespace NetGore.Graphics
         /// </summary>
         static readonly Color _backColor = new Color(255, 0, 255, 255);
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Contains a cache of the maximum allowed texture size. If this value is equal to int.MinValue, it has yet
         /// to be found.
@@ -46,44 +46,6 @@ namespace NetGore.Graphics
         readonly GraphicsDevice _device;
 
         bool _isDisposed = false;
-
-        /// <summary>
-        /// Gets the cache of the maximum allowed texture size. If this value is equal to int.MinValue, it has yet
-        /// to be found.
-        /// </summary>
-        static int MaxTextureSize
-        {
-            get
-            {
-                Debug.Assert(_maxTextureSize != int.MinValue, "MaxTextureSize was requested before it was calculated!");
-                return _maxTextureSize;
-            }
-        }
-
-        /// <summary>
-        /// Gets the items that this atlas is built out of.
-        /// </summary>
-        public IEnumerable<ITextureAtlasable> AtlasItems
-        {
-            get { return _atlasTextureInfos.SelectMany(x => x.Nodes).Select(x => x.ITextureAtlasable); }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used by this
-        /// <see cref="TextureAtlas"/>.
-        /// </summary>
-        public GraphicsDevice GraphicsDevice
-        {
-            get { return _device; }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="TextureAtlas"/> has been disposed.
-        /// </summary>
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureAtlas"/> class.
@@ -122,6 +84,44 @@ namespace NetGore.Graphics
             foreach (var atlasTextureInfo in _atlasTextureInfos)
             {
                 atlasTextureInfo.BuildTexture(_device, Padding);
+            }
+        }
+
+        /// <summary>
+        /// Gets the items that this atlas is built out of.
+        /// </summary>
+        public IEnumerable<ITextureAtlasable> AtlasItems
+        {
+            get { return _atlasTextureInfos.SelectMany(x => x.Nodes).Select(x => x.ITextureAtlasable); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used by this
+        /// <see cref="TextureAtlas"/>.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return _device; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="TextureAtlas"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets the cache of the maximum allowed texture size. If this value is equal to int.MinValue, it has yet
+        /// to be found.
+        /// </summary>
+        static int MaxTextureSize
+        {
+            get
+            {
+                Debug.Assert(_maxTextureSize != int.MinValue, "MaxTextureSize was requested before it was calculated!");
+                return _maxTextureSize;
             }
         }
 
@@ -408,14 +408,6 @@ namespace NetGore.Graphics
             Texture2D _atlasTexture;
 
             /// <summary>
-            /// Gets the <see cref="AtlasTextureItem"/>s that are in this atlas texture.
-            /// </summary>
-            public IEnumerable<AtlasTextureItem> Nodes
-            {
-                get { return _nodes; }
-            }
-
-            /// <summary>
             /// Initializes a new instance of the <see cref="AtlasTextureInfo"/> class.
             /// </summary>
             /// <param name="width">The width.</param>
@@ -428,6 +420,14 @@ namespace NetGore.Graphics
 
                 // Since we won't be altering the collection, use the smallest footprint possible
                 _nodes = nodes.Where(x => x.ITextureAtlasable != null).ToCompact();
+            }
+
+            /// <summary>
+            /// Gets the <see cref="AtlasTextureItem"/>s that are in this atlas texture.
+            /// </summary>
+            public IEnumerable<AtlasTextureItem> Nodes
+            {
+                get { return _nodes; }
             }
 
             /// <summary>

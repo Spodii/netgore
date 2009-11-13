@@ -13,11 +13,6 @@ namespace DemoGame
         /// </summary>
         readonly BodyInfo[] _bodyInfo;
 
-        public static BodyInfoManager Instance
-        {
-            get { return _instance; }
-        }
-
         /// <summary>
         /// Initializes the <see cref="BodyInfoManager"/> class.
         /// </summary>
@@ -33,6 +28,11 @@ namespace DemoGame
         {
             PathString path = ContentPaths.Build.Data.Join("bodies.xml");
             _bodyInfo = BodyInfo.Load(path);
+        }
+
+        public static BodyInfoManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

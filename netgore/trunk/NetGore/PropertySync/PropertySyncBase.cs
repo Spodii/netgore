@@ -22,6 +22,15 @@ namespace NetGore
         SetHandler _setter;
 
         /// <summary>
+        /// PropertySyncBase constructor.
+        /// </summary>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
+        /// <param name="p">PropertyInfo for the property to bind to.</param>
+        protected PropertySyncBase(object bindObject, PropertyInfo p) : base(bindObject, p)
+        {
+        }
+
+        /// <summary>
         /// Gets the Type that this PropertySync handles.
         /// </summary>
         public Type HandledType
@@ -37,15 +46,6 @@ namespace NetGore
         {
             get { return _getter(); }
             private set { _setter(value); }
-        }
-
-        /// <summary>
-        /// PropertySyncBase constructor.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        protected PropertySyncBase(object bindObject, PropertyInfo p) : base(bindObject, p)
-        {
         }
 
         /// <summary>
@@ -153,6 +153,8 @@ namespace NetGore
     /// </summary>
     public abstract class PropertySyncBase : IComparable<PropertySyncBase>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Dictionary cache for PropertySyncHandlers where the key is the Type to be handled and the value is
         /// the Type of the PropertySyncHandler itself.
@@ -164,19 +166,6 @@ namespace NetGore
         /// and the value is a sorted list of the PropertyInfoDatas for that Type.
         /// </summary>
         static readonly Dictionary<Type, PropertyInfoData[]> _syncValueProperties = new Dictionary<Type, PropertyInfoData[]>();
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Gets the name of the synchronized value. This is what populates the Name parameter of the IValueReader
-        /// and IValueWriter functions.
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets if this Property should be skipped when synchronizing over the network.
-        /// </summary>
-        public bool SkipNetworkSync { get; private set; }
 
         /// <summary>
         /// PropertySyncBase static constructor.
@@ -235,6 +224,17 @@ namespace NetGore
             StoreDelegates(getter, setter);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
+
+        /// <summary>
+        /// Gets the name of the synchronized value. This is what populates the Name parameter of the IValueReader
+        /// and IValueWriter functions.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets if this Property should be skipped when synchronizing over the network.
+        /// </summary>
+        public bool SkipNetworkSync { get; private set; }
 
         /// <summary>
         /// Creates an array of PropertyInfoDatas for the given Type.

@@ -13,8 +13,8 @@ namespace NetGore
     /// </summary>
     public static class TypeHelper
     {
-        const bool _gacDefault = false;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const bool _gacDefault = false;
 
         /// <summary>
         /// Gets all Types from every Assembly.

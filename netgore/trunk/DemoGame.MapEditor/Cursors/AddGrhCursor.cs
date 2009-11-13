@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Graphics;

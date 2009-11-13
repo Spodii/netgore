@@ -25,15 +25,6 @@ namespace NetGore.Graphics
         /// </summary>
         SkeletonNode _rootNode = null;
 
-        /// <summary>
-        /// Gets or sets the root n of the skeleton
-        /// </summary>
-        public SkeletonNode RootNode
-        {
-            get { return _rootNode; }
-            set { _rootNode = value; }
-        }
-
         public Skeleton()
         {
         }
@@ -48,6 +39,15 @@ namespace NetGore.Graphics
         public Skeleton(IValueReader reader)
         {
             Read(reader);
+        }
+
+        /// <summary>
+        /// Gets or sets the root n of the skeleton
+        /// </summary>
+        public SkeletonNode RootNode
+        {
+            get { return _rootNode; }
+            set { _rootNode = value; }
         }
 
         /// <summary>

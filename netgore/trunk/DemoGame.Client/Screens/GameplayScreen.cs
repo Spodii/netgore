@@ -22,11 +22,10 @@ namespace DemoGame.Client
     /// </summary>
     class GameplayScreen : GameScreen, IDisposable, IGetTime
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "game";
 
         const string _latencyString = "Latency: {0} ms";
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
@@ -54,6 +53,14 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
+        /// </summary>
+        public GameplayScreen() : base(ScreenName)
+        {
+            _gameControls = new GameplayScreenControls(this);
+        }
 
         public NPCChatDialogForm ChatDialogForm
         {
@@ -136,14 +143,6 @@ namespace DemoGame.Client
         public World World
         {
             get { return _world; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
-        /// </summary>
-        public GameplayScreen() : base(ScreenName)
-        {
-            _gameControls = new GameplayScreenControls(this);
         }
 
         void _inventoryForm_OnRequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
@@ -304,31 +303,6 @@ namespace DemoGame.Client
 
             // Other inits
             InitializeGUI();
-        }
-
-        void World_OnChangeMap(World world, Map map)
-        {
-            // Stop all sounds
-            SoundManager.Stop();
-
-            // Set the new music
-            if (string.IsNullOrEmpty(map.Music))
-            {
-                PlayMusic = false;
-                return;
-            }
-            else if (!MusicManager.TryPlay(map.Music))
-            {
-                IMusic musicTrack = MusicManager.GetItem(map.Music);
-                if (musicTrack == null)
-                {
-                    const string errmsg = "Failed to play map music track: `{0}`";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, map.Music);
-                    Debug.Fail(string.Format(errmsg, map.Music));
-                }
-                ScreenMusic = musicTrack;
-            }
         }
 
         /// <summary>
@@ -497,6 +471,31 @@ namespace DemoGame.Client
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
+        }
+
+        void World_OnChangeMap(World world, Map map)
+        {
+            // Stop all sounds
+            SoundManager.Stop();
+
+            // Set the new music
+            if (string.IsNullOrEmpty(map.Music))
+            {
+                PlayMusic = false;
+                return;
+            }
+            else if (!MusicManager.TryPlay(map.Music))
+            {
+                IMusic musicTrack = MusicManager.GetItem(map.Music);
+                if (musicTrack == null)
+                {
+                    const string errmsg = "Failed to play map music track: `{0}`";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, map.Music);
+                    Debug.Fail(string.Format(errmsg, map.Music));
+                }
+                ScreenMusic = musicTrack;
+            }
         }
 
         #region IDisposable Members

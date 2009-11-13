@@ -13,20 +13,20 @@ namespace NetGore
         readonly Type _handledType;
 
         /// <summary>
-        /// Gets the Property value Type that the class handles.
-        /// </summary>
-        public Type HandledType
-        {
-            get { return _handledType; }
-        }
-
-        /// <summary>
         /// PropertySyncHandlerAttribute constructor.
         /// </summary>
         /// <param name="handledType">The Property value Type that the class handles.</param>
         public PropertySyncHandlerAttribute(Type handledType)
         {
             _handledType = handledType;
+        }
+
+        /// <summary>
+        /// Gets the Property value Type that the class handles.
+        /// </summary>
+        public Type HandledType
+        {
+            get { return _handledType; }
         }
     }
 }

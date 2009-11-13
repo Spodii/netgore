@@ -8,8 +8,8 @@ namespace NetGore.EditorTools.NPCChat
 {
     public class EditorNPCChatConditionalCollection : NPCChatConditionalCollectionBase
     {
-        NPCChatConditionalEvaluationType _evaluationType;
         readonly List<EditorNPCChatConditionalCollectionItem> _items = new List<EditorNPCChatConditionalCollectionItem>();
+        NPCChatConditionalEvaluationType _evaluationType;
 
         /// <summary>
         /// Notifies listeners when this EditorNPCChatConditionalCollection changes.

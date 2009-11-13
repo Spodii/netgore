@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace NetGore
@@ -24,13 +21,9 @@ namespace NetGore
             Thread t = Thread.CurrentThread;
 
             if (_mainThread == null)
-            {
                 _mainThread = t;
-            }
             else if (_mainThread != t)
-            {
                 Debug.Fail("This method was not called from the main thread!");
-            }
         }
     }
 }

@@ -19,6 +19,18 @@ namespace NetGore.Graphics.GUI
         IEnumerable<IEnumerable<StyledText>> _texts;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="StyledTextsDrawer"/> class.
+        /// </summary>
+        /// <param name="font">The font.</param>
+        public StyledTextsDrawer(SpriteFont font)
+        {
+            if (font == null)
+                throw new ArgumentNullException("font");
+
+            _font = font;
+        }
+
+        /// <summary>
         /// Gets or sets the font used to draw. Cannot be null.
         /// </summary>
         public SpriteFont Font
@@ -43,18 +55,6 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<IEnumerable<StyledText>> Texts
         {
             get { return _texts; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StyledTextsDrawer"/> class.
-        /// </summary>
-        /// <param name="font">The font.</param>
-        public StyledTextsDrawer(SpriteFont font)
-        {
-            if (font == null)
-                throw new ArgumentNullException("font");
-
-            _font = font;
         }
 
         /// <summary>
@@ -170,6 +170,17 @@ namespace NetGore.Graphics.GUI
             readonly StyledText _styledText;
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="StyledTextWithPosition"/> class.
+            /// </summary>
+            /// <param name="styledText">The styled text.</param>
+            /// <param name="position">The position.</param>
+            public StyledTextWithPosition(StyledText styledText, Vector2 position)
+            {
+                _styledText = styledText;
+                _position = position;
+            }
+
+            /// <summary>
             /// Gets the position.
             /// </summary>
             public Vector2 Position
@@ -183,17 +194,6 @@ namespace NetGore.Graphics.GUI
             public StyledText StyledText
             {
                 get { return _styledText; }
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="StyledTextWithPosition"/> class.
-            /// </summary>
-            /// <param name="styledText">The styled text.</param>
-            /// <param name="position">The position.</param>
-            public StyledTextWithPosition(StyledText styledText, Vector2 position)
-            {
-                _styledText = styledText;
-                _position = position;
             }
         }
     }

@@ -15,6 +15,19 @@ namespace DemoGame.Server
         ushort _power;
 
         /// <summary>
+        /// ActiveStatusEffect constructor.
+        /// </summary>
+        /// <param name="statusEffect">The StatusEffectBase to use.</param>
+        /// <param name="power">The power of the StatusEffect.</param>
+        /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
+        public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power, int disableTime)
+        {
+            _statusEffect = statusEffect;
+            _power = power;
+            _disableTime = disableTime;
+        }
+
+        /// <summary>
         /// Gets the game time at which this ActiveStatusEffect will be disabled.
         /// </summary>
         public int DisableTime
@@ -37,19 +50,6 @@ namespace DemoGame.Server
         public StatusEffectBase StatusEffect
         {
             get { return _statusEffect; }
-        }
-
-        /// <summary>
-        /// ActiveStatusEffect constructor.
-        /// </summary>
-        /// <param name="statusEffect">The StatusEffectBase to use.</param>
-        /// <param name="power">The power of the StatusEffect.</param>
-        /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
-        public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power, int disableTime)
-        {
-            _statusEffect = statusEffect;
-            _power = power;
-            _disableTime = disableTime;
         }
 
         public void AddBonusesTo(IStatCollection statCollection)

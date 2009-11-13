@@ -168,15 +168,15 @@ namespace DemoGame.Client
         {
             readonly ToolbarItemType _type;
 
-            public ToolbarItemType ToolbarItemType
-            {
-                get { return _type; }
-            }
-
             public ToolbarItem(Control parent, ToolbarItemType type, Vector2 pos, ISprite sprite)
                 : base(sprite, pos, new Vector2(_itemSize), parent)
             {
                 _type = type;
+            }
+
+            public ToolbarItemType ToolbarItemType
+            {
+                get { return _type; }
             }
         }
     }

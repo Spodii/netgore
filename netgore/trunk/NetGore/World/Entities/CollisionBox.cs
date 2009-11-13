@@ -17,6 +17,42 @@ namespace NetGore
         Vector2 _size;
 
         /// <summary>
+        /// CollisionBox constructor
+        /// </summary>
+        /// <param name="position">Starting position</param>
+        /// <param name="width">Width of the box</param>
+        /// <param name="height">Height of the box</param>
+        public CollisionBox(Vector2 position, float width, float height) : this(position, position + new Vector2(width, height))
+        {
+        }
+
+        /// <summary>
+        /// CollisionBox constructor
+        /// </summary>
+        /// <param name="width">Width of the box</param>
+        /// <param name="height">Height of the box</param>
+        public CollisionBox(float width, float height) : this(Vector2.Zero, new Vector2(width, height))
+        {
+        }
+
+        /// <summary>
+        /// CollisionBox constructor
+        /// </summary>
+        /// <param name="min">Position the box starts at</param>
+        /// <param name="max">Position the box ends at</param>
+        public CollisionBox(Vector2 min, Vector2 max)
+        {
+            // Make sure min is actually min while max is actually max
+            if (min.X > max.X)
+                Swap(ref min.X, ref max.X);
+            if (min.Y > max.Y)
+                Swap(ref min.Y, ref max.Y);
+
+            _size = max - min;
+            Teleport(min);
+        }
+
+        /// <summary>
         /// Gets the height of the CollisionBox
         /// </summary>
         public float Height
@@ -54,42 +90,6 @@ namespace NetGore
         public float Width
         {
             get { return _size.X; }
-        }
-
-        /// <summary>
-        /// CollisionBox constructor
-        /// </summary>
-        /// <param name="position">Starting position</param>
-        /// <param name="width">Width of the box</param>
-        /// <param name="height">Height of the box</param>
-        public CollisionBox(Vector2 position, float width, float height) : this(position, position + new Vector2(width, height))
-        {
-        }
-
-        /// <summary>
-        /// CollisionBox constructor
-        /// </summary>
-        /// <param name="width">Width of the box</param>
-        /// <param name="height">Height of the box</param>
-        public CollisionBox(float width, float height) : this(Vector2.Zero, new Vector2(width, height))
-        {
-        }
-
-        /// <summary>
-        /// CollisionBox constructor
-        /// </summary>
-        /// <param name="min">Position the box starts at</param>
-        /// <param name="max">Position the box ends at</param>
-        public CollisionBox(Vector2 min, Vector2 max)
-        {
-            // Make sure min is actually min while max is actually max
-            if (min.X > max.X)
-                Swap(ref min.X, ref max.X);
-            if (min.Y > max.Y)
-                Swap(ref min.Y, ref max.Y);
-
-            _size = max - min;
-            Teleport(min);
         }
 
         public bool Contains(CollisionBox other)

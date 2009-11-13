@@ -22,6 +22,8 @@ namespace NetGore.Network
     /// </summary>
     public class TCPSocket : ITCPSocket
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Maximum receive size
         /// </summary>
@@ -41,8 +43,6 @@ namespace NetGore.Network
         /// Initial size of the receive queue 
         /// </summary>
         const int RecvQueueStartSize = 4;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Object used to lock receives

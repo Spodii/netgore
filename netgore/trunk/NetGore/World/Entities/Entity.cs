@@ -40,6 +40,24 @@ namespace NetGore
         public event EntityEventHandler<Vector2> OnResize;
 
         /// <summary>
+        /// Entity constructor
+        /// </summary>
+        protected Entity()
+        {
+            CB = new CollisionBox(Vector2.Zero, 1.0f, 1.0f);
+        }
+
+        /// <summary>
+        /// Entity constructor
+        /// </summary>
+        /// <param name="position">Initial position of the entity</param>
+        /// <param name="size">Initial size of the entity</param>
+        protected Entity(Vector2 position, Vector2 size)
+        {
+            CB = new CollisionBox(position, size.X, size.Y);
+        }
+
+        /// <summary>
         /// Gets or sets the collision box for the Entity.
         /// </summary>
         [Browsable(false)]
@@ -92,9 +110,10 @@ namespace NetGore
         public bool OnGround
         {
             get { return _onGround; }
-            set { 
+            set
+            {
                 // TODO: The setter on this shouldn't be public... or even protected. How will we accomplish that?
-                _onGround = value; 
+                _onGround = value;
             }
         }
 
@@ -150,24 +169,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Entity constructor
-        /// </summary>
-        protected Entity()
-        {
-            CB = new CollisionBox(Vector2.Zero, 1.0f, 1.0f);
-        }
-
-        /// <summary>
-        /// Entity constructor
-        /// </summary>
-        /// <param name="position">Initial position of the entity</param>
-        /// <param name="size">Initial size of the entity</param>
-        protected Entity(Vector2 position, Vector2 size)
-        {
-            CB = new CollisionBox(position, size.X, size.Y);
-        }
-
-        /// <summary>
         /// Handles when another Entity collides into us. Not synonymous CollideInto since the
         /// <paramref name="collider"/> Entity is the one who collided into us. For example, if the
         /// two entities in question were a moving Character and a stationary wall, this Entity would be
@@ -199,6 +200,22 @@ namespace NetGore
         /// </summary>
         protected virtual void HandleDispose()
         {
+        }
+
+        /// <summary>
+        /// Handles updating this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected virtual void HandleUpdate(IMap imap, float deltaTime)
+        {
+            // If the Y velocity is non-zero, assume not on the ground
+            if (Velocity.Y != 0)
+                _onGround = false;
+
+            // If moving, perform collision detection
+            if (Velocity != Vector2.Zero)
+                imap.CheckCollisions(this);
         }
 
         /// <summary>
@@ -325,7 +342,6 @@ namespace NetGore
             _velocity = newVelocity;
         }
 
-
         /// <summary>
         /// Sets the <see cref="Entity"/>'s <see cref="Velocity"/> directly without any chance to be overridden.
         /// This should only be used for synchronization.
@@ -365,22 +381,6 @@ namespace NetGore
             // Notify of movement
             if (OnMove != null)
                 OnMove(this, oldPos);
-        }
-
-        /// <summary>
-        /// Handles updating this <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
-        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected virtual void HandleUpdate(IMap imap, float deltaTime)
-        {
-            // If the Y velocity is non-zero, assume not on the ground
-            if (Velocity.Y != 0)
-                _onGround = false;
-
-            // If moving, perform collision detection
-            if (Velocity != Vector2.Zero)
-                imap.CheckCollisions(this);
         }
 
         /// <summary>

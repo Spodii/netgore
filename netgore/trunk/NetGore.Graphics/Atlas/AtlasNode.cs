@@ -14,6 +14,25 @@ namespace NetGore.Graphics
         ITextureAtlasable _iTextureAtlasable = null;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AtlasTextureItem"/> class.
+        /// </summary>
+        /// <param name="width">Width of the rectangular area the tree nodes can occupy.</param>
+        /// <param name="height">Height of the rectangular area the tree nodes can occupy.</param>
+        public AtlasTextureItem(int width, int height)
+        {
+            _rect = new Rectangle(0, 0, width, height);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AtlasTextureItem"/> class.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> describing where to put this item.</param>
+        internal AtlasTextureItem(Rectangle rect)
+        {
+            _rect = rect;
+        }
+
+        /// <summary>
         /// Gets the node's height.
         /// </summary>
         public int Height
@@ -60,25 +79,6 @@ namespace NetGore.Graphics
         public int Y
         {
             get { return Rect.Y; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AtlasTextureItem"/> class.
-        /// </summary>
-        /// <param name="width">Width of the rectangular area the tree nodes can occupy.</param>
-        /// <param name="height">Height of the rectangular area the tree nodes can occupy.</param>
-        public AtlasTextureItem(int width, int height)
-        {
-            _rect = new Rectangle(0, 0, width, height);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AtlasTextureItem"/> class.
-        /// </summary>
-        /// <param name="rect">The <see cref="Rectangle"/> describing where to put this item.</param>
-        internal AtlasTextureItem(Rectangle rect)
-        {
-            _rect = rect;
         }
     }
 }

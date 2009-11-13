@@ -1,8 +1,5 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Network;
@@ -64,6 +61,18 @@ namespace DemoGame.Server
             readonly Server _server;
 
             /// <summary>
+            /// SayCommands constructor.
+            /// </summary>
+            /// <param name="server">The Server that the commands will come from.</param>
+            public SayCommands(Server server)
+            {
+                if (server == null)
+                    throw new ArgumentNullException("server");
+
+                _server = server;
+            }
+
+            /// <summary>
             /// Gets the Server that the commands are coming from.
             /// </summary>
             public Server Server
@@ -77,18 +86,6 @@ namespace DemoGame.Server
             public World World
             {
                 get { return Server.World; }
-            }
-
-            /// <summary>
-            /// SayCommands constructor.
-            /// </summary>
-            /// <param name="server">The Server that the commands will come from.</param>
-            public SayCommands(Server server)
-            {
-                if (server == null)
-                    throw new ArgumentNullException("server");
-
-                _server = server;
             }
 
             [SayCommand("Tell")]

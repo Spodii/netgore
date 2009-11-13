@@ -514,39 +514,6 @@ namespace DemoGame.MapEditor
             SetMap(newMapPath);
         }
 
-        /// <summary>
-        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
-        /// </summary>
-        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
-        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
-        /// <param name="collisionType">The <see cref="CollisionType"/> to give the <see cref="WallEntityBase"/>.</param>
-        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
-        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size, CollisionType collisionType)
-        {
-            return new WallEntity(position, size, collisionType);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
-        /// </summary>
-        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
-        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
-        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
-        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size)
-        {
-            return new WallEntity(position, size);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> to read the creation values from.</param>
-        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
-        static WallEntityBase CreateWallEntity(IValueReader reader)
-        {
-            return new WallEntity(reader);
-        }
-
         void cmdSave_Click(object sender, EventArgs e)
         {
             if (Map == null)
@@ -595,6 +562,39 @@ namespace DemoGame.MapEditor
             OnChangeMap += ((oldMap, newMap) => instance.Map = newMap);
 
             return instance;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
+        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
+        /// <param name="collisionType">The <see cref="CollisionType"/> to give the <see cref="WallEntityBase"/>.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size, CollisionType collisionType)
+        {
+            return new WallEntity(position, size, collisionType);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
+        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size)
+        {
+            return new WallEntity(position, size);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the creation values from.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(IValueReader reader)
+        {
+            return new WallEntity(reader);
         }
 
         public void DrawGame()

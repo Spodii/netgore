@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Graphics;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -19,42 +18,6 @@ namespace NetGore.Graphics
         readonly Grh _grh;
         Vector2 _destination;
         bool _isForeground;
-
-        /// <summary>
-        /// Gets or sets the destination to draw the <see cref="MapGrh"/>.
-        /// </summary>
-        public Vector2 Destination
-        {
-            get { return _destination; }
-            set { _destination = value; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Grh"/> for the <see cref="MapGrh"/>.
-        /// </summary>
-        public Grh Grh
-        {
-            get { return _grh; }
-        }
-
-        /// <summary>
-        /// Gets or sets if the <see cref="MapGrh"/> is in the foreground.
-        /// </summary>
-        public bool IsForeground
-        {
-            get { return _isForeground; }
-            set
-            {
-                if (_isForeground == value)
-                    return;
-
-                MapRenderLayer oldLayer = MapRenderLayer;
-                _isForeground = value;
-
-                if (OnChangeRenderLayer != null)
-                    OnChangeRenderLayer(this, oldLayer);
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrh"/> class.
@@ -91,6 +54,42 @@ namespace NetGore.Graphics
             _isForeground = reader.ReadBool("IsForeground");
 
             _grh = new Grh(grhIndex, AnimType.Loop, currentTime);
+        }
+
+        /// <summary>
+        /// Gets or sets the destination to draw the <see cref="MapGrh"/>.
+        /// </summary>
+        public Vector2 Destination
+        {
+            get { return _destination; }
+            set { _destination = value; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Grh"/> for the <see cref="MapGrh"/>.
+        /// </summary>
+        public Grh Grh
+        {
+            get { return _grh; }
+        }
+
+        /// <summary>
+        /// Gets or sets if the <see cref="MapGrh"/> is in the foreground.
+        /// </summary>
+        public bool IsForeground
+        {
+            get { return _isForeground; }
+            set
+            {
+                if (_isForeground == value)
+                    return;
+
+                MapRenderLayer oldLayer = MapRenderLayer;
+                _isForeground = value;
+
+                if (OnChangeRenderLayer != null)
+                    OnChangeRenderLayer(this, oldLayer);
+            }
         }
 
         /// <summary>

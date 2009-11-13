@@ -94,6 +94,32 @@ namespace NetGore
         int _syncPnVLastTime;
 
         /// <summary>
+        /// DynamicEntity constructor.
+        /// </summary>
+        protected DynamicEntity()
+        {
+            // Get the PropertySyncBases for this DynamicEntity instance
+            // OrderBy() will make sure every PropertySync where SkipNetworkSync is true is at the end of the array
+            _propertySyncs = PropertySyncBase.GetPropertySyncs(this).OrderBy(x => x.SkipNetworkSync).ToArray();
+
+            // Store the index of the last PropertySync that needs to be synchronized over the network
+            _lastNetworkSyncIndex = (byte)(_propertySyncs.Count(x => !x.SkipNetworkSync) - 1);
+
+#if DEBUG
+            // Ensure the _lastNetworkSyncIndex valid, and that every index [0, _lastNetworkSyncIndex] is
+            // set to false, and [_lastNetworkSyncIndex+1, end] is true for SkipNetworkSync.
+            for (int i = 0; i < _lastNetworkSyncIndex; i++)
+            {
+                Debug.Assert(!_propertySyncs[i].SkipNetworkSync);
+            }
+            for (int i = _lastNetworkSyncIndex + 1; i < _propertySyncs.Length; i++)
+            {
+                Debug.Assert(_propertySyncs[i].SkipNetworkSync);
+            }
+#endif
+        }
+
+        /// <summary>
         /// Gets if the DynamicEntity's values are already synchronized.
         /// </summary>
         [Browsable(false)]
@@ -198,32 +224,6 @@ namespace NetGore
         {
             get { return Weight; }
             set { SetWeightRaw(value); }
-        }
-
-        /// <summary>
-        /// DynamicEntity constructor.
-        /// </summary>
-        protected DynamicEntity()
-        {
-            // Get the PropertySyncBases for this DynamicEntity instance
-            // OrderBy() will make sure every PropertySync where SkipNetworkSync is true is at the end of the array
-            _propertySyncs = PropertySyncBase.GetPropertySyncs(this).OrderBy(x => x.SkipNetworkSync).ToArray();
-
-            // Store the index of the last PropertySync that needs to be synchronized over the network
-            _lastNetworkSyncIndex = (byte)(_propertySyncs.Count(x => !x.SkipNetworkSync) - 1);
-
-#if DEBUG
-            // Ensure the _lastNetworkSyncIndex valid, and that every index [0, _lastNetworkSyncIndex] is
-            // set to false, and [_lastNetworkSyncIndex+1, end] is true for SkipNetworkSync.
-            for (int i = 0; i < _lastNetworkSyncIndex; i++)
-            {
-                Debug.Assert(!_propertySyncs[i].SkipNetworkSync);
-            }
-            for (int i = _lastNetworkSyncIndex + 1; i < _propertySyncs.Length; i++)
-            {
-                Debug.Assert(_propertySyncs[i].SkipNetworkSync);
-            }
-#endif
         }
 
         /// <summary>
@@ -336,6 +336,20 @@ namespace NetGore
         protected void ForceUpdatePositionAndVelocity()
         {
             _syncPnVDupeCounter = _syncPnVDupeTimes;
+        }
+
+        /// <summary>
+        /// Handles updating this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
+        {
+            base.HandleUpdate(imap, deltaTime);
+
+            // If the velocity has changed direction, force update
+            if (VelocityChangedDirection())
+                ForceUpdatePositionAndVelocity();
         }
 
         /// <summary>
@@ -463,20 +477,6 @@ namespace NetGore
 
             // If the position has changed, force update
             if (newPosition != _lastSentPosition)
-                ForceUpdatePositionAndVelocity();
-        }
-
-        /// <summary>
-        /// Handles updating this <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
-        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
-        {
-            base.HandleUpdate(imap, deltaTime);
-
-            // If the velocity has changed direction, force update
-            if (VelocityChangedDirection())
                 ForceUpdatePositionAndVelocity();
         }
 

@@ -7,6 +7,10 @@ namespace NetGore.Graphics.GUI
     {
         static PictureBoxSettings _default = null;
 
+        public PictureBoxSettings(ControlBorder border) : base(border)
+        {
+        }
+
         public static PictureBoxSettings Default
         {
             get
@@ -15,10 +19,6 @@ namespace NetGore.Graphics.GUI
                     _default = new PictureBoxSettings(null);
                 return _default;
             }
-        }
-
-        public PictureBoxSettings(ControlBorder border) : base(border)
-        {
         }
     }
 }

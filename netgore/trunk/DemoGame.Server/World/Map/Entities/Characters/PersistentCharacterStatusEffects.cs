@@ -13,6 +13,8 @@ namespace DemoGame.Server
 {
     public class PersistentCharacterStatusEffects : CharacterStatusEffects
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The minimum amount of time an ActiveStatusEffect must have remaining for it to be saved in the
         /// database when this object is disposed. Anything with less time remaining than this specified time
@@ -24,7 +26,6 @@ namespace DemoGame.Server
 
         static readonly ActiveStatusEffectIDCreator _idCreator;
         static readonly ReplaceCharacterStatusEffectQuery _replaceQuery;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<ASEWithID> _statusEffects = new List<ASEWithID>();
 

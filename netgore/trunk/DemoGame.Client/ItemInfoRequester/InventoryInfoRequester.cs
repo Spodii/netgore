@@ -13,15 +13,6 @@ namespace DemoGame.Client
         Inventory _inventory;
 
         /// <summary>
-        /// Gets or sets the <see cref="Inventory"/> the requests are being made for.
-        /// </summary>
-        public Inventory Inventory
-        {
-            get { return _inventory; }
-            set { _inventory = value; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InventoryInfoRequester"/> class.
         /// </summary>
         /// <param name="inventory">The inventory.</param>
@@ -29,6 +20,15 @@ namespace DemoGame.Client
         public InventoryInfoRequester(Inventory inventory, ISocketSender socket) : base(socket)
         {
             _inventory = inventory;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Inventory"/> the requests are being made for.
+        /// </summary>
+        public Inventory Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
         }
 
         /// <summary>

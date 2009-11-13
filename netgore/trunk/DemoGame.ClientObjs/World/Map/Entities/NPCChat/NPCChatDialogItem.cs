@@ -23,6 +23,14 @@ namespace DemoGame.Client.NPCChat
         string _title;
 
         /// <summary>
+        /// NPCChatDialogItem constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        internal NPCChatDialogItem(IValueReader reader) : base(reader)
+        {
+        }
+
+        /// <summary>
         /// Not used by the Client and always returns null.
         /// </summary>
         public override NPCChatConditionalCollectionBase Conditionals
@@ -71,14 +79,6 @@ namespace DemoGame.Client.NPCChat
         public override string Title
         {
             get { return _title; }
-        }
-
-        /// <summary>
-        /// NPCChatDialogItem constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatDialogItem(IValueReader reader) : base(reader)
-        {
         }
 
         /// <summary>

@@ -11,6 +11,17 @@ namespace Microsoft.Xna.Framework
         public float X;
         public float Y;
 
+        public Vector2(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
+
+        public Vector2(float value)
+        {
+            X = Y = value;
+        }
+
         public static Vector2 One
         {
             get { return _one; }
@@ -29,17 +40,6 @@ namespace Microsoft.Xna.Framework
         public static Vector2 Zero
         {
             get { return _zero; }
-        }
-
-        public Vector2(float x, float y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public Vector2(float value)
-        {
-            X = Y = value;
         }
 
         public static Vector2 Add(Vector2 value1, Vector2 value2)

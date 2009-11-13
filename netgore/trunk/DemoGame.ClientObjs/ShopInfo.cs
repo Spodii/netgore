@@ -11,6 +11,21 @@ namespace DemoGame.Client
         readonly DynamicEntity _shopOwner;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ShopInfo"/> class.
+        /// </summary>
+        /// <param name="shopOwner">The shop owner. Can be null.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="canBuy">if set to <c>true</c> [can buy].</param>
+        /// <param name="items">The items.</param>
+        public ShopInfo(DynamicEntity shopOwner, string name, bool canBuy, ItemInfo[] items)
+        {
+            _shopOwner = shopOwner;
+            _items = items;
+            _name = name;
+            _canBuy = canBuy;
+        }
+
+        /// <summary>
         /// Gets if the shop can buy stuff. If false, the shop can only sell items.
         /// </summary>
         public bool CanBuy
@@ -40,21 +55,6 @@ namespace DemoGame.Client
         public DynamicEntity ShopOwner
         {
             get { return _shopOwner; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ShopInfo"/> class.
-        /// </summary>
-        /// <param name="shopOwner">The shop owner. Can be null.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="canBuy">if set to <c>true</c> [can buy].</param>
-        /// <param name="items">The items.</param>
-        public ShopInfo(DynamicEntity shopOwner, string name, bool canBuy, ItemInfo[] items)
-        {
-            _shopOwner = shopOwner;
-            _items = items;
-            _name = name;
-            _canBuy = canBuy;
         }
 
         /// <summary>

@@ -13,14 +13,6 @@ namespace NetGore.AI
         readonly AIID _id;
 
         /// <summary>
-        /// Gets the <see cref="AIID"/> of this attribute.
-        /// </summary>
-        public AIID ID
-        {
-            get { return _id; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AIAttribute"/> class.
         /// </summary>
         /// <param name="id">The unique ID of the AI. This must be unique for each individual attribute, and must
@@ -28,6 +20,14 @@ namespace NetGore.AI
         public AIAttribute(int id)
         {
             _id = new AIID(id);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="AIID"/> of this attribute.
+        /// </summary>
+        public AIID ID
+        {
+            get { return _id; }
         }
     }
 }

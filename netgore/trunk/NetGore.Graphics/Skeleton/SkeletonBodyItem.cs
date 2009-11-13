@@ -13,6 +13,26 @@ namespace NetGore.Graphics
         readonly SkeletonBodyItemInfo _itemInfo;
 
         /// <summary>
+        /// SkeletonBodyItem constructor
+        /// </summary>
+        /// <param name="itemInfo">SkeletonBodyItemInfo to create the SkeletonBodyItem from</param>
+        public SkeletonBodyItem(SkeletonBodyItemInfo itemInfo)
+        {
+            _itemInfo = itemInfo;
+            Grh = new Grh(itemInfo.GrhIndex, AnimType.Loop, 0);
+        }
+
+        /// <summary>
+        /// SkeletonBodyItem constructor
+        /// </summary>
+        /// <param name="itemInfo">SkeletonBodyItemInfo to create the SkeletonBodyItem from</param>
+        /// <param name="skeleton">Skeleton to attach to</param>
+        public SkeletonBodyItem(SkeletonBodyItemInfo itemInfo, Skeleton skeleton) : this(itemInfo)
+        {
+            Attach(skeleton);
+        }
+
+        /// <summary>
         /// Gets or sets the destination SkeletonNode to draw to
         /// </summary>
         public SkeletonNode Dest { get; set; }
@@ -34,26 +54,6 @@ namespace NetGore.Graphics
         /// Gets or sets the source SkeletonNode to draw from
         /// </summary>
         public SkeletonNode Source { get; set; }
-
-        /// <summary>
-        /// SkeletonBodyItem constructor
-        /// </summary>
-        /// <param name="itemInfo">SkeletonBodyItemInfo to create the SkeletonBodyItem from</param>
-        public SkeletonBodyItem(SkeletonBodyItemInfo itemInfo)
-        {
-            _itemInfo = itemInfo;
-            Grh = new Grh(itemInfo.GrhIndex, AnimType.Loop, 0);
-        }
-
-        /// <summary>
-        /// SkeletonBodyItem constructor
-        /// </summary>
-        /// <param name="itemInfo">SkeletonBodyItemInfo to create the SkeletonBodyItem from</param>
-        /// <param name="skeleton">Skeleton to attach to</param>
-        public SkeletonBodyItem(SkeletonBodyItemInfo itemInfo, Skeleton skeleton) : this(itemInfo)
-        {
-            Attach(skeleton);
-        }
 
         /// <summary>
         /// Attaches the SkeletonBodyItem to a skeleton using the name of the joints

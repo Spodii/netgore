@@ -10,16 +10,6 @@ namespace NetGore.Db
         readonly IDbCommand _command;
         readonly IDataReader _dataReader;
 
-        protected IDbCommand Command
-        {
-            get { return _command; }
-        }
-
-        protected IDataReader DataReader
-        {
-            get { return _dataReader; }
-        }
-
         internal DataReaderContainer(IDbCommand command, IDataReader dataReader)
         {
             if (command == null)
@@ -29,6 +19,16 @@ namespace NetGore.Db
 
             _command = command;
             _dataReader = dataReader;
+        }
+
+        protected IDbCommand Command
+        {
+            get { return _command; }
+        }
+
+        protected IDataReader DataReader
+        {
+            get { return _dataReader; }
         }
 
         #region IDataReader Members

@@ -15,13 +15,13 @@ namespace DemoGame.Server
     /// </summary>
     public static class StatusEffectManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Dictionary that allows for lookup of a StatusEffectBase for the given StatusEffectType.
         /// </summary>
         static readonly Dictionary<StatusEffectType, StatusEffectBase> _statusEffects =
             new Dictionary<StatusEffectType, StatusEffectBase>(EnumComparer<StatusEffectType>.Instance);
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// StatusEffectManager static constructor.

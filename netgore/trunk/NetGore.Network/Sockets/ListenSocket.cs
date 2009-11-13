@@ -38,14 +38,6 @@ namespace NetGore.Network
         public event ListenSocketAcceptHandler OnAccept;
 
         /// <summary>
-        /// If the listen socket is correctly working and accepting connections
-        /// </summary>
-        public bool IsAlive
-        {
-            get { return _socket.IsBound; }
-        }
-
-        /// <summary>
         /// ListenSocket constructor
         /// </summary>
         /// <param name="port">Port to listen on</param>
@@ -80,6 +72,14 @@ namespace NetGore.Network
 
             // Start accepting right away
             BeginAccept();
+        }
+
+        /// <summary>
+        /// If the listen socket is correctly working and accepting connections
+        /// </summary>
+        public bool IsAlive
+        {
+            get { return _socket.IsBound; }
         }
 
         /// <summary>

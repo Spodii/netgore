@@ -8,15 +8,15 @@ namespace NetGore.Graphics.GUI
     {
         readonly Color _foreColor;
 
-        public Color ForeColor
-        {
-            get { return _foreColor; }
-        }
-
         protected TextControlSettings(Color foreColor, ControlBorder border) : base(border)
         {
             _foreColor = foreColor;
             CanFocus = true;
+        }
+
+        public Color ForeColor
+        {
+            get { return _foreColor; }
         }
     }
 }

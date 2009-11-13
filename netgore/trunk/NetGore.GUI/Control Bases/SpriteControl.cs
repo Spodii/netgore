@@ -25,40 +25,6 @@ namespace NetGore.Graphics.GUI
         public event ControlEventHandler OnChangeStretchSprite;
 
         /// <summary>
-        /// Gets or sets the Control's <see cref="ISprite"/>.
-        /// </summary>
-        public ISprite Sprite
-        {
-            get { return _sprite; }
-            set
-            {
-                if (_sprite != value)
-                {
-                    _sprite = value;
-                    if (OnChangeSprite != null)
-                        OnChangeSprite(this);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets if the sprite is drawn stretched or not.
-        /// </summary>
-        public bool StretchSprite
-        {
-            get { return _stretch; }
-            set
-            {
-                if (_stretch != value)
-                {
-                    _stretch = value;
-                    if (OnChangeStretchSprite != null)
-                        OnChangeStretchSprite(this);
-                }
-            }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SpriteControl"/> class.
         /// </summary>
         /// <param name="gui">GUIManager this PictureControl will be part of.</param>
@@ -95,6 +61,40 @@ namespace NetGore.Graphics.GUI
             // Add the size of the border (if there is one)
             if (Border != null)
                 Size += new Vector2(Border.Width, Border.Height);
+        }
+
+        /// <summary>
+        /// Gets or sets the Control's <see cref="ISprite"/>.
+        /// </summary>
+        public ISprite Sprite
+        {
+            get { return _sprite; }
+            set
+            {
+                if (_sprite != value)
+                {
+                    _sprite = value;
+                    if (OnChangeSprite != null)
+                        OnChangeSprite(this);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets if the sprite is drawn stretched or not.
+        /// </summary>
+        public bool StretchSprite
+        {
+            get { return _stretch; }
+            set
+            {
+                if (_stretch != value)
+                {
+                    _stretch = value;
+                    if (OnChangeStretchSprite != null)
+                        OnChangeStretchSprite(this);
+                }
+            }
         }
 
         /// <summary>

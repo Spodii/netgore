@@ -42,6 +42,56 @@ namespace NetGore.Graphics.GUI
         int _maxVisibleLines = 1;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// </summary>
+        /// <param name="gui">GUIManager used by this Control.</param>
+        /// <param name="settings">Settings for this TextControl.</param>
+        /// <param name="font">SpriteFont used to write the text.</param>
+        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Control that this Control belongs to.</param>
+        public TextBox(GUIManagerBase gui, TextControlSettings settings, SpriteFont font, Vector2 position, Vector2 size,
+                       Control parent) : base(gui, settings, string.Empty, font, position, size, parent)
+        {
+            _numCharsToDraw = new NumCharsToDrawCache(this);
+
+            OnKeyDown += TextBox_OnKeyDown;
+            _editableTextHandler = new EditableTextHandler(this);
+
+            // Set the initial line length and number of visible lines
+            UpdateMaxLineLength();
+            UpdateMaxVisibleLines();
+
+            // Hook event listeners
+            OnResize += TextBox_OnResize;
+            OnClick += TextBox_OnClick;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// </summary>
+        /// <param name="gui">GUIManager used by this Control.</param>
+        /// <param name="font">SpriteFont used to write the text.</param>
+        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Control that this Control belongs to.</param>
+        public TextBox(GUIManagerBase gui, SpriteFont font, Vector2 position, Vector2 size, Control parent)
+            : this(gui, gui.TextBoxSettings, font, position, size, parent)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// </summary>
+        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Control that this Control belongs to.</param>
+        public TextBox(Vector2 position, Vector2 size, Control parent)
+            : this(parent.GUIManager, parent.GUIManager.TextBoxSettings, parent.GUIManager.Font, position, size, parent)
+        {
+        }
+
+        /// <summary>
         /// Gets or set the position of the cursor on the current line. This is equal to the index of the character
         /// the cursor is immediately before. For example, 2 would mean the cursor is immediately before the character
         /// on the line at index 2 (or between the second and 3rd character).
@@ -56,11 +106,6 @@ namespace NetGore.Graphics.GUI
                 EnsureHorizontalOffsetValid();
             }
         }
-
-        /// <summary>
-        /// Gets the maximum number of possible visible lines. Only valid is <see cref="IsMultiLine"/> is true.
-        /// </summary>
-        public int MaxVisibleLines { get { return _maxVisibleLines; } }
 
         /// <summary>
         /// Gets or sets the SpriteFont used by the TextControl.
@@ -153,6 +198,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the maximum number of possible visible lines. Only valid is <see cref="IsMultiLine"/> is true.
+        /// </summary>
+        public int MaxVisibleLines
+        {
+            get { return _maxVisibleLines; }
+        }
+
+        /// <summary>
         /// Gets or sets the text in this <see cref="TextBox"/>. Please beware that setting the text through this
         /// method will result in all font styling to be lost.
         /// </summary>
@@ -165,56 +218,6 @@ namespace NetGore.Graphics.GUI
                 Clear();
                 Append(value);
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBox"/> class.
-        /// </summary>
-        /// <param name="gui">GUIManager used by this Control.</param>
-        /// <param name="settings">Settings for this TextControl.</param>
-        /// <param name="font">SpriteFont used to write the text.</param>
-        /// <param name="position">Position of the Control relative to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        public TextBox(GUIManagerBase gui, TextControlSettings settings, SpriteFont font, Vector2 position, Vector2 size,
-                       Control parent) : base(gui, settings, string.Empty, font, position, size, parent)
-        {
-            _numCharsToDraw = new NumCharsToDrawCache(this);
-
-            OnKeyDown += TextBox_OnKeyDown;
-            _editableTextHandler = new EditableTextHandler(this);
-
-            // Set the initial line length and number of visible lines
-            UpdateMaxLineLength();
-            UpdateMaxVisibleLines();
-
-            // Hook event listeners
-            OnResize += TextBox_OnResize;
-            OnClick += TextBox_OnClick;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBox"/> class.
-        /// </summary>
-        /// <param name="gui">GUIManager used by this Control.</param>
-        /// <param name="font">SpriteFont used to write the text.</param>
-        /// <param name="position">Position of the Control relative to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        public TextBox(GUIManagerBase gui, SpriteFont font, Vector2 position, Vector2 size, Control parent)
-            : this(gui, gui.TextBoxSettings, font, position, size, parent)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBox"/> class.
-        /// </summary>
-        /// <param name="position">Position of the Control relative to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        public TextBox(Vector2 position, Vector2 size, Control parent)
-            : this(parent.GUIManager, parent.GUIManager.TextBoxSettings, parent.GUIManager.Font, position, size, parent)
-        {
         }
 
         /// <summary>
@@ -236,7 +239,9 @@ namespace NetGore.Graphics.GUI
         public void Append(IEnumerable<StyledText> text)
         {
             foreach (var t in text)
+            {
                 Append(t);
+            }
         }
 
         /// <summary>
@@ -690,6 +695,15 @@ namespace NetGore.Graphics.GUI
             short _value = _invalidateValue;
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="NumCharsToDrawCache"/> class.
+            /// </summary>
+            /// <param name="textBox">The parent <see cref="TextBox"/>.</param>
+            public NumCharsToDrawCache(TextBox textBox)
+            {
+                _textBox = textBox;
+            }
+
+            /// <summary>
             /// Gets the number of characters to draw.
             /// </summary>
             int Value
@@ -701,15 +715,6 @@ namespace NetGore.Graphics.GUI
 
                     return _value;
                 }
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="NumCharsToDrawCache"/> class.
-            /// </summary>
-            /// <param name="textBox">The parent <see cref="TextBox"/>.</param>
-            public NumCharsToDrawCache(TextBox textBox)
-            {
-                _textBox = textBox;
             }
 
             /// <summary>
@@ -729,8 +734,7 @@ namespace NetGore.Graphics.GUI
 
                 _value =
                     (short)
-                    currLine.CountFittingCharactersLeft(_textBox.Font, _textBox.LineCharBufferOffset,
-                                                                       (int)_textBox.ClientSize.X);
+                    currLine.CountFittingCharactersLeft(_textBox.Font, _textBox.LineCharBufferOffset, (int)_textBox.ClientSize.X);
             }
 
             /// <summary>

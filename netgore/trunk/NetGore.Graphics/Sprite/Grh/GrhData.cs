@@ -16,6 +16,7 @@ namespace NetGore.Graphics
     /// </summary>
     public sealed class GrhData : ITextureAtlasable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _automaticSizeValueKey = "AutomaticSize";
         const string _categoryNameValueKey = "Name";
         const string _categoryNodeName = "Category";
@@ -27,7 +28,6 @@ namespace NetGore.Graphics
         const string _textureNodeName = "Texture";
         const string _textureSourceValueKey = "Source";
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
         string _category;
@@ -45,6 +45,24 @@ namespace NetGore.Graphics
         /// Notifies when either the category or title have been changed
         /// </summary>
         public event ChangeCategorizationHandler OnChangeCategorization;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhData"/> class.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        /// <param name="cm">ContentManager to use.</param>
+        internal GrhData(IValueReader r, ContentManager cm)
+        {
+            Read(r, cm);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhData"/> class.
+        /// </summary>
+        internal GrhData()
+        {
+            // Restrict construction to internal only
+        }
 
         /// <summary>
         /// Gets or sets if this GrhData automatically finds the Size by using the whole source texture. Only applies to
@@ -217,24 +235,6 @@ namespace NetGore.Graphics
                 ValidateTexture();
                 return _isUsingAtlas ? _atlasSourceRect.Y : _sourceRect.Y;
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GrhData"/> class.
-        /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
-        /// <param name="cm">ContentManager to use.</param>
-        internal GrhData(IValueReader r, ContentManager cm)
-        {
-            Read(r, cm);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GrhData"/> class.
-        /// </summary>
-        internal GrhData()
-        {
-            // Restrict construction to internal only
         }
 
         /// <summary>

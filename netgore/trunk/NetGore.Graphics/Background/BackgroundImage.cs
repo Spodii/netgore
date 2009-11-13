@@ -25,6 +25,32 @@ namespace NetGore.Graphics
         string _name;
 
         /// <summary>
+        /// BackgroundImage constructor.
+        /// </summary>
+        protected BackgroundImage()
+        {
+            // Set the default values
+            Offset = Vector2.Zero;
+            Color = Color.White;
+            Alignment = Alignment.TopLeft;
+        }
+
+        protected BackgroundImage(IValueReader reader, int currentTime)
+        {
+            Name = reader.ReadString(_valueKeyName);
+            Alignment = reader.ReadEnum(_alignmentHelper, _valueKeyAlignment);
+            Color = reader.ReadColor(_valueKeyColor);
+            Depth = reader.ReadFloat(_valueKeyDepth);
+            Offset = reader.ReadVector2(_valueKeyOffset);
+
+            GrhIndex grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
+            GrhData grhData = GrhInfo.GetData(grhIndex);
+            Grh grh = new Grh(grhData, AnimType.Loop, currentTime);
+
+            Sprite = grh;
+        }
+
+        /// <summary>
         /// Gets or sets how the background image is aligned to the map. Default is TopLeft.
         /// </summary>
         [Category("Position")]
@@ -115,32 +141,6 @@ namespace NetGore.Graphics
 
                 return new Vector2(Sprite.Source.Width, Sprite.Source.Height);
             }
-        }
-
-        /// <summary>
-        /// BackgroundImage constructor.
-        /// </summary>
-        protected BackgroundImage()
-        {
-            // Set the default values
-            Offset = Vector2.Zero;
-            Color = Color.White;
-            Alignment = Alignment.TopLeft;
-        }
-
-        protected BackgroundImage(IValueReader reader, int currentTime)
-        {
-            Name = reader.ReadString(_valueKeyName);
-            Alignment = reader.ReadEnum(_alignmentHelper, _valueKeyAlignment);
-            Color = reader.ReadColor(_valueKeyColor);
-            Depth = reader.ReadFloat(_valueKeyDepth);
-            Offset = reader.ReadVector2(_valueKeyOffset);
-
-            GrhIndex grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
-            GrhData grhData = GrhInfo.GetData(grhIndex);
-            Grh grh = new Grh(grhData, AnimType.Loop, currentTime);
-
-            Sprite = grh;
         }
 
         /// <summary>

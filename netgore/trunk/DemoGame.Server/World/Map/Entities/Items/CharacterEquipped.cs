@@ -12,11 +12,11 @@ namespace DemoGame.Server
 {
     public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Character _character;
 
-        bool _disposed = false;
         readonly bool _isPersistent;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        bool _disposed = false;
 
         protected CharacterEquipped(Character character)
         {

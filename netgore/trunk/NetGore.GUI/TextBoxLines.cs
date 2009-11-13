@@ -22,6 +22,26 @@ namespace NetGore.Graphics.GUI
         int _maxLineLength = 0;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextBoxLines"/> class.
+        /// </summary>
+        public TextBoxLines()
+        {
+            // Add the initial line
+            _currentLineIndex = 0;
+            _lines.Add(new TextBoxLine(this));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TextBoxLine"/> at the given index.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line.</param>
+        /// <returns>The <see cref="TextBoxLine"/> at the given index.</returns>
+        public TextBoxLine this[int lineIndex]
+        {
+            get { return _lines[lineIndex]; }
+        }
+
+        /// <summary>
         /// Gets the number of lines.
         /// </summary>
         public int Count
@@ -73,16 +93,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="TextBoxLine"/> at the given index.
-        /// </summary>
-        /// <param name="lineIndex">The index of the line.</param>
-        /// <returns>The <see cref="TextBoxLine"/> at the given index.</returns>
-        public TextBoxLine this[int lineIndex]
-        {
-            get { return _lines[lineIndex]; }
-        }
-
-        /// <summary>
         /// Gets the last line.
         /// </summary>
         public TextBoxLine LastLine
@@ -98,16 +108,6 @@ namespace NetGore.Graphics.GUI
         public int MaxLineLength
         {
             get { return _maxLineLength; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBoxLines"/> class.
-        /// </summary>
-        public TextBoxLines()
-        {
-            // Add the initial line
-            _currentLineIndex = 0;
-            _lines.Add(new TextBoxLine(this));
         }
 
         /// <summary>

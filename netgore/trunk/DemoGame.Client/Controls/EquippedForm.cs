@@ -21,12 +21,6 @@ namespace DemoGame.Client
 
         public event RequestUnequipHandler OnRequestUnequip;
 
-        public UserEquipped UserEquipped
-        {
-            get { return _userEquipped; }
-            set { _userEquipped = value; }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EquippedForm"/> class.
         /// </summary>
@@ -42,6 +36,12 @@ namespace DemoGame.Client
             _infoRequester = infoRequester;
 
             CreateItemSlots();
+        }
+
+        public UserEquipped UserEquipped
+        {
+            get { return _userEquipped; }
+            set { _userEquipped = value; }
         }
 
         void CreateItemSlots()
@@ -111,11 +111,6 @@ namespace DemoGame.Client
 
             readonly EquipmentSlot _slot;
 
-            public EquipmentSlot Slot
-            {
-                get { return _slot; }
-            }
-
             public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot)
                 : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -127,6 +122,11 @@ namespace DemoGame.Client
                 Tooltip = _tooltipHandler;
 
                 OnMouseUp += _equippedForm.EquippedItemPB_OnMouseUp;
+            }
+
+            public EquipmentSlot Slot
+            {
+                get { return _slot; }
             }
 
             protected override void DrawControl(SpriteBatch spriteBatch)

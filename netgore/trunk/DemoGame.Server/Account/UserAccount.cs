@@ -26,6 +26,22 @@ namespace DemoGame.Server
         User _user;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="UserAccount"/> class.
+        /// </summary>
+        /// <param name="socket">The socket.</param>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        UserAccount(IIPSocket socket, IDbController dbController)
+        {
+            if (socket == null)
+                throw new ArgumentNullException("socket");
+            if (dbController == null)
+                throw new ArgumentNullException("dbController");
+
+            _socket = socket;
+            _dbController = dbController;
+        }
+
+        /// <summary>
         /// Gets the number of Characters in this UserAccount.
         /// </summary>
         public byte CharacterCount
@@ -56,22 +72,6 @@ namespace DemoGame.Server
         public User User
         {
             get { return _user; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserAccount"/> class.
-        /// </summary>
-        /// <param name="socket">The socket.</param>
-        /// <param name="dbController">The <see cref="IDbController"/>.</param>
-        UserAccount(IIPSocket socket, IDbController dbController)
-        {
-            if (socket == null)
-                throw new ArgumentNullException("socket");
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
-
-            _socket = socket;
-            _dbController = dbController;
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Linq;
-using DemoGame;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -13,6 +12,14 @@ namespace DemoGame
     {
         Vector2 _destination;
         MapIndex _destinationMap;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
+        /// </summary>
+        protected TeleportEntityBase()
+        {
+            Weight = 0f;
+        }
 
         /// <summary>
         /// Gets or sets the map position that the Entity will be teleported to upon use.
@@ -40,14 +47,6 @@ namespace DemoGame
         {
             get { return _destinationMap; }
             set { _destinationMap = value; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
-        /// </summary>
-        protected TeleportEntityBase()
-        {
-            Weight = 0f;
         }
 
         #region IUsableEntity Members

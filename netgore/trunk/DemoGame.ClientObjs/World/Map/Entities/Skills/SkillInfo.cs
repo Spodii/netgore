@@ -21,26 +21,6 @@ namespace DemoGame.Client
         static readonly InfoManager<SkillType, SkillInfo> _infoManager;
         static readonly SkillTypeHelper _skillTypeHelper = SkillTypeHelper.Instance;
 
-        /// <summary>
-        /// Gets or sets the description of this Skill.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the GrhIndex for this Skill's icon.
-        /// </summary>
-        public GrhIndex Icon { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of this SkillType.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the SkillType that this SkillInfo is describing.
-        /// </summary>
-        public SkillType SkillType { get; set; }
-
         static SkillInfo()
         {
             _infoManager = new InfoManager<SkillType, SkillInfo>(_fileName, EnumComparer<SkillType>.Instance,
@@ -76,6 +56,26 @@ namespace DemoGame.Client
         {
             Read(r);
         }
+
+        /// <summary>
+        /// Gets or sets the description of this Skill.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the GrhIndex for this Skill's icon.
+        /// </summary>
+        public GrhIndex Icon { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of this SkillType.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the SkillType that this SkillInfo is describing.
+        /// </summary>
+        public SkillType SkillType { get; set; }
 
         public static SkillInfo GetSkillInfo(SkillType skillType)
         {

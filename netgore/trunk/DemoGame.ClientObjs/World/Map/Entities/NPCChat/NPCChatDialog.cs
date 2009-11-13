@@ -21,6 +21,14 @@ namespace DemoGame.Client.NPCChat
         string _title;
 
         /// <summary>
+        /// NPCChatDialog constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        internal NPCChatDialog(IValueReader reader) : base(reader)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
         /// </summary>
@@ -36,14 +44,6 @@ namespace DemoGame.Client.NPCChat
         public override string Title
         {
             get { return _title; }
-        }
-
-        /// <summary>
-        /// NPCChatDialog constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatDialog(IValueReader reader) : base(reader)
-        {
         }
 
         /// <summary>

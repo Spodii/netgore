@@ -12,13 +12,13 @@ namespace DemoGame.Server
 {
     public abstract class CharacterInventory : InventoryBase<ItemEntity>, IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Character _character;
+        readonly bool _isPersistent;
 
         bool _disposed = false;
 
         bool _isLoading;
-        readonly bool _isPersistent;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         protected CharacterInventory(Character character)
         {

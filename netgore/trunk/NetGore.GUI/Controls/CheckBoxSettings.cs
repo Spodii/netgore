@@ -13,16 +13,6 @@ namespace NetGore.Graphics.GUI
         public readonly ISprite UntickedMouseOver;
         public readonly ISprite UntickedPressed;
 
-        public new static CheckBoxSettings Default
-        {
-            get
-            {
-                if (_default == null)
-                    _default = new CheckBoxSettings(null, null, null, null, null, null, null);
-                return _default;
-            }
-        }
-
         public CheckBoxSettings(ControlBorder border, ISprite ticked, ISprite tickedOver, ISprite tickedPressed, ISprite unticked,
                                 ISprite untickedOver, ISprite untickedPressed) : base(border)
         {
@@ -32,6 +22,16 @@ namespace NetGore.Graphics.GUI
             Unticked = unticked;
             UntickedMouseOver = untickedOver;
             UntickedPressed = untickedPressed;
+        }
+
+        public new static CheckBoxSettings Default
+        {
+            get
+            {
+                if (_default == null)
+                    _default = new CheckBoxSettings(null, null, null, null, null, null, null);
+                return _default;
+            }
         }
     }
 }

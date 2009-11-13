@@ -13,10 +13,10 @@ namespace DemoGame.Client
     /// </summary>
     public class Inventory : InventoryBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly ItemEntity[] _buffer = new ItemEntity[MaxInventorySize];
 
         readonly ISocketSender _socket;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public Inventory(ISocketSender socket)
         {

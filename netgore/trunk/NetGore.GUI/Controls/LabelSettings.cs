@@ -8,6 +8,10 @@ namespace NetGore.Graphics.GUI
     {
         static LabelSettings _default = null;
 
+        public LabelSettings(ControlBorder border) : base(Color.Black, border)
+        {
+        }
+
         public static LabelSettings Default
         {
             get
@@ -16,10 +20,6 @@ namespace NetGore.Graphics.GUI
                     _default = new LabelSettings(null);
                 return _default;
             }
-        }
-
-        public LabelSettings(ControlBorder border) : base(Color.Black, border)
-        {
         }
     }
 }

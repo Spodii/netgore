@@ -37,12 +37,6 @@ namespace DemoGame.Client
         /// </summary>
         public event InventoryUseItemHandler OnRequestUseItem;
 
-        public Inventory Inventory
-        {
-            get { return _inventory; }
-            set { _inventory = value; }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
@@ -63,6 +57,12 @@ namespace DemoGame.Client
             Size = itemsSize + paddingSize + borderSize;
 
             CreateItemSlots();
+        }
+
+        public Inventory Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
         }
 
         void CreateItemSlots()
@@ -131,11 +131,6 @@ namespace DemoGame.Client
 
             readonly InventorySlot _slot;
 
-            public InventorySlot Slot
-            {
-                get { return _slot; }
-            }
-
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot)
                 : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -149,6 +144,11 @@ namespace DemoGame.Client
 
                 Skin.OnChange += Skin_OnChange;
                 LoadSprite();
+            }
+
+            public InventorySlot Slot
+            {
+                get { return _slot; }
             }
 
             protected override void DrawControl(SpriteBatch spriteBatch)

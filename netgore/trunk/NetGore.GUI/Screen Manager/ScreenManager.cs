@@ -23,8 +23,8 @@ namespace NetGore.Graphics.GUI
         readonly ContentManager _content;
         readonly FrameCounter _fps = new FrameCounter();
         readonly ContentManager _mapContent;
-        readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(8, StringComparer.OrdinalIgnoreCase);
         readonly MusicManager _musicManager;
+        readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(8, StringComparer.OrdinalIgnoreCase);
         readonly SoundManager _soundManager;
 
         GameScreen _activeScreen;
@@ -32,14 +32,20 @@ namespace NetGore.Graphics.GUI
         SpriteBatch _sb;
 
         /// <summary>
-        /// Gets the <see cref="MusicManager"/> managed by this <see cref="ScreenManager"/>.
+        /// Initializes a new instance of the <see cref="ScreenManager"/> class.
         /// </summary>
-        public MusicManager MusicManager { get { return _musicManager; } }
+        /// <param name="game">The Game that the game component should be attached to.</param>
+        public ScreenManager(Game game) : base(game)
+        {
+            if (game == null)
+                throw new ArgumentNullException("game");
 
-        /// <summary>
-        /// Gets the <see cref="SoundManager"/> managed by this <see cref="ScreenManager"/>.
-        /// </summary>
-        public SoundManager SoundManager { get { return _soundManager; } }
+            _content = new ContentManager(game.Services, "Content");
+            _mapContent = new ContentManager(game.Services, "Content");
+
+            _soundManager = SoundManager.GetInstance(_content);
+            _musicManager = MusicManager.GetInstance(_content);
+        }
 
         /// <summary>
         /// Gets or sets the currently active <see cref="GameScreen"/>.
@@ -96,6 +102,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="MusicManager"/> managed by this <see cref="ScreenManager"/>.
+        /// </summary>
+        public MusicManager MusicManager
+        {
+            get { return _musicManager; }
+        }
+
+        /// <summary>
         /// Gets the height of the screen in pixels.
         /// </summary>
         public int ScreenHeight
@@ -120,27 +134,19 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="SoundManager"/> managed by this <see cref="ScreenManager"/>.
+        /// </summary>
+        public SoundManager SoundManager
+        {
+            get { return _soundManager; }
+        }
+
+        /// <summary>
         /// Gets the generic <see cref="SpriteBatch"/> to use.
         /// </summary>
         public SpriteBatch SpriteBatch
         {
             get { return _sb; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenManager"/> class.
-        /// </summary>
-        /// <param name="game">The Game that the game component should be attached to.</param>
-        public ScreenManager(Game game) : base(game)
-        {
-            if (game == null)
-                throw new ArgumentNullException("game");
-
-            _content = new ContentManager(game.Services, "Content");
-            _mapContent = new ContentManager(game.Services, "Content");
-
-            _soundManager = SoundManager.GetInstance(_content);
-            _musicManager = MusicManager.GetInstance(_content);
         }
 
         /// <summary>

@@ -15,11 +15,6 @@ namespace DemoGame.Server
 
         readonly User _user;
 
-        User User
-        {
-            get { return _user; }
-        }
-
         /// <summary>
         /// UserEquipped constructor.
         /// </summary>
@@ -28,6 +23,11 @@ namespace DemoGame.Server
         public UserEquipped(User user) : base(user) // ReSharper restore SuggestBaseTypeForParameter
         {
             _user = user;
+        }
+
+        User User
+        {
+            get { return _user; }
         }
 
         protected override void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)

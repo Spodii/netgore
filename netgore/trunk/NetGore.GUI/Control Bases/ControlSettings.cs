@@ -12,6 +12,11 @@ namespace NetGore.Graphics.GUI
         bool _isEnabled = true;
         bool _isVisible = true;
 
+        protected ControlSettings(ControlBorder border)
+        {
+            _border = border;
+        }
+
         public ControlBorder Border
         {
             get { return _border; }
@@ -46,11 +51,6 @@ namespace NetGore.Graphics.GUI
         {
             get { return _isVisible; }
             set { _isVisible = value; }
-        }
-
-        protected ControlSettings(ControlBorder border)
-        {
-            _border = border;
         }
     }
 }

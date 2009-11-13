@@ -23,14 +23,6 @@ namespace NetGore.Graphics
         SkeletonBodyItemInfo[] _items;
 
         /// <summary>
-        /// Gets an array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
-        /// </summary>
-        internal SkeletonBodyItemInfo[] Items
-        {
-            get { return _items; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBodyInfo"/> class.
         /// </summary>
         /// <param name="items">SkeletonBodyItemInfos to create the SkeletonBodyInfo from.</param>
@@ -47,6 +39,14 @@ namespace NetGore.Graphics
         public SkeletonBodyInfo(IValueReader reader)
         {
             Read(reader);
+        }
+
+        /// <summary>
+        /// Gets an array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
+        /// </summary>
+        internal SkeletonBodyItemInfo[] Items
+        {
+            get { return _items; }
         }
 
         /// <summary>

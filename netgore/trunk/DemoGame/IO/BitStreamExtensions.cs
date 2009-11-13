@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -15,9 +14,9 @@ namespace DemoGame
     /// </summary>
     public static class BitStreamExtensions
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly int _clientPacketIDBits;
         static readonly int _serverPacketIDBits;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes the <see cref="BitStreamExtensions"/> class.

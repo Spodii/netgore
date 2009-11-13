@@ -12,22 +12,6 @@ namespace NetGore.Collections.Tests
     [TestFixture]
     public class BoolArrayTests
     {
-        static void ResizeTestValueValidate(BoolArray b, int newSize)
-        {
-            b.Resize(newSize - 1);
-            b.SetAll(true);
-            b.Resize(newSize);
-
-            // Make sure the new element is false
-            Assert.IsFalse(b[newSize - 1]);
-
-            // Make sure all the existing elements remain true
-            for (int i = 0; i < newSize - 1; i++)
-            {
-                Assert.IsTrue(b[i]);
-            }
-        }
-
         [Test]
         public void ConstructorTest()
         {
@@ -204,6 +188,22 @@ namespace NetGore.Collections.Tests
             b.SetAll(true);
             b.Resize(5);
             Assert.IsTrue(b.All(value => value));
+        }
+
+        static void ResizeTestValueValidate(BoolArray b, int newSize)
+        {
+            b.Resize(newSize - 1);
+            b.SetAll(true);
+            b.Resize(newSize);
+
+            // Make sure the new element is false
+            Assert.IsFalse(b[newSize - 1]);
+
+            // Make sure all the existing elements remain true
+            for (int i = 0; i < newSize - 1; i++)
+            {
+                Assert.IsTrue(b[i]);
+            }
         }
 
         [Test]

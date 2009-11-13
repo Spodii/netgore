@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using NetGore.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -12,34 +8,6 @@ namespace NetGore.Graphics
     /// </summary>
     public class GrhDataException : Exception
     {
-        static string GetStr(GrhData grhData, string msg)
-        {
-            string s = string.Format("Exception caused by GrhData `{0}`.", grhData != null ? grhData.ToString() : "[NULL]");
-            if (!string.IsNullOrEmpty(s))
-                s += " " + msg;
-            return s;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GrhDataException"/> class.
-        /// </summary>
-        /// <param name="rawMessage">The raw message.</param>
-        protected GrhDataException(string rawMessage)
-            : base(rawMessage)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GrhDataException"/> class.
-        /// </summary>
-        /// <param name="rawMessage">The raw message.</param>
-        /// <param name="innerException">The exception that is the cause of the current exception,
-        /// or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
-        protected GrhDataException(string rawMessage, Exception innerException)
-            : base(rawMessage, innerException)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Exception"/> class.
         /// </summary>
@@ -53,8 +21,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="grhData">The <see cref="GrhData"/> related to the <see cref="Exception"/>.</param>
         /// <param name="message">The message that describes the error.</param>
-        public GrhDataException(GrhData grhData, string message)
-            : base(GetStr(grhData, message))
+        public GrhDataException(GrhData grhData, string message) : base(GetStr(grhData, message))
         {
         }
 
@@ -69,6 +36,32 @@ namespace NetGore.Graphics
         public GrhDataException(GrhData grhData, string message, Exception innerException)
             : base(GetStr(grhData, message), innerException)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhDataException"/> class.
+        /// </summary>
+        /// <param name="rawMessage">The raw message.</param>
+        protected GrhDataException(string rawMessage) : base(rawMessage)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhDataException"/> class.
+        /// </summary>
+        /// <param name="rawMessage">The raw message.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception,
+        /// or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
+        protected GrhDataException(string rawMessage, Exception innerException) : base(rawMessage, innerException)
+        {
+        }
+
+        static string GetStr(GrhData grhData, string msg)
+        {
+            string s = string.Format("Exception caused by GrhData `{0}`.", grhData != null ? grhData.ToString() : "[NULL]");
+            if (!string.IsNullOrEmpty(s))
+                s += " " + msg;
+            return s;
         }
     }
 }

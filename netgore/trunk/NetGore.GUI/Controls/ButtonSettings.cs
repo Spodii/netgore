@@ -10,6 +10,12 @@ namespace NetGore.Graphics.GUI
         ControlBorder _mouseOver;
         ControlBorder _pressed;
 
+        public ButtonSettings(ControlBorder border, ControlBorder over, ControlBorder pressed) : base(Color.Black, border)
+        {
+            MouseOver = over;
+            Pressed = pressed;
+        }
+
         public static ButtonSettings Default
         {
             get
@@ -30,12 +36,6 @@ namespace NetGore.Graphics.GUI
         {
             get { return _pressed; }
             set { _pressed = value; }
-        }
-
-        public ButtonSettings(ControlBorder border, ControlBorder over, ControlBorder pressed) : base(Color.Black, border)
-        {
-            MouseOver = over;
-            Pressed = pressed;
         }
     }
 }

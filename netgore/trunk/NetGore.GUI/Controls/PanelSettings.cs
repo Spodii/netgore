@@ -7,6 +7,10 @@ namespace NetGore.Graphics.GUI
     {
         static PanelSettings _default = null;
 
+        public PanelSettings(ControlBorder border) : base(border)
+        {
+        }
+
         public static PanelSettings Default
         {
             get
@@ -15,10 +19,6 @@ namespace NetGore.Graphics.GUI
                     _default = new PanelSettings(null);
                 return _default;
             }
-        }
-
-        public PanelSettings(ControlBorder border) : base(border)
-        {
         }
     }
 }

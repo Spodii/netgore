@@ -24,14 +24,6 @@ namespace NetGore.Graphics
         SkeletonFrame[] _keyFrames;
 
         /// <summary>
-        /// Gets the keyframes used by the set
-        /// </summary>
-        public SkeletonFrame[] KeyFrames
-        {
-            get { return _keyFrames; }
-        }
-
-        /// <summary>
         /// Constructor for the SkeletonSet
         /// </summary>
         /// <param name="keyFrames">Array of frames to use for the keyframes</param>
@@ -48,6 +40,14 @@ namespace NetGore.Graphics
         public SkeletonSet(string skeletonSetName, ContentPaths contentPath)
             : this(new XmlValueReader(GetFilePath(skeletonSetName, contentPath), _rootNodeName), contentPath)
         {
+        }
+
+        /// <summary>
+        /// Gets the keyframes used by the set
+        /// </summary>
+        public SkeletonFrame[] KeyFrames
+        {
+            get { return _keyFrames; }
         }
 
         /// <summary>

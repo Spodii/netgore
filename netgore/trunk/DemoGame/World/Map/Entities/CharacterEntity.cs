@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -139,6 +138,27 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Handles updating this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, float deltaTime)
+        {
+            ThreadAsserts.IsMainThread();
+            Debug.Assert(imap != null, "How the hell is a null Map updating?");
+            Debug.Assert(deltaTime >= 0, "Unless we're going back in time, deltaTime < 0 makes no sense at all.");
+
+            // Perform pre-collision detection updating
+            UpdatePreCollision(deltaTime);
+
+            // Performs basic entity updating
+            base.HandleUpdate(imap, deltaTime);
+
+            // Perform post-collision detection updating
+            UpdatePostCollision(deltaTime);
+        }
+
+        /// <summary>
         /// Checks if the given <paramref name="toPickup"/> is close enough to the <see cref="CharacterEntity"/>
         /// to be picked up.
         /// </summary>
@@ -181,27 +201,6 @@ namespace DemoGame
 
             // Teleport
             base.Teleport(position);
-        }
-
-        /// <summary>
-        /// Handles updating this <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
-        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
-        {
-            ThreadAsserts.IsMainThread();
-            Debug.Assert(imap != null, "How the hell is a null Map updating?");
-            Debug.Assert(deltaTime >= 0, "Unless we're going back in time, deltaTime < 0 makes no sense at all.");
-
-            // Perform pre-collision detection updating
-            UpdatePreCollision(deltaTime);
-
-            // Performs basic entity updating
-            base.HandleUpdate(imap, deltaTime);
-
-            // Perform post-collision detection updating
-            UpdatePostCollision(deltaTime);
         }
 
         /// <summary>
@@ -290,6 +289,8 @@ namespace DemoGame
             _state = newState;
         }
 
+        #region IUpdateableEntity Members
+
         /// <summary>
         /// Updates the <see cref="IUpdateableEntity"/>.
         /// </summary>
@@ -299,5 +300,7 @@ namespace DemoGame
         {
             HandleUpdate(imap, deltaTime);
         }
+
+        #endregion
     }
 }

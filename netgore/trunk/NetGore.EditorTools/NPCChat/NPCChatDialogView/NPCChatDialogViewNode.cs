@@ -16,6 +16,34 @@ namespace NetGore.EditorTools.NPCChat
         NPCChatDialogViewNodeItemType _chatItemType;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatDialogViewNode"/> class.
+        /// </summary>
+        /// <param name="treeView">The tree view.</param>
+        /// <param name="handledItem">The handled item.</param>
+        internal NPCChatDialogViewNode(TreeView treeView, object handledItem)
+        {
+            Tag = handledItem;
+            UpdateChatItemType();
+            treeView.Nodes.Add(this);
+            TreeViewCasted.NotifyNodeCreated(this);
+            Update(true);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatDialogViewNode"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="handledItem">The handled item.</param>
+        internal NPCChatDialogViewNode(TreeNode parent, object handledItem)
+        {
+            Tag = handledItem;
+            UpdateChatItemType();
+            parent.Nodes.Add(this);
+            TreeViewCasted.NotifyNodeCreated(this);
+            UpdateText();
+        }
+
+        /// <summary>
         /// Gets the NPC chat item that this <see cref="NPCChatDialogViewNode"/> handles.
         /// </summary>
         public object ChatItem
@@ -114,34 +142,6 @@ namespace NetGore.EditorTools.NPCChat
         NPCChatDialogView TreeViewCasted
         {
             get { return (NPCChatDialogView)TreeView; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatDialogViewNode"/> class.
-        /// </summary>
-        /// <param name="treeView">The tree view.</param>
-        /// <param name="handledItem">The handled item.</param>
-        internal NPCChatDialogViewNode(TreeView treeView, object handledItem)
-        {
-            Tag = handledItem;
-            UpdateChatItemType();
-            treeView.Nodes.Add(this);
-            TreeViewCasted.NotifyNodeCreated(this);
-            Update(true);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatDialogViewNode"/> class.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="handledItem">The handled item.</param>
-        internal NPCChatDialogViewNode(TreeNode parent, object handledItem)
-        {
-            Tag = handledItem;
-            UpdateChatItemType();
-            parent.Nodes.Add(this);
-            TreeViewCasted.NotifyNodeCreated(this);
-            UpdateText();
         }
 
         /// <summary>

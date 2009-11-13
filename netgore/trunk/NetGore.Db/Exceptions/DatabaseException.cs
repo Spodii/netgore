@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Db
 {
@@ -15,14 +13,14 @@ namespace NetGore.Db
         /// Initializes a new instance of the <see cref="DatabaseException"/> class.
         /// </summary>
         public DatabaseException()
-        { }
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public DatabaseException(string message)
-            : base(message)
+        public DatabaseException(string message) : base(message)
         {
         }
 
@@ -31,8 +29,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public DatabaseException(string message, Exception innerException)
-            : base(message, innerException)
+        public DatabaseException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

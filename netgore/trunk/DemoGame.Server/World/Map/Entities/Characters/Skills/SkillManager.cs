@@ -15,13 +15,13 @@ namespace DemoGame.Server
     /// </summary>
     public static class SkillManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Dictionary that allows for lookup of a SkillBase for the given SkillType.
         /// </summary>
         static readonly Dictionary<SkillType, SkillBase> _skills =
             new Dictionary<SkillType, SkillBase>(EnumComparer<SkillType>.Instance);
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// SkillManager static constructor.

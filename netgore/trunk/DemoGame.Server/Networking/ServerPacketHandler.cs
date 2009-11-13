@@ -17,10 +17,26 @@ namespace DemoGame.Server
     class ServerPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly Queue<IIPSocket> _disconnectedSockets = new Queue<IIPSocket>();
         readonly MessageProcessorManager _ppManager;
         readonly SayHandler _sayHandler;
         readonly Server _server;
         readonly ServerSockets _serverSockets;
+
+        public ServerPacketHandler(ServerSockets serverSockets, Server server)
+        {
+            if (serverSockets == null)
+                throw new ArgumentNullException("serverSockets");
+            if (server == null)
+                throw new ArgumentNullException("server");
+
+            _server = server;
+            _serverSockets = serverSockets;
+            _serverSockets.OnDisconnect += ServerSockets_OnDisconnect;
+            _sayHandler = new SayHandler(server);
+
+            _ppManager = new MessageProcessorManager(this, ClientPacketIDHelper.Instance.BitsRequired);
+        }
 
         public IDbController DbController
         {
@@ -43,19 +59,24 @@ namespace DemoGame.Server
             get { return Server.World; }
         }
 
-        public ServerPacketHandler(ServerSockets serverSockets, Server server)
+        /// <summary>
+        /// Gets the <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.
+        /// </summary>
+        /// <returns>The <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.</returns>
+        public IEnumerable<IIPSocket> GetDisconnectedSockets()
         {
-            if (serverSockets == null)
-                throw new ArgumentNullException("serverSockets");
-            if (server == null)
-                throw new ArgumentNullException("server");
+            if (_disconnectedSockets.Count == 0)
+                return Enumerable.Empty<IIPSocket>();
 
-            _server = server;
-            _serverSockets = serverSockets;
-            _serverSockets.OnDisconnect += ServerSockets_OnDisconnect;
-            _sayHandler = new SayHandler(server);
+            lock (_disconnectedSockets)
+            {
+                if (_disconnectedSockets.Count == 0)
+                    return Enumerable.Empty<IIPSocket>();
 
-            _ppManager = new MessageProcessorManager(this, ClientPacketIDHelper.Instance.BitsRequired);
+                var ret = _disconnectedSockets.ToArray();
+                _disconnectedSockets.Clear();
+                return ret;
+            }
         }
 
         [MessageHandler((byte)ClientPacketID.Attack)]
@@ -460,28 +481,6 @@ namespace DemoGame.Server
             lock (_disconnectedSockets)
             {
                 _disconnectedSockets.Enqueue(conn);
-            }
-        }
-
-        readonly Queue<IIPSocket> _disconnectedSockets = new Queue<IIPSocket>();
-
-        /// <summary>
-        /// Gets the <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.
-        /// </summary>
-        /// <returns>The <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.</returns>
-        public IEnumerable<IIPSocket> GetDisconnectedSockets()
-        {
-            if (_disconnectedSockets.Count == 0)
-                return Enumerable.Empty<IIPSocket>();
-
-            lock (_disconnectedSockets)
-            {
-                if (_disconnectedSockets.Count == 0)
-                    return Enumerable.Empty<IIPSocket>();
-
-                var ret = _disconnectedSockets.ToArray();
-                _disconnectedSockets.Clear();
-                return ret;
             }
         }
 

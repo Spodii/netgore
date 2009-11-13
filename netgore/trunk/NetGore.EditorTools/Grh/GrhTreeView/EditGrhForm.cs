@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.EditorTools;
 using NetGore.Globalization;
 using NetGore.Graphics;
 using NetGore.IO;
@@ -21,9 +20,10 @@ namespace NetGore.EditorTools
         /// </summary>
         static readonly char DirSep = Path.DirectorySeparatorChar;
 
+        readonly CreateWallEntityHandler _createWall;
+
         readonly GrhData _gd;
         readonly MapGrhWalls _mapGrhWalls;
-        readonly CreateWallEntityHandler _createWall;
 
         public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall)
         {

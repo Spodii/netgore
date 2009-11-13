@@ -21,17 +21,6 @@ namespace NetGore
         static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
 
         /// <summary>
-        /// Gets or sets the weight of the Entity (used in gravity calculations).
-        /// </summary>
-        /// <value></value>
-        [Browsable(false)]
-        public override float Weight
-        {
-            get { return 0; }
-            set { }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
         /// </summary>
         /// <param name="position">The position.</param>
@@ -60,15 +49,15 @@ namespace NetGore
             CollisionType = collisionType;
         }
 
-        void Read(IValueReader r)
+        /// <summary>
+        /// Gets or sets the weight of the Entity (used in gravity calculations).
+        /// </summary>
+        /// <value></value>
+        [Browsable(false)]
+        public override float Weight
         {
-            Vector2 position = r.ReadVector2(_valueKeyPosition);
-            Vector2 size = r.ReadVector2(_valueKeySize);
-            CollisionType ct = r.ReadEnum(_collisionTypeHelper, _valueKeyCollisionType);
-
-            SetPositionRaw(position);
-            SetSizeRaw(size);
-            SetCollisionTypeRaw(ct);
+            get { return 0; }
+            set { }
         }
 
         public static void HandleCollideInto(Entity other, Vector2 displacement)
@@ -91,6 +80,17 @@ namespace NetGore
                     other.SetVelocity(new Vector2(other.Velocity.X, 0.0f));
                 }
             }
+        }
+
+        void Read(IValueReader r)
+        {
+            Vector2 position = r.ReadVector2(_valueKeyPosition);
+            Vector2 size = r.ReadVector2(_valueKeySize);
+            CollisionType ct = r.ReadEnum(_collisionTypeHelper, _valueKeyCollisionType);
+
+            SetPositionRaw(position);
+            SetSizeRaw(size);
+            SetCollisionTypeRaw(ct);
         }
 
         public void Write(IValueWriter w)

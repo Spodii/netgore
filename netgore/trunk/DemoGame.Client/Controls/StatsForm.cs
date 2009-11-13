@@ -30,11 +30,6 @@ namespace DemoGame.Client
         /// </summary>
         public event RaiseStatHandler OnRaiseStat;
 
-        public UserInfo UserInfo
-        {
-            get { return _userInfo; }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="StatsForm"/> class.
         /// </summary>
@@ -70,6 +65,11 @@ namespace DemoGame.Client
             NewStatLabel(StatType.Str);
             NewStatLabel(StatType.Agi);
             NewStatLabel(StatType.Int);
+        }
+
+        public UserInfo UserInfo
+        {
+            get { return _userInfo; }
         }
 
         void AddLine()
@@ -157,6 +157,18 @@ namespace DemoGame.Client
             readonly StatsForm _statsForm;
             readonly StatType _statType;
 
+            public RaiseStatPB(Vector2 position, ISprite sprite, StatsForm parent, StatType statType)
+                : base(sprite, position, parent)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException("parent");
+                if (sprite == null)
+                    throw new ArgumentNullException("sprite");
+
+                _statsForm = parent;
+                _statType = statType;
+            }
+
             public bool CanRaiseStat
             {
                 get { return Points >= StatCost; }
@@ -185,18 +197,6 @@ namespace DemoGame.Client
             public StatType StatType
             {
                 get { return _statType; }
-            }
-
-            public RaiseStatPB(Vector2 position, ISprite sprite, StatsForm parent, StatType statType)
-                : base(sprite, position, parent)
-            {
-                if (parent == null)
-                    throw new ArgumentNullException("parent");
-                if (sprite == null)
-                    throw new ArgumentNullException("sprite");
-
-                _statsForm = parent;
-                _statType = statType;
             }
 
             protected override void UpdateControl(int currentTime)

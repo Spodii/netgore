@@ -14,6 +14,14 @@ namespace DemoGame.Server
         int _lastUpdateTime;
         int _updateRate = 3000;
 
+        public ServerTimeUpdater(DbQueryNonReader updateQuery)
+        {
+            if (updateQuery == null)
+                throw new ArgumentNullException("updateQuery");
+
+            _updateQuery = updateQuery;
+        }
+
         /// <summary>
         /// Gets or sets the rate, in milliseconds, that the server time is updated in the database.
         /// </summary>
@@ -21,14 +29,6 @@ namespace DemoGame.Server
         {
             get { return _updateRate; }
             set { _updateRate = value; }
-        }
-
-        public ServerTimeUpdater(DbQueryNonReader updateQuery)
-        {
-            if (updateQuery == null)
-                throw new ArgumentNullException("updateQuery");
-
-            _updateQuery = updateQuery;
         }
 
         /// <summary>

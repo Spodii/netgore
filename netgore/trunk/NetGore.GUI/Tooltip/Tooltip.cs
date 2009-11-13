@@ -41,6 +41,26 @@ namespace NetGore.Graphics.GUI
         bool _tooltipTimedOut = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Tooltip"/> class.
+        /// </summary>
+        /// <param name="guiManager">The GUI manager.</param>
+        public Tooltip(GUIManagerBase guiManager)
+        {
+            if (guiManager == null)
+                throw new ArgumentNullException("guiManager");
+
+            _guiManager = guiManager;
+            _font = guiManager.Font;
+            _drawer = new StyledTextsDrawer(Font);
+
+            // Set the Tooltip in the GUIManager
+            GUIManager.Tooltip = this;
+
+            Debug.Assert(GUIManager.Tooltip == this);
+            Debug.Assert(Font != null);
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="Color"/> to draw the background of this <see cref="Tooltip"/>. This value
         /// is only valid for when the <see cref="Border"/> is null.
         /// </summary>
@@ -172,26 +192,6 @@ namespace NetGore.Graphics.GUI
         {
             get { return _timeout; }
             set { _timeout = Math.Max(0, value); }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Tooltip"/> class.
-        /// </summary>
-        /// <param name="guiManager">The GUI manager.</param>
-        public Tooltip(GUIManagerBase guiManager)
-        {
-            if (guiManager == null)
-                throw new ArgumentNullException("guiManager");
-
-            _guiManager = guiManager;
-            _font = guiManager.Font;
-            _drawer = new StyledTextsDrawer(Font);
-
-            // Set the Tooltip in the GUIManager
-            GUIManager.Tooltip = this;
-
-            Debug.Assert(GUIManager.Tooltip == this);
-            Debug.Assert(Font != null);
         }
 
         /// <summary>

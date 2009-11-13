@@ -40,6 +40,15 @@ namespace NetGore.Graphics
         float _width = 32;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenGrid"/> class.
+        /// </summary>
+        /// <param name="screenSize">Size of the screen in pixels.</param>
+        public ScreenGrid(Vector2 screenSize)
+        {
+            _screenSize = screenSize;
+        }
+
+        /// <summary>
         /// Gets or sets the color of the grid lines.
         /// </summary>
         public Color Color
@@ -112,15 +121,6 @@ namespace NetGore.Graphics
 
                 _width = value;
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenGrid"/> class.
-        /// </summary>
-        /// <param name="screenSize">Size of the screen in pixels.</param>
-        public ScreenGrid(Vector2 screenSize)
-        {
-            _screenSize = screenSize;
         }
 
         /// <summary>

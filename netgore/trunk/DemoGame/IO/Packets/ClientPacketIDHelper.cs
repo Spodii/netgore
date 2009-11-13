@@ -8,14 +8,6 @@ namespace DemoGame
         static readonly ClientPacketIDHelper _instance;
 
         /// <summary>
-        /// Gets the <see cref="ClientPacketIDHelper"/> instance.
-        /// </summary>
-        public static ClientPacketIDHelper Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="ClientPacketIDHelper"/> class.
         /// </summary>
         static ClientPacketIDHelper()
@@ -28,6 +20,14 @@ namespace DemoGame
         /// </summary>
         ClientPacketIDHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ClientPacketIDHelper"/> instance.
+        /// </summary>
+        public static ClientPacketIDHelper Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

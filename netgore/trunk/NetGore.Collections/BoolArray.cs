@@ -20,6 +20,37 @@ namespace NetGore.Collections
         int _version;
 
         /// <summary>
+        /// BoolArray constructor.
+        /// </summary>
+        /// <param name="length">The initial Length of the BoolArray.</param>
+        public BoolArray(int length)
+        {
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException("length", "The array length must be greater than 0.");
+
+            _bitLength = length;
+            _buffer = new byte[RequiredBufferSize(_bitLength)];
+        }
+
+        /// <summary>
+        /// BoolArray constructor.
+        /// </summary>
+        /// <param name="values">Boolean array containing the initial values to use.</param>
+        public BoolArray(bool[] values)
+        {
+            if (values == null)
+                throw new ArgumentNullException("values");
+
+            _bitLength = values.Length;
+            _buffer = new byte[RequiredBufferSize(_bitLength)];
+
+            for (int i = 0; i < _bitLength; i++)
+            {
+                this[i] = values[i];
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the boolean value at a given <paramref name="index"/>.
         /// </summary>
         /// <param name="index">Index to set the value at.</param>
@@ -68,37 +99,6 @@ namespace NetGore.Collections
         public int Length
         {
             get { return _bitLength; }
-        }
-
-        /// <summary>
-        /// BoolArray constructor.
-        /// </summary>
-        /// <param name="length">The initial Length of the BoolArray.</param>
-        public BoolArray(int length)
-        {
-            if (length <= 0)
-                throw new ArgumentOutOfRangeException("length", "The array length must be greater than 0.");
-
-            _bitLength = length;
-            _buffer = new byte[RequiredBufferSize(_bitLength)];
-        }
-
-        /// <summary>
-        /// BoolArray constructor.
-        /// </summary>
-        /// <param name="values">Boolean array containing the initial values to use.</param>
-        public BoolArray(bool[] values)
-        {
-            if (values == null)
-                throw new ArgumentNullException("values");
-
-            _bitLength = values.Length;
-            _buffer = new byte[RequiredBufferSize(_bitLength)];
-
-            for (int i = 0; i < _bitLength; i++)
-            {
-                this[i] = values[i];
-            }
         }
 
         /// <summary>

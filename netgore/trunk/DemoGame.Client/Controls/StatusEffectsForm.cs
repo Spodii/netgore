@@ -13,8 +13,8 @@ namespace DemoGame.Client
 {
     public class StatusEffectsForm : Form, IGetTime
     {
-        static readonly Vector2 _iconSize = new Vector2(32, 32);
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly Vector2 _iconSize = new Vector2(32, 32);
         readonly IGetTime _getTime;
         readonly StatusEffectCollection _statusEffects = new StatusEffectCollection();
 
@@ -128,6 +128,22 @@ namespace DemoGame.Client
             readonly StatusEffectInfo _statusEffectInfo;
             readonly StatusEffectType _statusEffectType;
 
+            /// <summary>
+            /// StatusEffectCollectionItem constructor.
+            /// </summary>
+            /// <param name="statusEffectType">The StatusEffectType to use.</param>
+            /// <param name="power">The power of the StatusEffect.</param>
+            /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
+            public StatusEffectCollectionItem(StatusEffectType statusEffectType, ushort power, int disableTime)
+            {
+                _statusEffectType = statusEffectType;
+                _power = power;
+                _disableTime = disableTime;
+
+                _statusEffectInfo = StatusEffectInfo.GetStatusEffectInfo(statusEffectType);
+                _grh = new Grh(_statusEffectInfo.Icon);
+            }
+
             public int DisableTime
             {
                 get { return _disableTime; }
@@ -146,22 +162,6 @@ namespace DemoGame.Client
             public StatusEffectType StatusEffectType
             {
                 get { return _statusEffectType; }
-            }
-
-            /// <summary>
-            /// StatusEffectCollectionItem constructor.
-            /// </summary>
-            /// <param name="statusEffectType">The StatusEffectType to use.</param>
-            /// <param name="power">The power of the StatusEffect.</param>
-            /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
-            public StatusEffectCollectionItem(StatusEffectType statusEffectType, ushort power, int disableTime)
-            {
-                _statusEffectType = statusEffectType;
-                _power = power;
-                _disableTime = disableTime;
-
-                _statusEffectInfo = StatusEffectInfo.GetStatusEffectInfo(statusEffectType);
-                _grh = new Grh(_statusEffectInfo.Icon);
             }
 
             public void Draw(SpriteBatch sb, Vector2 position, int currentTime)
