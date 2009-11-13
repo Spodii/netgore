@@ -14,7 +14,7 @@
       </Category>
       <AutomaticSize>False</AutomaticSize>
       <Texture>
-        <Name>1</Name>
+        <Name>Map/Platform/Grass/Top-Left</Name>
         <Source>0,0,32,32</Source>
       </Texture>
     </Item0>
@@ -30,8 +30,8 @@
       </Category>
       <AutomaticSize>False</AutomaticSize>
       <Texture>
-        <Name>1</Name>
-        <Source>32,0,32,32</Source>
+        <Name>Map/Platform/Grass/Top-Mid</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item1>
     <Item2>
@@ -46,8 +46,8 @@
       </Category>
       <AutomaticSize>False</AutomaticSize>
       <Texture>
-        <Name>1</Name>
-        <Source>64,0,32,32</Source>
+        <Name>Map/Platform/Grass/Top-Right</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item2>
     <Item3>
@@ -62,8 +62,8 @@
       </Category>
       <AutomaticSize>False</AutomaticSize>
       <Texture>
-        <Name>1</Name>
-        <Source>0,32,32,32</Source>
+        <Name>Map/Platform/Grass/Mid-Left</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item3>
     <Item4>
@@ -78,8 +78,8 @@
       </Category>
       <AutomaticSize>False</AutomaticSize>
       <Texture>
-        <Name>1</Name>
-        <Source>32,32,32,32</Source>
+        <Name>Map/Platform/Grass/Mid-Mid</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item4>
     <Item5>
@@ -94,8 +94,8 @@
       </Category>
       <AutomaticSize>False</AutomaticSize>
       <Texture>
-        <Name>1</Name>
-        <Source>64,32,32,32</Source>
+        <Name>Map/Platform/Grass/Mid-Right</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
     </Item5>
     <Item6>
@@ -110,8 +110,8 @@
       </Category>
       <AutomaticSize>False</AutomaticSize>
       <Texture>
-        <Name>1</Name>
-        <Source>0,64,32,1</Source>
+        <Name>Map/Platform/Grass/Bottom</Name>
+        <Source>0,0,32,1</Source>
       </Texture>
     </Item6>
     <Item7>
