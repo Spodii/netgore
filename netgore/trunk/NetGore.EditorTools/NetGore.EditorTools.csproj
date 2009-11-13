@@ -72,6 +72,10 @@
       <DependentUpon>EditGrhForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ListBoxExtensions.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeNodeMouseClickEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeViewCancelEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeViewContextMenuItemClickEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeViewEvent.cs" />
     <Compile Include="Grh\MapGrhWalls.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>

@@ -16,14 +16,6 @@ using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace NetGore.EditorTools
 {
-    public delegate void GrhTreeViewContextMenuItemClickEvent(object sender, EventArgs e);
-
-    public delegate void GrhTreeViewEvent(object sender, GrhTreeViewEventArgs e);
-
-    public delegate void GrhTreeNodeMouseClickEvent(object sender, GrhTreeNodeMouseClickEventArgs e);
-
-    public delegate void GrhTreeViewCancelEvent(object sender, GrhTreeViewCancelEventArgs e);
-
     /// <summary>
     /// TreeView used to display Grhs
     /// </summary>
