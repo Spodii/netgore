@@ -17,6 +17,28 @@ namespace NetGore.Graphics.GUI
         string _lineText;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextBoxLine"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="TextBoxLines"/> this line is part of.</param>
+        public TextBoxLine(TextBoxLines owner) : this(owner, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBoxLine"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="TextBoxLines"/> this line is part of.</param>
+        /// <param name="wasAutoBroken">if this <see cref="TextBoxLine"/> was created as the result of automatic line
+        /// breaking due to word wrapping.</param>
+        public TextBoxLine(TextBoxLines owner, bool wasAutoBroken)
+        {
+            TextBoxLines = owner;
+            _wasAutoBroken = wasAutoBroken;
+            _lineText = string.Empty;
+            _texts = new List<StyledText>(4);
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of the <see cref="StyledText"/>s contained in this line.
         /// </summary>
         public IEnumerable<StyledText> GetLineTexts
@@ -58,28 +80,6 @@ namespace NetGore.Graphics.GUI
         public bool WasAutoBroken
         {
             get { return _wasAutoBroken; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBoxLine"/> class.
-        /// </summary>
-        /// <param name="owner">The <see cref="TextBoxLines"/> this line is part of.</param>
-        public TextBoxLine(TextBoxLines owner) : this(owner, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBoxLine"/> class.
-        /// </summary>
-        /// <param name="owner">The <see cref="TextBoxLines"/> this line is part of.</param>
-        /// <param name="wasAutoBroken">if this <see cref="TextBoxLine"/> was created as the result of automatic line
-        /// breaking due to word wrapping.</param>
-        public TextBoxLine(TextBoxLines owner, bool wasAutoBroken)
-        {
-            TextBoxLines = owner;
-            _wasAutoBroken = wasAutoBroken;
-            _lineText = string.Empty;
-            _texts = new List<StyledText>(4);
         }
 
         /// <summary>

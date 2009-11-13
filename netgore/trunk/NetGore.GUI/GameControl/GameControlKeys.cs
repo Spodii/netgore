@@ -23,64 +23,6 @@ namespace NetGore.Graphics.GUI
         IEnumerable<Keys> _newKeysUp;
 
         /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be down for this
-        /// <see cref="GameControlKeys"/> to be invoked.
-        /// </summary>
-        public IEnumerable<Keys> KeysDown
-        {
-            get { return _keysDown; }
-            set { _keysDown = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be up for this
-        /// <see cref="GameControlKeys"/> to be invoked.
-        /// </summary>
-        public IEnumerable<Keys> KeysUp
-        {
-            get { return _keysUp; }
-            set { _keysUp = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
-        /// Gets or sets the optional name of this <see cref="GameControl"/>. This name is intended primarily for
-        /// debugging purposes. Cannot be null.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _name = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be pressed for this
-        /// <see cref="GameControlKeys"/> to be invoked. These keys must have been up the last frame, but
-        /// pressed this frame. If they were already pressed, they do not count.
-        /// </summary>
-        public IEnumerable<Keys> NewKeysDown
-        {
-            get { return _newKeysDown; }
-            set { _newKeysDown = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be raised for this
-        /// <see cref="GameControlKeys"/> to be invoked. These keys must have been pressed the last
-        /// frame, but up this frame. If they were already up, they do not count.
-        /// </summary>
-        public IEnumerable<Keys> NewKeysUp
-        {
-            get { return _newKeysUp; }
-            set { _newKeysUp = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
         /// </summary>
         /// <param name="name">The optional name of the control. Cannot be null.</param>
@@ -176,6 +118,64 @@ namespace NetGore.Graphics.GUI
             KeysUp = keyUp.HasValue ? new Keys[] { keyUp.Value } : _emptyKeys;
             NewKeysDown = newKeyDown.HasValue ? new Keys[] { newKeyDown.Value } : _emptyKeys;
             NewKeysUp = newKeyUp.HasValue ? new Keys[] { newKeyUp.Value } : _emptyKeys;
+        }
+
+        /// <summary>
+        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be down for this
+        /// <see cref="GameControlKeys"/> to be invoked.
+        /// </summary>
+        public IEnumerable<Keys> KeysDown
+        {
+            get { return _keysDown; }
+            set { _keysDown = value ?? _emptyKeys; }
+        }
+
+        /// <summary>
+        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be up for this
+        /// <see cref="GameControlKeys"/> to be invoked.
+        /// </summary>
+        public IEnumerable<Keys> KeysUp
+        {
+            get { return _keysUp; }
+            set { _keysUp = value ?? _emptyKeys; }
+        }
+
+        /// <summary>
+        /// Gets or sets the optional name of this <see cref="GameControl"/>. This name is intended primarily for
+        /// debugging purposes. Cannot be null.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _name = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be pressed for this
+        /// <see cref="GameControlKeys"/> to be invoked. These keys must have been up the last frame, but
+        /// pressed this frame. If they were already pressed, they do not count.
+        /// </summary>
+        public IEnumerable<Keys> NewKeysDown
+        {
+            get { return _newKeysDown; }
+            set { _newKeysDown = value ?? _emptyKeys; }
+        }
+
+        /// <summary>
+        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be raised for this
+        /// <see cref="GameControlKeys"/> to be invoked. These keys must have been pressed the last
+        /// frame, but up this frame. If they were already up, they do not count.
+        /// </summary>
+        public IEnumerable<Keys> NewKeysUp
+        {
+            get { return _newKeysUp; }
+            set { _newKeysUp = value ?? _emptyKeys; }
         }
     }
 }

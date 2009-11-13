@@ -13,15 +13,6 @@ namespace DemoGame.Client
         UserEquipped _equipment;
 
         /// <summary>
-        /// Gets or sets the <see cref="UserEquipped"/> the requests are being made for.
-        /// </summary>
-        public UserEquipped Equipment
-        {
-            get { return _equipment; }
-            set { _equipment = value; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EquipmentInfoRequester"/> class.
         /// </summary>
         /// <param name="equipment">The equipment.</param>
@@ -29,6 +20,15 @@ namespace DemoGame.Client
         public EquipmentInfoRequester(UserEquipped equipment, ISocketSender socket) : base(socket)
         {
             _equipment = equipment;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="UserEquipped"/> the requests are being made for.
+        /// </summary>
+        public UserEquipped Equipment
+        {
+            get { return _equipment; }
+            set { _equipment = value; }
         }
 
         /// <summary>

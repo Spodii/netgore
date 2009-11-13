@@ -18,14 +18,6 @@ namespace NetGore.Network
         readonly UDPSocket _socket;
 
         /// <summary>
-        /// Gets the port that this <see cref="LatencyTrackerServer"/> is bound to.
-        /// </summary>
-        public int BindPort
-        {
-            get { return _port; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LatencyTrackerServer"/> class.
         /// </summary>
         /// <param name="port">Port to bind to.</param>
@@ -38,6 +30,14 @@ namespace NetGore.Network
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created LatencyTrackerServer bound to port `{0}`.", port);
+        }
+
+        /// <summary>
+        /// Gets the port that this <see cref="LatencyTrackerServer"/> is bound to.
+        /// </summary>
+        public int BindPort
+        {
+            get { return _port; }
         }
 
         /// <summary>

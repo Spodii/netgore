@@ -18,14 +18,22 @@ namespace NetGore.Graphics.GUI
         IMusic _screenMusic;
 
         /// <summary>
-        /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="GameScreen"/>.
+        /// Initializes a new instance of the <see cref="GameScreen"/> class.
         /// </summary>
-        public MusicManager MusicManager { get { return ScreenManager.MusicManager; } }
+        /// <param name="name">Unique name of the screen that can be used to identify and
+        /// call it from other screens</param>
+        protected GameScreen(string name)
+        {
+            _name = name;
+        }
 
         /// <summary>
-        /// Gets the <see cref="SoundManager"/> to use for the sound to play on this <see cref="GameScreen"/>.
+        /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="GameScreen"/>.
         /// </summary>
-        public SoundManager SoundManager { get { return ScreenManager.SoundManager; } }
+        public MusicManager MusicManager
+        {
+            get { return ScreenManager.MusicManager; }
+        }
 
         /// <summary>
         /// Gets the unique name of this screen.
@@ -81,13 +89,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameScreen"/> class.
+        /// Gets the <see cref="SoundManager"/> to use for the sound to play on this <see cref="GameScreen"/>.
         /// </summary>
-        /// <param name="name">Unique name of the screen that can be used to identify and
-        /// call it from other screens</param>
-        protected GameScreen(string name)
+        public SoundManager SoundManager
         {
-            _name = name;
+            get { return ScreenManager.SoundManager; }
         }
 
         /// <summary>

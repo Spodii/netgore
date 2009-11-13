@@ -20,6 +20,18 @@ namespace DemoGame.Client
         T _slot;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ItemInfoRequesterBase&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="socket">The socket.</param>
+        protected ItemInfoRequesterBase(ISocketSender socket)
+        {
+            if (socket == null)
+                throw new ArgumentNullException("socket");
+
+            _socket = socket;
+        }
+
+        /// <summary>
         /// Gets the current <see cref="ItemInfo"/>. Can be null.
         /// </summary>
         public ItemInfo CurrentItemInfo
@@ -41,18 +53,6 @@ namespace DemoGame.Client
         public ISocketSender Socket
         {
             get { return _socket; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemInfoRequesterBase&lt;T&gt;"/> class.
-        /// </summary>
-        /// <param name="socket">The socket.</param>
-        protected ItemInfoRequesterBase(ISocketSender socket)
-        {
-            if (socket == null)
-                throw new ArgumentNullException("socket");
-
-            _socket = socket;
         }
 
         /// <summary>

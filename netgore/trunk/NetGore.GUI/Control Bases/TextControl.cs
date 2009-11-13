@@ -27,6 +27,23 @@ namespace NetGore.Graphics.GUI
         public event ControlEventHandler OnChangeText;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextControl"/> class.
+        /// </summary>
+        /// <param name="gui">GUIManager used by this Control.</param>
+        /// <param name="settings">Settings for this TextControl.</param>
+        /// <param name="text">Text to display.</param>
+        /// <param name="font">SpriteFont used to write the text.</param>
+        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Control that this Control belongs to.</param>
+        protected TextControl(GUIManagerBase gui, TextControlSettings settings, string text, SpriteFont font, Vector2 position,
+                              Vector2 size, Control parent) : base(gui, settings, position, size, parent)
+        {
+            _text = text;
+            _font = font;
+        }
+
+        /// <summary>
         /// Gets or sets the SpriteFont used by the TextControl.
         /// </summary>
         public virtual SpriteFont Font
@@ -68,23 +85,6 @@ namespace NetGore.Graphics.GUI
                 if (OnChangeText != null)
                     OnChangeText(this);
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextControl"/> class.
-        /// </summary>
-        /// <param name="gui">GUIManager used by this Control.</param>
-        /// <param name="settings">Settings for this TextControl.</param>
-        /// <param name="text">Text to display.</param>
-        /// <param name="font">SpriteFont used to write the text.</param>
-        /// <param name="position">Position of the Control relative to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        protected TextControl(GUIManagerBase gui, TextControlSettings settings, string text, SpriteFont font, Vector2 position,
-                              Vector2 size, Control parent) : base(gui, settings, position, size, parent)
-        {
-            _text = text;
-            _font = font;
         }
 
         /// <summary>

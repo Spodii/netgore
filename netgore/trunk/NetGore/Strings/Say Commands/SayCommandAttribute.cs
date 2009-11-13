@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -14,8 +11,7 @@ namespace NetGore
         /// Initializes a new instance of the <see cref="SayCommandAttribute"/> class.
         /// </summary>
         /// <param name="command">The name of the command.</param>
-        public SayCommandAttribute(string command)
-            : base(command)
+        public SayCommandAttribute(string command) : base(command)
         {
         }
     }

@@ -15,48 +15,15 @@ namespace DemoGame.Server
     /// </summary>
     public class NPCSpawner
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
         static readonly Random _rnd = new Random();
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly byte _amount;
 
         readonly Rectangle _area;
         readonly CharacterTemplate _characterTemplate;
         readonly Map _map;
-
-        /// <summary>
-        /// Gets the number of Characters being spawned by this NPCSpawner.
-        /// </summary>
-        public byte Amount
-        {
-            get { return _amount; }
-        }
-
-        /// <summary>
-        /// Gets the area that the spawning takes place in.
-        /// </summary>
-        public Rectangle Area
-        {
-            get { return _area; }
-        }
-
-        /// <summary>
-        /// Gets the CharacterTemplate used for the Characters spawned.
-        /// </summary>
-        public CharacterTemplate CharacterTemplate
-        {
-            get { return _characterTemplate; }
-        }
-
-        /// <summary>
-        /// Gets the Map that this NPCSpawner is on.
-        /// </summary>
-        public Map Map
-        {
-            get { return _map; }
-        }
 
         /// <summary>
         /// NPCSpawner constructor.
@@ -92,6 +59,38 @@ namespace DemoGame.Server
             }
 
             SpawnNPCs();
+        }
+
+        /// <summary>
+        /// Gets the number of Characters being spawned by this NPCSpawner.
+        /// </summary>
+        public byte Amount
+        {
+            get { return _amount; }
+        }
+
+        /// <summary>
+        /// Gets the area that the spawning takes place in.
+        /// </summary>
+        public Rectangle Area
+        {
+            get { return _area; }
+        }
+
+        /// <summary>
+        /// Gets the CharacterTemplate used for the Characters spawned.
+        /// </summary>
+        public CharacterTemplate CharacterTemplate
+        {
+            get { return _characterTemplate; }
+        }
+
+        /// <summary>
+        /// Gets the Map that this NPCSpawner is on.
+        /// </summary>
+        public Map Map
+        {
+            get { return _map; }
         }
 
         /// <summary>

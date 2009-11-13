@@ -15,14 +15,19 @@ namespace NetGore.NPCChat
     /// </summary>
     public abstract class NPCChatResponseActionBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// An empty array of <see cref="NPCChatResponseActionBase"/>s.
+        /// </summary>
+        public static readonly NPCChatResponseActionBase[] EmptyActions = new NPCChatResponseActionBase[0];
+
         /// <summary>
         /// Dictionary that contains the <see cref="NPCChatResponseActionBase"/> instance
         /// of each derived class, with the <see cref="Name"/> as the key.
         /// </summary>
         static readonly Dictionary<string, NPCChatResponseActionBase> _instances =
             new Dictionary<string, NPCChatResponseActionBase>(_nameComparer);
-
-        readonly string _name;
 
         /// <summary>
         /// <see cref="StringComparer"/> used for the Name.
@@ -34,12 +39,7 @@ namespace NetGore.NPCChat
         /// </summary>
         static readonly TypeFactory _typeCollection;
 
-        /// <summary>
-        /// An empty array of <see cref="NPCChatResponseActionBase"/>s.
-        /// </summary>
-        public static readonly NPCChatResponseActionBase[] EmptyActions = new NPCChatResponseActionBase[0];
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly string _name;
 
         /// <summary>
         /// Initializes the <see cref="NPCChatResponseActionBase"/> class.

@@ -13,9 +13,9 @@ namespace NetGore
     /// </summary>
     public static class DynamicEntityFactory
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string TypeNameStringKey = "DynamicEntityType";
         static readonly TypeFactory _typeCollection;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Static DynamicEntityFactory constructor.

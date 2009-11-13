@@ -37,6 +37,46 @@ namespace NetGore.Graphics
         int _lastUpdated = 0;
 
         /// <summary>
+        /// Creates a stationary Grh.
+        /// </summary>
+        /// <param name="grhIndex">Index of the stationary Grh.</param>
+        public Grh(GrhIndex grhIndex)
+        {
+            SetGrh(grhIndex);
+        }
+
+        /// <summary>
+        /// Creates a stationary Grh.
+        /// </summary>
+        /// <param name="grhData">GrhData to create from.</param>
+        public Grh(GrhData grhData)
+        {
+            SetGrh(grhData);
+        }
+
+        /// <summary>
+        /// Creates a Grh.
+        /// </summary>
+        /// <param name="grhIndex">Index of the Grh.</param>
+        /// <param name="anim">Animation type.</param>
+        /// <param name="currentTime">Current time.</param>
+        public Grh(GrhIndex grhIndex, AnimType anim, int currentTime)
+        {
+            SetGrh(grhIndex, anim, currentTime);
+        }
+
+        /// <summary>
+        /// Creates a Grh.
+        /// </summary>
+        /// <param name="grhData">GrhData to create from.</param>
+        /// <param name="anim">Animation type.</param>
+        /// <param name="currentTime">Current time.</param>
+        public Grh(GrhData grhData, AnimType anim, int currentTime)
+        {
+            SetGrh(grhData, anim, currentTime);
+        }
+
+        /// <summary>
         /// Gets or sets the animation type for the Grh.
         /// </summary>
         public AnimType AnimType
@@ -130,46 +170,6 @@ namespace NetGore.Graphics
 
                 return CurrentGrhData.Width;
             }
-        }
-
-        /// <summary>
-        /// Creates a stationary Grh.
-        /// </summary>
-        /// <param name="grhIndex">Index of the stationary Grh.</param>
-        public Grh(GrhIndex grhIndex)
-        {
-            SetGrh(grhIndex);
-        }
-
-        /// <summary>
-        /// Creates a stationary Grh.
-        /// </summary>
-        /// <param name="grhData">GrhData to create from.</param>
-        public Grh(GrhData grhData)
-        {
-            SetGrh(grhData);
-        }
-
-        /// <summary>
-        /// Creates a Grh.
-        /// </summary>
-        /// <param name="grhIndex">Index of the Grh.</param>
-        /// <param name="anim">Animation type.</param>
-        /// <param name="currentTime">Current time.</param>
-        public Grh(GrhIndex grhIndex, AnimType anim, int currentTime)
-        {
-            SetGrh(grhIndex, anim, currentTime);
-        }
-
-        /// <summary>
-        /// Creates a Grh.
-        /// </summary>
-        /// <param name="grhData">GrhData to create from.</param>
-        /// <param name="anim">Animation type.</param>
-        /// <param name="currentTime">Current time.</param>
-        public Grh(GrhData grhData, AnimType anim, int currentTime)
-        {
-            SetGrh(grhData, anim, currentTime);
         }
 
         /// <summary>

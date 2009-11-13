@@ -31,9 +31,9 @@ namespace DemoGame.Client
         public ChatForm(Control parent, Vector2 pos) : base(parent.GUIManager, "Chat", pos, new Vector2(300, 150), parent)
         {
             // Add the input and output boxes
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             float fontHeight = Font.LineSpacing;
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             int borderHeight = GUIManager.TextBoxSettings.Border != null ? GUIManager.TextBoxSettings.Border.Height : 0;
 
@@ -105,17 +105,11 @@ namespace DemoGame.Client
             }
         }
 
-        protected override void UpdateControl(int currentTime)
-        {
-            UpdateBufferOffset();
-            base.UpdateControl(currentTime);
-        }
-
         void UpdateBufferOffset()
         {
             if (_bufferOffset > _output.LineCount - _output.MaxVisibleLines)
                 _bufferOffset = _output.LineCount - _output.MaxVisibleLines;
-            
+
             if (_bufferOffset < 0)
                 _bufferOffset = 0;
 
@@ -126,6 +120,12 @@ namespace DemoGame.Client
                 pos = _output.LineCount - 1;
 
             _output.LineBufferOffset = pos;
+        }
+
+        protected override void UpdateControl(int currentTime)
+        {
+            UpdateBufferOffset();
+            base.UpdateControl(currentTime);
         }
 
         #region IRestorableSettings Members

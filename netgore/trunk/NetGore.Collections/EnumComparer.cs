@@ -28,14 +28,6 @@ namespace NetGore.Collections
         readonly Func<T, int> _getHashCode;
 
         /// <summary>
-        /// Gets the EnumComparer used to compare an Enum of type <typeparam name="T">T</typeparam>.
-        /// </summary>
-        public static EnumComparer<T> Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// EnumComparer static constructor.
         /// </summary>
         static EnumComparer()
@@ -66,6 +58,14 @@ namespace NetGore.Collections
         {
             _getHashCode = GenerateGetHashCode();
             _equals = GenerateEquals();
+        }
+
+        /// <summary>
+        /// Gets the EnumComparer used to compare an Enum of type <typeparam name="T">T</typeparam>.
+        /// </summary>
+        public static EnumComparer<T> Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

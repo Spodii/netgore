@@ -6,19 +6,19 @@ namespace DemoGame.Server
     public class SkillHeal : SkillBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SkillHeal"/> class.
+        /// </summary>
+        SkillHeal() : base(SkillType.Heal)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets if this Skill requires a target to be specified for the skill
         /// to be used. If this is false, the skill will never even attempt to be used unless there is a target.
         /// </summary>
         public override bool RequiresTarget
         {
             get { return false; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkillHeal"/> class.
-        /// </summary>
-        SkillHeal() : base(SkillType.Heal)
-        {
         }
 
         /// <summary>

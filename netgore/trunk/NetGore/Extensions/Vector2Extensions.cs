@@ -20,16 +20,6 @@ namespace NetGore
             return new Vector2(Math.Abs(source.X), Math.Abs(source.Y));
         }
 
-        public static Vector2 Min(this Vector2 a, Vector2 b)
-        {
-            return new Vector2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
-        }
-
-        public static Vector2 Max(this Vector2 a, Vector2 b)
-        {
-            return new Vector2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
-        }
-
         /// <summary>
         /// Checks if both of a Vector2's coordinates are greater than or equal to the
         /// corresponding coordinates in another Vector2.
@@ -86,6 +76,16 @@ namespace NetGore
         public static bool IsLessThan(this Vector2 source, Vector2 other)
         {
             return source.X < other.X && source.Y < other.Y;
+        }
+
+        public static Vector2 Max(this Vector2 a, Vector2 b)
+        {
+            return new Vector2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
+        }
+
+        public static Vector2 Min(this Vector2 a, Vector2 b)
+        {
+            return new Vector2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
         }
 
         /// <summary>

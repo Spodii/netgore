@@ -19,8 +19,8 @@ namespace DemoGame.Server
     /// </summary>
     public class World : WorldBase, IDisposable
     {
-        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
 
@@ -30,40 +30,6 @@ namespace DemoGame.Server
         readonly TSDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
         bool _disposed;
-
-        /// <summary>
-        /// Gets the <see cref="IDbController"/> used by this World.
-        /// </summary>
-        public IDbController DbController
-        {
-            get { return Server.DbController; }
-        }
-
-        /// <summary>
-        /// Gets a stack of objects that need to be disposed. The stack is processed once every frame.
-        /// Use for any Dispose call that would otherwise cause a potential exception (such as
-        /// trying to Dispose a character during their Update) or threading complications.
-        /// </summary>
-        public Stack<IDisposable> DisposeStack
-        {
-            get { return _disposeStack; }
-        }
-
-        /// <summary>
-        /// Gets an IEnuermable of all the maps in the world.
-        /// </summary>
-        public IEnumerable<Map> Maps
-        {
-            get { return _maps; }
-        }
-
-        /// <summary>
-        /// Gets the server the world belongs to
-        /// </summary>
-        public Server Server
-        {
-            get { return _server; }
-        }
 
         /// <summary>
         /// World constructor
@@ -109,6 +75,40 @@ namespace DemoGame.Server
                 }
             }
 #endif
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDbController"/> used by this World.
+        /// </summary>
+        public IDbController DbController
+        {
+            get { return Server.DbController; }
+        }
+
+        /// <summary>
+        /// Gets a stack of objects that need to be disposed. The stack is processed once every frame.
+        /// Use for any Dispose call that would otherwise cause a potential exception (such as
+        /// trying to Dispose a character during their Update) or threading complications.
+        /// </summary>
+        public Stack<IDisposable> DisposeStack
+        {
+            get { return _disposeStack; }
+        }
+
+        /// <summary>
+        /// Gets an IEnuermable of all the maps in the world.
+        /// </summary>
+        public IEnumerable<Map> Maps
+        {
+            get { return _maps; }
+        }
+
+        /// <summary>
+        /// Gets the server the world belongs to
+        /// </summary>
+        public Server Server
+        {
+            get { return _server; }
         }
 
         /// <summary>

@@ -8,16 +8,15 @@ namespace NetGore.Tests
     [TestFixture]
     public class StringRulesTests
     {
+        const int _maxLength = 10000;
+        const int _minLength = 1;
         const string _sLower = "abcdefghijklmnopqrstuvwxyz";
-        const string _sUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const string _sUpperLower = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string _sNumeric = "1234567890";
         const string _sPunctuation = "-_,.!?\"";
         const string _sSentence = "Hello World!";
+        const string _sUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string _sUpperLower = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string _sWhitespace = "    ";
-
-        const int _minLength = 1;
-        const int _maxLength = 10000;
 
         [Test]
         public void AllTest()

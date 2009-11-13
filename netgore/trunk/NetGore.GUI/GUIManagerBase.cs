@@ -48,6 +48,40 @@ namespace NetGore.Graphics.GUI
         public event GUIEventHandler OnChangeFocusedRoot;
 
         /// <summary>
+        /// GUIManager constructor
+        /// </summary>
+        /// <param name="font">Default SpriteFont to use for controls added to this GUIManager</param>
+        /// <param name="blank">A Sprite that is only Color.White (size does not matter). Used by multiple Controls
+        /// for a variety of reasons.</param>
+        public GUIManagerBase(SpriteFont font, ISprite blank)
+        {
+            Font = font;
+            SpriteBlank = blank;
+
+            new Tooltip(this);
+
+            // Store the input state from now so we have something to worth with on the first Update() call
+            _mouseState = Mouse.GetState();
+            _keyboardState = Keyboard.GetState();
+            _keysPressed = _keyboardState.GetPressedKeys();
+        }
+
+        /// <summary>
+        /// GUIManager constructor
+        /// </summary>
+        /// <param name="gui">GUIManager to copy the settings from. This will not copy over
+        /// the individual GUI components.</param>
+        public GUIManagerBase(GUIManagerBase gui) : this(gui.Font, gui.SpriteBlank)
+        {
+            ButtonSettings = gui.ButtonSettings;
+            CheckBoxSettings = gui.CheckBoxSettings;
+            FormSettings = gui.FormSettings;
+            LabelSettings = gui.LabelSettings;
+            PanelSettings = gui.PanelSettings;
+            TextBoxSettings = gui.TextBoxSettings;
+        }
+
+        /// <summary>
         /// Gets or sets the default settings for new Buttons under this GUIManager
         /// </summary>
         public ButtonSettings ButtonSettings
@@ -345,40 +379,6 @@ namespace NetGore.Graphics.GUI
         public Control UnderCursor
         {
             get { return _underCursor; }
-        }
-
-        /// <summary>
-        /// GUIManager constructor
-        /// </summary>
-        /// <param name="font">Default SpriteFont to use for controls added to this GUIManager</param>
-        /// <param name="blank">A Sprite that is only Color.White (size does not matter). Used by multiple Controls
-        /// for a variety of reasons.</param>
-        public GUIManagerBase(SpriteFont font, ISprite blank)
-        {
-            Font = font;
-            SpriteBlank = blank;
-
-            new Tooltip(this);
-
-            // Store the input state from now so we have something to worth with on the first Update() call
-            _mouseState = Mouse.GetState();
-            _keyboardState = Keyboard.GetState();
-            _keysPressed = _keyboardState.GetPressedKeys();
-        }
-
-        /// <summary>
-        /// GUIManager constructor
-        /// </summary>
-        /// <param name="gui">GUIManager to copy the settings from. This will not copy over
-        /// the individual GUI components.</param>
-        public GUIManagerBase(GUIManagerBase gui) : this(gui.Font, gui.SpriteBlank)
-        {
-            ButtonSettings = gui.ButtonSettings;
-            CheckBoxSettings = gui.CheckBoxSettings;
-            FormSettings = gui.FormSettings;
-            LabelSettings = gui.LabelSettings;
-            PanelSettings = gui.PanelSettings;
-            TextBoxSettings = gui.TextBoxSettings;
         }
 
         /// <summary>

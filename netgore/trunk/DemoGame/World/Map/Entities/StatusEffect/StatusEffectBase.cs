@@ -21,6 +21,22 @@ namespace DemoGame
         readonly StatusEffectType _statusEffectType;
 
         /// <summary>
+        /// StatusEffectBase constructor.
+        /// </summary>
+        /// <param name="statusEffectType">The StatusEffectType that this StatusEffectBase handles.</param>
+        /// <param name="mergeType">The StatusEffectMergeType that describes how to handle merging multiple
+        /// applications of this StatusEffect onto the same object.</param>
+        protected StatusEffectBase(StatusEffectType statusEffectType, StatusEffectMergeType mergeType)
+        {
+            _statusEffectType = statusEffectType;
+            _mergeType = mergeType;
+
+            _modifiedStats = GetUsedStatTypes();
+
+            AssertReturnValuesAreConsistent();
+        }
+
+        /// <summary>
         /// Gets the StatusEffectMergeType that describes how to handle merging multiple applications
         /// of this StatusEffect onto the same object.
         /// </summary>
@@ -44,22 +60,6 @@ namespace DemoGame
         public StatusEffectType StatusEffectType
         {
             get { return _statusEffectType; }
-        }
-
-        /// <summary>
-        /// StatusEffectBase constructor.
-        /// </summary>
-        /// <param name="statusEffectType">The StatusEffectType that this StatusEffectBase handles.</param>
-        /// <param name="mergeType">The StatusEffectMergeType that describes how to handle merging multiple
-        /// applications of this StatusEffect onto the same object.</param>
-        protected StatusEffectBase(StatusEffectType statusEffectType, StatusEffectMergeType mergeType)
-        {
-            _statusEffectType = statusEffectType;
-            _mergeType = mergeType;
-
-            _modifiedStats = GetUsedStatTypes();
-
-            AssertReturnValuesAreConsistent();
         }
 
         /// <summary>

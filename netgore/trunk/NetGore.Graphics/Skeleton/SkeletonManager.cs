@@ -25,20 +25,20 @@ namespace NetGore.Graphics
         readonly Dictionary<string, SkeletonSet> _sets = new Dictionary<string, SkeletonSet>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Gets or the directory to load from.
-        /// </summary>
-        public string Dir
-        {
-            get { return _dir; }
-        }
-
-        /// <summary>
         /// SkeletonManager constructor
         /// </summary>
         /// <param name="dir">Directory to load from</param>
         public SkeletonManager(string dir)
         {
             _dir = dir;
+        }
+
+        /// <summary>
+        /// Gets or the directory to load from.
+        /// </summary>
+        public string Dir
+        {
+            get { return _dir; }
         }
 
         public SkeletonBodyInfo LoadBodyInfo(string skeletonBodyInfoName, ContentPaths contentPath)

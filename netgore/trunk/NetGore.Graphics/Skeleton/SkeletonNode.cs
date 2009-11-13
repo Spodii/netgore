@@ -54,6 +54,30 @@ namespace NetGore.Graphics
         /// </summary>
         Vector2 _position;
 
+        public SkeletonNode(Vector2 position)
+        {
+            _parent = null;
+            _position = position;
+        }
+
+        public SkeletonNode(SkeletonNode parent, Vector2 position)
+        {
+            _parent = parent;
+            _parent.Nodes.Add(this);
+            _position = position;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonNode"/> class.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="parentName">Name of this SkeletonNode's parent, or null if the SkeletonNode
+        /// has no parent. This value must be used to manually set the SkeletonNode's parent.</param>
+        public SkeletonNode(IValueReader reader, out string parentName)
+        {
+            parentName = Read(reader);
+        }
+
         /// <summary>
         /// Gets or sets if the n is used when the n is part of a skeleton treated as an animation modifier
         /// </summary>
@@ -110,30 +134,6 @@ namespace NetGore.Graphics
         {
             get { return _position.Y; }
             set { _position.Y = value; }
-        }
-
-        public SkeletonNode(Vector2 position)
-        {
-            _parent = null;
-            _position = position;
-        }
-
-        public SkeletonNode(SkeletonNode parent, Vector2 position)
-        {
-            _parent = parent;
-            _parent.Nodes.Add(this);
-            _position = position;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkeletonNode"/> class.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        /// <param name="parentName">Name of this SkeletonNode's parent, or null if the SkeletonNode
-        /// has no parent. This value must be used to manually set the SkeletonNode's parent.</param>
-        public SkeletonNode(IValueReader reader, out string parentName)
-        {
-            parentName = Read(reader);
         }
 
         /// <summary>

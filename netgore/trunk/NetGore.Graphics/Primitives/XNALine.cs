@@ -26,6 +26,43 @@ namespace NetGore.Graphics
         Vector2 _scale = new Vector2(0.5f, 0.5f);
 
         /// <summary>
+        /// XNALine constructor
+        /// </summary>
+        public XNALine()
+        {
+            _p1 = Vector2.Zero;
+            _p2 = Vector2.Zero;
+            Color = Color.White;
+        }
+
+        /// <summary>
+        /// XNALine constructor
+        /// </summary>
+        /// <param name="p1">First point of the line</param>
+        /// <param name="p2">Second point of the line</param>
+        public XNALine(Vector2 p1, Vector2 p2)
+        {
+            _p1 = p1;
+            _p2 = p2;
+            Color = Color.White;
+            RecalculatePoints();
+        }
+
+        /// <summary>
+        /// XNALine constructor
+        /// </summary>
+        /// <param name="p1">First point of the line</param>
+        /// <param name="p2">Second point of the line</param>
+        /// <param name="color">Color of the line</param>
+        public XNALine(Vector2 p1, Vector2 p2, Color color)
+        {
+            _p1 = p1;
+            _p2 = p2;
+            Color = color;
+            RecalculatePoints();
+        }
+
+        /// <summary>
         /// Gets or sets the color of the line
         /// </summary>
         public Color Color
@@ -73,43 +110,6 @@ namespace NetGore.Graphics
         {
             get { return _scale.Y; }
             set { _scale.Y = value; }
-        }
-
-        /// <summary>
-        /// XNALine constructor
-        /// </summary>
-        public XNALine()
-        {
-            _p1 = Vector2.Zero;
-            _p2 = Vector2.Zero;
-            Color = Color.White;
-        }
-
-        /// <summary>
-        /// XNALine constructor
-        /// </summary>
-        /// <param name="p1">First point of the line</param>
-        /// <param name="p2">Second point of the line</param>
-        public XNALine(Vector2 p1, Vector2 p2)
-        {
-            _p1 = p1;
-            _p2 = p2;
-            Color = Color.White;
-            RecalculatePoints();
-        }
-
-        /// <summary>
-        /// XNALine constructor
-        /// </summary>
-        /// <param name="p1">First point of the line</param>
-        /// <param name="p2">Second point of the line</param>
-        /// <param name="color">Color of the line</param>
-        public XNALine(Vector2 p1, Vector2 p2, Color color)
-        {
-            _p1 = p1;
-            _p2 = p2;
-            Color = color;
-            RecalculatePoints();
         }
 
         /// <summary>

@@ -16,11 +16,10 @@ namespace NetGore.IO
     /// </summary>
     public class SettingsManager : IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _itemsNodeName = "Items";
         const string _objectValueKey = "Object";
         const string _valuesNodeName = "Values";
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// File path being used.
@@ -42,31 +41,6 @@ namespace NetGore.IO
 
         readonly string _rootNode;
         bool _disposed = false;
-
-        /// <summary>
-        /// Gets the file path used to load and save the settings.
-        /// </summary>
-        public string FilePath
-        {
-            get { return _filePath; }
-        }
-
-        /// <summary>
-        /// Gets if this GUISettings has been disposed of.
-        /// </summary>
-        public bool IsDisposed
-        {
-            get { return _disposed; }
-        }
-
-        /// <summary>
-        /// Gets the name of the root node used for Xml file. Only an Xml file that contains the same
-        /// root node name as this will be able to be loaded by this SettingsManager.
-        /// </summary>
-        public string RootNode
-        {
-            get { return _rootNode; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsManager"/> class.
@@ -145,6 +119,31 @@ namespace NetGore.IO
                 _loadedNodeItems = loadedItems.ToList();
             else
                 _loadedNodeItems = new List<NodeItems>();
+        }
+
+        /// <summary>
+        /// Gets the file path used to load and save the settings.
+        /// </summary>
+        public string FilePath
+        {
+            get { return _filePath; }
+        }
+
+        /// <summary>
+        /// Gets if this GUISettings has been disposed of.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
+
+        /// <summary>
+        /// Gets the name of the root node used for Xml file. Only an Xml file that contains the same
+        /// root node name as this will be able to be loaded by this SettingsManager.
+        /// </summary>
+        public string RootNode
+        {
+            get { return _rootNode; }
         }
 
         /// <summary>

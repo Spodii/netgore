@@ -23,19 +23,19 @@ namespace DemoGame.Server
     /// </summary>
     public class ItemEntity : ItemEntityBase, IItemTable
     {
-        byte _amount = 1;
-        readonly ItemStats _baseStats;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly IDbController _dbController = DbControllerBase.GetInstance();
+        readonly ItemStats _baseStats;
+        readonly ItemID _id;
+        readonly ItemStats _reqStats;
+        byte _amount = 1;
         string _description;
         GrhIndex _graphicIndex;
         SPValueType _hp;
-        readonly ItemID _id;
         SPValueType _mp;
         string _name;
-        readonly ItemStats _reqStats;
         ItemType _type;
         int _value;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.

@@ -15,6 +15,8 @@ namespace NetGore.NPCChat.Conditionals
     /// </summary>
     public abstract class NPCChatConditionalBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Array used for an empty set of <see cref="NPCChatConditionalParameter"/>s.
         /// </summary>
@@ -32,21 +34,18 @@ namespace NetGore.NPCChat.Conditionals
         static readonly Dictionary<string, NPCChatConditionalBase> _instances =
             new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
 
-        readonly string _name;
-
         /// <summary>
         /// <see cref="StringComparer"/> used for the <see cref="Name"/>.
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
-
-        readonly NPCChatConditionalParameterType[] _parameterTypes;
 
         /// <summary>
         /// Loads and manages the derived Types for this collection.
         /// </summary>
         static readonly TypeFactory _typeCollection;
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly string _name;
+        readonly NPCChatConditionalParameterType[] _parameterTypes;
 
         /// <summary>
         /// Initializes the <see cref="NPCChatConditionalBase"/> class.

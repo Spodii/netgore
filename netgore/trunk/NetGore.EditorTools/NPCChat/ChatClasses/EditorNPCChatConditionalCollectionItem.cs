@@ -12,9 +12,9 @@ namespace NetGore.EditorTools.NPCChat
 
     public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
+        readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
         NPCChatConditionalBase _conditional;
         bool _not;
-        readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
 
         public event EditorNPCChatConditionalCollectionItemHandler OnChange;
 

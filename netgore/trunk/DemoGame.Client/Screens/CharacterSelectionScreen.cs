@@ -14,9 +14,9 @@ namespace DemoGame.Client
 {
     class CharacterSelectionScreen : GameScreen
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "character selection";
         const string _unusedCharacterSlotText = "unused";
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         Button[] _characterButtons;
         GameplayScreen _gpScreen = null;

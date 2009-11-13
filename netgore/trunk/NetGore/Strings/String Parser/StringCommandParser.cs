@@ -18,12 +18,12 @@ namespace NetGore
     /// contain an Attribute of this Type will be handled.</typeparam>
     public class StringCommandParser<T> where T : StringCommandBaseAttribute
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Sorter used for the MethodInfos.
         /// </summary>
         static readonly MethodInfoSorter _methodInfoSorter = new MethodInfoSorter();
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Dictionary containing the command name as the key, and a list of the MethodInfos for the methods
@@ -31,15 +31,6 @@ namespace NetGore
         /// </summary>
         readonly Dictionary<string, IEnumerable<MethodInfo>> _commands =
             new Dictionary<string, IEnumerable<MethodInfo>>(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>
-        /// Gets a dictionary of each command and the method or methods that handle the command.
-        /// </summary>
-        /// <returns>A dictionary of each command and the method or methods that handle the command.</returns>
-        public IDictionary<string, IEnumerable<MethodInfo>> GetCommands()
-        {
-            return _commands;
-        }
 
         /// <summary>
         /// StringCommandParser constructor.
@@ -198,6 +189,15 @@ namespace NetGore
             }
             sb.Length--;
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Gets a dictionary of each command and the method or methods that handle the command.
+        /// </summary>
+        /// <returns>A dictionary of each command and the method or methods that handle the command.</returns>
+        public IDictionary<string, IEnumerable<MethodInfo>> GetCommands()
+        {
+            return _commands;
         }
 
         /// <summary>

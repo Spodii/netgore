@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,6 +18,16 @@ namespace DemoGame.Client
         static Grh _blankGrh = null;
 
         /// <summary>
+        /// GUIManager constructor
+        /// </summary>
+        /// <param name="font">Default SpriteFont to use for controls added to this GUIManager</param>
+        public GUIManager(SpriteFont font) : base(font, BlankGrh)
+        {
+            LoadSettings(Skin.Current);
+            Skin.OnChange += Skin_OnChange;
+        }
+
+        /// <summary>
         /// Gets the blank Grh, ensuring it is loaded
         /// </summary>
         static Grh BlankGrh
@@ -34,16 +43,6 @@ namespace DemoGame.Client
                 }
                 return _blankGrh;
             }
-        }
-
-        /// <summary>
-        /// GUIManager constructor
-        /// </summary>
-        /// <param name="font">Default SpriteFont to use for controls added to this GUIManager</param>
-        public GUIManager(SpriteFont font) : base(font, BlankGrh)
-        {
-            LoadSettings(Skin.Current);
-            Skin.OnChange += Skin_OnChange;
         }
 
         /// <summary>

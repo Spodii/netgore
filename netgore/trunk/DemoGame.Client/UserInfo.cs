@@ -15,6 +15,14 @@ namespace DemoGame.Client
         readonly Inventory _inventory;
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
 
+        public UserInfo(ISocketSender socket)
+        {
+            if (socket == null)
+                throw new ArgumentNullException("socket");
+
+            _inventory = new Inventory(socket);
+        }
+
         public CharacterStats BaseStats
         {
             get { return _baseStats; }
@@ -70,13 +78,5 @@ namespace DemoGame.Client
         }
 
         public int StatPoints { get; set; }
-
-        public UserInfo(ISocketSender socket)
-        {
-            if (socket == null)
-                throw new ArgumentNullException("socket");
-
-            _inventory = new Inventory(socket);
-        }
     }
 }

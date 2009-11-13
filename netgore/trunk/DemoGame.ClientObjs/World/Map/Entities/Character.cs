@@ -30,9 +30,11 @@ namespace DemoGame.Client
         SkeletonManager _skelManager;
 
         /// <summary>
-        /// Gets or sets the SpriteFont used to write the Character's name. If null, the names will not be drawn.
+        /// Character constructor.
         /// </summary>
-        public static SpriteFont NameFont { get; set; }
+        protected Character()
+        {
+        }
 
         /// <summary>
         /// Gets the location at which the character is to be drawn.
@@ -73,18 +75,16 @@ namespace DemoGame.Client
         public byte MPPercent { get; set; }
 
         /// <summary>
+        /// Gets or sets the SpriteFont used to write the Character's name. If null, the names will not be drawn.
+        /// </summary>
+        public static SpriteFont NameFont { get; set; }
+
+        /// <summary>
         /// Gets the map the character belongs to.
         /// </summary>
         public Map Parent
         {
             get { return _map; }
-        }
-
-        /// <summary>
-        /// Character constructor.
-        /// </summary>
-        protected Character()
-        {
         }
 
         /// <summary>

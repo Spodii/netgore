@@ -17,18 +17,18 @@ namespace DemoGame.Client.NPCChat
         static readonly NPCChatManager _instance = new NPCChatManager();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
+        /// </summary>
+        NPCChatManager() : base(true)
+        {
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of all the NPC chat dialogs in this manager.
         /// </summary>
         public static IEnumerable<NPCChatDialogBase> Dialogs
         {
             get { return _instance; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
-        /// </summary>
-        NPCChatManager() : base(true)
-        {
         }
 
         /// <summary>

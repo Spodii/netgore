@@ -1,5 +1,4 @@
 using System.Linq;
-using DemoGame;
 using NetGore;
 
 namespace DemoGame
@@ -7,14 +6,6 @@ namespace DemoGame
     public sealed class EquipmentSlotHelper : EnumHelper<EquipmentSlot>
     {
         static readonly EquipmentSlotHelper _instance;
-
-        /// <summary>
-        /// Gets the <see cref="EquipmentSlotHelper"/> instance.
-        /// </summary>
-        public static EquipmentSlotHelper Instance
-        {
-            get { return _instance; }
-        }
 
         /// <summary>
         /// Initializes the <see cref="EquipmentSlotHelper"/> class.
@@ -29,6 +20,14 @@ namespace DemoGame
         /// </summary>
         EquipmentSlotHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="EquipmentSlotHelper"/> instance.
+        /// </summary>
+        public static EquipmentSlotHelper Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

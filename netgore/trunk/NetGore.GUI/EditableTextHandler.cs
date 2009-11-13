@@ -14,6 +14,11 @@ namespace NetGore.Graphics.GUI
     public class EditableTextHandler
     {
         /// <summary>
+        /// The default blink rate of the insertion point cursor in milliseconds.
+        /// </summary>
+        const int _defaultCursorBlinkRate = 500;
+
+        /// <summary>
         /// The default number of milliseconds to wait before repeating the keystroke of a held key. Used
         /// when the value cannot be acquired from the registry.
         /// </summary>
@@ -24,11 +29,6 @@ namespace NetGore.Graphics.GUI
         /// value cannot be acquired from the registry.
         /// </summary>
         const int _defaultKeyboardRepeatRate = 31;
-
-        /// <summary>
-        /// The default blink rate of the insertion point cursor in milliseconds.
-        /// </summary>
-        const int _defaultCursorBlinkRate = 500;
 
         /// <summary>
         /// The blink rate of the insertion point cursor in milliseconds.
@@ -51,22 +51,6 @@ namespace NetGore.Graphics.GUI
         int _currentTime = 0;
         KeyboardState _ks;
         int _repeatTime = int.MaxValue;
-
-        /// <summary>
-        /// Gets if the Shift key is currently down.
-        /// </summary>
-        bool IsShiftDown
-        {
-            get { return _ks.IsKeyDown(Keys.LeftShift) || _ks.IsKeyDown(Keys.RightShift); }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IEditableText"/> that this <see cref="EditableTextHandler"/> handles.
-        /// </summary>
-        public IEditableText Source
-        {
-            get { return _source; }
-        }
 
         /// <summary>
         /// Initializes the <see cref="EditableTextHandler"/> class.
@@ -176,6 +160,22 @@ namespace NetGore.Graphics.GUI
                 throw new ArgumentNullException("source");
 
             _source = source;
+        }
+
+        /// <summary>
+        /// Gets if the Shift key is currently down.
+        /// </summary>
+        bool IsShiftDown
+        {
+            get { return _ks.IsKeyDown(Keys.LeftShift) || _ks.IsKeyDown(Keys.RightShift); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEditableText"/> that this <see cref="EditableTextHandler"/> handles.
+        /// </summary>
+        public IEditableText Source
+        {
+            get { return _source; }
         }
 
         /// <summary>

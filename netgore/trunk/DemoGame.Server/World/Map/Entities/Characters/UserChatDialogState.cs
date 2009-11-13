@@ -15,13 +15,13 @@ namespace DemoGame.Server
     /// </summary>
     public class UserChatDialogState
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Defines how the to handle when the conditionals to a response chosen by the client evaluate to false.
         /// </summary>
         const ResponseConditionalFailureHandleType _responseConditionalFailureType =
             ResponseConditionalFailureHandleType.ResendDialogItem;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// The User that the dialog is taking place with.
@@ -37,29 +37,6 @@ namespace DemoGame.Server
         /// The current dialog item.
         /// </summary>
         NPCChatDialogItemBase _dialogItem;
-
-        /// <summary>
-        /// Gets the current NPCChatDialogBase, or null if the User is not currently chatting.
-        /// </summary>
-        public NPCChatDialogBase ChatDialog
-        {
-            get
-            {
-                NPC n = _chattingWith;
-                if (n == null)
-                    return null;
-
-                return n.ChatDialog;
-            }
-        }
-
-        /// <summary>
-        /// Gets if the User is currently chatting.
-        /// </summary>
-        public bool IsChatting
-        {
-            get { return _chattingWith != null; }
-        }
 
         /// <summary>
         /// Initializes the <see cref="UserChatDialogState"/> class.
@@ -83,6 +60,29 @@ namespace DemoGame.Server
         public UserChatDialogState(User user)
         {
             _user = user;
+        }
+
+        /// <summary>
+        /// Gets the current NPCChatDialogBase, or null if the User is not currently chatting.
+        /// </summary>
+        public NPCChatDialogBase ChatDialog
+        {
+            get
+            {
+                NPC n = _chattingWith;
+                if (n == null)
+                    return null;
+
+                return n.ChatDialog;
+            }
+        }
+
+        /// <summary>
+        /// Gets if the User is currently chatting.
+        /// </summary>
+        public bool IsChatting
+        {
+            get { return _chattingWith != null; }
         }
 
         /// <summary>

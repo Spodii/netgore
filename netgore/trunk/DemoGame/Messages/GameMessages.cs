@@ -1,5 +1,4 @@
 using System.Linq;
-using DemoGame;
 using NetGore;
 using NetGore.IO;
 
@@ -28,14 +27,6 @@ namespace DemoGame
         readonly string _language;
 
         /// <summary>
-        /// Gets the name of this language.
-        /// </summary>
-        public string Language
-        {
-            get { return _language; }
-        }
-
-        /// <summary>
         /// GameMessages constructor.
         /// </summary>
         public GameMessages() : this(_defaultLanguageName)
@@ -50,6 +41,14 @@ namespace DemoGame
             : base(ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix), _defaultMessages)
         {
             _language = language;
+        }
+
+        /// <summary>
+        /// Gets the name of this language.
+        /// </summary>
+        public string Language
+        {
+            get { return _language; }
         }
 
         /// <summary>

@@ -14,6 +14,17 @@ namespace NetGore.IO
         readonly string _name;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NodeItems"/> struct.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <param name="items">The items.</param>
+        public NodeItems(string node, IEnumerable<NodeItem> items)
+        {
+            _name = node;
+            _items = new List<NodeItem>(items);
+        }
+
+        /// <summary>
         /// Gets the items that belong to the node.
         /// </summary>
         public IEnumerable<NodeItem> Items
@@ -27,17 +38,6 @@ namespace NetGore.IO
         public string Name
         {
             get { return _name; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NodeItems"/> struct.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <param name="items">The items.</param>
-        public NodeItems(string node, IEnumerable<NodeItem> items)
-        {
-            _name = node;
-            _items = new List<NodeItem>(items);
         }
 
         /// <summary>

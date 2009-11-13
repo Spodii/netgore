@@ -52,6 +52,15 @@ namespace DemoGame.SkeletonEditor
         SkeletonDrawer _skeletonDrawer;
         KeyEventArgs ks = new KeyEventArgs(Keys.None);
 
+        public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
+        {
+            _switches = switches;
+
+            InitializeComponent();
+            HookInput();
+            GameScreen.Parent = this;
+        }
+
         /// <summary>
         /// Gets or sets the file for the current skeleton animation
         /// </summary>
@@ -131,15 +140,6 @@ namespace DemoGame.SkeletonEditor
         public SkeletonBody SkeletonBody
         {
             get { return _skeletonAnim.SkeletonBody; }
-        }
-
-        public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
-        {
-            _switches = switches;
-
-            InitializeComponent();
-            HookInput();
-            GameScreen.Parent = this;
         }
 
         void btnAdd_Click(object sender, EventArgs e)

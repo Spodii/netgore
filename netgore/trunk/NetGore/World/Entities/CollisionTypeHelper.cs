@@ -11,14 +11,6 @@ namespace NetGore
         static readonly CollisionTypeHelper _instance;
 
         /// <summary>
-        /// Gets the <see cref="CollisionTypeHelper"/> instance.
-        /// </summary>
-        public static CollisionTypeHelper Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="CollisionTypeHelper"/> class.
         /// </summary>
         static CollisionTypeHelper()
@@ -31,6 +23,14 @@ namespace NetGore
         /// </summary>
         CollisionTypeHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CollisionTypeHelper"/> instance.
+        /// </summary>
+        public static CollisionTypeHelper Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

@@ -41,6 +41,15 @@ namespace NetGore.Graphics
         Vector2 _size;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Camera2D"/> class.
+        /// </summary>
+        /// <param name="screenSize">Size of the screen in pixels.</param>
+        public Camera2D(Vector2 screenSize)
+        {
+            _size = screenSize;
+        }
+
+        /// <summary>
         /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
         /// outside of the range of the map.
         /// </summary>
@@ -184,15 +193,6 @@ namespace NetGore.Graphics
                 _min.Y = value;
                 UpdateMatrix();
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Camera2D"/> class.
-        /// </summary>
-        /// <param name="screenSize">Size of the screen in pixels.</param>
-        public Camera2D(Vector2 screenSize)
-        {
-            _size = screenSize;
         }
 
         /// <summary>

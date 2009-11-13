@@ -21,22 +21,6 @@ namespace NetGore.Network
         readonly byte _msgID;
 
         /// <summary>
-        /// Gets the delegate to the processing method.
-        /// </summary>
-        public MessageProcessorHandler Call
-        {
-            get { return _call; }
-        }
-
-        /// <summary>
-        /// Gets the ID of the message the delegate processes.
-        /// </summary>
-        public byte MsgID
-        {
-            get { return _msgID; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessor"/> class.
         /// </summary>
         /// <param name="msgID">ID of the message to process. Must be non-zero.</param>
@@ -51,6 +35,22 @@ namespace NetGore.Network
 
             _msgID = msgID;
             _call = methodDelegate;
+        }
+
+        /// <summary>
+        /// Gets the delegate to the processing method.
+        /// </summary>
+        public MessageProcessorHandler Call
+        {
+            get { return _call; }
+        }
+
+        /// <summary>
+        /// Gets the ID of the message the delegate processes.
+        /// </summary>
+        public byte MsgID
+        {
+            get { return _msgID; }
         }
     }
 }

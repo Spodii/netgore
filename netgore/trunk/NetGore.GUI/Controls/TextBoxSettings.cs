@@ -8,6 +8,11 @@ namespace NetGore.Graphics.GUI
     {
         static TextBoxSettings _default = null;
 
+        public TextBoxSettings(ControlBorder border) : base(Color.Black, border)
+        {
+            CanDrag = false;
+        }
+
         public static TextBoxSettings Default
         {
             get
@@ -16,11 +21,6 @@ namespace NetGore.Graphics.GUI
                     _default = new TextBoxSettings(null);
                 return _default;
             }
-        }
-
-        public TextBoxSettings(ControlBorder border) : base(Color.Black, border)
-        {
-            CanDrag = false;
         }
     }
 }

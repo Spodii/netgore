@@ -12,6 +12,15 @@ namespace DemoGame.Server.NPCChat.Conditionals
         NPCChatConditionalParameter[] _parameters;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatConditionalCollectionItem"/> class.
+        /// </summary>
+        /// <param name="r">The IValueReader to read from.</param>
+        public NPCChatConditionalCollectionItem(IValueReader r)
+        {
+            Read(r);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.
         /// </summary>
         public override NPCChatConditionalBase Conditional
@@ -36,15 +45,6 @@ namespace DemoGame.Server.NPCChat.Conditionals
         public override NPCChatConditionalParameter[] Parameters
         {
             get { return _parameters; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalCollectionItem"/> class.
-        /// </summary>
-        /// <param name="r">The IValueReader to read from.</param>
-        public NPCChatConditionalCollectionItem(IValueReader r)
-        {
-            Read(r);
         }
 
         /// <summary>

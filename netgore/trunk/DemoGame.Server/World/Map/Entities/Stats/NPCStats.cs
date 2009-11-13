@@ -7,14 +7,14 @@ namespace DemoGame.Server
     {
         readonly NPC _npc;
 
-        public NPC NPC
-        {
-            get { return _npc; }
-        }
-
         public NPCStats(NPC npc, StatCollectionType statCollectionType) : base(statCollectionType)
         {
             _npc = npc;
+        }
+
+        public NPC NPC
+        {
+            get { return _npc; }
         }
     }
 }

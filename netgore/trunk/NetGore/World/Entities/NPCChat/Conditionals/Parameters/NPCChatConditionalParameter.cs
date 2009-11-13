@@ -12,6 +12,13 @@ namespace NetGore.NPCChat.Conditionals
     public abstract class NPCChatConditionalParameter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatConditionalParameter"/> class.
+        /// </summary>
+        protected internal NPCChatConditionalParameter()
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets this parameter's Value as an object.
         /// </summary>
         public abstract object Value { get; set; }
@@ -51,13 +58,6 @@ namespace NetGore.NPCChat.Conditionals
         /// that describes the native value type of this parameter's Value.
         /// </summary>
         public abstract NPCChatConditionalParameterType ValueType { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalParameter"/> class.
-        /// </summary>
-        protected internal NPCChatConditionalParameter()
-        {
-        }
 
         /// <summary>
         /// Creates a INPCChatConditionalParameter for the given <paramref name="valueType"/> that contains

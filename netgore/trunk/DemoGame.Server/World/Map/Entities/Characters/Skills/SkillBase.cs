@@ -17,6 +17,15 @@ namespace DemoGame.Server
         readonly SkillType _skillType;
 
         /// <summary>
+        /// SkillBase constructor.
+        /// </summary>
+        /// <param name="skillType">The type of skill that this class is for.</param>
+        protected SkillBase(SkillType skillType)
+        {
+            _skillType = skillType;
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of stats required by this <see cref="SkillBase"/>. Cannot be null.
         /// </summary>
         public virtual IEnumerable<KeyValuePair<StatType, int>> RequiredStats
@@ -36,15 +45,6 @@ namespace DemoGame.Server
         public SkillType SkillType
         {
             get { return _skillType; }
-        }
-
-        /// <summary>
-        /// SkillBase constructor.
-        /// </summary>
-        /// <param name="skillType">The type of skill that this class is for.</param>
-        protected SkillBase(SkillType skillType)
-        {
-            _skillType = skillType;
         }
 
         /// <summary>

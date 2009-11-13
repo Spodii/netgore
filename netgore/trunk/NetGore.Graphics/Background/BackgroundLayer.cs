@@ -16,6 +16,22 @@ namespace NetGore.Graphics
         static readonly BackgroundLayerLayoutHelper _backgroundLayerLayoutHelper = BackgroundLayerLayoutHelper.Instance;
 
         /// <summary>
+        /// BackgroundLayer constructor.
+        /// </summary>
+        public BackgroundLayer()
+        {
+            // Set the default values
+            HorizontalLayout = BackgroundLayerLayout.Stretched;
+            VerticalLayout = BackgroundLayerLayout.Stretched;
+        }
+
+        public BackgroundLayer(IValueReader reader, int currentTime) : base(reader, currentTime)
+        {
+            HorizontalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "HorizontalLayout");
+            VerticalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "VerticalLayout");
+        }
+
+        /// <summary>
         /// Gets or sets how the image is drawn on the horizontal axis. Default is Stretched.
         /// </summary>
         [Category("Display")]
@@ -34,22 +50,6 @@ namespace NetGore.Graphics
         [DefaultValue(BackgroundLayerLayout.Stretched)]
         [Browsable(true)]
         public BackgroundLayerLayout VerticalLayout { get; set; }
-
-        /// <summary>
-        /// BackgroundLayer constructor.
-        /// </summary>
-        public BackgroundLayer()
-        {
-            // Set the default values
-            HorizontalLayout = BackgroundLayerLayout.Stretched;
-            VerticalLayout = BackgroundLayerLayout.Stretched;
-        }
-
-        public BackgroundLayer(IValueReader reader, int currentTime) : base(reader, currentTime)
-        {
-            HorizontalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "HorizontalLayout");
-            VerticalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "VerticalLayout");
-        }
 
         /// <summary>
         /// Draws the image to the specified SpriteBatch.

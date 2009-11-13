@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace NetGore
@@ -12,8 +11,8 @@ namespace NetGore
     public class ConsoleInputBuffer : IDisposable
     {
         readonly Queue<string> _buffer = new Queue<string>();
-        bool _isRunning = true;
         readonly object _syncObj = new object();
+        bool _isRunning = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleInputBuffer"/> class.

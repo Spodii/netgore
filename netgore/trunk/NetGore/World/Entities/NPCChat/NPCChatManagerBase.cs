@@ -17,9 +17,9 @@ namespace NetGore.NPCChat
     /// </summary>
     public abstract class NPCChatManagerBase : IEnumerable<NPCChatDialogBase>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly bool _isReadonly;
         readonly DArray<NPCChatDialogBase> _npcChatDialogs = new DArray<NPCChatDialogBase>(32, false);
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// NPCChatManagerBase constructor.

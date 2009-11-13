@@ -36,15 +36,6 @@ namespace NetGore.Network
         readonly BitStream _sendStream;
 
         /// <summary>
-        /// Gets the maximum size of each message in bytes. When concatenating sends, the messages will never
-        /// exceed this size.
-        /// </summary>
-        public int MaxMessageSize
-        {
-            get { return _maxMessageSize; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SocketSendQueue"/> class.
         /// </summary>
         /// <param name="maxMessageSize">The maximum size of each message in bytes. When concatenating sends, the
@@ -58,6 +49,15 @@ namespace NetGore.Network
 
             _sendStream = new BitStream(new byte[MaxMessageSize])
             { WriteMode = BitStreamBufferMode.Static, Mode = BitStreamMode.Write };
+        }
+
+        /// <summary>
+        /// Gets the maximum size of each message in bytes. When concatenating sends, the messages will never
+        /// exceed this size.
+        /// </summary>
+        public int MaxMessageSize
+        {
+            get { return _maxMessageSize; }
         }
 
         /// <summary>

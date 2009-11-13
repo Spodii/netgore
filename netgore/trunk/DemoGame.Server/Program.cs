@@ -8,9 +8,9 @@ namespace DemoGame.Server
 {
     class Program
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static ConsoleCtrlHandler _handler;
         static Server _server;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static bool ConsoleCtrlCheck(CtrlTypes ctrlType)
         {

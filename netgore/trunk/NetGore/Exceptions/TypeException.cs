@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace NetGore
 {
@@ -39,8 +36,7 @@ namespace NetGore
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="type">The type that caused the exception.</param>
-        public TypeException(string message, Type type)
-            : base("TypeException from `" + type + "`. " + message ?? string.Empty)
+        public TypeException(string message, Type type) : base("TypeException from `" + type + "`. " + message ?? string.Empty)
         {
         }
 

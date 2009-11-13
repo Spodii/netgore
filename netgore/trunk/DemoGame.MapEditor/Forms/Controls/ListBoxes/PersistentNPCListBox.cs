@@ -17,16 +17,16 @@ namespace DemoGame.MapEditor
         IDbController _dbController;
         MapBase _map;
 
+        public PersistentNPCListBox()
+        {
+            SelectedIndexChanged += HandleSelectedIndexChanged;
+        }
+
         /// <summary>
         /// Gets or sets the PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.
         /// </summary>
         [Description("The PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.")]
         public PropertyGrid PropertyGrid { get; set; }
-
-        public PersistentNPCListBox()
-        {
-            SelectedIndexChanged += HandleSelectedIndexChanged;
-        }
 
         void HandleSelectedIndexChanged(object sender, EventArgs e)
         {

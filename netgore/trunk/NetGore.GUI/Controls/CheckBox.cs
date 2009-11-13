@@ -62,6 +62,85 @@ namespace NetGore.Graphics.GUI
         public event ControlEventHandler OnChangeValue;
 
         /// <summary>
+        /// CheckBox constructor
+        /// </summary>
+        /// <param name="text">Text to display</param>
+        /// <param name="position">Position of the CheckBox relative to its parent</param>
+        /// <param name="parent">Parent Control for this CheckBox</param>
+        public CheckBox(string text, Vector2 position, Control parent) : base(text, position, parent)
+        {
+            Initialize(GUIManager.CheckBoxSettings);
+        }
+
+        /// <summary>
+        /// CheckBox constructor
+        /// </summary>
+        /// <param name="settings">CheckBox settings</param>
+        /// <param name="text">Text to display</param>
+        /// <param name="position">Position of the CheckBox relative to its parent</param>
+        /// <param name="parent">Parent Control for this CheckBox</param>
+        public CheckBox(CheckBoxSettings settings, string text, Vector2 position, Control parent)
+            : base(settings, text, position, parent)
+        {
+            Initialize(settings);
+        }
+
+        /// <summary>
+        /// CheckBox constructor
+        /// </summary>
+        /// <param name="text">Text to display</param>
+        /// <param name="font">Font used to write the text</param>
+        /// <param name="position">Position of the CheckBox relative to its parent</param>
+        /// <param name="parent">Parent Control for this CheckBox</param>
+        public CheckBox(string text, SpriteFont font, Vector2 position, Control parent) : base(text, font, position, parent)
+        {
+            Initialize(GUIManager.CheckBoxSettings);
+        }
+
+        /// <summary>
+        /// CheckBox constructor
+        /// </summary>
+        /// <param name="settings">CheckBox settings</param>
+        /// <param name="text">Text to display</param>
+        /// <param name="font">Font used to write the text</param>
+        /// <param name="position">Position of the CheckBox relative to its parent</param>
+        /// <param name="parent">Parent Control for this CheckBox</param>
+        public CheckBox(CheckBoxSettings settings, string text, SpriteFont font, Vector2 position, Control parent)
+            : base(settings, text, font, position, parent)
+        {
+            Initialize(settings);
+        }
+
+        /// <summary>
+        /// CheckBox constructor
+        /// </summary>
+        /// <param name="gui">GUIManager this CheckBox is handled by</param>
+        /// <param name="text">Text to display</param>
+        /// <param name="font">Font used to write the text</param>
+        /// <param name="position">Position of the CheckBox relative to its parent</param>
+        /// <param name="parent">Parent Control for this CheckBox</param>
+        public CheckBox(GUIManagerBase gui, string text, SpriteFont font, Vector2 position, Control parent)
+            : base(gui, text, font, position, parent)
+        {
+            Initialize(GUIManager.CheckBoxSettings);
+        }
+
+        /// <summary>
+        /// CheckBox constructor
+        /// </summary>
+        /// <param name="gui">GUIManager this CheckBox is handled by</param>
+        /// <param name="settings">CheckBox settings</param>
+        /// <param name="text">Text to display</param>
+        /// <param name="font">Font used to write the text</param>
+        /// <param name="position">Position of the CheckBox relative to its parent</param>
+        /// <param name="parent">Parent Control for this CheckBox</param>
+        public CheckBox(GUIManagerBase gui, CheckBoxSettings settings, string text, SpriteFont font, Vector2 position,
+                        Control parent) : base(gui, settings, text, font, position, parent)
+        {
+            Initialize(settings);
+        }
+
+        /// <summary>
         /// Gets or sets the Sprite used for a ticked checkbox with the mouse over it
         /// </summary>
         public ISprite TickedOverSprite
@@ -178,85 +257,6 @@ namespace NetGore.Graphics.GUI
                         OnChangeValue(this);
                 }
             }
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(string text, Vector2 position, Control parent) : base(text, position, parent)
-        {
-            Initialize(GUIManager.CheckBoxSettings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="settings">CheckBox settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(CheckBoxSettings settings, string text, Vector2 position, Control parent)
-            : base(settings, text, position, parent)
-        {
-            Initialize(settings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(string text, SpriteFont font, Vector2 position, Control parent) : base(text, font, position, parent)
-        {
-            Initialize(GUIManager.CheckBoxSettings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="settings">CheckBox settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(CheckBoxSettings settings, string text, SpriteFont font, Vector2 position, Control parent)
-            : base(settings, text, font, position, parent)
-        {
-            Initialize(settings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="gui">GUIManager this CheckBox is handled by</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(GUIManagerBase gui, string text, SpriteFont font, Vector2 position, Control parent)
-            : base(gui, text, font, position, parent)
-        {
-            Initialize(GUIManager.CheckBoxSettings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="gui">GUIManager this CheckBox is handled by</param>
-        /// <param name="settings">CheckBox settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(GUIManagerBase gui, CheckBoxSettings settings, string text, SpriteFont font, Vector2 position,
-                        Control parent) : base(gui, settings, text, font, position, parent)
-        {
-            Initialize(settings);
         }
 
         void CheckBox_OnLostFocus(Control sender)

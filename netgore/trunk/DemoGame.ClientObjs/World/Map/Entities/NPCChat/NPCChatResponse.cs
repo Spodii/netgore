@@ -19,6 +19,14 @@ namespace DemoGame.Client.NPCChat
         byte _value;
 
         /// <summary>
+        /// NPCChatResponse constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        internal NPCChatResponse(IValueReader reader) : base(reader)
+        {
+        }
+
+        /// <summary>
         /// Not used by the Client, and will always return an empty collection.
         /// </summary>
         public override IEnumerable<NPCChatResponseActionBase> Actions
@@ -69,14 +77,6 @@ namespace DemoGame.Client.NPCChat
         public override byte Value
         {
             get { return _value; }
-        }
-
-        /// <summary>
-        /// NPCChatResponse constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatResponse(IValueReader reader) : base(reader)
-        {
         }
 
         /// <summary>

@@ -8,14 +8,6 @@ namespace NetGore.Graphics
         static readonly BackgroundLayerLayoutHelper _instance;
 
         /// <summary>
-        /// Gets the <see cref="BackgroundLayerLayoutHelper"/> instance.
-        /// </summary>
-        public static BackgroundLayerLayoutHelper Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="BackgroundLayerLayoutHelper"/> class.
         /// </summary>
         static BackgroundLayerLayoutHelper()
@@ -28,6 +20,14 @@ namespace NetGore.Graphics
         /// </summary>
         BackgroundLayerLayoutHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BackgroundLayerLayoutHelper"/> instance.
+        /// </summary>
+        public static BackgroundLayerLayoutHelper Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

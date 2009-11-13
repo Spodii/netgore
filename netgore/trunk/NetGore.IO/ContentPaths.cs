@@ -15,6 +15,7 @@ namespace NetGore.IO
     /// </summary>
     public class ContentPaths
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _dataFolder = "Data";
         const string _engineFolder = "Engine";
         const string _fontsFolder = "Font";
@@ -34,16 +35,19 @@ namespace NetGore.IO
 
         static readonly PathString _appRoot;
         static readonly ContentPaths _buildPaths;
+        static readonly PathString _temp;
 
-        readonly PathString _data;
         static ContentPaths _devPaths;
-        readonly PathString _engine;
-        readonly PathString _fonts;
 
         /// <summary>
         /// The current free file index.
         /// </summary>
         static volatile int _freeFileIndex = 0;
+
+        readonly PathString _data;
+
+        readonly PathString _engine;
+        readonly PathString _fonts;
 
         readonly PathString _grhs;
         readonly PathString _languages;
@@ -51,9 +55,7 @@ namespace NetGore.IO
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
-        static readonly PathString _temp;
         readonly PathString _textures;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes the <see cref="ContentPaths"/> class.

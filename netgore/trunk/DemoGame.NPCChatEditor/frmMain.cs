@@ -22,13 +22,13 @@ namespace DemoGame.NPCChatEditor
 {
     public partial class frmMain : Form
     {
-        bool _doNotUpdateObj;
-        object _editingObj;
-
         /// <summary>
         /// Contains the <see cref="NPCChatConditionalBase"/>s available.
         /// </summary>
         static readonly NPCChatConditionalBase[] _npcChatConditionals;
+
+        bool _doNotUpdateObj;
+        object _editingObj;
 
         /// <summary>
         /// Initializes the <see cref="frmMain"/> class.

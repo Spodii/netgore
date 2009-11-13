@@ -8,11 +8,6 @@ namespace NetGore.Collections.Tests
     public class MeanStackTests
     {
         /// <summary>
-        /// Number of iterations to perform, where each iteration is the size of the MeanStack.
-        /// </summary>
-        const int _iterations = 70;
-
-        /// <summary>
         /// Ending value for the sum of items to test.
         /// </summary>
         const int _itemEnd = 7;
@@ -21,6 +16,11 @@ namespace NetGore.Collections.Tests
         /// Starting value for the sum of items to test.
         /// </summary>
         const int _itemStart = 1;
+
+        /// <summary>
+        /// Number of iterations to perform, where each iteration is the size of the MeanStack.
+        /// </summary>
+        const int _iterations = 70;
 
         [Test]
         public void ByteMeanTest()

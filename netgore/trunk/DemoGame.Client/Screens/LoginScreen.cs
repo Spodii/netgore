@@ -117,10 +117,11 @@ namespace DemoGame.Client
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 
             new Label("Name:", new Vector2(60, 260), cScreen);
-            _cNameText = new TextBox(new Vector2(220, 260), new Vector2(200, 40), cScreen) { IsMultiLine = false, Text = "Spodi"};
+            _cNameText = new TextBox(new Vector2(220, 260), new Vector2(200, 40), cScreen) { IsMultiLine = false, Text = "Spodi" };
 
             new Label("Password:", new Vector2(60, 320), cScreen);
-            _cPasswordText = new TextBox(new Vector2(220, 320), new Vector2(200, 40), cScreen) { IsMultiLine = false, Text = "qwerty123" };
+            _cPasswordText = new TextBox(new Vector2(220, 320), new Vector2(200, 40), cScreen)
+            { IsMultiLine = false, Text = "qwerty123" };
 
             Button cLogin = new Button("Login", new Vector2(60, 380), new Vector2(250, 45), cScreen);
             Button cBack = new Button("Back", new Vector2(60, 440), new Vector2(250, 45), cScreen);

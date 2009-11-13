@@ -10,19 +10,19 @@ namespace DemoGame.Server
         const int _id = 1;
 
         /// <summary>
-        /// When overridden in the derived class, gets the ID of this AI.
-        /// </summary>
-        public override AIID ID
-        {
-            get { return new AIID(_id); }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TestAI"/> class.
         /// </summary>
         /// <param name="actor">Character for this AI module to control.</param>
         public TestAI(Character actor) : base(actor)
         {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the ID of this AI.
+        /// </summary>
+        public override AIID ID
+        {
+            get { return new AIID(_id); }
         }
 
         /// <summary>

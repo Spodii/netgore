@@ -13,11 +13,6 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Server _server;
 
-        IDbController DbController
-        {
-            get { return _server.DbController; }
-        }
-
         public ServerRuntimeCleaner(Server server)
         {
             if (server == null)
@@ -26,6 +21,11 @@ namespace DemoGame.Server
             _server = server;
 
             RunAll();
+        }
+
+        IDbController DbController
+        {
+            get { return _server.DbController; }
         }
 
         static void LogCleanupRoutine(string description)

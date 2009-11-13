@@ -10,41 +10,6 @@ namespace NetGore.Graphics.GUI
         bool _autoResize = false;
         ControlEventHandler _autoResizeHandler = null;
 
-        /// <summary>
-        /// Gets or sets if the label will automatically resize when the text or font changes
-        /// </summary>
-        public bool AutoResize
-        {
-            get { return _autoResize; }
-            set
-            {
-                // If value is not different, abort
-                if (_autoResize == value)
-                    return;
-
-                // Set the new value
-                _autoResize = value;
-
-                if (_autoResize)
-                {
-                    // Enable auto-resizing
-                    if (_autoResizeHandler == null)
-                        _autoResizeHandler = ResizeHandler;
-                    OnChangeText += _autoResizeHandler;
-                    OnChangeFont += _autoResizeHandler;
-                }
-                else
-                {
-                    // Disable auto-resizing
-                    if (_autoResizeHandler != null)
-                    {
-                        OnChangeText -= _autoResizeHandler;
-                        OnChangeFont -= _autoResizeHandler;
-                    }
-                }
-            }
-        }
-
         public Label(GUIManagerBase gui, LabelSettings settings, string text, SpriteFont font, Vector2 position, Vector2 size,
                      Control parent) : base(gui, settings, text, font, position, size, parent)
         {
@@ -85,6 +50,41 @@ namespace NetGore.Graphics.GUI
         public Label(LabelSettings settings, string text, Vector2 position, Control parent)
             : this(settings, text, parent.GUIManager.Font, position, parent)
         {
+        }
+
+        /// <summary>
+        /// Gets or sets if the label will automatically resize when the text or font changes
+        /// </summary>
+        public bool AutoResize
+        {
+            get { return _autoResize; }
+            set
+            {
+                // If value is not different, abort
+                if (_autoResize == value)
+                    return;
+
+                // Set the new value
+                _autoResize = value;
+
+                if (_autoResize)
+                {
+                    // Enable auto-resizing
+                    if (_autoResizeHandler == null)
+                        _autoResizeHandler = ResizeHandler;
+                    OnChangeText += _autoResizeHandler;
+                    OnChangeFont += _autoResizeHandler;
+                }
+                else
+                {
+                    // Disable auto-resizing
+                    if (_autoResizeHandler != null)
+                    {
+                        OnChangeText -= _autoResizeHandler;
+                        OnChangeFont -= _autoResizeHandler;
+                    }
+                }
+            }
         }
 
         protected override void DrawControl(SpriteBatch spriteBatch)

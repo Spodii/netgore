@@ -15,24 +15,18 @@ namespace NetGore.EditorTools
 {
     public class TextureHashCollection
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _fileSizeValueKey = "FileSize";
         const string _hashValueKey = "Hash";
         const string _lastModifiedValueKey = "LastModified";
         const string _rootNodeName = "TextureHashes";
         const string _textureNameValueKey = "TextureName";
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly string _dataFile;
         readonly string _rootTextureDir;
 
         readonly Dictionary<string, HashInfo> _textureHash =
             new Dictionary<string, HashInfo>(StringComparer.CurrentCultureIgnoreCase);
-
-        HashInfo this[string textureName]
-        {
-            get { return _textureHash[SanitizeTextureName(textureName)]; }
-            set { _textureHash.Add(SanitizeTextureName(textureName), value); }
-        }
 
         public TextureHashCollection()
         {
@@ -44,6 +38,12 @@ namespace NetGore.EditorTools
 
             Load();
             UpdateHashes();
+        }
+
+        HashInfo this[string textureName]
+        {
+            get { return _textureHash[SanitizeTextureName(textureName)]; }
+            set { _textureHash.Add(SanitizeTextureName(textureName), value); }
         }
 
         void Clear()

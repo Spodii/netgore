@@ -23,6 +23,17 @@ namespace NetGore.EditorTools
         readonly DArray<List<WallEntityBase>> _walls = new DArray<List<WallEntityBase>>(false);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MapGrhWalls"/> class.
+        /// </summary>
+        /// <param name="contentPath">The content path.</param>
+        /// <param name="createWall">Delegate describing how to create the <see cref="WallEntityBase"/>
+        /// from an <see cref="IValueReader"/>.</param>
+        public MapGrhWalls(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
+        {
+            Load(contentPath, createWall);
+        }
+
+        /// <summary>
         /// Gets or sets the List of WallEntities for the given GrhData
         /// </summary>
         /// <param name="index">Index of the GrhData to get/set the walls for</param>
@@ -52,24 +63,14 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapGrhWalls"/> class.
-        /// </summary>
-        /// <param name="contentPath">The content path.</param>
-        /// <param name="createWall">Delegate describing how to create the <see cref="WallEntityBase"/>
-        /// from an <see cref="IValueReader"/>.</param>
-        public MapGrhWalls(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
-        {
-            Load(contentPath, createWall);
-        }
-
-        /// <summary>
         /// Creates a List of the <see cref="WallEntityBase"/>s used for a set of <see cref="MapGrh"/>s.
         /// </summary>
         /// <param name="mapGrhs">Set of <see cref="MapGrh"/>s to get the walls for</param>
         /// <param name="createWall">Delegate that describes how to create the <see cref="WallEntityBase"/>
         /// instances.</param>
         /// <returns>List of each bound wall for all the <see cref="MapGrh"/>s.</returns>
-        public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs, CreateWallEntityWithCollisionTypeHandler createWall)
+        public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs,
+                                                   CreateWallEntityWithCollisionTypeHandler createWall)
         {
             var ret = new List<WallEntityBase>();
 

@@ -15,10 +15,10 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatDialog : NPCChatDialogBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         ushort _index;
         EditorNPCChatDialogItem[] _items = new EditorNPCChatDialogItem[8];
         string _title;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners when the EditorNPCChatDialog has changed.

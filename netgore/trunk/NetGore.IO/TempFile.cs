@@ -12,14 +12,6 @@ namespace NetGore.IO
         volatile bool _isDisposed = false;
 
         /// <summary>
-        /// Gets the file path to the temporary file.
-        /// </summary>
-        public string FilePath
-        {
-            get { return _filePath; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TempFile"/> class.
         /// </summary>
         public TempFile() : this(ContentPaths.GetTempFilePath())
@@ -33,6 +25,14 @@ namespace NetGore.IO
         internal TempFile(string filePath)
         {
             _filePath = filePath;
+        }
+
+        /// <summary>
+        /// Gets the file path to the temporary file.
+        /// </summary>
+        public string FilePath
+        {
+            get { return _filePath; }
         }
 
         #region IDisposable Members

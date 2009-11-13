@@ -49,11 +49,6 @@ namespace DemoGame.Server
         readonly ChangedStatsTracker _changedStats;
         readonly User _user;
 
-        public User User
-        {
-            get { return _user; }
-        }
-
         public UserStats(User user, StatCollectionType statCollectionType) : base(statCollectionType)
         {
             if (user == null)
@@ -61,6 +56,11 @@ namespace DemoGame.Server
 
             _user = user;
             _changedStats = new ChangedStatsTracker(this);
+        }
+
+        public User User
+        {
+            get { return _user; }
         }
 
         /// <summary>

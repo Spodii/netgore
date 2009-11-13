@@ -17,6 +17,18 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
 
         /// <summary>
+        /// UserInventoryUpdater constructor.
+        /// </summary>
+        /// <param name="userInventory">UserInventory that this UserInventoryUpdater will manage.</param>
+        public UserInventoryUpdater(UserInventory userInventory)
+        {
+            if (userInventory == null)
+                throw new ArgumentNullException("userInventory");
+
+            _userInventory = userInventory;
+        }
+
+        /// <summary>
         /// Gets the User to send the updates to.
         /// </summary>
         User OwnerUser
@@ -30,18 +42,6 @@ namespace DemoGame.Server
         public UserInventory UserInventory
         {
             get { return _userInventory; }
-        }
-
-        /// <summary>
-        /// UserInventoryUpdater constructor.
-        /// </summary>
-        /// <param name="userInventory">UserInventory that this UserInventoryUpdater will manage.</param>
-        public UserInventoryUpdater(UserInventory userInventory)
-        {
-            if (userInventory == null)
-                throw new ArgumentNullException("userInventory");
-
-            _userInventory = userInventory;
         }
 
         /// <summary>

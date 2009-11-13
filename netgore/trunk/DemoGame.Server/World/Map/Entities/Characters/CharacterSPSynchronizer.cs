@@ -20,14 +20,6 @@ namespace DemoGame.Server
         byte _lastSentMPPercent;
 
         /// <summary>
-        /// Gets the Character that this CharacterSPSynchronizer is for.
-        /// </summary>
-        public Character Character
-        {
-            get { return _character; }
-        }
-
-        /// <summary>
         /// CharacterSPSynchronizer constructor.
         /// </summary>
         /// <param name="character">The Character to synchronize the values of.</param>
@@ -38,6 +30,14 @@ namespace DemoGame.Server
 
             _character = character;
             _isUser = (_character is User);
+        }
+
+        /// <summary>
+        /// Gets the Character that this CharacterSPSynchronizer is for.
+        /// </summary>
+        public Character Character
+        {
+            get { return _character; }
         }
 
         /// <summary>

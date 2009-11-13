@@ -18,6 +18,15 @@ namespace DemoGame.Client
         int _lastPingTime;
         LatencyTrackerClient _latencyTracker;
 
+        public ClientSockets(GameplayScreen gameplayScreen)
+        {
+            _packetHandler = new ClientPacketHandler(this, gameplayScreen);
+            OnConnect += onConnect;
+
+            // Bind the UDP port
+            _udpPort = BindUDP();
+        }
+
         /// <summary>
         /// Gets the latency of the connection in milliseconds.
         /// </summary>
@@ -40,15 +49,6 @@ namespace DemoGame.Client
         public IIPSocket Socket
         {
             get { return _conn; }
-        }
-
-        public ClientSockets(GameplayScreen gameplayScreen)
-        {
-            _packetHandler = new ClientPacketHandler(this, gameplayScreen);
-            OnConnect += onConnect;
-
-            // Bind the UDP port
-            _udpPort = BindUDP();
         }
 
         /// <summary>

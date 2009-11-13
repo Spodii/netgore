@@ -11,20 +11,20 @@ namespace DemoGame.Server
 
         readonly CharacterInventory _inventory;
 
-        /// <summary>
-        /// Gets the Inventory that this InventoryChangeTracker is tracking
-        /// </summary>
-        public CharacterInventory Inventory
-        {
-            get { return _inventory; }
-        }
-
         public InventoryChangeTracker(CharacterInventory inventory)
         {
             Debug.Assert(CharacterInventory.MaxInventorySize <= byte.MaxValue,
                          "Too many inventory slots to index them with a byte.");
 
             _inventory = inventory;
+        }
+
+        /// <summary>
+        /// Gets the Inventory that this InventoryChangeTracker is tracking
+        /// </summary>
+        public CharacterInventory Inventory
+        {
+            get { return _inventory; }
         }
 
         public IEnumerable<InventoryChangeInfo> GetChanges()

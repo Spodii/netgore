@@ -33,6 +33,17 @@ namespace DemoGame.Client
         public event WorldEventHandler<Map> OnChangeMap;
 
         /// <summary>
+        /// World constructor
+        /// </summary>
+        /// <param name="getTime">Interface to get the current time</param>
+        /// <param name="camera">Primary world view camera</param>
+        public World(IGetTime getTime, Camera2D camera)
+        {
+            _getTime = getTime;
+            _camera = camera;
+        }
+
+        /// <summary>
         /// Gets the camera used for the active view.
         /// </summary>
         public Camera2D Camera
@@ -90,17 +101,6 @@ namespace DemoGame.Client
         /// Gets or sets if the UserCharIndex is set.
         /// </summary>
         public bool UserCharIndexSet { get; set; }
-
-        /// <summary>
-        /// World constructor
-        /// </summary>
-        /// <param name="getTime">Interface to get the current time</param>
-        /// <param name="camera">Primary world view camera</param>
-        public World(IGetTime getTime, Camera2D camera)
-        {
-            _getTime = getTime;
-            _camera = camera;
-        }
 
         /// <summary>
         /// Draws the world

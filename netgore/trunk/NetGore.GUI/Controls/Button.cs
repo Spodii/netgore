@@ -19,24 +19,6 @@ namespace NetGore.Graphics.GUI
         Vector2 _textSize = Vector2.Zero;
 
         /// <summary>
-        /// Gets or sets the ControlBorder used for when the mouse is over the control
-        /// </summary>
-        public ControlBorder BorderOver
-        {
-            get { return _borderOver; }
-            set { _borderOver = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the ControlBorder used for when the control is pressed
-        /// </summary>
-        public ControlBorder BorderPressed
-        {
-            get { return _borderPressed; }
-            set { _borderPressed = value; }
-        }
-
-        /// <summary>
         /// Button constructor
         /// </summary>
         /// <param name="gui">GUIManager used by this Control</param>
@@ -133,6 +115,24 @@ namespace NetGore.Graphics.GUI
         public Button(ButtonSettings settings, string text, Vector2 position, Vector2 size, Control parent)
             : this(parent.GUIManager, settings, text, parent.GUIManager.Font, position, size, parent)
         {
+        }
+
+        /// <summary>
+        /// Gets or sets the ControlBorder used for when the mouse is over the control
+        /// </summary>
+        public ControlBorder BorderOver
+        {
+            get { return _borderOver; }
+            set { _borderOver = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the ControlBorder used for when the control is pressed
+        /// </summary>
+        public ControlBorder BorderPressed
+        {
+            get { return _borderPressed; }
+            set { _borderPressed = value; }
         }
 
         void Button_OnChangeFont(Control sender)

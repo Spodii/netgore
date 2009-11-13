@@ -21,6 +21,18 @@ namespace DemoGame.Client
         Vector2 _position;
 
         /// <summary>
+        /// InfoBox constructor
+        /// </summary>
+        /// <param name="position">Position of the bottom-right corner of the InfoBox</param>
+        /// <param name="sf">SpriteFont used to draw the InfoBox text</param>
+        public InfoBox(Vector2 position, SpriteFont sf)
+        {
+            _items = new List<InfoBoxItem>(_maxItems);
+            _position = position;
+            _sf = sf;
+        }
+
+        /// <summary>
         /// Gets or sets the default color of the messages
         /// </summary>
         public Color DefaultColor
@@ -54,18 +66,6 @@ namespace DemoGame.Client
         {
             get { return _position; }
             set { _position = value; }
-        }
-
-        /// <summary>
-        /// InfoBox constructor
-        /// </summary>
-        /// <param name="position">Position of the bottom-right corner of the InfoBox</param>
-        /// <param name="sf">SpriteFont used to draw the InfoBox text</param>
-        public InfoBox(Vector2 position, SpriteFont sf)
-        {
-            _items = new List<InfoBoxItem>(_maxItems);
-            _position = position;
-            _sf = sf;
         }
 
         /// <summary>

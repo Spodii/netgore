@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Graphics
 {
@@ -14,8 +12,7 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="T:System.Exception"/> class.
         /// </summary>
         /// <param name="grhIndex">Index of the GRH.</param>
-        public GrhDataNotFoundException(GrhIndex grhIndex)
-            : base(string.Format("No GrhData found for GrhIndex `{0}`.", grhIndex))
+        public GrhDataNotFoundException(GrhIndex grhIndex) : base(string.Format("No GrhData found for GrhIndex `{0}`.", grhIndex))
         {
         }
 
@@ -55,7 +52,9 @@ namespace NetGore.Graphics
         /// <param name="title">The title.</param>
         /// <param name="innerException">The inner exception.</param>
         public GrhDataNotFoundException(string category, string title, Exception innerException)
-            : base(string.Format("No GrhData found for GrhIndex with category `{0}` and title `{1}`.", category, title), innerException)
+            : base(
+                string.Format("No GrhData found for GrhIndex with category `{0}` and title `{1}`.", category, title),
+                innerException)
         {
         }
 

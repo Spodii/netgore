@@ -18,14 +18,6 @@ namespace NetGore.Db
             new List<KeyValuePair<IDbConnection, IPoolableDbConnection>>();
 
         /// <summary>
-        /// Gets the DbConnectionPool used by this DbManager.
-        /// </summary>
-        public DbConnectionPool ConnectionPool
-        {
-            get { return _connectionPool; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DbManager"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to create the connections managed by this DbManager.</param>
@@ -35,6 +27,14 @@ namespace NetGore.Db
                 throw new ArgumentNullException("connectionPool");
 
             _connectionPool = connectionPool;
+        }
+
+        /// <summary>
+        /// Gets the DbConnectionPool used by this DbManager.
+        /// </summary>
+        public DbConnectionPool ConnectionPool
+        {
+            get { return _connectionPool; }
         }
 
         /// <summary>

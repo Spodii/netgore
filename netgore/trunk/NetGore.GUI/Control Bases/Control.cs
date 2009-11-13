@@ -123,6 +123,80 @@ namespace NetGore.Graphics.GUI
         public event ControlEventHandler OnResize;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        protected Control(Vector2 position, Vector2 size, Control parent)
+            : this(parent.GUIManager, parent.Settings, position, size, parent)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="settings">Default settings for this Control. Can be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        protected Control(ControlSettings settings, Vector2 position, Vector2 size, Control parent)
+            : this(parent.GUIManager, settings, position, size, parent)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of.</param>
+        /// <param name="settings">Default settings for this Control. Can be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Parent Control of this Control (or null for a root Control).</param>
+        protected Control(GUIManagerBase gui, ControlSettings settings, Vector2 position, Vector2 size, Control parent)
+        {
+            _settings = settings;
+            _gui = gui;
+            _parent = parent;
+
+            Position = position;
+            Size = size;
+
+            // Apply the settings.
+            if (_settings != null)
+            {
+                Border = Settings.Border;
+                CanDrag = Settings.CanDrag;
+                CanFocus = Settings.CanFocus;
+                IsBoundToParentArea = Settings.IsBoundToParentArea;
+                IsEnabled = Settings.IsEnabled;
+                IsVisible = Settings.IsVisible;
+            }
+
+            // Check for a valid GUIManager
+            if (GUIManager == null)
+                throw new ArgumentNullException("gui", "GUIManager cannot be null.");
+
+            if (Parent != null)
+            {
+                // Check that the parent isn't disposed
+                if (parent._isDisposed)
+                    throw new ArgumentException("Parent control is disposed and cannot be used.", "parent");
+
+                // Add the Control to the parent
+                Parent._controls.Add(this);
+                _root = GetRootControl();
+                KeepInParent();
+            }
+            else
+            {
+                // This control is the root, so add it directly to the GUIManager
+                _root = this;
+                gui.Add(this);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the ControlBorder used with this control (can be null)
         /// </summary>
         public ControlBorder Border
@@ -347,80 +421,6 @@ namespace NetGore.Graphics.GUI
         /// <see cref="Control"/> will not display a <see cref="Tooltip"/>.
         /// </summary>
         public TooltipHandler Tooltip { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
-        protected Control(Vector2 position, Vector2 size, Control parent)
-            : this(parent.GUIManager, parent.Settings, position, size, parent)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="settings">Default settings for this Control. Can be null.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
-        protected Control(ControlSettings settings, Vector2 position, Vector2 size, Control parent)
-            : this(parent.GUIManager, settings, position, size, parent)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of.</param>
-        /// <param name="settings">Default settings for this Control. Can be null.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Parent Control of this Control (or null for a root Control).</param>
-        protected Control(GUIManagerBase gui, ControlSettings settings, Vector2 position, Vector2 size, Control parent)
-        {
-            _settings = settings;
-            _gui = gui;
-            _parent = parent;
-
-            Position = position;
-            Size = size;
-
-            // Apply the settings.
-            if (_settings != null)
-            {
-                Border = Settings.Border;
-                CanDrag = Settings.CanDrag;
-                CanFocus = Settings.CanFocus;
-                IsBoundToParentArea = Settings.IsBoundToParentArea;
-                IsEnabled = Settings.IsEnabled;
-                IsVisible = Settings.IsVisible;
-            }
-
-            // Check for a valid GUIManager
-            if (GUIManager == null)
-                throw new ArgumentNullException("gui", "GUIManager cannot be null.");
-
-            if (Parent != null)
-            {
-                // Check that the parent isn't disposed
-                if (parent._isDisposed)
-                    throw new ArgumentException("Parent control is disposed and cannot be used.", "parent");
-
-                // Add the Control to the parent
-                Parent._controls.Add(this);
-                _root = GetRootControl();
-                KeepInParent();
-            }
-            else
-            {
-                // This control is the root, so add it directly to the GUIManager
-                _root = this;
-                gui.Add(this);
-            }
-        }
 
         /// <summary>
         /// Adds a control to the queue to set a child control as the top-most control.

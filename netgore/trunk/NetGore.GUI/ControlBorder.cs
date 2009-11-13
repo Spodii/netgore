@@ -65,6 +65,41 @@ namespace NetGore.Graphics.GUI
         ISprite _tr = null;
 
         /// <summary>
+        /// ControlBorder constructor
+        /// </summary>
+        /// <param name="source">ControlBorder to copy from</param>
+        public ControlBorder(ControlBorder source)
+            : this(source._tl, source._t, source._tr, source._r, source._br, source._b, source._bl, source._l, source._bg)
+        {
+        }
+
+        /// <summary>
+        /// ControlBorder constructor
+        /// </summary>
+        /// <param name="topLeft">Source of the top-left corner</param>
+        /// <param name="top">Source of the top side</param>
+        /// <param name="topRight">Source of the top-right corner</param>
+        /// <param name="right">Source of the right side</param>
+        /// <param name="bottomRight">Source of the bottom-right corner</param>
+        /// <param name="bottom">Source of the bottom side</param>
+        /// <param name="bottomLeft">Source of the bottom-left corner</param>
+        /// <param name="left">Source of the left side</param>
+        /// <param name="background">Source of the background</param>
+        public ControlBorder(ISprite topLeft, ISprite top, ISprite topRight, ISprite right, ISprite bottomRight, ISprite bottom,
+                             ISprite bottomLeft, ISprite left, ISprite background)
+        {
+            _tl = topLeft;
+            _t = top;
+            _tr = topRight;
+            _r = right;
+            _br = bottomRight;
+            _b = bottom;
+            _bl = bottomLeft;
+            _l = left;
+            _bg = background;
+        }
+
+        /// <summary>
         /// Gets the height of the bottom side of the border
         /// </summary>
         public int BottomHeight
@@ -232,41 +267,6 @@ namespace NetGore.Graphics.GUI
         public int Width
         {
             get { return LeftWidth + RightWidth; }
-        }
-
-        /// <summary>
-        /// ControlBorder constructor
-        /// </summary>
-        /// <param name="source">ControlBorder to copy from</param>
-        public ControlBorder(ControlBorder source)
-            : this(source._tl, source._t, source._tr, source._r, source._br, source._b, source._bl, source._l, source._bg)
-        {
-        }
-
-        /// <summary>
-        /// ControlBorder constructor
-        /// </summary>
-        /// <param name="topLeft">Source of the top-left corner</param>
-        /// <param name="top">Source of the top side</param>
-        /// <param name="topRight">Source of the top-right corner</param>
-        /// <param name="right">Source of the right side</param>
-        /// <param name="bottomRight">Source of the bottom-right corner</param>
-        /// <param name="bottom">Source of the bottom side</param>
-        /// <param name="bottomLeft">Source of the bottom-left corner</param>
-        /// <param name="left">Source of the left side</param>
-        /// <param name="background">Source of the background</param>
-        public ControlBorder(ISprite topLeft, ISprite top, ISprite topRight, ISprite right, ISprite bottomRight, ISprite bottom,
-                             ISprite bottomLeft, ISprite left, ISprite background)
-        {
-            _tl = topLeft;
-            _t = top;
-            _tr = topRight;
-            _r = right;
-            _br = bottomRight;
-            _b = bottom;
-            _bl = bottomLeft;
-            _l = left;
-            _bg = background;
         }
 
         /// <summary>

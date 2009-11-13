@@ -16,11 +16,6 @@ namespace NetGore.Collections
         readonly List<T> _list;
         readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
-        public int Capacity
-        {
-            get { return _list.Capacity; }
-        }
-
         public TSList()
         {
             _list = new List<T>();
@@ -34,6 +29,11 @@ namespace NetGore.Collections
         public TSList(IEnumerable<T> collection)
         {
             _list = new List<T>(collection);
+        }
+
+        public int Capacity
+        {
+            get { return _list.Capacity; }
         }
 
         public void AddRange(IEnumerable<T> collection)

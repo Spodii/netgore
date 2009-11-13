@@ -14,6 +14,15 @@ namespace NetGore.NPCChat.Conditionals
         string _value;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatConditionalParameterString"/> struct.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        public NPCChatConditionalParameterString(string value)
+        {
+            _value = value;
+        }
+
+        /// <summary>
         /// Gets or sets this parameter's Value as an object.
         /// </summary>
         public override object Value
@@ -38,15 +47,6 @@ namespace NetGore.NPCChat.Conditionals
         public override NPCChatConditionalParameterType ValueType
         {
             get { return NPCChatConditionalParameterType.String; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalParameterString"/> struct.
-        /// </summary>
-        /// <param name="value">The parameter value.</param>
-        public NPCChatConditionalParameterString(string value)
-        {
-            _value = value;
         }
 
         /// <summary>

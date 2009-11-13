@@ -25,26 +25,6 @@ namespace DemoGame.Client
 
         static readonly StatusEffectTypeHelper _statusEffectTypeHelper = StatusEffectTypeHelper.Instance;
 
-        /// <summary>
-        /// Gets or sets the description of this status effect.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the GrhIndex of the icon for this status effect.
-        /// </summary>
-        public GrhIndex Icon { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of this status effect.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the StatusEffectType that this StatusEffectInfo describes.
-        /// </summary>
-        public StatusEffectType StatusEffectType { get; set; }
-
         static StatusEffectInfo()
         {
             _infoManager.AddMissingTypes(EnumHelper<StatusEffectType>.Values,
@@ -65,6 +45,26 @@ namespace DemoGame.Client
         {
             Read(r);
         }
+
+        /// <summary>
+        /// Gets or sets the description of this status effect.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the GrhIndex of the icon for this status effect.
+        /// </summary>
+        public GrhIndex Icon { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of this status effect.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the StatusEffectType that this StatusEffectInfo describes.
+        /// </summary>
+        public StatusEffectType StatusEffectType { get; set; }
 
         public static StatusEffectInfo GetStatusEffectInfo(StatusEffectType statusEffectType)
         {

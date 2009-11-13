@@ -17,6 +17,25 @@ namespace NetGore.Graphics
         AtlasTreeNode _right = null;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AtlasTreeNode"/> class.
+        /// </summary>
+        /// <param name="node">The <see cref="AtlasTextureItem"/> that this <see cref="AtlasTreeNode"/> is for.</param>
+        public AtlasTreeNode(AtlasTextureItem node)
+        {
+            _atlasNode = node;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AtlasTreeNode"/> class.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> describing the area claimed by this
+        /// <see cref="AtlasTreeNode"/>.</param>
+        AtlasTreeNode(Rectangle rect)
+        {
+            _atlasNode = new AtlasTextureItem(rect);
+        }
+
+        /// <summary>
         /// Gets the <see cref="AtlasTextureItem"/> that this <see cref="AtlasTreeNode"/> is for.
         /// </summary>
         public AtlasTextureItem AtlasNode
@@ -63,25 +82,6 @@ namespace NetGore.Graphics
         {
             get { return _right; }
             private set { _right = value; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AtlasTreeNode"/> class.
-        /// </summary>
-        /// <param name="node">The <see cref="AtlasTextureItem"/> that this <see cref="AtlasTreeNode"/> is for.</param>
-        public AtlasTreeNode(AtlasTextureItem node)
-        {
-            _atlasNode = node;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AtlasTreeNode"/> class.
-        /// </summary>
-        /// <param name="rect">The <see cref="Rectangle"/> describing the area claimed by this
-        /// <see cref="AtlasTreeNode"/>.</param>
-        AtlasTreeNode(Rectangle rect)
-        {
-            _atlasNode = new AtlasTextureItem(rect);
         }
 
         /// <summary>

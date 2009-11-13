@@ -12,13 +12,6 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public class DbClassData
     {
-        readonly IEnumerable<CustomTypeMapping> _customTypes;
-        readonly Dictionary<Type, string> _dataReaderReadMethods;
-        readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
-
-        readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
-        readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
-        readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
         public readonly string ClassName;
         public readonly IEnumerable<ColumnCollection> ColumnCollections;
         public readonly IEnumerable<DbColumnInfo> Columns;
@@ -26,6 +19,13 @@ namespace NetGore.Db.ClassCreator
         public readonly CodeFormatter Formatter;
         public readonly string InterfaceName;
         public readonly string TableName;
+        readonly IEnumerable<CustomTypeMapping> _customTypes;
+        readonly Dictionary<Type, string> _dataReaderReadMethods;
+        readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
+
+        readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
+        readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
+        readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbClassData"/> class.

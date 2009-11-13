@@ -98,6 +98,30 @@ namespace DemoGame.MapEditor
         readonly Grh _grh;
 
         /// <summary>
+        /// Creates a transformation box
+        /// </summary>
+        /// <param name="transType">Type of transformation box</param>
+        /// <param name="entity">Entity to attach the box to</param>
+        /// <param name="position">Position to create the transformation box</param>
+        public TransBox(TransBoxType transType, Entity entity, Vector2 position)
+        {
+            TransType = transType;
+            Position = position;
+            Entity = entity;
+
+            GrhData sourceGrhData;
+
+            if (transType == TransBoxType.Move)
+                sourceGrhData = Move;
+            else
+                sourceGrhData = Scale;
+
+            Vector2 size = sourceGrhData.Size;
+            Area = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            _grh = new Grh(sourceGrhData);
+        }
+
+        /// <summary>
         /// Gets the GrhData for the moving icon
         /// </summary>
         public static GrhData Move
@@ -127,30 +151,6 @@ namespace DemoGame.MapEditor
         public static Vector2 ScaleSize
         {
             get { return _scaleSize; }
-        }
-
-        /// <summary>
-        /// Creates a transformation box
-        /// </summary>
-        /// <param name="transType">Type of transformation box</param>
-        /// <param name="entity">Entity to attach the box to</param>
-        /// <param name="position">Position to create the transformation box</param>
-        public TransBox(TransBoxType transType, Entity entity, Vector2 position)
-        {
-            TransType = transType;
-            Position = position;
-            Entity = entity;
-
-            GrhData sourceGrhData;
-
-            if (transType == TransBoxType.Move)
-                sourceGrhData = Move;
-            else
-                sourceGrhData = Scale;
-
-            Vector2 size = sourceGrhData.Size;
-            Area = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
-            _grh = new Grh(sourceGrhData);
         }
 
         /// <summary>

@@ -16,43 +16,12 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class GrhImageList
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly Dictionary<GrhIndex, GrhImageListCacheItem> _imageCache =
             new Dictionary<GrhIndex, GrhImageListCacheItem>();
 
         static readonly ImageList _imageList = new ImageList();
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Gets the key for the special image of a closed folder.
-        /// </summary>
-        public static string ClosedFolderKey
-        {
-            get { return "_folder"; }
-        }
-
-        /// <summary>
-        /// Gets the key for the default image.
-        /// </summary>
-        public static string DefaultImageKey
-        {
-            get { return "_default"; }
-        }
-
-        /// <summary>
-        /// Gets the ImageList used for the GrhDatas.
-        /// </summary>
-        public static ImageList ImageList
-        {
-            get { return _imageList; }
-        }
-
-        /// <summary>
-        /// Gets the key for the special image of an open folder.
-        /// </summary>
-        public static string OpenFolderKey
-        {
-            get { return "_openfolder"; }
-        }
 
         /// <summary>
         /// GrhImageList static constructor.
@@ -85,6 +54,38 @@ namespace NetGore.EditorTools
             {
                 AddImage(gd);
             }
+        }
+
+        /// <summary>
+        /// Gets the key for the special image of a closed folder.
+        /// </summary>
+        public static string ClosedFolderKey
+        {
+            get { return "_folder"; }
+        }
+
+        /// <summary>
+        /// Gets the key for the default image.
+        /// </summary>
+        public static string DefaultImageKey
+        {
+            get { return "_default"; }
+        }
+
+        /// <summary>
+        /// Gets the ImageList used for the GrhDatas.
+        /// </summary>
+        public static ImageList ImageList
+        {
+            get { return _imageList; }
+        }
+
+        /// <summary>
+        /// Gets the key for the special image of an open folder.
+        /// </summary>
+        public static string OpenFolderKey
+        {
+            get { return "_openfolder"; }
         }
 
         /// <summary>

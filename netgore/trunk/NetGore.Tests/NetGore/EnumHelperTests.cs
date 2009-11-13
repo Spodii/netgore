@@ -11,230 +11,29 @@ namespace NetGore.Tests
     [TestFixture]
     public class EnumHelperTests
     {
-        enum EVByte : byte
-        {
-            A,
-            B,
-            C,
-            D,
-            E,
-            F,
-            G,
-            H
-        }
-
-        sealed class EVHByte : EnumHelper<EVByte>
-        {
-            static readonly EVHByte _instance;
-
-            public static EVHByte Instance
-            {
-                get { return _instance; }
-            }
-
-            static EVHByte()
-            {
-                _instance = new EVHByte();
-            }
-
-            EVHByte()
-            {
-            }
-
-            protected override EVByte FromInt(int value)
-            {
-                return (EVByte)value;
-            }
-
-            protected override int ToInt(EVByte value)
-            {
-                return (int)value;
-            }
-        }
-
-        enum EVSByte : byte
-        {
-            A,
-            B,
-            C,
-            D,
-            E,
-            F,
-            G,
-            H
-        }
-
-        sealed class EVHSByte : EnumHelper<EVSByte>
-        {
-            static readonly EVHSByte _instance;
-
-            public static EVHSByte Instance
-            {
-                get { return _instance; }
-            }
-
-            static EVHSByte()
-            {
-                _instance = new EVHSByte();
-            }
-
-            EVHSByte()
-            {
-            }
-
-            protected override EVSByte FromInt(int value)
-            {
-                return (EVSByte)value;
-            }
-
-            protected override int ToInt(EVSByte value)
-            {
-                return (int)value;
-            }
-        }
-
-        enum EVShort : byte
-        {
-            A,
-            B,
-            C,
-            D,
-            E,
-            F,
-            G,
-            H
-        }
-
-        sealed class EVHShort : EnumHelper<EVShort>
-        {
-            static readonly EVHShort _instance;
-
-            public static EVHShort Instance
-            {
-                get { return _instance; }
-            }
-
-            static EVHShort()
-            {
-                _instance = new EVHShort();
-            }
-
-            EVHShort()
-            {
-            }
-
-            protected override EVShort FromInt(int value)
-            {
-                return (EVShort)value;
-            }
-
-            protected override int ToInt(EVShort value)
-            {
-                return (int)value;
-            }
-        }
-
-        enum EVUShort : byte
-        {
-            A,
-            B,
-            C,
-            D,
-            E,
-            F,
-            G,
-            H
-        }
-
-        sealed class EVHUShort : EnumHelper<EVUShort>
-        {
-            static readonly EVHUShort _instance;
-
-            public static EVHUShort Instance
-            {
-                get { return _instance; }
-            }
-
-            static EVHUShort()
-            {
-                _instance = new EVHUShort();
-            }
-
-            EVHUShort()
-            {
-            }
-
-            protected override EVUShort FromInt(int value)
-            {
-                return (EVUShort)value;
-            }
-
-            protected override int ToInt(EVUShort value)
-            {
-                return (int)value;
-            }
-        }
-
-        sealed class EVHInt : EnumHelper<EVInt>
-        {
-            static readonly EVHInt _instance;
-
-            public static EVHInt Instance
-            {
-                get { return _instance; }
-            }
-
-            static EVHInt()
-            {
-                _instance = new EVHInt();
-            }
-
-            EVHInt()
-            {
-            }
-
-            protected override EVInt FromInt(int value)
-            {
-                return (EVInt)value;
-            }
-
-            protected override int ToInt(EVInt value)
-            {
-                return (int)value;
-            }
-        }
-
-        enum EVInt
-        {
-            A = -100,
-            B = 0,
-            C,
-            D,
-            E,
-            F = 100,
-            G,
-            H
-        }
-
         const int _initialBufferSize = 512;
 
-        enum TestEnum
-        {
-            A,
-            B,
-            C,
-            D,
-            E,
-            F,
-            G,
-            h,
-            i,
-            jk,
-            lmno,
-            p
-        }
-
         static readonly Random r = new Random();
+
+        [Test]
+        public void ByteIOTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
+            EVHByte i = EVHByte.Instance;
+            var testValues = new EVByte[] { EVByte.A, EVByte.D, EVByte.H, EVByte.C, EVByte.A, EVByte.B, EVByte.B };
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                i.WriteValue(bs, testValues[j]);
+            }
+
+            bs.Mode = BitStreamMode.Read;
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                Assert.AreEqual(testValues[j], i.ReadValue(bs));
+            }
+        }
 
         static string CreateRandomString()
         {
@@ -276,26 +75,6 @@ namespace NetGore.Tests
             }
 
             return new string(ret);
-        }
-
-        [Test]
-        public void ByteIOTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
-            EVHByte i = EVHByte.Instance;
-            var testValues = new EVByte[] { EVByte.A, EVByte.D, EVByte.H, EVByte.C, EVByte.A, EVByte.B, EVByte.B };
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                i.WriteValue(bs, testValues[j]);
-            }
-
-            bs.Mode = BitStreamMode.Read;
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                Assert.AreEqual(testValues[j], i.ReadValue(bs));
-            }
         }
 
         [Test]
@@ -457,6 +236,227 @@ namespace NetGore.Tests
             {
                 Assert.AreEqual(testValues[j], i.ReadValue(bs));
             }
+        }
+
+        enum EVByte : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        sealed class EVHByte : EnumHelper<EVByte>
+        {
+            static readonly EVHByte _instance;
+
+            static EVHByte()
+            {
+                _instance = new EVHByte();
+            }
+
+            EVHByte()
+            {
+            }
+
+            public static EVHByte Instance
+            {
+                get { return _instance; }
+            }
+
+            protected override EVByte FromInt(int value)
+            {
+                return (EVByte)value;
+            }
+
+            protected override int ToInt(EVByte value)
+            {
+                return (int)value;
+            }
+        }
+
+        sealed class EVHInt : EnumHelper<EVInt>
+        {
+            static readonly EVHInt _instance;
+
+            static EVHInt()
+            {
+                _instance = new EVHInt();
+            }
+
+            EVHInt()
+            {
+            }
+
+            public static EVHInt Instance
+            {
+                get { return _instance; }
+            }
+
+            protected override EVInt FromInt(int value)
+            {
+                return (EVInt)value;
+            }
+
+            protected override int ToInt(EVInt value)
+            {
+                return (int)value;
+            }
+        }
+
+        sealed class EVHSByte : EnumHelper<EVSByte>
+        {
+            static readonly EVHSByte _instance;
+
+            static EVHSByte()
+            {
+                _instance = new EVHSByte();
+            }
+
+            EVHSByte()
+            {
+            }
+
+            public static EVHSByte Instance
+            {
+                get { return _instance; }
+            }
+
+            protected override EVSByte FromInt(int value)
+            {
+                return (EVSByte)value;
+            }
+
+            protected override int ToInt(EVSByte value)
+            {
+                return (int)value;
+            }
+        }
+
+        sealed class EVHShort : EnumHelper<EVShort>
+        {
+            static readonly EVHShort _instance;
+
+            static EVHShort()
+            {
+                _instance = new EVHShort();
+            }
+
+            EVHShort()
+            {
+            }
+
+            public static EVHShort Instance
+            {
+                get { return _instance; }
+            }
+
+            protected override EVShort FromInt(int value)
+            {
+                return (EVShort)value;
+            }
+
+            protected override int ToInt(EVShort value)
+            {
+                return (int)value;
+            }
+        }
+
+        sealed class EVHUShort : EnumHelper<EVUShort>
+        {
+            static readonly EVHUShort _instance;
+
+            static EVHUShort()
+            {
+                _instance = new EVHUShort();
+            }
+
+            EVHUShort()
+            {
+            }
+
+            public static EVHUShort Instance
+            {
+                get { return _instance; }
+            }
+
+            protected override EVUShort FromInt(int value)
+            {
+                return (EVUShort)value;
+            }
+
+            protected override int ToInt(EVUShort value)
+            {
+                return (int)value;
+            }
+        }
+
+        enum EVInt
+        {
+            A = -100,
+            B = 0,
+            C,
+            D,
+            E,
+            F = 100,
+            G,
+            H
+        }
+
+        enum EVSByte : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        enum EVShort : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        enum EVUShort : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        enum TestEnum
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            h,
+            i,
+            jk,
+            lmno,
+            p
         }
     }
 }

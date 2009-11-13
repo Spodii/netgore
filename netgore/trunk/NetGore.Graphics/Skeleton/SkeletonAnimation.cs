@@ -75,6 +75,34 @@ namespace NetGore.Graphics
         public event EventHandler OnLoop;
 
         /// <summary>
+        /// Skeleton animation constructor
+        /// </summary>
+        /// <param name="time">Current time</param>
+        /// <param name="skeletonSet">SkeletonSet to use for the keyframes</param>
+        public SkeletonAnimation(int time, SkeletonSet skeletonSet)
+        {
+            if (skeletonSet == null)
+                throw new ArgumentNullException("skeletonSet");
+            if (skeletonSet.KeyFrames.Length == 0)
+                throw new Exception("skeletonSet contains no KeyFrames.");
+
+            _lastTime = time;
+            _skelSet = skeletonSet;
+            _currFrame = _skelSet.KeyFrames[0];
+            _nextFrame = _skelSet.KeyFrames.Length > 1 ? _skelSet.KeyFrames[1] : _skelSet.KeyFrames[0];
+            _skel = CurrentFrame.Skeleton.DeepCopy();
+        }
+
+        /// <summary>
+        /// Skeleton animaiton constructor
+        /// </summary>
+        /// <param name="time">Current time</param>
+        /// <param name="frame">Single frame to use for the keyframe</param>
+        public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[] { frame }))
+        {
+        }
+
+        /// <summary>
         /// Gets the skeleton for the current frame
         /// </summary>
         public SkeletonFrame CurrentFrame
@@ -147,34 +175,6 @@ namespace NetGore.Graphics
         {
             get { return _speed; }
             set { _speed = value; }
-        }
-
-        /// <summary>
-        /// Skeleton animation constructor
-        /// </summary>
-        /// <param name="time">Current time</param>
-        /// <param name="skeletonSet">SkeletonSet to use for the keyframes</param>
-        public SkeletonAnimation(int time, SkeletonSet skeletonSet)
-        {
-            if (skeletonSet == null)
-                throw new ArgumentNullException("skeletonSet");
-            if (skeletonSet.KeyFrames.Length == 0)
-                throw new Exception("skeletonSet contains no KeyFrames.");
-
-            _lastTime = time;
-            _skelSet = skeletonSet;
-            _currFrame = _skelSet.KeyFrames[0];
-            _nextFrame = _skelSet.KeyFrames.Length > 1 ? _skelSet.KeyFrames[1] : _skelSet.KeyFrames[0];
-            _skel = CurrentFrame.Skeleton.DeepCopy();
-        }
-
-        /// <summary>
-        /// Skeleton animaiton constructor
-        /// </summary>
-        /// <param name="time">Current time</param>
-        /// <param name="frame">Single frame to use for the keyframe</param>
-        public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[] { frame }))
-        {
         }
 
         /// <summary>

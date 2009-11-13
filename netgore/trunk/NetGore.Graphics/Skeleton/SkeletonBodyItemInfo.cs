@@ -21,6 +21,28 @@ namespace NetGore.Graphics
         string _sourceName;
 
         /// <summary>
+        /// SkeletonBodyItemInfo constructor.
+        /// </summary>
+        /// <param name="grhIndex">GrhIndex of the body item.</param>
+        /// <param name="sourceName">Name of the source n.</param>
+        /// <param name="destName">Name of the destination n (String.Empty for no destination).</param>
+        /// <param name="offset">Grh drawing offset.</param>
+        /// <param name="origin">Grh drawing origin.</param>
+        public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset, Vector2 origin)
+        {
+            _grhIndex = grhIndex;
+            _sourceName = sourceName;
+            _destName = destName;
+            Offset = offset;
+            Origin = origin;
+        }
+
+        public SkeletonBodyItemInfo(IValueReader reader)
+        {
+            Read(reader);
+        }
+
+        /// <summary>
         /// Gets the name of the destination n.
         /// </summary>
         public string DestName
@@ -52,28 +74,6 @@ namespace NetGore.Graphics
         public string SourceName
         {
             get { return _sourceName; }
-        }
-
-        /// <summary>
-        /// SkeletonBodyItemInfo constructor.
-        /// </summary>
-        /// <param name="grhIndex">GrhIndex of the body item.</param>
-        /// <param name="sourceName">Name of the source n.</param>
-        /// <param name="destName">Name of the destination n (String.Empty for no destination).</param>
-        /// <param name="offset">Grh drawing offset.</param>
-        /// <param name="origin">Grh drawing origin.</param>
-        public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset, Vector2 origin)
-        {
-            _grhIndex = grhIndex;
-            _sourceName = sourceName;
-            _destName = destName;
-            Offset = offset;
-            Origin = origin;
-        }
-
-        public SkeletonBodyItemInfo(IValueReader reader)
-        {
-            Read(reader);
         }
 
         public void Read(IValueReader reader)

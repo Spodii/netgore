@@ -29,31 +29,6 @@ namespace NetGore.Graphics
         Skeleton _skeleton;
 
         /// <summary>
-        /// Gets the amount of time the animation will stay on this frame in milliseconds.
-        /// A value of 0 will result in the delay being found by the other frame - useful for stopped animation frames.
-        /// </summary>
-        public float Delay
-        {
-            get { return _delay; }
-        }
-
-        /// <summary>
-        /// Gets the file name of the frame
-        /// </summary>
-        public string FileName
-        {
-            get { return _fileName; }
-        }
-
-        /// <summary>
-        /// Gets the skeleton used for the frame
-        /// </summary>
-        public Skeleton Skeleton
-        {
-            get { return _skeleton; }
-        }
-
-        /// <summary>
         /// Skeleton frame constructor
         /// </summary>
         /// <param name="fileName">Path to the file used to load the frame</param>
@@ -85,6 +60,31 @@ namespace NetGore.Graphics
 
             if (Skeleton == null)
                 throw new Exception("Skeleton is null.");
+        }
+
+        /// <summary>
+        /// Gets the amount of time the animation will stay on this frame in milliseconds.
+        /// A value of 0 will result in the delay being found by the other frame - useful for stopped animation frames.
+        /// </summary>
+        public float Delay
+        {
+            get { return _delay; }
+        }
+
+        /// <summary>
+        /// Gets the file name of the frame
+        /// </summary>
+        public string FileName
+        {
+            get { return _fileName; }
+        }
+
+        /// <summary>
+        /// Gets the skeleton used for the frame
+        /// </summary>
+        public Skeleton Skeleton
+        {
+            get { return _skeleton; }
         }
 
         public void Read(IValueReader reader, ContentPaths contentPath)

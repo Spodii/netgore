@@ -21,14 +21,6 @@ namespace NetGore.Network
         readonly MessageProcessor[] _processors;
 
         /// <summary>
-        /// Gets an IEnumerable of all the MessageProcessors handled by this MessageProcessorManager.
-        /// </summary>
-        public IEnumerable<MessageProcessor> Processors
-        {
-            get { return _processors; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessorManager"/> class.
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static).</param>
@@ -80,6 +72,14 @@ namespace NetGore.Network
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the MessageProcessors handled by this MessageProcessorManager.
+        /// </summary>
+        public IEnumerable<MessageProcessor> Processors
+        {
+            get { return _processors; }
         }
 
         /// <summary>

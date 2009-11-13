@@ -16,12 +16,12 @@ namespace DemoGame
     /// </summary>
     public abstract class EquippedBase<T> : IEnumerable<KeyValuePair<EquipmentSlot, T>> where T : ItemEntityBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Greatest index of all the EquipmentSlots.
         /// </summary>
         static readonly int _highestSlotIndex = EquipmentSlotHelper.Instance.MaxValue;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Array indexed by the numeric value of the EquipmentSlot, containing the item

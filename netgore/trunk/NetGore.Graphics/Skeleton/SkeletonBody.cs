@@ -28,22 +28,6 @@ namespace NetGore.Graphics
         Skeleton _skeleton = null;
 
         /// <summary>
-        /// Gets the SkeletonBodyInfo that this SkeletonBody is created from
-        /// </summary>
-        public SkeletonBodyInfo BodyInfo
-        {
-            get { return _bodyInfo; }
-        }
-
-        /// <summary>
-        /// Gets the Skeleton that this SkeletonBody is attached to
-        /// </summary>
-        public Skeleton Skeleton
-        {
-            get { return _skeleton; }
-        }
-
-        /// <summary>
         /// SkeletonBody constructor
         /// </summary>
         /// <param name="bodyInfo">SkeletonBodyInfo to create the SkeletonBody from</param>
@@ -73,6 +57,22 @@ namespace NetGore.Graphics
         public SkeletonBody(SkeletonBodyInfo bodyInfo, Skeleton skeleton) : this(bodyInfo)
         {
             Attach(skeleton);
+        }
+
+        /// <summary>
+        /// Gets the SkeletonBodyInfo that this SkeletonBody is created from
+        /// </summary>
+        public SkeletonBodyInfo BodyInfo
+        {
+            get { return _bodyInfo; }
+        }
+
+        /// <summary>
+        /// Gets the Skeleton that this SkeletonBody is attached to
+        /// </summary>
+        public Skeleton Skeleton
+        {
+            get { return _skeleton; }
         }
 
         /// <summary>

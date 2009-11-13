@@ -15,6 +15,8 @@ namespace NetGore.Collections
     /// <typeparam name="T">Type of object to store.</typeparam>
     public class DArray<T> : IList<T>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Default size of the free indices stack.
         /// </summary>
@@ -25,14 +27,14 @@ namespace NetGore.Collections
         /// </summary>
         const int _defaultSize = 8;
 
-        T[] _buffer;
-        Stack<int> _freeIndices;
-        int _highestIndex = -1;
         readonly BitArray _isIndexUsed = new BitArray(_defaultSize, false);
 
         readonly bool _trackFree;
+
+        T[] _buffer;
+        Stack<int> _freeIndices;
+        int _highestIndex = -1;
         int _version = 0;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies when an item has been added to the DArray
@@ -562,10 +564,10 @@ namespace NetGore.Collections
         /// </summary>
         public struct Enumerator : IEnumerator<T>
         {
-            T _current;
-            int _index;
             readonly DArray<T> _items;
             readonly int _version;
+            T _current;
+            int _index;
 
             internal Enumerator(DArray<T> source)
             {

@@ -13,20 +13,20 @@ namespace NetGore
         readonly string _command;
 
         /// <summary>
-        /// Gets the name of the command, which is also the string entered to invoke the command.
-        /// </summary>
-        public string Command
-        {
-            get { return _command; }
-        }
-
-        /// <summary>
         /// StringCommandBaseAttribute constructor.
         /// </summary>
         /// <param name="command">The name of the command.</param>
         protected StringCommandBaseAttribute(string command)
         {
             _command = command;
+        }
+
+        /// <summary>
+        /// Gets the name of the command, which is also the string entered to invoke the command.
+        /// </summary>
+        public string Command
+        {
+            get { return _command; }
         }
     }
 }

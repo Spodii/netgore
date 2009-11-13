@@ -10,5 +10,6 @@ namespace NetGore.EditorTools
     /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
     /// <param name="collisionType">The <see cref="CollisionType"/> to give the <see cref="WallEntityBase"/>.</param>
     /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
-    public delegate WallEntityBase CreateWallEntityWithCollisionTypeHandler(Vector2 position, Vector2 size, CollisionType collisionType);
+    public delegate WallEntityBase CreateWallEntityWithCollisionTypeHandler(
+        Vector2 position, Vector2 size, CollisionType collisionType);
 }

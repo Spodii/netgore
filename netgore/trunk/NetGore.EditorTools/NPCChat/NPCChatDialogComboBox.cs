@@ -48,8 +48,8 @@ namespace NetGore.EditorTools.NPCChat
 
         struct NPCChatDialogComboBoxItem
         {
-            readonly string _toString;
             public readonly NPCChatDialogBase Dialog;
+            readonly string _toString;
 
             public NPCChatDialogComboBoxItem(NPCChatDialogBase dialog)
             {

@@ -14,12 +14,12 @@ namespace NetGore.Network
     /// </summary>
     public class LatencyTrackerClient
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Default size of the latency buffer.
         /// </summary>
         const int _defaultBufferSize = 3;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// EndPoint that we will be pinging.
@@ -63,6 +63,29 @@ namespace NetGore.Network
         /// If we are currently waiting for a response from our ping.
         /// </summary>
         bool _waitingForPong;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LatencyTrackerClient"/> class.
+        /// </summary>
+        /// <param name="hostAddress">Remote address of the LatencyTrackerServer to ping.</param>
+        /// <param name="hostPort">Remote port of the LatencyTrackerServer to ping.</param>
+        public LatencyTrackerClient(string hostAddress, int hostPort)
+        {
+            // Find the remote endpoint
+            IPAddress ipAddress = IPAddress.Parse(hostAddress);
+            if (ipAddress == null)
+                throw new ArgumentException("hostAddress");
+
+            IPEndPoint endPoint = new IPEndPoint(ipAddress, hostPort);
+            _endPoint = endPoint;
+
+            // Create the socket
+            _socket = new UDPSocket();
+            _socket.Bind();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created LatencyTrackerClient to ping remote address `{0}:{1}`.", hostAddress, hostPort);
+        }
 
         /// <summary>
         /// Gets the number of latencies are buffered. The greater this value, the greater time-span and range of lantencies
@@ -109,29 +132,6 @@ namespace NetGore.Network
         public int Latency
         {
             get { return _latency; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LatencyTrackerClient"/> class.
-        /// </summary>
-        /// <param name="hostAddress">Remote address of the LatencyTrackerServer to ping.</param>
-        /// <param name="hostPort">Remote port of the LatencyTrackerServer to ping.</param>
-        public LatencyTrackerClient(string hostAddress, int hostPort)
-        {
-            // Find the remote endpoint
-            IPAddress ipAddress = IPAddress.Parse(hostAddress);
-            if (ipAddress == null)
-                throw new ArgumentException("hostAddress");
-
-            IPEndPoint endPoint = new IPEndPoint(ipAddress, hostPort);
-            _endPoint = endPoint;
-
-            // Create the socket
-            _socket = new UDPSocket();
-            _socket.Bind();
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Created LatencyTrackerClient to ping remote address `{0}:{1}`.", hostAddress, hostPort);
         }
 
         /// <summary>

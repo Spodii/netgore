@@ -20,13 +20,13 @@ namespace DemoGame.Server
     /// </summary>
     public class Map : MapBase, IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// How long, in milliseconds, it takes from when the last User in a Map leaves it for the Map to stop
         /// updating all-together until a User enters the Map again.
         /// </summary>
         const int _emptyMapNoUpdateDelay = 60000;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<NPC> _npcs;
         readonly TSList<User> _users;
@@ -45,6 +45,22 @@ namespace DemoGame.Server
         /// IEnumerable of the NPCSpawners on this Map.
         /// </summary>
         IEnumerable<NPCSpawner> _npcSpawners;
+
+        /// <summary>
+        /// Map constructor.
+        /// </summary>
+        /// <param name="mapIndex">Index of the Map.</param>
+        /// <param name="world">World that the Map will be inside of.</param>
+        public Map(MapIndex mapIndex, World world) : base(mapIndex, world)
+        {
+            _world = world;
+
+            _npcs = new List<NPC>();
+            _users = new TSList<User>();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created Map `{0}`.", this);
+        }
 
         /// <summary>
         /// Gets the <see cref="IDbController"/> used by this Map.
@@ -100,22 +116,6 @@ namespace DemoGame.Server
         public World World
         {
             get { return _world; }
-        }
-
-        /// <summary>
-        /// Map constructor.
-        /// </summary>
-        /// <param name="mapIndex">Index of the Map.</param>
-        /// <param name="world">World that the Map will be inside of.</param>
-        public Map(MapIndex mapIndex, World world) : base(mapIndex, world)
-        {
-            _world = world;
-
-            _npcs = new List<NPC>();
-            _users = new TSList<User>();
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Created Map `{0}`.", this);
         }
 
         /// <summary>

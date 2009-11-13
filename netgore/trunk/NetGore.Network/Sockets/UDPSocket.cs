@@ -16,6 +16,8 @@ namespace NetGore.Network
     /// </summary>
     public class UDPSocket : IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Length of the maximum packet size in bytes.
         /// </summary>
@@ -25,8 +27,6 @@ namespace NetGore.Network
         /// Length of the custom packet header in bytes.
         /// </summary>
         const int _headerSize = 0;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Buffer for receiving data.
