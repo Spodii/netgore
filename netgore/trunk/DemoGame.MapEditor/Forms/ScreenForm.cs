@@ -16,7 +16,6 @@ using NetGore.EditorTools;
 using NetGore.Globalization;
 using NetGore.Graphics;
 using NetGore.IO;
-using Point=System.Drawing.Point;
 
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
@@ -725,7 +724,7 @@ namespace DemoGame.MapEditor
 
             return ret;
         }
-        
+
         void HandleSwitch_SaveAllMaps(string[] parameters)
         {
             foreach (string file in MapBase.GetMapFiles(ContentPaths.Dev))
