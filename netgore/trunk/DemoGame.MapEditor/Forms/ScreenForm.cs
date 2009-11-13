@@ -914,7 +914,6 @@ namespace DemoGame.MapEditor
 
             // Hook GrhTreeView context menu click events
             treeGrhs.GrhContextMenuEditClick += treeGrhs_mnuEdit;
-            treeGrhs.GrhContextMenuBatchChangeTextureClick += treeGrhs_mnuBatchChangeTexture;
             treeGrhs.GrhContextMenuNewGrhClick += treeGrhs_mnuNewGrh;
 
             // Start the stopwatch for the elapsed time checking
@@ -1184,21 +1183,6 @@ namespace DemoGame.MapEditor
         {
             if (e.Button == MouseButtons.Left)
                 BeginEditGrhData(e.Node, e.GrhData);
-        }
-
-        void treeGrhs_mnuBatchChangeTexture(object sender, EventArgs e)
-        {
-            TreeNode node = treeGrhs.SelectedNode;
-            if (node == null)
-                return;
-
-            // Show the new form
-            BatchRenameTextureForm frm = new BatchRenameTextureForm(node, _content);
-
-            // Disable this form until the rename one closes
-            Enabled = false;
-            frm.FormClosed += delegate { Enabled = true; };
-            frm.Show();
         }
 
         void treeGrhs_mnuEdit(object sender, EventArgs e)
