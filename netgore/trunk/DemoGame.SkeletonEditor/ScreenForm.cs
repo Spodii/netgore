@@ -22,7 +22,7 @@ namespace DemoGame.SkeletonEditor
         const string _filterBody = "Skeleton body (*" + SkeletonBodyInfo.FileSuffix + ")|*" + SkeletonBodyInfo.FileSuffix;
         const string _filterFrame = "Skeleton frame (*" + Skeleton.FileSuffix + ")|*" + Skeleton.FileSuffix;
         const string _filterSet = "Skeleton set (*" + SkeletonSet.FileSuffix + ")|*" + SkeletonSet.FileSuffix;
-        const string _skeletonSetFromStringDelimiter = "\reader\n";
+        const string _skeletonSetFromStringDelimiter = "\r\n";
 
         static readonly Color ColorError = Color.Red;
         static readonly Color ColorNormal = SystemColors.Window;

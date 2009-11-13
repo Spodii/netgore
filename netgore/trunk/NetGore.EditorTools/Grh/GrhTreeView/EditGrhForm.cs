@@ -127,7 +127,7 @@ namespace NetGore.EditorTools
             if (radioAnimated.Checked)
             {
                 // Generate the frames
-                var framesText = txtFrames.Text.Split(new[] { "\reader\n" }, StringSplitOptions.RemoveEmptyEntries);
+                var framesText = txtFrames.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 frames = new GrhIndex[framesText.Length];
                 for (int i = 0; i < framesText.Length; i++)
                 {
@@ -202,7 +202,7 @@ namespace NetGore.EditorTools
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Unable to load texture [" + textureName + "]! Aborting save...\reader\n" + ex);
+                    MessageBox.Show("Unable to load texture [" + textureName + "]! Aborting save..." + Environment.NewLine + ex);
                     return;
                 }
 
@@ -361,7 +361,7 @@ namespace NetGore.EditorTools
                 txtFrames.Text = string.Empty;
                 for (int i = 0; i < _gd.Frames.Length; i++)
                 {
-                    txtFrames.Text += _gd.Frames[i].GrhIndex + "\reader\n";
+                    txtFrames.Text += _gd.Frames[i].GrhIndex + Environment.NewLine;
                 }
                 txtSpeed.Text = (1f / _gd.Speed).ToString();
             }
