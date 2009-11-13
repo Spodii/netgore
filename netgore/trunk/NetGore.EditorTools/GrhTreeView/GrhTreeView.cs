@@ -77,24 +77,6 @@ namespace NetGore.EditorTools
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
 
         /// <summary>
-        /// Gets or sets the size of the Grh preview images
-        /// </summary>
-        [Description("Size of the Grh images in pixels")]
-        public Size ImageSize
-        {
-            get { return ImageList.ImageSize; }
-            set { ImageList.ImageSize = value; }
-        }
-
-        /// <summary>
-        /// Gets the current time
-        /// </summary>
-        int Time
-        {
-            get { return (int)_watch.ElapsedMilliseconds; }
-        }
-
-        /// <summary>
         /// GrhTreeView constructor
         /// </summary>
         public GrhTreeView()
@@ -140,6 +122,24 @@ namespace NetGore.EditorTools
             ContextMenu = _contextMenu;
 
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the Grh preview images
+        /// </summary>
+        [Description("Size of the Grh images in pixels")]
+        public Size ImageSize
+        {
+            get { return ImageList.ImageSize; }
+            set { ImageList.ImageSize = value; }
+        }
+
+        /// <summary>
+        /// Gets the current time
+        /// </summary>
+        int Time
+        {
+            get { return (int)_watch.ElapsedMilliseconds; }
         }
 
         /// <summary>
