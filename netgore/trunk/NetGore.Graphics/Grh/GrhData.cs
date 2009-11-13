@@ -484,7 +484,6 @@ namespace NetGore.Graphics
                     const string errmsg = "Failed to load GrhData `{0}.{1}` [{2}] : {3}";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, Category, Title, GrhIndex, ex);
-                    Debug.Fail(string.Format(errmsg, Category, Title, GrhIndex, ex));
                 }
 
                 // If we were using an atlas, we'll have to remove it because the texture was reloaded
