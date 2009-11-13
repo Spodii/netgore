@@ -11,70 +11,31 @@ using NetGore;
 using NetGore.Globalization;
 using NetGore.Graphics;
 using NetGore.IO;
+using Point=System.Drawing.Point;
 
 namespace NetGore.EditorTools
 {
     public partial class EditGrhForm : Form
     {
         /// <summary>
-        /// Character used to separate directories
-        /// </summary>
-        static readonly char DirSep = Path.DirectorySeparatorChar;
-
-        readonly CreateWallEntityHandler _createWall;
-        readonly GrhData _gd;
-        readonly MapGrhWalls _mapGrhWalls;
-        readonly Camera2D _camera;
-        readonly Grh _grh;
-        readonly Stopwatch _stopwatch;
-
-        public void Draw(SpriteBatch sb)
-        {
-            // Update the Grh first
-            _grh.Update((int)_stopwatch.ElapsedMilliseconds);
-
-            // Begin rendering
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
-
-            // Try/catch since invalid texture will throw an Exception that we will want to ignore in releases
-#if !DEBUG
-            try
-            {
-#endif
-            _grh.Draw(sb, Vector2.Zero);
-#if !DEBUG
-            }
-            catch
-            {
-            }
-#endif
-
-            // Draw the walls
-            foreach (var wall in lstWalls.Items.OfType<WallEntityBase>())
-            {
-                var rect = wall.CB.ToRectangle();
-                XNARectangle.Draw(sb, rect, _autoWallColor);
-            }
-
-            // End rendering
-            sb.End();
-        }
-
-        static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
-
-        /// <summary>
         /// The default amount the camera is zoomed in on the preview of the <see cref="GrhData"/> being edited.
         /// </summary>
         const float _defaultZoomLevel = 4f;
 
+        static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
+
         /// <summary>
-        /// Gets the <see cref="GrhData"/> being edited by this form.
+        /// Character used to separate directories
         /// </summary>
-        public GrhData GrhData { get { return _gd; } }
+        static readonly char DirSep = Path.DirectorySeparatorChar;
 
-        public Camera2D Camera { get { return _camera; } }
+        readonly Camera2D _camera;
 
-        public Grh Grh { get { return _grh; } }
+        readonly CreateWallEntityHandler _createWall;
+        readonly GrhData _gd;
+        readonly Grh _grh;
+        readonly MapGrhWalls _mapGrhWalls;
+        readonly Stopwatch _stopwatch;
 
         public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall, Vector2 screenSize)
         {
@@ -110,10 +71,28 @@ namespace NetGore.EditorTools
 
             _grh = new Grh(gd, AnimType.Loop, (int)_stopwatch.ElapsedMilliseconds);
 
-            Location = new System.Drawing.Point(0, 0);
+            Location = new Point(0, 0);
 
             InitializeComponent();
             ShowGrhInfo();
+        }
+
+        public Camera2D Camera
+        {
+            get { return _camera; }
+        }
+
+        public Grh Grh
+        {
+            get { return _grh; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GrhData"/> being edited by this form.
+        /// </summary>
+        public GrhData GrhData
+        {
+            get { return _gd; }
         }
 
         void btnAccept_Click(object sender, EventArgs e)
@@ -279,6 +258,38 @@ namespace NetGore.EditorTools
                 wall.CollisionType = CollisionType.Full;
                 cmbWallType.SelectedItem = CollisionType.Full;
             }
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            // Update the Grh first
+            _grh.Update((int)_stopwatch.ElapsedMilliseconds);
+
+            // Begin rendering
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+
+            // Try/catch since invalid texture will throw an Exception that we will want to ignore in releases
+#if !DEBUG
+            try
+            {
+#endif
+            _grh.Draw(sb, Vector2.Zero);
+#if !DEBUG
+            }
+            catch
+            {
+            }
+#endif
+
+            // Draw the walls
+            foreach (var wall in lstWalls.Items.OfType<WallEntityBase>())
+            {
+                var rect = wall.CB.ToRectangle();
+                XNARectangle.Draw(sb, rect, _autoWallColor);
+            }
+
+            // End rendering
+            sb.End();
         }
 
         void EditGrhForm_Load(object sender, EventArgs e)
