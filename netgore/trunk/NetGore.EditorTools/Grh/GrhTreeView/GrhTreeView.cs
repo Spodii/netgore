@@ -839,7 +839,6 @@ namespace NetGore.EditorTools
                 _editGrhDataForm = null;
             };
 
-            // NOTE: AddOwnedForm(_editGrhDataForm);
             _editGrhDataForm.Show();
 
             return true;
