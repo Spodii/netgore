@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -21,11 +22,61 @@ namespace NetGore.EditorTools
         static readonly char DirSep = Path.DirectorySeparatorChar;
 
         readonly CreateWallEntityHandler _createWall;
-
         readonly GrhData _gd;
         readonly MapGrhWalls _mapGrhWalls;
+        readonly Camera2D _camera;
+        readonly Grh _grh;
+        readonly Stopwatch _stopwatch;
 
-        public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall)
+        public void Draw(SpriteBatch sb)
+        {
+            // Update the Grh first
+            _grh.Update((int)_stopwatch.ElapsedMilliseconds);
+
+            // Begin rendering
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+
+            // Try/catch since invalid texture will throw an Exception that we will want to ignore in releases
+#if !DEBUG
+            try
+            {
+#endif
+            _grh.Draw(sb, Vector2.Zero);
+#if !DEBUG
+            }
+            catch
+            {
+            }
+#endif
+
+            // Draw the walls
+            foreach (var wall in lstWalls.Items.OfType<WallEntityBase>())
+            {
+                var rect = wall.CB.ToRectangle();
+                XNARectangle.Draw(sb, rect, _autoWallColor);
+            }
+
+            // End rendering
+            sb.End();
+        }
+
+        static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
+
+        /// <summary>
+        /// The default amount the camera is zoomed in on the preview of the <see cref="GrhData"/> being edited.
+        /// </summary>
+        const float _defaultZoomLevel = 4f;
+
+        /// <summary>
+        /// Gets the <see cref="GrhData"/> being edited by this form.
+        /// </summary>
+        public GrhData GrhData { get { return _gd; } }
+
+        public Camera2D Camera { get { return _camera; } }
+
+        public Grh Grh { get { return _grh; } }
+
+        public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall, Vector2 screenSize)
         {
             if (gd == null)
                 throw new ArgumentNullException("gd");
@@ -34,9 +85,32 @@ namespace NetGore.EditorTools
             if (createWall == null)
                 throw new ArgumentNullException("createWall");
 
+            // Set the local members
             _createWall = createWall;
             _gd = gd;
             _mapGrhWalls = mapGrhWalls;
+
+            // Set up the camera
+            Vector2 pos;
+            try
+            {
+                pos = gd.Size / 2f;
+            }
+            catch (ContentLoadException)
+            {
+                pos = new Vector2(32f) / 2f;
+            }
+
+            _camera = new Camera2D(screenSize);
+            _camera.Zoom(pos, screenSize, _defaultZoomLevel);
+
+            // Set up the rest of the stuff
+            _stopwatch = new Stopwatch();
+            _stopwatch.Start();
+
+            _grh = new Grh(gd, AnimType.Loop, (int)_stopwatch.ElapsedMilliseconds);
+
+            Location = new System.Drawing.Point(0, 0);
 
             InitializeComponent();
             ShowGrhInfo();

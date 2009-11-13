@@ -67,11 +67,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         readonly Camera2D _camera = new Camera2D(GameData.ScreenSize);
 
-        /// <summary>
-        /// Camera used on the Grh edit display.
-        /// </summary>
-        readonly Camera2D _editGrhCamera = new Camera2D(GameData.ScreenSize);
-
         readonly EntityCursor _entityCursor = new EntityCursor();
         readonly GrhCursor _grhCursor = new GrhCursor();
 
@@ -85,7 +80,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Information on the walls bound to MapGrhs.
         /// </summary>
-        readonly MapGrhWalls _mapGrhWalls;
+        readonly MapGrhWalls _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev, CreateWallEntity);
 
         /// <summary>
         /// Currently selected Grh to draw to the map.
@@ -134,26 +129,6 @@ namespace DemoGame.MapEditor
         Vector2 _cursorPos = Vector2.Zero;
 
         IDbController _dbController;
-
-        /// <summary>
-        /// Grh display of the _editGrhData.
-        /// </summary>
-        Grh _editGrh = null;
-
-        /// <summary>
-        /// GrhData currently being edited with the EditGrhForm.
-        /// </summary>
-        GrhData _editGrhData = null;
-
-        /// <summary>
-        /// ListBox control object collection containing the walls for the Grh being edited.
-        /// </summary>
-        ListBox.ObjectCollection _editGrhWallItems = null;
-
-        /// <summary>
-        /// TreeNode Grh currently being edited with the EditGrhForm.
-        /// </summary>
-        TreeNode _editNode = null;
 
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
@@ -210,7 +185,6 @@ namespace DemoGame.MapEditor
 
             // Read the settings
             _settings = new MapEditorSettings(this);
-            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev, CreateWallEntity);
 
             // Create the world
             _world = new World(this, _camera);
@@ -374,33 +348,6 @@ namespace DemoGame.MapEditor
         public WallCursor WallCursor
         {
             get { return _wallCursor; }
-        }
-
-        void BeginEditGrhData(TreeNode node, GrhData gd)
-        {
-            if (_editNode != null || gd == null)
-                return;
-
-            _editNode = node;
-            _editGrhData = gd;
-
-            Vector2 pos;
-            try
-            {
-                pos = _editGrhData.Size / 2f;
-            }
-            catch (ContentLoadException)
-            {
-                pos = Vector2.Zero;
-            }
-            _editGrhCamera.Zoom(pos, GameData.ScreenSize, 4f);
-            _editGrh = new Grh(_editGrhData.GrhIndex, AnimType.Loop, GetTime());
-
-            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls, CreateWallEntity) { Location = new Point(0, 0) };
-            f.FormClosed += EditGrhForm_Close;
-            AddOwnedForm(f);
-            f.Show();
-            _editGrhWallItems = f.lstWalls.Items;
         }
 
         void btnAddSpawn_Click(object sender, EventArgs e)
@@ -602,10 +549,11 @@ namespace DemoGame.MapEditor
             // Clear the background
             GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Draw a Grh if its being edited
-            if (_editGrh != null)
+            // Draw the GrhTreeView if needed
+            if (treeGrhs.NeedsToDraw)
             {
-                DrawGrhPreview();
+                treeGrhs.Draw(_sb);
+                GameScreen.GraphicsDevice.Present();
                 return;
             }
 
@@ -694,50 +642,6 @@ namespace DemoGame.MapEditor
             GameScreen.GraphicsDevice.Present();
         }
 
-        void DrawGrhPreview()
-        {
-            // Begin rendering
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _editGrhCamera.Matrix);
-
-            // Grh - try/catch since invalid texture will throw an exception
-#if !DEBUG
-            try
-            {
-#endif
-            _editGrh.Draw(_sb, Vector2.Zero);
-#if !DEBUG
-            }
-            catch
-            {
-            }
-#endif
-
-            // Walls
-            foreach (object o in _editGrhWallItems)
-            {
-                WallEntity wall = o as WallEntity;
-                if (wall != null)
-                    EntityDrawer.Draw(_sb, wall);
-            }
-
-            // End rendering
-            _sb.End();
-            GameScreen.GraphicsDevice.Present();
-        }
-
-        void EditGrhForm_Close(object sender, FormClosedEventArgs e)
-        {
-            if (_editGrhData != null && _editNode != null)
-            {
-                _editNode.Remove();
-                treeGrhs.UpdateGrhData(_editGrhData);
-            }
-
-            _editNode = null;
-            _editGrh = null;
-            _editGrhData = null;
-        }
-
         /// <summary>
         /// Finds which control has focus and no children controls
         /// </summary>
@@ -774,7 +678,7 @@ namespace DemoGame.MapEditor
 
             GameScreen.Focus();
 
-            if (_editGrh != null)
+            if (treeGrhs.IsEditingGrhData)
                 return;
 
             // Forward to the corresponding tool's reaction to the screen's MouseDown
@@ -790,7 +694,7 @@ namespace DemoGame.MapEditor
             // Update the cursor position
             _cursorPos = _camera.ToWorld(e.X, e.Y);
 
-            if (_editGrh != null)
+            if (treeGrhs.IsEditingGrhData)
                 return;
 
             // Forward to the corresponding tool's reaction to the screen's MouseMove
@@ -803,7 +707,7 @@ namespace DemoGame.MapEditor
             if (Map == null)
                 return;
 
-            if (_editGrh != null)
+            if (treeGrhs.IsEditingGrhData)
                 return;
 
             // Forward to the corresponding tool's reaction to the screen's MouseUp
@@ -821,32 +725,7 @@ namespace DemoGame.MapEditor
 
             return ret;
         }
-
-        string GetCategoryFromTreeNode(TreeNode node)
-        {
-            string category = "Uncategorized";
-
-            // Check for a valid n
-            if (node != null)
-            {
-                // Try and get the GrhData
-                GrhData tmpGrhData = GrhTreeView.GetGrhData(treeGrhs.SelectedNode);
-
-                if (tmpGrhData != null)
-                {
-                    // GrhData found, so use the category from that
-                    category = tmpGrhData.Category;
-                }
-                else if (treeGrhs.SelectedNode.Name.Length == 0)
-                {
-                    // No GrhData found, so if the n has no name (is a folder), use its filePath
-                    category = treeGrhs.SelectedNode.FullPath.Replace(treeGrhs.PathSeparator, ".");
-                }
-            }
-
-            return category;
-        }
-
+        
         void HandleSwitch_SaveAllMaps(string[] parameters)
         {
             foreach (string file in MapBase.GetMapFiles(ContentPaths.Dev))
@@ -944,10 +823,6 @@ namespace DemoGame.MapEditor
             GrhInfo.Load(ContentPaths.Dev, _content);
             treeGrhs.Initialize(_content);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
-
-            // Hook GrhTreeView context menu click events
-            treeGrhs.GrhContextMenuEditClick += treeGrhs_mnuEdit;
-            treeGrhs.GrhContextMenuNewGrhClick += treeGrhs_mnuNewGrh;
 
             // Start the stopwatch for the elapsed time checking
             _stopWatch.Start();
@@ -1212,50 +1087,6 @@ namespace DemoGame.MapEditor
             _selTransBox = null;
         }
 
-        void treeGrhs_DoubleClickGrh(object sender, GrhTreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-                BeginEditGrhData(e.Node, e.GrhData);
-        }
-
-        void treeGrhs_mnuEdit(object sender, EventArgs e)
-        {
-            TreeNode node = treeGrhs.SelectedNode;
-            GrhData gd = GrhTreeView.GetGrhData(node);
-
-            if (node == null)
-                return;
-
-            if (gd != null && node.Nodes.Count == 0)
-            {
-                // Grh n
-                BeginEditGrhData(node, gd);
-            }
-            else if (gd == null)
-            {
-                // Folder n
-                node.BeginEdit();
-            }
-        }
-
-        void treeGrhs_mnuNewGrh(object sender, EventArgs e)
-        {
-            // Create the new GrhData
-            string category = GetCategoryFromTreeNode(treeGrhs.SelectedNode);
-            GrhData gd = GrhInfo.CreateGrhData(_content, category);
-            treeGrhs.UpdateGrhData(gd);
-
-            // Begin edit
-            var nodes = treeGrhs.Nodes.Find(gd.GrhIndex.ToString(), true);
-            if (nodes.Length == 0)
-            {
-                Debug.Fail("Failed to find n.");
-                return;
-            }
-
-            BeginEditGrhData(nodes[0], gd);
-        }
-
         void treeGrhs_SelectGrh(object sender, GrhTreeViewEventArgs e)
         {
             if (_selectedGrh.GrhData == null || e.GrhData.GrhIndex != _selectedGrh.GrhData.GrhIndex)
@@ -1354,10 +1185,6 @@ namespace DemoGame.MapEditor
             int currTime = (int)_stopWatch.ElapsedMilliseconds;
             int deltaTime = currTime - _currentTime;
             _currentTime = (int)_stopWatch.ElapsedMilliseconds;
-
-            // Edited Grh
-            if (_editGrh != null)
-                _editGrh.Update(_currentTime);
 
             // Check for a map
             if (Map == null)

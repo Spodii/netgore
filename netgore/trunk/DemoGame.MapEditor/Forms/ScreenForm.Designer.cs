@@ -50,7 +50,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs = new System.Windows.Forms.TabPage();
             this.chkForeground = new System.Windows.Forms.CheckBox();
             this.chkSnapGrhGrid = new System.Windows.Forms.CheckBox();
-            this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
+            this.treeGrhs = new NetGore.EditorTools.GrhTreeView(GameData.ScreenSize, CreateWallEntity, _mapGrhWalls);
             this.tabPageWalls = new System.Windows.Forms.TabPage();
             this.pgWall = new System.Windows.Forms.PropertyGrid();
             this.cmbWallType = new System.Windows.Forms.ComboBox();
@@ -300,7 +300,6 @@ namespace DemoGame.MapEditor
             this.treeGrhs.Sorted = true;
             this.treeGrhs.TabIndex = 8;
             this.treeGrhs.GrhAfterSelect += new NetGore.EditorTools.GrhTreeViewEvent(this.treeGrhs_SelectGrh);
-            this.treeGrhs.GrhMouseDoubleClick += new NetGore.EditorTools.GrhTreeNodeMouseClickEvent(this.treeGrhs_DoubleClickGrh);
             // 
             // tabPageWalls
             // 
