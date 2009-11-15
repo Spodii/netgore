@@ -393,11 +393,11 @@ namespace NetGore.EditorTools
 
         /// <summary>
         /// Creates a duplicate of the tree nodes and structure from the root, giving it a unique name. All GrhDatas
-        /// under the n to be duplicated will be duplicated and placed in a new category with a new GrhIndex,
+        /// under the node to be duplicated will be duplicated and placed in a new category with a new GrhIndex,
         /// but with the same name and structure.
         /// </summary>
-        /// <param name="root">Root n to duplicate from</param>
-        /// <returns>GrhTreeNode of the root of the new duplicate</returns>
+        /// <param name="root">Root <see cref="TreeNode"/> to duplicate from.</param>
+        /// <returns><see cref="GrhTreeNode"/> of the root of the new duplicated node.</returns>
         public GrhTreeNode DuplicateNodes(TreeNode root)
         {
             // Get a unique name for the new n
@@ -415,11 +415,11 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Recursively duplicates a root n and all nodes under it, changing the category. Duplication
         /// actually takes place by duplicating the GrhDatas under the new category, then rebuilding the tree
-        /// to let the duplication take effect
+        /// to let the duplication take effect.
         /// </summary>
-        /// <param name="root">Root n to duplicate from</param>
-        /// <param name="oldCategory">Old category name</param>
-        /// <param name="newCategory">New category name</param>
+        /// <param name="root">Root node to duplicate from.</param>
+        /// <param name="oldCategory">Old category name.</param>
+        /// <param name="newCategory">New category name.</param>
         void DuplicateNodes(TreeNode root, string oldCategory, string newCategory)
         {
             // If this is not a leaf, it wont have a GrhData associated with it
@@ -502,10 +502,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Creates the tooltip text to use for a GrhData.
+        /// Creates the tooltip text to use for a <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="gd">GrhData to get the tooltip for.</param>
-        /// <returns>The tooltip text to use for a GrhData.</returns>
+        /// <param name="gd"><see cref="GrhData"/> to get the tooltip for.</param>
+        /// <returns>The tooltip text to use for a <see cref="GrhData"/>.</returns>
         static string GetToolTipText(GrhData gd)
         {
             StringBuilder sb = new StringBuilder();
