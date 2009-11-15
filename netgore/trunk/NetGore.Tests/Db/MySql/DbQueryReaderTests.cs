@@ -7,54 +7,41 @@ using NUnit.Framework;
 
 namespace NetGore.Db.MySql.Tests
 {
-    struct MyReaderValues
-    {
-        public int A;
-        public int B;
-        public int C;
-
-        public MyReaderValues(int a, int b, int c)
-        {
-            A = a;
-            B = b;
-            C = c;
-        }
-    }
-
-    class MyReader : DbQueryReader<QueryTestValues>
-    {
-        const string _commandText = "SELECT @a + @b + @c";
-
-        public MyReader(DbConnectionPool connectionPool) : base(connectionPool, _commandText)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return CreateParameters("@a", "@b", "@c");
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified item.
-        /// </summary>
-        /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="item">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, QueryTestValues item)
-        {
-            p["@a"] = item.A;
-            p["@b"] = item.B;
-            p["@c"] = item.C;
-        }
-    }
-
     [TestFixture]
     public class DbQueryReaderTests
     {
+        class MyReader : DbQueryReader<QueryTestValues>
+        {
+            const string _commandText = "SELECT @a + @b + @c";
+
+            public MyReader(DbConnectionPool connectionPool)
+                : base(connectionPool, _commandText)
+            {
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+            /// </summary>
+            /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
+            /// no parameters will be used.</returns>
+            protected override IEnumerable<DbParameter> InitializeParameters()
+            {
+                return CreateParameters("@a", "@b", "@c");
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, sets the database parameters based on the specified item.
+            /// </summary>
+            /// <param name="p">Collection of database parameters to set the values for.</param>
+            /// <param name="item">Item used to execute the query.</param>
+            protected override void SetParameters(DbParameterValues p, QueryTestValues item)
+            {
+                p["@a"] = item.A;
+                p["@b"] = item.B;
+                p["@c"] = item.C;
+            }
+        }
+
         [Test]
         public void ConcurrentSelectTest()
         {
@@ -71,7 +58,7 @@ namespace NetGore.Db.MySql.Tests
 
         static MyReader CreateReader()
         {
-            return new MyReader(TestSettings.CreateConnectionPool());
+            return new MyReader(DbManagerTestSettings.CreateConnectionPool());
         }
 
         [Test]

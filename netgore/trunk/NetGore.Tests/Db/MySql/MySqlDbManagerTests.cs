@@ -13,7 +13,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void CleanupCommandsTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
             var stack = new Stack<IDbCommand>();
 
             Assert.AreEqual(0, manager.ConnectionPool.Count);
@@ -38,7 +38,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void CleanupConnectionsTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
             var stack = new Stack<IPoolableDbConnection>();
 
             Assert.AreEqual(0, manager.ConnectionPool.Count);
@@ -63,7 +63,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void CommandParametersTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
@@ -97,7 +97,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void CommandStringTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
@@ -119,7 +119,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void CommandTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
@@ -142,7 +142,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ConnectionTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
@@ -163,7 +163,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ExecuteNonQueryTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
@@ -176,7 +176,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ExecuteReader2Test()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
@@ -194,7 +194,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ExecuteReaderTest()
         {
-            DbManager manager = TestSettings.CreateDbManager();
+            DbManager manager = DbManagerTestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
