@@ -14,7 +14,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Holds information representing how a Grh is displayed and functions
     /// </summary>
-    public sealed class GrhData : ITextureAtlasable
+    public class GrhData : ITextureAtlasable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _automaticSizeValueKey = "AutomaticSize";
