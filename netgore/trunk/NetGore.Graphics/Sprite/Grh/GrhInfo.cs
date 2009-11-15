@@ -315,6 +315,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the absolute file path to the GrhData file.
+        /// </summary>
+        /// <param name="contentPath">ContentPath to use.</param>
+        /// <returns>The absolute file path to the GrhData file.</returns>
+        public static string GetGrhDataFilePath(ContentPaths contentPath)
+        {
+            return contentPath.Data.Join("grhdata.xml");
+        }
+
+        /// <summary>
         /// Gets a unique category based off of an existing category.
         /// </summary>
         /// <param name="category">The category to base the new category name off of.</param>
@@ -358,16 +368,6 @@ namespace NetGore.Graphics
             while (GetData(category, newTitle) != null);
 
             return newTitle;
-        }
-
-        /// <summary>
-        /// Gets the absolute file path to the GrhData file.
-        /// </summary>
-        /// <param name="contentPath">ContentPath to use.</param>
-        /// <returns>The absolute file path to the GrhData file.</returns>
-        public static string GetGrhDataFilePath(ContentPaths contentPath)
-        {
-            return contentPath.Data.Join("grhdata.xml");
         }
 
         /// <summary>

@@ -38,11 +38,6 @@ namespace NetGore.EditorTools
         readonly Stopwatch _stopwatch;
 
         /// <summary>
-        /// Gets if this form was closed by pressing "Cancel".
-        /// </summary>
-        public bool WasCanceled { get; private set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditGrhForm"/> class.
         /// </summary>
         /// <param name="gd">The <see cref="GrhData"/> to edit.</param>
@@ -108,6 +103,11 @@ namespace NetGore.EditorTools
         {
             get { return _gd; }
         }
+
+        /// <summary>
+        /// Gets if this form was closed by pressing "Cancel".
+        /// </summary>
+        public bool WasCanceled { get; private set; }
 
         void btnAccept_Click(object sender, EventArgs e)
         {
