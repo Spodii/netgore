@@ -72,21 +72,21 @@
       <DependentUpon>EditGrhForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ListBoxExtensions.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeNodeMouseClickEvent.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeViewCancelEvent.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeViewContextMenuItemClickEvent.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeViewEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\Events\GrhTreeNodeMouseClickEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewCancelEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewContextMenuItemClickEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewEvent.cs" />
     <Compile Include="Grh\MapGrhWalls.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grh\GrhTreeView\GrhTreeNodeMouseClickEventArgs.cs" />
+    <Compile Include="Grh\GrhTreeView\Events\GrhTreeNodeMouseClickEventArgs.cs" />
     <Compile Include="Grh\GrhTreeView\GrhTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Grh\GrhTreeView\GrhTreeNode.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeViewCancelEventArgs.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeViewEventArgs.cs" />
+    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewCancelEventArgs.cs" />
+    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewEventArgs.cs" />
     <Compile Include="Grh\AutomaticGrhData\MissingTexturesForm.cs">
       <SubType>Form</SubType>
     </Compile>
