@@ -6,17 +6,38 @@ using NetGore.Graphics;
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// Node of a GrhTreeView
+    /// A node for a <see cref="GrhTreeView"/>.
     /// </summary>
     public class GrhTreeNode
     {
-        public readonly Grh Grh;
-        public readonly TreeNode TreeNode;
+        readonly Grh _grh;
+        readonly TreeNode _treeNode;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhTreeNode"/> class.
+        /// </summary>
+        /// <param name="tn">The <see cref="TreeNode"/>.</param>
+        /// <param name="grh">The <see cref="Grh"/>.</param>
         public GrhTreeNode(TreeNode tn, Grh grh)
         {
-            TreeNode = tn;
-            Grh = grh;
+            _treeNode = tn;
+            _grh = grh;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Grh"/>.
+        /// </summary>
+        public Grh Grh
+        {
+            get { return _grh; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TreeNode"/>.
+        /// </summary>
+        public TreeNode TreeNode
+        {
+            get { return _treeNode; }
         }
     }
 }
