@@ -3,22 +3,19 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NUnit.Framework;
 
-namespace NetGore.Tests
+namespace NetGore.Tests.NetGore
 {
-    class TestEntity : Entity
-    {
-        public TestEntity()
-        {
-        }
-
-        public TestEntity(Vector2 pos, Vector2 size) : base(pos, size)
-        {
-        }
-    }
-
     [TestFixture]
     public class EntityTests
     {
+        class TestEntity : Entity
+        {
+            public TestEntity(Vector2 pos, Vector2 size)
+                : base(pos, size)
+            {
+            }
+        }
+
         [Test]
         public void HitTestTest()
         {

@@ -1,8 +1,9 @@
 using System.Linq;
 using NetGore;
+using NetGore.Network;
 using NUnit.Framework;
 
-namespace NetGore.Network.Tests
+namespace NetGore.Tests.Network
 {
     [TestFixture]
     public class IPAddressHelperTests

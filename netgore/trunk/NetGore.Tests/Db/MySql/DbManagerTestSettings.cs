@@ -1,8 +1,10 @@
 using System.Linq;
 using NetGore;
+using NetGore.Db;
+using NetGore.Db.MySql;
 using NetGore.Tests;
 
-namespace NetGore.Db.MySql.Tests
+namespace NetGore.Tests.Db.MySql
 {
     /// <summary>
     /// Contains information needed to connect to and communicate with the test database for testing pooled connections.

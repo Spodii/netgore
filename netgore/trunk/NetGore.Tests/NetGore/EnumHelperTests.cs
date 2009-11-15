@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Local
 
-namespace NetGore.Tests
+namespace NetGore.Tests.NetGore
 {
     [TestFixture]
     public class EnumHelperTests

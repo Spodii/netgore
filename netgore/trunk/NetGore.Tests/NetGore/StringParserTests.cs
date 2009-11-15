@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 // ReSharper disable RedundantCast
 
-namespace NetGore.Tests
+namespace NetGore.Tests.NetGore
 {
     [TestFixture]
     public class StringParserTests

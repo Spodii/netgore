@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore.Db.MySql.Tests
+namespace NetGore.Tests.Db.MySql
 {
     struct QueryTestValues
     {

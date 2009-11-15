@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NUnit.Framework;
 
-namespace NetGore.Tests
+namespace NetGore.Tests.NetGore
 {
     [TestFixture]
     public class Vector2Tests

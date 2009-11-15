@@ -2,9 +2,10 @@ using System.Collections;
 using System.Linq;
 using System.Threading;
 using NetGore;
+using NetGore.Collections;
 using NUnit.Framework;
 
-namespace NetGore.Collections.Tests
+namespace NetGore.Tests.Collections
 {
     [TestFixture]
     public class TSListTests
@@ -18,9 +19,15 @@ namespace NetGore.Collections.Tests
         {
             IEnumerable e = (IEnumerable)obj;
 
+            string s = string.Empty;
             foreach (object item in e)
             {
+                s += item.ToString();
                 Thread.Sleep(1);
+            }
+
+            if (s == null)
+            {
             }
         }
 
@@ -159,7 +166,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var x = l.ToArray();
+                l.ToArray();
             }
         }
 

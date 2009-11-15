@@ -2,7 +2,7 @@ using System.Linq;
 using NetGore;
 using NUnit.Framework;
 
-namespace NetGore.Tests
+namespace NetGore.Tests.NetGore
 {
     [TestFixture]
     public class ClampTests

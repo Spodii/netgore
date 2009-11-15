@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 // ReSharper disable MemberCanBePrivate.Local
 
-namespace NetGore.Tests
+namespace NetGore.Tests.NetGore
 {
     [TestFixture]
     public class DynamicEntityTests
