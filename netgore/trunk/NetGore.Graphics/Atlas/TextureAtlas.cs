@@ -458,6 +458,18 @@ namespace NetGore.Graphics
             }
 
             /// <summary>
+            /// Draws a single item the atlas through a <see cref="SpriteBatch"/>.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+            /// <param name="texture">The source texture.</param>
+            /// <param name="dest">The drawing destination on the atlas.</param>
+            /// <param name="src">The source rectangle to draw from the <paramref name="texture"/>.</param>
+            static void DrawToAtlas(SpriteBatch spriteBatch, Texture2D texture, Vector2 dest, Rectangle src)
+            {
+                spriteBatch.Draw(texture, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            }
+
+            /// <summary>
             /// Draws the <see cref="Texture2D"/> for this atlas.
             /// </summary>
             /// <param name="device">Device to use to create the atlas.</param>
@@ -505,8 +517,8 @@ namespace NetGore.Graphics
                             Rectangle srcRect = item.ITextureAtlasable.SourceRect;
                             Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
                             Rectangle src = srcRect;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-
+                            DrawToAtlas(sb, tex, dest, src);
+  
                             // Create the borders if padded
                             if (padding == 0)
                                 continue;
@@ -514,44 +526,44 @@ namespace NetGore.Graphics
                             // Left border
                             src.Width = 1;
                             dest.X -= 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Right border
                             src.X += srcRect.Width - 1;
                             dest.X += srcRect.Width + 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Top border
                             src = new Rectangle(srcRect.X, srcRect.Y, srcRect.Width, 1);
                             dest.X = item.X + padding;
                             dest.Y = item.Y + padding - 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Bottom border
                             src.Y += srcRect.Height - 1;
                             dest.Y += srcRect.Height + 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Top-left corner
                             src = new Rectangle(srcRect.X, srcRect.Y, 1, 1);
                             dest.X = item.X + padding - 1;
                             dest.Y = item.Y + padding - 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Top-right corner
                             src.X += srcRect.Width - 1;
                             dest.X += srcRect.Width + 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Bottom-right corner
                             src.Y += srcRect.Height - 1;
                             dest.Y += srcRect.Height + 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Bottom-left corner
                             src.X -= srcRect.Width - 1;
                             dest.X -= srcRect.Width + 1;
-                            sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            DrawToAtlas(sb, tex, dest, src);
 
                             // Successfully drawn
                             successful.Add(item);
