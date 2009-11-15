@@ -76,6 +76,8 @@
     <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewCancelEvent.cs" />
     <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewContextMenuItemClickEvent.cs" />
     <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewEvent.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeViewFolderNode.cs" />
+    <Compile Include="Grh\GrhTreeView\GrhTreeViewNode.cs" />
     <Compile Include="Grh\MapGrhWalls.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>
@@ -84,7 +86,6 @@
     <Compile Include="Grh\GrhTreeView\GrhTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grh\GrhTreeView\GrhTreeNode.cs" />
     <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewCancelEventArgs.cs" />
     <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewEventArgs.cs" />
     <Compile Include="Grh\AutomaticGrhData\MissingTexturesForm.cs">

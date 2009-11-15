@@ -37,6 +37,18 @@ namespace NetGore.EditorTools
         readonly MapGrhWalls _mapGrhWalls;
         readonly Stopwatch _stopwatch;
 
+        /// <summary>
+        /// Gets if this form was closed by pressing "Cancel".
+        /// </summary>
+        public bool WasCanceled { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditGrhForm"/> class.
+        /// </summary>
+        /// <param name="gd">The <see cref="GrhData"/> to edit.</param>
+        /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance.</param>
+        /// <param name="createWall">Delegate describing how to create wall instances.</param>
+        /// <param name="screenSize">Size of the screen used to display the preview.</param>
         public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall, Vector2 screenSize)
         {
             if (gd == null)
@@ -45,6 +57,8 @@ namespace NetGore.EditorTools
                 throw new ArgumentNullException("mapGrhWalls");
             if (createWall == null)
                 throw new ArgumentNullException("createWall");
+
+            WasCanceled = false;
 
             // Set the local members
             _createWall = createWall;
@@ -210,6 +224,8 @@ namespace NetGore.EditorTools
             GrhInfo.Save(ContentPaths.Dev);
             _mapGrhWalls.Save(ContentPaths.Dev);
             Enabled = true;
+
+            WasCanceled = false;
             Close();
         }
 
@@ -222,6 +238,7 @@ namespace NetGore.EditorTools
 
         void btnCancel_Click(object sender, EventArgs e)
         {
+            WasCanceled = true;
             Close();
         }
 
