@@ -1,8 +1,9 @@
 using System.Linq;
 using NetGore;
+using NetGore.Collections;
 using NUnit.Framework;
 
-namespace NetGore.Collections.Tests
+namespace NetGore.Tests.Collections
 {
     [TestFixture]
     public class MeanStackTests

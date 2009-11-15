@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
+using NetGore.Collections;
 using NUnit.Framework;
 
-// TODO: More ObjectPool tests
-
-namespace NetGore.Collections.Tests
+namespace NetGore.Tests.Collections
 {
     class TestPoolItem : IPoolable<TestPoolItem>
     {

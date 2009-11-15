@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
 using NetGore;
+using NetGore.Collections;
 using NUnit.Framework;
 
 #pragma warning disable 219
 #pragma warning disable 168
 // ReSharper disable RedundantAssignment
 
-namespace NetGore.Collections.Tests
+namespace NetGore.Tests.Collections
 {
     [TestFixture]
     public class BoolArrayTests

@@ -6,9 +6,10 @@ using System.Linq;
 using System.Text;
 using NetGore;
 using NetGore.Globalization;
+using NetGore.IO;
 using NUnit.Framework;
 
-namespace NetGore.IO.Tests
+namespace NetGore.Tests.IO
 {
     [TestFixture]
     public class IValueReaderWriterTests

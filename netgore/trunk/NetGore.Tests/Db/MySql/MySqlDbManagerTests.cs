@@ -3,9 +3,10 @@ using System.Data;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using NetGore;
+using NetGore.Db;
 using NUnit.Framework;
 
-namespace NetGore.Db.MySql.Tests
+namespace NetGore.Tests.Db.MySql
 {
     [TestFixture]
     public class MySqlDbManagerTests

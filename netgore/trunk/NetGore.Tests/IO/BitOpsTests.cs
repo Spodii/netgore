@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 using NUnit.Framework;
 
-namespace NetGore.IO.Tests
+namespace NetGore.Tests.IO
 {
     [TestFixture]
     public class BitOpsTests

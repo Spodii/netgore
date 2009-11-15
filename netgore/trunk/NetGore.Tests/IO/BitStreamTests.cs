@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using NetGore;
+using NetGore.IO;
 using NUnit.Framework;
 
 #pragma warning disable 618,612
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 
-namespace NetGore.IO.Tests
+namespace NetGore.Tests.IO
 {
     [TestFixture]
     public class BitStreamTests

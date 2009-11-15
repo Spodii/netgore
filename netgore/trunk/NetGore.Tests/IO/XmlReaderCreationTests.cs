@@ -3,9 +3,10 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NetGore;
+using NetGore.IO;
 using NUnit.Framework;
 
-namespace NetGore.IO.Tests
+namespace NetGore.Tests.IO
 {
     [TestFixture]
     public class XmlReaderCreationTests

@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using NetGore;
+using NetGore.Db;
 using NUnit.Framework;
 
-namespace NetGore.Db.MySql.Tests
+namespace NetGore.Tests.Db.MySql
 {
     [TestFixture]
     public class DbQueryNonReaderTests

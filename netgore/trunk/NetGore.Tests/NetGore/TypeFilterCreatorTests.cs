@@ -9,7 +9,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local
 
-namespace NetGore.Tests
+namespace NetGore.Tests.NetGore
 {
     [TestFixture]
     public class TypeFilterCreatorTests

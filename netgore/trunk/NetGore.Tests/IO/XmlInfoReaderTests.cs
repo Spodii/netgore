@@ -5,7 +5,7 @@ using NetGore;
 using NetGore.Tests.Properties;
 using NUnit.Framework;
 
-namespace NetGore.IO.Tests
+namespace NetGore.Tests.IO
 {
     [TestFixture]
     public class XmlInfoReaderTests
