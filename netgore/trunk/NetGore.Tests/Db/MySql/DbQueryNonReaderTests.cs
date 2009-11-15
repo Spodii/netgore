@@ -9,13 +9,32 @@ namespace NetGore.Db.MySql.Tests
     [TestFixture]
     public class DbQueryNonReaderTests
     {
+        static MyNonReader CreateNonReader()
+        {
+            return new MyNonReader(DbManagerTestSettings.CreateConnectionPool());
+        }
+
+        [Test]
+        public void SelectTest()
+        {
+            using (MyNonReader nonReader = CreateNonReader())
+            {
+                DbConnectionPool cp = nonReader.ConnectionPool;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    Assert.AreEqual(0, cp.Count);
+                    nonReader.Execute(new QueryTestValues(5, 10, 15));
+                    Assert.AreEqual(0, cp.Count);
+                }
+            }
+        }
 
         class MyNonReader : DbQueryNonReader<QueryTestValues>
         {
             const string _commandText = "SELECT @a + @b + @c";
 
-            public MyNonReader(DbConnectionPool connectionPool)
-                : base(connectionPool, _commandText)
+            public MyNonReader(DbConnectionPool connectionPool) : base(connectionPool, _commandText)
             {
             }
 
@@ -39,27 +58,6 @@ namespace NetGore.Db.MySql.Tests
                 p["@a"] = item.A;
                 p["@b"] = item.B;
                 p["@c"] = item.C;
-            }
-        }
-
-        static MyNonReader CreateNonReader()
-        {
-            return new MyNonReader(DbManagerTestSettings.CreateConnectionPool());
-        }
-
-        [Test]
-        public void SelectTest()
-        {
-            using (MyNonReader nonReader = CreateNonReader())
-            {
-                DbConnectionPool cp = nonReader.ConnectionPool;
-
-                for (int i = 0; i < 100; i++)
-                {
-                    Assert.AreEqual(0, cp.Count);
-                    nonReader.Execute(new QueryTestValues(5, 10, 15));
-                    Assert.AreEqual(0, cp.Count);
-                }
             }
         }
     }
