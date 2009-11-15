@@ -443,13 +443,18 @@ namespace NetGore.Graphics
                 DepthStencilBuffer oldDSB = device.DepthStencilBuffer;
 
                 // Draw the atlas (rebuilding the texture)
-                _atlasTexture = DrawAtlas(device, padding);
+                IEnumerable<AtlasTextureItem> successful;
+                _atlasTexture = DrawAtlas(device, padding, out successful);
 
                 // Restore the old DSB
                 device.DepthStencilBuffer = oldDSB;
 
-                // Tell all the items to use the new atlas texture
-                ReapplyAtlasTexture();
+                // Tell all the items that were successfully added to use the new atlas texture
+                foreach (AtlasTextureItem n in successful)
+                {
+                    Rectangle r = new Rectangle(n.X + Padding, n.Y + Padding, n.Width - Padding * 2, n.Height - Padding * 2);
+                    n.ITextureAtlasable.SetAtlas(_atlasTexture, r);
+                }
             }
 
             /// <summary>
@@ -457,16 +462,13 @@ namespace NetGore.Graphics
             /// </summary>
             /// <param name="device">Device to use to create the atlas.</param>
             /// <param name="padding">The amount to pad each item.</param>
+            /// <param name="successfulItems">An IEnumerable of the <see cref="AtlasTextureItem"/>s that were
+            /// successfully draw to the atlas.</param>
             /// <returns>A <see cref="Texture2D"/> of the atlas.</returns>
-            Texture2D DrawAtlas(GraphicsDevice device, int padding)
+            Texture2D DrawAtlas(GraphicsDevice device, int padding, out IEnumerable<AtlasTextureItem> successfulItems)
             {
-                if (device == null || device.IsDisposed)
-                {
-                    const string errmsg = "device is null or invalid.";
-                    if (log.IsFatalEnabled)
-                        log.Fatal(errmsg);
-                    throw new ArgumentException(errmsg, "device");
-                }
+                List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
+                successfulItems = successful;
 
                 Texture2D ret;
                 SurfaceFormat format = device.PresentationParameters.BackBufferFormat;
@@ -492,7 +494,6 @@ namespace NetGore.Graphics
                             Texture2D tex = item.ITextureAtlasable.Texture;
                             if (tex == null || tex.IsDisposed)
                             {
-                                // HACK: Even though we skip invalid textures, we still end up telling the item to use the atlas after it is made, which is obviously no good
                                 const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
                                 if (log.IsErrorEnabled)
                                     log.ErrorFormat(errmsg, item);
@@ -551,6 +552,9 @@ namespace NetGore.Graphics
                             src.X -= srcRect.Width - 1;
                             dest.X -= srcRect.Width + 1;
                             sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+                            // Successfully drawn
+                            successful.Add(item);
                         }
                         sb.End();
                     }
@@ -570,19 +574,6 @@ namespace NetGore.Graphics
 
                 ret.Name = "Atlas Texture";
                 return ret;
-            }
-
-            /// <summary>
-            /// Applies this atlas texture to all of the <see cref="ITextureAtlasable"/> items that the atlas texture
-            /// contains.
-            /// </summary>
-            void ReapplyAtlasTexture()
-            {
-                foreach (AtlasTextureItem n in Nodes)
-                {
-                    Rectangle r = new Rectangle(n.X + Padding, n.Y + Padding, n.Width - Padding * 2, n.Height - Padding * 2);
-                    n.ITextureAtlasable.SetAtlas(_atlasTexture, r);
-                }
             }
 
             /// <summary>
