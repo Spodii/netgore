@@ -12,7 +12,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ConnectionCloseTest()
         {
-            DbConnectionPool pool = TestSettings.CreateConnectionPool();
+            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
             IDbConnection conn;
             using (PooledDbConnection connPool = pool.Create())
@@ -25,7 +25,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ConnectionOpenTest()
         {
-            DbConnectionPool pool = TestSettings.CreateConnectionPool();
+            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
             using (PooledDbConnection connPool = pool.Create())
             {
@@ -38,7 +38,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void MultiplePoolItemsTest()
         {
-            DbConnectionPool pool = TestSettings.CreateConnectionPool();
+            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
             Assert.AreEqual(0, pool.Count);
             using (PooledDbConnection a = pool.Create())
@@ -64,7 +64,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void SelectQueryTest()
         {
-            DbConnectionPool pool = TestSettings.CreateConnectionPool();
+            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
             using (PooledDbConnection connPool = pool.Create())
             {

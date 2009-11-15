@@ -60,7 +60,8 @@
     <Compile Include="Db\MySql\DbQueryReaderTests.cs" />
     <Compile Include="Db\MySql\MySqlDbConnectionPoolTests.cs" />
     <Compile Include="Db\MySql\MySqlDbManagerTests.cs" />
-    <Compile Include="Db\MySql\TestSettings.cs" />
+    <Compile Include="Db\MySql\QueryTestValues.cs" />
+    <Compile Include="Db\MySql\DbManagerTestSettings.cs" />
     <Compile Include="Graphics\GUI\StyledTextTests.cs" />
     <Compile Include="IO\BitOpsTests.cs" />
     <Compile Include="IO\BitStreamTests.cs" />
@@ -89,6 +90,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TestDb.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
