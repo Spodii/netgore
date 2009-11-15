@@ -32,7 +32,7 @@ namespace NetGore.Tests
         /// </summary>
         public static string Password
         {
-            get { return "password"; }
+            get { return ""; }
         }
 
         /// <summary>
