@@ -1,5 +1,4 @@
 using System.Linq;
-using MySql.Data.MySqlClient;
 using NetGore;
 using NetGore.Tests;
 
