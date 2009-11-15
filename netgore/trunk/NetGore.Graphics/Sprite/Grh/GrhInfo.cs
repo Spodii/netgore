@@ -315,6 +315,52 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets a unique category based off of an existing category.
+        /// </summary>
+        /// <param name="category">The category to base the new category name off of.</param>
+        /// <returns>The name of a unique, unused category.</returns>
+        public static string GetUniqueCategory(string category)
+        {
+            int copyNum = 1;
+            string newCategory;
+
+            Dictionary<string, GrhData> coll;
+            do
+            {
+                copyNum++;
+                newCategory = category + " (" + copyNum + ")";
+            }
+            while ((coll = GetDatas(newCategory)) != null && !coll.IsEmpty());
+
+            return newCategory;
+        }
+
+        /// <summary>
+        /// Gets a unique title for a <see cref="GrhData"/> in the given category.
+        /// </summary>
+        /// <param name="category">The category.</param>
+        /// <param name="title">The title to base the new title off of.</param>
+        /// <returns>A unique title for the given <paramref name="category"/>.</returns>
+        public static string GetUniqueTitle(string category, string title)
+        {
+            // Check if the given title is already free
+            if (GetData(category, title) == null)
+                return title;
+
+            // Find next free number for the title suffix
+            int copyNum = 1;
+            string newTitle;
+            do
+            {
+                copyNum++;
+                newTitle = title + " (" + copyNum + ")";
+            }
+            while (GetData(category, newTitle) != null);
+
+            return newTitle;
+        }
+
+        /// <summary>
         /// Gets the absolute file path to the GrhData file.
         /// </summary>
         /// <param name="contentPath">ContentPath to use.</param>

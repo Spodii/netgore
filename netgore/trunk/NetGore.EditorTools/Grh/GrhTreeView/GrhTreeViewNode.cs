@@ -1,0 +1,223 @@
+using System;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using NetGore.Graphics;
+
+namespace NetGore.EditorTools
+{
+    /// <summary>
+    /// A <see cref="TreeNode"/> for the <see cref="GrhTreeView"/> that represents a single <see cref="GrhData"/>.
+    /// </summary>
+    public class GrhTreeViewNode : TreeNode
+    {
+        readonly GrhData _grhData;
+
+        Grh _animationGrh = null;
+
+        GrhTreeViewNode(GrhTreeView treeView, GrhData grhData)
+        {
+            _grhData = grhData;
+            Update(treeView);
+        }
+
+        public GrhData GrhData
+        {
+            get { return _grhData; }
+        }
+
+        public bool NeedsToUpdateImage
+        {
+            get { return _animationGrh != null; }
+        }
+
+        public static GrhTreeViewNode Create(GrhTreeView grhTreeView, GrhData grhData)
+        {
+            var existingNode = grhTreeView.FindGrhDataNode(grhData);
+            if (existingNode != null)
+            {
+                existingNode.Update();
+                return existingNode;
+            }
+
+            return new GrhTreeViewNode(grhTreeView, grhData);
+        }
+
+        /// <summary>
+        /// Creates the tooltip text to use for a <see cref="GrhData"/>.
+        /// </summary>
+        /// <returns>The tooltip text to use for a <see cref="GrhData"/>.</returns>
+        string GetToolTipText()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            try
+            {
+                if (GrhData.Frames.Length == 1)
+                {
+                    // Stationary
+                    Rectangle sourceRect = GrhData.SourceRect;
+
+                    sb.AppendLine("Grh: " + GrhData.GrhIndex);
+                    sb.AppendLine("Texture: " + GrhData.TextureName);
+                    sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
+                    sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+                }
+                else
+                {
+                    // Animated
+                    const string framePadding = "  ";
+                    const string frameSeperator = ",";
+
+                    sb.AppendLine("Grh: " + GrhData.GrhIndex);
+                    sb.AppendLine("Frames: " + GrhData.Frames.Length);
+
+                    sb.Append(framePadding);
+                    for (int i = 0; i < GrhData.Frames.Length; i++)
+                    {
+                        sb.Append(GrhData.Frames[i].GrhIndex);
+
+                        if ((i + 1) % 6 == 0)
+                        {
+                            // Add a break every 6 indices
+                            sb.AppendLine();
+                            sb.Append(framePadding);
+                        }
+                        else
+                        {
+                            // Separate the frame indicies
+                            sb.Append(frameSeperator);
+                        }
+                    }
+
+                    sb.AppendLine();
+                    sb.Append("Speed: " + (1f / GrhData.Speed));
+
+                    return sb.ToString();
+                }
+            }
+            catch (ContentLoadException)
+            {
+            }
+
+            return sb.ToString();
+        }
+
+        void InsertIntoTree(GrhTreeView treeView)
+        {
+            Remove();
+            var folder = GrhTreeViewFolderNode.Create(treeView, GrhData.Category);
+            folder.Nodes.Add(this);
+        }
+
+        public void RemoveRecursive()
+        {
+            var parent = Parent as GrhTreeViewFolderNode;
+            Remove();
+
+            if (parent != null)
+                parent.RemoveIfEmpty();
+        }
+
+        void SetIconImage()
+        {
+            // Set the preview picture
+            if (!GrhData.IsAnimated)
+            {
+                // Static image
+                if (string.IsNullOrEmpty(GrhData.TextureName))
+                    SetImageKeys(null);
+                else
+                {
+                    string imageKey = GrhImageList.GetImageKey(GrhData);
+                    SetImageKeys(imageKey);
+                }
+            }
+            else
+            {
+                // Animation
+                if (_animationGrh == null)
+                {
+                    _animationGrh = new Grh(GrhData, AnimType.Loop, Environment.TickCount);
+                    string imageKey = GrhImageList.GetImageKey(GrhData.Frames[0]);
+                    SetImageKeys(imageKey);
+                }
+            }
+        }
+
+        void SetImageKeys(string imageKey)
+        {
+            ImageKey = imageKey;
+            SelectedImageKey = imageKey;
+            StateImageKey = imageKey;
+        }
+
+        /// <summary>
+        /// Makes the <see cref="GrhData"/> handled by this <see cref="GrhTreeViewNode"/> synchronize
+        /// to the information displayed by the node (in opposed to <see cref="Update"/>, which makes the node
+        /// update to match the <see cref="GrhData"/>).
+        /// </summary>
+        public void SyncGrhData()
+        {
+            // Check that the GrhData still exists
+            var gd = GrhInfo.GetData(GrhData.GrhIndex);
+            if (gd != _grhData)
+            {
+                RemoveRecursive();
+                return;
+            }
+
+            string category = ((GrhTreeViewFolderNode)Parent).FullCategory;
+            string title = Text;
+            GrhData.SetCategorization(category, title);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="GrhTreeViewNode"/> for when anything involving the <see cref="GrhData"/> changes.
+        /// </summary>
+        public void Update()
+        {
+            Update((GrhTreeView)TreeView);
+        }
+
+        void Update(GrhTreeView treeView)
+        {
+            // Check that the GrhData still exists
+            var gd = GrhInfo.GetData(GrhData.GrhIndex);
+            if (gd != _grhData)
+            {
+                RemoveRecursive();
+                return;
+            }
+
+            // Update everything
+            Name = GrhData.GrhIndex.ToString();
+            Text = GrhData.Title;
+            ToolTipText = GetToolTipText();
+            InsertIntoTree(treeView);
+            SetIconImage();
+        }
+
+        public void UpdateIconImage()
+        {
+            if (!NeedsToUpdateImage)
+                return;
+
+            // Store the GrhIndex of the animation before updating it to compare if there was a change
+            GrhIndex oldGrhIndex = _animationGrh.CurrentGrhData.GrhIndex;
+
+            // Update the Grh
+            _animationGrh.Update(Environment.TickCount);
+
+            // Check that the GrhIndex changed from the update
+            if (oldGrhIndex != _animationGrh.CurrentGrhData.GrhIndex)
+            {
+                // Change the image
+                string imageKey = GrhImageList.GetImageKey(_animationGrh.CurrentGrhData);
+                SetImageKeys(imageKey);
+            }
+        }
+    }
+}
