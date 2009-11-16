@@ -57,10 +57,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCompleteSources.cs" />
+    <Compile Include="AutoValidateTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CreateWallEntity\CreateWallEntityFromReaderHandler.cs" />
     <Compile Include="Grh\AutomaticGrhData\AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
-    <Compile Include="Grh\Controls\GrhDataTextureTextBox.cs" />
+    <Compile Include="Grh\Controls\GrhDataTextureTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Grh\GrhImageList\GrhImageList.cs" />
     <Compile Include="Grh\GrhImageList\GrhImageListCache.cs" />
     <Compile Include="Grh\GrhImageList\GrhImageListCacheItem.cs" />

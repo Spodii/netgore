@@ -442,25 +442,6 @@ namespace NetGore.EditorTools
                 txtIndex.BackColor = EditorColors.Error;
         }
 
-        void txtTexture_TextChanged(object sender, EventArgs e)
-        {
-            if (txtTexture.Text == _gd.TextureName)
-                txtTexture.BackColor = EditorColors.Normal;
-            else
-            {
-                try
-                {
-                    ContentManager cm = _gd.ContentManager;
-                    cm.Load<Texture2D>("Grh" + DirSep + txtTexture.Text);
-                    txtTexture.BackColor = EditorColors.Changed;
-                }
-                catch
-                {
-                    txtTexture.BackColor = EditorColors.Error;
-                }
-            }
-        }
-
         void txtTitle_KeyDown(object sender, KeyEventArgs e)
         {
             // Forward to "Accept"
