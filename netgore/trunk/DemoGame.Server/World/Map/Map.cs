@@ -544,7 +544,8 @@ namespace DemoGame.Server
             ThreadAsserts.IsMainThread();
 
             // If there are no Users on the Map, update the inactive counter or skip updating if already inactive
-            if (_users.Count == 0)
+            // NOTE: !! temp
+            if (false && _users.Count == 0)
             {
                 if (IsInactive)
                     return;

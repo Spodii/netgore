@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -44,6 +45,8 @@ namespace DemoGame.Server
             // without typing "quit".
             _handler += ConsoleCtrlCheck;
             SetConsoleCtrlHandler(_handler, true);
+
+            Console.Title = "NetGore Server";
 
             // Create and start the server
             using (_server = new Server())
