@@ -40,18 +40,6 @@ namespace NetGore.EditorTools
             this.label2 = new System.Windows.Forms.Label();
             this.txtCategory = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.gbStationary = new System.Windows.Forms.GroupBox();
-            this.chkAutoSize = new System.Windows.Forms.CheckBox();
-            this.txtH = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtW = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtY = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtX = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtTexture = new GrhDataTextureTextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.radioStationary = new System.Windows.Forms.RadioButton();
             this.radioAnimated = new System.Windows.Forms.RadioButton();
             this.gbAnimated = new System.Windows.Forms.GroupBox();
@@ -74,10 +62,22 @@ namespace NetGore.EditorTools
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lstWalls = new System.Windows.Forms.ListBox();
+            this.gbStationary = new System.Windows.Forms.GroupBox();
+            this.chkAutoSize = new System.Windows.Forms.CheckBox();
+            this.txtH = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtW = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtY = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtX = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtTexture = new NetGore.EditorTools.GrhDataTextureTextBox();
             this.gbCategorization.SuspendLayout();
-            this.gbStationary.SuspendLayout();
             this.gbAnimated.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.gbStationary.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbCategorization
@@ -90,7 +90,7 @@ namespace NetGore.EditorTools
             this.gbCategorization.Controls.Add(this.label1);
             this.gbCategorization.Location = new System.Drawing.Point(12, 12);
             this.gbCategorization.Name = "gbCategorization";
-            this.gbCategorization.Size = new System.Drawing.Size(190, 102);
+            this.gbCategorization.Size = new System.Drawing.Size(212, 102);
             this.gbCategorization.TabIndex = 4;
             this.gbCategorization.TabStop = false;
             this.gbCategorization.Text = "Categorization";
@@ -98,16 +98,16 @@ namespace NetGore.EditorTools
             // txtIndex
             // 
             this.txtIndex.Enabled = false;
-            this.txtIndex.Location = new System.Drawing.Point(122, 9);
+            this.txtIndex.Location = new System.Drawing.Point(139, 9);
             this.txtIndex.Name = "txtIndex";
-            this.txtIndex.Size = new System.Drawing.Size(62, 20);
+            this.txtIndex.Size = new System.Drawing.Size(67, 20);
             this.txtIndex.TabIndex = 9;
             this.txtIndex.TextChanged += new System.EventHandler(this.txtIndex_TextChanged);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(80, 12);
+            this.label10.Location = new System.Drawing.Point(97, 12);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(36, 13);
             this.label10.TabIndex = 8;
@@ -117,7 +117,7 @@ namespace NetGore.EditorTools
             // 
             this.txtTitle.Location = new System.Drawing.Point(6, 74);
             this.txtTitle.Name = "txtTitle";
-            this.txtTitle.Size = new System.Drawing.Size(178, 20);
+            this.txtTitle.Size = new System.Drawing.Size(200, 20);
             this.txtTitle.TabIndex = 7;
             this.txtTitle.TextChanged += new System.EventHandler(this.txtTitle_TextChanged);
             this.txtTitle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtTitle_KeyDown);
@@ -135,7 +135,7 @@ namespace NetGore.EditorTools
             // 
             this.txtCategory.Location = new System.Drawing.Point(6, 35);
             this.txtCategory.Name = "txtCategory";
-            this.txtCategory.Size = new System.Drawing.Size(178, 20);
+            this.txtCategory.Size = new System.Drawing.Size(200, 20);
             this.txtCategory.TabIndex = 5;
             this.txtCategory.TextChanged += new System.EventHandler(this.txtCategory_TextChanged);
             // 
@@ -148,125 +148,10 @@ namespace NetGore.EditorTools
             this.label1.TabIndex = 4;
             this.label1.Text = "Category:";
             // 
-            // gbStationary
-            // 
-            this.gbStationary.Controls.Add(this.chkAutoSize);
-            this.gbStationary.Controls.Add(this.txtH);
-            this.gbStationary.Controls.Add(this.label7);
-            this.gbStationary.Controls.Add(this.txtW);
-            this.gbStationary.Controls.Add(this.label6);
-            this.gbStationary.Controls.Add(this.txtY);
-            this.gbStationary.Controls.Add(this.label5);
-            this.gbStationary.Controls.Add(this.txtX);
-            this.gbStationary.Controls.Add(this.label4);
-            this.gbStationary.Controls.Add(this.txtTexture);
-            this.gbStationary.Controls.Add(this.label3);
-            this.gbStationary.Location = new System.Drawing.Point(12, 143);
-            this.gbStationary.Name = "gbStationary";
-            this.gbStationary.Size = new System.Drawing.Size(190, 161);
-            this.gbStationary.TabIndex = 5;
-            this.gbStationary.TabStop = false;
-            this.gbStationary.Text = "Stationary Grh";
-            // 
-            // chkAutoSize
-            // 
-            this.chkAutoSize.AutoSize = true;
-            this.chkAutoSize.Location = new System.Drawing.Point(6, 99);
-            this.chkAutoSize.Name = "chkAutoSize";
-            this.chkAutoSize.Size = new System.Drawing.Size(96, 17);
-            this.chkAutoSize.TabIndex = 15;
-            this.chkAutoSize.Text = "Automatic Size";
-            this.chkAutoSize.UseVisualStyleBackColor = true;
-            this.chkAutoSize.CheckedChanged += new System.EventHandler(this.chkAutoSize_CheckedChanged);
-            // 
-            // txtH
-            // 
-            this.txtH.Location = new System.Drawing.Point(121, 73);
-            this.txtH.Name = "txtH";
-            this.txtH.Size = new System.Drawing.Size(62, 20);
-            this.txtH.TabIndex = 14;
-            this.txtH.TextChanged += new System.EventHandler(this.txtH_TextChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(97, 76);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(18, 13);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "H:";
-            // 
-            // txtW
-            // 
-            this.txtW.Location = new System.Drawing.Point(29, 73);
-            this.txtW.Name = "txtW";
-            this.txtW.Size = new System.Drawing.Size(60, 20);
-            this.txtW.TabIndex = 12;
-            this.txtW.TextChanged += new System.EventHandler(this.txtW_TextChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 76);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(21, 13);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "W:";
-            // 
-            // txtY
-            // 
-            this.txtY.Location = new System.Drawing.Point(121, 47);
-            this.txtY.Name = "txtY";
-            this.txtY.Size = new System.Drawing.Size(62, 20);
-            this.txtY.TabIndex = 10;
-            this.txtY.TextChanged += new System.EventHandler(this.txtY_TextChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(98, 50);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(17, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Y:";
-            // 
-            // txtX
-            // 
-            this.txtX.Location = new System.Drawing.Point(29, 47);
-            this.txtX.Name = "txtX";
-            this.txtX.Size = new System.Drawing.Size(60, 20);
-            this.txtX.TabIndex = 8;
-            this.txtX.TextChanged += new System.EventHandler(this.txtX_TextChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(17, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "X:";
-            // 
-            // txtTexture
-            // 
-            this.txtTexture.Location = new System.Drawing.Point(58, 19);
-            this.txtTexture.Name = "txtTexture";
-            this.txtTexture.Size = new System.Drawing.Size(125, 20);
-            this.txtTexture.TabIndex = 6;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Texture:";
-            // 
             // radioStationary
             // 
             this.radioStationary.AutoSize = true;
-            this.radioStationary.Location = new System.Drawing.Point(29, 120);
+            this.radioStationary.Location = new System.Drawing.Point(46, 120);
             this.radioStationary.Name = "radioStationary";
             this.radioStationary.Size = new System.Drawing.Size(72, 17);
             this.radioStationary.TabIndex = 6;
@@ -278,7 +163,7 @@ namespace NetGore.EditorTools
             // radioAnimated
             // 
             this.radioAnimated.AutoSize = true;
-            this.radioAnimated.Location = new System.Drawing.Point(107, 120);
+            this.radioAnimated.Location = new System.Drawing.Point(124, 120);
             this.radioAnimated.Name = "radioAnimated";
             this.radioAnimated.Size = new System.Drawing.Size(69, 17);
             this.radioAnimated.TabIndex = 7;
@@ -295,7 +180,7 @@ namespace NetGore.EditorTools
             this.gbAnimated.Controls.Add(this.label8);
             this.gbAnimated.Location = new System.Drawing.Point(12, 143);
             this.gbAnimated.Name = "gbAnimated";
-            this.gbAnimated.Size = new System.Drawing.Size(190, 161);
+            this.gbAnimated.Size = new System.Drawing.Size(212, 161);
             this.gbAnimated.TabIndex = 8;
             this.gbAnimated.TabStop = false;
             this.gbAnimated.Text = "Animated Grh";
@@ -306,7 +191,7 @@ namespace NetGore.EditorTools
             this.txtFrames.Multiline = true;
             this.txtFrames.Name = "txtFrames";
             this.txtFrames.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtFrames.Size = new System.Drawing.Size(171, 95);
+            this.txtFrames.Size = new System.Drawing.Size(196, 95);
             this.txtFrames.TabIndex = 9;
             // 
             // label9
@@ -320,15 +205,15 @@ namespace NetGore.EditorTools
             // 
             // txtSpeed
             // 
-            this.txtSpeed.Location = new System.Drawing.Point(50, 134);
+            this.txtSpeed.Location = new System.Drawing.Point(94, 134);
             this.txtSpeed.Name = "txtSpeed";
-            this.txtSpeed.Size = new System.Drawing.Size(131, 20);
+            this.txtSpeed.Size = new System.Drawing.Size(112, 20);
             this.txtSpeed.TabIndex = 7;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 137);
+            this.label8.Location = new System.Drawing.Point(47, 137);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 13);
             this.label8.TabIndex = 6;
@@ -368,7 +253,7 @@ namespace NetGore.EditorTools
             this.groupBox1.Controls.Add(this.btnRemove);
             this.groupBox1.Controls.Add(this.btnAdd);
             this.groupBox1.Controls.Add(this.lstWalls);
-            this.groupBox1.Location = new System.Drawing.Point(212, 12);
+            this.groupBox1.Location = new System.Drawing.Point(230, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(177, 321);
             this.groupBox1.TabIndex = 11;
@@ -487,11 +372,128 @@ namespace NetGore.EditorTools
             this.lstWalls.TabIndex = 1;
             this.lstWalls.SelectedIndexChanged += new System.EventHandler(this.lstWalls_SelectedIndexChanged);
             // 
+            // gbStationary
+            // 
+            this.gbStationary.Controls.Add(this.chkAutoSize);
+            this.gbStationary.Controls.Add(this.txtH);
+            this.gbStationary.Controls.Add(this.label7);
+            this.gbStationary.Controls.Add(this.txtW);
+            this.gbStationary.Controls.Add(this.label6);
+            this.gbStationary.Controls.Add(this.txtY);
+            this.gbStationary.Controls.Add(this.label5);
+            this.gbStationary.Controls.Add(this.txtX);
+            this.gbStationary.Controls.Add(this.label4);
+            this.gbStationary.Controls.Add(this.txtTexture);
+            this.gbStationary.Controls.Add(this.label3);
+            this.gbStationary.Location = new System.Drawing.Point(12, 143);
+            this.gbStationary.Name = "gbStationary";
+            this.gbStationary.Size = new System.Drawing.Size(212, 161);
+            this.gbStationary.TabIndex = 12;
+            this.gbStationary.TabStop = false;
+            this.gbStationary.Text = "Stationary Grh";
+            // 
+            // chkAutoSize
+            // 
+            this.chkAutoSize.AutoSize = true;
+            this.chkAutoSize.Location = new System.Drawing.Point(110, 116);
+            this.chkAutoSize.Name = "chkAutoSize";
+            this.chkAutoSize.Size = new System.Drawing.Size(96, 17);
+            this.chkAutoSize.TabIndex = 15;
+            this.chkAutoSize.Text = "Automatic Size";
+            this.chkAutoSize.UseVisualStyleBackColor = true;
+            this.chkAutoSize.CheckedChanged += new System.EventHandler(this.chkAutoSize_CheckedChanged);
+            // 
+            // txtH
+            // 
+            this.txtH.Location = new System.Drawing.Point(144, 90);
+            this.txtH.Name = "txtH";
+            this.txtH.Size = new System.Drawing.Size(62, 20);
+            this.txtH.TabIndex = 14;
+            this.txtH.TextChanged += new System.EventHandler(this.txtH_TextChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(120, 93);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(18, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "H:";
+            // 
+            // txtW
+            // 
+            this.txtW.Location = new System.Drawing.Point(47, 90);
+            this.txtW.Name = "txtW";
+            this.txtW.Size = new System.Drawing.Size(60, 20);
+            this.txtW.TabIndex = 12;
+            this.txtW.TextChanged += new System.EventHandler(this.txtW_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(21, 93);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(21, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "W:";
+            // 
+            // txtY
+            // 
+            this.txtY.Location = new System.Drawing.Point(144, 64);
+            this.txtY.Name = "txtY";
+            this.txtY.Size = new System.Drawing.Size(62, 20);
+            this.txtY.TabIndex = 10;
+            this.txtY.TextChanged += new System.EventHandler(this.txtY_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(121, 67);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(17, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Y:";
+            // 
+            // txtX
+            // 
+            this.txtX.Location = new System.Drawing.Point(47, 64);
+            this.txtX.Name = "txtX";
+            this.txtX.Size = new System.Drawing.Size(60, 20);
+            this.txtX.TabIndex = 8;
+            this.txtX.TextChanged += new System.EventHandler(this.txtX_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(25, 67);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(17, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "X:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(46, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Texture:";
+            // 
+            // txtTexture
+            // 
+            this.txtTexture.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.txtTexture.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.txtTexture.Location = new System.Drawing.Point(6, 38);
+            this.txtTexture.Name = "txtTexture";
+            this.txtTexture.Size = new System.Drawing.Size(200, 20);
+            this.txtTexture.TabIndex = 6;
+            // 
             // EditGrhForm
             // 
-            this.ClientSize = new System.Drawing.Size(395, 339);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(414, 341);
             this.Controls.Add(this.gbStationary);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.radioAnimated);
@@ -508,12 +510,12 @@ namespace NetGore.EditorTools
             this.Load += new System.EventHandler(this.EditGrhForm_Load);
             this.gbCategorization.ResumeLayout(false);
             this.gbCategorization.PerformLayout();
-            this.gbStationary.ResumeLayout(false);
-            this.gbStationary.PerformLayout();
             this.gbAnimated.ResumeLayout(false);
             this.gbAnimated.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.gbStationary.ResumeLayout(false);
+            this.gbStationary.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -526,17 +528,6 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtCategory;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox gbStationary;
-        private System.Windows.Forms.TextBox txtW;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtY;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtX;
-        private System.Windows.Forms.Label label4;
-        private GrhDataTextureTextBox txtTexture;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtH;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.RadioButton radioStationary;
         private System.Windows.Forms.RadioButton radioAnimated;
         private System.Windows.Forms.GroupBox gbAnimated;
@@ -560,8 +551,19 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.TextBox txtWallX;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.CheckBox chkAutoSize;
         private System.Windows.Forms.ListBox lstWalls;
+        private System.Windows.Forms.GroupBox gbStationary;
+        private System.Windows.Forms.CheckBox chkAutoSize;
+        private System.Windows.Forms.TextBox txtH;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtW;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtY;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtX;
+        private System.Windows.Forms.Label label4;
+        private GrhDataTextureTextBox txtTexture;
+        private System.Windows.Forms.Label label3;
 
     }
 }
