@@ -18,8 +18,6 @@ namespace NetGore
             static readonly PerformanceCounter _cpu = new PerformanceCounter
             { CategoryName = "Processor", CounterName = "% Processor Time", InstanceName = "_Total" };
 
-            static readonly Dictionary<Process, PerformanceCounter> _procCounters = new Dictionary<Process, PerformanceCounter>();
-
             /// <summary>
             /// Gets the current global CPU usage percent. This represents the percent of time the CPU is
             /// busy with any process in the system.
@@ -27,36 +25,6 @@ namespace NetGore
             public static float Usage
             {
                 get { return _cpu.NextValue(); }
-            }
-
-            static readonly ReaderWriterLockSlim _procLock = new ReaderWriterLockSlim();
-
-            /// <summary>
-            /// Gets the current process CPU usage percent.
-            /// </summary>
-            public static float ProcessUsage
-            {
-                get
-                {
-                    PerformanceCounter counter;
-                    Process process = Process.GetCurrentProcess();
-
-                    _procLock.EnterUpgradeableReadLock();
-                    {
-                        if (!_procCounters.TryGetValue(process, out counter))
-                        {
-                            counter = new PerformanceCounter("Process", "% Processor Time", process.ProcessName, true);
-                            _procLock.EnterWriteLock();
-                            {
-                                _procCounters.Add(process, counter);
-                            }
-                            _procLock.ExitWriteLock();
-                        }
-                    }
-                    _procLock.ExitUpgradeableReadLock();
-
-                    return counter.NextValue();
-                }
             }
         }
 
