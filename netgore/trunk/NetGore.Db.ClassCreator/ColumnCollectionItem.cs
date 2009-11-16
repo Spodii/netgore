@@ -26,9 +26,9 @@ namespace NetGore.Db.ClassCreator
             Key = key;
         }
 
-        public static ColumnCollectionItem FromEnum<T>(string columnName, T key)
+        public static ColumnCollectionItem FromEnum<T>(CodeFormatter formatter, string columnName, T key)
         {
-            return new ColumnCollectionItem(columnName, typeof(T).FullName + "." + key);
+            return new ColumnCollectionItem(columnName, formatter.GetTypeString(typeof(T)) + "." + key);
         }
     }
 }

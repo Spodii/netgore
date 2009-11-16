@@ -30,13 +30,13 @@ namespace NetGore.Db.ClassCreator
         static readonly string _outputServerDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
                                                                 AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
-        static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(StatCollectionType statCollectionType)
+        static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(CodeFormatter formatter, StatCollectionType statCollectionType)
         {
             var columnItems = new List<ColumnCollectionItem>();
             foreach (var statType in StatTypeHelper.Values)
             {
                 var dbField = statType.GetDatabaseField(statCollectionType);
-                var item = ColumnCollectionItem.FromEnum(dbField, statType);
+                var item = ColumnCollectionItem.FromEnum(formatter, dbField, statType);
                 columnItems.Add(item);
             }
 
@@ -45,9 +45,6 @@ namespace NetGore.Db.ClassCreator
 
         static void Main()
         {
-            var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
-            var reqStatColumns = GetStatColumnCollectionItems(StatCollectionType.Requirement);
-
             Console.WriteLine("This program will generate the code files to match the database." +
                               " As a result, many code files will be altered. Are you sure you wish to continue?");
             Console.WriteLine("Press Y to continue, or any other key to abort.");
@@ -57,6 +54,9 @@ namespace NetGore.Db.ClassCreator
 
             using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
+                var baseStatColumns = GetStatColumnCollectionItems(generator.Formatter, StatCollectionType.Base);
+                var reqStatColumns = GetStatColumnCollectionItems(generator.Formatter, StatCollectionType.Requirement);
+
                 // Custom usings
                 generator.AddUsing("NetGore.Db");
                 generator.AddUsing("DemoGame.DbObjs");

@@ -222,14 +222,6 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public override string GetTypeString(Type type)
-        {
-            if (type == typeof(void))
-                return "void";
-
-            return base.GetTypeString(type);
-        }
-
         public override string GetUsing(string namespaceName)
         {
             return "using " + namespaceName + EndOfLine;

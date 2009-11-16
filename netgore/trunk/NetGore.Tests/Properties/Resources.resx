@@ -144,7 +144,8 @@
     <comment>Xml file contents used for the XmlInfoReader tests.</comment>
   </data>
   <data name="testdb_a" xml:space="preserve">
-    <value>CREATE TABLE IF NOT EXISTS `testdb_a` (
+    <value>DROP TABLE IF EXISTS `testdb_a`;
+CREATE TABLE IF NOT EXISTS `testdb_a` (
   `b` tinyint(4) NOT NULL,
   `bn` tinyint(4) DEFAULT NULL,
   `bu` tinyint(3) unsigned NOT NULL,
@@ -170,12 +171,40 @@
   `f` float NOT NULL,
   `fn` float DEFAULT NULL,
   `fu` float unsigned NOT NULL,
-  `fun` float unsigned DEFAULT NULL
+  `fun` float unsigned DEFAULT NULL,
+  `d` double NOT NULL,
+  `dn` double DEFAULT NULL,
+  `du` double unsigned NOT NULL,
+  `dun` double unsigned DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1</value>
     <comment>Query for a test database (lots of types).</comment>
   </data>
   <data name="testdb_a_name" xml:space="preserve">
     <value>testdb_a</value>
     <comment>Name of the test database.</comment>
+  </data>
+  <data name="testdb_a_view" xml:space="preserve">
+    <value>DROP VIEW IF EXISTS testdb_a_view;
+CREATE VIEW testdb_a_view AS SELECT * FROM testdb_a;</value>
+  </data>
+  <data name="testdb_a_view_name" xml:space="preserve">
+    <value>testdb_a_view</value>
+  </data>
+  <data name="testdb_b" xml:space="preserve">
+    <value>DROP TABLE IF EXISTS `testdb_b`;
+CREATE TABLE `testdb_b` (
+  `a` int(11) NOT NULL,
+  `b` int(11) NOT NULL,
+  `abcdEFGhij` int(11) NOT NULL,
+  `asdfA` int(11) NOT NULL,
+  `asdfB` int(11) NOT NULL,
+  `asdfC` int(11) NOT NULL,
+  `bbbbA` int(11) NOT NULL,
+  `bbbbB` int(11) NOT NULL,
+  `bbbbC` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</value>
+  </data>
+  <data name="testdb_b_name" xml:space="preserve">
+    <value>testdb_b</value>
   </data>
 </root>

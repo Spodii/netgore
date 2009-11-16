@@ -88,7 +88,8 @@ namespace NetGore.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE IF NOT EXISTS `testdb_a` (
+        ///   Looks up a localized string similar to DROP TABLE IF EXISTS `testdb_a`;
+        ///CREATE TABLE IF NOT EXISTS `testdb_a` (
         ///  `b` tinyint(4) NOT NULL,
         ///  `bn` tinyint(4) DEFAULT NULL,
         ///  `bu` tinyint(3) unsigned NOT NULL,
@@ -101,8 +102,7 @@ namespace NetGore.Tests.Properties {
         ///  `in` int(11) DEFAULT NULL,
         ///  `iu` int(10) unsigned NOT NULL,
         ///  `iun` int(10) unsigned DEFAULT NULL,
-        ///  `l` bigint(20) NOT NULL,
-        ///  `ln` bigint(20) DEFAULT [rest of string was truncated]&quot;;.
+        ///  `l` bigint(20) NO [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string testdb_a {
             get {
@@ -116,6 +116,54 @@ namespace NetGore.Tests.Properties {
         internal static string testdb_a_name {
             get {
                 return ResourceManager.GetString("testdb_a_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DROP VIEW IF EXISTS testdb_a_view;
+        ///CREATE VIEW testdb_a_view AS SELECT * FROM testdb_a;.
+        /// </summary>
+        internal static string testdb_a_view {
+            get {
+                return ResourceManager.GetString("testdb_a_view", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to testdb_a_view.
+        /// </summary>
+        internal static string testdb_a_view_name {
+            get {
+                return ResourceManager.GetString("testdb_a_view_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DROP TABLE IF EXISTS `testdb_b`;
+        ///CREATE TABLE `testdb_b` (
+        ///  `a` int(11) NOT NULL,
+        ///  `b` int(11) NOT NULL,
+        ///  `abcdEFGhij` int(11) NOT NULL,
+        ///  `asdfA` int(11) NOT NULL,
+        ///  `asdfB` int(11) NOT NULL,
+        ///  `asdfC` int(11) NOT NULL,
+        ///  `bbbbA` int(11) NOT NULL,
+        ///  `bbbbB` int(11) NOT NULL,
+        ///  `bbbbC` int(11) NOT NULL
+        ///) ENGINE=InnoDB DEFAULT CHARSET=latin1.
+        /// </summary>
+        internal static string testdb_b {
+            get {
+                return ResourceManager.GetString("testdb_b", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to testdb_b.
+        /// </summary>
+        internal static string testdb_b_name {
+            get {
+                return ResourceManager.GetString("testdb_b_name", resourceCulture);
             }
         }
     }
