@@ -575,18 +575,25 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetTypeString(Type type)
         {
+            if (type == typeof(void))
+                return GetVoidTypeString();
+
+            var s = type.FullName;
+
             if (type.IsGenericType)
             {
-                var s = type.ToString();
+                s = type.ToString();
                 var firstBracket = s.IndexOf("[") - 1;
                 var start = s.IndexOf("`");
                 s = s.Remove(start, firstBracket - start + 1);
                 s = s.Replace("[", OpenGeneric);
                 s = s.Replace("]", CloseGeneric);
-                return s;
             }
 
-            return type.FullName;
+            if (type.IsNested)
+                s = s.Replace("+", ".");
+
+            return s;
         }
 
         public abstract string GetUsing(string namespaceName);
