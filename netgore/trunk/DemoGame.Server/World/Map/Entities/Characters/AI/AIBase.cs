@@ -14,7 +14,7 @@ namespace DemoGame.Server
     /// of the AIBase must include static method that named "CreateInstance" that accepts a Character
     /// and returns an AIBase.
     /// </summary>
-    public abstract class AIBase : IAI
+    public abstract class AIBase : IAI, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly Random _rand = new Random();
@@ -53,34 +53,21 @@ namespace DemoGame.Server
         /// <returns>Closest Character this Actor is hostile towards, or null if none in range.</returns>
         protected Character GetClosestHostile()
         {
-            Character closestChar = null;
-            var closestDist = 0f;
+            var visibleArea = GetVisibleMapArea();
 
-            foreach (var character in Actor.Map.NPCs)
-            {
-                if (character == null)
-                {
-                    const string errmsg =
-                        "Shouldn't even run into a null Character from Actor.Map.Characters since the underlying " +
-                        "type (DArray or List) should not return removed elements when enumerating.";
-                    if (log.IsErrorEnabled)
-                        log.Error(errmsg);
-                    Debug.Fail(errmsg);
-                    continue;
-                }
+            // Get the characters that we are even hostile towards and are in view
+            var possibleChars = Actor.Map.EntityCollection.GetEntities<Character>(visibleArea, 
+                x => Actor.Alliance.IsHostile(x.Alliance));
 
-                if (!Actor.Alliance.IsHostile(character.Alliance) || !IsInView(character))
-                    continue;
+            // If no matches, return null
+            if (possibleChars.Count() == 0)
+                return null;
 
-                var dist = Vector2.Distance(Actor.Position, character.Position);
-                if (closestChar == null || closestDist > dist)
-                {
-                    closestChar = character;
-                    closestDist = dist;
-                }
-            }
+            // Get the closest of the bunch
+            var center = Actor.Center;
+            var closest = possibleChars.MinElement(x => center.QuickDistance(x.Center));
 
-            return closestChar;
+            return closest;
         }
 
         /// <summary>
@@ -110,12 +97,25 @@ namespace DemoGame.Server
         /// <returns>True if the entity is in view of the Actor, else false.</returns>
         protected bool IsInView(Entity entity)
         {
-            var halfScreenSize = GameData.ScreenSize / 2;
-
-            var dist = Actor.Position - entity.Position;
+            var dist = Actor.Center - entity.Center;
             dist = dist.Abs();
 
-            return dist.IsLessThan(halfScreenSize);
+            return dist.IsLessThan(_halfScreenSize);
+        }
+
+        static readonly Vector2 _halfScreenSize = GameData.ScreenSize / 2;
+
+        protected Rectangle GetVisibleMapArea()
+        {
+            var center = Actor.Center;
+            var min = center - _halfScreenSize;
+
+            int x = (int)Math.Max(0, min.X);
+            int y = (int)Math.Max(0, min.Y);
+            int w = (int)Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
+            int h = (int)Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
+
+            return new Rectangle(x, y, w, h);
         }
 
         /// <summary>
@@ -157,5 +157,17 @@ namespace DemoGame.Server
         public abstract AIID ID { get; }
 
         #endregion
+
+        /// <summary>
+        /// Gets the current time in milliseconds.
+        /// </summary>
+        /// <returns>The current time in milliseconds.</returns>
+        public int GetTime()
+        {
+            if (Actor != null)
+                return Actor.GetTime();
+
+            return 0;
+        }
     }
 }

@@ -25,53 +25,73 @@ namespace DemoGame.Server
             get { return new AIID(_id); }
         }
 
+        Character _target;
+
+        const int _targetUpdateRate = 2000;
+
+        int _lastTargetUpdateTime = int.MinValue;
+
+        void UpdateNoTarget()
+        {
+            // Move around randomly
+            if (Rand(0, 40) == 0)
+            {
+                if (Actor.IsMoving)
+                    Actor.StopMoving();
+                else
+                {
+                    if (Rand(0, 2) == 0)
+                        Actor.MoveLeft();
+                    else
+                        Actor.MoveRight();
+                }
+            }
+        }
+
+        void UpdateWithTarget()
+        {
+            // Move towards an enemy
+            if (_target.Position.X > Actor.Position.X + 10)
+                Actor.MoveRight();
+            else if (_target.Position.X < Actor.Position.X - 10)
+                Actor.MoveLeft();
+            else
+            {
+                // Stop moving when close enough to the enemy
+                Actor.StopMoving();
+
+                // Face the correct direction
+                if (Actor.Position.X > _target.Position.X)
+                    Actor.SetHeading(Direction.West);
+                else
+                    Actor.SetHeading(Direction.East);
+            }
+
+            // Attack if in range
+            if (IsInMeleeRange(_target))
+                Actor.Attack();
+        }
+
         /// <summary>
         /// Handles the real updating of the AI.
         /// </summary>
         protected override void DoUpdate()
         {
-            Character target = GetClosestHostile();
-
-            if (target == null)
+            // Update the target
+            int time = GetTime();
+            if (_lastTargetUpdateTime + _targetUpdateRate < time)
             {
-                // Move around randomly
-                if (Rand(0, 40) == 0)
-                {
-                    if (Actor.IsMoving)
-                        Actor.StopMoving();
-                    else
-                    {
-                        if (Rand(0, 2) == 0)
-                            Actor.MoveLeft();
-                        else
-                            Actor.MoveRight();
-                    }
-                }
+                _lastTargetUpdateTime = time;
+                _target = GetClosestHostile();
             }
+
+            // Check if we have a target or not
+            if (_target == null)
+                UpdateNoTarget();
             else
-            {
-                // Move towards an enemy
-                if (target.Position.X > Actor.Position.X + 10)
-                    Actor.MoveRight();
-                else if (target.Position.X < Actor.Position.X - 10)
-                    Actor.MoveLeft();
-                else
-                {
-                    // Stop moving when close enough to the enemy
-                    Actor.StopMoving();
+                UpdateWithTarget();
 
-                    // Face the correct direction
-                    if (Actor.Position.X > target.Position.X)
-                        Actor.SetHeading(Direction.West);
-                    else
-                        Actor.SetHeading(Direction.East);
-                }
-
-                // Attack if in range
-                if (IsInMeleeRange(target))
-                    Actor.Attack();
-            }
-            // Jump randomly
+            // Jump randomly for no apparent reason
             if (Rand(0, 200) == 0)
                 Actor.Jump();
         }
