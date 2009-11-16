@@ -256,7 +256,7 @@ namespace DemoGame.Server
         /// </summary>
         static void UpdateSystemInformationDisplay()
         {
-            Console.Title = string.Format("NetGore Server (CPU: [{0}% process, {1}% total], Memory: [{2} MB used, {3} MB free])",
+            Console.Title = string.Format("NetGore Server - CPU: [{0}%, {1}% total], MEM: [{2}MB used, {3}MB free])",
                         Math.Round(SystemPerformance.CPU.ProcessUsage),
                         Math.Round(SystemPerformance.CPU.Usage),
                         SystemPerformance.Memory.ProcessUsageMB,
