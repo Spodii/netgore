@@ -236,14 +236,39 @@ namespace DemoGame.Server
                 // Update the time
                 serverTimeUpdater.Update(GetTime());
 
+                // Update console title
+                if (_tick % 500 == 0)
+                    UpdateSystemInformationDisplay();
+
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
+
+                ++_tick;
             }
 
             _gameTimer.Stop();
         }
+
+        /// <summary>
+        /// Updates the display of the system information.
+        /// </summary>
+        static void UpdateSystemInformationDisplay()
+        {
+            Console.Title = string.Format("NetGore Server (CPU: [{0}% process, {1}% total], Memory: [{2} MB used, {3} MB free])",
+                        Math.Round(SystemPerformance.CPU.ProcessUsage),
+                        Math.Round(SystemPerformance.CPU.Usage),
+                        SystemPerformance.Memory.ProcessUsageMB,
+                        SystemPerformance.Memory.AvailableMB);
+        }
+
+        int _tick;
+
+        /// <summary>
+        /// Gets the current tick the server is currently on. Each tick represents one iteration of the main loop.
+        /// </summary>
+        public int Tick { get { return _tick; } }
 
         /// <summary>
         /// Creates an <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.
