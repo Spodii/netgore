@@ -56,6 +56,8 @@
     <Compile Include="Collections\MeanStackTests.cs" />
     <Compile Include="Collections\ObjectPoolTests.cs" />
     <Compile Include="Collections\TSListTests.cs" />
+    <Compile Include="Db\ClassCreator\ClassCreatorHelper.cs" />
+    <Compile Include="Db\ClassCreator\TypeTests.cs" />
     <Compile Include="Db\MySql\DbQueryNonReaderTests.cs" />
     <Compile Include="Db\MySql\DbQueryReaderTests.cs" />
     <Compile Include="Db\MySql\MySqlDbConnectionPoolTests.cs" />

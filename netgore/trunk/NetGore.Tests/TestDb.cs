@@ -1,6 +1,8 @@
 ﻿using System.Data.Common;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using NetGore.Db.ClassCreator;
+using NetGore.Tests.Properties;
 
 namespace NetGore.Tests
 {
@@ -17,6 +19,30 @@ namespace NetGore.Tests
         public static string Database
         {
             get { return "netgoretests"; }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="MySqlClassGenerator"/> for the test database.
+        /// </summary>
+        /// <returns>A <see cref="MySqlClassGenerator"/> for the test database.</returns>
+        public static MySqlClassGenerator CreateMySqlClassGenerator()
+        {
+            return new MySqlClassGenerator(Host, User, Password, Database);
+        }
+
+        /// <summary>
+        /// Executes a raw query.
+        /// </summary>
+        /// <param name="query">The query to execute.</param>
+        public static void Execute(string query)
+        {
+            var conn = Open();
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = query;
+                cmd.ExecuteNonQuery();
+            }
+            Close(conn);
         }
 
         /// <summary>

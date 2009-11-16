@@ -143,4 +143,39 @@
 &lt;/Bodies&gt;</value>
     <comment>Xml file contents used for the XmlInfoReader tests.</comment>
   </data>
+  <data name="testdb_a" xml:space="preserve">
+    <value>CREATE TABLE IF NOT EXISTS `testdb_a` (
+  `b` tinyint(4) NOT NULL,
+  `bn` tinyint(4) DEFAULT NULL,
+  `bu` tinyint(3) unsigned NOT NULL,
+  `bun` tinyint(3) unsigned DEFAULT NULL,
+  `s` smallint(6) NOT NULL,
+  `sn` smallint(6) DEFAULT NULL,
+  `su` smallint(5) unsigned NOT NULL,
+  `sun` smallint(5) unsigned DEFAULT NULL,
+  `i` int(11) NOT NULL,
+  `in` int(11) DEFAULT NULL,
+  `iu` int(10) unsigned NOT NULL,
+  `iun` int(10) unsigned DEFAULT NULL,
+  `l` bigint(20) NOT NULL,
+  `ln` bigint(20) DEFAULT NULL,
+  `lu` bigint(20) unsigned NOT NULL,
+  `lun` bigint(20) unsigned DEFAULT NULL,
+  `vc` varchar(0) NOT NULL,
+  `vcn` varchar(0) DEFAULT NULL,
+  `ttxt` tinytext NOT NULL,
+  `ttxtn` tinytext,
+  `txt` text NOT NULL,
+  `txtn` text,
+  `f` float NOT NULL,
+  `fn` float DEFAULT NULL,
+  `fu` float unsigned NOT NULL,
+  `fun` float unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</value>
+    <comment>Query for a test database (lots of types).</comment>
+  </data>
+  <data name="testdb_a_name" xml:space="preserve">
+    <value>testdb_a</value>
+    <comment>Name of the test database.</comment>
+  </data>
 </root>
