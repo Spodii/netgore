@@ -72,8 +72,8 @@
     <Compile Include="MapRenderLayerChange.cs" />
     <Compile Include="Sprite\Grh\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />
-    <Compile Include="Sprite\Grh\AnimType.cs" />
-    <Compile Include="Sprite\Grh\ChangeCategorizationHandler.cs" />
+    <Compile Include="Sprite\AnimType.cs" />
+    <Compile Include="Sprite\Grh\GrhDataChangeCategorizationHandler.cs" />
     <Compile Include="Sprite\Grh\GrhDataCategorization.cs" />
     <Compile Include="Sprite\Grh\GrhDataEventHandler.cs" />
     <Compile Include="MapBorderDrawer.cs" />

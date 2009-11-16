@@ -44,7 +44,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies when either the category or title have been changed
         /// </summary>
-        public event ChangeCategorizationHandler OnChangeCategorization;
+        public event GrhDataChangeCategorizationHandler OnChangeCategorization;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhData"/> class.

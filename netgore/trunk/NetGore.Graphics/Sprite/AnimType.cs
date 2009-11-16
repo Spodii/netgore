@@ -4,22 +4,22 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Defines how the grh animates.
+    /// Defines how an <see cref="ISprite"/> animates.
     /// </summary>
     public enum AnimType
     {
         /// <summary>
-        /// Grh that will not animate.
+        /// <see cref="Grh"/> that will not animate.
         /// </summary>
         None,
 
         /// <summary>
-        /// Grh will loop once then change to None back on the first frame.
+        /// <see cref="Grh"/> will loop once then change to <see cref="AnimType.None"/> back on the first frame.
         /// </summary>
         LoopOnce,
 
         /// <summary>
-        /// Grh will loop forever.
+        /// <see cref="Grh"/> will loop forever.
         /// </summary>
         Loop
     }
