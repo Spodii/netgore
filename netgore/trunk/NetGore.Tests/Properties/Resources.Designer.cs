@@ -86,5 +86,37 @@ namespace NetGore.Tests.Properties {
                 return ResourceManager.GetString("BasicXmlFile", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE IF NOT EXISTS `testdb_a` (
+        ///  `b` tinyint(4) NOT NULL,
+        ///  `bn` tinyint(4) DEFAULT NULL,
+        ///  `bu` tinyint(3) unsigned NOT NULL,
+        ///  `bun` tinyint(3) unsigned DEFAULT NULL,
+        ///  `s` smallint(6) NOT NULL,
+        ///  `sn` smallint(6) DEFAULT NULL,
+        ///  `su` smallint(5) unsigned NOT NULL,
+        ///  `sun` smallint(5) unsigned DEFAULT NULL,
+        ///  `i` int(11) NOT NULL,
+        ///  `in` int(11) DEFAULT NULL,
+        ///  `iu` int(10) unsigned NOT NULL,
+        ///  `iun` int(10) unsigned DEFAULT NULL,
+        ///  `l` bigint(20) NOT NULL,
+        ///  `ln` bigint(20) DEFAULT [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string testdb_a {
+            get {
+                return ResourceManager.GetString("testdb_a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to testdb_a.
+        /// </summary>
+        internal static string testdb_a_name {
+            get {
+                return ResourceManager.GetString("testdb_a_name", resourceCulture);
+            }
+        }
     }
 }
