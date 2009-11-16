@@ -26,6 +26,11 @@ namespace NetGore.IO
         const string _skeletonsFolder = "Skeletons";
 
         /// <summary>
+        /// The suffix given to compiled content files. Does not include the prefixed period.
+        /// </summary>
+        public const string CompiledContentSuffix = "xnb";
+
+        /// <summary>
         /// Suffix for temporary files.
         /// </summary>
         const string _tempFileSuffix = ".ngtmp";

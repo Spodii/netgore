@@ -50,7 +50,7 @@ namespace NetGore.EditorTools
             this.label5 = new System.Windows.Forms.Label();
             this.txtX = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtTexture = new System.Windows.Forms.TextBox();
+            this.txtTexture = new GrhDataTextureTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.radioStationary = new System.Windows.Forms.RadioButton();
             this.radioAnimated = new System.Windows.Forms.RadioButton();
@@ -253,7 +253,6 @@ namespace NetGore.EditorTools
             this.txtTexture.Name = "txtTexture";
             this.txtTexture.Size = new System.Drawing.Size(125, 20);
             this.txtTexture.TabIndex = 6;
-            this.txtTexture.TextChanged += new System.EventHandler(this.txtTexture_TextChanged);
             // 
             // label3
             // 
@@ -534,7 +533,7 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtX;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtTexture;
+        private GrhDataTextureTextBox txtTexture;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtH;
         private System.Windows.Forms.Label label7;
