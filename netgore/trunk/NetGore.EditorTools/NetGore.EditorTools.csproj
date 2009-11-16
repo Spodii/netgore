@@ -60,34 +60,35 @@
     <Compile Include="CreateWallEntity\CreateWallEntityFromReaderHandler.cs" />
     <Compile Include="Grh\AutomaticGrhData\AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
+    <Compile Include="Grh\Controls\GrhDataTextureTextBox.cs" />
     <Compile Include="Grh\GrhImageList\GrhImageList.cs" />
     <Compile Include="Grh\GrhImageList\GrhImageListCache.cs" />
     <Compile Include="Grh\GrhImageList\GrhImageListCacheItem.cs" />
     <Compile Include="CreateWallEntity\CreateWallEntityHandler.cs" />
     <Compile Include="CreateWallEntity\CreateWallEntityWithCollisionTypeHandler.cs" />
-    <Compile Include="Grh\GrhTreeView\EditGrhForm.cs">
+    <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Grh\GrhTreeView\EditGrhForm.Designer.cs">
+    <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.Designer.cs">
       <DependentUpon>EditGrhForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ListBoxExtensions.cs" />
-    <Compile Include="Grh\GrhTreeView\Events\GrhTreeNodeMouseClickEvent.cs" />
-    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewCancelEvent.cs" />
-    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewContextMenuItemClickEvent.cs" />
-    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewEvent.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeViewFolderNode.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeViewNode.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeNodeMouseClickEvent.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewCancelEvent.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewContextMenuItemClickEvent.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewEvent.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewFolderNode.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewNode.cs" />
     <Compile Include="Grh\MapGrhWalls.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grh\GrhTreeView\Events\GrhTreeNodeMouseClickEventArgs.cs" />
-    <Compile Include="Grh\GrhTreeView\GrhTreeView.cs">
+    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeNodeMouseClickEventArgs.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\GrhTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewCancelEventArgs.cs" />
-    <Compile Include="Grh\GrhTreeView\Events\GrhTreeViewEventArgs.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewCancelEventArgs.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewEventArgs.cs" />
     <Compile Include="Grh\AutomaticGrhData\MissingTexturesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,8 +171,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Grh\GrhTreeView\Folder.png" />
-    <EmbeddedResource Include="Grh\GrhTreeView\EditGrhForm.resx">
+    <None Include="Grh\Controls\GrhTreeView\Folder.png" />
+    <EmbeddedResource Include="Grh\Controls\GrhTreeView\EditGrhForm.resx">
       <DependentUpon>EditGrhForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -189,7 +190,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Grh\GrhTreeView\folderopen.png" />
+    <None Include="Grh\Controls\GrhTreeView\folderopen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
