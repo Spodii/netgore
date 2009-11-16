@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -47,6 +46,11 @@ namespace NetGore.Graphics
         /// Notifies listeners when either the <see cref="GrhData"/>'s categorization (category or title) has changed.
         /// </summary>
         public event GrhDataChangeCategorizationHandler OnChangeCategorization;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="GrhData"/>'s texture has changed.
+        /// </summary>
+        public event GrhDataChangeTextureHandler OnChangeTexture;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhData"/> class.
@@ -256,12 +260,17 @@ namespace NetGore.Graphics
             if (TextureName == newTexture)
                 return;
 
+            var oldTextureName = _textureName;
+
             // Apply the new texture
             _texture = null;
             _isUsingAtlas = false;
             _textureName = newTexture;
 
             ValidateTexture();
+
+            if (OnChangeTexture != null)
+                OnChangeTexture(this, oldTextureName);
         }
 
         /// <summary>
@@ -555,7 +564,7 @@ namespace NetGore.Graphics
         #region ITextureAtlasable Members
 
         /// <summary>
-        /// Gets the texture source rectangle in pixels for a single frame Grh
+        /// Gets the texture source <see cref="Rectangle"/> of the original image.
         /// </summary>
         public Rectangle SourceRect
         {
