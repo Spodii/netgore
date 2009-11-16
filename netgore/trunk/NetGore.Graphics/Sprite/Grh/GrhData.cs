@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Collections;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -32,7 +34,7 @@ namespace NetGore.Graphics
         bool _automaticSize = false;
         string _category;
         ContentManager _cm;
-        GrhData[] _frames;
+        ImmutableArray<GrhData> _frames;
         GrhIndex _grhIndex;
         bool _isUsingAtlas;
         Rectangle _sourceRect;
@@ -42,7 +44,7 @@ namespace NetGore.Graphics
         string _title;
 
         /// <summary>
-        /// Notifies when either the category or title have been changed
+        /// Notifies listeners when either the <see cref="GrhData"/>'s categorization (category or title) has changed.
         /// </summary>
         public event GrhDataChangeCategorizationHandler OnChangeCategorization;
 
@@ -118,7 +120,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the frames in the GrhData
         /// </summary>
-        public GrhData[] Frames
+        public ImmutableArray<GrhData> Frames
         {
             get { return _frames; }
         }
@@ -328,8 +330,9 @@ namespace NetGore.Graphics
             }
 
             // We only have one frame, this one
-            _frames = new GrhData[1];
-            _frames[0] = this;
+            var frames = new GrhData[1];
+            frames[0] = this;
+            _frames = new ImmutableArray<GrhData>(frames);
 
             // Store some values and references
             _cm = cm;
@@ -342,28 +345,31 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the data for an animated GrhData
+        /// Sets the data for an animated <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="grhIndex">Index of the Grh</param>
-        /// <param name="frames">Total number of frames</param>
-        /// <param name="speed">Array where the indices are the frames and elements are the GrhIndexes</param>
-        /// <param name="category">Period-delimited category</param>
-        /// <param name="title">Title of the GrhData. Must be unique for the supplied category.</param>
-        public void Load(GrhIndex grhIndex, GrhIndex[] frames, float speed, string category, string title)
+        /// <param name="grhIndex">Index of the <see cref="GrhData"/>.</param>
+        /// <param name="frameIndices">The indices of the <see cref="GrhData"/> frames to build the animation from.</param>
+        /// <param name="speed">The speed of the animation.</param>
+        /// <param name="category">The <see cref="GrhData"/> category.</param>
+        /// <param name="title">Title of the <see cref="GrhData"/>. Must be unique for the supplied
+        /// <paramref name="category"/>.</param>
+        public void Load(GrhIndex grhIndex, GrhIndex[] frameIndices, float speed, string category, string title)
         {
             // Create the frames
-            _frames = new GrhData[frames.Length];
-            for (int i = 0; i < frames.Length; i++)
+            var frames = new GrhData[frameIndices.Length];
+            for (int i = 0; i < frameIndices.Length; i++)
             {
-                _frames[i] = GrhInfo.GetData(frames[i]);
-                if (_frames[i] == null)
+                frames[i] = GrhInfo.GetData(frameIndices[i]);
+                if (frames[i] == null)
                 {
                     const string errmsg =
                         "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
-                    string err = string.Format(errmsg, _frames[i], grhIndex, i, frames.Length);
+                    string err = string.Format(errmsg, frames[i], grhIndex, i, frameIndices.Length);
                     throw new Exception(err);
                 }
             }
+
+            _frames = new ImmutableArray<GrhData>(frames);
 
             // Store some values and references
             _grhIndex = grhIndex;
@@ -447,9 +453,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Returns a System.String that represents the GrhData.
+        /// Returns a System.String that represents the <see cref="GrhData"/>.
         /// </summary>
-        /// <returns>A System.String that represents the GrhData.</returns>
+        /// <returns>A System.String that represents the <see cref="GrhData"/>.</returns>
         public override string ToString()
         {
             // Add the frame count if animated, or the texture if not animated
