@@ -966,12 +966,23 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Gets or sets an IEnumerable of the name of the tables to generate. If this value is null or empty,
+        /// all tables will be generated. Otherwise, only tables defined in this collection will be generated.
+        /// </summary>
+        public IEnumerable<string> TablesToGenerate { get; set; }
+
         public virtual IEnumerable<GeneratedTableCode> Generate(string classNamespace, string interfaceNamespace)
         {
             LoadDbContent();
 
+            bool isFilteringTables = (TablesToGenerate != null && TablesToGenerate.Count() > 0);
+
             foreach (var table in _dbTables)
             {
+                if (isFilteringTables && !TablesToGenerate.Contains(table.Key, StringComparer.OrdinalIgnoreCase))
+                    continue;
+
                 var generatedCodes = CreateCode(table.Key, table.Value, classNamespace, interfaceNamespace);
                 foreach (var item in generatedCodes)
                 {

@@ -34,6 +34,8 @@ namespace NetGore.Tests.Db.ClassCreator
                 if (additionalProcessing !=null)
                     additionalProcessing(generator);
 
+                generator.TablesToGenerate = new string[] { tableName };
+
                 codeItems = generator.Generate(GeneratedNamespace, GeneratedNamespace);
                 codeItems = codeItems.Where(x => x.CodeType != GeneratedCodeType.ClassDbExtensions);
                 codeItems = codeItems.Where(x => x.Table == tableName || x.CodeType == GeneratedCodeType.ColumnMetadata);
