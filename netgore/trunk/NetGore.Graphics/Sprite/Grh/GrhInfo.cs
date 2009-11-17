@@ -53,6 +53,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets an IEnumerable of all the <see cref="GrhData"/> categories.
+        /// </summary>
+        /// <returns>An IEnumerable of all the <see cref="GrhData"/> categories.</returns>
+        public static IEnumerable<string> GetCategories()
+        {
+            return _catDic.Keys;
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of all of the GrhDatas.
         /// </summary>
         public static IEnumerable<GrhData> GrhDatas
