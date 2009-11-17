@@ -18,9 +18,18 @@ namespace NetGore.EditorTools
         /// </summary>
         public GrhDataTextureTextBox()
         {
-            AutoCompleteMode = AutoCompleteMode.Suggest;
+            AutoCompleteMode = AutoCompleteSources.DefaultAutoCompleteMode;
             AutoCompleteSource = AutoCompleteSource.CustomSource;
             AutoCompleteCustomSource = AutoCompleteSources.Textures;
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            // Change to the correct slash direction
+            if (e.KeyChar == '\\')
+                e.KeyChar = '/';
+
+            base.OnKeyPress(e);
         }
 
         /// <summary>
@@ -35,7 +44,10 @@ namespace NetGore.EditorTools
             if (string.IsNullOrEmpty(txt))
                 return false;
 
-            return File.Exists(ContentPaths.Build.Grhs.Join(txt) + "." + ContentPaths.CompiledContentSuffix);
+            if (!File.Exists(ContentPaths.Build.Grhs.Join(txt) + "." + ContentPaths.CompiledContentSuffix))
+                return false;
+                
+            return base.IsValid();
         }
     }
 }

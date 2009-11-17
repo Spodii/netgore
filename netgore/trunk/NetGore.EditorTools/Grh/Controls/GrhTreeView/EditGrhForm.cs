@@ -173,8 +173,6 @@ namespace NetGore.EditorTools
             }
             if (txtCategory.Text.Length > 0)
                 txtCategory.Text = txtCategory.Text.Replace('\\', '/');
-            if (txtTexture.Text.Length > 0)
-                txtTexture.Text = txtTexture.Text.Replace('\\', '/');
 
             // Set the information
             if (radioStationary.Checked)
@@ -364,7 +362,7 @@ namespace NetGore.EditorTools
 
         void ShowGrhInfo()
         {
-            txtCategory.Text = _gd.Category;
+            txtCategory.ChangeTextToDefault(_gd.Category);
             txtTitle.Text = _gd.Title;
             txtIndex.Text = _gd.GrhIndex.ToString();
             chkAutoSize.Checked = _gd.AutomaticSize;

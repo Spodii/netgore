@@ -64,6 +64,9 @@
     <Compile Include="CreateWallEntity\CreateWallEntityFromReaderHandler.cs" />
     <Compile Include="Grh\AutomaticGrhData\AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
+    <Compile Include="Grh\Controls\GrhDataCategoryTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Grh\Controls\GrhDataTextureTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -1,16 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using NetGore.Graphics;
 using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
+    /// <summary>
+    /// Contains different AutoComplete sources.
+    /// </summary>
     public static class AutoCompleteSources
     {
+        /// <summary>
+        /// The default <see cref="AutoCompleteMode"/> to use for controls.
+        /// </summary>
+        public const AutoCompleteMode DefaultAutoCompleteMode = AutoCompleteMode.Suggest;
+
+        /// <summary>
+        /// The maximum rate at which the <see cref="_categories"/> may be updated. Any attempt to update
+        /// more frequenlty than this rate will be ignored. This is mostly to prevent from massive stalls
+        /// when adding/removing tons of <see cref="GrhData"/>s at once.
+        /// </summary>
+        const int _categoriesMaxUpdateRate = 500;
+
+        static readonly AutoCompleteStringCollection _categories;
         static readonly AutoCompleteStringCollection _textures;
+
+        /// <summary>
+        /// The tick count at which the <see cref="_categories"/> was last updated.
+        /// </summary>
+        static int _categoriesLastUpdateTime = int.MinValue;
 
         /// <summary>
         /// Initializes the <see cref="AutoCompleteSources"/> class.
@@ -19,12 +39,23 @@ namespace NetGore.EditorTools
         {
             // Textures source
             _textures = new AutoCompleteStringCollection();
-            var files = Directory.GetFiles(ContentPaths.Build.Grhs, "*." + ContentPaths.CompiledContentSuffix, SearchOption.AllDirectories);
-            
-            int start = ContentPaths.Build.Grhs.ToString().Length + 1;
-            int trimEnd = ContentPaths.CompiledContentSuffix.Length + 1;
-            files = files.Select(x => x.Substring(start, x.Length - start - trimEnd).Replace(Path.DirectorySeparatorChar, '/')).ToArray();
-            _textures.AddRange(files);
+            PrepareTextures();
+
+            // Categories source
+            _categories = new AutoCompleteStringCollection();
+            PrepareCategories();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="AutoCompleteStringCollection"/> for the <see cref="GrhData"/> categories.
+        /// </summary>
+        public static AutoCompleteStringCollection Categories
+        {
+            get
+            {
+                UpdateCategories();
+                return _categories;
+            }
         }
 
         /// <summary>
@@ -32,10 +63,72 @@ namespace NetGore.EditorTools
         /// </summary>
         public static AutoCompleteStringCollection Textures
         {
-            get
-            {
-                return _textures;
-            }
+            get { return _textures; }
+        }
+
+        /// <summary>
+        /// Forces the <see cref="Categories"/> collection to be updated.
+        /// </summary>
+        public static void ForceUpdateCategories()
+        {
+            UpdateCategories();
+        }
+
+        /// <summary>
+        /// Sets up the <see cref="_categories"/> collection.
+        /// </summary>
+        static void PrepareCategories()
+        {
+            // Force update categorization when any GrhInfos are added or removed
+            GrhInfo.OnAdd += delegate { UpdateCategories(); };
+            GrhInfo.OnRemove += delegate { UpdateCategories(); };
+
+            // Auto-update every 30 seconds so any unexpected synchronization problems self-resolve eventually
+            // without any noticeable hits to performance
+            Timer t = new Timer { Interval = 30000 };
+            t.Tick += delegate { UpdateCategories(); };
+
+            // Perform initial population
+            UpdateCategories();
+        }
+
+        /// <summary>
+        /// Sets up the <see cref="_textures"/> collection.
+        /// </summary>
+        static void PrepareTextures()
+        {
+            // Get all the content files
+            var files = Directory.GetFiles(ContentPaths.Build.Grhs, "*." + ContentPaths.CompiledContentSuffix,
+                                           SearchOption.AllDirectories);
+
+            // Cache the amount we need to remove from the start and end of each string
+            int start = ContentPaths.Build.Grhs.ToString().Length + 1;
+            int trimEnd = ContentPaths.CompiledContentSuffix.Length + 1;
+
+            // Remove from the start so we only have the relative path, and remove the suffix from the end
+            files =
+                files.Select(x => x.Substring(start, x.Length - start - trimEnd).Replace(Path.DirectorySeparatorChar, '/')).
+                    ToArray();
+
+            // Add
+            _textures.AddRange(files);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="_categories"/> collection.
+        /// </summary>
+        static void UpdateCategories()
+        {
+            if (_categoriesLastUpdateTime + _categoriesMaxUpdateRate > Environment.TickCount)
+                return;
+
+            _categoriesLastUpdateTime = Environment.TickCount;
+
+            // Grab the array first before clearing just so there is less time when the collection is empty
+            var items = GrhInfo.GetCategories().ToArray();
+
+            _categories.Clear();
+            _categories.AddRange(items);
         }
     }
 }

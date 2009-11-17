@@ -38,7 +38,7 @@ namespace NetGore.EditorTools
             this.label10 = new System.Windows.Forms.Label();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtCategory = new System.Windows.Forms.TextBox();
+            this.txtCategory = new GrhDataCategoryTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.radioStationary = new System.Windows.Forms.RadioButton();
             this.radioAnimated = new System.Windows.Forms.RadioButton();
@@ -526,7 +526,7 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.GroupBox gbCategorization;
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtCategory;
+        private GrhDataCategoryTextBox txtCategory;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton radioStationary;
         private System.Windows.Forms.RadioButton radioAnimated;
