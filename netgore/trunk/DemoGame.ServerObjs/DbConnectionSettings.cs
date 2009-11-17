@@ -1,4 +1,5 @@
 using System.Linq;
+using System;
 using MySql.Data.MySqlClient;
 using NetGore;
 
@@ -13,6 +14,7 @@ namespace DemoGame.Server
         readonly string _sqlHost;
         readonly string _sqlPass;
         readonly string _sqlUser;
+        readonly string _sqlPort;
 
         /// <summary>
         /// ServerSettings constructor.
@@ -24,6 +26,11 @@ namespace DemoGame.Server
             _sqlHost = dic["MySql.Host"];
             _sqlDatabase = dic["MySql.Database"];
 
+            if (dic.ContainsKey("MySql.Port"))
+                _sqlPort = dic["MySql.Port"];
+            else
+                _sqlPort = "3306";
+            
             if (dic.ContainsKey("MySql.Pass"))
                 _sqlPass = dic["MySql.Pass"];
             else
@@ -47,6 +54,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the Sql Host Port number, convert to UInt
+        /// </summary>
+        public uint SqlPort
+        {
+            get { return System.Convert.ToUInt32(_sqlPort); }
+        }
+        
+        /// <summary>
         /// Gets the Sql connection password.
         /// </summary>
         public string SqlPass
@@ -69,7 +84,7 @@ namespace DemoGame.Server
         public string SqlConnectionString()
         {
             MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
-            { Database = SqlDatabase, UserID = SqlUser, Password = SqlPass, Server = SqlHost, IgnorePrepare = false };
+            { Database = SqlDatabase, UserID = SqlUser, Password = SqlPass, Server = SqlHost, Port = SqlPort, IgnorePrepare = false };
             return sb.ToString();
         }
     }
