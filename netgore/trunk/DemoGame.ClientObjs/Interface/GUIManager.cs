@@ -72,7 +72,7 @@ namespace DemoGame.Client
         public void LoadSettings(string skin)
         {
             var root = string.Format("GUI{0}" + skin + "{0}Controls{0}", SpriteCategorization.Delimiter);
-  
+
             // TODO: Revert to "Default" skin if something isn't found (use Skin.GetSkinGrh or whatever)
 
             ControlBorder cbForm = CreateBorder(GrhInfo.GetDatas(root + "Form"));

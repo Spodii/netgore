@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -17,6 +16,7 @@ namespace DemoGame.Server
     public abstract class AIBase : IAI, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly Vector2 _halfScreenSize = GameData.ScreenSize / 2;
         static readonly Random _rand = new Random();
 
         readonly Character _actor;
@@ -56,8 +56,8 @@ namespace DemoGame.Server
             var visibleArea = GetVisibleMapArea();
 
             // Get the characters that we are even hostile towards and are in view
-            var possibleChars = Actor.Map.EntityCollection.GetEntities<Character>(visibleArea, 
-                x => Actor.Alliance.IsHostile(x.Alliance));
+            var possibleChars = Actor.Map.EntityCollection.GetEntities<Character>(visibleArea,
+                                                                                  x => Actor.Alliance.IsHostile(x.Alliance));
 
             // If no matches, return null
             if (possibleChars.Count() == 0)
@@ -77,6 +77,19 @@ namespace DemoGame.Server
         protected Rectangle GetMeleeRect()
         {
             return BodyInfo.GetHitRect(Actor, Actor.BodyInfo.PunchRect);
+        }
+
+        protected Rectangle GetVisibleMapArea()
+        {
+            var center = Actor.Center;
+            var min = center - _halfScreenSize;
+
+            int x = (int)Math.Max(0, min.X);
+            int y = (int)Math.Max(0, min.Y);
+            int w = (int)Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
+            int h = (int)Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
+
+            return new Rectangle(x, y, w, h);
         }
 
         /// <summary>
@@ -101,21 +114,6 @@ namespace DemoGame.Server
             dist = dist.Abs();
 
             return dist.IsLessThan(_halfScreenSize);
-        }
-
-        static readonly Vector2 _halfScreenSize = GameData.ScreenSize / 2;
-
-        protected Rectangle GetVisibleMapArea()
-        {
-            var center = Actor.Center;
-            var min = center - _halfScreenSize;
-
-            int x = (int)Math.Max(0, min.X);
-            int y = (int)Math.Max(0, min.Y);
-            int w = (int)Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
-            int h = (int)Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
-
-            return new Rectangle(x, y, w, h);
         }
 
         /// <summary>
@@ -158,6 +156,8 @@ namespace DemoGame.Server
 
         #endregion
 
+        #region IGetTime Members
+
         /// <summary>
         /// Gets the current time in milliseconds.
         /// </summary>
@@ -169,5 +169,7 @@ namespace DemoGame.Server
 
             return 0;
         }
+
+        #endregion
     }
 }

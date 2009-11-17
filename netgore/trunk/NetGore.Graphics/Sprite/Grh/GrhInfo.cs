@@ -51,15 +51,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the <see cref="GrhData"/> categories.
-        /// </summary>
-        /// <returns>An IEnumerable of all the <see cref="GrhData"/> categories.</returns>
-        public static IEnumerable<SpriteCategory> GetCategories()
-        {
-            return _catDic.Keys;
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of all of the GrhDatas.
         /// </summary>
         public static IEnumerable<GrhData> GrhDatas
@@ -227,6 +218,15 @@ namespace NetGore.Graphics
                 nonanimated.Where(
                     x => string.IsNullOrEmpty(x.TextureName) || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName) + ".xnb"));
             return invalidTexture;
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the <see cref="GrhData"/> categories.
+        /// </summary>
+        /// <returns>An IEnumerable of all the <see cref="GrhData"/> categories.</returns>
+        public static IEnumerable<SpriteCategory> GetCategories()
+        {
+            return _catDic.Keys;
         }
 
         /// <summary>

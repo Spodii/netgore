@@ -12,47 +12,6 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class SettingsManagerTests
     {
-        class InterfaceTester : IRestorableSettings
-        {
-            public string A;
-            public int B;
-            public float C;
-
-            static bool HaveSameValues(InterfaceTester l, InterfaceTester r)
-            {
-                return (l.A == r.A) && (l.B == r.B) && (l.C == r.C);
-            }
-
-            public bool HaveSameValues(InterfaceTester other)
-            {
-                return HaveSameValues(this, other);
-            }
-
-            #region IRestorableSettings Members
-
-            /// <summary>
-            /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
-            /// </summary>
-            /// <param name="items">NodeItems containing the values to restore.</param>
-            public void Load(IDictionary<string, string> items)
-            {
-                A = items["A"];
-                B = Parser.Invariant.ParseInt(items["B"]);
-                C = Parser.Invariant.ParseFloat(items["C"]);
-            }
-
-            /// <summary>
-            /// Returns the key and value pairs needed to restore the settings.
-            /// </summary>
-            /// <returns>The key and value pairs needed to restore the settings.</returns>
-            public IEnumerable<NodeItem> Save()
-            {
-                return new NodeItem[] { new NodeItem("A", A), new NodeItem("B", B), new NodeItem("C", C) };
-            }
-
-            #endregion
-        }
-
         static readonly Random r = new Random();
 
         [Test]
@@ -479,6 +438,47 @@ namespace NetGore.Tests.IO
                 if (File.Exists(filePath))
                     File.Delete(filePath);
             }
+        }
+
+        class InterfaceTester : IRestorableSettings
+        {
+            public string A;
+            public int B;
+            public float C;
+
+            public bool HaveSameValues(InterfaceTester other)
+            {
+                return HaveSameValues(this, other);
+            }
+
+            static bool HaveSameValues(InterfaceTester l, InterfaceTester r)
+            {
+                return (l.A == r.A) && (l.B == r.B) && (l.C == r.C);
+            }
+
+            #region IRestorableSettings Members
+
+            /// <summary>
+            /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
+            /// </summary>
+            /// <param name="items">NodeItems containing the values to restore.</param>
+            public void Load(IDictionary<string, string> items)
+            {
+                A = items["A"];
+                B = Parser.Invariant.ParseInt(items["B"]);
+                C = Parser.Invariant.ParseFloat(items["C"]);
+            }
+
+            /// <summary>
+            /// Returns the key and value pairs needed to restore the settings.
+            /// </summary>
+            /// <returns>The key and value pairs needed to restore the settings.</returns>
+            public IEnumerable<NodeItem> Save()
+            {
+                return new NodeItem[] { new NodeItem("A", A), new NodeItem("B", B), new NodeItem("C", C) };
+            }
+
+            #endregion
         }
     }
 }

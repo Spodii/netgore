@@ -348,17 +348,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return GrhData.Categorization + " [" + GrhData.GrhIndex + "]";
-        }
-
-        /// <summary>
         /// Sets the Grh to a new index.
         /// </summary>
         /// <param name="grhIndex">New Grh index to use.</param>
@@ -376,6 +365,17 @@ namespace NetGore.Graphics
                 return;
             }
             SetGrh(grhData, anim, currentTime);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return GrhData.Categorization + " [" + GrhData.GrhIndex + "]";
         }
 
         #region ISprite Members

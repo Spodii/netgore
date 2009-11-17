@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
 using NetGore.IO;
@@ -24,20 +21,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the sanitized text for this <see cref="AutoValidateTextBox"/>. This should always be used when
-        /// you want to make use of the contents of the <see cref="AutoValidateTextBox"/>. The sanitized
-        /// text is only guaranteed to be valid if IsValid is true.
-        /// </summary>
-        /// <param name="text">The text to sanitize.</param>
-        /// <returns>
-        /// The sanitized text for this <see cref="AutoValidateTextBox"/>.
-        /// </returns>
-        public override string GetSanitizedText(string text)
-        {
-            return SpriteCategory.Sanitize(text);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, checks if the <see cref="AutoValidateTextBox"/> is in a valid
         /// state and contains valid text.
         /// </summary>
@@ -47,7 +30,7 @@ namespace NetGore.EditorTools
         {
             if (string.IsNullOrEmpty(Text))
                 return false;
-            
+
             // Ends with delimiter
             if (Text.EndsWith(SpriteCategorization.Delimiter))
                 return false;
@@ -61,6 +44,20 @@ namespace NetGore.EditorTools
                 return false;
 
             return base.GetIsValid(text);
+        }
+
+        /// <summary>
+        /// Gets the sanitized text for this <see cref="AutoValidateTextBox"/>. This should always be used when
+        /// you want to make use of the contents of the <see cref="AutoValidateTextBox"/>. The sanitized
+        /// text is only guaranteed to be valid if IsValid is true.
+        /// </summary>
+        /// <param name="text">The text to sanitize.</param>
+        /// <returns>
+        /// The sanitized text for this <see cref="AutoValidateTextBox"/>.
+        /// </returns>
+        public override string GetSanitizedText(string text)
+        {
+            return SpriteCategory.Sanitize(text);
         }
     }
 }

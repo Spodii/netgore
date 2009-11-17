@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 
 namespace NetGore
 {
@@ -46,23 +44,17 @@ namespace NetGore
             /// <summary>
             /// Gets the amount of system memory in use by this process in bytes.
             /// </summary>
-            public static int ProcessUsageMB
+            public static long ProcessUsageBytes
             {
-                get
-                {
-                    return (int)(ProcessUsageBytes / 1024 / 1024);
-                }
+                get { return Process.GetCurrentProcess().PrivateMemorySize64; }
             }
 
             /// <summary>
             /// Gets the amount of system memory in use by this process in bytes.
             /// </summary>
-            public static long ProcessUsageBytes
+            public static int ProcessUsageMB
             {
-                get
-                {
-                    return Process.GetCurrentProcess().PrivateMemorySize64;
-                }
+                get { return (int)(ProcessUsageBytes / 1024 / 1024); }
             }
         }
     }

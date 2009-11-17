@@ -2,7 +2,6 @@ using System.Linq;
 using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
-using NetGore.Tests;
 
 namespace NetGore.Tests.Db.MySql
 {

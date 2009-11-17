@@ -458,18 +458,6 @@ namespace NetGore.Graphics
             }
 
             /// <summary>
-            /// Draws a single item the atlas through a <see cref="SpriteBatch"/>.
-            /// </summary>
-            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-            /// <param name="texture">The source texture.</param>
-            /// <param name="dest">The drawing destination on the atlas.</param>
-            /// <param name="src">The source rectangle to draw from the <paramref name="texture"/>.</param>
-            static void DrawToAtlas(SpriteBatch spriteBatch, Texture2D texture, Vector2 dest, Rectangle src)
-            {
-                spriteBatch.Draw(texture, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            }
-
-            /// <summary>
             /// Draws the <see cref="Texture2D"/> for this atlas.
             /// </summary>
             /// <param name="device">Device to use to create the atlas.</param>
@@ -518,7 +506,7 @@ namespace NetGore.Graphics
                             Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
                             Rectangle src = srcRect;
                             DrawToAtlas(sb, tex, dest, src);
-  
+
                             // Create the borders if padded
                             if (padding == 0)
                                 continue;
@@ -586,6 +574,18 @@ namespace NetGore.Graphics
 
                 ret.Name = "Atlas Texture";
                 return ret;
+            }
+
+            /// <summary>
+            /// Draws a single item the atlas through a <see cref="SpriteBatch"/>.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+            /// <param name="texture">The source texture.</param>
+            /// <param name="dest">The drawing destination on the atlas.</param>
+            /// <param name="src">The source rectangle to draw from the <paramref name="texture"/>.</param>
+            static void DrawToAtlas(SpriteBatch spriteBatch, Texture2D texture, Vector2 dest, Rectangle src)
+            {
+                spriteBatch.Draw(texture, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
 
             /// <summary>

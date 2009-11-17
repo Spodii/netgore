@@ -31,6 +31,7 @@ namespace NetGore.Graphics
 
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
+        SpriteCategorization _categorization;
         ContentManager _cm;
         ImmutableArray<GrhData> _frames;
         GrhIndex _grhIndex;
@@ -39,7 +40,6 @@ namespace NetGore.Graphics
         float _speed;
         Texture2D _texture;
         string _textureName;
-        SpriteCategorization _categorization;
 
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
@@ -100,6 +100,14 @@ namespace NetGore.Graphics
                         _sourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SpriteCategorization"/> for this <see cref="GrhData"/>.
+        /// </summary>
+        public SpriteCategorization Categorization
+        {
+            get { return _categorization; }
         }
 
         /// <summary>
@@ -192,11 +200,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="SpriteCategorization"/> for this <see cref="GrhData"/>.
-        /// </summary>
-        public SpriteCategorization Categorization { get { return _categorization; } }
-
-        /// <summary>
         /// Gets the pixel width for a single frame GrhData.
         /// </summary>
         public int Width
@@ -267,7 +270,8 @@ namespace NetGore.Graphics
         public GrhData Duplicate(SpriteCategorization newCategorization)
         {
             GrhIndex index = GrhInfo.NextFreeIndex();
-            Debug.Assert(GrhInfo.GetData(index) == null, "Slot to use is already in use! How the hell did this happen!? GrhInfo.NextFreeIndex() must be broken.");
+            Debug.Assert(GrhInfo.GetData(index) == null,
+                         "Slot to use is already in use! How the hell did this happen!? GrhInfo.NextFreeIndex() must be broken.");
 
             if (GrhInfo.GetData(newCategorization) != null)
                 throw new ArgumentException("Category already in use.", "newCategorization");

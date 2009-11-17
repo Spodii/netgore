@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.IO
 {
     /// <summary>
     /// An immutable string that represents the name, or virtual path, to a content asset.
     /// </summary>
-    public sealed class ContentAssetName 
+    public sealed class ContentAssetName
     {
-        readonly string _assetName;
-
         /// <summary>
         /// The string used to separate the directories.
         /// </summary>
         public const string PathSeparator = "/";
+
+        readonly string _assetName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentAssetName"/> class.
@@ -28,15 +26,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets the relative file path and name for the content asset. This must still be prefixed by a path created
-        /// with the <see cref="ContentPaths"/> to generate an absolute path.
+        /// Checks if the content with the given name exists.
         /// </summary>
-        /// <returns>The relative file path and name for the content asset..</returns>
-        public string GetFileName()
+        /// <param name="root">The root content path. Get this value from <see cref="ContentPaths"/>.</param>
+        /// <returns>True if the content exists in the given <paramref name="root"/> path; otherwise false.</returns>
+        public bool ContentExists(PathString root)
         {
-            // NOTE: !! Create unit tests
-
-            return _assetName + "." + ContentPaths.CompiledContentSuffix;
+            // TODO: !! Test to see if this concats properly
+            var filePath = root.Join(GetFileName());
+            return File.Exists(filePath);
         }
 
         /// <summary>
@@ -50,7 +48,8 @@ namespace NetGore.IO
             // NOTE: !! Create unit tests
 
             int start = contentRoot.Length;
-            if (!contentRoot.EndsWith("/") && !contentRoot.EndsWith("\\") && !contentRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            if (!contentRoot.EndsWith("/") && !contentRoot.EndsWith("\\") &&
+                !contentRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 ++start;
 
             int len = contentRoot.Length - start;
@@ -62,15 +61,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Checks if the content with the given name exists.
+        /// Gets the relative file path and name for the content asset. This must still be prefixed by a path created
+        /// with the <see cref="ContentPaths"/> to generate an absolute path.
         /// </summary>
-        /// <param name="root">The root content path. Get this value from <see cref="ContentPaths"/>.</param>
-        /// <returns>True if the content exists in the given <paramref name="root"/> path; otherwise false.</returns>
-        public bool ContentExists(PathString root)
+        /// <returns>The relative file path and name for the content asset..</returns>
+        public string GetFileName()
         {
-            // TODO: !! Test to see if this concats properly
-            var filePath = root.Join(GetFileName());
-            return File.Exists(filePath);
+            // NOTE: !! Create unit tests
+
+            return _assetName + "." + ContentPaths.CompiledContentSuffix;
         }
 
         /// <summary>

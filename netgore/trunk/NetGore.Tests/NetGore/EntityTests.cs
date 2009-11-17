@@ -8,14 +8,6 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class EntityTests
     {
-        class TestEntity : Entity
-        {
-            public TestEntity(Vector2 pos, Vector2 size)
-                : base(pos, size)
-            {
-            }
-        }
-
         [Test]
         public void HitTestTest()
         {
@@ -97,6 +89,13 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(10, e.Position.Y);
             Assert.AreEqual(10, e.Size.X);
             Assert.AreEqual(10, e.Size.Y);
+        }
+
+        class TestEntity : Entity
+        {
+            public TestEntity(Vector2 pos, Vector2 size) : base(pos, size)
+            {
+            }
         }
     }
 }
