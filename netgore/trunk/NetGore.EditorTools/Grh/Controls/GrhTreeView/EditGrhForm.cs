@@ -171,8 +171,6 @@ namespace NetGore.EditorTools
                 MessageBox.Show("Invalid index specified");
                 return;
             }
-            if (txtCategory.Text.Length > 0)
-                txtCategory.Text = txtCategory.Text.Replace('\\', '/');
 
             // Set the information
             if (radioStationary.Checked)
@@ -183,7 +181,7 @@ namespace NetGore.EditorTools
                 int y = Parser.Current.ParseInt(txtY.Text);
                 int w = Parser.Current.ParseInt(txtW.Text);
                 int h = Parser.Current.ParseInt(txtH.Text);
-                string textureName = txtTexture.Text;
+                string textureName = txtTexture.GetSanitizedText();
                 bool autoSize = chkAutoSize.Checked;
 
                 // Validate the texture
@@ -197,14 +195,14 @@ namespace NetGore.EditorTools
                     return;
                 }
 
-                _gd.Load(cm, newIndex, textureName, x, y, w, h, txtCategory.Text, txtTitle.Text);
+                _gd.Load(cm, newIndex, textureName, x, y, w, h, txtCategory.GetSanitizedText(), txtTitle.Text);
                 _gd.AutomaticSize = autoSize;
             }
             else
             {
                 // Animated
                 float speed = Parser.Current.ParseFloat(txtSpeed.Text);
-                _gd.Load(newIndex, frames, 1f / speed, txtCategory.Text, txtTitle.Text);
+                _gd.Load(newIndex, frames, 1f / speed, txtCategory.GetSanitizedText(), txtTitle.Text);
             }
 
             // Set the MapGrhWalls
@@ -362,7 +360,7 @@ namespace NetGore.EditorTools
 
         void ShowGrhInfo()
         {
-            txtCategory.ChangeTextToDefault(_gd.Category);
+            txtCategory.ChangeTextToDefault(_gd.Category, true);
             txtTitle.Text = _gd.Title;
             txtIndex.Text = _gd.GrhIndex.ToString();
             chkAutoSize.Checked = _gd.AutomaticSize;
@@ -377,7 +375,7 @@ namespace NetGore.EditorTools
                 txtY.Text = r.Y.ToString();
                 txtW.Text = r.Width.ToString();
                 txtH.Text = r.Height.ToString();
-                txtTexture.Text = _gd.TextureName;
+                txtTexture.ChangeTextToDefault(_gd.TextureName, true);
             }
             else
             {
@@ -402,14 +400,6 @@ namespace NetGore.EditorTools
                     lstWalls.AddItemAndReselect(wall);
                 }
             }
-        }
-
-        void txtCategory_TextChanged(object sender, EventArgs e)
-        {
-            if (txtCategory.Text == _gd.Category)
-                txtCategory.BackColor = EditorColors.Normal;
-            else
-                txtCategory.BackColor = EditorColors.Changed;
         }
 
         void txtH_TextChanged(object sender, EventArgs e)
@@ -567,7 +557,7 @@ namespace NetGore.EditorTools
 
         bool ValidateCategorization(bool showMessage)
         {
-            GrhData gd = GrhInfo.GetData(txtCategory.Text, txtTitle.Text);
+            GrhData gd = GrhInfo.GetData(txtCategory.GetSanitizedText(), txtTitle.Text);
             if (gd != null && gd != _gd)
             {
                 if (showMessage)

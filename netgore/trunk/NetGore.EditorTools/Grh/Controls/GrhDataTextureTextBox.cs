@@ -33,21 +33,33 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the sanitized text for this <see cref="AutoValidateTextBox"/>. This should always be used when
+        /// you want to make use of the contents of the <see cref="AutoValidateTextBox"/>. The sanitized
+        /// text is only guaranteed to be valid if IsValid is true.
+        /// </summary>
+        /// <param name="text">The text to sanitize.</param>
+        /// <returns>
+        /// The sanitized text for this <see cref="AutoValidateTextBox"/>.
+        /// </returns>
+        public override string GetSanitizedText(string text)
+        {
+            return ContentAssetName.Sanitize(text);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, checks if the <see cref="AutoValidateTextBox"/> is in a valid
         /// state and contains valid text.
         /// </summary>
         /// <returns>True if valid; otherwise false.</returns>
-        protected override bool IsValid()
+        protected override bool GetIsValid(string text)
         {
-            var txt = Text;
-
-            if (string.IsNullOrEmpty(txt))
+            if (string.IsNullOrEmpty(text))
                 return false;
 
-            if (!File.Exists(ContentPaths.Build.Grhs.Join(txt) + "." + ContentPaths.CompiledContentSuffix))
+            if (!File.Exists(ContentPaths.Build.Grhs.Join(text) + "." + ContentPaths.CompiledContentSuffix))
                 return false;
                 
-            return base.IsValid();
+            return base.GetIsValid(text);
         }
     }
 }

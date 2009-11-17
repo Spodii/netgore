@@ -74,7 +74,6 @@
     <Compile Include="EntityInterpolator.cs" />
     <Compile Include="Sprite\AnimType.cs" />
     <Compile Include="Sprite\Grh\GrhDataChangeCategorizationHandler.cs" />
-    <Compile Include="Sprite\Grh\GrhDataCategorization.cs" />
     <Compile Include="Sprite\Grh\GrhDataEventHandler.cs" />
     <Compile Include="MapBorderDrawer.cs" />
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />

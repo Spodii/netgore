@@ -1,13 +1,11 @@
 ﻿using System.Linq;
 
-// TODO: !! Replace all GrhData categorization crap with this class
-
-namespace NetGore.Graphics
+namespace NetGore.IO
 {
     /// <summary>
-    /// Contains the categorization information for a <see cref="GrhData"/>.
+    /// Contains the categorization information for a sprite.
     /// </summary>
-    public class GrhDataCategorization
+    public class SpriteCategorization
     {
         /// <summary>
         /// The delimiter used to separate category branches, and the title from the category.
