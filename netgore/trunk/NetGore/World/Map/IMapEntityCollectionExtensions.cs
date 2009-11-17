@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 
-namespace DemoGame
+namespace NetGore
 {
     /// <summary>
     /// Extension methods for the <see cref="IMapEntityCollection"/> interface.

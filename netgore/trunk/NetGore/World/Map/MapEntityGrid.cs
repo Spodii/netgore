@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
-namespace DemoGame
+namespace NetGore
 {
     /// <summary>
     /// Provides an optimized tracking grid that allows for faster look-up of Entities on a map based off of

@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
-namespace DemoGame
+namespace NetGore
 {
     /// <summary>
     /// Interface for an object that supports searching entities on a map.
