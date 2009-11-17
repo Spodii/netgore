@@ -192,26 +192,26 @@ namespace NetGore.Graphics
             // Invalid texture
             if (Texture == null)
             {
-                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - GrhData returning null texture for `{3}`!";
+                const string errmsg = "Failed to render Grh `{0}` - GrhData returning null texture for `{3}`!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex, GrhData.TextureName);
+                    log.WarnFormat(errmsg, this, GrhData.TextureName);
                 return false;
             }
 
             // Invalid SpriteBatch
             if (spriteBatch == null)
             {
-                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is null!";
+                const string errmsg = "Failed to render Grh `{0}` - SpriteBatch is null!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
+                    log.WarnFormat(errmsg, this, GrhData.GrhIndex);
                 return false;
             }
 
             if (spriteBatch.IsDisposed)
             {
-                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is disposed!";
+                const string errmsg = "Failed to render Grh `{0}` - SpriteBatch is disposed!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
+                    log.WarnFormat(errmsg, this, GrhData.GrhIndex);
                 return false;
             }
 
@@ -345,6 +345,17 @@ namespace NetGore.Graphics
         public void SetGrh(GrhData grhData)
         {
             SetGrh(grhData, AnimType.None, 0);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return GrhData.Categorization + " [" + GrhData.GrhIndex + "]";
         }
 
         /// <summary>

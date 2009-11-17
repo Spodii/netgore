@@ -31,7 +31,6 @@ namespace NetGore.Graphics
 
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
-        string _category;
         ContentManager _cm;
         ImmutableArray<GrhData> _frames;
         GrhIndex _grhIndex;
@@ -40,10 +39,10 @@ namespace NetGore.Graphics
         float _speed;
         Texture2D _texture;
         string _textureName;
-        string _title;
+        SpriteCategorization _categorization;
 
         /// <summary>
-        /// Notifies listeners when either the <see cref="GrhData"/>'s categorization (category or title) has changed.
+        /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
         /// </summary>
         public event GrhDataChangeCategorizationHandler OnChangeCategorization;
 
@@ -101,16 +100,6 @@ namespace NetGore.Graphics
                         _sourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the category of the GrhData (delimited by a period). If the category has not yet
-        /// been set (Read() has not been called on this GrhData), this value will be null. Other
-        /// than that, this value will never be null.
-        /// </summary>
-        public string Category
-        {
-            get { return _category; }
         }
 
         /// <summary>
@@ -203,13 +192,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the title of the GrhData. If the category has not yet been set (Read() has not been 
-        /// called on this GrhData), this value will be null. Other than that, this value will never be null.
+        /// Gets the <see cref="SpriteCategorization"/> for this <see cref="GrhData"/>.
         /// </summary>
-        public string Title
-        {
-            get { return _title; }
-        }
+        public SpriteCategorization Categorization { get { return _categorization; } }
 
         /// <summary>
         /// Gets the pixel width for a single frame GrhData.
@@ -274,22 +259,22 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates a duplicate (deep copy) of the GrhData, using the specified GrhIndex. Either one or both the
-        /// category and name must be different from the original GrhData, since duplicate names and categories
-        /// will raise an exception.
+        /// Creates a duplicate of the <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="newCategory">Category for the duplicate GrhData</param>
-        /// <param name="newTitle">Title for the duplicate GrhData</param>
-        /// <returns>Deep copy of the GrhData</returns>
-        public GrhData Duplicate(string newCategory, string newTitle)
+        /// <param name="newCategorization">Categorization for the duplicated GrhData. Must be unique.</param>
+        /// <returns>Deep copy of the <see cref="GrhData"/> with the new categorization and its own
+        /// unique <see cref="GrhIndex"/>.</returns>
+        public GrhData Duplicate(SpriteCategorization newCategorization)
         {
             GrhIndex index = GrhInfo.NextFreeIndex();
+            Debug.Assert(GrhInfo.GetData(index) == null, "Slot to use is already in use! How the hell did this happen!? GrhInfo.NextFreeIndex() must be broken.");
 
-            Debug.Assert(GrhInfo.GetData(index) == null, "Slot to use is already in use!");
+            if (GrhInfo.GetData(newCategorization) != null)
+                throw new ArgumentException("Category already in use.", "newCategorization");
 
             GrhData gd = new GrhData
             {
-                _category = newCategory,
+                _categorization = newCategorization,
                 _cm = _cm,
                 _frames = _frames,
                 _grhIndex = index,
@@ -297,7 +282,6 @@ namespace NetGore.Graphics
                 _speed = _speed,
                 _texture = _texture,
                 _textureName = _textureName,
-                _title = newTitle,
                 _isUsingAtlas = _isUsingAtlas,
                 _atlasSourceRect = _atlasSourceRect
             };
@@ -316,19 +300,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the data for a single GrhData (no animation)
+        /// Sets the data for a single <see cref="GrhData"/> (no animation).
         /// </summary>
-        /// <param name="cm">ContentManager used by this texture</param>
-        /// <param name="grhIndex">Index of the Grh</param>
-        /// <param name="textureName">Path and name of the texture relative to the Content/Grh/ folder</param>
-        /// <param name="x">Pixel x coordinate of the source texture</param>
-        /// <param name="y">Pixel y coordinate of the source texture</param>
-        /// <param name="width">Pixel width of the source texture</param>
-        /// <param name="height">Pixel height of the source texture</param>
-        /// <param name="category">Period-delimited category</param>
-        /// <param name="title">Title of the GrhData. Must be unique for the supplied category.</param>
+        /// <param name="cm">ContentManager used by this texture.</param>
+        /// <param name="grhIndex">Index of the <see cref="Grh"/>.</param>
+        /// <param name="textureName">Name of the texture asset.</param>
+        /// <param name="x">Pixel x coordinate of the source texture.</param>
+        /// <param name="y">Pixel y coordinate of the source texture.</param>
+        /// <param name="width">Pixel width of the source texture.</param>
+        /// <param name="height">Pixel height of the source texture.</param>
+        /// <param name="categorization">Unique categorization.</param>
         public void Load(ContentManager cm, GrhIndex grhIndex, string textureName, int x, int y, int width, int height,
-                         string category, string title)
+                         SpriteCategorization categorization)
         {
             if (cm == null)
             {
@@ -337,6 +320,9 @@ namespace NetGore.Graphics
                     log.Fatal("Parameter `cm`, ContentManager, is null.");
                 throw new ArgumentNullException("cm");
             }
+
+            if (GrhInfo.GetData(categorization) != null)
+                throw new ArgumentException("Category already in use.", "categorization");
 
             // We only have one frame, this one
             var frames = new GrhData[1];
@@ -350,7 +336,7 @@ namespace NetGore.Graphics
             _sourceRect = new Rectangle(x, y, width, height);
 
             // Set the categorization
-            SetCategorization(category, title);
+            SetCategorization(categorization);
         }
 
         /// <summary>
@@ -359,11 +345,12 @@ namespace NetGore.Graphics
         /// <param name="grhIndex">Index of the <see cref="GrhData"/>.</param>
         /// <param name="frameIndices">The indices of the <see cref="GrhData"/> frames to build the animation from.</param>
         /// <param name="speed">The speed of the animation.</param>
-        /// <param name="category">The <see cref="GrhData"/> category.</param>
-        /// <param name="title">Title of the <see cref="GrhData"/>. Must be unique for the supplied
-        /// <paramref name="category"/>.</param>
-        public void Load(GrhIndex grhIndex, GrhIndex[] frameIndices, float speed, string category, string title)
+        /// <param name="categorization">The unique categorization..</param>
+        public void Load(GrhIndex grhIndex, GrhIndex[] frameIndices, float speed, SpriteCategorization categorization)
         {
+            if (GrhInfo.GetData(categorization) != null)
+                throw new ArgumentException("Category already in use.", "categorization");
+
             // Create the frames
             var frames = new GrhData[frameIndices.Length];
             for (int i = 0; i < frameIndices.Length; i++)
@@ -390,7 +377,7 @@ namespace NetGore.Graphics
             _textureName = null;
 
             // Set the categorization
-            SetCategorization(category, title);
+            SetCategorization(categorization);
         }
 
         /// <summary>
@@ -406,6 +393,7 @@ namespace NetGore.Graphics
             IValueReader categoryNodeReader = r.ReadNode(_categoryNodeName);
             string categoryName = categoryNodeReader.ReadString(_categoryNameValueKey);
             string categoryTitle = categoryNodeReader.ReadString(_categoryTitleValueKey);
+            var categorization = new SpriteCategorization(categoryName, categoryTitle);
 
             if (frames.Length <= 1)
             {
@@ -416,7 +404,7 @@ namespace NetGore.Graphics
                 string textureName = textureNodeReader.ReadString(_textureNameValueKey);
                 Rectangle source = textureNodeReader.ReadRectangle(_textureSourceValueKey);
 
-                Load(cm, grhIndex, textureName, source.X, source.Y, source.Width, source.Height, categoryName, categoryTitle);
+                Load(cm, grhIndex, textureName, source.X, source.Y, source.Width, source.Height, categorization);
                 AutomaticSize = automaticSize;
             }
             else
@@ -424,41 +412,28 @@ namespace NetGore.Graphics
                 // Animated
                 float speed = r.ReadFloat(_speedValueKey);
 
-                Load(grhIndex, frames, speed, categoryName, categoryTitle);
+                Load(grhIndex, frames, speed, categorization);
             }
         }
 
         /// <summary>
-        /// Sets the category and title for the GrhData and raises an OnChangeCategorization event if
-        /// either of the values are different from the current
+        /// Sets the categorization for the <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="category">New category (may not be null or else it will change to a String.Empty)</param>
-        /// <param name="title">New title (may not be null or else it will change to a String.Empty)</param>
-        public void SetCategorization(string category, string title)
+        /// <param name="categorization">The new categorization.</param>
+        public void SetCategorization(SpriteCategorization categorization)
         {
-            Debug.Assert(category != null, "category is null.");
-            Debug.Assert(title != null, "title is null.");
-
-            // If given a null value, change it to a String.Empty so we can at least use it still
-            if (_category == null)
-                _category = string.Empty;
-            if (_title == null)
-                _title = string.Empty;
+            if (categorization == null)
+                throw new ArgumentNullException("categorization");
 
             // Check that either of the values are different
-            if (_category == category && _title == title)
+            if (_categorization == categorization)
                 return;
 
-            string oldCategory = _category;
-            string oldTitle = _title;
+            var oldCategorization = _categorization;
+            _categorization = categorization;
 
-            // Set the new values
-            _category = category;
-            _title = title;
-
-            // Raise the event
             if (OnChangeCategorization != null)
-                OnChangeCategorization(this, oldCategory, oldTitle);
+                OnChangeCategorization(this, oldCategorization);
         }
 
         /// <summary>
@@ -475,7 +450,7 @@ namespace NetGore.Graphics
                 extra = _textureName;
 
             // Create the categorization display, and add the extra info
-            return string.Format("[{0}] {1}.{2} - {3}", _grhIndex, _category, _title, extra);
+            return string.Format("{0} - {1} [{2}]", _categorization, extra, _grhIndex);
         }
 
         /// <summary>
@@ -496,9 +471,9 @@ namespace NetGore.Graphics
                 }
                 catch (ContentLoadException ex)
                 {
-                    const string errmsg = "Failed to load GrhData `{0}.{1}` [{2}] : {3}";
+                    const string errmsg = "Failed to load texture `{0}` for GrhData `{1}`: {2}";
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, Category, Title, GrhIndex, ex);
+                        log.ErrorFormat(errmsg, _textureName, this, ex);
                 }
 
                 // If we were using an atlas, we'll have to remove it because the texture was reloaded
@@ -518,10 +493,7 @@ namespace NetGore.Graphics
             if (w == null)
                 throw new ArgumentNullException("w");
 
-            if (string.IsNullOrEmpty(Category))
-                throw new NullReferenceException("Category is null or invalid.");
-            if (string.IsNullOrEmpty(Title))
-                throw new NullReferenceException("Title is null or invalid.");
+            Debug.Assert(Categorization != null);
 
             // Header
             w.Write(_indexKey, GrhIndex);
@@ -530,8 +502,8 @@ namespace NetGore.Graphics
             // Category
             w.WriteStartNode(_categoryNodeName);
             {
-                w.Write(_categoryNameValueKey, Category);
-                w.Write(_categoryTitleValueKey, Title);
+                w.Write(_categoryNameValueKey, Categorization.Category);
+                w.Write(_categoryTitleValueKey, Categorization.Title);
             }
             w.WriteEndNode(_categoryNodeName);
 

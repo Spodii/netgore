@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Globalization;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
@@ -101,18 +102,16 @@ namespace NetGore.EditorTools
             foreach (string file in goodFiles)
             {
                 string relativePath = TextureAbsoluteToRelativePath(trimLen, file);
-                string category;
-                string title;
-                GrhInfo.SplitCategoryAndTitle(relativePath, out category, out title);
+                var categorization = SpriteCategorization.SplitCategoryAndTitle(relativePath);
 
                 // Because the frames should be automatically generated, we should know exactly where it is
                 // just from the filepath and not have to search through the GrhDatas
-                GrhData gd = GrhInfo.GetData(category, title);
+                GrhData gd = GrhInfo.GetData(categorization);
 
                 // Ensure the GrhData exists
                 if (gd == null)
                 {
-                    Debug.Fail(string.Format("Failed to find frames for GrhData `{0}.{1}`", category, title));
+                    Debug.Fail(string.Format("Failed to find frames for GrhData `{0}`.", categorization));
                     return null;
                 }
 
@@ -249,8 +248,9 @@ namespace NetGore.EditorTools
                 }
 
                 // Get the categorization
-                string category = parentDir.FullName.Substring(trimLen);
-                string title = frameDirInfo.Title;
+                var category = new SpriteCategory(parentDir.FullName.Substring(trimLen));
+                var title = new SpriteTitle(frameDirInfo.Title);
+                var categorization = new SpriteCategorization(category, title);
 
                 // Get the GrhIndices of the frames for the animation
                 var indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
@@ -263,14 +263,14 @@ namespace NetGore.EditorTools
                 if (gd == null)
                 {
                     // Create the new GrhData
-                    gd = GrhInfo.CreateGrhData(indices, frameDirInfo.Speed, category, title);
+                    gd = GrhInfo.CreateGrhData(indices, frameDirInfo.Speed, categorization);
                     gd.AutomaticSize = true;
                     ret.Add(gd);
                 }
                 else
                 {
                     // Re-load the GrhData with the new values
-                    gd.Load(gd.GrhIndex, indices, frameDirInfo.Speed, category, title);
+                    gd.Load(gd.GrhIndex, indices, frameDirInfo.Speed, categorization);
                 }
             }
 
@@ -306,19 +306,17 @@ namespace NetGore.EditorTools
             {
                 // Go back to the relative path, and use it to figure out the categorization
                 string relative = TextureAbsoluteToRelativePath(trimLen, texture);
-                string category;
-                string title;
-                GrhInfo.SplitCategoryAndTitle(relative, out category, out title);
+                var categorization = SpriteCategorization.SplitCategoryAndTitle(relative);
 
                 // Ensure the GrhData doesn't already exist
-                if (GrhInfo.GetData(category, title) != null)
+                if (GrhInfo.GetData(categorization) != null)
                     continue;
 
                 // Read the texture size from the file
                 Vector2 size = GetTextureSize(texture);
 
                 // Create the GrhData
-                GrhData gd = GrhInfo.CreateGrhData(cm, category, title, relative, Vector2.Zero, size);
+                GrhData gd = GrhInfo.CreateGrhData(cm, categorization, relative, Vector2.Zero, size);
                 gd.AutomaticSize = true;
                 ret.Add(gd);
             }

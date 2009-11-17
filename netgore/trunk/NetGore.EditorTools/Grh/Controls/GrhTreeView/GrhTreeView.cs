@@ -285,14 +285,14 @@ namespace NetGore.EditorTools
 
             // Replace the start of the categorization to the new category
             var newCategory = newCategoryStart;
-            if (gd.Category.Length > oldCategoryStart.Length)
-                newCategory += gd.Category.Substring(oldCategoryStart.Length);
+            if (gd.Categorization.Category.ToString().Length > oldCategoryStart.Length)
+                newCategory += gd.Categorization.Category.ToString().Substring(oldCategoryStart.Length);
 
             // Grab the new title
-            var newTitle = GrhInfo.GetUniqueTitle(newCategory, gd.Title);
+            var newTitle = GrhInfo.GetUniqueTitle(newCategory, gd.Categorization.Title);
 
             // Duplicate
-            var newGrhData = gd.Duplicate(newCategory, newTitle);
+            var newGrhData = gd.Duplicate(new SpriteCategorization(newCategory, newTitle));
 
             // Add the new one to the tree
             UpdateGrhData(newGrhData);
@@ -321,12 +321,12 @@ namespace NetGore.EditorTools
         /// <param name="root">Root <see cref="TreeNode"/> to duplicate from.</param>
         public void DuplicateNodes(TreeNode root)
         {
-            string category;
-            string newCategory;
+            SpriteCategory category;
+            SpriteCategory newCategory;
 
             if (root is GrhTreeViewNode)
             {
-                category = ((GrhTreeViewNode)root).GrhData.Category;
+                category = ((GrhTreeViewNode)root).GrhData.Categorization.Category;
                 newCategory = category;
             }
             else
@@ -335,7 +335,7 @@ namespace NetGore.EditorTools
                 newCategory = GrhInfo.GetUniqueCategory(category);
             }
 
-            DuplicateNode(root, category, newCategory);
+            DuplicateNode(root, category.ToString(), newCategory.ToString());
         }
 
         public GrhTreeViewFolderNode FindFolder(string category)
@@ -362,7 +362,7 @@ namespace NetGore.EditorTools
 
         public GrhTreeViewNode FindGrhDataNode(GrhData grhData)
         {
-            var folder = FindFolder(grhData.Category);
+            var folder = FindFolder(grhData.Categorization.Category.ToString());
             if (folder != null)
             {
                 var existingNode = folder.Nodes.OfType<GrhTreeViewNode>().Where(x => x.GrhData == grhData).FirstOrDefault();
@@ -378,13 +378,13 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="node">The <see cref="TreeNode"/> to get the category from.</param>
         /// <returns>The category to use from the given <paramref name="node"/>.</returns>
-        public static string GetCategoryFromTreeNode(TreeNode node)
+        public static SpriteCategory GetCategoryFromTreeNode(TreeNode node)
         {
             // Check for a valid node
             if (node != null)
             {
                 if (node is GrhTreeViewNode)
-                    return ((GrhTreeViewNode)node).GrhData.Category;
+                    return ((GrhTreeViewNode)node).GrhData.Categorization.Category;
                 else if (node is GrhTreeViewFolderNode)
                     return ((GrhTreeViewFolderNode)node).FullCategory;
             }
@@ -563,7 +563,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Create the new GrhData
-            string category = GetCategoryFromTreeNode(SelectedNode);
+            var category = GetCategoryFromTreeNode(SelectedNode);
             GrhData gd = GrhInfo.CreateGrhData(_contentManager, category);
             UpdateGrhData(gd);
 

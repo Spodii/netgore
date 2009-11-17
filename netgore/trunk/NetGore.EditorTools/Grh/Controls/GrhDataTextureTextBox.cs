@@ -53,10 +53,9 @@ namespace NetGore.EditorTools
         /// <returns>True if valid; otherwise false.</returns>
         protected override bool GetIsValid(string text)
         {
-            if (string.IsNullOrEmpty(text))
-                return false;
+            var assetName = new ContentAssetName(text);
 
-            if (!File.Exists(ContentPaths.Build.Grhs.Join(text) + "." + ContentPaths.CompiledContentSuffix))
+            if (!assetName.ContentExists(ContentPaths.Build.Grhs))
                 return false;
                 
             return base.GetIsValid(text);

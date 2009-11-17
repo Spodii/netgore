@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
@@ -108,7 +109,7 @@ namespace NetGore.EditorTools
         void InsertIntoTree(GrhTreeView treeView)
         {
             Remove();
-            var folder = GrhTreeViewFolderNode.Create(treeView, GrhData.Category);
+            var folder = GrhTreeViewFolderNode.Create(treeView, GrhData.Categorization.Category.ToString());
             folder.Nodes.Add(this);
         }
 
@@ -171,7 +172,7 @@ namespace NetGore.EditorTools
 
             string category = ((GrhTreeViewFolderNode)Parent).FullCategory;
             string title = Text;
-            GrhData.SetCategorization(category, title);
+            GrhData.SetCategorization(new SpriteCategorization(category, title));
         }
 
         /// <summary>
@@ -194,7 +195,7 @@ namespace NetGore.EditorTools
 
             // Update everything
             Name = GrhData.GrhIndex.ToString();
-            Text = GrhData.Title;
+            Text = GrhData.Categorization.Title.ToString();
             ToolTipText = GetToolTipText();
             InsertIntoTree(treeView);
             SetIconImage();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -27,6 +28,52 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets the relative file path and name for the content asset. This must still be prefixed by a path created
+        /// with the <see cref="ContentPaths"/> to generate an absolute path.
+        /// </summary>
+        /// <returns>The relative file path and name for the content asset..</returns>
+        public string GetFileName()
+        {
+            // NOTE: !! Create unit tests
+
+            return _assetName + "." + ContentPaths.CompiledContentSuffix;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ContentAssetName"/> from an absolute file path.
+        /// </summary>
+        /// <param name="filePath">The absolute file path to the asset.</param>
+        /// <param name="contentRoot">The root path to the content directory.</param>
+        /// <returns>The <see cref="ContentAssetName"/> from the <paramref name="filePath"/>.</returns>
+        public static ContentAssetName FromAbsoluteFilePath(string filePath, string contentRoot)
+        {
+            // NOTE: !! Create unit tests
+
+            int start = contentRoot.Length;
+            if (!contentRoot.EndsWith("/") && !contentRoot.EndsWith("\\") && !contentRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                ++start;
+
+            int len = contentRoot.Length - start;
+            if (contentRoot.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
+                len -= 4;
+
+            var substr = filePath.Substring(start, len);
+            return new ContentAssetName(substr);
+        }
+
+        /// <summary>
+        /// Checks if the content with the given name exists.
+        /// </summary>
+        /// <param name="root">The root content path. Get this value from <see cref="ContentPaths"/>.</param>
+        /// <returns>True if the content exists in the given <paramref name="root"/> path; otherwise false.</returns>
+        public bool ContentExists(PathString root)
+        {
+            // TODO: !! Test to see if this concats properly
+            var filePath = root.Join(GetFileName());
+            return File.Exists(filePath);
+        }
+
+        /// <summary>
         /// Sanitizes the asset name. This will fix aspects of the asset name that can be fixed without
         /// making too large of assumptions.
         /// </summary>
@@ -34,6 +81,7 @@ namespace NetGore.IO
         /// <returns>The sanitized asset name.</returns>
         public static string Sanitize(string assetName)
         {
+            // NOTE: !! Create unit tests
             // Replace \\ with the proper character
             assetName = assetName.Replace("\\", PathSeparator);
 

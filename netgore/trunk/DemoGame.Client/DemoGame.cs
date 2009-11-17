@@ -117,11 +117,11 @@ namespace DemoGame.Client
             var gdNonMap = new List<ITextureAtlasable>();
             foreach (var gd in GrhInfo.GrhDatas.Where(x => !x.IsAnimated))
             {
-                if (gd.Category.StartsWith("character", StringComparison.OrdinalIgnoreCase))
+                if (gd.Categorization.Category.ToString().StartsWith("character", StringComparison.OrdinalIgnoreCase))
                     gdChars.Add(gd);
-                else if (gd.Category.StartsWith("gui", StringComparison.OrdinalIgnoreCase))
+                else if (gd.Categorization.Category.ToString().StartsWith("gui", StringComparison.OrdinalIgnoreCase))
                     gdGUI.Add(gd);
-                else if (!gd.Category.StartsWith("map", StringComparison.OrdinalIgnoreCase))
+                else if (!gd.Categorization.Category.ToString().StartsWith("map", StringComparison.OrdinalIgnoreCase))
                     gdNonMap.Add(gd);
             }
 

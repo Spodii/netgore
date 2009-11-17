@@ -111,6 +111,8 @@ namespace NetGore.EditorTools
 
         void btnAccept_Click(object sender, EventArgs e)
         {
+            // TODO: Clean this up a lot by adding more specialized textboxes, and using .IsValid()
+
             // Validate the category and title, making sure its unique
             if (!ValidateCategorization(true))
                 return;
@@ -172,6 +174,9 @@ namespace NetGore.EditorTools
                 return;
             }
 
+            // Get the categorization
+            var categorization = new SpriteCategorization(txtCategory.GetSanitizedText(), txtTitle.Text);
+
             // Set the information
             if (radioStationary.Checked)
             {
@@ -195,14 +200,14 @@ namespace NetGore.EditorTools
                     return;
                 }
 
-                _gd.Load(cm, newIndex, textureName, x, y, w, h, txtCategory.GetSanitizedText(), txtTitle.Text);
+                _gd.Load(cm, newIndex, textureName, x, y, w, h, categorization);
                 _gd.AutomaticSize = autoSize;
             }
             else
             {
                 // Animated
                 float speed = Parser.Current.ParseFloat(txtSpeed.Text);
-                _gd.Load(newIndex, frames, 1f / speed, txtCategory.GetSanitizedText(), txtTitle.Text);
+                _gd.Load(newIndex, frames, 1f / speed, categorization);
             }
 
             // Set the MapGrhWalls
@@ -360,8 +365,8 @@ namespace NetGore.EditorTools
 
         void ShowGrhInfo()
         {
-            txtCategory.ChangeTextToDefault(_gd.Category, true);
-            txtTitle.Text = _gd.Title;
+            txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);
+            txtTitle.Text = _gd.Categorization.Title.ToString();
             txtIndex.Text = _gd.GrhIndex.ToString();
             chkAutoSize.Checked = _gd.AutomaticSize;
 
@@ -439,7 +444,7 @@ namespace NetGore.EditorTools
 
         void txtTitle_TextChanged(object sender, EventArgs e)
         {
-            if (txtTitle.Text == _gd.Title)
+            if (txtTitle.Text == _gd.Categorization.Title.ToString())
                 txtTitle.BackColor = EditorColors.Normal;
             else
                 txtTitle.BackColor = EditorColors.Changed;

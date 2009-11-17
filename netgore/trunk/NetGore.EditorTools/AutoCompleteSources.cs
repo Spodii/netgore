@@ -125,7 +125,7 @@ namespace NetGore.EditorTools
             _categoriesLastUpdateTime = Environment.TickCount;
 
             // Grab the array first before clearing just so there is less time when the collection is empty
-            var items = GrhInfo.GetCategories().ToArray();
+            var items = GrhInfo.GetCategories().Select(x => x.ToString()).ToArray();
 
             _categories.Clear();
             _categories.AddRange(items);

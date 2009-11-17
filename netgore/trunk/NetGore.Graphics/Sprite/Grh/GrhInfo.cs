@@ -21,42 +21,40 @@ namespace NetGore.Graphics
         const string _rootNodeName = "GrhDatas";
 
         /// <summary>
-        /// Dictionary of categories, which contains a dictionary of all the names of the GrhDatas in
-        /// that category, which contains the GrhData of that given name and category
+        /// Dictionary of the <see cref="SpriteCategory"/>, and a dictionary of all the <see cref="SpriteTitle"/>s
+        /// and the corresponding <see cref="GrhData"/> for that <see cref="SpriteTitle"/> under the
+        /// <see cref="SpriteCategory"/>.
         /// </summary>
-        static readonly Dictionary<string, Dictionary<string, GrhData>> _catDic;
+        static readonly Dictionary<SpriteCategory, Dictionary<SpriteTitle, GrhData>> _catDic;
 
         /// <summary>
-        /// The StringComparer used for the GrhData dictionaries. This must be used for all of the
-        /// dictionaries created for the GrhData categorization.
-        /// </summary>
-        static readonly StringComparer _comparer = StringComparer.InvariantCultureIgnoreCase;
-
-        /// <summary>
-        /// List of all the GrhData where the array index is the GrhIndex
+        /// List of all the <see cref="GrhData"/> where the array index is the <see cref="GrhIndex"/>.
         /// </summary>
         static DArray<GrhData> _grhDatas;
 
         /// <summary>
-        /// Notifies listeners when a GrhData has been added.
+        /// Notifies listeners when a <see cref="GrhData"/> has been added.
         /// </summary>
         public static event GrhDataEventHandler OnAdd;
 
         /// <summary>
-        /// Notifies listeners when a GrhData has been removed.
+        /// Notifies listeners when a <see cref="GrhData"/> has been removed.
         /// </summary>
         public static event GrhDataEventHandler OnRemove;
 
+        /// <summary>
+        /// Initializes the <see cref="GrhInfo"/> class.
+        /// </summary>
         static GrhInfo()
         {
-            _catDic = new Dictionary<string, Dictionary<string, GrhData>>(_comparer);
+            _catDic = new Dictionary<SpriteCategory, Dictionary<SpriteTitle, GrhData>>();
         }
 
         /// <summary>
         /// Gets an IEnumerable of all the <see cref="GrhData"/> categories.
         /// </summary>
         /// <returns>An IEnumerable of all the <see cref="GrhData"/> categories.</returns>
-        public static IEnumerable<string> GetCategories()
+        public static IEnumerable<SpriteCategory> GetCategories()
         {
             return _catDic.Keys;
         }
@@ -120,39 +118,36 @@ namespace NetGore.Graphics
             // Set the categorization event so we can keep up with any changes to the categorization.
             gd.OnChangeCategorization += ChangeCategorizationHandler;
 
-            // If the title and category are not null, which would happen if the GrhData
-            // was created and initialized, THEN added to the array, then add it to the dictionary
-            if (gd.Category != null && gd.Title != null)
-                AddToDictionary(gd);
+            AddToDictionary(gd);
 
             if (OnAdd != null)
                 OnAdd(gd);
         }
 
         /// <summary>
-        /// Adds a GrhData to the dictionary
+        /// Adds a <see cref="GrhData"/> to the dictionary.
         /// </summary>
-        /// <param name="gd">GrhData to add to the dictionary</param>
+        /// <param name="gd"><see cref="GrhData"/> to add to the dictionary.</param>
         static void AddToDictionary(GrhData gd)
         {
-            Dictionary<string, GrhData> titleDic;
+            Dictionary<SpriteTitle, GrhData> titleDic;
 
             // Check if the category exists
-            if (!_catDic.TryGetValue(gd.Category, out titleDic))
+            if (!_catDic.TryGetValue(gd.Categorization.Category, out titleDic))
             {
                 // Category does not exist, so create and add it
-                titleDic = new Dictionary<string, GrhData>(_comparer);
-                _catDic.Add(gd.Category, titleDic);
+                titleDic = new Dictionary<SpriteTitle, GrhData>();
+                _catDic.Add(gd.Categorization.Category, titleDic);
             }
 
             // Add the GrhData to the sub-dictionary by its title
-            titleDic.Add(gd.Title, gd);
+            titleDic.Add(gd.Categorization.Title, gd);
         }
 
         /// <summary>
-        /// Handles when the category of a GrhData in the DArray changes
+        /// Handles when the category of a GrhData in the DArray changes.
         /// </summary>
-        static void ChangeCategorizationHandler(GrhData sender, string oldCategory, string oldTitle)
+        static void ChangeCategorizationHandler(GrhData sender, SpriteCategorization oldCategorization)
         {
             GrhData gd = sender;
             if (gd == null)
@@ -165,47 +160,34 @@ namespace NetGore.Graphics
             AddToDictionary(gd);
         }
 
-        public static GrhData CreateGrhData(GrhIndex[] frames, float speed, string category, string title)
+        public static GrhData CreateGrhData(GrhIndex[] frames, float speed, SpriteCategorization categorization)
         {
-            if (category == null)
-                category = string.Empty;
-            if (title == null)
-                throw new ArgumentNullException("title");
-
-            category = SanitizeCategory(category);
-
             GrhIndex grhIndex = NextFreeIndex();
             GrhData gd = new GrhData();
-            gd.Load(grhIndex, frames, speed, category, title);
+            gd.Load(grhIndex, frames, speed, categorization);
             AddGrhData(gd);
             return gd;
         }
 
-        public static GrhData CreateGrhData(ContentManager contentManager, string category, string title, string texture,
+        public static GrhData CreateGrhData(ContentManager contentManager, SpriteCategorization categorization, string texture,
                                             Vector2 pos, Vector2 size)
         {
-            return CreateGrhData(NextFreeIndex(), contentManager, category, title, texture, pos, size);
+            return CreateGrhData(NextFreeIndex(), contentManager, categorization, texture, pos, size);
         }
 
-        public static GrhData CreateGrhData(ContentManager contentManager, string category)
+        public static GrhData CreateGrhData(ContentManager contentManager, SpriteCategory category)
         {
-            GrhIndex index = NextFreeIndex();
-            string title = "tmp" + index;
-            return CreateGrhData(index, contentManager, category, title, string.Empty, Vector2.Zero, Vector2.Zero);
+            var index = NextFreeIndex();
+            var title = GetUniqueTitle(category, "tmp" + index);
+            var categorization = new SpriteCategorization(category, title);
+            return CreateGrhData(index, contentManager, categorization, string.Empty, Vector2.Zero, Vector2.Zero);
         }
 
-        static GrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, string category, string title,
+        static GrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, SpriteCategorization categorization,
                                      string texture, Vector2 pos, Vector2 size)
         {
-            if (category == null)
-                category = string.Empty;
-            if (title == null)
-                throw new ArgumentNullException("title");
-
-            category = SanitizeCategory(category);
-
             GrhData gd = new GrhData();
-            gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, category, title);
+            gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, categorization);
             AddGrhData(gd);
             return gd;
         }
@@ -248,30 +230,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the GrhData by the given information.
+        /// Gets the <see cref="GrhData"/> by the given categorization information.
         /// </summary>
-        /// <param name="categoryAndTitle">Concatenated GrhData category and title.</param>
-        /// <returns>GrhData matching the given information if found, or null if no matches.</returns>
-        public static GrhData GetData(string categoryAndTitle)
+        /// <param name="category">Category of the <see cref="GrhData"/>.</param>
+        /// <param name="title">Title of the <see cref="GrhData"/>.</param>
+        /// <returns><see cref="GrhData"/> matching the given information if found, or null if no matches.</returns>
+        public static GrhData GetData(SpriteCategory category, SpriteTitle title)
         {
-            string category, title;
-            SplitCategoryAndTitle(categoryAndTitle, out category, out title);
-            return GetData(category, title);
-        }
-
-        /// <summary>
-        /// Gets the GrhData by the given information
-        /// </summary>
-        /// <param name="category">Category of the GrhData</param>
-        /// <param name="title">Title of the GrhData</param>
-        /// <returns>GrhData matching the given information if found, or null if no matches</returns>
-        public static GrhData GetData(string category, string title)
-        {
-            if (string.IsNullOrEmpty(category))
-                throw new ArgumentNullException("category");
-
-            category = SanitizeCategory(category);
-
             // Get the dictionary for the category
             var titleDic = GetDatas(category);
 
@@ -289,6 +254,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the <see cref="GrhData"/> by the given categorization information.
+        /// </summary>
+        /// <param name="categorization">Categorization of the <see cref="GrhData"/>.</param>
+        /// <returns><see cref="GrhData"/> matching the given information if found, or null if no matches.</returns>
+        public static GrhData GetData(SpriteCategorization categorization)
+        {
+            return GetData(categorization.Category, categorization.Title);
+        }
+
+        /// <summary>
         /// Gets the GrhData by the given information
         /// </summary>
         /// <param name="grhIndex">GrhIndex of the GrhData</param>
@@ -302,19 +277,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the GrhData by the given information
+        /// Gets the <see cref="GrhData"/>s by the given information.
         /// </summary>
-        /// <param name="category">Category of the GrhData</param>
-        /// <returns>Dictionary of all GrhDatas from the given category with their Title as the key, or
-        /// null if the category was invalid</returns>
-        public static Dictionary<string, GrhData> GetDatas(string category)
+        /// <param name="category">Category of the <see cref="GrhData"/>s.</param>
+        /// <returns>All <see cref="GrhData"/>s from the given category with their Title as the key, or
+        /// null if the <paramref name="category"/> was invalid.</returns>
+        public static IDictionary<SpriteTitle, GrhData> GetDatas(SpriteCategory category)
         {
-            if (string.IsNullOrEmpty(category))
-                throw new ArgumentNullException("category");
-
-            category = SanitizeCategory(category);
-
-            Dictionary<string, GrhData> titleDic;
+            Dictionary<SpriteTitle, GrhData> titleDic;
 
             // Return the whole dictionary for the given catgory, or null if it does not exist
             if (_catDic.TryGetValue(category, out titleDic))
@@ -337,17 +307,26 @@ namespace NetGore.Graphics
         /// Gets a unique category based off of an existing category.
         /// </summary>
         /// <param name="category">The category to base the new category name off of.</param>
-        /// <returns>The name of a unique, unused category.</returns>
-        public static string GetUniqueCategory(string category)
+        /// <returns>A unique, unused category.</returns>
+        public static SpriteCategory GetUniqueCategory(SpriteCategory category)
+        {
+            return GetUniqueCategory(category.ToString());
+        }
+
+        /// <summary>
+        /// Gets a unique category based off of an existing category.
+        /// </summary>
+        /// <param name="category">The category to base the new category name off of.</param>
+        /// <returns>A unique, unused category.</returns>
+        public static SpriteCategory GetUniqueCategory(string category)
         {
             int copyNum = 1;
-            string newCategory;
+            SpriteCategory newCategory;
 
-            Dictionary<string, GrhData> coll;
+            IDictionary<SpriteTitle, GrhData> coll;
             do
             {
-                copyNum++;
-                newCategory = category + " (" + copyNum + ")";
+                newCategory = new SpriteCategory(category + " (" + ++copyNum + ")");
             }
             while ((coll = GetDatas(newCategory)) != null && !coll.IsEmpty());
 
@@ -358,34 +337,53 @@ namespace NetGore.Graphics
         /// Gets a unique title for a <see cref="GrhData"/> in the given category.
         /// </summary>
         /// <param name="category">The category.</param>
-        /// <param name="title">The title to base the new title off of.</param>
+        /// <param name="title">The string to base the new title off of.</param>
         /// <returns>A unique title for the given <paramref name="category"/>.</returns>
-        public static string GetUniqueTitle(string category, string title)
+        public static SpriteTitle GetUniqueTitle(SpriteCategory category, SpriteTitle title)
         {
-            // Check if the given title is already free
-            if (GetData(category, title) == null)
-                return title;
-
-            // Find next free number for the title suffix
-            int copyNum = 1;
-            string newTitle;
-            do
-            {
-                copyNum++;
-                newTitle = title + " (" + copyNum + ")";
-            }
-            while (GetData(category, newTitle) != null);
-
-            return newTitle;
+            return GetUniqueTitle(category, title.ToString());
         }
 
         /// <summary>
-        /// Checks if the specified Grh texture exists.
+        /// Gets a unique title for a <see cref="GrhData"/> in the given category.
         /// </summary>
-        /// <param name="textureName">Name of the Grh texture to check.</param>
-        /// <returns>True if a texture with the specified Grh texture exists.</returns>
+        /// <param name="category">The category.</param>
+        /// <param name="title">The string to base the new title off of.</param>
+        /// <returns>A unique title for the given <paramref name="category"/>.</returns>
+        public static SpriteTitle GetUniqueTitle(SpriteCategory category, string title)
+        {
+            if (!string.IsNullOrEmpty(title))
+                title = SpriteTitle.Sanitize(title);
+
+            if (!SpriteTitle.IsValid(title))
+                title = "tmp";
+
+            // Check if the given title is already free
+            var sTitle = new SpriteTitle(title);
+            if (GetData(category, sTitle) == null)
+                return sTitle;
+
+            // Find next free number for the title suffix
+            int copyNum = 1;
+            SpriteTitle sNewTitle;
+            do
+            {
+                copyNum++;
+                sNewTitle = new SpriteTitle(title + " (" + copyNum + ")");
+            }
+            while (GetData(category, sNewTitle) != null);
+
+            return sNewTitle;
+        }
+
+        /// <summary>
+        /// Checks if the specified <see cref="GrhData"/> texture exists.
+        /// </summary>
+        /// <param name="textureName">Name of the <see cref="GrhData"/> texture to check.</param>
+        /// <returns>True if a texture with the specified <see cref="GrhData"/> texture exists.</returns>
         public static bool GrhTextureExists(string textureName)
         {
+            // TODO: Remove
             if (string.IsNullOrEmpty(textureName))
                 throw new ArgumentNullException("textureName");
 
@@ -401,6 +399,7 @@ namespace NetGore.Graphics
         /// <returns>The texture name from the corresponding file.</returns>
         public static string GrhTextureNameFromFile(string filePath)
         {
+            // TODO: Remove
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
 
@@ -419,6 +418,7 @@ namespace NetGore.Graphics
         /// <returns>The file name for the corresponding Grh texture.</returns>
         public static string GrhTextureNameToFile(string textureName)
         {
+            // TODO: Remove
             if (string.IsNullOrEmpty(textureName))
                 throw new ArgumentNullException("textureName");
 
@@ -427,10 +427,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Loads the GrhDatas. This must be called before trying to access or use any GrhDatas.
+        /// Loads the <see cref="GrhData"/>s. This must be called before trying to access or use any
+        /// <see cref="GrhData"/>s.
         /// </summary>
-        /// <param name="contentPath">The ContentPaths to load the GrhDatas from.</param>
-        /// <param name="cm">The ContentManager to use for loaded GrhDatas.</param>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to load the <see cref="GrhData"/>s from.</param>
+        /// <param name="cm">The <see cref="ContentManager"/> to use for loaded <see cref="GrhData"/>s.</param>
         public static void Load(ContentPaths contentPath, ContentManager cm)
         {
             string path = GetGrhDataFilePath(contentPath);
@@ -468,9 +469,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Finds the next free GrhData
+        /// Finds the next free <see cref="GrhIndex"/>.
         /// </summary>
-        /// <returns>Next free GrhData index</returns>
+        /// <returns>The next free <see cref="GrhIndex"/>.</returns>
         public static GrhIndex NextFreeIndex()
         {
             if (_grhDatas.TrackFree)
@@ -490,14 +491,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Removes a GrhData from the dictionary
+        /// Removes a <see cref="GrhData"/> from the dictionary.
         /// </summary>
-        /// <param name="gd">GrhData to remove</param>
+        /// <param name="gd"><see cref="GrhData"/> to remove.</param>
         static void RemoveFromDictionary(GrhData gd)
         {
-            Dictionary<string, GrhData> titleDic;
-            if (_catDic.TryGetValue(gd.Category, out titleDic))
-                titleDic.Remove(gd.Title);
+            Dictionary<SpriteTitle, GrhData> titleDic;
+            if (_catDic.TryGetValue(gd.Categorization.Category, out titleDic))
+                titleDic.Remove(gd.Categorization.Title);
         }
 
         /// <summary>
@@ -511,11 +512,6 @@ namespace NetGore.Graphics
 
             if (OnRemove != null)
                 OnRemove(e.Item);
-        }
-
-        public static string SanitizeCategory(string category)
-        {
-            return category.Replace('/', '.').Replace('\\', '.');
         }
 
         /// <summary>
@@ -546,28 +542,6 @@ namespace NetGore.Graphics
             // Now that the temporary file has been successfully written, replace the existing file with it
             File.Delete(path);
             File.Move(tempPath, path);
-        }
-
-        public static void SplitCategoryAndTitle(string categoryAndTitle, out string category, out string title)
-        {
-            if (string.IsNullOrEmpty(categoryAndTitle))
-                throw new ArgumentNullException("categoryAndTitle");
-
-            categoryAndTitle = SanitizeCategory(categoryAndTitle);
-
-            int lastSep = categoryAndTitle.LastIndexOf('.');
-            if (lastSep == -1)
-            {
-                // If there is no seperator, we'll just assume there is no category and the whole thing is the title
-                category = string.Empty;
-                title = categoryAndTitle;
-            }
-            else
-            {
-                // Split at the last separator
-                category = categoryAndTitle.Substring(0, lastSep);
-                title = categoryAndTitle.Substring(lastSep + 1);
-            }
         }
     }
 }
