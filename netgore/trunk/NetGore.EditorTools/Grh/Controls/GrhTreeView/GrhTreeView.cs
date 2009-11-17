@@ -340,7 +340,7 @@ namespace NetGore.EditorTools
 
         public GrhTreeViewFolderNode FindFolder(string category)
         {
-            var delimiters = new string[] { GrhDataCategorization.Delimiter };
+            var delimiters = new string[] { SpriteCategorization.Delimiter };
             var categoryParts = category.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
             GrhTreeViewFolderNode current = null;

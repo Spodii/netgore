@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
@@ -37,7 +38,7 @@ namespace NetGore.EditorTools
                 if (Parent == null)
                     return SubCategory;
                 else
-                    return Parent.FullPath + GrhDataCategorization.Delimiter + SubCategory;
+                    return Parent.FullPath + SpriteCategorization.Delimiter + SubCategory;
             }
         }
 
@@ -50,7 +51,7 @@ namespace NetGore.EditorTools
 
         public static GrhTreeViewFolderNode Create(GrhTreeView grhTreeView, string category)
         {
-            var delimiters = new string[] { GrhDataCategorization.Delimiter };
+            var delimiters = new string[] { SpriteCategorization.Delimiter };
             var categoryParts = category.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
             GrhTreeViewFolderNode current = null;

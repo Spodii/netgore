@@ -137,7 +137,6 @@ namespace NetGore.EditorTools
             this.txtCategory.Name = "txtCategory";
             this.txtCategory.Size = new System.Drawing.Size(200, 20);
             this.txtCategory.TabIndex = 5;
-            this.txtCategory.TextChanged += new System.EventHandler(this.txtCategory_TextChanged);
             // 
             // label1
             // 
@@ -482,8 +481,6 @@ namespace NetGore.EditorTools
             // 
             // txtTexture
             // 
-            this.txtTexture.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.txtTexture.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtTexture.Location = new System.Drawing.Point(6, 38);
             this.txtTexture.Name = "txtTexture";
             this.txtTexture.Size = new System.Drawing.Size(200, 20);
