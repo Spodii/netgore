@@ -959,7 +959,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>gui/addstat</Name>
-        <Source>0,0,16,16</Source>
+        <Source>0,0,12,12</Source>
       </Texture>
     </Item59>
     <Item60>
@@ -975,7 +975,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Blank</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,2,2</Source>
       </Texture>
     </Item60>
     <Item61>
@@ -991,7 +991,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Joint</Name>
-        <Source>0,0,8,8</Source>
+        <Source>0,0,6,6</Source>
       </Texture>
     </Item61>
     <Item62>
@@ -1023,7 +1023,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Move</Name>
-        <Source>0,0,32,32</Source>
+        <Source>0,0,17,17</Source>
       </Texture>
     </Item63>
     <Item64>
@@ -1039,7 +1039,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>System/Resize</Name>
-        <Source>0,0,8,8</Source>
+        <Source>0,0,6,6</Source>
       </Texture>
     </Item64>
     <Item65>
@@ -1183,7 +1183,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>item/melee/titaniumsword</Name>
-        <Source>0,0,32,32</Source>
+        <Source>0,0,24,24</Source>
       </Texture>
     </Item73>
     <Item74>
@@ -1199,7 +1199,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Potion/Red</Name>
-        <Source>0,0,16,32</Source>
+        <Source>0,0,9,16</Source>
       </Texture>
     </Item74>
     <Item75>
@@ -1215,7 +1215,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Potion/Blue</Name>
-        <Source>0,0,16,32</Source>
+        <Source>0,0,9,16</Source>
       </Texture>
     </Item75>
     <Item76>
@@ -1231,7 +1231,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Back/Crystal</Name>
-        <Source>0,0,32,32</Source>
+        <Source>0,0,15,25</Source>
       </Texture>
     </Item76>
     <Item77>
@@ -1247,7 +1247,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Body/Crystal</Name>
-        <Source>0,0,32,32</Source>
+        <Source>0,0,22,22</Source>
       </Texture>
     </Item77>
     <Item78>
@@ -1263,7 +1263,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Feet/Crystal</Name>
-        <Source>0,0,32,32</Source>
+        <Source>0,0,15,14</Source>
       </Texture>
     </Item78>
     <Item79>
@@ -1279,7 +1279,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Item/Head/Crystal</Name>
-        <Source>0,0,16,32</Source>
+        <Source>0,0,11,16</Source>
       </Texture>
     </Item79>
     <Item80>
@@ -1487,7 +1487,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Head</Name>
-        <Source>0,0,32,32</Source>
+        <Source>0,0,19,19</Source>
       </Texture>
     </Item92>
     <Item93>
@@ -1503,7 +1503,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Neck</Name>
-        <Source>0,0,8,16</Source>
+        <Source>0,0,5,9</Source>
       </Texture>
     </Item93>
     <Item94>
@@ -1519,7 +1519,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Torso</Name>
-        <Source>0,0,16,32</Source>
+        <Source>0,0,16,28</Source>
       </Texture>
     </Item94>
     <Item95>
@@ -1535,7 +1535,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/ArmUpper</Name>
-        <Source>0,0,8,16</Source>
+        <Source>0,0,6,10</Source>
       </Texture>
     </Item95>
     <Item96>
@@ -1551,7 +1551,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/ArmLower</Name>
-        <Source>0,0,8,32</Source>
+        <Source>0,0,5,21</Source>
       </Texture>
     </Item96>
     <Item97>
@@ -1567,7 +1567,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/LegUpper</Name>
-        <Source>0,0,16,32</Source>
+        <Source>0,0,12,22</Source>
       </Texture>
     </Item97>
     <Item98>
@@ -1583,7 +1583,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/LegLower</Name>
-        <Source>0,0,16,32</Source>
+        <Source>0,0,13,19</Source>
       </Texture>
     </Item98>
     <Item99>
@@ -1599,7 +1599,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Character/Zombie/Shoe</Name>
-        <Source>0,0,8,32</Source>
+        <Source>0,0,6,17</Source>
       </Texture>
     </Item99>
   </Stationary>
