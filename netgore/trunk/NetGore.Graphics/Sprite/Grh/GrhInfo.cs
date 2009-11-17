@@ -216,7 +216,7 @@ namespace NetGore.Graphics
             var nonanimated = GrhDatas.Where(x => !x.IsAnimated);
             var invalidTexture =
                 nonanimated.Where(
-                    x => string.IsNullOrEmpty(x.TextureName) || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName) + ".xnb"));
+                    x => x.TextureName==null || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName.GetFileName())));
             return invalidTexture;
         }
 

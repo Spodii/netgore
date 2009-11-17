@@ -21,6 +21,12 @@ namespace NetGore
             writer.Write(name, value.ToString());
         }
 
+        public static void Write(this IValueWriter writer, string name, ContentAssetName value)
+        {
+            // TODO: ?? Try to remove as many usages of this as possible
+            writer.Write(name, value.ToString());
+        }
+
         public static void Write(this IValueWriter writer, string name, SpriteTitle value)
         {
             // TODO: ?? Try to remove as many usages of this as possible

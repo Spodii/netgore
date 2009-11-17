@@ -151,14 +151,14 @@ namespace NetGore.EditorTools
             // Loop through every stationary GrhData
             foreach (GrhData gd in GrhInfo.GrhDatas.Where(x => !x.IsAnimated))
             {
-                string texture = gd.TextureName;
+                var textureName = gd.TextureName.ToString();
                 List<GrhData> dictList;
 
                 // Get the existing list, or create a new one if the first entry
-                if (!ret.TryGetValue(texture, out dictList))
+                if (!ret.TryGetValue(textureName, out dictList))
                 {
                     dictList = new List<GrhData>();
-                    ret.Add(texture, dictList);
+                    ret.Add(textureName, dictList);
                 }
 
                 // Add the GrhData to the list

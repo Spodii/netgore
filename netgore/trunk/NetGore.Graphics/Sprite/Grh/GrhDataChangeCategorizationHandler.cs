@@ -16,5 +16,5 @@ namespace NetGore.Graphics
     /// </summary>
     /// <param name="grhData"><see cref="GrhData"/> that had it's texture changed.</param>
     /// <param name="oldTexture">The old texture.</param>
-    public delegate void GrhDataChangeTextureHandler(GrhData grhData, string oldTexture);
+    public delegate void GrhDataChangeTextureHandler(GrhData grhData, ContentAssetName oldTexture);
 }

@@ -97,7 +97,7 @@ namespace NetGore.EditorTools
             if (grhData == null)
                 return;
 
-            if (string.IsNullOrEmpty(grhData.TextureName))
+            if (grhData.TextureName == null)
                 return;
 
             string key = GetImageKey(grhData);
@@ -125,7 +125,7 @@ namespace NetGore.EditorTools
         /// <returns>The Image for the <paramref name="grhData"/>.</returns>
         static Image CreateImage(GrhData grhData)
         {
-            if (grhData == null || string.IsNullOrEmpty(grhData.TextureName))
+            if (grhData == null || grhData.TextureName == null)
                 return null;
 
             GrhImageListCacheItem cacheItem;

@@ -622,7 +622,7 @@ namespace DemoGame.SkeletonEditor
             if (dsi.Grh.GrhData == null)
                 textureName = "*";
             else
-                textureName = dsi.Grh.GrhData.TextureName.Replace("Character/", string.Empty);
+                textureName = dsi.Grh.GrhData.TextureName.ToString().Replace("Character/", string.Empty);
 
             return textureName + ": " + dsi.Source.Name + " -> " + s;
         }

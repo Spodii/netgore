@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         Rectangle _sourceRect;
         float _speed;
         Texture2D _texture;
-        string _textureName;
+        ContentAssetName _textureName;
 
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
@@ -191,10 +191,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the name of the texture used by the GrhData. Use instead of Texture.Name
-        /// when possible to prevent needless overhead and texture loading.
+        /// Gets the name of the texture used by the GrhData.
         /// </summary>
-        public string TextureName
+        public ContentAssetName TextureName
         {
             get { return _textureName; }
         }
@@ -232,12 +231,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Changes the texture for a stationary GrhData.
+        /// Changes the texture for a stationary <see cref="GrhData"/>.
         /// </summary>
         /// <param name="newTexture">Name of the new texture to use.</param>
-        public void ChangeTexture(string newTexture)
+        public void ChangeTexture(ContentAssetName newTexture)
         {
-            if (string.IsNullOrEmpty(newTexture))
+            if (newTexture == null)
                 throw new ArgumentNullException("newTexture");
 
             // Ensure this is not an animated GrhData
@@ -451,7 +450,7 @@ namespace NetGore.Graphics
             if (_frames.Length > 1)
                 extra = _frames.Length + " frames";
             else
-                extra = _textureName;
+                extra = _textureName.ToString();
 
             // Create the categorization display, and add the extra info
             return string.Format("{0} - {1} [{2}]", _categorization, extra, _grhIndex);
@@ -486,9 +485,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Writes the GrhData to an IValueWriter.
+        /// Writes the <see cref="GrhData"/> to an <see cref="IValueWriter"/>.
         /// </summary>
-        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="w"><see cref="IValueWriter"/> to write to.</param>
         public void Write(IValueWriter w)
         {
             // Check for valid data
@@ -514,12 +513,9 @@ namespace NetGore.Graphics
             if (!IsAnimated)
             {
                 // Single frame
-                if (string.IsNullOrEmpty(TextureName))
-                    throw new NullReferenceException("TextureName is null or invalid for a non-animation.");
-                if (SourceRect.Width <= 0)
-                    throw new Exception("SourceRect.Width must be > 0.");
-                if (SourceRect.Height <= 0)
-                    throw new Exception("SourceRect.Height must be > 0.");
+                Debug.Assert(TextureName != null, "TextureName is null or invalid for a non-animation.");
+                Debug.Assert(SourceRect.Width > 0, "SourceRect.Width must be > 0.");
+                Debug.Assert(SourceRect.Height > 0, "SourceRect.Height must be > 0.");
 
                 w.Write(_automaticSizeValueKey, AutomaticSize);
 

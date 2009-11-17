@@ -380,7 +380,7 @@ namespace NetGore.EditorTools
                 txtY.Text = r.Y.ToString();
                 txtW.Text = r.Width.ToString();
                 txtH.Text = r.Height.ToString();
-                txtTexture.ChangeTextToDefault(_gd.TextureName, true);
+                txtTexture.ChangeTextToDefault(_gd.TextureName.ToString(), true);
             }
             else
             {

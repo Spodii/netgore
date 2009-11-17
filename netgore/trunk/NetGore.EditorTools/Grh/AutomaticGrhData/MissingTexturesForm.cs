@@ -53,14 +53,14 @@ namespace NetGore.EditorTools
             string currTexture = selectedItem.TextureName;
             foreach (GrhData gd in selectedItem.GrhDatas)
             {
-                if (gd.TextureName != currTexture)
+                if (gd.TextureName.ToString() != currTexture)
                     Debug.Fail("Somehow we got a GrhData with a wrong texture!");
                 else
                     gd.ChangeTexture(newTexture);
             }
 
             // Ensure we got everything
-            Debug.Assert(GrhInfo.GrhDatas.Where(x => x.TextureName == currTexture).Count() == 0,
+            Debug.Assert(GrhInfo.GrhDatas.Where(x => x.TextureName.ToString() == currTexture).Count() == 0,
                          "One or more textures failed to be changed!");
 
             RemoveSelectedTextureListItem();
@@ -102,10 +102,10 @@ namespace NetGore.EditorTools
             foreach (GrhData gd in grhDatas)
             {
                 List<GrhData> list;
-                if (!ret.TryGetValue(gd.TextureName, out list))
+                if (!ret.TryGetValue(gd.TextureName.ToString(), out list))
                 {
                     list = new List<GrhData>();
-                    ret.Add(gd.TextureName, list);
+                    ret.Add(gd.TextureName.ToString(), list);
                 }
 
                 list.Add(gd);
