@@ -9,6 +9,11 @@ namespace DemoGame.Server
     {
         const int _id = 1;
 
+        const int _targetUpdateRate = 2000;
+
+        int _lastTargetUpdateTime = int.MinValue;
+        Character _target;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestAI"/> class.
         /// </summary>
@@ -25,11 +30,29 @@ namespace DemoGame.Server
             get { return new AIID(_id); }
         }
 
-        Character _target;
+        /// <summary>
+        /// Handles the real updating of the AI.
+        /// </summary>
+        protected override void DoUpdate()
+        {
+            // Update the target
+            int time = GetTime();
+            if (_lastTargetUpdateTime + _targetUpdateRate < time)
+            {
+                _lastTargetUpdateTime = time;
+                _target = GetClosestHostile();
+            }
 
-        const int _targetUpdateRate = 2000;
+            // Check if we have a target or not
+            if (_target == null)
+                UpdateNoTarget();
+            else
+                UpdateWithTarget();
 
-        int _lastTargetUpdateTime = int.MinValue;
+            // Jump randomly for no apparent reason
+            if (Rand(0, 200) == 0)
+                Actor.Jump();
+        }
 
         void UpdateNoTarget()
         {
@@ -70,30 +93,6 @@ namespace DemoGame.Server
             // Attack if in range
             if (IsInMeleeRange(_target))
                 Actor.Attack();
-        }
-
-        /// <summary>
-        /// Handles the real updating of the AI.
-        /// </summary>
-        protected override void DoUpdate()
-        {
-            // Update the target
-            int time = GetTime();
-            if (_lastTargetUpdateTime + _targetUpdateRate < time)
-            {
-                _lastTargetUpdateTime = time;
-                _target = GetClosestHostile();
-            }
-
-            // Check if we have a target or not
-            if (_target == null)
-                UpdateNoTarget();
-            else
-                UpdateWithTarget();
-
-            // Jump randomly for no apparent reason
-            if (Rand(0, 200) == 0)
-                Actor.Jump();
         }
     }
 }

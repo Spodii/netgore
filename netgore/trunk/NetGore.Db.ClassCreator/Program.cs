@@ -30,7 +30,8 @@ namespace NetGore.Db.ClassCreator
         static readonly string _outputServerDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
                                                                 AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
-        static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(CodeFormatter formatter, StatCollectionType statCollectionType)
+        static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(CodeFormatter formatter,
+                                                                              StatCollectionType statCollectionType)
         {
             var columnItems = new List<ColumnCollectionItem>();
             foreach (var statType in StatTypeHelper.Values)

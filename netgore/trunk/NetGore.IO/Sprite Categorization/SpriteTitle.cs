@@ -11,16 +11,6 @@ namespace NetGore.IO
         readonly string _value;
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteTitle"/>.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator SpriteTitle(string title)
-        {
-            return new SpriteTitle(title);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SpriteTitle"/> class.
         /// </summary>
         /// <param name="value">The sprite title. This value will be automatically sanitized.</param>
@@ -129,6 +119,16 @@ namespace NetGore.IO
         public override string ToString()
         {
             return _value;
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteTitle"/>.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SpriteTitle(string title)
+        {
+            return new SpriteTitle(title);
         }
     }
 }

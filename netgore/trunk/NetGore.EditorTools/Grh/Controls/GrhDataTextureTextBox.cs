@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using NetGore.Graphics;
 using NetGore.IO;
 
 namespace NetGore.EditorTools
@@ -23,13 +16,19 @@ namespace NetGore.EditorTools
             AutoCompleteCustomSource = AutoCompleteSources.Textures;
         }
 
-        protected override void OnKeyPress(KeyPressEventArgs e)
+        /// <summary>
+        /// When overridden in the derived class, checks if the <see cref="AutoValidateTextBox"/> is in a valid
+        /// state and contains valid text.
+        /// </summary>
+        /// <returns>True if valid; otherwise false.</returns>
+        protected override bool GetIsValid(string text)
         {
-            // Change to the correct slash direction
-            if (e.KeyChar == '\\')
-                e.KeyChar = '/';
+            var assetName = new ContentAssetName(text);
 
-            base.OnKeyPress(e);
+            if (!assetName.ContentExists(ContentPaths.Build.Grhs))
+                return false;
+
+            return base.GetIsValid(text);
         }
 
         /// <summary>
@@ -46,19 +45,13 @@ namespace NetGore.EditorTools
             return ContentAssetName.Sanitize(text);
         }
 
-        /// <summary>
-        /// When overridden in the derived class, checks if the <see cref="AutoValidateTextBox"/> is in a valid
-        /// state and contains valid text.
-        /// </summary>
-        /// <returns>True if valid; otherwise false.</returns>
-        protected override bool GetIsValid(string text)
+        protected override void OnKeyPress(KeyPressEventArgs e)
         {
-            var assetName = new ContentAssetName(text);
+            // Change to the correct slash direction
+            if (e.KeyChar == '\\')
+                e.KeyChar = '/';
 
-            if (!assetName.ContentExists(ContentPaths.Build.Grhs))
-                return false;
-                
-            return base.GetIsValid(text);
+            base.OnKeyPress(e);
         }
     }
 }

@@ -73,6 +73,7 @@ namespace DemoGame.Server
         bool _isRunning = true;
 
         IServerSettingTable _serverSettings;
+        int _tick;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
@@ -144,6 +145,14 @@ namespace DemoGame.Server
         public int StartupTime
         {
             get { return _startupTime; }
+        }
+
+        /// <summary>
+        /// Gets the current tick the server is currently on. Each tick represents one iteration of the main loop.
+        /// </summary>
+        public int Tick
+        {
+            get { return _tick; }
         }
 
         /// <summary>
@@ -250,24 +259,6 @@ namespace DemoGame.Server
 
             _gameTimer.Stop();
         }
-
-        /// <summary>
-        /// Updates the display of the system information.
-        /// </summary>
-        static void UpdateSystemInformationDisplay()
-        {
-            Console.Title = string.Format("NetGore Server - CPU: {0}%, MEM: {1}MB used, {2}MB free",
-                        Math.Round(SystemPerformance.CPU.Usage),
-                        SystemPerformance.Memory.ProcessUsageMB,
-                        SystemPerformance.Memory.AvailableMB);
-        }
-
-        int _tick;
-
-        /// <summary>
-        /// Gets the current tick the server is currently on. Each tick represents one iteration of the main loop.
-        /// </summary>
-        public int Tick { get { return _tick; } }
 
         /// <summary>
         /// Creates an <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.
@@ -428,6 +419,16 @@ namespace DemoGame.Server
 
             // Start the main game loop
             GameLoop();
+        }
+
+        /// <summary>
+        /// Updates the display of the system information.
+        /// </summary>
+        static void UpdateSystemInformationDisplay()
+        {
+            Console.Title = string.Format("NetGore Server - CPU: {0}%, MEM: {1}MB used, {2}MB free",
+                                          Math.Round(SystemPerformance.CPU.Usage), SystemPerformance.Memory.ProcessUsageMB,
+                                          SystemPerformance.Memory.AvailableMB);
         }
 
         /// <summary>

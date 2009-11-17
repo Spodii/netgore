@@ -30,15 +30,9 @@ namespace NetGore.Tests.Db.ClassCreator
         }
 
         [Test]
-        public void CreateFloatNullableTest()
+        public void CreateDoubleNullableTest()
         {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "fn", typeof(float?));
-        }
-
-        [Test]
-        public void CreateFloatTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "f", typeof(float));
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "dn", typeof(double?));
         }
 
         [Test]
@@ -48,45 +42,15 @@ namespace NetGore.Tests.Db.ClassCreator
         }
 
         [Test]
-        public void CreateDoubleNullableTest()
+        public void CreateFloatNullableTest()
         {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "dn", typeof(double?));
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "fn", typeof(float?));
         }
 
         [Test]
-        public void CreateUnsignedDoubleTest()
+        public void CreateFloatTest()
         {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "du", typeof(double));
-        }
-
-        [Test]
-        public void CreateUnsignedDoubleNullableTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "dun", typeof(double?));
-        }
-
-        [Test]
-        public void CreateViewDoubleTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "d", typeof(double));
-        }
-
-        [Test]
-        public void CreateViewDoubleNullableTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "dn", typeof(double?));
-        }
-
-        [Test]
-        public void CreateViewUnsignedDoubleTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "du", typeof(double));
-        }
-
-        [Test]
-        public void CreateViewUnsignedDoubleNullableTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "dun", typeof(double?));
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "f", typeof(float));
         }
 
         [Test]
@@ -198,6 +162,18 @@ namespace NetGore.Tests.Db.ClassCreator
         }
 
         [Test]
+        public void CreateUnsignedDoubleNullableTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "dun", typeof(double?));
+        }
+
+        [Test]
+        public void CreateUnsignedDoubleTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "du", typeof(double));
+        }
+
+        [Test]
         public void CreateUShortNullableTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "sun", typeof(ushort?));
@@ -231,6 +207,18 @@ namespace NetGore.Tests.Db.ClassCreator
         public void CreateViewByteTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "bu", typeof(byte));
+        }
+
+        [Test]
+        public void CreateViewDoubleNullableTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "dn", typeof(double?));
+        }
+
+        [Test]
+        public void CreateViewDoubleTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "d", typeof(double));
         }
 
         [Test]
@@ -351,6 +339,18 @@ namespace NetGore.Tests.Db.ClassCreator
         public void CreateViewULongTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "lu", typeof(ulong));
+        }
+
+        [Test]
+        public void CreateViewUnsignedDoubleNullableTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "dun", typeof(double?));
+        }
+
+        [Test]
+        public void CreateViewUnsignedDoubleTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "du", typeof(double));
         }
 
         [Test]

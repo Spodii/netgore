@@ -11,16 +11,6 @@ namespace NetGore.IO
         readonly string _value;
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteCategory"/>.
-        /// </summary>
-        /// <param name="category">The category.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator SpriteCategory(string category)
-        {
-            return new SpriteCategory(category);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SpriteCategory"/> class.
         /// </summary>
         /// <param name="value">The sprite category. This value will be automatically sanitized.</param>
@@ -148,5 +138,15 @@ namespace NetGore.IO
         }
 
         #endregion
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteCategory"/>.
+        /// </summary>
+        /// <param name="category">The category.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SpriteCategory(string category)
+        {
+            return new SpriteCategory(category);
+        }
     }
 }

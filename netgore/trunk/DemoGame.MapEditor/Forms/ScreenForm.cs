@@ -1015,9 +1015,7 @@ namespace DemoGame.MapEditor
                 throw;
             }
 
-
             var x = AutoCompleteSources.Categories;
-
         }
 
         /// <summary>

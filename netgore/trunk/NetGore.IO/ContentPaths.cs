@@ -16,6 +16,12 @@ namespace NetGore.IO
     public class ContentPaths
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// The suffix given to compiled content files. Does not include the prefixed period.
+        /// </summary>
+        public const string CompiledContentSuffix = "xnb";
+
         const string _dataFolder = "Data";
         const string _engineFolder = "Engine";
         const string _fontsFolder = "Font";
@@ -24,11 +30,6 @@ namespace NetGore.IO
         const string _mapsFolder = "Maps";
         const string _settingsFolder = "Settings";
         const string _skeletonsFolder = "Skeletons";
-
-        /// <summary>
-        /// The suffix given to compiled content files. Does not include the prefixed period.
-        /// </summary>
-        public const string CompiledContentSuffix = "xnb";
 
         /// <summary>
         /// Suffix for temporary files.
