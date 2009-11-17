@@ -128,7 +128,7 @@ namespace NetGore.EditorTools
             if (!GrhData.IsAnimated)
             {
                 // Static image
-                if (string.IsNullOrEmpty(GrhData.TextureName))
+                if (!GrhData.IsAnimated)
                     SetImageKeys(null);
                 else
                 {

@@ -86,6 +86,13 @@ namespace NetGore
             return new SpriteCategory(s);
         }
 
+        public static ContentAssetName ReadContentAssetName(this IValueReader reader, string name)
+        {
+            // TODO: ?? Try to remove as many usages of this as possible
+            string s = reader.ReadString(name);
+            return new ContentAssetName(s);
+        }
+
         public static SpriteTitle ReadSpriteTitle(this IValueReader reader, string name)
         {
             // TODO: ?? Try to remove as many usages of this as possible
