@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -46,11 +47,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Provides for easier creation of a border
+        /// Provides for easier creation of a <see cref="ControlBorder"/>.
         /// </summary>
-        /// <param name="dic">Dictionary containing the border information</param>
-        /// <returns>ControlBorder created from the dictionary information</returns>
-        static ControlBorder CreateBorder(IDictionary<string, GrhData> dic)
+        /// <param name="dic">IDictionary containing the border information.</param>
+        /// <returns><see cref="ControlBorder"/> created from the <paramref name="dic"/>.</returns>
+        static ControlBorder CreateBorder(IDictionary<SpriteTitle, GrhData> dic)
         {
             ISprite bg = new Grh(dic["Background"]);
             ISprite l = new Grh(dic["Left"]);
@@ -70,9 +71,9 @@ namespace DemoGame.Client
         /// <param name="skin">Name of the skin to load</param>
         public void LoadSettings(string skin)
         {
-            string root = "GUI." + skin + ".Controls.";
-
-            // NOTE: Revert to "Default" skin if something isn't found (use Skin.GetSkinGrh or whatever)
+            var root = string.Format("GUI{0}" + skin + "{0}Controls{0}", SpriteCategorization.Delimiter);
+  
+            // TODO: Revert to "Default" skin if something isn't found (use Skin.GetSkinGrh or whatever)
 
             ControlBorder cbForm = CreateBorder(GrhInfo.GetDatas(root + "Form"));
             ControlBorder cbTextBox = CreateBorder(GrhInfo.GetDatas(root + "TextBox"));

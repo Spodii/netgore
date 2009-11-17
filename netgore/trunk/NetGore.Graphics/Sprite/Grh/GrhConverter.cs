@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using NetGore;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -101,7 +102,7 @@ namespace NetGore.Graphics
                 Grh grh = value as Grh;
                 if (grh == null || grh.GrhData == null)
                     return string.Empty;
-                return grh.GrhData.Category + "." + grh.GrhData.Title;
+                return grh.GrhData.Categorization.ToString();
             }
 
             return null;
@@ -143,7 +144,7 @@ namespace NetGore.Graphics
 
             try
             {
-                grhData = GrhInfo.GetData(categoryAndTitle);
+                grhData = GrhInfo.GetData(new SpriteCategorization(categoryAndTitle));
             }
             catch (ArgumentNullException)
             {

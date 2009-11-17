@@ -85,7 +85,7 @@ namespace NetGore.EditorTools
             GrhDatasList.Items.Clear();
             foreach (GrhData grhData in selectedItem.GrhDatas)
             {
-                GrhDatasList.AddItemAndReselect(grhData.Category + "." + grhData.Title);
+                GrhDatasList.AddItemAndReselect(grhData.Categorization.ToString());
             }
         }
 

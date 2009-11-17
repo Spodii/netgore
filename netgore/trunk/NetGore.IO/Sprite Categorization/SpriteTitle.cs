@@ -1,16 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.IO
 {
     /// <summary>
-    /// An immutable string that represents the category of for a sprite.
+    /// An immutable string that represents the title of a sprite.
     /// </summary>
     public sealed class SpriteTitle
     {
         readonly string _value;
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteTitle"/>.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SpriteTitle(string title)
+        {
+            return new SpriteTitle(title);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteTitle"/> class.
@@ -29,6 +37,78 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public int CompareTo(SpriteTitle other)
+        {
+            return _value.CompareTo(other._value);
+        }
+
+        /// <summary>
+        /// Checks if this object is equal to another object.
+        /// </summary>
+        /// <param name="obj">The other object.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public override bool Equals(object obj)
+        {
+            var casted = obj as SpriteTitle;
+            if (casted != null)
+                return Equals(casted);
+
+            return base.Equals(obj);
+        }
+
+        /// <summary>
+        /// Checks if this <see cref="SpriteTitle"/> is equal to another <see cref="SpriteTitle"/>.
+        /// </summary>
+        /// <param name="other">The other <see cref="SpriteTitle"/>.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public bool Equals(SpriteTitle other)
+        {
+            return _value.Equals(other._value, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures
+        /// like a hash table. </returns>
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
+        /// <summary>
+        /// Checks if a string is valid for a <see cref="SpriteTitle"/>.
+        /// </summary>
+        /// <param name="value">The string to check.</param>
+        /// <returns>True if valid; otherwise false.</returns>
+        public static bool IsValid(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            // No delimiters allowed
+            if (value.Contains(SpriteCategorization.Delimiter) || value.Contains('/') || value.Contains('\\'))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
         /// Sanitizes a string to be used as a <see cref="SpriteTitle"/>.
         /// </summary>
         /// <param name="title">The string to sanitize.</param>
@@ -43,39 +123,12 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Checks if a string is valid for a <see cref="SpriteTitle"/>.
-        /// </summary>
-        /// <param name="value">The string to check.</param>
-        /// <returns>True if valid; otherwise false.</returns>
-        public static bool IsValid(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                return false;
-
-            // No delimiters allowed
-            if (value.Contains(SpriteCategorization.Delimiter))
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             return _value;
-        }
-
-        /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteTitle"/>.
-        /// </summary>
-        /// <param name="assetName">The asset name.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator SpriteTitle(string assetName)
-        {
-            return new SpriteTitle(assetName);
         }
     }
 }

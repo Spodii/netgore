@@ -13,6 +13,26 @@ namespace NetGore
     /// </summary>
     public static class IValueReaderExtensions
     {
+        public static SpriteCategory ReadSpriteCategory(this IValueReader reader, string name)
+        {
+            // TODO: ?? Try to remove as many usages of this as possible
+            string s = reader.ReadString(name);
+            return new SpriteCategory(s);
+        }
+
+        public static SpriteTitle ReadSpriteTitle(this IValueReader reader, string name)
+        {
+            // TODO: ?? Try to remove as many usages of this as possible
+            string s = reader.ReadString(name);
+            return new SpriteTitle(s);
+        }
+
+        public static SpriteCategorization ReadSpriteCategorization(this IValueReader reader, string name)
+        {
+            string s = reader.ReadString(name);
+            return new SpriteCategorization(s);
+        }
+
         /// <summary>
         /// Reads a Color.
         /// </summary>

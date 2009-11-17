@@ -15,6 +15,23 @@ namespace NetGore
     /// </summary>
     public static class IValueWriterExtensions
     {
+        public static void Write(this IValueWriter writer, string name, SpriteCategory value)
+        {
+            // TODO: ?? Try to remove as many usages of this as possible
+            writer.Write(name, value.ToString());
+        }
+
+        public static void Write(this IValueWriter writer, string name, SpriteTitle value)
+        {
+            // TODO: ?? Try to remove as many usages of this as possible
+            writer.Write(name, value.ToString());
+        }
+
+        public static void Write(this IValueWriter writer, string name, SpriteCategorization value)
+        {
+            writer.Write(name, value.ToString());
+        }
+
         /// <summary>
         /// Writes an unsigned integer with the specified range to an IValueWriter.
         /// </summary>

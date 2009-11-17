@@ -1,16 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.IO
 {
     /// <summary>
-    /// An immutable string that represents the category of for a sprite.
+    /// An immutable string that represents the category of a sprite.
     /// </summary>
-    public sealed class SpriteCategory
+    public sealed class SpriteCategory : IComparable<SpriteCategory>
     {
         readonly string _value;
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteCategory"/>.
+        /// </summary>
+        /// <param name="category">The category.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SpriteCategory(string category)
+        {
+            return new SpriteCategory(category);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteCategory"/> class.
@@ -29,21 +37,37 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Sanitizes a string to be used as a <see cref="SpriteCategory"/>.
+        /// Checks if this object is equal to another object.
         /// </summary>
-        /// <param name="category">The string to sanitize.</param>
-        /// <returns>The sanitized string.</returns>
-        public static string Sanitize(string category)
+        /// <param name="obj">The other object.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public override bool Equals(object obj)
         {
-            // Remove delimiter from start
-            if (category.StartsWith(SpriteCategorization.Delimiter))
-                category = category.Substring(1);
+            var casted = obj as SpriteCategory;
+            if (casted != null)
+                return Equals(casted);
 
-            // Remove delimiter from end
-            if (category.EndsWith(SpriteCategorization.Delimiter))
-                category = category.Substring(0, category.Length - 1);
+            return base.Equals(obj);
+        }
 
-            return category;
+        /// <summary>
+        /// Checks if this <see cref="SpriteCategory"/> is equal to another <see cref="SpriteCategory"/>.
+        /// </summary>
+        /// <param name="other">The other <see cref="SpriteCategory"/>.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public bool Equals(SpriteCategory other)
+        {
+            return _value.Equals(other._value, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures
+        /// like a hash table. </returns>
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
 
         /// <summary>
@@ -71,6 +95,27 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Sanitizes a string to be used as a <see cref="SpriteCategory"/>.
+        /// </summary>
+        /// <param name="category">The string to sanitize.</param>
+        /// <returns>The sanitized string.</returns>
+        public static string Sanitize(string category)
+        {
+            // Replace real path separators with the correct category delimiter
+            category = category.Replace("/", SpriteCategorization.Delimiter).Replace("\\", SpriteCategorization.Delimiter);
+
+            // Remove delimiter from start
+            if (category.StartsWith(SpriteCategorization.Delimiter))
+                category = category.Substring(1);
+
+            // Remove delimiter from end
+            if (category.EndsWith(SpriteCategorization.Delimiter))
+                category = category.Substring(0, category.Length - 1);
+
+            return category;
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -79,14 +124,29 @@ namespace NetGore.IO
             return _value;
         }
 
+        #region IComparable<SpriteCategory> Members
+
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteCategory"/>.
+        /// Compares the current object with another object of the same type.
         /// </summary>
-        /// <param name="assetName">The asset name.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator SpriteCategory(string assetName)
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public int CompareTo(SpriteCategory other)
         {
-            return new SpriteCategory(assetName);
+            return _value.CompareTo(other._value);
         }
+
+        #endregion
     }
 }

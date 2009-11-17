@@ -168,7 +168,7 @@ namespace NetGore.EditorTools
         /// </summary>
         void UpdateHashes()
         {
-            var files = Directory.GetFiles(_rootTextureDir, "*.xnb", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(_rootTextureDir, "*." + ContentPaths.CompiledContentSuffix, SearchOption.AllDirectories);
             foreach (string file in files)
             {
                 // Get the current info
