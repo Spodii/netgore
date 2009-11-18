@@ -128,13 +128,8 @@ namespace NetGore.EditorTools
             if (!GrhData.IsAnimated)
             {
                 // Static image
-                if (!GrhData.IsAnimated)
-                    SetImageKeys(null);
-                else
-                {
-                    string imageKey = GrhImageList.GetImageKey(GrhData);
-                    SetImageKeys(imageKey);
-                }
+                string imageKey = GrhImageList.GetImageKey(GrhData);
+                SetImageKeys(imageKey);
             }
             else
             {
@@ -150,6 +145,9 @@ namespace NetGore.EditorTools
 
         void SetImageKeys(string imageKey)
         {
+            if (ImageKey == imageKey)
+                return;
+
             ImageKey = imageKey;
             SelectedImageKey = imageKey;
             StateImageKey = imageKey;
