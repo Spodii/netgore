@@ -31,6 +31,34 @@ namespace NetGore.EditorTools
         public MapGrhWalls(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
         {
             Load(contentPath, createWall);
+
+            // Listen for the addition and removal of walls
+            GrhInfo.OnAddNew += DeleteGrhDataWalls;
+            GrhInfo.OnRemove += DeleteGrhDataWalls;
+        }
+
+        /// <summary>
+        /// Handles when a <see cref="GrhData"/> is removed or a new <see cref="GrhData"/> is added, and deletes
+        /// the walls for it.
+        /// </summary>
+        /// <param name="sender">The <see cref="GrhData"/> that the event is related to.</param>
+        void DeleteGrhDataWalls(GrhData sender)
+        {
+            RemoveWalls(sender);
+        }
+
+        /// <summary>
+        /// Removes all the walls for a <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to remove the walls for.</param>
+        public void RemoveWalls(GrhData grhData)
+        {
+            var index = (int)grhData.GrhIndex;
+
+            if (!_walls.CanGet(index))
+                return;
+
+            _walls.RemoveAt(index);
         }
 
         /// <summary>
