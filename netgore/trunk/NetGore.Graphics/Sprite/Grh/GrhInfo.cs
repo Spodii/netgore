@@ -33,9 +33,16 @@ namespace NetGore.Graphics
         static DArray<GrhData> _grhDatas;
 
         /// <summary>
-        /// Notifies listeners when a <see cref="GrhData"/> has been added.
+        /// Notifies listeners when a <see cref="GrhData"/> has been added. This includes
+        /// <see cref="GrhData"/>s added from loading.
         /// </summary>
         public static event GrhDataEventHandler OnAdd;
+
+        /// <summary>
+        /// Notifies listeners when a new <see cref="GrhData"/> has been added. This does not include
+        /// <see cref="GrhData"/>s added from loading.
+        /// </summary>
+        public static event GrhDataEventHandler OnAddNew;
 
         /// <summary>
         /// Notifies listeners when a <see cref="GrhData"/> has been removed.
@@ -93,10 +100,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Handles when a GrhData is added to the GrhDatas DArray
+        /// Handles when a GrhData is added to the GrhDatas DArray.
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Event args</param>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event args.</param>
         static void AddHandler(object sender, DArrayModifyEventArgs<GrhData> e)
         {
             GrhData gd = e.Item;
@@ -113,6 +120,9 @@ namespace NetGore.Graphics
 
             if (OnAdd != null)
                 OnAdd(gd);
+
+            if (!_isLoading && OnAddNew != null)
+                OnAddNew(gd);
         }
 
         /// <summary>
@@ -427,6 +437,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// If the <see cref="GrhData"/>s are currently being loaded
+        /// </summary>
+        static bool _isLoading;
+
+        /// <summary>
         /// Loads the <see cref="GrhData"/>s. This must be called before trying to access or use any
         /// <see cref="GrhData"/>s.
         /// </summary>
@@ -442,30 +457,39 @@ namespace NetGore.Graphics
             if (!File.Exists(path))
                 throw new FileNotFoundException("GrhData file not found.", path);
 
-            // Create the GrhData DArray
-            _grhDatas = new DArray<GrhData>(1024, false);
-            _catDic.Clear();
-            _grhDatas.OnAdd += AddHandler;
-            _grhDatas.OnRemove += RemoveHandler;
-
-            // Read the GrhDatas (non-aniamted first, followed by animated)
-            XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
-
-            var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => new GrhData(x, cm));
-            foreach (GrhData gd in nonAnimatedGrhDatas)
+            try
             {
-                _grhDatas[(int)gd.GrhIndex] = gd;
-            }
+                _isLoading = true;
 
-            var animatedGrhDatas = reader.ReadManyNodes(_animatedGrhDatasNodeName, x => new GrhData(x, cm));
-            foreach (GrhData gd in animatedGrhDatas)
+                // Create the GrhData DArray
+                _grhDatas = new DArray<GrhData>(1024, false);
+                _catDic.Clear();
+                _grhDatas.OnAdd += AddHandler;
+                _grhDatas.OnRemove += RemoveHandler;
+
+                // Read the GrhDatas (non-aniamted first, followed by animated)
+                XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
+
+                var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => new GrhData(x, cm));
+                foreach (GrhData gd in nonAnimatedGrhDatas)
+                {
+                    _grhDatas[(int)gd.GrhIndex] = gd;
+                }
+
+                var animatedGrhDatas = reader.ReadManyNodes(_animatedGrhDatasNodeName, x => new GrhData(x, cm));
+                foreach (GrhData gd in animatedGrhDatas)
+                {
+                    _grhDatas[(int)gd.GrhIndex] = gd;
+                }
+
+                // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
+                // while in the Client, and the Client is what counts, baby!
+                _grhDatas.Trim();
+            }
+            finally
             {
-                _grhDatas[(int)gd.GrhIndex] = gd;
+                _isLoading = false;
             }
-
-            // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
-            // while in the Client, and the Client is what counts, baby!
-            _grhDatas.Trim();
         }
 
         /// <summary>
