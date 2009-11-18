@@ -23,18 +23,10 @@ namespace DemoGame.Server
         {
             var dic = XmlInfoReader.ReadFile("DbSettings.xml")[0];
             _sqlUser = dic["MySql.User"];
-            _sqlHost = dic["MySql.Host"];
+            _sqlHost = dic.AsString("MySql.Host", "localhost");
             _sqlDatabase = dic["MySql.Database"];
-
-            if (dic.ContainsKey("MySql.Port"))
-                _sqlPort = dic["MySql.Port"];
-            else
-                _sqlPort = "3306";
-
-            if (dic.ContainsKey("MySql.Pass"))
-                _sqlPass = dic["MySql.Pass"];
-            else
-                _sqlPass = string.Empty;
+            _sqlPort = dic.AsString("MySql.Port", "3306");
+            _sqlPass = dic.AsString("MySql.Pass", string.Empty);
         }
 
         /// <summary>
