@@ -266,7 +266,7 @@ namespace NetGore.EditorTools
             base.Dispose(disposing);
 
             if (disposing)
-                GrhImageListCache.Save();
+                GrhImageList.Save();
         }
 
         /// <summary>

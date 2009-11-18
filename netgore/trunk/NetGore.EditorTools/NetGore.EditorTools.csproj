@@ -74,9 +74,7 @@
     <Compile Include="Grh\Controls\GrhDataTextureTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grh\GrhImageList\GrhImageList.cs" />
-    <Compile Include="Grh\GrhImageList\GrhImageListCache.cs" />
-    <Compile Include="Grh\GrhImageList\GrhImageListCacheItem.cs" />
+    <Compile Include="Grh\GrhImageList.cs" />
     <Compile Include="CreateWallEntity\CreateWallEntityHandler.cs" />
     <Compile Include="CreateWallEntity\CreateWallEntityWithCollisionTypeHandler.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.cs">
@@ -204,6 +202,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Grh\Controls\GrhTreeView\folderopen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Grh\GrhImageList\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
