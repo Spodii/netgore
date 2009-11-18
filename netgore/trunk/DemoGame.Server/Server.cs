@@ -231,14 +231,6 @@ namespace DemoGame.Server
                 // Update the networking
                 ServerSockets.Heartbeat();
 
-                // Handle input from the console
-                foreach (var inputStr in _consoleInputBuffer.GetBuffer())
-                {
-                    var resultStr = _consoleCommands.ExecuteCommand(inputStr);
-                    if (!string.IsNullOrEmpty(resultStr))
-                        Console.WriteLine(resultStr);
-                }
-
                 // Update the world
                 _world.Update();
 
@@ -249,6 +241,13 @@ namespace DemoGame.Server
                 if (_tick % 500 == 0)
                     UpdateSystemInformationDisplay();
 
+                // Handle input from the console
+                foreach (var inputStr in _consoleInputBuffer.GetBuffer())
+                {
+                    var resultStr = _consoleCommands.ExecuteCommand(inputStr);
+                    if (!string.IsNullOrEmpty(resultStr))
+                        Console.WriteLine(resultStr);
+                }
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
                 if (sleepTime > 0)
