@@ -446,7 +446,7 @@ namespace NetGore
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a short.</returns>
         public static short AsShort<T>(this IDictionary<T, string> dict, T key)
         {
             return Parser.Invariant.ParseShort(dict[key]);
@@ -476,7 +476,39 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type TimeSpan.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type string.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a string.</returns>
+        public static string AsString<T>(this IDictionary<T, string> dict, T key)
+        {
+            return dict[key];
+        }
+
+        /// <summary>
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type string.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a string, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static string AsString<T>(this IDictionary<T, string> dict, T key, string defaultValue)
+        {
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type
+        /// <see cref="TimeSpan"/>.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -488,7 +520,8 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type TimeSpan.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type
+        /// <see cref="TimeSpan"/>.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
