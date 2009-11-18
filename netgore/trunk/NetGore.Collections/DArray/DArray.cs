@@ -37,12 +37,12 @@ namespace NetGore.Collections
         int _version = 0;
 
         /// <summary>
-        /// Notifies when an item has been added to the DArray
+        /// Notifies listeners when an item has been added to the DArray.
         /// </summary>
         public event DArrayModifyEventHandler<T> OnAdd;
 
         /// <summary>
-        /// Notifies when an item has been removed from the DArray
+        /// Notifies listeners when an item has been removed from the DArray.
         /// </summary>
         public event DArrayModifyEventHandler<T> OnRemove;
 
