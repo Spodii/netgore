@@ -156,9 +156,9 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the image key for a GrhData.
+        /// Gets the image key for a <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="grhData">The GrhData to get the image key for.</param>
+        /// <param name="grhData">The <see cref="GrhData"/> to get the image key for.</param>
         /// <returns>The image key for the <paramref name="grhData"/>.</returns>
         public static string GetImageKey(GrhData grhData)
         {
