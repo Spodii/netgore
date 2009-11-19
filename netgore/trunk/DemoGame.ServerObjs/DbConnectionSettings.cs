@@ -16,16 +16,16 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// The name and suffix of the settings file.
+        /// </summary>
+        const string _settingsFileName = "DbSettings.xml";
+
         readonly string _sqlDatabase;
         readonly string _sqlHost;
         readonly string _sqlPass;
         readonly string _sqlPort;
         readonly string _sqlUser;
-
-        /// <summary>
-        /// The name and suffix of the settings file.
-        /// </summary>
-        const string _settingsFileName = "DbSettings.xml";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.

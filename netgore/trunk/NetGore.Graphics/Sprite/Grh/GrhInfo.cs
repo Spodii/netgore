@@ -33,6 +33,11 @@ namespace NetGore.Graphics
         static DArray<GrhData> _grhDatas;
 
         /// <summary>
+        /// If the <see cref="GrhData"/>s are currently being loaded
+        /// </summary>
+        static bool _isLoading;
+
+        /// <summary>
         /// Notifies listeners when a <see cref="GrhData"/> has been added. This includes
         /// <see cref="GrhData"/>s added from loading.
         /// </summary>
@@ -226,7 +231,7 @@ namespace NetGore.Graphics
             var nonanimated = GrhDatas.Where(x => !x.IsAnimated);
             var invalidTexture =
                 nonanimated.Where(
-                    x => x.TextureName==null || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName.GetFileName())));
+                    x => x.TextureName == null || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName.GetFileName())));
             return invalidTexture;
         }
 
@@ -435,11 +440,6 @@ namespace NetGore.Graphics
             textureName = textureName.Replace('/', Path.DirectorySeparatorChar);
             return ContentPaths.Build.Grhs.Join(textureName + ".xnb");
         }
-
-        /// <summary>
-        /// If the <see cref="GrhData"/>s are currently being loaded
-        /// </summary>
-        static bool _isLoading;
 
         /// <summary>
         /// Loads the <see cref="GrhData"/>s. This must be called before trying to access or use any
