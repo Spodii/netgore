@@ -17,7 +17,15 @@ namespace NetGore
         Vector2 _size;
 
         /// <summary>
-        /// CollisionBox constructor
+        /// Initializes a new instance of the <see cref="CollisionBox"/> class.
+        /// </summary>
+        /// <param name="source">The <see cref="CollisionBox"/> to copy the values from.</param>
+        public CollisionBox(CollisionBox source) : this(source.Min, source.Max)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollisionBox"/> class.
         /// </summary>
         /// <param name="position">Starting position</param>
         /// <param name="width">Width of the box</param>
@@ -27,7 +35,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// CollisionBox constructor
+        /// Initializes a new instance of the <see cref="CollisionBox"/> class.
         /// </summary>
         /// <param name="width">Width of the box</param>
         /// <param name="height">Height of the box</param>
@@ -36,7 +44,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// CollisionBox constructor
+        /// Initializes a new instance of the <see cref="CollisionBox"/> class.
         /// </summary>
         /// <param name="min">Position the box starts at</param>
         /// <param name="max">Position the box ends at</param>
