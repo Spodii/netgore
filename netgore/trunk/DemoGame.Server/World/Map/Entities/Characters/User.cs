@@ -297,8 +297,14 @@ namespace DemoGame.Server
         {
             base.Kill();
 
-            // TODO: Respawn the user to the correct respawn location
-            Teleport(new Vector2(300, 300));
+            if (!RespawnMapIndex.HasValue)
+            {
+                // TODO: Have a global User respawn map/position that can be defined, then use that here
+                return;
+            }
+
+            var spawnMap = World.GetMap(RespawnMapIndex.Value);
+            Teleport(spawnMap, RespawnPosition);
 
             UpdateModStats();
 
