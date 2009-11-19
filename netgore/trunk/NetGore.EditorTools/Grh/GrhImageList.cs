@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
+using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
@@ -61,6 +62,14 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the path to the file to use for the <see cref="GrhImageList"/> cache.
+        /// </summary>
+        static string CacheFilePath
+        {
+            get { return ContentPaths.Build.Data.Join("grhimagelistcache.bin"); }
+        }
+
+        /// <summary>
         /// Gets the key for the special image of a closed folder.
         /// </summary>
         public static string ClosedFolderKey
@@ -74,14 +83,6 @@ namespace NetGore.EditorTools
         public static string DefaultImageKey
         {
             get { return "_default"; }
-        }
-
-        /// <summary>
-        /// Gets the path to the file to use for the <see cref="GrhImageList"/> cache.
-        /// </summary>
-        static string CacheFilePath
-        {
-            get { return ContentPaths.Build.Data.Join("grhimagelistcache.bin"); }
         }
 
         /// <summary>
@@ -183,7 +184,7 @@ namespace NetGore.EditorTools
             string key = GetImageKey(grhData);
             ImageList.Images.RemoveByKey(key);
         }
-        
+
         /// <summary>
         /// Loads the <see cref="GrhImageListCacheItem"/>s from the <see cref="GrhImageList"/> cache file.
         /// </summary>
@@ -265,7 +266,7 @@ namespace NetGore.EditorTools
             public readonly Image Image;
 
             /// <summary>
-            /// The <see cref="Rectangle"/> describing the source that the <see cref="Image"/> came from.
+            /// The <see cref="Microsoft.Xna.Framework.Rectangle"/> describing the source that the <see cref="Image"/> came from.
             /// </summary>
             public readonly Rectangle SourceRect;
 

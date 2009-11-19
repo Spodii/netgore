@@ -43,6 +43,13 @@ namespace NetGore
             return new Color(r, g, b, a);
         }
 
+        public static ContentAssetName ReadContentAssetName(this IValueReader reader, string name)
+        {
+            // TODO: ?? Try to remove as many usages of this as possible
+            string s = reader.ReadString(name);
+            return new ContentAssetName(s);
+        }
+
         /// <summary>
         /// Reads a <see cref="Rectangle"/> from an IValueReader.
         /// </summary>
@@ -84,13 +91,6 @@ namespace NetGore
             // TODO: ?? Try to remove as many usages of this as possible
             string s = reader.ReadString(name);
             return new SpriteCategory(s);
-        }
-
-        public static ContentAssetName ReadContentAssetName(this IValueReader reader, string name)
-        {
-            // TODO: ?? Try to remove as many usages of this as possible
-            string s = reader.ReadString(name);
-            return new ContentAssetName(s);
         }
 
         public static SpriteTitle ReadSpriteTitle(this IValueReader reader, string name)

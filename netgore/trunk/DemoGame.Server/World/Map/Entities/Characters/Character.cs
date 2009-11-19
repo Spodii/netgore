@@ -535,30 +535,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Teleports the character to a new position and informs clients in the area of
-        /// interest that the character has teleported.
-        /// </summary>
-        /// <param name="newMap">The new map to teleport to.</param>
-        /// <param name="position">Position to teleport to.</param>
-        public void Teleport(Map newMap, Vector2 position)
-        {
-            if (newMap == null)
-                throw new ArgumentNullException("newMap");
-
-            if (newMap != Map)
-            {
-                if (Map != null)
-                    Map.RemoveEntity(this);
-
-                _map = null;
-
-                newMap.AddEntity(this);
-            }
-
-            Teleport(position);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, checks if enough time has elapesd since the Character died
         /// for them to be able to respawn.
         /// </summary>
@@ -1188,6 +1164,30 @@ namespace DemoGame.Server
         public void SynchronizeSPTo(User user)
         {
             _spSync.ForceSynchronizeTo(user);
+        }
+
+        /// <summary>
+        /// Teleports the character to a new position and informs clients in the area of
+        /// interest that the character has teleported.
+        /// </summary>
+        /// <param name="newMap">The new map to teleport to.</param>
+        /// <param name="position">Position to teleport to.</param>
+        public void Teleport(Map newMap, Vector2 position)
+        {
+            if (newMap == null)
+                throw new ArgumentNullException("newMap");
+
+            if (newMap != Map)
+            {
+                if (Map != null)
+                    Map.RemoveEntity(this);
+
+                _map = null;
+
+                newMap.AddEntity(this);
+            }
+
+            Teleport(position);
         }
 
         /// <summary>

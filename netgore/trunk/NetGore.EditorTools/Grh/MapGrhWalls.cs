@@ -38,30 +38,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Handles when a <see cref="GrhData"/> is removed or a new <see cref="GrhData"/> is added, and deletes
-        /// the walls for it.
-        /// </summary>
-        /// <param name="sender">The <see cref="GrhData"/> that the event is related to.</param>
-        void DeleteGrhDataWalls(GrhData sender)
-        {
-            RemoveWalls(sender);
-        }
-
-        /// <summary>
-        /// Removes all the walls for a <see cref="GrhData"/>.
-        /// </summary>
-        /// <param name="grhData">The <see cref="GrhData"/> to remove the walls for.</param>
-        public void RemoveWalls(GrhData grhData)
-        {
-            var index = (int)grhData.GrhIndex;
-
-            if (!_walls.CanGet(index))
-                return;
-
-            _walls.RemoveAt(index);
-        }
-
-        /// <summary>
         /// Gets or sets the List of WallEntities for the given GrhData
         /// </summary>
         /// <param name="index">Index of the GrhData to get/set the walls for</param>
@@ -125,6 +101,16 @@ namespace NetGore.EditorTools
             return ret;
         }
 
+        /// <summary>
+        /// Handles when a <see cref="GrhData"/> is removed or a new <see cref="GrhData"/> is added, and deletes
+        /// the walls for it.
+        /// </summary>
+        /// <param name="sender">The <see cref="GrhData"/> that the event is related to.</param>
+        void DeleteGrhDataWalls(GrhData sender)
+        {
+            RemoveWalls(sender);
+        }
+
         public static string GetFilePath(ContentPaths contentPath)
         {
             return contentPath.Data.Join("grhdatawalls.xml");
@@ -156,6 +142,20 @@ namespace NetGore.EditorTools
             var walls = r.ReadManyNodes(_wallsNodeName, x => createWall(x));
 
             return new KeyValuePair<GrhIndex, List<WallEntityBase>>(grhIndex, walls.ToList());
+        }
+
+        /// <summary>
+        /// Removes all the walls for a <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to remove the walls for.</param>
+        public void RemoveWalls(GrhData grhData)
+        {
+            var index = (int)grhData.GrhIndex;
+
+            if (!_walls.CanGet(index))
+                return;
+
+            _walls.RemoveAt(index);
         }
 
         public void Save(ContentPaths contentPath)
