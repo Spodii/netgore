@@ -298,7 +298,7 @@ namespace DemoGame.Server
             base.Kill();
 
             // TODO: Respawn the user to the correct respawn location
-            Teleport(new Vector2(100, 100));
+            Teleport(new Vector2(300, 300));
 
             UpdateModStats();
 

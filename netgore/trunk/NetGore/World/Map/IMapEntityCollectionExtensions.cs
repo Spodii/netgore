@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using NetGore;
 
 namespace NetGore
@@ -19,6 +20,19 @@ namespace NetGore
         public static bool ContainsEntities(this IMapEntityCollection c, CollisionBox cb)
         {
             return c.ContainsEntities(cb.ToRectangle());
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="cb">The map area to check.</param>
+        /// <param name="position">The position to use instead of the position provided by the
+        /// <paramref name="cb"/>.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public static bool ContainsEntities(this IMapEntityCollection c, CollisionBox cb, Vector2 position)
+        {
+            return c.ContainsEntities(new Rectangle((int)position.X, (int)position.Y, (int)cb.Width, (int)cb.Height));
         }
 
         /// <summary>
