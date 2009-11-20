@@ -74,6 +74,7 @@
     <Compile Include="MapGrh.cs" />
     <Compile Include="MapRenderLayer.cs" />
     <Compile Include="MapRenderLayerChange.cs" />
+    <Compile Include="ParticleEngine\IParticleRenderer.cs" />
     <Compile Include="Sprite\Grh\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />
     <Compile Include="Sprite\AnimType.cs" />
