@@ -1,11 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
-using NetGore;
 using NetGore.EditorTools.WinForms;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.ParticleEffectEditor
 {
-    class GameScreenControl : GraphicsDeviceControl
+    public class GameScreenControl : GraphicsDeviceControl
     {
         ScreenForm _screen;
 
