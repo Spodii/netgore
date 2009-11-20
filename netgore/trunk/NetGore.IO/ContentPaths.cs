@@ -30,6 +30,7 @@ namespace NetGore.IO
         const string _mapsFolder = "Maps";
         const string _settingsFolder = "Settings";
         const string _skeletonsFolder = "Skeletons";
+        const string _fxFolder = "Fx";
 
         /// <summary>
         /// Suffix for temporary files.
@@ -61,6 +62,7 @@ namespace NetGore.IO
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
+        readonly PathString _fx;
         readonly PathString _textures;
 
         /// <summary>
@@ -98,6 +100,7 @@ namespace NetGore.IO
             _fonts = GetChildPath(_root, _fontsFolder);
             _grhs = GetChildPath(_root, _grhsFolder);
             _skeletons = GetChildPath(_root, _skeletonsFolder);
+            _fx = GetChildPath(_root, _fxFolder);
             _textures = GetChildPath(_root, _texturesFolder);
             _settings = GetChildPath(_root, _settingsFolder);
             _languages = GetChildPath(_root, _languagesFolder);
@@ -194,6 +197,14 @@ namespace NetGore.IO
         public PathString Skeletons
         {
             get { return _skeletons; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the Fx (pixel shader effects) directory.
+        /// </summary>
+        public PathString Fx
+        {
+            get { return _fx; }
         }
 
         /// <summary>
