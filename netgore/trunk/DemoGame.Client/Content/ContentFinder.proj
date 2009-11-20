@@ -27,6 +27,13 @@
 		</FontTemplate>
 	</ItemGroup>
 	
+	<ItemGroup>
+		<FxTemplate Include="**\*.fx">
+			<Importer>EffectImporter</Importer>
+			<Processor>EffectProcessor</Processor>
+		</FxTemplate>
+	</ItemGroup>
+	
 	<Target Name="BeforeBuild">
 		<CreateItem Include="@(TextureTemplate)" AdditionalMetadata="Name=%(FileName)">
 			<Output TaskParameter="Include" ItemName="Compile" />
@@ -38,6 +45,9 @@
 			<Output TaskParameter="Include" ItemName="Compile" />
 		</CreateItem>
 		<CreateItem Include="@(FontTemplate)" AdditionalMetadata="Name=%(FileName)">
+			<Output TaskParameter="Include" ItemName="Compile" />
+		</CreateItem>
+		<CreateItem Include="@(FxTemplate)" AdditionalMetadata="Name=%(FileName)">
 			<Output TaskParameter="Include" ItemName="Compile" />
 		</CreateItem>
 	</Target>

@@ -15,6 +15,9 @@ namespace DemoGame.MapEditor
             set { _screen = value; }
         }
 
+        /// <summary>
+        /// Derived classes override this to draw themselves using the GraphicsDevice.
+        /// </summary>
         protected override void Draw()
         {
             ScreenForm screenToUse = Screen;
@@ -25,6 +28,9 @@ namespace DemoGame.MapEditor
             Screen.DrawGame();
         }
 
+        /// <summary>
+        /// Derived classes override this to initialize their drawing code.
+        /// </summary>
         protected override void Initialize()
         {
             Application.Idle += delegate { Invalidate(); };
