@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 
 namespace NetGore
 {
+    [TypeConverter(typeof(VariableUShortConverter))]
     public struct VariableUShort : IVariableValue<ushort>
     {
         ushort _max;
