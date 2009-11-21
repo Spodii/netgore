@@ -31,12 +31,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the default budget to give to new <see cref="ParticleEmitter"/>s when no budget
-        /// is explicitly given.
-        /// </summary>
-        public static int DefaultBudget { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
         /// </summary>
         public ParticleEmitter() : this(DefaultBudget)
@@ -102,6 +96,12 @@ namespace NetGore.Graphics.ParticleEngine
         {
             get { return _lastUpdateTime; }
         }
+
+        /// <summary>
+        /// Gets or sets the default budget to give to new <see cref="ParticleEmitter"/>s when no budget
+        /// is explicitly given.
+        /// </summary>
+        public static int DefaultBudget { get; set; }
 
         /// <summary>
         /// Gets or sets the life of each <see cref="Particle"/> emitted.
