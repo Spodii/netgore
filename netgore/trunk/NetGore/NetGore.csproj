@@ -59,7 +59,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RandomHelper.cs" />
     <Compile Include="SystemPerformance.cs" />
+    <Compile Include="Variable Values\IVariableValue.cs" />
+    <Compile Include="Variable Values\VariableByte.cs" />
+    <Compile Include="Variable Values\VariableColor.cs" />
+    <Compile Include="Variable Values\VariableFloat.cs" />
+    <Compile Include="Variable Values\VariableInt.cs" />
+    <Compile Include="Variable Values\VariableSByte.cs" />
+    <Compile Include="Variable Values\VariableShort.cs" />
+    <Compile Include="Variable Values\VariableUShort.cs" />
     <Compile Include="World\Entities\AI\AIAttribute.cs" />
     <Compile Include="World\Entities\AI\AIFactoryBase.cs" />
     <Compile Include="World\Entities\AI\AIID.cs" />
