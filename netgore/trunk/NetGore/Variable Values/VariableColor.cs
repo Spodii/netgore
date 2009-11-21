@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore
 {
+    [TypeConverter(typeof(VariableColorConverter))]
     public struct VariableColor : IVariableValue<Color>
     {
         Color _max;

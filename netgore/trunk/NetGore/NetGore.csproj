@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Converters\Variable Values\IVariableValueConverter.cs" />
     <Compile Include="Converters\Variable Values\VariableByteConverter.cs" />
+    <Compile Include="Converters\Variable Values\VariableColorConverter.cs" />
     <Compile Include="Converters\Variable Values\VariableFloatConverter.cs" />
     <Compile Include="Converters\Variable Values\VariableIntConverter.cs" />
     <Compile Include="Converters\Variable Values\VariableSByteConverter.cs" />
