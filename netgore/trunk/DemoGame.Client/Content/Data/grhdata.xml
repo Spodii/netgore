@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>100</Count>
+    <Count>112</Count>
     <Item0>
       <Index>1</Index>
       <Frames>
@@ -1043,6 +1043,198 @@
       </Texture>
     </Item64>
     <Item65>
+      <Index>66</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>66</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>ankh</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/ankh</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item65>
+    <Item66>
+      <Index>67</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>67</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>ball</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/ball</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item66>
+    <Item67>
+      <Index>68</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>68</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>raindrop</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/raindrop</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item67>
+    <Item68>
+      <Index>69</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>69</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>shield</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/shield</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item68>
+    <Item69>
+      <Index>70</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>70</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>skull</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/skull</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item69>
+    <Item70>
+      <Index>71</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>71</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>snow sharp</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/snow sharp</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item70>
+    <Item71>
+      <Index>72</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>72</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>snow</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/snow</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item71>
+    <Item72>
+      <Index>73</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>73</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>sparkle</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/sparkle</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item72>
+    <Item73>
+      <Index>74</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>74</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>splatter</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/splatter</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item73>
+    <Item74>
+      <Index>75</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>75</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>star sharp</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/star sharp</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item74>
+    <Item75>
+      <Index>76</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>76</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>star</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/star</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item75>
+    <Item76>
+      <Index>77</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>77</Item0>
+      </Frames>
+      <Category>
+        <Name>Particle</Name>
+        <Title>sword</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Particle/sword</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item76>
+    <Item77>
       <Index>117</Index>
       <Frames>
         <Count>1</Count>
@@ -1057,8 +1249,8 @@
         <Name>Effect/_Teleport_frames_400/1</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item65>
-    <Item66>
+    </Item77>
+    <Item78>
       <Index>118</Index>
       <Frames>
         <Count>1</Count>
@@ -1073,8 +1265,8 @@
         <Name>Effect/_Teleport_frames_400/2</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item66>
-    <Item67>
+    </Item78>
+    <Item79>
       <Index>119</Index>
       <Frames>
         <Count>1</Count>
@@ -1089,8 +1281,8 @@
         <Name>Effect/_Teleport_frames_400/3</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item67>
-    <Item68>
+    </Item79>
+    <Item80>
       <Index>120</Index>
       <Frames>
         <Count>1</Count>
@@ -1105,8 +1297,8 @@
         <Name>Effect/_Teleport_frames_400/4</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item68>
-    <Item69>
+    </Item80>
+    <Item81>
       <Index>121</Index>
       <Frames>
         <Count>1</Count>
@@ -1121,8 +1313,8 @@
         <Name>Effect/_Teleport_frames_400/5</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item69>
-    <Item70>
+    </Item81>
+    <Item82>
       <Index>122</Index>
       <Frames>
         <Count>1</Count>
@@ -1137,8 +1329,8 @@
         <Name>Effect/_Teleport_frames_400/6</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item70>
-    <Item71>
+    </Item82>
+    <Item83>
       <Index>123</Index>
       <Frames>
         <Count>1</Count>
@@ -1153,8 +1345,8 @@
         <Name>Effect/_Teleport_frames_400/7</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item71>
-    <Item72>
+    </Item83>
+    <Item84>
       <Index>124</Index>
       <Frames>
         <Count>1</Count>
@@ -1169,8 +1361,8 @@
         <Name>Effect/_Teleport_frames_400/8</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item72>
-    <Item73>
+    </Item84>
+    <Item85>
       <Index>126</Index>
       <Frames>
         <Count>1</Count>
@@ -1185,8 +1377,8 @@
         <Name>item/melee/titaniumsword</Name>
         <Source>0,0,24,24</Source>
       </Texture>
-    </Item73>
-    <Item74>
+    </Item85>
+    <Item86>
       <Index>127</Index>
       <Frames>
         <Count>1</Count>
@@ -1201,8 +1393,8 @@
         <Name>Item/Potion/Red</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item74>
-    <Item75>
+    </Item86>
+    <Item87>
       <Index>128</Index>
       <Frames>
         <Count>1</Count>
@@ -1217,8 +1409,8 @@
         <Name>Item/Potion/Blue</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item75>
-    <Item76>
+    </Item87>
+    <Item88>
       <Index>129</Index>
       <Frames>
         <Count>1</Count>
@@ -1233,8 +1425,8 @@
         <Name>Item/Back/Crystal</Name>
         <Source>0,0,15,25</Source>
       </Texture>
-    </Item76>
-    <Item77>
+    </Item88>
+    <Item89>
       <Index>130</Index>
       <Frames>
         <Count>1</Count>
@@ -1249,8 +1441,8 @@
         <Name>Item/Body/Crystal</Name>
         <Source>0,0,22,22</Source>
       </Texture>
-    </Item77>
-    <Item78>
+    </Item89>
+    <Item90>
       <Index>131</Index>
       <Frames>
         <Count>1</Count>
@@ -1265,8 +1457,8 @@
         <Name>Item/Feet/Crystal</Name>
         <Source>0,0,15,14</Source>
       </Texture>
-    </Item78>
-    <Item79>
+    </Item90>
+    <Item91>
       <Index>132</Index>
       <Frames>
         <Count>1</Count>
@@ -1281,8 +1473,8 @@
         <Name>Item/Head/Crystal</Name>
         <Source>0,0,11,16</Source>
       </Texture>
-    </Item79>
-    <Item80>
+    </Item91>
+    <Item92>
       <Index>133</Index>
       <Frames>
         <Count>1</Count>
@@ -1297,8 +1489,8 @@
         <Name>GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item80>
-    <Item81>
+    </Item92>
+    <Item93>
       <Index>134</Index>
       <Frames>
         <Count>1</Count>
@@ -1313,8 +1505,8 @@
         <Name>GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item81>
-    <Item82>
+    </Item93>
+    <Item94>
       <Index>135</Index>
       <Frames>
         <Count>1</Count>
@@ -1329,8 +1521,8 @@
         <Name>GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item82>
-    <Item83>
+    </Item94>
+    <Item95>
       <Index>136</Index>
       <Frames>
         <Count>1</Count>
@@ -1345,8 +1537,8 @@
         <Name>GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item83>
-    <Item84>
+    </Item95>
+    <Item96>
       <Index>137</Index>
       <Frames>
         <Count>1</Count>
@@ -1361,8 +1553,8 @@
         <Name>Background/sky</Name>
         <Source>0,0,1024,238</Source>
       </Texture>
-    </Item84>
-    <Item85>
+    </Item96>
+    <Item97>
       <Index>138</Index>
       <Frames>
         <Count>1</Count>
@@ -1377,8 +1569,8 @@
         <Name>Background/trees/dense</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item85>
-    <Item86>
+    </Item97>
+    <Item98>
       <Index>139</Index>
       <Frames>
         <Count>1</Count>
@@ -1393,8 +1585,8 @@
         <Name>Background/trees/sparse</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item86>
-    <Item87>
+    </Item98>
+    <Item99>
       <Index>140</Index>
       <Frames>
         <Count>1</Count>
@@ -1409,8 +1601,8 @@
         <Name>SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item87>
-    <Item88>
+    </Item99>
+    <Item100>
       <Index>141</Index>
       <Frames>
         <Count>1</Count>
@@ -1425,8 +1617,8 @@
         <Name>StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item88>
-    <Item89>
+    </Item100>
+    <Item101>
       <Index>142</Index>
       <Frames>
         <Count>1</Count>
@@ -1441,8 +1633,8 @@
         <Name>SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item89>
-    <Item90>
+    </Item101>
+    <Item102>
       <Index>143</Index>
       <Frames>
         <Count>1</Count>
@@ -1457,8 +1649,8 @@
         <Name>GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item90>
-    <Item91>
+    </Item102>
+    <Item103>
       <Index>144</Index>
       <Frames>
         <Count>1</Count>
@@ -1473,8 +1665,8 @@
         <Name>GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item91>
-    <Item92>
+    </Item103>
+    <Item104>
       <Index>200</Index>
       <Frames>
         <Count>1</Count>
@@ -1489,8 +1681,8 @@
         <Name>Character/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item92>
-    <Item93>
+    </Item104>
+    <Item105>
       <Index>201</Index>
       <Frames>
         <Count>1</Count>
@@ -1505,8 +1697,8 @@
         <Name>Character/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item93>
-    <Item94>
+    </Item105>
+    <Item106>
       <Index>202</Index>
       <Frames>
         <Count>1</Count>
@@ -1521,8 +1713,8 @@
         <Name>Character/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
-    </Item94>
-    <Item95>
+    </Item106>
+    <Item107>
       <Index>203</Index>
       <Frames>
         <Count>1</Count>
@@ -1537,8 +1729,8 @@
         <Name>Character/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
-    </Item95>
-    <Item96>
+    </Item107>
+    <Item108>
       <Index>204</Index>
       <Frames>
         <Count>1</Count>
@@ -1553,8 +1745,8 @@
         <Name>Character/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
-    </Item96>
-    <Item97>
+    </Item108>
+    <Item109>
       <Index>205</Index>
       <Frames>
         <Count>1</Count>
@@ -1569,8 +1761,8 @@
         <Name>Character/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item97>
-    <Item98>
+    </Item109>
+    <Item110>
       <Index>206</Index>
       <Frames>
         <Count>1</Count>
@@ -1585,8 +1777,8 @@
         <Name>Character/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item98>
-    <Item99>
+    </Item110>
+    <Item111>
       <Index>207</Index>
       <Frames>
         <Count>1</Count>
@@ -1601,7 +1793,7 @@
         <Name>Character/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
-    </Item99>
+    </Item111>
   </Stationary>
   <Animated>
     <Count>1</Count>
@@ -1622,7 +1814,7 @@
         <Name>Effect</Name>
         <Title>Teleport</Title>
       </Category>
-      <Speed>400</Speed>
+      <Speed>0.0025</Speed>
     </Item0>
   </Animated>
 </GrhDatas>
