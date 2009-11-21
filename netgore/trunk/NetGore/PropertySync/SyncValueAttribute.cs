@@ -5,7 +5,7 @@ using NetGore;
 namespace NetGore
 {
     /// <summary>
-    /// Attribute for a Property that will have its value synchronized by a PropertySyncBase.
+    /// Attribute for a Property that will have its value synchronized by a <see cref="PropertySyncBase"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class SyncValueAttribute : Attribute
