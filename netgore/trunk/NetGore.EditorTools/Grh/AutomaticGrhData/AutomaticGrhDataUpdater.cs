@@ -58,7 +58,8 @@ namespace NetGore.EditorTools
                 if (m.Groups["Speed"].Success)
                     speed = Parser.Invariant.ParseInt(m.Groups["Speed"].Value);
 
-                ret.Add(new AnimationRegexInfo(dir, title, speed));
+                var animationRegexInfo = new AnimationRegexInfo(dir, title, speed);
+                ret.Add(animationRegexInfo);
             }
 
             return ret;
@@ -248,9 +249,19 @@ namespace NetGore.EditorTools
                 }
 
                 // Get the categorization
-                var category = new SpriteCategory(parentDir.FullName.Substring(trimLen));
-                var title = new SpriteTitle(frameDirInfo.Title);
-                var categorization = new SpriteCategorization(category, title);
+                SpriteCategorization categorization;
+                try
+                {
+                    var category = new SpriteCategory(parentDir.FullName.Substring(trimLen));
+                    var title = new SpriteTitle(frameDirInfo.Title);
+                    categorization = new SpriteCategorization(category, title);
+                }
+                catch (ArgumentException)
+                {
+                    // Ignore argument exceptions from the categorization constructors since they will just
+                    // mean that it is an invalid category or title
+                    continue;
+                }
 
                 // Get the GrhIndices of the frames for the animation
                 var indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
@@ -259,7 +270,7 @@ namespace NetGore.EditorTools
 
                 // If the GrhData does not already exist, create it
                 // If it does exist, update the frames and speed
-                GrhData gd = GrhInfo.GetData(category, title);
+                GrhData gd = GrhInfo.GetData(categorization);
                 if (gd == null)
                 {
                     // Create the new GrhData
@@ -270,7 +281,9 @@ namespace NetGore.EditorTools
                 else
                 {
                     // Re-load the GrhData with the new values
-                    gd.Load(gd.GrhIndex, indices, frameDirInfo.Speed, categorization);
+                    gd.Speed = frameDirInfo.Speed;
+                    gd.SetFrames(indices);
+                    gd.SetCategorization(categorization);
                 }
             }
 
