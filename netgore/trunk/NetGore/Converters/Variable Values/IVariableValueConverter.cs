@@ -12,8 +12,6 @@ namespace NetGore
     /// <typeparam name="T">The internal value type of the IVariableValue.</typeparam>
     public abstract class IVariableValueConverter<T> : SimpleExpandableTypeConverter<IVariableValue<T>>
     {
-        static readonly Parser _parser = Parser.Current;
-
         /// <summary>
         /// When overridden in the derived class, converts the <paramref name="values"/> to the output
         /// type.
@@ -30,7 +28,7 @@ namespace NetGore
             {
                 case 1:
                     T value;
-                    if (TryParse(_parser, values[0], out value))
+                    if (TryParse(Parser, values[0], out value))
                         return Create(value);
 
                     break;
@@ -39,7 +37,7 @@ namespace NetGore
                     T min;
                     T max;
 
-                    if (TryParse(_parser, values[0], out min) && TryParse(_parser, values[1], out max))
+                    if (TryParse(Parser, values[0], out min) && TryParse(Parser, values[1], out max))
                         return Create(min, max);
 
                     break;

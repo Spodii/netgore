@@ -12,6 +12,9 @@ namespace NetGore
     /// <typeparam name="T">The type being converted.</typeparam>
     public abstract class SimpleExpandableTypeConverter<T> : ExpandableObjectConverter
     {
+        /// <summary>
+        /// Gets the <see cref="Parser"/> to use for parsing strings in this class.
+        /// </summary>
         protected Parser Parser
         {
             get { return Parser.Current; }
