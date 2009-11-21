@@ -22,13 +22,38 @@ namespace NetGore.Graphics.ParticleEngine
         int _lastUpdateTime = int.MinValue;
         int _nextReleaseTime;
 
+        /// <summary>
+        /// Initializes the <see cref="ParticleEmitter"/> class.
+        /// </summary>
+        static ParticleEmitter()
+        {
+            DefaultBudget = 1000;
+        }
+
+        /// <summary>
+        /// Gets or sets the default budget to give to new <see cref="ParticleEmitter"/>s when no budget
+        /// is explicitly given.
+        /// </summary>
+        public static int DefaultBudget { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
+        /// </summary>
+        public ParticleEmitter() : this(DefaultBudget)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
+        /// </summary>
+        /// <param name="budget">The initial particle budget.</param>
         public ParticleEmitter(int budget)
         {
             _budget = budget;
             particles = new Particle[budget];
 
             // Set some default values
-            Budget = 1000;
+            Budget = budget;
             Life = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
             ReleaseColor = new VariableColor(new Color(255, 255, 255, 255));
