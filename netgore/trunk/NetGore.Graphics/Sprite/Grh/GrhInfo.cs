@@ -12,7 +12,7 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Holds the GrhDatas and related methods.
+    /// Holds the <see cref="GrhData"/>s and related methods.
     /// </summary>
     public static class GrhInfo
     {
