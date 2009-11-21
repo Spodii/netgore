@@ -13,14 +13,14 @@ namespace NetGore
         readonly string _customName;
 
         /// <summary>
-        /// SyncValueAttribute constructor.
+        /// Initializes a new instance of the <see cref="SyncValueAttribute"/> class.
         /// </summary>
         public SyncValueAttribute()
         {
         }
 
         /// <summary>
-        /// SyncValueAttribute constructor.
+        /// Initializes a new instance of the <see cref="SyncValueAttribute"/> class.
         /// </summary>
         /// <param name="customName">The custom name to be used for when synchronizing.</param>
         public SyncValueAttribute(string customName) : this()
