@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NetGore.Globalization;
 
 namespace NetGore
@@ -54,6 +55,8 @@ namespace NetGore
             return base.CanConvertTo(context, destinationType);
         }
 
+        static readonly Regex _groupingRegex = new Regex(@"\{(?<value>.+?)\}", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+
         /// <summary>
         /// Converts the given object to the type of this converter, using the specified context and culture information.
         /// </summary>
@@ -73,11 +76,23 @@ namespace NetGore
             string s;
             if ((s = value as string) != null)
             {
-                // Remove empty characters
-                s = s.Replace(" ", string.Empty);
+                string[] values;
 
-                // Separate the values
-                string[] values = s.Split(new string[] { culture.TextInfo.ListSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                // Check if we have explicit grouping defined by using {} brackets
+                var matches = _groupingRegex.Matches(s);
+                if (matches.Count > 0)
+                {
+                    // Grab the group values
+                    values = new string[matches.Count];
+                    for (int i = 0; i < values.Length; i++)
+                        values[i] = matches[i].Groups["value"].Value;
+                }
+                else
+                {
+                    // No grouping so just separate the values by the separator
+                    values = s.Split(new string[] { culture.TextInfo.ListSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                }
+
                 if (value == null)
                     value = new string[0];
 

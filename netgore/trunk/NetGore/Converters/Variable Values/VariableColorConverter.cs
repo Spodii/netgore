@@ -44,5 +44,17 @@ namespace NetGore
             value = (Color)_colorConverter.ConvertFromString(valueString);
             return true;
         }
+
+        /// <summary>
+        /// Converts the <paramref name="value"/> to string in a way that it can be parsed by <see cref="TryParse"/>.
+        /// </summary>
+        /// <param name="value">The value to convert to a string.</param>
+        /// <returns>
+        /// The <paramref name="value"/> as a string.
+        /// </returns>
+        protected override string ConvertToString(Color value)
+        {
+            return "{" + _colorConverter.ConvertToString(value) + "}";
+        }
     }
 }

@@ -80,7 +80,19 @@ namespace NetGore
         /// <returns>The <paramref name="value"/> as a string.</returns>
         protected override string ConvertToString(IVariableValue<T> value, string separator)
         {
-            return string.Format("{1}{0}{2}", separator, value.Min, value.Max);
+            var minStr = ConvertToString(value.Min);
+            var maxStr = ConvertToString(value.Max);
+            return string.Format("{1}{0}{2}", separator, minStr, maxStr);
+        }
+
+        /// <summary>
+        /// Converts the <paramref name="value"/> to string in a way that it can be parsed by <see cref="TryParse"/>.
+        /// </summary>
+        /// <param name="value">The value to convert to a string.</param>
+        /// <returns>The <paramref name="value"/> as a string.</returns>
+        protected virtual string ConvertToString(T value)
+        {
+            return value.ToString();
         }
     }
 }
