@@ -47,6 +47,9 @@ namespace NetGore
         /// Gets or sets the inclusive minimum possible value. If this value is set to greater than <see cref="IVariableValue{T}.Max"/>,
         /// then <see cref="IVariableValue{T}.Max"/> will be raised to equal this value.
         /// </summary>
+        [Description("The inclusive minimum possible value.")]
+        [Category("Variable Value")]
+        [EditorBrowsable]
         public short Min
         {
             get { return _min; }
@@ -62,6 +65,9 @@ namespace NetGore
         /// Gets or sets the inclusive maximum possible value. If this value is set to less than <see cref="IVariableValue{T}.Min"/>,
         /// then <see cref="IVariableValue{T}.Min"/> will be lowered to equal this value.
         /// </summary>
+        [Description("The inclusive maximum possible value.")]
+        [Category("Variable Value")]
+        [EditorBrowsable]
         public short Max
         {
             get { return _max; }

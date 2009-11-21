@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 
 namespace NetGore
 {
@@ -8,12 +9,18 @@ namespace NetGore
         /// Gets or sets the inclusive maximum possible value. If this value is set to less than <see cref="Min"/>,
         /// then <see cref="Min"/> will be lowered to equal this value.
         /// </summary>
+        [Description("The inclusive maximum possible value.")]
+        [Category("Variable Value")]
+        [EditorBrowsable]
         T Max { get; set; }
 
         /// <summary>
         /// Gets or sets the inclusive minimum possible value. If this value is set to greater than <see cref="Max"/>,
         /// then <see cref="Max"/> will be raised to equal this value.
         /// </summary>
+        [Description("The inclusive minimum possible value.")]
+        [Category("Variable Value")]
+        [EditorBrowsable]
         T Min { get; set; }
 
         /// <summary>
