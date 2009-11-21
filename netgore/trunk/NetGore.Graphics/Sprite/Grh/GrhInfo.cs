@@ -63,7 +63,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all of the GrhDatas.
+        /// Gets an IEnumerable of all of the <see cref="GrhData"/>s.
         /// </summary>
         public static IEnumerable<GrhData> GrhDatas
         {
@@ -77,9 +77,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Adds a GrhData to the list of GrhDatas at the index assigned to it.
+        /// Adds a <see cref="GrhData"/> to the list of <see cref="GrhData"/>s at the index assigned to it.
         /// </summary>
-        /// <param name="gd">GrhData to add</param>
+        /// <param name="gd"><see cref="GrhData"/> to add</param>
         internal static void AddGrhData(GrhData gd)
         {
             if (gd == null)
@@ -105,7 +105,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Handles when a GrhData is added to the GrhDatas DArray.
+        /// Handles when a <see cref="GrhData"/> is added to the <see cref="GrhData"/>s DArray.
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Event args.</param>
@@ -151,7 +151,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Handles when the category of a GrhData in the DArray changes.
+        /// Handles when the category of a <see cref="GrhData"/> in the DArray changes.
         /// </summary>
         static void ChangeCategorizationHandler(GrhData sender, SpriteCategorization oldCategorization)
         {
@@ -199,9 +199,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Deletes a GrhData.
+        /// Deletes a <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="grhData">GrhData to delete.</param>
+        /// <param name="grhData"><see cref="GrhData"/> to delete.</param>
         public static void Delete(GrhData grhData)
         {
             if (grhData == null)
@@ -211,9 +211,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Deletes a GrhData.
+        /// Deletes a <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="grhIndex">Index of the GrhData to delete.</param>
+        /// <param name="grhIndex">Index of the <see cref="GrhData"/> to delete.</param>
         public static void Delete(GrhIndex grhIndex)
         {
             if (!_grhDatas.CanGet((int)grhIndex))
@@ -223,9 +223,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Finds all of the GrhDatas that reference a texture that does not exist.
+        /// Finds all of the <see cref="GrhData"/>s that reference a texture that does not exist.
         /// </summary>
-        /// <returns>IEnumerable of all of the GrhDatas that reference a texture that does not exist.</returns>
+        /// <returns>IEnumerable of all of the <see cref="GrhData"/>s that reference a texture that does not exist.</returns>
         public static IEnumerable<GrhData> FindMissingTextures()
         {
             var nonanimated = GrhDatas.Where(x => !x.IsAnimated);
