@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 
 namespace NetGore
 {
+    [TypeConverter(typeof(VariableSByteConverter))]
     public struct VariableSByte : IVariableValue<sbyte>
     {
         sbyte _max;

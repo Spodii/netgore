@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace NetGore
 {
+    [TypeConverter(typeof(VariableShortConverter))]
     public struct VariableShort : IVariableValue<short>
     {
         short _max;

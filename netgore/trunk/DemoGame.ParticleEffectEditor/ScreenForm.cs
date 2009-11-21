@@ -40,7 +40,7 @@ namespace DemoGame.ParticleEffectEditor
         {
             // Clear the background
             GraphicsDevice.Clear(Color.Black);
-            _renderer.RenderEmitter(_emitter);
+            _renderer.RenderEmitter(Emitter);
         }
 
         void ScreenForm_Load(object sender, EventArgs e)
@@ -52,7 +52,21 @@ namespace DemoGame.ParticleEffectEditor
             var effect = _content.Load<Effect>("Fx/pointsprite");
             _renderer = new PointSpriteRenderer(GraphicsDevice, effect);
             var texture = _content.Load<Texture2D>("Grh/Particle/skull");
-            _emitter = new ParticleEmitter(1000) { ParticleTexture = texture, Origin = new Vector2(300, 300) };
+            Emitter = new ParticleEmitter(1000) { ParticleTexture = texture, Origin = new Vector2(300, 300) };
+        }
+
+        public ParticleEmitter Emitter
+        {
+            get { return _emitter; }
+            set
+            {
+                if (_emitter == value)
+                    return;
+
+                _emitter = value;
+
+                pgEffect.SelectedObject = Emitter;
+            }
         }
 
         /// <summary>
@@ -60,7 +74,7 @@ namespace DemoGame.ParticleEffectEditor
         /// </summary>
         public void UpdateGame()
         {
-            _emitter.Update(GetTime());
+            Emitter.Update(GetTime());
         }
 
         #region IGetTime Members
