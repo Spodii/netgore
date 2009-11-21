@@ -124,6 +124,8 @@ namespace NetGore.IO
             if (string.IsNullOrEmpty(categoryAndTitle))
                 throw new ArgumentNullException("categoryAndTitle");
 
+            categoryAndTitle = categoryAndTitle.Replace("\\", Delimiter).Replace("/", Delimiter);
+
             int lastSep = categoryAndTitle.LastIndexOf(Delimiter);
             if (lastSep == -1)
                 throw new ArgumentException("No delimiters found.", "categoryAndTitle");
