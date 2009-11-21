@@ -183,11 +183,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the speed multiplier of the Grh animation where each frame lasts "Speed" milliseconds.
+        /// Gets or sets the speed multiplier of the Grh animation where each frame lasts "Speed" milliseconds.
         /// </summary>
         public float Speed
         {
             get { return _speed; }
+            set { _speed = value; }
         }
 
         /// <summary>
@@ -342,6 +343,37 @@ namespace NetGore.Graphics
             SetCategorization(categorization);
         }
 
+        ImmutableArray<GrhData> CreateFrames(GrhIndex[] frameIndices)
+        {
+            var frames = new GrhData[frameIndices.Length];
+            for (int i = 0; i < frameIndices.Length; i++)
+            {
+                frames[i] = GrhInfo.GetData(frameIndices[i]);
+                if (frames[i] == null)
+                {
+                    const string errmsg =
+                        "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
+                    string err = string.Format(errmsg, frames[i], this, i, frameIndices.Length);
+                    throw new Exception(err);
+                }
+            }
+
+            return new ImmutableArray<GrhData>(frames);
+        }
+
+        /// <summary>
+        /// Sets the <see cref="Frames"/> for an animated <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="frameIndices">The indices of the <see cref="GrhData"/> frames to build the animation from.</param>
+        /// <exception cref="MethodAccessException">IsAnimated is not set.</exception>
+        public void SetFrames(GrhIndex[] frameIndices)
+        {
+            if (!IsAnimated)
+                throw new MethodAccessException("Method may only be accessed when IsAnimated is not set.");
+
+            _frames = CreateFrames(frameIndices);
+        }
+
         /// <summary>
         /// Sets the data for an animated <see cref="GrhData"/>.
         /// </summary>
@@ -355,20 +387,7 @@ namespace NetGore.Graphics
                 throw new ArgumentException("Category already in use.", "categorization");
 
             // Create the frames
-            var frames = new GrhData[frameIndices.Length];
-            for (int i = 0; i < frameIndices.Length; i++)
-            {
-                frames[i] = GrhInfo.GetData(frameIndices[i]);
-                if (frames[i] == null)
-                {
-                    const string errmsg =
-                        "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
-                    string err = string.Format(errmsg, frames[i], grhIndex, i, frameIndices.Length);
-                    throw new Exception(err);
-                }
-            }
-
-            _frames = new ImmutableArray<GrhData>(frames);
+            _frames = CreateFrames(frameIndices);
 
             // Store some values and references
             _grhIndex = grhIndex;
