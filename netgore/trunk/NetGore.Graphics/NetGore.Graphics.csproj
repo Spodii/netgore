@@ -127,7 +127,8 @@
     <Compile Include="ParticleEngine\IParticleRenderer.cs" />
     <Compile Include="ParticleEngine\Particle.cs" />
     <Compile Include="ParticleEngine\ParticleEmitter.cs" />
-    <Compile Include="ParticleEngine\PointSpriteRenderer.cs" />
+    <Compile Include="ParticleEngine\ParticleRendererBase.cs" />
+    <Compile Include="ParticleEngine\SpriteBatchRenderer.cs" />
     <Compile Include="Sprite\Grh\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />
     <Compile Include="Sprite\AnimType.cs" />

@@ -10,16 +10,40 @@ namespace NetGore.Graphics.ParticleEngine
     {
         #region Shader members
 
+        /// <summary>
+        /// The current world position of the <see cref="Particle"/>.
+        /// </summary>
         public Vector2 Position;
+
+        /// <summary>
+        /// The size of the <see cref="Particle"/> in pixels.
+        /// </summary>
         public float Scale;
+
+        /// <summary>
+        /// The amount the <see cref="Particle"/> is rotated in radians. Rotation will not be used if
+        /// using <see cref="PointSpriteRenderer"/>.
+        /// </summary>
         public float Rotation;
+
+        /// <summary>
+        /// A <see cref="Vector4"/> describing the color of the <see cref="Particle"/> in the format of
+        /// RGBA. Each value must be between 0.0 and 1.0.
+        /// </summary>
         public Vector4 Color;
 
         #endregion
 
         #region Non-shader members
 
+        /// <summary>
+        /// The direction the <see cref="Particle"/> is moving.
+        /// </summary>
         public Vector2 Momentum;
+
+        /// <summary>
+        /// The speed and direction the <see cref="Particle"/> is increasing <see cref="Momentum"/> at.
+        /// </summary>
         public Vector2 Velocity;
 
         /// <summary>
