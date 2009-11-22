@@ -8,7 +8,7 @@ namespace NetGore
     /// </summary>
     public static class RandomHelper
     {
-        static readonly Random Random = new Random();
+        static readonly Random _rand = new Random();
 
         /// <summary>
         /// Chooses a random element in the given collection <paramref name="items"/>.
@@ -37,7 +37,7 @@ namespace NetGore
         /// <returns>A random float between 0.0 and 1.0.</returns>
         public static float NextFloat()
         {
-            return (float)Random.NextDouble();
+            return (float)_rand.NextDouble();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace NetGore
         /// <returns>A non-negative whole number.</returns>
         public static int NextInt()
         {
-            return Random.Next();
+            return _rand.Next();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NetGore
         /// <returns>A non-negetive random whole number less than the specified <paramref cref="maximum"/>.</returns>
         public static int NextInt(int maximum)
         {
-            return Random.Next(maximum);
+            return _rand.Next(maximum);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NetGore
         /// <returns>A random number within a specified range.</returns>
         public static int NextInt(int min, int max)
         {
-            return Random.Next(min, max);
+            return _rand.Next(min, max);
         }
     }
 }
