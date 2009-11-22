@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 using NetGore.IO;
 using NUnit.Framework;
 

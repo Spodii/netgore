@@ -1,5 +1,5 @@
 using System.Linq;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace NetGore
 {

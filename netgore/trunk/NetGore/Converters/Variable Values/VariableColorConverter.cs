@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace NetGore
 {

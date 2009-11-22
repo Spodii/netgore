@@ -6,11 +6,11 @@ using NetGore;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NetGore.Globalization")]
+[assembly: AssemblyTitle("NetGore.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("NetGore.Globalization")]
+[assembly: AssemblyProduct("NetGore.Core")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

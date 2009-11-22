@@ -1,6 +1,6 @@
 using System.Linq;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace NetGore.IO
 {

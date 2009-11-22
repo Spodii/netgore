@@ -4,6 +4,10 @@ using System.Globalization;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Wrapper for creating a <see cref="TypeConverter"/> with minimal effort.
+    /// </summary>
+    /// <typeparam name="T">The type being converted.</typeparam>
     public abstract class SimpleTypeConverter<T> : TypeConverter
     {
         /// <summary>

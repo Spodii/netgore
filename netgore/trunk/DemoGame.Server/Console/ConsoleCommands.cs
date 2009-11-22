@@ -5,7 +5,7 @@ using System.Text;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace DemoGame.Server
 {

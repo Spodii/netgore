@@ -115,9 +115,9 @@
       <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
       <Name>NetGore.Audio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
+    <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
       <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
-      <Name>NetGore.Globalization</Name>
+      <Name>NetGore.Core</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">

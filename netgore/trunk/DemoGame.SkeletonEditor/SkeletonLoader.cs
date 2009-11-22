@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 using NetGore.Graphics;
 using NetGore.IO;
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace NetGore.IO
 {

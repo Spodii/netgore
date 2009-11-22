@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
-using NetGore.Globalization;
+using NetGore.Core;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 

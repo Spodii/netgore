@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore
