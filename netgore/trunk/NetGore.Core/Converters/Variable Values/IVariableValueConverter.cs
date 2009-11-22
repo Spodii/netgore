@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
-using NetGore;
-
+﻿
 namespace NetGore
 {
     /// <summary>
@@ -48,30 +43,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a new object of the given type.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>A new object of the given type.</returns>
-        protected abstract IVariableValue<T> Create(T value);
-
-        /// <summary>
-        /// When overridden in the derived class, creates a new object of the given type.
-        /// </summary>
-        /// <param name="min">The min value.</param>
-        /// <param name="max">The max value.</param>
-        /// <returns>A new object of the given type.</returns>
-        protected abstract IVariableValue<T> Create(T min, T max);
-
-        /// <summary>
-        /// When overridden in the derived class, tries to parse the given value from the string.
-        /// </summary>
-        /// <param name="parser">The <see cref="Parser"/> to use to parse the <paramref name="valueString"/>.</param>
-        /// <param name="valueString">The string to parse.</param>
-        /// <param name="value">The value parsed from the string.</param>
-        /// <returns>True if parsed successfully; otherwise false.</returns>
-        protected abstract bool TryParse(Parser parser, string valueString, out T value);
-
-        /// <summary>
         /// When overridden in the derived class, converts the <paramref name="value"/> to a string, separating
         /// each element with the given <paramref name="separator"/>.
         /// </summary>
@@ -94,5 +65,29 @@ namespace NetGore
         {
             return value.ToString();
         }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a new object of the given type.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>A new object of the given type.</returns>
+        protected abstract IVariableValue<T> Create(T value);
+
+        /// <summary>
+        /// When overridden in the derived class, creates a new object of the given type.
+        /// </summary>
+        /// <param name="min">The min value.</param>
+        /// <param name="max">The max value.</param>
+        /// <returns>A new object of the given type.</returns>
+        protected abstract IVariableValue<T> Create(T min, T max);
+
+        /// <summary>
+        /// When overridden in the derived class, tries to parse the given value from the string.
+        /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use to parse the <paramref name="valueString"/>.</param>
+        /// <param name="valueString">The string to parse.</param>
+        /// <param name="value">The value parsed from the string.</param>
+        /// <returns>True if parsed successfully; otherwise false.</returns>
+        protected abstract bool TryParse(Parser parser, string valueString, out T value);
     }
 }

@@ -1,12 +1,13 @@
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace NetGore
 {
     /// <summary>
     /// Provides helper methods for the <see cref="CollisionType"/> enum.
     /// </summary>
-    public sealed class CollisionTypeHelper : EnumHelper<CollisionType>
+    public sealed class CollisionTypeHelper : EnumIOHelper<CollisionType>
     {
         static readonly CollisionTypeHelper _instance;
 

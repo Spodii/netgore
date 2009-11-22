@@ -1,7 +1,8 @@
+using System;
 using System.Linq;
 using NetGore;
 
-namespace NetGore.IO
+namespace NetGore
 {
     /// <summary>
     /// Helper methods for performing operations on bits.
@@ -248,15 +249,6 @@ namespace NetGore.IO
         public static bool IsPowerOf2(sbyte value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
-        }
-
-        /// <summary>
-        /// Convert a long to a double, preserving the bit sequence.
-        /// </summary>
-        /// <param name="value">Long value of the double.</param>
-        public static unsafe double LongToDouble(long value)
-        {
-            return *(double*)&value;
         }
 
         /// <summary>

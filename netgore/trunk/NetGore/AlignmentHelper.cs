@@ -2,13 +2,14 @@ using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.IO;
 
 namespace NetGore
 {
     /// <summary>
     /// Provides helper methods for the <see cref="Alignment"/> enum.
     /// </summary>
-    public sealed class AlignmentHelper : EnumHelper<Alignment>
+    public sealed class AlignmentHelper : EnumIOHelper<Alignment>
     {
         static readonly AlignmentHelper _instance;
 

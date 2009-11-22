@@ -1,9 +1,10 @@
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace DemoGame
 {
-    public sealed class ClientPacketIDHelper : EnumHelper<ClientPacketID>
+    public sealed class ClientPacketIDHelper : EnumIOHelper<ClientPacketID>
     {
         static readonly ClientPacketIDHelper _instance;
 

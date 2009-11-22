@@ -6,7 +6,7 @@ using NetGore;
 namespace NetGore
 {
     /// <summary>
-    /// Extensions for the System.Data.IDataRecord.
+    /// Extensions for the <see cref="IDataRecord"/>.
     /// </summary>
     public static class IDataRecordExtensions
     {

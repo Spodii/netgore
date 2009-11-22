@@ -250,7 +250,7 @@ namespace NetGore.Tests.NetGore
             H
         }
 
-        sealed class EVHByte : EnumHelper<EVByte>
+        sealed class EVHByte : EnumIOHelper<EVByte>
         {
             static readonly EVHByte _instance;
 
@@ -279,7 +279,7 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        sealed class EVHInt : EnumHelper<EVInt>
+        sealed class EVHInt : EnumIOHelper<EVInt>
         {
             static readonly EVHInt _instance;
 
@@ -308,7 +308,7 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        sealed class EVHSByte : EnumHelper<EVSByte>
+        sealed class EVHSByte : EnumIOHelper<EVSByte>
         {
             static readonly EVHSByte _instance;
 
@@ -337,7 +337,7 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        sealed class EVHShort : EnumHelper<EVShort>
+        sealed class EVHShort : EnumIOHelper<EVShort>
         {
             static readonly EVHShort _instance;
 
@@ -366,7 +366,7 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        sealed class EVHUShort : EnumHelper<EVUShort>
+        sealed class EVHUShort : EnumIOHelper<EVUShort>
         {
             static readonly EVHUShort _instance;
 

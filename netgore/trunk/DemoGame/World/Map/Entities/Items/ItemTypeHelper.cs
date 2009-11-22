@@ -1,9 +1,10 @@
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace DemoGame
 {
-    public sealed class ItemTypeHelper : EnumHelper<ItemType>
+    public sealed class ItemTypeHelper : EnumIOHelper<ItemType>
     {
         static readonly ItemTypeHelper _instance;
 

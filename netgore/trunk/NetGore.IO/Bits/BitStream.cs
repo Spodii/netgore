@@ -810,7 +810,7 @@ namespace NetGore.IO
         public T ReadEnumName<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
             var str = ReadString();
-            var value = EnumIOHelper.FromName<T>(str);
+            var value = EnumIOHelper<T>.FromName(str);
             return value;
         }
 
@@ -2748,7 +2748,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            var str = EnumIOHelper.ToName(value);
+            var str = EnumIOHelper<T>.ToName(value);
             Write(str);
         }
 
@@ -2923,7 +2923,7 @@ namespace NetGore.IO
         public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
             var str = ReadString();
-            var value = EnumIOHelper.FromName<T>(str);
+            var value = EnumIOHelper<T>.FromName(str);
             return value;
         }
 
@@ -2937,7 +2937,7 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            return EnumIOHelper.ReadEnum(this, reader, name);
+            return EnumIOHelper<T>.ReadEnum(this, reader, name);
         }
 
         /// <summary>
@@ -3237,7 +3237,7 @@ namespace NetGore.IO
         public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value)
             where T : struct, IComparable, IConvertible, IFormattable
         {
-            EnumIOHelper.WriteEnum(this, writer, name, value);
+            EnumIOHelper<T>.WriteEnum(this, writer, name, value);
         }
 
         /// <summary>
@@ -3248,7 +3248,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            var str = EnumIOHelper.ToName(value);
+            var str = EnumIOHelper<T>.ToName(value);
             Write(str);
         }
 

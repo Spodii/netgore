@@ -1,18 +1,16 @@
-using System.Linq;
-using NetGore;
 
 namespace NetGore
 {
-    public class VariableFloatConverter : IVariableValueConverter<float>
+    public class VariableShortConverter : IVariableValueConverter<short>
     {
         /// <summary>
         /// When overridden in the derived class, creates a new object of the given type.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>A new object of the given type.</returns>
-        protected override IVariableValue<float> Create(float value)
+        protected override IVariableValue<short> Create(short value)
         {
-            return new VariableFloat(value);
+            return new VariableShort(value);
         }
 
         /// <summary>
@@ -21,9 +19,9 @@ namespace NetGore
         /// <param name="min">The min value.</param>
         /// <param name="max">The max value.</param>
         /// <returns>A new object of the given type.</returns>
-        protected override IVariableValue<float> Create(float min, float max)
+        protected override IVariableValue<short> Create(short min, short max)
         {
-            return new VariableFloat(min, max);
+            return new VariableShort(min, max);
         }
 
         /// <summary>
@@ -35,7 +33,7 @@ namespace NetGore
         /// <returns>
         /// True if parsed successfully; otherwise false.
         /// </returns>
-        protected override bool TryParse(Parser parser, string valueString, out float value)
+        protected override bool TryParse(Parser parser, string valueString, out short value)
         {
             return parser.TryParse(valueString, out value);
         }

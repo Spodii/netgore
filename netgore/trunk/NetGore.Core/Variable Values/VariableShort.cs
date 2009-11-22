@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace NetGore
 {
-    [TypeConverter(typeof(VariableByteConverter))]
-    public struct VariableByte : IVariableValue<byte>
+    [TypeConverter(typeof(VariableShortConverter))]
+    public struct VariableShort : IVariableValue<short>
     {
-        byte _max;
-        byte _min;
+        short _max;
+        short _min;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VariableByte"/> struct.
+        /// Initializes a new instance of the <see cref="VariableShort"/> struct.
         /// </summary>
         /// <param name="value">The value for both the <see cref="Min"/> and <see cref="Max"/>.</param>
-        public VariableByte(byte value)
+        public VariableShort(short value)
         {
             _min = value;
             _max = value;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VariableByte"/> struct.
+        /// Initializes a new instance of the <see cref="VariableShort"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
         /// <param name="max">The max.</param>
-        public VariableByte(byte min, byte max)
+        public VariableShort(short min, short max)
         {
             if (min <= max)
             {
@@ -41,7 +37,7 @@ namespace NetGore
             }
         }
 
-        #region IVariableValue<byte> Members
+        #region IVariableValue<short> Members
 
         /// <summary>
         /// Gets or sets the inclusive minimum possible value. If this value is set to greater than <see cref="IVariableValue{T}.Max"/>,
@@ -50,7 +46,7 @@ namespace NetGore
         [Description("The inclusive minimum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
-        public byte Min
+        public short Min
         {
             get { return _min; }
             set
@@ -68,7 +64,7 @@ namespace NetGore
         [Description("The inclusive maximum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
-        public byte Max
+        public short Max
         {
             get { return _max; }
             set
@@ -83,9 +79,9 @@ namespace NetGore
         /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
         /// </summary>
         /// <returns>The next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</returns>
-        public byte GetNext()
+        public short GetNext()
         {
-            return (byte)RandomHelper.NextInt(Min, Max + 1);
+            return (short)RandomHelper.NextInt(Min, Max + 1);
         }
 
         #endregion

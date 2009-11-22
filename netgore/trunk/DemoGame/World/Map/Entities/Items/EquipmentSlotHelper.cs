@@ -1,9 +1,10 @@
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace DemoGame
 {
-    public sealed class EquipmentSlotHelper : EnumHelper<EquipmentSlot>
+    public sealed class EquipmentSlotHelper : EnumIOHelper<EquipmentSlot>
     {
         static readonly EquipmentSlotHelper _instance;
 

@@ -109,7 +109,7 @@ namespace NetGore.IO
         public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value)
             where T : struct, IComparable, IConvertible, IFormattable
         {
-            EnumIOHelper.WriteEnum(this, writer, name, value);
+            EnumIOHelper<T>.WriteEnum(this, writer, name, value);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = EnumIOHelper.ToName(value);
+            string str = EnumIOHelper<T>.ToName(value);
             Write(name, str);
         }
 

@@ -59,38 +59,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\Variable Values\IVariableValueConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableColorConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableFloatConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableIntConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableSByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableShortConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableUShortConverter.cs" />
-    <Compile Include="RandomHelper.cs" />
-    <Compile Include="SystemPerformance.cs" />
-    <Compile Include="Variable Values\IVariableValue.cs" />
-    <Compile Include="Variable Values\VariableByte.cs" />
+    <Compile Include="RandomHelperXna.cs" />
+    <Compile Include="Variable Values\VariableColorConverter.cs" />
     <Compile Include="Variable Values\VariableColor.cs" />
-    <Compile Include="Variable Values\VariableFloat.cs" />
-    <Compile Include="Variable Values\VariableInt.cs" />
-    <Compile Include="Variable Values\VariableSByte.cs" />
-    <Compile Include="Variable Values\VariableShort.cs" />
-    <Compile Include="Variable Values\VariableUShort.cs" />
     <Compile Include="World\Entities\AI\AIAttribute.cs" />
     <Compile Include="World\Entities\AI\AIFactoryBase.cs" />
     <Compile Include="World\Entities\AI\AIID.cs" />
     <Compile Include="World\Entities\AI\IAI.cs" />
     <Compile Include="Alignment.cs" />
     <Compile Include="AlignmentHelper.cs" />
-    <Compile Include="Strings\CharType.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="ConsoleInputBuffer.cs" />
     <Compile Include="World\Entities\CollisionTypeHelper.cs" />
     <Compile Include="World\Entities\IUpdateableEntity.cs" />
     <Compile Include="World\Entities\IUsableEntity.cs" />
-    <Compile Include="Reflection\EnumHelper.cs" />
-    <Compile Include="Extensions\ClampExtensions.cs" />
     <Compile Include="World\Entities\BoxSide.cs" />
     <Compile Include="World\Entities\CollisionBox.cs" />
     <Compile Include="World\Entities\CollisionType.cs" />
@@ -98,23 +80,16 @@
     <Compile Include="World\Entities\DynamicEntityFactory.cs" />
     <Compile Include="World\Entities\Entity.cs" />
     <Compile Include="World\Entities\EntityEventHandler.cs" />
-    <Compile Include="Extensions\IDictionaryExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="GrhIndex.cs" />
     <Compile Include="Extensions\IDataRecordExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\IsBetweenExtensions.cs" />
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
-    <Compile Include="Exceptions\InstantiateTypeException.cs" />
     <Compile Include="World\Map\IMapEntityCollection.cs" />
     <Compile Include="World\Map\IMapEntityCollectionExtensions.cs" />
     <Compile Include="World\Map\MapEntityAttribute.cs" />
     <Compile Include="World\Map\MapEntityGrid.cs" />
-    <Compile Include="World\Map\MapEntityIndex.cs" />
-    <Compile Include="World\Map\MapIndex.cs" />
-    <Compile Include="Reflection\MethodInfoHelper.cs" />
     <Compile Include="Audio\MusicID.cs" />
     <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
@@ -158,7 +133,6 @@
     <Compile Include="PropertySync\PropertySyncInt.cs" />
     <Compile Include="PropertySync\PropertySyncString.cs" />
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
-    <Compile Include="Extensions\StackExtensions.cs" />
     <Compile Include="Strings\Say Commands\ISayCommands.cs" />
     <Compile Include="Strings\Say Commands\SayCommandAttribute.cs" />
     <Compile Include="Strings\Say Commands\SayHandlerBase.cs" />
@@ -173,12 +147,9 @@
     <Compile Include="Strings\String Parser\StringCommandParser.cs" />
     <Compile Include="Strings\String Parser\StringParser.cs" />
     <Compile Include="Strings\StringRules.cs" />
-    <Compile Include="ThreadAsserts.cs" />
-    <Compile Include="Exceptions\TypeException.cs" />
-    <Compile Include="Reflection\TypeFilterCreator.cs" />
-    <Compile Include="Exceptions\TypeFilterException.cs" />
-    <Compile Include="Reflection\TypeHelper.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
+    <Compile Include="World\Map\MapEntityIndex.cs" />
+    <Compile Include="World\Map\MapIndex.cs" />
     <Compile Include="World\WorldSettings.cs" />
   </ItemGroup>
   <ItemGroup>

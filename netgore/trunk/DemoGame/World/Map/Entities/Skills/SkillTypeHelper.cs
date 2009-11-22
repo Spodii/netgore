@@ -1,9 +1,10 @@
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace DemoGame
 {
-    public sealed class SkillTypeHelper : EnumHelper<SkillType>
+    public sealed class SkillTypeHelper : EnumIOHelper<SkillType>
     {
         static readonly SkillTypeHelper _instance;
 
