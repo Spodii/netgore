@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 
 namespace NetGore.IO
@@ -6,6 +7,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable string that represents the category of a sprite.
     /// </summary>
+    [TypeConverter(typeof(SpriteCategoryConverter))]
     public sealed class SpriteCategory : IEquatable<SpriteCategory>, IComparable<SpriteCategory>
     {
         readonly string _value;
