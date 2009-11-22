@@ -257,6 +257,11 @@ namespace NetGore.Graphics.ParticleEngine
             for (int i = _lastAliveIndex + 1; i <= lastIndex; i++)
             {
                 var particle = particles[i];
+                if (particle == null)
+                {
+                    particle = new Particle();
+                    particles[i] = particle;
+                }
 
                 // Set up the particle
                 particle.Momentum = Vector2.Zero;
@@ -264,10 +269,8 @@ namespace NetGore.Graphics.ParticleEngine
                 particle.LifeEnd = currentTime + Life.GetNext();
                 particle.Rotation = ReleaseRotation.GetNext();
                 particle.Scale = ReleaseScale.GetNext();
-                particle.Color = ReleaseColor.GetNextAsVector4();
+                particle.Color = ReleaseColor.GetNext();
                 InitializeParticle(i, ReleaseSpeed.GetNext(), out particle.Position, out particle.Velocity);
-
-                particles[i] = particle;
             }
 
             // Increase the index of the last active particle
@@ -337,7 +340,7 @@ namespace NetGore.Graphics.ParticleEngine
                 // Update the particle
                 particle.Update(elapsedTime);
 
-                particles[i++] = particle;
+                ++i;
             }
         }
     }
