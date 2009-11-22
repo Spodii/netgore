@@ -51,6 +51,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -71,6 +72,54 @@
     <Compile Include="ContentManagerExtensions.cs" />
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
+    <Compile Include="GUI\Control Bases\Control.cs" />
+    <Compile Include="GUI\Control Bases\ControlEventHandler.cs" />
+    <Compile Include="GUI\Control Bases\ControlSettings.cs" />
+    <Compile Include="GUI\Control Bases\SpriteControl.cs" />
+    <Compile Include="GUI\Control Bases\SpriteControlSettings.cs" />
+    <Compile Include="GUI\Control Bases\TextControl.cs" />
+    <Compile Include="GUI\Control Bases\TextControlSettings.cs" />
+    <Compile Include="GUI\ControlBorder.cs" />
+    <Compile Include="GUI\Controls\Button.cs" />
+    <Compile Include="GUI\Controls\ButtonSettings.cs" />
+    <Compile Include="GUI\Controls\CheckBox.cs" />
+    <Compile Include="GUI\Controls\CheckBoxSettings.cs" />
+    <Compile Include="GUI\Controls\Form.cs" />
+    <Compile Include="GUI\Controls\FormSettings.cs" />
+    <Compile Include="GUI\Controls\Label.cs" />
+    <Compile Include="GUI\Controls\LabelSettings.cs" />
+    <Compile Include="GUI\Controls\Panel.cs" />
+    <Compile Include="GUI\Controls\PanelSettings.cs" />
+    <Compile Include="GUI\Controls\PictureBox.cs" />
+    <Compile Include="GUI\Controls\PictureBoxSettings.cs" />
+    <Compile Include="GUI\Controls\TextBox.cs" />
+    <Compile Include="GUI\Controls\TextBoxSettings.cs" />
+    <Compile Include="GUI\EditableTextHandler.cs" />
+    <Compile Include="GUI\EventArgs\KeyboardEventArgs.cs" />
+    <Compile Include="GUI\EventArgs\KeyboardEventHandler.cs" />
+    <Compile Include="GUI\EventArgs\MouseButtons.cs" />
+    <Compile Include="GUI\EventArgs\MouseClickEventArgs.cs" />
+    <Compile Include="GUI\EventArgs\MouseClickEventHandler.cs" />
+    <Compile Include="GUI\EventArgs\MouseEventArgs.cs" />
+    <Compile Include="GUI\EventArgs\MouseEventHandler.cs" />
+    <Compile Include="GUI\GameControl\GameControl.cs" />
+    <Compile Include="GUI\GameControl\GameControlCollection.cs" />
+    <Compile Include="GUI\GameControl\GameControlEventHandler.cs" />
+    <Compile Include="GUI\GameControl\GameControlKeys.cs" />
+    <Compile Include="GUI\GUIEventHandler.cs" />
+    <Compile Include="GUI\GUIManagerBase.cs" />
+    <Compile Include="GUI\IEditableText.cs" />
+    <Compile Include="GUI\MoveCursorDirection.cs" />
+    <Compile Include="GUI\Screen Manager\GameScreen.cs" />
+    <Compile Include="GUI\Screen Manager\ScreenManager.cs" />
+    <Compile Include="GUI\StyledText.cs" />
+    <Compile Include="GUI\StyledTextsDrawer.cs" />
+    <Compile Include="GUI\TextBoxLine.cs" />
+    <Compile Include="GUI\TextBoxLineChangeEventHandler.cs" />
+    <Compile Include="GUI\TextBoxLines.cs" />
+    <Compile Include="GUI\Tooltip\Tooltip.cs" />
+    <Compile Include="GUI\Tooltip\TooltipArgs.cs" />
+    <Compile Include="GUI\Tooltip\TooltipHandler.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="MapGrh.cs" />
     <Compile Include="MapRenderLayer.cs" />
@@ -113,6 +162,10 @@
     <Compile Include="Primitives\XNATriangle.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
+      <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
+      <Name>NetGore.Audio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
       <Name>NetGore.Collections</Name>
