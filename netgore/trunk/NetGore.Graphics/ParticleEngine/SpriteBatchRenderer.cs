@@ -22,8 +22,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
         protected override void InternalRenderEmitter(ParticleEmitter emitter)
         {
-            Rectangle source = new Rectangle(0, 0, emitter.ParticleTexture.Width, emitter.ParticleTexture.Height);
-            Vector2 origin = new Vector2(source.Width / 2f, source.Height / 2f);
+            Vector2 origin = emitter.Sprite.Size / 2f;
 
             _spriteBatch.Begin(BlendMode, SpriteSortMode.Deferred, SaveStateMode.None);
 
@@ -31,8 +30,7 @@ namespace NetGore.Graphics.ParticleEngine
             for (int i = 0; i < emitter.ActiveParticles; i++)
             {
                 var p = particles[i];
-                float scale = p.Scale / emitter.ParticleTexture.Width;
-                _spriteBatch.Draw(emitter.ParticleTexture, p.Position, source, p.Color, p.Rotation, origin, scale, SpriteEffects.None, 0f);
+                emitter.Sprite.Draw(_spriteBatch, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
             }
 
             _spriteBatch.End();

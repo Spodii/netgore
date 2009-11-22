@@ -6,7 +6,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable string that represents the title of a sprite.
     /// </summary>
-    public sealed class SpriteTitle
+    public sealed class SpriteTitle : IEquatable<SpriteTitle>, IComparable<SpriteTitle>
     {
         readonly string _value;
 
@@ -27,27 +27,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
-        /// The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public int CompareTo(SpriteTitle other)
-        {
-            return _value.CompareTo(other._value);
-        }
-
-        /// <summary>
         /// Checks if this object is equal to another object.
         /// </summary>
         /// <param name="obj">The other object.</param>
@@ -59,16 +38,6 @@ namespace NetGore.IO
                 return Equals(casted);
 
             return base.Equals(obj);
-        }
-
-        /// <summary>
-        /// Checks if this <see cref="SpriteTitle"/> is equal to another <see cref="SpriteTitle"/>.
-        /// </summary>
-        /// <param name="other">The other <see cref="SpriteTitle"/>.</param>
-        /// <returns>True if the two are equal; otherwise false.</returns>
-        public bool Equals(SpriteTitle other)
-        {
-            return _value.Equals(other._value, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -120,6 +89,45 @@ namespace NetGore.IO
         {
             return _value;
         }
+
+        #region IComparable<SpriteTitle> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public int CompareTo(SpriteTitle other)
+        {
+            return _value.CompareTo(other._value);
+        }
+
+        #endregion
+
+        #region IEquatable<SpriteTitle> Members
+
+        /// <summary>
+        /// Checks if this <see cref="SpriteTitle"/> is equal to another <see cref="SpriteTitle"/>.
+        /// </summary>
+        /// <param name="other">The other <see cref="SpriteTitle"/>.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public bool Equals(SpriteTitle other)
+        {
+            return _value.Equals(other._value, StringComparison.OrdinalIgnoreCase);
+        }
+
+        #endregion
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.SpriteTitle"/>.

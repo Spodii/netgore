@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
@@ -14,8 +13,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         protected Particle[] particles;
 
-        readonly ContentManager _contentManager;
-
         int _budget;
         bool _isDisposed = false;
 
@@ -26,8 +23,8 @@ namespace NetGore.Graphics.ParticleEngine
 
         int _lastUpdateTime = int.MinValue;
         int _nextReleaseTime;
-        Texture2D _particleTexture;
-        TextureAssetName _textureAssetName;
+        Grh _sprite;
+        SpriteCategorization _spriteCategorization;
 
         /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
@@ -40,24 +37,11 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
         /// </summary>
-        /// <param name="contentManager">The <see cref="ContentManager"/> used to load assets.</param>
-        public ParticleEmitter(ContentManager contentManager) : this(contentManager, DefaultBudget)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
-        /// </summary>
-        /// <param name="contentManager">The <see cref="ContentManager"/> used to load assets.</param>
         /// <param name="budget">The initial particle budget.</param>
-        public ParticleEmitter(ContentManager contentManager, int budget)
+        public ParticleEmitter(int budget)
         {
-            if (contentManager == null)
-                throw new ArgumentNullException("contentManager");
             if (budget < 1)
                 throw new ArgumentOutOfRangeException("budget", "budget must be greater than 0.");
-
-            _contentManager = contentManager;
 
             _budget = budget;
             particles = new Particle[budget];
@@ -69,7 +53,7 @@ namespace NetGore.Graphics.ParticleEngine
             ReleaseColor = new VariableColor(new Color(0, 0, 0, 255), new Color(255, 255, 255, 255));
             ReleaseRate = new VariableUShort(50);
             ReleaseRotation = new VariableFloat(0);
-            ReleaseScale = new VariableFloat(32);
+            ReleaseScale = new VariableFloat(1);
             ReleaseSpeed = new VariableFloat(50);
         }
 
@@ -139,43 +123,6 @@ namespace NetGore.Graphics.ParticleEngine
         public Vector2 Origin { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Texture2D"/> to apply to the <see cref="Particle"/>s.
-        /// </summary>
-        public Texture2D ParticleTexture
-        {
-            get { return _particleTexture; }
-        }
-
-        public TextureAssetName ParticleTextureName
-        {
-            get { return _textureAssetName; }
-            set
-            {
-                if (_textureAssetName == value)
-                    return;
-
-                _textureAssetName = value;
-
-                // Update the texture
-                if (!_textureAssetName.ContentExists())
-                {
-                    _particleTexture = null;
-                    return;
-                }
-
-                try
-                {
-                    // HACK: Need a good way to remove the Grhs/ string constant
-                    _particleTexture = _contentManager.Load<Texture2D>(_textureAssetName);
-                }
-                catch (ContentLoadException)
-                {
-                    _particleTexture = null;
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the number of <see cref="Particle"/>s that are emitted at each release.
         /// </summary>
         public VariableUShort ReleaseAmount { get; set; }
@@ -204,6 +151,41 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets or sets the speed of <see cref="Particle"/>s when released.
         /// </summary>
         public VariableFloat ReleaseSpeed { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="ISprite"/> to draw the <see cref="Particle"/>s.
+        /// </summary>
+        public Grh Sprite
+        {
+            get { return _sprite; }
+        }
+
+        /// <summary>
+        /// Gets or sets the category for the <see cref="ISprite"/> used by this <see cref="ParticleEmitter"/>.
+        /// </summary>
+        public SpriteCategorization SpriteCategorization
+        {
+            get { return _spriteCategorization; }
+            set
+            {
+                if (_spriteCategorization == value)
+                    return;
+
+                _spriteCategorization = value;
+
+                // Get the GrhData
+                var grhData = GrhInfo.GetData(_spriteCategorization);
+                if (grhData == null)
+                {
+                    // Invalid GrhData...
+                    _sprite = null;
+                    return;
+                }
+
+                // Load the sprite
+                _sprite = new Grh(grhData);
+            }
+        }
 
         /// <summary>
         /// Expires a <see cref="Particle"/> in the <see cref="particles"/> array, replacing the <paramref name="index"/>
@@ -304,6 +286,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="currentTime">The current time.</param>>
         public void Update(int currentTime)
         {
+            // Update the sprite
+            Sprite.Update(currentTime);
+
             // Get the elapsed time
             // On the first update, just assume 10 ms have elapsed
             int elapsedTime;
