@@ -35,7 +35,7 @@ namespace NetGore.IO
         /// </returns>
         public override string ToString()
         {
-            var s = Value.Substring(_rootDir.Length - 1);
+            var s = Value.Substring(_rootDir.Length);
             return s;
         }
 
