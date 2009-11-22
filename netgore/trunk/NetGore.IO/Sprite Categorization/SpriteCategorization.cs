@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 
 namespace NetGore.IO
@@ -6,6 +7,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable class that contains the categorization information for a sprite.
     /// </summary>
+    [TypeConverter(typeof(SpriteCategorizationConverter))]
     public class SpriteCategorization : IEquatable<SpriteCategorization>
     {
         /// <summary>

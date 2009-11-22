@@ -65,6 +65,7 @@
     <Compile Include="FilePathString.cs" />
     <Compile Include="Assets\TextureAssetName.cs" />
     <Compile Include="Sprite Categorization\SpriteCategorization.cs" />
+    <Compile Include="Sprite Categorization\SpriteCategorizationConverter.cs" />
     <Compile Include="Sprite Categorization\SpriteCategory.cs" />
     <Compile Include="Sprite Categorization\SpriteTitle.cs" />
     <Compile Include="TempFile.cs" />
