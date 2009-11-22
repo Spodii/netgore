@@ -175,8 +175,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public VariableColor ReleaseColor { get; set; }
 
-        // TODO: Decide how to handle changing the texture. Will probably want to use asset name.
-
         /// <summary>
         /// Gets or sets the rate in milliseconds that <see cref="Particle"/>s are emitted.
         /// </summary>
