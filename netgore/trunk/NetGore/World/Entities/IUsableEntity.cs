@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Linq;
-using NetGore;
 
 namespace NetGore
 {

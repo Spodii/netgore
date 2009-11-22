@@ -1,4 +1,3 @@
-﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -55,6 +54,19 @@ namespace NetGore
                 _min.A = max.A;
                 _max.A = min.A;
             }
+        }
+
+        /// <summary>
+        /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
+        /// </summary>
+        /// <returns>The next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</returns>
+        public Vector4 GetNextAsVector4()
+        {
+            var a = RandomHelper.NextInt(_min.A, _max.A);
+            var r = RandomHelper.NextInt(_min.R, _max.R);
+            var g = RandomHelper.NextInt(_min.G, _max.G);
+            var b = RandomHelper.NextInt(_min.B, _max.B);
+            return new Vector4(r, g, b, a);
         }
 
         #region IVariableValue<Color> Members
@@ -129,18 +141,5 @@ namespace NetGore
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
-        /// </summary>
-        /// <returns>The next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</returns>
-        public Vector4 GetNextAsVector4()
-        {
-            var a = RandomHelper.NextInt(_min.A, _max.A);
-            var r = RandomHelper.NextInt(_min.R, _max.R);
-            var g = RandomHelper.NextInt(_min.G, _max.G);
-            var b = RandomHelper.NextInt(_min.B, _max.B);
-            return new Vector4(r, g, b, a);
-        }
     }
 }

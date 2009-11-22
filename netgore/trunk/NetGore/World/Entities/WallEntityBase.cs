@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore

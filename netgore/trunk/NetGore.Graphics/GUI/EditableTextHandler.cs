@@ -3,7 +3,6 @@ using System.Linq;
 using System.Security;
 using Microsoft.Win32;
 using Microsoft.Xna.Framework.Input;
-using NetGore;
 
 namespace NetGore.Graphics.GUI
 {

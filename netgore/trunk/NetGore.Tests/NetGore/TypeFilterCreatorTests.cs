@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
-using NetGore;
-using NetGore.Collections;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Local

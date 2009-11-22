@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +6,27 @@ namespace NetGore
 {
     public static class EnumHelper<T> where T : struct, IComparable, IConvertible, IFormattable
     {
+        static readonly T[] _values;
+
+        /// <summary>
+        /// Initializes the <see cref="EnumHelper&lt;T&gt;"/> class.
+        /// </summary>
+        static EnumHelper()
+        {
+            if (!typeof(T).IsEnum)
+                throw CreateGenericTypeIsNotEnumException();
+
+            _values = Enum.GetValues(typeof(T)).Cast<T>().ToArray();
+        }
+
+        /// <summary>
+        /// Gets the defined values in the Enum.
+        /// </summary>
+        public static IEnumerable<T> Values
+        {
+            get { return _values; }
+        }
+
         static MethodAccessException CreateGenericTypeIsNotEnumException()
         {
             const string errmsg = "Type parameter T ({0}) must be an Enum.";
@@ -25,14 +46,6 @@ namespace NetGore
                 throw CreateGenericTypeIsNotEnumException();
 
             return Enum.IsDefined(typeof(T), value);
-        }
-
-        /// <summary>
-        /// Gets the defined values in the Enum.
-        /// </summary>
-        public static IEnumerable<T> Values
-        {
-            get { return _values; }
         }
 
         /// <summary>
@@ -92,17 +105,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Initializes the <see cref="EnumHelper&lt;T&gt;"/> class.
-        /// </summary>
-        static EnumHelper()
-        {
-            if (!typeof(T).IsEnum)
-                throw CreateGenericTypeIsNotEnumException();
-
-            _values = Enum.GetValues(typeof(T)).Cast<T>().ToArray();
-        }
-
-        /// <summary>
         /// Converts the string representation of the name or numeric value of one or more enumerated
         /// constants to an equivalent enumerated object.
         /// </summary>
@@ -128,7 +130,5 @@ namespace NetGore
 
             return true;
         }
-
-        static readonly T[] _values;
     }
 }

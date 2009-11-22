@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
-using NetGore;
 using NetGore.IO;
 
 namespace DemoGame.Server

@@ -1,4 +1,5 @@
-﻿
+using System.Linq;
+
 namespace NetGore
 {
     /// <summary>

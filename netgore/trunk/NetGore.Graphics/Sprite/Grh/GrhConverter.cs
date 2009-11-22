@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Graphics

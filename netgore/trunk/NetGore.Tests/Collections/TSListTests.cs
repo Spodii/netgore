@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using System.Threading;
-using NetGore;
 using NetGore.Collections;
 using NUnit.Framework;
 

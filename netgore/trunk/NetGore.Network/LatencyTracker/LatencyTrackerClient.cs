@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using log4net;
-using NetGore;
 
 namespace NetGore.Network
 {

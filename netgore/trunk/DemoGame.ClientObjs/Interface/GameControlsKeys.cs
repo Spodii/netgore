@@ -1,6 +1,5 @@
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
-using NetGore;
 using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.NPCChat.Conditionals;
-using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;

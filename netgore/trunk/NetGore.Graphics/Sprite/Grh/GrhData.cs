@@ -6,7 +6,6 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -277,6 +276,24 @@ namespace NetGore.Graphics
             ChangeTexture(newTexture, GetOriginalSource());
         }
 
+        ImmutableArray<GrhData> CreateFrames(GrhIndex[] frameIndices)
+        {
+            var frames = new GrhData[frameIndices.Length];
+            for (int i = 0; i < frameIndices.Length; i++)
+            {
+                frames[i] = GrhInfo.GetData(frameIndices[i]);
+                if (frames[i] == null)
+                {
+                    const string errmsg =
+                        "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
+                    string err = string.Format(errmsg, frames[i], this, i, frameIndices.Length);
+                    throw new Exception(err);
+                }
+            }
+
+            return new ImmutableArray<GrhData>(frames);
+        }
+
         /// <summary>
         /// Creates a duplicate of the <see cref="GrhData"/>.
         /// </summary>
@@ -355,37 +372,6 @@ namespace NetGore.Graphics
 
             // Set the categorization
             SetCategorization(categorization);
-        }
-
-        ImmutableArray<GrhData> CreateFrames(GrhIndex[] frameIndices)
-        {
-            var frames = new GrhData[frameIndices.Length];
-            for (int i = 0; i < frameIndices.Length; i++)
-            {
-                frames[i] = GrhInfo.GetData(frameIndices[i]);
-                if (frames[i] == null)
-                {
-                    const string errmsg =
-                        "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
-                    string err = string.Format(errmsg, frames[i], this, i, frameIndices.Length);
-                    throw new Exception(err);
-                }
-            }
-
-            return new ImmutableArray<GrhData>(frames);
-        }
-
-        /// <summary>
-        /// Sets the <see cref="Frames"/> for an animated <see cref="GrhData"/>.
-        /// </summary>
-        /// <param name="frameIndices">The indices of the <see cref="GrhData"/> frames to build the animation from.</param>
-        /// <exception cref="MethodAccessException">IsAnimated is not set.</exception>
-        public void SetFrames(GrhIndex[] frameIndices)
-        {
-            if (!IsAnimated)
-                throw new MethodAccessException("Method may only be accessed when IsAnimated is not set.");
-
-            _frames = CreateFrames(frameIndices);
         }
 
         /// <summary>
@@ -470,6 +456,19 @@ namespace NetGore.Graphics
 
             if (OnChangeCategorization != null)
                 OnChangeCategorization(this, oldCategorization);
+        }
+
+        /// <summary>
+        /// Sets the <see cref="Frames"/> for an animated <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="frameIndices">The indices of the <see cref="GrhData"/> frames to build the animation from.</param>
+        /// <exception cref="MethodAccessException">IsAnimated is not set.</exception>
+        public void SetFrames(GrhIndex[] frameIndices)
+        {
+            if (!IsAnimated)
+                throw new MethodAccessException("Method may only be accessed when IsAnimated is not set.");
+
+            _frames = CreateFrames(frameIndices);
         }
 
         /// <summary>

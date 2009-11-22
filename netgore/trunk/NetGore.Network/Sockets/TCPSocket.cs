@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Network

@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
-using NetGore;
 using NetGore.IO;
 using NUnit.Framework;
 

@@ -6,7 +6,6 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
-using NetGore;
 
 namespace DemoGame.Server
 {

@@ -1,13 +1,24 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
 
 namespace NetGore
 {
     public class VariableColorConverter : IVariableValueConverter<Color>
     {
         static readonly TypeConverter _colorConverter = TypeDescriptor.GetConverter(typeof(Color));
+
+        /// <summary>
+        /// Converts the <paramref name="value"/> to string in a way that it can be parsed by <see cref="TryParse"/>.
+        /// </summary>
+        /// <param name="value">The value to convert to a string.</param>
+        /// <returns>
+        /// The <paramref name="value"/> as a string.
+        /// </returns>
+        protected override string ConvertToString(Color value)
+        {
+            return "{" + _colorConverter.ConvertToString(value) + "}";
+        }
 
         /// <summary>
         /// When overridden in the derived class, creates a new object of the given type.
@@ -43,18 +54,6 @@ namespace NetGore
         {
             value = (Color)_colorConverter.ConvertFromString(valueString);
             return true;
-        }
-
-        /// <summary>
-        /// Converts the <paramref name="value"/> to string in a way that it can be parsed by <see cref="TryParse"/>.
-        /// </summary>
-        /// <param name="value">The value to convert to a string.</param>
-        /// <returns>
-        /// The <paramref name="value"/> as a string.
-        /// </returns>
-        protected override string ConvertToString(Color value)
-        {
-            return "{" + _colorConverter.ConvertToString(value) + "}";
         }
     }
 }

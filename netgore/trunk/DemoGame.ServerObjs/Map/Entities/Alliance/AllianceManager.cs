@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server

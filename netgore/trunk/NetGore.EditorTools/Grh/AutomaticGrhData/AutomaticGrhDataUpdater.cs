@@ -7,8 +7,6 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 

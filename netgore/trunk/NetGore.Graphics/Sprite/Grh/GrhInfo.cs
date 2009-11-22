@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using NetGore;
-using NetGore;
 
 namespace NetGore
 {

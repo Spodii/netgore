@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using NetGore;
 using NetGore.IO;
 
 namespace DemoGame.Client

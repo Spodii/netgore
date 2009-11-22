@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using NetGore;
 
 // FUTURE: Add a Debug check to see if Write operations result in data loss
 

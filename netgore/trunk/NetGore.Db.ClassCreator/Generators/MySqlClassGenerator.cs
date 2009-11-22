@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using MySql.Data.MySqlClient;
-using NetGore;
 
 namespace NetGore.Db.ClassCreator
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -28,6 +28,20 @@ namespace DemoGame.ParticleEffectEditor
             _watch.Start();
         }
 
+        public ParticleEmitter Emitter
+        {
+            get { return _emitter; }
+            set
+            {
+                if (_emitter == value)
+                    return;
+
+                _emitter = value;
+
+                pgEffect.SelectedObject = Emitter;
+            }
+        }
+
         GraphicsDevice GraphicsDevice
         {
             get { return GameScreen.GraphicsDevice; }
@@ -51,21 +65,8 @@ namespace DemoGame.ParticleEffectEditor
 
             var effect = _content.Load<Effect>("Fx/pointsprite");
             _renderer = new PointSpriteRenderer(GraphicsDevice, effect);
-            Emitter = new ParticleEmitter(_content, 1000) { ParticleTextureName = "Grh/Particle/skull", Origin = new Vector2(300, 300) };
-        }
-
-        public ParticleEmitter Emitter
-        {
-            get { return _emitter; }
-            set
-            {
-                if (_emitter == value)
-                    return;
-
-                _emitter = value;
-
-                pgEffect.SelectedObject = Emitter;
-            }
+            Emitter = new ParticleEmitter(_content, 1000)
+            { ParticleTextureName = "Grh/Particle/skull", Origin = new Vector2(300, 300) };
         }
 
         /// <summary>

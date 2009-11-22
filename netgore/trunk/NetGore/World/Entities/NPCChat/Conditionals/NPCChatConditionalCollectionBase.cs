@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.NPCChat.Conditionals
