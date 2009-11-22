@@ -17,7 +17,7 @@ namespace DemoGame.ParticleEffectEditor
 
         ContentManager _content;
         ParticleEmitter _emitter;
-        PointSpriteRenderer _renderer;
+        SpriteBatchRenderer _renderer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -69,8 +69,7 @@ namespace DemoGame.ParticleEffectEditor
 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
 
-            var effect = _content.Load<Effect>("Fx/pointsprite");
-            _renderer = new PointSpriteRenderer(GraphicsDevice, effect);
+            _renderer = new SpriteBatchRenderer(GraphicsDevice);
             Emitter = new ParticleEmitter(_content, 1000)
             { ParticleTextureName = "Grh/Particle/skull", Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f };
         }
