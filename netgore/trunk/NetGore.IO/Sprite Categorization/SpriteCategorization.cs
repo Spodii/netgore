@@ -6,7 +6,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable class that contains the categorization information for a sprite.
     /// </summary>
-    public class SpriteCategorization
+    public class SpriteCategorization : IEquatable<SpriteCategorization>
     {
         /// <summary>
         /// The delimiter used to separate category branches, and the title from the category.
@@ -77,16 +77,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Checks if this <see cref="SpriteCategorization"/> is equal to another <see cref="SpriteCategorization"/>.
-        /// </summary>
-        /// <param name="other">The other <see cref="SpriteCategorization"/>.</param>
-        /// <returns>True if the two are equal; otherwise false.</returns>
-        public bool Equals(SpriteCategorization other)
-        {
-            return Title.Equals(other.Title) && Category.Equals(other.Category);
-        }
-
-        /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures
@@ -148,5 +138,19 @@ namespace NetGore.IO
         {
             return Category + Delimiter + Title;
         }
+
+        #region IEquatable<SpriteCategorization> Members
+
+        /// <summary>
+        /// Checks if this <see cref="SpriteCategorization"/> is equal to another <see cref="SpriteCategorization"/>.
+        /// </summary>
+        /// <param name="other">The other <see cref="SpriteCategorization"/>.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public bool Equals(SpriteCategorization other)
+        {
+            return Title.Equals(other.Title) && Category.Equals(other.Category);
+        }
+
+        #endregion
     }
 }

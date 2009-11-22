@@ -47,7 +47,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
         public void RenderEmitter(ParticleEmitter emitter)
         {
-            if (emitter.ParticleTexture == null || emitter.ActiveParticles <= 0)
+            if (emitter.Sprite == null || emitter.ActiveParticles <= 0)
                 return;
 
             InternalRenderEmitter(emitter);

@@ -45,7 +45,7 @@ namespace NetGore.Graphics.ParticleEngine
         public float Rotation;
 
         /// <summary>
-        /// The size of the <see cref="Particle"/> in pixels.
+        /// The magnification scale to draw the <see cref="Particle"/>s at, where 1.0 is normal size.
         /// </summary>
         public float Scale;
 

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 
@@ -68,10 +69,11 @@ namespace DemoGame.ParticleEffectEditor
             GameScreen.ScreenForm = this;
 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
+            GrhInfo.Load(ContentPaths.Build, _content);
 
             _renderer = new SpriteBatchRenderer(GraphicsDevice);
-            Emitter = new ParticleEmitter(_content, 1000)
-            { ParticleTextureName = "Grh/Particle/skull", Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f };
+            Emitter = new ParticleEmitter(1000)
+            { SpriteCategorization = new SpriteCategorization("Particle", "skull"), Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f };
         }
 
         /// <summary>

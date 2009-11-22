@@ -6,7 +6,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable string that represents the category of a sprite.
     /// </summary>
-    public sealed class SpriteCategory : IComparable<SpriteCategory>
+    public sealed class SpriteCategory : IEquatable<SpriteCategory>, IComparable<SpriteCategory>
     {
         readonly string _value;
 
@@ -38,16 +38,6 @@ namespace NetGore.IO
                 return Equals(casted);
 
             return base.Equals(obj);
-        }
-
-        /// <summary>
-        /// Checks if this <see cref="SpriteCategory"/> is equal to another <see cref="SpriteCategory"/>.
-        /// </summary>
-        /// <param name="other">The other <see cref="SpriteCategory"/>.</param>
-        /// <returns>True if the two are equal; otherwise false.</returns>
-        public bool Equals(SpriteCategory other)
-        {
-            return _value.Equals(other._value, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -135,6 +125,20 @@ namespace NetGore.IO
         public int CompareTo(SpriteCategory other)
         {
             return _value.CompareTo(other._value);
+        }
+
+        #endregion
+
+        #region IEquatable<SpriteCategory> Members
+
+        /// <summary>
+        /// Checks if this <see cref="SpriteCategory"/> is equal to another <see cref="SpriteCategory"/>.
+        /// </summary>
+        /// <param name="other">The other <see cref="SpriteCategory"/>.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public bool Equals(SpriteCategory other)
+        {
+            return _value.Equals(other._value, StringComparison.OrdinalIgnoreCase);
         }
 
         #endregion
