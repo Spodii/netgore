@@ -7,7 +7,7 @@ using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
-    public class ParticleEmitter
+    public class ParticleEmitter : IDisposable
     {
         /// <summary>
         /// The array of <see cref="Particle"/>s.
@@ -17,6 +17,7 @@ namespace NetGore.Graphics.ParticleEngine
         readonly ContentManager _contentManager;
 
         int _budget;
+        bool _isDisposed = false;
 
         /// <summary>
         /// The index for the <see cref="particles"/> array of the last particle that is alive.
@@ -65,7 +66,7 @@ namespace NetGore.Graphics.ParticleEngine
             Budget = budget;
             Life = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
-            ReleaseColor = new VariableColor(new Color(0, 0, 0, 255), new Color(255,255,255,255));
+            ReleaseColor = new VariableColor(new Color(0, 0, 0, 255), new Color(255, 255, 255, 255));
             ReleaseRate = new VariableUShort(50);
             ReleaseRotation = new VariableFloat(0);
             ReleaseScale = new VariableFloat(32);
@@ -118,6 +119,14 @@ namespace NetGore.Graphics.ParticleEngine
         /// is explicitly given.
         /// </summary>
         public static int DefaultBudget { get; set; }
+
+        /// <summary>
+        /// Gets if this <see cref="ParticleEmitter"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
 
         /// <summary>
         /// Gets or sets the life of each <see cref="Particle"/> emitted.
@@ -259,7 +268,7 @@ namespace NetGore.Graphics.ParticleEngine
                 var particle = particles[i];
                 if (particle == null)
                 {
-                    particle = new Particle();
+                    particle = Particle.Create();
                     particles[i] = particle;
                 }
 
@@ -343,5 +352,27 @@ namespace NetGore.Graphics.ParticleEngine
                 ++i;
             }
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            // Dispose the particles so they can be used again
+            foreach (var particle in particles)
+            {
+                if (particle != null && !particle.IsDisposed)
+                    particle.Dispose();
+            }
+        }
+
+        #endregion
     }
 }
