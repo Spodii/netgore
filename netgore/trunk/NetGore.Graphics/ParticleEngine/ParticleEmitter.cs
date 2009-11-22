@@ -224,9 +224,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// and <paramref name="speed"/>.</param>
         protected static void GetVelocity(float direction, float speed, out Vector2 force)
         {
-            float radians = RandomHelper.NextFloat(direction);
-
-            force = new Vector2((float)(Math.Sin(radians) * speed), (float)(Math.Cos(radians) * speed));
+            force = new Vector2((float)(Math.Sin(direction) * speed), (float)(Math.Cos(direction) * speed));
         }
 
         /// <summary>
