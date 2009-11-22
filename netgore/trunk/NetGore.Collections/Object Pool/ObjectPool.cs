@@ -40,8 +40,6 @@ namespace NetGore.Collections
         /// <param name="node">The node to add.</param>
         protected internal virtual void AddNodeToEnd(LinkedListNode<T> node)
         {
-            // TODO: Override, lock
-
             // Add the node to the end of the item pool list
             _pool.AddLast(node);
 
@@ -57,8 +55,6 @@ namespace NetGore.Collections
         /// <param name="poolData">The node pool data.</param>
         protected internal virtual void CheckSetHighNode(PoolData<T> poolData)
         {
-            // TODO: Override, lock
-
             if (poolData.PoolIndex > _highNode.Value.PoolData.PoolIndex)
                 _highNode = poolData.PoolNode;
         }
@@ -69,7 +65,6 @@ namespace NetGore.Collections
         /// </summary>
         protected internal virtual void ClearPool()
         {
-            // TODO: Override, lock
             _pool.Clear();
         }
 
@@ -80,8 +75,6 @@ namespace NetGore.Collections
         /// <param name="node">The node being destroyed.</param>
         protected internal virtual void DestroyNode(LinkedListNode<T> node)
         {
-            // TODO: Override, lock
-
             // Push to the free list for later use
             _free.Push(node);
 
