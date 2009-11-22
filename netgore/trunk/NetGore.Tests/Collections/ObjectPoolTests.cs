@@ -24,7 +24,7 @@ namespace NetGore.Tests.Collections
         {
         }
 
-        public void SetPoolData(ObjectPool<TestPoolItem> objectPool, PoolData<TestPoolItem> poolData)
+        public void SetPoolData(IObjectPool<TestPoolItem> objectPool, PoolData<TestPoolItem> poolData)
         {
             _poolData = poolData;
         }
@@ -60,6 +60,75 @@ namespace NetGore.Tests.Collections
             }
 
             Assert.AreEqual(0, pool.Count);
+        }
+
+        static void CreateSpeedTest<T>(IObjectPool<T> pool) where T : IPoolable<T>, new()
+        {
+            for (int i = 0; i < 500000; i++)
+            {
+                pool.Create();
+            }
+        }
+
+        [Test]
+        public void CreateSpeedTestNotThreadSafe()
+        {
+            CreateSpeedTest(new ObjectPool<TestPoolItem>());
+        }
+
+        [Test]
+        public void CreateSpeedTestThreadSafe()
+        {
+            CreateSpeedTest(new ThreadSafeObjectPool<TestPoolItem>());
+        }
+
+        static void Destroy2SpeedTest<T>(IObjectPool<T> pool) where T : IPoolable<T>, new()
+        {
+            Stack<T> stack = new Stack<T>();
+
+            for (int i = 0; i < 500000; i++)
+            {
+                var c = pool.Create();
+                stack.Push(c);
+            }
+
+            while (stack.Count > 0)
+            {
+                pool.Destroy(stack.Pop());
+            }
+        }
+
+        [Test]
+        public void Destroy2SpeedTestNotThreadSafe()
+        {
+            Destroy2SpeedTest(new ObjectPool<TestPoolItem>());
+        }
+
+        [Test]
+        public void Destroy2SpeedTestThreadSafe()
+        {
+            Destroy2SpeedTest(new ThreadSafeObjectPool<TestPoolItem>());
+        }
+
+        static void DestroySpeedTest<T>(IObjectPool<T> pool) where T : IPoolable<T>, new()
+        {
+            for (int i = 0; i < 500000; i++)
+            {
+                var c = pool.Create();
+                pool.Destroy(c);
+            }
+        }
+
+        [Test]
+        public void DestroySpeedTestNotThreadSafe()
+        {
+            DestroySpeedTest(new ObjectPool<TestPoolItem>());
+        }
+
+        [Test]
+        public void DestroySpeedTestThreadSafe()
+        {
+            DestroySpeedTest(new ThreadSafeObjectPool<TestPoolItem>());
         }
     }
 }

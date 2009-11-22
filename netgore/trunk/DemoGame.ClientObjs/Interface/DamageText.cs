@@ -132,7 +132,7 @@ namespace DemoGame.Client
             get { return _poolData; }
         }
 
-        void IPoolable<DamageText>.SetPoolData(ObjectPool<DamageText> objectPool, PoolData<DamageText> poolData)
+        void IPoolable<DamageText>.SetPoolData(IObjectPool<DamageText> objectPool, PoolData<DamageText> poolData)
         {
             _poolData = poolData;
         }

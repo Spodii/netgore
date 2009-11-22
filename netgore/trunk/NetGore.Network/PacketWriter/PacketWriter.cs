@@ -35,7 +35,7 @@ namespace NetGore.Network
         readonly Timer _expireTimer = new Timer();
 #endif
 
-        ObjectPool<PacketWriter> _objectPool;
+        IObjectPool<PacketWriter> _objectPool;
         PoolData<PacketWriter> _poolData;
 
 #if DEBUG
@@ -135,7 +135,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="objectPool">Pool that created this object.</param>
         /// <param name="poolData">PoolData assigned to this object.</param>
-        void IPoolable<PacketWriter>.SetPoolData(ObjectPool<PacketWriter> objectPool, PoolData<PacketWriter> poolData)
+        void IPoolable<PacketWriter>.SetPoolData(IObjectPool<PacketWriter> objectPool, PoolData<PacketWriter> poolData)
         {
             _objectPool = objectPool;
             _poolData = poolData;
