@@ -62,10 +62,10 @@ namespace NetGore
         /// <returns>The next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</returns>
         public Vector4 GetNextAsVector4()
         {
-            var a = RandomHelper.NextInt(_min.A, _max.A);
-            var r = RandomHelper.NextInt(_min.R, _max.R);
-            var g = RandomHelper.NextInt(_min.G, _max.G);
-            var b = RandomHelper.NextInt(_min.B, _max.B);
+            var a = RandomHelper.NextFloat(_min.A, _max.A) / 255f;
+            var r = RandomHelper.NextFloat(_min.R, _max.R) / 255f;
+            var g = RandomHelper.NextFloat(_min.G, _max.G) / 255f;
+            var b = RandomHelper.NextFloat(_min.B, _max.B) / 255f;
             return new Vector4(r, g, b, a);
         }
 

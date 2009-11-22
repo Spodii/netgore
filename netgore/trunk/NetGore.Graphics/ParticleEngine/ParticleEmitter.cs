@@ -65,7 +65,7 @@ namespace NetGore.Graphics.ParticleEngine
             Budget = budget;
             Life = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
-            ReleaseColor = new VariableColor(new Color(255, 255, 255, 255));
+            ReleaseColor = new VariableColor(new Color(0, 0, 0, 255), new Color(255,255,255,255));
             ReleaseRate = new VariableUShort(50);
             ReleaseRotation = new VariableFloat(0);
             ReleaseScale = new VariableFloat(32);
