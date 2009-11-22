@@ -4,7 +4,7 @@ using NetGore;
 
 // ReSharper disable MemberCanBeMadeStatic.Global
 
-namespace NetGore.Core
+namespace NetGore
 {
     /// <summary>
     /// Provides parsing for values while forcing them to use the specified culture.

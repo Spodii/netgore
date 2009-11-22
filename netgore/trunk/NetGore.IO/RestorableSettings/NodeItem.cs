@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using NetGore;
-using NetGore.Core;
+using NetGore;
 
 namespace NetGore.IO
 {
