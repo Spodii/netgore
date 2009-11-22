@@ -200,7 +200,8 @@ namespace NetGore.EditorTools
                     return;
                 }
 
-                _gd.Load(cm, newIndex, textureName, x, y, w, h, categorization);
+                _gd.ChangeTexture(textureName, new Rectangle(x,y,w,h));
+                _gd.SetCategorization(categorization);
                 _gd.AutomaticSize = autoSize;
             }
             else

@@ -192,8 +192,10 @@ namespace NetGore.Graphics
         static GrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, SpriteCategorization categorization,
                                      string texture, Vector2 pos, Vector2 size)
         {
+            Rectangle source = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+
             GrhData gd = new GrhData();
-            gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, categorization);
+            gd.Load(contentManager, grhIndex, texture, source, categorization);
             AddGrhData(gd);
             return gd;
         }
