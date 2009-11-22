@@ -235,7 +235,9 @@ namespace NetGore.Graphics
         /// Changes the texture for a stationary <see cref="GrhData"/>.
         /// </summary>
         /// <param name="newTexture">Name of the new texture to use.</param>
-        public void ChangeTexture(TextureAssetName newTexture)
+        /// <param name="source">A <see cref="Rectangle"/> describing the source area of the texture to
+        /// use for this <see cref="GrhData"/>.</param>
+        public void ChangeTexture(TextureAssetName newTexture, Rectangle source)
         {
             if (newTexture == null)
                 throw new ArgumentNullException("newTexture");
@@ -244,11 +246,16 @@ namespace NetGore.Graphics
             if (IsAnimated)
                 throw new MemberAccessException("Cannot change the texture of an animated GrhData.");
 
-            // Check that it is actually a different texture
-            if (TextureName == newTexture)
+            // Check that the values have changed
+            if (source == _sourceRect && TextureName == newTexture)
                 return;
 
-            var oldTextureName = _textureName;
+            _sourceRect = source;
+
+            // Check that it is actually a different texture
+            TextureAssetName oldTextureName = null;
+            if (TextureName != newTexture)
+                oldTextureName = _textureName;
 
             // Apply the new texture
             _texture = null;
@@ -257,8 +264,17 @@ namespace NetGore.Graphics
 
             ValidateTexture();
 
-            if (OnChangeTexture != null)
+            if (oldTextureName != null && OnChangeTexture != null)
                 OnChangeTexture(this, oldTextureName);
+        }
+
+        /// <summary>
+        /// Changes the texture for a stationary <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="newTexture">Name of the new texture to use.</param>
+        public void ChangeTexture(TextureAssetName newTexture)
+        {
+            ChangeTexture(newTexture, GetOriginalSource());
         }
 
         /// <summary>
@@ -309,12 +325,10 @@ namespace NetGore.Graphics
         /// <param name="cm">ContentManager used by this texture.</param>
         /// <param name="grhIndex">Index of the <see cref="Grh"/>.</param>
         /// <param name="textureName">Name of the texture asset.</param>
-        /// <param name="x">Pixel x coordinate of the source texture.</param>
-        /// <param name="y">Pixel y coordinate of the source texture.</param>
-        /// <param name="width">Pixel width of the source texture.</param>
-        /// <param name="height">Pixel height of the source texture.</param>
+        /// <param name="source">A <see cref="Rectangle"/> describing the source area on the texture that
+        /// this <see cref="GrhData"/> will draw.</param>
         /// <param name="categorization">Unique categorization.</param>
-        public void Load(ContentManager cm, GrhIndex grhIndex, string textureName, int x, int y, int width, int height,
+        public void Load(ContentManager cm, GrhIndex grhIndex, string textureName, Rectangle source,
                          SpriteCategorization categorization)
         {
             if (cm == null)
@@ -337,7 +351,7 @@ namespace NetGore.Graphics
             _cm = cm;
             _textureName = textureName;
             _grhIndex = grhIndex;
-            _sourceRect = new Rectangle(x, y, width, height);
+            _sourceRect = source;
 
             // Set the categorization
             SetCategorization(categorization);
@@ -426,7 +440,7 @@ namespace NetGore.Graphics
                 string textureName = textureNodeReader.ReadString(_textureNameValueKey);
                 Rectangle source = textureNodeReader.ReadRectangle(_textureSourceValueKey);
 
-                Load(cm, grhIndex, textureName, source.X, source.Y, source.Width, source.Height, categorization);
+                Load(cm, grhIndex, textureName, source, categorization);
                 AutomaticSize = automaticSize;
             }
             else
