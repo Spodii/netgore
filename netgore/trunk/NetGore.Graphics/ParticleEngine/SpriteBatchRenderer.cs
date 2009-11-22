@@ -16,6 +16,10 @@ namespace NetGore.Graphics.ParticleEngine
             _spriteBatch = new SpriteBatch(graphicsDevice);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles rendering the <paramref name="emitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
         protected override void InternalRenderEmitter(ParticleEmitter emitter)
         {
             Rectangle source = new Rectangle(0, 0, emitter.ParticleTexture.Width, emitter.ParticleTexture.Height);
@@ -34,6 +38,9 @@ namespace NetGore.Graphics.ParticleEngine
             _spriteBatch.End();
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles the actual disposing.
+        /// </summary>
         protected override void InternalDispose()
         {
             if (!_spriteBatch.IsDisposed)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -13,6 +10,19 @@ namespace NetGore.Graphics.ParticleEngine
     {
         SpriteBlendMode _blendMode = SpriteBlendMode.Additive;
         bool _isDisposed = false;
+
+        /// <summary>
+        /// When overridden in the derived class, handles the actual disposing.
+        /// </summary>
+        protected abstract void InternalDispose();
+
+        /// <summary>
+        /// When overridden in the derived class, handles rendering the <paramref name="emitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
+        protected abstract void InternalRenderEmitter(ParticleEmitter emitter);
+
+        #region IParticleRenderer Members
 
         /// <summary>
         /// Gets if this <see cref="IParticleRenderer"/> has been disposed.
@@ -30,17 +40,6 @@ namespace NetGore.Graphics.ParticleEngine
             get { return _blendMode; }
             set { _blendMode = value; }
         }
-
-        /// <summary>
-        /// When overridden in the derived class, handles the actual disposing.
-        /// </summary>
-        protected abstract void InternalDispose();
-
-        /// <summary>
-        /// When overridden in the derived class, handles rendering the <paramref name="emitter"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
-        protected abstract void InternalRenderEmitter(ParticleEmitter emitter);
 
         /// <summary>
         /// Renders a <see cref="ParticleEmitter"/>.
@@ -66,5 +65,7 @@ namespace NetGore.Graphics.ParticleEngine
 
             InternalDispose();
         }
+
+        #endregion
     }
 }
