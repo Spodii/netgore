@@ -141,5 +141,19 @@ namespace NetGore
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
+        /// </summary>
+        /// <param name="value">The next value, based off of the
+        /// <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</param>
+        public void GetNext(ref Color value)
+        {
+            byte a = (byte)RandomHelper.NextInt(_min.A, _max.A);
+            byte r = (byte)RandomHelper.NextInt(_min.R, _max.R);
+            byte g = (byte)RandomHelper.NextInt(_min.G, _max.G);
+            byte b = (byte)RandomHelper.NextInt(_min.B, _max.B);
+            value = new Color(r, g, b, a);
+        }
     }
 }
