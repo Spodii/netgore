@@ -6,7 +6,7 @@ using NetGore.Collections;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// ObjectPool and pool handler for all of the DamageTexts
+    /// ObjectPool and pool handler for all of the <see cref="DamageText"/>s.
     /// </summary>
     public class DamageTextPool : ObjectPool<DamageText>
     {
