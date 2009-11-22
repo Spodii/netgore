@@ -70,7 +70,6 @@
     <Compile Include="RandomHelper.cs" />
     <Compile Include="SystemPerformance.cs" />
     <Compile Include="Variable Values\IVariableValue.cs" />
-    <Compile Include="Converters\SimpleExpandableTypeConverter.cs" />
     <Compile Include="Variable Values\VariableByte.cs" />
     <Compile Include="Variable Values\VariableColor.cs" />
     <Compile Include="Variable Values\VariableFloat.cs" />

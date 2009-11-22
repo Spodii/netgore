@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace NetGore.IO
 {
+    /// <summary>
+    /// An immutable string that represents the name, or virtual path, to a texture content asset.
+    /// </summary>
+    [TypeConverter(typeof(TextureAssetNameConverter))]
     public sealed class TextureAssetName : ContentAssetName
     {
         const string _rootDir = ContentPaths._grhsFolder + PathSeparator;
