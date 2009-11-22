@@ -6,7 +6,7 @@ namespace NetGore.Network
     /// <summary>
     /// A pool of <see cref="PacketWriter"/>s.
     /// </summary>
-    public class PacketWriterPool : ObjectPool<PacketWriter>
+    public class PacketWriterPool : ThreadSafeObjectPool<PacketWriter>
     {
     }
 }

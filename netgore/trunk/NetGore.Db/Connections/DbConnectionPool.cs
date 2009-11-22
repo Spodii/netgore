@@ -8,13 +8,13 @@ namespace NetGore.Db
     /// <summary>
     /// Base class for a pool of database connections.
     /// </summary>
-    public abstract class DbConnectionPool : ObjectPool<PooledDbConnection>, IDisposable
+    public abstract class DbConnectionPool : ThreadSafeObjectPool<PooledDbConnection>, IDisposable
     {
         readonly string _connectionString;
         bool _disposed;
 
         /// <summary>
-        /// DbConnectionPool constructor
+        /// Initializes a new instance of the <see cref="DbConnectionPool"/> class.
         /// </summary>
         /// <param name="connectionString">ConnectionString used for the connections made in this DbConnectionPool.</param>
         protected DbConnectionPool(string connectionString)

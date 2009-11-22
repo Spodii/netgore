@@ -146,7 +146,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="connectionString">The connection string used.</param>
         /// <param name="pool">The pool of connections.</param>
-        static void TestConnectionPool(string connectionString, ObjectPool<PooledDbConnection> pool)
+        static void TestConnectionPool(string connectionString, IObjectPool<PooledDbConnection> pool)
         {
             try
             {
