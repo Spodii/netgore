@@ -192,7 +192,7 @@ namespace NetGore
         ///                 </exception>
         public int CompareTo(object obj)
         {
-            return _value.CompareTo(obj);
+            return _value.CompareTo((ushort)obj);
         }
 
         #endregion
