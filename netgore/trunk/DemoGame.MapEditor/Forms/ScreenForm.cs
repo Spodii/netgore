@@ -168,7 +168,7 @@ namespace DemoGame.MapEditor
             _switches = switches;
 
             InitializeComponent();
-            GameScreen.Screen = this;
+            GameScreen.ScreenForm = this;
 
             // Set up some of the OnChangeMap events for objects that need to reference the Map
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);

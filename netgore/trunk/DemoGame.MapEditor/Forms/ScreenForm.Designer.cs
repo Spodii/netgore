@@ -866,7 +866,7 @@ namespace DemoGame.MapEditor
             this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.GameScreen.Location = new System.Drawing.Point(4, 38);
             this.GameScreen.Name = "GameScreen";
-            this.GameScreen.Screen = null;
+            this.GameScreen.ScreenForm = null;
             this.GameScreen.Size = new System.Drawing.Size(800, 600);
             this.GameScreen.TabIndex = 7;
             this.GameScreen.Text = "Game Screen";
