@@ -15,7 +15,7 @@ namespace NetGore.Graphics.ParticleEngine
         static readonly Stack<Particle> _freeParticles = new Stack<Particle>();
 
         /// <summary>
-        /// The color of the <see cref="Particle"/>.
+        /// Gets or sets the color of the <see cref="Particle"/>.
         /// </summary>
         public Color Color;
 
@@ -73,6 +73,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets the total number of milliseconds that this <see cref="Particle"/> will live, from start to finish.
+        /// </summary>
+        public int LifeSpan
+        {
+            get { return LifeEnd - LifeStart; }
+        }
+
+        /// <summary>
         /// Applies a force to the <see cref="Particle"/>.
         /// </summary>
         /// <param name="force">The <see cref="Vector2"/> describing the force.</param>
@@ -104,10 +112,30 @@ namespace NetGore.Graphics.ParticleEngine
                 Debug.Assert(free._isDisposed);
                 free._isDisposed = false;
                 return free;
-
             }
 
             return new Particle();
+        }
+
+        /// <summary>
+        /// Gets the age of the particle in milliseconds.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <returns>The age of the particle in milliseconds.</returns>
+        public int GetAge(int currentTime)
+        {
+            return currentTime - LifeStart;
+        }
+
+        /// <summary>
+        /// Gets the age of the particle on a scale of 0.0 to 1.0, where 0.0 means the particle
+        /// was just created and 1.0 means the particle is at the end of its life.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <returns>The age of the particle as a percent.</returns>
+        public float GetAgePercent(int currentTime)
+        {
+            return (float)GetAge(currentTime) / LifeSpan;
         }
 
         /// <summary>
