@@ -1,6 +1,5 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore;
 
 // FUTURE: This shouldn't be here! It needs to be in DemoGame
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -25,6 +25,16 @@ namespace NetGore.IO
         public ContentAssetName(string assetName)
         {
             _assetName = Sanitize(assetName);
+        }
+
+        /// <summary>
+        /// Gets the complete name of the asset. This differs from <see cref="ToString"/> as this will always
+        /// be the complete name of the asset, while <see cref="ToString"/> may only be a partial path in
+        /// derived classes.
+        /// </summary>
+        public string Value
+        {
+            get { return _assetName; }
         }
 
         /// <summary>
@@ -102,13 +112,6 @@ namespace NetGore.IO
         {
             return _assetName;
         }
-
-        /// <summary>
-        /// Gets the complete name of the asset. This differs from <see cref="ToString"/> as this will always
-        /// be the complete name of the asset, while <see cref="ToString"/> may only be a partial path in
-        /// derived classes.
-        /// </summary>
-        public string Value { get { return _assetName; } }
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.ContentAssetName"/>.

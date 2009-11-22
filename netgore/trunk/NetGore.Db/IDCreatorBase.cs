@@ -4,7 +4,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using NetGore;
 
 // NOTE: This isn't going to be safe if there is more than one IDCreatorBase instance for a table.
 

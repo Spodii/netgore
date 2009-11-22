@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using log4net;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 

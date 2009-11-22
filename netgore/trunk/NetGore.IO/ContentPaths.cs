@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using log4net;
-using NetGore;
 
 namespace NetGore.IO
 {
@@ -17,20 +16,20 @@ namespace NetGore.IO
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// The suffix given to compiled content files. Does not include the prefixed period.
-        /// </summary>
-        public const string CompiledContentSuffix = "xnb";
-
         public const string _dataFolder = "Data";
         public const string _engineFolder = "Engine";
         public const string _fontsFolder = "Font";
+        public const string _fxFolder = "Fx";
         public const string _grhsFolder = "Grh";
         public const string _languagesFolder = "Languages";
         public const string _mapsFolder = "Maps";
         public const string _settingsFolder = "Settings";
         public const string _skeletonsFolder = "Skeletons";
-        public const string _fxFolder = "Fx";
+
+        /// <summary>
+        /// The suffix given to compiled content files. Does not include the prefixed period.
+        /// </summary>
+        public const string CompiledContentSuffix = "xnb";
 
         /// <summary>
         /// Suffix for temporary files.
@@ -55,6 +54,7 @@ namespace NetGore.IO
 
         readonly PathString _engine;
         readonly PathString _fonts;
+        readonly PathString _fx;
 
         readonly PathString _grhs;
         readonly PathString _languages;
@@ -62,7 +62,6 @@ namespace NetGore.IO
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
-        readonly PathString _fx;
         readonly PathString _textures;
 
         /// <summary>
@@ -152,6 +151,14 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets the file path to the Fx (pixel shader effects) directory.
+        /// </summary>
+        public PathString Fx
+        {
+            get { return _fx; }
+        }
+
+        /// <summary>
         /// Gets the file path to the Grhs directory.
         /// </summary>
         public PathString Grhs
@@ -197,14 +204,6 @@ namespace NetGore.IO
         public PathString Skeletons
         {
             get { return _skeletons; }
-        }
-
-        /// <summary>
-        /// Gets the file path to the Fx (pixel shader effects) directory.
-        /// </summary>
-        public PathString Fx
-        {
-            get { return _fx; }
         }
 
         /// <summary>

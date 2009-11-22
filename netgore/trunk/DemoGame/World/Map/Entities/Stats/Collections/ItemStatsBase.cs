@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 
 // FUTURE: Could optimize the OnStatChange by only hooking to the Stat.OnChange when OnStatChange has listeners
 

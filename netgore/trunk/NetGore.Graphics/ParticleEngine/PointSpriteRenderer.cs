@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,23 +9,15 @@ namespace NetGore.Graphics.ParticleEngine
     public sealed class PointSpriteRenderer : IParticleRenderer
     {
         readonly GraphicsDevice _graphicsDevice;
-        readonly VertexDeclaration _vertexDeclaration;
         readonly Effect _pointSpriteEffect;
         readonly EffectParameter _textureParameter;
+        readonly VertexDeclaration _vertexDeclaration;
         readonly EffectParameter _wvpParameter;
 
-        Matrix _screenSpaceMatrix;
         SpriteBlendMode _blendMode = SpriteBlendMode.Additive;
-        
-        /// <summary>
-        /// Gets the <see cref="Effect"/> describing how to render the sprites.
-        /// </summary>
-        public Effect Effect { get { return _pointSpriteEffect; } }
 
-        /// <summary>
-        /// Gets or sets the <see cref="SpriteBlendMode"/> to use when rendering the particles.
-        /// </summary>
-        public SpriteBlendMode BlendMode { get { return _blendMode; } set { _blendMode = value; } }
+        bool _isDisposed = false;
+        Matrix _screenSpaceMatrix;
 
         public PointSpriteRenderer(GraphicsDevice graphicsDevice, Effect effect)
         {
@@ -46,11 +36,8 @@ namespace NetGore.Graphics.ParticleEngine
 
             Matrix world = Matrix.Identity;
 
-            Matrix view = new Matrix(
-                    1.0f, 0.0f, 0.0f, 0.0f,
-                    0.0f, -1.0f, 0.0f, 0.0f,
-                    0.0f, 0.0f, -1.0f, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f);
+            Matrix view = new Matrix(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                                     1.0f);
 
             var viewport = graphicsDevice.Viewport;
             Matrix projection = Matrix.CreateOrthographicOffCenter(0, viewport.Width, -viewport.Height, 0, 0, 1);
@@ -58,27 +45,29 @@ namespace NetGore.Graphics.ParticleEngine
             _screenSpaceMatrix = world * view * projection;
         }
 
-        bool _isDisposed = false;
+        /// <summary>
+        /// Gets or sets the <see cref="SpriteBlendMode"/> to use when rendering the particles.
+        /// </summary>
+        public SpriteBlendMode BlendMode
+        {
+            get { return _blendMode; }
+            set { _blendMode = value; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Effect"/> describing how to render the sprites.
+        /// </summary>
+        public Effect Effect
+        {
+            get { return _pointSpriteEffect; }
+        }
 
         /// <summary>
         /// Gets if this <see cref="PointSpriteRenderer"/> has been disposed.
         /// </summary>
-        public bool IsDisposed { get { return _isDisposed; } }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+        public bool IsDisposed
         {
-            if (_isDisposed)
-                return;
-
-            _isDisposed = true;
-
-            _vertexDeclaration.Dispose();
-
-            if (_pointSpriteEffect != null)
-                _pointSpriteEffect.Dispose();
+            get { return _isDisposed; }
         }
 
         public void RenderEmitter(ParticleEmitter emitter)
@@ -137,5 +126,25 @@ namespace NetGore.Graphics.ParticleEngine
             _pointSpriteEffect.Techniques[0].Passes[0].End();
             _pointSpriteEffect.End();
         }
+
+        #region IParticleRenderer Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            _vertexDeclaration.Dispose();
+
+            if (_pointSpriteEffect != null)
+                _pointSpriteEffect.Dispose();
+        }
+
+        #endregion
     }
 }

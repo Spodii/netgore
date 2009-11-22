@@ -6,8 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
-using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
 using NetGore.IO;

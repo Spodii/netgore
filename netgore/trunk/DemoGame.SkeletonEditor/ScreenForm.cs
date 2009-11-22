@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 using Color=System.Drawing.Color;

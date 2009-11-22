@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NetGore;
-using NetGore;
 using NetGore.IO;
 using NUnit.Framework;
 

@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using NetGore;
 using NetGore.Graphics;
 
 namespace DemoGame.Client

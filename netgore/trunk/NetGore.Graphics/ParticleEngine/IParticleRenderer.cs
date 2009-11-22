@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -10,6 +8,5 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public interface IParticleRenderer : IDisposable
     {
-
     }
 }

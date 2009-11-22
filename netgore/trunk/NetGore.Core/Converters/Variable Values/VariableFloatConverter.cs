@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NetGore
 {
     public class VariableFloatConverter : IVariableValueConverter<float>

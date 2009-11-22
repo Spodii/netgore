@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
 using Color=System.Drawing.Color;
 
 namespace NetGore.EditorTools

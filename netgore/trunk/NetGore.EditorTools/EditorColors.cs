@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Linq;
-using NetGore;
 
 namespace NetGore.EditorTools
 {

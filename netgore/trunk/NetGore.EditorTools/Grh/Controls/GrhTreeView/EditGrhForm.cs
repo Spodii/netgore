@@ -7,8 +7,6 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 using Point=System.Drawing.Point;
@@ -200,7 +198,7 @@ namespace NetGore.EditorTools
                     return;
                 }
 
-                _gd.ChangeTexture(textureName, new Rectangle(x,y,w,h));
+                _gd.ChangeTexture(textureName, new Rectangle(x, y, w, h));
                 _gd.SetCategorization(categorization);
                 _gd.AutomaticSize = autoSize;
             }

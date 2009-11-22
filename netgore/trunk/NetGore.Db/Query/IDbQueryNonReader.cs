@@ -1,5 +1,4 @@
 using System.Linq;
-using NetGore;
 
 namespace NetGore.Db
 {

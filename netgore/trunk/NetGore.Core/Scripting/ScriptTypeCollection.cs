@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
-using NetGore;
 
 namespace NetGore.Scripting
 {

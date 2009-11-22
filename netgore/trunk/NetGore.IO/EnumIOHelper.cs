@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore;
 
 namespace NetGore.IO
 {
@@ -13,16 +12,12 @@ namespace NetGore.IO
     public abstract class EnumIOHelper<T> : IEnumValueReader<T>, IEnumValueWriter<T>
         where T : struct, IComparable, IConvertible, IFormattable
     {
-        static readonly Type[] _supportedTypes = new Type[] { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
+        static readonly Type[] _supportedTypes = new Type[]
+        { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
 
         readonly int _bitsRequired;
         readonly int _maxValue;
         readonly int _minValue;
-
-        /// <summary>
-        /// Gets the defined values in this Enum.
-        /// </summary>
-        public static IEnumerable<T> Values { get { return EnumHelper<T>.Values; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumHelper&lt;T&gt;"/> class.
@@ -74,11 +69,50 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets the defined values in this Enum.
+        /// </summary>
+        public static IEnumerable<T> Values
+        {
+            get { return EnumHelper<T>.Values; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, casts an int to type <typeparamref name="T"/>.
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <typeparamref name="T"/>.</returns>
         protected abstract T FromInt(int value);
+
+        /// <summary>
+        /// Gets the Enum of the given type from its name. 
+        /// </summary>
+        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
+        /// <param name="value">The name of the <see cref="Enum"/> value.</param>
+        /// <returns>The parsed enum.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        /// <exception cref="ArgumentException"><typeparamref name="T"/> is not an <see cref="Enum"/> -or-
+        /// <paramref name="value"/> is an valid enum name -or-
+        /// <paramref name="value"/> is a name, but not one of the named constants defined for the enumeration.</exception>
+        public static T FromName(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value);
+        }
+
+        /// <summary>
+        /// Reads an <see cref="Enum"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the value from.</param>
+        /// <param name="enumReader">The enum value reader.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>The read and parsed enum.</returns>
+        public static T ReadEnum(IValueReader reader, IEnumValueReader<T> enumReader, string name)
+        {
+            if (reader.UseEnumNames)
+                return reader.ReadEnumName<T>(name);
+            else
+                return reader.ReadEnumValue(enumReader, name);
+        }
 
         /// <summary>
         /// Reads the Enum value using the name of the Enum instead of the underlying integer value.
@@ -134,6 +168,34 @@ namespace NetGore.IO
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
         protected abstract int ToInt(T value);
+
+        /// <summary>
+        /// Gets the name of the <see cref="Enum"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
+        /// <param name="value">The enum value.</param>
+        /// <returns>The string name of the <paramref name="value"/>.</returns>
+        public static string ToName(T value)
+        {
+            return value.ToString();
+        }
+
+        /// <summary>
+        /// Writes an <see cref="Enum"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the value to.</param>
+        /// <param name="enumWriter">The enum value writer.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">The enum to write.</param>
+        public static void WriteEnum(IValueWriter writer, IEnumValueWriter<T> enumWriter, string name, T value)
+        {
+            if (writer.UseEnumNames)
+                writer.WriteEnumName(name, value);
+            else
+                writer.WriteEnumValue(enumWriter, name, value);
+        }
 
         /// <summary>
         /// Writes the Enum value using the name of the Enum instead of the underlying integer value.
@@ -216,65 +278,5 @@ namespace NetGore.IO
         }
 
         #endregion
-
-
-        /// <summary>
-        /// Gets the Enum of the given type from its name. 
-        /// </summary>
-        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
-        /// <param name="value">The name of the <see cref="Enum"/> value.</param>
-        /// <returns>The parsed enum.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        /// <exception cref="ArgumentException"><typeparamref name="T"/> is not an <see cref="Enum"/> -or-
-        /// <paramref name="value"/> is an valid enum name -or-
-        /// <paramref name="value"/> is a name, but not one of the named constants defined for the enumeration.</exception>
-        public static T FromName(string value)
-        {
-            return (T)Enum.Parse(typeof(T), value);
-        }
-
-        /// <summary>
-        /// Reads an <see cref="Enum"/> from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the value from.</param>
-        /// <param name="enumReader">The enum value reader.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The read and parsed enum.</returns>
-        public static T ReadEnum(IValueReader reader, IEnumValueReader<T> enumReader, string name)
-        {
-            if (reader.UseEnumNames)
-                return reader.ReadEnumName<T>(name);
-            else
-                return reader.ReadEnumValue(enumReader, name);
-        }
-
-        /// <summary>
-        /// Gets the name of the <see cref="Enum"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
-        /// <param name="value">The enum value.</param>
-        /// <returns>The string name of the <paramref name="value"/>.</returns>
-        public static string ToName(T value)
-        {
-            return value.ToString();
-        }
-
-        /// <summary>
-        /// Writes an <see cref="Enum"/> to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the value to.</param>
-        /// <param name="enumWriter">The enum value writer.</param>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">The enum to write.</param>
-        public static void WriteEnum(IValueWriter writer, IEnumValueWriter<T> enumWriter, string name, T value)
-        {
-            if (writer.UseEnumNames)
-                writer.WriteEnumName(name, value);
-            else
-                writer.WriteEnumValue(enumWriter, name, value);
-        }
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.IO
 {
@@ -14,6 +12,14 @@ namespace NetGore.IO
     {
         const string _rootDir = ContentPaths._grhsFolder + PathSeparator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureAssetName"/> class.
+        /// </summary>
+        /// <param name="textureName">Name of the texture asset.</param>
+        public TextureAssetName(string textureName) : base(GetContentAssetName(textureName))
+        {
+        }
+
         static string GetContentAssetName(string textureName)
         {
             // Only prefix the root if we need to
@@ -21,15 +27,6 @@ namespace NetGore.IO
                 return textureName;
 
             return _rootDir + textureName;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextureAssetName"/> class.
-        /// </summary>
-        /// <param name="textureName">Name of the texture asset.</param>
-        public TextureAssetName(string textureName)
-            : base(GetContentAssetName(textureName))
-        {
         }
 
         /// <summary>

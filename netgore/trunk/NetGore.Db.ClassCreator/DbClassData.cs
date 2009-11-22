@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NetGore;
 using NetGore.Db.ClassCreator.Properties;
 
 namespace NetGore.Db.ClassCreator

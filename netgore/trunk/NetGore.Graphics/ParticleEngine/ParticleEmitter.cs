@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -14,6 +14,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         protected Particle[] particles;
 
+        readonly ContentManager _contentManager;
+
         int _budget;
 
         /// <summary>
@@ -23,6 +25,8 @@ namespace NetGore.Graphics.ParticleEngine
 
         int _lastUpdateTime = int.MinValue;
         int _nextReleaseTime;
+        Texture2D _particleTexture;
+        TextureAssetName _textureAssetName;
 
         /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
@@ -31,8 +35,6 @@ namespace NetGore.Graphics.ParticleEngine
         {
             DefaultBudget = 1000;
         }
-
-        readonly ContentManager _contentManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
@@ -126,8 +128,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public Vector2 Origin { get; set; }
 
-        Texture2D _particleTexture;
-
         /// <summary>
         /// Gets the <see cref="Texture2D"/> to apply to the <see cref="Particle"/>s.
         /// </summary>
@@ -136,14 +136,9 @@ namespace NetGore.Graphics.ParticleEngine
             get { return _particleTexture; }
         }
 
-        TextureAssetName _textureAssetName;
-
         public TextureAssetName ParticleTextureName
         {
-            get
-            {
-                return _textureAssetName;
-            }
+            get { return _textureAssetName; }
             set
             {
                 if (_textureAssetName == value)

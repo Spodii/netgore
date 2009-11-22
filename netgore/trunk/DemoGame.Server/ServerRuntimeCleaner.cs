@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.Queries;
 using log4net;
-using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server

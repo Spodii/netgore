@@ -1,6 +1,5 @@
 using System.Data.Common;
 using MySql.Data.MySqlClient;
-using NetGore;
 
 namespace NetGore.Db.MySql
 {

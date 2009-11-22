@@ -1,4 +1,4 @@
-using NetGore;
+using System.Linq;
 
 namespace NetGore
 {

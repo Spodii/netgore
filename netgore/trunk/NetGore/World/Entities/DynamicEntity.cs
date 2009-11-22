@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.IO;
 
 /* NOTE ON THE POSITION AND VELOCITY SYNCING:
