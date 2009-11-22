@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -30,19 +32,30 @@ namespace NetGore.Graphics.ParticleEngine
             DefaultBudget = 1000;
         }
 
+        readonly ContentManager _contentManager;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
         /// </summary>
-        public ParticleEmitter() : this(DefaultBudget)
+        /// <param name="contentManager">The <see cref="ContentManager"/> used to load assets.</param>
+        public ParticleEmitter(ContentManager contentManager) : this(contentManager, DefaultBudget)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
         /// </summary>
+        /// <param name="contentManager">The <see cref="ContentManager"/> used to load assets.</param>
         /// <param name="budget">The initial particle budget.</param>
-        public ParticleEmitter(int budget)
+        public ParticleEmitter(ContentManager contentManager, int budget)
         {
+            if (contentManager == null)
+                throw new ArgumentNullException("contentManager");
+            if (budget < 1)
+                throw new ArgumentOutOfRangeException("budget", "budget must be greater than 0.");
+
+            _contentManager = contentManager;
+
             _budget = budget;
             particles = new Particle[budget];
 
@@ -113,11 +126,49 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public Vector2 Origin { get; set; }
 
+        Texture2D _particleTexture;
+
         /// <summary>
-        /// Gets or sets the <see cref="Texture2D"/> to apply to the <see cref="Particle"/>s. If null,
-        /// this <see cref="ParticleEmitter"/> will not update or render any <see cref="Particle"/>s.
+        /// Gets the <see cref="Texture2D"/> to apply to the <see cref="Particle"/>s.
         /// </summary>
-        public Texture2D ParticleTexture { get; set; }
+        public Texture2D ParticleTexture
+        {
+            get { return _particleTexture; }
+        }
+
+        TextureAssetName _textureAssetName;
+
+        public TextureAssetName ParticleTextureName
+        {
+            get
+            {
+                return _textureAssetName;
+            }
+            set
+            {
+                if (_textureAssetName == value)
+                    return;
+
+                _textureAssetName = value;
+
+                // Update the texture
+                if (!_textureAssetName.ContentExists())
+                {
+                    _particleTexture = null;
+                    return;
+                }
+
+                try
+                {
+                    // HACK: Need a good way to remove the Grhs/ string constant
+                    _particleTexture = _contentManager.Load<Texture2D>(_textureAssetName);
+                }
+                catch (ContentLoadException)
+                {
+                    _particleTexture = null;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the number of <see cref="Particle"/>s that are emitted at each release.
@@ -128,6 +179,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets or sets the initial color of the <see cref="Particle"/> when emitted.
         /// </summary>
         public VariableColor ReleaseColor { get; set; }
+
+        // TODO: Decide how to handle changing the texture. Will probably want to use asset name.
 
         /// <summary>
         /// Gets or sets the rate in milliseconds that <see cref="Particle"/>s are emitted.

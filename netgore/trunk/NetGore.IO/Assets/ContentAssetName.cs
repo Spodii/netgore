@@ -7,7 +7,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable string that represents the name, or virtual path, to a content asset.
     /// </summary>
-    public sealed class ContentAssetName
+    public class ContentAssetName
     {
         /// <summary>
         /// The string used to separate the directories.
@@ -28,12 +28,10 @@ namespace NetGore.IO
         /// <summary>
         /// Checks if the content with the given name exists.
         /// </summary>
-        /// <param name="root">The root content path. Get this value from <see cref="ContentPaths"/>.</param>
-        /// <returns>True if the content exists in the given <paramref name="root"/> path; otherwise false.</returns>
-        public bool ContentExists(PathString root)
+        /// <returns>True if the content exists in the build; otherwise false.</returns>
+        public bool ContentExists()
         {
-            // TODO: !! Test to see if this concats properly
-            var filePath = root.Join(GetFileName());
+            var filePath = ContentPaths.Build.Root.Join(GetFileName());
             return File.Exists(filePath);
         }
 
@@ -102,6 +100,13 @@ namespace NetGore.IO
         {
             return _assetName;
         }
+
+        /// <summary>
+        /// Gets the complete name of the asset. This differs from <see cref="ToString"/> as this will always
+        /// be the complete name of the asset, while <see cref="ToString"/> may only be a partial path in
+        /// derived classes.
+        /// </summary>
+        public string Value { get { return _assetName; } }
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.ContentAssetName"/>.

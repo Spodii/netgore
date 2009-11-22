@@ -68,6 +68,7 @@
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
     <Compile Include="Camera2D.cs" />
+    <Compile Include="ContentManagerExtensions.cs" />
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
     <Compile Include="IDrawable.cs" />

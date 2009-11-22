@@ -58,10 +58,11 @@
     <Compile Include="Bits\BitStreamBufferMode.cs" />
     <Compile Include="Bits\BitStreamMode.cs" />
     <Compile Include="Bits\BitStreamSeekOrigin.cs" />
-    <Compile Include="ContentAssetName.cs" />
+    <Compile Include="Assets\ContentAssetName.cs" />
     <Compile Include="ContentPaths.cs" />
     <Compile Include="EnumIOHelper.cs" />
     <Compile Include="FilePathString.cs" />
+    <Compile Include="Assets\TextureAssetName.cs" />
     <Compile Include="Sprite Categorization\SpriteCategorization.cs" />
     <Compile Include="Sprite Categorization\SpriteCategory.cs" />
     <Compile Include="Sprite Categorization\SpriteTitle.cs" />

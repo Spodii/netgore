@@ -229,10 +229,8 @@ namespace NetGore.Graphics
         public static IEnumerable<GrhData> FindMissingTextures()
         {
             var nonanimated = GrhDatas.Where(x => !x.IsAnimated);
-            var invalidTexture =
-                nonanimated.Where(
-                    x => x.TextureName == null || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName.GetFileName())));
-            return invalidTexture;
+            var invalidTextures = nonanimated.Where(x => !x.TextureName.ContentExists());
+            return invalidTextures;
         }
 
         /// <summary>

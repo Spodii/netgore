@@ -23,9 +23,9 @@ namespace NetGore.EditorTools
         /// <returns>True if valid; otherwise false.</returns>
         protected override bool GetIsValid(string text)
         {
-            var assetName = new ContentAssetName(text);
+            var assetName = new TextureAssetName(text);
 
-            if (!assetName.ContentExists(ContentPaths.Build.Grhs))
+            if (!assetName.ContentExists())
                 return false;
 
             return base.GetIsValid(text);
@@ -42,7 +42,7 @@ namespace NetGore.EditorTools
         /// </returns>
         public override string GetSanitizedText(string text)
         {
-            return ContentAssetName.Sanitize(text);
+            return TextureAssetName.Sanitize(text);
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e)

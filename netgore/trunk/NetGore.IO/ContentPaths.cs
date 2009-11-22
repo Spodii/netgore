@@ -22,15 +22,15 @@ namespace NetGore.IO
         /// </summary>
         public const string CompiledContentSuffix = "xnb";
 
-        const string _dataFolder = "Data";
-        const string _engineFolder = "Engine";
-        const string _fontsFolder = "Font";
-        const string _grhsFolder = "Grh";
-        const string _languagesFolder = "Languages";
-        const string _mapsFolder = "Maps";
-        const string _settingsFolder = "Settings";
-        const string _skeletonsFolder = "Skeletons";
-        const string _fxFolder = "Fx";
+        public const string _dataFolder = "Data";
+        public const string _engineFolder = "Engine";
+        public const string _fontsFolder = "Font";
+        public const string _grhsFolder = "Grh";
+        public const string _languagesFolder = "Languages";
+        public const string _mapsFolder = "Maps";
+        public const string _settingsFolder = "Settings";
+        public const string _skeletonsFolder = "Skeletons";
+        public const string _fxFolder = "Fx";
 
         /// <summary>
         /// Suffix for temporary files.
