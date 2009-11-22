@@ -8,12 +8,89 @@ using log4net;
 
 namespace NetGore.Collections
 {
+    public interface IObjectPool<T> : IEnumerable<T> where T : IPoolable<T>, new()
+    {
+        /// <summary>
+        /// Gets the number of live objects in the pool.
+        /// </summary>
+        int Count { get; }
+
+        /// <summary>
+        /// Clears all nodes, dead and alive, from the pool.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// Clears all nodes, dead and alive, from the pool.
+        /// </summary>
+        /// <param name="destroy">If true, the Destroy() method will be raised on all the alive objects.
+        /// Default is true.</param>
+        void Clear(bool destroy);
+
+        /// <summary>
+        /// Gets an item to use from the pool.
+        /// </summary>
+        /// <returns>Item to use.</returns>
+        T Create();
+
+        /// <summary>
+        /// Deactivates the <paramref name="item"/> in the pool, making it no longer in use.
+        /// </summary>
+        /// <param name="item">Item to deactivate.</param>
+        void Destroy(T item);
+    }
+
+    public class ThreadSafeObjectPool<T> : ObjectPool<T> where T : IPoolable<T>, new()
+    {
+        readonly object _threadSync = new object();
+
+        protected internal override void AddNodeToEnd(LinkedListNode<T> node)
+        {
+            lock (_threadSync)
+            {
+                base.AddNodeToEnd(node);
+            }
+        }
+
+        protected internal override void CheckSetHighNode(PoolData<T> poolData)
+        {
+            lock (_threadSync)
+            {
+                base.CheckSetHighNode(poolData);
+            }
+        }
+
+        protected internal override void ClearPool()
+        {
+            lock (_threadSync)
+            {
+                base.ClearPool();
+            }
+        }
+
+        protected internal override void DestroyNode(LinkedListNode<T> node)
+        {
+            lock (_threadSync)
+            {
+                base.DestroyNode(node);
+            }
+        }
+
+        protected internal override LinkedListNode<T> GetFree()
+        {
+            lock (_threadSync)
+            {
+                return base.GetFree();
+            }
+        }
+    }
+
     /// <summary>
     /// Basic object pool layout. More complex pools can override this to allow for overriding of the
-    /// Create() and Destroy() methods to do some custom handling of individual items (ie setting parameters)
+    /// Create() and Destroy() methods to do some custom handling of individual items (ie setting parameters).
     /// </summary>
-    /// <typeparam name="T">Type of the item to be pooled</typeparam>
-    public class ObjectPool<T> : IEnumerable<T> where T : IPoolable<T>, new()
+    /// <typeparam name="T">Type of the item to be pooled.</typeparam>
+    public class ObjectPool<T> : IObjectPool<T> where T : IPoolable<T>, new()
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -28,29 +105,122 @@ namespace NetGore.Collections
         readonly LinkedList<T> _pool = new LinkedList<T>();
 
         /// <summary>
-        /// Object used to lock the pool on thread-unsafe sections of code
-        /// </summary>
-        readonly object _poolLock = new object();
-
-        /// <summary>
         /// Highest used node in the pool, which lets us end enumerating earlier. A null value
         /// means that the whole pool will be iterated through.
         /// </summary>
         LinkedListNode<T> _highNode = null;
 
         /// <summary>
-        /// Gets the number of live items in the ObjectPool.
+        /// Adds a node to the end of the pool and sets it as the highest node.
+        /// Can be overridden to add a thread synchronization lock.
         /// </summary>
-        public int Count
+        /// <param name="node">The node to add.</param>
+        protected internal virtual void AddNodeToEnd(LinkedListNode<T> node)
         {
-            get { return _pool.Count - _free.Count; }
+            // TODO: Override, lock
+
+            // Add the node to the end of the item pool list
+            _pool.AddLast(node);
+
+            // This is clearly the highest node in use since it has the highest index
+            _highNode = node;
         }
 
         /// <summary>
-        /// Clears all nodes, dead and alive, from the pool
+        /// Checks if the <paramref name="poolData"/> contains the highest node. If it does, set it as the
+        /// new highest node.
+        /// Can be overridden to add a thread synchronization lock.
+        /// </summary>
+        /// <param name="poolData">The node pool data.</param>
+        protected internal virtual void CheckSetHighNode(PoolData<T> poolData)
+        {
+            // TODO: Override, lock
+
+            if (poolData.PoolIndex > _highNode.Value.PoolData.PoolIndex)
+                _highNode = poolData.PoolNode;
+        }
+
+        /// <summary>
+        /// Clears out the object pool.
+        /// Can be overridden to add a thread synchronization lock.
+        /// </summary>
+        protected internal virtual void ClearPool()
+        {
+            // TODO: Override, lock
+            _pool.Clear();
+        }
+
+        /// <summary>
+        /// Frees the given <paramref name="node"/> and updates the highest node.
+        /// Can be overridden to add a thread synchronization lock.
+        /// </summary>
+        /// <param name="node">The node being destroyed.</param>
+        protected internal virtual void DestroyNode(LinkedListNode<T> node)
+        {
+            // TODO: Override, lock
+
+            // Push to the free list for later use
+            _free.Push(node);
+
+            // If we destroyed the highest node, find the next highest node
+            if (node == _highNode)
+                GetNextHighNode();
+        }
+
+        /// <summary>
+        /// Gets the next free node.
+        /// Can be overridden to add a thread synchronization lock.
+        /// </summary>
+        /// <returns>Next free node if one exists, else null.</returns>
+        protected internal virtual LinkedListNode<T> GetFree()
+        {
+            // If the stack count is 0, theres no free nodes
+            if (_free.Count == 0)
+                return null;
+
+            // Pop off and return the next item in the stack
+            return _free.Pop();
+        }
+
+        /// <summary>
+        /// Updates the <see cref="_highNode"/> by looping backwards through the nodes until either
+        /// the list has been depleted or a live node is found
+        /// </summary>
+        void GetNextHighNode()
+        {
+            // While the current high node is not activated and is not the first in the
+            // pool, move to the previous node
+            while (!_highNode.Value.PoolData.IsActivated && _highNode != _pool.First)
+            {
+                _highNode = _highNode.Previous;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
+        /// object is created for the pool. This is only called when a new object is created, not activated. This is
+        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
+        /// </summary>
+        /// <param name="item">New object that was created.</param>
+        protected virtual void HandleNewPoolObject(T item)
+        {
+        }
+
+        #region IObjectPool<T> Members
+
+        /// <summary>
+        /// Clears all nodes, dead and alive, from the pool.
+        /// </summary>
+        public void Clear()
+        {
+            Clear(true);
+        }
+
+        /// <summary>
+        /// Clears all nodes, dead and alive, from the pool.
         /// </summary>
         /// <param name="destroy">If true, the Destroy() method will be raised on all
-        /// the alive objects</param>
+        /// the alive objects.</param>
         public void Clear(bool destroy)
         {
             // Call Destroy() on the alive nodes if needed
@@ -63,24 +233,13 @@ namespace NetGore.Collections
             }
 
             // Remove the nodes
-            lock (_poolLock)
-            {
-                _pool.Clear();
-            }
+            ClearPool();
         }
 
         /// <summary>
-        /// Clears all nodes, dead and alive, from the pool
+        /// Gets an item to use from the pool.
         /// </summary>
-        public void Clear()
-        {
-            Clear(true);
-        }
-
-        /// <summary>
-        /// Gets an item to use from the pool
-        /// </summary>
-        /// <returns>Item to use</returns>
+        /// <returns>Item to use.</returns>
         public virtual T Create()
         {
             var node = GetFree();
@@ -107,27 +266,16 @@ namespace NetGore.Collections
                 // Allow for additional handling
                 HandleNewPoolObject(item);
 
-                lock (_poolLock)
-                {
-                    // Add the node to the end of the item pool list
-                    _pool.AddLast(node);
-
-                    // This is clearly the highest node in use since it has the highest index
-                    _highNode = node;
-                }
+                AddNodeToEnd(node);
             }
             else
             {
                 item = node.Value;
                 poolData = item.PoolData;
 
-                lock (_poolLock)
-                {
-                    // If the index of this node is higher than the index of the highest node,
-                    // set this node to the highest node
-                    if (poolData.PoolIndex > _highNode.Value.PoolData.PoolIndex)
-                        _highNode = node;
-                }
+                // If the index of this node is higher than the index of the highest node,
+                // set this node to the highest node
+                CheckSetHighNode(poolData);
             }
 
             // Activate the item
@@ -137,7 +285,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Deactivates the item, placing it back in the pool for later use.
+        /// Deactivates the <paramref name="item"/> in the pool, making it no longer in use.
         /// </summary>
         /// <param name="item">Item to deactivate.</param>
         public virtual void Destroy(T item)
@@ -157,59 +305,16 @@ namespace NetGore.Collections
                 throw new Exception(errmsg);
             }
 
-            lock (_poolLock)
-            {
-                // Push to the free list for later use
-                _free.Push(node);
-
-                // If we destroyed the highest node, find the next highest node
-                if (node == _highNode)
-                    GetNextHighNode();
-            }
+            DestroyNode(node);
         }
 
         /// <summary>
-        /// Gets the next free node
+        /// Gets the number of live items in the ObjectPool.
         /// </summary>
-        /// <returns>Next free LinkedListNode if one exists, else null</returns>
-        LinkedListNode<T> GetFree()
+        public int Count
         {
-            lock (_poolLock)
-            {
-                // If the stack count is 0, theres no free nodes
-                if (_free.Count == 0)
-                    return null;
-
-                // Pop off and return the next item in the stack
-                return _free.Pop();
-            }
+            get { return _pool.Count - _free.Count; }
         }
-
-        /// <summary>
-        /// Updates the HighNode by looping backwards through the nodes until either
-        /// the list has been depleted or a live node is found
-        /// </summary>
-        void GetNextHighNode()
-        {
-            // While the current high node is not activated and is not the first in the
-            // pool, move to the previous node
-            while (!_highNode.Value.PoolData.IsActivated && _highNode != _pool.First)
-            {
-                _highNode = _highNode.Previous;
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
-        /// object is created for the pool. This is only called when a new object is created, not activated. This is
-        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
-        /// </summary>
-        /// <param name="item">New object that was created.</param>
-        protected virtual void HandleNewPoolObject(T item)
-        {
-        }
-
-        #region IEnumerable<T> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection

@@ -32,6 +32,6 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="objectPool">Pool that created this object.</param>
         /// <param name="poolData">PoolData assigned to this object.</param>
-        void SetPoolData(ObjectPool<T> objectPool, PoolData<T> poolData);
+        void SetPoolData(IObjectPool<T> objectPool, PoolData<T> poolData);
     }
 }

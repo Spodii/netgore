@@ -11,7 +11,7 @@ namespace NetGore.Db
     public class PooledDbConnection : IPoolableDbConnection, IPoolable<PooledDbConnection>
     {
         DbConnection _connection;
-        ObjectPool<PooledDbConnection> _objectPool;
+        IObjectPool<PooledDbConnection> _objectPool;
         PoolData<PooledDbConnection> _poolData;
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="objectPool">Pool that created this object</param>
         /// <param name="poolData">PoolData assigned to this object</param>
-        void IPoolable<PooledDbConnection>.SetPoolData(ObjectPool<PooledDbConnection> objectPool,
+        void IPoolable<PooledDbConnection>.SetPoolData(IObjectPool<PooledDbConnection> objectPool,
                                                        PoolData<PooledDbConnection> poolData)
         {
             _objectPool = objectPool;
