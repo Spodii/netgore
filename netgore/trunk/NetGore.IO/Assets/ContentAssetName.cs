@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
@@ -7,6 +8,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable string that represents the name, or virtual path, to a content asset.
     /// </summary>
+    [TypeConverter(typeof(ContentAssetNameConverter))]
     public class ContentAssetName
     {
         /// <summary>

@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ContentAssetNameConverter.cs" />
+    <Compile Include="Assets\TextureAssetNameConverter.cs" />
     <Compile Include="Bits\BitOps.cs" />
     <Compile Include="Bits\BitStream.cs" />
     <Compile Include="Bits\BitStreamBufferMode.cs" />
