@@ -65,7 +65,7 @@ namespace DemoGame.ParticleEffectEditor
 
         void ScreenForm_Load(object sender, EventArgs e)
         {
-            GameScreen.Screen = this;
+            GameScreen.ScreenForm = this;
 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
 

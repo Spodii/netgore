@@ -57,7 +57,7 @@ namespace DemoGame.SkeletonEditor
 
             InitializeComponent();
             HookInput();
-            GameScreen.Parent = this;
+            GameScreen.ScreenForm = this;
         }
 
         /// <summary>

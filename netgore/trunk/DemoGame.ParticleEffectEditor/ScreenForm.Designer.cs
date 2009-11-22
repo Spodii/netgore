@@ -152,7 +152,7 @@
             // 
             this.GameScreen.Location = new System.Drawing.Point(294, 12);
             this.GameScreen.Name = "GameScreen";
-            this.GameScreen.Screen = null;
+            this.GameScreen.ScreenForm = null;
             this.GameScreen.Size = new System.Drawing.Size(727, 551);
             this.GameScreen.TabIndex = 0;
             this.GameScreen.Text = "gameScreenControl1";

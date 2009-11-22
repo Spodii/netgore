@@ -6,17 +6,12 @@ namespace DemoGame.SkeletonEditor
 {
     class GameScreenControl : GraphicsDeviceControl
     {
-        public new ScreenForm Parent;
+        public ScreenForm ScreenForm { get; set; }
 
         protected override void Draw()
         {
-            Parent.UpdateGame();
-            Parent.DrawGame();
-        }
-
-        protected override void Initialize()
-        {
-            Application.Idle += delegate { Invalidate(); };
+            ScreenForm.UpdateGame();
+            ScreenForm.DrawGame();
         }
     }
 }

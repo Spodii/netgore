@@ -28,6 +28,17 @@ namespace NetGore.EditorTools.WinForms
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicsDeviceControl"/> class.
+        /// </summary>
+        protected GraphicsDeviceControl()
+        {
+            // Create the redraw timer
+            Timer t = new Timer { Interval = 1000 / 60 };
+            t.Tick += delegate { Invalidate(); };
+            t.Start();
+        }
+
+        /// <summary>
         /// Gets an IServiceProvider container
         /// </summary>
         public ServiceContainer Services
@@ -152,7 +163,9 @@ namespace NetGore.EditorTools.WinForms
         /// <summary>
         /// Derived classes override this to initialize their drawing code.
         /// </summary>
-        protected abstract void Initialize();
+        protected virtual void Initialize()
+        {
+        }
 
         /// <summary>
         /// Initializes the control
