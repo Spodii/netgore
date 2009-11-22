@@ -57,6 +57,12 @@ namespace DemoGame.ParticleEffectEditor
             _renderer.RenderEmitter(Emitter);
         }
 
+        void GameScreen_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                Emitter.Origin = new Vector2(e.X, e.Y);
+        }
+
         void ScreenForm_Load(object sender, EventArgs e)
         {
             GameScreen.Screen = this;
@@ -66,7 +72,7 @@ namespace DemoGame.ParticleEffectEditor
             var effect = _content.Load<Effect>("Fx/pointsprite");
             _renderer = new PointSpriteRenderer(GraphicsDevice, effect);
             Emitter = new ParticleEmitter(_content, 1000)
-            { ParticleTextureName = "Grh/Particle/skull", Origin = new Vector2(300, 300) };
+            { ParticleTextureName = "Grh/Particle/skull", Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f };
         }
 
         /// <summary>
