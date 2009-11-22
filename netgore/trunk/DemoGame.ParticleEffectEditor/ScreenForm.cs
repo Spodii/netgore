@@ -17,7 +17,7 @@ namespace DemoGame.ParticleEffectEditor
 
         ContentManager _content;
         ParticleEmitter _emitter;
-        SpriteBatchRenderer _renderer;
+        IParticleRenderer _renderer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
