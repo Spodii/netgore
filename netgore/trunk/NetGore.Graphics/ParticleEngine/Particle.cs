@@ -92,7 +92,7 @@ namespace NetGore.Graphics.ParticleEngine
             Vector2 deltaMomentum;
 
             // Calculate the momentum for the elapsed time
-            Vector2.Multiply(ref Momentum, elapsedTime, out deltaMomentum);
+            Vector2.Multiply(ref Momentum, elapsedTime * 0.001f, out deltaMomentum);
 
             // Add the delta momentum to the position
             Vector2.Add(ref Position, ref deltaMomentum, out Position);

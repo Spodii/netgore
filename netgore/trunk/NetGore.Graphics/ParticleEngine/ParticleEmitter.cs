@@ -69,6 +69,7 @@ namespace NetGore.Graphics.ParticleEngine
             ReleaseRate = new VariableUShort(50);
             ReleaseRotation = new VariableFloat(0);
             ReleaseScale = new VariableFloat(32);
+            ReleaseSpeed = new VariableFloat(50);
         }
 
         /// <summary>
@@ -225,7 +226,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             float radians = RandomHelper.NextFloat(direction);
 
-            force = new Vector2 { X = (float)Math.Sin(radians) * speed, Y = (float)Math.Cos(radians) * speed };
+            force = new Vector2((float)(Math.Sin(radians) * speed), (float)(Math.Cos(radians) * speed));
         }
 
         /// <summary>
@@ -240,9 +241,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             float radians = RandomHelper.NextFloat(MathHelper.TwoPi);
 
-            var x = RandomHelper.NextFloat(-100, 100);
-            var y = RandomHelper.NextFloat(-100, 100);
-            releasePosition = Origin + new Vector2(x, y);
+            releasePosition = Origin;
             GetVelocity(radians, speed, out releaseVelocity);
         }
 
