@@ -56,10 +56,12 @@
     <Compile Include="DArray\DArrayModifyEventHandler.cs" />
     <Compile Include="ImmutableArray.cs" />
     <Compile Include="Mean Stack\MeanFinderHandler.cs" />
+    <Compile Include="Object Pool\IObjectPool.cs" />
+    <Compile Include="Object Pool\ThreadSafeObjectPool.cs" />
     <Compile Include="Type\TypeFactory.cs" />
     <Compile Include="Mean Stack\MeanStack.cs" />
     <Compile Include="Object Pool\IPoolable.cs" />
-    <Compile Include="Object Pool\ObjectPoolBase.cs" />
+    <Compile Include="Object Pool\ObjectPool.cs" />
     <Compile Include="Object Pool\PoolData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Thread Safe\TSDictionary.cs" />
