@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 
 namespace NetGore.IO
@@ -6,6 +7,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable string that represents the title of a sprite.
     /// </summary>
+    [TypeConverter(typeof(SpriteTitleConverter))]
     public sealed class SpriteTitle : IEquatable<SpriteTitle>, IComparable<SpriteTitle>
     {
         readonly string _value;

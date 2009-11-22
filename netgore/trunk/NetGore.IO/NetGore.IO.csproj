@@ -67,7 +67,9 @@
     <Compile Include="Sprite Categorization\SpriteCategorization.cs" />
     <Compile Include="Sprite Categorization\SpriteCategorizationConverter.cs" />
     <Compile Include="Sprite Categorization\SpriteCategory.cs" />
+    <Compile Include="Sprite Categorization\SpriteCategoryConverter.cs" />
     <Compile Include="Sprite Categorization\SpriteTitle.cs" />
+    <Compile Include="Sprite Categorization\SpriteTitleConverter.cs" />
     <Compile Include="TempFile.cs" />
     <Compile Include="ValueReaderWriter\BinaryValueReader.cs" />
     <Compile Include="ValueReaderWriter\BinaryValueWriter.cs" />
