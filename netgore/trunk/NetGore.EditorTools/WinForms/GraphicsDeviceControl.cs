@@ -100,7 +100,7 @@ namespace NetGore.EditorTools.WinForms
         /// the finished image onto the screen, using the appropriate WinForms
         /// control handle to make sure it shows up in the right place.
         /// </summary>
-        void EndDraw()
+        protected virtual void EndDraw()
         {
             try
             {
