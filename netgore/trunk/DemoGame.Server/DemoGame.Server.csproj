@@ -186,10 +186,6 @@
       <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
       <Name>NetGore.Network</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Scripting\NetGore.Scripting.csproj">
-      <Project>{4E491135-6089-4875-AEE8-9B35F64C6F59}</Project>
-      <Name>NetGore.Scripting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>

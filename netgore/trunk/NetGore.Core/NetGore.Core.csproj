@@ -55,6 +55,9 @@
     <Compile Include="RandomHelper.cs" />
     <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="MethodInfoHelper.cs" />
+    <Compile Include="Scripting\ScriptLanguage.cs" />
+    <Compile Include="Scripting\ScriptTypeCollection.cs" />
+    <Compile Include="Scripting\ScriptTypeHelper.cs" />
     <Compile Include="Type\TypeFilterCreator.cs" />
     <Compile Include="Type\TypeFilterException.cs" />
     <Compile Include="Type\TypeHelper.cs" />
