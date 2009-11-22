@@ -1,9 +1,10 @@
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace DemoGame
 {
-    public sealed class StatusEffectTypeHelper : EnumHelper<StatusEffectType>
+    public sealed class StatusEffectTypeHelper : EnumIOHelper<StatusEffectType>
     {
         static readonly StatusEffectTypeHelper _instance;
 

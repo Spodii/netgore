@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using NetGore;
 
 namespace NetGore
 {
@@ -12,6 +11,9 @@ namespace NetGore
     /// <typeparam name="T">The type being converted.</typeparam>
     public abstract class SimpleExpandableTypeConverter<T> : ExpandableObjectConverter
     {
+        static readonly Regex _groupingRegex = new Regex(@"\{(?<value>.+?)\}",
+                                                         RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+
         /// <summary>
         /// Gets the <see cref="Parser"/> to use for parsing strings in this class.
         /// </summary>
@@ -54,8 +56,6 @@ namespace NetGore
             return base.CanConvertTo(context, destinationType);
         }
 
-        static readonly Regex _groupingRegex = new Regex(@"\{(?<value>.+?)\}", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-
         /// <summary>
         /// Converts the given object to the type of this converter, using the specified context and culture information.
         /// </summary>
@@ -84,7 +84,9 @@ namespace NetGore
                     // Grab the group values
                     values = new string[matches.Count];
                     for (int i = 0; i < values.Length; i++)
+                    {
                         values[i] = matches[i].Groups["value"].Value;
+                    }
                 }
                 else
                 {

@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace DemoGame
 {
-    public sealed class StatTypeHelper : EnumHelper<StatType>
+    public sealed class StatTypeHelper : EnumIOHelper<StatType>
     {
         static readonly StatTypeHelper _instance;
 

@@ -1,9 +1,10 @@
 using System.Linq;
 using NetGore;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
-    public sealed class BackgroundLayerLayoutHelper : EnumHelper<BackgroundLayerLayout>
+    public sealed class BackgroundLayerLayoutHelper : EnumIOHelper<BackgroundLayerLayout>
     {
         static readonly BackgroundLayerLayoutHelper _instance;
 

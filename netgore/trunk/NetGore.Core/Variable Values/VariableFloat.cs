@@ -1,30 +1,29 @@
 ﻿using System.ComponentModel;
-using System.Linq;
 
 namespace NetGore
 {
-    [TypeConverter(typeof(VariableSByteConverter))]
-    public struct VariableSByte : IVariableValue<sbyte>
+    [TypeConverter(typeof(VariableFloatConverter))]
+    public struct VariableFloat : IVariableValue<float>
     {
-        sbyte _max;
-        sbyte _min;
+        float _max;
+        float _min;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VariableSByte"/> struct.
+        /// Initializes a new instance of the <see cref="VariableFloat"/> struct.
         /// </summary>
         /// <param name="value">The value for both the <see cref="Min"/> and <see cref="Max"/>.</param>
-        public VariableSByte(sbyte value)
+        public VariableFloat(float value)
         {
             _min = value;
             _max = value;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VariableSByte"/> struct.
+        /// Initializes a new instance of the <see cref="VariableFloat"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
         /// <param name="max">The max.</param>
-        public VariableSByte(sbyte min, sbyte max)
+        public VariableFloat(float min, float max)
         {
             if (min <= max)
             {
@@ -38,7 +37,7 @@ namespace NetGore
             }
         }
 
-        #region IVariableValue<sbyte> Members
+        #region IVariableValue<float> Members
 
         /// <summary>
         /// Gets or sets the inclusive minimum possible value. If this value is set to greater than <see cref="IVariableValue{T}.Max"/>,
@@ -47,7 +46,7 @@ namespace NetGore
         [Description("The inclusive minimum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
-        public sbyte Min
+        public float Min
         {
             get { return _min; }
             set
@@ -65,7 +64,7 @@ namespace NetGore
         [Description("The inclusive maximum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
-        public sbyte Max
+        public float Max
         {
             get { return _max; }
             set
@@ -80,9 +79,9 @@ namespace NetGore
         /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
         /// </summary>
         /// <returns>The next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</returns>
-        public sbyte GetNext()
+        public float GetNext()
         {
-            return (sbyte)RandomHelper.NextInt(Min, Max);
+            return RandomHelper.NextFloat(Min, Max);
         }
 
         #endregion

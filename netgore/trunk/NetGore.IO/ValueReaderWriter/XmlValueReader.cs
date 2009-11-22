@@ -420,7 +420,7 @@ namespace NetGore.IO
         public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
             string str = ReadString(name);
-            T value = EnumIOHelper.FromName<T>(str);
+            T value = EnumIOHelper<T>.FromName(str);
             return value;
         }
 
@@ -434,7 +434,7 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            return EnumIOHelper.ReadEnum(this, reader, name);
+            return EnumIOHelper<T>.ReadEnum(this, reader, name);
         }
 
         /// <summary>

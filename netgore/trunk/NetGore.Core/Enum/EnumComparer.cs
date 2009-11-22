@@ -8,7 +8,7 @@ using NetGore;
 
 // EnumComparer code base credit goes to: http://www.codeproject.com/KB/cs/EnumComparer.aspx
 
-namespace NetGore.Collections
+namespace NetGore
 {
     /// <summary>
     /// Comparer that is specifically for Enums.

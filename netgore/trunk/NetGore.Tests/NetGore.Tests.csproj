@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\BoolArrayTests.cs" />
     <Compile Include="Collections\DArrayTests.cs" />
     <Compile Include="Collections\MeanStackTests.cs" />
     <Compile Include="Collections\ObjectPoolTests.cs" />

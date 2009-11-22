@@ -1,31 +1,29 @@
 ﻿using System.ComponentModel;
-using System.Linq;
-using Microsoft.Xna.Framework.Design;
 
 namespace NetGore
 {
-    [TypeConverter(typeof(VariableFloatConverter))]
-    public struct VariableFloat : IVariableValue<float>
+    [TypeConverter(typeof(VariableUShortConverter))]
+    public struct VariableUShort : IVariableValue<ushort>
     {
-        float _max;
-        float _min;
+        ushort _max;
+        ushort _min;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VariableFloat"/> struct.
+        /// Initializes a new instance of the <see cref="VariableUShort"/> struct.
         /// </summary>
         /// <param name="value">The value for both the <see cref="Min"/> and <see cref="Max"/>.</param>
-        public VariableFloat(float value)
+        public VariableUShort(ushort value)
         {
             _min = value;
             _max = value;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VariableFloat"/> struct.
+        /// Initializes a new instance of the <see cref="VariableUShort"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
         /// <param name="max">The max.</param>
-        public VariableFloat(float min, float max)
+        public VariableUShort(ushort min, ushort max)
         {
             if (min <= max)
             {
@@ -39,7 +37,7 @@ namespace NetGore
             }
         }
 
-        #region IVariableValue<float> Members
+        #region IVariableValue<ushort> Members
 
         /// <summary>
         /// Gets or sets the inclusive minimum possible value. If this value is set to greater than <see cref="IVariableValue{T}.Max"/>,
@@ -48,7 +46,7 @@ namespace NetGore
         [Description("The inclusive minimum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
-        public float Min
+        public ushort Min
         {
             get { return _min; }
             set
@@ -66,7 +64,7 @@ namespace NetGore
         [Description("The inclusive maximum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
-        public float Max
+        public ushort Max
         {
             get { return _max; }
             set
@@ -81,9 +79,9 @@ namespace NetGore
         /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
         /// </summary>
         /// <returns>The next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</returns>
-        public float GetNext()
+        public ushort GetNext()
         {
-            return RandomHelper.NextFloat(Min, Max);
+            return (ushort)RandomHelper.NextInt(Min, Max);
         }
 
         #endregion

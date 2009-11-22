@@ -51,11 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoolArray.cs" />
     <Compile Include="DArray\DArray.cs" />
     <Compile Include="DArray\DArrayModifyEventArgs.cs" />
     <Compile Include="DArray\DArrayModifyEventHandler.cs" />
-    <Compile Include="EnumComparer.cs" />
     <Compile Include="ImmutableArray.cs" />
     <Compile Include="Mean Stack\MeanFinderHandler.cs" />
     <Compile Include="Type\TypeFactory.cs" />

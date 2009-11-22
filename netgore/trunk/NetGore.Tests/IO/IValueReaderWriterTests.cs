@@ -1737,7 +1737,7 @@ namespace NetGore.Tests.IO
             Ayche = 100
         }
 
-        sealed class TestEnumHelper : EnumHelper<TestEnum>
+        sealed class TestEnumHelper : EnumIOHelper<TestEnum>
         {
             /// <summary>
             /// When overridden in the derived class, casts an int to type TestEnum.

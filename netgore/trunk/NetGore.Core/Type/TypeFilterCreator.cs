@@ -5,7 +5,7 @@ using System.Text;
 using log4net;
 using NetGore;
 
-namespace NetGore.Collections
+namespace NetGore
 {
     public class TypeFilterCreator
     {
