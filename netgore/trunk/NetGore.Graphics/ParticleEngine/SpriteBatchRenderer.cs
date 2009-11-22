@@ -32,7 +32,7 @@ namespace NetGore.Graphics.ParticleEngine
             {
                 var p = particles[i];
                 float scale = p.Scale / emitter.ParticleTexture.Width;
-                _spriteBatch.Draw(emitter.ParticleTexture, p.Position, source, new Color(p.Color), p.Rotation, origin, scale, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(emitter.ParticleTexture, p.Position, source, p.Color, p.Rotation, origin, scale, SpriteEffects.None, 0f);
             }
 
             _spriteBatch.End();

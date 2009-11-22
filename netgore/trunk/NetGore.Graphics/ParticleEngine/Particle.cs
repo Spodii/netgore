@@ -5,11 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Particle
+    /// <summary>
+    /// Describes a single particle in a particle system.
+    /// </summary>
+    public class Particle
     {
-        #region Shader members
-
         /// <summary>
         /// The current world position of the <see cref="Particle"/>.
         /// </summary>
@@ -21,20 +21,14 @@ namespace NetGore.Graphics.ParticleEngine
         public float Scale;
 
         /// <summary>
-        /// The amount the <see cref="Particle"/> is rotated in radians. Rotation will not be used if
-        /// using <see cref="PointSpriteRenderer"/>.
+        /// The amount the <see cref="Particle"/> is rotated in radians.
         /// </summary>
         public float Rotation;
 
         /// <summary>
-        /// A <see cref="Vector4"/> describing the color of the <see cref="Particle"/> in the format of
-        /// RGBA. Each value must be between 0.0 and 1.0.
+        /// The color of the <see cref="Particle"/>.
         /// </summary>
-        public Vector4 Color;
-
-        #endregion
-
-        #region Non-shader members
+        public Color Color;
 
         /// <summary>
         /// The direction the <see cref="Particle"/> is moving.
@@ -55,42 +49,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// The time at which the <see cref="Particle"/> will die.
         /// </summary>
         public int LifeEnd;
-
-        #endregion
-
-        /// <summary>
-        /// The vertex element data for a <see cref="Particle"/>.
-        /// </summary>
-        public static readonly VertexElement[] VertexElements;
-
-        /// <summary>
-        /// Initializes the <see cref="Particle"/> struct.
-        /// </summary>
-        static Particle()
-        {
-            // Position vertex element
-            var positionElement = new VertexElement
-            { VertexElementFormat = VertexElementFormat.Vector2, VertexElementUsage = VertexElementUsage.Position };
-
-            // Scale vertex element
-            var scaleElement = new VertexElement
-            { Offset = 8, VertexElementFormat = VertexElementFormat.Single, VertexElementUsage = VertexElementUsage.PointSize };
-
-            // Rotation vertex element
-            var rotationElement = new VertexElement
-            {
-                Offset = 12,
-                VertexElementFormat = VertexElementFormat.Single,
-                VertexElementUsage = VertexElementUsage.TextureCoordinate
-            };
-
-            // Color vertex element
-            var colorElement = new VertexElement
-            { Offset = 16, VertexElementFormat = VertexElementFormat.Vector4, VertexElementUsage = VertexElementUsage.Color };
-
-            // Vertex element array
-            VertexElements = new VertexElement[] { positionElement, scaleElement, rotationElement, colorElement };
-        }
 
         /// <summary>
         /// Applies a force to the <see cref="Particle"/>.
