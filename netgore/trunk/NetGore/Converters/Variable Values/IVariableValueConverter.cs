@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore.Core;
+using NetGore;
 
 namespace NetGore
 {

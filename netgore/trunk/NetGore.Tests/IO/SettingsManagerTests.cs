@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NetGore;
-using NetGore.Core;
+using NetGore;
 using NetGore.IO;
 using NUnit.Framework;
 
