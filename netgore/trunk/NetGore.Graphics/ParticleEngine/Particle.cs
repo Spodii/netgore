@@ -90,10 +90,21 @@ namespace NetGore.Graphics.ParticleEngine
             // Return any free particles that we have already created
             if (_freeParticles.Count > 0)
             {
-                var free = _freeParticles.Pop();
+                Particle free;
+                try
+                {
+                    free = _freeParticles.Pop();
+                }
+                catch (InvalidOperationException)
+                {
+                    Debug.Fail("Huh... did someone try calling Create() from another thread?");
+                    return new Particle();
+                }
+
                 Debug.Assert(free._isDisposed);
                 free._isDisposed = false;
                 return free;
+
             }
 
             return new Particle();
