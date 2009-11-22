@@ -8,8 +8,8 @@
     <ProjectGuid>{CF26A8C6-7162-499C-8870-BF3C29E43532}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetGore.Globalization</RootNamespace>
-    <AssemblyName>NetGore.Globalization</AssemblyName>
+    <RootNamespace>NetGore.Core</RootNamespace>
+    <AssemblyName>NetGore.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

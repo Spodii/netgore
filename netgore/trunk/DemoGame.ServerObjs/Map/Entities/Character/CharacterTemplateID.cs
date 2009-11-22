@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
-using NetGore.Globalization;
+using NetGore.Core;
 using NetGore.IO;
 
 namespace DemoGame.Server

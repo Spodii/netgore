@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace NetGore
 {

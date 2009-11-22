@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace DemoGame.Server
 {

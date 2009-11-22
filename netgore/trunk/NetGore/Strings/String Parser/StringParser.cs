@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace NetGore
 {

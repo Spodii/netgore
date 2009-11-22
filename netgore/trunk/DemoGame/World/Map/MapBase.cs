@@ -9,7 +9,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
-using NetGore.Globalization;
+using NetGore.Core;
 using NetGore.IO;
 
 // FUTURE: Improve how characters handle when they hit the map's borders

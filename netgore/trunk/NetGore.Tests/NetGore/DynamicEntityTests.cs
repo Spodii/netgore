@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 using NetGore.IO;
 using NUnit.Framework;
 

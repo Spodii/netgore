@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security;
 using Microsoft.Win32;
 using Microsoft.Xna.Framework.Input;
-using NetGore.Globalization;
+using NetGore.Core;
 
 namespace NetGore.Graphics.GUI
 {

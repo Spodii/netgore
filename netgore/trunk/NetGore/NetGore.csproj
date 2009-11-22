@@ -187,9 +187,9 @@
       <Name>NetGore.Collections</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
+    <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
       <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
-      <Name>NetGore.Globalization</Name>
+      <Name>NetGore.Core</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">

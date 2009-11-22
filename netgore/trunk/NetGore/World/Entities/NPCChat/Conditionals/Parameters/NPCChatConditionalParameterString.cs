@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using NetGore;
-using NetGore.Globalization;
+using NetGore.Core;
 using NetGore.IO;
 
 namespace NetGore.NPCChat.Conditionals
