@@ -51,8 +51,7 @@ namespace DemoGame.ParticleEffectEditor
 
             var effect = _content.Load<Effect>("Fx/pointsprite");
             _renderer = new PointSpriteRenderer(GraphicsDevice, effect);
-            var texture = _content.Load<Texture2D>("Grh/Particle/skull");
-            Emitter = new ParticleEmitter(1000) { ParticleTexture = texture, Origin = new Vector2(300, 300) };
+            Emitter = new ParticleEmitter(_content, 1000) { ParticleTextureName = "Grh/Particle/skull", Origin = new Vector2(300, 300) };
         }
 
         public ParticleEmitter Emitter

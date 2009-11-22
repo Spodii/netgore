@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         Rectangle _sourceRect;
         float _speed;
         Texture2D _texture;
-        ContentAssetName _textureName;
+        TextureAssetName _textureName;
 
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
@@ -194,7 +194,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the name of the texture used by the GrhData.
         /// </summary>
-        public ContentAssetName TextureName
+        public TextureAssetName TextureName
         {
             get { return _textureName; }
         }
@@ -235,7 +235,7 @@ namespace NetGore.Graphics
         /// Changes the texture for a stationary <see cref="GrhData"/>.
         /// </summary>
         /// <param name="newTexture">Name of the new texture to use.</param>
-        public void ChangeTexture(ContentAssetName newTexture)
+        public void ChangeTexture(TextureAssetName newTexture)
         {
             if (newTexture == null)
                 throw new ArgumentNullException("newTexture");
@@ -489,7 +489,7 @@ namespace NetGore.Graphics
                 // Try to load the texture
                 try
                 {
-                    _texture = _cm.Load<Texture2D>("Grh/" + _textureName);
+                    _texture = _cm.Load<Texture2D>(_textureName);
                 }
                 catch (ContentLoadException ex)
                 {
