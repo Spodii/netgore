@@ -15,7 +15,7 @@ namespace NetGore.EditorTools
     {
         static readonly IEnumerable<Type> _emitterTypes =
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).Concat(new Type[]
-            { typeof(ParticleEmitter) }).Distinct().ToCompact();
+            { typeof(ParticleEmitter) }).Distinct().OrderBy(x => x.Name).ToCompact();
 
         public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
      
