@@ -70,7 +70,7 @@ namespace DemoGame.ParticleEffectEditor
         /// <returns>The initial <see cref="ParticleEmitter"/> to display.</returns>
         ParticleEmitter CreateInitialEmitter()
         {
-            return new CircleParticleEmitter
+            return new ParticleEmitter
             {
                 SpriteCategorization = new SpriteCategorization("Particle", "skull"),
                 Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
