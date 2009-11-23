@@ -7,7 +7,7 @@ using NetGore.Collections;
 using NetGore.EditorTools;
 using NetGore.Graphics.ParticleEngine;
 
-namespace DemoGame.ParticleEffectEditor
+namespace NetGore.EditorTools
 {
     public delegate void ParticleEmitterComboBoxHandler(ParticleEmitterComboBox sender, ParticleEmitter emitter);
 

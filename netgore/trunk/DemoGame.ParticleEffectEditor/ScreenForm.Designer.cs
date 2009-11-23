@@ -1,4 +1,6 @@
-﻿namespace DemoGame.ParticleEffectEditor
+﻿using NetGore.EditorTools;
+
+namespace DemoGame.ParticleEffectEditor
 {
     partial class ScreenForm
     {
@@ -34,7 +36,7 @@
             this.gbEmitter = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
-            this.cmbEmitter = new DemoGame.ParticleEffectEditor.ParticleEmitterComboBox();
+            this.cmbEmitter = new ParticleEmitterComboBox();
             this.GameScreen = new DemoGame.ParticleEffectEditor.GameScreenControl();
             this.tabControl1.SuspendLayout();
             this.tabEffect.SuspendLayout();
@@ -108,7 +110,7 @@
             this.cmbEmitter.Name = "cmbEmitter";
             this.cmbEmitter.Size = new System.Drawing.Size(196, 21);
             this.cmbEmitter.TabIndex = 1;
-            this.cmbEmitter.SelectedEmitterChanged += new DemoGame.ParticleEffectEditor.ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
+            this.cmbEmitter.SelectedEmitterChanged += new ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
             // 
             // GameScreen
             // 
