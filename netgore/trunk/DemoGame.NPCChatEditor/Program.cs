@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.Server.NPCChat.Conditionals;
+using NetGore.EditorTools;
 
 namespace DemoGame.NPCChatEditor
 {
@@ -27,6 +28,10 @@ namespace DemoGame.NPCChatEditor
         [STAThread]
         static void Main()
         {
+#if DEBUG
+            WinFormExceptionHelper.AddUnhandledExceptionHooks();
+#endif
+
             ForceLoadServerAssembly();
 
             Application.EnableVisualStyles();

@@ -112,7 +112,7 @@ namespace NetGore.EditorTools.WinForms
                 // Present might throw if the device became lost while we were
                 // drawing. The lost device will be handled by the next BeginDraw,
                 // so we just swallow the exception.
-                Debug.WriteLine("GraphicsDeviceControl caught exception: " + ex);
+                Debug.Fail("GraphicsDeviceControl caught exception: " + ex);
             }
         }
 

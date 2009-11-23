@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
+using NetGore.EditorTools;
 
 namespace DemoGame.MapEditor
 {
@@ -13,6 +14,10 @@ namespace DemoGame.MapEditor
         [STAThread]
         static void Main(string[] args)
         {
+#if DEBUG
+            WinFormExceptionHelper.AddUnhandledExceptionHooks();
+#endif
+
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
 
             Application.EnableVisualStyles();
