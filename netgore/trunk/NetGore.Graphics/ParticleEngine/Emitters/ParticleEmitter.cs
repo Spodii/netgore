@@ -282,12 +282,15 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets an array of the <see cref="Particle"/>s handled by this <see cref="ParticleEmitter"/>.
+        /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.
         /// </summary>
-        /// <returns>An array of the <see cref="Particle"/>s handled by this <see cref="ParticleEmitter"/>.</returns>
-        public Particle[] GetParticlesArray()
+        /// <param name="particle">The <see cref="Particle"/> that the values are being generated for.</param>
+        /// <param name="offset">The offset vector.</param>
+        /// <param name="force">The normalized force vector.</param>
+        protected virtual void GenerateParticleOffsetAndForce(Particle particle, out Vector2 offset, out Vector2 force)
         {
-            return particles;
+            offset = Vector2.Zero;
+            GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
         }
 
         /// <summary>
@@ -301,17 +304,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.
+        /// Gets an array of the <see cref="Particle"/>s handled by this <see cref="ParticleEmitter"/>.
         /// </summary>
-        /// <param name="particle">The <see cref="Particle"/> that the values are being generated for.</param>
-        /// <param name="offset">The offset vector.</param>
-        /// <param name="force">The normalized force vector.</param>
-        protected virtual void GenerateParticleOffsetAndForce(Particle particle, out Vector2 offset, out Vector2 force)
+        /// <returns>An array of the <see cref="Particle"/>s handled by this <see cref="ParticleEmitter"/>.</returns>
+        public Particle[] GetParticlesArray()
         {
-            offset = Vector2.Zero;
-            GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
+            return particles;
         }
-        
+
         /// <summary>
         /// Releases one or more particles.
         /// </summary>
@@ -360,7 +360,7 @@ namespace NetGore.Graphics.ParticleEngine
 
                 // Set the position
                 Vector2.Add(ref _origin, ref offset, out particle.Position);
-                
+
                 // Set the velocity
                 Vector2.Multiply(ref force, ReleaseSpeed.GetNext(), out particle.Velocity);
             }
