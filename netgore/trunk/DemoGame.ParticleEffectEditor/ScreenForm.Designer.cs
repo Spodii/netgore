@@ -32,13 +32,9 @@
             this.tabEffect = new System.Windows.Forms.TabPage();
             this.pgEffect = new System.Windows.Forms.PropertyGrid();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.cmbEmitter = new DemoGame.ParticleEffectEditor.ParticleEmitterComboBox();
             this.GameScreen = new DemoGame.ParticleEffectEditor.GameScreenControl();
             this.tabControl1.SuspendLayout();
             this.tabEffect.SuspendLayout();
@@ -69,65 +65,21 @@
             // 
             // pgEffect
             // 
-            this.pgEffect.Location = new System.Drawing.Point(6, 87);
+            this.pgEffect.Location = new System.Drawing.Point(6, 64);
             this.pgEffect.Name = "pgEffect";
-            this.pgEffect.Size = new System.Drawing.Size(256, 432);
+            this.pgEffect.Size = new System.Drawing.Size(256, 455);
             this.pgEffect.TabIndex = 1;
             // 
             // gbEmitter
             // 
-            this.gbEmitter.Controls.Add(this.textBox2);
-            this.gbEmitter.Controls.Add(this.label3);
-            this.gbEmitter.Controls.Add(this.textBox1);
-            this.gbEmitter.Controls.Add(this.label2);
-            this.gbEmitter.Controls.Add(this.comboBox1);
+            this.gbEmitter.Controls.Add(this.cmbEmitter);
             this.gbEmitter.Controls.Add(this.label1);
             this.gbEmitter.Location = new System.Drawing.Point(6, 6);
             this.gbEmitter.Name = "gbEmitter";
-            this.gbEmitter.Size = new System.Drawing.Size(256, 75);
+            this.gbEmitter.Size = new System.Drawing.Size(256, 52);
             this.gbEmitter.TabIndex = 0;
             this.gbEmitter.TabStop = false;
             this.gbEmitter.Text = "Emitter";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(162, 46);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(88, 20);
-            this.textBox2.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(129, 49);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(27, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Life:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(56, 46);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(67, 20);
-            this.textBox1.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Budget:";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(54, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(196, 21);
-            this.comboBox1.TabIndex = 1;
             // 
             // label1
             // 
@@ -147,6 +99,16 @@
             this.tabSettings.TabIndex = 1;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // cmbEmitter
+            // 
+            this.cmbEmitter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEmitter.FormattingEnabled = true;
+            this.cmbEmitter.Location = new System.Drawing.Point(54, 19);
+            this.cmbEmitter.Name = "cmbEmitter";
+            this.cmbEmitter.Size = new System.Drawing.Size(196, 21);
+            this.cmbEmitter.TabIndex = 1;
+            this.cmbEmitter.SelectedEmitterChanged += new DemoGame.ParticleEffectEditor.ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
             // 
             // GameScreen
             // 
@@ -184,11 +146,7 @@
         private System.Windows.Forms.TabPage tabEffect;
         private System.Windows.Forms.TabPage tabSettings;
         private System.Windows.Forms.GroupBox gbEmitter;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private ParticleEmitterComboBox cmbEmitter;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PropertyGrid pgEffect;
     }
