@@ -159,6 +159,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WinForms\Typed Controls\TypedListBoxChangeEventHandler.cs" />
+    <Compile Include="WinForms\Typed Controls\TypedListItem.cs" />
     <Compile Include="WinForms\WinFormExceptionHelper.cs" />
     <Compile Include="WinForms\GraphicsDeviceControl.cs">
       <SubType>Component</SubType>

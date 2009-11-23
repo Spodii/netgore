@@ -5,37 +5,27 @@ using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
-    public class TypedListBox<T> : ListBox
+    public class TypedListBox<T> : ListBox, ITypedControl<T>
     {
         public event TypedListBoxChangeEventHandler<T> TypedSelectedItemChanged;
 
         public void AddItem(T item)
         {
-            Items.Add(new TypedListItem(this, item));
+            Items.Add(new TypedListControlItem<T>(this, item));
         }
 
         public void AddItems(IEnumerable<T> items)
         {
-            Items.AddRange(items.Select(x => new TypedListItem(this, x)).ToArray());
+            Items.AddRange(items.Select(x => new TypedListControlItem<T>(this, x)).ToArray());
         }
 
         /// <summary>
-        /// Gets the items to initially populate the <see cref="ComboBox"/> with.
+        /// Gets the items to initially populate the <see cref="ListBox"/> with.
         /// </summary>
-        /// <returns>The items to initially populate the <see cref="ComboBox"/> with.</returns>
+        /// <returns>The items to initially populate the <see cref="ListBox"/> with.</returns>
         protected virtual IEnumerable<T> GetInitialItems()
         {
             return Enumerable.Empty<T>();
-        }
-
-        /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns>The string to display.</returns>
-        protected virtual string ItemToString(T item)
-        {
-            return item.ToString();
         }
 
         /// <summary>
@@ -58,54 +48,39 @@ namespace NetGore.EditorTools
                 SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ListControl.SelectedValueChanged"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnSelectedValueChanged(EventArgs e)
         {
             base.OnSelectedValueChanged(e);
 
-            var i = SelectedItem as TypedListItem;
-            if (i != null)
+            T item;
+            if (TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out item))
             {
-                OnTypedSelectedItemChanged(i.Value);
+                OnTypedSelectedValueChanged(item);
                 if (TypedSelectedItemChanged != null)
-                    TypedSelectedItemChanged(this, i.Value);
+                    TypedSelectedItemChanged(this, item);
             }
         }
 
-        protected virtual void OnTypedSelectedItemChanged(T item)
+        protected virtual void OnTypedSelectedValueChanged(T item)
         {
         }
 
-        class TypedListItem
+        #region ITypedControl<T> Members
+
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The string to display.</returns>
+        public virtual string ItemToString(T item)
         {
-            readonly TypedListBox<T> _owner;
-            readonly T _value;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TypedListItem"/> class.
-            /// </summary>
-            /// <param name="owner">The owner.</param>
-            /// <param name="value">The value.</param>
-            public TypedListItem(TypedListBox<T> owner, T value)
-            {
-                _owner = owner;
-                _value = value;
-            }
-
-            public T Value
-            {
-                get { return _value; }
-            }
-
-            /// <summary>
-            /// Returns a <see cref="System.String"/> that represents this instance.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="System.String"/> that represents this instance.
-            /// </returns>
-            public override string ToString()
-            {
-                return _owner.ItemToString(Value);
-            }
+            return item.ToString();
         }
+
+        #endregion
     }
 }

@@ -5,22 +5,53 @@ using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
+    public interface ITypedControl<T>
+    {
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The string to display.</returns>
+        string ItemToString(T item);
+    }
+
+    public static class TypedControlHelper<T>
+    {
+        public static bool TryGetItemAsTyped(object item, out T value)
+        {
+            if (item is TypedListControlItem<T>)
+            {
+                value = ((TypedListControlItem<T>)item).Value;
+                return true;
+            }
+
+            if (item is T)
+            {
+                value = (T)item;
+                return true;
+            }
+
+            value = default(T);
+            return false;
+        }
+    }
+
     /// <summary>
     /// A <see cref="ComboBox"/> with some strong typing support.
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
-    public class TypedComboBox<T> : ComboBox
+    public class TypedComboBox<T> : ComboBox, ITypedControl<T>
     {
         public event TypedComboBoxChangeEventHandler<T> TypedSelectedItemChanged;
 
         public void AddItem(T item)
         {
-            Items.Add(new TypedListItem(this, item));
+            Items.Add(new TypedListControlItem<T>(this, item));
         }
 
         public void AddItems(IEnumerable<T> items)
         {
-            Items.AddRange(items.Select(x => new TypedListItem(this, x)).ToArray());
+            Items.AddRange(items.Select(x => new TypedListControlItem<T>(this, x)).ToArray());
         }
 
         /// <summary>
@@ -30,16 +61,6 @@ namespace NetGore.EditorTools
         protected virtual IEnumerable<T> GetInitialItems()
         {
             return Enumerable.Empty<T>();
-        }
-
-        /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns>The string to display.</returns>
-        protected virtual string ItemToString(T item)
-        {
-            return item.ToString();
         }
 
         /// <summary>
@@ -70,12 +91,12 @@ namespace NetGore.EditorTools
         {
             base.OnSelectedValueChanged(e);
 
-            var i = SelectedItem as TypedListItem;
-            if (i != null)
+            T item;
+            if (TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out item))
             {
-                OnTypedSelectedValueChanged(i.Value);
+                OnTypedSelectedValueChanged(item);
                 if (TypedSelectedItemChanged != null)
-                    TypedSelectedItemChanged(this, i.Value);
+                    TypedSelectedItemChanged(this, item);
             }
         }
 
@@ -83,37 +104,18 @@ namespace NetGore.EditorTools
         {
         }
 
-        class TypedListItem
+        #region ITypedControl<T> Members
+
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The string to display.</returns>
+        public virtual string ItemToString(T item)
         {
-            readonly TypedComboBox<T> _owner;
-            readonly T _value;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TypedListItem"/> class.
-            /// </summary>
-            /// <param name="owner">The owner.</param>
-            /// <param name="value">The value.</param>
-            public TypedListItem(TypedComboBox<T> owner, T value)
-            {
-                _owner = owner;
-                _value = value;
-            }
-
-            public T Value
-            {
-                get { return _value; }
-            }
-
-            /// <summary>
-            /// Returns a <see cref="System.String"/> that represents this instance.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="System.String"/> that represents this instance.
-            /// </returns>
-            public override string ToString()
-            {
-                return _owner.ItemToString(Value);
-            }
+            return item.ToString();
         }
+
+        #endregion
     }
 }
