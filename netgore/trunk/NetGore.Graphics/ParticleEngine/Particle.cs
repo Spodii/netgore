@@ -5,6 +5,10 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+// Thanks goes out to the open source particle engine ProjectMercury, which a lot of the particle engine concepts
+// and design is derived from.
+// http://www.codeplex.com/mpe
+
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
