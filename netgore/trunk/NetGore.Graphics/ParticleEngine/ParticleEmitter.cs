@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -39,34 +40,34 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         static ParticleEmitter()
         {
-            DefaultBudget = 1000;
+            DefaultBudget = _defaultBudget;
         }
+
+        /// <summary>
+        /// The initial size of the particle array.
+        /// </summary>
+        const int _initialParticleArraySize = 64;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
         /// </summary>
-        /// <param name="budget">The initial particle budget.</param>
-        public ParticleEmitter(int budget)
+        public ParticleEmitter()
         {
-            if (budget < 1)
-                throw new ArgumentOutOfRangeException("budget", "budget must be greater than 0.");
-
-            _budget = budget;
-            particles = new Particle[budget];
+            _budget = DefaultBudget;
+            particles = new Particle[_initialParticleArraySize];
 
             // Set some default values
             BlendMode = _defaultBlendMode;
-            Budget = budget;
             Life = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
             ReleaseColor = new VariableColor(Color.White);
             ReleaseRate = new VariableUShort(100);
-            ReleaseRotation = new VariableFloat(_defaultRotation);
+            ReleaseRotation = new VariableFloat(0);
             ReleaseScale = new VariableFloat(1);
             ReleaseSpeed = new VariableFloat(50);
         }
 
-        const int _defaultRotation = 0;
+        const int _defaultBudget = 5000;
 
         /// <summary>
         /// Gets the number of living <see cref="Particle"/>s.
@@ -95,6 +96,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("The maximum number of live Particles that this emitter may have out at once.")]
         [DisplayName("Budget")]
+        [DefaultValue(_defaultBudget)]
         public int Budget
         {
             get { return _budget; }
@@ -304,7 +306,18 @@ namespace NetGore.Graphics.ParticleEngine
         void ReleaseParticles(int currentTime, int amount)
         {
             // Find how many we can actually release
-            int lastIndex = Math.Min(particles.Length - 1, _lastAliveIndex + amount);
+            int lastIndex = Math.Min(Budget - 1, _lastAliveIndex + amount);
+
+            // Ensure our particles array is large enough to fit the new particles.
+            // When we resize the array, we use the "next power of two" sizing concept to reduce the
+            // memory fragmentation (.NET internally does the same with most collections). To speed things up,
+            // we just find the next power of two instead of looping until we have a large enough value.
+            if (particles.Length - 1 < lastIndex)
+            {
+                int newSize = BitOps.NextPowerOf2(lastIndex);
+                Debug.Assert(BitOps.IsPowerOf2(newSize), "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
+                Array.Resize(ref particles, newSize);
+            }
 
             // Start releasing the particles
             for (int i = _lastAliveIndex + 1; i <= lastIndex; i++)
