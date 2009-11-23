@@ -76,8 +76,8 @@ namespace DemoGame.ParticleEffectEditor
             {
                 SpriteCategorization = new SpriteCategorization("Particle", "skull"),
                 Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
-                ReleaseRate = new VariableUShort(50),
-                ReleaseAmount = new VariableUShort(5)
+                ReleaseRate = 50,
+                ReleaseAmount = 5
             };
         }
 
