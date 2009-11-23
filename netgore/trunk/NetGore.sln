@@ -55,8 +55,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Audio", "NetGore.Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.ParticleEffectEditor", "DemoGame.ParticleEffectEditor\DemoGame.ParticleEffectEditor.csproj", "{B754CB42-CD27-4602-809C-930677A8AD08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.AI", "NetGore.AI\NetGore.AI.csproj", "{5B6A1FFA-F90C-402F-9B9A-5830AEBA117D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
