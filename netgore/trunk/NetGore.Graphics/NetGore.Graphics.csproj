@@ -127,6 +127,9 @@
     <Compile Include="ParticleEngine\Emitters\CircleParticleEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\ConeParticleEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\LineParticleEmitter.cs" />
+    <Compile Include="ParticleEngine\Emitters\PolygonOrigin.cs" />
+    <Compile Include="ParticleEngine\Emitters\PolygonParticleEmitter.cs" />
+    <Compile Include="ParticleEngine\Emitters\PolygonPointCollection.cs" />
     <Compile Include="ParticleEngine\Emitters\RectParticleEmitter.cs" />
     <Compile Include="ParticleEngine\Renderers\IParticleRenderer.cs" />
     <Compile Include="ParticleEngine\Particle.cs" />
