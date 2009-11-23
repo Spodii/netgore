@@ -173,7 +173,7 @@ namespace NetGore.EditorTools.WinForms
                 Initialize();
 
                 // Create the redraw timer
-                Timer t = new Timer { Interval = 1000 / 60 };
+                Timer t = new Timer { Interval = 1000 / 100 };
                 t.Tick += delegate { Invalidate(); };
                 t.Start();
             }
