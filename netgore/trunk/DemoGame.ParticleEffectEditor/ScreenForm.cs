@@ -102,5 +102,16 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         #endregion
+
+        private void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
+        {
+            if (_emitter == null || _emitter.GetType() == emitter.GetType())
+                return;
+
+            _emitter.CopyValuesTo(emitter);
+            _emitter = emitter;
+
+            pgEffect.SelectedObject = _emitter;
+        }
     }
 }
