@@ -148,6 +148,7 @@
     <Compile Include="ImageHelper.cs" />
     <Compile Include="Extensions\TreeNodeCollectionExtensions.cs" />
     <Compile Include="Extensions\TreeNodeExtensions.cs" />
+    <Compile Include="WinForms\WinFormExceptionHelper.cs" />
     <Compile Include="WinForms\GraphicsDeviceControl.cs">
       <SubType>Component</SubType>
     </Compile>
