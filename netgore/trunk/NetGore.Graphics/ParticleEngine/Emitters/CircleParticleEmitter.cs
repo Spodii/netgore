@@ -60,17 +60,19 @@ namespace NetGore.Graphics.ParticleEngine
         protected override void GenerateParticleOffsetAndForce(Particle particle, out Vector2 offset, out Vector2 force)
         {
             float rads = RandomHelper.NextFloat(MathHelper.TwoPi);
-
             var radius = Radius.GetNext();
-            offset = new Vector2((float)Math.Cos(rads) * radius, (float)Math.Sin(rads) * radius);
+
+            float cosRads = (float)Math.Cos(rads);
+            float sinRads = (float)Math.Sin(rads);
+            offset = new Vector2(cosRads * radius, sinRads * radius);
 
             if (!IsRing)
                 Vector2.Multiply(ref offset, RandomHelper.NextFloat(), out offset);
 
             if (Radiate)
-                Vector2.Normalize(ref offset, out force);
+                force = new Vector2(cosRads, sinRads);
             else
-                GetForce(rads, out force);
+                GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
         }
     }
 }
