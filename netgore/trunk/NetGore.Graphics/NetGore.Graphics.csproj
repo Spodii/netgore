@@ -124,11 +124,11 @@
     <Compile Include="MapGrh.cs" />
     <Compile Include="MapRenderLayer.cs" />
     <Compile Include="MapRenderLayerChange.cs" />
-    <Compile Include="ParticleEngine\IParticleRenderer.cs" />
+    <Compile Include="ParticleEngine\Renderers\IParticleRenderer.cs" />
     <Compile Include="ParticleEngine\Particle.cs" />
-    <Compile Include="ParticleEngine\ParticleEmitter.cs" />
-    <Compile Include="ParticleEngine\ParticleRendererBase.cs" />
-    <Compile Include="ParticleEngine\SpriteBatchRenderer.cs" />
+    <Compile Include="ParticleEngine\Emitters\ParticleEmitter.cs" />
+    <Compile Include="ParticleEngine\Renderers\ParticleRendererBase.cs" />
+    <Compile Include="ParticleEngine\Renderers\SpriteBatchRenderer.cs" />
     <Compile Include="Sprite\Grh\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />
     <Compile Include="Sprite\AnimType.cs" />
