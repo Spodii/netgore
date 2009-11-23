@@ -22,6 +22,17 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Performs an implicit conversion from <see cref="Microsoft.Xna.Framework.Graphics.Color"/>
+        /// to <see cref="NetGore.VariableColor"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator VariableColor(Color value)
+        {
+            return new VariableColor(value);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VariableColor"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
