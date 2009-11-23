@@ -397,7 +397,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// This way we suffer very little from an invalid Sprite, but still give the emitter a chance to reload
         /// the sprite.
         /// </summary>
-        int _tryLoadSpriteTimeout = 0;
+        ushort _tryLoadSpriteTimeout = 0;
 
         /// <summary>
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.
@@ -408,8 +408,8 @@ namespace NetGore.Graphics.ParticleEngine
             // Check if the sprite is loaded
             if (Sprite == null)
             {
-                // Try every update the first 5 times, then after that only try every 100 updates
-                if (++_tryLoadSpriteTimeout < 5 || _tryLoadSpriteTimeout % 100 == 0)
+                // Try every update the first 5 times, then after that only try every 150 updates
+                if (++_tryLoadSpriteTimeout < 5 || _tryLoadSpriteTimeout % 150 == 0)
                     TryLoadSprite();
 
                 if (Sprite == null)
