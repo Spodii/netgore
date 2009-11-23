@@ -6,6 +6,9 @@ using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
+    /// <summary>
+    /// A basic emitter of <see cref="Particle"/>s that just spews out <see cref="Particle"/>s from a single point.
+    /// </summary>
     public class ParticleEmitter : IDisposable
     {
         /// <summary>
