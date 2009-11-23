@@ -18,19 +18,19 @@ namespace NetGore.Graphics.ParticleEngine
         public CircleParticleEmitter()
         {
             Radius = 50;
-            IsRing = false;
+            Perimeter = false;
             Radiate = false;
         }
 
         /// <summary>
-        /// Gets or sets if <see cref="Particle"/>s are emitted as a ring. If true, <see cref="Particle"/>s will only
-        /// be emitted on the perimeter of the circle.
+        /// Gets or sets if <see cref="Particle"/>s are emitted only from the perimeter. If true,
+        /// <see cref="Particle"/>s will only be emitted on the perimeter of the circle.
         /// </summary>
         [Category(_emitterCategoryName)]
         [Description("If Particles are emitter along the perimeter of the circle to form a ring.")]
-        [DisplayName("IsRing")]
+        [DisplayName("Perimeter")]
         [DefaultValue(false)]
-        public bool IsRing { get; set; }
+        public bool Perimeter { get; set; }
 
         /// <summary>
         /// Gets or sets if the <see cref="Particle"/>s will radiate away from the center of the circle. If false,
@@ -66,7 +66,7 @@ namespace NetGore.Graphics.ParticleEngine
             float sinRads = (float)Math.Sin(rads);
             offset = new Vector2(cosRads * radius, sinRads * radius);
 
-            if (!IsRing)
+            if (!Perimeter)
                 Vector2.Multiply(ref offset, RandomHelper.NextFloat(), out offset);
 
             if (Radiate)
