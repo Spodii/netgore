@@ -52,10 +52,12 @@ namespace NetGore.Graphics.ParticleEngine
         public VariableFloat Radius { get; set; }
 
         /// <summary>
-        /// Generates the offset vector to release the <see cref="Particle"/> at.
+        /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.
         /// </summary>
+        /// <param name="particle">The <see cref="Particle"/> that the values are being generated for.</param>
         /// <param name="offset">The offset vector.</param>
-        protected override void GenerateParticleOffset(out Vector2 offset)
+        /// <param name="force">The normalized force vector.</param>
+        protected override void GenerateParticleOffsetAndForce(Particle particle, out Vector2 offset, out Vector2 force)
         {
             float rads = RandomHelper.NextFloat(MathHelper.TwoPi);
 
@@ -64,19 +66,11 @@ namespace NetGore.Graphics.ParticleEngine
 
             if (!IsRing)
                 Vector2.Multiply(ref offset, RandomHelper.NextFloat(), out offset);
-        }
 
-        /// <summary>
-        /// Generates the normalized force vector for releasing the <see cref="Particle"/>.
-        /// </summary>
-        /// <param name="offset">The offset vector that was acquired for this <see cref="Particle"/>.</param>
-        /// <param name="force">The normalized force vector.</param>
-        protected override void GenerateParticleForce(ref Vector2 offset, out Vector2 force)
-        {
             if (Radiate)
                 Vector2.Normalize(ref offset, out force);
             else
-                base.GenerateParticleForce(ref offset, out force);
+                GetForce(rads, out force);
         }
     }
 }

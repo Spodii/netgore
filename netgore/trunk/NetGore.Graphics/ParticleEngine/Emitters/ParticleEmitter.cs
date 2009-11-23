@@ -301,26 +301,19 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Generates the offset vector to release the <see cref="Particle"/> at.
+        /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.
         /// </summary>
+        /// <param name="particle">The <see cref="Particle"/> that the values are being generated for.</param>
         /// <param name="offset">The offset vector.</param>
-        protected virtual void GenerateParticleOffset(out Vector2 offset)
+        /// <param name="force">The normalized force vector.</param>
+        protected virtual void GenerateParticleOffsetAndForce(Particle particle, out Vector2 offset, out Vector2 force)
         {
             offset = Vector2.Zero;
+            GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
         }
         
         /// <summary>
-        /// Generates the normalized force vector for releasing the <see cref="Particle"/>.
-        /// </summary>
-        /// <param name="offset">The offset vector that was acquired for this <see cref="Particle"/>.</param>
-        /// <param name="force">The normalized force vector.</param>
-        protected virtual void GenerateParticleForce(ref Vector2 offset, out Vector2 force)
-        {
-            GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
-        }
-
-        /// <summary>
-        /// Releases particles.
+        /// Releases one or more particles.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <param name="amount">The number of particles to release.</param>
@@ -360,14 +353,15 @@ namespace NetGore.Graphics.ParticleEngine
                 particle.Scale = ReleaseScale.GetNext();
                 ReleaseColor.GetNext(ref particle.Color);
 
-                // Get the position
+                // Get the offset and force
                 Vector2 offset;
-                GenerateParticleOffset(out offset);
+                Vector2 force;
+                GenerateParticleOffsetAndForce(particle, out offset, out force);
+
+                // Set the position
                 Vector2.Add(ref _origin, ref offset, out particle.Position);
                 
-                // Get the velocity
-                Vector2 force;
-                GenerateParticleForce(ref offset, out force);
+                // Set the velocity
                 Vector2.Multiply(ref force, ReleaseSpeed.GetNext(), out particle.Velocity);
             }
 
