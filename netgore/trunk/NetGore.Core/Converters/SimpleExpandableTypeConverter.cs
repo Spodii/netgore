@@ -124,14 +124,6 @@ namespace NetGore
 
                 if (wasConverted)
                     return converted;
-
-                try
-                {
-                    return base.ConvertFrom(context, culture, value);
-                }
-                catch (NotSupportedException)
-                {
-                }
             }
 
             return base.ConvertFrom(context, culture, value);

@@ -24,7 +24,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             Vector2 origin = emitter.Sprite.Size / 2f;
 
-            _spriteBatch.Begin(BlendMode, SpriteSortMode.Deferred, SaveStateMode.None);
+            _spriteBatch.Begin(emitter.BlendMode, SpriteSortMode.Deferred, SaveStateMode.None);
 
             var particles = emitter.GetParticlesArray();
             for (int i = 0; i < emitter.ActiveParticles; i++)
