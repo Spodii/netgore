@@ -20,16 +20,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.Single"/> to <see cref="NetGore.VariableFloat"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator VariableFloat(float value)
-        {
-            return new VariableFloat(value);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="VariableFloat"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
@@ -96,5 +86,15 @@ namespace NetGore
         }
 
         #endregion
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.Single"/> to <see cref="NetGore.VariableFloat"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator VariableFloat(float value)
+        {
+            return new VariableFloat(value);
+        }
     }
 }

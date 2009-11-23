@@ -22,17 +22,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="Microsoft.Xna.Framework.Graphics.Color"/>
-        /// to <see cref="NetGore.VariableColor"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator VariableColor(Color value)
-        {
-            return new VariableColor(value);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="VariableColor"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
@@ -65,6 +54,20 @@ namespace NetGore
                 _min.A = max.A;
                 _max.A = min.A;
             }
+        }
+
+        /// <summary>
+        /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
+        /// </summary>
+        /// <param name="value">The next value, based off of the
+        /// <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</param>
+        public void GetNext(ref Color value)
+        {
+            byte a = (byte)RandomHelper.NextInt(_min.A, _max.A);
+            byte r = (byte)RandomHelper.NextInt(_min.R, _max.R);
+            byte g = (byte)RandomHelper.NextInt(_min.G, _max.G);
+            byte b = (byte)RandomHelper.NextInt(_min.B, _max.B);
+            value = new Color(r, g, b, a);
         }
 
         /// <summary>
@@ -154,17 +157,14 @@ namespace NetGore
         #endregion
 
         /// <summary>
-        /// Gets the next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.
+        /// Performs an implicit conversion from <see cref="Microsoft.Xna.Framework.Graphics.Color"/>
+        /// to <see cref="NetGore.VariableColor"/>.
         /// </summary>
-        /// <param name="value">The next value, based off of the
-        /// <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</param>
-        public void GetNext(ref Color value)
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator VariableColor(Color value)
         {
-            byte a = (byte)RandomHelper.NextInt(_min.A, _max.A);
-            byte r = (byte)RandomHelper.NextInt(_min.R, _max.R);
-            byte g = (byte)RandomHelper.NextInt(_min.G, _max.G);
-            byte b = (byte)RandomHelper.NextInt(_min.B, _max.B);
-            value = new Color(r, g, b, a);
+            return new VariableColor(value);
         }
     }
 }
