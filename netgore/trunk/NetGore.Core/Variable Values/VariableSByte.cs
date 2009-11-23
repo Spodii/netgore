@@ -20,16 +20,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.SByte"/> to <see cref="NetGore.VariableSByte"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator VariableSByte(sbyte value)
-        {
-            return new VariableSByte(value);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="VariableSByte"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
@@ -96,5 +86,15 @@ namespace NetGore
         }
 
         #endregion
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.SByte"/> to <see cref="NetGore.VariableSByte"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator VariableSByte(sbyte value)
+        {
+            return new VariableSByte(value);
+        }
     }
 }

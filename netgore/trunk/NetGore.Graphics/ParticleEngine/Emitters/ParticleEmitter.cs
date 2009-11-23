@@ -39,8 +39,16 @@ namespace NetGore.Graphics.ParticleEngine
 
         int _lastUpdateTime = int.MinValue;
         int _nextReleaseTime;
+        Vector2 _origin;
         Grh _sprite;
         SpriteCategorization _spriteCategorization;
+
+        /// <summary>
+        /// Used to spread out sprite loading attempts when trying to load the sprite when it is null on Update().
+        /// This way we suffer very little from an invalid Sprite, but still give the emitter a chance to reload
+        /// the sprite.
+        /// </summary>
+        ushort _tryLoadSpriteTimeout = 0;
 
         /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
@@ -156,9 +164,11 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("The origin of the emitter.")]
         [DisplayName("Origin")]
-        public Vector2 Origin { get { return _origin; } set { _origin = value; } }
-
-        Vector2 _origin;
+        public Vector2 Origin
+        {
+            get { return _origin; }
+            set { _origin = value; }
+        }
 
         /// <summary>
         /// Gets or sets the number of <see cref="Particle"/>s that are emitted at each release.
@@ -243,26 +253,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Tries to load the <see cref="_sprite"/> using the <see cref="SpriteCategorization"/>.
-        /// </summary>
-        void TryLoadSprite()
-        {
-            // Get the GrhData
-            var grhData = GrhInfo.GetData(_spriteCategorization);
-            if (grhData == null)
-            {
-                // Invalid GrhData...
-                _sprite = null;
-                return;
-            }
-
-            // Load the sprite
-            _sprite = new Grh(grhData);
-
-            _tryLoadSpriteTimeout = 0;
-        }
-
-        /// <summary>
         /// Copies the values in this <see cref="ParticleEmitter"/> to another.
         /// </summary>
         /// <param name="destination">The <see cref="ParticleEmitter"/> to copy the values to.</param>
@@ -319,8 +309,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="speed">The speed.</param>
         /// <param name="offset">The position offset to release the particle from the origin.</param>
         /// <param name="releaseVelocity">The velocity vector to apply to the <see cref="Particle"/>.</param>
-        protected virtual void InitializeParticle(int particleIndex, float speed, out Vector2 offset,
-                                                  out Vector2 releaseVelocity)
+        protected virtual void InitializeParticle(int particleIndex, float speed, out Vector2 offset, out Vector2 releaseVelocity)
         {
             float radians = RandomHelper.NextFloat(MathHelper.TwoPi);
 
@@ -393,11 +382,24 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Used to spread out sprite loading attempts when trying to load the sprite when it is null on Update().
-        /// This way we suffer very little from an invalid Sprite, but still give the emitter a chance to reload
-        /// the sprite.
+        /// Tries to load the <see cref="_sprite"/> using the <see cref="SpriteCategorization"/>.
         /// </summary>
-        ushort _tryLoadSpriteTimeout = 0;
+        void TryLoadSprite()
+        {
+            // Get the GrhData
+            var grhData = GrhInfo.GetData(_spriteCategorization);
+            if (grhData == null)
+            {
+                // Invalid GrhData...
+                _sprite = null;
+                return;
+            }
+
+            // Load the sprite
+            _sprite = new Grh(grhData);
+
+            _tryLoadSpriteTimeout = 0;
+        }
 
         /// <summary>
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.

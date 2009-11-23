@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore;
-using NetGore.Collections;
-using NetGore.EditorTools;
 using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.EditorTools
@@ -18,23 +15,10 @@ namespace NetGore.EditorTools
             { typeof(ParticleEmitter) }).Distinct().OrderBy(x => x.Name).ToCompact();
 
         public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
-     
+
         public ParticleEmitterComboBox()
         {
             DropDownStyle = ComboBoxStyle.DropDownList;
-        }
-
-        protected override void OnTypedSelectedValueChanged(Type item)
-        {
-            base.OnTypedSelectedValueChanged(item);
-
-            if (SelectedEmitterChanged == null)
-                return;
-
-            ParticleEmitter emitter = (ParticleEmitter)Activator.CreateInstance(item, true);
-
-            if (emitter != null)
-                SelectedEmitterChanged(this, emitter);
         }
 
         protected override IEnumerable<Type> GetInitialItems()
@@ -50,6 +34,19 @@ namespace NetGore.EditorTools
         public override string ItemToString(Type item)
         {
             return item.Name;
+        }
+
+        protected override void OnTypedSelectedValueChanged(Type item)
+        {
+            base.OnTypedSelectedValueChanged(item);
+
+            if (SelectedEmitterChanged == null)
+                return;
+
+            ParticleEmitter emitter = (ParticleEmitter)Activator.CreateInstance(item, true);
+
+            if (emitter != null)
+                SelectedEmitterChanged(this, emitter);
         }
     }
 }

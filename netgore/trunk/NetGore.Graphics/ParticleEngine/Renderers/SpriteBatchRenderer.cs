@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,11 +6,20 @@ namespace NetGore.Graphics.ParticleEngine
 {
     public sealed class SpriteBatchRenderer : ParticleRendererBase
     {
-        SpriteBatch _spriteBatch;
+        readonly SpriteBatch _spriteBatch;
 
         public SpriteBatchRenderer(GraphicsDevice graphicsDevice)
         {
             _spriteBatch = new SpriteBatch(graphicsDevice);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles the actual disposing.
+        /// </summary>
+        protected override void InternalDispose()
+        {
+            if (!_spriteBatch.IsDisposed)
+                _spriteBatch.Dispose();
         }
 
         /// <summary>
@@ -34,15 +40,6 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             _spriteBatch.End();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles the actual disposing.
-        /// </summary>
-        protected override void InternalDispose()
-        {
-            if (!_spriteBatch.IsDisposed)
-                _spriteBatch.Dispose();
         }
     }
 }

@@ -168,7 +168,7 @@ namespace NetGore.EditorTools.WinForms
 
                 // Register the service, so components like ContentManager can find it
                 _services.AddService<IGraphicsDeviceService>(_gds);
-                
+
                 // Give derived classes a chance to initialize themselves
                 Initialize();
 
@@ -233,7 +233,7 @@ namespace NetGore.EditorTools.WinForms
         protected void PaintUsingSystemDrawing(System.Drawing.Graphics graphics, string text)
         {
             graphics.Clear(Color.CornflowerBlue);
-            
+
             using (Brush brush = new SolidBrush(Color.Black))
             {
                 using (StringFormat format = new StringFormat())
