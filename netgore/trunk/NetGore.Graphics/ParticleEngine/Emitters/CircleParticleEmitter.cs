@@ -10,6 +10,16 @@ namespace NetGore.Graphics.ParticleEngine
         const string _emitterCategoryName = "Circle Emitter";
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CircleParticleEmitter"/> class.
+        /// </summary>
+        public CircleParticleEmitter()
+        {
+            Radius = 50;
+            IsRing = false;
+            Radiate = false;
+        }
+
+        /// <summary>
         /// Gets or sets if <see cref="Particle"/>s are emitted as a ring. If true, <see cref="Particle"/>s will only
         /// be emitted on the perimeter of the circle.
         /// </summary>
@@ -36,20 +46,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("The size of the circle's radius.")]
         [DisplayName("Radius")]
         [DefaultValue(typeof(VariableFloat), "50")]
-        public VariableFloat Radius
-        {
-        get;set;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CircleParticleEmitter"/> class.
-        /// </summary>
-        public CircleParticleEmitter()
-        {
-            Radius = 50;
-            IsRing = true;
-            Radiate = false;
-        }
+        public VariableFloat Radius { get; set; }
 
         /// <summary>
         /// Initializes a <see cref="Particle"/>.
@@ -58,8 +55,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="speed">The speed.</param>
         /// <param name="offset">The position offset to release the particle from the origin.</param>
         /// <param name="releaseVelocity">The velocity vector to apply to the <see cref="Particle"/>.</param>
-        protected override void InitializeParticle(int particleIndex, float speed, out Vector2 offset,
-                                                   out Vector2 releaseVelocity)
+        protected override void InitializeParticle(int particleIndex, float speed, out Vector2 offset, out Vector2 releaseVelocity)
         {
             var radius = Radius.GetNext();
             float radians = RandomHelper.NextFloat(MathHelper.TwoPi);
@@ -75,9 +71,7 @@ namespace NetGore.Graphics.ParticleEngine
                 Vector2.Multiply(ref releaseVelocity, speed, out releaseVelocity);
             }
             else
-            {
                 GetVelocity(RandomHelper.NextFloat(MathHelper.TwoPi), speed, out releaseVelocity);
-            }
         }
     }
 }
