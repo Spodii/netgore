@@ -72,12 +72,13 @@ namespace DemoGame.ParticleEffectEditor
             GrhInfo.Load(ContentPaths.Build, _content);
 
             _renderer = new SpriteBatchRenderer(GraphicsDevice);
-            Emitter = new ParticleEmitter
+            Emitter = new CircleParticleEmitter
             {
                 SpriteCategorization = new SpriteCategorization("Particle", "skull"),
                 Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
-                ReleaseRate = 50,
-                ReleaseAmount = 5
+                ReleaseRate = 5,
+                ReleaseAmount = 5,
+                ReleaseSpeed = 50
             };
         }
 
