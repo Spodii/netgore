@@ -22,18 +22,10 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         bool _flip;
 
-        int _length;
-        Matrix _rotationMatrix = Matrix.CreateRotationZ(0f);
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineParticleEmitter"/> class.
-        /// </summary>
-        public LineParticleEmitter()
-        {
-            Length = _defaultLength;
-            EmitBothWays = _defaultEmitBothWays;
-            Rectilinear = _defaultRectilinear;
-        }
+        bool _emitBothWays = _defaultEmitBothWays;
+        int _length = _defaultLength;
+        bool _rectilinear = _defaultRectilinear;
+        Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultAngle);
 
         /// <summary>
         /// Gets or sets the rotation in radians of the line around its center point.
@@ -56,7 +48,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("If particles are emitted in both directions from the line. Only valid if rectilinear is set.")]
         [DisplayName("Rectilinear")]
         [DefaultValue(_defaultEmitBothWays)]
-        public bool EmitBothWays { get; set; }
+        public bool EmitBothWays { get { return _emitBothWays; } set { _emitBothWays = value; } }
 
         /// <summary>
         /// Gets or sets the length of the line.
@@ -84,7 +76,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("If particles are emitted only in the direction of the line's sides.")]
         [DisplayName("Rectilinear")]
         [DefaultValue(_defaultRectilinear)]
-        public bool Rectilinear { get; set; }
+        public bool Rectilinear { get { return _rectilinear; } set { _rectilinear = value; } }
 
         /// <summary>
         /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.

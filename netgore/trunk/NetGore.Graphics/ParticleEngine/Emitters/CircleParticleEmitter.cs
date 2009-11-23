@@ -10,17 +10,13 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class CircleParticleEmitter : ParticleEmitter
     {
+        const bool _defaultPerimeter = false;
+        const bool _defaultRadiate = false;
         const string _emitterCategoryName = "Circle Emitter";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CircleParticleEmitter"/> class.
-        /// </summary>
-        public CircleParticleEmitter()
-        {
-            Radius = 50;
-            Perimeter = false;
-            Radiate = false;
-        }
+        bool _perimeter = _defaultPerimeter;
+        bool _radiate = _defaultRadiate;
+        VariableFloat _radius = 50;
 
         /// <summary>
         /// Gets or sets if <see cref="Particle"/>s are emitted only from the perimeter. If true,
@@ -29,8 +25,12 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("If Particles are emitter along the perimeter of the circle to form a ring.")]
         [DisplayName("Perimeter")]
-        [DefaultValue(false)]
-        public bool Perimeter { get; set; }
+        [DefaultValue(_defaultPerimeter)]
+        public bool Perimeter
+        {
+            get { return _perimeter; }
+            set { _perimeter = value; }
+        }
 
         /// <summary>
         /// Gets or sets if the <see cref="Particle"/>s will radiate away from the center of the circle. If false,
@@ -39,8 +39,12 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("If true, Particles will radiate out from the center of the circle.")]
         [DisplayName("Radiate")]
-        [DefaultValue(false)]
-        public bool Radiate { get; set; }
+        [DefaultValue(_defaultRadiate)]
+        public bool Radiate
+        {
+            get { return _radiate; }
+            set { _radiate = value; }
+        }
 
         /// <summary>
         /// Gets or sets the radius of the circle.
@@ -49,7 +53,11 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("The size of the circle's radius.")]
         [DisplayName("Radius")]
         [DefaultValue(typeof(VariableFloat), "50")]
-        public VariableFloat Radius { get; set; }
+        public VariableFloat Radius
+        {
+            get { return _radius; }
+            set { _radius = value; }
+        }
 
         /// <summary>
         /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.

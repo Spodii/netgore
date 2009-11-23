@@ -13,14 +13,8 @@ namespace NetGore.Graphics.ParticleEngine
         const float _defaultDirection = 0;
         const string _emitterCategoryName = "Cone Emitter";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConeParticleEmitter"/> class.
-        /// </summary>
-        public ConeParticleEmitter()
-        {
-            ConeAngle = _defaultConeAngle;
-            Direction = _defaultDirection;
-        }
+        float _coneAngle = _defaultConeAngle;
+        float _direction = _defaultDirection;
 
         /// <summary>
         /// Gets or sets the angle (in radians) from edge to edge of the emitter beam.
@@ -29,7 +23,11 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("The angle (in radians) from edge to edge of the emitter beam.")]
         [DisplayName("Angle")]
         [DefaultValue(_defaultConeAngle)]
-        public float ConeAngle { get; set; }
+        public float ConeAngle
+        {
+            get { return _coneAngle; }
+            set { _coneAngle = value; }
+        }
 
         /// <summary>
         /// Gets or sets the angle (in radians) that the emitter is facing.
@@ -38,7 +36,11 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("The angle (in radians) that the emitter is facing.")]
         [DisplayName("Direction")]
         [DefaultValue(_defaultDirection)]
-        public float Direction { get; set; }
+        public float Direction
+        {
+            get { return _direction; }
+            set { _direction = value; }
+        }
 
         /// <summary>
         /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.
