@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -74,7 +73,12 @@ namespace DemoGame.ParticleEffectEditor
 
             _renderer = new SpriteBatchRenderer(GraphicsDevice);
             Emitter = new ParticleEmitter
-            { SpriteCategorization = new SpriteCategorization("Particle", "skull"), Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f };
+            {
+                SpriteCategorization = new SpriteCategorization("Particle", "skull"),
+                Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
+                ReleaseRate = new VariableUShort(50),
+                ReleaseAmount = new VariableUShort(5)
+            };
         }
 
         /// <summary>

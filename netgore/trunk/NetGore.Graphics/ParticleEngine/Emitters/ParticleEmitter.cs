@@ -333,9 +333,10 @@ namespace NetGore.Graphics.ParticleEngine
             // we just find the next power of two instead of looping until we have a large enough value.
             if (particles.Length - 1 < lastIndex)
             {
-                int newSize = BitOps.NextPowerOf2(lastIndex);
+                int newSize = BitOps.NextPowerOf2(lastIndex + 1);
                 Debug.Assert(BitOps.IsPowerOf2(newSize),
                              "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
+                Debug.Assert(newSize >= lastIndex + 1);
                 Array.Resize(ref particles, newSize);
             }
 
