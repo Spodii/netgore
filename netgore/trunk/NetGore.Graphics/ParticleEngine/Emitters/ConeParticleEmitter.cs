@@ -41,20 +41,25 @@ namespace NetGore.Graphics.ParticleEngine
         public float Direction { get; set; }
 
         /// <summary>
-        /// Initializes a <see cref="Particle"/>.
+        /// Generates the offset vector to release the <see cref="Particle"/> at.
         /// </summary>
-        /// <param name="particleIndex">Index of the particle to initialize.</param>
-        /// <param name="speed">The speed.</param>
-        /// <param name="offset">The position offset to release the particle from the origin.</param>
-        /// <param name="releaseVelocity">The velocity vector to apply to the <see cref="Particle"/>.</param>
-        protected override void InitializeParticle(int particleIndex, float speed, out Vector2 offset, out Vector2 releaseVelocity)
+        /// <param name="offset">The offset vector.</param>
+        protected override void GenerateParticleOffset(out Vector2 offset)
+        {
+            offset = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// Generates the normalized force vector for releasing the <see cref="Particle"/>.
+        /// </summary>
+        /// <param name="offset">The offset vector that was acquired for this <see cref="Particle"/>.</param>
+        /// <param name="force">The normalized force vector.</param>
+        protected override void GenerateParticleForce(ref Vector2 offset, out Vector2 force)
         {
             float f = ConeAngle * 0.5f;
             float radians = RandomHelper.NextFloat(Direction - f, Direction + f);
 
-            offset = Vector2.Zero;
-
-            GetVelocity(radians, speed, out releaseVelocity);
+            GetForce(radians, out force);
         }
     }
 }
