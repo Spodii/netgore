@@ -168,14 +168,14 @@ namespace NetGore.EditorTools.WinForms
 
                 // Register the service, so components like ContentManager can find it
                 _services.AddService<IGraphicsDeviceService>(_gds);
+                
+                // Give derived classes a chance to initialize themselves
+                Initialize();
 
                 // Create the redraw timer
                 Timer t = new Timer { Interval = 1000 / 60 };
                 t.Tick += delegate { Invalidate(); };
                 t.Start();
-                
-                // Give derived classes a chance to initialize themselves
-                Initialize();
             }
 
             base.OnCreateControl();
