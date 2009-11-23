@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using NetGore;
 
 //NOTE: I'm working on an implementation of this so far into the demogame.  This is the first time i've written this in c# so
 //      i won't commit the implementation yet until i know it works 100%.  aPhRo_
