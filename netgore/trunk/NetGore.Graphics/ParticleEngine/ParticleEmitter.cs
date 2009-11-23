@@ -12,6 +12,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class ParticleEmitter : IDisposable
     {
+        const SpriteBlendMode _defaultBlendMode = SpriteBlendMode.Additive;
         const string _emitterCategoryName = "Emitter";
         const string _particleCategoryName = "Particle";
 
@@ -54,15 +55,18 @@ namespace NetGore.Graphics.ParticleEngine
             particles = new Particle[budget];
 
             // Set some default values
+            BlendMode = _defaultBlendMode;
             Budget = budget;
             Life = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
-            ReleaseColor = new VariableColor(new Color(0, 0, 0, 255), new Color(255, 255, 255, 255));
-            ReleaseRate = new VariableUShort(50);
-            ReleaseRotation = new VariableFloat(0);
+            ReleaseColor = new VariableColor(Color.White);
+            ReleaseRate = new VariableUShort(100);
+            ReleaseRotation = new VariableFloat(_defaultRotation);
             ReleaseScale = new VariableFloat(1);
             ReleaseSpeed = new VariableFloat(50);
         }
+
+        const int _defaultRotation = 0;
 
         /// <summary>
         /// Gets the number of living <see cref="Particle"/>s.
@@ -72,6 +76,16 @@ namespace NetGore.Graphics.ParticleEngine
         {
             get { return _lastAliveIndex + 1; }
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="SpriteBlendMode"/> to use when rendering the <see cref="Particle"/>s
+        /// emitted by this <see cref="ParticleEmitter"/>.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The blending mode to use when rendering Particles from this emitter.")]
+        [DisplayName("Blend Mode")]
+        [DefaultValue(_defaultBlendMode)]
+        public SpriteBlendMode BlendMode { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum number of live particles this <see cref="ParticleEmitter"/> may create at
@@ -131,6 +145,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_particleCategoryName)]
         [Description("How long in milliseconds each Particle emitted lives after being emitted.")]
         [DisplayName("Life")]
+        [DefaultValue(typeof(VariableInt), "2000")]
         public VariableInt Life { get; set; }
 
         /// <summary>
@@ -147,6 +162,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("How many Particles are emitted on each release (see Release Rate).")]
         [DisplayName("Amount")]
+        [DefaultValue(typeof(VariableUShort), "1")]
         public VariableUShort ReleaseAmount { get; set; }
 
         /// <summary>
@@ -155,6 +171,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_particleCategoryName)]
         [Description("The color of a Particle when it is released.")]
         [DisplayName("Color")]
+        [DefaultValue(typeof(VariableColor), "{255, 255, 255, 255}")]
         public VariableColor ReleaseColor { get; set; }
 
         /// <summary>
@@ -163,6 +180,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("The rate in milliseconds that Particles are released from this emitter.")]
         [DisplayName("Rate")]
+        [DefaultValue(typeof(VariableUShort), "100")]
         public VariableUShort ReleaseRate { get; set; }
 
         /// <summary>
@@ -171,6 +189,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_particleCategoryName)]
         [Description("The angle in radians released Particles will be facing.")]
         [DisplayName("Rotation")]
+        [DefaultValue(typeof(VariableFloat), "0")]
         public VariableFloat ReleaseRotation { get; set; }
 
         /// <summary>
@@ -179,6 +198,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_particleCategoryName)]
         [Description("The magnification multiplier of released Particles, where 1.0 is the normal sprite size.")]
         [DisplayName("Scale")]
+        [DefaultValue(typeof(VariableFloat), "1")]
         public VariableFloat ReleaseScale { get; set; }
 
         /// <summary>
@@ -187,6 +207,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_particleCategoryName)]
         [Description("The speed released Particles will be moving, where 0.0 is no movement.")]
         [DisplayName("Speed")]
+        [DefaultValue(typeof(VariableFloat), "50")]
         public VariableFloat ReleaseSpeed { get; set; }
 
         /// <summary>

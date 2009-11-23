@@ -15,11 +15,6 @@ namespace NetGore.Graphics.ParticleEngine
         bool IsDisposed { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteBlendMode"/> to use when rendering the particles.
-        /// </summary>
-        SpriteBlendMode BlendMode { get; set; }
-
-        /// <summary>
         /// Renders a <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>

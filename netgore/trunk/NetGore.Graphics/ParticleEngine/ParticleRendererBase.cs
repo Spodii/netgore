@@ -8,7 +8,6 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public abstract class ParticleRendererBase : IParticleRenderer
     {
-        SpriteBlendMode _blendMode = SpriteBlendMode.Additive;
         bool _isDisposed = false;
 
         /// <summary>
@@ -33,21 +32,12 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteBlendMode"/> to use when rendering the particles.
-        /// </summary>
-        public SpriteBlendMode BlendMode
-        {
-            get { return _blendMode; }
-            set { _blendMode = value; }
-        }
-
-        /// <summary>
         /// Renders a <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
         public void RenderEmitter(ParticleEmitter emitter)
         {
-            if (emitter.Sprite == null || emitter.ActiveParticles <= 0)
+            if (emitter.Sprite == null || emitter.ActiveParticles <= 0 || emitter.BlendMode == SpriteBlendMode.None)
                 return;
 
             InternalRenderEmitter(emitter);
