@@ -20,6 +20,16 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Performs an implicit conversion from <see cref="System.Int16"/> to <see cref="NetGore.VariableShort"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator VariableShort(short value)
+        {
+            return new VariableShort(value);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VariableShort"/> struct.
         /// </summary>
         /// <param name="min">The min.</param>
