@@ -125,6 +125,7 @@
     <Compile Include="MapRenderLayer.cs" />
     <Compile Include="MapRenderLayerChange.cs" />
     <Compile Include="ParticleEngine\Emitters\CircleParticleEmitter.cs" />
+    <Compile Include="ParticleEngine\Emitters\ConeParticleEmitter.cs" />
     <Compile Include="ParticleEngine\Renderers\IParticleRenderer.cs" />
     <Compile Include="ParticleEngine\Particle.cs" />
     <Compile Include="ParticleEngine\Emitters\ParticleEmitter.cs" />
