@@ -42,7 +42,12 @@ namespace NetGore.EditorTools
             return _emitterTypes;
         }
 
-        protected override string ItemToString(Type item)
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns>The string to display.</returns>
+        public override string ItemToString(Type item)
         {
             return item.Name;
         }
