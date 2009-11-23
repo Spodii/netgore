@@ -14,7 +14,14 @@ namespace NetGore.Graphics.ParticleEngine
     public class ParticleEmitter : IDisposable
     {
         const SpriteBlendMode _defaultBlendMode = SpriteBlendMode.Additive;
+        const int _defaultBudget = 5000;
         const string _emitterCategoryName = "Emitter";
+
+        /// <summary>
+        /// The initial size of the particle array.
+        /// </summary>
+        const int _initialParticleArraySize = 64;
+
         const string _particleCategoryName = "Particle";
 
         /// <summary>
@@ -44,11 +51,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// The initial size of the particle array.
-        /// </summary>
-        const int _initialParticleArraySize = 64;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
         /// </summary>
         public ParticleEmitter()
@@ -66,8 +68,6 @@ namespace NetGore.Graphics.ParticleEngine
             ReleaseScale = new VariableFloat(1);
             ReleaseSpeed = new VariableFloat(50);
         }
-
-        const int _defaultBudget = 5000;
 
         /// <summary>
         /// Gets the number of living <see cref="Particle"/>s.
@@ -315,7 +315,8 @@ namespace NetGore.Graphics.ParticleEngine
             if (particles.Length - 1 < lastIndex)
             {
                 int newSize = BitOps.NextPowerOf2(lastIndex);
-                Debug.Assert(BitOps.IsPowerOf2(newSize), "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
+                Debug.Assert(BitOps.IsPowerOf2(newSize),
+                             "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
                 Array.Resize(ref particles, newSize);
             }
 
