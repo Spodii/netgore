@@ -49,6 +49,37 @@ namespace DemoGame.ParticleEffectEditor
             get { return GameScreen.GraphicsDevice; }
         }
 
+        void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
+        {
+            if (_emitter == null)
+            {
+                Emitter = CreateInitialEmitter();
+                return;
+            }
+
+            if (_emitter.GetType() == emitter.GetType())
+                return;
+
+            _emitter.CopyValuesTo(emitter);
+            Emitter = emitter;
+        }
+
+        /// <summary>
+        /// Creates the initial <see cref="ParticleEmitter"/> to display.
+        /// </summary>
+        /// <returns>The initial <see cref="ParticleEmitter"/> to display.</returns>
+        ParticleEmitter CreateInitialEmitter()
+        {
+            return new CircleParticleEmitter
+            {
+                SpriteCategorization = new SpriteCategorization("Particle", "skull"),
+                Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
+                ReleaseRate = 5,
+                ReleaseAmount = 5,
+                ReleaseSpeed = 50
+            };
+        }
+
         /// <summary>
         /// Main entry point for all the screen drawing.
         /// </summary>
@@ -73,14 +104,6 @@ namespace DemoGame.ParticleEffectEditor
             GrhInfo.Load(ContentPaths.Build, _content);
 
             _renderer = new SpriteBatchRenderer(GraphicsDevice);
-            Emitter = new CircleParticleEmitter
-            {
-                SpriteCategorization = new SpriteCategorization("Particle", "skull"),
-                Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
-                ReleaseRate = 5,
-                ReleaseAmount = 5,
-                ReleaseSpeed = 50
-            };
         }
 
         /// <summary>
@@ -103,16 +126,5 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         #endregion
-
-        private void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
-        {
-            if (_emitter == null || _emitter.GetType() == emitter.GetType())
-                return;
-
-            _emitter.CopyValuesTo(emitter);
-            _emitter = emitter;
-
-            pgEffect.SelectedObject = _emitter;
-        }
     }
 }

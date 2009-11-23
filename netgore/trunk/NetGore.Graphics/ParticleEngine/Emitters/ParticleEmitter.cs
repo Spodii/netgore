@@ -238,19 +238,28 @@ namespace NetGore.Graphics.ParticleEngine
                     return;
 
                 _spriteCategorization = value;
-
-                // Get the GrhData
-                var grhData = GrhInfo.GetData(_spriteCategorization);
-                if (grhData == null)
-                {
-                    // Invalid GrhData...
-                    _sprite = null;
-                    return;
-                }
-
-                // Load the sprite
-                _sprite = new Grh(grhData);
+                TryLoadSprite();
             }
+        }
+
+        /// <summary>
+        /// Tries to load the <see cref="_sprite"/> using the <see cref="SpriteCategorization"/>.
+        /// </summary>
+        void TryLoadSprite()
+        {
+            // Get the GrhData
+            var grhData = GrhInfo.GetData(_spriteCategorization);
+            if (grhData == null)
+            {
+                // Invalid GrhData...
+                _sprite = null;
+                return;
+            }
+
+            // Load the sprite
+            _sprite = new Grh(grhData);
+
+            _tryLoadSpriteTimeout = 0;
         }
 
         /// <summary>
@@ -384,13 +393,28 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Used to spread out sprite loading attempts when trying to load the sprite when it is null on Update().
+        /// This way we suffer very little from an invalid Sprite, but still give the emitter a chance to reload
+        /// the sprite.
+        /// </summary>
+        int _tryLoadSpriteTimeout = 0;
+
+        /// <summary>
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.
         /// </summary>
         /// <param name="currentTime">The current time.</param>>
         public void Update(int currentTime)
         {
+            // Check if the sprite is loaded
             if (Sprite == null)
-                return;
+            {
+                // Try every update the first 5 times, then after that only try every 100 updates
+                if (++_tryLoadSpriteTimeout < 5 || _tryLoadSpriteTimeout % 100 == 0)
+                    TryLoadSprite();
+
+                if (Sprite == null)
+                    return;
+            }
 
             // Update the sprite
             Sprite.Update(currentTime);
