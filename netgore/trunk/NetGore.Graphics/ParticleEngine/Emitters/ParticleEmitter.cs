@@ -252,6 +252,25 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Copies the values in this <see cref="ParticleEmitter"/> to another.
+        /// </summary>
+        /// <param name="destination">The <see cref="ParticleEmitter"/> to copy the values to.</param>
+        public void CopyValuesTo(ParticleEmitter destination)
+        {
+            destination.BlendMode = BlendMode;
+            destination.Budget = Budget;
+            destination.Life = Life;
+            destination.Origin = Origin;
+            destination.ReleaseAmount = ReleaseAmount;
+            destination.ReleaseColor = ReleaseColor;
+            destination.ReleaseRate = ReleaseRate;
+            destination.ReleaseRotation = ReleaseRotation;
+            destination.ReleaseScale = ReleaseScale;
+            destination.ReleaseSpeed = ReleaseSpeed;
+            destination.SpriteCategorization = SpriteCategorization;
+        }
+
+        /// <summary>
         /// Expires a <see cref="Particle"/> in the <see cref="particles"/> array, replacing the <paramref name="index"/>
         /// with a living particle, unless the <paramref name="index"/> is the last living particle.
         /// </summary>
