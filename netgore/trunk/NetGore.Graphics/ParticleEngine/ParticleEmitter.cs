@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +12,9 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class ParticleEmitter : IDisposable
     {
+        const string _emitterCategoryName = "Emitter";
+        const string _particleCategoryName = "Particle";
+
         /// <summary>
         /// The array of <see cref="Particle"/>s.
         /// </summary>
@@ -63,6 +67,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the number of living <see cref="Particle"/>s.
         /// </summary>
+        [Browsable(false)]
         public int ActiveParticles
         {
             get { return _lastAliveIndex + 1; }
@@ -73,6 +78,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// any given time.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> less than or equal to zero.</exception>
+        [Category(_emitterCategoryName)]
+        [Description("The maximum number of live Particles that this emitter may have out at once.")]
+        [DisplayName("Budget")]
         public int Budget
         {
             get { return _budget; }
@@ -96,6 +104,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the approximate current time.
         /// </summary>
+        [Browsable(false)]
         protected int CurrentTime
         {
             get { return _lastUpdateTime; }
@@ -110,6 +119,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets if this <see cref="ParticleEmitter"/> has been disposed.
         /// </summary>
+        [Browsable(false)]
         public bool IsDisposed
         {
             get { return _isDisposed; }
@@ -118,46 +128,71 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets or sets the life of each <see cref="Particle"/> emitted.
         /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("How long in milliseconds each Particle emitted lives after being emitted.")]
+        [DisplayName("Life")]
         public VariableInt Life { get; set; }
 
         /// <summary>
         /// Gets or sets the origin of this <see cref="ParticleEmitter"/>.
         /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The origin of the emitter.")]
+        [DisplayName("Origin")]
         public Vector2 Origin { get; set; }
 
         /// <summary>
         /// Gets or sets the number of <see cref="Particle"/>s that are emitted at each release.
         /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("How many Particles are emitted on each release (see Release Rate).")]
+        [DisplayName("Amount")]
         public VariableUShort ReleaseAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the initial color of the <see cref="Particle"/> when emitted.
         /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The color of a Particle when it is released.")]
+        [DisplayName("Color")]
         public VariableColor ReleaseColor { get; set; }
 
         /// <summary>
         /// Gets or sets the rate in milliseconds that <see cref="Particle"/>s are emitted.
         /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The rate in milliseconds that Particles are released from this emitter.")]
+        [DisplayName("Rate")]
         public VariableUShort ReleaseRate { get; set; }
 
         /// <summary>
         /// Gets or sets the initial rotation in radians of the <see cref="Particle"/> when emitted.
         /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The angle in radians released Particles will be facing.")]
+        [DisplayName("Rotation")]
         public VariableFloat ReleaseRotation { get; set; }
 
         /// <summary>
         /// Gets or sets the initial scale of the <see cref="Particle"/> when emitted.
         /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The magnification multiplier of released Particles, where 1.0 is the normal sprite size.")]
+        [DisplayName("Scale")]
         public VariableFloat ReleaseScale { get; set; }
 
         /// <summary>
         /// Gets or sets the speed of <see cref="Particle"/>s when released.
         /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The speed released Particles will be moving, where 0.0 is no movement.")]
+        [DisplayName("Speed")]
         public VariableFloat ReleaseSpeed { get; set; }
 
         /// <summary>
         /// Gets the <see cref="ISprite"/> to draw the <see cref="Particle"/>s.
         /// </summary>
+        [Browsable(false)]
         public Grh Sprite
         {
             get { return _sprite; }
@@ -166,6 +201,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets or sets the category for the <see cref="ISprite"/> used by this <see cref="ParticleEmitter"/>.
         /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The sprite categorization that defines which sprite to use to draw the Particles.")]
+        [DisplayName("Sprite")]
         public SpriteCategorization SpriteCategorization
         {
             get { return _spriteCategorization; }

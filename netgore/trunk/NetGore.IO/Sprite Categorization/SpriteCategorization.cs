@@ -7,6 +7,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable class that contains the categorization information for a sprite.
     /// </summary>
+    [ImmutableObject(true)]
     [TypeConverter(typeof(SpriteCategorizationConverter))]
     public class SpriteCategorization : IEquatable<SpriteCategorization>
     {

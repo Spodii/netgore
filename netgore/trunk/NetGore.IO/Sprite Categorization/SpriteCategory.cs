@@ -7,6 +7,7 @@ namespace NetGore.IO
     /// <summary>
     /// An immutable string that represents the category of a sprite.
     /// </summary>
+    [ImmutableObject(true)]
     [TypeConverter(typeof(SpriteCategoryConverter))]
     public sealed class SpriteCategory : IEquatable<SpriteCategory>, IComparable<SpriteCategory>
     {
