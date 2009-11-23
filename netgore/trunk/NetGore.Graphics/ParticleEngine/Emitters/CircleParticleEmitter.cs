@@ -52,29 +52,31 @@ namespace NetGore.Graphics.ParticleEngine
         public VariableFloat Radius { get; set; }
 
         /// <summary>
-        /// Initializes a <see cref="Particle"/>.
+        /// Generates the offset vector to release the <see cref="Particle"/> at.
         /// </summary>
-        /// <param name="particleIndex">Index of the particle to initialize.</param>
-        /// <param name="speed">The speed.</param>
-        /// <param name="offset">The position offset to release the particle from the origin.</param>
-        /// <param name="releaseVelocity">The velocity vector to apply to the <see cref="Particle"/>.</param>
-        protected override void InitializeParticle(int particleIndex, float speed, out Vector2 offset, out Vector2 releaseVelocity)
+        /// <param name="offset">The offset vector.</param>
+        protected override void GenerateParticleOffset(out Vector2 offset)
         {
-            var radius = Radius.GetNext();
-            float radians = RandomHelper.NextFloat(MathHelper.TwoPi);
+            float rads = RandomHelper.NextFloat(MathHelper.TwoPi);
 
-            offset = new Vector2((float)Math.Cos(radians) * radius, (float)Math.Sin(radians) * radius);
+            var radius = Radius.GetNext();
+            offset = new Vector2((float)Math.Cos(rads) * radius, (float)Math.Sin(rads) * radius);
 
             if (!IsRing)
                 Vector2.Multiply(ref offset, RandomHelper.NextFloat(), out offset);
+        }
 
+        /// <summary>
+        /// Generates the normalized force vector for releasing the <see cref="Particle"/>.
+        /// </summary>
+        /// <param name="offset">The offset vector that was acquired for this <see cref="Particle"/>.</param>
+        /// <param name="force">The normalized force vector.</param>
+        protected override void GenerateParticleForce(ref Vector2 offset, out Vector2 force)
+        {
             if (Radiate)
-            {
-                Vector2.Normalize(ref offset, out releaseVelocity);
-                Vector2.Multiply(ref releaseVelocity, speed, out releaseVelocity);
-            }
+                Vector2.Normalize(ref offset, out force);
             else
-                GetVelocity(RandomHelper.NextFloat(MathHelper.TwoPi), speed, out releaseVelocity);
+                base.GenerateParticleForce(ref offset, out force);
         }
     }
 }
