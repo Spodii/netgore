@@ -18,7 +18,6 @@ namespace NetGore.Graphics.ParticleEngine
 
         bool _closed = _defaultClosed;
         PolygonPointCollection _points = new PolygonPointCollection();
-
         Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultRotation);
         Matrix _scaleMatrix = Matrix.CreateScale(_defaultScale);
 
