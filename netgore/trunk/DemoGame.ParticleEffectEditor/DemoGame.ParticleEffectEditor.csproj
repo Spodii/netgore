@@ -44,9 +44,6 @@
     <Compile Include="GameScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ParticleEmitterComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>
