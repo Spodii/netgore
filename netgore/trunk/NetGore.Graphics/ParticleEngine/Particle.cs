@@ -14,7 +14,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Describes a single particle in a particle system.
     /// </summary>
-    public class Particle : IDisposable
+    public sealed class Particle : IDisposable
     {
         static readonly Stack<Particle> _freeParticles = new Stack<Particle>();
 
