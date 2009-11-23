@@ -156,7 +156,9 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("The origin of the emitter.")]
         [DisplayName("Origin")]
-        public Vector2 Origin { get; set; }
+        public Vector2 Origin { get { return _origin; } set { _origin = value; } }
+
+        Vector2 _origin;
 
         /// <summary>
         /// Gets or sets the number of <see cref="Particle"/>s that are emitted at each release.
@@ -306,14 +308,14 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="particleIndex">Index of the particle to initialize.</param>
         /// <param name="speed">The speed.</param>
-        /// <param name="releasePosition">The position to release the particle.</param>
+        /// <param name="offset">The position offset to release the particle from the origin.</param>
         /// <param name="releaseVelocity">The velocity vector to apply to the <see cref="Particle"/>.</param>
-        protected virtual void InitializeParticle(int particleIndex, float speed, out Vector2 releasePosition,
+        protected virtual void InitializeParticle(int particleIndex, float speed, out Vector2 offset,
                                                   out Vector2 releaseVelocity)
         {
             float radians = RandomHelper.NextFloat(MathHelper.TwoPi);
 
-            releasePosition = Origin;
+            offset = Vector2.Zero;
             GetVelocity(radians, speed, out releaseVelocity);
         }
 
@@ -357,7 +359,12 @@ namespace NetGore.Graphics.ParticleEngine
                 particle.Rotation = ReleaseRotation.GetNext();
                 particle.Scale = ReleaseScale.GetNext();
                 ReleaseColor.GetNext(ref particle.Color);
-                InitializeParticle(i, ReleaseSpeed.GetNext(), out particle.Position, out particle.Velocity);
+
+                Vector2 pos;
+                InitializeParticle(i, ReleaseSpeed.GetNext(), out pos, out particle.Velocity);
+
+                // Add the offset position to the origin
+                Vector2.Add(ref pos, ref _origin, out particle.Position);
             }
 
             // Increase the index of the last active particle
