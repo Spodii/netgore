@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore.Graphics.ParticleEngine
 {
+    /// <summary>
+    /// A <see cref="ParticleEmitter"/> that emits particles from a circle.
+    /// </summary>
     public class CircleParticleEmitter : ParticleEmitter
     {
         const string _emitterCategoryName = "Circle Emitter";
