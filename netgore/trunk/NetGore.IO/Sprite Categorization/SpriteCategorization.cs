@@ -47,6 +47,8 @@ namespace NetGore.IO
         /// <summary>
         /// Gets the category part of the categorization.
         /// </summary>
+        [Description("The category of the sprite.")]
+        [DisplayName("Category")]
         public SpriteCategory Category
         {
             get { return _category; }
@@ -55,6 +57,8 @@ namespace NetGore.IO
         /// <summary>
         /// Gets the title part of the categorization.
         /// </summary>
+        [Description("The title of the sprite.")]
+        [DisplayName("Title")]
         public SpriteTitle Title
         {
             get { return _title; }
