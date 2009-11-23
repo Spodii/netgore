@@ -286,6 +286,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="currentTime">The current time.</param>>
         public void Update(int currentTime)
         {
+            if (Sprite == null)
+                return;
+
             // Update the sprite
             Sprite.Update(currentTime);
 
