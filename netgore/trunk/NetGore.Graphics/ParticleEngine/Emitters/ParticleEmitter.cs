@@ -252,6 +252,25 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
+        ParticleModifierCollection _modifiers = new ParticleModifierCollection();
+
+        /// <summary>
+        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
+        /// <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        public ParticleModifierCollection Modifiers
+        {
+            get { return _modifiers; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _modifiers = value;
+            }
+        }
+
         /// <summary>
         /// Copies the values in this <see cref="ParticleEmitter"/> to another.
         /// </summary>
@@ -269,6 +288,7 @@ namespace NetGore.Graphics.ParticleEngine
             destination.ReleaseScale = ReleaseScale;
             destination.ReleaseSpeed = ReleaseSpeed;
             destination.SpriteCategorization = SpriteCategorization;
+            destination.Modifiers = Modifiers.DeepCopy();
         }
 
         /// <summary>
@@ -336,6 +356,7 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             // Start releasing the particles
+            bool hasReleaseModifiers = Modifiers.HasReleaseModifiers;
             for (int i = _lastAliveIndex + 1; i <= lastIndex; i++)
             {
                 var particle = particles[i];
@@ -363,6 +384,9 @@ namespace NetGore.Graphics.ParticleEngine
 
                 // Set the velocity
                 Vector2.Multiply(ref force, ReleaseSpeed.GetNext(), out particle.Velocity);
+
+                if (hasReleaseModifiers)
+                    Modifiers.ProcessReleasedParticle(this, particle);
             }
 
             // Increase the index of the last active particle
@@ -418,6 +442,9 @@ namespace NetGore.Graphics.ParticleEngine
                     return;
             }
 
+            // Update the current time on the modifiers
+            Modifiers.UpdateCurrentTime(currentTime);
+
             // Update the sprite
             Sprite.Update(currentTime);
 
@@ -447,6 +474,7 @@ namespace NetGore.Graphics.ParticleEngine
                 ReleaseParticles(currentTime, amountToRelease);
 
             // Update the particles
+            bool hasUpdateModifiers = Modifiers.HasUpdateModifiers;
             int i = 0;
             while (i <= _lastAliveIndex)
             {
@@ -461,7 +489,9 @@ namespace NetGore.Graphics.ParticleEngine
                     continue;
                 }
 
-                // TODO: Run update modifiers on the particle
+                // Process the particle with the modifiers
+                if (hasUpdateModifiers)
+                    Modifiers.ProcessUpdatedParticle(this, particle);
 
                 // Update the particle
                 particle.Update(elapsedTime);

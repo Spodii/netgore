@@ -21,6 +21,18 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         }
 
         [Test]
+        public void DeepCopyTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            ConsistencyAsserts(c);
+            var copy = c.DeepCopy();
+            ConsistencyAsserts(copy);
+            Assert.IsTrue(c.ContainSameElements(copy));
+            Assert.IsTrue(c.ReleaseModifiers.ContainSameElements(copy.ReleaseModifiers));
+            Assert.IsTrue(c.UpdateModifiers.ContainSameElements(copy.UpdateModifiers));
+        }
+
+        [Test]
         public void AddReleaseModifierTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(true, false) };
@@ -66,6 +78,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
                           "Sub-list does not match main list for given value.");
 
             Assert.IsFalse(c.Any(x => x == null), "Shouldn't be able to add null items.");
+
+            Assert.AreEqual(c.HasReleaseModifiers, c.ReleaseModifiers.Count() > 0);
+            Assert.AreEqual(c.HasUpdateModifiers, c.UpdateModifiers.Count() > 0);
 
             var concatDistinct = c.ReleaseModifiers.Concat(c.UpdateModifiers).Distinct();
             Assert.IsTrue(c.ContainSameElements(concatDistinct), "Sub-collections don't contain same items as main collection.");
