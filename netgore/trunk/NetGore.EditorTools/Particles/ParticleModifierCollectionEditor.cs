@@ -59,7 +59,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override Type CreateCollectionItemType()
         {
-            return typeof(ParticleModifierCollection);
+            return typeof(ColorModifier);
         }
 
         /// <summary>
