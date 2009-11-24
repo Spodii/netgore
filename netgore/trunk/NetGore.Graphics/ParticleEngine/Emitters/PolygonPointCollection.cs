@@ -17,7 +17,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         public Matrix TranslationMatrix = Matrix.Identity;
 
-        PolygonOrigin _origin = PolygonParticleEmitter.DefaultPolygonOrigin;
+        PolygonOrigin _origin = PolygonEmitter.DefaultPolygonOrigin;
 
         /// <summary>
         /// Gets or sets the origin mode of the polygon for the given points.
@@ -25,7 +25,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_categoryName)]
         [Description("The origin mode of the polygon for the given points.")]
         [DisplayName("Polygon Origin")]
-        [DefaultValue(PolygonParticleEmitter.DefaultPolygonOrigin)]
+        [DefaultValue(PolygonEmitter.DefaultPolygonOrigin)]
         public PolygonOrigin Origin
         {
             get { return _origin; }

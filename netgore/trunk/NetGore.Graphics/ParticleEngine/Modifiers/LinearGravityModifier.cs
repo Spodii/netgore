@@ -6,14 +6,14 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore.Graphics.ParticleEngine
 {
-    public class ParticleLinearGravityModifier : ParticleModifierBase
+    public class LinearGravityModifier : ParticleModifier
     {
         Vector2 _gravity;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifierBase"/> class.
+        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
         /// </summary>
-        public ParticleLinearGravityModifier() : base(false, true)
+        public LinearGravityModifier() : base(false, true)
         {
         }
 

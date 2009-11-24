@@ -8,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A <see cref="ParticleEmitter"/> that emits particles from a circle.
     /// </summary>
-    public class CircleParticleEmitter : ParticleEmitter
+    public class CircleEmitter : ParticleEmitter
     {
         const bool _defaultPerimeter = false;
         const bool _defaultRadiate = false;

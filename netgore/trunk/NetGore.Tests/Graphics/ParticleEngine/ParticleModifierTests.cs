@@ -18,10 +18,10 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             Assert.Throws<ArgumentException>(() => new TestModifier(false, false));
         }
 
-        class TestModifier : ParticleModifierBase
+        class TestModifier : ParticleModifier
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ParticleModifierBase"/> class.
+            /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
             /// </summary>
             /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
             /// <param name="processOnUpdate">If <see cref="Particle"/>s will be processed after being updated.</param>
@@ -31,7 +31,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
 
             /// <summary>
             /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
-            /// it is released. Only valid if <see cref="ParticleModifierBase.ProcessOnRelease"/> is set.
+            /// it is released. Only valid if <see cref="ParticleModifier.ProcessOnRelease"/> is set.
             /// </summary>
             /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
             /// came from.</param>
@@ -42,7 +42,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
 
             /// <summary>
             /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
-            /// it is updated. Only valid if <see cref="ParticleModifierBase.ProcessOnUpdate"/> is set.
+            /// it is updated. Only valid if <see cref="ParticleModifier.ProcessOnUpdate"/> is set.
             /// </summary>
             /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
             /// came from.</param>

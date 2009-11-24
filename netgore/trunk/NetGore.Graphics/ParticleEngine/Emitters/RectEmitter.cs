@@ -8,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A <see cref="ParticleEmitter"/> that emits particles from a rectangle.
     /// </summary>
-    public class RectParticleEmitter : ParticleEmitter
+    public class RectEmitter : ParticleEmitter
     {
         const int _defaultHeight = 100;
         const bool _defaultPerimeter = false;

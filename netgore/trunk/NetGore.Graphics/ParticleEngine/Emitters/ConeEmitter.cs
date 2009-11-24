@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// A <see cref="ConeParticleEmitter"/> that emits particles in the form of a cone.
+    /// A <see cref="ConeEmitter"/> that emits particles in the form of a cone.
     /// </summary>
-    class ConeParticleEmitter : ParticleEmitter
+    public class ConeEmitter : ParticleEmitter
     {
         const float _defaultConeAngle = MathHelper.PiOver2;
         const float _defaultDirection = 0;
