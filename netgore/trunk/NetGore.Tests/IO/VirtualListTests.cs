@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace NetGore.Tests.IO
 {
-    [TestFixture]
+    [TestFixture(Description="These tests are to make sure the VirtualList behaves just like a normal List.")]
     public class VirtualListTests
     {
         static readonly object[] _testValues = new object[] { new object(), new object(), new object() };
