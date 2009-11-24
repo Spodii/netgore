@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.EditorTools
@@ -12,8 +10,53 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifierCollectionEditor"/> class.
         /// </summary>
-        public ParticleModifierCollectionEditor()
-            : base(typeof(ParticleModifierCollection)) { }
+        public ParticleModifierCollectionEditor() : base(typeof(ParticleModifierCollection))
+        {
+        }
+
+        /// <summary>
+        /// Indicates whether multiple collection items can be selected at once.
+        /// </summary>
+        /// <returns>
+        /// true if it multiple collection members can be selected at the same time; otherwise, false. By default, this returns true.
+        /// </returns>
+        protected override bool CanSelectMultipleInstances()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the data type that this collection contains.
+        /// </summary>
+        /// <returns>
+        /// The data type of the items in the collection, or an <see cref="T:System.Object"/> if no
+        /// Item property can be located on the collection.
+        /// </returns>
+        protected override Type CreateCollectionItemType()
+        {
+            return typeof(LinearGravityModifier);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the specified collection item type.
+        /// </summary>
+        /// <param name="itemType">The type of item to create.</param>
+        /// <returns>A new instance of the specified object.</returns>
+        protected override object CreateInstance(Type itemType)
+        {
+            return ParticleModifier.CreateModifier(itemType);
+        }
+
+        /// <summary>
+        /// Gets the data types that this collection editor can contain.
+        /// </summary>
+        /// <returns>
+        /// An array of data types that this collection can contain.
+        /// </returns>
+        protected override Type[] CreateNewItemTypes()
+        {
+            return ParticleModifier.ModifierTypes.ToArray();
+        }
 
         /// <summary>
         /// Retrieves the display text for the given list item.
@@ -29,47 +72,33 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Indicates whether multiple collection items can be selected at once.
+        /// Gets an array of objects containing the specified collection.
         /// </summary>
+        /// <param name="editValue">The collection to edit.</param>
         /// <returns>
-        /// true if it multiple collection members can be selected at the same time; otherwise, false. By default, this returns true.
+        /// An array containing the collection objects, or an empty object array if the specified collection
+        /// does not inherit from <see cref="T:System.Collections.ICollection"/>.
         /// </returns>
-        protected override bool CanSelectMultipleInstances()
+        protected override object[] GetItems(object editValue)
         {
-            return false;
+            return ((ParticleModifierCollection)editValue).ToArray();
         }
 
         /// <summary>
-        /// Gets the data types that this collection editor can contain.
+        /// Sets the specified array as the items of the collection.
         /// </summary>
+        /// <param name="editValue">The collection to edit.</param>
+        /// <param name="value">An array of objects to set as the collection items.</param>
         /// <returns>
-        /// An array of data types that this collection can contain.
+        /// The newly created collection object or, otherwise, the collection indicated by the
+        /// <paramref name="editValue"/> parameter.
         /// </returns>
-        protected override Type[] CreateNewItemTypes()
+        protected override object SetItems(object editValue, object[] value)
         {
-            return ParticleModifier.ModifierTypes.ToArray();
-        }
-
-        /// <summary>
-        /// Gets the data type that this collection contains.
-        /// </summary>
-        /// <returns>
-        /// The data type of the items in the collection, or an <see cref="T:System.Object"/> if no
-        /// Item property can be located on the collection.
-        /// </returns>
-        protected override Type CreateCollectionItemType()
-        {
-            return typeof(ColorModifier);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the specified collection item type.
-        /// </summary>
-        /// <param name="itemType">The type of item to create.</param>
-        /// <returns>A new instance of the specified object.</returns>
-        protected override object CreateInstance(Type itemType)
-        {
-            return ParticleModifier.CreateModifier(itemType);
+            var c = ((ParticleModifierCollection)editValue);
+            c.Clear();
+            c.AddRange(value.Cast<ParticleModifier>());
+            return c;
         }
     }
 }
