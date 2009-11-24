@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -16,6 +17,14 @@ namespace NetGore.Graphics.ParticleEngine
         const SpriteBlendMode _defaultBlendMode = SpriteBlendMode.Additive;
         const int _defaultBudget = 5000;
         const string _emitterCategoryName = "Emitter";
+
+        static readonly IEnumerable<Type> _emitterTypes =
+            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).Concat(new Type[] { typeof(ParticleEmitter) }).Distinct().OrderBy(x => x.Name).ToCompact();
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s of <see cref="ParticleEmitter"/>s.
+        /// </summary>
+        public static IEnumerable<Type> EmitterTypes { get { return _emitterTypes; } }
 
         /// <summary>
         /// The initial size of the particle array.
