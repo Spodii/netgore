@@ -75,6 +75,7 @@
     <Compile Include="IO\BitStreamTests.cs" />
     <Compile Include="IO\IValueReaderWriterTests.cs" />
     <Compile Include="IO\SettingsManagerTests.cs" />
+    <Compile Include="IO\VirtualListTests.cs" />
     <Compile Include="IO\XmlInfoReaderTests.cs" />
     <Compile Include="IO\XmlReaderCreationTests.cs" />
     <Compile Include="NetGore\ClampTests.cs" />
