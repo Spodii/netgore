@@ -10,10 +10,6 @@ namespace NetGore.EditorTools
 
     public class ParticleEmitterComboBox : TypedComboBox<Type>
     {
-        static readonly IEnumerable<Type> _emitterTypes =
-            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).Concat(new Type[]
-            { typeof(ParticleEmitter) }).Distinct().OrderBy(x => x.Name).ToCompact();
-
         public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
 
         public ParticleEmitterComboBox()
@@ -21,9 +17,15 @@ namespace NetGore.EditorTools
             DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
+        /// <summary>
+        /// Gets the items to initially populate the <see cref="ComboBox"/> with.
+        /// </summary>
+        /// <returns>
+        /// The items to initially populate the <see cref="ComboBox"/> with.
+        /// </returns>
         protected override IEnumerable<Type> GetInitialItems()
         {
-            return _emitterTypes;
+            return ParticleEmitter.EmitterTypes;
         }
 
         /// <summary>
