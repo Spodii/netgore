@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// Modifies the color of particles throughout their life.
+    /// Modifies the color of <see cref="Particle"/>s throughout their life.
     /// </summary>
     public class ColorModifier : ParticleModifier
     {
