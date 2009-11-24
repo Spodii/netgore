@@ -87,6 +87,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("The starting color.")]
         [DisplayName("Release Color")]
         [DefaultValue(typeof(Color), "{255, 255, 255, 255}")]
+        [Editor(EditorHelper.XnaColorEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Color ReleaseColor { get; set; }
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("The ending color.")]
         [DisplayName("Ultimate Color")]
         [DefaultValue(typeof(Color), "{255, 255, 255, 255}")]
+        [Editor(EditorHelper.XnaColorEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Color UltimateColor { get; set; }
 
         /// <summary>
