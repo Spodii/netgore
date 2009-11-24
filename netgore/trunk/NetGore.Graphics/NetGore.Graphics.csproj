@@ -69,7 +69,8 @@
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
     <Compile Include="Camera2D.cs" />
-    <Compile Include="ContentManagerExtensions.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\ContentManagerExtensions.cs" />
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
     <Compile Include="GUI\Control Bases\Control.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="ParticleEngine\Emitters\PolygonParticleEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonPointCollection.cs" />
     <Compile Include="ParticleEngine\Emitters\RectParticleEmitter.cs" />
+    <Compile Include="ParticleEngine\Modifiers\ParticleColorModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\ParticleModifierBase.cs" />
     <Compile Include="ParticleEngine\Modifiers\ParticleModifierCollection.cs" />
     <Compile Include="ParticleEngine\Renderers\IParticleRenderer.cs" />
@@ -147,7 +149,7 @@
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
     <Compile Include="Skeleton\SkeletonBodyItemInfo.cs" />
     <Compile Include="Skeleton\SkeletonFrame.cs" />
-    <Compile Include="SpriteBatchExtensions.cs" />
+    <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Primitives\XNAArrow.cs" />
     <Compile Include="Primitives\XNARectangle.cs" />
     <Compile Include="FrameCounter.cs" />

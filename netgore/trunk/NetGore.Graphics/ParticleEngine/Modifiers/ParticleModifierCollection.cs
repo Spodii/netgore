@@ -49,26 +49,50 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         readonly List<ParticleModifierBase> _allModifiers = new List<ParticleModifierBase>(2);
 
+        /// <summary>
+        /// Gets an IEnumerable of all the <see cref="ParticleModifierBase"/>s that process <see cref="Particle"/>s
+        /// when they are released.
+        /// </summary>
         public IEnumerable<ParticleModifierBase> ReleaseModifiers { get { return _releaseModifiers; } }
 
+        /// <summary>
+        /// Gets an IEnumerable of all the <see cref="ParticleModifierBase"/>s that process <see cref="Particle"/>s
+        /// when they are updated.
+        /// </summary>
         public IEnumerable<ParticleModifierBase> UpdateModifiers { get { return _updateModifiers; } }
 
-        public void UpdateCurrentTime(int currentTime)
+        /// <summary>
+        /// Updates the current time on all processors.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        internal void UpdateCurrentTime(int currentTime)
         {
             foreach (var modifier in this)
                 modifier.UpdateCurrentTime(currentTime);
         }
 
+        /// <summary>
+        /// Calls all modifiers that process released <see cref="Particle"/>s on the given <paramref name="particle"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> that created the <paramref name="particle"/>.</param>
+        /// <param name="particle">The <see cref="Particle"/> to process.</param>
         public void ProcessReleasedParticle(ParticleEmitter emitter, Particle particle)
         {
             foreach (var modifier in _releaseModifiers)
                 modifier.ProcessReleased(emitter, particle);
         }
 
-        public void ProcessUpdatedParticle(ParticleEmitter emitter, Particle particle)
+        /// <summary>
+        /// Calls all modifiers that process updated <see cref="Particle"/>s on the given <paramref name="particle"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> that created the <paramref name="particle"/>.</param>
+        /// <param name="particle">The <see cref="Particle"/> to process.</param>
+        /// <param name="elapsedTime">The amount of time that has elapsed since the <paramref name="emitter"/>
+        /// was last updated.</param>
+        public void ProcessUpdatedParticle(ParticleEmitter emitter, Particle particle, int elapsedTime)
         {
             foreach (var modifier in _updateModifiers)
-                modifier.ProcessReleased(emitter, particle);
+                modifier.ProcessUpdated(emitter, particle, elapsedTime);
         }
 
         /// <summary>

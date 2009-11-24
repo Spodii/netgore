@@ -491,7 +491,7 @@ namespace NetGore.Graphics.ParticleEngine
 
                 // Process the particle with the modifiers
                 if (hasUpdateModifiers)
-                    Modifiers.ProcessUpdatedParticle(this, particle);
+                    Modifiers.ProcessUpdatedParticle(this, particle, elapsedTime);
 
                 // Update the particle
                 particle.Update(elapsedTime);
