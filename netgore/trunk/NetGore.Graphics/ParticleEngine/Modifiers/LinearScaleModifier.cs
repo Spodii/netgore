@@ -8,35 +8,40 @@ using Microsoft.Xna.Framework;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// Rotates the <see cref="Particle"/>s at a linear rate.
+    /// Scales the <see cref="Particle"/>s linearly from one value to another over the life of the
+    /// <see cref="Particle"/>.
     /// </summary>
-    public class RotationModifier : ParticleModifier
+    public class LinearScaleModifier : ParticleModifier
     {
-        const string _categoryName = "Rotation Modifier";
-        
-        /// <summary>
-        /// Default rotation rate. Using a literal instead of MathHelper.Pi since the latter doesn't work well
-        /// with the DefaultValueAttribute.
-        /// </summary>
-        const float _defaultRate = 3.14159f;
-
-        float _rate;
+        const string _categoryName = "Linear Scale Modifier";
+        const float _defaultInitialScale = 1.0f;
+        const float _defaultUltimateScale = 2.0f;
 
         /// <summary>
-        /// Gets or sets the rate and direction of the rotation in radians per second.
+        /// Gets or sets the initial scale value.
         /// </summary>
         [Category(_categoryName)]
-        [Description("The rate and direction of the rotation in radians per second.")]
-        [DisplayName("Rate")]
-        [DefaultValue(_defaultRate)]
-        public float Rate { get { return _rate * 1000f; } set { _rate = value * 0.001f; } }
+        [Description("The initial scale value.")]
+        [DisplayName("Initial Scale")]
+        [DefaultValue(_defaultInitialScale)]
+        public float InitialScale { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ending scale value.
+        /// </summary>
+        [Category(_categoryName)]
+        [Description("The final scale value.")]
+        [DisplayName("Ultimate Scale")]
+        [DefaultValue(_defaultUltimateScale)]
+        public float UltimateScale { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
         /// </summary>
-        public RotationModifier() : base(false, true)
+        public LinearScaleModifier() : base(false, true)
         {
-            Rate = _defaultRate;
+            InitialScale = _defaultInitialScale;
+            UltimateScale = _defaultUltimateScale;
         }
 
         /// <summary>
@@ -61,7 +66,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// was last updated.</param>
         protected override void HandleProcessUpdated(ParticleEmitter emitter, Particle particle, int elapsedTime)
         {
-            particle.Rotation += _rate * elapsedTime;
+            particle.Scale = MathHelper.Lerp(InitialScale, UltimateScale, particle.GetAgePercent(CurrentTime));
         }
     }
 }
