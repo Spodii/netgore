@@ -73,9 +73,18 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>A <see cref="ParticleModifierBase"/> instance of type <typeparamref name="T"/>.</returns>
         public static T GetInstance<T>() where T : ParticleModifierBase
         {
-            var type = typeof(T);
+            return (T)GetInstance(typeof(T));
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ParticleModifierBase"/> instance .
+        /// </summary>
+        /// <param name="type">The Type of <see cref="ParticleModifierBase"/>.</param>
+        /// <returns>A <see cref="ParticleModifierBase"/> instance.</returns>
+        public static ParticleModifierBase GetInstance(Type type)
+        {
             var ret = _instances[type];
-            return (T)ret;
+            return ret;
         }
 
         static void HandleTypeLoaded(TypeFactory typefactory, Type loadedtype, string name)
