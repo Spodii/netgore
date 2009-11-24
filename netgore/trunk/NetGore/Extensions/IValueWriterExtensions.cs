@@ -9,10 +9,118 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Extensions for the IValueWriter.
+    /// Extensions for the <see cref="IValueWriter"/>.
     /// </summary>
     public static class IValueWriterExtensions
     {
+        /// <summary>
+        /// Helps write a variable value.
+        /// </summary>
+        /// <typeparam name="T">The internal type of the variable value.</typeparam>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="writeValue">Delegate used to write type <typeparamref name="T"/>.</param>
+        static void WriteVariableValue<T>(IValueWriter writer, string name, IVariableValue<T> value, Action<string, T> writeValue)
+        {
+            if (writer.SupportsNodes && writer.SupportsNameLookup)
+            {
+                writer.WriteStartNode(name);
+                writeValue("Min", value.Min);
+                writeValue("Max", value.Max);
+                writer.WriteEndNode(name);
+            }
+            else
+            {
+                writeValue("Min", value.Min);
+                writeValue("Max", value.Max);
+            }
+        }
+
+        /// <summary>
+        /// Writes a <see cref="VariableByte"/> the specified writer.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, VariableByte value)
+        {
+            WriteVariableValue(writer, name, value, writer.Write);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="VariableColor"/> the specified writer.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, VariableColor value)
+        {
+            WriteVariableValue(writer, name, value, writer.Write);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="VariableFloat"/> the specified writer.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, VariableFloat value)
+        {
+            WriteVariableValue(writer, name, value, writer.Write);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="VariableInt"/> the specified writer.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, VariableInt value)
+        {
+            WriteVariableValue(writer, name, value, writer.Write);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="VariableSByte"/> the specified writer.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, VariableSByte value)
+        {
+            WriteVariableValue(writer, name, value, writer.Write);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="VariableShort"/> the specified writer.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, VariableShort value)
+        {
+            WriteVariableValue(writer, name, value, writer.Write);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="VariableUShort"/> the specified writer.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, VariableUShort value)
+        {
+            WriteVariableValue(writer, name, value, writer.Write);
+        }
+
         public static void Write(this IValueWriter writer, string name, SpriteCategory value)
         {
             // TODO: ?? Try to remove as many usages of this as possible

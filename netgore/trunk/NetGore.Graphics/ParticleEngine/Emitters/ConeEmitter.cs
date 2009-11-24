@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -15,6 +16,21 @@ namespace NetGore.Graphics.ParticleEngine
 
         float _coneAngle = _defaultConeAngle;
         float _direction = _defaultDirection;
+
+        const string _coneAngleKeyName = "ConeAngle";
+        const string _directionKeyName = "Direction";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
+        {
+            writer.Write(_coneAngleKeyName, ConeAngle);
+            writer.Write(_directionKeyName, Direction);
+
+            base.WriteCustomValues(writer);
+        }
 
         /// <summary>
         /// Gets or sets the angle (in radians) from edge to edge of the emitter beam.

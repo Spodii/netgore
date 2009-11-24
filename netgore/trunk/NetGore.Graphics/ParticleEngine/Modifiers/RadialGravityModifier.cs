@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine.Modifiers
 {
@@ -26,6 +27,21 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
         {
             Strength = _defaultStrength;
             Radius = _defaultRadius;
+        }
+
+        const string _positionKeyName = "Position";
+        const string _radiusKeyName = "Radius";
+        const string _strengthKeyName = "Strength";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_positionKeyName, Position);
+            writer.Write(_radiusKeyName, Radius);
+            writer.Write(_strengthKeyName, Strength);
         }
 
         /// <summary>

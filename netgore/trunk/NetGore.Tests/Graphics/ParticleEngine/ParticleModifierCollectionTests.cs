@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore.Graphics.ParticleEngine;
+using NetGore.IO;
 using NUnit.Framework;
 
 namespace NetGore.Tests.Graphics.ParticleEngine
@@ -283,6 +285,14 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
             /// <param name="processOnUpdate">If <see cref="Particle"/>s will be processed after being updated.</param>
             public TestModifier(bool processOnRelease, bool processOnUpdate) : base(processOnRelease, processOnUpdate)
+            {
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+            /// </summary>
+            /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+            protected override void WriteCustomValues(IValueWriter writer)
             {
             }
 

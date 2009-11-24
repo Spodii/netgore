@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using NetGore.Collections;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -11,9 +13,35 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public abstract class ParticleModifier
     {
+        const string _customValuesNodeName = "CustomValues";
+        const string _typeKeyName = "ModifierType";
+
         readonly bool _processOnRelease;
         readonly bool _processOnUpdate;
         int _currentTime;
+
+        /// <summary>
+        /// Writes the <see cref="ParticleModifier"/> to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(IValueWriter writer)
+        {
+            string typeName = ParticleModifierFactory.GetFactoryTypeName(GetType());
+
+            writer.Write(_typeKeyName, typeName);
+
+            writer.WriteStartNode(_customValuesNodeName);
+            {
+                WriteCustomValues(writer);
+            }
+            writer.WriteEndNode(_customValuesNodeName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected abstract void WriteCustomValues(IValueWriter writer);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifier"/> class.

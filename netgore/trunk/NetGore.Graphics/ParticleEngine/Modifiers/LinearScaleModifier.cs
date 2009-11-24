@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -21,6 +22,19 @@ namespace NetGore.Graphics.ParticleEngine
         {
             InitialScale = _defaultInitialScale;
             UltimateScale = _defaultUltimateScale;
+        }
+
+        const string _initialScaleKeyName = "InitialScale";
+        const string _ultimateScaleKeyName = "UltimateScale";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_initialScaleKeyName, InitialScale);
+            writer.Write(_ultimateScaleKeyName, UltimateScale);
         }
 
         /// <summary>

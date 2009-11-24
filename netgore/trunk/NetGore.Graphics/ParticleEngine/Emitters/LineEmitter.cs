@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -17,6 +18,25 @@ namespace NetGore.Graphics.ParticleEngine
         const string _emitterCategoryName = "Line Emitter";
 
         bool _emitBothWays = _defaultEmitBothWays;
+
+        const string _angleKeyName = "Angle";
+        const string _emitBothWaysKeyName = "EmitBothWays";
+        const string _lengthKeyName = "Length";
+        const string _rectilinearKeyName = "Rectilinear";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
+        {
+            writer.Write(_angleKeyName, Angle);
+            writer.Write(_emitBothWaysKeyName, EmitBothWays);
+            writer.Write(_lengthKeyName, Length);
+            writer.Write(_rectilinearKeyName, Rectilinear);
+
+            base.WriteCustomValues(writer);
+        }
 
         /// <summary>
         /// Used when <see cref="EmitBothWays"/> is set to alter which direction a particle is emitted.

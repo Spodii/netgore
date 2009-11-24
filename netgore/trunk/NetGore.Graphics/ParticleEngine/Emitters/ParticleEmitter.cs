@@ -433,6 +433,59 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected virtual void WriteCustomValues(IValueWriter writer)
+        {
+            // TODO: !! Abstract...
+        }
+
+        const string _blendModeKeyName = "BlendMode";
+        const string _budgetKeyName = "Budget";
+        const string _lifeKeyName = "Life";
+        const string _originKeyName = "Origin";
+        const string _releaseAmountKeyName = "ReleaseAmount";
+        const string _releaseColorKeyName = "ReleaseColor";
+        const string _releaseRateKeyName = "ReleaseRate";
+        const string _releaseRotationKeyName = "ReleaseRotation";
+        const string _releaseScaleKeyName = "ReleaseScale";
+        const string _releaseSpeedKeyName = "ReleaseSpeed";
+        const string _spriteCategorizationKeyName = "SpriteCategorization";
+        const string _customValuesNodeName = "CustomValues";
+        const string _modifiersNodeName = "Modifiers";
+
+        /// <summary>
+        /// Writes the <see cref="ParticleEmitter"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(IValueWriter writer)
+        {
+            // Write the primary values
+            writer.Write(_blendModeKeyName, BlendMode);
+            writer.Write(_budgetKeyName, Budget);
+            writer.Write(_lifeKeyName, Life);
+            writer.Write(_originKeyName, Origin);
+            writer.Write(_releaseAmountKeyName, ReleaseAmount);
+            writer.Write(_releaseColorKeyName, ReleaseColor);
+            writer.Write(_releaseRateKeyName, ReleaseRate);
+            writer.Write(_releaseRotationKeyName, ReleaseRotation);
+            writer.Write(_releaseScaleKeyName, ReleaseScale);
+            writer.Write(_releaseSpeedKeyName, ReleaseSpeed);
+            writer.Write(_spriteCategorizationKeyName, SpriteCategorization);
+
+            // Write the custom values
+            writer.WriteStartNode(_customValuesNodeName);
+            {
+                WriteCustomValues(writer);
+            }
+            writer.WriteEndNode(_customValuesNodeName);
+
+            // Write the modifier collection
+            Modifiers.Write(_modifiersNodeName, writer);
+        }
+
+        /// <summary>
         /// Tries to load the <see cref="_sprite"/> using the <see cref="SpriteCategorization"/>.
         /// </summary>
         void TryLoadSprite()

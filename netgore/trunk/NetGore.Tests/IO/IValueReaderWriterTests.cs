@@ -12,30 +12,7 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class IValueReaderWriterTests
     {
-        const int _bufferSize = 1024 * 1024;
-
-        /// <summary>
-        /// The CreateCreatorHandlers that will be used to create the ReaderWriterCreatorBase instances.
-        /// </summary>
-        static readonly IEnumerable<CreateCreatorHandler> _createCreators;
-
-        static readonly List<string> _createdTempFiles = new List<string>();
-
         static readonly object[] _emptyObjArray = new object[0];
-
-        /// <summary>
-        /// Initializes the <see cref="IValueReaderWriterTests"/> class.
-        /// </summary>
-        static IValueReaderWriterTests()
-        {
-            // Create the delegates for creating the ReaderWriterCreatorBases
-            _createCreators = new CreateCreatorHandler[]
-            {
-                () => new MemoryBinaryValueReaderWriterCreator(), () => new FileBinaryValueReaderWriterCreator(),
-                () => new XmlValueReaderWriterCreator(), () => new BitStreamReaderWriterCreator(),
-                () => new BitStreamByteArrayReaderWriterCreator()
-            };
-        }
 
         static void AssertArraysEqual<T>(T[] expected, T[] actual)
         {
@@ -59,27 +36,6 @@ namespace NetGore.Tests.IO
             {
                 Assert.AreEqual(expected[i], actual[i], "Type: `{0}`  Index: `{1}`  Message: {2}", typeof(T), i, customMsg);
             }
-        }
-
-        /// <summary>
-        /// Gets the path for a temp file.
-        /// </summary>
-        /// <returns>The path for a temp file.</returns>
-        static string GetTempFile()
-        {
-            if (_createdTempFiles.Count > 3)
-            {
-                // Do a garbage collection to see if there is crap still out there, but waiting to be destructed
-                GC.Collect();
-                if (_createdTempFiles.Count > 3)
-                    throw new Exception("Too many temp files are out. Make sure they are being released!");
-                else
-                    Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
-            }
-
-            string ret = Path.GetTempFileName();
-            _createdTempFiles.Add(ret);
-            return ret;
         }
 
         /// <summary>
@@ -148,22 +104,10 @@ namespace NetGore.Tests.IO
             AssertArraysEqual(expected, actual, errmsg, r.GetType());
         }
 
-        /// <summary>
-        /// Releases a file used with GetTempFile().
-        /// </summary>
-        /// <param name="filePath">Path to the file to release.</param>
-        static void ReleaseFile(string filePath)
-        {
-            _createdTempFiles.Remove(filePath);
-
-            if (File.Exists(filePath))
-                File.Delete(filePath);
-        }
-
         [Test]
         public void TestBools()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -185,7 +129,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestBytes()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -207,7 +151,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestDoubles()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -235,7 +179,7 @@ namespace NetGore.Tests.IO
                 TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
             };
 
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -274,7 +218,7 @@ namespace NetGore.Tests.IO
                 TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
             };
 
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -307,7 +251,7 @@ namespace NetGore.Tests.IO
             };
             TestEnumHelper enumHelper = new TestEnumHelper();
 
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -347,7 +291,7 @@ namespace NetGore.Tests.IO
             };
             TestEnumHelper enumHelper = new TestEnumHelper();
 
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -373,7 +317,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestFloats()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -398,7 +342,7 @@ namespace NetGore.Tests.IO
             var illegalStrs = new string[] { "<", ">", "\\", "/", "&", "'", "\"", "?", Environment.NewLine };
             string allStrings = Implode(illegalStrs);
 
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -427,7 +371,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestInts()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -449,7 +393,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestLongs()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -471,7 +415,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookup()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -517,7 +461,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookupCaseSensitivity()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -565,7 +509,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookupWithNodes()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -677,7 +621,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookupWithNodesCaseSensitivity()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -789,7 +733,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodes()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -836,7 +780,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodesBoolsOnly()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase tmp = createCreator())
                 {
@@ -869,7 +813,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodesDeepLinear()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1095,7 +1039,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodesDeepRandom()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1323,7 +1267,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestSBytes()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1345,7 +1289,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestShorts()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1367,7 +1311,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestStrings()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1389,7 +1333,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestUInts()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1411,7 +1355,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestULongs()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1433,7 +1377,7 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestUShorts()
         {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
                 using (ReaderWriterCreatorBase creator = createCreator())
                 {
@@ -1470,249 +1414,12 @@ namespace NetGore.Tests.IO
         }
 
         /// <summary>
-        /// BitStream using the ByteArray to transfer data from the reader to writer
-        /// </summary>
-        class BitStreamByteArrayReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly BitStream _writeStream = new BitStream(BitStreamMode.Write, _bufferSize);
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                var buffer = _writeStream.GetBuffer();
-                return new BitStream(buffer);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return _writeStream;
-            }
-        }
-
-        /// <summary>
-        /// BitStream
-        /// </summary>
-        class BitStreamReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                _stream.Mode = BitStreamMode.Read;
-                return _stream;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return _stream;
-            }
-        }
-
-        /// <summary>
-        /// Handler for getting a ReaderWriterCreatorBase instance. 
-        /// </summary>
-        /// <returns>The ReaderWriterCreatorBase instance.</returns>
-        delegate ReaderWriterCreatorBase CreateCreatorHandler();
-
-        /// <summary>
         /// Handler for creating a value from a double.
         /// </summary>
         /// <typeparam name="T">The Type of value to create.</typeparam>
         /// <param name="value">The value to give the new type. Round is fine as long as it is consistent.</param>
         /// <returns>The new value as type <typeparamref name="T"/>.</returns>
         delegate T CreateValueTypeHandler<T>(double value);
-
-        /// <summary>
-        /// BinaryValueReader/Writer, using a file.
-        /// </summary>
-        class FileBinaryValueReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly string _filePath = GetTempFile();
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public override void Dispose()
-            {
-                ReleaseFile(_filePath);
-                GC.SuppressFinalize(this);
-
-                base.Dispose();
-            }
-
-            ~FileBinaryValueReaderWriterCreator()
-            {
-                ReleaseFile(_filePath);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                return new BinaryValueReader(_filePath);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return new BinaryValueWriter(_filePath);
-            }
-        }
-
-        /// <summary>
-        /// BinaryValueReader/Writer, using memory.
-        /// </summary>
-        class MemoryBinaryValueReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                _stream.Mode = BitStreamMode.Read;
-                return new BinaryValueReader(_stream);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return new BinaryValueWriter(_stream);
-            }
-        }
-
-        /// <summary>
-        /// Base class for a IValueReader and IValueWriter creator.
-        /// </summary>
-        abstract class ReaderWriterCreatorBase : IDisposable
-        {
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public abstract bool SupportsNameLookup { get; }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public abstract bool SupportsNodes { get; }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public abstract IValueReader GetReader();
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public abstract IValueWriter GetWriter();
-
-            #region IDisposable Members
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public virtual void Dispose()
-            {
-            }
-
-            #endregion
-        }
 
         /// <summary>
         /// Handler for reading a value.
@@ -1767,65 +1474,5 @@ namespace NetGore.Tests.IO
         /// <param name="value">Value to write.</param>
         delegate void WriteTestValuesHandler<T>(IValueWriter w, string name, T value);
 
-        /// <summary>
-        /// XmlValueReader/Writer.
-        /// </summary>
-        class XmlValueReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            const string _rootNodeName = "TestRootNode";
-
-            readonly string _filePath = GetTempFile();
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public override void Dispose()
-            {
-                ReleaseFile(_filePath);
-                GC.SuppressFinalize(this);
-
-                base.Dispose();
-            }
-
-            ~XmlValueReaderWriterCreator()
-            {
-                ReleaseFile(_filePath);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                return new XmlValueReader(_filePath, _rootNodeName);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return new XmlValueWriter(_filePath, _rootNodeName);
-            }
-        }
     }
 }

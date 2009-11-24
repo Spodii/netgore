@@ -16,15 +16,55 @@ namespace NetGore.IO
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public const string _dataFolder = "Data";
-        public const string _engineFolder = "Engine";
-        public const string _fontsFolder = "Font";
-        public const string _fxFolder = "Fx";
-        public const string _grhsFolder = "Grh";
-        public const string _languagesFolder = "Languages";
-        public const string _mapsFolder = "Maps";
-        public const string _settingsFolder = "Settings";
-        public const string _skeletonsFolder = "Skeletons";
+        /// <summary>
+        /// The relative path to the Data directory from the Contents directory.
+        /// </summary>
+        public const string DataFolder = "Data";
+
+        /// <summary>
+        /// The relative path to the Particle Effects directory from the Contents directory.
+        /// </summary>
+        public static readonly string ParticleEffectsFolder = DataFolder + Path.DirectorySeparatorChar + "ParticleEffects";
+
+        /// <summary>
+        /// The relative path to the Engine directory from the Contents directory.
+        /// </summary>
+        public const string EngineFolder = "Engine";
+
+        /// <summary>
+        /// The relative path to the Fonts directory from the Contents directory.
+        /// </summary>
+        public const string FontsFolder = "Font";
+
+        /// <summary>
+        /// The relative path to the Fx directory from the Contents directory.
+        /// </summary>
+        public const string FxFolder = "Fx";
+
+        /// <summary>
+        /// The relative path to the Grhs directory from the Contents directory.
+        /// </summary>
+        public const string GrhsFolder = "Grh";
+
+        /// <summary>
+        /// The relative path to the Languages directory from the Contents directory.
+        /// </summary>
+        public const string LanguagesFolder = "Languages";
+
+        /// <summary>
+        /// The relative path to the Maps directory from the Contents directory.
+        /// </summary>
+        public const string MapsFolder = "Maps";
+
+        /// <summary>
+        /// The relative path to the Settings directory from the Contents directory.
+        /// </summary>
+        public const string SettingsFolder = "Settings";
+
+        /// <summary>
+        /// The relative path to the Skeletons directory from the Contents directory.
+        /// </summary>
+        public const string SkeletonsFolder = "Skeletons";
 
         /// <summary>
         /// The suffix given to compiled content files. Does not include the prefixed period.
@@ -51,11 +91,10 @@ namespace NetGore.IO
         static volatile int _freeFileIndex = 0;
 
         readonly PathString _data;
-
+        readonly PathString _particleEffects;
         readonly PathString _engine;
         readonly PathString _fonts;
         readonly PathString _fx;
-
         readonly PathString _grhs;
         readonly PathString _languages;
         readonly PathString _maps;
@@ -93,16 +132,17 @@ namespace NetGore.IO
         {
             _root = Path.GetFullPath(rootPath);
 
-            _data = GetChildPath(_root, _dataFolder);
-            _maps = GetChildPath(_root, _mapsFolder);
-            _engine = GetChildPath(_root, _engineFolder);
-            _fonts = GetChildPath(_root, _fontsFolder);
-            _grhs = GetChildPath(_root, _grhsFolder);
-            _skeletons = GetChildPath(_root, _skeletonsFolder);
-            _fx = GetChildPath(_root, _fxFolder);
+            _data = GetChildPath(_root, DataFolder);
+            _particleEffects = GetChildPath(_root, ParticleEffectsFolder);
+            _maps = GetChildPath(_root, MapsFolder);
+            _engine = GetChildPath(_root, EngineFolder);
+            _fonts = GetChildPath(_root, FontsFolder);
+            _grhs = GetChildPath(_root, GrhsFolder);
+            _skeletons = GetChildPath(_root, SkeletonsFolder);
+            _fx = GetChildPath(_root, FxFolder);
             _textures = GetChildPath(_root, _texturesFolder);
-            _settings = GetChildPath(_root, _settingsFolder);
-            _languages = GetChildPath(_root, _languagesFolder);
+            _settings = GetChildPath(_root, SettingsFolder);
+            _languages = GetChildPath(_root, LanguagesFolder);
         }
 
         /// <summary>
@@ -119,6 +159,14 @@ namespace NetGore.IO
         public PathString Data
         {
             get { return _data; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the ParticleEffects directory.
+        /// </summary>
+        public PathString ParticleEffects
+        {
+            get { return _particleEffects; }
         }
 
         /// <summary>
@@ -391,7 +439,7 @@ namespace NetGore.IO
                 return false;
 
             // Check for the required child directories
-            var reqFolders = new List<string> { _dataFolder, _grhsFolder };
+            var reqFolders = new List<string> { DataFolder, GrhsFolder };
             var req = reqFolders.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
 
             var dirs = Directory.GetDirectories(path);

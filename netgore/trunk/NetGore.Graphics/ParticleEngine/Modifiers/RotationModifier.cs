@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Linq;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -24,6 +25,17 @@ namespace NetGore.Graphics.ParticleEngine
         public RotationModifier() : base(false, true)
         {
             Rate = _defaultRate;
+        }
+
+        const string _rateKeyName = "Rate";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_rateKeyName, Rate);
         }
 
         /// <summary>
