@@ -29,7 +29,7 @@ namespace NetGore.AI
         /// <param name="activation">What activation function is to be used with the neuron.</param>
         public AINeuron(int numWeights, ActivationFunction activation)
         {
-            _weights = new float[numWeights - 1];
+            _weights = new float[numWeights];
 
             for (int idx = 0; idx < _weights.Length; ++idx)
             {
@@ -66,7 +66,7 @@ namespace NetGore.AI
             int i = 0;
 
             //inputs should be 1 less than the number of weights since the last weight is the threshold for activation.
-            for (int idx = 0; idx < inputs.Length; ++idx)
+            for (int idx = 0; idx < inputs.Length - 1; ++idx)
             {
                 total += inputs[idx] * _weights[idx];
                 i = idx;

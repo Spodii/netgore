@@ -79,7 +79,7 @@ namespace NetGore.AI
         {
             int outidx = 0;
 
-            float[] tmpout = new float[List.Count - 1];
+            float[] tmpout = new float[List.Count];
 
             foreach (AINeuron n in List)
             {
