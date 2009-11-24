@@ -48,9 +48,19 @@ namespace NetGore.Graphics.ParticleEngine
 
         int _lastUpdateTime = int.MinValue;
         int _nextReleaseTime;
-        Vector2 _origin;
         Grh _sprite;
         SpriteCategorization _spriteCategorization;
+        Vector2 _origin;
+
+        /// <summary>
+        /// Gets the absolute position from a relative position and the origin of this emitter.
+        /// </summary>
+        /// <param name="relativePosition">The relative position.</param>
+        /// <param name="absolutePosition">The resulting absolute position.</param>
+        public void GetAbsoultePosition(ref Vector2 relativePosition, out Vector2 absolutePosition)
+        {
+            Vector2.Add(ref relativePosition, ref _origin, out absolutePosition);
+        }
 
         /// <summary>
         /// Used to spread out sprite loading attempts when trying to load the sprite when it is null on Update().
