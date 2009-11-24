@@ -92,6 +92,7 @@ namespace NetGore
         [Description("The inclusive maximum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
+        [Editor(EditorHelper.XnaColorEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Color Max
         {
             get { return _max; }
@@ -120,6 +121,7 @@ namespace NetGore
         [Description("The inclusive minimum possible value.")]
         [Category("Variable Value")]
         [EditorBrowsable]
+        [Editor(EditorHelper.XnaColorEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Color Min
         {
             get { return _min; }

@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditorHelper.cs" />
     <Compile Include="RandomHelperXna.cs" />
     <Compile Include="Variable Values\VariableColorConverter.cs" />
     <Compile Include="Variable Values\VariableColor.cs" />

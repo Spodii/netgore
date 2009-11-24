@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -21,6 +22,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets or sets the color of the <see cref="Particle"/>.
         /// </summary>
+        [Editor(EditorHelper.XnaColorEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Color Color;
 
         /// <summary>
