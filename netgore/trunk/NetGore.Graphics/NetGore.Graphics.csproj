@@ -134,9 +134,9 @@
     <Compile Include="ParticleEngine\Emitters\RectEmitter.cs" />
     <Compile Include="ParticleEngine\Modifiers\ColorModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\LinearGravityModifier.cs" />
-    <Compile Include="ParticleEngine\Modifiers\ParticleModifier.cs" />
-    <Compile Include="ParticleEngine\Modifiers\ParticleModifierCollection.cs" />
-    <Compile Include="ParticleEngine\Modifiers\ParticleModifierFactory.cs" />
+    <Compile Include="ParticleEngine\Modifiers\Core\ParticleModifier.cs" />
+    <Compile Include="ParticleEngine\Modifiers\Core\ParticleModifierCollection.cs" />
+    <Compile Include="ParticleEngine\Modifiers\Core\ParticleModifierFactory.cs" />
     <Compile Include="ParticleEngine\Renderers\IParticleRenderer.cs" />
     <Compile Include="ParticleEngine\Particle.cs" />
     <Compile Include="ParticleEngine\Emitters\ParticleEmitter.cs" />

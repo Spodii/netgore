@@ -270,6 +270,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         [Editor("NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools",
             "System.Drawing.Design.UITypeEditor, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+        [Category(_emitterCategoryName)]
+        [Description("Collection of particle effect modifiers.")]
+        [DisplayName("Modifiers")]
         public ParticleModifierCollection Modifiers
         {
             get { return _modifiers; }
