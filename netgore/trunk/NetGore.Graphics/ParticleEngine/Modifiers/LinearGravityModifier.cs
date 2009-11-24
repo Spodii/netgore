@@ -21,10 +21,10 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the gravity vector.
+        /// Gets or sets the gravity vector in units of force per second.
         /// </summary>
         [Category(_categoryName)]
-        [Description("The gravitational force vector.")]
+        [Description("The gravitational force vector in units of force per second.")]
         [DisplayName("Gravity")]
         [DefaultValue(typeof(Vector2), "0, 100")]
         public Vector2 Gravity
