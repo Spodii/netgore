@@ -81,7 +81,7 @@ namespace DemoGame.ParticleEffectEditor
                 ReleaseRate = 35
             };
 
-            var colorModifier = new ParticleColorModifier { ReleaseColor = new Color(0, 255, 0, 255), UltimateColor = new Color(0, 0, 255, 175) };
+            var colorModifier = new ColorModifier { ReleaseColor = new Color(0, 255, 0, 255), UltimateColor = new Color(0, 0, 255, 175) };
             ret.Modifiers.Add(colorModifier);
 
             return ret;

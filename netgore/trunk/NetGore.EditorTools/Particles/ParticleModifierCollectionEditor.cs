@@ -52,7 +52,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override Type[] CreateNewItemTypes()
         {
-            return ParticleModifierBase.ModifierTypes.ToArray();
+            return ParticleModifier.ModifierTypes.ToArray();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace NetGore.EditorTools
         /// <returns>A new instance of the specified object.</returns>
         protected override object CreateInstance(Type itemType)
         {
-            return ParticleModifierBase.CreateModifier(itemType);
+            return ParticleModifier.CreateModifier(itemType);
         }
     }
 }

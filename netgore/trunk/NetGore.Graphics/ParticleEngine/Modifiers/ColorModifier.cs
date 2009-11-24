@@ -7,16 +7,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {
-    public class ParticleColorModifier : ParticleModifierBase
+    public class ColorModifier : ParticleModifier
     {
         public Color ReleaseColor { get; set; }
 
         public Color UltimateColor { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleColorModifier"/> class.
+        /// Initializes a new instance of the <see cref="ColorModifier"/> class.
         /// </summary>
-        public ParticleColorModifier()
+        public ColorModifier()
             : base(true, true)
         {
             ReleaseColor = Color.White;
@@ -25,7 +25,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
-        /// it is released. Only valid if <see cref="ParticleModifierBase.ProcessOnRelease"/> is set.
+        /// it is released. Only valid if <see cref="ParticleModifier.ProcessOnRelease"/> is set.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
         /// came from.</param>
@@ -37,7 +37,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
-        /// it is updated. Only valid if <see cref="ParticleModifierBase.ProcessOnUpdate"/> is set.
+        /// it is updated. Only valid if <see cref="ParticleModifier.ProcessOnUpdate"/> is set.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
         /// came from.</param>

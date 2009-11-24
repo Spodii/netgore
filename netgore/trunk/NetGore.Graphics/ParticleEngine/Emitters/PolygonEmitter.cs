@@ -8,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A <see cref="ParticleEmitter"/> that emits particles from a custom-defined polygon.
     /// </summary>
-    public class PolygonParticleEmitter : ParticleEmitter
+    public class PolygonEmitter : ParticleEmitter
     {
         internal const PolygonOrigin DefaultPolygonOrigin = PolygonOrigin.Center;
         const bool _defaultClosed = true;

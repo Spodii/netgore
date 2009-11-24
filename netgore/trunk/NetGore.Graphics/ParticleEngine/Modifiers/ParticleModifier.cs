@@ -8,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Base class for a modifier for a <see cref="ParticleEmitter"/>.
     /// </summary>
-    public abstract class ParticleModifierBase
+    public abstract class ParticleModifier
     {
         readonly bool _processOnRelease;
         readonly bool _processOnUpdate;
@@ -23,34 +23,34 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Creates an instance of a <see cref="ParticleModifierBase"/> of type <typeparamref name="T"/>. This is the
+        /// Creates an instance of a <see cref="ParticleModifier"/> of type <typeparamref name="T"/>. This is the
         /// preferred method of creating modifiers.
         /// </summary>
         /// <typeparam name="T">The type of modifier.</typeparam>
-        /// <returns>An instance of a <see cref="ParticleModifierBase"/> of type <typeparamref name="T"/>.</returns>
-        public static T CreateModifier<T>() where T : ParticleModifierBase
+        /// <returns>An instance of a <see cref="ParticleModifier"/> of type <typeparamref name="T"/>.</returns>
+        public static T CreateModifier<T>() where T : ParticleModifier
         {
             return ParticleModifierFactory.GetInstance<T>();
         }
 
         /// <summary>
-        /// Creates an instance of a <see cref="ParticleModifierBase"/>. This is the preferred method of
+        /// Creates an instance of a <see cref="ParticleModifier"/>. This is the preferred method of
         /// creating modifiers.
         /// </summary>
         /// <param name="type">The type of modifier.</param>
-        /// <returns>An instance of a <see cref="ParticleModifierBase"/>.</returns>
-        public static ParticleModifierBase CreateModifier(Type type)
+        /// <returns>An instance of a <see cref="ParticleModifier"/>.</returns>
+        public static ParticleModifier CreateModifier(Type type)
         {
             return ParticleModifierFactory.GetInstance(type);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifierBase"/> class.
+        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
         /// </summary>
         /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
         /// <param name="processOnUpdate">If <see cref="Particle"/>s will be processed after being updated.</param>
         /// <exception cref="ArgumentException">Both parameters are false.</exception>
-        protected ParticleModifierBase(bool processOnRelease, bool processOnUpdate)
+        protected ParticleModifier(bool processOnRelease, bool processOnUpdate)
         {
             if (!processOnRelease && !processOnUpdate)
                 throw new ArgumentException("Either one of or both parameters must be true.");
@@ -85,7 +85,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
-        /// it is released. Only valid if <see cref="ParticleModifierBase.ProcessOnRelease"/> is set.
+        /// it is released. Only valid if <see cref="ParticleModifier.ProcessOnRelease"/> is set.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
         /// came from.</param>
@@ -94,7 +94,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
-        /// it is updated. Only valid if <see cref="ParticleModifierBase.ProcessOnUpdate"/> is set.
+        /// it is updated. Only valid if <see cref="ParticleModifier.ProcessOnUpdate"/> is set.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
         /// came from.</param>

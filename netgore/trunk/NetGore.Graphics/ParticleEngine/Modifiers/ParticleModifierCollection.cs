@@ -7,9 +7,9 @@ using System.Text;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// A collection of <see cref="ParticleModifierBase"/>s.
+    /// A collection of <see cref="ParticleModifier"/>s.
     /// </summary>
-    public class ParticleModifierCollection : IList<ParticleModifierBase>
+    public class ParticleModifierCollection : IList<ParticleModifier>
     {
         /// <summary>
         /// Creates a deep copy of the <see cref="ParticleModifierCollection"/>.
@@ -37,29 +37,29 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Modifiers that process released <see cref="Particle"/>s.
         /// </summary>
-        readonly List<ParticleModifierBase> _releaseModifiers = new List<ParticleModifierBase>(2);
+        readonly List<ParticleModifier> _releaseModifiers = new List<ParticleModifier>(2);
 
         /// <summary>
         /// Modifiers that process updated <see cref="Particle"/>s.
         /// </summary>
-        readonly List<ParticleModifierBase> _updateModifiers = new List<ParticleModifierBase>(2);
+        readonly List<ParticleModifier> _updateModifiers = new List<ParticleModifier>(2);
 
         /// <summary>
         /// All of the modifiers.
         /// </summary>
-        readonly List<ParticleModifierBase> _allModifiers = new List<ParticleModifierBase>(2);
+        readonly List<ParticleModifier> _allModifiers = new List<ParticleModifier>(2);
 
         /// <summary>
-        /// Gets an IEnumerable of all the <see cref="ParticleModifierBase"/>s that process <see cref="Particle"/>s
+        /// Gets an IEnumerable of all the <see cref="ParticleModifier"/>s that process <see cref="Particle"/>s
         /// when they are released.
         /// </summary>
-        public IEnumerable<ParticleModifierBase> ReleaseModifiers { get { return _releaseModifiers; } }
+        public IEnumerable<ParticleModifier> ReleaseModifiers { get { return _releaseModifiers; } }
 
         /// <summary>
-        /// Gets an IEnumerable of all the <see cref="ParticleModifierBase"/>s that process <see cref="Particle"/>s
+        /// Gets an IEnumerable of all the <see cref="ParticleModifier"/>s that process <see cref="Particle"/>s
         /// when they are updated.
         /// </summary>
-        public IEnumerable<ParticleModifierBase> UpdateModifiers { get { return _updateModifiers; } }
+        public IEnumerable<ParticleModifier> UpdateModifiers { get { return _updateModifiers; } }
 
         /// <summary>
         /// Updates the current time on all processors.
@@ -102,7 +102,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<ParticleModifierBase> GetEnumerator()
+        public IEnumerator<ParticleModifier> GetEnumerator()
         {
             return _allModifiers.GetEnumerator();
         }
@@ -125,7 +125,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         /// <exception cref="T:System.NotSupportedException">
         /// The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
-        public void Add(ParticleModifierBase item)
+        public void Add(ParticleModifier item)
         {
             if (item == null)
                 return;
@@ -145,7 +145,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="items">The objects to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         /// <exception cref="T:System.NotSupportedException">
         /// The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
-        public void AddRange(IEnumerable<ParticleModifierBase> items)
+        public void AddRange(IEnumerable<ParticleModifier> items)
         {
             foreach (var item in items)
                 Add(item);
@@ -171,7 +171,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>;
         /// otherwise, false.
         /// </returns>
-        public bool Contains(ParticleModifierBase item)
+        public bool Contains(ParticleModifier item)
         {
             return _allModifiers.Contains(item);
         }
@@ -194,10 +194,10 @@ namespace NetGore.Graphics.ParticleEngine
         ///                     is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination
         ///                     <paramref name="array"/>.
         ///                     -or-
-        ///                     Type <see cref="ParticleModifierBase"/> cannot be cast automatically to the type of the destination
+        ///                     Type <see cref="ParticleModifier"/> cannot be cast automatically to the type of the destination
         ///                     <paramref name="array"/>.
         /// </exception>
-        public void CopyTo(ParticleModifierBase[] array, int arrayIndex)
+        public void CopyTo(ParticleModifier[] array, int arrayIndex)
         {
             _allModifiers.CopyTo(array, arrayIndex);
         }
@@ -212,7 +212,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </returns
         /// <exception cref="T:System.NotSupportedException">
         /// The <see cref="T:System.Collections.Generic.ICollection`1"/>is read-only.</exception>
-        public bool Remove(ParticleModifierBase item)
+        public bool Remove(ParticleModifier item)
         {
             if (!_allModifiers.Remove(item))
                 return false;
@@ -251,7 +251,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>
         /// The index of <paramref name="item"/> if found in the list; otherwise, -1.
         /// </returns>
-        public int IndexOf(ParticleModifierBase item)
+        public int IndexOf(ParticleModifier item)
         {
             return _allModifiers.IndexOf(item);
         }
@@ -265,7 +265,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
         /// <exception cref="T:System.NotSupportedException">
         /// The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
-        public void Insert(int index, ParticleModifierBase item)
+        public void Insert(int index, ParticleModifier item)
         {
             if (item == null)
                 return;
@@ -313,7 +313,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>
         /// The element at the specified index.
         /// </returns>
-        public ParticleModifierBase this[int index]
+        public ParticleModifier this[int index]
         {
             get { return _allModifiers[index]; }
             set

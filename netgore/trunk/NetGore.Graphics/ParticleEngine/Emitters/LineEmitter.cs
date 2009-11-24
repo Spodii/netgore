@@ -8,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A <see cref="ParticleEmitter"/> that emits particles from a line.
     /// </summary>
-    public class LineParticleEmitter : ParticleEmitter
+    public class LineEmitter : ParticleEmitter
     {
         const int _defaultAngle = 0;
         const bool _defaultEmitBothWays = true;

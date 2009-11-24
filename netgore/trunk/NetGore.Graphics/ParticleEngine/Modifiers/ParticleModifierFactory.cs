@@ -7,14 +7,14 @@ using NetGore.Collections;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// Factory that caches instances of the <see cref="ParticleModifierBase"/>s.
+    /// Factory that caches instances of the <see cref="ParticleModifier"/>s.
     /// </summary>
     internal class ParticleModifierFactory : TypeFactory
     {
         /// <summary>
         /// Dictionary of the modifier Types and the instances for the Type.
         /// </summary>
-        static readonly Dictionary<Type, ParticleModifierBase> _instances = new Dictionary<Type, ParticleModifierBase>();
+        static readonly Dictionary<Type, ParticleModifier> _instances = new Dictionary<Type, ParticleModifier>();
 
         /// <summary>
         /// Sync for the <see cref="_instances"/>.
@@ -49,7 +49,7 @@ namespace NetGore.Graphics.ParticleEngine
             var filterCreator = new TypeFilterCreator
             {
                 IsClass = true,
-                Subclass = typeof(ParticleModifierBase),
+                Subclass = typeof(ParticleModifier),
                 IsAbstract = false,
                 RequireConstructor = true,
                 ConstructorParameters = Type.EmptyTypes,
@@ -67,21 +67,21 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets a <see cref="ParticleModifierBase"/> instance of type <typeparamref name="T"/>.
+        /// Gets a <see cref="ParticleModifier"/> instance of type <typeparamref name="T"/>.
         /// </summary>
-        /// <typeparam name="T">The type of <see cref="ParticleModifierBase"/>.</typeparam>
-        /// <returns>A <see cref="ParticleModifierBase"/> instance of type <typeparamref name="T"/>.</returns>
-        public static T GetInstance<T>() where T : ParticleModifierBase
+        /// <typeparam name="T">The type of <see cref="ParticleModifier"/>.</typeparam>
+        /// <returns>A <see cref="ParticleModifier"/> instance of type <typeparamref name="T"/>.</returns>
+        public static T GetInstance<T>() where T : ParticleModifier
         {
             return (T)GetInstance(typeof(T));
         }
 
         /// <summary>
-        /// Gets a <see cref="ParticleModifierBase"/> instance .
+        /// Gets a <see cref="ParticleModifier"/> instance .
         /// </summary>
-        /// <param name="type">The Type of <see cref="ParticleModifierBase"/>.</param>
-        /// <returns>A <see cref="ParticleModifierBase"/> instance.</returns>
-        public static ParticleModifierBase GetInstance(Type type)
+        /// <param name="type">The Type of <see cref="ParticleModifier"/>.</param>
+        /// <returns>A <see cref="ParticleModifier"/> instance.</returns>
+        public static ParticleModifier GetInstance(Type type)
         {
             var ret = _instances[type];
             return ret;
@@ -95,7 +95,7 @@ namespace NetGore.Graphics.ParticleEngine
                 return;
             }
 
-            var instance = (ParticleModifierBase)GetTypeInstance(loadedtype);
+            var instance = (ParticleModifier)GetTypeInstance(loadedtype);
 
             // Lock when adding instances just in case... who knows
             // Not like this lock will cost us more than a few microseconds
