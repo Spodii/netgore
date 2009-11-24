@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Collections;
 
 //NOTE: I'm working on an implementation of this so far into the demogame.  This is the first time i've written this in c# so
@@ -12,7 +11,7 @@ namespace NetGore.AI
     /// <summary>
     /// AINeuralNetwork encapsulates the neural network.
     /// </summary>
-    class AINeuralNetwork
+    public class AINeuralNetwork
     {
         private ArrayList _layers;
         private AINeuronLayer _inputLayer;
