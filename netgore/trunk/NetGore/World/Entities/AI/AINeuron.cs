@@ -22,7 +22,7 @@ namespace NetGore.AI
             AFSigmoid = 1
         }
 
-        private Single[] _weights;
+        private float[] _weights;
         private ActivationFunction _activation;
 
         /// <summary>
@@ -31,13 +31,14 @@ namespace NetGore.AI
         /// <param name="numWeights">Number of weights.</param>
         /// <param name="activation">What activation function is to be used with the neuron.</param>
         public AINeuron(int numWeights, ActivationFunction activation)
-        { 
-         _weights = new Single[numWeights-1];
+        {
+            _weights = new float[numWeights - 1];
            
          for (int idx = 0; idx < _weights.Length; ++idx)
          { 
              _weights[idx] = Convert.ToSingle(_rand.NextDouble()); 
          }
+
          Activation = activation;
         }
 
@@ -53,20 +54,19 @@ namespace NetGore.AI
         /// <summary>
         /// The input weights and threshold value.
         /// </summary>
-        public Single[] Weights
+        public float[] Weights
         {
             get { return _weights;  }
             set { _weights = value; }
         }
 
         /// <summary>
-        /// This is the most important function in a neuron.  It takes an array of singles and calculates the output.
+        /// This is the most important function in a neuron.  It takes an array of floats and calculates the output.
         /// </summary>
-        public Single Output(Single[] inputs)
+        public float Output(float[] inputs)
         {
-                Single total = 0;
-                Single threshold;
-                int i = 0;
+            float total = 0;
+            int i = 0;
                
                 //inputs should be 1 less than the number of weights since the last weight is the threshold for activation.
                 for (int idx =0; idx < inputs.Length; ++idx)
@@ -74,7 +74,7 @@ namespace NetGore.AI
                     total += inputs[idx]*_weights[idx];
                     i = idx;
                 }
-                threshold = _weights[i];
+                float threshold = _weights[i];
 
                 switch(_activation)
                 {
