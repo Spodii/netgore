@@ -69,6 +69,8 @@
     <Compile Include="Db\MySql\QueryTestValues.cs" />
     <Compile Include="Db\MySql\DbManagerTestSettings.cs" />
     <Compile Include="Graphics\GUI\StyledTextTests.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifierCollectionTests.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifierTests.cs" />
     <Compile Include="IO\BitOpsTests.cs" />
     <Compile Include="IO\BitStreamTests.cs" />
     <Compile Include="IO\IValueReaderWriterTests.cs" />

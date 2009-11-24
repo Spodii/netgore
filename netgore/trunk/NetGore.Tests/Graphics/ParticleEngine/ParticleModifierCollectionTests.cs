@@ -1,0 +1,298 @@
+﻿using System.Linq;
+using NetGore.Graphics.ParticleEngine;
+using NUnit.Framework;
+
+namespace NetGore.Tests.Graphics.ParticleEngine
+{
+    [TestFixture]
+    public class ParticleModifierCollectionTests
+    {
+        [Test]
+        public void AddNullTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            var initial = c.ToArray();
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+            c.Add(null);
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void AddReleaseModifierTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(true, false) };
+
+            Assert.AreEqual(1, c.ReleaseModifiers.Count());
+            Assert.AreEqual(0, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void AddReleaseUpdateModifierTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(true, true) };
+
+            Assert.AreEqual(1, c.ReleaseModifiers.Count());
+            Assert.AreEqual(1, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void AddUpdateModifierTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(false, true) };
+
+            Assert.AreEqual(0, c.ReleaseModifiers.Count());
+            Assert.AreEqual(1, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        static void ConsistencyAsserts(ParticleModifierCollection c)
+        {
+            Assert.AreEqual(c.Where(x => x.ProcessOnRelease).Count(), c.ReleaseModifiers.Count(),
+                            "Sub-list has too many or too few elements.");
+            Assert.AreEqual(c.Where(x => x.ProcessOnUpdate).Count(), c.UpdateModifiers.Count(),
+                            "Sub-list has too many or too few elements.");
+
+            Assert.IsTrue(c.Where(x => x.ProcessOnRelease).ContainSameElements(c.ReleaseModifiers),
+                          "Sub-list does not match main list for given value.");
+            Assert.IsTrue(c.Where(x => x.ProcessOnUpdate).ContainSameElements(c.UpdateModifiers),
+                          "Sub-list does not match main list for given value.");
+
+            Assert.IsFalse(c.Any(x => x == null), "Shouldn't be able to add null items.");
+
+            var concatDistinct = c.ReleaseModifiers.Concat(c.UpdateModifiers).Distinct();
+            Assert.IsTrue(c.ContainSameElements(concatDistinct), "Sub-collections don't contain same items as main collection.");
+        }
+
+        [Test]
+        public void InsertNullTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            var initial = c.ToArray();
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+            c.Insert(0, null);
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveModifierThatDoesNotExistTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+            ConsistencyAsserts(c);
+
+            c.Remove(new TestModifier(false, true));
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveNullTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            var initial = c.ToArray();
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+            c.Remove(null);
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveOnlyReleaseModifierTest()
+        {
+            var item = new TestModifier(true, false);
+            ParticleModifierCollection c = new ParticleModifierCollection { item };
+            c.Remove(item);
+
+            Assert.AreEqual(0, c.ReleaseModifiers.Count());
+            Assert.AreEqual(0, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveOnlyUpdateModifierTest()
+        {
+            var item = new TestModifier(false, true);
+            ParticleModifierCollection c = new ParticleModifierCollection { item };
+            c.Remove(item);
+
+            Assert.AreEqual(0, c.ReleaseModifiers.Count());
+            Assert.AreEqual(0, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveReleaseModifierFromBackTest()
+        {
+            var item = new TestModifier(true, false);
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(true, true), new TestModifier(true, true), item };
+            c.Remove(item);
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveReleaseModifierFromFrontTest()
+        {
+            var item = new TestModifier(true, false);
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { item, new TestModifier(true, true), new TestModifier(true, true) };
+            c.Remove(item);
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveReleaseModifierFromMiddleTest()
+        {
+            var item = new TestModifier(true, false);
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(true, true), item, new TestModifier(true, true) };
+            c.Remove(item);
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveUpdateModifierFromBackTest()
+        {
+            var item = new TestModifier(false, true);
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(true, true), new TestModifier(true, true), item };
+            c.Remove(item);
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveUpdateModifierFromFrontTest()
+        {
+            var item = new TestModifier(false, true);
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { item, new TestModifier(true, true), new TestModifier(true, true) };
+            c.Remove(item);
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void RemoveUpdateModifierFromMiddleTest()
+        {
+            var item = new TestModifier(false, true);
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(true, true), item, new TestModifier(true, true) };
+            c.Remove(item);
+
+            Assert.AreEqual(2, c.ReleaseModifiers.Count());
+            Assert.AreEqual(2, c.UpdateModifiers.Count());
+
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void SetNullTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            var initial = c.ToArray();
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+            c[0] = null;
+            Assert.IsTrue(c.ContainSameElements(initial));
+            ConsistencyAsserts(c);
+        }
+
+        [Test]
+        public void ToArrayTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+
+            var a = c.ToArray();
+            Assert.IsTrue(c.ContainSameElements(a));
+            Assert.AreEqual(c.Count, a.Length);
+        }
+
+        [Test]
+        public void ToListTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+
+            var a = c.ToList();
+            Assert.IsTrue(c.ContainSameElements(a));
+            Assert.AreEqual(c.Count, a.Count);
+        }
+
+        class TestModifier : ParticleModifierBase
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ParticleModifierBase"/> class.
+            /// </summary>
+            /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
+            /// <param name="processOnUpdate">If <see cref="Particle"/>s will be processed after being updated.</param>
+            public TestModifier(bool processOnRelease, bool processOnUpdate) : base(processOnRelease, processOnUpdate)
+            {
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
+            /// it is released. Only valid if <see cref="ParticleModifierBase.ProcessOnRelease"/> is set.
+            /// </summary>
+            /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
+            /// came from.</param>
+            /// <param name="particle">The <see cref="Particle"/> to process.</param>
+            protected override void HandleProcessReleased(ParticleEmitter emitter, Particle particle)
+            {
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
+            /// it is updated. Only valid if <see cref="ParticleModifierBase.ProcessOnUpdate"/> is set.
+            /// </summary>
+            /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
+            /// came from.</param>
+            /// <param name="particle">The <see cref="Particle"/> to process.</param>
+            /// <param name="elapsedTime">The amount of time that has elapsed since the <paramref name="emitter"/>
+            /// was last updated.</param>
+            protected override void HandleProcessUpdated(ParticleEmitter emitter, Particle particle, int elapsedTime)
+            {
+            }
+        }
+    }
+}
