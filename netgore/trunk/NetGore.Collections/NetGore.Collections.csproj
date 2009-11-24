@@ -67,6 +67,7 @@
     <Compile Include="Thread Safe\TSDictionary.cs" />
     <Compile Include="Thread Safe\TSList.cs" />
     <Compile Include="Type\TypeFactoryLoadedHandler.cs" />
+    <Compile Include="VirtualList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
