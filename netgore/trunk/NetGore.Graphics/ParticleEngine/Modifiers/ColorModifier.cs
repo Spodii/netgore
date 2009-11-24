@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,40 +11,74 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class ColorModifier : ParticleModifier
     {
+        const byte _aOffset = 3;
+        const byte _bOffset = 2;
         const string _categoryName = "Color Modifier";
 
+        const byte _gOffset = 1;
+        const byte _rOffset = 0;
         byte _modifyFlags = byte.MaxValue;
 
-        // TODO: !! Finish...
-
-        const byte _rOffset = 1 << 0;
-        const byte _gOffset = 1 << 1;
-        const byte _bOffset = 1 << 2;
-        const byte _aOffset = 1 << 3;
-
-        bool IsBitSet(byte bit)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorModifier"/> class.
+        /// </summary>
+        public ColorModifier() : base(true, true)
         {
-            return ((1 << bit) & _modifyFlags) != 0;
+            ReleaseColor = Color.White;
+            ReleaseColor = Color.White;
         }
 
-        void SetBit(byte bit, bool value)
+        /// <summary>
+        /// Gets or sets if the Alpha color channel is modified by this modifier.
+        /// </summary>
+        [Category(_categoryName)]
+        [Description("If the Alpha color channel is modified by this modifier.")]
+        [DisplayName("Modify Alpha")]
+        [DefaultValue(true)]
+        public bool ModifyAlpha
         {
-            if (value)
-            {
-                _modifyFlags |= (byte)(1 << bit);
-                Debug.Assert(IsBitSet(bit));
-            }
-            else
-            {
-                _modifyFlags &= (byte)~(1<<bit);
-                Debug.Assert(!IsBitSet(bit));
-            }
+            get { return IsBitSet(_aOffset); }
+            set { SetBit(_aOffset, value); }
         }
 
-        public bool ModifyBlue { get { return IsBitSet(_bOffset); } set { SetBit(_bOffset, value); } }
-        public bool ModifyRed { get { return IsBitSet(_rOffset); } set { SetBit(_rOffset, value); } }
-        public bool ModifyGreen { get { return IsBitSet(_gOffset); } set { SetBit(_gOffset, value); } }
-        public bool ModifyAlpha { get { return IsBitSet(_aOffset); } set { SetBit(_aOffset, value); } }
+        /// <summary>
+        /// Gets or sets if the Blue color channel is modified by this modifier.
+        /// </summary>
+        [Category(_categoryName)]
+        [Description("If the Blue color channel is modified by this modifier.")]
+        [DisplayName("Modify Blue")]
+        [DefaultValue(true)]
+        public bool ModifyBlue
+        {
+            get { return IsBitSet(_bOffset); }
+            set { SetBit(_bOffset, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets if the Green color channel is modified by this modifier.
+        /// </summary>
+        [Category(_categoryName)]
+        [Description("If the Green color channel is modified by this modifier.")]
+        [DisplayName("Modify Green")]
+        [DefaultValue(true)]
+        public bool ModifyGreen
+        {
+            get { return IsBitSet(_gOffset); }
+            set { SetBit(_gOffset, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets if the Red color channel is modified by this modifier.
+        /// </summary>
+        [Category(_categoryName)]
+        [Description("If the Red color channel is modified by this modifier.")]
+        [DisplayName("Modify Red")]
+        [DefaultValue(true)]
+        public bool ModifyRed
+        {
+            get { return IsBitSet(_rOffset); }
+            set { SetBit(_rOffset, value); }
+        }
 
         /// <summary>
         /// Gets or sets the starting color.
@@ -68,13 +99,13 @@ namespace NetGore.Graphics.ParticleEngine
         public Color UltimateColor { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorModifier"/> class.
+        /// Checks if all 4 bits are set.
         /// </summary>
-        public ColorModifier()
-            : base(true, true)
+        /// <returns>If all 4 bits are set.</returns>
+        bool AllBitsSet()
         {
-            ReleaseColor = Color.White;
-            ReleaseColor = Color.White;
+            const int mask = ((1 << 5) - 1);
+            return (_modifyFlags & mask) == mask;
         }
 
         /// <summary>
@@ -86,7 +117,34 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="particle">The <see cref="Particle"/> to process.</param>
         protected override void HandleProcessReleased(ParticleEmitter emitter, Particle particle)
         {
-            particle.Color = ReleaseColor;
+            if (AllBitsSet())
+                particle.Color = ReleaseColor;
+            else
+            {
+                byte r, g, b, a;
+
+                if (ModifyRed)
+                    r = ReleaseColor.R;
+                else
+                    r = particle.Color.R;
+
+                if (ModifyGreen)
+                    g = ReleaseColor.G;
+                else
+                    g = particle.Color.G;
+
+                if (ModifyBlue)
+                    b = ReleaseColor.B;
+                else
+                    b = particle.Color.B;
+
+                if (ModifyAlpha)
+                    a = ReleaseColor.A;
+                else
+                    a = particle.Color.A;
+
+                particle.Color = new Color(r, g, b, a);
+            }
         }
 
         /// <summary>
@@ -101,7 +159,64 @@ namespace NetGore.Graphics.ParticleEngine
         protected override void HandleProcessUpdated(ParticleEmitter emitter, Particle particle, int elapsedTime)
         {
             var agePercent = particle.GetAgePercent(CurrentTime);
-            particle.Color = ReleaseColor.Lerp(UltimateColor, agePercent);
+
+            if (AllBitsSet())
+                particle.Color = ReleaseColor.Lerp(UltimateColor, agePercent);
+            else
+            {
+                byte r, g, b, a;
+
+                if (ModifyRed)
+                    r = (byte)MathHelper.Lerp(ReleaseColor.R, UltimateColor.R, agePercent);
+                else
+                    r = particle.Color.R;
+
+                if (ModifyGreen)
+                    g = (byte)MathHelper.Lerp(ReleaseColor.G, UltimateColor.G, agePercent);
+                else
+                    g = particle.Color.G;
+
+                if (ModifyBlue)
+                    b = (byte)MathHelper.Lerp(ReleaseColor.B, UltimateColor.B, agePercent);
+                else
+                    b = particle.Color.B;
+
+                if (ModifyAlpha)
+                    a = (byte)MathHelper.Lerp(ReleaseColor.A, UltimateColor.A, agePercent);
+                else
+                    a = particle.Color.A;
+
+                particle.Color = new Color(r, g, b, a);
+            }
+        }
+
+        /// <summary>
+        /// Checks if a bit is set.
+        /// </summary>
+        /// <param name="bit">The bit.</param>
+        /// <returns>True if the bit is set; otherwise false.</returns>
+        bool IsBitSet(byte bit)
+        {
+            return ((1 << bit) & _modifyFlags) != 0;
+        }
+
+        /// <summary>
+        /// Sets a bit in <see cref="_modifyFlags"/>.
+        /// </summary>
+        /// <param name="bit">The bit to set.</param>
+        /// <param name="value">The value.</param>
+        void SetBit(byte bit, bool value)
+        {
+            if (value)
+            {
+                _modifyFlags |= (byte)(1 << bit);
+                Debug.Assert(IsBitSet(bit));
+            }
+            else
+            {
+                _modifyFlags &= (byte)~(1 << bit);
+                Debug.Assert(!IsBitSet(bit));
+            }
         }
     }
 }
