@@ -140,6 +140,18 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Adds multiple items to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <param name="items">The objects to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <exception cref="T:System.NotSupportedException">
+        /// The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        public void AddRange(IEnumerable<ParticleModifierBase> items)
+        {
+            foreach (var item in items)
+                Add(item);
+        }
+
+        /// <summary>
         /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <exception cref="T:System.NotSupportedException">
