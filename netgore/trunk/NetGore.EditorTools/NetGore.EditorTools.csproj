@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
-    <Compile Include="AutoValidateTextBox.cs">
+    <Compile Include="WinForms\AutoValidateTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CreateWallEntity\CreateWallEntityFromReaderHandler.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewFolderNode.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewNode.cs" />
     <Compile Include="Grh\MapGrhWalls.cs" />
-    <Compile Include="MapItemListBox.cs">
+    <Compile Include="WinForms\MapItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeNodeMouseClickEventArgs.cs" />
