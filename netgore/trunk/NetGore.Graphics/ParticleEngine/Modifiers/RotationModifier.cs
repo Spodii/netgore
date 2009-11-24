@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore.Graphics.ParticleEngine
 {
+    /// <summary>
+    /// Rotates the <see cref="Particle"/>s at a linear rate.
+    /// </summary>
     public class RotationModifier : ParticleModifier
     {
         const string _categoryName = "Rotation Modifier";

@@ -137,6 +137,7 @@
     <Compile Include="ParticleEngine\Modifiers\Core\ParticleModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\Core\ParticleModifierCollection.cs" />
     <Compile Include="ParticleEngine\Modifiers\Core\ParticleModifierFactory.cs" />
+    <Compile Include="ParticleEngine\Modifiers\LinearScaleModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\RadialGravityModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\RotationModifier.cs" />
     <Compile Include="ParticleEngine\Renderers\IParticleRenderer.cs" />
