@@ -12,6 +12,29 @@ namespace NetGore.Graphics.ParticleEngine
     public class ParticleModifierCollection : IList<ParticleModifierBase>
     {
         /// <summary>
+        /// Creates a deep copy of the <see cref="ParticleModifierCollection"/>.
+        /// </summary>
+        /// <returns>A deep copy of the <see cref="ParticleModifierCollection"/>.</returns>
+        public ParticleModifierCollection DeepCopy()
+        {
+            var ret = new ParticleModifierCollection();
+            ret._allModifiers.AddRange(_allModifiers);
+            ret._updateModifiers.AddRange(_updateModifiers);
+            ret._releaseModifiers.AddRange(_releaseModifiers);
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="ParticleModifierCollection"/> has any update modifiers.
+        /// </summary>
+        public bool HasUpdateModifiers { get { return _updateModifiers.Count > 0; } }
+
+        /// <summary>
+        /// Gets if this <see cref="ParticleModifierCollection"/> has any release modifiers.
+        /// </summary>
+        public bool HasReleaseModifiers { get { return _releaseModifiers.Count > 0; } }
+
+        /// <summary>
         /// Modifiers that process released <see cref="Particle"/>s.
         /// </summary>
         readonly List<ParticleModifierBase> _releaseModifiers = new List<ParticleModifierBase>(2);
