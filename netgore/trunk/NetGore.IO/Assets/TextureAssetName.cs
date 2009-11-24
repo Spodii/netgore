@@ -10,7 +10,7 @@ namespace NetGore.IO
     [TypeConverter(typeof(TextureAssetNameConverter))]
     public sealed class TextureAssetName : ContentAssetName
     {
-        const string _rootDir = ContentPaths._grhsFolder + PathSeparator;
+        const string _rootDir = ContentPaths.GrhsFolder + PathSeparator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureAssetName"/> class.

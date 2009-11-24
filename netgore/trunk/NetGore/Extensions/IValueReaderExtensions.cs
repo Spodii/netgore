@@ -7,10 +7,116 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Extensions for the IValueReader.
+    /// Extensions for the <see cref="IValueReader"/>.
     /// </summary>
     public static class IValueReaderExtensions
     {
+        /// <summary>
+        /// Helps read a variable value.
+        /// </summary>
+        /// <typeparam name="T">The internal type of the variable value.</typeparam>
+        /// <param name="reader">The IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="readValue">Delegate used to read a value of type <typeparamref name="T"/>.</param>
+        /// <param name="createValue">Delegate used to create the needed variable value.</param>
+        /// <returns>Value read from the <paramref name="reader"/>.</returns>
+        static IVariableValue<T> ReadVariableValue<T>(this IValueReader reader, string name, Func<IValueReader, string, T> readValue, Func<T, T, IVariableValue<T>> createValue)
+        {
+            T min;
+            T max;
+
+            if (reader.SupportsNameLookup && reader.SupportsNodes)
+            {
+                var node = reader.ReadNode(name);
+                min = readValue(node, "Min");
+                max = readValue(node, "Max");
+            }
+            else
+            {
+                min = readValue(reader, "Min");
+                max = readValue(reader, "Max");
+            }
+
+            return createValue(min, max);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="VariableByte"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static VariableByte ReadVariableByte(this IValueReader reader, string name)
+        {
+            return (VariableByte)ReadVariableValue(reader, name, (r, n) => r.ReadByte(n), (min, max) => new VariableByte(min, max));
+        }
+
+        /// <summary>
+        /// Reads a <see cref="VariableColor"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static VariableColor ReadVariableColor(this IValueReader reader, string name)
+        {
+            return (VariableColor)ReadVariableValue(reader, name, (r, n) => r.ReadColor(n), (min, max) => new VariableColor(min, max));
+        }
+
+        /// <summary>
+        /// Reads a <see cref="VariableFloat"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static VariableFloat ReadVariableFloat(this IValueReader reader, string name)
+        {
+            return (VariableFloat)ReadVariableValue(reader, name, (r, n) => r.ReadFloat(n), (min, max) => new VariableFloat(min, max));
+        }
+
+        /// <summary>
+        /// Reads a <see cref="VariableInt"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static VariableInt ReadVariableInt(this IValueReader reader, string name)
+        {
+            return (VariableInt)ReadVariableValue(reader, name, (r, n) => r.ReadInt(n), (min, max) => new VariableInt(min, max));
+        }
+
+        /// <summary>
+        /// Reads a <see cref="VariableSByte"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static VariableSByte ReadVariableSByte(this IValueReader reader, string name)
+        {
+            return (VariableSByte)ReadVariableValue(reader, name, (r, n) => r.ReadSByte(n), (min, max) => new VariableSByte(min, max));
+        }
+
+        /// <summary>
+        /// Reads a <see cref="VariableShort"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static VariableShort ReadVariableShort(this IValueReader reader, string name)
+        {
+            return (VariableShort)ReadVariableValue(reader, name, (r, n) => r.ReadShort(n), (min, max) => new VariableShort(min, max));
+        }
+
+        /// <summary>
+        /// Reads a <see cref="VariableUShort"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static VariableUShort ReadVariableUShort(this IValueReader reader, string name)
+        {
+            return (VariableUShort)ReadVariableValue(reader, name, (r, n) => r.ReadUShort(n), (min, max) => new VariableUShort(min, max));
+        }
+
         /// <summary>
         /// Reads a Color.
         /// </summary>

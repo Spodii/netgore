@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -176,7 +177,9 @@ namespace NetGore.Collections
         /// <returns>The name of the Type.</returns>
         protected virtual string GetTypeName(Type type)
         {
+            // TODO: !! Can probably just use "type.Name". The assert below is to make sure the two are equal.
             string name = type.ToString().Split('.').Last();
+            Debug.Assert(name == type.Name);
             return name;
         }
 

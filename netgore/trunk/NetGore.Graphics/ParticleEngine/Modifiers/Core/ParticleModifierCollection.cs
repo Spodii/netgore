@@ -20,6 +20,16 @@ namespace NetGore.Graphics.ParticleEngine
         readonly List<ParticleModifier> _updateModifiers = new List<ParticleModifier>(2);
 
         /// <summary>
+        /// Writes the <see cref="ParticleModifierCollection"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="nodeName">The name to give the collection node.</param>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(string nodeName, IValueWriter writer)
+        {
+            writer.WriteManyNodes(nodeName, this.ToArray(), (w, mod) => mod.Write(w));
+        }
+
+        /// <summary>
         /// Gets or sets the element at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>

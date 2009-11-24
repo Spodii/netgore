@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -20,6 +21,25 @@ namespace NetGore.Graphics.ParticleEngine
         PolygonPointCollection _points = new PolygonPointCollection();
         Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultRotation);
         Matrix _scaleMatrix = Matrix.CreateScale(_defaultScale);
+
+        const string _closedKeyName = "Closed";
+        const string _pointsNodeName = "Points";
+        const string _polygonOriginKeyName = "PolygonOrigin";
+        const string _scaleKeyName = "Scale";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
+        {
+            writer.Write(_closedKeyName, Closed);
+            writer.Write(_scaleKeyName, Scale);
+            writer.WriteEnum(PolygonOriginHelper.Instance, _polygonOriginKeyName, PolygonOrigin);
+            Points.Write(_pointsNodeName, writer);
+
+            base.WriteCustomValues(writer);
+        }
 
         /// <summary>
         /// Gets or sets if the polygon is closed. If true, the last point will be connected to the first.

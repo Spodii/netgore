@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -18,6 +19,11 @@ namespace NetGore.Graphics.ParticleEngine
         public Matrix TranslationMatrix = Matrix.Identity;
 
         PolygonOrigin _origin = PolygonEmitter.DefaultPolygonOrigin;
+
+        public void Write(string nodeName, IValueWriter writer)
+        {
+            writer.WriteMany(nodeName, ToArray(), writer.Write);
+        }
 
         /// <summary>
         /// Gets or sets the origin mode of the polygon for the given points.

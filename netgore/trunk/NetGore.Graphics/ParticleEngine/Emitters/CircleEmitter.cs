@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -17,6 +18,23 @@ namespace NetGore.Graphics.ParticleEngine
         bool _perimeter = _defaultPerimeter;
         bool _radiate = _defaultRadiate;
         VariableFloat _radius = 50;
+
+        const string _perimeterKeyName = "Perimeter";
+        const string _radiateKeyName = "Radiate";
+        const string _RadiusKeyName = "Radius";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
+        {
+            writer.Write(_perimeterKeyName, Perimeter);
+            writer.Write(_radiateKeyName, Radiate);
+            writer.Write(_RadiusKeyName, Radius);
+
+            base.WriteCustomValues(writer);
+        }
 
         /// <summary>
         /// Gets or sets if <see cref="Particle"/>s are emitted only from the perimeter. If true,

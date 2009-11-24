@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -108,6 +110,28 @@ namespace NetGore.Graphics.ParticleEngine
         {
             const int mask = ((1 << 5) - 1);
             return (_modifyFlags & mask) == mask;
+        }
+
+        const string _modifyRedKeyName = "ModifyRed";
+        const string _modifyGreenKeyName = "ModifyGreen";
+        const string _modifyBlueKeyName = "ModifyBlue";
+        const string _modifyAlphaKeyName = "ModifyAlpha";
+        const string _releaseColorKeyName = "ReleaseColor";
+        const string _ultimateColorKeyName = "UltimateColor";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_modifyRedKeyName, ModifyRed);
+            writer.Write(_modifyGreenKeyName, ModifyGreen);
+            writer.Write(_modifyBlueKeyName, ModifyBlue);
+            writer.Write(_modifyAlphaKeyName, ModifyAlpha);
+
+            writer.Write(_releaseColorKeyName, ReleaseColor);
+            writer.Write(_ultimateColorKeyName, UltimateColor);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -18,6 +19,23 @@ namespace NetGore.Graphics.ParticleEngine
         int _height = _defaultHeight;
         bool _perimeter = _defaultPerimeter;
         int _width = _defaultWidth;
+
+        const string _heightKeyName = "Height";
+        const string _widthKeyName = "Width";
+        const string _perimeterKeyName = "Perimeter";
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
+        {
+            writer.Write(_heightKeyName, Height);
+            writer.Write(_widthKeyName, Width);
+            writer.Write(_perimeterKeyName, Perimeter);
+
+            base.WriteCustomValues(writer);
+        }
 
         /// <summary>
         /// Gets or sets the height of the rectangle.
