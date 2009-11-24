@@ -25,7 +25,6 @@ namespace NetGore.Collections
 
         readonly Dictionary<Type, string> _typeToName = new Dictionary<Type, string>();
         readonly bool _useGAC;
-        bool _isLoaded;
 
         /// <summary>
         /// Notifies listeners when a Type has been loaded into this <see cref="TypeFactory"/>.
@@ -65,6 +64,15 @@ namespace NetGore.Collections
 
             if (loadTypeHandler != null)
                 OnLoadType += loadTypeHandler;
+
+            // Listen for when new assemblies are loaded
+            AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
+
+            // Load the already loaded assemblies
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                LoadAssemblyTypes(assembly);
+            }
         }
 
         /// <summary>
@@ -103,26 +111,6 @@ namespace NetGore.Collections
         public bool UseGAC
         {
             get { return _useGAC; }
-        }
-
-        /// <summary>
-        /// Begins loading the Types into this FactoryTypeCollection. If BeginLoading() has already been called, this will
-        /// do nothing. This collection will remain empty until this method is called.
-        /// </summary>
-        public void BeginLoading()
-        {
-            if (_isLoaded)
-                return;
-            _isLoaded = true;
-
-            // Listen for when new assemblies are loaded
-            AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
-
-            // Load the already loaded assemblies
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                LoadAssemblyTypes(assembly);
-            }
         }
 
         /// <summary>

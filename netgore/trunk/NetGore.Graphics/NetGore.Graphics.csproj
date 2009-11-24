@@ -135,6 +135,7 @@
     <Compile Include="ParticleEngine\Modifiers\ParticleColorModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\ParticleModifierBase.cs" />
     <Compile Include="ParticleEngine\Modifiers\ParticleModifierCollection.cs" />
+    <Compile Include="ParticleEngine\Modifiers\ParticleModifierFactory.cs" />
     <Compile Include="ParticleEngine\Renderers\IParticleRenderer.cs" />
     <Compile Include="ParticleEngine\Particle.cs" />
     <Compile Include="ParticleEngine\Emitters\ParticleEmitter.cs" />
