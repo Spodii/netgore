@@ -34,6 +34,17 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Creates an instance of a <see cref="ParticleModifierBase"/>. This is the preferred method of
+        /// creating modifiers.
+        /// </summary>
+        /// <param name="type">The type of modifier.</param>
+        /// <returns>An instance of a <see cref="ParticleModifierBase"/>.</returns>
+        public static ParticleModifierBase CreateModifier(Type type)
+        {
+            return ParticleModifierFactory.GetInstance(type);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifierBase"/> class.
         /// </summary>
         /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>

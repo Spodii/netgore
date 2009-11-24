@@ -54,5 +54,27 @@ namespace NetGore.EditorTools
         {
             return ParticleModifierBase.ModifierTypes.ToArray();
         }
+
+        /// <summary>
+        /// Gets the data type that this collection contains.
+        /// </summary>
+        /// <returns>
+        /// The data type of the items in the collection, or an <see cref="T:System.Object"/> if no
+        /// Item property can be located on the collection.
+        /// </returns>
+        protected override Type CreateCollectionItemType()
+        {
+            return typeof(ParticleModifierCollection);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the specified collection item type.
+        /// </summary>
+        /// <param name="itemType">The type of item to create.</param>
+        /// <returns>A new instance of the specified object.</returns>
+        protected override object CreateInstance(Type itemType)
+        {
+            return ParticleModifierBase.CreateModifier(itemType);
+        }
     }
 }

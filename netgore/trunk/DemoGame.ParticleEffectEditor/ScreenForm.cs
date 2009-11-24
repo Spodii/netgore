@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
@@ -28,6 +29,9 @@ namespace DemoGame.ParticleEffectEditor
         {
             InitializeComponent();
             _watch.Start();
+
+            var a = typeof(ParticleModifierCollectionEditor).AssemblyQualifiedName;
+            var b = typeof(UITypeEditor).AssemblyQualifiedName;
         }
 
         public ParticleEmitter Emitter
