@@ -53,8 +53,8 @@ namespace NetGore.NPCChat
                 RequireConstructor = true,
                 ConstructorParameters = Type.EmptyTypes
             };
+
             _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
-            _typeCollection.BeginLoading();
         }
 
         /// <summary>

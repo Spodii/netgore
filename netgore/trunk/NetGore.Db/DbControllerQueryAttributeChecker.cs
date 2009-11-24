@@ -45,7 +45,6 @@ namespace NetGore.Db
             };
 
             _typeFactory = new TypeFactory(filter.GetFilter(), LoadTypeHandler, false);
-            _typeFactory.BeginLoading();
         }
 
         void LoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)

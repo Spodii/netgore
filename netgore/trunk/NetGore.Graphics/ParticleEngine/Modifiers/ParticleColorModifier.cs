@@ -13,6 +13,9 @@ namespace NetGore.Graphics.ParticleEngine
 
         public Color UltimateColor { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleColorModifier"/> class.
+        /// </summary>
         public ParticleColorModifier()
             : base(true, true)
         {

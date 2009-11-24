@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -12,6 +13,25 @@ namespace NetGore.Graphics.ParticleEngine
         readonly bool _processOnRelease;
         readonly bool _processOnUpdate;
         int _currentTime;
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s of the particle modifiers.
+        /// </summary>
+        public static IEnumerable<Type> ModifierTypes
+        {
+            get { return ParticleModifierFactory.ModifierTypes; }
+        }
+
+        /// <summary>
+        /// Creates an instance of a <see cref="ParticleModifierBase"/> of type <typeparamref name="T"/>. This is the
+        /// preferred method of creating modifiers.
+        /// </summary>
+        /// <typeparam name="T">The type of modifier.</typeparam>
+        /// <returns>An instance of a <see cref="ParticleModifierBase"/> of type <typeparamref name="T"/>.</returns>
+        public static T CreateModifier<T>() where T : ParticleModifierBase
+        {
+            return ParticleModifierFactory.GetInstance<T>();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifierBase"/> class.

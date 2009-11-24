@@ -44,7 +44,6 @@ namespace NetGore.AI
             };
 
             _typeFactory = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
-            _typeFactory.BeginLoading();
         }
 
         /// <summary>
