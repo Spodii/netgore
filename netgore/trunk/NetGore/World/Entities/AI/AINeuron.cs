@@ -9,7 +9,7 @@ using System.Text;
 namespace NetGore.AI
 {
 
-    class AINeuron
+    public class AINeuron
     {
         static readonly Random _rand = new Random();
 
@@ -33,7 +33,7 @@ namespace NetGore.AI
         public AINeuron(int numWeights, ActivationFunction activation)
         { 
          _weights = new Single[numWeights-1];
-
+           
          for (int idx = 0; idx < _weights.Length; ++idx)
          { 
              _weights[idx] = Convert.ToSingle(_rand.NextDouble()); 

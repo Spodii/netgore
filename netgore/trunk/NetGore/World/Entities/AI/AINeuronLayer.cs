@@ -12,7 +12,7 @@ namespace NetGore.AI
     /// AINeuronLayer organises the neurons into layers.  It totals the weights and output properties of
     /// the neuron
     /// </summary>
-    class AINeuronLayer : System.Collections.CollectionBase
+    public class AINeuronLayer : System.Collections.CollectionBase
     {
         private int _weightsPerNeuron;
 
@@ -45,7 +45,7 @@ namespace NetGore.AI
             get
             {
                 Single[] ret;
-                ret = new Single[(_weightsPerNeuron * List.Count)-1];
+                ret = new Single[(_weightsPerNeuron * List.Count) - 1];
 
                 int idx = 0;
 
@@ -62,7 +62,7 @@ namespace NetGore.AI
                 }
                 return ret;
             }
-            set 
+            set
             {
                 int idx = 0;
 
@@ -76,7 +76,7 @@ namespace NetGore.AI
                         tmpw[idx2] = value[idx];
                         idx += 1;
                     }
-                    n.Weights = tmpw;   
+                    n.Weights = tmpw;
                 }
             }
         }
