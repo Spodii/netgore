@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -62,6 +63,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the current game time.
         /// </summary>
+        [Browsable(false)]
         protected int CurrentTime
         {
             get { return _currentTime; }
@@ -70,6 +72,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets if <see cref="Particle"/>s will be processed after being released.
         /// </summary>
+        [Browsable(false)]
         public bool ProcessOnRelease
         {
             get { return _processOnRelease; }
@@ -78,6 +81,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets if <see cref="Particle"/>s will be processed after being updated.
         /// </summary>
+        [Browsable(false)]
         public bool ProcessOnUpdate
         {
             get { return _processOnUpdate; }
