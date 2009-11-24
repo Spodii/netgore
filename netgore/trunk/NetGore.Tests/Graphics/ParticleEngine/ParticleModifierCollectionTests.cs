@@ -21,18 +21,6 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         }
 
         [Test]
-        public void DeepCopyTest()
-        {
-            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
-            ConsistencyAsserts(c);
-            var copy = c.DeepCopy();
-            ConsistencyAsserts(copy);
-            Assert.IsTrue(c.ContainSameElements(copy));
-            Assert.IsTrue(c.ReleaseModifiers.ContainSameElements(copy.ReleaseModifiers));
-            Assert.IsTrue(c.UpdateModifiers.ContainSameElements(copy.UpdateModifiers));
-        }
-
-        [Test]
         public void AddReleaseModifierTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(true, false) };
@@ -84,6 +72,19 @@ namespace NetGore.Tests.Graphics.ParticleEngine
 
             var concatDistinct = c.ReleaseModifiers.Concat(c.UpdateModifiers).Distinct();
             Assert.IsTrue(c.ContainSameElements(concatDistinct), "Sub-collections don't contain same items as main collection.");
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            ConsistencyAsserts(c);
+            var copy = c.DeepCopy();
+            ConsistencyAsserts(copy);
+            Assert.IsTrue(c.ContainSameElements(copy));
+            Assert.IsTrue(c.ReleaseModifiers.ContainSameElements(copy.ReleaseModifiers));
+            Assert.IsTrue(c.UpdateModifiers.ContainSameElements(copy.UpdateModifiers));
         }
 
         [Test]

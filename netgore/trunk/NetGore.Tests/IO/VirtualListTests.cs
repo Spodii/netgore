@@ -2,16 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NUnit.Framework;
 
 namespace NetGore.Tests.IO
 {
-    [TestFixture(Description="These tests are to make sure the VirtualList behaves just like a normal List.")]
+    [TestFixture(Description = "These tests are to make sure the VirtualList behaves just like a normal List.")]
     public class VirtualListTests
     {
         static readonly object[] _testValues = new object[] { new object(), new object(), new object() };
+
+        [Test]
+        public void AddTest()
+        {
+            var o = new object();
+            ListTOperation(x => x.Add(o));
+        }
 
         /// <summary>
         /// Checks that two ILists are the same.
@@ -43,34 +49,23 @@ namespace NetGore.Tests.IO
             }
         }
 
-        /// <summary>
-        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
-        /// </summary>
-        /// <param name="action">The action to perform.</param>
-        static void ListTOperation(Action<IList<object>> action)
+        [Test]
+        public void ClearTest()
         {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
-
-            action(a);
-            action(b);
-
-            AssertEquality(a, b);
+            ListTOperation(x => x.Clear());
         }
 
-        /// <summary>
-        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
-        /// </summary>
-        /// <param name="action">The action to perform.</param>
-        static void ListOperation(Action<IList> action)
+        [Test]
+        public void CollectionTAddTest()
         {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
+            var o = new object();
+            CollectionTOperation(x => x.Add(o));
+        }
 
-            action(a);
-            action(b);
-
-            AssertEquality(a, b);
+        [Test]
+        public void CollectionTClearTest()
+        {
+            CollectionTOperation(x => x.Clear());
         }
 
         /// <summary>
@@ -89,35 +84,16 @@ namespace NetGore.Tests.IO
         }
 
         [Test]
-        public void AddTest()
+        public void CollectionTRemoveNewTest()
         {
             var o = new object();
-            ListTOperation(x => x.Add(o));
+            CollectionTOperation(x => x.Remove(o));
         }
 
         [Test]
-        public void RemoveTest()
+        public void CollectionTRemoveTest()
         {
-            ListTOperation(x => x.Remove(_testValues[0]));
-        }
-
-        [Test]
-        public void RemoveNewTest()
-        {
-            var o = new object();
-            ListTOperation(x => x.Remove(o));
-        }
-
-        [Test]
-        public void RemoveAtTest()
-        {
-            ListTOperation(x => x.RemoveAt(0));
-        }
-
-        [Test]
-        public void ClearTest()
-        {
-            ListTOperation(x => x.Clear());
+            CollectionTOperation(x => x.Remove(_testValues[0]));
         }
 
         [Test]
@@ -156,25 +132,6 @@ namespace NetGore.Tests.IO
         }
 
         [Test]
-        public void ListRemoveTest()
-        {
-            ListOperation(x => x.Remove(_testValues[0]));
-        }
-
-        [Test]
-        public void ListRemoveNewTest()
-        {
-            var o = new object();
-            ListOperation(x => x.Remove(o));
-        }
-
-        [Test]
-        public void ListRemoveAtTest()
-        {
-            ListOperation(x => x.RemoveAt(0));
-        }
-
-        [Test]
         public void ListClearTest()
         {
             ListOperation(x => x.Clear());
@@ -208,31 +165,72 @@ namespace NetGore.Tests.IO
             Assert.Throws<ArgumentOutOfRangeException>(() => ListOperation(x => x.Insert(3, o)));
         }
 
+        /// <summary>
+        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        static void ListOperation(Action<IList> action)
+        {
+            List<object> a = new List<object> { _testValues };
+            VirtualList<object> b = new VirtualList<object> { _testValues };
+
+            action(a);
+            action(b);
+
+            AssertEquality(a, b);
+        }
 
         [Test]
-        public void CollectionTAddTest()
+        public void ListRemoveAtTest()
+        {
+            ListOperation(x => x.RemoveAt(0));
+        }
+
+        [Test]
+        public void ListRemoveNewTest()
         {
             var o = new object();
-            CollectionTOperation(x => x.Add(o));
+            ListOperation(x => x.Remove(o));
         }
 
         [Test]
-        public void CollectionTRemoveTest()
+        public void ListRemoveTest()
         {
-            CollectionTOperation(x => x.Remove(_testValues[0]));
+            ListOperation(x => x.Remove(_testValues[0]));
+        }
+
+        /// <summary>
+        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        static void ListTOperation(Action<IList<object>> action)
+        {
+            List<object> a = new List<object> { _testValues };
+            VirtualList<object> b = new VirtualList<object> { _testValues };
+
+            action(a);
+            action(b);
+
+            AssertEquality(a, b);
         }
 
         [Test]
-        public void CollectionTRemoveNewTest()
+        public void RemoveAtTest()
+        {
+            ListTOperation(x => x.RemoveAt(0));
+        }
+
+        [Test]
+        public void RemoveNewTest()
         {
             var o = new object();
-            CollectionTOperation(x => x.Remove(o));
+            ListTOperation(x => x.Remove(o));
         }
 
         [Test]
-        public void CollectionTClearTest()
+        public void RemoveTest()
         {
-            CollectionTOperation(x => x.Clear());
+            ListTOperation(x => x.Remove(_testValues[0]));
         }
     }
 }

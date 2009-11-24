@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -13,7 +9,7 @@ namespace NetGore.Graphics.ParticleEngine
     public class RotationModifier : ParticleModifier
     {
         const string _categoryName = "Rotation Modifier";
-        
+
         /// <summary>
         /// Default rotation rate. Using a literal instead of MathHelper.Pi since the latter doesn't work well
         /// with the DefaultValueAttribute.
@@ -23,20 +19,24 @@ namespace NetGore.Graphics.ParticleEngine
         float _rate;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
+        /// </summary>
+        public RotationModifier() : base(false, true)
+        {
+            Rate = _defaultRate;
+        }
+
+        /// <summary>
         /// Gets or sets the rate and direction of the rotation in radians per second.
         /// </summary>
         [Category(_categoryName)]
         [Description("The rate and direction of the rotation in radians per second.")]
         [DisplayName("Rate")]
         [DefaultValue(_defaultRate)]
-        public float Rate { get { return _rate * 1000f; } set { _rate = value * 0.001f; } }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
-        /// </summary>
-        public RotationModifier() : base(false, true)
+        public float Rate
         {
-            Rate = _defaultRate;
+            get { return _rate * 1000f; }
+            set { _rate = value * 0.001f; }
         }
 
         /// <summary>

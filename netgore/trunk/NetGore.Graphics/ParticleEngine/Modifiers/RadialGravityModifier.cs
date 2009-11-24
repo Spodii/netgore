@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore.Graphics.ParticleEngine.Modifiers
@@ -13,12 +11,12 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
     public class RadialGravityModifier : ParticleModifier
     {
         const string _categoryName = "Radial Gravity Modifier";
-        const float _defaultStrength = 250f;
         const float _defaultRadius = 250f;
+        const float _defaultStrength = 250f;
+        Vector2 _position = Vector2.Zero;
 
         float _radius;
         float _radiusSquared;
-        Vector2 _position = Vector2.Zero;
         float _strength;
 
         /// <summary>
@@ -37,8 +35,12 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
         [Description("The position of the center of the gravity well relative to the emitter's origin.")]
         [DisplayName("Position")]
         [DefaultValue(typeof(Vector2), "0, 0")]
-        public Vector2 Position { get { return _position; } set { _position = value; } }
-        
+        public Vector2 Position
+        {
+            get { return _position; }
+            set { _position = value; }
+        }
+
         /// <summary>
         /// Gets or sets the radius of the gravity well.
         /// </summary>
@@ -66,7 +68,22 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
         [Description("The gravitational strength of the gravity well.")]
         [DisplayName("Strength")]
         [DefaultValue(_defaultStrength)]
-        public float Strength { get { return _strength * 1000f; } set { _strength = value * 0.001f; } }
+        public float Strength
+        {
+            get { return _strength * 1000f; }
+            set { _strength = value * 0.001f; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
+        /// it is released. Only valid if <see cref="ParticleModifier.ProcessOnRelease"/> is set.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
+        /// came from.</param>
+        /// <param name="particle">The <see cref="Particle"/> to process.</param>
+        protected override void HandleProcessReleased(ParticleEmitter emitter, Particle particle)
+        {
+        }
 
         /// <summary>
         /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
@@ -100,17 +117,6 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
 
             // Apply the force to the particle
             particle.ApplyForce(ref force);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
-        /// it is released. Only valid if <see cref="ParticleModifier.ProcessOnRelease"/> is set.
-        /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> that the <paramref name="particle"/>
-        /// came from.</param>
-        /// <param name="particle">The <see cref="Particle"/> to process.</param>
-        protected override void HandleProcessReleased(ParticleEmitter emitter, Particle particle)
-        {
         }
     }
 }

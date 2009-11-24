@@ -16,36 +16,6 @@ namespace NetGore.Graphics.ParticleEngine
         int _currentTime;
 
         /// <summary>
-        /// Gets an IEnumerable of the <see cref="Type"/>s of the particle modifiers.
-        /// </summary>
-        public static IEnumerable<Type> ModifierTypes
-        {
-            get { return ParticleModifierFactory.ModifierTypes; }
-        }
-
-        /// <summary>
-        /// Creates an instance of a <see cref="ParticleModifier"/> of type <typeparamref name="T"/>. This is the
-        /// preferred method of creating modifiers.
-        /// </summary>
-        /// <typeparam name="T">The type of modifier.</typeparam>
-        /// <returns>An instance of a <see cref="ParticleModifier"/> of type <typeparamref name="T"/>.</returns>
-        public static T CreateModifier<T>() where T : ParticleModifier
-        {
-            return ParticleModifierFactory.GetInstance<T>();
-        }
-
-        /// <summary>
-        /// Creates an instance of a <see cref="ParticleModifier"/>. This is the preferred method of
-        /// creating modifiers.
-        /// </summary>
-        /// <param name="type">The type of modifier.</param>
-        /// <returns>An instance of a <see cref="ParticleModifier"/>.</returns>
-        public static ParticleModifier CreateModifier(Type type)
-        {
-            return ParticleModifierFactory.GetInstance(type);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
         /// </summary>
         /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
@@ -70,6 +40,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s of the particle modifiers.
+        /// </summary>
+        public static IEnumerable<Type> ModifierTypes
+        {
+            get { return ParticleModifierFactory.ModifierTypes; }
+        }
+
+        /// <summary>
         /// Gets if <see cref="Particle"/>s will be processed after being released.
         /// </summary>
         [Browsable(false)]
@@ -85,6 +63,28 @@ namespace NetGore.Graphics.ParticleEngine
         public bool ProcessOnUpdate
         {
             get { return _processOnUpdate; }
+        }
+
+        /// <summary>
+        /// Creates an instance of a <see cref="ParticleModifier"/> of type <typeparamref name="T"/>. This is the
+        /// preferred method of creating modifiers.
+        /// </summary>
+        /// <typeparam name="T">The type of modifier.</typeparam>
+        /// <returns>An instance of a <see cref="ParticleModifier"/> of type <typeparamref name="T"/>.</returns>
+        public static T CreateModifier<T>() where T : ParticleModifier
+        {
+            return ParticleModifierFactory.GetInstance<T>();
+        }
+
+        /// <summary>
+        /// Creates an instance of a <see cref="ParticleModifier"/>. This is the preferred method of
+        /// creating modifiers.
+        /// </summary>
+        /// <param name="type">The type of modifier.</param>
+        /// <returns>An instance of a <see cref="ParticleModifier"/>.</returns>
+        public static ParticleModifier CreateModifier(Type type)
+        {
+            return ParticleModifierFactory.GetInstance(type);
         }
 
         /// <summary>
@@ -119,15 +119,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Updates the current time.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        internal void UpdateCurrentTime(int currentTime)
-        {
-            _currentTime = currentTime;
-        }
-
-        /// <summary>
         /// Process a <see cref="Particle"/> that was updated.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> the <paramref name="particle"/> came from.</param>
@@ -138,6 +129,15 @@ namespace NetGore.Graphics.ParticleEngine
         {
             Debug.Assert(ProcessOnUpdate, "This method should NOT be called when ProcessOnUpdate is not set!");
             HandleProcessUpdated(emitter, particle, elapsedTime);
+        }
+
+        /// <summary>
+        /// Updates the current time.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        internal void UpdateCurrentTime(int currentTime)
+        {
+            _currentTime = currentTime;
         }
     }
 }
