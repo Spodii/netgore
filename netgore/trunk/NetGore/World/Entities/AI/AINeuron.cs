@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 //NOTE: I'm working on an implementation of this so far into the demogame.  This is the first time i've written this in c# so
 //      i won't commit the implementation yet until i know it works 100%.  aPhRo_
 
 namespace NetGore.AI
 {
-
     public class AINeuron
     {
-        static readonly Random _rand = new Random();
-
         /// <summary>
         /// Enumerator for the activation function used.  Only Step and Sigmoid are currently implemented.
         /// </summary>
@@ -22,8 +17,10 @@ namespace NetGore.AI
             AFSigmoid = 1
         }
 
-        private float[] _weights;
-        private ActivationFunction _activation;
+        static readonly Random _rand = new Random();
+
+        ActivationFunction _activation;
+        float[] _weights;
 
         /// <summary>
         /// Constructor for the Neuron.
@@ -33,13 +30,13 @@ namespace NetGore.AI
         public AINeuron(int numWeights, ActivationFunction activation)
         {
             _weights = new float[numWeights - 1];
-           
-         for (int idx = 0; idx < _weights.Length; ++idx)
-         { 
-             _weights[idx] = Convert.ToSingle(_rand.NextDouble()); 
-         }
 
-         Activation = activation;
+            for (int idx = 0; idx < _weights.Length; ++idx)
+            {
+                _weights[idx] = Convert.ToSingle(_rand.NextDouble());
+            }
+
+            Activation = activation;
         }
 
         /// <summary>
@@ -47,16 +44,16 @@ namespace NetGore.AI
         /// </summary>
         public ActivationFunction Activation
         {
-            get { return _activation;   }
-            set { _activation = value;  }
+            get { return _activation; }
+            set { _activation = value; }
         }
-        
+
         /// <summary>
         /// The input weights and threshold value.
         /// </summary>
         public float[] Weights
         {
-            get { return _weights;  }
+            get { return _weights; }
             set { _weights = value; }
         }
 
@@ -67,36 +64,32 @@ namespace NetGore.AI
         {
             float total = 0;
             int i = 0;
-               
-                //inputs should be 1 less than the number of weights since the last weight is the threshold for activation.
-                for (int idx =0; idx < inputs.Length; ++idx)
-                {
-                    total += inputs[idx]*_weights[idx];
-                    i = idx;
-                }
-                float threshold = _weights[i];
 
-                switch(_activation)
-                {
-                    case ActivationFunction.AFStep:
-                        if(threshold < total)
-                        { return 1;}
-                        else
-                        { return 0;}
-                
-                    case ActivationFunction.AFSigmoid:
-                        return Convert.ToSingle(1 / (1+Math.Exp((-total) / threshold)));
-                    
-                    default:                        //Just use AFStep.
-                        if (threshold < total)
-                        { return 1; }
-                        else
-                        { return 0; }
-                }
+            //inputs should be 1 less than the number of weights since the last weight is the threshold for activation.
+            for (int idx = 0; idx < inputs.Length; ++idx)
+            {
+                total += inputs[idx] * _weights[idx];
+                i = idx;
+            }
+            float threshold = _weights[i];
 
+            switch (_activation)
+            {
+                case ActivationFunction.AFStep:
+                    if (threshold < total)
+                        return 1;
+                    else
+                        return 0;
+
+                case ActivationFunction.AFSigmoid:
+                    return Convert.ToSingle(1 / (1 + Math.Exp((-total) / threshold)));
+
+                default: //Just use AFStep.
+                    if (threshold < total)
+                        return 1;
+                    else
+                        return 0;
+            }
         }
-
-
-
     }
 }

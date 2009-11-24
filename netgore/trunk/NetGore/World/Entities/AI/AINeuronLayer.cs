@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
-using System.Text;
 
 //NOTE: I'm working on an implementation of this so far into the demogame.  This is the first time i've written this in c# so
 //      i won't commit any implementation yet until i know it works 100%.  aPhRo_
@@ -12,9 +10,9 @@ namespace NetGore.AI
     /// AINeuronLayer organises the neurons into layers.  It totals the weights and output properties of
     /// the neuron
     /// </summary>
-    public class AINeuronLayer : System.Collections.CollectionBase
+    public class AINeuronLayer : CollectionBase
     {
-        readonly private int _weightsPerNeuron;
+        readonly int _weightsPerNeuron;
 
         //Constructor
 
@@ -32,11 +30,6 @@ namespace NetGore.AI
         public int NumWeights
         {
             get { return _weightsPerNeuron * List.Count; }
-        }
-
-        public int WeightsPerNeuron
-        {
-            get { return _weightsPerNeuron; }
         }
 
         public float[] Weights
@@ -75,6 +68,11 @@ namespace NetGore.AI
                     n.Weights = tmpw;
                 }
             }
+        }
+
+        public int WeightsPerNeuron
+        {
+            get { return _weightsPerNeuron; }
         }
 
         public float[] Outputs(float[] Inputs)

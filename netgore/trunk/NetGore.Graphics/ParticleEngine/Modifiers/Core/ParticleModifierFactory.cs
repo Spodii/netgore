@@ -9,8 +9,13 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Factory that caches instances of the <see cref="ParticleModifier"/>s.
     /// </summary>
-    internal class ParticleModifierFactory : TypeFactory
+    class ParticleModifierFactory : TypeFactory
     {
+        /// <summary>
+        /// The only instance of the <see cref="ParticleModifierFactory"/>.
+        /// </summary>
+        static readonly ParticleModifierFactory _instance;
+
         /// <summary>
         /// Dictionary of the modifier Types and the instances for the Type.
         /// </summary>
@@ -22,11 +27,6 @@ namespace NetGore.Graphics.ParticleEngine
         static readonly object _instancesSync = new object();
 
         /// <summary>
-        /// The only instance of the <see cref="ParticleModifierFactory"/>.
-        /// </summary>
-        static readonly ParticleModifierFactory _instance;
-
-        /// <summary>
         /// Initializes the <see cref="ParticleModifierFactory"/> class.
         /// </summary>
         static ParticleModifierFactory()
@@ -36,34 +36,18 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the Types in this <see cref="TypeFactory"/>.
+        /// Initializes a new instance of the <see cref="ParticleModifierFactory"/> class.
         /// </summary>
-        public static IEnumerable<Type> ModifierTypes { get { return _instance; } }
-
-        /// <summary>
-        /// Gets the type filter for the <see cref="ParticleModifierFactory"/>.
-        /// </summary>
-        /// <returns>The type filter for the <see cref="ParticleModifierFactory"/>.</returns>
-        static Func<Type, bool> GetTypeFilter()
+        ParticleModifierFactory() : base(GetTypeFilter(), HandleTypeLoaded, false)
         {
-            var filterCreator = new TypeFilterCreator
-            {
-                IsClass = true,
-                Subclass = typeof(ParticleModifier),
-                IsAbstract = false,
-                RequireConstructor = true,
-                ConstructorParameters = Type.EmptyTypes,
-            };
-
-            return filterCreator.GetFilter();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifierFactory"/> class.
+        /// Gets an IEnumerable of the Types in this <see cref="TypeFactory"/>.
         /// </summary>
-        ParticleModifierFactory()
-            : base(GetTypeFilter(), HandleTypeLoaded, false)
+        public static IEnumerable<Type> ModifierTypes
         {
+            get { return _instance; }
         }
 
         /// <summary>
@@ -87,11 +71,30 @@ namespace NetGore.Graphics.ParticleEngine
             return ret;
         }
 
+        /// <summary>
+        /// Gets the type filter for the <see cref="ParticleModifierFactory"/>.
+        /// </summary>
+        /// <returns>The type filter for the <see cref="ParticleModifierFactory"/>.</returns>
+        static Func<Type, bool> GetTypeFilter()
+        {
+            var filterCreator = new TypeFilterCreator
+            {
+                IsClass = true,
+                Subclass = typeof(ParticleModifier),
+                IsAbstract = false,
+                RequireConstructor = true,
+                ConstructorParameters = Type.EmptyTypes,
+            };
+
+            return filterCreator.GetFilter();
+        }
+
         static void HandleTypeLoaded(TypeFactory typefactory, Type loadedtype, string name)
         {
             if (_instances.ContainsKey(loadedtype))
             {
-                Debug.Fail("Why did we end up trying to load the same Type more than once? Did someone else instantiate this? Hmm...");
+                Debug.Fail(
+                    "Why did we end up trying to load the same Type more than once? Did someone else instantiate this? Hmm...");
                 return;
             }
 

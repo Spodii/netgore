@@ -18,20 +18,16 @@ namespace NetGore.Graphics.ParticleEngine
         const int _defaultBudget = 5000;
         const string _emitterCategoryName = "Emitter";
 
-        static readonly IEnumerable<Type> _emitterTypes =
-            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).Concat(new Type[] { typeof(ParticleEmitter) }).Distinct().OrderBy(x => x.Name).ToCompact();
-
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="Type"/>s of <see cref="ParticleEmitter"/>s.
-        /// </summary>
-        public static IEnumerable<Type> EmitterTypes { get { return _emitterTypes; } }
-
         /// <summary>
         /// The initial size of the particle array.
         /// </summary>
         const int _initialParticleArraySize = 64;
 
         const string _particleCategoryName = "Particle";
+
+        static readonly IEnumerable<Type> _emitterTypes =
+            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).Concat(new Type[]
+            { typeof(ParticleEmitter) }).Distinct().OrderBy(x => x.Name).ToCompact();
 
         /// <summary>
         /// The array of <see cref="Particle"/>s.
@@ -47,20 +43,11 @@ namespace NetGore.Graphics.ParticleEngine
         int _lastAliveIndex = -1;
 
         int _lastUpdateTime = int.MinValue;
+        ParticleModifierCollection _modifiers = new ParticleModifierCollection();
         int _nextReleaseTime;
+        Vector2 _origin;
         Grh _sprite;
         SpriteCategorization _spriteCategorization;
-        Vector2 _origin;
-
-        /// <summary>
-        /// Gets the absolute position from a relative position and the origin of this emitter.
-        /// </summary>
-        /// <param name="relativePosition">The relative position.</param>
-        /// <param name="absolutePosition">The resulting absolute position.</param>
-        public void GetAbsoultePosition(ref Vector2 relativePosition, out Vector2 absolutePosition)
-        {
-            Vector2.Add(ref relativePosition, ref _origin, out absolutePosition);
-        }
 
         /// <summary>
         /// Used to spread out sprite loading attempts when trying to load the sprite when it is null on Update().
@@ -160,6 +147,14 @@ namespace NetGore.Graphics.ParticleEngine
         public static int DefaultBudget { get; set; }
 
         /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s of <see cref="ParticleEmitter"/>s.
+        /// </summary>
+        public static IEnumerable<Type> EmitterTypes
+        {
+            get { return _emitterTypes; }
+        }
+
+        /// <summary>
         /// Gets if this <see cref="ParticleEmitter"/> has been disposed.
         /// </summary>
         [Browsable(false)]
@@ -176,6 +171,29 @@ namespace NetGore.Graphics.ParticleEngine
         [DisplayName("Life")]
         [DefaultValue(typeof(VariableInt), "2000")]
         public VariableInt Life { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
+        /// <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        [Editor("NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools",
+            "System.Drawing.Design.UITypeEditor, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+            )]
+        [Category(_emitterCategoryName)]
+        [Description("Collection of particle effect modifiers.")]
+        [DisplayName("Modifiers")]
+        public ParticleModifierCollection Modifiers
+        {
+            get { return _modifiers; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _modifiers = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the origin of this <see cref="ParticleEmitter"/>.
@@ -271,30 +289,6 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
-        ParticleModifierCollection _modifiers = new ParticleModifierCollection();
-
-        /// <summary>
-        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
-        /// <see cref="ParticleEmitter"/>.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Editor("NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools",
-            "System.Drawing.Design.UITypeEditor, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-        [Category(_emitterCategoryName)]
-        [Description("Collection of particle effect modifiers.")]
-        [DisplayName("Modifiers")]
-        public ParticleModifierCollection Modifiers
-        {
-            get { return _modifiers; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _modifiers = value;
-            }
-        }
-
         /// <summary>
         /// Copies the values in this <see cref="ParticleEmitter"/> to another.
         /// </summary>
@@ -335,6 +329,16 @@ namespace NetGore.Graphics.ParticleEngine
         {
             offset = Vector2.Zero;
             GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
+        }
+
+        /// <summary>
+        /// Gets the absolute position from a relative position and the origin of this emitter.
+        /// </summary>
+        /// <param name="relativePosition">The relative position.</param>
+        /// <param name="absolutePosition">The resulting absolute position.</param>
+        public void GetAbsoultePosition(ref Vector2 relativePosition, out Vector2 absolutePosition)
+        {
+            Vector2.Add(ref relativePosition, ref _origin, out absolutePosition);
         }
 
         /// <summary>

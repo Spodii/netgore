@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -16,6 +13,15 @@ namespace NetGore.Graphics.ParticleEngine
         const string _categoryName = "Linear Scale Modifier";
         const float _defaultInitialScale = 1.0f;
         const float _defaultUltimateScale = 2.0f;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
+        /// </summary>
+        public LinearScaleModifier() : base(false, true)
+        {
+            InitialScale = _defaultInitialScale;
+            UltimateScale = _defaultUltimateScale;
+        }
 
         /// <summary>
         /// Gets or sets the initial scale value.
@@ -34,15 +40,6 @@ namespace NetGore.Graphics.ParticleEngine
         [DisplayName("Ultimate Scale")]
         [DefaultValue(_defaultUltimateScale)]
         public float UltimateScale { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
-        /// </summary>
-        public LinearScaleModifier() : base(false, true)
-        {
-            InitialScale = _defaultInitialScale;
-            UltimateScale = _defaultUltimateScale;
-        }
 
         /// <summary>
         /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
