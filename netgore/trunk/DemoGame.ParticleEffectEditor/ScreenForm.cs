@@ -29,9 +29,6 @@ namespace DemoGame.ParticleEffectEditor
         {
             InitializeComponent();
             _watch.Start();
-
-            var a = typeof(ParticleModifierCollectionEditor).AssemblyQualifiedName;
-            var b = typeof(UITypeEditor).AssemblyQualifiedName;
         }
 
         public ParticleEmitter Emitter

@@ -24,12 +24,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override string GetDisplayText(object value)
         {
-            const string prefixToRemove = "Particle";
-
             var typeName = value.GetType().Name;
-            if (typeName.StartsWith(prefixToRemove, StringComparison.OrdinalIgnoreCase))
-                typeName = typeName.Substring(prefixToRemove.Length);
-
             return typeName;
         }
 
