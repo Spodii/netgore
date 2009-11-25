@@ -34,7 +34,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
+        protected override void WriteCustomValues(IValueWriter writer)
         {
         }
     }

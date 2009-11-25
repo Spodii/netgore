@@ -20,31 +20,6 @@ namespace NetGore.Graphics.ParticleEngine
         readonly List<ParticleModifier> _updateModifiers = new List<ParticleModifier>(2);
 
         /// <summary>
-        /// Writes the <see cref="ParticleModifierCollection"/> to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="nodeName">The name to give the collection node.</param>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        public void Write(string nodeName, IValueWriter writer)
-        {
-            writer.WriteManyNodes(nodeName, this.ToArray(), (w, mod) => mod.Write(w));
-        }
-
-        /// <summary>
-        /// Reads the <see cref="ParticleModifierCollection"/> from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="nodeName">The name of the collection node.</param>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        public void Read(string nodeName, IValueReader reader)
-        {
-            // Read the modifiers
-            var modifiers = reader.ReadManyNodes<ParticleModifier>(nodeName, ParticleModifier.Read );
-
-            // Clear the collection and add the created modifiers
-            Clear();
-            AddRange(modifiers);
-        }
-
-        /// <summary>
         /// Gets or sets the element at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
@@ -215,6 +190,21 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Reads the <see cref="ParticleModifierCollection"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="nodeName">The name of the collection node.</param>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        public void Read(string nodeName, IValueReader reader)
+        {
+            // Read the modifiers
+            var modifiers = reader.ReadManyNodes<ParticleModifier>(nodeName, ParticleModifier.Read);
+
+            // Clear the collection and add the created modifiers
+            Clear();
+            AddRange(modifiers);
+        }
+
+        /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
@@ -274,6 +264,16 @@ namespace NetGore.Graphics.ParticleEngine
             {
                 modifier.UpdateCurrentTime(currentTime);
             }
+        }
+
+        /// <summary>
+        /// Writes the <see cref="ParticleModifierCollection"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="nodeName">The name to give the collection node.</param>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(string nodeName, IValueWriter writer)
+        {
+            writer.WriteManyNodes(nodeName, this.ToArray(), (w, mod) => mod.Write(w));
         }
     }
 }

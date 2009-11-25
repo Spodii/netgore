@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using NetGore.Collections;
 using NetGore.IO;
@@ -15,9 +13,13 @@ namespace NetGore.Graphics.ParticleEngine
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Gets the <see cref="ParticleEmitterFactory"/> instance.
+        /// The suffix for <see cref="ParticleEmitter"/> files, not including the prefixed period.
         /// </summary>
-        public static ParticleEmitterFactory Instance { get { return _instance; } }
+        public const string EmitterFileSuffix = "xml";
+
+        const string _emitterNodeName = "Emitter";
+        const string _emitterTypeKeyName = "EmitterType";
+        const string _rootNodeName = "ParticleEffect";
 
         /// <summary>
         /// The only instance of the <see cref="ParticleEmitterFactory"/>.
@@ -34,9 +36,38 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// The suffix for <see cref="ParticleEmitter"/> files, not including the prefixed period.
+        /// Initializes a new instance of the <see cref="ParticleEmitterFactory"/> class.
         /// </summary>
-        public const string EmitterFileSuffix = "xml";
+        ParticleEmitterFactory() : base(GetTypeFilter(), null, false)
+        {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ParticleEmitterFactory"/> instance.
+        /// </summary>
+        public static ParticleEmitterFactory Instance
+        {
+            get { return _instance; }
+        }
+
+        static string GetFilePath(ContentPaths contentPath, string emitterName)
+        {
+            return contentPath.ParticleEffects.Join(emitterName + "." + EmitterFileSuffix);
+        }
+
+        static Func<Type, bool> GetTypeFilter()
+        {
+            var filterCreator = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                RequireConstructor = true,
+                ConstructorParameters = Type.EmptyTypes,
+                Subclass = typeof(ParticleEmitter)
+            };
+
+            return filterCreator.GetFilter();
+        }
 
         /// <summary>
         /// Loads a <see cref="ParticleEmitter"/> from file.
@@ -64,9 +95,24 @@ namespace NetGore.Graphics.ParticleEngine
             return emitter;
         }
 
-        static string GetFilePath(ContentPaths contentPath, string emitterName)
+        /// <summary>
+        /// Reads a <see cref="ParticleEmitter"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <returns>The <see cref="ParticleEmitter"/> read from the <paramref name="reader"/>.</returns>
+        public static ParticleEmitter Read(IValueReader reader)
         {
-            return contentPath.ParticleEffects.Join(emitterName + "." + EmitterFileSuffix);
+            // Get the type name
+            var emitterTypeString = reader.ReadString(_emitterTypeKeyName);
+
+            // Create the instance using the type name
+            var emitter = (ParticleEmitter)Instance.GetTypeInstance(emitterTypeString);
+
+            // Grab the reader for the emitter node, then read the values into the emitter
+            var emitterReader = reader.ReadNode(_emitterNodeName);
+            emitter.Read(emitterReader);
+
+            return emitter;
         }
 
         /// <summary>
@@ -89,30 +135,6 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
-        const string _rootNodeName = "ParticleEffect";
-        const string _emitterTypeKeyName = "EmitterType";
-        const string _emitterNodeName = "Emitter";
-
-        /// <summary>
-        /// Reads a <see cref="ParticleEmitter"/> from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        /// <returns>The <see cref="ParticleEmitter"/> read from the <paramref name="reader"/>.</returns>
-        public static ParticleEmitter Read(IValueReader reader)
-        {
-            // Get the type name
-            var emitterTypeString = reader.ReadString(_emitterTypeKeyName);
-
-            // Create the instance using the type name
-            var emitter = (ParticleEmitter)Instance.GetTypeInstance(emitterTypeString);
-
-            // Grab the reader for the emitter node, then read the values into the emitter
-            var emitterReader = reader.ReadNode(_emitterNodeName);
-            emitter.Read(emitterReader);
-
-            return emitter;
-        }
-
         /// <summary>
         /// Writes a <see cref="ParticleEmitter"/> to an <see cref="IValueWriter"/>.
         /// </summary>
@@ -126,28 +148,6 @@ namespace NetGore.Graphics.ParticleEngine
                 emitter.Write(writer);
             }
             writer.WriteEndNode(_emitterNodeName);
-        }
-
-        static Func<Type, bool> GetTypeFilter()
-        {
-            var filterCreator = new TypeFilterCreator
-            {
-                IsClass = true,
-                IsAbstract = false,
-                RequireConstructor = true,
-                ConstructorParameters = Type.EmptyTypes,
-                Subclass = typeof(ParticleEmitter)
-            };
-
-            return filterCreator.GetFilter();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleEmitterFactory"/> class.
-        /// </summary>
-        ParticleEmitterFactory()
-            : base(GetTypeFilter(), null, false)
-        {
         }
     }
 }

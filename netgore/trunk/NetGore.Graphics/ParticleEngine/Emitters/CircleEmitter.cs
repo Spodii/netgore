@@ -15,35 +15,12 @@ namespace NetGore.Graphics.ParticleEngine
         const bool _defaultRadiate = false;
         const string _emitterCategoryName = "Circle Emitter";
 
-        bool _perimeter = _defaultPerimeter;
-        bool _radiate = _defaultRadiate;
-        VariableFloat _radius = 50;
-
         const string _perimeterKeyName = "Perimeter";
         const string _radiateKeyName = "Radiate";
         const string _radiusKeyName = "Radius";
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
-        {
-            writer.Write(_perimeterKeyName, Perimeter);
-            writer.Write(_radiateKeyName, Radiate);
-            writer.Write(_radiusKeyName, Radius);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            Perimeter = reader.ReadBool(_perimeterKeyName);
-            Radiate = reader.ReadBool(_radiateKeyName);
-            Radius = reader.ReadVariableFloat(_radiusKeyName);
-        }
+        bool _perimeter = _defaultPerimeter;
+        bool _radiate = _defaultRadiate;
+        VariableFloat _radius = 50;
 
         /// <summary>
         /// Gets or sets if <see cref="Particle"/>s are emitted only from the perimeter. If true,
@@ -109,6 +86,28 @@ namespace NetGore.Graphics.ParticleEngine
                 force = new Vector2(cosRads, sinRads);
             else
                 GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Perimeter = reader.ReadBool(_perimeterKeyName);
+            Radiate = reader.ReadBool(_radiateKeyName);
+            Radius = reader.ReadVariableFloat(_radiusKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_perimeterKeyName, Perimeter);
+            writer.Write(_radiateKeyName, Radiate);
+            writer.Write(_radiusKeyName, Radius);
         }
     }
 }

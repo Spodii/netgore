@@ -17,14 +17,14 @@ namespace NetGore.IO
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// The suffix given to compiled content files. Does not include the prefixed period.
+        /// </summary>
+        public const string CompiledContentSuffix = "xnb";
+
+        /// <summary>
         /// The relative path to the Data directory from the Contents directory.
         /// </summary>
         public const string DataFolder = "Data";
-
-        /// <summary>
-        /// The relative path to the Particle Effects directory from the Contents directory.
-        /// </summary>
-        public static readonly string ParticleEffectsFolder = DataFolder + Path.DirectorySeparatorChar + "ParticleEffects";
 
         /// <summary>
         /// The relative path to the Engine directory from the Contents directory.
@@ -67,17 +67,17 @@ namespace NetGore.IO
         public const string SkeletonsFolder = "Skeletons";
 
         /// <summary>
-        /// The suffix given to compiled content files. Does not include the prefixed period.
-        /// </summary>
-        public const string CompiledContentSuffix = "xnb";
-
-        /// <summary>
         /// Suffix for temporary files.
         /// </summary>
         const string _tempFileSuffix = ".ngtmp";
 
         const string _tempFolder = "Temp";
         const string _texturesFolder = "Texture";
+
+        /// <summary>
+        /// The relative path to the Particle Effects directory from the Contents directory.
+        /// </summary>
+        public static readonly string ParticleEffectsFolder = DataFolder + Path.DirectorySeparatorChar + "ParticleEffects";
 
         static readonly PathString _appRoot;
         static readonly ContentPaths _buildPaths;
@@ -91,13 +91,13 @@ namespace NetGore.IO
         static volatile int _freeFileIndex = 0;
 
         readonly PathString _data;
-        readonly PathString _particleEffects;
         readonly PathString _engine;
         readonly PathString _fonts;
         readonly PathString _fx;
         readonly PathString _grhs;
         readonly PathString _languages;
         readonly PathString _maps;
+        readonly PathString _particleEffects;
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
@@ -162,14 +162,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets the file path to the ParticleEffects directory.
-        /// </summary>
-        public PathString ParticleEffects
-        {
-            get { return _particleEffects; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="ContentPaths"/> for the Development content.
         /// </summary>
         public static ContentPaths Dev
@@ -228,6 +220,14 @@ namespace NetGore.IO
         public PathString Maps
         {
             get { return _maps; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the ParticleEffects directory.
+        /// </summary>
+        public PathString ParticleEffects
+        {
+            get { return _particleEffects; }
         }
 
         /// <summary>

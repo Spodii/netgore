@@ -15,6 +15,9 @@ namespace NetGore.Graphics.ParticleEngine
         const float _defaultInitialScale = 1.0f;
         const float _defaultUltimateScale = 2.0f;
 
+        const string _initialScaleKeyName = "InitialScale";
+        const string _ultimateScaleKeyName = "UltimateScale";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
         /// </summary>
@@ -22,29 +25,6 @@ namespace NetGore.Graphics.ParticleEngine
         {
             InitialScale = _defaultInitialScale;
             UltimateScale = _defaultUltimateScale;
-        }
-
-        const string _initialScaleKeyName = "InitialScale";
-        const string _ultimateScaleKeyName = "UltimateScale";
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(IValueWriter writer)
-        {
-            writer.Write(_initialScaleKeyName, InitialScale);
-            writer.Write(_ultimateScaleKeyName, UltimateScale);
-        }
-
-        /// <summary>
-        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            InitialScale = reader.ReadFloat(_initialScaleKeyName);
-            UltimateScale = reader.ReadFloat(_ultimateScaleKeyName);
         }
 
         /// <summary>
@@ -88,6 +68,26 @@ namespace NetGore.Graphics.ParticleEngine
         protected override void HandleProcessUpdated(ParticleEmitter emitter, Particle particle, int elapsedTime)
         {
             particle.Scale = MathHelper.Lerp(InitialScale, UltimateScale, particle.GetAgePercent(CurrentTime));
+        }
+
+        /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            InitialScale = reader.ReadFloat(_initialScaleKeyName);
+            UltimateScale = reader.ReadFloat(_ultimateScaleKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_initialScaleKeyName, InitialScale);
+            writer.Write(_ultimateScaleKeyName, UltimateScale);
         }
     }
 }

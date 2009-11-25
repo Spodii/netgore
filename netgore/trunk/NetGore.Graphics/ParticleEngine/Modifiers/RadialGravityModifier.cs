@@ -14,6 +14,9 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
         const string _categoryName = "Radial Gravity Modifier";
         const float _defaultRadius = 250f;
         const float _defaultStrength = 250f;
+        const string _positionKeyName = "Position";
+        const string _radiusKeyName = "Radius";
+        const string _strengthKeyName = "Strength";
         Vector2 _position = Vector2.Zero;
 
         float _radius;
@@ -27,32 +30,6 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
         {
             Strength = _defaultStrength;
             Radius = _defaultRadius;
-        }
-
-        const string _positionKeyName = "Position";
-        const string _radiusKeyName = "Radius";
-        const string _strengthKeyName = "Strength";
-
-        /// <summary>
-        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            Position = reader.ReadVector2(_positionKeyName);
-            Radius = reader.ReadFloat(_radiusKeyName);
-            Strength = reader.ReadFloat(_strengthKeyName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(IValueWriter writer)
-        {
-            writer.Write(_positionKeyName, Position);
-            writer.Write(_radiusKeyName, Radius);
-            writer.Write(_strengthKeyName, Strength);
         }
 
         /// <summary>
@@ -144,6 +121,28 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
 
             // Apply the force to the particle
             particle.ApplyForce(ref force);
+        }
+
+        /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Position = reader.ReadVector2(_positionKeyName);
+            Radius = reader.ReadFloat(_radiusKeyName);
+            Strength = reader.ReadFloat(_strengthKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_positionKeyName, Position);
+            writer.Write(_radiusKeyName, Radius);
+            writer.Write(_strengthKeyName, Strength);
         }
     }
 }

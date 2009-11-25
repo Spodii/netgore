@@ -14,6 +14,9 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public abstract class ParticleEmitter : IDisposable
     {
+        const string _blendModeKeyName = "BlendMode";
+        const string _budgetKeyName = "Budget";
+        const string _customValuesNodeName = "CustomValues";
         const SpriteBlendMode _defaultBlendMode = SpriteBlendMode.Additive;
         const int _defaultBudget = 5000;
         const string _emitterCategoryName = "Emitter";
@@ -23,7 +26,18 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         const int _initialParticleArraySize = 64;
 
+        const string _lifeKeyName = "Life";
+        const string _modifiersNodeName = "Modifiers";
+        const string _originKeyName = "Origin";
+
         const string _particleCategoryName = "Particle";
+        const string _releaseAmountKeyName = "ReleaseAmount";
+        const string _releaseColorKeyName = "ReleaseColor";
+        const string _releaseRateKeyName = "ReleaseRate";
+        const string _releaseRotationKeyName = "ReleaseRotation";
+        const string _releaseScaleKeyName = "ReleaseScale";
+        const string _releaseSpeedKeyName = "ReleaseSpeed";
+        const string _spriteCategorizationKeyName = "SpriteCategorization";
 
         static readonly IEnumerable<Type> _emitterTypes =
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).Concat(new Type[]
@@ -177,8 +191,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Editor(EditorHelper.ParticleModifierCollectionEditorTypeName,
-            EditorHelper.UITypeEditorTypeName)]
+        [Editor(EditorHelper.ParticleModifierCollectionEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         [Category(_emitterCategoryName)]
         [Description("Collection of particle effect modifiers.")]
         [DisplayName("Modifiers")]
@@ -357,6 +370,39 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Reads the <see cref="ParticleEmitter"/> settings from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        public void Read(IValueReader reader)
+        {
+            // Read the primary values
+            BlendMode = reader.ReadEnum(SpriteBlendModeHelper.Instance, _blendModeKeyName);
+            Budget = reader.ReadInt(_budgetKeyName);
+            Life = reader.ReadVariableInt(_lifeKeyName);
+            Origin = reader.ReadVector2(_originKeyName);
+            ReleaseAmount = reader.ReadVariableUShort(_releaseAmountKeyName);
+            ReleaseColor = reader.ReadVariableColor(_releaseColorKeyName);
+            ReleaseRate = reader.ReadVariableUShort(_releaseRateKeyName);
+            ReleaseRotation = reader.ReadVariableFloat(_releaseRotationKeyName);
+            ReleaseScale = reader.ReadVariableFloat(_releaseScaleKeyName);
+            ReleaseSpeed = reader.ReadVariableFloat(_releaseSpeedKeyName);
+            SpriteCategorization = reader.ReadSpriteCategorization(_spriteCategorizationKeyName);
+
+            // Read the custom values
+            var customValuesReader = reader.ReadNode(_customValuesNodeName);
+            ReadCustomValues(customValuesReader);
+
+            // Read the modifier collection
+            Modifiers.Read(_modifiersNodeName, reader);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected abstract void ReadCustomValues(IValueReader reader);
+
+        /// <summary>
         /// Releases one or more particles.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
@@ -427,89 +473,6 @@ namespace NetGore.Graphics.ParticleEngine
             var tmp = particles[aIndex];
             particles[aIndex] = particles[bIndex];
             particles[bIndex] = tmp;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected abstract void WriteCustomValues(IValueWriter writer);
-
-        /// <summary>
-        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
-        protected abstract void ReadCustomValues(IValueReader reader);
-
-        const string _blendModeKeyName = "BlendMode";
-        const string _budgetKeyName = "Budget";
-        const string _lifeKeyName = "Life";
-        const string _originKeyName = "Origin";
-        const string _releaseAmountKeyName = "ReleaseAmount";
-        const string _releaseColorKeyName = "ReleaseColor";
-        const string _releaseRateKeyName = "ReleaseRate";
-        const string _releaseRotationKeyName = "ReleaseRotation";
-        const string _releaseScaleKeyName = "ReleaseScale";
-        const string _releaseSpeedKeyName = "ReleaseSpeed";
-        const string _spriteCategorizationKeyName = "SpriteCategorization";
-        const string _customValuesNodeName = "CustomValues";
-        const string _modifiersNodeName = "Modifiers";
-
-        /// <summary>
-        /// Reads the <see cref="ParticleEmitter"/> settings from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        public void Read(IValueReader reader)
-        {
-            // Read the primary values
-            BlendMode = reader.ReadEnum(SpriteBlendModeHelper.Instance, _blendModeKeyName);
-            Budget = reader.ReadInt(_budgetKeyName);
-            Life = reader.ReadVariableInt(_lifeKeyName);
-            Origin = reader.ReadVector2(_originKeyName);
-            ReleaseAmount = reader.ReadVariableUShort(_releaseAmountKeyName);
-            ReleaseColor = reader.ReadVariableColor(_releaseColorKeyName);
-            ReleaseRate = reader.ReadVariableUShort(_releaseRateKeyName);
-            ReleaseRotation = reader.ReadVariableFloat(_releaseRotationKeyName);
-            ReleaseScale = reader.ReadVariableFloat(_releaseScaleKeyName);
-            ReleaseSpeed = reader.ReadVariableFloat(_releaseSpeedKeyName);
-            SpriteCategorization = reader.ReadSpriteCategorization(_spriteCategorizationKeyName);
-
-            // Read the custom values
-            var customValuesReader = reader.ReadNode(_customValuesNodeName);
-            ReadCustomValues(customValuesReader);
-
-            // Read the modifier collection
-            Modifiers.Read(_modifiersNodeName, reader);
-        }
-
-        /// <summary>
-        /// Writes the <see cref="ParticleEmitter"/> to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        public void Write(IValueWriter writer)
-        {
-            // Write the primary values
-            writer.Write(_blendModeKeyName, BlendMode);
-            writer.Write(_budgetKeyName, Budget);
-            writer.Write(_lifeKeyName, Life);
-            writer.Write(_originKeyName, Origin);
-            writer.Write(_releaseAmountKeyName, ReleaseAmount);
-            writer.Write(_releaseColorKeyName, ReleaseColor);
-            writer.Write(_releaseRateKeyName, ReleaseRate);
-            writer.Write(_releaseRotationKeyName, ReleaseRotation);
-            writer.Write(_releaseScaleKeyName, ReleaseScale);
-            writer.Write(_releaseSpeedKeyName, ReleaseSpeed);
-            writer.Write(_spriteCategorizationKeyName, SpriteCategorization);
-
-            // Write the custom values
-            writer.WriteStartNode(_customValuesNodeName);
-            {
-                WriteCustomValues(writer);
-            }
-            writer.WriteEndNode(_customValuesNodeName);
-
-            // Write the modifier collection
-            Modifiers.Write(_modifiersNodeName, writer);
         }
 
         /// <summary>
@@ -606,6 +569,42 @@ namespace NetGore.Graphics.ParticleEngine
                 ++i;
             }
         }
+
+        /// <summary>
+        /// Writes the <see cref="ParticleEmitter"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(IValueWriter writer)
+        {
+            // Write the primary values
+            writer.Write(_blendModeKeyName, BlendMode);
+            writer.Write(_budgetKeyName, Budget);
+            writer.Write(_lifeKeyName, Life);
+            writer.Write(_originKeyName, Origin);
+            writer.Write(_releaseAmountKeyName, ReleaseAmount);
+            writer.Write(_releaseColorKeyName, ReleaseColor);
+            writer.Write(_releaseRateKeyName, ReleaseRate);
+            writer.Write(_releaseRotationKeyName, ReleaseRotation);
+            writer.Write(_releaseScaleKeyName, ReleaseScale);
+            writer.Write(_releaseSpeedKeyName, ReleaseSpeed);
+            writer.Write(_spriteCategorizationKeyName, SpriteCategorization);
+
+            // Write the custom values
+            writer.WriteStartNode(_customValuesNodeName);
+            {
+                WriteCustomValues(writer);
+            }
+            writer.WriteEndNode(_customValuesNodeName);
+
+            // Write the modifier collection
+            Modifiers.Write(_modifiersNodeName, writer);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected abstract void WriteCustomValues(IValueWriter writer);
 
         #region IDisposable Members
 

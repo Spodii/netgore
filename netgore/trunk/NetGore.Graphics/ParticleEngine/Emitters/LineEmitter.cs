@@ -11,42 +11,16 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class LineEmitter : ParticleEmitter
     {
+        const string _angleKeyName = "Angle";
         const int _defaultAngle = 0;
         const bool _defaultEmitBothWays = true;
         const int _defaultLength = 100;
         const bool _defaultRectilinear = false;
-        const string _emitterCategoryName = "Line Emitter";
-
-        bool _emitBothWays = _defaultEmitBothWays;
-
-        const string _angleKeyName = "Angle";
         const string _emitBothWaysKeyName = "EmitBothWays";
+        const string _emitterCategoryName = "Line Emitter";
         const string _lengthKeyName = "Length";
         const string _rectilinearKeyName = "Rectilinear";
-
-        /// <summary>
-        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            Angle = reader.ReadFloat(_angleKeyName);
-            EmitBothWays = reader.ReadBool(_emitBothWaysKeyName);
-            Length = reader.ReadInt(_lengthKeyName);
-            Rectilinear = reader.ReadBool(_rectilinearKeyName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
-        {
-            writer.Write(_angleKeyName, Angle);
-            writer.Write(_emitBothWaysKeyName, EmitBothWays);
-            writer.Write(_lengthKeyName, Length);
-            writer.Write(_rectilinearKeyName, Rectilinear);
-        }
+        bool _emitBothWays = _defaultEmitBothWays;
 
         /// <summary>
         /// Used when <see cref="EmitBothWays"/> is set to alter which direction a particle is emitted.
@@ -146,6 +120,30 @@ namespace NetGore.Graphics.ParticleEngine
             }
             else
                 GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Angle = reader.ReadFloat(_angleKeyName);
+            EmitBothWays = reader.ReadBool(_emitBothWaysKeyName);
+            Length = reader.ReadInt(_lengthKeyName);
+            Rectilinear = reader.ReadBool(_rectilinearKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_angleKeyName, Angle);
+            writer.Write(_emitBothWaysKeyName, EmitBothWays);
+            writer.Write(_lengthKeyName, Length);
+            writer.Write(_rectilinearKeyName, Rectilinear);
         }
     }
 }

@@ -3,13 +3,76 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 
 namespace NetGore.Tests
 {
     class IValueReaderWriterTestHelper
     {
+        const int _bufferSize = 1024 * 1024;
+
+        /// <summary>
+        /// The CreateCreatorHandlers that will be used to create the ReaderWriterCreatorBase instances.
+        /// </summary>
+        static readonly IEnumerable<CreateCreatorHandler> _createCreators;
+
+        static readonly List<string> _createdTempFiles = new List<string>();
+
+        /// <summary>
+        /// Initializes the <see cref="IValueReaderWriterTestHelper"/> class.
+        /// </summary>
+        static IValueReaderWriterTestHelper()
+        {
+            // Create the delegates for creating the ReaderWriterCreatorBases
+            _createCreators = new CreateCreatorHandler[]
+            {
+                () => new MemoryBinaryValueReaderWriterCreator(), () => new FileBinaryValueReaderWriterCreator(),
+                () => new XmlValueReaderWriterCreator(), () => new BitStreamReaderWriterCreator(),
+                () => new BitStreamByteArrayReaderWriterCreator()
+            };
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="CreateCreatorHandler"/>s.
+        /// </summary>
+        public static IEnumerable<CreateCreatorHandler> CreateCreators
+        {
+            get { return _createCreators; }
+        }
+
+        /// <summary>
+        /// Gets the path for a temp file.
+        /// </summary>
+        /// <returns>The path for a temp file.</returns>
+        static string GetTempFile()
+        {
+            if (_createdTempFiles.Count > 3)
+            {
+                // Do a garbage collection to see if there is crap still out there, but waiting to be destructed
+                GC.Collect();
+                if (_createdTempFiles.Count > 3)
+                    throw new Exception("Too many temp files are out. Make sure they are being released!");
+                else
+                    Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
+            }
+
+            string ret = Path.GetTempFileName();
+            _createdTempFiles.Add(ret);
+            return ret;
+        }
+
+        /// <summary>
+        /// Releases a file used with GetTempFile().
+        /// </summary>
+        /// <param name="filePath">Path to the file to release.</param>
+        static void ReleaseFile(string filePath)
+        {
+            _createdTempFiles.Remove(filePath);
+
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+        }
+
         /// <summary>
         /// BitStream using the ByteArray to transfer data from the reader to writer
         /// </summary>
@@ -97,7 +160,6 @@ namespace NetGore.Tests
                 return _stream;
             }
         }
-
 
         /// <summary>
         /// BinaryValueReader/Writer, using a file.
@@ -203,27 +265,6 @@ namespace NetGore.Tests
         }
 
         /// <summary>
-        /// Gets the path for a temp file.
-        /// </summary>
-        /// <returns>The path for a temp file.</returns>
-        static string GetTempFile()
-        {
-            if (_createdTempFiles.Count > 3)
-            {
-                // Do a garbage collection to see if there is crap still out there, but waiting to be destructed
-                GC.Collect();
-                if (_createdTempFiles.Count > 3)
-                    throw new Exception("Too many temp files are out. Make sure they are being released!");
-                else
-                    Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
-            }
-
-            string ret = Path.GetTempFileName();
-            _createdTempFiles.Add(ret);
-            return ret;
-        }
-
-        /// <summary>
         /// XmlValueReader/Writer.
         /// </summary>
         class XmlValueReaderWriterCreator : ReaderWriterCreatorBase
@@ -282,46 +323,6 @@ namespace NetGore.Tests
             {
                 return new XmlValueWriter(_filePath, _rootNodeName);
             }
-        }
-
-        /// <summary>
-        /// Initializes the <see cref="IValueReaderWriterTestHelper"/> class.
-        /// </summary>
-        static IValueReaderWriterTestHelper()
-        {
-            // Create the delegates for creating the ReaderWriterCreatorBases
-            _createCreators = new CreateCreatorHandler[]
-            {
-                () => new MemoryBinaryValueReaderWriterCreator(), () => new FileBinaryValueReaderWriterCreator(),
-                () => new XmlValueReaderWriterCreator(), () => new BitStreamReaderWriterCreator(),
-                () => new BitStreamByteArrayReaderWriterCreator()
-            };
-        }
-
-        const int _bufferSize = 1024 * 1024;
-
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="CreateCreatorHandler"/>s.
-        /// </summary>
-        public static IEnumerable<CreateCreatorHandler> CreateCreators { get { return _createCreators; } } 
-
-        /// <summary>
-        /// The CreateCreatorHandlers that will be used to create the ReaderWriterCreatorBase instances.
-        /// </summary>
-        static readonly IEnumerable<CreateCreatorHandler> _createCreators;
-
-        static readonly List<string> _createdTempFiles = new List<string>();
-
-        /// <summary>
-        /// Releases a file used with GetTempFile().
-        /// </summary>
-        /// <param name="filePath">Path to the file to release.</param>
-        static void ReleaseFile(string filePath)
-        {
-            _createdTempFiles.Remove(filePath);
-
-            if (File.Exists(filePath))
-                File.Delete(filePath);
         }
     }
 }

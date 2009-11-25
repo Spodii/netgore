@@ -21,31 +21,6 @@ namespace NetGore.Graphics.ParticleEngine
         PolygonOrigin _origin = PolygonEmitter.DefaultPolygonOrigin;
 
         /// <summary>
-        /// Writes the <see cref="PolygonPointCollection"/> to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="nodeName">The name of the collection node.</param>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        public void Write(string nodeName, IValueWriter writer)
-        {
-            writer.WriteMany(nodeName, ToArray(), writer.Write);
-        }
-
-        /// <summary>
-        /// Reads the <see cref="PolygonPointCollection"/> values from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="nodeName">The name of the collection node.</param>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        public void Read(string nodeName, IValueReader reader)
-        {
-            // Read the values
-            var values = reader.ReadMany(nodeName, (r,name) => r.ReadVector2(name));
-
-            // Clear the list and repopulate with the read values
-            Clear();
-            AddRange(values);
-        }
-
-        /// <summary>
         /// Gets or sets the origin mode of the polygon for the given points.
         /// </summary>
         [Category(_categoryName)]
@@ -98,6 +73,21 @@ namespace NetGore.Graphics.ParticleEngine
             matrix = Matrix.CreateTranslation(-point.X, -point.Y, 0f);
         }
 
+        /// <summary>
+        /// Reads the <see cref="PolygonPointCollection"/> values from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="nodeName">The name of the collection node.</param>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        public void Read(string nodeName, IValueReader reader)
+        {
+            // Read the values
+            var values = reader.ReadMany(nodeName, (r, name) => r.ReadVector2(name));
+
+            // Clear the list and repopulate with the read values
+            Clear();
+            AddRange(values);
+        }
+
         void RecalculateTranslation()
         {
             switch (Origin)
@@ -121,6 +111,16 @@ namespace NetGore.Graphics.ParticleEngine
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Writes the <see cref="PolygonPointCollection"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="nodeName">The name of the collection node.</param>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(string nodeName, IValueWriter writer)
+        {
+            writer.WriteMany(nodeName, ToArray(), writer.Write);
         }
 
         #region IList Members
