@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
+using NetGore.Collections;
 
 namespace DemoGame.Server
 {
@@ -23,7 +24,7 @@ namespace DemoGame.Server
             new Dictionary<StatusEffectType, StatusEffectBase>(EnumComparer<StatusEffectType>.Instance);
 
         /// <summary>
-        /// StatusEffectManager static constructor.
+        /// Initializes the <see cref="StatusEffectManager"/> class.
         /// </summary>
         static StatusEffectManager()
         {
@@ -36,7 +37,7 @@ namespace DemoGame.Server
             // Create an instance of each of the valid derived classes
             foreach (Type type in types)
             {
-                StatusEffectBase instance = (StatusEffectBase)Activator.CreateInstance(type, true);
+                StatusEffectBase instance = (StatusEffectBase)TypeFactory.GetTypeInstance(type);
 
                 if (_statusEffects.ContainsKey(instance.StatusEffectType))
                 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.Collections;
 using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.EditorTools
@@ -45,7 +46,7 @@ namespace NetGore.EditorTools
             if (SelectedEmitterChanged == null)
                 return;
 
-            ParticleEmitter emitter = (ParticleEmitter)Activator.CreateInstance(item, true);
+            ParticleEmitter emitter = (ParticleEmitter)TypeFactory.GetTypeInstance(item);
 
             if (emitter != null)
                 SelectedEmitterChanged(this, emitter);

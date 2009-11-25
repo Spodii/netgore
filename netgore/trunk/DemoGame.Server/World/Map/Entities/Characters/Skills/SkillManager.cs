@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
+using NetGore.Collections;
 
 namespace DemoGame.Server
 {
@@ -23,7 +24,7 @@ namespace DemoGame.Server
             new Dictionary<SkillType, SkillBase>(EnumComparer<SkillType>.Instance);
 
         /// <summary>
-        /// SkillManager static constructor.
+        /// Initializes the <see cref="SkillManager"/> class.
         /// </summary>
         static SkillManager()
         {
@@ -36,7 +37,7 @@ namespace DemoGame.Server
             // Create an instance of each of the valid derived classes
             foreach (Type type in types)
             {
-                SkillBase instance = (SkillBase)Activator.CreateInstance(type, true);
+                SkillBase instance = (SkillBase)TypeFactory.GetTypeInstance(type);
 
                 if (_skills.ContainsKey(instance.SkillType))
                 {
