@@ -21,6 +21,33 @@ namespace NetGore.Graphics.ParticleEngine
         int _currentTime;
 
         /// <summary>
+        /// Reads a <see cref="ParticleModifier"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        /// <returns>The <see cref="ParticleModifier"/> instance created from the values read from the
+        /// <paramref name="reader"/>.</returns>
+        public static ParticleModifier Read(IValueReader reader)
+        {
+            // Get the type
+            string typeName = reader.ReadString(_typeKeyName);
+
+            // Create the instance
+            var modifier = (ParticleModifier)ParticleModifierFactory.Instance.GetTypeInstance(typeName);
+            
+            // Read the custom values
+            var customValueReader = reader.ReadNode(_customValuesNodeName);
+            modifier.ReadCustomValues(customValueReader);
+
+            return modifier;
+        }
+
+        /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        abstract protected void ReadCustomValues(IValueReader reader);
+
+        /// <summary>
         /// Writes the <see cref="ParticleModifier"/> to the <paramref name="writer"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -37,10 +38,35 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public const string EmitterFileSuffix = "xml";
 
+        /// <summary>
+        /// Loads a <see cref="ParticleEmitter"/> from file.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to load from.</param>
+        /// <param name="emitterName">The unique name of the <see cref="ParticleEmitter"/>.</param>
+        /// <returns>The loaded <see cref="ParticleEmitter"/>.</returns>
+        /// <exception cref="ParticleEmitterNotFoundException">No emitter found with the given
+        /// <paramref name="emitterName"/>.</exception>
         public static ParticleEmitter LoadEmitter(ContentPaths contentPath, string emitterName)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            var filePath = GetFilePath(contentPath, emitterName);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loading ParticleEmitter `{0}` from `{1}`.", emitterName, filePath);
+
+            // Ensure the file exists
+            if (!File.Exists(filePath))
+                throw new ParticleEmitterNotFoundException(emitterName);
+
+            // Get the reader and read the emitter
+            XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
+            var emitter = Read(reader);
+
+            return emitter;
+        }
+
+        static string GetFilePath(ContentPaths contentPath, string emitterName)
+        {
+            return contentPath.ParticleEffects.Join(emitterName + "." + EmitterFileSuffix);
         }
 
         /// <summary>
@@ -48,18 +74,44 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to save to.</param>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to save.</param>
-        /// <param name="emitterName">The unique name to give the <paramref name="emitter"/>.</param>
+        /// <param name="emitterName">The unique name of the <paramref name="emitter"/>.</param>
         public static void SaveEmitter(ContentPaths contentPath, ParticleEmitter emitter, string emitterName)
         {
-            var filePath = contentPath.ParticleEffects.Join(emitterName + "." + EmitterFileSuffix);
-            using (var writer = new XmlValueWriter(filePath, "ParticleEffect"))
+            var filePath = GetFilePath(contentPath, emitterName);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Saving ParticleEmitter `{0}` to `{1}`.", emitter, filePath);
+
+            // Create the writer and begin writing
+            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
             {
                 Write(writer, emitter);
             }
         }
 
+        const string _rootNodeName = "ParticleEffect";
         const string _emitterTypeKeyName = "EmitterType";
         const string _emitterNodeName = "Emitter";
+
+        /// <summary>
+        /// Reads a <see cref="ParticleEmitter"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <returns>The <see cref="ParticleEmitter"/> read from the <paramref name="reader"/>.</returns>
+        public static ParticleEmitter Read(IValueReader reader)
+        {
+            // Get the type name
+            var emitterTypeString = reader.ReadString(_emitterTypeKeyName);
+
+            // Create the instance using the type name
+            var emitter = (ParticleEmitter)Instance.GetTypeInstance(emitterTypeString);
+
+            // Grab the reader for the emitter node, then read the values into the emitter
+            var emitterReader = reader.ReadNode(_emitterNodeName);
+            emitter.Read(emitterReader);
+
+            return emitter;
+        }
 
         /// <summary>
         /// Writes a <see cref="ParticleEmitter"/> to an <see cref="IValueWriter"/>.

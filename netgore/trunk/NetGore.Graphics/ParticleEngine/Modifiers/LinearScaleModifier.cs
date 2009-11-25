@@ -38,6 +38,16 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            InitialScale = reader.ReadFloat(_initialScaleKeyName);
+            UltimateScale = reader.ReadFloat(_ultimateScaleKeyName);
+        }
+
+        /// <summary>
         /// Gets or sets the initial scale value.
         /// </summary>
         [Category(_categoryName)]

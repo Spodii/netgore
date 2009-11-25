@@ -69,6 +69,8 @@
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
     <Compile Include="Camera2D.cs" />
+    <Compile Include="Exceptions\ParticleEmitterException.cs" />
+    <Compile Include="Exceptions\ParticleEmitterNotFoundException.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\ContentManagerExtensions.cs" />
     <Compile Include="Exceptions\GrhDataException.cs" />

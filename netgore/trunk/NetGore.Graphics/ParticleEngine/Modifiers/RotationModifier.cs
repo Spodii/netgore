@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 
@@ -28,6 +29,15 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         const string _rateKeyName = "Rate";
+
+        /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Rate = reader.ReadFloat(_rateKeyName);
+        }
 
         /// <summary>
         /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.

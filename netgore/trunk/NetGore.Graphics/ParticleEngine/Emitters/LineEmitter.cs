@@ -25,6 +25,18 @@ namespace NetGore.Graphics.ParticleEngine
         const string _rectilinearKeyName = "Rectilinear";
 
         /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Angle = reader.ReadFloat(_angleKeyName);
+            EmitBothWays = reader.ReadBool(_emitBothWaysKeyName);
+            Length = reader.ReadInt(_lengthKeyName);
+            Rectilinear = reader.ReadBool(_rectilinearKeyName);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>

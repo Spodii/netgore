@@ -21,6 +21,16 @@ namespace NetGore.Graphics.ParticleEngine
         const string _directionKeyName = "Direction";
 
         /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            ConeAngle = reader.ReadFloat(_coneAngleKeyName);
+            Direction = reader.ReadFloat(_directionKeyName);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
