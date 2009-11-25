@@ -130,6 +130,7 @@
     <Compile Include="ParticleEngine\Emitters\CircleEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\ConeEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\LineEmitter.cs" />
+    <Compile Include="ParticleEngine\Emitters\PointEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonOrigin.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonOriginHelper.cs" />

@@ -33,8 +33,6 @@ namespace NetGore.Graphics.ParticleEngine
             writer.Write(_heightKeyName, Height);
             writer.Write(_widthKeyName, Width);
             writer.Write(_perimeterKeyName, Perimeter);
-
-            base.WriteCustomValues(writer);
         }
 
         /// <summary>
@@ -93,7 +91,8 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Generates the offset and normalized force vectors to release the <see cref="Particle"/> at.
+        /// When overridden in the derived class, generates the offset and normalized force vectors to
+        /// release the <see cref="Particle"/> at.
         /// </summary>
         /// <param name="particle">The <see cref="Particle"/> that the values are being generated for.</param>
         /// <param name="offset">The offset vector.</param>
