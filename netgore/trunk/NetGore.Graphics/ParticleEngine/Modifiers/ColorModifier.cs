@@ -120,6 +120,21 @@ namespace NetGore.Graphics.ParticleEngine
         const string _ultimateColorKeyName = "UltimateColor";
 
         /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            ModifyRed = reader.ReadBool(_modifyRedKeyName);
+            ModifyGreen = reader.ReadBool(_modifyGreenKeyName);
+            ModifyBlue = reader.ReadBool(_modifyBlueKeyName);
+            ModifyAlpha = reader.ReadBool(_modifyAlphaKeyName);
+
+            ReleaseColor = reader.ReadColor(_releaseColorKeyName);
+            UltimateColor = reader.ReadColor(_ultimateColorKeyName);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>

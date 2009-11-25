@@ -26,6 +26,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _pointsNodeName = "Points";
         const string _polygonOriginKeyName = "PolygonOrigin";
         const string _scaleKeyName = "Scale";
+        const string _rotationKeyName = "Rotation";
 
         /// <summary>
         /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
@@ -35,8 +36,22 @@ namespace NetGore.Graphics.ParticleEngine
         {
             writer.Write(_closedKeyName, Closed);
             writer.Write(_scaleKeyName, Scale);
+            writer.Write(_rotationKeyName, Rotation);
             writer.WriteEnum(PolygonOriginHelper.Instance, _polygonOriginKeyName, PolygonOrigin);
             Points.Write(_pointsNodeName, writer);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Closed = reader.ReadBool(_closedKeyName);
+            Scale = reader.ReadFloat(_scaleKeyName);
+            Rotation = reader.ReadFloat(_rotationKeyName);
+            PolygonOrigin = reader.ReadEnum(PolygonOriginHelper.Instance, _polygonOriginKeyName);
+            Points.Read(_pointsNodeName, reader);
         }
 
         /// <summary>

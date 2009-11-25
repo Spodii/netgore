@@ -21,7 +21,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         const string _perimeterKeyName = "Perimeter";
         const string _radiateKeyName = "Radiate";
-        const string _RadiusKeyName = "Radius";
+        const string _radiusKeyName = "Radius";
 
         /// <summary>
         /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
@@ -31,7 +31,18 @@ namespace NetGore.Graphics.ParticleEngine
         {
             writer.Write(_perimeterKeyName, Perimeter);
             writer.Write(_radiateKeyName, Radiate);
-            writer.Write(_RadiusKeyName, Radius);
+            writer.Write(_radiusKeyName, Radius);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Perimeter = reader.ReadBool(_perimeterKeyName);
+            Radiate = reader.ReadBool(_radiateKeyName);
+            Radius = reader.ReadVariableFloat(_radiusKeyName);
         }
 
         /// <summary>

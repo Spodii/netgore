@@ -435,6 +435,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
         protected abstract void WriteCustomValues(IValueWriter writer);
 
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected abstract void ReadCustomValues(IValueReader reader);
+
         const string _blendModeKeyName = "BlendMode";
         const string _budgetKeyName = "Budget";
         const string _lifeKeyName = "Life";
@@ -448,6 +454,33 @@ namespace NetGore.Graphics.ParticleEngine
         const string _spriteCategorizationKeyName = "SpriteCategorization";
         const string _customValuesNodeName = "CustomValues";
         const string _modifiersNodeName = "Modifiers";
+
+        /// <summary>
+        /// Reads the <see cref="ParticleEmitter"/> settings from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        public void Read(IValueReader reader)
+        {
+            // Read the primary values
+            BlendMode = reader.ReadEnum(SpriteBlendModeHelper.Instance, _blendModeKeyName);
+            Budget = reader.ReadInt(_budgetKeyName);
+            Life = reader.ReadVariableInt(_lifeKeyName);
+            Origin = reader.ReadVector2(_originKeyName);
+            ReleaseAmount = reader.ReadVariableUShort(_releaseAmountKeyName);
+            ReleaseColor = reader.ReadVariableColor(_releaseColorKeyName);
+            ReleaseRate = reader.ReadVariableUShort(_releaseRateKeyName);
+            ReleaseRotation = reader.ReadVariableFloat(_releaseRotationKeyName);
+            ReleaseScale = reader.ReadVariableFloat(_releaseScaleKeyName);
+            ReleaseSpeed = reader.ReadVariableFloat(_releaseSpeedKeyName);
+            SpriteCategorization = reader.ReadSpriteCategorization(_spriteCategorizationKeyName);
+
+            // Read the custom values
+            var customValuesReader = reader.ReadNode(_customValuesNodeName);
+            ReadCustomValues(customValuesReader);
+
+            // Read the modifier collection
+            Modifiers.Read(_modifiersNodeName, reader);
+        }
 
         /// <summary>
         /// Writes the <see cref="ParticleEmitter"/> to an <see cref="IValueWriter"/>.

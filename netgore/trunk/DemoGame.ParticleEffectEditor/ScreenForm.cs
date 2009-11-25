@@ -81,9 +81,6 @@ namespace DemoGame.ParticleEffectEditor
             { ReleaseColor = new Color(0, 255, 0, 255), UltimateColor = new Color(0, 0, 255, 175) };
             ret.Modifiers.Add(colorModifier);
             
-            // TODO: !! Temp...
-            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, ret, "TestEmitter");
-
             return ret;
         }
 
