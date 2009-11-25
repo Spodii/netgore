@@ -10,35 +10,14 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class ConeEmitter : ParticleEmitter
     {
+        const string _coneAngleKeyName = "ConeAngle";
         const float _defaultConeAngle = MathHelper.PiOver2;
         const float _defaultDirection = 0;
+        const string _directionKeyName = "Direction";
         const string _emitterCategoryName = "Cone Emitter";
 
         float _coneAngle = _defaultConeAngle;
         float _direction = _defaultDirection;
-
-        const string _coneAngleKeyName = "ConeAngle";
-        const string _directionKeyName = "Direction";
-
-        /// <summary>
-        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            ConeAngle = reader.ReadFloat(_coneAngleKeyName);
-            Direction = reader.ReadFloat(_directionKeyName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
-        {
-            writer.Write(_coneAngleKeyName, ConeAngle);
-            writer.Write(_directionKeyName, Direction);
-        }
 
         /// <summary>
         /// Gets or sets the angle (in radians) from edge to edge of the emitter beam.
@@ -81,6 +60,26 @@ namespace NetGore.Graphics.ParticleEngine
             float radians = RandomHelper.NextFloat(Direction - f, Direction + f);
 
             GetForce(radians, out force);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            ConeAngle = reader.ReadFloat(_coneAngleKeyName);
+            Direction = reader.ReadFloat(_directionKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_coneAngleKeyName, ConeAngle);
+            writer.Write(_directionKeyName, Direction);
         }
     }
 }

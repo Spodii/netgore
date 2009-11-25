@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using NUnit.Framework;
@@ -289,22 +288,6 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             }
 
             /// <summary>
-            /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
-            /// </summary>
-            /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
-            protected override void ReadCustomValues(IValueReader reader)
-            {
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-            /// </summary>
-            /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-            protected override void WriteCustomValues(IValueWriter writer)
-            {
-            }
-
-            /// <summary>
             /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
             /// it is released. Only valid if <see cref="ParticleModifier.ProcessOnRelease"/> is set.
             /// </summary>
@@ -325,6 +308,22 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             /// <param name="elapsedTime">The amount of time that has elapsed since the <paramref name="emitter"/>
             /// was last updated.</param>
             protected override void HandleProcessUpdated(ParticleEmitter emitter, Particle particle, int elapsedTime)
+            {
+            }
+
+            /// <summary>
+            /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+            /// </summary>
+            /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+            protected override void ReadCustomValues(IValueReader reader)
+            {
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+            /// </summary>
+            /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+            protected override void WriteCustomValues(IValueWriter writer)
             {
             }
         }

@@ -14,30 +14,6 @@ namespace NetGore
     public static class IValueWriterExtensions
     {
         /// <summary>
-        /// Helps write a variable value.
-        /// </summary>
-        /// <typeparam name="T">The internal type of the variable value.</typeparam>
-        /// <param name="writer">The writer.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="writeValue">Delegate used to write type <typeparamref name="T"/>.</param>
-        static void WriteVariableValue<T>(IValueWriter writer, string name, IVariableValue<T> value, Action<string, T> writeValue)
-        {
-            if (writer.SupportsNodes && writer.SupportsNameLookup)
-            {
-                writer.WriteStartNode(name);
-                writeValue("Min", value.Min);
-                writeValue("Max", value.Max);
-                writer.WriteEndNode(name);
-            }
-            else
-            {
-                writeValue("Min", value.Min);
-                writeValue("Max", value.Max);
-            }
-        }
-
-        /// <summary>
         /// Writes a <see cref="VariableByte"/> the specified writer.
         /// </summary>
         /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
@@ -284,6 +260,30 @@ namespace NetGore
                 writer.Write(null, (byte)value.B);
                 writer.Write(null, (byte)value.A);
                 // ReSharper restore RedundantCast
+            }
+        }
+
+        /// <summary>
+        /// Helps write a variable value.
+        /// </summary>
+        /// <typeparam name="T">The internal type of the variable value.</typeparam>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="writeValue">Delegate used to write type <typeparamref name="T"/>.</param>
+        static void WriteVariableValue<T>(IValueWriter writer, string name, IVariableValue<T> value, Action<string, T> writeValue)
+        {
+            if (writer.SupportsNodes && writer.SupportsNameLookup)
+            {
+                writer.WriteStartNode(name);
+                writeValue("Min", value.Min);
+                writeValue("Max", value.Max);
+                writer.WriteEndNode(name);
+            }
+            else
+            {
+                writeValue("Min", value.Min);
+                writeValue("Max", value.Max);
             }
         }
     }

@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore.Collections;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -37,7 +33,10 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the <see cref="ParticleModifierFactory"/> instance.
         /// </summary>
-        public static ParticleModifierFactory Instance { get { return _instance; } }
+        public static ParticleModifierFactory Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Gets the type filter for the <see cref="ParticleModifierFactory"/>.

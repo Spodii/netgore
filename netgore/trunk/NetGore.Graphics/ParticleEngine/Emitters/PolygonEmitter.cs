@@ -12,47 +12,20 @@ namespace NetGore.Graphics.ParticleEngine
     public class PolygonEmitter : ParticleEmitter
     {
         internal const PolygonOrigin DefaultPolygonOrigin = PolygonOrigin.Center;
+        const string _closedKeyName = "Closed";
         const bool _defaultClosed = true;
         const float _defaultRotation = 0;
         const float _defaultScale = 1;
         const string _emitterCategoryName = "Polygon Emitter";
+        const string _pointsNodeName = "Points";
+        const string _polygonOriginKeyName = "PolygonOrigin";
+        const string _rotationKeyName = "Rotation";
+        const string _scaleKeyName = "Scale";
 
         bool _closed = _defaultClosed;
         PolygonPointCollection _points = new PolygonPointCollection();
         Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultRotation);
         Matrix _scaleMatrix = Matrix.CreateScale(_defaultScale);
-
-        const string _closedKeyName = "Closed";
-        const string _pointsNodeName = "Points";
-        const string _polygonOriginKeyName = "PolygonOrigin";
-        const string _scaleKeyName = "Scale";
-        const string _rotationKeyName = "Rotation";
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
-        {
-            writer.Write(_closedKeyName, Closed);
-            writer.Write(_scaleKeyName, Scale);
-            writer.Write(_rotationKeyName, Rotation);
-            writer.WriteEnum(PolygonOriginHelper.Instance, _polygonOriginKeyName, PolygonOrigin);
-            Points.Write(_pointsNodeName, writer);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            Closed = reader.ReadBool(_closedKeyName);
-            Scale = reader.ReadFloat(_scaleKeyName);
-            Rotation = reader.ReadFloat(_rotationKeyName);
-            PolygonOrigin = reader.ReadEnum(PolygonOriginHelper.Instance, _polygonOriginKeyName);
-            Points.Read(_pointsNodeName, reader);
-        }
 
         /// <summary>
         /// Gets or sets if the polygon is closed. If true, the last point will be connected to the first.
@@ -151,6 +124,32 @@ namespace NetGore.Graphics.ParticleEngine
 
             // Get the force
             GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Closed = reader.ReadBool(_closedKeyName);
+            Scale = reader.ReadFloat(_scaleKeyName);
+            Rotation = reader.ReadFloat(_rotationKeyName);
+            PolygonOrigin = reader.ReadEnum(PolygonOriginHelper.Instance, _polygonOriginKeyName);
+            Points.Read(_pointsNodeName, reader);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_closedKeyName, Closed);
+            writer.Write(_scaleKeyName, Scale);
+            writer.Write(_rotationKeyName, Rotation);
+            writer.WriteEnum(PolygonOriginHelper.Instance, _polygonOriginKeyName, PolygonOrigin);
+            Points.Write(_pointsNodeName, writer);
         }
     }
 }

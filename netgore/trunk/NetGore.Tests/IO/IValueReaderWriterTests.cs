@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using NetGore.IO;
@@ -1473,6 +1471,5 @@ namespace NetGore.Tests.IO
         /// <param name="name">Name to use for writing.</param>
         /// <param name="value">Value to write.</param>
         delegate void WriteTestValuesHandler<T>(IValueWriter w, string name, T value);
-
     }
 }

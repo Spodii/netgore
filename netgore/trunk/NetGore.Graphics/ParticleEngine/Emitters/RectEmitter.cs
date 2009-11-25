@@ -15,36 +15,13 @@ namespace NetGore.Graphics.ParticleEngine
         const bool _defaultPerimeter = false;
         const int _defaultWidth = 100;
         const string _emitterCategoryName = "Rect Emitter";
+        const string _heightKeyName = "Height";
+        const string _perimeterKeyName = "Perimeter";
+        const string _widthKeyName = "Width";
 
         int _height = _defaultHeight;
         bool _perimeter = _defaultPerimeter;
         int _width = _defaultWidth;
-
-        const string _heightKeyName = "Height";
-        const string _widthKeyName = "Width";
-        const string _perimeterKeyName = "Perimeter";
-
-        /// <summary>
-        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            Height = reader.ReadInt(_heightKeyName);
-            Width = reader.ReadInt(_widthKeyName);
-            Perimeter = reader.ReadBool(_perimeterKeyName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
-        {
-            writer.Write(_heightKeyName, Height);
-            writer.Write(_widthKeyName, Width);
-            writer.Write(_perimeterKeyName, Perimeter);
-        }
 
         /// <summary>
         /// Gets or sets the height of the rectangle.
@@ -127,6 +104,28 @@ namespace NetGore.Graphics.ParticleEngine
             // Get the force
             float radians = RandomHelper.NextFloat(MathHelper.TwoPi);
             force = new Vector2((float)Math.Sin(radians), (float)Math.Cos(radians));
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Height = reader.ReadInt(_heightKeyName);
+            Width = reader.ReadInt(_widthKeyName);
+            Perimeter = reader.ReadBool(_perimeterKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_heightKeyName, Height);
+            writer.Write(_widthKeyName, Width);
+            writer.Write(_perimeterKeyName, Perimeter);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 
@@ -18,6 +17,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         const float _defaultRate = 3.14159f;
 
+        const string _rateKeyName = "Rate";
+
         float _rate;
 
         /// <summary>
@@ -26,26 +27,6 @@ namespace NetGore.Graphics.ParticleEngine
         public RotationModifier() : base(false, true)
         {
             Rate = _defaultRate;
-        }
-
-        const string _rateKeyName = "Rate";
-
-        /// <summary>
-        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            Rate = reader.ReadFloat(_rateKeyName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(IValueWriter writer)
-        {
-            writer.Write(_rateKeyName, Rate);
         }
 
         /// <summary>
@@ -84,6 +65,24 @@ namespace NetGore.Graphics.ParticleEngine
         protected override void HandleProcessUpdated(ParticleEmitter emitter, Particle particle, int elapsedTime)
         {
             particle.Rotation += _rate * elapsedTime;
+        }
+
+        /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Rate = reader.ReadFloat(_rateKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_rateKeyName, Rate);
         }
     }
 }

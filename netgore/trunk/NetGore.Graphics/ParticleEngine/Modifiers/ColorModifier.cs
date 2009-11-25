@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -18,7 +17,13 @@ namespace NetGore.Graphics.ParticleEngine
         const string _categoryName = "Color Modifier";
 
         const byte _gOffset = 1;
+        const string _modifyAlphaKeyName = "ModifyAlpha";
+        const string _modifyBlueKeyName = "ModifyBlue";
+        const string _modifyGreenKeyName = "ModifyGreen";
+        const string _modifyRedKeyName = "ModifyRed";
+        const string _releaseColorKeyName = "ReleaseColor";
         const byte _rOffset = 0;
+        const string _ultimateColorKeyName = "UltimateColor";
         byte _modifyFlags = byte.MaxValue;
 
         /// <summary>
@@ -110,43 +115,6 @@ namespace NetGore.Graphics.ParticleEngine
         {
             const int mask = ((1 << 5) - 1);
             return (_modifyFlags & mask) == mask;
-        }
-
-        const string _modifyRedKeyName = "ModifyRed";
-        const string _modifyGreenKeyName = "ModifyGreen";
-        const string _modifyBlueKeyName = "ModifyBlue";
-        const string _modifyAlphaKeyName = "ModifyAlpha";
-        const string _releaseColorKeyName = "ReleaseColor";
-        const string _ultimateColorKeyName = "UltimateColor";
-
-        /// <summary>
-        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            ModifyRed = reader.ReadBool(_modifyRedKeyName);
-            ModifyGreen = reader.ReadBool(_modifyGreenKeyName);
-            ModifyBlue = reader.ReadBool(_modifyBlueKeyName);
-            ModifyAlpha = reader.ReadBool(_modifyAlphaKeyName);
-
-            ReleaseColor = reader.ReadColor(_releaseColorKeyName);
-            UltimateColor = reader.ReadColor(_ultimateColorKeyName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(IValueWriter writer)
-        {
-            writer.Write(_modifyRedKeyName, ModifyRed);
-            writer.Write(_modifyGreenKeyName, ModifyGreen);
-            writer.Write(_modifyBlueKeyName, ModifyBlue);
-            writer.Write(_modifyAlphaKeyName, ModifyAlpha);
-
-            writer.Write(_releaseColorKeyName, ReleaseColor);
-            writer.Write(_ultimateColorKeyName, UltimateColor);
         }
 
         /// <summary>
@@ -242,6 +210,21 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            ModifyRed = reader.ReadBool(_modifyRedKeyName);
+            ModifyGreen = reader.ReadBool(_modifyGreenKeyName);
+            ModifyBlue = reader.ReadBool(_modifyBlueKeyName);
+            ModifyAlpha = reader.ReadBool(_modifyAlphaKeyName);
+
+            ReleaseColor = reader.ReadColor(_releaseColorKeyName);
+            UltimateColor = reader.ReadColor(_ultimateColorKeyName);
+        }
+
+        /// <summary>
         /// Sets a bit in <see cref="_modifyFlags"/>.
         /// </summary>
         /// <param name="bit">The bit to set.</param>
@@ -258,6 +241,21 @@ namespace NetGore.Graphics.ParticleEngine
                 _modifyFlags &= (byte)~(1 << bit);
                 Debug.Assert(!IsBitSet(bit));
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_modifyRedKeyName, ModifyRed);
+            writer.Write(_modifyGreenKeyName, ModifyGreen);
+            writer.Write(_modifyBlueKeyName, ModifyBlue);
+            writer.Write(_modifyAlphaKeyName, ModifyAlpha);
+
+            writer.Write(_releaseColorKeyName, ReleaseColor);
+            writer.Write(_ultimateColorKeyName, UltimateColor);
         }
     }
 }

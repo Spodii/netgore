@@ -11,6 +11,7 @@ namespace NetGore.Graphics.ParticleEngine
     public class LinearGravityModifier : ParticleModifier
     {
         const string _categoryName = "Linear Gravity Modifier";
+        const string _gravityKeyName = "Gravity";
 
         Vector2 _gravity = new Vector2(0, 100);
 
@@ -19,26 +20,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public LinearGravityModifier() : base(false, true)
         {
-        }
-
-        const string _gravityKeyName = "Gravity";
-
-        /// <summary>
-        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            Gravity = reader.ReadVector2(_gravityKeyName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected override void WriteCustomValues(IValueWriter writer)
-        {
-            writer.Write(_gravityKeyName, Gravity);
         }
 
         /// <summary>
@@ -81,6 +62,24 @@ namespace NetGore.Graphics.ParticleEngine
             Vector2.Multiply(ref _gravity, elapsedTime * 0.001f, out deltaGrav);
 
             particle.ApplyForce(ref deltaGrav);
+        }
+
+        /// <summary>
+        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
+        protected override void ReadCustomValues(IValueReader reader)
+        {
+            Gravity = reader.ReadVector2(_gravityKeyName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected override void WriteCustomValues(IValueWriter writer)
+        {
+            writer.Write(_gravityKeyName, Gravity);
         }
     }
 }
