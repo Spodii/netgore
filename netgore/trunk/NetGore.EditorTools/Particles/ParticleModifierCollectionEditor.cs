@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using NetGore.Collections;
 using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.EditorTools
@@ -44,7 +45,7 @@ namespace NetGore.EditorTools
         /// <returns>A new instance of the specified object.</returns>
         protected override object CreateInstance(Type itemType)
         {
-            return ParticleModifier.CreateModifier(itemType);
+            return TypeFactory.GetTypeInstance(itemType);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override Type[] CreateNewItemTypes()
         {
-            return ParticleModifier.ModifierTypes.ToArray();
+            return ParticleModifierFactory.Instance.ToArray();
         }
 
         /// <summary>

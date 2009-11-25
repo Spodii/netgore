@@ -125,7 +125,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Creates an instance of a Type.
+        /// Creates an instance of a <see cref="Type"/>.
         /// </summary>
         /// <param name="type">Type to create an instance of.</param>
         /// <returns>An instance of the Type.</returns>
@@ -171,11 +171,11 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Gets the name of a Type.
+        /// Gets the name of a <see cref="Type"/> for this <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="type">Type to get the name of.</param>
-        /// <returns>The name of the Type.</returns>
-        protected virtual string GetTypeName(Type type)
+        /// <param name="type">The <see cref="Type"/> to get the name of.</param>
+        /// <returns>The name of the <see cref="Type"/>.</returns>
+        public virtual string GetTypeName(Type type)
         {
             // TODO: !! Can probably just use "type.Name". The assert below is to make sure the two are equal.
             string name = type.ToString().Split('.').Last();
@@ -184,9 +184,9 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Loads the Types of an Assembly.
+        /// Loads the <see cref="Type"/>s of an <see cref="Assembly"/>.
         /// </summary>
-        /// <param name="assembly">Assembly to load the Types from.</param>
+        /// <param name="assembly"><see cref="Assembly"/> to load the Types from.</param>
         void LoadAssemblyTypes(Assembly assembly)
         {
             // Check if this is from the Global Assembly Cache
