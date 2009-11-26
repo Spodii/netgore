@@ -11,7 +11,6 @@ namespace NetGore.Db
     public class DbControllerQueryAttributeChecker
     {
         readonly DbControllerQueryAttributeCheckerEventHandler _missingAttributeHandler;
-        readonly TypeFactory _typeFactory;
         readonly Type[] _typesToIgnore;
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace NetGore.Db
                 IsEnum = false
             };
 
-            _typeFactory = new TypeFactory(filter.GetFilter(), LoadTypeHandler, false);
+            new TypeFactory(filter.GetFilter(), LoadTypeHandler, false);
         }
 
         void LoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)

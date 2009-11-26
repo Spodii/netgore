@@ -74,10 +74,10 @@ namespace NetGore.AI
         /// <summary>
         /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="factoryTypeCollection"><see cref="TypeFactory"/> that the event occured on.</param>
+        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        protected virtual void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
+        protected virtual void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
         {
             var aiAttributes = loadedType.GetCustomAttributes(typeof(AIAttribute), false).Cast<AIAttribute>();
 
