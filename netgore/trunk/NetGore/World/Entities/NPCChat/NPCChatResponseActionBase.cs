@@ -19,7 +19,7 @@ namespace NetGore.NPCChat
         /// <summary>
         /// An empty array of <see cref="NPCChatResponseActionBase"/>s.
         /// </summary>
-        public static readonly NPCChatResponseActionBase[] EmptyActions = new NPCChatResponseActionBase[0];
+        public static readonly NPCChatResponseActionBase[] EmptyActions;
 
         /// <summary>
         /// Dictionary that contains the <see cref="NPCChatResponseActionBase"/> instance
@@ -33,11 +33,6 @@ namespace NetGore.NPCChat
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
 
-        /// <summary>
-        /// Loads and manages the derived Types for this collection.
-        /// </summary>
-        static readonly TypeFactory _typeCollection;
-
         readonly string _name;
 
         /// <summary>
@@ -45,6 +40,8 @@ namespace NetGore.NPCChat
         /// </summary>
         static NPCChatResponseActionBase()
         {
+            EmptyActions = new NPCChatResponseActionBase[0];
+
             var filter = new TypeFilterCreator
             {
                 IsClass = true,
@@ -54,7 +51,7 @@ namespace NetGore.NPCChat
                 ConstructorParameters = Type.EmptyTypes
             };
 
-            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
+            new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
         }
 
         /// <summary>
@@ -119,14 +116,14 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Handles when a new type has been loaded into the <see cref="FactoryTypeCollection"/>.
+        /// Handles when a new type has been loaded into the <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
+        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
+        static void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
         {
-            var instance = (NPCChatResponseActionBase)_typeCollection.GetTypeInstance(name);
+            var instance = (NPCChatResponseActionBase)typeFactory.GetTypeInstance(name);
 
             // Make sure the name is not already in use
             if (ContainsResponseAction(instance.Name))

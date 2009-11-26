@@ -27,12 +27,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Handles when a new type has been loaded into a FactoryTypeCollection.
+        /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
+        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
+        static void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
         {
             if (log.IsDebugEnabled)
                 log.DebugFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", name, loadedType);

@@ -62,6 +62,9 @@ namespace NetGore.IO
         {
             _useEnumNames = useEnumNames;
 
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException(filePath);
+
             using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 using (XmlReader r = XmlReader.Create(stream))

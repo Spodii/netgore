@@ -19,12 +19,12 @@ namespace NetGore.NPCChat.Conditionals
         /// <summary>
         /// Array used for an empty set of <see cref="NPCChatConditionalParameter"/>s.
         /// </summary>
-        static readonly NPCChatConditionalParameter[] _emptyParameters = new NPCChatConditionalParameter[0];
+        static readonly NPCChatConditionalParameter[] _emptyParameters;
 
         /// <summary>
         /// Array used for an empty set of <see cref="NPCChatConditionalParameterType"/>s.
         /// </summary>
-        static readonly NPCChatConditionalParameterType[] _emptyParameterTypes = new NPCChatConditionalParameterType[0];
+        static readonly NPCChatConditionalParameterType[] _emptyParameterTypes;
 
         /// <summary>
         /// Dictionary that contains the <see cref="NPCChatConditionalBase"/> instance
@@ -38,11 +38,6 @@ namespace NetGore.NPCChat.Conditionals
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
 
-        /// <summary>
-        /// Loads and manages the derived Types for this collection.
-        /// </summary>
-        static readonly TypeFactory _typeCollection;
-
         readonly string _name;
         readonly NPCChatConditionalParameterType[] _parameterTypes;
 
@@ -51,6 +46,9 @@ namespace NetGore.NPCChat.Conditionals
         /// </summary>
         static NPCChatConditionalBase()
         {
+            _emptyParameters = new NPCChatConditionalParameter[0];
+            _emptyParameterTypes = new NPCChatConditionalParameterType[0];
+
             var filter = new TypeFilterCreator
             {
                 IsClass = true,
@@ -60,7 +58,7 @@ namespace NetGore.NPCChat.Conditionals
                 ConstructorParameters = Type.EmptyTypes
             };
 
-            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
+            new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
         }
 
         /// <summary>
@@ -213,14 +211,14 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Handles when a new type has been loaded into the FactoryTypeCollection.
+        /// Handles when a new type has been loaded into the <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
+        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
+        static void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
         {
-            var instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
+            var instance = (NPCChatConditionalBase)typeFactory.GetTypeInstance(name);
 
             // Make sure the name is not already in use
             if (ContainsConditional(instance.Name))
