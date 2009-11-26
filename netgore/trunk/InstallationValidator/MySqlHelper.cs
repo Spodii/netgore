@@ -304,6 +304,7 @@ namespace InstallationValidator
                 Console.WriteLine(
                     "Please enter the path to mysql.exe, which should be located in your MySQL installation directory under the sub-directory \\bin\\.");
                 Console.WriteLine(@"Example: C:\Program Files\MySQL\MySQL Server 5.1\bin\mysql.exe");
+                Console.WriteLine(@"Type in the path of MySQL.exe:");
                 while (true)
                 {
                     Console.WriteLine();
