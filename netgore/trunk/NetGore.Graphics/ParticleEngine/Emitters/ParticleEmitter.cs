@@ -577,7 +577,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Write(IValueWriter writer)
         {
             // Write the primary values
-            writer.Write(_blendModeKeyName, BlendMode);
+            writer.WriteEnumName(_blendModeKeyName, BlendMode);
             writer.Write(_budgetKeyName, Budget);
             writer.Write(_lifeKeyName, Life);
             writer.Write(_originKeyName, Origin);
