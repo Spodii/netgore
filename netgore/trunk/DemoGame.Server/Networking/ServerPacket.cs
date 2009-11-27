@@ -62,7 +62,7 @@ namespace DemoGame.Server
         {
             pw.Write(ServerPacketID.CreateDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
-            DynamicEntityFactory.Write(pw, dynamicEntity);
+            DynamicEntityFactory.Instance.Write(pw, dynamicEntity);
         }
 
         public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)

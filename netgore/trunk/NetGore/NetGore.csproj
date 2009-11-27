@@ -194,13 +194,14 @@
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="ConsoleInputBuffer.cs" />
     <Compile Include="World\Entities\CollisionTypeHelper.cs" />
+    <Compile Include="World\Entities\IDynamicEntityFactory.cs" />
     <Compile Include="World\Entities\IUpdateableEntity.cs" />
     <Compile Include="World\Entities\IUsableEntity.cs" />
     <Compile Include="World\Entities\BoxSide.cs" />
     <Compile Include="World\Entities\CollisionBox.cs" />
     <Compile Include="World\Entities\CollisionType.cs" />
     <Compile Include="World\Entities\DynamicEntity.cs" />
-    <Compile Include="World\Entities\DynamicEntityFactory.cs" />
+    <Compile Include="World\Entities\DynamicEntityFactoryBase.cs" />
     <Compile Include="World\Entities\Entity.cs" />
     <Compile Include="World\Entities\EntityEventHandler.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />

@@ -94,7 +94,7 @@ namespace NetGore
         int _syncPnVLastTime;
 
         /// <summary>
-        /// DynamicEntity constructor.
+        /// Initializes a new instance of the <see cref="DynamicEntity"/> class.
         /// </summary>
         protected DynamicEntity()
         {

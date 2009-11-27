@@ -14,16 +14,22 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class DynamicEntityTests
     {
+        class DynamicEntityFactory : DynamicEntityFactoryBase
+        {
+        }
+
+        static readonly IDynamicEntityFactory _dynamicEntityFactoryBase = new DynamicEntityFactory();
+
         [Test]
         public void TestSkipNonSyncNetworkValues()
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE { SkipA = 1, SkipB = 2, SkipC = 3 };
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
 
             BitStream reader = new BitStream(buffer);
-            DE dest = (DE)DynamicEntityFactory.Read(reader);
+            DE dest = (DE)_dynamicEntityFactoryBase.Read(reader);
 
             Assert.AreEqual(src.Position, dest.Position);
             Assert.AreEqual(src.Size, dest.Size);
@@ -105,11 +111,11 @@ namespace NetGore.Tests.NetGore
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE { SkipA = 1, SkipB = 2, SkipC = 3 };
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
 
             BitStream reader = new BitStream(buffer);
-            DE dest = (DE)DynamicEntityFactory.Read(reader);
+            DE dest = (DE)_dynamicEntityFactoryBase.Read(reader);
 
             Assert.AreEqual(src.Position, dest.Position);
             Assert.AreEqual(src.Size, dest.Size);
@@ -194,7 +200,7 @@ namespace NetGore.Tests.NetGore
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE();
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
         }
 
         [Test]
@@ -202,11 +208,11 @@ namespace NetGore.Tests.NetGore
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE();
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
 
             BitStream reader = new BitStream(buffer);
-            DynamicEntityFactory.Read(reader);
+            _dynamicEntityFactoryBase.Read(reader);
         }
 
         [Test]
@@ -220,7 +226,7 @@ namespace NetGore.Tests.NetGore
             {
                 DE src = new DE();
                 sources.Add(src);
-                DynamicEntityFactory.Write(writer, src);
+                _dynamicEntityFactoryBase.Write(writer, src);
             }
             var buffer = writer.GetBuffer();
 
@@ -228,7 +234,7 @@ namespace NetGore.Tests.NetGore
             for (int i = 0; i < count; i++)
             {
                 DE src = sources[i];
-                DE dest = (DE)DynamicEntityFactory.Read(reader);
+                DE dest = (DE)_dynamicEntityFactoryBase.Read(reader);
 
                 Assert.AreEqual(src.Position, dest.Position);
                 Assert.AreEqual(src.Size, dest.Size);
@@ -276,7 +282,7 @@ namespace NetGore.Tests.NetGore
                         sources.Add(src);
                         string key = "Entity" + Parser.Invariant.ToString(i);
                         writer.WriteStartNode(key);
-                        DynamicEntityFactory.Write(writer, src);
+                        _dynamicEntityFactoryBase.Write(writer, src);
                         writer.WriteEndNode(key);
                     }
                 }
@@ -288,7 +294,7 @@ namespace NetGore.Tests.NetGore
                     IValueReader r = reader.ReadNode(key);
 
                     DE src = sources[i];
-                    DE dest = (DE)DynamicEntityFactory.Read(r);
+                    DE dest = (DE)_dynamicEntityFactoryBase.Read(r);
 
                     Assert.AreEqual(src.Position, dest.Position);
                     Assert.AreEqual(src.Size, dest.Size);
@@ -328,11 +334,11 @@ namespace NetGore.Tests.NetGore
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE();
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
 
             BitStream reader = new BitStream(buffer);
-            DE dest = (DE)DynamicEntityFactory.Read(reader);
+            DE dest = (DE)_dynamicEntityFactoryBase.Read(reader);
 
             Assert.AreEqual(src.Position, dest.Position);
             Assert.AreEqual(src.Size, dest.Size);
@@ -348,11 +354,11 @@ namespace NetGore.Tests.NetGore
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE();
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
 
             BitStream reader = new BitStream(buffer);
-            DE dest = (DE)DynamicEntityFactory.Read(reader);
+            DE dest = (DE)_dynamicEntityFactoryBase.Read(reader);
 
             Assert.AreEqual(src.Position, dest.Position);
             Assert.AreEqual(src.Size, dest.Size);
@@ -426,11 +432,11 @@ namespace NetGore.Tests.NetGore
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE();
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
 
             BitStream reader = new BitStream(buffer);
-            DE dest = (DE)DynamicEntityFactory.Read(reader);
+            DE dest = (DE)_dynamicEntityFactoryBase.Read(reader);
 
             Assert.AreEqual(src.Position, dest.Position);
             Assert.AreEqual(src.Size, dest.Size);
@@ -499,11 +505,11 @@ namespace NetGore.Tests.NetGore
         {
             BitStream writer = new BitStream(BitStreamMode.Write, 2048);
             DE src = new DE();
-            DynamicEntityFactory.Write(writer, src);
+            _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
 
             BitStream reader = new BitStream(buffer);
-            DE dest = (DE)DynamicEntityFactory.Read(reader);
+            DE dest = (DE)_dynamicEntityFactoryBase.Read(reader);
 
             Assert.AreEqual(src.Position, dest.Position);
             Assert.AreEqual(src.Size, dest.Size);

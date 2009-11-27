@@ -345,7 +345,7 @@ namespace DemoGame.Server
 
             _isLoaded = true;
 
-            Load(ContentPaths.Build, true);
+            Load(ContentPaths.Build, true, DynamicEntityFactory.Instance);
 
             _npcSpawners = NPCSpawner.LoadSpawners(this).ToCompact();
 

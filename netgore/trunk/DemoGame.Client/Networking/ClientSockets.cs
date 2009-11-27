@@ -18,9 +18,13 @@ namespace DemoGame.Client
         int _lastPingTime;
         LatencyTrackerClient _latencyTracker;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientSockets"/> class.
+        /// </summary>
+        /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
         public ClientSockets(GameplayScreen gameplayScreen)
         {
-            _packetHandler = new ClientPacketHandler(this, gameplayScreen);
+            _packetHandler = new ClientPacketHandler(this, gameplayScreen, DynamicEntityFactory.Instance);
             OnConnect += onConnect;
 
             // Bind the UDP port

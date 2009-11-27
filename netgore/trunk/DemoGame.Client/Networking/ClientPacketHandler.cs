@@ -30,6 +30,7 @@ namespace DemoGame.Client
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
+        readonly IDynamicEntityFactory _dynamicEntityFactory;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -46,8 +47,18 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="socketSender">The socket sender.</param>
         /// <param name="gameplayScreen">The gameplay screen.</param>
-        public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen)
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to serialize
+        /// <see cref="DynamicEntity"/>s.</param>
+        public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen, IDynamicEntityFactory dynamicEntityFactory)
         {
+            if (dynamicEntityFactory == null)
+                throw new ArgumentNullException("dynamicEntityFactory");
+            if (gameplayScreen == null)
+                throw new ArgumentNullException("gameplayScreen");
+            if (socketSender == null)
+                throw new ArgumentNullException("socketSender");
+
+            _dynamicEntityFactory = dynamicEntityFactory;
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
             _ppManager = new MessageProcessorManager(this, ServerPacketIDHelper.Instance.BitsRequired);
@@ -59,7 +70,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the GameplayScreen.
+        /// Gets the <see cref="GameplayScreen"/>.
         /// </summary>
         public GameplayScreen GameplayScreen
         {
@@ -67,7 +78,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the map used by the world (Parent.World.Map)
+        /// Gets the <see cref="Map"/> used by the <see cref="World"/>.
         /// </summary>
         public Map Map
         {
@@ -81,7 +92,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the user's character
+        /// Gets the user's <see cref="Character"/>.
         /// </summary>
         public Character User
         {
@@ -195,7 +206,7 @@ namespace DemoGame.Client
         void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
             MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
+            DynamicEntity dynamicEntity = _dynamicEntityFactory.Read(r);
             Map.AddDynamicEntity(dynamicEntity, mapEntityIndex);
 
             Character character = dynamicEntity as Character;
@@ -487,7 +498,7 @@ namespace DemoGame.Client
 
             // Create the new map
             Map newMap = new Map(mapIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
-            newMap.Load(ContentPaths.Build, false);
+            newMap.Load(ContentPaths.Build, false, _dynamicEntityFactory);
 
             // Change maps
             World.SetMap(newMap);

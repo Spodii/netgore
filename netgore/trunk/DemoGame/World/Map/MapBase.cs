@@ -697,10 +697,12 @@ namespace DemoGame
         /// <param name="contentPath">ContentPath to load the map from.</param>
         /// <param name="loadDynamicEntities">If true, the DynamicEntities will be loaded from the file. If false,
         /// all DynamicEntities will be skipped.</param>
-        public void Load(ContentPaths contentPath, bool loadDynamicEntities)
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
+        /// <see cref="DynamicEntity"/>s.</param>
+        public void Load(ContentPaths contentPath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
             string path = contentPath.Maps.Join(Index + "." + MapFileSuffix);
-            Load(path, loadDynamicEntities);
+            Load(path, loadDynamicEntities, dynamicEntityFactory);
         }
 
         /// <summary>
@@ -709,8 +711,13 @@ namespace DemoGame
         /// <param name="filePath">Path to the file to load.</param>
         /// <param name="loadDynamicEntities">If true, the DynamicEntities will be loaded from the file. If false,
         /// all DynamicEntities will be skipped.</param>
-        protected virtual void Load(string filePath, bool loadDynamicEntities)
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
+        /// <see cref="DynamicEntity"/>s.</param>
+        protected virtual void Load(string filePath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
+            if (dynamicEntityFactory == null)
+                throw new ArgumentNullException("dynamicEntityFactory");
+
             if (!File.Exists(filePath))
             {
                 const string errmsg = "Map file `{0}` does not exist - unable to load map.";
@@ -722,13 +729,13 @@ namespace DemoGame
             var r = new XmlValueReader(filePath, _rootNodeName);
             LoadHeader(r);
             LoadWalls(r);
-            LoadDynamicEntities(r, loadDynamicEntities);
+            LoadDynamicEntities(r, loadDynamicEntities, dynamicEntityFactory);
             LoadMisc(r.ReadNode(_miscNodeName));
         }
 
-        void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities)
+        void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
-            var loadedDynamicEntities = r.ReadManyNodes<DynamicEntity>(_dynamicEntitiesNodeName, DynamicEntityFactory.Read);
+            var loadedDynamicEntities = r.ReadManyNodes<DynamicEntity>(_dynamicEntitiesNodeName, dynamicEntityFactory.Read);
 
             // Add the loaded DynamicEntities to the map
             if (loadDynamicEntities)
@@ -891,10 +898,12 @@ namespace DemoGame
         /// </summary>
         /// <param name="mapIndex">Map index to save as.</param>
         /// <param name="contentPath">Content path to save the map file to.</param>
-        public void Save(MapIndex mapIndex, ContentPaths contentPath)
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
+        /// <see cref="DynamicEntity"/>s.</param>
+        public void Save(MapIndex mapIndex, ContentPaths contentPath, IDynamicEntityFactory dynamicEntityFactory)
         {
             var path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
-            Save(path);
+            Save(path, dynamicEntityFactory);
 
             if (OnSave != null)
                 OnSave(this);
@@ -904,17 +913,21 @@ namespace DemoGame
         /// Saves the map to a file to the specified file path.
         /// </summary>
         /// <param name="filePath">Path to save the map file at.</param>
-        void Save(string filePath)
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
+        /// <see cref="DynamicEntity"/>s.</param>
+        void Save(string filePath, IDynamicEntityFactory dynamicEntityFactory)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
+            if (dynamicEntityFactory == null)
+                throw new ArgumentNullException("dynamicEntityFactory");
 
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             using (IValueWriter w = new XmlValueWriter(filePath, _rootNodeName))
             {
                 SaveHeader(w);
                 SaveWalls(w);
-                SaveDynamicEntities(w);
+                SaveDynamicEntities(w, dynamicEntityFactory);
 
                 w.WriteStartNode(_miscNodeName);
                 SaveMisc(w);
@@ -922,9 +935,9 @@ namespace DemoGame
             }
         }
 
-        void SaveDynamicEntities(IValueWriter w)
+        void SaveDynamicEntities(IValueWriter w, IDynamicEntityFactory dynamicEntityFactory)
         {
-            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, DynamicEntityFactory.Write);
+            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, dynamicEntityFactory.Write);
         }
 
         /// <summary>
