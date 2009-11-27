@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using log4net;
 
 namespace NetGore.Collections
 {
@@ -203,6 +204,17 @@ namespace NetGore.Collections
             foreach (Type type in newTypes)
             {
                 string typeName = GetTypeName(type);
+
+                // Ensure the name isn't already in use
+                if (_nameToType.ContainsKey(typeName))
+                {
+                    const string errmsg = "Type name `{0}` is alredy used by Type `{1}` - cannot add new Type `{2}`.";
+                    string err = string.Format(errmsg, typeName, _nameToType[typeName], type);
+                    log.Fatal(err);
+                    throw new TypeException(err);
+                }
+
+                // Add the type/key to the dictionaries
                 _nameToType.Add(typeName, type);
                 _typeToName.Add(type, typeName);
 
@@ -210,6 +222,8 @@ namespace NetGore.Collections
                     OnLoadType(this, type, typeName);
             }
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #region IEnumerable<Type> Members
 
