@@ -13,6 +13,12 @@ namespace NetGore
     /// </summary>
     public static class IValueWriterExtensions
     {
+
+        public static void Write(this IValueWriter writer, string name, SpriteBlendMode spriteBlendMode)
+        {
+            writer.WriteEnum(SpriteBlendModeHelper.Instance, name, spriteBlendMode);
+        }
+
         /// <summary>
         /// Writes a <see cref="VariableByte"/> the specified writer.
         /// </summary>
