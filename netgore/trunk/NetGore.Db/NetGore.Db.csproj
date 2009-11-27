@@ -35,6 +35,7 @@
       <HintPath>..\_dependencies\log4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -47,8 +48,8 @@
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="DataReaderContainer.cs" />
     <Compile Include="Connections\DbConnectionPool.cs" />
-    <Compile Include="DbControllerQueryAttributeChecker.cs" />
-    <Compile Include="DbControllerQueryAttributeCheckerEventHandler.cs" />
+    <Compile Include="DbController\DbControllerQueryAttributeChecker.cs" />
+    <Compile Include="DbController\DbControllerQueryAttributeCheckerEventHandler.cs" />
     <Compile Include="DbController\DbControllerBase.cs" />
     <Compile Include="DbController\DbControllerQueryAttribute.cs" />
     <Compile Include="DbController\IDbController.cs" />
@@ -59,6 +60,9 @@
     <Compile Include="DbTableDataManager\DbTableDataManager.cs" />
     <Compile Include="IDataReaderExtensions.cs" />
     <Compile Include="IDCreatorBase.cs" />
+    <Compile Include="MySql\MySqlDbConnectionPool.cs" />
+    <Compile Include="MySql\MySqlDbController.cs" />
+    <Compile Include="MySql\Special Queries\MySqlFindForeignKeysQuery.cs" />
     <Compile Include="Query\DbQueryBase.cs" />
     <Compile Include="Query\DbQueryNonReader.cs" />
     <Compile Include="Query\DbQueryReader.cs" />
@@ -71,16 +75,6 @@
     <Compile Include="TableColumnPair.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
-      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
-      <Name>NetGore.Collections</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
-      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
-      <Name>NetGore.Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>

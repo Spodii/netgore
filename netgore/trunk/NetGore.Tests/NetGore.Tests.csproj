@@ -55,10 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\DArrayTests.cs" />
-    <Compile Include="Collections\MeanStackTests.cs" />
-    <Compile Include="Collections\ObjectPoolTests.cs" />
-    <Compile Include="Collections\TSListTests.cs" />
+    <Compile Include="NetGore\Collections\DArrayTests.cs" />
+    <Compile Include="NetGore\Collections\MeanStackTests.cs" />
+    <Compile Include="NetGore\Collections\ObjectPoolTests.cs" />
+    <Compile Include="NetGore\Collections\TSListTests.cs" />
     <Compile Include="CreateCreatorHandler.cs" />
     <Compile Include="Db\ClassCreator\AliasingTests.cs" />
     <Compile Include="Db\ClassCreator\ClassCreatorHelper.cs" />
@@ -72,13 +72,13 @@
     <Compile Include="Graphics\GUI\StyledTextTests.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleModifierCollectionTests.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleModifierTests.cs" />
-    <Compile Include="IO\BitOpsTests.cs" />
-    <Compile Include="IO\BitStreamTests.cs" />
-    <Compile Include="IO\IValueReaderWriterTests.cs" />
-    <Compile Include="IO\SettingsManagerTests.cs" />
-    <Compile Include="IO\VirtualListTests.cs" />
-    <Compile Include="IO\XmlInfoReaderTests.cs" />
-    <Compile Include="IO\XmlReaderCreationTests.cs" />
+    <Compile Include="NetGore\IO\BitOpsTests.cs" />
+    <Compile Include="NetGore\IO\BitStreamTests.cs" />
+    <Compile Include="NetGore\IO\IValueReaderWriterTests.cs" />
+    <Compile Include="NetGore\IO\SettingsManagerTests.cs" />
+    <Compile Include="NetGore\IO\VirtualListTests.cs" />
+    <Compile Include="NetGore\IO\XmlInfoReaderTests.cs" />
+    <Compile Include="NetGore\IO\XmlReaderCreationTests.cs" />
     <Compile Include="IValueReaderWriterTestHelper.cs" />
     <Compile Include="NetGore\ClampTests.cs" />
     <Compile Include="NetGore\CollisionBoxTests.cs" />
@@ -106,17 +106,9 @@
     <Compile Include="TestDb.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
-      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
-      <Name>NetGore.Collections</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj">
       <Project>{927E889E-AC38-4549-A717-A4FFCA22ADB6}</Project>
       <Name>NetGore.Db.ClassCreator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Db.MySql\NetGore.Db.MySql.csproj">
-      <Project>{43D09443-29F5-4688-81D7-5B5835EAC550}</Project>
-      <Name>NetGore.Db.MySql</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
       <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
@@ -126,22 +118,9 @@
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
       <Name>NetGore.EditorTools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
-      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
-      <Name>NetGore.Core</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
-      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
-      <Name>NetGore.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Network\NetGore.Network.csproj">
-      <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
-      <Name>NetGore.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>

@@ -95,24 +95,18 @@
     </NestedContentProject>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoGame.ClientObjs\DemoGame.ClientObjs.csproj">
-      <Project>{7313F955-A78D-48A2-B087-8EC22E24ED8A}</Project>
-      <Name>DemoGame.ClientObjs</Name>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
-      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
-      <Name>NetGore.Core</Name>
+    <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">
+      <Project>{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}</Project>
+      <Name>DemoGame.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
-      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
-      <Name>NetGore.IO</Name>
-      <Private>True</Private>
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>NetGore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

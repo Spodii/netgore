@@ -103,13 +103,17 @@
     <Compile Include="Controls\StatusEffectsForm.cs" />
     <Compile Include="Controls\ToolbarItemType.cs" />
     <Compile Include="GameplayScreenControls.cs" />
+    <Compile Include="Interface\DamageText.cs" />
+    <Compile Include="Interface\DamageTextPool.cs" />
+    <Compile Include="Interface\GameControlsKeys.cs" />
+    <Compile Include="Interface\GUIManager.cs" />
     <Compile Include="ItemInfoRequester\EquipmentInfoRequester.cs" />
     <Compile Include="ItemInfoHelper.cs" />
     <Compile Include="ItemInfoRequester\InventoryInfoRequester.cs" />
     <Compile Include="ItemInfoRequester\ItemInfoRequesterBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CharacterStats.cs" />
-    <Compile Include="GUISettings.cs" />
+    <Compile Include="Interface\GUISettings.cs" />
     <Compile Include="Networking\ClientPacket.cs" />
     <Compile Include="Networking\ClientSockets.cs" />
     <Compile Include="Controls\InfoBox.cs" />
@@ -125,8 +129,31 @@
     <Compile Include="DemoGame.cs" />
     <Compile Include="Controls\StatsForm.cs" />
     <Compile Include="Controls\Toolbar.cs" />
+    <Compile Include="ShopInfo.cs" />
+    <Compile Include="Skin.cs" />
     <Compile Include="StatTypeExtensions.cs" />
+    <Compile Include="UserEquipped.cs" />
     <Compile Include="UserInfo.cs" />
+    <Compile Include="World\Map\Entities\Character.cs" />
+    <Compile Include="World\Map\Entities\DamageTrapEntity.cs" />
+    <Compile Include="World\Map\Entities\EntityDrawer.cs" />
+    <Compile Include="World\Map\Entities\ItemEntity.cs" />
+    <Compile Include="World\Map\Entities\ItemStats.cs" />
+    <Compile Include="World\Map\Entities\NPC.cs" />
+    <Compile Include="World\Map\Entities\NPCChat\NPCChatDialog.cs" />
+    <Compile Include="World\Map\Entities\NPCChat\NPCChatDialogItem.cs" />
+    <Compile Include="World\Map\Entities\NPCChat\NPCChatManager.cs" />
+    <Compile Include="World\Map\Entities\NPCChat\NPCChatResponse.cs" />
+    <Compile Include="World\Map\Entities\Skills\InfoManager.cs" />
+    <Compile Include="World\Map\Entities\Skills\SkillInfo.cs" />
+    <Compile Include="World\Map\Entities\Skills\StatusEffectInfo.cs" />
+    <Compile Include="World\Map\Entities\TeleportEntity.cs" />
+    <Compile Include="World\Map\Entities\User.cs" />
+    <Compile Include="World\Map\Map.cs" />
+    <Compile Include="World\Map\MapDrawExtensionBase.cs" />
+    <Compile Include="World\Map\MapEntityBoxDrawer.cs" />
+    <Compile Include="World\Map\MapWallDrawer.cs" />
+    <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>
     <NestedContentProject Include="Content\Content.contentproj">
@@ -139,33 +166,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoGame.ClientObjs\DemoGame.ClientObjs.csproj">
-      <Project>{7313F955-A78D-48A2-B087-8EC22E24ED8A}</Project>
-      <Name>DemoGame.ClientObjs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
       <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
       <Name>NetGore.Audio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
-      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
-      <Name>NetGore.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
-      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
-      <Name>NetGore.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
-      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
-      <Name>NetGore.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Network\NetGore.Network.csproj">
-      <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
-      <Name>NetGore.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>

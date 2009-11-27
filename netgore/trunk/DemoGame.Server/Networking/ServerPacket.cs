@@ -4,6 +4,7 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Network;
 
 namespace DemoGame.Server
