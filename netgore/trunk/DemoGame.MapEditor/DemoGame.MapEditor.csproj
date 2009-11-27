@@ -53,6 +53,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -84,6 +85,7 @@
     <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MapEditorDynamicEntityFactory.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Forms\ScreenForm.cs">
       <SubType>Form</SubType>

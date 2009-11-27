@@ -19,7 +19,6 @@ using NetGore.IO;
 using Map = DemoGame.Client.Map;
 using World = DemoGame.Client.World;
 using Character = DemoGame.Client.Character;
-using DynamicEntityFactory = DemoGame.Client.DynamicEntityFactory;
 
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
@@ -277,7 +276,7 @@ namespace DemoGame.MapEditor
 
                 // Set new map
                 _map = value;
-                _map.Load(ContentPaths.Dev, true, DynamicEntityFactory.Instance);
+                _map.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
                 _map.OnSave += Map_OnSave;
 
                 // Remove all of the walls previously created from the MapGrhs
@@ -460,7 +459,7 @@ namespace DemoGame.MapEditor
             DbController.GetQuery<InsertMapQuery>().Execute(Map);
             Map.OnSave += Map_OnSave;
             Map.SetDimensions(new Vector2(30 * 32, 20 * 32));
-            Map.Save(index, ContentPaths.Dev, DynamicEntityFactory.Instance);
+            Map.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
             SetMap(newMapPath);
         }
 
@@ -480,7 +479,7 @@ namespace DemoGame.MapEditor
             }
 
             // Write the map
-            Map.Save(Map.Index, ContentPaths.Dev, DynamicEntityFactory.Instance);
+            Map.Save(Map.Index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
 
             // Remove the extra walls
             foreach (WallEntityBase wall in extraWalls)
@@ -742,8 +741,8 @@ namespace DemoGame.MapEditor
 
                 using (Map tempMap = new Map(index, _world, GameScreen.GraphicsDevice))
                 {
-                    tempMap.Load(ContentPaths.Dev, true, DynamicEntityFactory.Instance);
-                    tempMap.Save(index, ContentPaths.Dev, DynamicEntityFactory.Instance);
+                    tempMap.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
+                    tempMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
                 }
             }
         }
