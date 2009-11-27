@@ -77,15 +77,150 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\AccountID.cs" />
+    <Compile Include="Account\AccountIDCreator.cs" />
+    <Compile Include="DbConnectionSettings.cs" />
+    <Compile Include="DbObjsTmp\AccountTable.cs" />
+    <Compile Include="DbObjsTmp\AllianceAttackableTable.cs" />
+    <Compile Include="DbObjsTmp\AllianceHostileTable.cs" />
+    <Compile Include="DbObjsTmp\AllianceTable.cs" />
+    <Compile Include="DbObjsTmp\CharacterEquippedTable.cs" />
+    <Compile Include="DbObjsTmp\CharacterInventoryTable.cs" />
+    <Compile Include="DbObjsTmp\CharacterStatusEffectTable.cs" />
+    <Compile Include="DbObjsTmp\CharacterTable.cs" />
+    <Compile Include="DbObjsTmp\CharacterTemplateEquippedTable.cs" />
+    <Compile Include="DbObjsTmp\CharacterTemplateInventoryTable.cs" />
+    <Compile Include="DbObjsTmp\CharacterTemplateTable.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\AccountTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\AllianceAttackableTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\AllianceHostileTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\AllianceTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\CharacterEquippedTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\CharacterInventoryTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\CharacterStatusEffectTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\CharacterTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\CharacterTemplateEquippedTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\CharacterTemplateInventoryTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\CharacterTemplateTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\GameConstantTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\ItemTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\ItemTemplateTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\MapSpawnTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\MapTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\NpcCharacterTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\ServerSettingTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\ServerTimeTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\ShopItemTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\ShopTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\DbExtensions\UserCharacterTableDbExtensions.cs" />
+    <Compile Include="DbObjsTmp\GameConstantTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IAccountTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IAllianceAttackableTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IAllianceHostileTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IAllianceTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\ICharacterEquippedTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\ICharacterInventoryTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\ICharacterStatusEffectTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\ICharacterTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\ICharacterTemplateEquippedTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\ICharacterTemplateInventoryTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\ICharacterTemplateTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IGameConstantTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IItemTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IItemTemplateTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IMapSpawnTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\INpcCharacterTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IServerSettingTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IServerTimeTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IShopItemTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IShopTable.cs" />
+    <Compile Include="DbObjsTmp\Interfaces\IUserCharacterTable.cs" />
+    <Compile Include="DbObjsTmp\ItemTable.cs" />
+    <Compile Include="DbObjsTmp\ItemTemplateTable.cs" />
+    <Compile Include="DbObjsTmp\MapSpawnTable.cs" />
+    <Compile Include="DbObjsTmp\NpcCharacterTable.cs" />
+    <Compile Include="DbObjsTmp\ServerSettingTable.cs" />
+    <Compile Include="DbObjsTmp\ServerTimeTable.cs" />
+    <Compile Include="DbObjsTmp\ShopItemTable.cs" />
+    <Compile Include="DbObjsTmp\ShopTable.cs" />
+    <Compile Include="DbObjsTmp\UserCharacterTable.cs" />
+    <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
+    <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
+    <Compile Include="Queries\Account\CreateAccountQuery.cs" />
+    <Compile Include="Queries\Account\CreateUserOnAccountQuery.cs" />
+    <Compile Include="Queries\Account\SelectAccountCharacterIDsQuery.cs" />
+    <Compile Include="Queries\Account\SelectAccountIDFromNameQuery.cs" />
+    <Compile Include="Queries\Account\SetAccountCurrentIPNullQuery.cs" />
+    <Compile Include="Queries\Account\SetAccountCurrentIPsNullQuery.cs" />
+    <Compile Include="Queries\Account\UpdateTimeLastLoginQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceIDsQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceQuery.cs" />
+    <Compile Include="Queries\Character\Items\DeleteCharacterEquippedItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\DeleteCharacterInventoryItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\InsertCharacterEquippedItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\InsertCharacterInventoryItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\SelectCharacterEquippedItemsQuery.cs" />
+    <Compile Include="Queries\Character\Items\SelectCharacterInventoryItemsQuery.cs" />
+    <Compile Include="Queries\Character\SelectAccountCharacterInfoQuery.cs" />
+    <Compile Include="Queries\Character\SelectCharacterByIDQuery.cs" />
+    <Compile Include="Queries\Character\SelectCharacterQuery.cs" />
+    <Compile Include="Queries\Character\SelectPersistentMapNPCsQuery.cs" />
+    <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
+    <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
+    <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
+    <Compile Include="Queries\Character\StatusEffect\SelectCharacterStatusEffectsQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateEquippedQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateIDsQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuery.cs" />
+    <Compile Include="Queries\DbTableValidator.cs" />
+    <Compile Include="Queries\IDataReaderExtensions.cs" />
+    <Compile Include="Queries\Item\DeleteItemQuery.cs" />
+    <Compile Include="Queries\Item\ReplaceItemQuery.cs" />
+    <Compile Include="Queries\Item\SelectItemQuery.cs" />
+    <Compile Include="Queries\Item\SelectItemsQuery.cs" />
+    <Compile Include="Queries\Item\Template\SelectItemTemplateIDsQuery.cs" />
+    <Compile Include="Queries\Item\Template\SelectItemTemplateQuery.cs" />
+    <Compile Include="Queries\Item\UpdateItemFieldQuery.cs" />
+    <Compile Include="Queries\Map\InsertMapQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\InsertMapSpawnQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\SelectMapSpawnQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\SelectMapSpawnsOnMapQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\UpdateMapSpawnQuery.cs" />
+    <Compile Include="Queries\Map\UpdateMapQuery.cs" />
+    <Compile Include="Queries\Misc\SelectServerSettingsQuery.cs" />
+    <Compile Include="Queries\Misc\UpdateGameDataTableQuery.cs" />
+    <Compile Include="Queries\Misc\UpdateServerTimeQuery.cs" />
+    <Compile Include="Queries\QueryAsserts.cs" />
+    <Compile Include="Queries\ServerDbController.cs" />
+    <Compile Include="Queries\Shop\SelectShopIDsQuery.cs" />
+    <Compile Include="Queries\Shop\SelectShopQuery.cs" />
+    <Compile Include="Queries\Shop\ShopItem\SelectShopItemsQuery.cs" />
+    <Compile Include="Queries\User\UserExistsQuery.cs" />
+    <Compile Include="World\Map\Entities\ActiveStatusEffectID.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\TestAI.cs" />
+    <Compile Include="World\Map\Entities\Characters\Alliance\Alliance.cs" />
+    <Compile Include="World\Map\Entities\Characters\Alliance\AllianceID.cs" />
+    <Compile Include="World\Map\Entities\Characters\Alliance\AllianceManager.cs" />
     <Compile Include="World\Map\Entities\Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="World\Map\Entities\Characters\CharacterID.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterIDCreator.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStatusEffects.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterSPSynchronizer.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStats.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterTemplate.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterTemplateEquipmentItem.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterTemplateID.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterTemplateIDConverter.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterTemplateInventoryItem.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterTemplateManager.cs" />
     <Compile Include="World\Map\Entities\Characters\NonPersistentCharacterStatusEffects.cs" />
     <Compile Include="World\Map\Entities\Characters\PersistentCharacterStatusEffects.cs" />
     <Compile Include="World\Map\Entities\Characters\NPC.cs">
@@ -97,10 +232,18 @@
     <Compile Include="World\Map\Entities\Characters\CharacterTemplateInventoryItemExtensions.cs" />
     <Compile Include="Console\ConsoleCommandAttribute.cs" />
     <Compile Include="IRespawnable.cs" />
+    <Compile Include="World\Map\Entities\Items\BitStreamItemInfoExtensions.cs" />
     <Compile Include="World\Map\Entities\Items\CharacterEquipped.cs" />
     <Compile Include="World\Map\Entities\Items\CharacterInventory.cs" />
     <Compile Include="World\Map\Entities\Items\InventoryChangeInfo.cs" />
     <Compile Include="World\Map\Entities\Items\InventoryChangeTracker.cs" />
+    <Compile Include="World\Map\Entities\Items\ItemChance.cs" />
+    <Compile Include="World\Map\Entities\Items\ItemID.cs" />
+    <Compile Include="World\Map\Entities\Items\ItemIDCreator.cs" />
+    <Compile Include="World\Map\Entities\Items\ItemStats.cs" />
+    <Compile Include="World\Map\Entities\Items\ItemTemplateComparer.cs" />
+    <Compile Include="World\Map\Entities\Items\ItemTemplateID.cs" />
+    <Compile Include="World\Map\Entities\Items\ItemTemplateManager.cs" />
     <Compile Include="World\Map\Entities\Items\ItemValueTracker.cs" />
     <Compile Include="World\Map\Entities\Items\NPCEquipped.cs" />
     <Compile Include="World\Map\Entities\Items\NPCInventory.cs" />
@@ -153,38 +296,23 @@
     <Compile Include="Server.cs" />
     <Compile Include="Networking\ServerSockets.cs" />
     <Compile Include="World\Map\Entities\Characters\User.cs" />
+    <Compile Include="World\Map\MapSpawn\MapSpawnRect.cs" />
+    <Compile Include="World\Map\MapSpawn\MapSpawnValues.cs" />
+    <Compile Include="World\Map\MapSpawn\MapSpawnValuesID.cs" />
+    <Compile Include="World\Map\MapSpawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="World\Map\NPCSpawner.cs" />
     <Compile Include="World\Map\Entities\TeleportEntity.cs" />
+    <Compile Include="World\Map\Shop\Shop.cs" />
+    <Compile Include="World\Map\Shop\ShopID.cs" />
+    <Compile Include="World\Map\Shop\ShopItem.cs" />
+    <Compile Include="World\Map\Shop\ShopItemComparer.cs" />
+    <Compile Include="World\Map\Shop\ShopManager.cs" />
     <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoGame.ServerObjs\DemoGame.ServerObjs.csproj">
-      <Project>{20E83735-4A5F-426C-9759-F9A1AD51B00E}</Project>
-      <Name>DemoGame.ServerObjs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
-      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
-      <Name>NetGore.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Db.MySql\NetGore.Db.MySql.csproj">
-      <Project>{43D09443-29F5-4688-81D7-5B5835EAC550}</Project>
-      <Name>NetGore.Db.MySql</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
       <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
       <Name>NetGore.Db</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Core\NetGore.Core.csproj">
-      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
-      <Name>NetGore.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
-      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
-      <Name>NetGore.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Network\NetGore.Network.csproj">
-      <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
-      <Name>NetGore.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
@@ -229,6 +357,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DbSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

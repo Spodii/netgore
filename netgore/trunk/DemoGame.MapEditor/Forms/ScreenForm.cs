@@ -15,6 +15,9 @@ using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.IO;
+using Map = DemoGame.Client.Map;
+using World = DemoGame.Client.World;
+using Character = DemoGame.Client.Character;
 
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
@@ -1013,8 +1016,6 @@ namespace DemoGame.MapEditor
                 Dispose();
                 throw;
             }
-
-            var x = AutoCompleteSources.Categories;
         }
 
         /// <summary>

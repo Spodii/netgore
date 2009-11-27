@@ -1,7 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 
-namespace NetGore
+namespace NetGore.Audio
 {
     /// <summary>
     /// Interface for an object that can be the source of audio.

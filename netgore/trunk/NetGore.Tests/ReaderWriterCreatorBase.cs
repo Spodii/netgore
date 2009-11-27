@@ -5,7 +5,9 @@ using NetGore.IO;
 namespace NetGore.Tests
 {
     /// <summary>
-    /// Base class for a IValueReader and IValueWriter creator.
+    /// Base class for a <see cref="IValueReader"/> and <see cref="IValueWriter"/> creator. This is used to
+    /// create a variety of <see cref="IValueReader"/>s and <see cref="IValueWriter"/>s using different backends
+    /// to test a large number of I/O mediums and methods at once.
     /// </summary>
     abstract class ReaderWriterCreatorBase : IDisposable
     {

@@ -32,45 +32,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BitOps.cs" />
-    <Compile Include="CharType.cs" />
-    <Compile Include="Converters\Variable Values\IVariableValueConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableFloatConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableIntConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableSByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableShortConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableUShortConverter.cs" />
-    <Compile Include="Enum\EnumComparer.cs" />
-    <Compile Include="Exceptions\InstantiateTypeException.cs" />
-    <Compile Include="Exceptions\TypeException.cs" />
-    <Compile Include="Extensions\ClampExtensions.cs" />
-    <Compile Include="Extensions\IDictionaryExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\IsBetweenExtensions.cs" />
-    <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Converters\SimpleExpandableTypeConverter.cs" />
-    <Compile Include="Converters\SimpleTypeConverter.cs" />
-    <Compile Include="RandomHelper.cs" />
-    <Compile Include="Enum\EnumHelper.cs" />
-    <Compile Include="MethodInfoHelper.cs" />
-    <Compile Include="Scripting\ScriptLanguage.cs" />
-    <Compile Include="Scripting\ScriptTypeCollection.cs" />
-    <Compile Include="Scripting\ScriptTypeHelper.cs" />
-    <Compile Include="Type\TypeFilterCreator.cs" />
-    <Compile Include="Type\TypeFilterException.cs" />
-    <Compile Include="Type\TypeHelper.cs" />
-    <Compile Include="Extensions\StackExtensions.cs" />
-    <Compile Include="SystemPerformance.cs" />
-    <Compile Include="Asserts\ThreadAsserts.cs" />
-    <Compile Include="Variable Values\IVariableValue.cs" />
-    <Compile Include="Variable Values\VariableByte.cs" />
-    <Compile Include="Variable Values\VariableFloat.cs" />
-    <Compile Include="Variable Values\VariableInt.cs" />
-    <Compile Include="Variable Values\VariableSByte.cs" />
-    <Compile Include="Variable Values\VariableShort.cs" />
-    <Compile Include="Variable Values\VariableUShort.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
