@@ -1,0 +1,84 @@
+/// <summary>
+/// A Dictionary-like lookup table for the Enum values of the type collection `[COLUMNCOLLECTIONNAME]` for the
+/// table that this class represents. Majority of the code for this class was automatically generated and
+/// only other automatically generated code should be using this class.
+/// </summary>
+private class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>>
+{
+    /// <summary>
+    /// Array containing the actual values. The index of this array is found through the value returned
+    /// from the _lookupTable.
+    /// </summary>
+    readonly [VALUETYPE][] _values;
+    
+    /// <summary>
+    /// Array that maps the integer value of key type to the index of the _values array.
+    /// </summary>
+    static readonly [STORAGETYPE][] _lookupTable;
+
+    /// <summary>
+    /// [CLASSNAME] static constructor.
+    /// </summary>
+    static [CLASSNAME]()
+    {
+        [KEYTYPE][] asArray = Enum.GetValues(typeof([KEYTYPE])).Cast<[KEYTYPE]>().ToArray();
+        _lookupTable = new [STORAGETYPE][asArray.Length];
+
+        for ([STORAGETYPE] i = 0; i < _lookupTable.Length; i++)
+            _lookupTable[i] = ([STORAGETYPE])asArray[i];
+    }
+    
+    /// <summary>
+    /// [CLASSNAME] constructor.
+    /// </summary>
+    public [CLASSNAME]()
+    {
+        _values = new [VALUETYPE][_lookupTable.Length];
+    }
+    
+	/// <summary>
+	/// Gets or sets an item's value using the <paramref name="key"/>.
+	/// </summary>
+	/// <param name="key">The key for the value to get or set.</param>
+	/// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
+    public [VALUETYPE] this[[KEYTYPE] key]
+    {
+        get
+        {
+            return _values[_lookupTable[([STORAGETYPE])key]];
+        }
+        set
+        {
+            _values[_lookupTable[([STORAGETYPE])key]] = value;
+        }
+    }
+
+    #region IEnumerable<KeyValuePair<[KEYTYPE],[VALUETYPE]>> Members
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+    /// </returns>
+    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>> GetEnumerator()
+    {
+        for (int i = 0; i < _values.Length; i++)
+        {
+            yield return new System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>(([KEYTYPE])i, _values[i]);
+        }
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through a collection.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+    /// </returns>
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    #endregion
+}
