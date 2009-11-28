@@ -63,17 +63,13 @@ namespace NetGore.EditorTools
         {
             if (createWall == null)
                 throw new ArgumentNullException("createWall");
-            if (mapGrhWalls == null)
+            if (mapGrhWalls == null && !DesignMode)
                 throw new ArgumentNullException("mapGrhWalls");
 
             _gameScreenSize = gameScreenSize;
             _createWall = createWall;
             _mapGrhWalls = mapGrhWalls;
             GrhInfo.OnRemove += GrhInfo_OnRemove;
-
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-
-            AllowDrop = true;
 
             // Remove all nodes
             Nodes.Clear();
@@ -97,8 +93,11 @@ namespace NetGore.EditorTools
             _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
             _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
             _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
+
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ContextMenu = _contextMenu;
 
+            AllowDrop = true;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
