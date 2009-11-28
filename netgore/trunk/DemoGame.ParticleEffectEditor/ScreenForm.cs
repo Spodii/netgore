@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,6 +17,7 @@ namespace DemoGame.ParticleEffectEditor
     public partial class ScreenForm : Form, IGetTime
     {
         readonly Stopwatch _watch = new Stopwatch();
+        readonly string _defaultTitle;
 
         ContentManager _content;
         ParticleEmitter _emitter;
@@ -27,6 +29,7 @@ namespace DemoGame.ParticleEffectEditor
         public ScreenForm()
         {
             InitializeComponent();
+            _defaultTitle = Text;
             _watch.Start();
         }
 
@@ -130,5 +133,17 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         #endregion
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            ParticleEmitter emitter;
+            var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
+        }
+
+        /// <summary>
+        /// The file path of the currently loaded effect. Null if not loaded from file.
+        /// </summary>
+        string _currentEffectFilePath = null;
     }
 }
