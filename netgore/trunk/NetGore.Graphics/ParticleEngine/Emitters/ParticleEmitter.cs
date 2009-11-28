@@ -49,6 +49,7 @@ namespace NetGore.Graphics.ParticleEngine
         protected Particle[] particles;
 
         int _budget;
+        int _expirationTime = int.MaxValue;
         bool _isDisposed = false;
 
         /// <summary>
@@ -169,12 +170,41 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets if this <see cref="ParticleEmitter"/> has an infinite life span. If true,
+        /// it will never expire automatically. If false, the amount of time remaining can be found
+        /// from <see cref="RemainingLife"/>.
+        /// </summary>
+        public bool HasInfiniteLife
+        {
+            get { return _expirationTime == int.MaxValue; }
+        }
+
+        /// <summary>
         /// Gets if this <see cref="ParticleEmitter"/> has been disposed.
         /// </summary>
         [Browsable(false)]
         public bool IsDisposed
         {
             get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets if the <see cref="ParticleEmitter"/> is expired and all <see cref="Particle"/>s it has spawned
+        /// have expired.
+        /// </summary>
+        /// <returns>True if the <see cref="ParticleEmitter"/> is ready to be disposed; otherwise false.</returns>
+        public bool IsExpired
+        {
+            get
+            {
+                if (RemainingLife != 0)
+                    return false;
+
+                if (ActiveParticles > 0)
+                    return false;
+
+                return true;
+            }
         }
 
         /// <summary>
@@ -272,6 +302,23 @@ namespace NetGore.Graphics.ParticleEngine
         [DisplayName("Speed")]
         [DefaultValue(typeof(VariableFloat), "50")]
         public VariableFloat ReleaseSpeed { get; set; }
+
+        /// <summary>
+        /// Gets the amount of time remaining for the <see cref="ParticleEmitter"/> before it is
+        /// automatically terminated.
+        /// </summary>
+        /// <returns>The number of milliseconds remaining in the <see cref="ParticleEmitter"/>'s life, or
+        /// zero if the emitter has already expired, or -1 if the emitter does not expire.</returns>
+        public int RemainingLife
+        {
+            get
+            {
+                if (HasInfiniteLife)
+                    return -1;
+
+                return Math.Max(0, _expirationTime - _lastUpdateTime);
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="ISprite"/> to draw the <see cref="Particle"/>s.
@@ -464,6 +511,20 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Sets the life of the <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <param name="totalLife">The total life of the <see cref="ParticleEmitter"/> in milliseconds. If less
+        /// than or equal to zero, the <see cref="ParticleEmitter"/> will never expire.</param>
+        public void SetEmitterLife(int currentTime, int totalLife)
+        {
+            if (totalLife <= 0)
+                _expirationTime = int.MaxValue;
+            else
+                _expirationTime = currentTime + totalLife;
+        }
+
+        /// <summary>
         /// Swaps two <see cref="Particle"/>s by index.
         /// </summary>
         /// <param name="aIndex">The first index.</param>
@@ -501,6 +562,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="currentTime">The current time.</param>>
         public void Update(int currentTime)
         {
+            _lastUpdateTime = currentTime;
+
             // Check if the sprite is loaded
             if (Sprite == null)
             {
@@ -533,15 +596,18 @@ namespace NetGore.Graphics.ParticleEngine
             _lastUpdateTime = currentTime;
 
             // Check to spawn more particles
-            int amountToRelease = 0;
-            while (_nextReleaseTime < currentTime)
+            if (RemainingLife != 0)
             {
-                amountToRelease += ReleaseAmount.GetNext();
-                _nextReleaseTime += ReleaseRate.GetNext();
-            }
+                int amountToRelease = 0;
+                while (_nextReleaseTime < currentTime)
+                {
+                    amountToRelease += ReleaseAmount.GetNext();
+                    _nextReleaseTime += ReleaseRate.GetNext();
+                }
 
-            if (amountToRelease > 0)
-                ReleaseParticles(currentTime, amountToRelease);
+                if (amountToRelease > 0)
+                    ReleaseParticles(currentTime, amountToRelease);
+            }
 
             // Update the particles
             bool hasUpdateModifiers = Modifiers.HasUpdateModifiers;
