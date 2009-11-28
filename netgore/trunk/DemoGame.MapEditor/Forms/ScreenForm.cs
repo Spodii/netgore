@@ -823,7 +823,7 @@ namespace DemoGame.MapEditor
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
-            treeGrhs.Initialize(_content);
+            treeGrhs.Initialize(_content, GameData.ScreenSize, CreateWallEntity, _mapGrhWalls);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
 
             // Start the stopwatch for the elapsed time checking

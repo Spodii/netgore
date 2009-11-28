@@ -26,9 +26,9 @@ namespace NetGore.EditorTools
         readonly Timer _animTimer = new Timer();
 
         readonly ContextMenu _contextMenu = new ContextMenu();
-        readonly CreateWallEntityHandler _createWall;
-        readonly Vector2 _gameScreenSize;
-        readonly MapGrhWalls _mapGrhWalls;
+        CreateWallEntityHandler _createWall;
+        Vector2 _gameScreenSize;
+        MapGrhWalls _mapGrhWalls;
 
         ContentManager _contentManager;
         EditGrhForm _editGrhDataForm;
@@ -54,61 +54,25 @@ namespace NetGore.EditorTools
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GrhTreeView"/> class.
-        /// </summary>
-        /// <param name="gameScreenSize">The size of the game screen.</param>
-        /// <param name="createWall">Delegate used to create a <see cref="WallEntityBase"/>.</param>
-        /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance to use.</param>
-        public GrhTreeView(Vector2 gameScreenSize, CreateWallEntityHandler createWall, MapGrhWalls mapGrhWalls)
-        {
-            if (createWall == null)
-                throw new ArgumentNullException("createWall");
-            if (mapGrhWalls == null && !DesignMode)
-                throw new ArgumentNullException("mapGrhWalls");
-
-            _gameScreenSize = gameScreenSize;
-            _createWall = createWall;
-            _mapGrhWalls = mapGrhWalls;
-            GrhInfo.OnRemove += GrhInfo_OnRemove;
-
-            // Remove all nodes
-            Nodes.Clear();
-
-            // Create the animate timer
-            _animTimer.Interval = 150;
-            _animTimer.Tick += UpdateAnimations;
-            _animTimer.Start();
-
-            // Set the sort method
-            TreeViewNodeSorter = this;
-
-            // Create the ImageList containing the Grhs as an image
-            ImageList = GrhImageList.ImageList;
-
-            // Event hooks
-            GrhMouseDoubleClick += GrhTreeView_GrhMouseDoubleClick;
-
-            // Set up the context menu for the GrhTreeView
-            _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
-            _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
-            _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
-            _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
-
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            ContextMenu = _contextMenu;
-
-            AllowDrop = true;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
-
-        /// <summary>
         /// Gets or sets the size of the Grh preview images
         /// </summary>
         [Description("Size of the Grh images in pixels")]
         public Size ImageSize
         {
-            get { return ImageList.ImageSize; }
-            set { ImageList.ImageSize = value; }
+            get
+            {
+                if (ImageList == null)
+                    return new Size(0, 0);
+
+                return ImageList.ImageSize;
+            }
+            set
+            {
+                if (ImageList == null)
+                    return;
+
+                ImageList.ImageSize = value;
+            }
         }
 
         /// <summary>
@@ -462,9 +426,52 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Initializes the <see cref="GrhTreeView"/>.
         /// </summary>
-        public void Initialize(ContentManager cm)
+        /// <param name="cm">The <see cref="ContentManager"/> used for loading content needed by the
+        /// <see cref="GrhTreeView"/>.</param>
+        /// <param name="gameScreenSize">The size of the game screen.</param>
+        /// <param name="createWall">Delegate used to create a <see cref="WallEntityBase"/>.</param>
+        /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance to use.</param>
+        public void Initialize(ContentManager cm, Vector2 gameScreenSize, CreateWallEntityHandler createWall, MapGrhWalls mapGrhWalls)
         {
+            if (DesignMode)
+                return;
+
+            if (createWall == null)
+                throw new ArgumentNullException("createWall");
+            if (mapGrhWalls == null)
+                throw new ArgumentNullException("mapGrhWalls");
+
             _contentManager = cm;
+            _gameScreenSize = gameScreenSize;
+            _createWall = createWall;
+            _mapGrhWalls = mapGrhWalls;
+            GrhInfo.OnRemove += GrhInfo_OnRemove;
+
+            // Remove all nodes
+            Nodes.Clear();
+
+            // Create the animate timer
+            _animTimer.Interval = 150;
+            _animTimer.Tick += UpdateAnimations;
+            _animTimer.Start();
+
+            // Set the sort method
+            TreeViewNodeSorter = this;
+
+            // Create the ImageList containing the Grhs as an image
+            ImageList = GrhImageList.ImageList;
+
+            // Event hooks
+            GrhMouseDoubleClick += GrhTreeView_GrhMouseDoubleClick;
+
+            // Set up the context menu for the GrhTreeView
+            _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
+            _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
+            _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
+            _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
+            ContextMenu = _contextMenu;
+
+            AllowDrop = true;
 
             // Check for missing textures
             CheckForMissingTextures();

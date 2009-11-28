@@ -50,7 +50,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs = new System.Windows.Forms.TabPage();
             this.chkForeground = new System.Windows.Forms.CheckBox();
             this.chkSnapGrhGrid = new System.Windows.Forms.CheckBox();
-            this.treeGrhs = new NetGore.EditorTools.GrhTreeView(GameData.ScreenSize, CreateWallEntity, _mapGrhWalls);
+            this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
             this.tabPageWalls = new System.Windows.Forms.TabPage();
             this.pgWall = new System.Windows.Forms.PropertyGrid();
             this.cmbWallType = new System.Windows.Forms.ComboBox();
