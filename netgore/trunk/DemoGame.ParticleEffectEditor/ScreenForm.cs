@@ -29,7 +29,11 @@ namespace DemoGame.ParticleEffectEditor
         public ScreenForm()
         {
             InitializeComponent();
+
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _defaultTitle = Text;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             _watch.Start();
         }
 
@@ -139,11 +143,61 @@ namespace DemoGame.ParticleEffectEditor
             string filePath;
             ParticleEmitter emitter;
             var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
+
+            if (wasSuccessful)
+            {
+                Emitter = emitter;
+                CurrentEffectFilePath = filePath;
+            }
         }
 
         /// <summary>
         /// The file path of the currently loaded effect. Null if not loaded from file.
         /// </summary>
         string _currentEffectFilePath = null;
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (CurrentEffectFilePath == null)
+            {
+                btnSaveAs_Click(this, null);
+                return;
+            }
+
+            var emitterName = ParticleEffectHelper.GetEffectDisplayNameFromFile(CurrentEffectFilePath);
+            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter, emitterName);
+        }
+
+        private void btnSaveAs_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            if (FileDialogs.TrySaveAsParticleEffect(Emitter, out filePath))
+                CurrentEffectFilePath = filePath;
+        }
+
+        string CurrentEffectFilePath
+        {
+            get { return _currentEffectFilePath; }
+            set
+            {
+                if (_currentEffectFilePath == value)
+                    return;
+
+                _currentEffectFilePath = value;
+
+                string effectName;
+                if (_currentEffectFilePath == null)
+                {
+                    effectName = string.Empty;
+                }
+                else
+                {
+                    effectName = " - ";
+                    effectName += ParticleEffectHelper.GetEffectDisplayNameFromFile(_currentEffectFilePath);
+                }
+
+                Text = _defaultTitle + effectName;
+            }
+        }
     }
 }

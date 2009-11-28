@@ -34,13 +34,13 @@ namespace DemoGame.ParticleEffectEditor
             this.tabEffect = new System.Windows.Forms.TabPage();
             this.pgEffect = new System.Windows.Forms.PropertyGrid();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
-            this.cmbEmitter = new NetGore.EditorTools.ParticleEmitterComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
-            this.GameScreen = new DemoGame.ParticleEffectEditor.GameScreenControl();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnSaveAs = new System.Windows.Forms.Button();
+            this.cmbEmitter = new NetGore.EditorTools.ParticleEmitterComboBox();
+            this.GameScreen = new DemoGame.ParticleEffectEditor.GameScreenControl();
             this.tabControl1.SuspendLayout();
             this.tabEffect.SuspendLayout();
             this.gbEmitter.SuspendLayout();
@@ -86,16 +86,6 @@ namespace DemoGame.ParticleEffectEditor
             this.gbEmitter.TabStop = false;
             this.gbEmitter.Text = "Emitter";
             // 
-            // cmbEmitter
-            // 
-            this.cmbEmitter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEmitter.FormattingEnabled = true;
-            this.cmbEmitter.Location = new System.Drawing.Point(54, 19);
-            this.cmbEmitter.Name = "cmbEmitter";
-            this.cmbEmitter.Size = new System.Drawing.Size(196, 21);
-            this.cmbEmitter.TabIndex = 1;
-            this.cmbEmitter.SelectedEmitterChanged += new NetGore.EditorTools.ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -110,20 +100,10 @@ namespace DemoGame.ParticleEffectEditor
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(268, 525);
+            this.tabSettings.Size = new System.Drawing.Size(268, 494);
             this.tabSettings.TabIndex = 1;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
-            // 
-            // GameScreen
-            // 
-            this.GameScreen.Location = new System.Drawing.Point(294, 12);
-            this.GameScreen.Name = "GameScreen";
-            this.GameScreen.ScreenForm = null;
-            this.GameScreen.Size = new System.Drawing.Size(727, 551);
-            this.GameScreen.TabIndex = 0;
-            this.GameScreen.Text = "gameScreenControl1";
-            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             // 
             // btnLoad
             // 
@@ -143,6 +123,7 @@ namespace DemoGame.ParticleEffectEditor
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnSaveAs
             // 
@@ -152,6 +133,27 @@ namespace DemoGame.ParticleEffectEditor
             this.btnSaveAs.TabIndex = 4;
             this.btnSaveAs.Text = "Save As";
             this.btnSaveAs.UseVisualStyleBackColor = true;
+            this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click);
+            // 
+            // cmbEmitter
+            // 
+            this.cmbEmitter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEmitter.FormattingEnabled = true;
+            this.cmbEmitter.Location = new System.Drawing.Point(54, 19);
+            this.cmbEmitter.Name = "cmbEmitter";
+            this.cmbEmitter.Size = new System.Drawing.Size(196, 21);
+            this.cmbEmitter.TabIndex = 1;
+            this.cmbEmitter.SelectedEmitterChanged += new NetGore.EditorTools.ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
+            // 
+            // GameScreen
+            // 
+            this.GameScreen.Location = new System.Drawing.Point(294, 12);
+            this.GameScreen.Name = "GameScreen";
+            this.GameScreen.ScreenForm = null;
+            this.GameScreen.Size = new System.Drawing.Size(727, 551);
+            this.GameScreen.TabIndex = 0;
+            this.GameScreen.Text = "gameScreenControl1";
+            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             // 
             // ScreenForm
             // 
