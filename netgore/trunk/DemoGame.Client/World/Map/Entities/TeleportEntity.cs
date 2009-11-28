@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
-using IDrawable = NetGore.Graphics.IDrawable;
+using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {

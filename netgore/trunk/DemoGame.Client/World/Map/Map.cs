@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
-using IDrawable = NetGore.Graphics.IDrawable;
+using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {

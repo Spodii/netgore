@@ -26,12 +26,11 @@ namespace NetGore.EditorTools
         readonly Timer _animTimer = new Timer();
 
         readonly ContextMenu _contextMenu = new ContextMenu();
+        ContentManager _contentManager;
         CreateWallEntityHandler _createWall;
+        EditGrhForm _editGrhDataForm;
         Vector2 _gameScreenSize;
         MapGrhWalls _mapGrhWalls;
-
-        ContentManager _contentManager;
-        EditGrhForm _editGrhDataForm;
 
         /// <summary>
         /// Occurs after a new Grh n is selected
@@ -431,7 +430,8 @@ namespace NetGore.EditorTools
         /// <param name="gameScreenSize">The size of the game screen.</param>
         /// <param name="createWall">Delegate used to create a <see cref="WallEntityBase"/>.</param>
         /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance to use.</param>
-        public void Initialize(ContentManager cm, Vector2 gameScreenSize, CreateWallEntityHandler createWall, MapGrhWalls mapGrhWalls)
+        public void Initialize(ContentManager cm, Vector2 gameScreenSize, CreateWallEntityHandler createWall,
+                               MapGrhWalls mapGrhWalls)
         {
             if (DesignMode)
                 return;

@@ -14,18 +14,8 @@ namespace NetGore
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string TypeNameStringKey = "DynamicEntityType";
-       
-        readonly TypeFactory _typeCollection;
 
-        /// <summary>
-        /// Gets the <see cref="TypeFilterCreator"/> to use for creating the <see cref="TypeFactory"/> that loads
-        /// all the items in the <see cref="DynamicEntityFactoryBase"/>.
-        /// </summary>
-        /// <returns>The <see cref="TypeFilterCreator"/> to use.</returns>
-        protected virtual TypeFilterCreator GetTypeFilterCreator()
-        {
-            return new TypeFilterCreator { IsClass = true, IsAbstract = false, Subclass = typeof(DynamicEntity) };
-        }
+        readonly TypeFactory _typeCollection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicEntityFactoryBase"/> class.
@@ -40,6 +30,16 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the <see cref="TypeFilterCreator"/> to use for creating the <see cref="TypeFactory"/> that loads
+        /// all the items in the <see cref="DynamicEntityFactoryBase"/>.
+        /// </summary>
+        /// <returns>The <see cref="TypeFilterCreator"/> to use.</returns>
+        protected virtual TypeFilterCreator GetTypeFilterCreator()
+        {
+            return new TypeFilterCreator { IsClass = true, IsAbstract = false, Subclass = typeof(DynamicEntity) };
+        }
+
+        /// <summary>
         /// Handles when a new type has been loaded into the <see cref="DynamicEntityFactoryBase"/>.
         /// </summary>
         /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
@@ -50,6 +50,8 @@ namespace NetGore
             if (log.IsDebugEnabled)
                 log.DebugFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", name, loadedType);
         }
+
+        #region IDynamicEntityFactory Members
 
         /// <summary>
         /// Reads and constructs a <see cref="DynamicEntity"/> from a stream.
@@ -88,5 +90,7 @@ namespace NetGore
             writer.Write(TypeNameStringKey, typeName);
             dEntity.WriteAll(writer);
         }
+
+        #endregion
     }
 }

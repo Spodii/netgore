@@ -1262,11 +1262,13 @@ namespace DemoGame
         public string Name
         {
             get { return _name; }
-            set {
+            set
+            {
                 if (value == null)
                     throw new ArgumentNullException("value");
 
-                _name = value; }
+                _name = value;
+            }
         }
 
         #endregion
