@@ -15,6 +15,8 @@ namespace DemoGame.ParticleEffectEditor
 {
     public partial class ScreenForm : Form, IGetTime
     {
+        const string _defaultCategory = "Particle";
+
         readonly string _defaultTitle;
         readonly Stopwatch _watch = new Stopwatch();
 
@@ -139,7 +141,7 @@ namespace DemoGame.ParticleEffectEditor
         {
             var ret = new PointEmitter
             {
-                SpriteCategorization = new SpriteCategorization("Particle", "skull"),
+                SpriteCategorization = new SpriteCategorization(_defaultCategory, "ball"),
                 Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
                 ReleaseRate = 35
             };
