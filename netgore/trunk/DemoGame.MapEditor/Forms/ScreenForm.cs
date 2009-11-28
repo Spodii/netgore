@@ -427,16 +427,10 @@ namespace DemoGame.MapEditor
 
         void cmdLoad_Click(object sender, EventArgs e)
         {
-            using (FileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Title = "Read map";
-                ofd.InitialDirectory = ContentPaths.Dev.Maps;
-                ofd.RestoreDirectory = true;
-
-                DialogResult result = ofd.ShowDialog();
-                if (result != DialogResult.Cancel)
-                    SetMap(ofd.FileName);
-            }
+            string filePath;
+            IMap loadedMap;
+            if (FileDialogs.TryOpenMap(CreateMapFromFilePath, MapBase.MapFileSuffix, out filePath, out loadedMap))
+                Map = (Map)loadedMap;
         }
 
         void cmdNew_Click(object sender, EventArgs e)
@@ -448,19 +442,11 @@ namespace DemoGame.MapEditor
 
             MapIndex index = Map.GetNextFreeIndex(ContentPaths.Dev);
 
-            string newMapPath = ContentPaths.Dev.Maps.Join(index + "." + Map.MapFileSuffix);
-            if (File.Exists(newMapPath))
-            {
-                MessageBox.Show(string.Format("Map.GetNextFreeIndex() returned the index [{0}] of an existing map!", index));
-                return;
-            }
-
-            Map = new Map(index, _world, GameScreen.GraphicsDevice);
-            DbController.GetQuery<InsertMapQuery>().Execute(Map);
-            Map.OnSave += Map_OnSave;
-            Map.SetDimensions(new Vector2(30 * 32, 20 * 32));
-            Map.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
-            SetMap(newMapPath);
+            var newMap = new Map(index, _world, GameScreen.GraphicsDevice);
+            DbController.GetQuery<InsertMapQuery>().Execute(newMap);
+            newMap.SetDimensions(new Vector2(30, 20) * 32);
+            newMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
+            Map = newMap;
         }
 
         void cmdSave_Click(object sender, EventArgs e)
@@ -850,7 +836,14 @@ namespace DemoGame.MapEditor
             HookFormKeyEvents(this, kehDown, kehUp);
 
             // Read the first map
-            SetMap(ContentPaths.Dev.Maps.Join("1." + Map.MapFileSuffix));
+            try
+            {
+                Map = new Map(new MapIndex(1), _world, GameScreen.GraphicsDevice);
+            }
+            catch (Exception)
+            { 
+                // Doesn't matter if we fail to load the first map...
+            }
 
             // Set up the MapItemListBoxes
             foreach (MapItemListBox lb in GetAllControls(this).OfType<MapItemListBox>())
@@ -1019,29 +1012,24 @@ namespace DemoGame.MapEditor
             }
         }
 
-        /// <summary>
-        /// Sets the map being used. Use this instead of directly setting Map.
-        /// </summary>
-        /// <param name="filePath">Path to the map to use</param>
-        void SetMap(string filePath)
+        Map CreateMapFromFilePath(string filePath)
         {
             const string errmsg = "Invalid map file selected:{0}{1}";
 
             if (!MapBase.IsValidMapFile(filePath))
             {
                 MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
-                return;
+                return null;
             }
 
             MapIndex index;
             if (!Map.TryGetIndexFromPath(filePath, out index))
             {
                 MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
-                return;
+                return null;
             }
 
-            Map = new Map(index, _world, GameScreen.GraphicsDevice);
-            return;
+            return new Map(index, _world, GameScreen.GraphicsDevice);
         }
 
         void SetMapGUITexts(Map oldMap, Map newMap)
