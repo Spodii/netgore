@@ -13,66 +13,6 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class FileDialogs
     {
-        static string GenericSaveFile(string contentType, string initialDirectory, string fileFilterSuffix)
-        {
-            if (!Directory.Exists(initialDirectory))
-                Directory.CreateDirectory(initialDirectory);
-
-            string filePath;
-
-            try
-            {
-                using (var sfd = new SaveFileDialog())
-                {
-                    sfd.CheckPathExists = true;
-                    sfd.CheckFileExists = false;
-                    sfd.AutoUpgradeEnabled = true;
-                    sfd.AddExtension = true;
-                    sfd.CreatePrompt = false;
-                    sfd.DefaultExt = fileFilterSuffix;
-                    sfd.InitialDirectory = initialDirectory;
-                    sfd.OverwritePrompt = true;
-                    sfd.RestoreDirectory = true;
-                    sfd.ValidateNames = true;
-                    sfd.Filter = string.Format("{0} (*.{1})|*.{1}", contentType, fileFilterSuffix);
-                    sfd.Title = "Save " + contentType;
-
-                    var sfdResult = sfd.ShowDialog();
-                    if (sfdResult != DialogResult.OK)
-                        return null;
-
-                    filePath = sfd.FileName;
-                }
-
-                if (filePath == null)
-                    return null;
-
-                if (!IsFileFromDirectory(initialDirectory, filePath, false))
-                    return null;
-            }
-            catch (Exception ex)
-            {
-                HandleUnhandledException(contentType, false, ex);
-                return null;
-            }
-
-            return filePath;
-        }
-
-        static bool IsFileFromDirectory(string dir, string file, bool wasLoadError)
-        {
-            if (file.Length <= dir.Length ||
-                       !file.StartsWith(dir, StringComparison.OrdinalIgnoreCase))
-            {
-                HandleError(
-                    "The selected file was from an invalid directory. Files must be selected from the initial directory.",
-                    wasLoadError);
-                return false;
-            }
-
-            return true;
-        }
-
         /// <summary>
         /// Gets the results from a generic open file dialog.
         /// </summary>
@@ -150,6 +90,52 @@ namespace NetGore.EditorTools
             return filePath;
         }
 
+        static string GenericSaveFile(string contentType, string initialDirectory, string fileFilterSuffix)
+        {
+            if (!Directory.Exists(initialDirectory))
+                Directory.CreateDirectory(initialDirectory);
+
+            string filePath;
+
+            try
+            {
+                using (var sfd = new SaveFileDialog())
+                {
+                    sfd.CheckPathExists = true;
+                    sfd.CheckFileExists = false;
+                    sfd.AutoUpgradeEnabled = true;
+                    sfd.AddExtension = true;
+                    sfd.CreatePrompt = false;
+                    sfd.DefaultExt = fileFilterSuffix;
+                    sfd.InitialDirectory = initialDirectory;
+                    sfd.OverwritePrompt = true;
+                    sfd.RestoreDirectory = true;
+                    sfd.ValidateNames = true;
+                    sfd.Filter = string.Format("{0} (*.{1})|*.{1}", contentType, fileFilterSuffix);
+                    sfd.Title = "Save " + contentType;
+
+                    var sfdResult = sfd.ShowDialog();
+                    if (sfdResult != DialogResult.OK)
+                        return null;
+
+                    filePath = sfd.FileName;
+                }
+
+                if (filePath == null)
+                    return null;
+
+                if (!IsFileFromDirectory(initialDirectory, filePath, false))
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                HandleUnhandledException(contentType, false, ex);
+                return null;
+            }
+
+            return filePath;
+        }
+
         /// <summary>
         /// Handles an error made from one of this class's methods.
         /// </summary>
@@ -189,33 +175,40 @@ namespace NetGore.EditorTools
         /// <param name="innerException">The inner exception.</param>
         static void HandleUnhandledException(string contentType, bool wasLoadError, Exception innerException)
         {
-            string msg = string.Format("Failed to {0} {1}:{2}{2}{3}", wasLoadError ? "load" : "save", contentType, Environment.NewLine, innerException);
+            string msg = string.Format("Failed to {0} {1}:{2}{2}{3}", wasLoadError ? "load" : "save", contentType,
+                                       Environment.NewLine, innerException);
 
             MessageBox.Show(msg, "Unhandled I/O error", MessageBoxButtons.OK);
         }
 
-        /// <summary>
-        /// Saves a <see cref="ParticleEmitter"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to save.</param>
-        /// <param name="filePath">When this method returns true, contains the path to the file that was saved.</param>
-        /// <returns>True if successfully saved; otherwise false.</returns>
-        public static bool TrySaveAsParticleEffect(ParticleEmitter emitter, out string filePath)
+        static bool IsFileFromDirectory(string dir, string file, bool wasLoadError)
+        {
+            if (file.Length <= dir.Length || !file.StartsWith(dir, StringComparison.OrdinalIgnoreCase))
+            {
+                HandleError(
+                    "The selected file was from an invalid directory. Files must be selected from the initial directory.",
+                    wasLoadError);
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool TryOpenMap(Func<string, IMap> createMap, string mapFileSuffix, out string filePath, out IMap map)
         {
             filePath = null;
+            map = null;
 
             try
             {
-                filePath = GenericSaveFile("Particle Effect", ContentPaths.Dev.ParticleEffects, ParticleEmitterFactory.EmitterFileSuffix);
+                filePath = GenericOpenFile("Map", mapFileSuffix, ContentPaths.Dev.Maps, createMap, out map);
+
                 if (filePath == null)
                     return false;
-
-                string emitterName =ParticleEffectHelper.GetEffectDisplayNameFromFile(filePath);
-                ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, emitter, emitterName);
             }
             catch (Exception ex)
             {
-                HandleUnhandledException("Particle Effect", false, ex);
+                HandleUnhandledException("Map", true, ex);
                 return false;
             }
 
@@ -250,6 +243,35 @@ namespace NetGore.EditorTools
             catch (Exception ex)
             {
                 HandleUnhandledException("Particle Effect", true, ex);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Saves a <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to save.</param>
+        /// <param name="filePath">When this method returns true, contains the path to the file that was saved.</param>
+        /// <returns>True if successfully saved; otherwise false.</returns>
+        public static bool TrySaveAsParticleEffect(ParticleEmitter emitter, out string filePath)
+        {
+            filePath = null;
+
+            try
+            {
+                filePath = GenericSaveFile("Particle Effect", ContentPaths.Dev.ParticleEffects,
+                                           ParticleEmitterFactory.EmitterFileSuffix);
+                if (filePath == null)
+                    return false;
+
+                string emitterName = ParticleEffectHelper.GetEffectDisplayNameFromFile(filePath);
+                ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, emitter, emitterName);
+            }
+            catch (Exception ex)
+            {
+                HandleUnhandledException("Particle Effect", false, ex);
                 return false;
             }
 
