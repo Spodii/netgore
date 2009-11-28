@@ -48,7 +48,7 @@ namespace DemoGame.MapEditor
                 return;
 
             // Check for a valid cursor position
-            if (!map.Contains(screen.CursorPos))
+            if (!map.IsInMapBoundaries(screen.CursorPos))
                 return;
 
             if (_selectedEntity != null)

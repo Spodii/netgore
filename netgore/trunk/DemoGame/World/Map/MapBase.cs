@@ -256,39 +256,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// If the given point is in the map's boundaries
-        /// </summary>
-        /// <param name="p">Point to check</param>
-        /// <returns>True if the point is in the map's boundaries, else false</returns>
-        public bool Contains(Vector2 p)
-        {
-            // TODO: Get rid of this method? That, or rename it.
-            return p.X >= 0 && p.Y >= 0 && p.X <= Width && p.Y <= Height;
-        }
-
-        /// <summary>
-        /// If the given Rectangle is in the map's boundaries
-        /// </summary>
-        /// <param name="rect">Rectangle to check</param>
-        /// <returns>True if the Rectangle is in the map's boundaries, else false</returns>
-        public bool Contains(Rectangle rect)
-        {
-            // TODO: Get rid of this method? That, or rename it.
-            return rect.X >= 0 && rect.Y >= 0 & rect.Right <= Width && rect.Bottom <= Height;
-        }
-
-        /// <summary>
-        /// If the given CollisionBox is in the map's boundaries
-        /// </summary>
-        /// <param name="cb">CollisionBox to check</param>
-        /// <returns>True if the CollisionBox is in the map's boundaries, else false</returns>
-        public bool Contains(CollisionBox cb)
-        {
-            // TODO: Get rid of this method? That, or rename it.
-            return Contains(cb.ToRectangle());
-        }
-
-        /// <summary>
         /// When overridden in the derived class, creates a new WallEntityBase instance.
         /// </summary>
         /// <returns>WallEntityBase that is to be used on the map.</returns>
