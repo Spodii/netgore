@@ -16,7 +16,7 @@ namespace NetGore
         /// Size of each segment of the wall grid in pixels (smallest requires more
         /// memory but often less checks (to an extent))
         /// </summary>
-        protected const int WallGridSize = 128;
+        protected const int EntityGridSize = 128;
 
         /// <summary>
         /// Two-dimensional grid of references to entities in that sector.
@@ -58,10 +58,10 @@ namespace NetGore
         /// <param name="entity">The <see cref="Entity"/> to add to the grid.</param>
         public void Add(Entity entity)
         {
-            var minX = (int)entity.CB.Min.X / WallGridSize;
-            var minY = (int)entity.CB.Min.Y / WallGridSize;
-            var maxX = (int)entity.CB.Max.X / WallGridSize;
-            var maxY = (int)entity.CB.Max.Y / WallGridSize;
+            var minX = (int)entity.CB.Min.X / EntityGridSize;
+            var minY = (int)entity.CB.Min.Y / EntityGridSize;
+            var maxX = (int)entity.CB.Max.X / EntityGridSize;
+            var maxY = (int)entity.CB.Max.Y / EntityGridSize;
 
             // Keep in range of the grid
             if (minX < 0)
@@ -93,8 +93,8 @@ namespace NetGore
         /// <returns>A two-dimensional array of Lists to use as the grid of entities.</returns>
         static List<Entity>[,] BuildEntityGrid(float width, float height)
         {
-            var gridWidth = (int)Math.Ceiling(width / WallGridSize);
-            var gridHeight = (int)Math.Ceiling(height / WallGridSize);
+            var gridWidth = (int)Math.Ceiling(width / EntityGridSize);
+            var gridHeight = (int)Math.Ceiling(height / EntityGridSize);
 
             // Create the array
             var retGrid = new List<Entity>[gridWidth,gridHeight];
@@ -123,10 +123,10 @@ namespace NetGore
         /// <returns>An IEnumerable of all grid segments intersected by the specified <paramref name="rect"/>.</returns>
         protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(Rectangle rect)
         {
-            var minX = rect.X / WallGridSize;
-            var minY = rect.Y / WallGridSize;
-            var maxX = rect.Right / WallGridSize;
-            var maxY = rect.Bottom / WallGridSize;
+            var minX = rect.X / EntityGridSize;
+            var minY = rect.Y / EntityGridSize;
+            var maxX = rect.Right / EntityGridSize;
+            var maxY = rect.Bottom / EntityGridSize;
 
             // Keep in range of the grid
             if (minX < 0)
@@ -175,8 +175,8 @@ namespace NetGore
 
         static Point MapPositionToGridIndex(Vector2 position)
         {
-            var x = position.X / WallGridSize;
-            var y = position.Y / WallGridSize;
+            var x = position.X / EntityGridSize;
+            var y = position.Y / EntityGridSize;
             return new Point((int)x, (int)y);
         }
 
@@ -259,16 +259,16 @@ namespace NetGore
 
             // Check that the entity changed grid segments by comparing the lowest grid segments
             // of the old position and current position
-            var minX = (int)oldPos.X / WallGridSize;
-            var minY = (int)oldPos.Y / WallGridSize;
-            var newMinX = (int)entity.CB.Min.X / WallGridSize;
-            var newMinY = (int)entity.CB.Min.Y / WallGridSize;
+            var minX = (int)oldPos.X / EntityGridSize;
+            var minY = (int)oldPos.Y / EntityGridSize;
+            var newMinX = (int)entity.CB.Min.X / EntityGridSize;
+            var newMinY = (int)entity.CB.Min.Y / EntityGridSize;
 
             if (minX == newMinX && minY == newMinY)
                 return; // No change in grid segment
 
-            var maxX = (int)(oldPos.X + entity.CB.Width) / WallGridSize;
-            var maxY = (int)(oldPos.Y + entity.CB.Height) / WallGridSize;
+            var maxX = (int)(oldPos.X + entity.CB.Width) / EntityGridSize;
+            var maxY = (int)(oldPos.Y + entity.CB.Height) / EntityGridSize;
 
             // Keep in range of the grid
             if (minX < 0)

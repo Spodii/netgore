@@ -12,7 +12,6 @@ using NetGore.Collections;
 using NetGore.IO;
 
 // FUTURE: Improve how characters handle when they hit the map's borders
-// TODO: Rename WallGridSize to EntityGridSize
 
 namespace DemoGame
 {
@@ -95,7 +94,7 @@ namespace DemoGame
         /// <summary>
         /// Name of the map
         /// </summary>
-        string _name = null;
+        string _name = string.Empty;
 
         /// <summary>
         /// Width of the map in pixels
@@ -1257,9 +1256,9 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the current time
+        /// Gets the current time in milliseconds.
         /// </summary>
-        /// <returns>Current time</returns>
+        /// <returns>The current time in milliseconds.</returns>
         public int GetTime()
         {
             return _getTime.GetTime();
@@ -1281,6 +1280,9 @@ namespace DemoGame
             return new MapTable(this);
         }
 
+        /// <summary>
+        /// Gets the value of the database column `id`.
+        /// </summary>
         MapIndex IMapTable.ID
         {
             get { return Index; }
@@ -1289,10 +1291,15 @@ namespace DemoGame
         /// <summary>
         /// Gets or sets the name of the map.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _name = value; }
         }
 
         #endregion
