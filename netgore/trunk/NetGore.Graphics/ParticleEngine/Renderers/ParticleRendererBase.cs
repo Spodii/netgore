@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -16,10 +18,25 @@ namespace NetGore.Graphics.ParticleEngine
         protected abstract void InternalDispose();
 
         /// <summary>
-        /// When overridden in the derived class, handles rendering the <paramref name="emitter"/>.
+        /// When overridden in the derived class, handles rendering the <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
-        protected abstract void InternalRenderEmitter(ParticleEmitter emitter);
+        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="additiveEmitters">The valid <see cref="ParticleEmitter"/>s where
+        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.Additive"/>.</param>
+        /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
+        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
+        protected abstract void InternalRenderEmitter(Camera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
+            IEnumerable<ParticleEmitter> alphaEmitters);
+
+        /// <summary>
+        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
+        /// a valid state to draw.
+        /// </summary>
+        /// <returns>True if in a valid state to draw; otherwise false.</returns>
+        protected virtual bool InValidRenderState()
+        {
+            return true;
+        }
 
         #region IParticleRenderer Members
 
@@ -32,15 +49,23 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Renders a <see cref="ParticleEmitter"/>.
+        /// Renders the <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
-        public void RenderEmitter(ParticleEmitter emitter)
+        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="emitters">The <see cref="ParticleEmitter"/>s to render.</param>
+        public void Draw(Camera2D camera, IEnumerable<ParticleEmitter> emitters)
         {
-            if (emitter.Sprite == null || emitter.ActiveParticles <= 0 || emitter.BlendMode == SpriteBlendMode.None)
+            if (emitters == null)
                 return;
 
-            InternalRenderEmitter(emitter);
+            if (!InValidRenderState())
+                return;
+
+            var validEmitters = emitters.Where(x => x.Sprite != null && x.ActiveParticles > 0);
+            var additiveEmitters = validEmitters.Where(x => x.BlendMode == SpriteBlendMode.Additive);
+            var alphaEmitters = validEmitters.Where(x => x.BlendMode == SpriteBlendMode.AlphaBlend);
+
+            InternalRenderEmitter(camera, additiveEmitters, alphaEmitters);
         }
 
         /// <summary>

@@ -1,45 +1,129 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {
+    /// <summary>
+    /// A <see cref="IParticleRenderer"/> that draws with a <see cref="SpriteBatch"/>.
+    /// </summary>
     public sealed class SpriteBatchRenderer : ParticleRendererBase
     {
-        readonly SpriteBatch _spriteBatch;
-
-        public SpriteBatchRenderer(GraphicsDevice graphicsDevice)
-        {
-            _spriteBatch = new SpriteBatch(graphicsDevice);
-        }
+        SpriteBlendMode _startingBlendMode = SpriteBlendMode.AlphaBlend;
 
         /// <summary>
         /// When overridden in the derived class, handles the actual disposing.
         /// </summary>
         protected override void InternalDispose()
         {
-            if (!_spriteBatch.IsDisposed)
-                _spriteBatch.Dispose();
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles rendering the <paramref name="emitter"/>.
+        /// Gets or sets the <see cref="SpriteBlendMode"/> the <see cref="SpriteBatch"/> is using
+        /// when the <see cref="SpriteBatchRenderer"/> is called to render.
         /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
-        protected override void InternalRenderEmitter(ParticleEmitter emitter)
+        public SpriteBlendMode StartingBlendMode
+        {
+            get { return _startingBlendMode; }
+            set
+            {
+                if (value == SpriteBlendMode.None)
+                    throw new ArgumentException("value cannot be SpriteBlendMode.None.");
+
+                _startingBlendMode = value;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
+        /// a valid state to draw.
+        /// </summary>
+        /// <returns>
+        /// True if in a valid state to draw; otherwise false.
+        /// </returns>
+        protected override bool InValidRenderState()
+        {
+            return SpriteBatch != null;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="SpriteBatch"/> used to draw.
+        /// </summary>
+        public SpriteBatch SpriteBatch { get; set; }
+
+        
+        /// <summary>
+        /// When overridden in the derived class, handles rendering the <see cref="ParticleEmitter"/>s.
+        /// </summary>
+        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="additiveEmitters">The valid <see cref="ParticleEmitter"/>s where
+        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.Additive"/>.</param>
+        /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
+        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
+        protected override void InternalRenderEmitter(Camera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
+            IEnumerable<ParticleEmitter> alphaEmitters)
+        {
+            IEnumerable<ParticleEmitter> first;
+            IEnumerable<ParticleEmitter> second;
+
+            // Figure out which collection to render first
+            if (StartingBlendMode == SpriteBlendMode.AlphaBlend)
+            {
+                first = alphaEmitters;
+                second = additiveEmitters;
+            }
+            else
+            {
+                first = additiveEmitters;
+                second = alphaEmitters;
+            }
+
+            if (first.Count() > 0)
+            {
+                RenderEmitters(first);
+            }
+
+            if (second.Count() > 0)
+            {
+                SpriteBatch.End();
+                BeginSpriteBatch(camera);
+                RenderEmitters(second);
+                SpriteBatch.End();
+
+                // Start the SpriteBatch again back as normal
+                SpriteBatch.Begin(StartingBlendMode, _spriteBatchSortMode, _spriteBatchStateMode, camera.Matrix);
+            }
+        }
+
+        const SpriteSortMode _spriteBatchSortMode = SpriteSortMode.Deferred;
+        const SaveStateMode _spriteBatchStateMode = SaveStateMode.None;
+
+        void BeginSpriteBatch(Camera2D camera)
+        {
+            var blendMode = StartingBlendMode == SpriteBlendMode.Additive ? SpriteBlendMode.AlphaBlend : SpriteBlendMode.Additive;
+            var matrix = camera.Matrix;
+
+            SpriteBatch.Begin(blendMode, _spriteBatchSortMode, _spriteBatchStateMode, matrix);
+        }
+
+        void RenderEmitters(IEnumerable<ParticleEmitter> emitters)
+        {
+            foreach (var emitter in emitters)
+                RenderEmitter(emitter);
+        }
+
+        void RenderEmitter(ParticleEmitter emitter)
         {
             Vector2 origin = emitter.Sprite.Size / 2f;
-
-            _spriteBatch.Begin(emitter.BlendMode, SpriteSortMode.Deferred, SaveStateMode.None);
 
             var particles = emitter.GetParticlesArray();
             for (int i = 0; i < emitter.ActiveParticles; i++)
             {
                 var p = particles[i];
-                emitter.Sprite.Draw(_spriteBatch, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
+                emitter.Sprite.Draw(SpriteBatch, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
             }
-
-            _spriteBatch.End();
         }
     }
 }
