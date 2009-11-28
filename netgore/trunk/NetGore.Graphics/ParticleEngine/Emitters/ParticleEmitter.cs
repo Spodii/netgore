@@ -174,6 +174,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// it will never expire automatically. If false, the amount of time remaining can be found
         /// from <see cref="RemainingLife"/>.
         /// </summary>
+       [Browsable(false)]
         public bool HasInfiniteLife
         {
             get { return _expirationTime == int.MaxValue; }
@@ -193,6 +194,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// have expired.
         /// </summary>
         /// <returns>True if the <see cref="ParticleEmitter"/> is ready to be disposed; otherwise false.</returns>
+        [Browsable(false)]
         public bool IsExpired
         {
             get
@@ -309,6 +311,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <returns>The number of milliseconds remaining in the <see cref="ParticleEmitter"/>'s life, or
         /// zero if the emitter has already expired, or -1 if the emitter does not expire.</returns>
+        [Browsable(false)]
         public int RemainingLife
         {
             get
@@ -562,8 +565,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="currentTime">The current time.</param>>
         public void Update(int currentTime)
         {
-            _lastUpdateTime = currentTime;
-
             // Check if the sprite is loaded
             if (Sprite == null)
             {
@@ -574,12 +575,6 @@ namespace NetGore.Graphics.ParticleEngine
                 if (Sprite == null)
                     return;
             }
-
-            // Update the current time on the modifiers
-            Modifiers.UpdateCurrentTime(currentTime);
-
-            // Update the sprite
-            Sprite.Update(currentTime);
 
             // Get the elapsed time
             // On the first update, just assume 10 ms have elapsed
@@ -594,6 +589,12 @@ namespace NetGore.Graphics.ParticleEngine
                 elapsedTime = currentTime - _lastUpdateTime;
 
             _lastUpdateTime = currentTime;
+
+            // Update the current time on the modifiers
+            Modifiers.UpdateCurrentTime(currentTime);
+
+            // Update the sprite
+            Sprite.Update(currentTime);
 
             // Check to spawn more particles
             if (RemainingLife != 0)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -14,9 +15,10 @@ namespace NetGore.Graphics.ParticleEngine
         bool IsDisposed { get; }
 
         /// <summary>
-        /// Renders a <see cref="ParticleEmitter"/>.
+        /// Renders the <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to render.</param>
-        void RenderEmitter(ParticleEmitter emitter);
+        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="emitters">The <see cref="ParticleEmitter"/>s to render.</param>
+        void Draw(Camera2D camera, IEnumerable<ParticleEmitter> emitters);
     }
 }

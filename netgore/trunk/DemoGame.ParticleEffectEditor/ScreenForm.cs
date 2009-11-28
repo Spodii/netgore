@@ -41,6 +41,8 @@ namespace DemoGame.ParticleEffectEditor
             _defaultTitle = Text;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
+            _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
+
             _watch.Start();
         }
 
@@ -153,6 +155,8 @@ namespace DemoGame.ParticleEffectEditor
             return ret;
         }
 
+        readonly Camera2D _camera;
+
         /// <summary>
         /// Main entry point for all the screen drawing.
         /// </summary>
@@ -160,7 +164,9 @@ namespace DemoGame.ParticleEffectEditor
         {
             // Clear the background
             GraphicsDevice.Clear(Color.Black);
-            _renderer.RenderEmitter(Emitter);
+            _spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, Matrix.Identity);
+            _renderer.Draw(_camera, new ParticleEmitter[] { Emitter });
+            _spriteBatch.End();
         }
 
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
@@ -169,6 +175,8 @@ namespace DemoGame.ParticleEffectEditor
                 Emitter.Origin = new Vector2(e.X, e.Y);
         }
 
+        SpriteBatch _spriteBatch;
+
         void ScreenForm_Load(object sender, EventArgs e)
         {
             GameScreen.ScreenForm = this;
@@ -176,7 +184,8 @@ namespace DemoGame.ParticleEffectEditor
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
             GrhInfo.Load(ContentPaths.Build, _content);
 
-            _renderer = new SpriteBatchRenderer(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _renderer = new SpriteBatchRenderer { SpriteBatch = _spriteBatch };
         }
 
         /// <summary>

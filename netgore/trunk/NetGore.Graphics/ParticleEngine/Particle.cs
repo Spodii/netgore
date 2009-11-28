@@ -156,9 +156,8 @@ namespace NetGore.Graphics.ParticleEngine
             // Set the velocity back to zero
             Velocity = Vector2.Zero;
 
-            Vector2 deltaMomentum;
-
             // Calculate the momentum for the elapsed time
+            Vector2 deltaMomentum;
             Vector2.Multiply(ref Momentum, elapsedTime * 0.001f, out deltaMomentum);
 
             // Add the delta momentum to the position
