@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,10 +15,16 @@ namespace DemoGame.ParticleEffectEditor
 {
     public partial class ScreenForm : Form, IGetTime
     {
-        readonly Stopwatch _watch = new Stopwatch();
         readonly string _defaultTitle;
+        readonly Stopwatch _watch = new Stopwatch();
 
         ContentManager _content;
+
+        /// <summary>
+        /// The file path of the currently loaded effect. Null if not loaded from file.
+        /// </summary>
+        string _currentEffectFilePath = null;
+
         ParticleEmitter _emitter;
         IParticleRenderer _renderer;
 
@@ -35,6 +40,29 @@ namespace DemoGame.ParticleEffectEditor
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _watch.Start();
+        }
+
+        string CurrentEffectFilePath
+        {
+            get { return _currentEffectFilePath; }
+            set
+            {
+                if (_currentEffectFilePath == value)
+                    return;
+
+                _currentEffectFilePath = value;
+
+                string effectName;
+                if (_currentEffectFilePath == null)
+                    effectName = string.Empty;
+                else
+                {
+                    effectName = " - ";
+                    effectName += ParticleEffectHelper.GetEffectDisplayNameFromFile(_currentEffectFilePath);
+                }
+
+                Text = _defaultTitle + effectName;
+            }
         }
 
         public ParticleEmitter Emitter
@@ -54,6 +82,38 @@ namespace DemoGame.ParticleEffectEditor
         GraphicsDevice GraphicsDevice
         {
             get { return GameScreen.GraphicsDevice; }
+        }
+
+        void btnLoad_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            ParticleEmitter emitter;
+            var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
+
+            if (wasSuccessful)
+            {
+                Emitter = emitter;
+                CurrentEffectFilePath = filePath;
+            }
+        }
+
+        void btnSave_Click(object sender, EventArgs e)
+        {
+            if (CurrentEffectFilePath == null)
+            {
+                btnSaveAs_Click(this, null);
+                return;
+            }
+
+            var emitterName = ParticleEffectHelper.GetEffectDisplayNameFromFile(CurrentEffectFilePath);
+            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter, emitterName);
+        }
+
+        void btnSaveAs_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            if (FileDialogs.TrySaveAsParticleEffect(Emitter, out filePath))
+                CurrentEffectFilePath = filePath;
         }
 
         void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
@@ -137,67 +197,5 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         #endregion
-
-        private void btnLoad_Click(object sender, EventArgs e)
-        {
-            string filePath;
-            ParticleEmitter emitter;
-            var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
-
-            if (wasSuccessful)
-            {
-                Emitter = emitter;
-                CurrentEffectFilePath = filePath;
-            }
-        }
-
-        /// <summary>
-        /// The file path of the currently loaded effect. Null if not loaded from file.
-        /// </summary>
-        string _currentEffectFilePath = null;
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            if (CurrentEffectFilePath == null)
-            {
-                btnSaveAs_Click(this, null);
-                return;
-            }
-
-            var emitterName = ParticleEffectHelper.GetEffectDisplayNameFromFile(CurrentEffectFilePath);
-            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter, emitterName);
-        }
-
-        private void btnSaveAs_Click(object sender, EventArgs e)
-        {
-            string filePath;
-            if (FileDialogs.TrySaveAsParticleEffect(Emitter, out filePath))
-                CurrentEffectFilePath = filePath;
-        }
-
-        string CurrentEffectFilePath
-        {
-            get { return _currentEffectFilePath; }
-            set
-            {
-                if (_currentEffectFilePath == value)
-                    return;
-
-                _currentEffectFilePath = value;
-
-                string effectName;
-                if (_currentEffectFilePath == null)
-                {
-                    effectName = string.Empty;
-                }
-                else
-                {
-                    effectName = " - ";
-                    effectName += ParticleEffectHelper.GetEffectDisplayNameFromFile(_currentEffectFilePath);
-                }
-
-                Text = _defaultTitle + effectName;
-            }
-        }
     }
 }
