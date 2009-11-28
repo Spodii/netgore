@@ -721,8 +721,8 @@ namespace DemoGame
             if (!File.Exists(filePath))
             {
                 const string errmsg = "Map file `{0}` does not exist - unable to load map.";
-                Debug.Fail(string.Format(errmsg, filePath));
-                log.ErrorFormat(errmsg, filePath);
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, filePath);
                 throw new ArgumentException("filePath");
             }
 
