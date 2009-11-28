@@ -11,12 +11,6 @@ namespace NetGore
     /// </summary>
     public static class IValueReaderExtensions
     {
-
-        public static SpriteBlendMode ReadSpriteBlendMode(this IValueReader reader, string name)
-        {
-            return reader.ReadEnum(SpriteBlendModeHelper.Instance, name);
-        }
-
         /// <summary>
         /// Reads a Color.
         /// </summary>
@@ -82,6 +76,11 @@ namespace NetGore
             }
 
             return new Rectangle(x, y, w, h);
+        }
+
+        public static SpriteBlendMode ReadSpriteBlendMode(this IValueReader reader, string name)
+        {
+            return reader.ReadEnum(SpriteBlendModeHelper.Instance, name);
         }
 
         public static SpriteCategorization ReadSpriteCategorization(this IValueReader reader, string name)

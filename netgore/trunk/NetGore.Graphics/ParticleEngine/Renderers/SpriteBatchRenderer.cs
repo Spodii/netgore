@@ -11,14 +11,14 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public sealed class SpriteBatchRenderer : ParticleRendererBase
     {
+        const SpriteSortMode _spriteBatchSortMode = SpriteSortMode.Deferred;
+        const SaveStateMode _spriteBatchStateMode = SaveStateMode.None;
         SpriteBlendMode _startingBlendMode = SpriteBlendMode.AlphaBlend;
 
         /// <summary>
-        /// When overridden in the derived class, handles the actual disposing.
+        /// Gets or sets the <see cref="SpriteBatch"/> used to draw.
         /// </summary>
-        protected override void InternalDispose()
-        {
-        }
+        public SpriteBatch SpriteBatch { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="SpriteBlendMode"/> the <see cref="SpriteBatch"/> is using
@@ -36,24 +36,21 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
-        /// <summary>
-        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
-        /// a valid state to draw.
-        /// </summary>
-        /// <returns>
-        /// True if in a valid state to draw; otherwise false.
-        /// </returns>
-        protected override bool InValidRenderState()
+        void BeginSpriteBatch(Camera2D camera)
         {
-            return SpriteBatch != null;
+            var blendMode = StartingBlendMode == SpriteBlendMode.Additive ? SpriteBlendMode.AlphaBlend : SpriteBlendMode.Additive;
+            var matrix = camera.Matrix;
+
+            SpriteBatch.Begin(blendMode, _spriteBatchSortMode, _spriteBatchStateMode, matrix);
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteBatch"/> used to draw.
+        /// When overridden in the derived class, handles the actual disposing.
         /// </summary>
-        public SpriteBatch SpriteBatch { get; set; }
+        protected override void InternalDispose()
+        {
+        }
 
-        
         /// <summary>
         /// When overridden in the derived class, handles rendering the <see cref="ParticleEmitter"/>s.
         /// </summary>
@@ -63,7 +60,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
         /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
         protected override void InternalRenderEmitter(Camera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
-            IEnumerable<ParticleEmitter> alphaEmitters)
+                                                      IEnumerable<ParticleEmitter> alphaEmitters)
         {
             IEnumerable<ParticleEmitter> first;
             IEnumerable<ParticleEmitter> second;
@@ -81,9 +78,7 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             if (first.Count() > 0)
-            {
                 RenderEmitters(first);
-            }
 
             if (second.Count() > 0)
             {
@@ -97,21 +92,16 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
-        const SpriteSortMode _spriteBatchSortMode = SpriteSortMode.Deferred;
-        const SaveStateMode _spriteBatchStateMode = SaveStateMode.None;
-
-        void BeginSpriteBatch(Camera2D camera)
+        /// <summary>
+        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
+        /// a valid state to draw.
+        /// </summary>
+        /// <returns>
+        /// True if in a valid state to draw; otherwise false.
+        /// </returns>
+        protected override bool InValidRenderState()
         {
-            var blendMode = StartingBlendMode == SpriteBlendMode.Additive ? SpriteBlendMode.AlphaBlend : SpriteBlendMode.Additive;
-            var matrix = camera.Matrix;
-
-            SpriteBatch.Begin(blendMode, _spriteBatchSortMode, _spriteBatchStateMode, matrix);
-        }
-
-        void RenderEmitters(IEnumerable<ParticleEmitter> emitters)
-        {
-            foreach (var emitter in emitters)
-                RenderEmitter(emitter);
+            return SpriteBatch != null;
         }
 
         void RenderEmitter(ParticleEmitter emitter)
@@ -123,6 +113,14 @@ namespace NetGore.Graphics.ParticleEngine
             {
                 var p = particles[i];
                 emitter.Sprite.Draw(SpriteBatch, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
+            }
+        }
+
+        void RenderEmitters(IEnumerable<ParticleEmitter> emitters)
+        {
+            foreach (var emitter in emitters)
+            {
+                RenderEmitter(emitter);
             }
         }
     }

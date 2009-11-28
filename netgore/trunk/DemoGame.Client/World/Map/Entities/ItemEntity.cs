@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
-using IDrawable = NetGore.Graphics.IDrawable;
+using IDrawable=NetGore.Graphics.IDrawable;
 
 // LATER: When editing Grhs and changing texture, change the preview
 // LATER: When updating a Grh, update the preview image

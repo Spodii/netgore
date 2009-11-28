@@ -16,6 +16,7 @@ namespace DemoGame.ParticleEffectEditor
     public partial class ScreenForm : Form, IGetTime
     {
         const string _defaultCategory = "Particle";
+        readonly Camera2D _camera;
 
         readonly string _defaultTitle;
         readonly Stopwatch _watch = new Stopwatch();
@@ -29,6 +30,7 @@ namespace DemoGame.ParticleEffectEditor
 
         ParticleEmitter _emitter;
         IParticleRenderer _renderer;
+        SpriteBatch _spriteBatch;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -155,8 +157,6 @@ namespace DemoGame.ParticleEffectEditor
             return ret;
         }
 
-        readonly Camera2D _camera;
-
         /// <summary>
         /// Main entry point for all the screen drawing.
         /// </summary>
@@ -174,8 +174,6 @@ namespace DemoGame.ParticleEffectEditor
             if (e.Button == MouseButtons.Left)
                 Emitter.Origin = new Vector2(e.X, e.Y);
         }
-
-        SpriteBatch _spriteBatch;
 
         void ScreenForm_Load(object sender, EventArgs e)
         {

@@ -24,13 +24,13 @@ namespace DemoGame.Client
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
+        readonly IDynamicEntityFactory _dynamicEntityFactory;
 
         readonly GameMessages _gameMessages = new GameMessages();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
-        readonly IDynamicEntityFactory _dynamicEntityFactory;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -49,7 +49,8 @@ namespace DemoGame.Client
         /// <param name="gameplayScreen">The gameplay screen.</param>
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to serialize
         /// <see cref="DynamicEntity"/>s.</param>
-        public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen, IDynamicEntityFactory dynamicEntityFactory)
+        public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen,
+                                   IDynamicEntityFactory dynamicEntityFactory)
         {
             if (dynamicEntityFactory == null)
                 throw new ArgumentNullException("dynamicEntityFactory");

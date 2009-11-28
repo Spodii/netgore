@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -26,7 +25,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
         /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
         protected abstract void InternalRenderEmitter(Camera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
-            IEnumerable<ParticleEmitter> alphaEmitters);
+                                                      IEnumerable<ParticleEmitter> alphaEmitters);
 
         /// <summary>
         /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in

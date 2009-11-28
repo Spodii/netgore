@@ -15,10 +15,9 @@ using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.IO;
-
-using Map = DemoGame.Client.Map;
-using World = DemoGame.Client.World;
-using Character = DemoGame.Client.Character;
+using Character=DemoGame.Client.Character;
+using Map=DemoGame.Client.Map;
+using World=DemoGame.Client.World;
 
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
@@ -499,6 +498,26 @@ namespace DemoGame.MapEditor
             return instance;
         }
 
+        Map CreateMapFromFilePath(string filePath)
+        {
+            const string errmsg = "Invalid map file selected:{0}{1}";
+
+            if (!MapBase.IsValidMapFile(filePath))
+            {
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
+                return null;
+            }
+
+            MapIndex index;
+            if (!Map.TryGetIndexFromPath(filePath, out index))
+            {
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
+                return null;
+            }
+
+            return new Map(index, _world, GameScreen.GraphicsDevice);
+        }
+
         /// <summary>
         /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
         /// </summary>
@@ -841,7 +860,7 @@ namespace DemoGame.MapEditor
                 Map = new Map(new MapIndex(1), _world, GameScreen.GraphicsDevice);
             }
             catch (Exception)
-            { 
+            {
                 // Doesn't matter if we fail to load the first map...
             }
 
@@ -1010,26 +1029,6 @@ namespace DemoGame.MapEditor
                 Dispose();
                 throw;
             }
-        }
-
-        Map CreateMapFromFilePath(string filePath)
-        {
-            const string errmsg = "Invalid map file selected:{0}{1}";
-
-            if (!MapBase.IsValidMapFile(filePath))
-            {
-                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
-                return null;
-            }
-
-            MapIndex index;
-            if (!Map.TryGetIndexFromPath(filePath, out index))
-            {
-                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
-                return null;
-            }
-
-            return new Map(index, _world, GameScreen.GraphicsDevice);
         }
 
         void SetMapGUITexts(Map oldMap, Map newMap)

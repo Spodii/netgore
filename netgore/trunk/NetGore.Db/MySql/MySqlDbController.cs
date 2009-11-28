@@ -1,4 +1,6 @@
-﻿namespace NetGore.Db.MySql
+﻿using System.Linq;
+
+namespace NetGore.Db.MySql
 {
     /// <summary>
     /// A <see cref="DbControllerBase"/> for MySql.

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -13,6 +12,8 @@ namespace NetGore.Collections
     /// </summary>
     public class TypeFactory : IEnumerable<Type>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Contains a List of Assemblies that have already been loaded (used to prevent loading an Assembly more than once).
         /// </summary>
@@ -222,8 +223,6 @@ namespace NetGore.Collections
                     OnLoadType(this, type, typeName);
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #region IEnumerable<Type> Members
 

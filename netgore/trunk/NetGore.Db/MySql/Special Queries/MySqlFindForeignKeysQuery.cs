@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq;
 
 namespace NetGore.Db.MySql
 {

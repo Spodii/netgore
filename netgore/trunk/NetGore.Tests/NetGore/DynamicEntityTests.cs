@@ -14,10 +14,6 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class DynamicEntityTests
     {
-        class DynamicEntityFactory : DynamicEntityFactoryBase
-        {
-        }
-
         static readonly IDynamicEntityFactory _dynamicEntityFactoryBase = new DynamicEntityFactory();
 
         [Test]
@@ -612,6 +608,10 @@ namespace NetGore.Tests.NetGore
 
             [SyncValue(SkipNetworkSync = true)]
             public short SkipC { get; set; }
+        }
+
+        class DynamicEntityFactory : DynamicEntityFactoryBase
+        {
         }
     }
 }

@@ -174,7 +174,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// it will never expire automatically. If false, the amount of time remaining can be found
         /// from <see cref="RemainingLife"/>.
         /// </summary>
-       [Browsable(false)]
+        [Browsable(false)]
         public bool HasInfiniteLife
         {
             get { return _expirationTime == int.MaxValue; }
