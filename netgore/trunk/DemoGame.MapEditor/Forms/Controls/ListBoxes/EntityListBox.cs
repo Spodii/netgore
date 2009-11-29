@@ -18,6 +18,7 @@ namespace DemoGame.MapEditor
         protected override void Delete(Entity item)
         {
             Map.RemoveEntity(item);
+           ListBoxExtensions.RemoveItemAndReselect(this, item);
         }
 
         protected override IEnumerable<Entity> GetItems()
@@ -29,5 +30,6 @@ namespace DemoGame.MapEditor
         {
             Camera.Center(item);
         }
+
     }
 }
