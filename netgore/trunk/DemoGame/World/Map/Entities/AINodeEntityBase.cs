@@ -19,18 +19,7 @@ namespace DemoGame
         public Vector2 ClosestNode
         {
             get { return _closestAINode; }
-            set { _closestAINode = GetClosestAINode(); }
-        }
-
-        Vector2 Size
-        {
-            set
-            {
-                Vector2 FixedSize;
-                FixedSize.X = 32;
-                FixedSize.Y = 32;
-                Size = FixedSize;
-            }
+            set { _closestAINode = value; }
         }
     }
 }
