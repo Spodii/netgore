@@ -33,7 +33,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenForm));
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
@@ -105,6 +104,8 @@ namespace DemoGame.MapEditor
             this.picToolWalls = new System.Windows.Forms.PictureBox();
             this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
+            this.tabEffects = new System.Windows.Forms.TabPage();
+            this.cmdSaveAs = new System.Windows.Forms.Button();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
@@ -134,12 +135,13 @@ namespace DemoGame.MapEditor
             this.tcMenu.Controls.Add(this.tabPageWalls);
             this.tcMenu.Controls.Add(this.tabPageEntities);
             this.tcMenu.Controls.Add(this.tabPageBackground);
+            this.tcMenu.Controls.Add(this.tabEffects);
             this.tcMenu.Controls.Add(this.tabPageNPCs);
             this.tcMenu.Controls.Add(this.tabPageSettings);
             this.tcMenu.Location = new System.Drawing.Point(810, 3);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
-            this.tcMenu.Size = new System.Drawing.Size(345, 605);
+            this.tcMenu.Size = new System.Drawing.Size(389, 605);
             this.tcMenu.TabIndex = 1;
             // 
             // tabPageGeneral
@@ -152,7 +154,7 @@ namespace DemoGame.MapEditor
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeneral.Name = "tabPageGeneral";
             this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageGeneral.Size = new System.Drawing.Size(337, 579);
+            this.tabPageGeneral.Size = new System.Drawing.Size(381, 579);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.ToolTipText = "General map information";
@@ -257,7 +259,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.Controls.Add(this.treeGrhs);
             this.tabPageGrhs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGrhs.Name = "tabPageGrhs";
-            this.tabPageGrhs.Size = new System.Drawing.Size(337, 579);
+            this.tabPageGrhs.Size = new System.Drawing.Size(381, 579);
             this.tabPageGrhs.TabIndex = 5;
             this.tabPageGrhs.Text = "Grhs";
             this.tabPageGrhs.UseVisualStyleBackColor = true;
@@ -288,13 +290,11 @@ namespace DemoGame.MapEditor
             // treeGrhs
             // 
             this.treeGrhs.AllowDrop = true;
-            this.treeGrhs.ImageIndex = 0;
-            this.treeGrhs.ImageSize = new System.Drawing.Size(16, 16);
+            this.treeGrhs.ImageSize = new System.Drawing.Size(0, 0);
             this.treeGrhs.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.treeGrhs.LabelEdit = true;
             this.treeGrhs.Location = new System.Drawing.Point(6, 29);
             this.treeGrhs.Name = "treeGrhs";
-            this.treeGrhs.SelectedImageIndex = 0;
             this.treeGrhs.ShowNodeToolTips = true;
             this.treeGrhs.Size = new System.Drawing.Size(326, 547);
             this.treeGrhs.Sorted = true;
@@ -311,7 +311,7 @@ namespace DemoGame.MapEditor
             this.tabPageWalls.Location = new System.Drawing.Point(4, 22);
             this.tabPageWalls.Name = "tabPageWalls";
             this.tabPageWalls.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWalls.Size = new System.Drawing.Size(337, 579);
+            this.tabPageWalls.Size = new System.Drawing.Size(381, 579);
             this.tabPageWalls.TabIndex = 1;
             this.tabPageWalls.Text = "Walls";
             this.tabPageWalls.ToolTipText = "Collision walls";
@@ -379,7 +379,7 @@ namespace DemoGame.MapEditor
             this.tabPageEntities.Controls.Add(this.lstEntities);
             this.tabPageEntities.Location = new System.Drawing.Point(4, 22);
             this.tabPageEntities.Name = "tabPageEntities";
-            this.tabPageEntities.Size = new System.Drawing.Size(337, 579);
+            this.tabPageEntities.Size = new System.Drawing.Size(381, 579);
             this.tabPageEntities.TabIndex = 7;
             this.tabPageEntities.Text = "Entities";
             this.tabPageEntities.UseVisualStyleBackColor = true;
@@ -431,7 +431,7 @@ namespace DemoGame.MapEditor
             this.tabPageBackground.Controls.Add(this.lstBGItems);
             this.tabPageBackground.Location = new System.Drawing.Point(4, 22);
             this.tabPageBackground.Name = "tabPageBackground";
-            this.tabPageBackground.Size = new System.Drawing.Size(337, 579);
+            this.tabPageBackground.Size = new System.Drawing.Size(381, 579);
             this.tabPageBackground.TabIndex = 6;
             this.tabPageBackground.Text = "Background";
             this.tabPageBackground.UseVisualStyleBackColor = true;
@@ -491,7 +491,7 @@ namespace DemoGame.MapEditor
             this.tabPageNPCs.Controls.Add(this.pgNPCSpawn);
             this.tabPageNPCs.Location = new System.Drawing.Point(4, 22);
             this.tabPageNPCs.Name = "tabPageNPCs";
-            this.tabPageNPCs.Size = new System.Drawing.Size(337, 579);
+            this.tabPageNPCs.Size = new System.Drawing.Size(381, 579);
             this.tabPageNPCs.TabIndex = 4;
             this.tabPageNPCs.Text = "NPCs";
             this.tabPageNPCs.ToolTipText = "Mob and NPC spawning and settings";
@@ -601,7 +601,7 @@ namespace DemoGame.MapEditor
             this.tabPageSettings.Controls.Add(this.groupBox1);
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
-            this.tabPageSettings.Size = new System.Drawing.Size(337, 579);
+            this.tabPageSettings.Size = new System.Drawing.Size(381, 579);
             this.tabPageSettings.TabIndex = 3;
             this.tabPageSettings.Text = "Settings";
             this.tabPageSettings.ToolTipText = "Map editor settings";
@@ -759,7 +759,7 @@ namespace DemoGame.MapEditor
             // 
             // cmdSave
             // 
-            this.cmdSave.Location = new System.Drawing.Point(987, 610);
+            this.cmdSave.Location = new System.Drawing.Point(973, 614);
             this.cmdSave.Name = "cmdSave";
             this.cmdSave.Size = new System.Drawing.Size(65, 24);
             this.cmdSave.TabIndex = 2;
@@ -769,7 +769,7 @@ namespace DemoGame.MapEditor
             // 
             // cmdLoad
             // 
-            this.cmdLoad.Location = new System.Drawing.Point(916, 610);
+            this.cmdLoad.Location = new System.Drawing.Point(902, 614);
             this.cmdLoad.Name = "cmdLoad";
             this.cmdLoad.Size = new System.Drawing.Size(65, 24);
             this.cmdLoad.TabIndex = 3;
@@ -779,7 +779,7 @@ namespace DemoGame.MapEditor
             // 
             // cmdNew
             // 
-            this.cmdNew.Location = new System.Drawing.Point(845, 610);
+            this.cmdNew.Location = new System.Drawing.Point(831, 614);
             this.cmdNew.Name = "cmdNew";
             this.cmdNew.Size = new System.Drawing.Size(65, 24);
             this.cmdNew.TabIndex = 4;
@@ -789,7 +789,7 @@ namespace DemoGame.MapEditor
             // 
             // cmdOptimize
             // 
-            this.cmdOptimize.Location = new System.Drawing.Point(1058, 610);
+            this.cmdOptimize.Location = new System.Drawing.Point(1115, 614);
             this.cmdOptimize.Name = "cmdOptimize";
             this.cmdOptimize.Size = new System.Drawing.Size(65, 24);
             this.cmdOptimize.TabIndex = 5;
@@ -874,11 +874,30 @@ namespace DemoGame.MapEditor
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
+            // tabEffects
+            // 
+            this.tabEffects.Location = new System.Drawing.Point(4, 22);
+            this.tabEffects.Name = "tabEffects";
+            this.tabEffects.Size = new System.Drawing.Size(381, 579);
+            this.tabEffects.TabIndex = 8;
+            this.tabEffects.Text = "Effects";
+            this.tabEffects.UseVisualStyleBackColor = true;
+            // 
+            // cmdSaveAs
+            // 
+            this.cmdSaveAs.Location = new System.Drawing.Point(1044, 614);
+            this.cmdSaveAs.Name = "cmdSaveAs";
+            this.cmdSaveAs.Size = new System.Drawing.Size(65, 24);
+            this.cmdSaveAs.TabIndex = 8;
+            this.cmdSaveAs.Text = "Save As";
+            this.cmdSaveAs.UseVisualStyleBackColor = true;
+            // 
             // ScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1158, 642);
+            this.ClientSize = new System.Drawing.Size(1202, 642);
+            this.Controls.Add(this.cmdSaveAs);
             this.Controls.Add(this.GameScreen);
             this.Controls.Add(this.panToolBar);
             this.Controls.Add(this.cmdOptimize);
@@ -994,5 +1013,7 @@ namespace DemoGame.MapEditor
         private PersistentNPCListBox lstPersistentNPCs;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtMusic;
+        private System.Windows.Forms.TabPage tabEffects;
+        private System.Windows.Forms.Button cmdSaveAs;
     }
 }

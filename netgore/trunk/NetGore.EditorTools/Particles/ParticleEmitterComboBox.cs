@@ -13,6 +13,9 @@ namespace NetGore.EditorTools
     {
         public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleEmitterComboBox"/> class.
+        /// </summary>
         public ParticleEmitterComboBox()
         {
             DropDownStyle = ComboBoxStyle.DropDownList;

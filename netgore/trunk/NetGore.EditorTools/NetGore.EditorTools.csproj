@@ -65,7 +65,11 @@
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
     <Compile Include="FileDialogs.cs" />
-    <Compile Include="Particles\ParticleEffectHelper.cs" />
+    <Compile Include="WinForms\ParticleEffectListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinForms\Typed Controls\ITypedControl.cs" />
+    <Compile Include="WinForms\Typed Controls\TypedControlHelper.cs" />
     <Compile Include="XnaColorEditor.cs" />
     <Compile Include="WinForms\AutoValidateTextBox.cs">
       <SubType>Component</SubType>

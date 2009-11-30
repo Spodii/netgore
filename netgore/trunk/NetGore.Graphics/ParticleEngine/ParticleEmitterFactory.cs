@@ -8,9 +8,30 @@ using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
+    /// <summary>
+    /// A factory for creating <see cref="ParticleEmitter"/>s for particle effects.
+    /// </summary>
     public class ParticleEmitterFactory : TypeFactory
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Gets the name of a particle effect from the file path.
+        /// </summary>
+        /// <param name="filePath">The file path for the particle effect.</param>
+        /// <returns>The name of the particle effect, or "Unnamed" if the <paramref name="filePath"/> is invalid.</returns>
+        public static string GetEffectNameFromPath(string filePath)
+        {
+            // TODO: Create unit tests for this, and ensure it is nice and sturdy
+            try
+            {
+                return Path.GetFileNameWithoutExtension(filePath);
+            }
+            catch (ArgumentException)
+            {
+                return filePath ?? "Unnamed";
+            }
+        }
 
         /// <summary>
         /// The suffix for <see cref="ParticleEmitter"/> files, not including the prefixed period.

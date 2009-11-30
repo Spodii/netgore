@@ -5,24 +5,39 @@ using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
+    /// <summary>
+    /// A <see cref="ListBox"/> that uses strong typing for the collection items.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class TypedListBox<T> : ListBox, ITypedControl<T>
     {
+        /// <summary>
+        /// Notifies listeners when the selected item has changed.
+        /// </summary>
         public event TypedListBoxChangeEventHandler<T> TypedSelectedItemChanged;
 
+        /// <summary>
+        /// Adds an item to the <see cref="Control"/>'s collection.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
         public void AddItem(T item)
         {
             Items.Add(new TypedListControlItem<T>(this, item));
         }
 
+        /// <summary>
+        /// Adds an item to the <see cref="Control"/>'s collection.
+        /// </summary>
+        /// <param name="items">The items to add.</param>
         public void AddItems(IEnumerable<T> items)
         {
             Items.AddRange(items.Select(x => new TypedListControlItem<T>(this, x)).ToArray());
         }
 
         /// <summary>
-        /// Gets the items to initially populate the <see cref="ListBox"/> with.
+        /// Gets the items to initially populate the <see cref="Control"/>'s collection with.
         /// </summary>
-        /// <returns>The items to initially populate the <see cref="ListBox"/> with.</returns>
+        /// <returns>The items to initially populate the <see cref="Control"/>'s collection with.</returns>
         protected virtual IEnumerable<T> GetInitialItems()
         {
             return Enumerable.Empty<T>();
@@ -65,6 +80,10 @@ namespace NetGore.EditorTools
             }
         }
 
+        /// <summary>
+        /// Handles when the selected value changes.
+        /// </summary>
+        /// <param name="item">The new selected value.</param>
         protected virtual void OnTypedSelectedValueChanged(T item)
         {
         }
