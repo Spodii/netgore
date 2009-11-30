@@ -71,13 +71,13 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the user's character given the UserCharIndex
+        /// Gets the user's character, or null if the user's character is not yet set.
         /// </summary>
         public Character UserChar
         {
             get
             {
-                if (_map == null || !UserCharIndexSet)
+                if (_map == null || !IsUserCharIndexSet)
                     return null;
 
                 return _map.GetDynamicEntity<Character>(UserCharIndex);
@@ -93,14 +93,14 @@ namespace DemoGame.Client
             set
             {
                 _usercharIndex = value;
-                UserCharIndexSet = true;
+                IsUserCharIndexSet = true;
             }
         }
 
         /// <summary>
-        /// Gets or sets if the UserCharIndex is set.
+        /// Gets or sets if the <see cref="UserCharIndex"/> is set.
         /// </summary>
-        public bool UserCharIndexSet { get; set; }
+        public bool IsUserCharIndexSet { get; set; }
 
         /// <summary>
         /// Draws the world
@@ -136,7 +136,7 @@ namespace DemoGame.Client
             }
 
             // Invalidate the user's character index until it is reset
-            UserCharIndexSet = false;
+            IsUserCharIndexSet = false;
 
             // Dispose of the old map
             if (Map != null)
