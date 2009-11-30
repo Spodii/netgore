@@ -64,7 +64,7 @@ namespace DemoGame.ParticleEffectEditor
                 else
                 {
                     effectName = " - ";
-                    effectName += ParticleEffectHelper.GetEffectDisplayNameFromFile(_currentEffectFilePath);
+                    effectName += ParticleEmitterFactory.GetEffectNameFromPath(_currentEffectFilePath);
                 }
 
                 Text = _defaultTitle + effectName;
@@ -111,7 +111,7 @@ namespace DemoGame.ParticleEffectEditor
                 return;
             }
 
-            var emitterName = ParticleEffectHelper.GetEffectDisplayNameFromFile(CurrentEffectFilePath);
+            var emitterName = ParticleEmitterFactory.GetEffectNameFromPath(CurrentEffectFilePath);
             ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter, emitterName);
         }
 

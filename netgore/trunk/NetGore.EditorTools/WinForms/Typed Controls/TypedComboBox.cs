@@ -5,59 +5,39 @@ using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
-    public interface ITypedControl<T>
-    {
-        /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns>The string to display.</returns>
-        string ItemToString(T item);
-    }
-
-    public static class TypedControlHelper<T>
-    {
-        public static bool TryGetItemAsTyped(object item, out T value)
-        {
-            if (item is TypedListControlItem<T>)
-            {
-                value = ((TypedListControlItem<T>)item).Value;
-                return true;
-            }
-
-            if (item is T)
-            {
-                value = (T)item;
-                return true;
-            }
-
-            value = default(T);
-            return false;
-        }
-    }
-
     /// <summary>
     /// A <see cref="ComboBox"/> with some strong typing support.
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     public class TypedComboBox<T> : ComboBox, ITypedControl<T>
     {
+        /// <summary>
+        /// Notifies listeners when the selected item has changed.
+        /// </summary>
         public event TypedComboBoxChangeEventHandler<T> TypedSelectedItemChanged;
 
+        /// <summary>
+        /// Adds an item to the <see cref="Control"/>'s collection.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
         public void AddItem(T item)
         {
             Items.Add(new TypedListControlItem<T>(this, item));
         }
 
+        /// <summary>
+        /// Adds an item to the <see cref="Control"/>'s collection.
+        /// </summary>
+        /// <param name="items">The items to add.</param>
         public void AddItems(IEnumerable<T> items)
         {
             Items.AddRange(items.Select(x => new TypedListControlItem<T>(this, x)).ToArray());
         }
 
         /// <summary>
-        /// Gets the items to initially populate the <see cref="ComboBox"/> with.
+        /// Gets the items to initially populate the <see cref="Control"/>'s collection with.
         /// </summary>
-        /// <returns>The items to initially populate the <see cref="ComboBox"/> with.</returns>
+        /// <returns>The items to initially populate the <see cref="Control"/>'s collection with.</returns>
         protected virtual IEnumerable<T> GetInitialItems()
         {
             return Enumerable.Empty<T>();
@@ -100,6 +80,10 @@ namespace NetGore.EditorTools
             }
         }
 
+        /// <summary>
+        /// Handles when the selected value changes.
+        /// </summary>
+        /// <param name="item">The new selected value.</param>
         protected virtual void OnTypedSelectedValueChanged(T item)
         {
         }
