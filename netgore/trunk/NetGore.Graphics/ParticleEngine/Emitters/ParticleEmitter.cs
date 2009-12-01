@@ -20,6 +20,7 @@ namespace NetGore.Graphics.ParticleEngine
         const SpriteBlendMode _defaultBlendMode = SpriteBlendMode.Additive;
         const int _defaultBudget = 5000;
         const string _emitterCategoryName = "Emitter";
+        const string _defaultName = "Unnamed";
 
         /// <summary>
         /// The initial size of the particle array.
@@ -30,6 +31,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _modifiersNodeName = "Modifiers";
         const string _originKeyName = "Origin";
 
+        const string _nameKeyName = "Name";
         const string _particleCategoryName = "Particle";
         const string _releaseAmountKeyName = "ReleaseAmount";
         const string _releaseColorKeyName = "ReleaseColor";
@@ -88,6 +90,7 @@ namespace NetGore.Graphics.ParticleEngine
             particles = new Particle[_initialParticleArraySize];
 
             // Set some default values
+            Name = _defaultName;
             BlendMode = _defaultBlendMode;
             Life = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
@@ -97,6 +100,15 @@ namespace NetGore.Graphics.ParticleEngine
             ReleaseScale = new VariableFloat(1);
             ReleaseSpeed = new VariableFloat(50);
         }
+
+        /// <summary>
+        /// Gets or sets the unique name of the particle effect.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The unique name of the particle effect.")]
+        [DisplayName("Name")]
+        [DefaultValue(_defaultName)]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets the number of living <see cref="Particle"/>s.
@@ -426,6 +438,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Read(IValueReader reader)
         {
             // Read the primary values
+            Name = reader.ReadString(_nameKeyName);
             BlendMode = reader.ReadEnum(SpriteBlendModeHelper.Instance, _blendModeKeyName);
             Budget = reader.ReadInt(_budgetKeyName);
             Life = reader.ReadVariableInt(_lifeKeyName);
@@ -644,6 +657,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Write(IValueWriter writer)
         {
             // Write the primary values
+            writer.Write(_nameKeyName, Name);
             writer.Write(_blendModeKeyName, BlendMode);
             writer.Write(_budgetKeyName, Budget);
             writer.Write(_lifeKeyName, Life);

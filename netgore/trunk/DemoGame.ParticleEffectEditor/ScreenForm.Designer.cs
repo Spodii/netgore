@@ -34,12 +34,11 @@ namespace DemoGame.ParticleEffectEditor
             this.tabEffect = new System.Windows.Forms.TabPage();
             this.pgEffect = new System.Windows.Forms.PropertyGrid();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
+            this.cmbEmitter = new NetGore.EditorTools.ParticleEmitterComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.btnSaveAs = new System.Windows.Forms.Button();
-            this.cmbEmitter = new NetGore.EditorTools.ParticleEmitterComboBox();
             this.GameScreen = new DemoGame.ParticleEffectEditor.GameScreenControl();
             this.tabControl1.SuspendLayout();
             this.tabEffect.SuspendLayout();
@@ -86,6 +85,16 @@ namespace DemoGame.ParticleEffectEditor
             this.gbEmitter.TabStop = false;
             this.gbEmitter.Text = "Emitter";
             // 
+            // cmbEmitter
+            // 
+            this.cmbEmitter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEmitter.FormattingEnabled = true;
+            this.cmbEmitter.Location = new System.Drawing.Point(54, 19);
+            this.cmbEmitter.Name = "cmbEmitter";
+            this.cmbEmitter.Size = new System.Drawing.Size(196, 21);
+            this.cmbEmitter.TabIndex = 1;
+            this.cmbEmitter.SelectedEmitterChanged += new NetGore.EditorTools.ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -107,7 +116,7 @@ namespace DemoGame.ParticleEffectEditor
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(22, 538);
+            this.btnLoad.Location = new System.Drawing.Point(67, 538);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(76, 25);
             this.btnLoad.TabIndex = 2;
@@ -117,33 +126,13 @@ namespace DemoGame.ParticleEffectEditor
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(104, 538);
+            this.btnSave.Location = new System.Drawing.Point(149, 538);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(76, 25);
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnSaveAs
-            // 
-            this.btnSaveAs.Location = new System.Drawing.Point(186, 538);
-            this.btnSaveAs.Name = "btnSaveAs";
-            this.btnSaveAs.Size = new System.Drawing.Size(76, 25);
-            this.btnSaveAs.TabIndex = 4;
-            this.btnSaveAs.Text = "Save As";
-            this.btnSaveAs.UseVisualStyleBackColor = true;
-            this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click);
-            // 
-            // cmbEmitter
-            // 
-            this.cmbEmitter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEmitter.FormattingEnabled = true;
-            this.cmbEmitter.Location = new System.Drawing.Point(54, 19);
-            this.cmbEmitter.Name = "cmbEmitter";
-            this.cmbEmitter.Size = new System.Drawing.Size(196, 21);
-            this.cmbEmitter.TabIndex = 1;
-            this.cmbEmitter.SelectedEmitterChanged += new NetGore.EditorTools.ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
             // 
             // GameScreen
             // 
@@ -160,7 +149,6 @@ namespace DemoGame.ParticleEffectEditor
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1033, 575);
-            this.Controls.Add(this.btnSaveAs);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.tabControl1);
@@ -189,7 +177,6 @@ namespace DemoGame.ParticleEffectEditor
         private System.Windows.Forms.PropertyGrid pgEffect;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnSaveAs;
     }
 }
 

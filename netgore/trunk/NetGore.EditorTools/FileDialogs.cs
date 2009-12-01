@@ -266,8 +266,7 @@ namespace NetGore.EditorTools
                 if (filePath == null)
                     return false;
 
-                string emitterName = ParticleEmitterFactory.GetEffectNameFromPath(filePath);
-                ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, emitter, emitterName);
+                ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, emitter);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,24 +15,6 @@ namespace NetGore.Graphics.ParticleEngine
     public class ParticleEmitterFactory : TypeFactory
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Gets the name of a particle effect from the file path.
-        /// </summary>
-        /// <param name="filePath">The file path for the particle effect.</param>
-        /// <returns>The name of the particle effect, or "Unnamed" if the <paramref name="filePath"/> is invalid.</returns>
-        public static string GetEffectNameFromPath(string filePath)
-        {
-            // TODO: Create unit tests for this, and ensure it is nice and sturdy
-            try
-            {
-                return Path.GetFileNameWithoutExtension(filePath);
-            }
-            catch (ArgumentException)
-            {
-                return filePath ?? "Unnamed";
-            }
-        }
 
         /// <summary>
         /// The suffix for <see cref="ParticleEmitter"/> files, not including the prefixed period.
@@ -69,6 +52,24 @@ namespace NetGore.Graphics.ParticleEngine
         public static ParticleEmitterFactory Instance
         {
             get { return _instance; }
+        }        
+        
+        /// <summary>
+        /// Gets the name of a particle effect from the file path.
+        /// </summary>
+        /// <param name="filePath">The file path for the particle effect.</param>
+        /// <returns>The name of the particle effect, or "Unnamed" if the <paramref name="filePath"/> is invalid.</returns>
+        public static string GetEffectNameFromPath(string filePath)
+        {
+            // TODO: Create unit tests for this, and ensure it is nice and sturdy
+            try
+            {
+                return Path.GetFileNameWithoutExtension(filePath);
+            }
+            catch (ArgumentException)
+            {
+                return filePath ?? "Unnamed";
+            }
         }
 
         static string GetFilePath(ContentPaths contentPath, string emitterName)
@@ -113,6 +114,8 @@ namespace NetGore.Graphics.ParticleEngine
             XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
             var emitter = Read(reader);
 
+            Debug.Assert(emitter.Name.Equals(emitterName, StringComparison.OrdinalIgnoreCase));
+
             return emitter;
         }
 
@@ -141,10 +144,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to save to.</param>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to save.</param>
-        /// <param name="emitterName">The unique name of the <paramref name="emitter"/>.</param>
-        public static void SaveEmitter(ContentPaths contentPath, ParticleEmitter emitter, string emitterName)
+        public static void SaveEmitter(ContentPaths contentPath, ParticleEmitter emitter)
         {
-            var filePath = GetFilePath(contentPath, emitterName);
+            var filePath = GetFilePath(contentPath, emitter.Name);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saving ParticleEmitter `{0}` to `{1}`.", emitter, filePath);
