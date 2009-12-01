@@ -75,6 +75,9 @@
     <Compile Include="Forms\Controls\ListBoxes\EntityListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\Controls\ListBoxes\MapParticleEffectsListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\Controls\ListBoxes\PersistentNPCListBox.cs">
       <SubType>Component</SubType>
     </Compile>

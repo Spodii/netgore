@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
+using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using IDrawable=NetGore.Graphics.IDrawable;
 
@@ -35,6 +36,8 @@ namespace DemoGame.Client
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
         const string _usedIndiciesNodeName = "UsedIndicies";
+
+        readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
 
         /// <summary>
         /// List of BackgroundImages on this map.
@@ -115,6 +118,8 @@ namespace DemoGame.Client
             _world = parent;
         }
 
+        static readonly SpriteBatchRenderer _particleEffectRenderer = new SpriteBatchRenderer();
+
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.
         /// </summary>
@@ -149,6 +154,14 @@ namespace DemoGame.Client
         public IEnumerable<MapGrh> MapGrhs
         {
             get { return _mapGrhs; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MapParticleEffectCollection"/> containing the particle effects for the map.
+        /// </summary>
+        public MapParticleEffectCollection ParticleEffects
+        {
+            get { return _particleEffects; }
         }
 
         /// <summary>
@@ -285,6 +298,10 @@ namespace DemoGame.Client
 
             // Draw the foreground map graphics (in front of the character)
             DrawLayer(sb, camera, _drawLayerForeground, MapRenderLayer.SpriteForeground, DrawMapGrhs);
+
+            // Draw the particle effects
+            _particleEffectRenderer.SpriteBatch = sb;
+            _particleEffectRenderer.Draw(camera, ParticleEffects);
         }
 
         /// <summary>
@@ -609,6 +626,10 @@ namespace DemoGame.Client
             {
                 bgImage.Update(currentTime);
             }
+
+            // Update particle effects
+            foreach (var p in ParticleEffects)
+                p.Update(currentTime);
         }
 
         #region IDisposable Members

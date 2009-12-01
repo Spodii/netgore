@@ -199,22 +199,27 @@ namespace NetGore.Graphics
         /// of the camera.
         /// </summary>
         /// <param name="entity">Entity to center on.</param>
-        public void Center(Entity entity)
+        public void CenterOn(Entity entity)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Center(entity.CB.Min + (entity.CB.Size / 2));
+            CenterOn(entity.CB.Min + (entity.CB.Size / 2));
         }
 
         /// <summary>
         /// Centers the camera on a point so that the point is at the center of the camera.
         /// </summary>
         /// <param name="point">Point to center on.</param>
-        public void Center(Vector2 point)
+        public void CenterOn(Vector2 point)
         {
             Min = point - (Size / 2);
         }
+
+        /// <summary>
+        /// Gets the coordinate of the center of the Camera's view port.
+        /// </summary>
+        public Vector2 Center { get { return Min + Size / 2; } }
 
         /// <summary>
         /// Checks if a specified object is in view of the camera
