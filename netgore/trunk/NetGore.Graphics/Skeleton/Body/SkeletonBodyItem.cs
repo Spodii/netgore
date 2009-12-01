@@ -42,7 +42,7 @@ namespace NetGore.Graphics
         public Grh Grh { get; set; }
 
         /// <summary>
-        /// Gets the SkeletonBodyItemInfo used by this SkeletonBodyItem
+        /// Gets the <see cref="SkeletonBodyItemInfo"/> used by this <see cref="SkeletonBodyItem"/>.
         /// </summary>
         public SkeletonBodyItemInfo ItemInfo
         {
@@ -50,14 +50,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the source SkeletonNode to draw from
+        /// Gets or sets the source <see cref="SkeletonNode"/> to draw from.
         /// </summary>
         public SkeletonNode Source { get; set; }
 
         /// <summary>
-        /// Attaches the SkeletonBodyItem to a skeleton using the name of the joints
+        /// Attaches the <see cref="SkeletonBodyItem"/> to a <see cref="Skeleton"/> using the name of the joints.
         /// </summary>
-        /// <param name="skeleton">Skeleton to attach to</param>
+        /// <param name="skeleton"><see cref="Skeleton"/> to attach to.</param>
         internal void Attach(Skeleton skeleton)
         {
             // Source n
@@ -74,33 +74,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the SkeletonBodyItem
+        /// Draws the <see cref="SkeletonBodyItem"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="position">Position to draw at</param>
-        internal void Draw(SpriteBatch sb, Vector2 position)
-        {
-            Draw(sb, position, 1.0f, SpriteEffects.None);
-        }
-
-        /// <summary>
-        /// Draws the SkeletonBodyItem
-        /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="position">Position to draw at</param>
-        /// <param name="scale">Amount to scale the Grh in percent (1.0f for no scaling)</param>
-        internal void Draw(SpriteBatch sb, Vector2 position, float scale)
-        {
-            Draw(sb, position, scale, SpriteEffects.None);
-        }
-
-        /// <summary>
-        /// Draws the SkeletonBodyItem
-        /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="position">Position to draw at</param>
-        /// <param name="scale">Amount to scale the Grh in percent (1.0f for no scaling)</param>
-        /// <param name="effect">SpriteEffects to use when drawing</param>
+        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="position">Position to draw at.</param>
+        /// <param name="scale">Amount to scale the Grh in percent (1.0f for no scaling).</param>
+        /// <param name="effect">SpriteEffects to use when drawing.</param>
         internal void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
         {
             // Validate
@@ -137,9 +116,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the Grh used by the SkeletonBodyItem
+        /// Updates the <see cref="SkeletonBodyItem"/>.
         /// </summary>
-        /// <param name="currentTime">Current time</param>
+        /// <param name="currentTime">The current time.</param>
         internal void Update(int currentTime)
         {
             Grh.Update(currentTime);
