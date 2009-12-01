@@ -89,19 +89,6 @@ namespace DemoGame.Client
             get { return _map; }
         }
 
-        public void SetPaperDoll(IEnumerable<string> layers)
-        {
-            _skelAnim.BodyLayers.Clear();
-            foreach (var layer in layers)
-            {
-                var bodyInfo = _skelManager.LoadBodyInfo(layer, ContentPaths.Build);
-                if (bodyInfo == null)
-                    continue;
-
-                _skelAnim.BodyLayers.Add(new SkeletonBody(bodyInfo, _skelAnim.Skeleton));
-            }
-        }
-
         /// <summary>
         /// Makes the character show an attack.
         /// </summary>
@@ -226,6 +213,19 @@ namespace DemoGame.Client
                 return;
 
             base.SetHeading(newHeading);
+        }
+
+        public void SetPaperDoll(IEnumerable<string> layers)
+        {
+            _skelAnim.BodyLayers.Clear();
+            foreach (var layer in layers)
+            {
+                var bodyInfo = _skelManager.LoadBodyInfo(layer, ContentPaths.Build);
+                if (bodyInfo == null)
+                    continue;
+
+                _skelAnim.BodyLayers.Add(new SkeletonBody(bodyInfo, _skelAnim.Skeleton));
+            }
         }
 
         /// <summary>

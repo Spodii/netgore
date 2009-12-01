@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DemoGame.Client;
 using NetGore.EditorTools;
 using NetGore.Graphics.ParticleEngine;
@@ -13,8 +12,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Initializes a new instance of the <see cref="MapParticleEffectsListBox"/> class.
         /// </summary>
-        public MapParticleEffectsListBox()
-            : base(true, false, true)
+        public MapParticleEffectsListBox() : base(true, false, true)
         {
         }
 

@@ -449,7 +449,9 @@ namespace DemoGame.Client
             byte count = r.ReadByte();
             string[] layers = new string[count];
             for (int i = 0; i < layers.Length; i++)
+            {
                 layers[i] = r.ReadString();
+            }
 
             Character character = Map.GetDynamicEntity<Character>(mapEntityIndex);
             if (character == null)

@@ -49,6 +49,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the coordinate of the center of the Camera's view port.
+        /// </summary>
+        public Vector2 Center
+        {
+            get { return Min + Size / 2; }
+        }
+
+        /// <summary>
         /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
         /// outside of the range of the map.
         /// </summary>
@@ -215,11 +223,6 @@ namespace NetGore.Graphics
         {
             Min = point - (Size / 2);
         }
-
-        /// <summary>
-        /// Gets the coordinate of the center of the Camera's view port.
-        /// </summary>
-        public Vector2 Center { get { return Min + Size / 2; } }
 
         /// <summary>
         /// Checks if a specified object is in view of the camera

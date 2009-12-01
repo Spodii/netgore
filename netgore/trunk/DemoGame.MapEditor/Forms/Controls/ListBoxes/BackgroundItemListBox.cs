@@ -12,8 +12,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundItemListBox"/> class.
         /// </summary>
-        public BackgroundItemListBox()
-            : base(true, false, false)
+        public BackgroundItemListBox() : base(true, false, false)
         {
         }
 

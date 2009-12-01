@@ -880,6 +880,15 @@ namespace DemoGame.MapEditor
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
         }
 
+        void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)
+        {
+            // TODO: Error handling for when the effect fails to load
+            var effect = ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev, effectName);
+            effect.Origin = Camera.Center;
+            effect.SetEmitterLife(0, 0);
+            Map.ParticleEffects.Add(effect);
+        }
+
         void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (pgBGItem.SelectedObject != lstBGItems.SelectedItem)
@@ -1312,15 +1321,6 @@ namespace DemoGame.MapEditor
                     w.WriteEndNode(_displayNodeName);
                 }
             }
-        }
-
-        private void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)
-        {
-            // TODO: Error handling for when the effect fails to load
-            var effect = ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev, effectName);
-            effect.Origin = Camera.Center;
-            effect.SetEmitterLife(0, 0);
-            Map.ParticleEffects.Add(effect);
         }
     }
 }

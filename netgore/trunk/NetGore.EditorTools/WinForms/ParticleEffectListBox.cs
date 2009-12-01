@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
@@ -22,15 +21,18 @@ namespace NetGore.EditorTools
     public class ParticleEffectListBox : TypedListBox<string>
     {
         /// <summary>
-        /// Gets the path to the particle effects directory.
-        /// </summary>
-        static PathString EffectsDirectory { get { return ContentPaths.Dev.ParticleEffects; } }
-        
-        /// <summary>
         /// Notifies listeners when this <see cref="ParticleEffectListBox"/> requests to create a particle effect
         /// instance.
         /// </summary>
         public event ParticleEffectListBoxCreateEventHandler RequestCreateEffect;
+
+        /// <summary>
+        /// Gets the path to the particle effects directory.
+        /// </summary>
+        static PathString EffectsDirectory
+        {
+            get { return ContentPaths.Dev.ParticleEffects; }
+        }
 
         /// <summary>
         /// Gets the items to initially populate the <see cref="Control"/>'s collection with.

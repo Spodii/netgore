@@ -12,8 +12,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Initializes a new instance of the <see cref="WallListBox"/> class.
         /// </summary>
-        public WallListBox()
-            : base(true, false, false)
+        public WallListBox() : base(true, false, false)
         {
         }
 

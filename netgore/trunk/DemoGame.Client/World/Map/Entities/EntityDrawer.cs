@@ -11,6 +11,11 @@ namespace DemoGame.Client
     /// </summary>
     public static class EntityDrawer
     {
+        ///<summary>
+        ///Color of AINodeEntity
+        /// </summary>
+        static readonly Color _aiNodeEntityColor = new Color(0, 0, 0, 0);
+
         /// <summary>
         /// Color for an arrow
         /// </summary>
@@ -40,11 +45,6 @@ namespace DemoGame.Client
         /// Color of WallEntities
         /// </summary>
         static readonly Color _wallColor = new Color(255, 255, 255, 100);
-
-        ///<summary>
-        ///Color of AINodeEntity
-        /// </summary>
-        static readonly Color _aiNodeEntityColor = new Color(0, 0, 0, 0);
 
         /// <summary>
         /// Draws an Entity
@@ -93,7 +93,6 @@ namespace DemoGame.Client
         public static void Draw(SpriteBatch sb, AINodeEntity aine)
         {
             DrawCB(sb, aine.CB, CollisionType.Full, _entityColor);
-
         }
 
         /// <summary>

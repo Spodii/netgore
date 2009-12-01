@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -17,60 +16,9 @@ namespace DemoGame.Server
         readonly Character _character;
 
         readonly bool _isPersistent;
-        bool _disposed = false;
 
         readonly EquippedPaperDoll _paperDoll;
-
-        private class EquippedPaperDoll
-        {
-            static readonly int _maxSlotValue = EquipmentSlotHelper.Instance.MaxValue;
-
-            readonly Character _character;
-            readonly string[] _bodies;
-
-            public EquippedPaperDoll(Character character)
-            {
-                _bodies = new string[_maxSlotValue];
-                _character = character;
-            }
-
-            public void NotifyRemoved(EquipmentSlot slot)
-            {
-                var slotID = slot.GetValue();
-
-                if (_bodies[slotID] == null)
-                    return;
-
-                _bodies[slotID] = null;
-                SynchronizeBodyLayers();
-            }
-
-            public void NotifyAdded(EquipmentSlot slot, IItemTable item)
-            {
-                var slotID = slot.GetValue();
-
-                if (_bodies[slotID] != null)
-                    NotifyRemoved(slot);
-
-                if (string.IsNullOrEmpty(item.EquippedBody))
-                    return;
-
-                _bodies[slotID] = item.EquippedBody;
-                SynchronizeBodyLayers();
-            }
-
-            void SynchronizeBodyLayers()
-            {
-                var map = _character.Map;
-                if (map == null)
-                    return;
-
-                using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
-                {
-                    _character.Map.Send(pw);
-                }
-            }
-        }
+        bool _disposed = false;
 
         protected CharacterEquipped(Character character)
         {
@@ -260,5 +208,56 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        class EquippedPaperDoll
+        {
+            static readonly int _maxSlotValue = EquipmentSlotHelper.Instance.MaxValue;
+
+            readonly string[] _bodies;
+            readonly Character _character;
+
+            public EquippedPaperDoll(Character character)
+            {
+                _bodies = new string[_maxSlotValue];
+                _character = character;
+            }
+
+            public void NotifyAdded(EquipmentSlot slot, IItemTable item)
+            {
+                var slotID = slot.GetValue();
+
+                if (_bodies[slotID] != null)
+                    NotifyRemoved(slot);
+
+                if (string.IsNullOrEmpty(item.EquippedBody))
+                    return;
+
+                _bodies[slotID] = item.EquippedBody;
+                SynchronizeBodyLayers();
+            }
+
+            public void NotifyRemoved(EquipmentSlot slot)
+            {
+                var slotID = slot.GetValue();
+
+                if (_bodies[slotID] == null)
+                    return;
+
+                _bodies[slotID] = null;
+                SynchronizeBodyLayers();
+            }
+
+            void SynchronizeBodyLayers()
+            {
+                var map = _character.Map;
+                if (map == null)
+                    return;
+
+                using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
+                {
+                    _character.Map.Send(pw);
+                }
+            }
+        }
     }
 }

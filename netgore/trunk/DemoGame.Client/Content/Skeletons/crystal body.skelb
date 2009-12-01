@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SkeletonBody>
   <BodyItems>
-    <Count>1</Count>
+    <Count>11</Count>
     <Item0>
       <Sprite>Character.Crystal.Torso</Sprite>
       <Source>Neck</Source>
@@ -9,5 +9,75 @@
       <Offset>0,0</Offset>
       <Origin>8,0</Origin>
     </Item0>
+	<Item1>
+      <Sprite>Character.Crystal.LegUpper</Sprite>
+      <Source>Pelvis</Source>
+      <Destination>Front Knee</Destination>
+      <Offset>0,0</Offset>
+      <Origin>6,3</Origin>
+    </Item1>
+    <Item2>
+      <Sprite>Character.Crystal.LegLower</Sprite>
+      <Source>Front Knee</Source>
+      <Destination>Front Foot</Destination>
+      <Offset>0,0</Offset>
+      <Origin>6,1</Origin>
+    </Item2>
+    <Item3>
+      <Sprite>Character.Crystal.Shoe</Sprite>
+      <Source>Front Foot</Source>
+      <Destination>Front Toe</Destination>
+      <Offset>0,0</Offset>
+      <Origin>3,4</Origin>
+    </Item3>
+    <Item4>
+      <Sprite>Character.Crystal.LegUpper</Sprite>
+      <Source>Pelvis</Source>
+      <Destination>Back Knee</Destination>
+      <Offset>0,0</Offset>
+      <Origin>6,3</Origin>
+    </Item4>
+    <Item5>
+      <Sprite>Character.Crystal.LegLower</Sprite>
+      <Source>Back Knee</Source>
+      <Destination>Back Foot</Destination>
+      <Offset>0,0</Offset>
+      <Origin>6,1</Origin>
+    </Item5>
+    <Item6>
+      <Sprite>Character.Crystal.Shoe</Sprite>
+      <Source>Back Foot</Source>
+      <Destination>Back Toe</Destination>
+      <Offset>0,0</Offset>
+      <Origin>3,4</Origin>
+    </Item6>
+	<Item7>
+      <Sprite>Character.Crystal.ArmUpper</Sprite>
+      <Source>Neck</Source>
+      <Destination>Front Elbow</Destination>
+      <Offset>0,0</Offset>
+      <Origin>3,1</Origin>
+    </Item7>
+    <Item8>
+      <Sprite>Character.Crystal.ArmLower</Sprite>
+      <Source>Front Elbow</Source>
+      <Destination>Front Hand</Destination>
+      <Offset>0,0</Offset>
+      <Origin>2.5,1</Origin>
+    </Item8>
+    <Item9>
+      <Sprite>Character.Crystal.ArmUpper</Sprite>
+      <Source>Neck</Source>
+      <Destination>Back Elbow</Destination>
+      <Offset>0,0</Offset>
+      <Origin>3,1</Origin>
+    </Item9>
+    <Item10>
+      <Sprite>Character.Crystal.ArmLower</Sprite>
+      <Source>Back Elbow</Source>
+      <Destination>Back Hand</Destination>
+      <Offset>0,0</Offset>
+      <Origin>2.5,1</Origin>
+    </Item10>
   </BodyItems>
 </SkeletonBody>
