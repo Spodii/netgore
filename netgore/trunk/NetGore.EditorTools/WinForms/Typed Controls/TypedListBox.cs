@@ -81,6 +81,22 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the selected item as type <typeparamref name="T"/>, or the default value for the given
+        /// type if the selected item was not of the given type.
+        /// </summary>
+        public T TypedSelectedItem
+        {
+            get
+            {
+                T output;
+                if (!TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out output))
+                    return default(T);
+
+                return output;
+            }
+        }
+
+        /// <summary>
         /// Handles when the selected value changes.
         /// </summary>
         /// <param name="item">The new selected value.</param>

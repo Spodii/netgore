@@ -871,7 +871,6 @@ namespace DemoGame.MapEditor
             // 
             this.lstEntities.Camera = null;
             this.lstEntities.FormattingEnabled = true;
-            this.lstEntities.IMap = null;
             this.lstEntities.Location = new System.Drawing.Point(3, 3);
             this.lstEntities.Name = "lstEntities";
             this.lstEntities.Size = new System.Drawing.Size(329, 186);
@@ -882,7 +881,6 @@ namespace DemoGame.MapEditor
             // 
             this.lstBGItems.Camera = null;
             this.lstBGItems.FormattingEnabled = true;
-            this.lstBGItems.IMap = null;
             this.lstBGItems.Location = new System.Drawing.Point(3, 3);
             this.lstBGItems.Name = "lstBGItems";
             this.lstBGItems.Size = new System.Drawing.Size(329, 134);

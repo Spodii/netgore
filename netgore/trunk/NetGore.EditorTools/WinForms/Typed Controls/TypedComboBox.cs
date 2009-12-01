@@ -64,6 +64,22 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the selected item as type <typeparamref name="T"/>, or the default value for the given
+        /// type if the selected item was not of the given type.
+        /// </summary>
+        public T TypedSelectedItem
+        {
+            get
+            {
+                T output;
+                if (!TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out output))
+                    return default(T);
+
+                return output;
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.ListControl.SelectedValueChanged"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>

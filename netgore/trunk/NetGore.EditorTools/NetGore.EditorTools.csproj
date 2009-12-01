@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
     <Compile Include="FileDialogs.cs" />
+    <Compile Include="WinForms\IMapItemListBox.cs" />
     <Compile Include="WinForms\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>

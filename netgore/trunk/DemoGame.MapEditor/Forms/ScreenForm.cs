@@ -865,7 +865,7 @@ namespace DemoGame.MapEditor
             }
 
             // Set up the MapItemListBoxes
-            foreach (MapItemListBox lb in GetAllControls(this).OfType<MapItemListBox>())
+            foreach (var lb in GetAllControls(this).OfType<IMapItemListBox>())
             {
                 lb.IMap = Map;
                 lb.Camera = Camera;
