@@ -337,11 +337,24 @@ namespace NetGore.Graphics
                 return;
             }
 
-            if (_skelBody != null)
-                _skelBody.Draw(sb, position, _scale, effect);
+            if (_skelBody == null)
+                return;
 
-            foreach (var bodyLayer in BodyLayers)
-                bodyLayer.Draw(sb, position, _scale, effect);
+            // Draw the body and all layers
+            // FUTURE: This is horribly inefficient. Can improve later by, whenever a body layer is added or removed
+            // use a dictionary where the key is the _skelBody.BodyItems, and the value is an IEnumerable of all body layer
+            // items to draw for that layer (giving us O(1) look-up). Then update that dictionary every time the collection
+            // is changed. Will have to change the way the BodyLayers is exposed so we can keep track of adds/removes.
+            foreach (var item in _skelBody.BodyItems)
+            {
+                item.Draw(sb, position, _scale, effect);
+                foreach (var bodyLayer in BodyLayers)
+                {
+                    foreach (var item2 in bodyLayer.BodyItems)
+                        if (item2.Source == item.Source)
+                            item2.Draw(sb, position, _scale, effect);
+                }
+            }
         }
 
         /// <summary>
