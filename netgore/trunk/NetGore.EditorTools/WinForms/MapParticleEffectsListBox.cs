@@ -10,7 +10,7 @@ namespace NetGore.EditorTools.WinForms
     /// <summary>
     /// A <see cref="ListBox"/> containing the particle effects on a map.
     /// </summary>
-    public class MapParticleEffectsListBox : TypedListBox<ParticleEmitter>
+    public abstract class MapParticleEffectsListBox<TMap> : MapItemListBox<TMap, ParticleEmitter> where TMap : class, IMap
     {
     }
 }
