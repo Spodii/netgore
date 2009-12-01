@@ -12,7 +12,7 @@ namespace NetGore.EditorTools
     /// </summary>
     /// <typeparam name="TMap">Type of Map.</typeparam>
     /// <typeparam name="TItem">Type of collection item.</typeparam>
-    public abstract class MapItemListBox<TMap, TItem> : TypedListBox<TItem>, IMapItemListBox
+    public abstract class MapItemListBox<TMap, TItem> : ListBox, IMapItemListBox
         where TMap : class, IMap
         where TItem : class
     {
@@ -52,6 +52,8 @@ namespace NetGore.EditorTools
                 Map = (TMap)value;
             }
         }
+
+        public TItem TypedSelectedItem { get { return SelectedItem as TItem; } }
 
         /// <summary>
         /// When overridden in the derived class, creates a clone of the specified <paramref name="item"/>.
