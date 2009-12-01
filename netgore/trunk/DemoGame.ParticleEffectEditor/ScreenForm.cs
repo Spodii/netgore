@@ -149,6 +149,9 @@ namespace DemoGame.ParticleEffectEditor
         /// </summary>
         public void UpdateGame()
         {
+            if (Emitter == null)
+                return;
+
             Emitter.Update(GetTime());
 
             if (Emitter.Name != _lastEmitterName)

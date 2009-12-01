@@ -42,8 +42,8 @@ namespace NetGore.Graphics.ParticleEngine
         const string _spriteCategorizationKeyName = "SpriteCategorization";
 
         static readonly IEnumerable<Type> _emitterTypes =
-            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).Concat(new Type[]
-            { typeof(ParticleEmitter) }).Distinct().OrderBy(x => x.Name).ToCompact();
+            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false)
+            .OrderBy(x => x.Name).ToCompact();
 
         /// <summary>
         /// The array of <see cref="Particle"/>s.
