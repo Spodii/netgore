@@ -3,91 +3,91 @@
   <BodyItems>
     <Count>13</Count>
     <Item0>
-      <Sprite>Character.Naked.ArmUpper</Sprite>
+      <Sprite>Character.Zombie.ArmUpper</Sprite>
       <Source>Neck</Source>
       <Destination>Front Elbow</Destination>
       <Offset>0,0</Offset>
       <Origin>3,1</Origin>
     </Item0>
     <Item1>
-      <Sprite>Character.Naked.ArmLower</Sprite>
+      <Sprite>Character.Zombie.ArmLower</Sprite>
       <Source>Front Elbow</Source>
       <Destination>Front Hand</Destination>
       <Offset>0,0</Offset>
       <Origin>2.5,1</Origin>
     </Item1>
     <Item2>
-      <Sprite>Character.Naked.LegUpper</Sprite>
+      <Sprite>Character.Zombie.LegUpper</Sprite>
       <Source>Pelvis</Source>
       <Destination>Front Knee</Destination>
       <Offset>0,0</Offset>
       <Origin>6,3</Origin>
     </Item2>
     <Item3>
-      <Sprite>Character.Naked.LegLower</Sprite>
+      <Sprite>Character.Zombie.LegLower</Sprite>
       <Source>Front Knee</Source>
       <Destination>Front Foot</Destination>
       <Offset>0,0</Offset>
       <Origin>6,1</Origin>
     </Item3>
     <Item4>
-      <Sprite>Character.Naked.Shoe</Sprite>
+      <Sprite>Character.Zombie.Shoe</Sprite>
       <Source>Front Foot</Source>
       <Destination>Front Toe</Destination>
       <Offset>0,0</Offset>
       <Origin>3,4</Origin>
     </Item4>
     <Item5>
-      <Sprite>Character.Naked.Torso</Sprite>
+      <Sprite>Character.Zombie.Torso</Sprite>
       <Source>Neck</Source>
       <Destination>Pelvis</Destination>
       <Offset>0,0</Offset>
       <Origin>8,0</Origin>
     </Item5>
     <Item6>
-      <Sprite>Character.Naked.Head</Sprite>
+      <Sprite>Character.Zombie.Head</Sprite>
       <Source>Head</Source>
       <Destination />
       <Offset>0,0</Offset>
       <Origin>9,9</Origin>
     </Item6>
     <Item7>
-      <Sprite>Character.Naked.Neck</Sprite>
+      <Sprite>Character.Zombie.Neck</Sprite>
       <Source>Neck</Source>
       <Destination>Head</Destination>
       <Offset>0,0</Offset>
       <Origin>2,2</Origin>
     </Item7>
     <Item8>
-      <Sprite>Character.Naked.LegUpper</Sprite>
+      <Sprite>Character.Zombie.LegUpper</Sprite>
       <Source>Pelvis</Source>
       <Destination>Back Knee</Destination>
       <Offset>0,0</Offset>
       <Origin>6,3</Origin>
     </Item8>
     <Item9>
-      <Sprite>Character.Naked.LegLower</Sprite>
+      <Sprite>Character.Zombie.LegLower</Sprite>
       <Source>Back Knee</Source>
       <Destination>Back Foot</Destination>
       <Offset>0,0</Offset>
       <Origin>6,1</Origin>
     </Item9>
     <Item10>
-      <Sprite>Character.Naked.Shoe</Sprite>
+      <Sprite>Character.Zombie.Shoe</Sprite>
       <Source>Back Foot</Source>
       <Destination>Back Toe</Destination>
       <Offset>0,0</Offset>
       <Origin>3,4</Origin>
     </Item10>
     <Item11>
-      <Sprite>Character.Naked.ArmUpper</Sprite>
+      <Sprite>Character.Zombie.ArmUpper</Sprite>
       <Source>Neck</Source>
       <Destination>Back Elbow</Destination>
       <Offset>0,0</Offset>
       <Origin>3,1</Origin>
     </Item11>
     <Item12>
-      <Sprite>Character.Naked.ArmLower</Sprite>
+      <Sprite>Character.Zombie.ArmLower</Sprite>
       <Source>Back Elbow</Source>
       <Destination>Back Hand</Destination>
       <Offset>0,0</Offset>

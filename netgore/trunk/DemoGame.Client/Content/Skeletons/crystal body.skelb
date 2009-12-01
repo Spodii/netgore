@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SkeletonBody>
+  <BodyItems>
+    <Count>1</Count>
+    <Item0>
+      <Sprite>Character.Crystal.Torso</Sprite>
+      <Source>Neck</Source>
+      <Destination>Pelvis</Destination>
+      <Offset>0,0</Offset>
+      <Origin>8,0</Origin>
+    </Item0>
+  </BodyItems>
+</SkeletonBody>
