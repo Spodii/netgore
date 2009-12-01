@@ -189,6 +189,7 @@ namespace NetGore.Graphics
                 Debug.Fail("rootNode is null.");
                 return null;
             }
+
             if (name == null)
             {
                 Debug.Fail("name is null.");
