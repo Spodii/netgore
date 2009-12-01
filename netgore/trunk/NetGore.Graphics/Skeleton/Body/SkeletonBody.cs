@@ -27,7 +27,7 @@ namespace NetGore.Graphics
         Skeleton _skeleton = null;
 
         /// <summary>
-        /// SkeletonBody constructor
+        /// Initializes a new instance of the <see cref="SkeletonBody"/> class.
         /// </summary>
         /// <param name="bodyInfo">SkeletonBodyInfo to create the SkeletonBody from</param>
         public SkeletonBody(SkeletonBodyInfo bodyInfo)
