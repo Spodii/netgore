@@ -12,7 +12,7 @@ namespace NetGore.Graphics
         readonly SkeletonBodyItemInfo _itemInfo;
 
         /// <summary>
-        /// SkeletonBodyItem constructor
+        /// Initializes a new instance of the <see cref="SkeletonBodyItem"/> class.
         /// </summary>
         /// <param name="itemInfo">SkeletonBodyItemInfo to create the SkeletonBodyItem from</param>
         public SkeletonBodyItem(SkeletonBodyItemInfo itemInfo)
@@ -22,7 +22,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// SkeletonBodyItem constructor
+        /// Initializes a new instance of the <see cref="SkeletonBodyItem"/> class.
         /// </summary>
         /// <param name="itemInfo">SkeletonBodyItemInfo to create the SkeletonBodyItem from</param>
         /// <param name="skeleton">Skeleton to attach to</param>
