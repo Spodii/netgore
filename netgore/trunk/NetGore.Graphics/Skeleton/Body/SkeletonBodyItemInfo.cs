@@ -20,7 +20,7 @@ namespace NetGore.Graphics
         string _sourceName;
 
         /// <summary>
-        /// SkeletonBodyItemInfo constructor.
+        /// Initializes a new instance of the <see cref="SkeletonBodyItemInfo"/> class.
         /// </summary>
         /// <param name="grhIndex">GrhIndex of the body item.</param>
         /// <param name="sourceName">Name of the source n.</param>
