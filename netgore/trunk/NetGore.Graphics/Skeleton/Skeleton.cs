@@ -20,7 +20,7 @@ namespace NetGore.Graphics
         const string _rootNodeName = "SkeletonFrame";
 
         /// <summary>
-        /// Root n of the skeleton
+        /// Root node of the skeleton
         /// </summary>
         SkeletonNode _rootNode = null;
 
@@ -41,7 +41,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the root n of the skeleton
+        /// Gets or sets the root node of the skeleton
         /// </summary>
         public SkeletonNode RootNode
         {
