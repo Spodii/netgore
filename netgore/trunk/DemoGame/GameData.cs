@@ -70,7 +70,7 @@ namespace DemoGame
         /// <summary>
         /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2
         /// </summary>
-        public static Vector2 ScreenSize = new Vector2(800, 600);
+        public static Vector2 ScreenSize = new Vector2(1024, 768);
 
         /// <summary>
         /// Gets the maximum delta time between draws for any kind of drawable component. If the delta time between
