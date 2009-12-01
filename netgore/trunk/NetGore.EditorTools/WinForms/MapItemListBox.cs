@@ -169,11 +169,19 @@ namespace NetGore.EditorTools
         protected virtual void UpdateItems()
         {
             if (Map == null || Camera == null)
+            {
+                if (Items.Count > 0)
+                    Items.Clear();
                 return;
+            }
 
             var allItems = GetItems();
             if (allItems == null || allItems.Count() == 0)
+            {
+                if (Items.Count > 0)
+                    Items.Clear();
                 return;
+            }
 
             var existingItems = Items.OfType<TItem>();
             var toAdd = allItems.Except(existingItems).ToArray();
