@@ -23,9 +23,9 @@ namespace NetGore.Graphics
         SkeletonFrame[] _keyFrames;
 
         /// <summary>
-        /// Constructor for the SkeletonSet
+        /// Initializes a new instance of the <see cref="SkeletonSet"/> class.
         /// </summary>
-        /// <param name="keyFrames">Array of frames to use for the keyframes</param>
+        /// <param name="keyFrames">Array of frames to use for the keyframes.</param>
         public SkeletonSet(SkeletonFrame[] keyFrames)
         {
             _keyFrames = keyFrames;
