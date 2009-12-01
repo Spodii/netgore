@@ -144,7 +144,7 @@ namespace DemoGame.SkeletonEditor
         void btnAdd_Click(object sender, EventArgs e)
         {
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
-            SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(new GrhIndex(0), _skeleton.RootNode.Name, string.Empty,
+            SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(new SpriteCategorization("Character.Naked", "Body"), _skeleton.RootNode.Name, string.Empty,
                                                                          Vector2.Zero, Vector2.Zero);
             SkeletonBodyItem bodyItem = new SkeletonBodyItem(bodyItemInfo);
             SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
@@ -191,7 +191,7 @@ namespace DemoGame.SkeletonEditor
         void btnBodySave_Click(object sender, EventArgs e)
         {
             if (FileBody != null && FileBody.Length > 1)
-                SkeletonBody.BodyInfo.Write(FileBody);
+                SkeletonBody.BodyInfo.Save(FileBody);
         }
 
         void btnBodySaveAs_Click(object sender, EventArgs e)
@@ -200,7 +200,7 @@ namespace DemoGame.SkeletonEditor
 
             if (result != null && result.Length > 1)
             {
-                SkeletonBody.BodyInfo.Write(result);
+                SkeletonBody.BodyInfo.Save(result);
                 FileBody = result;
             }
         }
@@ -705,7 +705,7 @@ namespace DemoGame.SkeletonEditor
             foreach (string file in files.Where(x => x.EndsWith(SkeletonBodyInfo.FileSuffix, StringComparison.OrdinalIgnoreCase)))
             {
                 SkeletonBodyInfo body = SkeletonLoader.LoadSkeletonBodyInfo(file);
-                body.Write(file);
+                body.Save(file);
             }
         }
 

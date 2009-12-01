@@ -10,26 +10,25 @@ namespace NetGore.Graphics
     public class SkeletonBodyItemInfo
     {
         const string _destValueKey = "Destination";
-        const string _grhIndexValueKey = "GrhIndex";
+        const string _spriteCategorizationValueKey = "Sprite";
         const string _offsetValueKey = "Offset";
         const string _originValueKey = "Origin";
         const string _sourceValueKey = "Source";
 
         string _destName;
-        GrhIndex _grhIndex;
         string _sourceName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBodyItemInfo"/> class.
         /// </summary>
-        /// <param name="grhIndex">GrhIndex of the body item.</param>
+        /// <param name="categorization">The <see cref="SpriteCategorization"/> for the sprite to draw for the body item.</param>
         /// <param name="sourceName">Name of the source n.</param>
         /// <param name="destName">Name of the destination n (String.Empty for no destination).</param>
         /// <param name="offset">Grh drawing offset.</param>
         /// <param name="origin">Grh drawing origin.</param>
-        public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset, Vector2 origin)
+        public SkeletonBodyItemInfo(SpriteCategorization categorization, string sourceName, string destName, Vector2 offset, Vector2 origin)
         {
-            _grhIndex = grhIndex;
+            _spriteCategorization = categorization;
             _sourceName = sourceName;
             _destName = destName;
             Offset = offset;
@@ -49,13 +48,12 @@ namespace NetGore.Graphics
             get { return _destName; }
         }
 
+        SpriteCategorization _spriteCategorization;
+
         /// <summary>
-        /// Gets the GrhIndex to use.
+        /// Gets the categorization information of the sprite to use.
         /// </summary>
-        public GrhIndex GrhIndex
-        {
-            get { return _grhIndex; }
-        }
+        public SpriteCategorization SpriteCategorization { get { return _spriteCategorization; } }
 
         /// <summary>
         /// Gets or sets the Grh drawing offset.
@@ -77,7 +75,7 @@ namespace NetGore.Graphics
 
         public void Read(IValueReader reader)
         {
-            _grhIndex = reader.ReadGrhIndex(_grhIndexValueKey);
+            _spriteCategorization = reader.ReadSpriteCategorization(_spriteCategorizationValueKey);
             _sourceName = reader.ReadString(_sourceValueKey);
             _destName = reader.ReadString(_destValueKey);
             Offset = reader.ReadVector2(_offsetValueKey);
@@ -86,7 +84,7 @@ namespace NetGore.Graphics
 
         public void Write(IValueWriter writer)
         {
-            writer.Write(_grhIndexValueKey, GrhIndex);
+            writer.Write(_spriteCategorizationValueKey, _spriteCategorization);
             writer.Write(_sourceValueKey, SourceName);
             writer.Write(_destValueKey, DestName);
             writer.Write(_offsetValueKey, Offset);
