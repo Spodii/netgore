@@ -28,7 +28,7 @@ namespace DemoGame.MapEditor
 
         protected override void Locate(Entity item)
         {
-            Camera.Center(item);
+            Camera.CenterOn(item);
         }
 
     }

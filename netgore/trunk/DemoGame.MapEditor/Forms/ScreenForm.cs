@@ -14,6 +14,7 @@ using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using Character=DemoGame.Client.Character;
 using Map=DemoGame.Client.Map;
@@ -1311,6 +1312,15 @@ namespace DemoGame.MapEditor
                     w.WriteEndNode(_displayNodeName);
                 }
             }
+        }
+
+        private void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)
+        {
+            // TODO: Error handling for when the effect fails to load
+            var effect = ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev, effectName);
+            effect.Origin = Camera.Center;
+            effect.SetEmitterLife(0, 0);
+            Map.ParticleEffects.Add(effect);
         }
     }
 }

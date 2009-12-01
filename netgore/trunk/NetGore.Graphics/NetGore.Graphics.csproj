@@ -135,6 +135,7 @@
     <Compile Include="ParticleEngine\Emitters\PolygonOriginHelper.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonPointCollection.cs" />
     <Compile Include="ParticleEngine\Emitters\RectEmitter.cs" />
+    <Compile Include="ParticleEngine\MapParticleEffectCollection.cs" />
     <Compile Include="ParticleEngine\Modifiers\ColorModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\LinearGravityModifier.cs" />
     <Compile Include="ParticleEngine\Modifiers\Core\ParticleModifier.cs" />
