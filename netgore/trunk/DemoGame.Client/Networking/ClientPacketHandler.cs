@@ -441,6 +441,23 @@ namespace DemoGame.Client
             character.MPPercent = percent;
         }
 
+        [MessageHandler((byte)ServerPacketID.SetCharacterPaperDoll)]
+        void RecvSetCharacterPaperDoll(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
+
+            byte count = r.ReadByte();
+            string[] layers = new string[count];
+            for (int i = 0; i < layers.Length; i++)
+                layers[i] = r.ReadString();
+
+            Character character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            if (character == null)
+                return;
+
+            character.SetPaperDoll(layers);
+        }
+
         [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]
         void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
         {
