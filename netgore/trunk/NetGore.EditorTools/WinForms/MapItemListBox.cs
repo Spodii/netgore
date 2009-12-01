@@ -66,8 +66,8 @@ namespace NetGore.EditorTools
         /// <param name="e">EventArgs.</param>
         protected virtual void CloneHandler(object sender, EventArgs e)
         {
-            TItem item = TypedSelectedItem;
-            if (item == null || Map == null || Camera == null)
+            TItem item;
+            if (Map == null || Camera == null || (item = TypedSelectedItem) == null)
                 return;
 
             Clone(item);
@@ -87,8 +87,8 @@ namespace NetGore.EditorTools
         /// <param name="e">EventArgs.</param>
         protected virtual void DeleteHandler(object sender, EventArgs e)
         {
-            TItem item = TypedSelectedItem;
-            if (item == null || Map == null || Camera == null)
+            TItem item;
+            if (Map == null || Camera == null || (item = TypedSelectedItem) == null)
                 return;
 
             Delete(item);
@@ -156,8 +156,8 @@ namespace NetGore.EditorTools
         /// <param name="e">EventArgs.</param>
         protected virtual void LocateHandler(object sender, EventArgs e)
         {
-            TItem item = TypedSelectedItem;
-            if (item == null || Map == null || Camera == null)
+            TItem item;
+            if (Map == null || Camera == null || (item = TypedSelectedItem) == null)
                 return;
 
             Locate(item);
