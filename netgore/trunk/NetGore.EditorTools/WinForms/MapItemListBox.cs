@@ -8,7 +8,7 @@ using NetGore.Graphics;
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// Special ListBox that is designed for displaying a list of items in a map.
+    /// Special <see cref="ListBox"/> that is designed for displaying a list of items in a map.
     /// </summary>
     /// <typeparam name="TMap">Type of Map.</typeparam>
     /// <typeparam name="TItem">Type of collection item.</typeparam>
