@@ -2,13 +2,14 @@
 <ParticleEffect>
   <EmitterType>PointEmitter</EmitterType>
   <Emitter>
+    <Name>test</Name>
     <BlendMode>Additive</BlendMode>
     <Budget>5000</Budget>
     <Life>
       <Min>2000</Min>
       <Max>2000</Max>
     </Life>
-    <Origin>363.5,275.5</Origin>
+    <Origin>328,227</Origin>
     <ReleaseAmount>
       <Min>1</Min>
       <Max>1</Max>
