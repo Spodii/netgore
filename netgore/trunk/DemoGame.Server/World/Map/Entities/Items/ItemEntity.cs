@@ -13,13 +13,14 @@ using NetGore.Db;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Delegate for handling ItemEntity events.
+    /// Delegate for handling <see cref="ItemEntity"/> events.
     /// </summary>
-    /// <param name="itemEntity">ItemEntity this event came from.</param>
+    /// <param name="itemEntity"><see cref="ItemEntity"/> this event came from.</param>
     public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
 
     /// <summary>
-    /// A single ItemEntity on the server. Either a single item, or a stack of a single type of item.
+    /// A single item instance on the server. Can be either a single item, or a stack of the exact same kind
+    /// of item combined into one (<see cref="ItemEntity.Amount"/> greater than 1).
     /// </summary>
     public class ItemEntity : ItemEntityBase, IItemTable
     {
