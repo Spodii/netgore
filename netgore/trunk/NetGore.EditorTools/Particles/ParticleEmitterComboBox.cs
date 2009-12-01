@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Collections;
 using NetGore.Graphics.ParticleEngine;
+using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {
@@ -32,6 +33,9 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override IEnumerable<Type> GetInitialItems()
         {
+            if (DesignMode)
+                return Enumerable.Empty<Type>();
+
             return ParticleEmitter.EmitterTypes;
         }
 
