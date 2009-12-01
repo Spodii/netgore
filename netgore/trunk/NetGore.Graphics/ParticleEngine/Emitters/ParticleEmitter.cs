@@ -19,8 +19,8 @@ namespace NetGore.Graphics.ParticleEngine
         const string _customValuesNodeName = "CustomValues";
         const SpriteBlendMode _defaultBlendMode = SpriteBlendMode.Additive;
         const int _defaultBudget = 5000;
-        const string _emitterCategoryName = "Emitter";
         const string _defaultName = "Unnamed";
+        const string _emitterCategoryName = "Emitter";
 
         /// <summary>
         /// The initial size of the particle array.
@@ -29,9 +29,9 @@ namespace NetGore.Graphics.ParticleEngine
 
         const string _lifeKeyName = "Life";
         const string _modifiersNodeName = "Modifiers";
-        const string _originKeyName = "Origin";
 
         const string _nameKeyName = "Name";
+        const string _originKeyName = "Origin";
         const string _particleCategoryName = "Particle";
         const string _releaseAmountKeyName = "ReleaseAmount";
         const string _releaseColorKeyName = "ReleaseColor";
@@ -42,8 +42,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _spriteCategorizationKeyName = "SpriteCategorization";
 
         static readonly IEnumerable<Type> _emitterTypes =
-            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false)
-            .OrderBy(x => x.Name).ToCompact();
+            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).OrderBy(x => x.Name).ToCompact();
 
         /// <summary>
         /// The array of <see cref="Particle"/>s.
@@ -74,17 +73,6 @@ namespace NetGore.Graphics.ParticleEngine
         ushort _tryLoadSpriteTimeout = 0;
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return string.Format("{0} [{1}] - {2}", Name, Origin, GetType().Name);
-        }
-
-        /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
         /// </summary>
         static ParticleEmitter()
@@ -111,15 +99,6 @@ namespace NetGore.Graphics.ParticleEngine
             ReleaseScale = new VariableFloat(1);
             ReleaseSpeed = new VariableFloat(50);
         }
-
-        /// <summary>
-        /// Gets or sets the unique name of the particle effect.
-        /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("The unique name of the particle effect.")]
-        [DisplayName("Name")]
-        [DefaultValue(_defaultName)]
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets the number of living <see cref="Particle"/>s.
@@ -261,6 +240,15 @@ namespace NetGore.Graphics.ParticleEngine
                 _modifiers = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the unique name of the particle effect.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The unique name of the particle effect.")]
+        [DisplayName("Name")]
+        [DefaultValue(_defaultName)]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the origin of this <see cref="ParticleEmitter"/>.
@@ -561,6 +549,17 @@ namespace NetGore.Graphics.ParticleEngine
             var tmp = particles[aIndex];
             particles[aIndex] = particles[bIndex];
             particles[bIndex] = tmp;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format("{0} [{1}] - {2}", Name, Origin, GetType().Name);
         }
 
         /// <summary>

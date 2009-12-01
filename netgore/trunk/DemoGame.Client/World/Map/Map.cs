@@ -35,9 +35,9 @@ namespace DemoGame.Client
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
+        const string _particleEffectsNodeName = "ParticleEffects";
         const string _usedIndiciesNodeName = "UsedIndicies";
-
-        readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
+        static readonly SpriteBatchRenderer _particleEffectRenderer = new SpriteBatchRenderer();
 
         /// <summary>
         /// List of BackgroundImages on this map.
@@ -73,6 +73,8 @@ namespace DemoGame.Client
         /// List of map grhs on the map
         /// </summary>
         readonly List<MapGrh> _mapGrhs = new List<MapGrh>(128);
+
+        readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
 
         /// <summary>
         /// The world the map belongs to
@@ -117,8 +119,6 @@ namespace DemoGame.Client
             _graphics = graphics;
             _world = parent;
         }
-
-        static readonly SpriteBatchRenderer _particleEffectRenderer = new SpriteBatchRenderer();
 
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.
@@ -606,8 +606,6 @@ namespace DemoGame.Client
             w.WriteEndNode(_mapGrhsNodeName);
         }
 
-        const string _particleEffectsNodeName = "ParticleEffects";
-
         /// <summary>
         /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
@@ -643,7 +641,9 @@ namespace DemoGame.Client
 
             // Update particle effects
             foreach (var p in ParticleEffects)
+            {
                 p.Update(currentTime);
+            }
         }
 
         #region IDisposable Members

@@ -13,8 +13,8 @@ namespace DemoGame.MapEditor
         /// Initializes a new instance of the <see cref="EntityListBox"/> class.
         /// </summary>
         public EntityListBox() : base(true, false, true)
-    {
-    }
+        {
+        }
 
         /// <summary>
         /// When overridden in the derived class, creates a clone of the specified <paramref name="item"/>.
@@ -33,7 +33,7 @@ namespace DemoGame.MapEditor
         protected override void Delete(Entity item)
         {
             Map.RemoveEntity(item);
-           this.RemoveItemAndReselect(item);
+            this.RemoveItemAndReselect(item);
         }
 
         /// <summary>
@@ -55,6 +55,5 @@ namespace DemoGame.MapEditor
         {
             Camera.CenterOn(item);
         }
-
     }
 }

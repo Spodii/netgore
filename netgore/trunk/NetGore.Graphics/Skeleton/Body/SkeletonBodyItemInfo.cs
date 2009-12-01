@@ -10,13 +10,14 @@ namespace NetGore.Graphics
     public class SkeletonBodyItemInfo
     {
         const string _destValueKey = "Destination";
-        const string _spriteCategorizationValueKey = "Sprite";
         const string _offsetValueKey = "Offset";
         const string _originValueKey = "Origin";
         const string _sourceValueKey = "Source";
+        const string _spriteCategorizationValueKey = "Sprite";
 
         string _destName;
         string _sourceName;
+        SpriteCategorization _spriteCategorization;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBodyItemInfo"/> class.
@@ -26,7 +27,8 @@ namespace NetGore.Graphics
         /// <param name="destName">Name of the destination n (String.Empty for no destination).</param>
         /// <param name="offset">Grh drawing offset.</param>
         /// <param name="origin">Grh drawing origin.</param>
-        public SkeletonBodyItemInfo(SpriteCategorization categorization, string sourceName, string destName, Vector2 offset, Vector2 origin)
+        public SkeletonBodyItemInfo(SpriteCategorization categorization, string sourceName, string destName, Vector2 offset,
+                                    Vector2 origin)
         {
             _spriteCategorization = categorization;
             _sourceName = sourceName;
@@ -48,13 +50,6 @@ namespace NetGore.Graphics
             get { return _destName; }
         }
 
-        SpriteCategorization _spriteCategorization;
-
-        /// <summary>
-        /// Gets the categorization information of the sprite to use.
-        /// </summary>
-        public SpriteCategorization SpriteCategorization { get { return _spriteCategorization; } }
-
         /// <summary>
         /// Gets or sets the Grh drawing offset.
         /// </summary>
@@ -71,6 +66,14 @@ namespace NetGore.Graphics
         public string SourceName
         {
             get { return _sourceName; }
+        }
+
+        /// <summary>
+        /// Gets the categorization information of the sprite to use.
+        /// </summary>
+        public SpriteCategorization SpriteCategorization
+        {
+            get { return _spriteCategorization; }
         }
 
         public void Read(IValueReader reader)

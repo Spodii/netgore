@@ -30,13 +30,13 @@ namespace DemoGame.Server
         readonly ItemStats _reqStats;
         byte _amount = 1;
         string _description;
+        string _equippedBody;
         GrhIndex _graphicIndex;
         SPValueType _hp;
         SPValueType _mp;
         string _name;
         ItemType _type;
         int _value;
-        string _equippedBody;
 
         /// <summary>
         /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.
@@ -118,8 +118,8 @@ namespace DemoGame.Server
 
         ItemEntity(ItemEntity s)
             : this(
-                s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.EquippedBody,
-                s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
+                s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
+                s.EquippedBody, s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
 

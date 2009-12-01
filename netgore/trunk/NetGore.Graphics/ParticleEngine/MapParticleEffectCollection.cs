@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -12,16 +10,6 @@ namespace NetGore.Graphics.ParticleEngine
     public class MapParticleEffectCollection : List<ParticleEmitter>
     {
         /// <summary>
-        /// Writes the <see cref="MapParticleEffectCollection"/>'s items.
-        /// </summary>
-        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
-        /// <param name="nodeName">The name of the collection node.</param>
-        public void Write(IValueWriter writer, string nodeName)
-        {
-            writer.WriteManyNodes(nodeName, ToArray(), ParticleEmitterFactory.Write);
-        }
-
-        /// <summary>
         /// Reads the <see cref="MapParticleEffectCollection"/>'s items.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
@@ -31,6 +19,16 @@ namespace NetGore.Graphics.ParticleEngine
             Clear();
             var emitters = reader.ReadManyNodes<ParticleEmitter>(nodeName, ParticleEmitterFactory.Read);
             AddRange(emitters);
+        }
+
+        /// <summary>
+        /// Writes the <see cref="MapParticleEffectCollection"/>'s items.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="nodeName">The name of the collection node.</param>
+        public void Write(IValueWriter writer, string nodeName)
+        {
+            writer.WriteManyNodes(nodeName, ToArray(), ParticleEmitterFactory.Write);
         }
     }
 }

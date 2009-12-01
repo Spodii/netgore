@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Collections;
 using NetGore.Graphics.ParticleEngine;
-using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {

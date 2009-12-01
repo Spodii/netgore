@@ -52,8 +52,8 @@ namespace NetGore.Graphics.ParticleEngine
         public static ParticleEmitterFactory Instance
         {
             get { return _instance; }
-        }        
-        
+        }
+
         /// <summary>
         /// Gets the name of a particle effect from the file path.
         /// </summary>

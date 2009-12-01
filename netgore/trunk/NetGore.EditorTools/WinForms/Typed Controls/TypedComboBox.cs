@@ -17,6 +17,22 @@ namespace NetGore.EditorTools
         public event TypedComboBoxChangeEventHandler<T> TypedSelectedItemChanged;
 
         /// <summary>
+        /// Gets the selected item as type <typeparamref name="T"/>, or the default value for the given
+        /// type if the selected item was not of the given type.
+        /// </summary>
+        public T TypedSelectedItem
+        {
+            get
+            {
+                T output;
+                if (!TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out output))
+                    return default(T);
+
+                return output;
+            }
+        }
+
+        /// <summary>
         /// Adds an item to the <see cref="Control"/>'s collection.
         /// </summary>
         /// <param name="item">The item to add.</param>
@@ -61,22 +77,6 @@ namespace NetGore.EditorTools
 
             if (Items.Count > 0)
                 SelectedIndex = 0;
-        }
-
-        /// <summary>
-        /// Gets the selected item as type <typeparamref name="T"/>, or the default value for the given
-        /// type if the selected item was not of the given type.
-        /// </summary>
-        public T TypedSelectedItem
-        {
-            get
-            {
-                T output;
-                if (!TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out output))
-                    return default(T);
-
-                return output;
-            }
         }
 
         /// <summary>

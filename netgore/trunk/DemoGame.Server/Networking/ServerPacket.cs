@@ -290,7 +290,9 @@ namespace DemoGame.Server
 
             pw.Write((byte)layers.Count());
             foreach (var layer in layers)
+            {
                 pw.Write(layer);
+            }
 
             return pw;
         }

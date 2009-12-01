@@ -90,7 +90,9 @@ namespace NetGore.Graphics
             _skeleton = skeleton;
 
             foreach (var bodyItem in BodyItems)
+            {
                 bodyItem.Attach(skeleton);
+            }
         }
 
         /// <summary>
@@ -113,7 +115,9 @@ namespace NetGore.Graphics
         public void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
         {
             foreach (var bodyItem in BodyItems)
+            {
                 bodyItem.Draw(sb, position, scale, effect);
+            }
         }
 
         /// <summary>
@@ -123,7 +127,9 @@ namespace NetGore.Graphics
         public void Update(int currentTime)
         {
             foreach (var bodyItem in BodyItems)
+            {
                 bodyItem.Update(currentTime);
+            }
         }
     }
 }

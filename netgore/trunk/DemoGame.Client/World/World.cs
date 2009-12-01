@@ -52,6 +52,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets if the <see cref="UserCharIndex"/> is set.
+        /// </summary>
+        public bool IsUserCharIndexSet { get; set; }
+
+        /// <summary>
         /// Gets or sets the map currently being used.
         /// </summary>
         public Map Map
@@ -96,11 +101,6 @@ namespace DemoGame.Client
                 IsUserCharIndexSet = true;
             }
         }
-
-        /// <summary>
-        /// Gets or sets if the <see cref="UserCharIndex"/> is set.
-        /// </summary>
-        public bool IsUserCharIndexSet { get; set; }
 
         /// <summary>
         /// Draws the world

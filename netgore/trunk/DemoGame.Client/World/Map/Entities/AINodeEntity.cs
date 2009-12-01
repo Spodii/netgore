@@ -4,13 +4,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
-using IDrawable = NetGore.Graphics.IDrawable;
+using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
     [MapFileEntity]
     public class AINodeEntity : AINodeEntityBase, IDrawable
     {
+        #region IDrawable Members
 
         /// <summary>
         /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
@@ -34,7 +35,7 @@ namespace DemoGame.Client
         public void Draw(SpriteBatch sb)
         {
             Rectangle rect = CB.ToRectangle();
-            XNARectangle.Draw(sb, rect, new Color(0, 0, 0, 0),Color.Black);
+            XNARectangle.Draw(sb, rect, new Color(0, 0, 0, 0), Color.Black);
         }
 
         /// <summary>
@@ -48,5 +49,7 @@ namespace DemoGame.Client
         {
             return camera.InView(this);
         }
+
+        #endregion
     }
 }

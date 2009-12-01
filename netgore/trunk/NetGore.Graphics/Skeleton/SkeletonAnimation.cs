@@ -12,6 +12,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class SkeletonAnimation
     {
+        readonly List<SkeletonBody> _bodyLayers = new List<SkeletonBody>();
+
         /// <summary>
         /// Skeleton used for animating. Unlike _frames, the nodes of this skeleton
         /// are altered to interpolate between frames.
@@ -100,6 +102,15 @@ namespace NetGore.Graphics
         /// <param name="frame">Single frame to use for the keyframe</param>
         public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[] { frame }))
         {
+        }
+
+        /// <summary>
+        /// Gets a List of the additional layers that can be stacked on top of the original
+        /// <see cref="SkeletonBody"/>.
+        /// </summary>
+        public List<SkeletonBody> BodyLayers
+        {
+            get { return _bodyLayers; }
         }
 
         /// <summary>
@@ -212,14 +223,6 @@ namespace NetGore.Graphics
         {
             AddModifier(modifier, false);
         }
-
-        readonly List<SkeletonBody> _bodyLayers = new List<SkeletonBody>();
-
-        /// <summary>
-        /// Gets a List of the additional layers that can be stacked on top of the original
-        /// <see cref="SkeletonBody"/>.
-        /// </summary>
-        public List<SkeletonBody> BodyLayers { get { return _bodyLayers; } }
 
         /// <summary>
         /// Changes the SkeletonSet used to animate
@@ -351,8 +354,10 @@ namespace NetGore.Graphics
                 foreach (var bodyLayer in BodyLayers)
                 {
                     foreach (var item2 in bodyLayer.BodyItems)
+                    {
                         if (item2.Source == item.Source)
                             item2.Draw(sb, position, _scale, effect);
+                    }
                 }
             }
         }
@@ -525,7 +530,9 @@ namespace NetGore.Graphics
                 _skelBody.Update(currentTime);
 
             foreach (var bodyLayer in BodyLayers)
+            {
                 bodyLayer.Update(currentTime);
+            }
 
             // If there is a parent, apply the changes to it
             if (_parent != null)

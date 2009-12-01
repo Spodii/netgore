@@ -144,8 +144,9 @@ namespace DemoGame.SkeletonEditor
         void btnAdd_Click(object sender, EventArgs e)
         {
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
-            SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(new SpriteCategorization("Character.Naked", "Body"), _skeleton.RootNode.Name, string.Empty,
-                                                                         Vector2.Zero, Vector2.Zero);
+            SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(new SpriteCategorization("Character.Naked", "Body"),
+                                                                         _skeleton.RootNode.Name, string.Empty, Vector2.Zero,
+                                                                         Vector2.Zero);
             SkeletonBodyItem bodyItem = new SkeletonBodyItem(bodyItemInfo);
             SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
             UpdateBodyList();

@@ -23,6 +23,7 @@ namespace DemoGame.ParticleEffectEditor
 
         ContentManager _content;
         ParticleEmitter _emitter;
+        string _lastEmitterName = string.Empty;
         IParticleRenderer _renderer;
         SpriteBatch _spriteBatch;
 
@@ -141,8 +142,6 @@ namespace DemoGame.ParticleEffectEditor
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _renderer = new SpriteBatchRenderer { SpriteBatch = _spriteBatch };
         }
-
-        string _lastEmitterName = string.Empty;
 
         /// <summary>
         /// Main entry point for all the screen content updating.

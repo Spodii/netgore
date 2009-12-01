@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
 
@@ -18,7 +15,8 @@ namespace NetGore.EditorTools
         /// <param name="supportsLocate">Whether or not the Locate operation is supported.</param>
         /// <param name="supportsClone">Whether or not the Clone operation is supported.</param>
         /// <param name="supportsDelete">Whether or not the Delete operation is supported.</param>
-        protected MapParticleEffectsListBoxBase(bool supportsLocate, bool supportsClone, bool supportsDelete) : base(supportsLocate, supportsClone, supportsDelete)
+        protected MapParticleEffectsListBoxBase(bool supportsLocate, bool supportsClone, bool supportsDelete)
+            : base(supportsLocate, supportsClone, supportsDelete)
         {
         }
     }

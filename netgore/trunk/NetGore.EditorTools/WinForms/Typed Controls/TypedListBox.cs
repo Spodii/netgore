@@ -17,6 +17,22 @@ namespace NetGore.EditorTools
         public event TypedListBoxChangeEventHandler<T> TypedSelectedItemChanged;
 
         /// <summary>
+        /// Gets the selected item as type <typeparamref name="T"/>, or the default value for the given
+        /// type if the selected item was not of the given type.
+        /// </summary>
+        public T TypedSelectedItem
+        {
+            get
+            {
+                T output;
+                if (!TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out output))
+                    return default(T);
+
+                return output;
+            }
+        }
+
+        /// <summary>
         /// Adds an item to the <see cref="Control"/>'s collection.
         /// </summary>
         /// <param name="item">The item to add.</param>
@@ -77,22 +93,6 @@ namespace NetGore.EditorTools
                 OnTypedSelectedValueChanged(item);
                 if (TypedSelectedItemChanged != null)
                     TypedSelectedItemChanged(this, item);
-            }
-        }
-
-        /// <summary>
-        /// Gets the selected item as type <typeparamref name="T"/>, or the default value for the given
-        /// type if the selected item was not of the given type.
-        /// </summary>
-        public T TypedSelectedItem
-        {
-            get
-            {
-                T output;
-                if (!TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out output))
-                    return default(T);
-
-                return output;
             }
         }
 
