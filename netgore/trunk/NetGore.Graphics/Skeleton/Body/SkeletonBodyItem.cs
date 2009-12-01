@@ -58,7 +58,7 @@ namespace NetGore.Graphics
         /// Attaches the SkeletonBodyItem to a skeleton using the name of the joints
         /// </summary>
         /// <param name="skeleton">Skeleton to attach to</param>
-        public void Attach(Skeleton skeleton)
+        internal void Attach(Skeleton skeleton)
         {
             // Source n
             if (skeleton == null)
@@ -78,7 +78,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="position">Position to draw at</param>
-        public void Draw(SpriteBatch sb, Vector2 position)
+        internal void Draw(SpriteBatch sb, Vector2 position)
         {
             Draw(sb, position, 1.0f, SpriteEffects.None);
         }
@@ -89,7 +89,7 @@ namespace NetGore.Graphics
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="position">Position to draw at</param>
         /// <param name="scale">Amount to scale the Grh in percent (1.0f for no scaling)</param>
-        public void Draw(SpriteBatch sb, Vector2 position, float scale)
+        internal void Draw(SpriteBatch sb, Vector2 position, float scale)
         {
             Draw(sb, position, scale, SpriteEffects.None);
         }
@@ -101,7 +101,7 @@ namespace NetGore.Graphics
         /// <param name="position">Position to draw at</param>
         /// <param name="scale">Amount to scale the Grh in percent (1.0f for no scaling)</param>
         /// <param name="effect">SpriteEffects to use when drawing</param>
-        public void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
+        internal void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
         {
             // Validate
             if (Source == null)
@@ -140,7 +140,7 @@ namespace NetGore.Graphics
         /// Updates the Grh used by the SkeletonBodyItem
         /// </summary>
         /// <param name="currentTime">Current time</param>
-        public void Update(int currentTime)
+        internal void Update(int currentTime)
         {
             Grh.Update(currentTime);
         }
