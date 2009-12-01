@@ -114,9 +114,11 @@ namespace NetGore.Graphics
                 case SpriteEffects.FlipHorizontally:
                     m = new Vector2(-1, 1);
                     break;
+
                 case SpriteEffects.FlipVertically:
                     m = new Vector2(1, -1);
                     break;
+
                 default:
                     m = new Vector2(1, 1);
                     break;

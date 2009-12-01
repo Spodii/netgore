@@ -7,7 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Creates a body over a skeleton
+    /// Creates a graphical body over a <see cref="Skeleton"/> using a <see cref="SkeletonBodyInfo"/> to define
+    /// the body layout information. A new instance of this class is created for each <see cref="Skeleton"/>.
     /// </summary>
     public class SkeletonBody
     {
@@ -29,7 +30,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBody"/> class.
         /// </summary>
-        /// <param name="bodyInfo">SkeletonBodyInfo to create the SkeletonBody from</param>
+        /// <param name="bodyInfo"><see cref="SkeletonBodyInfo"/> to create the <see cref="SkeletonBody"/> from.</param>
         public SkeletonBody(SkeletonBodyInfo bodyInfo)
         {
             if (bodyInfo == null)
@@ -49,17 +50,17 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// SkeletonBody constructor
+        /// Initializes a new instance of the <see cref="SkeletonBody"/> class.
         /// </summary>
-        /// <param name="bodyInfo">SkeletonBodyInfo to create the SkeletonBody from</param>
-        /// <param name="skeleton">Skeleton to attach to</param>
+        /// <param name="bodyInfo"><see cref="SkeletonBodyInfo"/> to create the <see cref="SkeletonBody"/> from.</param>
+        /// <param name="skeleton"><see cref="Skeleton"/> to attach to.</param>
         public SkeletonBody(SkeletonBodyInfo bodyInfo, Skeleton skeleton) : this(bodyInfo)
         {
             Attach(skeleton);
         }
 
         /// <summary>
-        /// Gets the SkeletonBodyInfo that this SkeletonBody is created from
+        /// Gets the <see cref="SkeletonBodyInfo"/> that this <see cref="SkeletonBody"/> is created from.
         /// </summary>
         public SkeletonBodyInfo BodyInfo
         {
@@ -67,7 +68,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the Skeleton that this SkeletonBody is attached to
+        /// Gets the <see cref="Skeleton"/> that this <see cref="SkeletonBody"/> is attached to.
         /// </summary>
         public Skeleton Skeleton
         {
@@ -75,9 +76,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Attaches the body to a skeleton
+        /// Attaches the body to a <see cref="Skeleton"/>.
         /// </summary>
-        /// <param name="skeleton">Skeleton to attach to</param>
+        /// <param name="skeleton"><see cref="Skeleton"/> to attach to.</param>
         public void Attach(Skeleton skeleton)
         {
             if (skeleton == null)
@@ -87,10 +88,9 @@ namespace NetGore.Graphics
             }
 
             _skeleton = skeleton;
-            foreach (SkeletonBodyItem sbi in BodyItems)
-            {
-                sbi.Attach(skeleton);
-            }
+
+            foreach (var bodyItem in BodyItems)
+                bodyItem.Attach(skeleton);
         }
 
         /// <summary>
@@ -123,21 +123,8 @@ namespace NetGore.Graphics
         /// <param name="effect">SpriteEffects to use when drawing</param>
         public void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
         {
-            if (sb == null)
-            {
-                Debug.Fail("sb is null.");
-                return;
-            }
-            if (sb.IsDisposed)
-            {
-                Debug.Fail("sb is disposed.");
-                return;
-            }
-
-            for (int i = BodyItems.Length - 1; i >= 0; i--)
-            {
-                BodyItems[i].Draw(sb, position, scale, effect);
-            }
+            foreach (var bodyItem in BodyItems)
+                bodyItem.Draw(sb, position, scale, effect);
         }
 
         /// <summary>
@@ -146,10 +133,8 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current time</param>
         public void Update(int currentTime)
         {
-            for (int i = BodyItems.Length - 1; i >= 0; i--)
-            {
-                BodyItems[i].Update(currentTime);
-            }
+            foreach (var bodyItem in BodyItems)
+                bodyItem.Update(currentTime);
         }
     }
 }

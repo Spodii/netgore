@@ -4,7 +4,8 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Describes a SkeletonBody.
+    /// Describes a graphical body over a <see cref="Skeleton"/>. Only one instance of this class is to be created
+    /// for each unique body layout.
     /// </summary>
     public class SkeletonBodyInfo
     {
