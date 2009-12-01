@@ -156,8 +156,8 @@
     <Compile Include="Sprite\Grh\GrhDataChangeCategorizationHandler.cs" />
     <Compile Include="Sprite\Grh\GrhDataEventHandler.cs" />
     <Compile Include="Map\MapBorderDrawer.cs" />
-    <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
-    <Compile Include="Skeleton\SkeletonBodyItemInfo.cs" />
+    <Compile Include="Skeleton\Body\SkeletonBodyInfo.cs" />
+    <Compile Include="Skeleton\Body\SkeletonBodyItemInfo.cs" />
     <Compile Include="Skeleton\SkeletonFrame.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Primitives\XNAArrow.cs" />
@@ -173,8 +173,8 @@
     <Compile Include="ScreenGrid.cs" />
     <Compile Include="Skeleton\Skeleton.cs" />
     <Compile Include="Skeleton\SkeletonAnimation.cs" />
-    <Compile Include="Skeleton\SkeletonBody.cs" />
-    <Compile Include="Skeleton\SkeletonBodyItem.cs" />
+    <Compile Include="Skeleton\Body\SkeletonBody.cs" />
+    <Compile Include="Skeleton\Body\SkeletonBodyItem.cs" />
     <Compile Include="Skeleton\SkeletonDrawer.cs" />
     <Compile Include="Skeleton\SkeletonManager.cs" />
     <Compile Include="Skeleton\SkeletonNode.cs" />
