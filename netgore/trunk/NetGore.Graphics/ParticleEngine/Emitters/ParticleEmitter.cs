@@ -74,6 +74,17 @@ namespace NetGore.Graphics.ParticleEngine
         ushort _tryLoadSpriteTimeout = 0;
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format("{0} [{1}] - {2}", Name, Origin, GetType().Name);
+        }
+
+        /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
         /// </summary>
         static ParticleEmitter()
