@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>112</Count>
+    <Count>128</Count>
     <Item0>
       <Index>1</Index>
       <Frames>
@@ -1235,6 +1235,262 @@
       </Texture>
     </Item76>
     <Item77>
+      <Index>78</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>78</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>ArmLower</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/ArmLower</Name>
+        <Source>0,0,5,21</Source>
+      </Texture>
+    </Item77>
+    <Item78>
+      <Index>79</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>79</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>ArmUpper</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/ArmUpper</Name>
+        <Source>0,0,6,10</Source>
+      </Texture>
+    </Item78>
+    <Item79>
+      <Index>80</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>80</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>Head</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/Head</Name>
+        <Source>0,0,19,19</Source>
+      </Texture>
+    </Item79>
+    <Item80>
+      <Index>81</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>81</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>LegLower</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/LegLower</Name>
+        <Source>0,0,13,19</Source>
+      </Texture>
+    </Item80>
+    <Item81>
+      <Index>82</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>82</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>LegUpper</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/LegUpper</Name>
+        <Source>0,0,12,22</Source>
+      </Texture>
+    </Item81>
+    <Item82>
+      <Index>83</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>83</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>Neck</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/Neck</Name>
+        <Source>0,0,5,9</Source>
+      </Texture>
+    </Item82>
+    <Item83>
+      <Index>84</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>84</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>Shoe</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/Shoe</Name>
+        <Source>0,0,6,16</Source>
+      </Texture>
+    </Item83>
+    <Item84>
+      <Index>85</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>85</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Naked</Name>
+        <Title>Torso</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Naked/Torso</Name>
+        <Source>0,0,14,28</Source>
+      </Texture>
+    </Item84>
+    <Item85>
+      <Index>86</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>86</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>ArmLower</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/ArmLower</Name>
+        <Source>0,0,4,17</Source>
+      </Texture>
+    </Item85>
+    <Item86>
+      <Index>87</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>87</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>ArmUpper</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/ArmUpper</Name>
+        <Source>0,0,6,10</Source>
+      </Texture>
+    </Item86>
+    <Item87>
+      <Index>88</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>88</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>Head</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/Head</Name>
+        <Source>0,0,19,19</Source>
+      </Texture>
+    </Item87>
+    <Item88>
+      <Index>89</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>89</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>LegLower</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/LegLower</Name>
+        <Source>0,0,13,19</Source>
+      </Texture>
+    </Item88>
+    <Item89>
+      <Index>90</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>90</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>LegUpper</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/LegUpper</Name>
+        <Source>0,0,12,22</Source>
+      </Texture>
+    </Item89>
+    <Item90>
+      <Index>91</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>91</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>Neck</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/Neck</Name>
+        <Source>0,0,5,9</Source>
+      </Texture>
+    </Item90>
+    <Item91>
+      <Index>92</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>92</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>Shoe</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/Shoe</Name>
+        <Source>0,0,6,18</Source>
+      </Texture>
+    </Item91>
+    <Item92>
+      <Index>93</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>93</Item0>
+      </Frames>
+      <Category>
+        <Name>Character.Crystal</Name>
+        <Title>Torso</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Crystal/Torso</Name>
+        <Source>0,0,14,28</Source>
+      </Texture>
+    </Item92>
+    <Item93>
       <Index>117</Index>
       <Frames>
         <Count>1</Count>
@@ -1249,8 +1505,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/1</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item77>
-    <Item78>
+    </Item93>
+    <Item94>
       <Index>118</Index>
       <Frames>
         <Count>1</Count>
@@ -1265,8 +1521,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/2</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item78>
-    <Item79>
+    </Item94>
+    <Item95>
       <Index>119</Index>
       <Frames>
         <Count>1</Count>
@@ -1281,8 +1537,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/3</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item79>
-    <Item80>
+    </Item95>
+    <Item96>
       <Index>120</Index>
       <Frames>
         <Count>1</Count>
@@ -1297,8 +1553,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/4</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item80>
-    <Item81>
+    </Item96>
+    <Item97>
       <Index>121</Index>
       <Frames>
         <Count>1</Count>
@@ -1313,8 +1569,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/5</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item81>
-    <Item82>
+    </Item97>
+    <Item98>
       <Index>122</Index>
       <Frames>
         <Count>1</Count>
@@ -1329,8 +1585,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/6</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item82>
-    <Item83>
+    </Item98>
+    <Item99>
       <Index>123</Index>
       <Frames>
         <Count>1</Count>
@@ -1345,8 +1601,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/7</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item83>
-    <Item84>
+    </Item99>
+    <Item100>
       <Index>124</Index>
       <Frames>
         <Count>1</Count>
@@ -1361,8 +1617,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/8</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item84>
-    <Item85>
+    </Item100>
+    <Item101>
       <Index>126</Index>
       <Frames>
         <Count>1</Count>
@@ -1377,8 +1633,8 @@
         <Name>Grh/item/melee/titaniumsword</Name>
         <Source>0,0,24,24</Source>
       </Texture>
-    </Item85>
-    <Item86>
+    </Item101>
+    <Item102>
       <Index>127</Index>
       <Frames>
         <Count>1</Count>
@@ -1393,8 +1649,8 @@
         <Name>Grh/Item/Potion/Red</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item86>
-    <Item87>
+    </Item102>
+    <Item103>
       <Index>128</Index>
       <Frames>
         <Count>1</Count>
@@ -1409,8 +1665,8 @@
         <Name>Grh/Item/Potion/Blue</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item87>
-    <Item88>
+    </Item103>
+    <Item104>
       <Index>129</Index>
       <Frames>
         <Count>1</Count>
@@ -1425,8 +1681,8 @@
         <Name>Grh/Item/Back/Crystal</Name>
         <Source>0,0,15,25</Source>
       </Texture>
-    </Item88>
-    <Item89>
+    </Item104>
+    <Item105>
       <Index>130</Index>
       <Frames>
         <Count>1</Count>
@@ -1441,8 +1697,8 @@
         <Name>Grh/Item/Body/Crystal</Name>
         <Source>0,0,22,22</Source>
       </Texture>
-    </Item89>
-    <Item90>
+    </Item105>
+    <Item106>
       <Index>131</Index>
       <Frames>
         <Count>1</Count>
@@ -1457,8 +1713,8 @@
         <Name>Grh/Item/Feet/Crystal</Name>
         <Source>0,0,15,14</Source>
       </Texture>
-    </Item90>
-    <Item91>
+    </Item106>
+    <Item107>
       <Index>132</Index>
       <Frames>
         <Count>1</Count>
@@ -1473,8 +1729,8 @@
         <Name>Grh/Item/Head/Crystal</Name>
         <Source>0,0,11,16</Source>
       </Texture>
-    </Item91>
-    <Item92>
+    </Item107>
+    <Item108>
       <Index>133</Index>
       <Frames>
         <Count>1</Count>
@@ -1489,8 +1745,8 @@
         <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item92>
-    <Item93>
+    </Item108>
+    <Item109>
       <Index>134</Index>
       <Frames>
         <Count>1</Count>
@@ -1505,8 +1761,8 @@
         <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item93>
-    <Item94>
+    </Item109>
+    <Item110>
       <Index>135</Index>
       <Frames>
         <Count>1</Count>
@@ -1521,8 +1777,8 @@
         <Name>Grh/GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item94>
-    <Item95>
+    </Item110>
+    <Item111>
       <Index>136</Index>
       <Frames>
         <Count>1</Count>
@@ -1537,8 +1793,8 @@
         <Name>Grh/GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item95>
-    <Item96>
+    </Item111>
+    <Item112>
       <Index>137</Index>
       <Frames>
         <Count>1</Count>
@@ -1553,8 +1809,8 @@
         <Name>Grh/Background/sky</Name>
         <Source>0,0,1024,238</Source>
       </Texture>
-    </Item96>
-    <Item97>
+    </Item112>
+    <Item113>
       <Index>138</Index>
       <Frames>
         <Count>1</Count>
@@ -1569,8 +1825,8 @@
         <Name>Grh/Background/trees/dense</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item97>
-    <Item98>
+    </Item113>
+    <Item114>
       <Index>139</Index>
       <Frames>
         <Count>1</Count>
@@ -1585,8 +1841,8 @@
         <Name>Grh/Background/trees/sparse</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item98>
-    <Item99>
+    </Item114>
+    <Item115>
       <Index>140</Index>
       <Frames>
         <Count>1</Count>
@@ -1601,8 +1857,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item99>
-    <Item100>
+    </Item115>
+    <Item116>
       <Index>141</Index>
       <Frames>
         <Count>1</Count>
@@ -1617,8 +1873,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item100>
-    <Item101>
+    </Item116>
+    <Item117>
       <Index>142</Index>
       <Frames>
         <Count>1</Count>
@@ -1633,8 +1889,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item101>
-    <Item102>
+    </Item117>
+    <Item118>
       <Index>143</Index>
       <Frames>
         <Count>1</Count>
@@ -1649,8 +1905,8 @@
         <Name>Grh/GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item102>
-    <Item103>
+    </Item118>
+    <Item119>
       <Index>144</Index>
       <Frames>
         <Count>1</Count>
@@ -1665,8 +1921,8 @@
         <Name>Grh/GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item103>
-    <Item104>
+    </Item119>
+    <Item120>
       <Index>200</Index>
       <Frames>
         <Count>1</Count>
@@ -1681,8 +1937,8 @@
         <Name>Grh/Character/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item104>
-    <Item105>
+    </Item120>
+    <Item121>
       <Index>201</Index>
       <Frames>
         <Count>1</Count>
@@ -1697,8 +1953,8 @@
         <Name>Grh/Character/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item105>
-    <Item106>
+    </Item121>
+    <Item122>
       <Index>202</Index>
       <Frames>
         <Count>1</Count>
@@ -1713,8 +1969,8 @@
         <Name>Grh/Character/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
-    </Item106>
-    <Item107>
+    </Item122>
+    <Item123>
       <Index>203</Index>
       <Frames>
         <Count>1</Count>
@@ -1729,8 +1985,8 @@
         <Name>Grh/Character/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
-    </Item107>
-    <Item108>
+    </Item123>
+    <Item124>
       <Index>204</Index>
       <Frames>
         <Count>1</Count>
@@ -1745,8 +2001,8 @@
         <Name>Grh/Character/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
-    </Item108>
-    <Item109>
+    </Item124>
+    <Item125>
       <Index>205</Index>
       <Frames>
         <Count>1</Count>
@@ -1761,8 +2017,8 @@
         <Name>Grh/Character/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item109>
-    <Item110>
+    </Item125>
+    <Item126>
       <Index>206</Index>
       <Frames>
         <Count>1</Count>
@@ -1777,8 +2033,8 @@
         <Name>Grh/Character/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item110>
-    <Item111>
+    </Item126>
+    <Item127>
       <Index>207</Index>
       <Frames>
         <Count>1</Count>
@@ -1793,7 +2049,7 @@
         <Name>Grh/Character/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
-    </Item111>
+    </Item127>
   </Stationary>
   <Animated>
     <Count>1</Count>
@@ -1814,7 +2070,7 @@
         <Name>Effect</Name>
         <Title>Teleport</Title>
       </Category>
-      <Speed>400</Speed>
+      <Speed>0.0025</Speed>
     </Item0>
   </Animated>
 </GrhDatas>
