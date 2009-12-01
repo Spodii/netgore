@@ -11,6 +11,14 @@ namespace DemoGame.MapEditor
     public class MapParticleEffectsListBox : MapParticleEffectsListBoxBase<Map>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="MapParticleEffectsListBox"/> class.
+        /// </summary>
+        public MapParticleEffectsListBox()
+            : base(true, false, true)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, creates a clone of the specified <paramref name="item"/>.
         /// </summary>
         /// <param name="item">Object to clone.</param>
