@@ -24,7 +24,7 @@ namespace NetGore.Db.ClassCreator
 
         /// <summary>
         /// Output directory for the generated code that is referenced only by the server.
-        /// Points to the ...\DemoGame.ServerObjs\DbObjs\ folder.
+        /// Points to the ...\DemoGame.Server\DbObjs\ folder.
         /// </summary>
         static readonly string _outputServerDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.Server{1}DbObjs{1}",
                                                                 AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
