@@ -62,21 +62,20 @@ namespace NetGore.Graphics
 
         public void Read(IValueReader reader)
         {
-            var loadedItems = reader.ReadManyNodes(_itemsNodeName, x => new SkeletonBodyItemInfo(x));
-            _items = loadedItems;
+            _items = reader.ReadManyNodes(_itemsNodeName, x => new SkeletonBodyItemInfo(x));
         }
 
-        public void Write(IValueWriter writer)
-        {
-            writer.WriteManyNodes(_itemsNodeName, Items, ((w, item) => item.Write(w)));
-        }
-
-        public void Write(string filePath)
+        public void Save(string filePath)
         {
             using (XmlValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
             {
                 Write(writer);
             }
+        }
+
+        public void Write(IValueWriter writer)
+        {
+            writer.WriteManyNodes(_itemsNodeName, Items, ((w, item) => item.Write(w)));
         }
     }
 }
