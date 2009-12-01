@@ -350,6 +350,11 @@ namespace DemoGame.Client
             AddToRenderList(drawableEntity);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional processing on Entities added to the map.
+        /// This is called after the Entity has finished being added to the map.
+        /// </summary>
+        /// <param name="entity">Entity that was added to the map.</param>
         protected override void EntityAdded(Entity entity)
         {
             // If the entity implements IDrawableEntity, listen to the 
@@ -362,6 +367,11 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// When overriddeni n the derived class, allows for additional processing on Entities removed from the map.
+        /// This is called after the Entity has finished being removed from the map.
+        /// </summary>
+        /// <param name="entity">Entity that was removed from the map.</param>
         protected override void EntityRemoved(Entity entity)
         {
             // If the entity implements IDrawableEntity, remove it from the render layer and
