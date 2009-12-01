@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +19,59 @@ namespace DemoGame.Server
         readonly bool _isPersistent;
         bool _disposed = false;
 
+        readonly EquippedPaperDoll _paperDoll;
+
+        private class EquippedPaperDoll
+        {
+            static readonly int _maxSlotValue = EquipmentSlotHelper.Instance.MaxValue;
+
+            readonly Character _character;
+            readonly string[] _bodies;
+
+            public EquippedPaperDoll(Character character)
+            {
+                _bodies = new string[_maxSlotValue];
+                _character = character;
+            }
+
+            public void NotifyRemoved(EquipmentSlot slot)
+            {
+                var slotID = slot.GetValue();
+
+                if (_bodies[slotID] == null)
+                    return;
+
+                _bodies[slotID] = null;
+                SynchronizeBodyLayers();
+            }
+
+            public void NotifyAdded(EquipmentSlot slot, IItemTable item)
+            {
+                var slotID = slot.GetValue();
+
+                if (_bodies[slotID] != null)
+                    NotifyRemoved(slot);
+
+                if (string.IsNullOrEmpty(item.EquippedBody))
+                    return;
+
+                _bodies[slotID] = item.EquippedBody;
+                SynchronizeBodyLayers();
+            }
+
+            void SynchronizeBodyLayers()
+            {
+                var map = _character.Map;
+                if (map == null)
+                    return;
+
+                using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
+                {
+                    _character.Map.Send(pw);
+                }
+            }
+        }
+
         protected CharacterEquipped(Character character)
         {
             if (character == null)
@@ -25,6 +79,7 @@ namespace DemoGame.Server
 
             _character = character;
             _isPersistent = character.IsPersistent;
+            _paperDoll = new EquippedPaperDoll(Character);
 
             AddListeners();
         }
@@ -44,6 +99,7 @@ namespace DemoGame.Server
 
         void AddListeners()
         {
+            // TODO: Add two virtual methods, AfterEquip() and AfterRemove(), to replace the need for these event hooks
             OnEquip += CharacterEquipped_OnEquip;
             OnRemove += CharacterEquipped_OnRemove;
         }
@@ -85,6 +141,8 @@ namespace DemoGame.Server
             }
 
             SendSlotUpdate(slot, item.GraphicIndex);
+
+            _paperDoll.NotifyAdded(slot, item);
         }
 
         void CharacterEquipped_OnRemove(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
@@ -113,6 +171,8 @@ namespace DemoGame.Server
                 // Make the Character drop the remainder
                 Character.DropItem(remainder);
             }
+
+            _paperDoll.NotifyRemoved(slot);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -212,6 +213,14 @@ namespace NetGore.Graphics
             AddModifier(modifier, false);
         }
 
+        readonly List<SkeletonBody> _bodyLayers = new List<SkeletonBody>();
+
+        /// <summary>
+        /// Gets a List of the additional layers that can be stacked on top of the original
+        /// <see cref="SkeletonBody"/>.
+        /// </summary>
+        public List<SkeletonBody> BodyLayers { get { return _bodyLayers; } }
+
         /// <summary>
         /// Changes the SkeletonSet used to animate
         /// </summary>
@@ -330,6 +339,9 @@ namespace NetGore.Graphics
 
             if (_skelBody != null)
                 _skelBody.Draw(sb, position, _scale, effect);
+
+            foreach (var bodyLayer in BodyLayers)
+                bodyLayer.Draw(sb, position, _scale, effect);
         }
 
         /// <summary>
@@ -498,6 +510,9 @@ namespace NetGore.Graphics
             // Update the body
             if (_skelBody != null)
                 _skelBody.Update(currentTime);
+
+            foreach (var bodyLayer in BodyLayers)
+                bodyLayer.Update(currentTime);
 
             // If there is a parent, apply the changes to it
             if (_parent != null)

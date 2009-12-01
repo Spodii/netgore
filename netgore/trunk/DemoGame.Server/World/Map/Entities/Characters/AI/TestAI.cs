@@ -39,7 +39,9 @@ namespace DemoGame.Server
             if (_lastTargetUpdateTime + _targetUpdateRate < time)
             {
                 _lastTargetUpdateTime = time;
-                _target = GetClosestHostile();
+                // NOTE: Removed targeting because it got really damn annoying having NPCs kill me constantly
+                //_target = GetClosestHostile();
+                _target = null;
             }
 
             // Check if we have a target or not

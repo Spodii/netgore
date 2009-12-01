@@ -283,6 +283,18 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SetCharacterPaperDoll(MapEntityIndex mapEntityIndex, IEnumerable<string> layers)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetCharacterPaperDoll);
+            pw.Write(mapEntityIndex);
+
+            pw.Write((byte)layers.Count());
+            foreach (var layer in layers)
+                pw.Write(layer);
+
+            return pw;
+        }
+
         public static PacketWriter SetChatDialogPage(ushort pageIndex, IEnumerable<byte> responsesToSkip)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetChatDialogPage);

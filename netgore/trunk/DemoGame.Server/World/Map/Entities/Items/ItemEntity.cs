@@ -36,6 +36,7 @@ namespace DemoGame.Server
         string _name;
         ItemType _type;
         int _value;
+        string _equippedBody;
 
         /// <summary>
         /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.
@@ -64,7 +65,7 @@ namespace DemoGame.Server
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
                 pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.Graphic, t.Value, amount, t.HP,
-                t.MP, t.Stats, t.ReqStats)
+                t.MP, t.EquippedBody, t.Stats, t.ReqStats)
         {
         }
 
@@ -91,7 +92,7 @@ namespace DemoGame.Server
         }
 
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
-                   SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats,
+                   SPValueType hp, SPValueType mp, string equippedBody, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
         {
             _id = IDCreator.GetNext();
@@ -104,6 +105,7 @@ namespace DemoGame.Server
             _type = type;
             _hp = hp;
             _mp = mp;
+            _equippedBody = equippedBody;
 
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
@@ -116,7 +118,7 @@ namespace DemoGame.Server
 
         ItemEntity(ItemEntity s)
             : this(
-                s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
+                s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.EquippedBody,
                 s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
@@ -513,6 +515,20 @@ namespace DemoGame.Server
         public ItemID ID
         {
             get { return _id; }
+        }
+
+        public string EquippedBody
+        {
+            get { return _equippedBody; }
+            set
+            {
+                if (_equippedBody == value)
+                    return;
+
+                _equippedBody = value;
+
+                SynchronizeField("equipped_body", _equippedBody);
+            }
         }
 
         public SPValueType MP
