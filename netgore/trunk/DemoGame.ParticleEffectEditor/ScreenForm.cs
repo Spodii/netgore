@@ -22,12 +22,6 @@ namespace DemoGame.ParticleEffectEditor
         readonly Stopwatch _watch = new Stopwatch();
 
         ContentManager _content;
-
-        /// <summary>
-        /// The file path of the currently loaded effect. Null if not loaded from file.
-        /// </summary>
-        string _currentEffectFilePath = null;
-
         ParticleEmitter _emitter;
         IParticleRenderer _renderer;
         SpriteBatch _spriteBatch;
@@ -46,29 +40,6 @@ namespace DemoGame.ParticleEffectEditor
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
 
             _watch.Start();
-        }
-
-        string CurrentEffectFilePath
-        {
-            get { return _currentEffectFilePath; }
-            set
-            {
-                if (_currentEffectFilePath == value)
-                    return;
-
-                _currentEffectFilePath = value;
-
-                string effectName;
-                if (_currentEffectFilePath == null)
-                    effectName = string.Empty;
-                else
-                {
-                    effectName = " - ";
-                    effectName += ParticleEmitterFactory.GetEffectNameFromPath(_currentEffectFilePath);
-                }
-
-                Text = _defaultTitle + effectName;
-            }
         }
 
         public ParticleEmitter Emitter
@@ -97,29 +68,14 @@ namespace DemoGame.ParticleEffectEditor
             var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
 
             if (wasSuccessful)
-            {
                 Emitter = emitter;
-                CurrentEffectFilePath = filePath;
-            }
         }
 
         void btnSave_Click(object sender, EventArgs e)
         {
-            if (CurrentEffectFilePath == null)
-            {
-                btnSaveAs_Click(this, null);
-                return;
-            }
+            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter);
 
-            var emitterName = ParticleEmitterFactory.GetEffectNameFromPath(CurrentEffectFilePath);
-            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter, emitterName);
-        }
-
-        void btnSaveAs_Click(object sender, EventArgs e)
-        {
-            string filePath;
-            if (FileDialogs.TrySaveAsParticleEffect(Emitter, out filePath))
-                CurrentEffectFilePath = filePath;
+            MessageBox.Show("Saved!", "Saved", MessageBoxButtons.OK);
         }
 
         void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
@@ -186,12 +142,20 @@ namespace DemoGame.ParticleEffectEditor
             _renderer = new SpriteBatchRenderer { SpriteBatch = _spriteBatch };
         }
 
+        string _lastEmitterName = string.Empty;
+
         /// <summary>
         /// Main entry point for all the screen content updating.
         /// </summary>
         public void UpdateGame()
         {
             Emitter.Update(GetTime());
+
+            if (Emitter.Name != _lastEmitterName)
+            {
+                _lastEmitterName = Emitter.Name;
+                Text = _defaultTitle + " - " + _lastEmitterName;
+            }
         }
 
         #region IGetTime Members
