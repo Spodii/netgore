@@ -536,6 +536,7 @@ namespace DemoGame.Client
         {
             LoadGrhs(reader);
             LoadBackgroundImages(reader);
+            _particleEffects.Read(reader, _particleEffectsNodeName);
         }
 
         /// <summary>
@@ -595,6 +596,8 @@ namespace DemoGame.Client
             w.WriteEndNode(_mapGrhsNodeName);
         }
 
+        const string _particleEffectsNodeName = "ParticleEffects";
+
         /// <summary>
         /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
@@ -603,6 +606,7 @@ namespace DemoGame.Client
         {
             SaveGrhs(w);
             SaveBackgroundImages(w);
+            _particleEffects.Write(w, _particleEffectsNodeName);
         }
 
         /// <summary>
