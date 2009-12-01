@@ -94,33 +94,22 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the SkeletonBody
+        /// Draws the <see cref="SkeletonBody"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw with</param>
-        /// <param name="position">Position to draw at</param>
+        /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="position">Position to draw at.</param>
         public void Draw(SpriteBatch sb, Vector2 position)
         {
             Draw(sb, position, 1.0f, SpriteEffects.None);
         }
 
         /// <summary>
-        /// Draws the SkeletonBody
+        /// Draws the <see cref="SkeletonBody"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw with</param>
-        /// <param name="position">Position to draw at</param>
-        /// <param name="scale">Scale in percent (1.0f for normal scale)</param>
-        public void Draw(SpriteBatch sb, Vector2 position, float scale)
-        {
-            Draw(sb, position, scale, SpriteEffects.None);
-        }
-
-        /// <summary>
-        /// Draws the SkeletonBody
-        /// </summary>
-        /// <param name="sb">SpriteBatch to draw with</param>
-        /// <param name="position">Position to draw at</param>
-        /// <param name="scale">Scale in percent (1.0f for normal scale)</param>
-        /// <param name="effect">SpriteEffects to use when drawing</param>
+        /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="position">Position to draw at.</param>
+        /// <param name="scale">Scale in percent (1.0f for normal scale).</param>
+        /// <param name="effect"><see cref="SpriteEffects"/> to use when drawing.</param>
         public void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
         {
             foreach (var bodyItem in BodyItems)
@@ -128,9 +117,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the SkeletonBody
+        /// Updates the <see cref="SkeletonBody"/>.
         /// </summary>
-        /// <param name="currentTime">Current time</param>
+        /// <param name="currentTime">The current time.</param>
         public void Update(int currentTime)
         {
             foreach (var bodyItem in BodyItems)
