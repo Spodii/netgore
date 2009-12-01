@@ -9,6 +9,9 @@ namespace NetGore.EditorTools
 {
     public delegate void ParticleEmitterComboBoxHandler(ParticleEmitterComboBox sender, ParticleEmitter emitter);
 
+    /// <summary>
+    /// A <see cref="ComboBox"/> containing the <see cref="ParticleEmitter"/>s.
+    /// </summary>
     public class ParticleEmitterComboBox : TypedComboBox<Type>
     {
         public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
@@ -42,6 +45,10 @@ namespace NetGore.EditorTools
             return item.Name;
         }
 
+        /// <summary>
+        /// Handles when the selected value changes.
+        /// </summary>
+        /// <param name="item">The new selected value.</param>
         protected override void OnTypedSelectedValueChanged(Type item)
         {
             base.OnTypedSelectedValueChanged(item);

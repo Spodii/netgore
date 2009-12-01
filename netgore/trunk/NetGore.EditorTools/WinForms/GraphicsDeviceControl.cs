@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Color=System.Drawing.Color;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
-namespace NetGore.EditorTools.WinForms
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Custom control uses the XNA Framework GraphicsDevice to render onto

@@ -1,5 +1,5 @@
 using System.Linq;
-using NetGore.EditorTools.WinForms;
+using NetGore.EditorTools;
 
 namespace DemoGame.ParticleEffectEditor
 {
