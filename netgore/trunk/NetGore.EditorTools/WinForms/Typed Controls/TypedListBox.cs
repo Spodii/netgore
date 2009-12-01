@@ -8,7 +8,7 @@ namespace NetGore.EditorTools
     /// <summary>
     /// A <see cref="ListBox"/> that uses strong typing for the collection items.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The Type of collection item.</typeparam>
     public class TypedListBox<T> : ListBox, ITypedControl<T>
     {
         /// <summary>
