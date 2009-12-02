@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
 using NetGore.Network;
+using System.Text;
 
 namespace DemoGame.Server
 {
@@ -160,7 +162,7 @@ namespace DemoGame.Server
             }
 
             // Check for a matching password
-            if (!password.Equals(userAccount.Password, StringComparison.Ordinal))
+            if (!EncodePassword(password).Equals(userAccount.Password, StringComparison.Ordinal))
             {
                 userAccount = null;
                 return AccountLoginResult.InvalidPassword;
@@ -462,6 +464,24 @@ namespace DemoGame.Server
 
             value = _characterIDs[index];
             return true;
+        }
+
+        ///<summary>
+        ///Return MD5 hash of string
+        /// </summary>
+        public static string EncodePassword(string originalPassword)
+        {
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            md5 = new MD5CryptoServiceProvider();
+
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalPassword);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            string ret = System.Text.RegularExpressions.Regex.Replace(BitConverter.ToString(encodedBytes), "-", "").ToLower();
+            return ret;
         }
 
         #region IDisposable Members
