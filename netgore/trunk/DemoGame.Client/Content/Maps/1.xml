@@ -985,7 +985,7 @@
     </Item194>
   </Walls>
   <DynamicEntities>
-    <Count>6</Count>
+    <Count>1</Count>
     <Item0>
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
       <CollisionType>Full</CollisionType>
@@ -996,46 +996,6 @@
       <Position>436,646</Position>
       <Velocity>0,0</Velocity>
     </Item0>
-    <Item1>
-      <DynamicEntityType>AINodeEntity</DynamicEntityType>
-      <CollisionType>Full</CollisionType>
-      <Size>64,64</Size>
-      <Weight>1</Weight>
-      <Position>40,671</Position>
-      <Velocity>0,0</Velocity>
-    </Item1>
-    <Item2>
-      <DynamicEntityType>AINodeEntity</DynamicEntityType>
-      <CollisionType>Full</CollisionType>
-      <Size>32,32</Size>
-      <Weight>1</Weight>
-      <Position>141,590</Position>
-      <Velocity>0,0</Velocity>
-    </Item2>
-    <Item3>
-      <DynamicEntityType>AINodeEntity</DynamicEntityType>
-      <CollisionType>Full</CollisionType>
-      <Size>64,64</Size>
-      <Weight>1</Weight>
-      <Position>413,639</Position>
-      <Velocity>0,0</Velocity>
-    </Item3>
-    <Item4>
-      <DynamicEntityType>AINodeEntity</DynamicEntityType>
-      <CollisionType>Full</CollisionType>
-      <Size>32,32</Size>
-      <Weight>1</Weight>
-      <Position>283,641</Position>
-      <Velocity>0,0</Velocity>
-    </Item4>
-    <Item5>
-      <DynamicEntityType>AINodeEntity</DynamicEntityType>
-      <CollisionType>Full</CollisionType>
-      <Size>64,64</Size>
-      <Weight>1</Weight>
-      <Position>544,511</Position>
-      <Velocity>0,0</Velocity>
-    </Item5>
   </DynamicEntities>
   <Misc>
     <MapGrhs>
