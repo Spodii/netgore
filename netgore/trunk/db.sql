@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` int(11) NOT NULL COMMENT 'The account ID.',
   `name` varchar(30) NOT NULL COMMENT 'The account name.',
-  `password` varchar(30) NOT NULL COMMENT 'The account password.',
+  `password` varchar(40) NOT NULL COMMENT 'The account password.',
   `email` varchar(60) NOT NULL COMMENT 'The email address.',
   `time_created` datetime NOT NULL COMMENT 'The DateTime of when the account was created.',
   `time_last_login` datetime NOT NULL COMMENT 'The DateTime that the account was last logged in to.',
@@ -33,7 +33,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-12-01 00:52:20', null);
+INSERT INTO `account` VALUES ('1', 'Spodi', '3fc0a7acf087f549ac2b266baf94b8b1', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-12-01 00:52:20', null);
 
 -- ----------------------------
 -- Table structure for `alliance`
