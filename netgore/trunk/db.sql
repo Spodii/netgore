@@ -520,88 +520,99 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- ----------------------------
 -- Procedure structure for `Rebuild_View_NPC_Character`
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `Rebuild_View_NPC_Character`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Rebuild_View_NPC_Character`()
-BEGIN
-	DROP VIEW IF EXISTS `npc_character`;
-	CREATE VIEW npc_character AS SELECT * FROM `character` WHERE `account_id` IS NULL;
-END;;
-DELIMITER ;
+DELIMITER $$
 
--- ----------------------------
--- Procedure structure for `Rebuild_View_User_Character`
--- ----------------------------
-DROP PROCEDURE IF EXISTS `Rebuild_View_User_Character`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Rebuild_View_User_Character`()
+
+DROP PROCEDURE IF EXISTS `demogame`.`Rebuild_View_NPC_Character`$$
+
+
+CREATE PROCEDURE `demogame`.`Rebuild_View_NPC_Character`()
+    
 BEGIN
-	DROP VIEW IF EXISTS user_character;
-	CREATE VIEW user_character AS SELECT * FROM `character` WHERE `account_id` IS NOT NULL;
-END;;
+	
+	DROP VIEW IF EXISTS `npc_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `npc_character` AS SELECT *FROM `character` WHERE `account_id` IS NULL;
+    
+END$$
+
+
 DELIMITER ;
 
 -- ----------------------------
 -- Procedure structure for `Rebuild_Views`
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `Rebuild_Views`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Rebuild_Views`()
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `demogame`.`Rebuild_Views`$$
+
+CREATE PROCEDURE `demogame`.`Rebuild_Views`()
+    
 BEGIN
+	
 	CALL Rebuild_View_NPC_Character();
 	CALL Rebuild_View_User_Character();
-END;;
+    
+END$$
+
 DELIMITER ;
 
 -- ----------------------------
 -- Function structure for `CreateUserOnAccount`
 -- ----------------------------
-DROP FUNCTION IF EXISTS `CreateUserOnAccount`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `CreateUserOnAccount`(accountID INT, characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
-BEGIN
-				DECLARE character_count INT DEFAULT 0;
-				DECLARE max_character_count INT DEFAULT 3;
-				DECLARE is_id_free INT DEFAULT 0;
-				DECLARE is_name_free INT DEFAULT 0;
-				DECLARE errorMsg VARCHAR(100) DEFAULT "";
+DELIMITER $$
 
-				SELECT COUNT(*) 
-					INTO character_count
-					FROM `character`
-					WHERE account_id = accountID;
+DROP FUNCTION IF EXISTS `demogame`.`CreateUserOnAccount`$$
+
+CREATE FUNCTION `demogame`.`CreateUserOnAccount`(accountID INT, characterName VARCHAR(30), characterID INT)
+	
+RETURNS varchar(100) CHARSET latin1
+    
+BEGIN
+		
+		DECLARE character_count INT DEFAULT 0;
+		DECLARE max_character_count INT DEFAULT 3;
+		DECLARE is_id_free INT DEFAULT 0;
+		DECLARE is_name_free INT DEFAULT 0;
+		DECLARE errorMsg VARCHAR(100) DEFAULT "";
+
+		SELECT COUNT(*) 
+			INTO character_count
+			FROM `character`
+			WHERE account_id = accountID;
 					
-				SELECT `max_characters_per_account` 
-					INTO max_character_count
-					FROM `game_data`;
+			SELECT `max_characters_per_account` 
+			INTO max_character_count
+			FROM `game_data`;
 					
-				IF character_count > max_character_count THEN
-					SET errorMsg = "No free character slots available in the account.";
+			IF character_count > max_character_count THEN
+				SET errorMsg = "No free character slots available in the account.";
+			ELSE
+				SELECT COUNT(*)
+				INTO is_id_free
+				FROM `character`
+				WHERE `id` = characterID;
+				
+				IF is_id_free > 0 THEN
+					SET errorMsg = "The specified CharacterID is not available for use.";
 				ELSE
 					SELECT COUNT(*)
-						INTO is_id_free
-						FROM `character`
-						WHERE `id` = characterID;
-				
-					IF is_id_free > 0 THEN
-						SET errorMsg = "The specified CharacterID is not available for use.";
-					ELSE
-						SELECT COUNT(*)
-							INTO is_name_free
-							FROM `user_character`
-							WHERE `name` = characterName;
+					INTO is_name_free
+					FROM `user_character`
+					WHERE `name` = characterName;
 						
-						IF is_name_free > 0 THEN
-							SET errorMsg = "The specified character name is not available for use.";
-						ELSE
-							INSERT INTO `character` SET 
-								`id`			= 	characterID,
-								`name`			= 	characterName,
-								`account_id`	= 	accountID;
-						END IF;
+					IF is_name_free > 0 THEN
+						SET errorMsg = "The specified character name is not available for use.";
+					ELSE
+						INSERT INTO `character` SET 
+						`id`			= 	characterID,
+						`name`			= 	characterName,
+						`account_id`	= 	accountID;
 					END IF;
 				END IF;
+			END IF;
 				
-				RETURN errorMsg;
-			END;;
+		RETURN errorMsg;
+    
+END$$
+
 DELIMITER ;
