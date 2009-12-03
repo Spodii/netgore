@@ -75,6 +75,7 @@
     <Compile Include="NetGore\IO\BitOpsTests.cs" />
     <Compile Include="NetGore\IO\BitStreamTests.cs" />
     <Compile Include="NetGore\IO\IValueReaderWriterTests.cs" />
+    <Compile Include="NetGore\IO\PropertySyncTests.cs" />
     <Compile Include="NetGore\IO\SettingsManagerTests.cs" />
     <Compile Include="NetGore\IO\VirtualListTests.cs" />
     <Compile Include="NetGore\IO\XmlInfoReaderTests.cs" />
