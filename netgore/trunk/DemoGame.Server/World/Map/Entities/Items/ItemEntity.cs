@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Db;
 
+// TODO: I REALLY need to make it so that copying values with an ItemEntity is as non-redundant and automated by the IItemTable as possible
+
 namespace DemoGame.Server
 {
     /// <summary>
