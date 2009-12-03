@@ -6,7 +6,7 @@
       <Sprite>Character.Crystal.Head</Sprite>
       <Source>Head</Source>
       <Destination />
-      <Offset>0,0</Offset>
+      <Offset>0,-1</Offset>
       <Origin>9,9</Origin>
     </Item0>
     <Item1>

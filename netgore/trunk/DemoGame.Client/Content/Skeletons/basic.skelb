@@ -6,14 +6,14 @@
       <Sprite>Character.Naked.ArmUpper</Sprite>
       <Source>Neck</Source>
       <Destination>Front Elbow</Destination>
-      <Offset>0,0</Offset>
+      <Offset>0,3</Offset>
       <Origin>3,1</Origin>
     </Item0>
     <Item1>
       <Sprite>Character.Naked.ArmLower</Sprite>
       <Source>Front Elbow</Source>
       <Destination>Front Hand</Destination>
-      <Offset>0,0</Offset>
+      <Offset>0,3</Offset>
       <Origin>2.5,1</Origin>
     </Item1>
     <Item2>
@@ -21,14 +21,14 @@
       <Source>Pelvis</Source>
       <Destination>Front Knee</Destination>
       <Offset>0,0</Offset>
-      <Origin>6,3</Origin>
+      <Origin>7,3</Origin>
     </Item2>
     <Item3>
       <Sprite>Character.Naked.LegLower</Sprite>
       <Source>Front Knee</Source>
       <Destination>Front Foot</Destination>
       <Offset>0,0</Offset>
-      <Origin>6,1</Origin>
+      <Origin>7,1</Origin>
     </Item3>
     <Item4>
       <Sprite>Character.Naked.Shoe</Sprite>
@@ -56,21 +56,21 @@
       <Source>Head</Source>
       <Destination />
       <Offset>0,0</Offset>
-      <Origin>9,9</Origin>
+      <Origin>9,10</Origin>
     </Item7>
     <Item8>
       <Sprite>Character.Naked.LegUpper</Sprite>
       <Source>Pelvis</Source>
       <Destination>Back Knee</Destination>
       <Offset>0,0</Offset>
-      <Origin>6,3</Origin>
+      <Origin>7,3</Origin>
     </Item8>
     <Item9>
       <Sprite>Character.Naked.LegLower</Sprite>
       <Source>Back Knee</Source>
       <Destination>Back Foot</Destination>
       <Offset>0,0</Offset>
-      <Origin>6,1</Origin>
+      <Origin>7,1</Origin>
     </Item9>
     <Item10>
       <Sprite>Character.Naked.Shoe</Sprite>
@@ -83,14 +83,14 @@
       <Sprite>Character.Naked.ArmUpper</Sprite>
       <Source>Neck</Source>
       <Destination>Back Elbow</Destination>
-      <Offset>0,0</Offset>
-      <Origin>3,1</Origin>
+      <Offset>0,3</Offset>
+      <Origin>2.5,1</Origin>
     </Item11>
     <Item12>
       <Sprite>Character.Naked.ArmLower</Sprite>
       <Source>Back Elbow</Source>
       <Destination>Back Hand</Destination>
-      <Offset>0,0</Offset>
+      <Offset>0,7</Offset>
       <Origin>2.5,1</Origin>
     </Item12>
   </BodyItems>

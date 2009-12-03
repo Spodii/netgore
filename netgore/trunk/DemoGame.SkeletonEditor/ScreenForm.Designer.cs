@@ -221,7 +221,6 @@ namespace DemoGame.SkeletonEditor
             this.btnShiftNodes.TabIndex = 32;
             this.btnShiftNodes.Text = "Shift Nodes";
             this.btnShiftNodes.UseVisualStyleBackColor = true;
-            this.btnShiftNodes.Click += new System.EventHandler(btnShiftNodes_Click);
             // 
             // btnCopyRoot
             // 
@@ -967,6 +966,7 @@ namespace DemoGame.SkeletonEditor
             this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.GameScreen.Location = new System.Drawing.Point(9, 12);
             this.GameScreen.Name = "GameScreen";
+            this.GameScreen.ScreenForm = null;
             this.GameScreen.Size = new System.Drawing.Size(800, 600);
             this.GameScreen.TabIndex = 0;
             this.GameScreen.Text = "Game Screen";
