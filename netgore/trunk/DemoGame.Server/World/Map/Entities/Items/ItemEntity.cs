@@ -85,6 +85,7 @@ namespace DemoGame.Server
             _value = iv.Value;
             _amount = iv.Amount;
             _type = iv.Type;
+            _equippedBody = iv.EquippedBody;
 
             _baseStats = NewItemStats(iv.Stats, StatCollectionType.Base);
             _reqStats = NewItemStats(iv.ReqStats, StatCollectionType.Requirement);
