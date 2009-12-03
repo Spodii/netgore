@@ -80,7 +80,7 @@ namespace NetGore
         /// <returns>True if the Property needs to be re-synchronized, else False.</returns>
         public override bool HasValueChanged()
         {
-            return !_lastSentValue.Equals(Value);
+            return !Equals(_lastSentValue, Value);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace NetGore
         static readonly Dictionary<Type, PropertyInfoData[]> _syncValueProperties = new Dictionary<Type, PropertyInfoData[]>();
 
         /// <summary>
-        /// PropertySyncBase static constructor.
+        /// Initializes the <see cref="PropertySyncBase"/> class.
         /// </summary>
         static PropertySyncBase()
         {
