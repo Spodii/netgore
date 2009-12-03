@@ -129,14 +129,14 @@ namespace DemoGame.Server.DbObjs
         Byte _width;
 
         /// <summary>
-        /// ItemTable constructor.
+        /// Initializes a new instance of the <see cref="ItemTable"/> class.
         /// </summary>
         public ItemTable()
         {
         }
 
         /// <summary>
-        /// ItemTable constructor.
+        /// Initializes a new instance of the <see cref="ItemTable"/> class.
         /// </summary>
         /// <param name="amount">The initial value for the corresponding property.</param>
         /// <param name="description">The initial value for the corresponding property.</param>
@@ -192,7 +192,7 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// ItemTable constructor.
+        /// Initializes a new instance of the <see cref="ItemTable"/> class.
         /// </summary>
         /// <param name="source">IItemTable to copy the initial values from.</param>
         public ItemTable(IItemTable source)
