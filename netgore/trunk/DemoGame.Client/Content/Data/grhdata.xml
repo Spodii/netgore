@@ -1375,7 +1375,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/ArmLower</Name>
-        <Source>0,0,4,17</Source>
+        <Source>0,0,5,21</Source>
       </Texture>
     </Item85>
     <Item86>
@@ -2070,7 +2070,7 @@
         <Name>Effect</Name>
         <Title>Teleport</Title>
       </Category>
-      <Speed>0.0025</Speed>
+      <Speed>400</Speed>
     </Item0>
   </Animated>
 </GrhDatas>
