@@ -1160,10 +1160,19 @@ namespace DemoGame.Server
         /// <summary>
         /// Synchronizes this Character's SP to the specified <paramref name="user"/>.
         /// </summary>
-        /// <param name="user">The User to synchronize this Character's SP to.</param>
+        /// <param name="user">The <see cref="User"/> to synchronize to.</param>
         public void SynchronizeSPTo(User user)
         {
             _spSync.ForceSynchronizeTo(user);
+        }
+
+        /// <summary>
+        /// Synchronizes this Character's paperdoll information to the specified <paramref name="user"/>.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to synchronize to.</param>
+        public void SynchronizePaperdollTo(User user)
+        {
+            Equipped.SynchronizePaperdollTo(user);
         }
 
         /// <summary>
