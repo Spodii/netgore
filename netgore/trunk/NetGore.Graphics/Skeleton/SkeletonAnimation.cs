@@ -355,7 +355,7 @@ namespace NetGore.Graphics
                 {
                     foreach (var item2 in bodyLayer.BodyItems)
                     {
-                        if (item2.Source == item.Source)
+                        if (item2.Source == item.Source && item.Dest == item2.Dest)
                             item2.Draw(sb, position, _scale, effect);
                     }
                 }
