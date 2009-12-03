@@ -156,8 +156,15 @@ namespace DemoGame.Server
             foreach (var item in items)
             {
                 ItemEntity itemEntity = new ItemEntity(item.Value);
-                TrySetSlot(item.Key, itemEntity);
-                SendSlotUpdate(item.Key, itemEntity.GraphicIndex);
+                if (TrySetSlot(item.Key, itemEntity))
+                {
+                    SendSlotUpdate(item.Key, itemEntity.GraphicIndex);
+                    _paperDoll.NotifyAdded(item.Key, itemEntity);
+                }
+                else
+                {
+                    Debug.Fail("Uhm, the Character couldn't load their equipped item. What should we do...?");
+                }
             }
 
             // Add the listeners back
@@ -270,7 +277,11 @@ namespace DemoGame.Server
 
             internal void SynchronizeBodyLayersTo(User user)
             {
-                using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
+                var bodiesToSend = _bodies.Where(x => x != null);
+                if (bodiesToSend.Count() == 0)
+                    return;
+
+                using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, bodiesToSend))
                 {
                     user.Send(pw);
                 }
