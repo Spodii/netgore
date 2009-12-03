@@ -894,7 +894,7 @@ namespace DemoGame.SkeletonEditor
                 // Create the engine objects
                 _content = new ContentManager(GameScreen.Services, "Content");
                 _sb = new SpriteBatch(GameScreen.GraphicsDevice);
-                _camera = new Camera2D(GameData.ScreenSize);
+                _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
                 GrhInfo.Load(ContentPaths.Dev, _content);
 
                 // Create the skeleton-related objects
@@ -919,6 +919,11 @@ namespace DemoGame.SkeletonEditor
                 _watch.Start();
 
                 HandleSwitches(_switches);
+
+                // Zoom in and start animation
+                radioAnimate.Checked = true;
+                chkDrawSkel.Checked = false;
+                _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
             }
             catch (Exception ex)
             {
