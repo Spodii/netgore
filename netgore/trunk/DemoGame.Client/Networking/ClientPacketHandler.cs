@@ -447,6 +447,9 @@ namespace DemoGame.Client
             MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
 
             byte count = r.ReadByte();
+            if (count == 0)
+                return;
+
             string[] layers = new string[count];
             for (int i = 0; i < layers.Length; i++)
             {
