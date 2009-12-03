@@ -30,7 +30,7 @@ namespace DemoGame.SkeletonEditor
         readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
         readonly Stopwatch _watch = new Stopwatch();
 
-        Camera2D _camera = new Camera2D(GameData.ScreenSize);
+        Camera2D _camera;
         ContentManager _content;
         int _currentTime = 0;
 
@@ -844,12 +844,10 @@ namespace DemoGame.SkeletonEditor
                     _camera.Y += TranslateRate / _camera.Scale;
                     break;
                 case Keys.NumPad9:
-                    _camera.Zoom(_camera.Min + ((GameData.ScreenSize / 2) / _camera.Scale), GameData.ScreenSize,
-                                 _camera.Scale + ScaleRate);
+                    _camera.Zoom(_camera.Min + ((_camera.Size / 2) / _camera.Scale), _camera.Size, _camera.Scale + ScaleRate);
                     break;
                 case Keys.NumPad7:
-                    _camera.Zoom(_camera.Min + ((GameData.ScreenSize / 2) / _camera.Scale), GameData.ScreenSize,
-                                 _camera.Scale - ScaleRate);
+                    _camera.Zoom(_camera.Min + ((_camera.Size / 2) / _camera.Scale), _camera.Size, _camera.Scale - ScaleRate);
                     break;
                 case Keys.Delete:
                     if (chkCanAlter.Checked && SelectedNode != null)
@@ -892,9 +890,9 @@ namespace DemoGame.SkeletonEditor
             try
             {
                 // Create the engine objects
+                _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
                 _content = new ContentManager(GameScreen.Services, "Content");
                 _sb = new SpriteBatch(GameScreen.GraphicsDevice);
-                _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
                 GrhInfo.Load(ContentPaths.Dev, _content);
 
                 // Create the skeleton-related objects
