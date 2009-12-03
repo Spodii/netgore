@@ -32,6 +32,11 @@ namespace DemoGame.Server
             AddListeners();
         }
 
+        public void SynchronizePaperdollTo(User user)
+        {
+            _paperDoll.SynchronizeBodyLayersTo(user);
+        }
+
         /// <summary>
         /// Gets the Character that this UserEquipped belongs to.
         /// </summary>
@@ -260,6 +265,14 @@ namespace DemoGame.Server
                 using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
                 {
                     _character.Map.Send(pw);
+                }
+            }
+
+            internal void SynchronizeBodyLayersTo(User user)
+            {
+                using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
+                {
+                    user.Send(pw);
                 }
             }
         }

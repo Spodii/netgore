@@ -444,9 +444,13 @@ namespace DemoGame.Server
                     ServerPacket.CreateDynamicEntity(pw, dynamicEntity);
                     user.Send(pw);
 
+                    // Perform special synchronizations for Characters
                     Character character = dynamicEntity as Character;
                     if (character != null)
+                    {
                         character.SynchronizeSPTo(user);
+                        character.SynchronizePaperdollTo(user);
+                    }
                 }
 
                 // Now that the user know about the Map and every Entity on it, tell them which one is theirs
