@@ -121,6 +121,10 @@ namespace DemoGame.Server
             }
 
             _paperDoll.NotifyRemoved(slot);
+
+            // Make sure we dispose of items where the amount hit 0
+            if (item.Amount == 0)
+                item.Dispose();
         }
 
         /// <summary>
