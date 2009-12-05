@@ -202,7 +202,6 @@
     <Compile Include="Queries\Shop\ShopItem\SelectShopItemsQuery.cs" />
     <Compile Include="Queries\User\UserExistsQuery.cs" />
     <Compile Include="World\Map\Entities\ActiveStatusEffectID.cs" />
-    <Compile Include="World\Map\Entities\AINodeEntity.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\TestAI.cs" />
