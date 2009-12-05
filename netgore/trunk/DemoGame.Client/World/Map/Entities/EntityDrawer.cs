@@ -11,11 +11,6 @@ namespace DemoGame.Client
     /// </summary>
     public static class EntityDrawer
     {
-        ///<summary>
-        ///Color of AINodeEntity
-        /// </summary>
-        static readonly Color _aiNodeEntityColor = new Color(0, 0, 0, 0);
-
         /// <summary>
         /// Color for an arrow
         /// </summary>
@@ -55,15 +50,12 @@ namespace DemoGame.Client
         {
             WallEntityBase wallEntity;
             TeleportEntity teleportEntity;
-            AINodeEntity aiNodeEntity;
 
             // Check for a different entity type
             if ((wallEntity = entity as WallEntityBase) != null)
                 Draw(sb, wallEntity);
             else if ((teleportEntity = entity as TeleportEntity) != null)
                 Draw(sb, teleportEntity);
-            else if ((aiNodeEntity = entity as AINodeEntity) != null)
-                Draw(sb, aiNodeEntity);
             else
             {
                 // Draw a normal entity using the CollisionBox
@@ -88,11 +80,6 @@ namespace DemoGame.Client
             // Arrow
             Vector2 centerOffset = tele.CB.Size / 2;
             XNAArrow.Draw(sb, tele.Position + centerOffset, tele.Destination + centerOffset, _arrowColor);
-        }
-
-        public static void Draw(SpriteBatch sb, AINodeEntity aine)
-        {
-            DrawCB(sb, aine.CB, CollisionType.Full, _entityColor);
         }
 
         /// <summary>

@@ -136,7 +136,6 @@
     <Compile Include="StatTypeExtensions.cs" />
     <Compile Include="UserEquipped.cs" />
     <Compile Include="UserInfo.cs" />
-    <Compile Include="World\Map\Entities\AINodeEntity.cs" />
     <Compile Include="World\Map\Entities\Character.cs" />
     <Compile Include="World\Map\Entities\DamageTrapEntity.cs" />
     <Compile Include="World\Map\Entities\EntityDrawer.cs" />
