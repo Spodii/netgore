@@ -5,9 +5,9 @@ using NetGore;
 namespace DemoGame
 {
     /// <summary>
-    /// Extension methods for the <see cref="IMapEntityCollection"/> interface.
+    /// Extension methods for the <see cref="IEntitySpatial"/> interface.
     /// </summary>
-    public static class IMapEntityCollectionExtensions
+    public static class IEntitySpatialExtensions
     {
         /// <summary>
         /// Gets the first <see cref="IUsableEntity"/> that intersects a specified area.
@@ -18,9 +18,9 @@ namespace DemoGame
         /// <see cref="IUsableEntity"/>.</param>
         /// <returns>First <see cref="IUsableEntity"/> that intersects the specified area that the
         /// <paramref name="charEntity"/> is able to use, or null if none.</returns>
-        public static IUsableEntity GetUsable(this IMapEntityCollection c, Rectangle rect, CharacterEntity charEntity)
+        public static IUsableEntity GetUsable(this IEntitySpatial c, Rectangle rect, CharacterEntity charEntity)
         {
-            // NOTE: This doesn't really belong in here. Maybe make it an extension?
+            // NOTE: !! This doesn't really belong in here
             return c.GetEntities(rect).OfType<IUsableEntity>().Where(x => x.CanUse(charEntity)).FirstOrDefault();
         }
 
@@ -33,9 +33,9 @@ namespace DemoGame
         /// <see cref="IUsableEntity"/>.</param>
         /// <returns>First <see cref="IUsableEntity"/> that intersects the specified area that the
         /// <paramref name="charEntity"/> is able to use, or null if none.</returns>
-        public static IUsableEntity GetUsable(this IMapEntityCollection c, CollisionBox cb, CharacterEntity charEntity)
+        public static IUsableEntity GetUsable(this IEntitySpatial c, CollisionBox cb, CharacterEntity charEntity)
         {
-            // NOTE: This doesn't really belong in here. Maybe make it an extension?
+            // NOTE: !! This doesn't really belong in here
             return c.GetUsable(cb.ToRectangle(), charEntity);
         }
     }

@@ -7,16 +7,15 @@ using Microsoft.Xna.Framework;
 namespace NetGore
 {
     /// <summary>
-    /// Provides an optimized tracking grid that allows for faster look-up of Entities on a map based off of
-    /// a variety of parameters.
+    /// An implementation of <see cref="IEntitySpatial"/> that supports tracking entities that can move.
     /// </summary>
-    public class MapEntityGrid : IMapEntityCollection
+    public class DynamicEntitySpatial : IEntitySpatial
     {
         /// <summary>
         /// Size of each segment of the wall grid in pixels (smallest requires more
         /// memory but often less checks (to an extent))
         /// </summary>
-        protected const int EntityGridSize = 128;
+        const int _entityGridSize = 128;
 
         /// <summary>
         /// Two-dimensional grid of references to entities in that sector.
@@ -44,57 +43,14 @@ namespace NetGore
             get { return new Point(_entityGrid.GetLength(0), _entityGrid.GetLength(1)); }
         }
 
-        public void Add(IEnumerable<Entity> entities)
-        {
-            foreach (var entity in entities)
-            {
-                Add(entity);
-            }
-        }
-
-        /// <summary>
-        /// Adds an <see cref="Entity"/> to the grid.
-        /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to add to the grid.</param>
-        public void Add(Entity entity)
-        {
-            var minX = (int)entity.CB.Min.X / EntityGridSize;
-            var minY = (int)entity.CB.Min.Y / EntityGridSize;
-            var maxX = (int)entity.CB.Max.X / EntityGridSize;
-            var maxY = (int)entity.CB.Max.Y / EntityGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-
-            if (maxX >= GridSize.X)
-                maxX = GridSize.X - 1;
-
-            if (minY < 0)
-                minY = 0;
-
-            if (maxY >= GridSize.Y)
-                maxY = GridSize.Y - 1;
-
-            // Add to all the segments of the grid
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = minY; y <= maxY; y++)
-                {
-                    if (!_entityGrid[x, y].Contains(entity))
-                        _entityGrid[x, y].Add(entity);
-                }
-            }
-        }
-
         /// <summary>
         /// Builds a two-dimensional array of Lists to use as the grid of entities.
         /// </summary>
         /// <returns>A two-dimensional array of Lists to use as the grid of entities.</returns>
         static List<Entity>[,] BuildEntityGrid(float width, float height)
         {
-            var gridWidth = (int)Math.Ceiling(width / EntityGridSize);
-            var gridHeight = (int)Math.Ceiling(height / EntityGridSize);
+            var gridWidth = (int)Math.Ceiling(width / _entityGridSize);
+            var gridHeight = (int)Math.Ceiling(height / _entityGridSize);
 
             // Create the array
             var retGrid = new List<Entity>[gridWidth,gridHeight];
@@ -123,10 +79,10 @@ namespace NetGore
         /// <returns>An IEnumerable of all grid segments intersected by the specified <paramref name="rect"/>.</returns>
         protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(Rectangle rect)
         {
-            var minX = rect.X / EntityGridSize;
-            var minY = rect.Y / EntityGridSize;
-            var maxX = rect.Right / EntityGridSize;
-            var maxY = rect.Bottom / EntityGridSize;
+            var minX = rect.X / _entityGridSize;
+            var minY = rect.Y / _entityGridSize;
+            var maxX = rect.Right / _entityGridSize;
+            var maxY = rect.Bottom / _entityGridSize;
 
             // Keep in range of the grid
             if (minX < 0)
@@ -175,8 +131,8 @@ namespace NetGore
 
         static Point MapPositionToGridIndex(Vector2 position)
         {
-            var x = position.X / EntityGridSize;
-            var y = position.Y / EntityGridSize;
+            var x = position.X / _entityGridSize;
+            var y = position.Y / _entityGridSize;
             return new Point((int)x, (int)y);
         }
 
@@ -236,14 +192,6 @@ namespace NetGore
             return matches;
         }
 
-        public void Remove(Entity entity)
-        {
-            foreach (var gridSegment in _entityGrid)
-            {
-                gridSegment.Remove(entity);
-            }
-        }
-
         /// <summary>
         /// Sets the source map to a new size and clears out all existing entities in the grid.
         /// </summary>
@@ -255,20 +203,22 @@ namespace NetGore
 
         public void UpdateEntity(Entity entity, Vector2 oldPos)
         {
+            // NOTE: !! Does this really need to be public?
+
             // FUTURE: Can optimize this method quite a lot by only adding/removing from changed grid segments
 
             // Check that the entity changed grid segments by comparing the lowest grid segments
             // of the old position and current position
-            var minX = (int)oldPos.X / EntityGridSize;
-            var minY = (int)oldPos.Y / EntityGridSize;
-            var newMinX = (int)entity.CB.Min.X / EntityGridSize;
-            var newMinY = (int)entity.CB.Min.Y / EntityGridSize;
+            var minX = (int)oldPos.X / _entityGridSize;
+            var minY = (int)oldPos.Y / _entityGridSize;
+            var newMinX = (int)entity.CB.Min.X / _entityGridSize;
+            var newMinY = (int)entity.CB.Min.Y / _entityGridSize;
 
             if (minX == newMinX && minY == newMinY)
                 return; // No change in grid segment
 
-            var maxX = (int)(oldPos.X + entity.CB.Width) / EntityGridSize;
-            var maxY = (int)(oldPos.Y + entity.CB.Height) / EntityGridSize;
+            var maxX = (int)(oldPos.X + entity.CB.Width) / _entityGridSize;
+            var maxY = (int)(oldPos.Y + entity.CB.Height) / _entityGridSize;
 
             // Keep in range of the grid
             if (minX < 0)
@@ -296,7 +246,66 @@ namespace NetGore
             Add(entity);
         }
 
-        #region IMapEntityCollection Members
+        #region IEntitySpatial Members
+
+        /// <summary>
+        /// Adds multiple entities to the spatial collection.
+        /// </summary>
+        /// <param name="entities">The entities to add.</param>
+        public void Add(IEnumerable<Entity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                Add(entity);
+            }
+        }
+
+        /// <summary>
+        /// Adds a single <see cref="Entity"/> to the spatial collection.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to add.</param>
+        public void Add(Entity entity)
+        {
+            var minX = (int)entity.CB.Min.X / _entityGridSize;
+            var minY = (int)entity.CB.Min.Y / _entityGridSize;
+            var maxX = (int)entity.CB.Max.X / _entityGridSize;
+            var maxY = (int)entity.CB.Max.Y / _entityGridSize;
+
+            // Keep in range of the grid
+            if (minX < 0)
+                minX = 0;
+
+            if (maxX >= GridSize.X)
+                maxX = GridSize.X - 1;
+
+            if (minY < 0)
+                minY = 0;
+
+            if (maxY >= GridSize.Y)
+                maxY = GridSize.Y - 1;
+
+            // Add to all the segments of the grid
+            for (var x = minX; x <= maxX; x++)
+            {
+                for (var y = minY; y <= maxY; y++)
+                {
+                    if (!_entityGrid[x, y].Contains(entity))
+                        _entityGrid[x, y].Add(entity);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes an <see cref="Entity"/> from the spatial collection.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to remove.</param>
+        public void Remove(Entity entity)
+        {
+            foreach (var gridSegment in _entityGrid)
+            {
+                gridSegment.Remove(entity);
+            }
+        }
 
         /// <summary>
         /// Gets the first <see cref="Entity"/> found in the given region.

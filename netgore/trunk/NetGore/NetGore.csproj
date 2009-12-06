@@ -210,10 +210,10 @@
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
-    <Compile Include="World\Map\IMapEntityCollection.cs" />
-    <Compile Include="World\Map\IMapEntityCollectionExtensions.cs" />
+    <Compile Include="World\Map\EntitySpatial\IEntitySpatial.cs" />
+    <Compile Include="World\Map\EntitySpatial\IEntitySpatialExtensions.cs" />
     <Compile Include="World\Map\MapEntityAttribute.cs" />
-    <Compile Include="World\Map\MapEntityGrid.cs" />
+    <Compile Include="World\Map\EntitySpatial\DynamicEntitySpatial.cs" />
     <Compile Include="Audio\MusicID.cs" />
     <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
