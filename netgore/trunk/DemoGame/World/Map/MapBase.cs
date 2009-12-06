@@ -1197,7 +1197,7 @@ namespace DemoGame
 
             // Get the entities we have a rectangular collision with
 
-            // It is absolutely VITAL that we have the ToArray() at the end (or to any other type of collection). Even
+            // It is absolutely VITAL that we have the ToImmutable() at the end. Even
             // though it may look like it is useless since we just enumerate over it immediately after, this will
             // ensure that any logic in CollideInto and CollideFrom in the Entity updating that moves the Entity will
             // not break the enumeration by changing the underlying collection.
