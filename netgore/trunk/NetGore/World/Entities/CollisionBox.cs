@@ -52,6 +52,7 @@ namespace NetGore
             // Make sure min is actually min while max is actually max
             if (min.X > max.X)
                 Swap(ref min.X, ref max.X);
+
             if (min.Y > max.Y)
                 Swap(ref min.Y, ref max.Y);
 

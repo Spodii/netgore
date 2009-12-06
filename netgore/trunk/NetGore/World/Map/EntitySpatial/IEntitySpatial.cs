@@ -1,15 +1,35 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
     /// <summary>
-    /// Interface for an object that supports searching entities on a map.
+    /// Interface for a collection that keeps track and allows for queries on the spatial components of an
+    /// <see cref="Entity"/>.
     /// </summary>
-    public interface IMapEntityCollection
+    public interface IEntitySpatial
     {
+        /// <summary>
+        /// Adds multiple entities to the spatial collection.
+        /// </summary>
+        /// <param name="entities">The entities to add.</param>
+        void Add(IEnumerable<Entity> entities);
+
+        /// <summary>
+        /// Adds a single <see cref="Entity"/> to the spatial collection.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to add.</param>
+        void Add(Entity entity);
+
+        /// <summary>
+        /// Removes an <see cref="Entity"/> from the spatial collection.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to remove.</param>
+        void Remove(Entity entity);
+
         /// <summary>
         /// Gets if the specified area or location contains any entities.
         /// </summary>

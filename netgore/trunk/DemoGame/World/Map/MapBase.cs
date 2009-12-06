@@ -62,7 +62,7 @@ namespace DemoGame
         /// </summary>
         readonly List<Entity> _entities = new List<Entity>();
 
-        readonly MapEntityGrid _entityGrid = new MapEntityGrid();
+        readonly DynamicEntitySpatial _dynamicEntitySpatial = new DynamicEntitySpatial();
 
         /// <summary>
         /// Interface used to get the time
@@ -129,9 +129,9 @@ namespace DemoGame
             get { return _dynamicEntities; }
         }
 
-        public IMapEntityCollection EntityCollection
+        public IEntitySpatial DynamicEntitySpatial
         {
-            get { return _entityGrid; }
+            get { return _dynamicEntitySpatial; }
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace DemoGame
                 _updateableEntities.Add((IUpdateableEntity)entity);
 
             // Also add the entity to the grid
-            _entityGrid.Add(entity);
+            _dynamicEntitySpatial.Add(entity);
 
             // Add the event hooks
             AddEntityEventHooks(entity);
@@ -279,7 +279,7 @@ namespace DemoGame
         /// <param name="oldPos">Position the entity was at before moving</param>
         void Entity_OnMove(Entity entity, Vector2 oldPos)
         {
-            _entityGrid.UpdateEntity(entity, oldPos);
+            _dynamicEntitySpatial.UpdateEntity(entity, oldPos);
             ForceEntityInMapBoundaries(entity);
         }
 
@@ -553,7 +553,7 @@ namespace DemoGame
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
         public bool IsValidPlacementPosition(CollisionBox cb)
         {
-            return IsInMapBoundaries(cb) && !_entityGrid.ContainsEntities(cb);
+            return IsInMapBoundaries(cb) && !_dynamicEntitySpatial.ContainsEntities(cb);
         }
 
         /// <summary>
@@ -565,7 +565,7 @@ namespace DemoGame
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
         public bool IsValidPlacementPosition(Rectangle rect)
         {
-            return IsInMapBoundaries(rect) && !_entityGrid.ContainsEntities<WallEntity>(rect);
+            return IsInMapBoundaries(rect) && !_dynamicEntitySpatial.ContainsEntities<WallEntity>(rect);
         }
 
         public bool IsValidPlacementPosition(Vector2 position, Vector2 size)
@@ -603,7 +603,7 @@ namespace DemoGame
                                                 (int)cb.Min.Y - _findValidPlacementPadding,
                                                 (int)cb.Width + (_findValidPlacementPadding * 2),
                                                 (int)cb.Height + (_findValidPlacementPadding * 2));
-            var nearbyWalls = _entityGrid.GetEntities<WallEntityBase>(nearbyWallsRect);
+            var nearbyWalls = _dynamicEntitySpatial.GetEntities<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
             var cbSize = cb.Size;
@@ -731,7 +731,7 @@ namespace DemoGame
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
 
             // Build the entity grid
-            _entityGrid.SetMapSize(Size);
+            _dynamicEntitySpatial.SetMapSize(Size);
         }
 
         /// <summary>
@@ -793,7 +793,7 @@ namespace DemoGame
             }
 
             // Remove the entity from the grid
-            _entityGrid.Remove(entity);
+            _dynamicEntitySpatial.Remove(entity);
 
             // Allow for additional processing
             EntityRemoved(entity);
@@ -999,8 +999,8 @@ namespace DemoGame
             _height = newSize.Y;
 
             // Update the grid's size
-            _entityGrid.SetMapSize(Size);
-            _entityGrid.Add(Entities);
+            _dynamicEntitySpatial.SetMapSize(Size);
+            _dynamicEntitySpatial.Add(Entities);
         }
 
         /// <summary>
@@ -1106,7 +1106,7 @@ namespace DemoGame
         public virtual void Update(int deltaTime)
         {
             // Check for a valid map
-            if (_entityGrid == null)
+            if (_dynamicEntitySpatial == null)
                 return;
 
             // Update the Entities
@@ -1202,7 +1202,7 @@ namespace DemoGame
             // ensure that any logic in CollideInto and CollideFrom in the Entity updating that moves the Entity will
             // not break the enumeration by changing the underlying collection.
             var rectCollisionEntities =
-                _entityGrid.GetEntities(entity.CB.ToRectangle(), x => x.CollisionType != CollisionType.None).ToImmutable();
+                _dynamicEntitySpatial.GetEntities(entity.CB.ToRectangle(), x => x.CollisionType != CollisionType.None).ToImmutable();
 
             // Do real collision detection on the entities, and handle it if the collision test passes
             foreach (var collideEntity in rectCollisionEntities)
