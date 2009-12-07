@@ -14,6 +14,15 @@ namespace DemoGame
         MapIndex _destinationMap;
 
         /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
+        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
+        /// </summary>
+        public override bool CollidesAgainstWalls
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
         /// </summary>
         protected TeleportEntityBase()
