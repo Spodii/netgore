@@ -68,6 +68,11 @@ namespace NetGore
             return c.GetEntities(cb.ToRectangle());
         }
 
+        public static IEnumerable<Entity> GetEntities(this IEntitySpatial c, Entity entity)
+        {
+            return c.GetEntities(entity.CB);
+        }
+
         /// <summary>
         /// Gets the Entities found intersecting the given region.
         /// </summary>
@@ -82,6 +87,12 @@ namespace NetGore
             return c.GetEntities(cb.ToRectangle(), condition);
         }
 
+        public static IEnumerable<T> GetEntities<T>(this IEntitySpatial c, Entity entity, Predicate<T> condition)
+            where T : Entity
+        {
+            return c.GetEntities(entity.CB, condition);
+        }
+
         /// <summary>
         /// Gets the Entities found intersecting the given region.
         /// </summary>
@@ -92,6 +103,11 @@ namespace NetGore
         public static IEnumerable<T> GetEntities<T>(this IEntitySpatial c, CollisionBox cb) where T : Entity
         {
             return c.GetEntities<T>(cb.ToRectangle());
+        }
+
+        public static IEnumerable<T> GetEntities<T>(this IEntitySpatial c, Entity entity) where T : Entity
+        {
+            return c.GetEntities<T>(entity.CB);
         }
     }
 }

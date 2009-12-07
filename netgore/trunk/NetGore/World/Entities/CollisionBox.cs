@@ -244,8 +244,10 @@ namespace NetGore
                     return MTDTriangleTopLeft(source, target);
                 case CollisionType.TriangleTopRight:
                     return MTDTriangleTopRight(source, target);
+                case CollisionType.None:
+                    return Vector2.Zero;
                 default:
-                    return MTDFull(source, target);
+                    throw new ArgumentOutOfRangeException("ct", string.Format("Unknown CollisionType `{0}`.", ct)); 
             }
         }
 

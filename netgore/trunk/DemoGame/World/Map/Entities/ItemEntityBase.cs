@@ -85,9 +85,6 @@ namespace DemoGame
         /// <param name="displacement">Displacement between the two Entities</param>
         public override void CollideInto(Entity collideWith, Vector2 displacement)
         {
-            // Collision against a wall
-            if (collideWith is WallEntityBase)
-                WallEntityBase.HandleCollideInto(this, displacement);
         }
 
         /// <summary>
