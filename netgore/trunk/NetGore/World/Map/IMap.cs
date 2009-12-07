@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -37,7 +38,13 @@ namespace NetGore
         /// <param name="entity">Entity to check against other Entities. If the CollisionType is
         /// CollisionType.None, or if null, this will always return 0 and no collision detection
         /// will take place.</param>
-        /// <returns>Number of collisions the <paramref name="entity"/> made with other entities</returns>
-        int CheckCollisions(Entity entity);
+        void CheckCollisions(Entity entity);
+
+        /// <summary>
+        /// Gets the <see cref="IEntitySpatial"/> for the given type of <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="type">The type of <see cref="Entity"/>.</param>
+        /// <returns>The <see cref="IEntitySpatial"/> that contains the <paramref name="type"/>.</returns>
+        IEntitySpatial GetSpatial(Type type);
     }
 }

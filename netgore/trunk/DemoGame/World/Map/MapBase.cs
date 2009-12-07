@@ -129,11 +129,6 @@ namespace DemoGame
             get { return _dynamicEntities; }
         }
 
-        public IEntitySpatial DynamicEntitySpatial
-        {
-            get { return _dynamicEntitySpatial; }
-        }
-
         /// <summary>
         /// Gets the index of the map.
         /// </summary>
@@ -215,15 +210,6 @@ namespace DemoGame
             AddEntityFinish(entity);
         }
 
-        void AddEntityEventHooks(Entity entity)
-        {
-            // Listen for when the entity is disposed so we can remove it
-            entity.OnDispose += Entity_OnDispose;
-
-            // Listen for movement from the entity so we can update their position in the grid
-            entity.OnMove += Entity_OnMove;
-        }
-
         void AddEntityFinish(Entity entity)
         {
             AddEntityToEntityList(entity);
@@ -246,10 +232,10 @@ namespace DemoGame
                 _updateableEntities.Add((IUpdateableEntity)entity);
 
             // Also add the entity to the grid
-            _dynamicEntitySpatial.Add(entity);
+            GetSpatial(entity.GetType()).Add(entity);
 
             // Add the event hooks
-            AddEntityEventHooks(entity);
+            entity.OnDispose += Entity_OnDispose;
 
             // Allow for additional processing
             EntityAdded(entity);
@@ -268,19 +254,6 @@ namespace DemoGame
         void Entity_OnDispose(Entity entity)
         {
             RemoveEntity(entity);
-        }
-
-        /// <summary>
-        /// Handles when an entity belong to this map moves. Only needed for entities that can move,
-        /// but no harm in being safe and adding to every entity. Failure to assign to an entity that
-        /// moves will result in glitches in the collision detection.
-        /// </summary>
-        /// <param name="entity">Entity that moved</param>
-        /// <param name="oldPos">Position the entity was at before moving</param>
-        void Entity_OnMove(Entity entity, Vector2 oldPos)
-        {
-            _dynamicEntitySpatial.UpdateEntity(entity, oldPos);
-            ForceEntityInMapBoundaries(entity);
         }
 
         /// <summary>
@@ -553,7 +526,7 @@ namespace DemoGame
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
         public bool IsValidPlacementPosition(CollisionBox cb)
         {
-            return IsInMapBoundaries(cb) && !_dynamicEntitySpatial.ContainsEntities(cb);
+            return IsValidPlacementPosition(cb.ToRectangle());
         }
 
         /// <summary>
@@ -565,7 +538,7 @@ namespace DemoGame
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
         public bool IsValidPlacementPosition(Rectangle rect)
         {
-            return IsInMapBoundaries(rect) && !_dynamicEntitySpatial.ContainsEntities<WallEntity>(rect);
+            return IsInMapBoundaries(rect) && !this.GetSpatial<WallEntityBase>().ContainsEntities<WallEntity>(rect);
         }
 
         public bool IsValidPlacementPosition(Vector2 position, Vector2 size)
@@ -603,7 +576,7 @@ namespace DemoGame
                                                 (int)cb.Min.Y - _findValidPlacementPadding,
                                                 (int)cb.Width + (_findValidPlacementPadding * 2),
                                                 (int)cb.Height + (_findValidPlacementPadding * 2));
-            var nearbyWalls = _dynamicEntitySpatial.GetEntities<WallEntityBase>(nearbyWallsRect);
+            var nearbyWalls = this.GetSpatial<WallEntityBase>().GetEntities<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
             var cbSize = cb.Size;
@@ -730,7 +703,7 @@ namespace DemoGame
             _width = nodeReader.ReadFloat(_headerNodeWidthKey);
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
 
-            // Build the entity grid
+            // Build the entity spatial collections
             _dynamicEntitySpatial.SetMapSize(Size);
         }
 
@@ -770,7 +743,7 @@ namespace DemoGame
                 throw new ArgumentNullException("entity");
 
             // Remove the listeners
-            RemoveEntityEventHooks(entity);
+            entity.OnDispose -= Entity_OnDispose;
 
             // Remove the entity from the entity list
             if (!_entities.Remove(entity))
@@ -793,16 +766,10 @@ namespace DemoGame
             }
 
             // Remove the entity from the grid
-            _dynamicEntitySpatial.Remove(entity);
+            GetSpatial(entity.GetType()).Remove(entity);
 
             // Allow for additional processing
             EntityRemoved(entity);
-        }
-
-        void RemoveEntityEventHooks(Entity entity)
-        {
-            entity.OnDispose -= Entity_OnDispose;
-            entity.OnMove -= Entity_OnMove;
         }
 
         /// <summary>
@@ -998,9 +965,8 @@ namespace DemoGame
             _width = newSize.X;
             _height = newSize.Y;
 
-            // Update the grid's size
+            // Update the spatial's size
             _dynamicEntitySpatial.SetMapSize(Size);
-            _dynamicEntitySpatial.Add(Entities);
         }
 
         /// <summary>
@@ -1105,10 +1071,6 @@ namespace DemoGame
         /// </summary>
         public virtual void Update(int deltaTime)
         {
-            // Check for a valid map
-            if (_dynamicEntitySpatial == null)
-                return;
-
             // Update the Entities
             // We use a for loop because entities might be added/removed when they update
             IUpdateableEntity current;
@@ -1174,52 +1136,100 @@ namespace DemoGame
         /// <param name="entity">Entity to check against other Entities. If the CollisionType is
         /// CollisionType.None, or if <paramref name="entity"/> is null, this will always return 0 and no
         /// collision detection will take place.</param>
-        /// <returns>
-        /// Number of collisions the <paramref name="entity"/> made with other entities.
-        /// </returns>
-        public int CheckCollisions(Entity entity)
+        public void CheckCollisions(Entity entity)
         {
             // Check for a null entity
             if (entity == null)
             {
-                const string errmsg = "Parameter entity is null.";
+                const string errmsg = "Parameter `entity` is null.";
                 Debug.Fail(errmsg);
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                return 0;
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                return;
             }
 
             // Check that this entity even supports collision detection
             if (entity.CollisionType == CollisionType.None)
-                return 0;
+                return;
 
-            int collisions = 0;
+            CheckCollisionsAgainstWalls(entity);
+            CheckCollisionAgainstEntities(entity);
+        }
+
+        void CheckCollisionAgainstEntities(Entity entity)
+        {
+            // TODO: !! Find some way to optimize this to only return interesting entities
 
             // Get the entities we have a rectangular collision with
+            var spatial = this.GetSpatial<Entity>();
+            var collisionSources = spatial.GetEntities<Entity>(entity, x => !(x is WallEntityBase));
 
-            // It is absolutely VITAL that we have the ToImmutable() at the end. Even
-            // though it may look like it is useless since we just enumerate over it immediately after, this will
-            // ensure that any logic in CollideInto and CollideFrom in the Entity updating that moves the Entity will
-            // not break the enumeration by changing the underlying collection.
-            var rectCollisionEntities =
-                _dynamicEntitySpatial.GetEntities(entity.CB.ToRectangle(), x => x.CollisionType != CollisionType.None).ToImmutable();
+            foreach (var other in collisionSources)
+            {
+                var displacement = CollisionBox.MTD(entity.CB, other.CB, other.CollisionType);
+                if (displacement != Vector2.Zero)
+                {
+                    entity.CollideInto(other, displacement);
+                    other.CollideFrom(entity, displacement);
+                }
+            }
+        }
+
+        void CheckCollisionsAgainstWalls(Entity entity)
+        {
+            // TODO: !! Add something like entity.ObeysSpatialRules
+
+            // Get the entities we have a rectangular collision with
+            var spatial = this.GetSpatial<WallEntityBase>();
+            var collisionSources = spatial.GetEntities<WallEntityBase>(entity);
 
             // Do real collision detection on the entities, and handle it if the collision test passes
-            foreach (var collideEntity in rectCollisionEntities)
+            foreach (var wall in collisionSources)
             {
                 // Get the displacement vector if the two entities collided
-                var displacement = CollisionBox.MTD(entity.CB, collideEntity.CB, collideEntity.CollisionType);
+                var displacement = CollisionBox.MTD(entity.CB, wall.CB, wall.CollisionType);
 
                 // If there is a displacement value, forward it to the collision notifiers
                 if (displacement != Vector2.Zero)
                 {
-                    entity.CollideInto(collideEntity, displacement);
-                    collideEntity.CollideFrom(entity, displacement);
-                    collisions++;
+                    WallEntityBase.HandleCollideInto(entity, displacement);
+
                 }
             }
 
-            return collisions;
+            // TODO: !! Ensure position is valid
+            /*
+            // Ensure the position we found is actually valid
+            // Its not uncommon for this to return false when teleporting an Entity inside of a bunch of walls or
+            // something, resulting in the displaced position being inside another Wall
+            Vector2 closestValid;
+            bool validPositionFound;
+            if (!IsValidPlacementPosition(entity.CB, out closestValid, out validPositionFound))
+            {
+                if (!validPositionFound)
+                {
+                    // TODO: What do we do when we can't find a valid position at all!?
+                    Debug.Fail("What do we do when we can't find a valid position at all!?");
+                    return;
+                }
+
+                entity.Teleport(closestValid);
+
+                Debug.Assert(!this.GetSpatial<WallEntityBase>().ContainsEntities<WallEntityBase>(entity.CB));
+            }
+            */
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEntitySpatial"/> for the given type of <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="type">The type of <see cref="Entity"/>.</param>
+        /// <returns>
+        /// The <see cref="IEntitySpatial"/> that contains the <paramref name="type"/>.
+        /// </returns>
+        public IEntitySpatial GetSpatial(Type type)
+        {
+            return _dynamicEntitySpatial;
         }
 
         /// <summary>

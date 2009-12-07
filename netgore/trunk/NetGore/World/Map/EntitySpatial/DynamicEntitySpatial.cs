@@ -22,6 +22,8 @@ namespace NetGore
         /// </summary>
         List<Entity>[,] _entityGrid;
 
+        Vector2 _mapSize;
+
         protected IEnumerable<Entity> this[int x, int y]
         {
             get
@@ -38,9 +40,40 @@ namespace NetGore
             get { return this[gridIndex.X, gridIndex.Y]; }
         }
 
-        public Point GridSize
+        protected Point GridSize
         {
             get { return new Point(_entityGrid.GetLength(0), _entityGrid.GetLength(1)); }
+        }
+
+        void AddToGrid(Entity entity)
+        {
+            var minX = (int)entity.CB.Min.X / _entityGridSize;
+            var minY = (int)entity.CB.Min.Y / _entityGridSize;
+            var maxX = (int)entity.CB.Max.X / _entityGridSize;
+            var maxY = (int)entity.CB.Max.Y / _entityGridSize;
+
+            // Keep in range of the grid
+            if (minX < 0)
+                minX = 0;
+
+            if (maxX >= GridSize.X)
+                maxX = GridSize.X - 1;
+
+            if (minY < 0)
+                minY = 0;
+
+            if (maxY >= GridSize.Y)
+                maxY = GridSize.Y - 1;
+
+            // Add to all the segments of the grid
+            for (var x = minX; x <= maxX; x++)
+            {
+                for (var y = minY; y <= maxY; y++)
+                {
+                    if (!_entityGrid[x, y].Contains(entity))
+                        _entityGrid[x, y].Add(entity);
+                }
+            }
         }
 
         /// <summary>
@@ -70,6 +103,48 @@ namespace NetGore
         static bool EmptyPred<T>(T e)
         {
             return true;
+        }
+
+        void Entity_OnMove(Entity entity, Vector2 oldPos)
+        {
+            UpdateEntity(entity, oldPos);
+            ForceEntityInMapBoundaries(entity);
+        }
+
+        /// <summary>
+        /// Checks if an Entity is in the map's boundaries and, if it is not, moves the Entity into the map's boundaries.
+        /// </summary>
+        /// <param name="entity">Entity to check.</param>
+        void ForceEntityInMapBoundaries(Entity entity)
+        {
+            var min = entity.CB.Min;
+            var max = entity.CB.Max;
+
+            if (min.X < 0)
+                min.X = 0;
+            if (min.Y < 0)
+                min.Y = 0;
+            if (max.X >= _mapSize.X)
+                min.X = _mapSize.X - entity.CB.Width;
+            if (max.Y >= _mapSize.Y)
+                min.Y = _mapSize.Y - entity.CB.Height;
+
+            if (min != entity.CB.Min)
+                entity.Teleport(min);
+        }
+
+        IEnumerable<Entity> GetAllEntities()
+        {
+            if (_entityGrid == null)
+                return Enumerable.Empty<Entity>();
+
+            List<Entity> ret = new List<Entity>();
+            foreach (var segment in _entityGrid)
+            {
+                ret.AddRange(segment);
+            }
+
+            return ret.Distinct();
         }
 
         /// <summary>
@@ -198,7 +273,16 @@ namespace NetGore
         /// <param name="size">The new size of the source map.</param>
         public void SetMapSize(Vector2 size)
         {
+            var entities = GetAllEntities();
+
+            _mapSize = size;
             _entityGrid = BuildEntityGrid(size.X, size.Y);
+
+            // Re-add the items to the grid
+            foreach (var entity in entities)
+            {
+                AddToGrid(entity);
+            }
         }
 
         public void UpdateEntity(Entity entity, Vector2 oldPos)
@@ -243,7 +327,7 @@ namespace NetGore
             }
 
             // Re-add the entity to the grid
-            Add(entity);
+            AddToGrid(entity);
         }
 
         #region IEntitySpatial Members
@@ -266,33 +350,8 @@ namespace NetGore
         /// <param name="entity">The <see cref="Entity"/> to add.</param>
         public void Add(Entity entity)
         {
-            var minX = (int)entity.CB.Min.X / _entityGridSize;
-            var minY = (int)entity.CB.Min.Y / _entityGridSize;
-            var maxX = (int)entity.CB.Max.X / _entityGridSize;
-            var maxY = (int)entity.CB.Max.Y / _entityGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-
-            if (maxX >= GridSize.X)
-                maxX = GridSize.X - 1;
-
-            if (minY < 0)
-                minY = 0;
-
-            if (maxY >= GridSize.Y)
-                maxY = GridSize.Y - 1;
-
-            // Add to all the segments of the grid
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = minY; y <= maxY; y++)
-                {
-                    if (!_entityGrid[x, y].Contains(entity))
-                        _entityGrid[x, y].Add(entity);
-                }
-            }
+            AddToGrid(entity);
+            entity.OnMove += Entity_OnMove;
         }
 
         /// <summary>
@@ -301,6 +360,8 @@ namespace NetGore
         /// <param name="entity">The <see cref="Entity"/> to remove.</param>
         public void Remove(Entity entity)
         {
+            entity.OnMove -= Entity_OnMove;
+
             foreach (var gridSegment in _entityGrid)
             {
                 gridSegment.Remove(entity);
