@@ -492,5 +492,8 @@
     <BackgroundImages>
       <Count>0</Count>
     </BackgroundImages>
+	<ParticleEffects>
+	  <Count>0</Count>
+	</ParticleEffects>
   </Misc>
 </Map>
