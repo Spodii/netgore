@@ -68,7 +68,7 @@ namespace DemoGame
         public static readonly StringRules CharacterName = new StringRules(3, 15, CharType.Alpha);
 
         /// <summary>
-        /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2
+        /// Size of the screen display.
         /// </summary>
         public static Vector2 ScreenSize = new Vector2(1024, 768);
 
