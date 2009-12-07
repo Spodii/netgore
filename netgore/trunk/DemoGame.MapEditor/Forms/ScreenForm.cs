@@ -63,19 +63,10 @@ namespace DemoGame.MapEditor
 
         readonly AddGrhCursor _addGrhCursor = new AddGrhCursor();
         readonly AddWallCursor _addWallCursor = new AddWallCursor();
-
-        /// <summary>
-        /// Screen camera
-        /// </summary>
-        readonly Camera2D _camera = new Camera2D(GameData.ScreenSize);
-
+        readonly Camera2D _camera;
         readonly EntityCursor _entityCursor = new EntityCursor();
         readonly GrhCursor _grhCursor = new GrhCursor();
-
-        /// <summary>
-        /// Draws the grid.
-        /// </summary>
-        readonly ScreenGrid _grid = new ScreenGrid(GameData.ScreenSize);
+        readonly ScreenGrid _grid;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
 
@@ -172,7 +163,10 @@ namespace DemoGame.MapEditor
             _switches = switches;
 
             InitializeComponent();
+
             GameScreen.ScreenForm = this;
+            _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
+            _grid = new ScreenGrid(_camera.Size);
 
             // Set up some of the OnChangeMap events for objects that need to reference the Map
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
@@ -829,7 +823,7 @@ namespace DemoGame.MapEditor
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
-            treeGrhs.Initialize(_content, GameData.ScreenSize, CreateWallEntity, _mapGrhWalls);
+            treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
 
             // Start the stopwatch for the elapsed time checking
