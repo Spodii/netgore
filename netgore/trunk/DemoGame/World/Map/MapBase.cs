@@ -1177,7 +1177,8 @@ namespace DemoGame
 
         void CheckCollisionsAgainstWalls(Entity entity)
         {
-            // TODO: !! Add something like entity.ObeysSpatialRules
+            if (!entity.CollidesAgainstWalls)
+                return;
 
             // Get the entities we have a rectangular collision with
             var spatial = this.GetSpatial<WallEntityBase>();

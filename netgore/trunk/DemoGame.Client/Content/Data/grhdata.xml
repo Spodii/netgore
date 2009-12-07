@@ -1247,7 +1247,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/ArmLower</Name>
-        <Source>0,0,5,21</Source>
+        <Source>0,0,6,20</Source>
       </Texture>
     </Item77>
     <Item78>
@@ -1263,7 +1263,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/ArmUpper</Name>
-        <Source>0,0,6,10</Source>
+        <Source>0,0,6,12</Source>
       </Texture>
     </Item78>
     <Item79>
@@ -1375,7 +1375,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/ArmLower</Name>
-        <Source>0,0,5,21</Source>
+        <Source>0,0,6,20</Source>
       </Texture>
     </Item85>
     <Item86>
@@ -1391,7 +1391,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/ArmUpper</Name>
-        <Source>0,0,6,10</Source>
+        <Source>0,0,6,12</Source>
       </Texture>
     </Item86>
     <Item87>
@@ -1407,7 +1407,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/Head</Name>
-        <Source>0,0,19,19</Source>
+        <Source>0,0,19,20</Source>
       </Texture>
     </Item87>
     <Item88>
