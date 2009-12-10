@@ -185,9 +185,6 @@
     <Compile Include="World\Entities\AI\AIAttribute.cs" />
     <Compile Include="World\Entities\AI\AIFactoryBase.cs" />
     <Compile Include="World\Entities\AI\AIID.cs" />
-    <Compile Include="World\Entities\AI\AINeuralNetwork.cs" />
-    <Compile Include="World\Entities\AI\AINeuron.cs" />
-    <Compile Include="World\Entities\AI\AINeuronLayer.cs" />
     <Compile Include="World\Entities\AI\IAI.cs" />
     <Compile Include="World\Alignment.cs" />
     <Compile Include="World\AlignmentHelper.cs" />
