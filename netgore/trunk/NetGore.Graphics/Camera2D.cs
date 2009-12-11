@@ -335,17 +335,23 @@ namespace NetGore.Graphics
         void UpdateMatrix()
         {
             // Force the camera to stay in the map
-            if (Map != null && KeepInMap)
+            if (KeepInMap)
             {
+                // Check the min values (can do this with or without a map)
                 if (_min.X < 0)
                     _min.X = 0;
-                else if (_min.X + _size.X > Map.Width)
-                    _min.X = Map.Width - _size.X;
-
                 if (_min.Y < 0)
                     _min.Y = 0;
-                else if (_min.Y + _size.Y > Map.Height)
-                    _min.Y = Map.Height - _size.Y;
+
+                // Check the max values (requires the Map to be set)
+                if (Map != null)
+                {
+                    if (_min.X + _size.X > Map.Width)
+                        _min.X = Map.Width - _size.X;
+
+                    if (_min.Y + _size.Y > Map.Height)
+                        _min.Y = Map.Height - _size.Y;
+                }
             }
 
             // Update the matrix
