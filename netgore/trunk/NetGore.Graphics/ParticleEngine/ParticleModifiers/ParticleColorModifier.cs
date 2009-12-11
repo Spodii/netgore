@@ -10,7 +10,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Modifies the color of <see cref="Particle"/>s throughout their life.
     /// </summary>
-    public class ColorModifier : ParticleModifier
+    public class ParticleColorModifier : ParticleModifier
     {
         const byte _aOffset = 3;
         const byte _bOffset = 2;
@@ -27,9 +27,9 @@ namespace NetGore.Graphics.ParticleEngine
         byte _modifyFlags = byte.MaxValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorModifier"/> class.
+        /// Initializes a new instance of the <see cref="ParticleColorModifier"/> class.
         /// </summary>
-        public ColorModifier() : base(true, true)
+        public ParticleColorModifier() : base(true, true)
         {
             ReleaseColor = Color.White;
             ReleaseColor = Color.White;

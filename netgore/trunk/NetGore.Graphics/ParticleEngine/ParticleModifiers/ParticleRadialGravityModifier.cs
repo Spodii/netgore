@@ -9,7 +9,7 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
     /// <summary>
     /// A modifier that pulls <see cref="Particle"/>s in range towards it like a gravity well.
     /// </summary>
-    public class RadialGravityModifier : ParticleModifier
+    public class ParticleRadialGravityModifier : ParticleModifier
     {
         const string _categoryName = "Radial Gravity Modifier";
         const float _defaultRadius = 250f;
@@ -24,9 +24,9 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
         float _strength;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
+        /// Initializes a new instance of the <see cref="ParticleRadialGravityModifier"/> class.
         /// </summary>
-        public RadialGravityModifier() : base(false, true)
+        public ParticleRadialGravityModifier() : base(false, true)
         {
             Strength = _defaultStrength;
             Radius = _defaultRadius;
