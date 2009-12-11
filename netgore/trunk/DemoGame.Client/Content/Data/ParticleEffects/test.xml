@@ -39,7 +39,7 @@
     <Modifiers>
       <Count>1</Count>
       <Item0>
-        <ModifierType>ColorModifier</ModifierType>
+        <ModifierType>ParticleColorModifier</ModifierType>
         <CustomValues>
           <ModifyRed>True</ModifyRed>
           <ModifyGreen>True</ModifyGreen>
