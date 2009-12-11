@@ -35,7 +35,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override Type CreateCollectionItemType()
         {
-            return typeof(LinearGravityModifier);
+            return typeof(ParticleLinearGravityModifier);
         }
 
         /// <summary>

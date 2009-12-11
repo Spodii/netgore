@@ -83,6 +83,8 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="typeName">Name of the Type to get.</param>
         /// <returns>The Type with the specified name.</returns>
+        /// <exception cref="KeyNotFoundException">No Type with the given <paramref name="typeName"/> exists
+        /// in this <see cref="TypeFactory"/>.</exception>
         public Type this[string typeName]
         {
             get { return _nameToType[typeName]; }
@@ -93,6 +95,8 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="type">Type to get the name of.</param>
         /// <returns>The name of the Type.</returns>
+        /// <exception cref="KeyNotFoundException">The given <paramref name="type"/> does not exist
+        /// in this <see cref="TypeFactory"/>.</exception>
         public string this[Type type]
         {
             get { return _typeToName[type]; }
@@ -154,6 +158,8 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="typeName">Name of the Type to create an instance of.</param>
         /// <returns>An instance of the Type.</returns>
+        /// <exception cref="KeyNotFoundException">No Type with the given <paramref name="typeName"/> exists
+        /// in this <see cref="TypeFactory"/>.</exception>
         public object GetTypeInstance(string typeName)
         {
             Type type = this[typeName];
@@ -166,6 +172,8 @@ namespace NetGore.Collections
         /// <param name="typeName">Name of the Type to create an instance of.</param>
         /// <param name="arguments">Arguments to use when invoking the constructor.</param>
         /// <returns>An instance of the Type.</returns>
+        /// <exception cref="KeyNotFoundException">No Type with the given <paramref name="typeName"/> exists
+        /// in this <see cref="TypeFactory"/>.</exception>
         public object GetTypeInstance(string typeName, params object[] arguments)
         {
             Type type = this[typeName];

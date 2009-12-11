@@ -8,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Applies a constant linear force to <see cref="Particle"/>s.
     /// </summary>
-    public class LinearGravityModifier : ParticleModifier
+    public class ParticleLinearGravityModifier : ParticleModifier
     {
         const string _categoryName = "Linear Gravity Modifier";
         const string _gravityKeyName = "Gravity";
@@ -16,9 +16,9 @@ namespace NetGore.Graphics.ParticleEngine
         Vector2 _gravity = new Vector2(0, 100);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
+        /// Initializes a new instance of the <see cref="ParticleLinearGravityModifier"/> class.
         /// </summary>
-        public LinearGravityModifier() : base(false, true)
+        public ParticleLinearGravityModifier() : base(false, true)
         {
         }
 

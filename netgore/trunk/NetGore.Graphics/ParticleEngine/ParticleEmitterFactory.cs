@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -130,7 +131,15 @@ namespace NetGore.Graphics.ParticleEngine
             var emitterTypeString = reader.ReadString(_emitterTypeKeyName);
 
             // Create the instance using the type name
-            var emitter = (ParticleEmitter)Instance.GetTypeInstance(emitterTypeString);
+            ParticleEmitter emitter;
+            try
+            {
+                emitter = (ParticleEmitter)Instance.GetTypeInstance(emitterTypeString);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new ParticleEmitterLoadEmitterException(emitterTypeString, ex);
+            }
 
             // Grab the reader for the emitter node, then read the values into the emitter
             var emitterReader = reader.ReadNode(_emitterNodeName);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -116,7 +117,15 @@ namespace NetGore.Graphics.ParticleEngine
             string typeName = reader.ReadString(_typeKeyName);
 
             // Create the instance
-            var modifier = (ParticleModifier)ParticleModifierFactory.Instance.GetTypeInstance(typeName);
+            ParticleModifier modifier;
+            try
+            {
+                modifier = (ParticleModifier)ParticleModifierFactory.Instance.GetTypeInstance(typeName);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new ParticleEmitterLoadModifierException(typeName, ex);
+            }
 
             // Read the custom values
             var customValueReader = reader.ReadNode(_customValuesNodeName);
