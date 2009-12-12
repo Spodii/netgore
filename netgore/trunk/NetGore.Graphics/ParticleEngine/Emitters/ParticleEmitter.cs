@@ -28,7 +28,7 @@ namespace NetGore.Graphics.ParticleEngine
         const int _initialParticleArraySize = 64;
 
         const string _lifeKeyName = "Life";
-        const string _modifiersNodeName = "Modifiers";
+        const string _modifiersNodeName = "ParticleModifiers";
 
         const string _nameKeyName = "Name";
         const string _originKeyName = "Origin";
