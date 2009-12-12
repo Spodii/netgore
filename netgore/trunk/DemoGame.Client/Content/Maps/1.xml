@@ -2074,7 +2074,7 @@
           </ReleaseSpeed>
           <SpriteCategorization>Particle.skull</SpriteCategorization>
           <CustomValues />
-          <Modifiers>
+          <ParticleModifiers>
             <Count>1</Count>
             <Item0>
               <ModifierType>ParticleColorModifier</ModifierType>
@@ -2087,7 +2087,7 @@
                 <UltimateColor>0,0,255,175</UltimateColor>
               </CustomValues>
             </Item0>
-          </Modifiers>
+          </ParticleModifiers>
         </Emitter>
       </Item0>
     </ParticleEffects>
