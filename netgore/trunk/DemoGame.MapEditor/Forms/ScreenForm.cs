@@ -1316,5 +1316,10 @@ namespace DemoGame.MapEditor
                 }
             }
         }
+
+        private void picToolSelect_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
