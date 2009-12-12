@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace NetGore.Graphics
+namespace NetGore.Graphics.ParticleEngine
 {
     public class ParticleEmitterException : Exception
     {

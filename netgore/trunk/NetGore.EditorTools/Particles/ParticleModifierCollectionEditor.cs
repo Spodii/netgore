@@ -19,7 +19,8 @@ namespace NetGore.EditorTools
         /// Indicates whether multiple collection items can be selected at once.
         /// </summary>
         /// <returns>
-        /// true if it multiple collection members can be selected at the same time; otherwise, false. By default, this returns true.
+        /// true if it multiple collection members can be selected at the same time; otherwise, false.
+        /// By default, this returns true.
         /// </returns>
         protected override bool CanSelectMultipleInstances()
         {

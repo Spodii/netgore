@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NetGore.Graphics.ParticleEngine;
 
-namespace NetGore.Graphics
+namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
     /// An <see cref="Exception"/> for when a <see cref="ParticleEmitter"/> fails to load because the
