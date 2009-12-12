@@ -6,6 +6,9 @@ using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.EditorTools
 {
+    /// <summary>
+    /// Provides a design-timer user interface for the <see cref="ParticleModifierCollection"/>.
+    /// </summary>
     public class ParticleModifierCollectionEditor : CollectionEditor
     {
         /// <summary>
