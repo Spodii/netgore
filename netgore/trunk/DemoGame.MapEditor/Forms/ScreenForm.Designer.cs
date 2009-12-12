@@ -60,15 +60,12 @@ namespace DemoGame.MapEditor
             this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
             this.btnNewEntity = new System.Windows.Forms.Button();
             this.pgEntity = new System.Windows.Forms.PropertyGrid();
-            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.pgBGItem = new System.Windows.Forms.PropertyGrid();
             this.btnNewBGSprite = new System.Windows.Forms.Button();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
-            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tabEffects = new System.Windows.Forms.TabPage();
-            this.mapParticleEffectsListBox1 = new DemoGame.MapEditor.MapParticleEffectsListBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lstAvailableParticleEffects = new NetGore.EditorTools.ParticleEffectListBox();
@@ -77,10 +74,8 @@ namespace DemoGame.MapEditor
             this.tpSpawns = new System.Windows.Forms.TabPage();
             this.btnAddSpawn = new System.Windows.Forms.Button();
             this.btnDeleteSpawn = new System.Windows.Forms.Button();
-            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
             this.pgNPCSpawn = new System.Windows.Forms.PropertyGrid();
             this.tpPersistent = new System.Windows.Forms.TabPage();
-            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
@@ -110,6 +105,11 @@ namespace DemoGame.MapEditor
             this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.cmdSaveAs = new System.Windows.Forms.Button();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
+            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
+            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
+            this.mapParticleEffectsListBox1 = new DemoGame.MapEditor.MapParticleEffectsListBox();
+            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
+            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
@@ -169,7 +169,7 @@ namespace DemoGame.MapEditor
             // 
             this.txtMusic.Location = new System.Drawing.Point(50, 36);
             this.txtMusic.Name = "txtMusic";
-            this.txtMusic.Size = new System.Drawing.Size(231, 20);
+            this.txtMusic.Size = new System.Drawing.Size(325, 20);
             this.txtMusic.TabIndex = 5;
             this.txtMusic.TextChanged += new System.EventHandler(this.txtMusic_TextChanged);
             // 
@@ -244,7 +244,7 @@ namespace DemoGame.MapEditor
             // 
             this.txtMapName.Location = new System.Drawing.Point(74, 10);
             this.txtMapName.Name = "txtMapName";
-            this.txtMapName.Size = new System.Drawing.Size(207, 20);
+            this.txtMapName.Size = new System.Drawing.Size(301, 20);
             this.txtMapName.TabIndex = 1;
             this.txtMapName.TextChanged += new System.EventHandler(this.txtMapName_TextChanged);
             // 
@@ -301,7 +301,7 @@ namespace DemoGame.MapEditor
             this.treeGrhs.Location = new System.Drawing.Point(6, 29);
             this.treeGrhs.Name = "treeGrhs";
             this.treeGrhs.ShowNodeToolTips = true;
-            this.treeGrhs.Size = new System.Drawing.Size(326, 547);
+            this.treeGrhs.Size = new System.Drawing.Size(370, 547);
             this.treeGrhs.Sorted = true;
             this.treeGrhs.TabIndex = 8;
             this.treeGrhs.GrhAfterSelect += new NetGore.EditorTools.GrhTreeViewEvent(this.treeGrhs_SelectGrh);
@@ -328,7 +328,7 @@ namespace DemoGame.MapEditor
             this.pgWall.Location = new System.Drawing.Point(6, 469);
             this.pgWall.Name = "pgWall";
             this.pgWall.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.pgWall.Size = new System.Drawing.Size(325, 104);
+            this.pgWall.Size = new System.Drawing.Size(369, 104);
             this.pgWall.TabIndex = 8;
             this.pgWall.ToolbarVisible = false;
             // 
@@ -337,7 +337,7 @@ namespace DemoGame.MapEditor
             this.cmbWallType.FormattingEnabled = true;
             this.cmbWallType.Location = new System.Drawing.Point(6, 29);
             this.cmbWallType.Name = "cmbWallType";
-            this.cmbWallType.Size = new System.Drawing.Size(181, 21);
+            this.cmbWallType.Size = new System.Drawing.Size(369, 21);
             this.cmbWallType.TabIndex = 7;
             // 
             // chkSnapWallGrid
@@ -370,7 +370,7 @@ namespace DemoGame.MapEditor
             this.lstSelectedWalls.Location = new System.Drawing.Point(6, 56);
             this.lstSelectedWalls.Name = "lstSelectedWalls";
             this.lstSelectedWalls.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstSelectedWalls.Size = new System.Drawing.Size(325, 407);
+            this.lstSelectedWalls.Size = new System.Drawing.Size(369, 407);
             this.lstSelectedWalls.Sorted = true;
             this.lstSelectedWalls.TabIndex = 3;
             this.lstSelectedWalls.SelectedIndexChanged += new System.EventHandler(this.lstSelectedWalls_SelectedIndexChanged);
@@ -395,12 +395,12 @@ namespace DemoGame.MapEditor
             this.cmbEntityTypes.FormattingEnabled = true;
             this.cmbEntityTypes.Location = new System.Drawing.Point(3, 195);
             this.cmbEntityTypes.Name = "cmbEntityTypes";
-            this.cmbEntityTypes.Size = new System.Drawing.Size(264, 21);
+            this.cmbEntityTypes.Size = new System.Drawing.Size(308, 21);
             this.cmbEntityTypes.TabIndex = 11;
             // 
             // btnNewEntity
             // 
-            this.btnNewEntity.Location = new System.Drawing.Point(273, 192);
+            this.btnNewEntity.Location = new System.Drawing.Point(317, 192);
             this.btnNewEntity.Name = "btnNewEntity";
             this.btnNewEntity.Size = new System.Drawing.Size(59, 24);
             this.btnNewEntity.TabIndex = 10;
@@ -412,20 +412,9 @@ namespace DemoGame.MapEditor
             // 
             this.pgEntity.Location = new System.Drawing.Point(3, 222);
             this.pgEntity.Name = "pgEntity";
-            this.pgEntity.Size = new System.Drawing.Size(329, 354);
+            this.pgEntity.Size = new System.Drawing.Size(373, 354);
             this.pgEntity.TabIndex = 1;
             this.pgEntity.ToolbarVisible = false;
-            // 
-            // lstEntities
-            // 
-            this.lstEntities.Camera = null;
-            this.lstEntities.FormattingEnabled = true;
-            this.lstEntities.Location = new System.Drawing.Point(3, 3);
-            this.lstEntities.Map = null;
-            this.lstEntities.Name = "lstEntities";
-            this.lstEntities.Size = new System.Drawing.Size(329, 186);
-            this.lstEntities.TabIndex = 0;
-            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
             // 
             // tabPageBackground
             // 
@@ -445,13 +434,13 @@ namespace DemoGame.MapEditor
             // 
             this.pgBGItem.Location = new System.Drawing.Point(3, 173);
             this.pgBGItem.Name = "pgBGItem";
-            this.pgBGItem.Size = new System.Drawing.Size(329, 403);
+            this.pgBGItem.Size = new System.Drawing.Size(373, 403);
             this.pgBGItem.TabIndex = 5;
             this.pgBGItem.ToolbarVisible = false;
             // 
             // btnNewBGSprite
             // 
-            this.btnNewBGSprite.Location = new System.Drawing.Point(258, 143);
+            this.btnNewBGSprite.Location = new System.Drawing.Point(163, 143);
             this.btnNewBGSprite.Name = "btnNewBGSprite";
             this.btnNewBGSprite.Size = new System.Drawing.Size(74, 24);
             this.btnNewBGSprite.TabIndex = 4;
@@ -461,7 +450,7 @@ namespace DemoGame.MapEditor
             // 
             // btnNewBGLayer
             // 
-            this.btnNewBGLayer.Location = new System.Drawing.Point(178, 143);
+            this.btnNewBGLayer.Location = new System.Drawing.Point(83, 143);
             this.btnNewBGLayer.Name = "btnNewBGLayer";
             this.btnNewBGLayer.Size = new System.Drawing.Size(74, 24);
             this.btnNewBGLayer.TabIndex = 3;
@@ -471,24 +460,13 @@ namespace DemoGame.MapEditor
             // 
             // btnDeleteBGItem
             // 
-            this.btnDeleteBGItem.Location = new System.Drawing.Point(98, 143);
+            this.btnDeleteBGItem.Location = new System.Drawing.Point(3, 143);
             this.btnDeleteBGItem.Name = "btnDeleteBGItem";
             this.btnDeleteBGItem.Size = new System.Drawing.Size(74, 24);
             this.btnDeleteBGItem.TabIndex = 2;
             this.btnDeleteBGItem.Text = "Delete";
             this.btnDeleteBGItem.UseVisualStyleBackColor = true;
             this.btnDeleteBGItem.Click += new System.EventHandler(this.btnDeleteBGItem_Click);
-            // 
-            // lstBGItems
-            // 
-            this.lstBGItems.Camera = null;
-            this.lstBGItems.FormattingEnabled = true;
-            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
-            this.lstBGItems.Map = null;
-            this.lstBGItems.Name = "lstBGItems";
-            this.lstBGItems.Size = new System.Drawing.Size(329, 134);
-            this.lstBGItems.TabIndex = 0;
-            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
             // 
             // tabEffects
             // 
@@ -502,16 +480,6 @@ namespace DemoGame.MapEditor
             this.tabEffects.TabIndex = 8;
             this.tabEffects.Text = "Effects";
             this.tabEffects.UseVisualStyleBackColor = true;
-            // 
-            // mapParticleEffectsListBox1
-            // 
-            this.mapParticleEffectsListBox1.Camera = null;
-            this.mapParticleEffectsListBox1.FormattingEnabled = true;
-            this.mapParticleEffectsListBox1.Location = new System.Drawing.Point(3, 354);
-            this.mapParticleEffectsListBox1.Map = null;
-            this.mapParticleEffectsListBox1.Name = "mapParticleEffectsListBox1";
-            this.mapParticleEffectsListBox1.Size = new System.Drawing.Size(373, 225);
-            this.mapParticleEffectsListBox1.TabIndex = 3;
             // 
             // label7
             // 
@@ -559,7 +527,7 @@ namespace DemoGame.MapEditor
             this.tcSpawns.Location = new System.Drawing.Point(3, 3);
             this.tcSpawns.Name = "tcSpawns";
             this.tcSpawns.SelectedIndex = 0;
-            this.tcSpawns.Size = new System.Drawing.Size(331, 200);
+            this.tcSpawns.Size = new System.Drawing.Size(375, 200);
             this.tcSpawns.TabIndex = 7;
             // 
             // tpSpawns
@@ -570,14 +538,14 @@ namespace DemoGame.MapEditor
             this.tpSpawns.Location = new System.Drawing.Point(4, 22);
             this.tpSpawns.Name = "tpSpawns";
             this.tpSpawns.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSpawns.Size = new System.Drawing.Size(323, 174);
+            this.tpSpawns.Size = new System.Drawing.Size(367, 174);
             this.tpSpawns.TabIndex = 0;
             this.tpSpawns.Text = "Spawns";
             this.tpSpawns.UseVisualStyleBackColor = true;
             // 
             // btnAddSpawn
             // 
-            this.btnAddSpawn.Location = new System.Drawing.Point(243, 146);
+            this.btnAddSpawn.Location = new System.Drawing.Point(285, 147);
             this.btnAddSpawn.Name = "btnAddSpawn";
             this.btnAddSpawn.Size = new System.Drawing.Size(74, 24);
             this.btnAddSpawn.TabIndex = 7;
@@ -586,27 +554,18 @@ namespace DemoGame.MapEditor
             // 
             // btnDeleteSpawn
             // 
-            this.btnDeleteSpawn.Location = new System.Drawing.Point(163, 146);
+            this.btnDeleteSpawn.Location = new System.Drawing.Point(205, 147);
             this.btnDeleteSpawn.Name = "btnDeleteSpawn";
             this.btnDeleteSpawn.Size = new System.Drawing.Size(74, 24);
             this.btnDeleteSpawn.TabIndex = 6;
             this.btnDeleteSpawn.Text = "Delete";
             this.btnDeleteSpawn.UseVisualStyleBackColor = true;
             // 
-            // lstNPCSpawns
-            // 
-            this.lstNPCSpawns.FormattingEnabled = true;
-            this.lstNPCSpawns.Location = new System.Drawing.Point(6, 6);
-            this.lstNPCSpawns.Name = "lstNPCSpawns";
-            this.lstNPCSpawns.PropertyGrid = this.pgNPCSpawn;
-            this.lstNPCSpawns.Size = new System.Drawing.Size(311, 134);
-            this.lstNPCSpawns.TabIndex = 5;
-            // 
             // pgNPCSpawn
             // 
             this.pgNPCSpawn.Location = new System.Drawing.Point(3, 209);
             this.pgNPCSpawn.Name = "pgNPCSpawn";
-            this.pgNPCSpawn.Size = new System.Drawing.Size(329, 367);
+            this.pgNPCSpawn.Size = new System.Drawing.Size(371, 367);
             this.pgNPCSpawn.TabIndex = 6;
             this.pgNPCSpawn.ToolbarVisible = false;
             // 
@@ -618,19 +577,10 @@ namespace DemoGame.MapEditor
             this.tpPersistent.Location = new System.Drawing.Point(4, 22);
             this.tpPersistent.Name = "tpPersistent";
             this.tpPersistent.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPersistent.Size = new System.Drawing.Size(323, 174);
+            this.tpPersistent.Size = new System.Drawing.Size(367, 174);
             this.tpPersistent.TabIndex = 1;
             this.tpPersistent.Text = "Persistent";
             this.tpPersistent.UseVisualStyleBackColor = true;
-            // 
-            // lstPersistentNPCs
-            // 
-            this.lstPersistentNPCs.FormattingEnabled = true;
-            this.lstPersistentNPCs.Location = new System.Drawing.Point(6, 6);
-            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
-            this.lstPersistentNPCs.PropertyGrid = this.pgNPCSpawn;
-            this.lstPersistentNPCs.Size = new System.Drawing.Size(311, 134);
-            this.lstPersistentNPCs.TabIndex = 11;
             // 
             // button1
             // 
@@ -674,7 +624,7 @@ namespace DemoGame.MapEditor
             this.groupBox3.Controls.Add(this.chkDrawGrid);
             this.groupBox3.Location = new System.Drawing.Point(3, 52);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(290, 116);
+            this.groupBox3.Size = new System.Drawing.Size(221, 116);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Display Options";
@@ -773,7 +723,7 @@ namespace DemoGame.MapEditor
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(3, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(290, 40);
+            this.groupBox1.Size = new System.Drawing.Size(204, 40);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Grid";
@@ -937,6 +887,56 @@ namespace DemoGame.MapEditor
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
+            // 
+            // lstEntities
+            // 
+            this.lstEntities.Camera = null;
+            this.lstEntities.FormattingEnabled = true;
+            this.lstEntities.Location = new System.Drawing.Point(3, 3);
+            this.lstEntities.Map = null;
+            this.lstEntities.Name = "lstEntities";
+            this.lstEntities.Size = new System.Drawing.Size(373, 186);
+            this.lstEntities.TabIndex = 0;
+            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
+            // 
+            // lstBGItems
+            // 
+            this.lstBGItems.Camera = null;
+            this.lstBGItems.FormattingEnabled = true;
+            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
+            this.lstBGItems.Map = null;
+            this.lstBGItems.Name = "lstBGItems";
+            this.lstBGItems.Size = new System.Drawing.Size(373, 134);
+            this.lstBGItems.TabIndex = 0;
+            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
+            // 
+            // mapParticleEffectsListBox1
+            // 
+            this.mapParticleEffectsListBox1.Camera = null;
+            this.mapParticleEffectsListBox1.FormattingEnabled = true;
+            this.mapParticleEffectsListBox1.Location = new System.Drawing.Point(3, 354);
+            this.mapParticleEffectsListBox1.Map = null;
+            this.mapParticleEffectsListBox1.Name = "mapParticleEffectsListBox1";
+            this.mapParticleEffectsListBox1.Size = new System.Drawing.Size(373, 225);
+            this.mapParticleEffectsListBox1.TabIndex = 3;
+            // 
+            // lstNPCSpawns
+            // 
+            this.lstNPCSpawns.FormattingEnabled = true;
+            this.lstNPCSpawns.Location = new System.Drawing.Point(6, 6);
+            this.lstNPCSpawns.Name = "lstNPCSpawns";
+            this.lstNPCSpawns.PropertyGrid = this.pgNPCSpawn;
+            this.lstNPCSpawns.Size = new System.Drawing.Size(353, 134);
+            this.lstNPCSpawns.TabIndex = 5;
+            // 
+            // lstPersistentNPCs
+            // 
+            this.lstPersistentNPCs.FormattingEnabled = true;
+            this.lstPersistentNPCs.Location = new System.Drawing.Point(6, 6);
+            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
+            this.lstPersistentNPCs.PropertyGrid = this.pgNPCSpawn;
+            this.lstPersistentNPCs.Size = new System.Drawing.Size(311, 134);
+            this.lstPersistentNPCs.TabIndex = 11;
             // 
             // ScreenForm
             // 
