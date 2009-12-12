@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.Design;
 using System.Linq;
 using NetGore.Collections;
@@ -6,12 +6,13 @@ using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.EditorTools
 {
-    public class ParticleModifierCollectionEditor : CollectionEditor
+    public class EmitterModifierCollectionEditor : CollectionEditor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleModifierCollectionEditor"/> class.
+        /// Initializes a new instance of the <see cref="EmitterModifierCollectionEditor"/> class.
         /// </summary>
-        public ParticleModifierCollectionEditor() : base(typeof(ParticleModifierCollection))
+        public EmitterModifierCollectionEditor()
+            : base(typeof(EmitterModifierCollection))
         {
         }
 
@@ -36,7 +37,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override Type CreateCollectionItemType()
         {
-            return typeof(ParticleLinearGravityModifier);
+            return typeof(EmitterBurstEmitModifier);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override Type[] CreateNewItemTypes()
         {
-            return ParticleModifierFactory.Instance.ToArray();
+            return EmitterModifierFactory.Instance.ToArray();
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override object[] GetItems(object editValue)
         {
-            return ((ParticleModifierCollection)editValue).ToArray();
+            return ((EmitterModifierCollection)editValue).ToArray();
         }
 
         /// <summary>
@@ -97,9 +98,9 @@ namespace NetGore.EditorTools
         /// </returns>
         protected override object SetItems(object editValue, object[] value)
         {
-            var c = ((ParticleModifierCollection)editValue);
+            var c = ((EmitterModifierCollection)editValue);
             c.Clear();
-            c.AddRange(value.Cast<ParticleModifier>());
+            c.AddRange(value.Cast<EmitterModifier>());
             return c;
         }
     }

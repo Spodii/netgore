@@ -8,16 +8,26 @@ using NetGore.IO;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// Base class for a modifier for a <see cref="ParticleEmitter"/>.
+    /// Base class for a class that modifies the behavior of each <see cref="Particle"/> that is emitted from a
+    /// <see cref="ParticleEmitter"/>.
     /// </summary>
     public abstract class ParticleModifier
     {
         const string _customValuesNodeName = "CustomValues";
         const string _typeKeyName = "ModifierType";
+        static readonly ParticleModifierFactory _typeFactory;
 
         readonly bool _processOnRelease;
         readonly bool _processOnUpdate;
         int _currentTime;
+
+        /// <summary>
+        /// Initializes the <see cref="ParticleModifier"/> class.
+        /// </summary>
+        static ParticleModifier()
+        {
+            _typeFactory = ParticleModifierFactory.Instance;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
@@ -120,11 +130,11 @@ namespace NetGore.Graphics.ParticleEngine
             ParticleModifier modifier;
             try
             {
-                modifier = (ParticleModifier)ParticleModifierFactory.Instance.GetTypeInstance(typeName);
+                modifier = (ParticleModifier)_typeFactory.GetTypeInstance(typeName);
             }
             catch (KeyNotFoundException ex)
             {
-                throw new ParticleEmitterLoadModifierException(typeName, ex);
+                throw new ParticleEmitterLoadParticleModifierException(typeName, ex);
             }
 
             // Read the custom values
@@ -135,7 +145,8 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Reads the <see cref="ParticleModifier"/>'s custom values from the <see cref="reader"/>.
+        /// When overridden in the derived class, reads the <see cref="ParticleModifier"/>'s custom values
+        /// from the <see cref="reader"/>.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
         protected abstract void ReadCustomValues(IValueReader reader);
@@ -155,7 +166,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         public void Write(IValueWriter writer)
         {
-            string typeName = ParticleModifierFactory.Instance.GetTypeName(GetType());
+            string typeName = _typeFactory.GetTypeName(GetType());
 
             writer.Write(_typeKeyName, typeName);
 

@@ -7,15 +7,15 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A collection of <see cref="ParticleModifier"/>s.
     /// </summary>
-    public class ParticleModifierCollection : VirtualList<ParticleModifier>
+    public sealed class ParticleModifierCollection : VirtualList<ParticleModifier>
     {
         /// <summary>
-        /// Modifiers that process released <see cref="Particle"/>s.
+        /// ParticleModifiers that process released <see cref="Particle"/>s.
         /// </summary>
         readonly List<ParticleModifier> _releaseModifiers = new List<ParticleModifier>(2);
 
         /// <summary>
-        /// Modifiers that process updated <see cref="Particle"/>s.
+        /// ParticleModifiers that process updated <see cref="Particle"/>s.
         /// </summary>
         readonly List<ParticleModifier> _updateModifiers = new List<ParticleModifier>(2);
 

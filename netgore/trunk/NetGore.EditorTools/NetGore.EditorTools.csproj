@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
     <Compile Include="FileDialogs.cs" />
+    <Compile Include="Particles\EmitterModifierCollectionEditor.cs" />
     <Compile Include="WinForms\IMapItemListBox.cs" />
     <Compile Include="WinForms\MapParticleEffectsListBoxBase.cs">
       <SubType>Component</SubType>

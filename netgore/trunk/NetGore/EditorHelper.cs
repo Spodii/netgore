@@ -13,6 +13,13 @@ namespace NetGore
         public const string ParticleModifierCollectionEditorTypeName =
             "NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools";
 
+
+        /// <summary>
+        /// The fully qualified name for the EmitterModifierCollectionEditor.
+        /// </summary>
+        public const string EmitterModifierCollectionEditorTypeName =
+            "NetGore.EditorTools.EmitterModifierCollectionEditor, NetGore.EditorTools";
+
         /// <summary>
         /// The fully qualified type name for the UITypeEditor.
         /// </summary>

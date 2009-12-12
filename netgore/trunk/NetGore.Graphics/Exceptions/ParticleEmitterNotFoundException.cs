@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using NetGore.Graphics.ParticleEngine;
 
-namespace NetGore.Graphics
+namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
     /// An <see cref="Exception"/> for when trying to load a <see cref="ParticleEmitter"/> that does not exist.
