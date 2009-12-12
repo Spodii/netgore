@@ -37,8 +37,16 @@ namespace NetGore.IO
         /// </returns>
         public override string ToString()
         {
-             var s = Value.Substring(_rootDir.Length);
-            return s;
+            if (_rootDir.Equals("Grh/"))
+            {
+                 var s = Value.Substring(_rootDir.Length - 1);
+                return s;
+            }
+            else
+            {
+                var s = Value.Substring(_rootDir.Length);
+                return s;
+            }
         }
 
         /// <summary>
