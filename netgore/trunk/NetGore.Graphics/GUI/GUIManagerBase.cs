@@ -220,6 +220,7 @@ namespace NetGore.Graphics.GUI
             {
                 if (value == null)
                     throw new ArgumentNullException();
+
                 _labelSettings = value;
             }
         }
@@ -304,6 +305,7 @@ namespace NetGore.Graphics.GUI
             {
                 if (value == null)
                     throw new ArgumentNullException();
+
                 _panelSettings = value;
             }
         }
@@ -318,6 +320,7 @@ namespace NetGore.Graphics.GUI
             {
                 if (value == null)
                     throw new ArgumentNullException();
+
                 _pictureBoxSettings = value;
             }
         }

@@ -17,6 +17,7 @@ namespace NetGore.Graphics.GUI
             {
                 if (_default == null)
                     _default = new LabelSettings(null);
+
                 return _default;
             }
         }
