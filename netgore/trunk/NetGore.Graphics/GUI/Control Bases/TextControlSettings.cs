@@ -5,7 +5,7 @@ namespace NetGore.Graphics.GUI
 {
     public abstract class TextControlSettings : ControlSettings
     {
-        readonly Color _foreColor;
+        Color _foreColor;
 
         protected TextControlSettings(Color foreColor, ControlBorder border) : base(border)
         {
@@ -16,6 +16,7 @@ namespace NetGore.Graphics.GUI
         public Color ForeColor
         {
             get { return _foreColor; }
+            set { _foreColor = value; }
         }
     }
 }

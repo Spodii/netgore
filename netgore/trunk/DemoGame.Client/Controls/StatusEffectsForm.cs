@@ -25,7 +25,7 @@ namespace DemoGame.Client
         /// <param name="position">The position.</param>
         /// <param name="getTime">The get time.</param>
         public StatusEffectsForm(Control parent, Vector2 position, IGetTime getTime)
-            : base(parent.GUIManager, "Status Effects", position, _iconSize)
+            : base(parent.GUIManager, "Status Effects", position, _iconSize, parent)
         {
             _getTime = getTime;
 

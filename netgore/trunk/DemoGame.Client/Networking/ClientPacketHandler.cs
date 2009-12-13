@@ -194,7 +194,7 @@ namespace DemoGame.Client
         void RecvChatSay(IIPSocket conn, BitStream r)
         {
             string name = r.ReadString(GameData.MaxServerSayNameLength);
-            ushort mapCharIndex = r.ReadUShort();
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
             string text = r.ReadString(GameData.MaxServerSayLength);
 
             // NOTE: Make use of the mapCharIndex for a chat bubble
