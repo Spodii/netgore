@@ -43,6 +43,7 @@ namespace DemoGame.MapEditor
             this.picToolWallsAdd = new System.Windows.Forms.PictureBox();
             this.picToolWalls = new System.Windows.Forms.PictureBox();
             this.picToolSelect = new System.Windows.Forms.PictureBox();
+            this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.MapSizeGroupBox = new System.Windows.Forms.GroupBox();
@@ -57,17 +58,32 @@ namespace DemoGame.MapEditor
             this.txtMapName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPageGrhs = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.chkForeground = new System.Windows.Forms.CheckBox();
+            this.chkSnapGrhGrid = new System.Windows.Forms.CheckBox();
+            this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
             this.tabPageWalls = new System.Windows.Forms.TabPage();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.chkSnapWallGrid = new System.Windows.Forms.CheckBox();
+            this.chkSnapWallWall = new System.Windows.Forms.CheckBox();
+            this.cmbWallType = new System.Windows.Forms.ComboBox();
+            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.lstSelectedWalls = new System.Windows.Forms.ListBox();
+            this.pgWall = new System.Windows.Forms.PropertyGrid();
             this.tabPageEntities = new System.Windows.Forms.TabPage();
             this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
             this.btnNewEntity = new System.Windows.Forms.Button();
             this.pgEntity = new System.Windows.Forms.PropertyGrid();
+            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.pgBGItem = new System.Windows.Forms.PropertyGrid();
             this.btnNewBGSprite = new System.Windows.Forms.Button();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
+            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tabEffects = new System.Windows.Forms.TabPage();
+            this.mapParticleEffectsListBox1 = new DemoGame.MapEditor.MapParticleEffectsListBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lstAvailableParticleEffects = new NetGore.EditorTools.ParticleEffectListBox();
@@ -76,8 +92,10 @@ namespace DemoGame.MapEditor
             this.tpSpawns = new System.Windows.Forms.TabPage();
             this.btnAddSpawn = new System.Windows.Forms.Button();
             this.btnDeleteSpawn = new System.Windows.Forms.Button();
+            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
             this.pgNPCSpawn = new System.Windows.Forms.PropertyGrid();
             this.tpPersistent = new System.Windows.Forms.TabPage();
+            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
@@ -100,24 +118,6 @@ namespace DemoGame.MapEditor
             this.cmdSave = new System.Windows.Forms.Button();
             this.cmdLoad = new System.Windows.Forms.Button();
             this.cmdNew = new System.Windows.Forms.Button();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.chkForeground = new System.Windows.Forms.CheckBox();
-            this.chkSnapGrhGrid = new System.Windows.Forms.CheckBox();
-            this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
-            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.chkSnapWallGrid = new System.Windows.Forms.CheckBox();
-            this.chkSnapWallWall = new System.Windows.Forms.CheckBox();
-            this.cmbWallType = new System.Windows.Forms.ComboBox();
-            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstSelectedWalls = new System.Windows.Forms.ListBox();
-            this.pgWall = new System.Windows.Forms.PropertyGrid();
-            this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
-            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
-            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
-            this.mapParticleEffectsListBox1 = new DemoGame.MapEditor.MapParticleEffectsListBox();
-            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
-            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -141,7 +141,19 @@ namespace DemoGame.MapEditor
             this.MapSizeGroupBox.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPageGrhs.SuspendLayout();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             this.tabPageWalls.SuspendLayout();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.Panel2.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
+            this.splitContainer7.Panel1.SuspendLayout();
+            this.splitContainer7.Panel2.SuspendLayout();
+            this.splitContainer7.SuspendLayout();
             this.tabPageEntities.SuspendLayout();
             this.tabPageBackground.SuspendLayout();
             this.tabEffects.SuspendLayout();
@@ -152,18 +164,6 @@ namespace DemoGame.MapEditor
             this.tabPageSettings.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.Panel2.SuspendLayout();
-            this.splitContainer4.SuspendLayout();
-            this.splitContainer5.Panel1.SuspendLayout();
-            this.splitContainer5.Panel2.SuspendLayout();
-            this.splitContainer5.SuspendLayout();
-            this.splitContainer6.Panel1.SuspendLayout();
-            this.splitContainer6.Panel2.SuspendLayout();
-            this.splitContainer6.SuspendLayout();
-            this.splitContainer7.Panel1.SuspendLayout();
-            this.splitContainer7.Panel2.SuspendLayout();
-            this.splitContainer7.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -277,6 +277,17 @@ namespace DemoGame.MapEditor
             this.picToolSelect.TabIndex = 0;
             this.picToolSelect.TabStop = false;
             this.picToolSelect.Click += new System.EventHandler(this.picToolSelect_Click);
+            // 
+            // GameScreen
+            // 
+            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.GameScreen.Location = new System.Drawing.Point(0, 0);
+            this.GameScreen.Name = "GameScreen";
+            this.GameScreen.Padding = new System.Windows.Forms.Padding(5);
+            this.GameScreen.ScreenForm = null;
+            this.GameScreen.Size = new System.Drawing.Size(800, 600);
+            this.GameScreen.TabIndex = 8;
+            this.GameScreen.Text = "Game Screen";
             // 
             // splitContainer3
             // 
@@ -454,6 +465,64 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.Text = "Grhs";
             this.tabPageGrhs.UseVisualStyleBackColor = true;
             // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.chkForeground);
+            this.splitContainer4.Panel1.Controls.Add(this.chkSnapGrhGrid);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.treeGrhs);
+            this.splitContainer4.Size = new System.Drawing.Size(385, 573);
+            this.splitContainer4.SplitterDistance = 25;
+            this.splitContainer4.TabIndex = 10;
+            // 
+            // chkForeground
+            // 
+            this.chkForeground.AutoSize = true;
+            this.chkForeground.Dock = System.Windows.Forms.DockStyle.Left;
+            this.chkForeground.Location = new System.Drawing.Point(89, 0);
+            this.chkForeground.Name = "chkForeground";
+            this.chkForeground.Size = new System.Drawing.Size(80, 25);
+            this.chkForeground.TabIndex = 11;
+            this.chkForeground.Text = "Foreground";
+            this.chkForeground.UseVisualStyleBackColor = true;
+            // 
+            // chkSnapGrhGrid
+            // 
+            this.chkSnapGrhGrid.AutoSize = true;
+            this.chkSnapGrhGrid.Checked = true;
+            this.chkSnapGrhGrid.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSnapGrhGrid.Dock = System.Windows.Forms.DockStyle.Left;
+            this.chkSnapGrhGrid.Location = new System.Drawing.Point(0, 0);
+            this.chkSnapGrhGrid.Name = "chkSnapGrhGrid";
+            this.chkSnapGrhGrid.Size = new System.Drawing.Size(89, 25);
+            this.chkSnapGrhGrid.TabIndex = 10;
+            this.chkSnapGrhGrid.Text = "Snap To Grid";
+            this.chkSnapGrhGrid.UseVisualStyleBackColor = true;
+            // 
+            // treeGrhs
+            // 
+            this.treeGrhs.AllowDrop = true;
+            this.treeGrhs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeGrhs.ImageSize = new System.Drawing.Size(0, 0);
+            this.treeGrhs.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.treeGrhs.LabelEdit = true;
+            this.treeGrhs.Location = new System.Drawing.Point(0, 0);
+            this.treeGrhs.Name = "treeGrhs";
+            this.treeGrhs.ShowNodeToolTips = true;
+            this.treeGrhs.Size = new System.Drawing.Size(385, 544);
+            this.treeGrhs.Sorted = true;
+            this.treeGrhs.TabIndex = 9;
+            // 
             // tabPageWalls
             // 
             this.tabPageWalls.Controls.Add(this.splitContainer5);
@@ -465,6 +534,119 @@ namespace DemoGame.MapEditor
             this.tabPageWalls.Text = "Walls";
             this.tabPageWalls.ToolTipText = "Collision walls";
             this.tabPageWalls.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer5.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.splitContainer6);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.splitContainer7);
+            this.splitContainer5.Size = new System.Drawing.Size(379, 567);
+            this.splitContainer5.SplitterDistance = 51;
+            this.splitContainer5.TabIndex = 9;
+            // 
+            // splitContainer6
+            // 
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.chkSnapWallGrid);
+            this.splitContainer6.Panel1.Controls.Add(this.chkSnapWallWall);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.cmbWallType);
+            this.splitContainer6.Size = new System.Drawing.Size(379, 51);
+            this.splitContainer6.SplitterDistance = 25;
+            this.splitContainer6.TabIndex = 0;
+            // 
+            // chkSnapWallGrid
+            // 
+            this.chkSnapWallGrid.AutoSize = true;
+            this.chkSnapWallGrid.Checked = true;
+            this.chkSnapWallGrid.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSnapWallGrid.Dock = System.Windows.Forms.DockStyle.Left;
+            this.chkSnapWallGrid.Location = new System.Drawing.Point(96, 0);
+            this.chkSnapWallGrid.Name = "chkSnapWallGrid";
+            this.chkSnapWallGrid.Size = new System.Drawing.Size(89, 25);
+            this.chkSnapWallGrid.TabIndex = 7;
+            this.chkSnapWallGrid.Text = "Snap To Grid";
+            this.chkSnapWallGrid.UseVisualStyleBackColor = true;
+            // 
+            // chkSnapWallWall
+            // 
+            this.chkSnapWallWall.AutoSize = true;
+            this.chkSnapWallWall.Checked = true;
+            this.chkSnapWallWall.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSnapWallWall.Dock = System.Windows.Forms.DockStyle.Left;
+            this.chkSnapWallWall.Location = new System.Drawing.Point(0, 0);
+            this.chkSnapWallWall.Name = "chkSnapWallWall";
+            this.chkSnapWallWall.Size = new System.Drawing.Size(96, 25);
+            this.chkSnapWallWall.TabIndex = 6;
+            this.chkSnapWallWall.Text = "Snap To Walls";
+            this.chkSnapWallWall.UseVisualStyleBackColor = true;
+            // 
+            // cmbWallType
+            // 
+            this.cmbWallType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbWallType.FormattingEnabled = true;
+            this.cmbWallType.Location = new System.Drawing.Point(0, 0);
+            this.cmbWallType.Name = "cmbWallType";
+            this.cmbWallType.Size = new System.Drawing.Size(379, 21);
+            this.cmbWallType.TabIndex = 8;
+            // 
+            // splitContainer7
+            // 
+            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer7.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer7.Name = "splitContainer7";
+            this.splitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer7.Panel1
+            // 
+            this.splitContainer7.Panel1.Controls.Add(this.lstSelectedWalls);
+            // 
+            // splitContainer7.Panel2
+            // 
+            this.splitContainer7.Panel2.Controls.Add(this.pgWall);
+            this.splitContainer7.Size = new System.Drawing.Size(379, 512);
+            this.splitContainer7.SplitterDistance = 200;
+            this.splitContainer7.TabIndex = 0;
+            // 
+            // lstSelectedWalls
+            // 
+            this.lstSelectedWalls.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstSelectedWalls.FormattingEnabled = true;
+            this.lstSelectedWalls.Location = new System.Drawing.Point(0, 0);
+            this.lstSelectedWalls.Name = "lstSelectedWalls";
+            this.lstSelectedWalls.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lstSelectedWalls.Size = new System.Drawing.Size(379, 199);
+            this.lstSelectedWalls.Sorted = true;
+            this.lstSelectedWalls.TabIndex = 4;
+            // 
+            // pgWall
+            // 
+            this.pgWall.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgWall.HelpVisible = false;
+            this.pgWall.Location = new System.Drawing.Point(0, 0);
+            this.pgWall.Name = "pgWall";
+            this.pgWall.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+            this.pgWall.Size = new System.Drawing.Size(379, 308);
+            this.pgWall.TabIndex = 9;
+            this.pgWall.ToolbarVisible = false;
             // 
             // tabPageEntities
             // 
@@ -504,6 +686,16 @@ namespace DemoGame.MapEditor
             this.pgEntity.Size = new System.Drawing.Size(373, 348);
             this.pgEntity.TabIndex = 1;
             this.pgEntity.ToolbarVisible = false;
+            // 
+            // lstEntities
+            // 
+            this.lstEntities.Camera = null;
+            this.lstEntities.FormattingEnabled = true;
+            this.lstEntities.Location = new System.Drawing.Point(3, 3);
+            this.lstEntities.Map = null;
+            this.lstEntities.Name = "lstEntities";
+            this.lstEntities.Size = new System.Drawing.Size(373, 186);
+            this.lstEntities.TabIndex = 0;
             // 
             // tabPageBackground
             // 
@@ -554,6 +746,16 @@ namespace DemoGame.MapEditor
             this.btnDeleteBGItem.Text = "Delete";
             this.btnDeleteBGItem.UseVisualStyleBackColor = true;
             // 
+            // lstBGItems
+            // 
+            this.lstBGItems.Camera = null;
+            this.lstBGItems.FormattingEnabled = true;
+            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
+            this.lstBGItems.Map = null;
+            this.lstBGItems.Name = "lstBGItems";
+            this.lstBGItems.Size = new System.Drawing.Size(373, 134);
+            this.lstBGItems.TabIndex = 0;
+            // 
             // tabEffects
             // 
             this.tabEffects.Controls.Add(this.mapParticleEffectsListBox1);
@@ -566,6 +768,16 @@ namespace DemoGame.MapEditor
             this.tabEffects.TabIndex = 8;
             this.tabEffects.Text = "Effects";
             this.tabEffects.UseVisualStyleBackColor = true;
+            // 
+            // mapParticleEffectsListBox1
+            // 
+            this.mapParticleEffectsListBox1.Camera = null;
+            this.mapParticleEffectsListBox1.FormattingEnabled = true;
+            this.mapParticleEffectsListBox1.Location = new System.Drawing.Point(3, 354);
+            this.mapParticleEffectsListBox1.Map = null;
+            this.mapParticleEffectsListBox1.Name = "mapParticleEffectsListBox1";
+            this.mapParticleEffectsListBox1.Size = new System.Drawing.Size(373, 212);
+            this.mapParticleEffectsListBox1.TabIndex = 3;
             // 
             // label7
             // 
@@ -646,6 +858,15 @@ namespace DemoGame.MapEditor
             this.btnDeleteSpawn.Text = "Delete";
             this.btnDeleteSpawn.UseVisualStyleBackColor = true;
             // 
+            // lstNPCSpawns
+            // 
+            this.lstNPCSpawns.FormattingEnabled = true;
+            this.lstNPCSpawns.Location = new System.Drawing.Point(6, 6);
+            this.lstNPCSpawns.Name = "lstNPCSpawns";
+            this.lstNPCSpawns.PropertyGrid = this.pgNPCSpawn;
+            this.lstNPCSpawns.Size = new System.Drawing.Size(353, 134);
+            this.lstNPCSpawns.TabIndex = 5;
+            // 
             // pgNPCSpawn
             // 
             this.pgNPCSpawn.Location = new System.Drawing.Point(3, 209);
@@ -666,6 +887,15 @@ namespace DemoGame.MapEditor
             this.tpPersistent.TabIndex = 1;
             this.tpPersistent.Text = "Persistent";
             this.tpPersistent.UseVisualStyleBackColor = true;
+            // 
+            // lstPersistentNPCs
+            // 
+            this.lstPersistentNPCs.FormattingEnabled = true;
+            this.lstPersistentNPCs.Location = new System.Drawing.Point(6, 6);
+            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
+            this.lstPersistentNPCs.PropertyGrid = this.pgNPCSpawn;
+            this.lstPersistentNPCs.Size = new System.Drawing.Size(311, 134);
+            this.lstPersistentNPCs.TabIndex = 11;
             // 
             // button1
             // 
@@ -893,236 +1123,6 @@ namespace DemoGame.MapEditor
             this.cmdNew.Text = "New";
             this.cmdNew.UseVisualStyleBackColor = true;
             // 
-            // splitContainer4
-            // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.chkForeground);
-            this.splitContainer4.Panel1.Controls.Add(this.chkSnapGrhGrid);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.treeGrhs);
-            this.splitContainer4.Size = new System.Drawing.Size(385, 573);
-            this.splitContainer4.SplitterDistance = 25;
-            this.splitContainer4.TabIndex = 10;
-            // 
-            // chkForeground
-            // 
-            this.chkForeground.AutoSize = true;
-            this.chkForeground.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chkForeground.Location = new System.Drawing.Point(89, 0);
-            this.chkForeground.Name = "chkForeground";
-            this.chkForeground.Size = new System.Drawing.Size(80, 25);
-            this.chkForeground.TabIndex = 11;
-            this.chkForeground.Text = "Foreground";
-            this.chkForeground.UseVisualStyleBackColor = true;
-            // 
-            // chkSnapGrhGrid
-            // 
-            this.chkSnapGrhGrid.AutoSize = true;
-            this.chkSnapGrhGrid.Checked = true;
-            this.chkSnapGrhGrid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSnapGrhGrid.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chkSnapGrhGrid.Location = new System.Drawing.Point(0, 0);
-            this.chkSnapGrhGrid.Name = "chkSnapGrhGrid";
-            this.chkSnapGrhGrid.Size = new System.Drawing.Size(89, 25);
-            this.chkSnapGrhGrid.TabIndex = 10;
-            this.chkSnapGrhGrid.Text = "Snap To Grid";
-            this.chkSnapGrhGrid.UseVisualStyleBackColor = true;
-            // 
-            // treeGrhs
-            // 
-            this.treeGrhs.AllowDrop = true;
-            this.treeGrhs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeGrhs.ImageSize = new System.Drawing.Size(0, 0);
-            this.treeGrhs.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.treeGrhs.LabelEdit = true;
-            this.treeGrhs.Location = new System.Drawing.Point(0, 0);
-            this.treeGrhs.Name = "treeGrhs";
-            this.treeGrhs.ShowNodeToolTips = true;
-            this.treeGrhs.Size = new System.Drawing.Size(385, 544);
-            this.treeGrhs.Sorted = true;
-            this.treeGrhs.TabIndex = 9;
-            // 
-            // splitContainer5
-            // 
-            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer5.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer5.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer5.Name = "splitContainer5";
-            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer5.Panel1
-            // 
-            this.splitContainer5.Panel1.Controls.Add(this.splitContainer6);
-            // 
-            // splitContainer5.Panel2
-            // 
-            this.splitContainer5.Panel2.Controls.Add(this.splitContainer7);
-            this.splitContainer5.Size = new System.Drawing.Size(379, 567);
-            this.splitContainer5.SplitterDistance = 51;
-            this.splitContainer5.TabIndex = 9;
-            // 
-            // splitContainer6
-            // 
-            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer6.Name = "splitContainer6";
-            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer6.Panel1
-            // 
-            this.splitContainer6.Panel1.Controls.Add(this.chkSnapWallGrid);
-            this.splitContainer6.Panel1.Controls.Add(this.chkSnapWallWall);
-            // 
-            // splitContainer6.Panel2
-            // 
-            this.splitContainer6.Panel2.Controls.Add(this.cmbWallType);
-            this.splitContainer6.Size = new System.Drawing.Size(379, 51);
-            this.splitContainer6.SplitterDistance = 25;
-            this.splitContainer6.TabIndex = 0;
-            // 
-            // chkSnapWallGrid
-            // 
-            this.chkSnapWallGrid.AutoSize = true;
-            this.chkSnapWallGrid.Checked = true;
-            this.chkSnapWallGrid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSnapWallGrid.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chkSnapWallGrid.Location = new System.Drawing.Point(96, 0);
-            this.chkSnapWallGrid.Name = "chkSnapWallGrid";
-            this.chkSnapWallGrid.Size = new System.Drawing.Size(89, 25);
-            this.chkSnapWallGrid.TabIndex = 7;
-            this.chkSnapWallGrid.Text = "Snap To Grid";
-            this.chkSnapWallGrid.UseVisualStyleBackColor = true;
-            // 
-            // chkSnapWallWall
-            // 
-            this.chkSnapWallWall.AutoSize = true;
-            this.chkSnapWallWall.Checked = true;
-            this.chkSnapWallWall.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSnapWallWall.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chkSnapWallWall.Location = new System.Drawing.Point(0, 0);
-            this.chkSnapWallWall.Name = "chkSnapWallWall";
-            this.chkSnapWallWall.Size = new System.Drawing.Size(96, 25);
-            this.chkSnapWallWall.TabIndex = 6;
-            this.chkSnapWallWall.Text = "Snap To Walls";
-            this.chkSnapWallWall.UseVisualStyleBackColor = true;
-            // 
-            // cmbWallType
-            // 
-            this.cmbWallType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbWallType.FormattingEnabled = true;
-            this.cmbWallType.Location = new System.Drawing.Point(0, 0);
-            this.cmbWallType.Name = "cmbWallType";
-            this.cmbWallType.Size = new System.Drawing.Size(379, 21);
-            this.cmbWallType.TabIndex = 8;
-            // 
-            // splitContainer7
-            // 
-            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer7.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer7.Name = "splitContainer7";
-            this.splitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer7.Panel1
-            // 
-            this.splitContainer7.Panel1.Controls.Add(this.lstSelectedWalls);
-            // 
-            // splitContainer7.Panel2
-            // 
-            this.splitContainer7.Panel2.Controls.Add(this.pgWall);
-            this.splitContainer7.Size = new System.Drawing.Size(379, 512);
-            this.splitContainer7.SplitterDistance = 200;
-            this.splitContainer7.TabIndex = 0;
-            // 
-            // lstSelectedWalls
-            // 
-            this.lstSelectedWalls.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstSelectedWalls.FormattingEnabled = true;
-            this.lstSelectedWalls.Location = new System.Drawing.Point(0, 0);
-            this.lstSelectedWalls.Name = "lstSelectedWalls";
-            this.lstSelectedWalls.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstSelectedWalls.Size = new System.Drawing.Size(379, 199);
-            this.lstSelectedWalls.Sorted = true;
-            this.lstSelectedWalls.TabIndex = 4;
-            // 
-            // pgWall
-            // 
-            this.pgWall.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgWall.HelpVisible = false;
-            this.pgWall.Location = new System.Drawing.Point(0, 0);
-            this.pgWall.Name = "pgWall";
-            this.pgWall.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.pgWall.Size = new System.Drawing.Size(379, 308);
-            this.pgWall.TabIndex = 9;
-            this.pgWall.ToolbarVisible = false;
-            // 
-            // GameScreen
-            // 
-            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.GameScreen.Location = new System.Drawing.Point(0, 0);
-            this.GameScreen.Name = "GameScreen";
-            this.GameScreen.Padding = new System.Windows.Forms.Padding(5);
-            this.GameScreen.ScreenForm = null;
-            this.GameScreen.Size = new System.Drawing.Size(800, 600);
-            this.GameScreen.TabIndex = 8;
-            this.GameScreen.Text = "Game Screen";
-            // 
-            // lstEntities
-            // 
-            this.lstEntities.Camera = null;
-            this.lstEntities.FormattingEnabled = true;
-            this.lstEntities.Location = new System.Drawing.Point(3, 3);
-            this.lstEntities.Map = null;
-            this.lstEntities.Name = "lstEntities";
-            this.lstEntities.Size = new System.Drawing.Size(373, 186);
-            this.lstEntities.TabIndex = 0;
-            // 
-            // lstBGItems
-            // 
-            this.lstBGItems.Camera = null;
-            this.lstBGItems.FormattingEnabled = true;
-            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
-            this.lstBGItems.Map = null;
-            this.lstBGItems.Name = "lstBGItems";
-            this.lstBGItems.Size = new System.Drawing.Size(373, 134);
-            this.lstBGItems.TabIndex = 0;
-            // 
-            // mapParticleEffectsListBox1
-            // 
-            this.mapParticleEffectsListBox1.Camera = null;
-            this.mapParticleEffectsListBox1.FormattingEnabled = true;
-            this.mapParticleEffectsListBox1.Location = new System.Drawing.Point(3, 354);
-            this.mapParticleEffectsListBox1.Map = null;
-            this.mapParticleEffectsListBox1.Name = "mapParticleEffectsListBox1";
-            this.mapParticleEffectsListBox1.Size = new System.Drawing.Size(373, 212);
-            this.mapParticleEffectsListBox1.TabIndex = 3;
-            // 
-            // lstNPCSpawns
-            // 
-            this.lstNPCSpawns.FormattingEnabled = true;
-            this.lstNPCSpawns.Location = new System.Drawing.Point(6, 6);
-            this.lstNPCSpawns.Name = "lstNPCSpawns";
-            this.lstNPCSpawns.PropertyGrid = this.pgNPCSpawn;
-            this.lstNPCSpawns.Size = new System.Drawing.Size(353, 134);
-            this.lstNPCSpawns.TabIndex = 5;
-            // 
-            // lstPersistentNPCs
-            // 
-            this.lstPersistentNPCs.FormattingEnabled = true;
-            this.lstPersistentNPCs.Location = new System.Drawing.Point(6, 6);
-            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
-            this.lstPersistentNPCs.PropertyGrid = this.pgNPCSpawn;
-            this.lstPersistentNPCs.Size = new System.Drawing.Size(311, 134);
-            this.lstPersistentNPCs.TabIndex = 11;
-            // 
             // ScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1158,7 +1158,21 @@ namespace DemoGame.MapEditor
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tabPageGrhs.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel1.PerformLayout();
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            this.splitContainer4.ResumeLayout(false);
             this.tabPageWalls.ResumeLayout(false);
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            this.splitContainer5.Panel2.ResumeLayout(false);
+            this.splitContainer5.ResumeLayout(false);
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel1.PerformLayout();
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            this.splitContainer6.ResumeLayout(false);
+            this.splitContainer7.Panel1.ResumeLayout(false);
+            this.splitContainer7.Panel2.ResumeLayout(false);
+            this.splitContainer7.ResumeLayout(false);
             this.tabPageEntities.ResumeLayout(false);
             this.tabPageBackground.ResumeLayout(false);
             this.tabEffects.ResumeLayout(false);
@@ -1172,20 +1186,6 @@ namespace DemoGame.MapEditor
             this.groupBox3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel1.PerformLayout();
-            this.splitContainer4.Panel2.ResumeLayout(false);
-            this.splitContainer4.ResumeLayout(false);
-            this.splitContainer5.Panel1.ResumeLayout(false);
-            this.splitContainer5.Panel2.ResumeLayout(false);
-            this.splitContainer5.ResumeLayout(false);
-            this.splitContainer6.Panel1.ResumeLayout(false);
-            this.splitContainer6.Panel1.PerformLayout();
-            this.splitContainer6.Panel2.ResumeLayout(false);
-            this.splitContainer6.ResumeLayout(false);
-            this.splitContainer7.Panel1.ResumeLayout(false);
-            this.splitContainer7.Panel2.ResumeLayout(false);
-            this.splitContainer7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
