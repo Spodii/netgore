@@ -247,7 +247,7 @@ namespace NetGore
                 case CollisionType.None:
                     return Vector2.Zero;
                 default:
-                    throw new ArgumentOutOfRangeException("ct", string.Format("Unknown CollisionType `{0}`.", ct)); 
+                    throw new ArgumentOutOfRangeException("ct", string.Format("Unknown CollisionType `{0}`.", ct));
             }
         }
 

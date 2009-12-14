@@ -32,11 +32,6 @@ namespace DemoGame.Server
             AddListeners();
         }
 
-        public void SynchronizePaperdollTo(User user)
-        {
-            _paperDoll.SynchronizeBodyLayersTo(user);
-        }
-
         /// <summary>
         /// Gets the Character that this UserEquipped belongs to.
         /// </summary>
@@ -162,9 +157,7 @@ namespace DemoGame.Server
                     _paperDoll.NotifyAdded(item.Key, itemEntity);
                 }
                 else
-                {
                     Debug.Fail("Uhm, the Character couldn't load their equipped item. What should we do...?");
-                }
             }
 
             // Add the listeners back
@@ -179,6 +172,11 @@ namespace DemoGame.Server
 
         protected virtual void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
+        }
+
+        public void SynchronizePaperdollTo(User user)
+        {
+            _paperDoll.SynchronizeBodyLayersTo(user);
         }
 
         #region IDisposable Members

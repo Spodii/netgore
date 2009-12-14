@@ -42,17 +42,6 @@ namespace DemoGame.Client
         public event ToolbarEventHandler OnClickItem;
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Menu";
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Toolbar"/> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
@@ -142,6 +131,17 @@ namespace DemoGame.Client
             string title = Enum.GetName(typeof(ToolbarItemType), index);
             GrhData gd = Skin.GetToolbarItem(title);
             return new Grh(gd, AnimType.Loop, 0); // Start time doesn't matter
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Menu";
         }
 
         void ToolbarItem_OnClick(object sender, MouseClickEventArgs e)

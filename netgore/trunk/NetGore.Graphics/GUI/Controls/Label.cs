@@ -20,32 +20,14 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
-        public Label(GUIManagerBase gui, Vector2 position)
-            : base(gui, position, Vector2.One)
+        public Label(GUIManagerBase gui, Vector2 position) : base(gui, position, Vector2.One)
         {
-        }
-
-        /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Border = GUIManager.LabelSettings.Border;
-            CanDrag = false;
-            CanFocus = false;
-            AutoResize = true;
         }
 
         /// <summary>
         /// Gets or sets if the <see cref="Label"/> will automatically resize when the text or font changes.
         /// </summary>
-        public bool AutoResize
-        {
-            get; set;
-        }
+        public bool AutoResize { get; set; }
 
         /// <summary>
         /// Handles when the <see cref="TextControl.Font"/> has changed.
@@ -88,6 +70,20 @@ namespace NetGore.Graphics.GUI
         void ResizeToFitText()
         {
             Size = Border.Size + Font.MeasureString(Text);
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Border = GUIManager.LabelSettings.Border;
+            CanDrag = false;
+            CanFocus = false;
+            AutoResize = true;
         }
     }
 }

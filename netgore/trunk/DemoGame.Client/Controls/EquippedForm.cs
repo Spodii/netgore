@@ -20,13 +20,6 @@ namespace DemoGame.Client
 
         public event RequestUnequipHandler OnRequestUnequip;
 
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Equipment";
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EquippedForm"/> class.
         /// </summary>
@@ -85,6 +78,13 @@ namespace DemoGame.Client
             }
         }
 
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Equipment";
+        }
+
         #region IRestorableSettings Members
 
         /// <summary>
@@ -116,8 +116,7 @@ namespace DemoGame.Client
 
             readonly EquipmentSlot _slot;
 
-            public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot)
-                : base(parent, pos,_itemSize)
+            public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot) : base(parent, pos, _itemSize)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

@@ -38,24 +38,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            CanDrag = false;
-            CanFocus = false;
-
-            Border = GUIManager.ButtonSettings.Border;
-
-            _borderOver = GUIManager.ButtonSettings.MouseOver;
-            _borderPressed = GUIManager.ButtonSettings.Pressed;
-            _currentBorder = Border;
-        }
-
-        /// <summary>
         /// Gets or sets the ControlBorder used for when the mouse is over the control
         /// </summary>
         public ControlBorder BorderOver
@@ -71,18 +53,6 @@ namespace NetGore.Graphics.GUI
         {
             get { return _borderPressed; }
             set { _borderPressed = value; }
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control"/> has lost focus.
-        /// This is called immediately before <see cref="Control.OnLostFocus"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
-        /// </summary>
-        protected override void LostFocus()
-        {
-            base.LostFocus();
-
-            _currentBorder = Border;
         }
 
         /// <summary>
@@ -107,6 +77,36 @@ namespace NetGore.Graphics.GUI
             base.ChangeText();
 
             UpdateTextSize();
+        }
+
+        /// <summary>
+        /// Draw the Button
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw to</param>
+        protected override void DrawControl(SpriteBatch spriteBatch)
+        {
+            // Find the border, and try using the default if null in case one of the
+            // mouse over or pressed borders were not set
+            ControlBorder border = _currentBorder ?? Border;
+
+            // Draw the border
+            if (border != null)
+                border.Draw(spriteBatch, this);
+
+            // Draw the text
+            DrawText(spriteBatch, _textPos);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control"/> has lost focus.
+        /// This is called immediately before <see cref="Control.OnLostFocus"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
+        /// </summary>
+        protected override void LostFocus()
+        {
+            base.LostFocus();
+
+            _currentBorder = Border;
         }
 
         /// <summary>
@@ -165,21 +165,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draw the Button
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        protected override void SetDefaultValues()
         {
-            // Find the border, and try using the default if null in case one of the
-            // mouse over or pressed borders were not set
-            ControlBorder border = _currentBorder ?? Border;
+            base.SetDefaultValues();
 
-            // Draw the border
-            if (border != null)
-                border.Draw(spriteBatch, this);
+            CanDrag = false;
+            CanFocus = false;
 
-            // Draw the text
-            DrawText(spriteBatch, _textPos);
+            Border = GUIManager.ButtonSettings.Border;
+
+            _borderOver = GUIManager.ButtonSettings.MouseOver;
+            _borderPressed = GUIManager.ButtonSettings.Pressed;
+            _currentBorder = Border;
         }
 
         /// <summary>

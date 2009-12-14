@@ -46,76 +46,14 @@ namespace NetGore.Graphics.GUI
         public event ControlEventHandler OnBeginDrag;
 
         /// <summary>
-        /// Handles when a <see cref="Control"/> has begun being dragged.
-        /// This is called immediately before <see cref="Control.OnBeginDrag"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnBeginDrag"/> when possible.
-        /// </summary>
-        protected virtual void BeginDrag()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeBeginDrag()
-        {
-            BeginDrag();
-            if (OnBeginDrag != null)
-                OnBeginDrag(this);
-        }
-
-        /// <summary>
         /// Notifies listeners when the <see cref="Control.Border"/> has changed.
         /// </summary>
         public event ControlEventHandler OnChangeBorder;
 
         /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
-        /// </summary>
-        protected virtual void ChangeBorder()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeChangeBorder()
-        {
-            ChangeBorder();
-            if (OnChangeBorder != null)
-                OnChangeBorder(this);
-        }
-
-        /// <summary>
         /// Notifies listeners when this <see cref="Control"/> was clicked.
         /// </summary>
         public event MouseClickEventHandler OnClick;
-
-        /// <summary>
-        /// Handles when this <see cref="Control"/> was clicked.
-        /// This is called immediately before <see cref="Control.OnClick"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void Click(MouseClickEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeClick(MouseClickEventArgs e)
-        {
-            Click(e);
-            if (OnClick != null)
-                OnClick(this, e);
-        }
 
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has been disposed.
@@ -128,49 +66,9 @@ namespace NetGore.Graphics.GUI
         public event ControlEventHandler OnEndDrag;
 
         /// <summary>
-        /// Handles when this <see cref="Control"/> has ended being dragged.
-        /// This is called immediately before <see cref="Control.OnEndDrag"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnEndDrag"/> when possible.
-        /// </summary>
-        protected virtual void EndDrag()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeEndDrag()
-        {
-            EndDrag();
-            if (OnEndDrag != null)
-                OnEndDrag(this);
-        }
-
-        /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has gained focus.
         /// </summary>
         public event ControlEventHandler OnGetFocus;
-
-        /// <summary>
-        /// Handles when this <see cref="Control"/> has gained focus.
-        /// This is called immediately before <see cref="Control.OnGetFocus"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnGetFocus"/> when possible.
-        /// </summary>
-        protected virtual void GetFocus()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeGetFocus()
-        {
-            GetFocus();
-            if (OnGetFocus != null)
-                OnGetFocus(this);
-        }
 
         /// <summary>
         /// Notifies listeners when a key has been pressed down while the <see cref="Control"/> has focus.
@@ -178,53 +76,9 @@ namespace NetGore.Graphics.GUI
         public event KeyboardEventHandler OnKeyDown;
 
         /// <summary>
-        /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.OnKeyDown"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnKeyDown"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void KeyDown(KeyboardEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeKeyDown(KeyboardEventArgs e)
-        {
-            KeyDown(e);
-            if (OnKeyDown != null)
-                OnKeyDown(this, e);
-        }
-
-        /// <summary>
         /// Notifies listeners when a key is being pressed while the <see cref="Control"/> has focus.
         /// </summary>
         public event KeyboardEventHandler OnKeyPress;
-
-        /// <summary>
-        /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.OnKeyPress"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnKeyPress"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void KeyPress(KeyboardEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeKeyPress(KeyboardEventArgs e)
-        {
-            KeyPress(e);
-            if (OnKeyPress != null)
-                OnKeyPress(this, e);
-        }
 
         /// <summary>
         /// Notifies listeners when a key has been raised while the <see cref="Control"/> has focus.
@@ -232,51 +86,9 @@ namespace NetGore.Graphics.GUI
         public event KeyboardEventHandler OnKeyUp;
 
         /// <summary>
-        /// Handles when a key has been raised while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.OnKeyUp"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnKeyUp"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void KeyUp(KeyboardEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeKeyUp(KeyboardEventArgs e)
-        {
-            KeyUp(e);
-            if (OnKeyUp != null)
-                OnKeyUp(this, e);
-        }
-
-        /// <summary>
         /// Notifies listeners when the <see cref="Control"/> has lost focus.
         /// </summary>
         public event ControlEventHandler OnLostFocus;
-
-        /// <summary>
-        /// Handles when the <see cref="Control"/> has lost focus.
-        /// This is called immediately before <see cref="Control.OnLostFocus"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
-        /// </summary>
-        protected virtual void LostFocus()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeLostFocus()
-        {
-            LostFocus();
-            if (OnLostFocus != null)
-                OnLostFocus(this);
-        }
 
         /// <summary>
         /// Notifies listeners when a mouse button has been pressed down on this <see cref="Control"/>.
@@ -284,53 +96,9 @@ namespace NetGore.Graphics.GUI
         public event MouseClickEventHandler OnMouseDown;
 
         /// <summary>
-        /// Handles when a mouse button has been pressed down on this <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.OnMouseDown"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseDown"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void MouseDown(MouseClickEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeMouseDown(MouseClickEventArgs e)
-        {
-            MouseDown(e);
-            if (OnMouseDown != null)
-                OnMouseDown(this, e);
-        }
-
-        /// <summary>
         /// Notifies listeners when the mouse has entered the area of the <see cref="Control"/>.
         /// </summary>
         public event MouseEventHandler OnMouseEnter;
-
-        /// <summary>
-        /// Handles when the mouse has entered the area of the <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseEnter"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void MouseEnter(MouseEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeMouseEnter(MouseEventArgs e)
-        {
-            MouseEnter(e);
-            if (OnMouseEnter != null)
-                OnMouseEnter(this, e);
-        }
 
         /// <summary>
         /// Notifies listeners when the mouse has left the area of the <see cref="Control"/>.
@@ -338,53 +106,9 @@ namespace NetGore.Graphics.GUI
         public event MouseEventHandler OnMouseLeave;
 
         /// <summary>
-        /// Handles when the mouse has left the area of the <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseLeave"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void MouseLeave(MouseEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeMouseLeave(MouseEventArgs e)
-        {
-            MouseLeave(e);
-            if (OnMouseLeave != null)
-                OnMouseLeave(this, e);
-        }
-
-        /// <summary>
         /// Notifies listeners when the mouse has moved over the <see cref="Control"/>.
         /// </summary>
         public event MouseEventHandler OnMouseMove;
-
-        /// <summary>
-        /// Handles when the mouse has moved over the <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.OnMouseMove"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseMove"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void MouseMove(MouseEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeMouseMove(MouseEventArgs e)
-        {
-            MouseMove(e);
-            if (OnMouseMove != null)
-                OnMouseMove(this, e);
-        }
 
         /// <summary>
         /// Notifies listeners when a mouse button has been raised on the <see cref="Control"/>.
@@ -392,51 +116,9 @@ namespace NetGore.Graphics.GUI
         public event MouseClickEventHandler OnMouseUp;
 
         /// <summary>
-        /// Handles when a mouse button has been raised on the <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.OnMouseUp"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseUp"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void MouseUp(MouseClickEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeMouseUp(MouseClickEventArgs e)
-        {
-            MouseUp(e);
-            if (OnMouseUp != null)
-                OnMouseUp(this, e);
-        }
-
-        /// <summary>
         /// Notifies listeners when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// </summary>
         public event ControlEventHandler OnResize;
-
-        /// <summary>
-        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.OnResize"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
-        /// </summary>
-        protected virtual void Resize()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeResize()
-        {
-            Resize();
-            if (OnResize != null)
-                OnResize(this);
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -444,22 +126,18 @@ namespace NetGore.Graphics.GUI
         /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="size">Size of the Control.</param>
-        protected Control(Control parent, Vector2 position, Vector2 size)
-            : this(parent, parent.GUIManager, position, size)
+        protected Control(Control parent, Vector2 position, Vector2 size) : this(parent, parent.GUIManager, position, size)
         {
         }
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
+        /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        protected virtual void SetDefaultValues()
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        protected Control(GUIManagerBase gui, Vector2 position, Vector2 size) : this(null, gui, position, size)
         {
-            CanFocus = true;
-            CanDrag = false;
-            IsEnabled = true;
-            IsVisible = true;
-            Border = ControlBorder.Empty;
         }
 
         /// <summary>
@@ -505,25 +183,16 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        protected Control(GUIManagerBase gui, Vector2 position, Vector2 size)
-            : this(null, gui, position, size)
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the <see cref="ControlBorder"/> used with this control. If set to null,
         /// <see cref="ControlBorder.Empty"/> will be used instead. Will never be null.
         /// </summary>
         public ControlBorder Border
         {
-            get {
+            get
+            {
                 Debug.Assert(_border != null);
-                return _border; }
+                return _border;
+            }
             set
             {
                 if (value == null)
@@ -567,14 +236,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public Vector2 ClientSize
         {
-            get
-            {
-                return Size - Border.Size;
-            }
-            set
-            {
-                Size = value + Border.Size;
-            }
+            get { return Size - Border.Size; }
+            set { Size = value + Border.Size; }
         }
 
         /// <summary>
@@ -745,6 +408,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when a <see cref="Control"/> has begun being dragged.
+        /// This is called immediately before <see cref="Control.OnBeginDrag"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnBeginDrag"/> when possible.
+        /// </summary>
+        protected virtual void BeginDrag()
+        {
+        }
+
+        /// <summary>
         /// Gets a Vector2 for the offset created by the Border.
         /// </summary>
         /// <returns>A Vector2 for the offset created by the Border.</returns>
@@ -756,6 +428,25 @@ namespace NetGore.Graphics.GUI
                 return Vector2.Zero;
 
             return new Vector2(b.LeftWidth, b.TopHeight);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
+        /// </summary>
+        protected virtual void ChangeBorder()
+        {
+        }
+
+        /// <summary>
+        /// Handles when this <see cref="Control"/> was clicked.
+        /// This is called immediately before <see cref="Control.OnClick"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void Click(MouseClickEventArgs e)
+        {
         }
 
         /// <summary>
@@ -861,6 +552,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when this <see cref="Control"/> has ended being dragged.
+        /// This is called immediately before <see cref="Control.OnEndDrag"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnEndDrag"/> when possible.
+        /// </summary>
+        protected virtual void EndDrag()
+        {
+        }
+
+        /// <summary>
         /// Gets all of the child <see cref="Control"/>s from this <see cref="Control"/>.
         /// </summary>
         /// <returns>All of the child <see cref="Control"/>s from this <see cref="Control"/>. Does not include
@@ -941,6 +641,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when this <see cref="Control"/> has gained focus.
+        /// This is called immediately before <see cref="Control.OnGetFocus"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnGetFocus"/> when possible.
+        /// </summary>
+        protected virtual void GetFocus()
+        {
+        }
+
+        /// <summary>
         /// Finds the Control's root Control.
         /// </summary>
         /// <returns>Root Control for this Control.</returns>
@@ -988,6 +697,180 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeBeginDrag()
+        {
+            BeginDrag();
+            if (OnBeginDrag != null)
+                OnBeginDrag(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeBorder()
+        {
+            ChangeBorder();
+            if (OnChangeBorder != null)
+                OnChangeBorder(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeClick(MouseClickEventArgs e)
+        {
+            Click(e);
+            if (OnClick != null)
+                OnClick(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeEndDrag()
+        {
+            EndDrag();
+            if (OnEndDrag != null)
+                OnEndDrag(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeGetFocus()
+        {
+            GetFocus();
+            if (OnGetFocus != null)
+                OnGetFocus(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeKeyDown(KeyboardEventArgs e)
+        {
+            KeyDown(e);
+            if (OnKeyDown != null)
+                OnKeyDown(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeKeyPress(KeyboardEventArgs e)
+        {
+            KeyPress(e);
+            if (OnKeyPress != null)
+                OnKeyPress(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeKeyUp(KeyboardEventArgs e)
+        {
+            KeyUp(e);
+            if (OnKeyUp != null)
+                OnKeyUp(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeLostFocus()
+        {
+            LostFocus();
+            if (OnLostFocus != null)
+                OnLostFocus(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeMouseDown(MouseClickEventArgs e)
+        {
+            MouseDown(e);
+            if (OnMouseDown != null)
+                OnMouseDown(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeMouseEnter(MouseEventArgs e)
+        {
+            MouseEnter(e);
+            if (OnMouseEnter != null)
+                OnMouseEnter(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeMouseLeave(MouseEventArgs e)
+        {
+            MouseLeave(e);
+            if (OnMouseLeave != null)
+                OnMouseLeave(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeMouseMove(MouseEventArgs e)
+        {
+            MouseMove(e);
+            if (OnMouseMove != null)
+                OnMouseMove(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeMouseUp(MouseClickEventArgs e)
+        {
+            MouseUp(e);
+            if (OnMouseUp != null)
+                OnMouseUp(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeResize()
+        {
+            Resize();
+            if (OnResize != null)
+                OnResize(this);
+        }
+
+        /// <summary>
         /// Checks if a point is in a given region.
         /// </summary>
         /// <param name="point">Point to check if the region contains.</param>
@@ -1014,6 +897,95 @@ namespace NetGore.Graphics.GUI
             Vector2 min = Vector2.Zero;
             Vector2 max = parent.ClientSize - Size;
             Position = Vector2.Min(Vector2.Max(Position, min), max);
+        }
+
+        /// <summary>
+        /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.OnKeyDown"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnKeyDown"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void KeyDown(KeyboardEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.OnKeyPress"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnKeyPress"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void KeyPress(KeyboardEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when a key has been raised while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.OnKeyUp"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnKeyUp"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void KeyUp(KeyboardEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control"/> has lost focus.
+        /// This is called immediately before <see cref="Control.OnLostFocus"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
+        /// </summary>
+        protected virtual void LostFocus()
+        {
+        }
+
+        /// <summary>
+        /// Handles when a mouse button has been pressed down on this <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseDown"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseDown"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void MouseDown(MouseClickEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the mouse has entered the area of the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseEnter"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void MouseEnter(MouseEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the mouse has left the area of the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseLeave"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void MouseLeave(MouseEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the mouse has moved over the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseMove"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseMove"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void MouseMove(MouseEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when a mouse button has been raised on the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseUp"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseUp"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void MouseUp(MouseClickEventArgs e)
+        {
         }
 
         /// <summary>
@@ -1055,6 +1027,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.OnResize"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
+        /// </summary>
+        protected virtual void Resize()
+        {
+        }
+
+        /// <summary>
         /// Sets this Control as the top-most Control, if possible.
         /// </summary>
         void SetAsTopMost()
@@ -1062,6 +1043,19 @@ namespace NetGore.Graphics.GUI
             Control parent = Parent;
             if (parent != null)
                 parent.SetTopMostChild(this);
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected virtual void SetDefaultValues()
+        {
+            CanFocus = true;
+            CanDrag = false;
+            IsEnabled = true;
+            IsVisible = true;
+            Border = ControlBorder.Empty;
         }
 
         /// <summary>

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.Collections;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -28,8 +26,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="EmitterModifierFactory"/> class.
         /// </summary>
-        EmitterModifierFactory()
-            : base(GetTypeFilter(), null, false)
+        EmitterModifierFactory() : base(GetTypeFilter(), null, false)
         {
         }
 

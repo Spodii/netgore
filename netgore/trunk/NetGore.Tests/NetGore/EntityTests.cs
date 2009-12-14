@@ -92,6 +92,10 @@ namespace NetGore.Tests.NetGore
 
         class TestEntity : Entity
         {
+            public TestEntity(Vector2 pos, Vector2 size) : base(pos, size)
+            {
+            }
+
             /// <summary>
             /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
             /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
@@ -99,10 +103,6 @@ namespace NetGore.Tests.NetGore
             public override bool CollidesAgainstWalls
             {
                 get { return true; }
-            }
-
-            public TestEntity(Vector2 pos, Vector2 size) : base(pos, size)
-            {
             }
         }
     }

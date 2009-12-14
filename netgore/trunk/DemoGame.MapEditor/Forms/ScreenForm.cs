@@ -1011,6 +1011,10 @@ namespace DemoGame.MapEditor
             tcMenu.SelectTab(tabPageGrhs);
         }
 
+        void picToolSelect_Click(object sender, EventArgs e)
+        {
+        }
+
         void ScreenForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             GrhInfo.Save(ContentPaths.Dev);
@@ -1315,11 +1319,6 @@ namespace DemoGame.MapEditor
                     w.WriteEndNode(_displayNodeName);
                 }
             }
-        }
-
-        private void picToolSelect_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

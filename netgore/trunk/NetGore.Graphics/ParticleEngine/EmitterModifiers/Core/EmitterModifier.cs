@@ -30,16 +30,6 @@ namespace NetGore.Graphics.ParticleEngine
         protected abstract void HandleUpdate(ParticleEmitter emitter, int elapsedTime);
 
         /// <summary>
-        /// Updates the <see cref="EmitterModifier"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to modifier.</param>
-        /// <param name="elapsedTime">The amount of time that has elapsed since the last update.</param>
-        public void Update(ParticleEmitter emitter, int elapsedTime)
-        {
-            HandleUpdate(emitter, elapsedTime);
-        }
-
-        /// <summary>
         /// Reads a <see cref="EmitterModifier"/> from an <see cref="IValueReader"/>.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
@@ -74,6 +64,16 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
         protected abstract void ReadCustomValues(IValueReader reader);
+
+        /// <summary>
+        /// Updates the <see cref="EmitterModifier"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to modifier.</param>
+        /// <param name="elapsedTime">The amount of time that has elapsed since the last update.</param>
+        public void Update(ParticleEmitter emitter, int elapsedTime)
+        {
+            HandleUpdate(emitter, elapsedTime);
+        }
 
         /// <summary>
         /// Writes the <see cref="EmitterModifier"/> to the <paramref name="writer"/>.

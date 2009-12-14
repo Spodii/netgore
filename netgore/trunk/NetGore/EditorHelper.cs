@@ -8,17 +8,16 @@ namespace NetGore
     public static class EditorHelper
     {
         /// <summary>
-        /// The fully qualified name for the ParticleModifierCollectionEditor.
-        /// </summary>
-        public const string ParticleModifierCollectionEditorTypeName =
-            "NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools";
-
-
-        /// <summary>
         /// The fully qualified name for the EmitterModifierCollectionEditor.
         /// </summary>
         public const string EmitterModifierCollectionEditorTypeName =
             "NetGore.EditorTools.EmitterModifierCollectionEditor, NetGore.EditorTools";
+
+        /// <summary>
+        /// The fully qualified name for the ParticleModifierCollectionEditor.
+        /// </summary>
+        public const string ParticleModifierCollectionEditorTypeName =
+            "NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools";
 
         /// <summary>
         /// The fully qualified type name for the UITypeEditor.

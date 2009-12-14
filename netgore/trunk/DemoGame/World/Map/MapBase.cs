@@ -57,12 +57,12 @@ namespace DemoGame
         /// </summary>
         readonly DArray<DynamicEntity> _dynamicEntities = new DArray<DynamicEntity>(true);
 
+        readonly DynamicEntitySpatial _dynamicEntitySpatial = new DynamicEntitySpatial();
+
         /// <summary>
         /// List of entities in the map
         /// </summary>
         readonly List<Entity> _entities = new List<Entity>();
-
-        readonly DynamicEntitySpatial _dynamicEntitySpatial = new DynamicEntitySpatial();
 
         /// <summary>
         /// Interface used to get the time
@@ -239,6 +239,68 @@ namespace DemoGame
 
             // Allow for additional processing
             EntityAdded(entity);
+        }
+
+        void CheckCollisionAgainstEntities(Entity entity)
+        {
+            // TODO: !! Find some way to optimize this to only return interesting entities
+
+            // Get the entities we have a rectangular collision with
+            var spatial = this.GetSpatial<Entity>();
+            var collisionSources = spatial.GetEntities<Entity>(entity, x => !(x is WallEntityBase));
+
+            foreach (var other in collisionSources)
+            {
+                var displacement = CollisionBox.MTD(entity.CB, other.CB, other.CollisionType);
+                if (displacement != Vector2.Zero)
+                {
+                    entity.CollideInto(other, displacement);
+                    other.CollideFrom(entity, displacement);
+                }
+            }
+        }
+
+        void CheckCollisionsAgainstWalls(Entity entity)
+        {
+            if (!entity.CollidesAgainstWalls)
+                return;
+
+            // Get the entities we have a rectangular collision with
+            var spatial = this.GetSpatial<WallEntityBase>();
+            var collisionSources = spatial.GetEntities<WallEntityBase>(entity);
+
+            // Do real collision detection on the entities, and handle it if the collision test passes
+            foreach (var wall in collisionSources)
+            {
+                // Get the displacement vector if the two entities collided
+                var displacement = CollisionBox.MTD(entity.CB, wall.CB, wall.CollisionType);
+
+                // If there is a displacement value, forward it to the collision notifiers
+                if (displacement != Vector2.Zero)
+                    WallEntityBase.HandleCollideInto(entity, displacement);
+            }
+
+            // TODO: !! Ensure position is valid
+            /*
+            // Ensure the position we found is actually valid
+            // Its not uncommon for this to return false when teleporting an Entity inside of a bunch of walls or
+            // something, resulting in the displaced position being inside another Wall
+            Vector2 closestValid;
+            bool validPositionFound;
+            if (!IsValidPlacementPosition(entity.CB, out closestValid, out validPositionFound))
+            {
+                if (!validPositionFound)
+                {
+                    // TODO: What do we do when we can't find a valid position at all!?
+                    Debug.Fail("What do we do when we can't find a valid position at all!?");
+                    return;
+                }
+
+                entity.Teleport(closestValid);
+
+                Debug.Assert(!this.GetSpatial<WallEntityBase>().ContainsEntities<WallEntityBase>(entity.CB));
+            }
+            */
         }
 
         /// <summary>
@@ -1154,71 +1216,6 @@ namespace DemoGame
 
             CheckCollisionsAgainstWalls(entity);
             CheckCollisionAgainstEntities(entity);
-        }
-
-        void CheckCollisionAgainstEntities(Entity entity)
-        {
-            // TODO: !! Find some way to optimize this to only return interesting entities
-
-            // Get the entities we have a rectangular collision with
-            var spatial = this.GetSpatial<Entity>();
-            var collisionSources = spatial.GetEntities<Entity>(entity, x => !(x is WallEntityBase));
-
-            foreach (var other in collisionSources)
-            {
-                var displacement = CollisionBox.MTD(entity.CB, other.CB, other.CollisionType);
-                if (displacement != Vector2.Zero)
-                {
-                    entity.CollideInto(other, displacement);
-                    other.CollideFrom(entity, displacement);
-                }
-            }
-        }
-
-        void CheckCollisionsAgainstWalls(Entity entity)
-        {
-            if (!entity.CollidesAgainstWalls)
-                return;
-
-            // Get the entities we have a rectangular collision with
-            var spatial = this.GetSpatial<WallEntityBase>();
-            var collisionSources = spatial.GetEntities<WallEntityBase>(entity);
-
-            // Do real collision detection on the entities, and handle it if the collision test passes
-            foreach (var wall in collisionSources)
-            {
-                // Get the displacement vector if the two entities collided
-                var displacement = CollisionBox.MTD(entity.CB, wall.CB, wall.CollisionType);
-
-                // If there is a displacement value, forward it to the collision notifiers
-                if (displacement != Vector2.Zero)
-                {
-                    WallEntityBase.HandleCollideInto(entity, displacement);
-
-                }
-            }
-
-            // TODO: !! Ensure position is valid
-            /*
-            // Ensure the position we found is actually valid
-            // Its not uncommon for this to return false when teleporting an Entity inside of a bunch of walls or
-            // something, resulting in the displaced position being inside another Wall
-            Vector2 closestValid;
-            bool validPositionFound;
-            if (!IsValidPlacementPosition(entity.CB, out closestValid, out validPositionFound))
-            {
-                if (!validPositionFound)
-                {
-                    // TODO: What do we do when we can't find a valid position at all!?
-                    Debug.Fail("What do we do when we can't find a valid position at all!?");
-                    return;
-                }
-
-                entity.Teleport(closestValid);
-
-                Debug.Assert(!this.GetSpatial<WallEntityBase>().ContainsEntities<WallEntityBase>(entity.CB));
-            }
-            */
         }
 
         /// <summary>

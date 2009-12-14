@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -23,12 +22,6 @@ namespace NetGore
         /// </summary>
         /// <param name="entity">The <see cref="Entity"/> to add.</param>
         void Add(Entity entity);
-
-        /// <summary>
-        /// Removes an <see cref="Entity"/> from the spatial collection.
-        /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to remove.</param>
-        void Remove(Entity entity);
 
         /// <summary>
         /// Gets if the specified area or location contains any entities.
@@ -227,5 +220,11 @@ namespace NetGore
         /// <typeparam name="T">Type to convert to</typeparam>
         /// <returns>First Entity found at the given point, or null if none found</returns>
         T GetEntity<T>(Rectangle rect) where T : Entity;
+
+        /// <summary>
+        /// Removes an <see cref="Entity"/> from the spatial collection.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to remove.</param>
+        void Remove(Entity entity);
     }
 }

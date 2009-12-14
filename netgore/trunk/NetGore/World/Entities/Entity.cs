@@ -39,12 +39,6 @@ namespace NetGore
         public event EntityEventHandler<Vector2> OnResize;
 
         /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
-        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
-        /// </summary>
-        public abstract bool CollidesAgainstWalls { get; }
-
-        /// <summary>
         /// Entity constructor
         /// </summary>
         protected Entity()
@@ -84,6 +78,12 @@ namespace NetGore
         {
             get { return Position + (Size / 2); }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
+        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
+        /// </summary>
+        public abstract bool CollidesAgainstWalls { get; }
 
         /// <summary>
         /// Gets or sets the collision type used for the entity.

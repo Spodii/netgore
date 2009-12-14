@@ -74,23 +74,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.OnKeyDown"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnKeyDown"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected override void KeyDown(KeyboardEventArgs e)
-        {
-            base.KeyDown(e);
-
-            if (!IsEnabled || !IsVisible)
-                return;
-
-            // Notify of only the last key pressed
-            _editableTextHandler.NotifyKeyPressed(e.Keys.LastOrDefault());
-        }
-
-        /// <summary>
         /// Gets or set the position of the cursor on the current line. This is equal to the index of the character
         /// the cursor is immediately before. For example, 2 would mean the cursor is immediately before the character
         /// on the line at index 2 (or between the second and 3rd character).
@@ -325,6 +308,27 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when this <see cref="Control"/> was clicked.
+        /// This is called immediately before <see cref="Control.OnClick"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void Click(MouseClickEventArgs e)
+        {
+            base.Click(e);
+
+            if (!IsEnabled || !IsVisible)
+                return;
+
+            int lineIndex;
+            int lineCharIndex;
+            GetCharacterAtPoint(e.Location, out lineIndex, out lineCharIndex);
+
+            _lines.MoveTo(lineIndex);
+            CursorLinePosition = lineCharIndex;
+        }
+
+        /// <summary>
         /// Draws the Control.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
@@ -455,30 +459,26 @@ namespace NetGore.Graphics.GUI
             _numCharsToDraw.Invalidate();
         }
 
-        void ResetCursorBlink()
-        {
-            _cursorBlinkTimer = _currentTime;
-        }
-
         /// <summary>
-        /// Handles when this <see cref="Control"/> was clicked.
-        /// This is called immediately before <see cref="Control.OnClick"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+        /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.OnKeyDown"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnKeyDown"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void Click(MouseClickEventArgs e)
+        protected override void KeyDown(KeyboardEventArgs e)
         {
-            base.Click(e);
+            base.KeyDown(e);
 
             if (!IsEnabled || !IsVisible)
                 return;
 
-            int lineIndex;
-            int lineCharIndex;
-            GetCharacterAtPoint(e.Location, out lineIndex, out lineCharIndex);
+            // Notify of only the last key pressed
+            _editableTextHandler.NotifyKeyPressed(e.Keys.LastOrDefault());
+        }
 
-            _lines.MoveTo(lineIndex);
-            CursorLinePosition = lineCharIndex;
+        void ResetCursorBlink()
+        {
+            _cursorBlinkTimer = _currentTime;
         }
 
         /// <summary>

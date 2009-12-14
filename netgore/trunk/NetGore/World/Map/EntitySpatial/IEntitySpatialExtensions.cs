@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -87,8 +86,7 @@ namespace NetGore
             return c.GetEntities(cb.ToRectangle(), condition);
         }
 
-        public static IEnumerable<T> GetEntities<T>(this IEntitySpatial c, Entity entity, Predicate<T> condition)
-            where T : Entity
+        public static IEnumerable<T> GetEntities<T>(this IEntitySpatial c, Entity entity, Predicate<T> condition) where T : Entity
         {
             return c.GetEntities(entity.CB, condition);
         }

@@ -15,15 +15,6 @@ namespace DemoGame
         public const byte MaxStackSize = 99;
 
         /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
-        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
-        /// </summary>
-        public override bool CollidesAgainstWalls
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
         /// </summary>
         /// <param name="pos">Position to place the item.</param>
@@ -45,6 +36,15 @@ namespace DemoGame
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
         public abstract byte Amount { get; set; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
+        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
+        /// </summary>
+        public override bool CollidesAgainstWalls
+        {
+            get { return true; }
+        }
 
         /// <summary>
         /// Gets or sets the description of the item.

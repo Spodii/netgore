@@ -12,15 +12,6 @@ namespace DemoGame
     public abstract class CharacterEntity : DynamicEntity, IUpdateableEntity
     {
         /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
-        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
-        /// </summary>
-        public override bool CollidesAgainstWalls
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// The maximum distance, in pixels, a character can pick up an item.
         /// </summary>
         public const int MaxPickupDistance = 32;
@@ -50,6 +41,15 @@ namespace DemoGame
         public bool CanJump
         {
             get { return OnGround; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
+        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
+        /// </summary>
+        public override bool CollidesAgainstWalls
+        {
+            get { return true; }
         }
 
         /// <summary>

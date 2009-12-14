@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -22,7 +20,9 @@ namespace NetGore.Graphics.ParticleEngine
         public void ProcessEmitter(ParticleEmitter emitter, int elapsedTime)
         {
             foreach (var modifier in this)
+            {
                 modifier.Update(emitter, elapsedTime);
+            }
         }
 
         /// <summary>

@@ -44,17 +44,6 @@ namespace DemoGame.Client
         public event InventoryUseItemHandler OnRequestUseItem;
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Inventory";
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
         /// <param name="infoRequester">The item info tooltip.</param>
@@ -117,6 +106,17 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Inventory";
+        }
+
         #region IRestorableSettings Members
 
         /// <summary>
@@ -148,8 +148,7 @@ namespace DemoGame.Client
 
             readonly InventorySlot _slot;
 
-            public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot)
-                : base(parent, pos, _itemSize)
+            public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot) : base(parent, pos, _itemSize)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
