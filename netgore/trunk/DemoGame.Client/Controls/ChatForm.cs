@@ -24,23 +24,11 @@ namespace DemoGame.Client
         public event ChatFormSayHandler OnSay;
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Chat";
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ChatForm"/> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="pos">The pos.</param>
-        public ChatForm(Control parent, Vector2 pos)
-            : base(parent, pos, new Vector2(300, 150))
+        public ChatForm(Control parent, Vector2 pos) : base(parent, pos, new Vector2(300, 150))
         {
             // Create the input and output TextBoxes
             _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = false, IsEnabled = true, Font = Font };
@@ -50,70 +38,6 @@ namespace DemoGame.Client
 
             // Force the initial repositioning
             RepositionTextBoxes();
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
-        /// </summary>
-        protected override void ChangeFont()
-        {
-            base.ChangeFont();
-
-
-            if (_input == null || _output == null)
-                return;
-
-            _input.Font = Font;
-            _output.Font = Font;
-
-            RepositionTextBoxes();
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
-        /// </summary>
-        protected override void ChangeBorder()
-        {
-            base.ChangeBorder();
-
-            RepositionTextBoxes();
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.OnResize"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
-        /// </summary>
-        protected override void Resize()
-        {
-            base.Resize();
-
-            RepositionTextBoxes();
-        }
-
-        /// <summary>
-        /// Repositions the input and output TextBoxes on the form.
-        /// </summary>
-        void RepositionTextBoxes()
-        {
-            if (_input == null || _output == null)
-                return;
-
-            Vector2 inputSize = new Vector2(ClientSize.X, Font.LineSpacing + _input.Border.Height);
-            Vector2 outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
-
-            Vector2 inputPos = new Vector2(0, outputSize.Y);
-            Vector2 outputPos = Vector2.Zero;
-
-            _input.Position = inputPos;
-            _input.Size = inputSize;
-
-            _output.Position = outputPos;
-            _output.Size = outputSize;
         }
 
         /// <summary>
@@ -144,6 +68,36 @@ namespace DemoGame.Client
             _output.AppendLine(text);
         }
 
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
+        /// </summary>
+        protected override void ChangeBorder()
+        {
+            base.ChangeBorder();
+
+            RepositionTextBoxes();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// </summary>
+        protected override void ChangeFont()
+        {
+            base.ChangeFont();
+
+            if (_input == null || _output == null)
+                return;
+
+            _input.Font = Font;
+            _output.Font = Font;
+
+            RepositionTextBoxes();
+        }
+
         void Input_OnKeyDown(object sender, KeyboardEventArgs e)
         {
             const int bufferScrollRate = 3;
@@ -170,6 +124,50 @@ namespace DemoGame.Client
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Repositions the input and output TextBoxes on the form.
+        /// </summary>
+        void RepositionTextBoxes()
+        {
+            if (_input == null || _output == null)
+                return;
+
+            Vector2 inputSize = new Vector2(ClientSize.X, Font.LineSpacing + _input.Border.Height);
+            Vector2 outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
+
+            Vector2 inputPos = new Vector2(0, outputSize.Y);
+            Vector2 outputPos = Vector2.Zero;
+
+            _input.Position = inputPos;
+            _input.Size = inputSize;
+
+            _output.Position = outputPos;
+            _output.Size = outputSize;
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.OnResize"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
+        /// </summary>
+        protected override void Resize()
+        {
+            base.Resize();
+
+            RepositionTextBoxes();
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Chat";
         }
 
         void UpdateBufferOffset()

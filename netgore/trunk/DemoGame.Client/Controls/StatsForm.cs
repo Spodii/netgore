@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -32,23 +31,11 @@ namespace DemoGame.Client
         public event RaiseStatHandler OnRaiseStat;
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Stats";
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="StatsForm"/> class.
         /// </summary>
         /// <param name="userInfo">The user info.</param>
         /// <param name="parent">The parent.</param>
-        public StatsForm(UserInfo userInfo, Control parent)
-            : base(parent, Vector2.Zero, new Vector2(225, 275))
+        public StatsForm(UserInfo userInfo, Control parent) : base(parent, Vector2.Zero, new Vector2(225, 275))
         {
             if (userInfo == null)
                 throw new ArgumentNullException("userInfo");
@@ -110,6 +97,17 @@ namespace DemoGame.Client
             AddLine();
             Vector2 pos = new Vector2(_xOffset, _yOffset);
             new UserInfoLabel(this, pos, title, valueHandler);
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Stats";
         }
 
         void StatPB_OnClick(object sender, MouseClickEventArgs e)
@@ -233,9 +231,9 @@ namespace DemoGame.Client
             readonly StatsForm _statsForm;
             readonly StatType _statType;
 
-            int _lastUpdateTextTime = int.MinValue;
             int _lastBaseValue = int.MinValue;
             int _lastModValue = int.MinValue;
+            int _lastUpdateTextTime = int.MinValue;
 
             public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : base(statsForm, pos)
             {

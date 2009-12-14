@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
 using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -16,6 +12,11 @@ namespace NetGore.Graphics.ParticleEngine
         const string _categoryName = "Burst Emit Modifier";
         const int _defaultEmitPeriod = 500;
         const int _defaultRestPeriod = 2000;
+        const string _emitPeriodKeyName = "EmitPeriod";
+        const string _restPeriodKeyName = "RestPeriod";
+        VariableUShort _emitterReleaseAmount = 0;
+        bool _isBursting = true;
+        int _timeout = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmitterBurstEmitModifier"/> class.
@@ -45,10 +46,6 @@ namespace NetGore.Graphics.ParticleEngine
         [DefaultValue(_defaultRestPeriod)]
         public int RestPeriod { get; set; }
 
-        bool _isBursting = true;
-        int _timeout = 0;
-        VariableUShort _emitterReleaseAmount = 0;
-
         /// <summary>
         /// When overridden in the derived class, handles updating the <see cref="ParticleEmitter"/>.
         /// </summary>
@@ -76,9 +73,6 @@ namespace NetGore.Graphics.ParticleEngine
                 _isBursting = !_isBursting;
             }
         }
-
-        const string _emitPeriodKeyName = "EmitPeriod";
-        const string _restPeriodKeyName = "RestPeriod";
 
         /// <summary>
         /// When overridden in the derived class, reads the <see cref="EmitterModifier"/>'s custom values

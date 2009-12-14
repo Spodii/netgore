@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -34,9 +32,7 @@ namespace DemoGame.MapEditor
 
             // Set the selected entity to the first entity we find at the cursor
             var spatial = screen.Map.GetSpatial<Entity>();
-            _selectedEntity = spatial.GetEntity(cursorPos,
-                                                                    entity =>
-                                                                    !(entity is WallEntityBase || entity is CharacterEntity));
+            _selectedEntity = spatial.GetEntity(cursorPos, entity => !(entity is WallEntityBase || entity is CharacterEntity));
 
             // Set the offset
             if (_selectedEntity != null)

@@ -27,6 +27,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Draws the Control.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(SpriteBatch spriteBatch)
+        {
+            base.DrawControl(spriteBatch);
+
+            DrawText(spriteBatch, new Vector2(3, 3));
+        }
+
+        /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
         /// base class's method to ensure that changes to settings are hierchical.
         /// </summary>
@@ -37,17 +48,6 @@ namespace NetGore.Graphics.GUI
             Border = GUIManager.FormSettings.Border;
             CanDrag = true;
             ForeColor = GUIManager.FormSettings.ForeColor;
-        }
-
-        /// <summary>
-        /// Draws the Control.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
-        {
-            base.DrawControl(spriteBatch);
-
-            DrawText(spriteBatch, new Vector2(3, 3));
         }
     }
 }

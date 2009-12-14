@@ -12,6 +12,7 @@ namespace NetGore.Graphics.GUI
     public class ControlBorder
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly ControlBorder _empty;
 
         /// <summary>
         /// Bottom border
@@ -63,22 +64,12 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         ISprite _tr = null;
 
-        static readonly ControlBorder _empty;
-
         /// <summary>
         /// Initializes the <see cref="ControlBorder"/> class.
         /// </summary>
         static ControlBorder()
         {
             _empty = new ControlBorder(null, null, null, null, null, null, null, null, null);
-    }
-
-        /// <summary>
-        /// Gets the default empty <see cref="ControlBorder"/>.
-        /// </summary>
-        public static ControlBorder Empty
-        {
-            get { return _empty; }
         }
 
         /// <summary>
@@ -138,6 +129,14 @@ namespace NetGore.Graphics.GUI
         {
             get { return _color; }
             set { _color = value; }
+        }
+
+        /// <summary>
+        /// Gets the default empty <see cref="ControlBorder"/>.
+        /// </summary>
+        public static ControlBorder Empty
+        {
+            get { return _empty; }
         }
 
         /// <summary>

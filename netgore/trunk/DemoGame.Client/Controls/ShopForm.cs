@@ -21,7 +21,7 @@ namespace DemoGame.Client.Controls
         /// <summary>
         /// The size of each item slot.
         /// </summary>
-        static readonly Vector2 _itemSize = new Vector2(32,32);
+        static readonly Vector2 _itemSize = new Vector2(32, 32);
 
         /// <summary>
         /// The amount of space between each item.
@@ -32,23 +32,11 @@ namespace DemoGame.Client.Controls
         public event ShopFormPurchaseHandler OnPurchase;
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Shop";
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ShopForm"/> class.
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public ShopForm(Vector2 position, Control parent)
-            : base(parent, position, new Vector2(200, 200))
+        public ShopForm(Vector2 position, Control parent) : base(parent, position, new Vector2(200, 200))
         {
             IsVisible = false;
 
@@ -91,6 +79,17 @@ namespace DemoGame.Client.Controls
             _shopInfo = null;
         }
 
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Shop";
+        }
+
         void ShopItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
             ShopItemPB src = (ShopItemPB)sender;
@@ -131,8 +130,7 @@ namespace DemoGame.Client.Controls
             readonly ShopForm _shopForm;
             Grh _grh;
 
-            public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
-                : base(parent, pos, _itemSize)
+            public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index) : base(parent, pos, _itemSize)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

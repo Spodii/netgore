@@ -39,7 +39,7 @@ namespace NetGore.IO
         {
             if (_rootDir.Equals("Grh/"))
             {
-                 var s = Value.Substring(_rootDir.Length - 1);
+                var s = Value.Substring(_rootDir.Length - 1);
                 return s;
             }
             else

@@ -40,20 +40,12 @@ namespace DemoGame.Client
         /// </summary>
         public event ChatDialogSelectResponseHandler OnSelectResponse;
 
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "NPC Chat";
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogForm"/> class.
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public NPCChatDialogForm(Vector2 position, Control parent)
-            : base(parent, position, new Vector2(600, 500))
+        public NPCChatDialogForm(Vector2 position, Control parent) : base(parent, position, new Vector2(600, 500))
         {
             IsVisible = false;
 
@@ -65,7 +57,8 @@ namespace DemoGame.Client
 
             float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
             Vector2 textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
-            _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize) { IsEnabled = false, CanFocus = false, IsMultiLine = true };
+            _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize)
+            { IsEnabled = false, CanFocus = false, IsMultiLine = true };
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
@@ -73,6 +66,20 @@ namespace DemoGame.Client
                 r.OnClick += ResponseText_OnClick;
                 _responseTextControls[i] = r;
             }
+        }
+
+        /// <summary>
+        /// Gets if a dialog is currently open.
+        /// </summary>
+        public bool IsChatting
+        {
+            get { return _dialog != null; }
+        }
+
+        public void EndDialog()
+        {
+            IsVisible = false;
+            _dialog = null;
         }
 
         /// <summary>
@@ -92,20 +99,6 @@ namespace DemoGame.Client
             }
         }
 
-        /// <summary>
-        /// Gets if a dialog is currently open.
-        /// </summary>
-        public bool IsChatting
-        {
-            get { return _dialog != null; }
-        }
-
-        public void EndDialog()
-        {
-            IsVisible = false;
-            _dialog = null;
-        }
-
         void ResponseText_OnClick(object sender, MouseClickEventArgs e)
         {
             ResponseText src = (ResponseText)sender;
@@ -115,6 +108,13 @@ namespace DemoGame.Client
                 if (OnSelectResponse != null)
                     OnSelectResponse(this, response);
             }
+        }
+
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "NPC Chat";
         }
 
         public void SetPageIndex(ushort pageIndex, IEnumerable<byte> responsesToSkip)
@@ -201,8 +201,7 @@ namespace DemoGame.Client
         {
             NPCChatResponseBase _response;
 
-            public ResponseText(Control parent, Vector2 position)
-                : base(parent, position)
+            public ResponseText(Control parent, Vector2 position) : base(parent, position)
             {
             }
 

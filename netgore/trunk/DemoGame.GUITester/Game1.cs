@@ -66,7 +66,8 @@ namespace DemoGame.GUITester
 
             TextBox tb = new TextBox(topForm, new Vector2(10, 10), new Vector2(150, 300));
 
-            _textBox = new TextBox(topForm, new Vector2(350, 10), new Vector2(200, 200)) { Font = _font, Text = "abcdef\nghi\r\njklj\n" };
+            _textBox = new TextBox(topForm, new Vector2(350, 10), new Vector2(200, 200))
+            { Font = _font, Text = "abcdef\nghi\r\njklj\n" };
 
             for (int i = 0; i < 150; i++)
             {
@@ -108,7 +109,7 @@ namespace DemoGame.GUITester
 
             new CheckBox(form, new Vector2(20, 200)) { Text = "Checkbox" };
 
-            Form f2 = new Form(topForm, new Vector2(200, 250), new Vector2(275, 270)) { Text = "My form 2"};
+            Form f2 = new Form(topForm, new Vector2(200, 250), new Vector2(275, 270)) { Text = "My form 2" };
             Form f3 = new Form(f2, Vector2.Zero, new Vector2(200, 200)) { Text = "form 3" };
             Form f4 = new Form(f3, Vector2.Zero, new Vector2(100, 100)) { Text = "form 4" };
 

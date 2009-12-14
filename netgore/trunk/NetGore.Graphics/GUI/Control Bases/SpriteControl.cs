@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +11,16 @@ namespace NetGore.Graphics.GUI
     {
         ISprite _sprite;
         bool _stretch = true;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
+        /// </summary>
+        public event ControlEventHandler OnChangeSprite;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
+        /// </summary>
+        public event ControlEventHandler OnChangeStretchSprite;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -29,70 +38,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="size">Size of the Control.</param>
-        protected SpriteControl(GUIManagerBase gui, Vector2 position, Vector2 size)
-            : base(gui, position, size)
+        protected SpriteControl(GUIManagerBase gui, Vector2 position, Vector2 size) : base(gui, position, size)
         {
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
-        /// </summary>
-        public event ControlEventHandler OnChangeSprite;
-
-        /// <summary>
-        /// Handles when the <see cref="SpriteControl.Sprite"/> has changed.
-        /// This is called immediately before <see cref="SpriteControl.OnChangeSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeSprite"/> when possible.
-        /// </summary>
-        protected virtual void ChangeSprite()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeChangeSprite()
-        {
-            ChangeSprite();
-            if (OnChangeSprite != null)
-                OnChangeSprite(this);
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
-        /// </summary>
-        public event ControlEventHandler OnChangeStretchSprite;
-
-        /// <summary>
-        /// Handles when the <see cref="SpriteControl.StretchSprite"/> value has changed.
-        /// This is called immediately before <see cref="SpriteControl.OnChangeStretchSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeStretchSprite"/> when possible.
-        /// </summary>
-        protected virtual void ChangeStretchSprite()
-        {
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeChangeStretchSprite()
-        {
-            ChangeStretchSprite();
-            if (OnChangeStretchSprite != null)
-                OnChangeStretchSprite(this);
-        }
-
-        /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            CanDrag = false;
         }
 
         /// <summary>
@@ -130,6 +77,24 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when the <see cref="SpriteControl.Sprite"/> has changed.
+        /// This is called immediately before <see cref="SpriteControl.OnChangeSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeSprite()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="SpriteControl.StretchSprite"/> value has changed.
+        /// This is called immediately before <see cref="SpriteControl.OnChangeStretchSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeStretchSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeStretchSprite()
+        {
+        }
+
+        /// <summary>
         /// Draws the <see cref="Control"/>.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
@@ -157,6 +122,39 @@ namespace NetGore.Graphics.GUI
                 // Non-stretched draw
                 _sprite.Draw(spriteBatch, min, Color.White);
             }
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeSprite()
+        {
+            ChangeSprite();
+            if (OnChangeSprite != null)
+                OnChangeSprite(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeStretchSprite()
+        {
+            ChangeStretchSprite();
+            if (OnChangeStretchSprite != null)
+                OnChangeStretchSprite(this);
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            CanDrag = false;
         }
 
         /// <summary>

@@ -50,6 +50,7 @@ namespace NetGore.Graphics.ParticleEngine
         protected Particle[] particles;
 
         int _budget;
+        EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
         int _expirationTime = int.MaxValue;
         bool _isDisposed = false;
 
@@ -59,10 +60,9 @@ namespace NetGore.Graphics.ParticleEngine
         int _lastAliveIndex = -1;
 
         int _lastUpdateTime = int.MinValue;
-        ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
-        EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
         int _nextReleaseTime;
         Vector2 _origin;
+        ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
         Grh _sprite;
         SpriteCategorization _spriteCategorization;
 
@@ -165,6 +165,26 @@ namespace NetGore.Graphics.ParticleEngine
         public static int DefaultBudget { get; set; }
 
         /// <summary>
+        /// Gets or sets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        [Editor(EditorHelper.EmitterModifierCollectionEditorTypeName, EditorHelper.UITypeEditorTypeName)]
+        [Category(_emitterCategoryName)]
+        [Description("Collection of modifiers for the actual emitter.")]
+        [DisplayName("Emitter Modifiers")]
+        public EmitterModifierCollection EmitterModifiers
+        {
+            get { return _emitterModifiers; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _emitterModifiers = value;
+            }
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of the <see cref="Type"/>s of <see cref="ParticleEmitter"/>s.
         /// </summary>
         public static IEnumerable<Type> EmitterTypes
@@ -222,47 +242,6 @@ namespace NetGore.Graphics.ParticleEngine
         public VariableInt Life { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
-        /// <see cref="ParticleEmitter"/>.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Editor(EditorHelper.ParticleModifierCollectionEditorTypeName, EditorHelper.UITypeEditorTypeName)]
-        [Category(_emitterCategoryName)]
-        [Description("Collection of modifiers for individual particles.")]
-        [DisplayName("Particle Modifiers")]
-        public ParticleModifierCollection ParticleModifiers
-        {
-            get { return _particleModifiers; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _particleModifiers = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Editor(EditorHelper.EmitterModifierCollectionEditorTypeName, EditorHelper.UITypeEditorTypeName)]
-        [Category(_emitterCategoryName)]
-        [Description("Collection of modifiers for the actual emitter.")]
-        [DisplayName("Emitter Modifiers")]
-        public EmitterModifierCollection EmitterModifiers
-        {
-            get { return _emitterModifiers; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _emitterModifiers = value;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the unique name of the particle effect.
         /// </summary>
         [Category(_emitterCategoryName)]
@@ -281,6 +260,27 @@ namespace NetGore.Graphics.ParticleEngine
         {
             get { return _origin; }
             set { _origin = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
+        /// <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        [Editor(EditorHelper.ParticleModifierCollectionEditorTypeName, EditorHelper.UITypeEditorTypeName)]
+        [Category(_emitterCategoryName)]
+        [Description("Collection of modifiers for individual particles.")]
+        [DisplayName("Particle Modifiers")]
+        public ParticleModifierCollection ParticleModifiers
+        {
+            get { return _particleModifiers; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _particleModifiers = value;
+            }
         }
 
         /// <summary>

@@ -14,8 +14,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Initializes a new instance of the <see cref="EmitterModifierCollectionEditor"/> class.
         /// </summary>
-        public EmitterModifierCollectionEditor()
-            : base(typeof(EmitterModifierCollection))
+        public EmitterModifierCollectionEditor() : base(typeof(EmitterModifierCollection))
         {
         }
 
