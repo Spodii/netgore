@@ -54,12 +54,8 @@ namespace NetGore.Graphics.GUI
             if (_sprite == null)
                 throw new ArgumentNullException("sprite");
 
-            // Set the size of the control to the size of the sprite
-            Size = new Vector2(_sprite.Source.Width, _sprite.Source.Height);
-
-            // Add the size of the border (if there is one)
-            if (Border != null)
-                Size += new Vector2(Border.Width, Border.Height);
+            // Set the size of the control to the size of the sprite plus the size of the border
+            Size = new Vector2(_sprite.Source.Width, _sprite.Source.Height) + Border.Size;
         }
 
         /// <summary>
@@ -109,19 +105,14 @@ namespace NetGore.Graphics.GUI
                 return;
 
             Vector2 sp = ScreenPosition;
-            Vector2 min = sp;
-            if (Border != null)
-                min += new Vector2(Border.LeftWidth, Border.TopHeight);
+            Vector2 min = sp + new Vector2(Border.LeftWidth, Border.TopHeight);
 
             // Draw the picture
             if (StretchSprite)
             {
                 // Stretched draw
-                Vector2 max = sp + Size;
-                if (Border != null)
-                    max -= new Vector2(Border.LeftWidth + Border.RightWidth, Border.TopHeight - Border.BottomHeight);
-                Vector2 s = max - min;
-                Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)s.X, (int)s.Y);
+                Vector2 drawSize = Size - Border.Size;
+                Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)drawSize.X, (int)drawSize.Y);
                 _sprite.Draw(spriteBatch, dest, Color.White);
             }
             else

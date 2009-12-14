@@ -36,10 +36,10 @@ namespace DemoGame.GUITester
         {
             Window.Title = rnd.NextDouble().ToString();
 
-            if (topForm.Border == null)
+            if (topForm.Border == ControlBorder.Empty)
                 topForm.Border = _topBorder;
             else
-                topForm.Border = null;
+                topForm.Border = ControlBorder.Empty;
         }
 
         protected override void Draw(GameTime gameTime)

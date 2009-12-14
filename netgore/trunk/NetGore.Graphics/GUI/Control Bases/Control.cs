@@ -160,6 +160,7 @@ namespace NetGore.Graphics.GUI
 
             Position = position;
             Size = size;
+            Border = ControlBorder.Empty;
 
             // Apply the settings.
             if (_settings != null)
@@ -196,14 +197,20 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the ControlBorder used with this control (can be null)
+        /// Gets or sets the <see cref="ControlBorder"/> used with this control. If set to null,
+        /// <see cref="ControlBorder.Empty"/> will be used instead. Will never be null.
         /// </summary>
         public ControlBorder Border
         {
-            get { return _border; }
+            get {
+                Debug.Assert(_border != null);
+                return _border; }
             set
             {
-                if (Border == value)
+                if (value == null)
+                    value = ControlBorder.Empty;
+
+                if (_border == value)
                     return;
 
                 _border = value;
@@ -526,8 +533,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
         protected virtual void DrawControl(SpriteBatch spriteBatch)
         {
-            if (Border != null)
-                Border.Draw(spriteBatch, this);
+            Border.Draw(spriteBatch, this);
         }
 
         /// <summary>

@@ -63,8 +63,26 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         ISprite _tr = null;
 
+        static readonly ControlBorder _empty;
+
         /// <summary>
-        /// ControlBorder constructor
+        /// Initializes the <see cref="ControlBorder"/> class.
+        /// </summary>
+        static ControlBorder()
+        {
+            _empty = new ControlBorder(null, null, null, null, null, null, null, null, null);
+    }
+
+        /// <summary>
+        /// Gets the default empty <see cref="ControlBorder"/>.
+        /// </summary>
+        public static ControlBorder Empty
+        {
+            get { return _empty; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ControlBorder"/> class.
         /// </summary>
         /// <param name="source">ControlBorder to copy from</param>
         public ControlBorder(ControlBorder source)
@@ -73,7 +91,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// ControlBorder constructor
+        /// Initializes a new instance of the <see cref="ControlBorder"/> class.
         /// </summary>
         /// <param name="topLeft">Source of the top-left corner</param>
         /// <param name="top">Source of the top side</param>
@@ -108,6 +126,7 @@ namespace NetGore.Graphics.GUI
                 // If the ISprite is null, return a 0
                 if (_b == null)
                     return 0;
+
                 return _b.Source.Height;
             }
         }
@@ -349,6 +368,10 @@ namespace NetGore.Graphics.GUI
         /// <param name="c">Control to draw to.</param>
         public void Draw(SpriteBatch sb, Control c)
         {
+            // A little optimization to make sure we never try drawing the empty border
+            if (this == Empty)
+                return;
+
             Vector2 sp = c.ScreenPosition;
             Rectangle region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
             Draw(sb, region);
