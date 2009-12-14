@@ -251,22 +251,11 @@ namespace NetGore.Graphics.GUI
         {
             get
             {
-                ControlBorder b = Border;
-
-                if (b == null)
-                    return Size;
-
-                return Size - new Vector2(b.Width, b.Height);
+                return Size - Border.Size;
             }
-
             set
             {
-                ControlBorder b = Border;
-
-                if (b == null)
-                    Size = value;
-                else
-                    Size = value + new Vector2(b.Width, b.Height);
+                Size = value + Border.Size;
             }
         }
 

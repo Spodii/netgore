@@ -111,7 +111,7 @@ namespace NetGore.Graphics.GUI
             if (StretchSprite)
             {
                 // Stretched draw
-                Vector2 drawSize = Size - Border.Size;
+                Vector2 drawSize = ClientSize;
                 Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)drawSize.X, (int)drawSize.Y);
                 _sprite.Draw(spriteBatch, dest, Color.White);
             }
