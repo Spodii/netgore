@@ -342,7 +342,7 @@ namespace DemoGame.Client
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
-            _latencyLabel = new Label(string.Format(_latencyString, 0), cScreen.Size - new Vector2(75, 5), cScreen);
+            _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 
             Toolbar toolbar = new Toolbar(cScreen, new Vector2(200, 200));
             toolbar.OnClickItem += Toolbar_OnClickItem;

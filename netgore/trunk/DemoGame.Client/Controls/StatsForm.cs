@@ -23,6 +23,7 @@ namespace DemoGame.Client
         const float _xOffset = 21;
         readonly Grh _addStatGrh = new Grh(GrhInfo.GetData("GUI", "AddStat"));
         readonly UserInfo _userInfo;
+
         float _yOffset = 0;
 
         /// <summary>
@@ -31,12 +32,23 @@ namespace DemoGame.Client
         public event RaiseStatHandler OnRaiseStat;
 
         /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Stats";
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StatsForm"/> class.
         /// </summary>
         /// <param name="userInfo">The user info.</param>
         /// <param name="parent">The parent.</param>
         public StatsForm(UserInfo userInfo, Control parent)
-            : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 275), parent)
+            : base(parent, Vector2.Zero, new Vector2(225, 275))
         {
             if (userInfo == null)
                 throw new ArgumentNullException("userInfo");
@@ -97,7 +109,7 @@ namespace DemoGame.Client
         {
             AddLine();
             Vector2 pos = new Vector2(_xOffset, _yOffset);
-            new UserInfoLabel(pos, this, title, valueHandler);
+            new UserInfoLabel(this, pos, title, valueHandler);
         }
 
         void StatPB_OnClick(object sender, MouseClickEventArgs e)
@@ -157,8 +169,8 @@ namespace DemoGame.Client
             readonly StatsForm _statsForm;
             readonly StatType _statType;
 
-            public RaiseStatPB(Vector2 position, ISprite sprite, StatsForm parent, StatType statType)
-                : base(sprite, position, parent)
+            public RaiseStatPB(Vector2 position, Grh sprite, StatsForm parent, StatType statType)
+                : base(parent, position, sprite.Size)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
@@ -199,23 +211,33 @@ namespace DemoGame.Client
                 get { return _statType; }
             }
 
+            /// <summary>
+            /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+            /// </summary>
+            /// <param name="currentTime">The current time in milliseconds.</param>
             protected override void UpdateControl(int currentTime)
             {
                 base.UpdateControl(currentTime);
+
                 IsVisible = CanRaiseStat;
             }
         }
 
         class StatLabel : Label
         {
+            /// <summary>
+            /// How frequently we will attempt to update the label's text.
+            /// </summary>
+            const int _textUpdateRate = 250;
+
             readonly StatsForm _statsForm;
             readonly StatType _statType;
 
-            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : this(statsForm, statType, pos, statsForm)
-            {
-            }
+            int _lastUpdateTextTime = int.MinValue;
+            int _lastBaseValue = int.MinValue;
+            int _lastModValue = int.MinValue;
 
-            StatLabel(StatsForm statsForm, StatType statType, Vector2 pos, Control parent) : base(string.Empty, pos, parent)
+            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : base(statsForm, pos)
             {
                 if (statsForm == null)
                     throw new ArgumentNullException("statsForm");
@@ -224,10 +246,21 @@ namespace DemoGame.Client
                 _statType = statType;
             }
 
-            protected override void DrawControl(SpriteBatch spriteBatch)
+            /// <summary>
+            /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+            /// </summary>
+            /// <param name="currentTime">The current time in milliseconds.</param>
+            protected override void UpdateControl(int currentTime)
             {
-                base.DrawControl(spriteBatch);
+                base.UpdateControl(currentTime);
 
+                // Check that enough time has elapsed since the last update
+                if (_lastUpdateTextTime + _textUpdateRate > currentTime)
+                    return;
+
+                _lastUpdateTextTime = currentTime;
+
+                // Get the stat values
                 int baseValue;
                 if (!_statsForm.UserInfo.BaseStats.TryGetStatValue(_statType, out baseValue))
                     baseValue = 0;
@@ -236,18 +269,32 @@ namespace DemoGame.Client
                 if (!_statsForm.UserInfo.ModStats.TryGetStatValue(_statType, out modValue))
                     modValue = 0;
 
+                // Check that they have changed before creating the new text
+                if (_lastBaseValue == baseValue && _lastModValue == modValue)
+                    return;
+
+                _lastBaseValue = baseValue;
+                _lastModValue = modValue;
+
                 Text = _statType + ": " + baseValue + " (" + modValue + ")";
             }
         }
 
         class UserInfoLabel : Label
         {
+            /// <summary>
+            /// How frequently we will attempt to update the label's text.
+            /// </summary>
+            const int _textUpdateRate = 250;
+
             readonly StatsForm _statsForm;
             readonly string _title;
             readonly UserInfoLabelValueHandler _valueHandler;
 
-            public UserInfoLabel(Vector2 pos, StatsForm parent, string title, UserInfoLabelValueHandler valueHandler)
-                : base(string.Empty, pos, parent)
+            int _lastUpdateTextTime = int.MinValue;
+
+            public UserInfoLabel(StatsForm parent, Vector2 pos, string title, UserInfoLabelValueHandler valueHandler)
+                : base(parent, pos)
             {
                 if (valueHandler == null)
                     throw new ArgumentNullException("valueHandler");
@@ -257,9 +304,20 @@ namespace DemoGame.Client
                 _valueHandler = valueHandler;
             }
 
-            protected override void DrawControl(SpriteBatch spriteBatch)
+            /// <summary>
+            /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+            /// </summary>
+            /// <param name="currentTime">The current time in milliseconds.</param>
+            protected override void UpdateControl(int currentTime)
             {
-                base.DrawControl(spriteBatch);
+                base.UpdateControl(currentTime);
+
+                // Check that enough time has elapsed since the last update
+                if (_lastUpdateTextTime + _textUpdateRate > currentTime)
+                    return;
+
+                _lastUpdateTextTime = currentTime;
+
                 Text = _title + ": " + _valueHandler(_statsForm.UserInfo);
             }
         }

@@ -42,11 +42,22 @@ namespace DemoGame.Client
         public event ToolbarEventHandler OnClickItem;
 
         /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Menu";
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Toolbar"/> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="pos">The pos.</param>
-        public Toolbar(Control parent, Vector2 pos) : base(parent.GUIManager, "Menu", pos, new Vector2(800, 800), parent)
+        public Toolbar(Control parent, Vector2 pos) : base(parent, pos, new Vector2(800, 800))
         {
             // Create the ToolbarItems
             _items = CreateToolbarItems();
@@ -54,10 +65,21 @@ namespace DemoGame.Client
             // Set the size
             _neededClientSize = FindNeededClientSize();
             UpdateSize(this);
-            OnChangeBorder += UpdateSize;
 
             // Re-adjust the position
             Position = pos;
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
+        /// </summary>
+        protected override void ChangeBorder()
+        {
+            base.ChangeBorder();
+
+            UpdateSize(this);
         }
 
         /// <summary>
@@ -169,8 +191,9 @@ namespace DemoGame.Client
             readonly ToolbarItemType _type;
 
             public ToolbarItem(Control parent, ToolbarItemType type, Vector2 pos, ISprite sprite)
-                : base(sprite, pos, new Vector2(_itemSize), parent)
+                : base(parent, pos, new Vector2(_itemSize))
             {
+                Sprite = sprite;
                 _type = type;
             }
 

@@ -14,88 +14,125 @@ namespace NetGore.Graphics.GUI
         bool _stretch = true;
 
         /// <summary>
-        /// Notifies listeners when the Sprite has changed.
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        protected SpriteControl(Control parent, Vector2 position, Vector2 size) : base(parent, position, size)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        protected SpriteControl(GUIManagerBase gui, Vector2 position, Vector2 size)
+            : base(gui, position, size)
+        {
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
         /// </summary>
         public event ControlEventHandler OnChangeSprite;
 
         /// <summary>
-        /// Notifies listeners when the StretchSprite value changes.
+        /// Handles when the <see cref="SpriteControl.Sprite"/> has changed.
+        /// This is called immediately before <see cref="SpriteControl.OnChangeSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeSprite()
+        {
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeSprite()
+        {
+            ChangeSprite();
+            if (OnChangeSprite != null)
+                OnChangeSprite(this);
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
         /// </summary>
         public event ControlEventHandler OnChangeStretchSprite;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpriteControl"/> class.
+        /// Handles when the <see cref="SpriteControl.StretchSprite"/> value has changed.
+        /// This is called immediately before <see cref="SpriteControl.OnChangeStretchSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeStretchSprite"/> when possible.
         /// </summary>
-        /// <param name="gui">GUIManager this PictureControl will be part of.</param>
-        /// <param name="settings">Settings for this PictureControl.</param>
-        /// <param name="position">Position of the PictureControl reletive to its parent.</param>
-        /// <param name="sprite">Sprite to display.</param>
-        /// <param name="size">Size of the PictureControl</param>
-        /// <param name="parent">Parent Control of this PictureControl (null for a root Control).</param>
-        protected SpriteControl(GUIManagerBase gui, SpriteControlSettings settings, Vector2 position, ISprite sprite, Vector2 size,
-                                Control parent) : base(gui, settings, position, size, parent)
+        protected virtual void ChangeStretchSprite()
         {
-            _sprite = sprite;
+        }
 
-            // Disable dragging by default
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeStretchSprite()
+        {
+            ChangeStretchSprite();
+            if (OnChangeStretchSprite != null)
+                OnChangeStretchSprite(this);
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
             CanDrag = false;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpriteControl"/> class.
-        /// </summary>
-        /// <param name="settings">Settings for this PictureControl</param>
-        /// <param name="position">Position of the Control reletive to its parent</param>
-        /// <param name="sprite">Sprite to display</param>
-        /// <param name="parent">Parent Control of this Control (null for a root Control)</param>
-        protected SpriteControl(SpriteControlSettings settings, Vector2 position, ISprite sprite, Control parent)
-            : this(parent.GUIManager, settings, position, sprite, Vector2.Zero, parent)
-        {
-            if (_sprite == null)
-                throw new ArgumentNullException("sprite");
-
-            // Set the size of the control to the size of the sprite plus the size of the border
-            Size = new Vector2(_sprite.Source.Width, _sprite.Source.Height) + Border.Size;
-        }
-
-        /// <summary>
-        /// Gets or sets the Control's <see cref="ISprite"/>.
+        /// Gets or sets the sprite to draw on this <see cref="Control"/>.
         /// </summary>
         public ISprite Sprite
         {
             get { return _sprite; }
             set
             {
-                if (_sprite != value)
-                {
-                    _sprite = value;
-                    if (OnChangeSprite != null)
-                        OnChangeSprite(this);
-                }
+                if (_sprite == value)
+                    return;
+
+                _sprite = value;
+
+                InvokeChangeSprite();
             }
         }
 
         /// <summary>
-        /// Gets or sets if the sprite is drawn stretched or not.
+        /// Gets or sets if the <see cref="SpriteControl.Sprite"/> is drawn stretched when drawn.
         /// </summary>
         public bool StretchSprite
         {
             get { return _stretch; }
             set
             {
-                if (_stretch != value)
-                {
-                    _stretch = value;
-                    if (OnChangeStretchSprite != null)
-                        OnChangeStretchSprite(this);
-                }
+                if (_stretch == value)
+                    return;
+
+                _stretch = value;
+
+                InvokeChangeStretchSprite();
             }
         }
 
         /// <summary>
-        /// Draws the control
+        /// Draws the <see cref="Control"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
         protected override void DrawControl(SpriteBatch spriteBatch)
         {
             base.DrawControl(spriteBatch);
@@ -122,6 +159,10 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
         protected override void UpdateControl(int currentTime)
         {
             base.UpdateControl(currentTime);

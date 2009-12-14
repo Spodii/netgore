@@ -40,17 +40,22 @@ namespace DemoGame.Client
         /// </summary>
         public event ChatDialogSelectResponseHandler OnSelectResponse;
 
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "NPC Chat";
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogForm"/> class.
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
         public NPCChatDialogForm(Vector2 position, Control parent)
-            : base(parent.GUIManager, "NPC Chat", position, new Vector2(600, 500), parent)
+            : base(parent, position, new Vector2(600, 500))
         {
             IsVisible = false;
-
-            OnKeyPress += NPCChatDialogForm_OnKeyPress;
 
             // NOTE: We want to use a scrollable textbox here... when we finally make one
 
@@ -60,14 +65,30 @@ namespace DemoGame.Client
 
             float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
             Vector2 textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
-            _dialogTextControl = new TextBox(Vector2.Zero, textboxSize, this) { IsEnabled = false, IsMultiLine = true };
-            _dialogTextControl.OnKeyPress += NPCChatDialogForm_OnKeyPress;
+            _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize) { IsEnabled = false, CanFocus = false, IsMultiLine = true };
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
-                ResponseText r = new ResponseText(new Vector2(0, responseStartY + (spacing * i)), this) { IsVisible = true };
+                ResponseText r = new ResponseText(this, new Vector2(0, responseStartY + (spacing * i))) { IsVisible = true };
                 r.OnClick += ResponseText_OnClick;
                 _responseTextControls[i] = r;
+            }
+        }
+
+        /// <summary>
+        /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.OnKeyPress"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnKeyPress"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void KeyPress(KeyboardEventArgs e)
+        {
+            base.KeyPress(e);
+
+            if (e.Keys.Contains(Keys.Escape))
+            {
+                if (OnRequestEndDialog != null)
+                    OnRequestEndDialog(this);
             }
         }
 
@@ -83,15 +104,6 @@ namespace DemoGame.Client
         {
             IsVisible = false;
             _dialog = null;
-        }
-
-        void NPCChatDialogForm_OnKeyPress(object sender, KeyboardEventArgs e)
-        {
-            if (e.Keys.Contains(Keys.Escape))
-            {
-                if (OnRequestEndDialog != null)
-                    OnRequestEndDialog(this);
-            }
         }
 
         void ResponseText_OnClick(object sender, MouseClickEventArgs e)
@@ -189,7 +201,8 @@ namespace DemoGame.Client
         {
             NPCChatResponseBase _response;
 
-            public ResponseText(Vector2 position, Control parent) : base(string.Empty, position, parent)
+            public ResponseText(Control parent, Vector2 position)
+                : base(parent, position)
             {
             }
 

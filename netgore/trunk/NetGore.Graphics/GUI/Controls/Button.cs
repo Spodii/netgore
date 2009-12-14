@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// A button control
+    /// A standard static button control.
     /// </summary>
     public class Button : TextControl
     {
@@ -18,102 +18,41 @@ namespace NetGore.Graphics.GUI
         Vector2 _textSize = Vector2.Zero;
 
         /// <summary>
-        /// Button constructor
+        /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="gui">GUIManager used by this Control</param>
-        /// <param name="settings">Button settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">SpriteFont used to write the text</param>
-        /// <param name="position">Position of the Control relative to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        /// <param name="parent">Control that this Control belongs to</param>
-        public Button(GUIManagerBase gui, ButtonSettings settings, string text, SpriteFont font, Vector2 position, Vector2 size,
-                      Control parent) : base(gui, settings, text, font, position, size, parent)
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        public Button(Control parent, Vector2 position, Vector2 size) : base(parent, position, size)
         {
-            // Set the default behavior
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        public Button(GUIManagerBase gui, Vector2 position, Vector2 size) : base(gui, position, size)
+        {
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
             CanDrag = false;
             CanFocus = false;
 
-            // Set the default borders
+            Border = GUIManager.ButtonSettings.Border;
+
             _borderOver = GUIManager.ButtonSettings.MouseOver;
             _borderPressed = GUIManager.ButtonSettings.Pressed;
             _currentBorder = Border;
-
-            // Set the event hooks
-            OnMouseDown += Button_OnMouseDown;
-            OnMouseUp += Button_OnMouseUp;
-            OnLostFocus += Button_OnLostFocus;
-            OnMouseMove += Button_OnMouseMove;
-            OnMouseLeave += Button_OnMouseLeave;
-            OnChangeText += Button_OnChangeText;
-            OnChangeFont += Button_OnChangeFont;
-
-            // Perform the initial text update
-            UpdateTextSize();
-        }
-
-        /// <summary>
-        /// Button constructor
-        /// </summary>
-        /// <param name="gui">GUIManager used by this Control</param>
-        /// <param name="settings">Button settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">SpriteFont used to write the text</param>
-        /// <param name="position">Position of the Control relative to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        public Button(GUIManagerBase gui, ButtonSettings settings, string text, SpriteFont font, Vector2 position, Vector2 size)
-            : this(gui, settings, text, font, position, size, null)
-        {
-        }
-
-        /// <summary>
-        /// Button constructor
-        /// </summary>
-        /// <param name="gui">GUIManager used by this Control</param>
-        /// <param name="settings">Button settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the Control relative to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        public Button(GUIManagerBase gui, ButtonSettings settings, string text, Vector2 position, Vector2 size)
-            : this(gui, settings, text, gui.Font, position, size)
-        {
-        }
-
-        /// <summary>
-        /// Button constructor
-        /// </summary>
-        /// <param name="gui">GUIManager used by this Control</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the Control relative to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        public Button(GUIManagerBase gui, string text, Vector2 position, Vector2 size)
-            : this(gui, gui.ButtonSettings, text, gui.Font, position, size)
-        {
-        }
-
-        /// <summary>
-        /// Button constructor
-        /// </summary>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the Control relative to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        /// <param name="parent">Control that this Control belongs to</param>
-        public Button(string text, Vector2 position, Vector2 size, Control parent)
-            : this(parent.GUIManager, parent.GUIManager.ButtonSettings, text, parent.GUIManager.Font, position, size, parent)
-        {
-        }
-
-        /// <summary>
-        /// Button constructor
-        /// </summary>
-        /// <param name="settings">Button settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the Control relative to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        /// <param name="parent">Control that this Control belongs to</param>
-        public Button(ButtonSettings settings, string text, Vector2 position, Vector2 size, Control parent)
-            : this(parent.GUIManager, settings, text, parent.GUIManager.Font, position, size, parent)
-        {
         }
 
         /// <summary>
@@ -134,40 +73,93 @@ namespace NetGore.Graphics.GUI
             set { _borderPressed = value; }
         }
 
-        void Button_OnChangeFont(Control sender)
+        /// <summary>
+        /// Handles when the <see cref="Control"/> has lost focus.
+        /// This is called immediately before <see cref="Control.OnLostFocus"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
+        /// </summary>
+        protected override void LostFocus()
         {
-            UpdateTextSize();
-        }
+            base.LostFocus();
 
-        void Button_OnChangeText(Control sender)
-        {
-            UpdateTextSize();
-        }
-
-        void Button_OnLostFocus(Control sender)
-        {
             _currentBorder = Border;
         }
 
-        void Button_OnMouseDown(object sender, MouseClickEventArgs e)
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// </summary>
+        protected override void ChangeFont()
         {
+            base.ChangeFont();
+
+            UpdateTextSize();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Text"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
+        /// </summary>
+        protected override void ChangeText()
+        {
+            base.ChangeText();
+
+            UpdateTextSize();
+        }
+
+        /// <summary>
+        /// Handles when a mouse button has been pressed down on this <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseDown"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseDown"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseDown(MouseClickEventArgs e)
+        {
+            base.MouseDown(e);
+
             if (e.Button == MouseButtons.Left)
                 _currentBorder = _borderPressed;
         }
 
-        void Button_OnMouseLeave(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Handles when the mouse has left the area of the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseLeave"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseLeave(MouseEventArgs e)
         {
+            base.MouseLeave(e);
+
             _currentBorder = Border;
         }
 
-        void Button_OnMouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Handles when the mouse has moved over the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseMove"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseMove"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseMove(MouseEventArgs e)
         {
+            base.MouseMove(e);
+
             if (GUIManager.MouseState.LeftButton == ButtonState.Released)
                 _currentBorder = _borderOver;
         }
 
-        void Button_OnMouseUp(object sender, MouseClickEventArgs e)
+        /// <summary>
+        /// Handles when a mouse button has been raised on the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseUp"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseUp"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseUp(MouseClickEventArgs e)
         {
+            base.MouseUp(e);
+
             if (e.Button == MouseButtons.Left)
                 _currentBorder = _borderOver;
         }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// Base of a Control that contains a text display.
+    /// Base of a <see cref="Control"/> that contains a text display.
     /// </summary>
     public abstract class TextControl : Control
     {
@@ -16,30 +16,86 @@ namespace NetGore.Graphics.GUI
         string _text = string.Empty;
 
         /// <summary>
-        /// Notifies listeners when the SpriteFont used by this Control has changed.
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        protected TextControl(Control parent, Vector2 position, Vector2 size) : base(parent, position, size)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        protected TextControl(GUIManagerBase gui, Vector2 position, Vector2 size) : base(gui, position, size)
+        {
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
         /// </summary>
         public event ControlEventHandler OnChangeFont;
 
         /// <summary>
-        /// Notifies listeners when the Control's text has changed
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// </summary>
+        protected virtual void ChangeFont()
+        {
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeFont()
+        {
+            ChangeFont();
+            if (OnChangeFont != null)
+                OnChangeFont(this);
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
         /// </summary>
         public event ControlEventHandler OnChangeText;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextControl"/> class.
+        /// Handles when the <see cref="TextControl.Text"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
         /// </summary>
-        /// <param name="gui">GUIManager used by this Control.</param>
-        /// <param name="settings">Settings for this TextControl.</param>
-        /// <param name="text">Text to display.</param>
-        /// <param name="font">SpriteFont used to write the text.</param>
-        /// <param name="position">Position of the Control relative to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        protected TextControl(GUIManagerBase gui, TextControlSettings settings, string text, SpriteFont font, Vector2 position,
-                              Vector2 size, Control parent) : base(gui, settings, position, size, parent)
+        protected virtual void ChangeText()
         {
-            _text = text;
-            _font = font;
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeText()
+        {
+            ChangeText();
+            if (OnChangeText != null)
+                OnChangeText(this);
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = string.Empty;
+            Font = GUIManager.Font;
+            ForeColor = Color.Black;
         }
 
         /// <summary>
@@ -55,8 +111,8 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _font = value;
-                if (OnChangeFont != null)
-                    OnChangeFont(this);
+
+                InvokeChangeFont();
             }
         }
 
@@ -81,8 +137,8 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _text = value;
-                if (OnChangeText != null)
-                    OnChangeText(this);
+
+                InvokeChangeText();
             }
         }
 

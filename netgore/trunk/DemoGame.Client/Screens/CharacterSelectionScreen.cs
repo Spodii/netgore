@@ -136,7 +136,7 @@ namespace DemoGame.Client
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 
-            Button cLogOut = new Button("Log out", new Vector2(60, 440), new Vector2(250, 45), cScreen);
+            Button cLogOut = new Button(cScreen, new Vector2(60, 440), new Vector2(250, 45)) { Text = "Log out" };
             cLogOut.OnClick += cLogOut_OnClick;
 
             // Create the character controls
@@ -145,7 +145,7 @@ namespace DemoGame.Client
             {
                 Vector2 size = new Vector2(250, 35);
                 Vector2 pos = new Vector2((ScreenManager.ScreenWidth / 2f) - (size.X / 2), 10 + (i * (size.Y + 5)));
-                Button characterButton = new Button(_unusedCharacterSlotText, pos, size, cScreen) { Tag = (byte)i };
+                Button characterButton = new Button(cScreen, pos, size) { Text = _unusedCharacterSlotText, Tag = (byte)i };
                 characterButton.OnClick += characterButton_OnClick;
                 _characterButtons[i] = characterButton;
             }

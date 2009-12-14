@@ -18,12 +18,23 @@ namespace DemoGame.Client
         public event UseSkillHandler OnUseSkill;
 
         /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Skills";
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SkillsForm"/> class.
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
         public SkillsForm(Vector2 position, Control parent)
-            : base(parent.GUIManager, "Skills", position, new Vector2(150, 100), parent)
+            : base(parent, position, new Vector2(150, 100))
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             // Find the spacing to use between lines
@@ -95,9 +106,11 @@ namespace DemoGame.Client
 
         class SkillLabel : Label
         {
-            public SkillLabel(Control parent, SkillInfo skillInfo, Vector2 position) : base(skillInfo.Name, position, parent)
+            public SkillLabel(Control parent, SkillInfo skillInfo, Vector2 position)
+                : base(parent, position)
             {
                 SkillInfo = skillInfo;
+                Text = SkillInfo.Name;
             }
 
             public SkillInfo SkillInfo { get; private set; }
@@ -105,11 +118,19 @@ namespace DemoGame.Client
 
         class SkillPictureBox : PictureBox
         {
+            protected override void SetDefaultValues()
+            {
+                base.SetDefaultValues();
+
+                StretchSprite = false;
+                Size = _iconSize;
+            }
+
             public SkillPictureBox(Control parent, SkillInfo skillInfo, Vector2 position)
-                : base(new Grh(GrhInfo.GetData(skillInfo.Icon)), position, parent)
+                : base(parent, position, _iconSize)
             {
                 SkillInfo = skillInfo;
-                Size = _iconSize;
+                Sprite = new Grh(GrhInfo.GetData(SkillInfo.Icon));
             }
 
             public SkillInfo SkillInfo { get; private set; }

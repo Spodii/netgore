@@ -115,17 +115,17 @@ namespace DemoGame.Client
             _gui = new GUIManager(ScreenManager.Content.Load<SpriteFont>("Font/Menu"));
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 
-            new Label("Name:", new Vector2(60, 260), cScreen);
-            _cNameText = new TextBox(new Vector2(220, 260), new Vector2(200, 40), cScreen) { IsMultiLine = false, Text = "Spodi" };
+            new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
+            _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
 
-            new Label("Password:", new Vector2(60, 320), cScreen);
-            _cPasswordText = new TextBox(new Vector2(220, 320), new Vector2(200, 40), cScreen)
+            new Label(cScreen, new Vector2(60, 320)) { Text = "Password:" };
+            _cPasswordText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = "qwerty123" };
 
-            Button cLogin = new Button("Login", new Vector2(60, 380), new Vector2(250, 45), cScreen);
-            Button cBack = new Button("Back", new Vector2(60, 440), new Vector2(250, 45), cScreen);
+            Button cLogin = new Button(cScreen, new Vector2(60, 380), new Vector2(250, 45)) { Text = "Login" };
+            Button cBack = new Button(cScreen, new Vector2(60, 440), new Vector2(250, 45)) { Text = "Back" };
 
-            _cError = new Label(string.Empty, new Vector2(60, 500), cScreen) { ForeColor = Color.Red };
+            _cError = new Label(cScreen, new Vector2(60, 500)) { ForeColor = Color.Red };
 
             cLogin.OnClick += cLogin_OnClick;
             cBack.OnClick += cBack_OnClick;
