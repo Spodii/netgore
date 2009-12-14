@@ -334,9 +334,7 @@ namespace NetGore.Graphics.GUI
             base.DrawControl(spriteBatch);
 
             // Get the text offset
-            Vector2 textDrawOffset = ScreenPosition;
-            if (Border != null)
-                textDrawOffset += new Vector2(Border.LeftWidth, Border.TopHeight);
+            Vector2 textDrawOffset = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
 
             // Draw the text
             if (IsMultiLine)

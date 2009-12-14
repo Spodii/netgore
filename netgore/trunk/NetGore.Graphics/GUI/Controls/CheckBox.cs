@@ -326,8 +326,7 @@ namespace NetGore.Graphics.GUI
         protected override void DrawControl(SpriteBatch spriteBatch)
         {
             // Draw the border
-            if (Border != null)
-                Border.Draw(spriteBatch, this);
+            Border.Draw(spriteBatch, this);
 
             // Find the sprite based on the state and value
             ISprite sprite;
