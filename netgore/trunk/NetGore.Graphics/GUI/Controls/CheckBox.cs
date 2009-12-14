@@ -26,6 +26,26 @@ namespace NetGore.Graphics.GUI
         bool _value = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        public CheckBox(Control parent, Vector2 position) : base(parent, position)
+        {
+            Initialize(GUIManager.CheckBoxSettings);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        public CheckBox(GUIManagerBase gui, Vector2 position) : base(gui, position)
+        {
+            Initialize(GUIManager.CheckBoxSettings);
+        }
+
+        /// <summary>
         /// Notifies when the TickedOverSprite changes
         /// </summary>
         public event ControlEventHandler OnChangeTickedOverSprite;
@@ -59,85 +79,6 @@ namespace NetGore.Graphics.GUI
         /// Notifies when the checkbox value changes
         /// </summary>
         public event ControlEventHandler OnChangeValue;
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(string text, Vector2 position, Control parent) : base(text, position, parent)
-        {
-            Initialize(GUIManager.CheckBoxSettings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="settings">CheckBox settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(CheckBoxSettings settings, string text, Vector2 position, Control parent)
-            : base(settings, text, position, parent)
-        {
-            Initialize(settings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(string text, SpriteFont font, Vector2 position, Control parent) : base(text, font, position, parent)
-        {
-            Initialize(GUIManager.CheckBoxSettings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="settings">CheckBox settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(CheckBoxSettings settings, string text, SpriteFont font, Vector2 position, Control parent)
-            : base(settings, text, font, position, parent)
-        {
-            Initialize(settings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="gui">GUIManager this CheckBox is handled by</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(GUIManagerBase gui, string text, SpriteFont font, Vector2 position, Control parent)
-            : base(gui, text, font, position, parent)
-        {
-            Initialize(GUIManager.CheckBoxSettings);
-        }
-
-        /// <summary>
-        /// CheckBox constructor
-        /// </summary>
-        /// <param name="gui">GUIManager this CheckBox is handled by</param>
-        /// <param name="settings">CheckBox settings</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">Font used to write the text</param>
-        /// <param name="position">Position of the CheckBox relative to its parent</param>
-        /// <param name="parent">Parent Control for this CheckBox</param>
-        public CheckBox(GUIManagerBase gui, CheckBoxSettings settings, string text, SpriteFont font, Vector2 position,
-                        Control parent) : base(gui, settings, text, font, position, parent)
-        {
-            Initialize(settings);
-        }
 
         /// <summary>
         /// Gets or sets the Sprite used for a ticked checkbox with the mouse over it
@@ -242,19 +183,20 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets if the checkbox is ticked (true for ticked, false for unticked)
+        /// Gets or sets if the checkbox is ticked.
         /// </summary>
         public bool Value
         {
             get { return _value; }
             set
             {
-                if (_value != value)
-                {
-                    _value = value;
-                    if (OnChangeValue != null)
-                        OnChangeValue(this);
-                }
+                if (_value == value)
+                    return;
+
+                _value = value;
+
+                if (OnChangeValue != null)
+                    OnChangeValue(this);
             }
         }
 
@@ -385,6 +327,7 @@ namespace NetGore.Graphics.GUI
             _untickedPressed = settings.UntickedPressed;
 
             // Set all the event hooks
+            // TODO: !!
             OnChangeText += CheckBox_Resize;
             OnChangeFont += CheckBox_Resize;
             OnChangeTickedSprite += CheckBox_Resize;
@@ -401,11 +344,20 @@ namespace NetGore.Graphics.GUI
             OnMouseMove += CheckBox_OnMouseMove;
             OnLostFocus += CheckBox_OnLostFocus;
 
-            // Allow the CheckBox to get focus
-            CanFocus = true;
-
             // Perform the initial auto-resize
             CheckBox_Resize(this);
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Border = GUIManager.CheckBoxSettings.Border;
+            CanFocus = true;
         }
 
         enum CheckBoxState

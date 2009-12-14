@@ -13,13 +13,19 @@ namespace DemoGame.Client
 
     class EquippedForm : Form, IRestorableSettings
     {
-        const float _itemHeight = 32; // Height of each item slot
-        const float _itemWidth = 32; // Width of each item slot
+        static readonly Vector2 _itemSize = new Vector2(32, 32);
 
         readonly ItemInfoRequesterBase<EquipmentSlot> _infoRequester;
         UserEquipped _userEquipped;
 
         public event RequestUnequipHandler OnRequestUnequip;
+
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Equipment";
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EquippedForm"/> class.
@@ -28,7 +34,7 @@ namespace DemoGame.Client
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
         public EquippedForm(ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position, Control parent)
-            : base(parent.GUIManager, "Equipment", position, new Vector2(200, 200), parent)
+            : base(parent, position, new Vector2(200, 200))
         {
             if (infoRequester == null)
                 throw new ArgumentNullException("infoRequester");
@@ -55,9 +61,8 @@ namespace DemoGame.Client
 
         void CreateItemSlots(int row, int column, EquipmentSlot slot)
         {
-            Vector2 size = new Vector2(_itemWidth, _itemHeight);
             Vector2 loc = new Vector2(row, column);
-            Vector2 pos = size * loc;
+            Vector2 pos = _itemSize * loc;
 
             new EquippedItemPB(this, pos, slot);
         }
@@ -112,7 +117,7 @@ namespace DemoGame.Client
             readonly EquipmentSlot _slot;
 
             public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot)
-                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
+                : base(parent, pos,_itemSize)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
@@ -129,6 +134,10 @@ namespace DemoGame.Client
                 get { return _slot; }
             }
 
+            /// <summary>
+            /// Draws the <see cref="Control"/>.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
             protected override void DrawControl(SpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
@@ -137,18 +146,12 @@ namespace DemoGame.Client
                 if (equipped == null)
                     return;
 
-                if (equipped[_slot] == null)
-                    return;
-
                 ItemEntity item = equipped[_slot];
                 if (item == null)
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = new Vector2(_itemWidth, _itemHeight);
-                offset -= item.Grh.Size;
-                offset /= 2;
-
+                Vector2 offset = (_itemSize - item.Grh.Size) / 2f;
                 item.Draw(spriteBatch, ScreenPosition + offset);
             }
 

@@ -17,13 +17,30 @@ namespace DemoGame.Client.Controls
     class ShopForm : Form, IRestorableSettings
     {
         const int _columns = 6; // Number of items on each row
-        const float _itemHeight = 32; // Height of each item slot
-        const float _itemWidth = 32; // Width of each item slot
-        const float _sepX = 2; // Amount of space on the X axis between each item
-        const float _sepY = 2; // Amount of space on the Y axis between each item
+
+        /// <summary>
+        /// The size of each item slot.
+        /// </summary>
+        static readonly Vector2 _itemSize = new Vector2(32,32);
+
+        /// <summary>
+        /// The amount of space between each item.
+        /// </summary>
+        static readonly Vector2 _padding = new Vector2(2, 2);
 
         ShopInfo _shopInfo;
         public event ShopFormPurchaseHandler OnPurchase;
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Shop";
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopForm"/> class.
@@ -31,12 +48,12 @@ namespace DemoGame.Client.Controls
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
         public ShopForm(Vector2 position, Control parent)
-            : base(parent.GUIManager, "Shop", position, new Vector2(200, 200), parent)
+            : base(parent, position, new Vector2(200, 200))
         {
             IsVisible = false;
 
-            Vector2 itemsSize = _columns * new Vector2(_itemWidth, _itemHeight);
-            Vector2 paddingSize = (_columns + 1) * new Vector2(_sepX, _sepY);
+            Vector2 itemsSize = _columns * _itemSize;
+            Vector2 paddingSize = (_columns + 1) * _padding;
             Size = itemsSize + paddingSize + Border.Size;
 
             CreateItemSlots();
@@ -49,13 +66,14 @@ namespace DemoGame.Client.Controls
 
         void CreateItemSlots()
         {
-            Vector2 offset = new Vector2(_sepX, _sepY);
+            Vector2 offset = _padding;
+            Vector2 offsetMultiplier = _itemSize + _padding;
 
             for (int i = 0; i < GameData.MaxShopItems; i++)
             {
                 int x = i % _columns;
                 int y = i / _columns;
-                Vector2 pos = offset + new Vector2(x * (_itemWidth + _sepX), y * (_itemHeight + _sepY));
+                Vector2 pos = offset + new Vector2(x, y) * offsetMultiplier;
 
                 new ShopItemPB(this, pos, new ShopItemIndex((byte)i));
             }
@@ -114,7 +132,7 @@ namespace DemoGame.Client.Controls
             Grh _grh;
 
             public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
-                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
+                : base(parent, pos, _itemSize)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
@@ -150,6 +168,10 @@ namespace DemoGame.Client.Controls
                 get { return _shopForm.ShopInfo; }
             }
 
+            /// <summary>
+            /// Draws the <see cref="Control"/>.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
             protected override void DrawControl(SpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
@@ -165,7 +187,6 @@ namespace DemoGame.Client.Controls
                 {
                     try
                     {
-                        // TODO: Get the correct time
                         _grh = new Grh(itemInfo.GrhIndex, AnimType.Loop, 0);
                     }
                     catch (Exception ex)
@@ -180,10 +201,7 @@ namespace DemoGame.Client.Controls
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = new Vector2(_itemWidth, _itemHeight);
-                offset -= _grh.Size;
-                offset /= 2;
-
+                Vector2 offset = (_itemSize - _grh.Size) / 2f;
                 _grh.Draw(spriteBatch, ScreenPosition + offset);
             }
 

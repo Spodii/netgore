@@ -6,95 +6,88 @@ namespace NetGore.Graphics.GUI
 {
     public class Label : TextControl
     {
-        bool _autoResize = false;
-        ControlEventHandler _autoResizeHandler = null;
-
-        public Label(GUIManagerBase gui, LabelSettings settings, string text, SpriteFont font, Vector2 position, Vector2 size,
-                     Control parent) : base(gui, settings, text, font, position, size, parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        public Label(Control parent, Vector2 position) : base(parent, position, Vector2.One)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        public Label(GUIManagerBase gui, Vector2 position)
+            : base(gui, position, Vector2.One)
+        {
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Border = GUIManager.LabelSettings.Border;
             CanDrag = false;
             CanFocus = false;
             AutoResize = true;
         }
 
-        public Label(GUIManagerBase gui, string text, SpriteFont font, Vector2 position, Vector2 size, Control parent)
-            : this(gui, gui.LabelSettings, text, font, position, size, parent)
-        {
-        }
-
-        public Label(GUIManagerBase gui, string text, SpriteFont font, Vector2 position, Control parent)
-            : this(gui, text, font, position, font.MeasureString(text), parent)
-        {
-        }
-
-        public Label(GUIManagerBase gui, LabelSettings settings, string text, SpriteFont font, Vector2 position, Control parent)
-            : this(gui, settings, text, font, position, font.MeasureString(text), parent)
-        {
-        }
-
-        public Label(string text, SpriteFont font, Vector2 position, Control parent)
-            : this(parent.GUIManager, text, font, position, font.MeasureString(text), parent)
-        {
-        }
-
-        public Label(LabelSettings settings, string text, SpriteFont font, Vector2 position, Control parent)
-            : this(parent.GUIManager, settings, text, font, position, font.MeasureString(text), parent)
-        {
-        }
-
-        public Label(string text, Vector2 position, Control parent) : this(text, parent.GUIManager.Font, position, parent)
-        {
-        }
-
-        public Label(LabelSettings settings, string text, Vector2 position, Control parent)
-            : this(settings, text, parent.GUIManager.Font, position, parent)
-        {
-        }
-
         /// <summary>
-        /// Gets or sets if the label will automatically resize when the text or font changes
+        /// Gets or sets if the <see cref="Label"/> will automatically resize when the text or font changes.
         /// </summary>
         public bool AutoResize
         {
-            get { return _autoResize; }
-            set
-            {
-                // If value is not different, abort
-                if (_autoResize == value)
-                    return;
-
-                // Set the new value
-                _autoResize = value;
-
-                if (_autoResize)
-                {
-                    // Enable auto-resizing
-                    if (_autoResizeHandler == null)
-                        _autoResizeHandler = ResizeHandler;
-                    OnChangeText += _autoResizeHandler;
-                    OnChangeFont += _autoResizeHandler;
-                }
-                else
-                {
-                    // Disable auto-resizing
-                    if (_autoResizeHandler != null)
-                    {
-                        OnChangeText -= _autoResizeHandler;
-                        OnChangeFont -= _autoResizeHandler;
-                    }
-                }
-            }
+            get; set;
         }
 
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// </summary>
+        protected override void ChangeFont()
+        {
+            base.ChangeFont();
+
+            ResizeToFitText();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Text"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
+        /// </summary>
+        protected override void ChangeText()
+        {
+            base.ChangeText();
+
+            ResizeToFitText();
+        }
+
+        /// <summary>
+        /// Draws the <see cref="Control"/>.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
         protected override void DrawControl(SpriteBatch spriteBatch)
         {
             base.DrawControl(spriteBatch);
-            DrawText(spriteBatch, Vector2.Zero);
+
+            DrawText(spriteBatch, new Vector2(Border.LeftWidth, Border.TopHeight));
         }
 
-        void ResizeHandler(Control sender)
+        /// <summary>
+        /// Resizes the <see cref="Label"/> so it is large enough to fit the <see cref="TextControl.Text"/>.
+        /// </summary>
+        void ResizeToFitText()
         {
-            Size = Font.MeasureString(Text);
+            Size = Border.Size + Font.MeasureString(Text);
         }
     }
 }

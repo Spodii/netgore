@@ -42,53 +42,52 @@ namespace NetGore.Graphics.GUI
         int _maxVisibleLines = 1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="gui">GUIManager used by this Control.</param>
-        /// <param name="settings">Settings for this TextControl.</param>
-        /// <param name="font">SpriteFont used to write the text.</param>
-        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        public TextBox(GUIManagerBase gui, TextControlSettings settings, SpriteFont font, Vector2 position, Vector2 size,
-                       Control parent) : base(gui, settings, string.Empty, font, position, size, parent)
+        public TextBox(Control parent, Vector2 position, Vector2 size) : base(parent, position, size)
         {
             _numCharsToDraw = new NumCharsToDrawCache(this);
-
-            OnKeyDown += TextBox_OnKeyDown;
             _editableTextHandler = new EditableTextHandler(this);
 
             // Set the initial line length and number of visible lines
             UpdateMaxLineLength();
             UpdateMaxVisibleLines();
-
-            // Hook event listeners
-            OnResize += TextBox_OnResize;
-            OnClick += TextBox_OnClick;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="gui">GUIManager used by this Control.</param>
-        /// <param name="font">SpriteFont used to write the text.</param>
-        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        public TextBox(GUIManagerBase gui, SpriteFont font, Vector2 position, Vector2 size, Control parent)
-            : this(gui, gui.TextBoxSettings, font, position, size, parent)
+        public TextBox(GUIManagerBase gui, Vector2 position, Vector2 size) : base(gui, position, size)
         {
+            _numCharsToDraw = new NumCharsToDrawCache(this);
+            _editableTextHandler = new EditableTextHandler(this);
+
+            // Set the initial line length and number of visible lines
+            UpdateMaxLineLength();
+            UpdateMaxVisibleLines();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.OnKeyDown"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnKeyDown"/> when possible.
         /// </summary>
-        /// <param name="position">Position of the Control relative to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        /// <param name="parent">Control that this Control belongs to.</param>
-        public TextBox(Vector2 position, Vector2 size, Control parent)
-            : this(parent.GUIManager, parent.GUIManager.TextBoxSettings, parent.GUIManager.Font, position, size, parent)
+        /// <param name="e">The event args.</param>
+        protected override void KeyDown(KeyboardEventArgs e)
         {
+            base.KeyDown(e);
+
+            if (!IsEnabled || !IsVisible)
+                return;
+
+            // Notify of only the last key pressed
+            _editableTextHandler.NotifyKeyPressed(e.Keys.LastOrDefault());
         }
 
         /// <summary>
@@ -461,8 +460,16 @@ namespace NetGore.Graphics.GUI
             _cursorBlinkTimer = _currentTime;
         }
 
-        void TextBox_OnClick(object sender, MouseClickEventArgs e)
+        /// <summary>
+        /// Handles when this <see cref="Control"/> was clicked.
+        /// This is called immediately before <see cref="Control.OnClick"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void Click(MouseClickEventArgs e)
         {
+            base.Click(e);
+
             if (!IsEnabled || !IsVisible)
                 return;
 
@@ -474,17 +481,15 @@ namespace NetGore.Graphics.GUI
             CursorLinePosition = lineCharIndex;
         }
 
-        void TextBox_OnKeyDown(object sender, KeyboardEventArgs e)
+        /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.OnResize"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
+        /// </summary>
+        protected override void Resize()
         {
-            if (!IsEnabled || !IsVisible)
-                return;
+            base.Resize();
 
-            // Notify of only the last key pressed
-            _editableTextHandler.NotifyKeyPressed(e.Keys.LastOrDefault());
-        }
-
-        void TextBox_OnResize(Control sender)
-        {
             if (IsMultiLine)
             {
                 UpdateMaxLineLength();
@@ -492,6 +497,17 @@ namespace NetGore.Graphics.GUI
             }
             else
                 _numCharsToDraw.Invalidate();
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Border = GUIManager.TextBoxSettings.Border;
         }
 
         /// <summary>

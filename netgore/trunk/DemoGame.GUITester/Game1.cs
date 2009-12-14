@@ -61,13 +61,12 @@ namespace DemoGame.GUITester
 
             _gui = new GUIManager(_font);
 
-            topForm = new Form(_gui, "Primary form", new Vector2(5, 5), new Vector2(700, 550));
+            topForm = new Form(_gui, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
             topForm.OnMouseMove += topForm_OnMouseMove;
 
-            TextBox tb = new TextBox(new Vector2(10, 10), new Vector2(150, 300), topForm);
+            TextBox tb = new TextBox(topForm, new Vector2(10, 10), new Vector2(150, 300));
 
-            _textBox = new TextBox(_gui, _font, new Vector2(350, 10), new Vector2(200, 200), topForm);
-            _textBox.Append("abcdef\nghi\r\njklj\n");
+            _textBox = new TextBox(topForm, new Vector2(350, 10), new Vector2(200, 200)) { Font = _font, Text = "abcdef\nghi\r\njklj\n" };
 
             for (int i = 0; i < 150; i++)
             {
@@ -102,18 +101,18 @@ namespace DemoGame.GUITester
 
             _topBorder = topForm.Border;
 
-            Form form = new Form(_gui, "My form", new Vector2(50, 50), new Vector2(200, 200), topForm);
+            Form form = new Form(topForm, new Vector2(50, 50), new Vector2(200, 200)) { Text = "My form" };
 
-            Button b = new Button("Press me", new Vector2(20, 20), new Vector2(80, 30), form);
+            Button b = new Button(form, new Vector2(20, 20), new Vector2(80, 30)) { Text = "Press me" };
             b.OnClick += b_OnMouseDown;
 
-            new CheckBox("Checkbox", new Vector2(20, 200), form);
+            new CheckBox(form, new Vector2(20, 200)) { Text = "Checkbox" };
 
-            Form f2 = new Form(_gui, "My form 2", new Vector2(200, 250), new Vector2(275, 270), topForm);
-            Form f3 = new Form(_gui, "form 3", Vector2.Zero, new Vector2(200, 200), f2);
-            Form f4 = new Form(_gui, "form 4", Vector2.Zero, new Vector2(100, 100), f3);
+            Form f2 = new Form(topForm, new Vector2(200, 250), new Vector2(275, 270)) { Text = "My form 2"};
+            Form f3 = new Form(f2, Vector2.Zero, new Vector2(200, 200)) { Text = "form 3" };
+            Form f4 = new Form(f3, Vector2.Zero, new Vector2(100, 100)) { Text = "form 4" };
 
-            Label testLabelF4 = new Label("Click me", Vector2.Zero, f4);
+            Label testLabelF4 = new Label(f4, Vector2.Zero) { Text = "Click me" };
             testLabelF4.OnClick += testLabelF4_OnClick;
 
             topForm.OnBeginDrag += OnDrag;

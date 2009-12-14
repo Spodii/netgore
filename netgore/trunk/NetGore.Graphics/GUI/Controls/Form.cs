@@ -6,43 +6,43 @@ namespace NetGore.Graphics.GUI
 {
     public class Form : TextControl
     {
-        public Form(GUIManagerBase gui, FormSettings settings, string text, SpriteFont font, Vector2 position, Vector2 size,
-                    Control parent) : base(gui, settings, text, font, position, size, parent)
-        {
-            // All constructors ultimately lead to this one
-            ForeColor = settings.ForeColor;
-        }
-
-        public Form(GUIManagerBase gui, FormSettings settings, string text, SpriteFont font, Vector2 position, Vector2 size)
-            : this(gui, settings, text, font, position, size, null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        public Form(Control parent, Vector2 position, Vector2 size) : base(parent, position, size)
         {
         }
 
-        public Form(GUIManagerBase gui, FormSettings settings, string text, Vector2 position, Vector2 size)
-            : this(gui, settings, text, gui.Font, position, size, null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        public Form(GUIManagerBase gui, Vector2 position, Vector2 size) : base(gui, position, size)
         {
         }
 
-        public Form(GUIManagerBase gui, string text, Vector2 position, Vector2 size)
-            : this(gui, gui.FormSettings, text, gui.Font, position, size)
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
         {
+            base.SetDefaultValues();
+
+            Border = GUIManager.FormSettings.Border;
+            CanDrag = true;
+            ForeColor = GUIManager.FormSettings.ForeColor;
         }
 
-        public Form(GUIManagerBase gui, string text, Vector2 position, Vector2 size, Control parent)
-            : this(gui, gui.FormSettings, text, gui.Font, position, size, parent)
-        {
-        }
-
-        public Form(GUIManagerBase gui, string text, SpriteFont font, Vector2 position, Vector2 size)
-            : this(gui, gui.FormSettings, text, font, position, size)
-        {
-        }
-
-        public Form(GUIManagerBase gui, string text, SpriteFont font, Vector2 position, Vector2 size, Control parent)
-            : this(gui, gui.FormSettings, text, font, position, size, parent)
-        {
-        }
-
+        /// <summary>
+        /// Draws the Control.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
         protected override void DrawControl(SpriteBatch spriteBatch)
         {
             base.DrawControl(spriteBatch);

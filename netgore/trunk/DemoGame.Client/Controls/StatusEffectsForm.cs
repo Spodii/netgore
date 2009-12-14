@@ -19,13 +19,24 @@ namespace DemoGame.Client
         readonly StatusEffectCollection _statusEffects = new StatusEffectCollection();
 
         /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Status Effects";
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StatusEffectsForm"/> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="position">The position.</param>
         /// <param name="getTime">The get time.</param>
         public StatusEffectsForm(Control parent, Vector2 position, IGetTime getTime)
-            : base(parent.GUIManager, "Status Effects", position, _iconSize, parent)
+            : base(parent, position, _iconSize)
         {
             _getTime = getTime;
 

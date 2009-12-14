@@ -71,10 +71,10 @@ namespace DemoGame.Client
             _gui = new GUIManager(ScreenManager.Content.Load<SpriteFont>("Font/Menu"));
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
-            Button cLogin = new Button("Login", new Vector2(60, 260), new Vector2(250, 45), cScreen);
-            Button cNewAccount = new Button("New Account", new Vector2(60, 320), new Vector2(250, 45), cScreen);
-            Button cOptions = new Button("Options", new Vector2(60, 380), new Vector2(250, 45), cScreen);
-            Button cQuit = new Button("Quit", new Vector2(60, 440), new Vector2(250, 45), cScreen);
+            Button cLogin = new Button(cScreen, new Vector2(60, 260), new Vector2(250, 45)) { Text = "Login" };
+            Button cNewAccount = new Button(cScreen, new Vector2(60, 320), new Vector2(250, 45)) { Text = "New Account" };
+            Button cOptions = new Button(cScreen, new Vector2(60, 380), new Vector2(250, 45)) { Text = "Options" };
+            Button cQuit = new Button(cScreen, new Vector2(60, 440), new Vector2(250, 45)) { Text = "Quit" };
 
             cLogin.OnClick += cLogin_OnClick;
             cQuit.OnClick += cQuit_OnClick;

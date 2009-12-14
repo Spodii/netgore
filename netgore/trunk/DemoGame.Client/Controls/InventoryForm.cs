@@ -18,10 +18,16 @@ namespace DemoGame.Client
     class InventoryForm : Form, IRestorableSettings
     {
         const int _columns = 6; // Number of items on each row
-        const float _itemHeight = 32; // Height of each item slot
-        const float _itemWidth = 32; // Width of each item slot
-        const float _sepX = 2; // Amount of space on the X axis between each item
-        const float _sepY = 2; // Amount of space on the Y axis between each item
+
+        /// <summary>
+        /// The size of each item box.
+        /// </summary>
+        static readonly Vector2 _itemSize = new Vector2(32, 32);
+
+        /// <summary>
+        /// The amount of space between each item.
+        /// </summary>
+        static readonly Vector2 _padding = new Vector2(2, 2);
 
         readonly ItemInfoRequesterBase<InventorySlot> _infoRequester;
 
@@ -38,21 +44,32 @@ namespace DemoGame.Client
         public event InventoryUseItemHandler OnRequestUseItem;
 
         /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Inventory";
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
         /// <param name="infoRequester">The item info tooltip.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
         public InventoryForm(ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position, Control parent)
-            : base(parent.GUIManager, "Inventory", position, new Vector2(200, 200), parent)
+            : base(parent, position, new Vector2(200, 200))
         {
             if (infoRequester == null)
                 throw new ArgumentNullException("infoRequester");
 
             _infoRequester = infoRequester;
 
-            Vector2 itemsSize = _columns * new Vector2(_itemWidth, _itemHeight);
-            Vector2 paddingSize = (_columns + 1) * new Vector2(_sepX, _sepY);
+            Vector2 itemsSize = _columns * _itemSize;
+            Vector2 paddingSize = (_columns + 1) * _padding;
             Size = itemsSize + paddingSize + Border.Size;
 
             CreateItemSlots();
@@ -66,13 +83,14 @@ namespace DemoGame.Client
 
         void CreateItemSlots()
         {
-            Vector2 offset = new Vector2(_sepX, _sepY);
+            Vector2 offset = _padding;
+            Vector2 offsetMultiplier = _itemSize + _padding;
 
             for (int i = 0; i < Inventory.MaxInventorySize; i++)
             {
                 int x = i % _columns;
                 int y = i / _columns;
-                Vector2 pos = offset + new Vector2(x * (_itemWidth + _sepX), y * (_itemHeight + _sepY));
+                Vector2 pos = offset + new Vector2(x, y) * offsetMultiplier;
 
                 new InventoryItemPB(this, pos, new InventorySlot(i));
             }
@@ -131,7 +149,7 @@ namespace DemoGame.Client
             readonly InventorySlot _slot;
 
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot)
-                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
+                : base(parent, pos, _itemSize)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
@@ -150,6 +168,10 @@ namespace DemoGame.Client
                 get { return _slot; }
             }
 
+            /// <summary>
+            /// Draws the <see cref="Control"/>.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
             protected override void DrawControl(SpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
@@ -166,10 +188,7 @@ namespace DemoGame.Client
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = new Vector2(_itemWidth, _itemHeight);
-                offset -= item.Grh.Size;
-                offset /= 2;
-
+                Vector2 offset = (_itemSize - item.Grh.Size) / 2f;
                 item.Draw(spriteBatch, ScreenPosition + offset);
 
                 // Draw the amount
@@ -179,7 +198,7 @@ namespace DemoGame.Client
 
             void DrawShadedText(SpriteBatch sb, string txt, Vector2 pos, Color foreground, Color background)
             {
-                // NOTE: Isn't there an overload or something for shaded text somewhere else?
+                // NOTE: Isn't there an extension method or something for shaded text somewhere else?
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(1, 0), background);
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(0, 1), background);
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(-1, 0), background);
