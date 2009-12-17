@@ -32,11 +32,6 @@ namespace DemoGame.Client
         readonly ToolbarItem[] _items;
 
         /// <summary>
-        /// Needed size of the client area of the form.
-        /// </summary>
-        readonly Vector2 _neededClientSize;
-
-        /// <summary>
         /// Notifies listeners when an individual tool item on the Toolbar has been clicked.
         /// </summary>
         public event ToolbarEventHandler OnClickItem;
@@ -48,14 +43,9 @@ namespace DemoGame.Client
         /// <param name="pos">The pos.</param>
         public Toolbar(Control parent, Vector2 pos) : base(parent, pos, new Vector2(800, 800))
         {
-            // Create the ToolbarItems
             _items = CreateToolbarItems();
 
-            // Set the size
-            _neededClientSize = FindNeededClientSize();
-            UpdateSize(this);
-
-            // Re-adjust the position
+            UpdateSize();
             Position = pos;
         }
 
@@ -68,7 +58,7 @@ namespace DemoGame.Client
         {
             base.ChangeBorder();
 
-            UpdateSize(this);
+            UpdateSize();
         }
 
         /// <summary>
@@ -126,11 +116,34 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="index">Index of the item.</param>
         /// <returns>ISprite for the given index.</returns>
-        static ISprite GetItemSprite(int index)
+        ISprite GetItemSprite(int index)
         {
-            string title = Enum.GetName(typeof(ToolbarItemType), index);
-            GrhData gd = Skin.GetToolbarItem(title);
-            return new Grh(gd, AnimType.Loop, 0); // Start time doesn't matter
+            var title = EnumIOHelper<ToolbarItemType>.ToName((ToolbarItemType)index);
+            return GUIManager.SkinManager.GetSprite("Toolbar", title);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            base.LoadSkin(skinManager);
+
+            // Re-load the toolbar icons
+            if (_items != null)
+            {
+                for (int i = 0; i < _items.Length; i++)
+                {
+                    if (_items[i] == null)
+                        continue;
+
+                    _items[i].Sprite = GetItemSprite(i);
+                }
+
+                UpdateSize();
+            }
         }
 
         /// <summary>
@@ -156,10 +169,10 @@ namespace DemoGame.Client
         /// <summary>
         /// Updates the size to ensure the Toolbar has the needed ClientSize.
         /// </summary>
-        static void UpdateSize(Control sender)
+        void UpdateSize()
         {
-            Toolbar toolbar = (Toolbar)sender;
-            toolbar.ClientSize = toolbar._neededClientSize;
+            if (_items != null)
+            ClientSize = FindNeededClientSize();
         }
 
         #region IRestorableSettings Members

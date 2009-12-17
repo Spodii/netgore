@@ -16,6 +16,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "PictureBox";
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
@@ -23,13 +38,6 @@ namespace NetGore.Graphics.GUI
         /// <param name="size">Size of the Control.</param>
         public PictureBox(GUIManagerBase gui, Vector2 position, Vector2 size) : base(gui, position, size)
         {
-        }
-
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Border = GUIManager.PictureBoxSettings.Border;
         }
     }
 }

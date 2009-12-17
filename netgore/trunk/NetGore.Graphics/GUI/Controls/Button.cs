@@ -174,13 +174,25 @@ namespace NetGore.Graphics.GUI
 
             CanDrag = false;
             CanFocus = false;
-
-            Border = GUIManager.ButtonSettings.Border;
-
-            _borderOver = GUIManager.ButtonSettings.MouseOver;
-            _borderPressed = GUIManager.ButtonSettings.Pressed;
             _currentBorder = Border;
         }
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+            BorderOver = skinManager.GetBorder(_controlSkinName, "MouseOver");
+            BorderPressed = skinManager.GetBorder(_controlSkinName, "Pressed");
+        }
+
+        /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "Button";
 
         /// <summary>
         /// Updates the size and position of the button text

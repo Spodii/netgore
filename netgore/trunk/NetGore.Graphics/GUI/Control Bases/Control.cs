@@ -232,6 +232,16 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public virtual void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(GetType().Name);
+        }
+
+        /// <summary>
         /// Gets the size of the client area (internal area, not including the borders) of the Control.
         /// </summary>
         public Vector2 ClientSize
@@ -250,7 +260,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the GUIManager used by this Control
+        /// Gets the <see cref="GUIManagerBase"/> used by this <see cref="Control"/>.
         /// </summary>
         public GUIManagerBase GUIManager
         {
@@ -258,7 +268,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets if the control currently has focus
+        /// Gets if the <see cref="Control"/> currently has focus.
         /// </summary>
         public bool HasFocus
         {
@@ -266,7 +276,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets if the control is bound to the area of its parent (control must have a parent)
+        /// Gets or sets if the <see cref="Control"/> is bound to the area of its parent. Only valid if the
+        /// <see cref="Control"/> has a parent.
         /// </summary>
         public bool IsBoundToParentArea
         {
@@ -275,7 +286,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets if the Control is enabled.
+        /// Gets or sets if the <see cref="Control"/> is enabled.
         /// </summary>
         public bool IsEnabled
         {
@@ -284,8 +295,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets if the mouse has entered the Control (OnMouseEnter has been raised) and the mouse
-        /// is still location in the Control's area (OnMouseLeave has not been raised).
+        /// Gets if the cursor is currently over this <see cref="Control"/>.
         /// </summary>
         public bool IsMouseEntered
         {
@@ -1056,6 +1066,8 @@ namespace NetGore.Graphics.GUI
             IsEnabled = true;
             IsVisible = true;
             Border = ControlBorder.Empty;
+
+            LoadSkin(GUIManager.SkinManager);
         }
 
         /// <summary>

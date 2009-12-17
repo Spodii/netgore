@@ -157,9 +157,6 @@ namespace DemoGame.Client
                 _slot = slot;
                 Tooltip = _tooltipHandler;
                 OnMouseUp += _invForm.InventoryItemPB_OnMouseUp;
-
-                Skin.OnChange += Skin_OnChange;
-                LoadSprite();
             }
 
             public InventorySlot Slot
@@ -205,18 +202,16 @@ namespace DemoGame.Client
                 sb.DrawString(GUIManager.Font, txt, pos, foreground);
             }
 
-            void LoadSprite()
+            /// <summary>
+            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+            /// from the given <paramref name="skinManager"/>.
+            /// </summary>
+            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+            public override void LoadSkin(ISkinManager skinManager)
             {
-                GrhData grhData = Skin.GetSkinGrhData(string.Empty, "item_slot");
-                if (grhData == null)
-                    return;
+                base.LoadSkin(skinManager);
 
-                Sprite = new Grh(grhData);
-            }
-
-            void Skin_OnChange(string newSkin, string oldSkin)
-            {
-                LoadSprite();
+                Sprite = GUIManager.SkinManager.GetSprite("item_slot");
             }
 
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)

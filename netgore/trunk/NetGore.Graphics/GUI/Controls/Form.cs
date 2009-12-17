@@ -45,9 +45,23 @@ namespace NetGore.Graphics.GUI
         {
             base.SetDefaultValues();
 
-            Border = GUIManager.FormSettings.Border;
             CanDrag = true;
-            ForeColor = GUIManager.FormSettings.ForeColor;
+            ForeColor = Color.White;
+        }
+
+        /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "Form";
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
         }
     }
 }

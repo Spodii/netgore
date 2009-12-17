@@ -73,6 +73,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "Label";
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+        }
+
+        /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
         /// base class's method to ensure that changes to settings are hierchical.
         /// </summary>
@@ -80,7 +95,6 @@ namespace NetGore.Graphics.GUI
         {
             base.SetDefaultValues();
 
-            Border = GUIManager.LabelSettings.Border;
             CanDrag = false;
             CanFocus = false;
             AutoResize = true;
