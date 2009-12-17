@@ -14,25 +14,18 @@ namespace NetGore.Graphics.GUI
     public class GUIManagerBase
     {
         readonly List<Control> _controls = new List<Control>(2);
-        ButtonSettings _buttonSettings = ButtonSettings.Default;
-        CheckBoxSettings _checkBoxSettings = CheckBoxSettings.Default;
         Control _focusedControl = null;
-        FormSettings _formSettings = FormSettings.Default;
         bool _isKeysDownSet = false;
         bool _isKeysUpSet = false;
         KeyboardState _keyboardState;
         List<Keys> _keysDown = null;
         Keys[] _keysPressed = null;
         List<Keys> _keysUp = null;
-        LabelSettings _labelSettings = LabelSettings.Default;
         KeyboardState _lastKeyboardState;
         MouseState _lastMouseState;
         Keys[] _lastPressedKeys = null;
         MouseState _mouseState;
-        PanelSettings _panelSettings = PanelSettings.Default;
-        PictureBoxSettings _pictureBoxSettings = PictureBoxSettings.Default;
         ISprite _spriteBlank = null;
-        TextBoxSettings _textBoxSettings = TextBoxSettings.Default;
         Tooltip _tooltip;
         Control _underCursor;
 
@@ -46,13 +39,21 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public event GUIEventHandler OnChangeFocusedRoot;
 
+        readonly ISkinManager _skinManager;
+
         /// <summary>
-        /// GUIManager constructor
+        /// Gets the <see cref="ISkinManager"/> for this <see cref="GUIManagerBase"/>.
         /// </summary>
-        /// <param name="font">Default SpriteFont to use for controls added to this GUIManager</param>
+        public ISkinManager SkinManager { get { return _skinManager; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GUIManagerBase"/> class.
+        /// </summary>
+        /// <param name="font">Default SpriteFont to use for controls added to this GUIManagerBase.</param>
         /// <param name="blank">A Sprite that is only Color.White (size does not matter). Used by multiple Controls
         /// for a variety of reasons.</param>
-        public GUIManagerBase(SpriteFont font, ISprite blank)
+        /// <param name="defaultSkin">The name of the default skin.</param>
+        public GUIManagerBase(SpriteFont font, ISprite blank, string defaultSkin)
         {
             Font = font;
             SpriteBlank = blank;
@@ -63,49 +64,11 @@ namespace NetGore.Graphics.GUI
             _mouseState = Mouse.GetState();
             _keyboardState = Keyboard.GetState();
             _keysPressed = _keyboardState.GetPressedKeys();
-        }
 
-        /// <summary>
-        /// GUIManager constructor
-        /// </summary>
-        /// <param name="gui">GUIManager to copy the settings from. This will not copy over
-        /// the individual GUI components.</param>
-        public GUIManagerBase(GUIManagerBase gui) : this(gui.Font, gui.SpriteBlank)
-        {
-            ButtonSettings = gui.ButtonSettings;
-            CheckBoxSettings = gui.CheckBoxSettings;
-            FormSettings = gui.FormSettings;
-            LabelSettings = gui.LabelSettings;
-            PanelSettings = gui.PanelSettings;
-            TextBoxSettings = gui.TextBoxSettings;
-        }
-
-        /// <summary>
-        /// Gets or sets the default settings for new Buttons under this GUIManager
-        /// </summary>
-        public ButtonSettings ButtonSettings
-        {
-            get { return _buttonSettings; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
-                _buttonSettings = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the default settings for new CheckBoxes under this GUIManager
-        /// </summary>
-        public CheckBoxSettings CheckBoxSettings
-        {
-            get { return _checkBoxSettings; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
-                _checkBoxSettings = value;
-            }
+            // Create the skin manager
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            _skinManager = CreateSkinManager(defaultSkin);
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -181,20 +144,6 @@ namespace NetGore.Graphics.GUI
         public SpriteFont Font { get; set; }
 
         /// <summary>
-        /// Gets or sets the default settings for new Forms under this GUIManager
-        /// </summary>
-        public FormSettings FormSettings
-        {
-            get { return _formSettings; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
-                _formSettings = value;
-            }
-        }
-
-        /// <summary>
         /// Gets the current KeyboardState
         /// </summary>
         public KeyboardState KeyboardState
@@ -208,21 +157,6 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Keys> KeysPressed
         {
             get { return _keysPressed; }
-        }
-
-        /// <summary>
-        /// Gets or sets the default settings for new Labels under this GUIManager
-        /// </summary>
-        public LabelSettings LabelSettings
-        {
-            get { return _labelSettings; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
-
-                _labelSettings = value;
-            }
         }
 
         /// <summary>
@@ -296,36 +230,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the default settings for new Panels under this GUIManager
-        /// </summary>
-        public PanelSettings PanelSettings
-        {
-            get { return _panelSettings; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
-
-                _panelSettings = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the default settings for new PictureBoxes under this GUIManager
-        /// </summary>
-        public PictureBoxSettings PictureBoxSettings
-        {
-            get { return _pictureBoxSettings; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
-
-                _pictureBoxSettings = value;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a Sprite that is only Color.White (size does not matter). Used by multiple Controls
         /// for a variety of reasons.
         /// </summary>
@@ -351,21 +255,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the default settings for new TextBoxes under this GUIManager
-        /// </summary>
-        public TextBoxSettings TextBoxSettings
-        {
-            get { return _textBoxSettings; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
-
-                _textBoxSettings = value;
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManagerBase"/>.
         /// </summary>
         public Tooltip Tooltip
@@ -381,6 +270,16 @@ namespace NetGore.Graphics.GUI
         public Control UnderCursor
         {
             get { return _underCursor; }
+        }
+
+        /// <summary>
+        /// Creates the <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <param name="defaultSkin">The name of the default skin.</param>
+        /// <returns>The <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>.</returns>
+        protected virtual ISkinManager CreateSkinManager(string defaultSkin)
+        {
+            return new SkinManager(defaultSkin, this);
         }
 
         /// <summary>

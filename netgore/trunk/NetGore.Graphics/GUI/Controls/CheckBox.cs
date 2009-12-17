@@ -67,7 +67,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position of the Control reletive to its parent.</param>
         public CheckBox(Control parent, Vector2 position) : base(parent, position)
         {
-            Initialize(GUIManager.CheckBoxSettings);
+            Initialize();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position of the Control reletive to its parent.</param>
         public CheckBox(GUIManagerBase gui, Vector2 position) : base(gui, position)
         {
-            Initialize(GUIManager.CheckBoxSettings);
+            Initialize();
         }
 
         /// <summary>
@@ -312,22 +312,37 @@ namespace NetGore.Graphics.GUI
             DrawText(spriteBatch, textOffset);
         }
 
-        /// <summary>
-        /// Initializes the CheckBox
-        /// </summary>
-        /// <param name="settings">CheckBox settings</param>
-        void Initialize(CheckBoxSettings settings)
-        {
-            // Set the default Sprites
-            _ticked = settings.Ticked;
-            _tickedOver = settings.TickedMouseOver;
-            _tickedPressed = settings.TickedPressed;
-            _unticked = settings.Unticked;
-            _untickedOver = settings.UntickedMouseOver;
-            _untickedPressed = settings.UntickedPressed;
 
+        /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "CheckBox";
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            base.LoadSkin(skinManager);
+
+            _ticked = skinManager.GetControlSprite(_controlSkinName, "Ticked");
+            _tickedOver = skinManager.GetControlSprite(_controlSkinName, "TickedMouseOver");
+            _tickedPressed = skinManager.GetControlSprite(_controlSkinName, "TickedPressed");
+
+            _unticked = skinManager.GetControlSprite(_controlSkinName, "Unticked");
+            _untickedOver = skinManager.GetControlSprite(_controlSkinName, "UntickedMouseOver");
+            _untickedPressed = skinManager.GetControlSprite(_controlSkinName, "UntickedPressed");
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="CheckBox"/>.
+        /// </summary>
+        void Initialize()
+        {
             // Set all the event hooks
-            // TODO: !!
+            // TODO: !! Use the overridden methods instead of these event hooks
             OnChangeText += CheckBox_Resize;
             OnChangeFont += CheckBox_Resize;
             OnChangeTickedSprite += CheckBox_Resize;
@@ -356,7 +371,6 @@ namespace NetGore.Graphics.GUI
         {
             base.SetDefaultValues();
 
-            Border = GUIManager.CheckBoxSettings.Border;
             CanFocus = true;
         }
 
