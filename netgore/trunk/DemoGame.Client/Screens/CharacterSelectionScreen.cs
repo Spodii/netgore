@@ -144,7 +144,7 @@ namespace DemoGame.Client
             for (int i = 0; i < GameData.MaxCharactersPerAccount; i++)
             {
                 Vector2 size = new Vector2(250, 35);
-                Vector2 pos = new Vector2((ScreenManager.ScreenWidth / 2f) - (size.X / 2), 10 + (i * (size.Y + 5)));
+                Vector2 pos = new Vector2((ScreenManager.ScreenWidth / 2f) - (size.X / 2), 10 + (i * (size.Y + 10)));
                 Button characterButton = new Button(cScreen, pos, size) { Text = _unusedCharacterSlotText, Tag = (byte)i };
                 characterButton.OnClick += characterButton_OnClick;
                 _characterButtons[i] = characterButton;
