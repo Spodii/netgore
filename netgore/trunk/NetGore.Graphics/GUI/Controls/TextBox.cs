@@ -546,6 +546,9 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         void UpdateMaxVisibleLines()
         {
+            if (Font == null)
+                return;
+
             if (IsMultiLine)
                 _maxVisibleLines = (int)Math.Floor(ClientSize.Y / Font.LineSpacing);
         }
