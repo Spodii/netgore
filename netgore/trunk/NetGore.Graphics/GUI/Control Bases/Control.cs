@@ -125,8 +125,9 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        protected Control(Control parent, Vector2 position, Vector2 size) : this(parent, parent.GUIManager, position, size)
+        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+        protected Control(Control parent, Vector2 position, Vector2 clientSize)
+            : this(parent, parent.GUIManager, position, clientSize)
         {
         }
 
@@ -135,8 +136,9 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        protected Control(GUIManagerBase gui, Vector2 position, Vector2 size) : this(null, gui, position, size)
+        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+        protected Control(GUIManagerBase gui, Vector2 position, Vector2 clientSize)
+            : this(null, gui, position, clientSize)
         {
         }
 
@@ -146,8 +148,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of.</param>
         /// <param name="parent">Parent Control of this Control.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="size">Size of the Control.</param>
-        Control(Control parent, GUIManagerBase gui, Vector2 position, Vector2 size)
+        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+        Control(Control parent, GUIManagerBase gui, Vector2 position, Vector2 clientSize)
         {
             if (gui == null)
                 throw new ArgumentNullException("gui", "GUIManager cannot be null.");
@@ -157,7 +159,7 @@ namespace NetGore.Graphics.GUI
 
             _border = ControlBorder.Empty;
             _position = position;
-            _size = size;
+            _size = clientSize;
 
             if (Parent != null)
             {
@@ -201,7 +203,13 @@ namespace NetGore.Graphics.GUI
                 if (_border == value)
                     return;
 
+                var oldBorderSize = _border != null ? _border.Size : Vector2.Zero;
+
                 _border = value;
+
+                // Resize the control so that the ClientSize remainst he same
+                if (_border.Size != oldBorderSize)
+                    Size += (_border.Size - oldBorderSize); 
 
                 // The border changed, thus the ClientArea probably changed and we need to update the KeepInParent
                 foreach (Control child in Controls)
