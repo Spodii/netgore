@@ -11,6 +11,11 @@ namespace NetGore.Graphics.GUI
     public class CheckBox : Label
     {
         /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "CheckBox";
+
+        /// <summary>
         /// Amount of space added between the check box and text
         /// </summary>
         const float _textXAdjust = 2f;
@@ -26,37 +31,37 @@ namespace NetGore.Graphics.GUI
         bool _value = false;
 
         /// <summary>
-        /// Notifies when the TickedOverSprite changes
+        /// Notifies listeners when the <see cref="CheckBox.TickedOverSprite"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeTickedOverSprite;
 
         /// <summary>
-        /// Notifies when the TickedPressedSprite changes
+        /// Notifies listeners when the <see cref="CheckBox.TickedPressedSprite"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeTickedPressedSprite;
 
         /// <summary>
-        /// Notifies when the TickedSprite changes
+        /// Notifies listeners when the <see cref="CheckBox.TickedSprite"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeTickedSprite;
 
         /// <summary>
-        /// Notifies when the UntickedOverSprite changes
+        /// Notifies listeners when the <see cref="CheckBox.UntickedOverSprite"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeUntickedOverSprite;
 
         /// <summary>
-        /// Notifies when the UntickedPressedSprite changes
+        /// Notifies listeners when the <see cref="CheckBox.UntickedPressedSprite"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeUntickedPressedSprite;
 
         /// <summary>
-        /// Notifies when the UntickedSprite changes
+        /// Notifies listeners when the <see cref="CheckBox.UntickedSprite"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeUntickedSprite;
 
         /// <summary>
-        /// Notifies when the checkbox value changes
+        /// Notifies listeners when the <see cref="CheckBox.Value"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeValue;
 
@@ -67,7 +72,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position of the Control reletive to its parent.</param>
         public CheckBox(Control parent, Vector2 position) : base(parent, position)
         {
-            Initialize();
+            HandleAutoResize();
         }
 
         /// <summary>
@@ -77,7 +82,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position of the Control reletive to its parent.</param>
         public CheckBox(GUIManagerBase gui, Vector2 position) : base(gui, position)
         {
-            Initialize();
+            HandleAutoResize();
         }
 
         /// <summary>
@@ -88,12 +93,11 @@ namespace NetGore.Graphics.GUI
             get { return _ticked; }
             set
             {
-                if (_tickedOver != value)
-                {
-                    _tickedOver = value;
-                    if (OnChangeTickedOverSprite != null)
-                        OnChangeTickedOverSprite(this);
-                }
+                if (_tickedOver == value)
+                    return;
+
+                _tickedOver = value;
+                InvokeChangeTickedOverSprite();
             }
         }
 
@@ -105,12 +109,11 @@ namespace NetGore.Graphics.GUI
             get { return _ticked; }
             set
             {
-                if (_ticked != value)
-                {
-                    _ticked = value;
-                    if (OnChangeTickedPressedSprite != null)
-                        OnChangeTickedPressedSprite(this);
-                }
+                if (_ticked == value)
+                    return;
+
+                _ticked = value;
+                InvokeChangeTickedPressedSprite();
             }
         }
 
@@ -122,12 +125,11 @@ namespace NetGore.Graphics.GUI
             get { return _ticked; }
             set
             {
-                if (_ticked != value)
-                {
-                    _ticked = value;
-                    if (OnChangeTickedSprite != null)
-                        OnChangeTickedSprite(this);
-                }
+                if (_ticked == value)
+                    return;
+
+                _ticked = value;
+                InvokeChangeTickedSprite();
             }
         }
 
@@ -139,12 +141,11 @@ namespace NetGore.Graphics.GUI
             get { return _untickedOver; }
             set
             {
-                if (_untickedOver != value)
-                {
-                    _untickedOver = value;
-                    if (OnChangeUntickedOverSprite != null)
-                        OnChangeUntickedOverSprite(this);
-                }
+                if (_untickedOver == value)
+                    return;
+
+                _untickedOver = value;
+                InvokeChangeUntickedOverSprite();
             }
         }
 
@@ -156,12 +157,11 @@ namespace NetGore.Graphics.GUI
             get { return _untickedPressed; }
             set
             {
-                if (_untickedPressed != value)
-                {
-                    _untickedPressed = value;
-                    if (OnChangeUntickedPressedSprite != null)
-                        OnChangeUntickedPressedSprite(this);
-                }
+                if (_untickedPressed == value)
+                    return;
+
+                _untickedPressed = value;
+                InvokeChangeUntickedPressedSprite();
             }
         }
 
@@ -173,17 +173,16 @@ namespace NetGore.Graphics.GUI
             get { return _unticked; }
             set
             {
-                if (_unticked != value)
-                {
-                    _unticked = value;
-                    if (OnChangeUntickedSprite != null)
-                        OnChangeUntickedSprite(this);
-                }
+                if (_unticked == value)
+                    return;
+
+                _unticked = value;
+                InvokeChangeUntickedSprite();
             }
         }
 
         /// <summary>
-        /// Gets or sets if the checkbox is ticked.
+        /// Gets or sets if the <see cref="CheckBox"/> is ticked.
         /// </summary>
         public bool Value
         {
@@ -194,71 +193,101 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _value = value;
-
-                if (OnChangeValue != null)
-                    OnChangeValue(this);
+                InvokeChangeValue();
             }
         }
 
-        void CheckBox_OnLostFocus(Control sender)
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// </summary>
+        protected override void ChangeFont()
         {
-            _state = CheckBoxState.None;
+            base.ChangeFont();
+
+            HandleAutoResize();
         }
 
         /// <summary>
-        /// Handles mouse clicks
+        /// Handles when the <see cref="TextControl.Text"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
         /// </summary>
-        /// <param name="sender">Sender object</param>
-        /// <param name="e">Event args</param>
-        void CheckBox_OnMouseDown(object sender, MouseClickEventArgs e)
+        protected override void ChangeText()
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                Value = !_value;
-                _state = CheckBoxState.Pressed;
-            }
-        }
+            base.ChangeText();
 
-        void CheckBox_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            _state = CheckBoxState.Over;
-        }
-
-        void CheckBox_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            _state = CheckBoxState.None;
-        }
-
-        void CheckBox_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            _state = CheckBoxState.Over;
-        }
-
-        void CheckBox_OnMouseUp(object sender, MouseClickEventArgs e)
-        {
-            _state = CheckBoxState.Over;
+            HandleAutoResize();
         }
 
         /// <summary>
-        /// Handles control resizing.
+        /// Handles when the <see cref="CheckBox.TickedOverSprite"/> changes.
+        /// This is called immediately before <see cref="CheckBox.OnChangeTickedOverSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeTickedOverSprite"/> when possible.
         /// </summary>
-        /// <param name="sender">Sender Control.</param>
-        void CheckBox_Resize(Control sender)
+        protected virtual void ChangeTickedOverSprite()
         {
-            // Start with the size of the text
-            Vector2 textSize = Font.MeasureString(Text);
+            HandleAutoResize();
+        }
 
-            // Add the width of checkbox
-            textSize.X += Math.Max(_unticked.Source.Width, _ticked.Source.Width);
+        /// <summary>
+        /// Handles when the <see cref="CheckBox.TickedPressedSprite"/> changes.
+        /// This is called immediately before <see cref="CheckBox.OnChangeTickedPressedSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeTickedPressedSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeTickedPressedSprite()
+        {
+            HandleAutoResize();
+        }
 
-            // Set the height to the largest of either the text or checkbox
-            textSize.Y = Math.Max(textSize.Y, Math.Max(_unticked.Source.Height, _ticked.Source.Height));
+        /// <summary>
+        /// Handles when the <see cref="CheckBox.TickedSprite"/> changes.
+        /// This is called immediately before <see cref="CheckBox.OnChangeTickedSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeTickedSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeTickedSprite()
+        {
+            HandleAutoResize();
+        }
 
-            // Add the space between the checkbox and text
-            textSize.X += _textXAdjust;
+        /// <summary>
+        /// Handles when the <see cref="CheckBox.UntickedOverSprite"/> changes.
+        /// This is called immediately before <see cref="CheckBox.OnChangeUntickedOverSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeUntickedOverSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeUntickedOverSprite()
+        {
+            HandleAutoResize();
+        }
 
-            // Set the new size
-            Size = textSize;
+        /// <summary>
+        /// Handles when the <see cref="CheckBox.UntickedPressedSprite"/> changes.
+        /// This is called immediately before <see cref="CheckBox.OnChangeUntickedPressedSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeUntickedPressedSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeUntickedPressedSprite()
+        {
+            HandleAutoResize();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="CheckBox.UntickedSprite"/> changes.
+        /// This is called immediately before <see cref="CheckBox.OnChangeUntickedSprite"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeUntickedSprite"/> when possible.
+        /// </summary>
+        protected virtual void ChangeUntickedSprite()
+        {
+            HandleAutoResize();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="CheckBox.Value"/> changes.
+        /// This is called immediately before <see cref="CheckBox.OnChangeValue"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeValue"/> when possible.
+        /// </summary>
+        protected virtual void ChangeValue()
+        {
         }
 
         /// <summary>
@@ -312,11 +341,103 @@ namespace NetGore.Graphics.GUI
             DrawText(spriteBatch, textOffset);
         }
 
+        /// <summary>
+        /// Handles control resizing.
+        /// </summary>
+        void HandleAutoResize()
+        {
+            // Start with the size of the text
+            Vector2 textSize = Font.MeasureString(Text);
+
+            // Add the width of checkbox
+            textSize.X += Math.Max(_unticked.Source.Width, _ticked.Source.Width);
+
+            // Set the height to the largest of either the text or checkbox
+            textSize.Y = Math.Max(textSize.Y, Math.Max(_unticked.Source.Height, _ticked.Source.Height));
+
+            // Add the space between the checkbox and text
+            textSize.X += _textXAdjust;
+
+            // Set the new size
+            Size = textSize;
+        }
 
         /// <summary>
-        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        const string _controlSkinName = "CheckBox";
+        void InvokeChangeTickedOverSprite()
+        {
+            ChangeTickedOverSprite();
+            if (OnChangeTickedOverSprite != null)
+                OnChangeTickedOverSprite(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeTickedPressedSprite()
+        {
+            ChangeTickedPressedSprite();
+            if (OnChangeTickedPressedSprite != null)
+                OnChangeTickedPressedSprite(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeTickedSprite()
+        {
+            ChangeTickedSprite();
+            if (OnChangeTickedSprite != null)
+                OnChangeTickedSprite(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeUntickedOverSprite()
+        {
+            ChangeUntickedOverSprite();
+            if (OnChangeUntickedOverSprite != null)
+                OnChangeUntickedOverSprite(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeUntickedPressedSprite()
+        {
+            ChangeUntickedPressedSprite();
+            if (OnChangeUntickedPressedSprite != null)
+                OnChangeUntickedPressedSprite(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeUntickedSprite()
+        {
+            ChangeUntickedSprite();
+            if (OnChangeUntickedSprite != null)
+                OnChangeUntickedSprite(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeChangeValue()
+        {
+            ChangeValue();
+            if (OnChangeValue != null)
+                OnChangeValue(this);
+        }
 
         /// <summary>
         /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
@@ -337,30 +458,84 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Initializes the <see cref="CheckBox"/>.
+        /// Handles when the <see cref="Control"/> has lost focus.
+        /// This is called immediately before <see cref="Control.OnLostFocus"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
         /// </summary>
-        void Initialize()
+        protected override void LostFocus()
         {
-            // Set all the event hooks
-            // TODO: !! Use the overridden methods instead of these event hooks
-            OnChangeText += CheckBox_Resize;
-            OnChangeFont += CheckBox_Resize;
-            OnChangeTickedSprite += CheckBox_Resize;
-            OnChangeTickedOverSprite += CheckBox_Resize;
-            OnChangeTickedPressedSprite += CheckBox_Resize;
-            OnChangeUntickedSprite += CheckBox_Resize;
-            OnChangeUntickedOverSprite += CheckBox_Resize;
-            OnChangeUntickedPressedSprite += CheckBox_Resize;
+            base.LostFocus();
 
-            OnMouseDown += CheckBox_OnMouseDown;
-            OnMouseEnter += CheckBox_OnMouseEnter;
-            OnMouseLeave += CheckBox_OnMouseLeave;
-            OnMouseUp += CheckBox_OnMouseUp;
-            OnMouseMove += CheckBox_OnMouseMove;
-            OnLostFocus += CheckBox_OnLostFocus;
+            _state = CheckBoxState.None;
+        }
 
-            // Perform the initial auto-resize
-            CheckBox_Resize(this);
+        /// <summary>
+        /// Handles when a mouse button has been pressed down on this <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseDown"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseDown"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseDown(MouseClickEventArgs e)
+        {
+            base.MouseDown(e);
+
+            if (e.Button == MouseButtons.Left)
+            {
+                Value = !_value;
+                _state = CheckBoxState.Pressed;
+            }
+        }
+
+        /// <summary>
+        /// Handles when the mouse has entered the area of the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseEnter"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseEnter(MouseEventArgs e)
+        {
+            base.MouseEnter(e);
+
+            _state = CheckBoxState.Over;
+        }
+
+        /// <summary>
+        /// Handles when the mouse has left the area of the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseLeave"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseLeave(MouseEventArgs e)
+        {
+            base.MouseLeave(e);
+
+            _state = CheckBoxState.None;
+        }
+
+        /// <summary>
+        /// Handles when the mouse has moved over the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseMove"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseMove"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseMove(MouseEventArgs e)
+        {
+            base.MouseMove(e);
+
+            _state = CheckBoxState.Over;
+        }
+
+        /// <summary>
+        /// Handles when a mouse button has been raised on the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseUp"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnMouseUp"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void MouseUp(MouseClickEventArgs e)
+        {
+            base.MouseUp(e);
+
+            _state = CheckBoxState.Over;
         }
 
         /// <summary>
