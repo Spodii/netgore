@@ -17,8 +17,25 @@ namespace NetGore.Graphics.GUI
     public abstract class Control : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly object _eventBeginDrag = new object();
+        static readonly object _eventChangeBorder = new object();
+        static readonly object _eventClick = new object();
+        static readonly object _eventDispose = new object();
+        static readonly object _eventEndDrag = new object();
+        static readonly object _eventGetFocus = new object();
+        static readonly object _eventKeyDown = new object();
+        static readonly object _eventKeyPress = new object();
+        static readonly object _eventKeyUp = new object();
+        static readonly object _eventLostFocus = new object();
+        static readonly object _eventMouseDown = new object();
+        static readonly object _eventMouseEnter = new object();
+        static readonly object _eventMouseLeave = new object();
+        static readonly object _eventMouseMove = new object();
+        static readonly object _eventMouseUp = new object();
+        static readonly object _eventResize = new object();
 
         readonly List<Control> _controls = new List<Control>(1);
+        readonly EventHandlerList _eventHandlerList = new EventHandlerList();
         readonly GUIManagerBase _gui;
         readonly Control _parent;
         readonly Control _root;
@@ -36,16 +53,10 @@ namespace NetGore.Graphics.GUI
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
 
-        readonly EventHandlerList _eventHandlerList = new EventHandlerList();
-
-        protected EventHandlerList Events { get { return _eventHandlerList; } }
-
         /// <summary>
         /// States if a OnClick event will be raised with the OnMouseUp event.
         /// </summary>
         bool _willRaiseClick = false;
-
-        static readonly object _eventBeginDrag = new object();
 
         /// <summary>
         /// Notifies listeners when the Control has begun being dragged.
@@ -56,8 +67,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventBeginDrag, value); }
         }
 
-        static readonly object _eventChangeBorder = new object();
-
         /// <summary>
         /// Notifies listeners when the <see cref="Control.Border"/> has changed.
         /// </summary>
@@ -66,8 +75,6 @@ namespace NetGore.Graphics.GUI
             add { Events.AddHandler(_eventChangeBorder, value); }
             remove { Events.RemoveHandler(_eventChangeBorder, value); }
         }
-
-        static readonly object _eventClick = new object();
 
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> was clicked.
@@ -78,8 +85,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventClick, value); }
         }
 
-        static readonly object _eventDispose = new object();
-
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has been disposed.
         /// </summary>
@@ -88,8 +93,6 @@ namespace NetGore.Graphics.GUI
             add { Events.AddHandler(_eventDispose, value); }
             remove { Events.RemoveHandler(_eventDispose, value); }
         }
-
-        static readonly object _eventEndDrag = new object();
 
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has ended being dragged.
@@ -100,8 +103,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventEndDrag, value); }
         }
 
-        static readonly object _eventGetFocus = new object();
-
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has gained focus.
         /// </summary>
@@ -110,8 +111,6 @@ namespace NetGore.Graphics.GUI
             add { Events.AddHandler(_eventGetFocus, value); }
             remove { Events.RemoveHandler(_eventGetFocus, value); }
         }
-
-        static readonly object _eventKeyDown = new object();
 
         /// <summary>
         /// Notifies listeners when a key has been pressed down while the <see cref="Control"/> has focus.
@@ -122,8 +121,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventKeyDown, value); }
         }
 
-        static readonly object _eventKeyPress = new object();
-
         /// <summary>
         /// Notifies listeners when a key is being pressed while the <see cref="Control"/> has focus.
         /// </summary>
@@ -132,8 +129,6 @@ namespace NetGore.Graphics.GUI
             add { Events.AddHandler(_eventKeyPress, value); }
             remove { Events.RemoveHandler(_eventKeyPress, value); }
         }
-
-        static readonly object _eventKeyUp = new object();
 
         /// <summary>
         /// Notifies listeners when a key has been raised while the <see cref="Control"/> has focus.
@@ -144,8 +139,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventKeyUp, value); }
         }
 
-        static readonly object _eventLostFocus = new object();
-
         /// <summary>
         /// Notifies listeners when the <see cref="Control"/> has lost focus.
         /// </summary>
@@ -154,8 +147,6 @@ namespace NetGore.Graphics.GUI
             add { Events.AddHandler(_eventLostFocus, value); }
             remove { Events.RemoveHandler(_eventLostFocus, value); }
         }
-
-        static readonly object _eventMouseDown = new object();
 
         /// <summary>
         /// Notifies listeners when a mouse button has been pressed down on this <see cref="Control"/>.
@@ -166,8 +157,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventMouseDown, value); }
         }
 
-        static readonly object _eventMouseEnter = new object();
-
         /// <summary>
         /// Notifies listeners when the mouse has entered the area of the <see cref="Control"/>.
         /// </summary>
@@ -176,8 +165,6 @@ namespace NetGore.Graphics.GUI
             add { Events.AddHandler(_eventMouseEnter, value); }
             remove { Events.RemoveHandler(_eventMouseEnter, value); }
         }
-
-        static readonly object _eventMouseLeave = new object();
 
         /// <summary>
         /// Notifies listeners when the mouse has left the area of the <see cref="Control"/>.
@@ -188,8 +175,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventMouseLeave, value); }
         }
 
-        static readonly object _eventMouseMove = new object();
-
         /// <summary>
         /// Notifies listeners when the mouse has moved over the <see cref="Control"/>.
         /// </summary>
@@ -199,8 +184,6 @@ namespace NetGore.Graphics.GUI
             remove { Events.RemoveHandler(_eventMouseMove, value); }
         }
 
-        static readonly object _eventMouseUp = new object();
-
         /// <summary>
         /// Notifies listeners when a mouse button has been raised on the <see cref="Control"/>.
         /// </summary>
@@ -209,8 +192,6 @@ namespace NetGore.Graphics.GUI
             add { Events.AddHandler(_eventMouseUp, value); }
             remove { Events.RemoveHandler(_eventMouseUp, value); }
         }
-
-        static readonly object _eventResize = new object();
 
         /// <summary>
         /// Notifies listeners when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
@@ -238,8 +219,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
-        protected Control(GUIManagerBase gui, Vector2 position, Vector2 clientSize)
-            : this(null, gui, position, clientSize)
+        protected Control(GUIManagerBase gui, Vector2 position, Vector2 clientSize) : this(null, gui, position, clientSize)
         {
         }
 
@@ -310,7 +290,7 @@ namespace NetGore.Graphics.GUI
 
                 // Resize the control so that the ClientSize remainst he same
                 if (_border.Size != oldBorderSize)
-                    Size += (_border.Size - oldBorderSize); 
+                    Size += (_border.Size - oldBorderSize);
 
                 // The border changed, thus the ClientArea probably changed and we need to update the KeepInParent
                 foreach (Control child in Controls)
@@ -341,16 +321,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-        /// from the given <paramref name="skinManager"/>.
-        /// </summary>
-        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-        public virtual void LoadSkin(ISkinManager skinManager)
-        {
-            Border = skinManager.GetBorder(GetType().Name);
-        }
-
-        /// <summary>
         /// Gets the size of the client area (internal area, not including the borders) of the Control.
         /// </summary>
         public Vector2 ClientSize
@@ -366,6 +336,11 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Control> Controls
         {
             get { return _controls; }
+        }
+
+        protected EventHandlerList Events
+        {
+            get { return _eventHandlerList; }
         }
 
         /// <summary>
@@ -450,7 +425,7 @@ namespace NetGore.Graphics.GUI
         public Vector2 Position
         {
             get { return _position; }
-            set 
+            set
             {
                 if (_position == value)
                     return;
@@ -1076,6 +1051,16 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public virtual void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(GetType().Name);
+        }
+
+        /// <summary>
         /// Handles when the <see cref="Control"/> has lost focus.
         /// This is called immediately before <see cref="Control.OnLostFocus"/>.
         /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
@@ -1179,7 +1164,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void Resize()
         {
-
         }
 
         /// <summary>

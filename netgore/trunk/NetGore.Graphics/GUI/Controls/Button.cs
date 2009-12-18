@@ -11,6 +11,11 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class Button : TextControl
     {
+        /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "Button";
+
         ControlBorder _borderOver = null;
         ControlBorder _borderPressed = null;
         ControlBorder _currentBorder;
@@ -98,6 +103,18 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+            BorderOver = skinManager.GetBorder(_controlSkinName, "MouseOver");
+            BorderPressed = skinManager.GetBorder(_controlSkinName, "Pressed");
+        }
+
+        /// <summary>
         /// Handles when the <see cref="Control"/> has lost focus.
         /// This is called immediately before <see cref="Control.OnLostFocus"/>.
         /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
@@ -176,23 +193,6 @@ namespace NetGore.Graphics.GUI
             CanFocus = false;
             _currentBorder = Border;
         }
-
-        /// <summary>
-        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-        /// from the given <paramref name="skinManager"/>.
-        /// </summary>
-        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-        public override void LoadSkin(ISkinManager skinManager)
-        {
-            Border = skinManager.GetBorder(_controlSkinName);
-            BorderOver = skinManager.GetBorder(_controlSkinName, "MouseOver");
-            BorderPressed = skinManager.GetBorder(_controlSkinName, "Pressed");
-        }
-
-        /// <summary>
-        /// The name of this <see cref="Control"/> for when looking up the skin information.
-        /// </summary>
-        const string _controlSkinName = "Button";
 
         /// <summary>
         /// Updates the size and position of the button text

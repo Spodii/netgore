@@ -9,6 +9,11 @@ namespace NetGore.Graphics.GUI
 {
     public class TextBox : TextControl, IEditableText
     {
+        /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "TextBox";
+
         readonly EditableTextHandler _editableTextHandler;
         readonly TextBoxLines _lines = new TextBoxLines();
 
@@ -476,6 +481,16 @@ namespace NetGore.Graphics.GUI
             _editableTextHandler.NotifyKeyPressed(e.Keys.LastOrDefault());
         }
 
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+        }
+
         void ResetCursorBlink()
         {
             _cursorBlinkTimer = _currentTime;
@@ -497,21 +512,6 @@ namespace NetGore.Graphics.GUI
             }
             else
                 _numCharsToDraw.Invalidate();
-        }
-
-        /// <summary>
-        /// The name of this <see cref="Control"/> for when looking up the skin information.
-        /// </summary>
-        const string _controlSkinName = "TextBox";
-
-        /// <summary>
-        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-        /// from the given <paramref name="skinManager"/>.
-        /// </summary>
-        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-        public override void LoadSkin(ISkinManager skinManager)
-        {
-            Border = skinManager.GetBorder(_controlSkinName);
         }
 
         /// <summary>

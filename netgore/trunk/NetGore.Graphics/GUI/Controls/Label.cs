@@ -7,6 +7,11 @@ namespace NetGore.Graphics.GUI
     public class Label : TextControl
     {
         /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "Label";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
@@ -65,19 +70,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Resizes the <see cref="Label"/> so it is large enough to fit the <see cref="TextControl.Text"/>.
-        /// </summary>
-        void ResizeToFitText()
-        {
-            Size = Border.Size + Font.MeasureString(Text);
-        }
-
-        /// <summary>
-        /// The name of this <see cref="Control"/> for when looking up the skin information.
-        /// </summary>
-        const string _controlSkinName = "Label";
-
-        /// <summary>
         /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
         /// from the given <paramref name="skinManager"/>.
         /// </summary>
@@ -85,6 +77,14 @@ namespace NetGore.Graphics.GUI
         public override void LoadSkin(ISkinManager skinManager)
         {
             Border = skinManager.GetBorder(_controlSkinName);
+        }
+
+        /// <summary>
+        /// Resizes the <see cref="Label"/> so it is large enough to fit the <see cref="TextControl.Text"/>.
+        /// </summary>
+        void ResizeToFitText()
+        {
+            Size = Border.Size + Font.MeasureString(Text);
         }
 
         /// <summary>

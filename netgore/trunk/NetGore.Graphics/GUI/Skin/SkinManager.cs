@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,9 +12,12 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class SkinManager : ISkinManager
     {
+        readonly Dictionary<string, ControlBorder> _borderCache =
+            new Dictionary<string, ControlBorder>(StringComparer.OrdinalIgnoreCase);
+
         readonly string _defaultSkin;
         readonly GUIManagerBase _guiManager;
-        readonly Dictionary<string, ControlBorder> _borderCache = new Dictionary<string, ControlBorder>(StringComparer.OrdinalIgnoreCase);
+
         readonly Dictionary<string, ISprite> _spriteCache = new Dictionary<string, ISprite>(StringComparer.OrdinalIgnoreCase);
 
         string _currentSkin;
@@ -45,54 +47,23 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets the name of the default skin.
         /// </summary>
-        public string DefaultSkin { get { return _defaultSkin; } }
+        public string DefaultSkin
+        {
+            get { return _defaultSkin; }
+        }
 
         /// <summary>
         /// Gets the <see cref="GUIManagerBase"/> that contains the <see cref="Control"/>s that will be skinned.
         /// </summary>
-        public GUIManagerBase GUIManager { get { return _guiManager; }}
+        public GUIManagerBase GUIManager
+        {
+            get { return _guiManager; }
+        }
 
         /// <summary>
         /// Gets if the current skin is the default skin.
         /// </summary>
         protected bool IsCurrentSkinDefault { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the name of the currently active skin.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
-        public string CurrentSkin
-        {
-            get { return _currentSkin; }
-            set 
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("value");
-
-                if (_currentSkin != null && _currentSkin.Equals(value, StringComparison.OrdinalIgnoreCase))
-                    return;
-
-                var oldSkin = _currentSkin;
-                _currentSkin = value;
-
-                // Clear our caches
-                _borderCache.Clear();
-                _spriteCache.Clear();
-
-                // Cache if this is the default skin
-                if (CurrentSkin.Equals(DefaultSkin, StringComparison.OrdinalIgnoreCase))
-                    IsCurrentSkinDefault = true;
-                else
-                    IsCurrentSkinDefault = false;
-
-                // Apply the new skin to existing Controls
-                ChangeSkin();
-
-                // Only raise the change event if the skin actually changed, not the skin was just set from nothing
-                if (oldSkin != null && OnChangeSkin != null)
-                    OnChangeSkin(_currentSkin, oldSkin);
-            }
-        }
 
         /// <summary>
         /// Handles when the skin has changed and applies the new skin to all the <see cref="Control"/>s.
@@ -134,6 +105,79 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="SpriteCategory"/> for a <see cref="Control"/> relative to the skin's root.
+        /// </summary>
+        /// <param name="controlName">The name of the <see cref="Control"/>.</param>
+        /// <returns>The <see cref="SpriteCategory"/> for a <see cref="Control"/> relative to the skin's root.</returns>
+        protected virtual SpriteCategory GetControlSpriteSubCategory(string controlName)
+        {
+            return "Controls" + SpriteCategorization.Delimiter + controlName;
+        }
+
+        /// <summary>
+        /// Gets the absolute <see cref="SpriteCategory"/> path for the given skin and skin sub-category.
+        /// </summary>
+        /// <param name="skinName">The name of the skin.</param>
+        /// <param name="subCategory">The sub-category under the skin directory. Can be null or empty.</param>
+        /// <returns>The absolute <see cref="SpriteCategory"/> path for the given skin and skin sub-category.</returns>
+        protected virtual SpriteCategory GetSpriteCategory(string skinName, SpriteCategory subCategory)
+        {
+            const string del = SpriteCategorization.Delimiter;
+
+            StringBuilder sb = new StringBuilder(64);
+            sb.Append("GUI");
+            sb.Append(del);
+            sb.Append(skinName);
+
+            if (subCategory != null && subCategory.ToString().Length > 0)
+            {
+                sb.Append(del);
+                sb.Append(subCategory);
+            }
+
+            return new SpriteCategory(sb.ToString());
+        }
+
+        #region ISkinManager Members
+
+        /// <summary>
+        /// Gets or sets the name of the currently active skin.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
+        public string CurrentSkin
+        {
+            get { return _currentSkin; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentNullException("value");
+
+                if (_currentSkin != null && _currentSkin.Equals(value, StringComparison.OrdinalIgnoreCase))
+                    return;
+
+                var oldSkin = _currentSkin;
+                _currentSkin = value;
+
+                // Clear our caches
+                _borderCache.Clear();
+                _spriteCache.Clear();
+
+                // Cache if this is the default skin
+                if (CurrentSkin.Equals(DefaultSkin, StringComparison.OrdinalIgnoreCase))
+                    IsCurrentSkinDefault = true;
+                else
+                    IsCurrentSkinDefault = false;
+
+                // Apply the new skin to existing Controls
+                ChangeSkin();
+
+                // Only raise the change event if the skin actually changed, not the skin was just set from nothing
+                if (oldSkin != null && OnChangeSkin != null)
+                    OnChangeSkin(_currentSkin, oldSkin);
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="ControlBorder"/> for the <see cref="Control"/> with the given name.
         /// </summary>
         /// <param name="controlName">The name of the <see cref="Control"/>.</param>
@@ -169,7 +213,8 @@ namespace NetGore.Graphics.GUI
             }
             catch (ArgumentException ex)
             {
-                Debug.Fail("Key already exists. Multi-threading conflict? This should never happen, but its likely not critical." + ex);
+                Debug.Fail(
+                    "Key already exists. Multi-threading conflict? This should never happen, but its likely not critical." + ex);
             }
 
             // Return the border
@@ -187,16 +232,6 @@ namespace NetGore.Graphics.GUI
         public ISprite GetControlSprite(string controlName, SpriteTitle spriteTitle)
         {
             return GetSprite(GetControlSpriteSubCategory(controlName), spriteTitle);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="SpriteCategory"/> for a <see cref="Control"/> relative to the skin's root.
-        /// </summary>
-        /// <param name="controlName">The name of the <see cref="Control"/>.</param>
-        /// <returns>The <see cref="SpriteCategory"/> for a <see cref="Control"/> relative to the skin's root.</returns>
-        protected virtual SpriteCategory GetControlSpriteSubCategory(string controlName)
-        {
-            return "Controls" + SpriteCategorization.Delimiter + controlName;
         }
 
         /// <summary>
@@ -225,30 +260,6 @@ namespace NetGore.Graphics.GUI
         public ISprite GetSprite(SpriteTitle spriteTitle)
         {
             return GetSprite(null, spriteTitle);
-        }
-
-        /// <summary>
-        /// Gets the absolute <see cref="SpriteCategory"/> path for the given skin and skin sub-category.
-        /// </summary>
-        /// <param name="skinName">The name of the skin.</param>
-        /// <param name="subCategory">The sub-category under the skin directory. Can be null or empty.</param>
-        /// <returns>The absolute <see cref="SpriteCategory"/> path for the given skin and skin sub-category.</returns>
-        protected virtual SpriteCategory GetSpriteCategory(string skinName, SpriteCategory subCategory)
-        {
-            const string del = SpriteCategorization.Delimiter;
-
-            StringBuilder sb = new StringBuilder(64);
-            sb.Append("GUI");
-            sb.Append(del);
-            sb.Append(skinName);
-
-            if (subCategory != null && subCategory.ToString().Length > 0)
-            {
-                sb.Append(del);
-                sb.Append(subCategory);
-            }
-
-            return new SpriteCategory(sb.ToString());
         }
 
         /// <summary>
@@ -291,7 +302,8 @@ namespace NetGore.Graphics.GUI
             }
             catch (ArgumentException ex)
             {
-                Debug.Fail("Key already exists. Multi-threading conflict? This should never happen, but its likely not critical." + ex);
+                Debug.Fail(
+                    "Key already exists. Multi-threading conflict? This should never happen, but its likely not critical." + ex);
             }
 
             // Return the sprite
@@ -302,6 +314,7 @@ namespace NetGore.Graphics.GUI
         /// Notifies listeners when the active skin has changed.
         /// </summary>
         public event SkinChangeEventHandler OnChangeSkin;
-        
+
+        #endregion
     }
 }

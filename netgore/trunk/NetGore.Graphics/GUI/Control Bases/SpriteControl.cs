@@ -9,11 +9,10 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public abstract class SpriteControl : Control
     {
-        ISprite _sprite;
-        bool _stretch = true;
-
         static readonly object _eventChangeSprite = new object();
         static readonly object _eventChangeStretchSprite = new object();
+        ISprite _sprite;
+        bool _stretch = true;
 
         /// <summary>
         /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.

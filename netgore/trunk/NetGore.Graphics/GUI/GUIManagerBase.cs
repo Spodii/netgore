@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,6 +13,8 @@ namespace NetGore.Graphics.GUI
     public class GUIManagerBase
     {
         readonly List<Control> _controls = new List<Control>(2);
+        readonly ISkinManager _skinManager;
+        readonly Tooltip _tooltip;
         Control _focusedControl = null;
         bool _isKeysDownSet = false;
         bool _isKeysUpSet = false;
@@ -25,7 +26,6 @@ namespace NetGore.Graphics.GUI
         MouseState _lastMouseState;
         Keys[] _lastPressedKeys = null;
         MouseState _mouseState;
-        Tooltip _tooltip;
         Control _underCursor;
 
         /// <summary>
@@ -38,13 +38,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public event GUIEventHandler OnChangeFocusedRoot;
 
-        readonly ISkinManager _skinManager;
-
-        /// <summary>
-        /// Gets the <see cref="ISkinManager"/> for this <see cref="GUIManagerBase"/>.
-        /// </summary>
-        public ISkinManager SkinManager { get { return _skinManager; } }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManagerBase"/> class.
         /// </summary>
@@ -53,7 +46,7 @@ namespace NetGore.Graphics.GUI
         public GUIManagerBase(SpriteFont font, string defaultSkin)
         {
             Font = font;
-   
+
             // Store the input state from now so we have something to worth with on the first Update() call
             _mouseState = Mouse.GetState();
             _keyboardState = Keyboard.GetState();
@@ -225,6 +218,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="ISkinManager"/> for this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        public ISkinManager SkinManager
+        {
+            get { return _skinManager; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManagerBase"/>.
         /// </summary>
         public Tooltip Tooltip
@@ -239,27 +240,6 @@ namespace NetGore.Graphics.GUI
         public Control UnderCursor
         {
             get { return _underCursor; }
-        }
-
-        /// <summary>
-        /// Creates the <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>.
-        /// </summary>
-        /// <param name="defaultSkin">The name of the default skin.</param>
-        /// <returns>The <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>. Must
-        /// not be null.</returns>
-        protected virtual ISkinManager CreateSkinManager(string defaultSkin)
-        {
-            return new SkinManager(defaultSkin, this);
-        }
-
-        /// <summary>
-        /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>.
-        /// </summary>
-        /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>. Can be null
-        /// if no <see cref="Tooltip"/> is to be used.</returns>
-        protected virtual Tooltip CreateTooltip()
-        {
-            return new Tooltip(this);
         }
 
         /// <summary>
@@ -306,6 +286,27 @@ namespace NetGore.Graphics.GUI
 
             // No matches found
             return false;
+        }
+
+        /// <summary>
+        /// Creates the <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <param name="defaultSkin">The name of the default skin.</param>
+        /// <returns>The <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>. Must
+        /// not be null.</returns>
+        protected virtual ISkinManager CreateSkinManager(string defaultSkin)
+        {
+            return new SkinManager(defaultSkin, this);
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>. Can be null
+        /// if no <see cref="Tooltip"/> is to be used.</returns>
+        protected virtual Tooltip CreateTooltip()
+        {
+            return new Tooltip(this);
         }
 
         /// <summary>

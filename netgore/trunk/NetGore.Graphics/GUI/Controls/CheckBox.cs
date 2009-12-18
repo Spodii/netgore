@@ -20,6 +20,14 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const float _textXAdjust = 2f;
 
+        static readonly object _eventChangeTickedOverSprite = new object();
+        static readonly object _eventChangeTickedPressedSprite = new object();
+        static readonly object _eventChangeTickedSprite = new object();
+        static readonly object _eventChangeUntickedOverSprite = new object();
+        static readonly object _eventChangeUntickedPressedSprite = new object();
+        static readonly object _eventChangeUntickedSprite = new object();
+        static readonly object _eventChangeValue = new object();
+
         CheckBoxState _state = CheckBoxState.None;
 
         ISprite _ticked;
@@ -29,14 +37,6 @@ namespace NetGore.Graphics.GUI
         ISprite _untickedOver;
         ISprite _untickedPressed;
         bool _value = false;
-
-        static readonly object _eventChangeTickedOverSprite = new object();
-        static readonly object _eventChangeTickedPressedSprite = new object();
-        static readonly object _eventChangeTickedSprite = new object();
-        static readonly object _eventChangeUntickedOverSprite = new object();
-        static readonly object _eventChangeUntickedPressedSprite = new object();
-        static readonly object _eventChangeUntickedSprite = new object();
-        static readonly object _eventChangeValue = new object();
 
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedOverSprite"/> changes.

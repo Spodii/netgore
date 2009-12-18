@@ -10,15 +10,15 @@ namespace NetGore.Graphics.GUI
     public interface ISkinManager
     {
         /// <summary>
+        /// Notifies listeners when the active skin has changed.
+        /// </summary>
+        event SkinChangeEventHandler OnChangeSkin;
+
+        /// <summary>
         /// Gets or sets the name of the currently active skin.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
         string CurrentSkin { get; set; }
-
-        /// <summary>
-        /// Notifies listeners when the active skin has changed.
-        /// </summary>
-        event SkinChangeEventHandler OnChangeSkin;
 
         /// <summary>
         /// Gets the <see cref="ControlBorder"/> for the <see cref="Control"/> with the given name.
