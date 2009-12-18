@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -35,90 +36,190 @@ namespace NetGore.Graphics.GUI
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
 
+        readonly EventHandlerList _eventHandlerList = new EventHandlerList();
+
+        protected EventHandlerList Events { get { return _eventHandlerList; } }
+
         /// <summary>
         /// States if a OnClick event will be raised with the OnMouseUp event.
         /// </summary>
         bool _willRaiseClick = false;
 
+        static readonly object _eventBeginDrag = new object();
+
         /// <summary>
         /// Notifies listeners when the Control has begun being dragged.
         /// </summary>
-        public event ControlEventHandler OnBeginDrag;
+        public event ControlEventHandler OnBeginDrag
+        {
+            add { Events.AddHandler(_eventBeginDrag, value); }
+            remove { Events.RemoveHandler(_eventBeginDrag, value); }
+        }
+
+        static readonly object _eventChangeBorder = new object();
 
         /// <summary>
         /// Notifies listeners when the <see cref="Control.Border"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeBorder;
+        public event ControlEventHandler OnChangeBorder
+        {
+            add { Events.AddHandler(_eventChangeBorder, value); }
+            remove { Events.RemoveHandler(_eventChangeBorder, value); }
+        }
+
+        static readonly object _eventClick = new object();
 
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> was clicked.
         /// </summary>
-        public event MouseClickEventHandler OnClick;
+        public event MouseClickEventHandler OnClick
+        {
+            add { Events.AddHandler(_eventClick, value); }
+            remove { Events.RemoveHandler(_eventClick, value); }
+        }
+
+        static readonly object _eventDispose = new object();
 
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has been disposed.
         /// </summary>
-        public event ControlEventHandler OnDispose;
+        public event ControlEventHandler OnDispose
+        {
+            add { Events.AddHandler(_eventDispose, value); }
+            remove { Events.RemoveHandler(_eventDispose, value); }
+        }
+
+        static readonly object _eventEndDrag = new object();
 
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has ended being dragged.
         /// </summary>
-        public event ControlEventHandler OnEndDrag;
+        public event ControlEventHandler OnEndDrag
+        {
+            add { Events.AddHandler(_eventEndDrag, value); }
+            remove { Events.RemoveHandler(_eventEndDrag, value); }
+        }
+
+        static readonly object _eventGetFocus = new object();
 
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has gained focus.
         /// </summary>
-        public event ControlEventHandler OnGetFocus;
+        public event ControlEventHandler OnGetFocus
+        {
+            add { Events.AddHandler(_eventGetFocus, value); }
+            remove { Events.RemoveHandler(_eventGetFocus, value); }
+        }
+
+        static readonly object _eventKeyDown = new object();
 
         /// <summary>
         /// Notifies listeners when a key has been pressed down while the <see cref="Control"/> has focus.
         /// </summary>
-        public event KeyboardEventHandler OnKeyDown;
+        public event KeyboardEventHandler OnKeyDown
+        {
+            add { Events.AddHandler(_eventKeyDown, value); }
+            remove { Events.RemoveHandler(_eventKeyDown, value); }
+        }
+
+        static readonly object _eventKeyPress = new object();
 
         /// <summary>
         /// Notifies listeners when a key is being pressed while the <see cref="Control"/> has focus.
         /// </summary>
-        public event KeyboardEventHandler OnKeyPress;
+        public event KeyboardEventHandler OnKeyPress
+        {
+            add { Events.AddHandler(_eventKeyPress, value); }
+            remove { Events.RemoveHandler(_eventKeyPress, value); }
+        }
+
+        static readonly object _eventKeyUp = new object();
 
         /// <summary>
         /// Notifies listeners when a key has been raised while the <see cref="Control"/> has focus.
         /// </summary>
-        public event KeyboardEventHandler OnKeyUp;
+        public event KeyboardEventHandler OnKeyUp
+        {
+            add { Events.AddHandler(_eventKeyUp, value); }
+            remove { Events.RemoveHandler(_eventKeyUp, value); }
+        }
+
+        static readonly object _eventLostFocus = new object();
 
         /// <summary>
         /// Notifies listeners when the <see cref="Control"/> has lost focus.
         /// </summary>
-        public event ControlEventHandler OnLostFocus;
+        public event ControlEventHandler OnLostFocus
+        {
+            add { Events.AddHandler(_eventLostFocus, value); }
+            remove { Events.RemoveHandler(_eventLostFocus, value); }
+        }
+
+        static readonly object _eventMouseDown = new object();
 
         /// <summary>
         /// Notifies listeners when a mouse button has been pressed down on this <see cref="Control"/>.
         /// </summary>
-        public event MouseClickEventHandler OnMouseDown;
+        public event MouseClickEventHandler OnMouseDown
+        {
+            add { Events.AddHandler(_eventMouseDown, value); }
+            remove { Events.RemoveHandler(_eventMouseDown, value); }
+        }
+
+        static readonly object _eventMouseEnter = new object();
 
         /// <summary>
         /// Notifies listeners when the mouse has entered the area of the <see cref="Control"/>.
         /// </summary>
-        public event MouseEventHandler OnMouseEnter;
+        public event MouseEventHandler OnMouseEnter
+        {
+            add { Events.AddHandler(_eventMouseEnter, value); }
+            remove { Events.RemoveHandler(_eventMouseEnter, value); }
+        }
+
+        static readonly object _eventMouseLeave = new object();
 
         /// <summary>
         /// Notifies listeners when the mouse has left the area of the <see cref="Control"/>.
         /// </summary>
-        public event MouseEventHandler OnMouseLeave;
+        public event MouseEventHandler OnMouseLeave
+        {
+            add { Events.AddHandler(_eventMouseLeave, value); }
+            remove { Events.RemoveHandler(_eventMouseLeave, value); }
+        }
+
+        static readonly object _eventMouseMove = new object();
 
         /// <summary>
         /// Notifies listeners when the mouse has moved over the <see cref="Control"/>.
         /// </summary>
-        public event MouseEventHandler OnMouseMove;
+        public event MouseEventHandler OnMouseMove
+        {
+            add { Events.AddHandler(_eventMouseMove, value); }
+            remove { Events.RemoveHandler(_eventMouseMove, value); }
+        }
+
+        static readonly object _eventMouseUp = new object();
 
         /// <summary>
         /// Notifies listeners when a mouse button has been raised on the <see cref="Control"/>.
         /// </summary>
-        public event MouseClickEventHandler OnMouseUp;
+        public event MouseClickEventHandler OnMouseUp
+        {
+            add { Events.AddHandler(_eventMouseUp, value); }
+            remove { Events.RemoveHandler(_eventMouseUp, value); }
+        }
+
+        static readonly object _eventResize = new object();
 
         /// <summary>
         /// Notifies listeners when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnResize;
+        public event ControlEventHandler OnResize
+        {
+            add { Events.AddHandler(_eventResize, value); }
+            remove { Events.RemoveHandler(_eventResize, value); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -400,6 +501,8 @@ namespace NetGore.Graphics.GUI
                 _size = value;
 
                 InvokeResize();
+
+                KeepInParent();
             }
         }
 
@@ -514,10 +617,13 @@ namespace NetGore.Graphics.GUI
                 }
                 else
                     Parent._controls.Remove(this);
+
+                Events.Dispose();
             }
 
-            if (OnDispose != null)
-                OnDispose(this);
+            var eventHandler = Events[_eventDispose] as ControlEventHandler;
+            if (eventHandler != null)
+                eventHandler(this);
         }
 
         /// <summary>
@@ -728,8 +834,9 @@ namespace NetGore.Graphics.GUI
         void InvokeBeginDrag()
         {
             BeginDrag();
-            if (OnBeginDrag != null)
-                OnBeginDrag(this);
+            var handler = Events[_eventBeginDrag] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -739,8 +846,9 @@ namespace NetGore.Graphics.GUI
         void InvokeChangeBorder()
         {
             ChangeBorder();
-            if (OnChangeBorder != null)
-                OnChangeBorder(this);
+            var handler = Events[_eventChangeBorder] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -751,8 +859,9 @@ namespace NetGore.Graphics.GUI
         void InvokeClick(MouseClickEventArgs e)
         {
             Click(e);
-            if (OnClick != null)
-                OnClick(this, e);
+            var handler = Events[_eventClick] as MouseClickEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -762,8 +871,9 @@ namespace NetGore.Graphics.GUI
         void InvokeEndDrag()
         {
             EndDrag();
-            if (OnEndDrag != null)
-                OnEndDrag(this);
+            var handler = Events[_eventEndDrag] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -773,8 +883,9 @@ namespace NetGore.Graphics.GUI
         void InvokeGetFocus()
         {
             GetFocus();
-            if (OnGetFocus != null)
-                OnGetFocus(this);
+            var handler = Events[_eventGetFocus] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -785,8 +896,9 @@ namespace NetGore.Graphics.GUI
         void InvokeKeyDown(KeyboardEventArgs e)
         {
             KeyDown(e);
-            if (OnKeyDown != null)
-                OnKeyDown(this, e);
+            var handler = Events[_eventKeyDown] as KeyboardEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -797,8 +909,9 @@ namespace NetGore.Graphics.GUI
         void InvokeKeyPress(KeyboardEventArgs e)
         {
             KeyPress(e);
-            if (OnKeyPress != null)
-                OnKeyPress(this, e);
+            var handler = Events[_eventKeyPress] as KeyboardEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -809,8 +922,9 @@ namespace NetGore.Graphics.GUI
         void InvokeKeyUp(KeyboardEventArgs e)
         {
             KeyUp(e);
-            if (OnKeyUp != null)
-                OnKeyUp(this, e);
+            var handler = Events[_eventKeyUp] as KeyboardEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -820,8 +934,9 @@ namespace NetGore.Graphics.GUI
         void InvokeLostFocus()
         {
             LostFocus();
-            if (OnLostFocus != null)
-                OnLostFocus(this);
+            var handler = Events[_eventLostFocus] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -832,8 +947,9 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseDown(MouseClickEventArgs e)
         {
             MouseDown(e);
-            if (OnMouseDown != null)
-                OnMouseDown(this, e);
+            var handler = Events[_eventMouseDown] as MouseClickEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -844,8 +960,9 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseEnter(MouseEventArgs e)
         {
             MouseEnter(e);
-            if (OnMouseEnter != null)
-                OnMouseEnter(this, e);
+            var handler = Events[_eventMouseEnter] as MouseEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -856,8 +973,9 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseLeave(MouseEventArgs e)
         {
             MouseLeave(e);
-            if (OnMouseLeave != null)
-                OnMouseLeave(this, e);
+            var handler = Events[_eventMouseLeave] as MouseEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -868,8 +986,9 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseMove(MouseEventArgs e)
         {
             MouseMove(e);
-            if (OnMouseMove != null)
-                OnMouseMove(this, e);
+            var handler = Events[_eventMouseMove] as MouseEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -880,8 +999,9 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseUp(MouseClickEventArgs e)
         {
             MouseUp(e);
-            if (OnMouseUp != null)
-                OnMouseUp(this, e);
+            var handler = Events[_eventMouseUp] as MouseClickEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -891,8 +1011,9 @@ namespace NetGore.Graphics.GUI
         void InvokeResize()
         {
             Resize();
-            if (OnResize != null)
-                OnResize(this);
+            var handler = Events[_eventResize] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -1058,6 +1179,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void Resize()
         {
+
         }
 
         /// <summary>
