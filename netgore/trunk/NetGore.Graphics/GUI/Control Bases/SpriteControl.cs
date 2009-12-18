@@ -12,15 +12,26 @@ namespace NetGore.Graphics.GUI
         ISprite _sprite;
         bool _stretch = true;
 
+        static readonly object _eventChangeSprite = new object();
+        static readonly object _eventChangeStretchSprite = new object();
+
         /// <summary>
         /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeSprite;
+        public event ControlEventHandler OnChangeSprite
+        {
+            add { Events.AddHandler(_eventChangeSprite, value); }
+            remove { Events.RemoveHandler(_eventChangeSprite, value); }
+        }
 
         /// <summary>
         /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeStretchSprite;
+        public event ControlEventHandler OnChangeStretchSprite
+        {
+            add { Events.AddHandler(_eventChangeStretchSprite, value); }
+            remove { Events.RemoveHandler(_eventChangeStretchSprite, value); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -131,8 +142,9 @@ namespace NetGore.Graphics.GUI
         void InvokeChangeSprite()
         {
             ChangeSprite();
-            if (OnChangeSprite != null)
-                OnChangeSprite(this);
+            var handler = Events[_eventChangeSprite] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -142,8 +154,9 @@ namespace NetGore.Graphics.GUI
         void InvokeChangeStretchSprite()
         {
             ChangeStretchSprite();
-            if (OnChangeStretchSprite != null)
-                OnChangeStretchSprite(this);
+            var handler = Events[_eventChangeStretchSprite] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
