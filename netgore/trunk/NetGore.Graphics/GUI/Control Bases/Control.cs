@@ -455,7 +455,7 @@ namespace NetGore.Graphics.GUI
                 Vector2 pos = Position;
 
                 if (parent != null)
-                    return pos + parent.ScreenPosition + parent.BorderOffset();
+                    return pos + parent.ScreenPosition + parent.GetBorderOffset();
                 else
                     return pos;
             }
@@ -523,14 +523,9 @@ namespace NetGore.Graphics.GUI
         /// Gets a Vector2 for the offset created by the Border.
         /// </summary>
         /// <returns>A Vector2 for the offset created by the Border.</returns>
-        Vector2 BorderOffset()
+        Vector2 GetBorderOffset()
         {
-            ControlBorder b = Border;
-
-            if (b == null)
-                return Vector2.Zero;
-
-            return new Vector2(b.LeftWidth, b.TopHeight);
+            return new Vector2(Border.LeftWidth, Border.TopHeight);
         }
 
         /// <summary>
