@@ -159,25 +159,13 @@ namespace NetGore.Network
         /// <param name="targetConn">Connection whos IP is to be checked.</param>
         int ConnectionsFromIP(ITCPSocket targetConn)
         {
-            Debug.Assert(!Monitor.TryEnter(_connectionsLock), "_connectionsLock must be locked when calling this method!");
-
             if (targetConn == null || string.IsNullOrEmpty(targetConn.Address))
             {
                 Debug.Fail("targetConn is null or invalid");
                 return 0;
             }
 
-            int ret = 0;
-            string targetIP = targetConn.Address.Split(':')[0];
-
-            foreach (IPSocket ipSocket in Connections)
-            {
-                // Compare the two IPs (we must chop off the port)
-                if (targetIP == ipSocket.Address.Split(':')[0])
-                    ret++;
-            }
-
-            return ret;
+            return Connections.Count(x => x.IP == targetConn.IP);
         }
 
         /// <summary>
