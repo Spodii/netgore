@@ -25,7 +25,6 @@ namespace NetGore.Graphics.GUI
         MouseState _lastMouseState;
         Keys[] _lastPressedKeys = null;
         MouseState _mouseState;
-        ISprite _spriteBlank = null;
         Tooltip _tooltip;
         Control _underCursor;
 
@@ -50,24 +49,20 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="GUIManagerBase"/> class.
         /// </summary>
         /// <param name="font">Default SpriteFont to use for controls added to this GUIManagerBase.</param>
-        /// <param name="blank">A Sprite that is only Color.White (size does not matter). Used by multiple Controls
-        /// for a variety of reasons.</param>
         /// <param name="defaultSkin">The name of the default skin.</param>
-        public GUIManagerBase(SpriteFont font, ISprite blank, string defaultSkin)
+        public GUIManagerBase(SpriteFont font, string defaultSkin)
         {
             Font = font;
-            SpriteBlank = blank;
-
-            new Tooltip(this);
-
+   
             // Store the input state from now so we have something to worth with on the first Update() call
             _mouseState = Mouse.GetState();
             _keyboardState = Keyboard.GetState();
             _keysPressed = _keyboardState.GetPressedKeys();
 
-            // Create the skin manager
+            // Create the skin manager and tooltip
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _skinManager = CreateSkinManager(defaultSkin);
+            _tooltip = CreateTooltip();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
@@ -230,37 +225,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets a Sprite that is only Color.White (size does not matter). Used by multiple Controls
-        /// for a variety of reasons.
-        /// </summary>
-        public ISprite SpriteBlank
-        {
-            get { return _spriteBlank; }
-            set
-            {
-                if (value == null)
-                {
-                    Debug.Fail("Cannot set SpriteBlank to null.");
-
-                    // If the _spriteBlank is already set to non-null, we can try to recover
-                    // from the exception by just not setting the value
-                    if (_spriteBlank != null)
-                        return;
-
-                    throw new Exception("Cannot set SpriteBlank to null.");
-                }
-
-                _spriteBlank = value;
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManagerBase"/>.
         /// </summary>
         public Tooltip Tooltip
         {
             get { return _tooltip; }
-            internal set { _tooltip = value; }
         }
 
         /// <summary>
@@ -276,10 +245,21 @@ namespace NetGore.Graphics.GUI
         /// Creates the <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>.
         /// </summary>
         /// <param name="defaultSkin">The name of the default skin.</param>
-        /// <returns>The <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>.</returns>
+        /// <returns>The <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>. Must
+        /// not be null.</returns>
         protected virtual ISkinManager CreateSkinManager(string defaultSkin)
         {
             return new SkinManager(defaultSkin, this);
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>. Can be null
+        /// if no <see cref="Tooltip"/> is to be used.</returns>
+        protected virtual Tooltip CreateTooltip()
+        {
+            return new Tooltip(this);
         }
 
         /// <summary>
