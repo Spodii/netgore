@@ -15,15 +15,26 @@ namespace NetGore.Graphics.GUI
         Color _foreColor = Color.Black;
         string _text = string.Empty;
 
+        static readonly object _eventChangeFont = new object();
+        static readonly object _eventChangeText = new object();
+
         /// <summary>
         /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeFont;
+        public event ControlEventHandler OnChangeFont
+        {
+            add { Events.AddHandler(_eventChangeFont, value); }
+            remove { Events.RemoveHandler(_eventChangeFont, value); }
+        }
 
         /// <summary>
         /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeText;
+        public event ControlEventHandler OnChangeText
+        {
+            add { Events.AddHandler(_eventChangeText, value); }
+            remove { Events.RemoveHandler(_eventChangeText, value); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -422,8 +433,9 @@ namespace NetGore.Graphics.GUI
         void InvokeChangeFont()
         {
             ChangeFont();
-            if (OnChangeFont != null)
-                OnChangeFont(this);
+            var handler = Events[_eventChangeFont] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -433,8 +445,9 @@ namespace NetGore.Graphics.GUI
         void InvokeChangeText()
         {
             ChangeText();
-            if (OnChangeText != null)
-                OnChangeText(this);
+            var handler = Events[_eventChangeText] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
