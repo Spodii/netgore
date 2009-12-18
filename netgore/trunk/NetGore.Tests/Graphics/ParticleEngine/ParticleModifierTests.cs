@@ -4,6 +4,8 @@ using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using NUnit.Framework;
 
+// ReSharper disable UnusedMember.Local
+
 namespace NetGore.Tests.Graphics.ParticleEngine
 {
     [TestFixture]
@@ -22,10 +24,19 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         class TestModifier : ParticleModifier
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
+            /// Initializes a new instance of the <see cref="TestModifier"/> class.
+            /// </summary>
+            public TestModifier()
+                : this(true, true)
+            {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="TestModifier"/> class.
             /// </summary>
             /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
             /// <param name="processOnUpdate">If <see cref="Particle"/>s will be processed after being updated.</param>
+            /// <exception cref="ArgumentException">Both parameters are false.</exception>
             public TestModifier(bool processOnRelease, bool processOnUpdate) : base(processOnRelease, processOnUpdate)
             {
             }
