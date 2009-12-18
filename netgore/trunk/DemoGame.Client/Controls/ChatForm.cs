@@ -140,11 +140,11 @@ namespace DemoGame.Client
             Vector2 inputPos = new Vector2(0, outputSize.Y);
             Vector2 outputPos = Vector2.Zero;
 
-            _input.Position = inputPos;
             _input.Size = inputSize;
+            _input.Position = inputPos;
 
-            _output.Position = outputPos;
             _output.Size = outputSize;
+            _output.Position = outputPos;
         }
 
         /// <summary>
@@ -187,6 +187,10 @@ namespace DemoGame.Client
             _output.LineBufferOffset = pos;
         }
 
+        /// <summary>
+        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
         protected override void UpdateControl(int currentTime)
         {
             UpdateBufferOffset();
