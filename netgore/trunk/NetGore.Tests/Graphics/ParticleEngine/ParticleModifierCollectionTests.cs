@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using NUnit.Framework;
+
+// ReSharper disable UnusedMember.Local
 
 namespace NetGore.Tests.Graphics.ParticleEngine
 {
@@ -12,7 +15,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         public void AddNullTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
             var initial = c.ToArray();
             Assert.IsTrue(c.ContainSameElements(initial));
             ConsistencyAsserts(c);
@@ -24,7 +27,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void AddReleaseModifierTest()
         {
-            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(true, false) };
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifierA(true, false) };
 
             Assert.AreEqual(1, c.ReleaseModifiers.Count());
             Assert.AreEqual(0, c.UpdateModifiers.Count());
@@ -35,7 +38,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void AddReleaseUpdateModifierTest()
         {
-            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(true, true) };
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifierA(true, true) };
 
             Assert.AreEqual(1, c.ReleaseModifiers.Count());
             Assert.AreEqual(1, c.UpdateModifiers.Count());
@@ -46,7 +49,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void AddUpdateModifierTest()
         {
-            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifier(false, true) };
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifierA(false, true) };
 
             Assert.AreEqual(0, c.ReleaseModifiers.Count());
             Assert.AreEqual(1, c.UpdateModifiers.Count());
@@ -79,7 +82,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         public void DeepCopyTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
             ConsistencyAsserts(c);
             var copy = c.DeepCopy();
             ConsistencyAsserts(copy);
@@ -92,7 +95,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         public void InsertNullTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
             var initial = c.ToArray();
             Assert.IsTrue(c.ContainSameElements(initial));
             ConsistencyAsserts(c);
@@ -105,13 +108,13 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         public void RemoveModifierThatDoesNotExistTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
             Assert.AreEqual(2, c.UpdateModifiers.Count());
             ConsistencyAsserts(c);
 
-            c.Remove(new TestModifier(false, true));
+            c.Remove(new TestModifierA(false, true));
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
             Assert.AreEqual(2, c.UpdateModifiers.Count());
@@ -122,7 +125,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         public void RemoveNullTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
             var initial = c.ToArray();
             Assert.IsTrue(c.ContainSameElements(initial));
             ConsistencyAsserts(c);
@@ -134,7 +137,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveOnlyReleaseModifierTest()
         {
-            var item = new TestModifier(true, false);
+            var item = new TestModifierA(true, false);
             ParticleModifierCollection c = new ParticleModifierCollection { item };
             c.Remove(item);
 
@@ -147,7 +150,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveOnlyUpdateModifierTest()
         {
-            var item = new TestModifier(false, true);
+            var item = new TestModifierA(false, true);
             ParticleModifierCollection c = new ParticleModifierCollection { item };
             c.Remove(item);
 
@@ -160,9 +163,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveReleaseModifierFromBackTest()
         {
-            var item = new TestModifier(true, false);
+            var item = new TestModifierA(true, false);
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(true, true), new TestModifier(true, true), item };
+            { new TestModifierA(true, true), new TestModifierA(true, true), item };
             c.Remove(item);
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
@@ -174,9 +177,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveReleaseModifierFromFrontTest()
         {
-            var item = new TestModifier(true, false);
+            var item = new TestModifierA(true, false);
             ParticleModifierCollection c = new ParticleModifierCollection
-            { item, new TestModifier(true, true), new TestModifier(true, true) };
+            { item, new TestModifierA(true, true), new TestModifierA(true, true) };
             c.Remove(item);
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
@@ -188,9 +191,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveReleaseModifierFromMiddleTest()
         {
-            var item = new TestModifier(true, false);
+            var item = new TestModifierA(true, false);
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(true, true), item, new TestModifier(true, true) };
+            { new TestModifierA(true, true), item, new TestModifierA(true, true) };
             c.Remove(item);
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
@@ -202,9 +205,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveUpdateModifierFromBackTest()
         {
-            var item = new TestModifier(false, true);
+            var item = new TestModifierA(false, true);
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(true, true), new TestModifier(true, true), item };
+            { new TestModifierA(true, true), new TestModifierA(true, true), item };
             c.Remove(item);
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
@@ -216,9 +219,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveUpdateModifierFromFrontTest()
         {
-            var item = new TestModifier(false, true);
+            var item = new TestModifierA(false, true);
             ParticleModifierCollection c = new ParticleModifierCollection
-            { item, new TestModifier(true, true), new TestModifier(true, true) };
+            { item, new TestModifierA(true, true), new TestModifierA(true, true) };
             c.Remove(item);
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
@@ -230,9 +233,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void RemoveUpdateModifierFromMiddleTest()
         {
-            var item = new TestModifier(false, true);
+            var item = new TestModifierA(false, true);
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(true, true), item, new TestModifier(true, true) };
+            { new TestModifierA(true, true), item, new TestModifierA(true, true) };
             c.Remove(item);
 
             Assert.AreEqual(2, c.ReleaseModifiers.Count());
@@ -245,7 +248,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         public void SetNullTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
             var initial = c.ToArray();
             Assert.IsTrue(c.ContainSameElements(initial));
             ConsistencyAsserts(c);
@@ -258,7 +261,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         public void ToArrayTest()
         {
             ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
 
             var a = c.ToArray();
             Assert.IsTrue(c.ContainSameElements(a));
@@ -268,24 +271,34 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void ToListTest()
         {
-            ParticleModifierCollection c = new ParticleModifierCollection
-            { new TestModifier(false, true), new TestModifier(true, true), new TestModifier(true, false) };
+            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
 
             var a = c.ToList();
             Assert.IsTrue(c.ContainSameElements(a));
             Assert.AreEqual(c.Count, a.Count);
         }
 
-        class TestModifier : ParticleModifier
+        class TestModifierA : ParticleModifier
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ParticleModifier"/> class.
+            /// Initializes a new instance of the <see cref="TestModifierA"/> class.
+            /// </summary>
+            public TestModifierA()
+                : this(true, true)
+            {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="TestModifierA"/> class.
             /// </summary>
             /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
             /// <param name="processOnUpdate">If <see cref="Particle"/>s will be processed after being updated.</param>
-            public TestModifier(bool processOnRelease, bool processOnUpdate) : base(processOnRelease, processOnUpdate)
+            /// <exception cref="ArgumentException">Both parameters are false.</exception>
+            public TestModifierA(bool processOnRelease, bool processOnUpdate)
+                : base(processOnRelease, processOnUpdate)
             {
             }
+
 
             /// <summary>
             /// When overridden in the derived class, handles processing the <paramref name="particle"/> when
