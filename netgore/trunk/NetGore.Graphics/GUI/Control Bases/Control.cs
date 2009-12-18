@@ -349,7 +349,14 @@ namespace NetGore.Graphics.GUI
         public Vector2 Position
         {
             get { return _position; }
-            set { _position = value; }
+            set 
+            {
+                if (_position == value)
+                    return;
+
+                _position = value;
+                KeepInParent();
+            }
         }
 
         /// <summary>
