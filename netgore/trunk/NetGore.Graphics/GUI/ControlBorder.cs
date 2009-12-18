@@ -35,6 +35,12 @@ namespace NetGore.Graphics.GUI
         ISprite _br = null;
 
         /// <summary>
+        /// Contains a cached value of whether or not the border can be drawn so we only have to do a quick boolean
+        /// check each time we draw instead of a more extensive and expensive check.
+        /// </summary>
+        bool _canDraw = false;
+
+        /// <summary>
         /// Color to draw the ISprites with
         /// </summary>
         Color _color = Color.White;
@@ -105,6 +111,8 @@ namespace NetGore.Graphics.GUI
             _bl = bottomLeft;
             _l = left;
             _bg = background;
+
+            UpdateCanDraw();
         }
 
         /// <summary>
@@ -128,7 +136,11 @@ namespace NetGore.Graphics.GUI
         public Color Color
         {
             get { return _color; }
-            set { _color = value; }
+            set
+            {
+                _color = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -157,6 +169,7 @@ namespace NetGore.Graphics.GUI
                 // If the ISprite is null, return a 0
                 if (_l == null)
                     return 0;
+
                 return _l.Source.Width;
             }
         }
@@ -171,6 +184,7 @@ namespace NetGore.Graphics.GUI
                 // If the ISprite is null, return a 0
                 if (_r == null)
                     return 0;
+
                 return _r.Source.Width;
             }
         }
@@ -198,7 +212,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceBottom
         {
             get { return _b; }
-            set { _b = value; }
+            set
+            {
+                _b = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -207,7 +225,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceBottomLeft
         {
             get { return _bl; }
-            set { _bl = value; }
+            set
+            {
+                _bl = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -216,7 +238,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceBottomRight
         {
             get { return _br; }
-            set { _br = value; }
+            set
+            {
+                _br = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -225,7 +251,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceLeft
         {
             get { return _l; }
-            set { _l = value; }
+            set
+            {
+                _l = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -234,7 +264,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceRight
         {
             get { return _r; }
-            set { _r = value; }
+            set
+            {
+                _r = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -243,7 +277,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceTop
         {
             get { return _t; }
-            set { _t = value; }
+            set
+            {
+                _t = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -252,7 +290,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceTopLeft
         {
             get { return _tl; }
-            set { _tl = value; }
+            set
+            {
+                _tl = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -261,7 +303,11 @@ namespace NetGore.Graphics.GUI
         public ISprite SourceTopRight
         {
             get { return _tr; }
-            set { _tr = value; }
+            set
+            {
+                _tr = value;
+                UpdateCanDraw();
+            }
         }
 
         /// <summary>
@@ -274,6 +320,7 @@ namespace NetGore.Graphics.GUI
                 // If the ISprite is null, return a 0
                 if (_t == null)
                     return 0;
+
                 return _t.Source.Height;
             }
         }
@@ -294,14 +341,8 @@ namespace NetGore.Graphics.GUI
         /// the absolute screen position.</param>
         public void Draw(SpriteBatch sb, Rectangle region)
         {
-            // Don't draw if any of the sprites are null
-            if (_t == null || _tl == null || _tr == null || _l == null || _r == null || _b == null || _bl == null || _br == null)
-            {
-                const string errmsg = "Failed to draw ControlBorder `{0}` - one or more border sprites missing.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
+            if (!_canDraw)
                 return;
-            }
 
             Rectangle tSrc = _t.Source;
             Rectangle tlSrc = _tl.Source;
@@ -367,13 +408,21 @@ namespace NetGore.Graphics.GUI
         /// <param name="c">Control to draw to.</param>
         public void Draw(SpriteBatch sb, Control c)
         {
-            // A little optimization to make sure we never try drawing the empty border
-            if (this == Empty)
+            if (!_canDraw)
                 return;
 
             Vector2 sp = c.ScreenPosition;
             Rectangle region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
             Draw(sb, region);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="_canDraw"/> value.
+        /// </summary>
+        void UpdateCanDraw()
+        {
+            _canDraw = (_t != null && _tl != null && _tr != null && _l != null && _r != null && _b != null && _bl != null &&
+                        _br != null && Color.A > 0);
         }
     }
 }
