@@ -271,7 +271,8 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         [Test]
         public void ToListTest()
         {
-            ParticleModifierCollection c = new ParticleModifierCollection { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
+            ParticleModifierCollection c = new ParticleModifierCollection
+            { new TestModifierA(false, true), new TestModifierA(true, true), new TestModifierA(true, false) };
 
             var a = c.ToList();
             Assert.IsTrue(c.ContainSameElements(a));
@@ -283,8 +284,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             /// <summary>
             /// Initializes a new instance of the <see cref="TestModifierA"/> class.
             /// </summary>
-            public TestModifierA()
-                : this(true, true)
+            public TestModifierA() : this(true, true)
             {
             }
 
@@ -294,11 +294,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             /// <param name="processOnRelease">If <see cref="Particle"/>s will be processed after being released.</param>
             /// <param name="processOnUpdate">If <see cref="Particle"/>s will be processed after being updated.</param>
             /// <exception cref="ArgumentException">Both parameters are false.</exception>
-            public TestModifierA(bool processOnRelease, bool processOnUpdate)
-                : base(processOnRelease, processOnUpdate)
+            public TestModifierA(bool processOnRelease, bool processOnUpdate) : base(processOnRelease, processOnUpdate)
             {
             }
-
 
             /// <summary>
             /// When overridden in the derived class, handles processing the <paramref name="particle"/> when

@@ -6,6 +6,11 @@ namespace NetGore.Graphics.GUI
     public class Panel : Control
     {
         /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "Panel";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
@@ -24,11 +29,6 @@ namespace NetGore.Graphics.GUI
         public Panel(GUIManagerBase gui, Vector2 position, Vector2 size) : base(gui, position, size)
         {
         }
-
-        /// <summary>
-        /// The name of this <see cref="Control"/> for when looking up the skin information.
-        /// </summary>
-        const string _controlSkinName = "Panel";
 
         /// <summary>
         /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>

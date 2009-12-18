@@ -26,8 +26,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             /// <summary>
             /// Initializes a new instance of the <see cref="TestModifier"/> class.
             /// </summary>
-            public TestModifier()
-                : this(true, true)
+            public TestModifier() : this(true, true)
             {
             }
 

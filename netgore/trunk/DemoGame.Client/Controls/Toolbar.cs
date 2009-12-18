@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -172,7 +171,7 @@ namespace DemoGame.Client
         void UpdateSize()
         {
             if (_items != null)
-            ClientSize = FindNeededClientSize();
+                ClientSize = FindNeededClientSize();
         }
 
         #region IRestorableSettings Members

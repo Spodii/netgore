@@ -11,12 +11,11 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public abstract class TextControl : Control
     {
+        static readonly object _eventChangeFont = new object();
+        static readonly object _eventChangeText = new object();
         SpriteFont _font = null;
         Color _foreColor = Color.Black;
         string _text = string.Empty;
-
-        static readonly object _eventChangeFont = new object();
-        static readonly object _eventChangeText = new object();
 
         /// <summary>
         /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.

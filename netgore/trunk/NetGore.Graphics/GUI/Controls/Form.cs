@@ -7,6 +7,11 @@ namespace NetGore.Graphics.GUI
     public class Form : TextControl
     {
         /// <summary>
+        /// The name of this <see cref="Control"/> for when looking up the skin information.
+        /// </summary>
+        const string _controlSkinName = "Form";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
@@ -38,6 +43,16 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+        }
+
+        /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
         /// base class's method to ensure that changes to settings are hierchical.
         /// </summary>
@@ -47,21 +62,6 @@ namespace NetGore.Graphics.GUI
 
             CanDrag = true;
             ForeColor = Color.White;
-        }
-
-        /// <summary>
-        /// The name of this <see cref="Control"/> for when looking up the skin information.
-        /// </summary>
-        const string _controlSkinName = "Form";
-
-        /// <summary>
-        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-        /// from the given <paramref name="skinManager"/>.
-        /// </summary>
-        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-        public override void LoadSkin(ISkinManager skinManager)
-        {
-            Border = skinManager.GetBorder(_controlSkinName);
         }
     }
 }
