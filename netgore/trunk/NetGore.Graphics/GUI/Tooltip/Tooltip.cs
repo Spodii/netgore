@@ -52,9 +52,6 @@ namespace NetGore.Graphics.GUI
             _font = guiManager.Font;
             _drawer = new StyledTextsDrawer(Font);
 
-            // Set the Tooltip in the GUIManager
-            GUIManager.Tooltip = this;
-
             Debug.Assert(GUIManager.Tooltip == this);
             Debug.Assert(Font != null);
         }

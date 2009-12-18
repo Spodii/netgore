@@ -21,27 +21,8 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
         /// </summary>
         /// <param name="font">The default <see cref="SpriteFont"/> to use on added <see cref="Control"/>s.</param>
-        public GUIManager(SpriteFont font) : base(font, BlankGrh, "Default")
+        public GUIManager(SpriteFont font) : base(font, "Default")
         {
-        }
-
-        /// <summary>
-        /// Gets the blank Grh, ensuring it is loaded
-        /// </summary>
-        static Grh BlankGrh
-        {
-            get
-            {
-                if (_blankGrh == null)
-                {
-                    GrhData gd = GrhInfo.GetData("System", "Blank");
-                    if (gd == null)
-                        throw new GrhDataNotFoundException("System", "Blank");
-                    _blankGrh = new Grh(gd);
-                }
-
-                return _blankGrh;
-            }
         }
     }
 }
