@@ -1,15 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
+using System.Text;
 
 namespace NetGore
 {
     /// <summary>
-    /// An implementation of <see cref="IEntitySpatial"/> that supports tracking entities that can move.
+    /// An implementation of <see cref="IEntitySpatial"/> that supports tracking entities that do not move.
     /// </summary>
-    public class DynamicEntitySpatial : EntitySpatialBase
+    public class StaticEntitySpatial : EntitySpatialBase
     {
         /// <summary>
         /// When overridden in the derived class, returns an immutable version of the <see cref="collection"/>. This is
@@ -21,7 +20,7 @@ namespace NetGore
         /// <returns>The <paramref name="collection"/> as immutable.</returns>
         protected override IEnumerable<T> ToImmutable<T>(IEnumerable<T> collection)
         {
-            return collection.ToImmutable();
+            return collection;
         }
     }
 }
