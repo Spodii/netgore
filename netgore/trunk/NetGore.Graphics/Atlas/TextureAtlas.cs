@@ -489,6 +489,11 @@ namespace NetGore.Graphics
                         sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.SaveState);
                         foreach (AtlasTextureItem item in Nodes)
                         {
+                            // Make sure this item is not already part of an atlas. While it is handy to have an atlas
+                            // draw to another atlas, the benefits of that are likely minimal, and it is far more important
+                            // to avoid having an invalid atlas (such as when the device is lost) drawing to another atlas
+                            item.ITextureAtlasable.RemoveAtlas();
+
                             // Grab the texture and make sure it is valid
                             Texture2D tex = item.ITextureAtlasable.Texture;
                             if (tex == null || tex.IsDisposed)
