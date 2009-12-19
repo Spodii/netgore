@@ -89,6 +89,7 @@
     <Compile Include="NetGore\IEnumerableTests.cs" />
     <Compile Include="NetGore\IsBetweenTests.cs" />
     <Compile Include="NetGore\MathStringTests.cs" />
+    <Compile Include="NetGore\SpatialTests.cs" />
     <Compile Include="NetGore\TypeFilterCreatorTests.cs" />
     <Compile Include="NetGore\VariableValueIOTests.cs" />
     <Compile Include="Network\IPAddressHelperTests.cs" />
