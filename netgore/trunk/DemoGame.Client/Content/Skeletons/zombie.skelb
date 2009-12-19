@@ -38,25 +38,25 @@
       <Origin>3,4</Origin>
     </Item4>
     <Item5>
-      <Sprite>Character.Zombie.Torso</Sprite>
-      <Source>Neck</Source>
-      <Destination>Pelvis</Destination>
-      <Offset>0,0</Offset>
-      <Origin>8,0</Origin>
-    </Item5>
-    <Item6>
-      <Sprite>Character.Zombie.Head</Sprite>
-      <Source>Head</Source>
-      <Destination />
-      <Offset>0,0</Offset>
-      <Origin>9,9</Origin>
-    </Item6>
-    <Item7>
       <Sprite>Character.Zombie.Neck</Sprite>
       <Source>Neck</Source>
       <Destination>Head</Destination>
       <Offset>0,0</Offset>
       <Origin>2,2</Origin>
+    </Item5>
+    <Item6>
+      <Sprite>Character.Zombie.Torso</Sprite>
+      <Source>Neck</Source>
+      <Destination>Pelvis</Destination>
+      <Offset>0,0</Offset>
+      <Origin>8,0</Origin>
+    </Item6>
+    <Item7>
+      <Sprite>Character.Zombie.Head</Sprite>
+      <Source>Head</Source>
+      <Destination />
+      <Offset>0,0</Offset>
+      <Origin>9,9</Origin>
     </Item7>
     <Item8>
       <Sprite>Character.Zombie.LegUpper</Sprite>
