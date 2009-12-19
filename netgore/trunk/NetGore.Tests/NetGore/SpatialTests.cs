@@ -30,7 +30,11 @@ namespace NetGore.Tests.NetGore
         {
             var a = new DynamicEntitySpatial();
             a.SetMapSize(SpatialSize);
-            return new IEntitySpatial[] { a };
+
+            var b = new StaticEntitySpatial();
+            b.SetMapSize(SpatialSize);
+
+            return new IEntitySpatial[] { a, b };
         }
 
         [Test]
