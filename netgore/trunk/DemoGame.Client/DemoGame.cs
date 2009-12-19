@@ -35,6 +35,9 @@ namespace DemoGame.Client
             IsFixedTimeStep = true;
         }
 
+        /// <summary>
+        /// Called after all components are initialized but before the first update in the game loop.
+        /// </summary>
         protected override void BeginRun()
         {
             base.BeginRun();
@@ -62,6 +65,10 @@ namespace DemoGame.Client
                                          });
         }
 
+        /// <summary>
+        /// Releases all resources used by the Game class.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (_globalAtlases != null)
@@ -75,6 +82,9 @@ namespace DemoGame.Client
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Called after the Game and GraphicsDevice are created, but before LoadContent.  Reference page contains code sample.
+        /// </summary>
         protected override void Initialize()
         {
             Content.RootDirectory = ContentPaths.Build.Root;
