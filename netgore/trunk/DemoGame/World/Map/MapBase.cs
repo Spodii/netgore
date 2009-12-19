@@ -58,6 +58,8 @@ namespace DemoGame
         readonly DArray<DynamicEntity> _dynamicEntities = new DArray<DynamicEntity>(true);
 
         readonly DynamicEntitySpatial _dynamicEntitySpatial = new DynamicEntitySpatial();
+        readonly StaticEntitySpatial _staticEntitySpatial = new StaticEntitySpatial();
+        readonly SpatialAggregate _spatialAggregate;
 
         /// <summary>
         /// List of entities in the map
@@ -118,6 +120,9 @@ namespace DemoGame
 
             _getTime = getTime;
             _mapIndex = mapIndex;
+
+            _spatialAggregate = new SpatialAggregate(new IEntitySpatial[] { _dynamicEntitySpatial, _staticEntitySpatial }, false);
+
             _updateStopWatch.Start();
         }
 
@@ -246,8 +251,8 @@ namespace DemoGame
             // TODO: !! Find some way to optimize this to only return interesting entities
 
             // Get the entities we have a rectangular collision with
-            var spatial = this.GetSpatial<Entity>();
-            var collisionSources = spatial.GetEntities<Entity>(entity, x => !(x is WallEntityBase));
+            var spatial = _dynamicEntitySpatial;
+            var collisionSources = spatial.GetEntities<Entity>(entity);
 
             foreach (var other in collisionSources)
             {
@@ -767,6 +772,7 @@ namespace DemoGame
 
             // Build the entity spatial collections
             _dynamicEntitySpatial.SetMapSize(Size);
+            _staticEntitySpatial.SetMapSize(Size);
         }
 
         /// <summary>
@@ -1029,6 +1035,7 @@ namespace DemoGame
 
             // Update the spatial's size
             _dynamicEntitySpatial.SetMapSize(Size);
+            _staticEntitySpatial.SetMapSize(Size);
         }
 
         /// <summary>
@@ -1227,7 +1234,12 @@ namespace DemoGame
         /// </returns>
         public IEntitySpatial GetSpatial(Type type)
         {
-            return _dynamicEntitySpatial;
+            if (type.IsSubclassOf(typeof(WallEntityBase)) || type == typeof(WallEntityBase))
+                return _staticEntitySpatial;
+            else if (type.IsAssignableFrom(typeof(WallEntityBase)))
+                return _spatialAggregate;
+            else
+                return _dynamicEntitySpatial;
         }
 
         /// <summary>
