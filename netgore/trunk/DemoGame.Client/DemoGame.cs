@@ -29,10 +29,6 @@ namespace DemoGame.Client
         {
             // Create the graphics manager and device
             graphics = new GraphicsDeviceManager(this);
-
-            // No need to use a time step since we use delta time in our updating
-            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 100);
-            IsFixedTimeStep = true;
         }
 
         /// <summary>
@@ -89,6 +85,10 @@ namespace DemoGame.Client
         {
             Content.RootDirectory = ContentPaths.Build.Root;
             IsMouseVisible = true;
+
+            // Try to go for 75 FPS for the update rate
+            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 75);
+            IsFixedTimeStep = true;
 
             // Set the graphics settings
             graphics.SynchronizeWithVerticalRetrace = false; // vsync
