@@ -24,6 +24,13 @@ namespace NetGore
         void Add(Entity entity);
 
         /// <summary>
+        /// Checks if this spatial collection contains the given <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to look for.</param>
+        /// <returns>True if this spatial collection contains the given <paramref name="entity"/>; otherwise false.</returns>
+        bool Contains(Entity entity);
+
+        /// <summary>
         /// Gets if the specified area or location contains any entities.
         /// </summary>
         /// <param name="point">The map point to check.</param>

@@ -355,6 +355,30 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Checks if this spatial collection contains the given <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to look for.</param>
+        /// <returns>True if this spatial collection contains the given <paramref name="entity"/>; otherwise false.</returns>
+        public bool Contains(Entity entity)
+        {
+            // The first place to check would be the place the entity should be
+            if (ContainsEntities(entity.CB.ToRectangle(), x => x == entity))
+                return true;
+
+            // If the entity isn't where it should be, check every segment
+            foreach (var gridSegment in _entityGrid)
+            {
+                if (gridSegment.Contains(entity))
+                {
+                    Debug.Fail("The entity was found in the spatial, but not where it was expected to be...");
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Removes an <see cref="Entity"/> from the spatial collection.
         /// </summary>
         /// <param name="entity">The <see cref="Entity"/> to remove.</param>

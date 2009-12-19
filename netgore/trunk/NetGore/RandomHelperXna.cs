@@ -48,6 +48,17 @@ namespace NetGore
         /// <summary>
         /// Returns a random <see cref="Vector2"/> with both coordinates within the specified range.
         /// </summary>
+        /// <param name="min">The inclusive lower bound of the random number returned.</param>
+        /// <param name="max">The inclusive upper bound of the random number returned.</param>
+        /// <returns>A random <see cref="Vector2"/> with both coordinates within the specified range.</returns>
+        public static Vector2 NextVector2(Vector2 min, Vector2 max)
+        {
+            return NextVector2(min.X, max.X, min.Y, max.Y);
+        }
+
+        /// <summary>
+        /// Returns a random <see cref="Vector2"/> with both coordinates within the specified range.
+        /// </summary>
         /// <param name="minX">The inclusive lower bound of the x coordinate.</param>
         /// <param name="maxX">The inclusive upper bound of the x coordinate.</param>
         /// <param name="minY">The inclusive lower bound of the y coordinate.</param>
