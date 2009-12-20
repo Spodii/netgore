@@ -11,7 +11,7 @@ namespace DemoGame.Client
     {
         public const string ScreenName = "main menu";
 
-        GUIManager _gui;
+        GUIManagerBase _gui;
         SpriteBatch _sb = null;
 
         public MainMenuScreen() : base(ScreenName)
@@ -68,7 +68,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            _gui = new GUIManager(ScreenManager.Content.Load<SpriteFont>("Font/Menu"));
+            _gui = ScreenManager.CreateGUIManager("Font/Menu");
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
             Button cLogin = new Button(cScreen, new Vector2(60, 260), new Vector2(250, 45)) { Text = "Login" };

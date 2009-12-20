@@ -16,8 +16,7 @@ namespace NetGore.Graphics.GUI
             new Dictionary<string, ControlBorder>(StringComparer.OrdinalIgnoreCase);
 
         readonly string _defaultSkin;
-        readonly GUIManagerBase _guiManager;
-
+        readonly List<GUIManagerBase> _guiManagers = new List<GUIManagerBase>();
         readonly Dictionary<string, ISprite> _spriteCache = new Dictionary<string, ISprite>(StringComparer.OrdinalIgnoreCase);
 
         string _currentSkin;
@@ -26,21 +25,13 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="SkinManager"/> class.
         /// </summary>
         /// <param name="defaultSkin">The name of the default skin to use.</param>
-        /// <param name="guiManager">The <see cref="GUIManagerBase"/> that contains the <see cref="Control"/>s
-        /// that will be skinned.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="defaultSkin"/> is null or empty
-        /// -or-
-        /// <paramref name="guiManager"/> is null.</exception>
-        public SkinManager(string defaultSkin, GUIManagerBase guiManager)
+        /// <exception cref="ArgumentNullException"><paramref name="defaultSkin"/> is null or empty.</exception>
+        public SkinManager(string defaultSkin)
         {
             if (string.IsNullOrEmpty(defaultSkin))
                 throw new ArgumentNullException("defaultSkin");
-            if (guiManager == null)
-                throw new ArgumentNullException("guiManager");
 
-            _guiManager = guiManager;
             _defaultSkin = defaultSkin;
-
             CurrentSkin = defaultSkin;
         }
 
@@ -53,11 +44,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="GUIManagerBase"/> that contains the <see cref="Control"/>s that will be skinned.
+        /// Gets the <see cref="GUIManagerBase"/>s that use this <see cref="SkinManager"/>.
         /// </summary>
-        public GUIManagerBase GUIManager
+        public IEnumerable<GUIManagerBase> GUIManagers
         {
-            get { return _guiManager; }
+            get { return _guiManagers; }
         }
 
         /// <summary>
@@ -66,13 +57,35 @@ namespace NetGore.Graphics.GUI
         protected bool IsCurrentSkinDefault { get; private set; }
 
         /// <summary>
+        /// Adds a <see cref="GUIManagerBase"/> to this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
+        public void AddGUIManager(GUIManagerBase guiManager)
+        {
+            if (!_guiManagers.Contains(guiManager))
+                _guiManagers.Add(guiManager);
+        }
+
+        /// <summary>
+        /// Removes a <see cref="GUIManagerBase"/> from this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
+        public bool RemoveGUIManager(GUIManagerBase guiManager)
+        {
+            return _guiManagers.Remove(guiManager);
+        }
+
+        /// <summary>
         /// Handles when the skin has changed and applies the new skin to all the <see cref="Control"/>s.
         /// </summary>
         protected virtual void ChangeSkin()
         {
-            foreach (var control in GUIManager.GetAllControls())
+            foreach (var guiManager in GUIManagers)
             {
-                control.LoadSkin(this);
+                foreach (var control in guiManager.GetAllControls())
+                {
+                    control.LoadSkin(this);
+                }
             }
         }
 

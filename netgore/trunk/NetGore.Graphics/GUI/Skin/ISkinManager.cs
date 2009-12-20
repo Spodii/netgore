@@ -36,6 +36,18 @@ namespace NetGore.Graphics.GUI
         ControlBorder GetBorder(string controlName, SpriteCategory subCategory);
 
         /// <summary>
+        /// Adds a <see cref="GUIManagerBase"/> to this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
+        void AddGUIManager(GUIManagerBase guiManager);
+
+        /// <summary>
+        /// Removes a <see cref="GUIManagerBase"/> from this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
+        bool RemoveGUIManager(GUIManagerBase guiManager);
+
+        /// <summary>
         /// Gets the <see cref="ISprite"/> for the <see cref="Control"/> with the given <paramref name="spriteTitle"/>.
         /// </summary>
         /// <param name="controlName">The name of the <see cref="Control"/>.</param>

@@ -39,7 +39,7 @@ namespace DemoGame.Client
             base.BeginRun();
 
             // Create the screen manager
-            screenManager = new ScreenManager(this);
+            screenManager = new ScreenManager(this, new SkinManager("Default"), "Content");
             Components.Add(screenManager);
 
             // Read the GrhInfo
