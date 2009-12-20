@@ -52,6 +52,12 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
+        ChatBubbleManager _chatBubbleManager;
+
+        /// <summary>
+        /// Gets the <see cref="ChatBubbleManagerBase"/>.
+        /// </summary>
+        public ChatBubbleManagerBase ChatBubbleManager { get { return _chatBubbleManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -268,6 +274,7 @@ namespace DemoGame.Client
             _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,
                                          World.Camera.Matrix);
             World.Draw(_spriteBatch);
+            _chatBubbleManager.Draw(_spriteBatch);
             _damageTextPool.Draw(_spriteBatch, _damageFont);
             _spriteBatch.End();
         }
@@ -302,6 +309,8 @@ namespace DemoGame.Client
 
             // Other inits
             InitializeGUI();
+
+            _chatBubbleManager = new ChatBubbleManager(_gui.SkinManager, _guiFont);
         }
 
         /// <summary>
@@ -464,6 +473,7 @@ namespace DemoGame.Client
             _gui.Update(_currentTime);
             _damageTextPool.Update(_currentTime);
             _guiSettings.Update(_currentTime);
+            _chatBubbleManager.Update(_currentTime);
 
             if (UserChar != null)
                 _gameControls.Update(_gui, _currentTime);

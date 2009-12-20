@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Audio", "NetGore.Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.ParticleEffectEditor", "DemoGame.ParticleEffectEditor\DemoGame.ParticleEffectEditor.csproj", "{B754CB42-CD27-4602-809C-930677A8AD08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.MapEditor", "DemoGame.MapEditor\DemoGame.MapEditor.csproj", "{E45C879C-61AC-45F0-8E25-453EE46EB086}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -524,6 +526,36 @@ Global
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|Any CPU.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|x86.ActiveCfg = Release|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Debug|x86.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Debug|x86.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugCS|Any CPU.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugCS|Mixed Platforms.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugCS|Mixed Platforms.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugCS|x86.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugCS|x86.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugDbClassGen|Any CPU.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugDbClassGen|Mixed Platforms.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugDbClassGen|Mixed Platforms.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugDbClassGen|x86.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugGUITester|Any CPU.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugGUITester|Mixed Platforms.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugGUITester|Mixed Platforms.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugGUITester|x86.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugGUITester|x86.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugParticleEd|Any CPU.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugParticleEd|Mixed Platforms.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugParticleEd|Mixed Platforms.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugParticleEd|x86.ActiveCfg = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugParticleEd|x86.Build.0 = Debug|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Release|Any CPU.ActiveCfg = Release|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Release|x86.ActiveCfg = Release|x86
+		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

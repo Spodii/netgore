@@ -197,10 +197,21 @@ namespace DemoGame.Client
             MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
             string text = r.ReadString(GameData.MaxServerSayLength);
 
-            // NOTE: Make use of the mapCharIndex for a chat bubble
             // TODO: Should use a GameMessage so we don't have the constant "says"
             var chatText = CreateChatText(name, "says", text);
             GameplayScreen.AppendToChatOutput(chatText);
+
+            DynamicEntity entity;
+            if (!Map.TryGetDynamicEntity(mapEntityIndex, out entity))
+            {
+                const string errmsg = "Failed to get DynamicEntity `{0}` for creating a chat bubble with text `{1}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, mapEntityIndex, text);
+            }
+            else
+            {
+                GameplayScreen.ChatBubbleManager.Add(entity, text, GetTime());
+            }
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
