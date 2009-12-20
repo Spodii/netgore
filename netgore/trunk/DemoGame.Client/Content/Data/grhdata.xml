@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>145</Count>
+    <Count>144</Count>
     <Item0>
       <Index>1</Index>
       <Frames>
@@ -1651,22 +1651,6 @@
       </Texture>
     </Item102>
     <Item103>
-      <Index>104</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>104</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>Center</Title>
-      </Category>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/Center</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item103>
-    <Item104>
       <Index>105</Index>
       <Frames>
         <Count>1</Count>
@@ -1681,8 +1665,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item104>
-    <Item105>
+    </Item103>
+    <Item104>
       <Index>106</Index>
       <Frames>
         <Count>1</Count>
@@ -1697,8 +1681,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item105>
-    <Item106>
+    </Item104>
+    <Item105>
       <Index>107</Index>
       <Frames>
         <Count>1</Count>
@@ -1713,8 +1697,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item106>
-    <Item107>
+    </Item105>
+    <Item106>
       <Index>108</Index>
       <Frames>
         <Count>1</Count>
@@ -1729,8 +1713,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item107>
-    <Item108>
+    </Item106>
+    <Item107>
       <Index>109</Index>
       <Frames>
         <Count>1</Count>
@@ -1745,8 +1729,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopRight</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item108>
-    <Item109>
+    </Item107>
+    <Item108>
       <Index>110</Index>
       <Frames>
         <Count>1</Count>
@@ -1761,8 +1745,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Background</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item109>
-    <Item110>
+    </Item108>
+    <Item109>
       <Index>117</Index>
       <Frames>
         <Count>1</Count>
@@ -1777,8 +1761,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/1</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item110>
-    <Item111>
+    </Item109>
+    <Item110>
       <Index>118</Index>
       <Frames>
         <Count>1</Count>
@@ -1793,8 +1777,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/2</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item111>
-    <Item112>
+    </Item110>
+    <Item111>
       <Index>119</Index>
       <Frames>
         <Count>1</Count>
@@ -1809,8 +1793,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/3</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item112>
-    <Item113>
+    </Item111>
+    <Item112>
       <Index>120</Index>
       <Frames>
         <Count>1</Count>
@@ -1825,8 +1809,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/4</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item113>
-    <Item114>
+    </Item112>
+    <Item113>
       <Index>121</Index>
       <Frames>
         <Count>1</Count>
@@ -1841,8 +1825,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/5</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item114>
-    <Item115>
+    </Item113>
+    <Item114>
       <Index>122</Index>
       <Frames>
         <Count>1</Count>
@@ -1857,8 +1841,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/6</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item115>
-    <Item116>
+    </Item114>
+    <Item115>
       <Index>123</Index>
       <Frames>
         <Count>1</Count>
@@ -1873,8 +1857,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/7</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item116>
-    <Item117>
+    </Item115>
+    <Item116>
       <Index>124</Index>
       <Frames>
         <Count>1</Count>
@@ -1889,8 +1873,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/8</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item117>
-    <Item118>
+    </Item116>
+    <Item117>
       <Index>126</Index>
       <Frames>
         <Count>1</Count>
@@ -1905,8 +1889,8 @@
         <Name>Grh/item/melee/titaniumsword</Name>
         <Source>0,0,24,24</Source>
       </Texture>
-    </Item118>
-    <Item119>
+    </Item117>
+    <Item118>
       <Index>127</Index>
       <Frames>
         <Count>1</Count>
@@ -1921,8 +1905,8 @@
         <Name>Grh/Item/Potion/Red</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item119>
-    <Item120>
+    </Item118>
+    <Item119>
       <Index>128</Index>
       <Frames>
         <Count>1</Count>
@@ -1937,8 +1921,8 @@
         <Name>Grh/Item/Potion/Blue</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item120>
-    <Item121>
+    </Item119>
+    <Item120>
       <Index>129</Index>
       <Frames>
         <Count>1</Count>
@@ -1953,8 +1937,8 @@
         <Name>Grh/Item/Back/Crystal</Name>
         <Source>0,0,15,25</Source>
       </Texture>
-    </Item121>
-    <Item122>
+    </Item120>
+    <Item121>
       <Index>130</Index>
       <Frames>
         <Count>1</Count>
@@ -1969,8 +1953,8 @@
         <Name>Grh/Item/Body/Crystal</Name>
         <Source>0,0,22,22</Source>
       </Texture>
-    </Item122>
-    <Item123>
+    </Item121>
+    <Item122>
       <Index>131</Index>
       <Frames>
         <Count>1</Count>
@@ -1985,8 +1969,8 @@
         <Name>Grh/Item/Feet/Crystal</Name>
         <Source>0,0,15,14</Source>
       </Texture>
-    </Item123>
-    <Item124>
+    </Item122>
+    <Item123>
       <Index>132</Index>
       <Frames>
         <Count>1</Count>
@@ -2001,8 +1985,8 @@
         <Name>Grh/Item/Head/Crystal</Name>
         <Source>0,0,11,16</Source>
       </Texture>
-    </Item124>
-    <Item125>
+    </Item123>
+    <Item124>
       <Index>133</Index>
       <Frames>
         <Count>1</Count>
@@ -2017,8 +2001,8 @@
         <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item125>
-    <Item126>
+    </Item124>
+    <Item125>
       <Index>134</Index>
       <Frames>
         <Count>1</Count>
@@ -2033,8 +2017,8 @@
         <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item126>
-    <Item127>
+    </Item125>
+    <Item126>
       <Index>135</Index>
       <Frames>
         <Count>1</Count>
@@ -2049,8 +2033,8 @@
         <Name>Grh/GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item127>
-    <Item128>
+    </Item126>
+    <Item127>
       <Index>136</Index>
       <Frames>
         <Count>1</Count>
@@ -2065,8 +2049,8 @@
         <Name>Grh/GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item128>
-    <Item129>
+    </Item127>
+    <Item128>
       <Index>137</Index>
       <Frames>
         <Count>1</Count>
@@ -2081,8 +2065,8 @@
         <Name>Grh/Background/sky</Name>
         <Source>0,0,1024,238</Source>
       </Texture>
-    </Item129>
-    <Item130>
+    </Item128>
+    <Item129>
       <Index>138</Index>
       <Frames>
         <Count>1</Count>
@@ -2097,8 +2081,8 @@
         <Name>Grh/Background/trees/dense</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item130>
-    <Item131>
+    </Item129>
+    <Item130>
       <Index>139</Index>
       <Frames>
         <Count>1</Count>
@@ -2113,8 +2097,8 @@
         <Name>Grh/Background/trees/sparse</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item131>
-    <Item132>
+    </Item130>
+    <Item131>
       <Index>140</Index>
       <Frames>
         <Count>1</Count>
@@ -2129,8 +2113,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item132>
-    <Item133>
+    </Item131>
+    <Item132>
       <Index>141</Index>
       <Frames>
         <Count>1</Count>
@@ -2145,8 +2129,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item133>
-    <Item134>
+    </Item132>
+    <Item133>
       <Index>142</Index>
       <Frames>
         <Count>1</Count>
@@ -2161,8 +2145,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item134>
-    <Item135>
+    </Item133>
+    <Item134>
       <Index>143</Index>
       <Frames>
         <Count>1</Count>
@@ -2177,8 +2161,8 @@
         <Name>Grh/GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item135>
-    <Item136>
+    </Item134>
+    <Item135>
       <Index>144</Index>
       <Frames>
         <Count>1</Count>
@@ -2193,8 +2177,8 @@
         <Name>Grh/GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item136>
-    <Item137>
+    </Item135>
+    <Item136>
       <Index>200</Index>
       <Frames>
         <Count>1</Count>
@@ -2209,8 +2193,8 @@
         <Name>Grh/Character/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item137>
-    <Item138>
+    </Item136>
+    <Item137>
       <Index>201</Index>
       <Frames>
         <Count>1</Count>
@@ -2225,8 +2209,8 @@
         <Name>Grh/Character/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item138>
-    <Item139>
+    </Item137>
+    <Item138>
       <Index>202</Index>
       <Frames>
         <Count>1</Count>
@@ -2241,8 +2225,8 @@
         <Name>Grh/Character/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
-    </Item139>
-    <Item140>
+    </Item138>
+    <Item139>
       <Index>203</Index>
       <Frames>
         <Count>1</Count>
@@ -2257,8 +2241,8 @@
         <Name>Grh/Character/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
-    </Item140>
-    <Item141>
+    </Item139>
+    <Item140>
       <Index>204</Index>
       <Frames>
         <Count>1</Count>
@@ -2273,8 +2257,8 @@
         <Name>Grh/Character/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
-    </Item141>
-    <Item142>
+    </Item140>
+    <Item141>
       <Index>205</Index>
       <Frames>
         <Count>1</Count>
@@ -2289,8 +2273,8 @@
         <Name>Grh/Character/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item142>
-    <Item143>
+    </Item141>
+    <Item142>
       <Index>206</Index>
       <Frames>
         <Count>1</Count>
@@ -2305,8 +2289,8 @@
         <Name>Grh/Character/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item143>
-    <Item144>
+    </Item142>
+    <Item143>
       <Index>207</Index>
       <Frames>
         <Count>1</Count>
@@ -2321,7 +2305,7 @@
         <Name>Grh/Character/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
-    </Item144>
+    </Item143>
   </Stationary>
   <Animated>
     <Count>1</Count>
