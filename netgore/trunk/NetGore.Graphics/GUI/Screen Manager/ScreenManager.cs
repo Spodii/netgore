@@ -24,33 +24,12 @@ namespace NetGore.Graphics.GUI
         readonly ContentManager _mapContent;
         readonly MusicManager _musicManager;
         readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(StringComparer.OrdinalIgnoreCase);
-        readonly SoundManager _soundManager;
         readonly ISkinManager _skinManager;
+        readonly SoundManager _soundManager;
 
         GameScreen _activeScreen;
         SpriteFont _menuFont;
         SpriteBatch _sb;
-
-        /// <summary>
-        /// Creates an <see cref="IGUIManager"/>.
-        /// </summary>
-        /// <param name="fontAssetName">The name of the font asset that will be used as the default GUI font.</param>
-        /// <returns>A new <see cref="IGUIManager"/> instance.</returns>
-        public IGUIManager CreateGUIManager(string fontAssetName)
-        {
-            var font = Content.Load<SpriteFont>(fontAssetName);
-            return CreateGUIManager(font);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="GUIManager"/>.
-        /// </summary>
-        /// <param name="font">The font that will be used as the default GUI font.</param>
-        /// <returns>A new <see cref="GUIManager"/> instance.</returns>
-        public virtual GUIManager CreateGUIManager(SpriteFont font)
-        {
-            return new GUIManager(font, SkinManager);
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenManager"/> class.
@@ -79,11 +58,6 @@ namespace NetGore.Graphics.GUI
             _soundManager = SoundManager.GetInstance(_content);
             _musicManager = MusicManager.GetInstance(_content);
         }
-
-        /// <summary>
-        /// Gets the <see cref="ISkinManager"/> used to manage all the general skinning between all screens.
-        /// </summary>
-        public ISkinManager SkinManager { get { return _skinManager; } }
 
         /// <summary>
         /// Gets or sets the currently active <see cref="GameScreen"/>.
@@ -172,6 +146,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="ISkinManager"/> used to manage all the general skinning between all screens.
+        /// </summary>
+        public ISkinManager SkinManager
+        {
+            get { return _skinManager; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="SoundManager"/> managed by this <see cref="ScreenManager"/>.
         /// </summary>
         public SoundManager SoundManager
@@ -201,6 +183,27 @@ namespace NetGore.Graphics.GUI
 
             screen.Initialize();
             screen.LoadContent();
+        }
+
+        /// <summary>
+        /// Creates an <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="fontAssetName">The name of the font asset that will be used as the default GUI font.</param>
+        /// <returns>A new <see cref="IGUIManager"/> instance.</returns>
+        public IGUIManager CreateGUIManager(string fontAssetName)
+        {
+            var font = Content.Load<SpriteFont>(fontAssetName);
+            return CreateGUIManager(font);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="GUIManager"/>.
+        /// </summary>
+        /// <param name="font">The font that will be used as the default GUI font.</param>
+        /// <returns>A new <see cref="GUIManager"/> instance.</returns>
+        public virtual GUIManager CreateGUIManager(SpriteFont font)
+        {
+            return new GUIManager(font, SkinManager);
         }
 
         /// <summary>

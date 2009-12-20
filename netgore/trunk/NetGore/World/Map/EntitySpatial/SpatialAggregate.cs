@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -13,7 +12,7 @@ namespace NetGore
     public class SpatialAggregate : IEntitySpatial
     {
         readonly bool _canIntersect;
-        IEnumerable<IEntitySpatial> _spatials;
+        readonly IEnumerable<IEntitySpatial> _spatials;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpatialAggregate"/> class.
@@ -28,6 +27,11 @@ namespace NetGore
             _spatials = spatials.ToCompact();
         }
 
+        static NotSupportedException GetNotSupportedException()
+        {
+            return new NotSupportedException("This operation is not supported by an aggregate spatial.");
+        }
+
         IEnumerable<T> HandleIntersect<T>(IEnumerable<T> collection)
         {
             if (_canIntersect)
@@ -36,10 +40,7 @@ namespace NetGore
                 return collection;
         }
 
-        static NotSupportedException GetNotSupportedException()
-        {
-            return new NotSupportedException("This operation is not supported by an aggregate spatial.");
-        }
+        #region IEntitySpatial Members
 
         /// <summary>
         /// Adds multiple entities to the spatial collection.
@@ -403,5 +404,7 @@ namespace NetGore
         {
             throw GetNotSupportedException();
         }
+
+        #endregion
     }
 }

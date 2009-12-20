@@ -625,8 +625,9 @@ namespace NetGore.Graphics
             if (!_isUsingAtlas)
                 return;
 
-            Debug.Assert(!IsAnimated, "Why are we trying to remove an atlas from an animated GrhData?" + 
-                " Its not like we can even add an atlas to them...");
+            Debug.Assert(!IsAnimated,
+                         "Why are we trying to remove an atlas from an animated GrhData?" +
+                         " Its not like we can even add an atlas to them...");
 
             _isUsingAtlas = false;
             _texture = null;

@@ -209,9 +209,7 @@ namespace DemoGame.Client
                     log.ErrorFormat(errmsg, mapEntityIndex, text);
             }
             else
-            {
                 GameplayScreen.ChatBubbleManager.Add(entity, text, GetTime());
-            }
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]

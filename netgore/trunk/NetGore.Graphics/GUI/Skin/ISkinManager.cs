@@ -22,6 +22,17 @@ namespace NetGore.Graphics.GUI
         string CurrentSkin { get; set; }
 
         /// <summary>
+        /// Gets the <see cref="IGUIManager"/>s that this <see cref="ISkinManager"/> is currently managing.
+        /// </summary>
+        IEnumerable<IGUIManager> GUIManagers { get; }
+
+        /// <summary>
+        /// Adds an <see cref="IGUIManager"/> to this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to add.</param>
+        void AddGUIManager(IGUIManager guiManager);
+
+        /// <summary>
         /// Gets the <see cref="ControlBorder"/> for the <see cref="Control"/> with the given name.
         /// </summary>
         /// <param name="controlName">The name of the <see cref="Control"/>.</param>
@@ -35,23 +46,6 @@ namespace NetGore.Graphics.GUI
         /// <param name="subCategory">The sprite sub-category under the <paramref name="controlName"/>.</param>
         /// <returns>The <see cref="ControlBorder"/> for the <see cref="Control"/> with the given name.</returns>
         ControlBorder GetBorder(string controlName, SpriteCategory subCategory);
-
-        /// <summary>
-        /// Adds an <see cref="IGUIManager"/> to this <see cref="ISkinManager"/>.
-        /// </summary>
-        /// <param name="guiManager">The <see cref="IGUIManager"/> to add.</param>
-        void AddGUIManager(IGUIManager guiManager);
-
-        /// <summary>
-        /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.
-        /// </summary>
-        /// <param name="guiManager">The <see cref="IGUIManager"/> to remove.</param>
-        bool RemoveGUIManager(IGUIManager guiManager);
-
-        /// <summary>
-        /// Gets the <see cref="IGUIManager"/>s that this <see cref="ISkinManager"/> is currently managing.
-        /// </summary>
-        IEnumerable<IGUIManager> GUIManagers { get; }
 
         /// <summary>
         /// Gets the <see cref="ISprite"/> for the <see cref="Control"/> with the given <paramref name="spriteTitle"/>.
@@ -90,5 +84,11 @@ namespace NetGore.Graphics.GUI
         /// <returns>The <see cref="ISprite"/> for the skin with the given <see cref="SpriteTitle"/>,
         /// or null if no <see cref="ISprite"/> could be created with the given categorization information.</returns>
         ISprite GetSprite(SpriteCategory subCategory, SpriteTitle spriteTitle);
+
+        /// <summary>
+        /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to remove.</param>
+        bool RemoveGUIManager(IGUIManager guiManager);
     }
 }

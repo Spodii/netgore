@@ -18,7 +18,7 @@ namespace NetGore.Graphics
         /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
         /// outside of the range of the map. Only valid if <see cref="ICamera2D.Map"/> is not null.
         /// </summary>
-        bool KeepInMap { get;set;}
+        bool KeepInMap { get; set; }
 
         /// <summary>
         /// Gets or sets the map that this camera is viewing.
@@ -44,16 +44,16 @@ namespace NetGore.Graphics
         /// Gets or sets the camera's rotation magnitude in radians.
         /// </summary>
         float Rotation { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the camera scale percent where 1 equals 100%, or no scaling.
         /// </summary>
-        float Scale {get;set;}
+        float Scale { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the camera's view area in pixels.
         /// </summary>
-        Vector2 Size {get;set;}
+        Vector2 Size { get; set; }
 
         /// <summary>
         /// Centers the camera on an <see cref="Entity"/> so that the center of the <see cref="Entity"/> is at the center
@@ -130,7 +130,13 @@ namespace NetGore.Graphics
         /// <param name="screenY">The screen position Y co-ordinate.</param>
         /// <returns>The world position for the given <see cref="screenX"/> and <see cref="screenY"/>.</returns>
         Vector2 ToWorld(float screenX, float screenY);
-        
+
+        /// <summary>
+        /// Moves the camera's position using the given <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The amount and direction to move the camera.</param>
+        void Translate(Vector2 offset);
+
         /// <summary>
         /// Zooms the camera in and focuses on a specified point.
         /// </summary>
@@ -139,11 +145,5 @@ namespace NetGore.Graphics
         /// <param name="scale">Magnification scale in percent. Must be non-zero.</param>
         /// <exception cref="ArgumentException"><paramref name="scale"/> is equal to 0.</exception>
         void Zoom(Vector2 origin, Vector2 size, float scale);
-
-        /// <summary>
-        /// Moves the camera's position using the given <paramref name="offset"/>.
-        /// </summary>
-        /// <param name="offset">The amount and direction to move the camera.</param>
-        void Translate(Vector2 offset);
     }
 }

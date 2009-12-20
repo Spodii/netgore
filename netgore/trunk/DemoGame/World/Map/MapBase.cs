@@ -58,8 +58,6 @@ namespace DemoGame
         readonly DArray<DynamicEntity> _dynamicEntities = new DArray<DynamicEntity>(true);
 
         readonly DynamicEntitySpatial _dynamicEntitySpatial = new DynamicEntitySpatial();
-        readonly StaticEntitySpatial _staticEntitySpatial = new StaticEntitySpatial();
-        readonly SpatialAggregate _spatialAggregate;
 
         /// <summary>
         /// List of entities in the map
@@ -75,6 +73,9 @@ namespace DemoGame
         /// Index of the map
         /// </summary>
         readonly MapIndex _mapIndex;
+
+        readonly SpatialAggregate _spatialAggregate;
+        readonly StaticEntitySpatial _staticEntitySpatial = new StaticEntitySpatial();
 
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
 

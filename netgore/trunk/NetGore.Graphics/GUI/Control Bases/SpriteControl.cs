@@ -16,6 +16,24 @@ namespace NetGore.Graphics.GUI
         bool _stretch = true;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
+        /// </summary>
+        public event ControlEventHandler OnChangeSprite
+        {
+            add { Events.AddHandler(_eventChangeSprite, value); }
+            remove { Events.RemoveHandler(_eventChangeSprite, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
+        /// </summary>
+        public event ControlEventHandler OnChangeStretchSprite
+        {
+            add { Events.AddHandler(_eventChangeStretchSprite, value); }
+            remove { Events.RemoveHandler(_eventChangeStretchSprite, value); }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
@@ -33,26 +51,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        protected SpriteControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
+        protected SpriteControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
+            : base(guiManager, position, clientSize)
         {
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
-        /// </summary>
-        public event ControlEventHandler OnChangeSprite
-        {
-            add { Events.AddHandler(_eventChangeSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeSprite, value); }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
-        /// </summary>
-        public event ControlEventHandler OnChangeStretchSprite
-        {
-            add { Events.AddHandler(_eventChangeStretchSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeStretchSprite, value); }
         }
 
         /// <summary>

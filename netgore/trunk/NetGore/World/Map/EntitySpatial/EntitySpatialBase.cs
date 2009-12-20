@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -87,7 +86,7 @@ namespace NetGore
             var gridHeight = (int)Math.Ceiling(height / _entityGridSize);
 
             // Create the array
-            var retGrid = new List<Entity>[gridWidth, gridHeight];
+            var retGrid = new List<Entity>[gridWidth,gridHeight];
 
             // Create the lists
             for (var x = 0; x < gridWidth; x++)
@@ -269,16 +268,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, returns an immutable version of the <see cref="collection"/>. This is
-        /// abstract so the code can be reused in a derived class that does not need to make the collection immutable
-        /// because it does not contains entities that move.
-        /// </summary>
-        /// <typeparam name="T">The Type of element.</typeparam>
-        /// <param name="collection">The collection to make immutable.</param>
-        /// <returns>The <paramref name="collection"/> as immutable.</returns>
-        protected abstract IEnumerable<T> ToImmutable<T>(IEnumerable<T> collection);
-
-        /// <summary>
         /// Sets the source map to a new size and clears out all existing entities in the grid.
         /// </summary>
         /// <param name="size">The new size of the source map.</param>
@@ -295,6 +284,16 @@ namespace NetGore
                 AddToGrid(entity);
             }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, returns an immutable version of the <see cref="collection"/>. This is
+        /// abstract so the code can be reused in a derived class that does not need to make the collection immutable
+        /// because it does not contains entities that move.
+        /// </summary>
+        /// <typeparam name="T">The Type of element.</typeparam>
+        /// <param name="collection">The collection to make immutable.</param>
+        /// <returns>The <paramref name="collection"/> as immutable.</returns>
+        protected abstract IEnumerable<T> ToImmutable<T>(IEnumerable<T> collection);
 
         public void UpdateEntity(Entity entity, Vector2 oldPos)
         {
