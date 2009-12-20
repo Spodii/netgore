@@ -47,44 +47,44 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <summary>
         /// Safely gets the percent of two values.
         /// </summary>
-        /// <param name="n">The numerator.</param>
-        /// <param name="d">The denominator.</param>
-        /// <returns>The percent of n/d.</returns>
-        protected static float GetPercent(uint n, uint d)
+        /// <param name="num">The numerator.</param>
+        /// <param name="denom">The denominator.</param>
+        /// <returns>The percent.</returns>
+        protected static float GetPercent(uint num, uint denom)
         {
-            Debug.Assert(n >= float.MinValue && n <= float.MaxValue);
-            Debug.Assert(d >= float.MinValue && d <= float.MaxValue);
-            return GetPercent((float)n, d);
+            Debug.Assert(num >= float.MinValue && num <= float.MaxValue);
+            Debug.Assert(denom >= float.MinValue && denom <= float.MaxValue);
+            return GetPercent((float)num, denom);
         }
 
         /// <summary>
         /// Safely gets the percent of two values.
         /// </summary>
-        /// <param name="n">The numerator.</param>
-        /// <param name="d">The denominator.</param>
-        /// <returns>The percent of n/d.</returns>
-        protected static float GetPercent(int n, int d)
+        /// <param name="num">The numerator.</param>
+        /// <param name="denom">The denominator.</param>
+        /// <returns>The percent.</returns>
+        protected static float GetPercent(int num, int denom)
         {
-            Debug.Assert(n >= float.MinValue && n <= float.MaxValue);
-            Debug.Assert(d >= float.MinValue && d <= float.MaxValue);
-            return GetPercent((float)n, d);
+            Debug.Assert(num >= float.MinValue && num <= float.MaxValue);
+            Debug.Assert(denom >= float.MinValue && denom <= float.MaxValue);
+            return GetPercent((float)num, denom);
         }
 
         /// <summary>
         /// Safely gets the percent of two values.
         /// </summary>
-        /// <param name="n">The numerator.</param>
-        /// <param name="d">The denominator.</param>
-        /// <returns>The percent of n/d.</returns>
-        protected static float GetPercent(float n, float d)
+        /// <param name="num">The numerator.</param>
+        /// <param name="denom">The denominator.</param>
+        /// <returns>The percent.</returns>
+        protected static float GetPercent(float num, float denom)
         {
             // Ensure we get absolute values for 0% and 100%
-            if (n == 0 || d == 0)
+            if (num == 0 || denom == 0)
                 return 0;
-            if (n == d)
+            if (num == denom)
                 return 100;
 
-            var p = (n / d) * 100.0f;
+            var p = (num / denom) * 100.0f;
 
             Debug.Assert(p >= 0f);
             Debug.Assert(p <= 100f);

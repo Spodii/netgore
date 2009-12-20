@@ -28,7 +28,7 @@ namespace NetGore.Graphics
         /// <param name="sb">SpriteBatch to draw to.</param>
         /// <param name="map">Map to draw the borders for.</param>
         /// <param name="camera">Camera used to view the map.</param>
-        public virtual void Draw(SpriteBatch sb, IMap map, Camera2D camera)
+        public virtual void Draw(SpriteBatch sb, IMap map, ICamera2D camera)
         {
             if (sb == null || sb.IsDisposed)
                 return;

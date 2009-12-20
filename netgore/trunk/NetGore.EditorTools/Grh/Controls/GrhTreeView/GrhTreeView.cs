@@ -33,22 +33,22 @@ namespace NetGore.EditorTools
         MapGrhWalls _mapGrhWalls;
 
         /// <summary>
-        /// Occurs after a new Grh n is selected
+        /// Notofies listeners after a new Grh node is selected.
         /// </summary>
         public event GrhTreeViewEvent GrhAfterSelect;
 
         /// <summary>
-        /// Occurs before a new Grh n is selected
+        /// Notifies listeners before a new Grh node is selected.
         /// </summary>
         public event GrhTreeViewCancelEvent GrhBeforeSelect;
 
         /// <summary>
-        /// Occurs when a Grh n is clicked
+        /// Notifies listeners when a Grh node is clicked.
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseClick;
 
         /// <summary>
-        /// Occurs when a Grh n is double-clicked
+        /// Notifies listeners when a Grh node is double-clicked.
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
 
@@ -577,10 +577,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Counts the number of nodes under the root n, plus the root itself
+        /// Counts the number of nodes under the root node, plus the root itself
         /// </summary>
-        /// <param name="root">Root n to count from</param>
-        /// <returns>Number of nodes under the root n, plus the root itself</returns>
+        /// <param name="root">Root node to count from</param>
+        /// <returns>Number of nodes under the root node, plus the root itself</returns>
         public static int NodeCount(TreeNode root)
         {
             // No root? No count
@@ -710,7 +710,7 @@ namespace NetGore.EditorTools
             TreeNode nodeOver = GetNodeAt(PointToClient(new Point(e.X, e.Y)));
             if (nodeOver != null)
             {
-                // Find the folder the n will drop into
+                // Find the folder the node will drop into
                 TreeNode folderNode = nodeOver;
                 if (!IsGrhDataNode(folderNode))
                     folderNode = folderNode.Parent;
@@ -758,7 +758,7 @@ namespace NetGore.EditorTools
             if (GrhMouseClick == null || e.Node == null || !IsGrhDataNode(e.Node))
                 return;
 
-            // Get the GrhData for the n clicked, raising the GrhMouseClick event if valid
+            // Get the GrhData for the node clicked, raising the GrhMouseClick event if valid
             GrhData gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhMouseClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
@@ -772,7 +772,7 @@ namespace NetGore.EditorTools
             if (GrhMouseDoubleClick == null || e.Node == null || !IsGrhDataNode(e.Node))
                 return;
 
-            // Get the GrhData for the n double-clicked, raising the GrhMouseDoubleClick event if valid
+            // Get the GrhData for the node double-clicked, raising the GrhMouseDoubleClick event if valid
             GrhData gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhMouseDoubleClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));

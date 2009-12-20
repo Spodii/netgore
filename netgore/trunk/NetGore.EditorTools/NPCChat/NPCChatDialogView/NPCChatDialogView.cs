@@ -228,7 +228,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Notifies the NPCChatDialogView when a NPCChatDialogViewNode was created.
         /// </summary>
-        /// <param name="n">The NPCChatDialogViewNode that was created.</param>
+        /// <param name="node">The NPCChatDialogViewNode that was created.</param>
         internal void NotifyNodeCreated(NPCChatDialogViewNode node)
         {
             List<NPCChatDialogViewNode> l;
@@ -249,7 +249,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Notifies the NPCChatDialogView when a NPCChatDialogViewNode was destroyed.
         /// </summary>
-        /// <param name="n">The NPCChatDialogViewNode that was destroyed.</param>
+        /// <param name="node">The NPCChatDialogViewNode that was destroyed.</param>
         internal void NotifyNodeDestroyed(NPCChatDialogViewNode node)
         {
             List<NPCChatDialogViewNode> l;

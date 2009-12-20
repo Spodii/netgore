@@ -221,6 +221,7 @@ namespace DemoGame.SkeletonEditor
             this.btnShiftNodes.TabIndex = 32;
             this.btnShiftNodes.Text = "Shift Nodes";
             this.btnShiftNodes.UseVisualStyleBackColor = true;
+            this.btnShiftNodes.Click += new System.EventHandler(this.btnShiftNodes_Click);
             // 
             // btnCopyRoot
             // 

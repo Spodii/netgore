@@ -63,7 +63,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Gets the ChatItem as a <see cref="EditorNPCChatDialogItem"/>. If this is a ChatItemType is
         /// <see cref="NPCChatDialogViewNodeItemType.Redirect"/>, this will
-        /// return the <see cref="EditorNPCChatDialogItem"/> that the n redirects to.
+        /// return the <see cref="EditorNPCChatDialogItem"/> that the node redirects to.
         /// </summary>
         /// <exception cref="MethodAccessException">Unsupported ChatItemType for this operation.</exception>
         public EditorNPCChatDialogItem ChatItemAsDialogItem
@@ -146,11 +146,11 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Creates a NPCChatDialogViewNode as a child of this NPCChatDialogViewNode.
         /// </summary>
-        /// <param name="dialogItem">The NPCChatDialogItemBase the child n will handle.</param>
+        /// <param name="dialogItem">The NPCChatDialogItemBase the child node will handle.</param>
         /// <returns>A NPCChatDialogViewNode as a child of this NPCChatDialogViewNode.</returns>
         NPCChatDialogViewNode CreateNode(NPCChatDialogItemBase dialogItem)
         {
-            // Check if the n already exists
+            // Check if the node already exists
             var children = Nodes.OfType<NPCChatDialogViewNode>();
             NPCChatDialogViewNode retNode =
                 children.FirstOrDefault(
@@ -158,10 +158,10 @@ namespace NetGore.EditorTools.NPCChat
                     (x.ChatItemType == NPCChatDialogViewNodeItemType.DialogItem ||
                      x.ChatItemType == NPCChatDialogViewNodeItemType.Redirect) && x.ChatItemAsDialogItem == dialogItem);
 
-            // Create the new n if needed
+            // Create the new node if needed
             if (retNode == null)
             {
-                // Check if it has to be a redirect n
+                // Check if it has to be a redirect node
                 NPCChatDialogViewNode existingDialogNode = TreeViewCasted.GetNodeForDialogItem(dialogItem);
                 if (existingDialogNode != null)
                     retNode = new NPCChatDialogViewNode(this, existingDialogNode);
@@ -175,11 +175,11 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Creates a NPCChatDialogViewNode as a child of this NPCChatDialogViewNode.
         /// </summary>
-        /// <param name="response">The NPCChatResponseBase the child n will handle.</param>
+        /// <param name="response">The NPCChatResponseBase the child node will handle.</param>
         /// <returns>A NPCChatDialogViewNode as a child of this NPCChatDialogViewNode.</returns>
         NPCChatDialogViewNode CreateNode(NPCChatResponseBase response)
         {
-            // Check if the n already exists
+            // Check if the node already exists
             var children = Nodes.OfType<NPCChatDialogViewNode>();
             NPCChatDialogViewNode retNode =
                 children.FirstOrDefault(
@@ -238,7 +238,7 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Removes the current tree n from the tree view control.
+        /// Removes the current tree node from the tree view control.
         /// </summary>
         public new void Remove()
         {
@@ -312,7 +312,7 @@ namespace NetGore.EditorTools.NPCChat
                 }
             }
 
-            // Update the text of this n
+            // Update the text of this node
             UpdateText();
 
             // Check to recursively update all the children nodes

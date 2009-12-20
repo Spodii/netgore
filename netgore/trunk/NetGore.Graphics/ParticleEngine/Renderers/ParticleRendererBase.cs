@@ -19,12 +19,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// When overridden in the derived class, handles rendering the <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> describing the world view.</param>
         /// <param name="additiveEmitters">The valid <see cref="ParticleEmitter"/>s where
         /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.Additive"/>.</param>
         /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
         /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
-        protected abstract void InternalRenderEmitter(Camera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
+        protected abstract void InternalRenderEmitter(ICamera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
                                                       IEnumerable<ParticleEmitter> alphaEmitters);
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Renders the <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> describing the world view.</param>
         /// <param name="emitters">The <see cref="ParticleEmitter"/>s to render.</param>
-        public void Draw(Camera2D camera, IEnumerable<ParticleEmitter> emitters)
+        public void Draw(ICamera2D camera, IEnumerable<ParticleEmitter> emitters)
         {
             if (emitters == null)
                 return;

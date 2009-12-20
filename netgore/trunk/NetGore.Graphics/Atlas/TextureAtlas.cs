@@ -204,7 +204,7 @@ namespace NetGore.Graphics
                 throw new ArgumentException(errmsg, "items");
             }
 
-            // Create the n stack for all set nodes
+            // Create the node stack for all set nodes
             var nodeStack = new Stack<AtlasTextureItem>(items.Count);
 
             // Set the positions
@@ -449,10 +449,10 @@ namespace NetGore.Graphics
                 device.DepthStencilBuffer = oldDSB;
 
                 // Tell all the items that were successfully added to use the new atlas texture
-                foreach (AtlasTextureItem n in successful)
+                foreach (AtlasTextureItem node in successful)
                 {
-                    Rectangle r = new Rectangle(n.X + Padding, n.Y + Padding, n.Width - Padding * 2, n.Height - Padding * 2);
-                    n.ITextureAtlasable.SetAtlas(_atlasTexture, r);
+                    Rectangle r = new Rectangle(node.X + Padding, node.Y + Padding, node.Width - Padding * 2, node.Height - Padding * 2);
+                    node.ITextureAtlasable.SetAtlas(_atlasTexture, r);
                 }
             }
 

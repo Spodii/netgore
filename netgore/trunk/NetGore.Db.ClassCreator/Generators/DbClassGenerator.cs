@@ -174,9 +174,9 @@ namespace NetGore.Db.ClassCreator
         /// <param name="namespaceNames">Namespaces to use.</param>
         public void AddUsing(IEnumerable<string> namespaceNames)
         {
-            foreach (var n in namespaceNames)
+            foreach (var namespaceName in namespaceNames)
             {
-                AddUsing(n);
+                AddUsing(namespaceName);
             }
         }
 

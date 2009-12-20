@@ -10,9 +10,9 @@ namespace NetGore.EditorTools
     public interface IMapItemListBox
     {
         /// <summary>
-        /// Gets or sets the Camera2D used to view the Map.
+        /// Gets or sets the <see cref="ICamera2D"/> used to view the Map.
         /// </summary>
-        Camera2D Camera { get; set; }
+        ICamera2D Camera { get; set; }
 
         /// <summary>
         /// Gets or sets the IMap containing the objects being handled.

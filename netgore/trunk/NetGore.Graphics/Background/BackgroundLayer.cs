@@ -56,7 +56,7 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch">SpriteBatch to draw the image to.</param>
         /// <param name="camera">Camera that describes the current view.</param>
         /// <param name="mapSize">Size of the map to draw to.</param>
-        public override void Draw(SpriteBatch spriteBatch, Camera2D camera, Vector2 mapSize)
+        public override void Draw(SpriteBatch spriteBatch, ICamera2D camera, Vector2 mapSize)
         {
             Vector2 spriteSize = SpriteSourceSize;
 

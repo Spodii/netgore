@@ -382,12 +382,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Recursively updates all the children of a n
+        /// Recursively updates all the children of a node
         /// </summary>
-        /// <param name="srcA">Source skeleton n for the current frame</param>
-        /// <param name="srcB">Source skeleton n for the next frame</param>
-        /// <param name="srcP">Parent skeleton n (use null if theres no parent)</param>
-        /// <param name="dest">Destination skeleton n to have the two sources applied to</param>
+        /// <param name="srcA">Source skeleton node for the current frame</param>
+        /// <param name="srcB">Source skeleton node for the next frame</param>
+        /// <param name="srcP">Parent skeleton node (use null if theres no parent)</param>
+        /// <param name="dest">Destination skeleton node to have the two sources applied to</param>
         /// <param name="framePercent">A value between 0.0 and 1.0 stating how far along the animation is
         /// from the current frame</param>
         void RecursiveUpdate(SkeletonNode srcA, SkeletonNode srcB, SkeletonNode srcP, SkeletonNode dest, float framePercent)
@@ -407,7 +407,7 @@ namespace NetGore.Graphics
             }
             dest.Position = Vector2.Lerp(vA, vB, framePercent);
 
-            // Check if the n is part of a modifier animation
+            // Check if the node is part of a modifier animation
             if (srcP == null)
             {
                 // Set the length
@@ -415,7 +415,7 @@ namespace NetGore.Graphics
             }
             else
             {
-                // This is a modifier so check for inheriting n values
+                // This is a modifier so check for inheriting node values
                 dest.SetLength(srcP.GetLength());
                 if (srcP.IsModifier && srcP.Parent != null)
                     dest.SetAngle(srcP.GetAngle());

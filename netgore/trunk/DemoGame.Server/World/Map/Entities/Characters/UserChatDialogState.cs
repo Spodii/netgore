@@ -69,11 +69,11 @@ namespace DemoGame.Server
         {
             get
             {
-                NPC n = _chattingWith;
-                if (n == null)
+                NPC npc = _chattingWith;
+                if (npc == null)
                     return null;
 
-                return n.ChatDialog;
+                return npc.ChatDialog;
             }
         }
 
