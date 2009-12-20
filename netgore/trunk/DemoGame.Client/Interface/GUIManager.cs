@@ -11,11 +11,6 @@ namespace DemoGame.Client
     public class GUIManager : GUIManagerBase
     {
         /// <summary>
-        /// Static instance of the System.Blank GrhData used as the default blank sprite
-        /// </summary>
-        static Grh _blankGrh = null;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
         /// </summary>
         /// <param name="font">The default <see cref="SpriteFont"/> to use on added <see cref="Control"/>s.</param>
