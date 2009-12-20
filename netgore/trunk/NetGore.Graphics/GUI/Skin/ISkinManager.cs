@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 
@@ -36,16 +37,21 @@ namespace NetGore.Graphics.GUI
         ControlBorder GetBorder(string controlName, SpriteCategory subCategory);
 
         /// <summary>
-        /// Adds a <see cref="GUIManagerBase"/> to this <see cref="ISkinManager"/>.
+        /// Adds an <see cref="IGUIManager"/> to this <see cref="ISkinManager"/>.
         /// </summary>
-        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
-        void AddGUIManager(GUIManagerBase guiManager);
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to add.</param>
+        void AddGUIManager(IGUIManager guiManager);
 
         /// <summary>
-        /// Removes a <see cref="GUIManagerBase"/> from this <see cref="ISkinManager"/>.
+        /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.
         /// </summary>
-        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
-        bool RemoveGUIManager(GUIManagerBase guiManager);
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to remove.</param>
+        bool RemoveGUIManager(IGUIManager guiManager);
+
+        /// <summary>
+        /// Gets the <see cref="IGUIManager"/>s that this <see cref="ISkinManager"/> is currently managing.
+        /// </summary>
+        IEnumerable<IGUIManager> GUIManagers { get; }
 
         /// <summary>
         /// Gets the <see cref="ISprite"/> for the <see cref="Control"/> with the given <paramref name="spriteTitle"/>.

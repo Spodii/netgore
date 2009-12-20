@@ -11,7 +11,7 @@ namespace DemoGame.Client
     {
         public const string ScreenName = "main menu";
 
-        GUIManagerBase _gui;
+        IGUIManager _gui;
         SpriteBatch _sb = null;
 
         public MainMenuScreen() : base(ScreenName)

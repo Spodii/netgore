@@ -19,7 +19,7 @@ namespace DemoGame.Client
 
         Button[] _characterButtons;
         GameplayScreen _gpScreen = null;
-        GUIManagerBase _gui;
+        IGUIManager _gui;
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 

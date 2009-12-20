@@ -34,9 +34,9 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Updates all of the <see cref="GameControl"/>s in this <see cref="GameControlCollection"/>.
         /// </summary>
-        /// <param name="guiManager">The <see cref="GUIManagerBase"/> used to update the <see cref="GameControl"/>s.</param>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> used to update the <see cref="GameControl"/>s.</param>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        public void Update(GUIManagerBase guiManager, int currentTime)
+        public void Update(IGUIManager guiManager, int currentTime)
         {
             foreach (GameControl gc in this)
             {
