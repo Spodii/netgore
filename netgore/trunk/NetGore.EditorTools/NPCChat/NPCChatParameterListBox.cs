@@ -13,8 +13,6 @@ namespace NetGore.EditorTools.NPCChat
         bool _doNotUpdateParameterValue;
         TextBox _valueTextBox;
 
-        public event NPCChatParameterListBoxChangeSelectedHandler OnChangeSelectedParameter;
-
         [Browsable(false)]
         public EditorNPCChatConditionalCollectionItem ConditionalCollectionItem
         {
