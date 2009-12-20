@@ -59,7 +59,8 @@ namespace DemoGame.GUITester
             _font = Content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
             GrhInfo.Load(ContentPaths.Build, Content);
 
-            _gui = new GUIManager(_font);
+            SkinManager skinManager = new SkinManager("Default");
+            _gui = new GUIManagerBase(_font, skinManager);
 
             topForm = new Form(_gui, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
             topForm.OnMouseMove += topForm_OnMouseMove;

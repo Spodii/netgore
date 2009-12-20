@@ -109,7 +109,6 @@
     <Compile Include="Interface\DamageText.cs" />
     <Compile Include="Interface\DamageTextPool.cs" />
     <Compile Include="Interface\GameControlsKeys.cs" />
-    <Compile Include="Interface\GUIManager.cs" />
     <Compile Include="ItemInfoRequester\EquipmentInfoRequester.cs" />
     <Compile Include="ItemInfoHelper.cs" />
     <Compile Include="ItemInfoRequester\InventoryInfoRequester.cs" />

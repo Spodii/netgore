@@ -19,7 +19,7 @@ namespace DemoGame.Client
 
         Button[] _characterButtons;
         GameplayScreen _gpScreen = null;
-        GUIManager _gui;
+        GUIManagerBase _gui;
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 
@@ -132,7 +132,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            _gui = new GUIManager(ScreenManager.Content.Load<SpriteFont>("Font/Menu"));
+            _gui = ScreenManager.CreateGUIManager("Font/Menu");
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 

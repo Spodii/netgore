@@ -23,28 +23,67 @@ namespace NetGore.Graphics.GUI
         readonly FrameCounter _fps = new FrameCounter();
         readonly ContentManager _mapContent;
         readonly MusicManager _musicManager;
-        readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(8, StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(StringComparer.OrdinalIgnoreCase);
         readonly SoundManager _soundManager;
+        readonly ISkinManager _skinManager;
 
         GameScreen _activeScreen;
         SpriteFont _menuFont;
         SpriteBatch _sb;
 
         /// <summary>
+        /// Creates a <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <param name="fontAssetName">The name of the font asset that will be used as the default GUI font.</param>
+        /// <returns>A new <see cref="GUIManagerBase"/> instance.</returns>
+        public GUIManagerBase CreateGUIManager(string fontAssetName)
+        {
+            var font = Content.Load<SpriteFont>(fontAssetName);
+            return CreateGUIManager(font);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <param name="font">The font that will be used as the default GUI font.</param>
+        /// <returns>A new <see cref="GUIManagerBase"/> instance.</returns>
+        public virtual GUIManagerBase CreateGUIManager(SpriteFont font)
+        {
+            return new GUIManagerBase(font, SkinManager);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ScreenManager"/> class.
         /// </summary>
         /// <param name="game">The Game that the game component should be attached to.</param>
-        public ScreenManager(Game game) : base(game)
+        /// <param name="skinManager">The <see cref="ISkinManager"/> used to manage all the general skinning
+        /// between all screens.</param>
+        /// <param name="rootContentDirectory">The default root content directory.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="game"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
+        public ScreenManager(Game game, ISkinManager skinManager, string rootContentDirectory) : base(game)
         {
             if (game == null)
                 throw new ArgumentNullException("game");
+            if (skinManager == null)
+                throw new ArgumentNullException("skinManager");
 
-            _content = new ContentManager(game.Services, "Content");
-            _mapContent = new ContentManager(game.Services, "Content");
+            if (rootContentDirectory == null)
+                rootContentDirectory = string.Empty;
+
+            _skinManager = skinManager;
+
+            _content = new ContentManager(game.Services, rootContentDirectory);
+            _mapContent = new ContentManager(game.Services, rootContentDirectory);
 
             _soundManager = SoundManager.GetInstance(_content);
             _musicManager = MusicManager.GetInstance(_content);
         }
+
+        /// <summary>
+        /// Gets the <see cref="ISkinManager"/> used to manage all the general skinning between all screens.
+        /// </summary>
+        public ISkinManager SkinManager { get { return _skinManager; } }
 
         /// <summary>
         /// Gets or sets the currently active <see cref="GameScreen"/>.

@@ -37,7 +37,7 @@ namespace DemoGame.Client
         bool _disposed;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
-        GUIManager _gui;
+        GUIManagerBase _gui;
         SpriteFont _guiFont;
         GUISettings _guiSettings;
         InfoBox _infoBox;
@@ -319,7 +319,7 @@ namespace DemoGame.Client
         void InitializeGUI()
         {
             _guiFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
-            _gui = new GUIManager(_guiFont);
+            _gui = ScreenManager.CreateGUIManager(_guiFont);
             Character.NameFont = _guiFont;
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };

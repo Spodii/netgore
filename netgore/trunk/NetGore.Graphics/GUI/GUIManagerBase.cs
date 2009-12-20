@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -41,10 +42,16 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManagerBase"/> class.
         /// </summary>
-        /// <param name="font">Default SpriteFont to use for controls added to this GUIManagerBase.</param>
-        /// <param name="defaultSkin">The name of the default skin.</param>
-        public GUIManagerBase(SpriteFont font, string defaultSkin)
+        /// <param name="font">Default SpriteFont to use for controls added to this <see cref="GUIManagerBase"/>.</param>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> that handles the skinning for this
+        /// <see cref="GUIManagerBase"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
+        public GUIManagerBase(SpriteFont font, ISkinManager skinManager)
         {
+            if (skinManager == null)
+                throw new ArgumentNullException();
+
+            _skinManager = skinManager;
             Font = font;
 
             // Store the input state from now so we have something to worth with on the first Update() call
@@ -52,9 +59,8 @@ namespace NetGore.Graphics.GUI
             _keyboardState = Keyboard.GetState();
             _keysPressed = _keyboardState.GetPressedKeys();
 
-            // Create the skin manager and tooltip
+            // Create the tooltip
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            _skinManager = CreateSkinManager(defaultSkin);
             _tooltip = CreateTooltip();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
@@ -286,17 +292,6 @@ namespace NetGore.Graphics.GUI
 
             // No matches found
             return false;
-        }
-
-        /// <summary>
-        /// Creates the <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>.
-        /// </summary>
-        /// <param name="defaultSkin">The name of the default skin.</param>
-        /// <returns>The <see cref="ISkinManager"/> to be used with this <see cref="GUIManagerBase"/>. Must
-        /// not be null.</returns>
-        protected virtual ISkinManager CreateSkinManager(string defaultSkin)
-        {
-            return new SkinManager(defaultSkin, this);
         }
 
         /// <summary>
