@@ -80,7 +80,7 @@
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
     <Compile Include="GUI\Control Bases\Control.cs" />
-    <Compile Include="GUI\Control Bases\ControlEventHandler.cs" />
+    <Compile Include="GUI\EventArgs\ControlEventHandler.cs" />
     <Compile Include="GUI\Control Bases\SpriteControl.cs" />
     <Compile Include="GUI\Control Bases\TextControl.cs" />
     <Compile Include="GUI\ControlBorder.cs" />
@@ -104,8 +104,9 @@
     <Compile Include="GUI\GameControl\GameControlEventHandler.cs" />
     <Compile Include="GUI\GameControl\GameControlKeys.cs" />
     <Compile Include="GUI\GUIEventHandler.cs" />
-    <Compile Include="GUI\GUIManagerBase.cs" />
+    <Compile Include="GUI\GUI Manager\GUIManager.cs" />
     <Compile Include="GUI\IEditableText.cs" />
+    <Compile Include="GUI\GUI Manager\IGUIManager.cs" />
     <Compile Include="GUI\MoveCursorDirection.cs" />
     <Compile Include="GUI\Screen Manager\GameScreen.cs" />
     <Compile Include="GUI\Screen Manager\ScreenManager.cs" />

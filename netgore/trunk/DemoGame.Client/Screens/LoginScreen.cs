@@ -17,7 +17,7 @@ namespace DemoGame.Client
         TextBox _cNameText;
         TextBox _cPasswordText;
         GameplayScreen _gpScreen = null;
-        GUIManagerBase _gui;
+        IGUIManager _gui;
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 

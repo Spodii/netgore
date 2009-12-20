@@ -9,9 +9,10 @@ using Microsoft.Xna.Framework.Input;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// Base control for managing all of the GUI controls for a screen
+    /// A generic implementation of <see cref="IGUIManager"/> to manage GUI components that should be suitable for most
+    /// all GUI manager needs.
     /// </summary>
-    public class GUIManagerBase
+    public class GUIManager : IGUIManager
     {
         readonly List<Control> _controls = new List<Control>(2);
         readonly ISkinManager _skinManager;
@@ -30,23 +31,23 @@ namespace NetGore.Graphics.GUI
         Control _underCursor;
 
         /// <summary>
-        /// Raised when the focused control has changed
+        /// Notifies listeners when the focused <see cref="Control"/> has changed.
         /// </summary>
         public event GUIEventHandler OnChangeFocusedControl;
 
         /// <summary>
-        /// Raised when the focused root control has changed
+        /// Notifies listeners when the focused root <see cref="Control"/> has changed.
         /// </summary>
         public event GUIEventHandler OnChangeFocusedRoot;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GUIManagerBase"/> class.
+        /// Initializes a new instance of the <see cref="GUIManager"/> class.
         /// </summary>
-        /// <param name="font">Default SpriteFont to use for controls added to this <see cref="GUIManagerBase"/>.</param>
+        /// <param name="font">Default SpriteFont to use for controls added to this <see cref="GUIManager"/>.</param>
         /// <param name="skinManager">The <see cref="ISkinManager"/> that handles the skinning for this
-        /// <see cref="GUIManagerBase"/>.</param>
+        /// <see cref="GUIManager"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
-        public GUIManagerBase(SpriteFont font, ISkinManager skinManager)
+        public GUIManager(SpriteFont font, ISkinManager skinManager)
         {
             if (skinManager == null)
                 throw new ArgumentNullException();
@@ -66,7 +67,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the root Controls handled by this GUIManager.
+        /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
+        /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
         /// </summary>
         public IEnumerable<Control> Controls
         {
@@ -74,15 +76,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the position of the cursor
+        /// Gets the screen coordinates of the cursor.
         /// </summary>
+        /// <value></value>
         public Vector2 CursorPosition
         {
             get { return new Vector2(_mouseState.X, _mouseState.Y); }
         }
 
         /// <summary>
-        /// Gets or sets the currently focused control
+        /// Gets or sets the <see cref="Control"/> that currently has focus. If the <paramref name="value"/> is null
+        /// or <see cref="Control.CanFocus"/> is false, the setter will do nothing.
         /// </summary>
         public Control FocusedControl
         {
@@ -117,7 +121,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the focused root control
+        /// Gets the top-level <see cref="Control"/> that currently has focus, or has a child <see cref="Control"/>
+        /// that has focus.
         /// </summary>
         public Control FocusedRoot
         {
@@ -133,12 +138,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the default SpriteFont for new controls added to this GUIManager
+        /// Gets or sets the default font for new <see cref="Control"/>s added to this <see cref="IGUIManager"/>.
+        /// Can be null, but having this value null may result in certain <see cref="Control"/>s that require
+        /// a default font throwing an <see cref="Exception"/>.
         /// </summary>
         public SpriteFont Font { get; set; }
 
         /// <summary>
-        /// Gets the current KeyboardState
+        /// Gets the latest <see cref="KeyboardState"/>. This value is updated on each call to
+        /// <see cref="IGUIManager.Update"/>.
         /// </summary>
         public KeyboardState KeyboardState
         {
@@ -146,7 +154,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of Keys that are currently down.
+        /// Gets an IEnumerable of all keys that are currently down. This value is updated on each call to
+        /// <see cref="IGUIManager.Update"/>.
         /// </summary>
         public IEnumerable<Keys> KeysPressed
         {
@@ -154,7 +163,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the KeyboardState used for the previous update
+        /// Gets the <see cref="KeyboardState"/> that was used immediately before the current
+        /// <see cref="IGUIManager.KeyboardState"/>.
         /// </summary>
         public KeyboardState LastKeyboardState
         {
@@ -162,7 +172,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the MouseState used for the previous update
+        /// Gets the <see cref="MouseState"/> that was used immediately before the current
+        /// <see cref="IGUIManager.MouseState"/>.
         /// </summary>
         public MouseState LastMouseState
         {
@@ -170,15 +181,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of Keys that were down the previous update
+        /// Gets the IEnumerable of <see cref="Keys"/> that was used immediately before the current
+        /// <see cref="IGUIManager.KeysPressed"/>.
         /// </summary>
-        public IEnumerable<Keys> LastPressedKeys
+        public IEnumerable<Keys> LastKeysPressed
         {
             get { return _lastPressedKeys; }
         }
 
         /// <summary>
-        /// Gets the current MouseState
+        /// Gets the latest <see cref="MouseState"/>. This value is updated on each call to
+        /// <see cref="IGUIManager.Update"/>.
         /// </summary>
         public MouseState MouseState
         {
@@ -186,7 +199,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the keys that were up the last frame and down this frame.
+        /// Gets an IEnumerable of all the <see cref="Keys"/> that were up during the previous call to
+        /// <see cref="IGUIManager.Update"/> but are down on the latest call to <see cref="IGUIManager.Update"/>.
+        /// This value is updated on each call to <see cref="IGUIManager.Update"/>.
         /// </summary>
         public IEnumerable<Keys> NewKeysDown
         {
@@ -205,7 +220,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all keys that were down the last frame and up this frame.
+        /// Gets an IEnumerable of all the <see cref="Keys"/> that were down during the previous call to
+        /// <see cref="IGUIManager.Update"/> but are up on the latest call to <see cref="IGUIManager.Update"/>.
+        /// This value is updated on each call to <see cref="IGUIManager.Update"/>.
         /// </summary>
         public IEnumerable<Keys> NewKeysUp
         {
@@ -224,7 +241,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="ISkinManager"/> for this <see cref="GUIManagerBase"/>.
+        /// Gets the <see cref="ISkinManager"/> used by this <see cref="IGUIManager"/> to perform
+        /// all of the GUI skinning.
         /// </summary>
         public ISkinManager SkinManager
         {
@@ -232,7 +250,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManagerBase"/>.
+        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManager"/>.
         /// </summary>
         public Tooltip Tooltip
         {
@@ -241,7 +259,7 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
-        /// by this GUIManager is currently under the cursor.
+        /// by this <see cref="IGUIManager"/> is currently under the cursor.
         /// </summary>
         public Control UnderCursor
         {
@@ -249,24 +267,36 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Adds a control to this GUIMangaer
+        /// Adds a <see cref="Control"/> to this <see cref="IGUIManager"/> at the root level. This should only be called
+        /// by the <see cref="Control"/>'s constructor.
         /// </summary>
-        /// <param name="c">Control to add</param>
-        internal void Add(Control c)
+        /// <param name="control">The <see cref="Control"/> to add.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="control"/> is not a root <see cref="Control"/>.</exception>
+        void IGUIManager.Add(Control control)
         {
-            if (c == null)
-            {
-                Debug.Fail("c is null.");
-                return;
-            }
-            if (c.Parent != null)
-            {
-                Debug.Fail("Only root controls (controls with no parent) may be added.");
-                return;
-            }
+            if (control == null)
+                throw new ArgumentNullException("control");
+            if (!control.IsRoot)
+                throw new ArgumentException("Only root controls may be added to the IGUIManager directly.");
 
-            _controls.Add(c);
-            c.SetFocus();
+            _controls.Add(control);
+        }
+
+        /// <summary>
+        /// Remove a <see cref="Control"/> from this <see cref="IGUIManager"/> from the root level. This should only be called
+        /// by the <see cref="Control"/>'s constructor.
+        /// </summary>
+        /// <param name="control">The <see cref="Control"/> to remove.</param>
+        /// <returns>True if the <paramref name="control"/> was successfully removed; false if the <paramref name="control"/>
+        /// could not be removed or was not in this <see cref="IGUIManager"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
+        bool IGUIManager.Remove(Control control)
+        {
+            if (control == null)
+                throw new ArgumentNullException("control");
+
+            return _controls.Remove(control);
         }
 
         /// <summary>
@@ -295,9 +325,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>.
+        /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>.
         /// </summary>
-        /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManagerBase"/>. Can be null
+        /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>. Can be null
         /// if no <see cref="Tooltip"/> is to be used.</returns>
         protected virtual Tooltip CreateTooltip()
         {
@@ -305,25 +335,26 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws all of the controls in this GUIManager
+        /// Draws all of the <see cref="Control"/>s in this <see cref="IGUIManager"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw the controls to</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing the <see cref="Control"/>s.</param>
+        public void Draw(SpriteBatch spriteBatch)
         {
             // Iterate forward through the list so the last control is on top
             foreach (Control control in Controls)
             {
-                control.Draw(sb);
+                control.Draw(spriteBatch);
             }
 
             // Draw the tooltip
-            Tooltip.Draw(sb);
+            Tooltip.Draw(spriteBatch);
         }
 
         /// <summary>
-        /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.
+        /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManager"/>, including all
+        /// child <see cref="Control"/>s.
         /// </summary>
-        /// <returns>All of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.</returns>
+        /// <returns>All of the <see cref="Control"/>s in this <see cref="GUIManager"/>.</returns>
         public IEnumerable<Control> GetAllControls()
         {
             foreach (Control c in Controls)
@@ -337,11 +368,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the top-most Control at the given point.
+        /// Gets the top-most <see cref="Control"/> at the given point.
         /// </summary>
-        /// <param name="point">Point to find the top-most Control at.</param>
-        /// <returns>The Control at the given <paramref name="point"/>, or null if no Control was found
-        /// at the given point.</returns>
+        /// <param name="point">Point to find the top-most <see cref="Control"/> at.</param>
+        /// <returns>The <see cref="Control"/> at the given <paramref name="point"/>, or null if no
+        /// <see cref="Control"/> was found at the given <paramref name="point"/>.</returns>
         public Control GetControlAtPoint(Vector2 point)
         {
             // Enumerate through the controls in reverse until we find the first Control containing
@@ -362,8 +393,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the top-most Control at a given point from a root control. This is intended as a sub-method
-        /// for GetControlAtPoint().
+        /// Gets the top-most <see cref="Control"/> at a given point from a root <see cref="Control"/>.
         /// </summary>
         /// <param name="point">Point to find the top-most Control at.</param>
         /// <param name="root">Root control to look from.</param>
@@ -458,22 +488,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Remove a control from this GUIManager
-        /// </summary>
-        /// <param name="c">Control to remove</param>
-        internal void Remove(Control c)
-        {
-            if (c == null)
-            {
-                Debug.Fail("c is null.");
-                return;
-            }
-            Debug.Assert(c.Parent == null, "Only root controls (controls with no parent) need to be removed.");
-
-            _controls.Remove(c);
-        }
-
-        /// <summary>
         /// Sets the focused root control
         /// </summary>
         /// <param name="newFocusedRoot">New focused root control</param>
@@ -503,9 +517,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Updates all of the controls in the GUIManager.
+        /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.
         /// </summary>
-        /// <param name="currentTime">Current game time.</param>
+        /// <param name="currentTime">The current game time.</param>
         public void Update(int currentTime)
         {
             // Set the last state

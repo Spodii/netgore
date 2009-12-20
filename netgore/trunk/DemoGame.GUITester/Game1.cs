@@ -18,7 +18,7 @@ namespace DemoGame.GUITester
 
         readonly GraphicsDeviceManager _graphics;
         SpriteFont _font;
-        GUIManagerBase _gui;
+        IGUIManager _gui;
         SpriteBatch _sb;
         TextBox _textBox;
         ControlBorder _topBorder;
@@ -60,7 +60,7 @@ namespace DemoGame.GUITester
             GrhInfo.Load(ContentPaths.Build, Content);
 
             SkinManager skinManager = new SkinManager("Default");
-            _gui = new GUIManagerBase(_font, skinManager);
+            _gui = new GUIManager(_font, skinManager);
 
             topForm = new Form(_gui, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
             topForm.OnMouseMove += topForm_OnMouseMove;

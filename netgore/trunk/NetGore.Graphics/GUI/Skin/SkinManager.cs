@@ -16,7 +16,7 @@ namespace NetGore.Graphics.GUI
             new Dictionary<string, ControlBorder>(StringComparer.OrdinalIgnoreCase);
 
         readonly string _defaultSkin;
-        readonly List<GUIManagerBase> _guiManagers = new List<GUIManagerBase>();
+        readonly List<IGUIManager> _guiManagers = new List<IGUIManager>();
         readonly Dictionary<string, ISprite> _spriteCache = new Dictionary<string, ISprite>(StringComparer.OrdinalIgnoreCase);
 
         string _currentSkin;
@@ -44,9 +44,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="GUIManagerBase"/>s that use this <see cref="SkinManager"/>.
+        /// Gets the <see cref="IGUIManager"/>s that this <see cref="ISkinManager"/> is currently managing.
         /// </summary>
-        public IEnumerable<GUIManagerBase> GUIManagers
+        public IEnumerable<IGUIManager> GUIManagers
         {
             get { return _guiManagers; }
         }
@@ -57,20 +57,20 @@ namespace NetGore.Graphics.GUI
         protected bool IsCurrentSkinDefault { get; private set; }
 
         /// <summary>
-        /// Adds a <see cref="GUIManagerBase"/> to this <see cref="ISkinManager"/>.
+        /// Adds an <see cref="IGUIManager"/> to this <see cref="ISkinManager"/>.
         /// </summary>
-        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
-        public void AddGUIManager(GUIManagerBase guiManager)
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to add.</param>
+        void ISkinManager.AddGUIManager(IGUIManager guiManager)
         {
             if (!_guiManagers.Contains(guiManager))
                 _guiManagers.Add(guiManager);
         }
 
         /// <summary>
-        /// Removes a <see cref="GUIManagerBase"/> from this <see cref="ISkinManager"/>.
+        /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.
         /// </summary>
-        /// <param name="guiManager">The <see cref="GUIManagerBase"/> to add.</param>
-        public bool RemoveGUIManager(GUIManagerBase guiManager)
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to remove.</param>
+        bool ISkinManager.RemoveGUIManager(IGUIManager guiManager)
         {
             return _guiManagers.Remove(guiManager);
         }

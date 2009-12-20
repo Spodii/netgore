@@ -32,24 +32,24 @@ namespace NetGore.Graphics.GUI
         SpriteBatch _sb;
 
         /// <summary>
-        /// Creates a <see cref="GUIManagerBase"/>.
+        /// Creates an <see cref="IGUIManager"/>.
         /// </summary>
         /// <param name="fontAssetName">The name of the font asset that will be used as the default GUI font.</param>
-        /// <returns>A new <see cref="GUIManagerBase"/> instance.</returns>
-        public GUIManagerBase CreateGUIManager(string fontAssetName)
+        /// <returns>A new <see cref="IGUIManager"/> instance.</returns>
+        public IGUIManager CreateGUIManager(string fontAssetName)
         {
             var font = Content.Load<SpriteFont>(fontAssetName);
             return CreateGUIManager(font);
         }
 
         /// <summary>
-        /// Creates a <see cref="GUIManagerBase"/>.
+        /// Creates a <see cref="GUIManager"/>.
         /// </summary>
         /// <param name="font">The font that will be used as the default GUI font.</param>
-        /// <returns>A new <see cref="GUIManagerBase"/> instance.</returns>
-        public virtual GUIManagerBase CreateGUIManager(SpriteFont font)
+        /// <returns>A new <see cref="GUIManager"/> instance.</returns>
+        public virtual GUIManager CreateGUIManager(SpriteFont font)
         {
-            return new GUIManagerBase(font, SkinManager);
+            return new GUIManager(font, SkinManager);
         }
 
         /// <summary>

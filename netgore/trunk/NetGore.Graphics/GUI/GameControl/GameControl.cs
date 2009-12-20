@@ -82,9 +82,9 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Updates the <see cref="GameControl"/>.
         /// </summary>
-        /// <param name="gui">The <see cref="GUIManagerBase"/> to get the key states from.</param>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to get the key states from.</param>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        public void Update(GUIManagerBase gui, int currentTime)
+        public void Update(IGUIManager guiManager, int currentTime)
         {
             // Ensure the object is enabled and there is an invoke handler before checking the key states
             if (!IsEnabled || OnInvoke == null)
@@ -95,7 +95,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Check the key states
-            KeyboardState ks = gui.KeyboardState;
+            KeyboardState ks = guiManager.KeyboardState;
 
             foreach (Keys key in GameControlKeys.KeysUp)
             {
@@ -111,13 +111,13 @@ namespace NetGore.Graphics.GUI
 
             foreach (Keys key in GameControlKeys.NewKeysDown)
             {
-                if (!gui.NewKeysDown.Contains(key))
+                if (!guiManager.NewKeysDown.Contains(key))
                     return;
             }
 
             foreach (Keys key in GameControlKeys.NewKeysUp)
             {
-                if (!gui.NewKeysUp.Contains(key))
+                if (!guiManager.NewKeysUp.Contains(key))
                     return;
             }
 

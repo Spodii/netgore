@@ -39,6 +39,28 @@ namespace NetGore.Graphics.GUI
         bool _value = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Label"/> class.
+        /// </summary>
+        /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
+        public CheckBox(Control parent, Vector2 position) : base(parent, position)
+        {
+            HandleAutoResize();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Label"/> class.
+        /// </summary>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
+        public CheckBox(IGUIManager guiManager, Vector2 position) : base(guiManager, position)
+        {
+            HandleAutoResize();
+        }
+
+        /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedOverSprite"/> changes.
         /// </summary>
         public event ControlEventHandler OnChangeTickedOverSprite
@@ -99,26 +121,6 @@ namespace NetGore.Graphics.GUI
         {
             add { Events.AddHandler(_eventChangeValue, value); }
             remove { Events.RemoveHandler(_eventChangeValue, value); }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        public CheckBox(Control parent, Vector2 position) : base(parent, position)
-        {
-            HandleAutoResize();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        public CheckBox(GUIManagerBase gui, Vector2 position) : base(gui, position)
-        {
-            HandleAutoResize();
         }
 
         /// <summary>

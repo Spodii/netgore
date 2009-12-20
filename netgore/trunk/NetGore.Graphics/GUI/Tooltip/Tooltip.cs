@@ -14,7 +14,7 @@ namespace NetGore.Graphics.GUI
     {
         readonly TooltipArgs _args = new TooltipArgs();
         readonly StyledTextsDrawer _drawer;
-        readonly GUIManagerBase _guiManager;
+        readonly IGUIManager _guiManager;
 
         Color _bgColor = new Color(0, 0, 0, 200);
         ControlBorder _border;
@@ -43,7 +43,7 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="Tooltip"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager.</param>
-        public Tooltip(GUIManagerBase guiManager)
+        public Tooltip(IGUIManager guiManager)
         {
             if (guiManager == null)
                 throw new ArgumentNullException("guiManager");
@@ -134,9 +134,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the GUIManager that this <see cref="Tooltip"/> is for.
+        /// Gets the <see cref="IGUIManager"/> that this <see cref="Tooltip"/> is for.
         /// </summary>
-        public GUIManagerBase GUIManager
+        public IGUIManager GUIManager
         {
             get { return _guiManager; }
         }

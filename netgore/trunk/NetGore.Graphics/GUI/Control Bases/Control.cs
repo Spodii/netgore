@@ -36,7 +36,7 @@ namespace NetGore.Graphics.GUI
 
         readonly List<Control> _controls = new List<Control>(1);
         readonly EventHandlerList _eventHandlerList = new EventHandlerList();
-        readonly GUIManagerBase _gui;
+        readonly IGUIManager _gui;
         readonly Control _parent;
         readonly Control _root;
         ControlBorder _border;
@@ -205,9 +205,10 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="parent">Parent Control of this Control. Cannot be null.</param>
+        /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+        /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
         protected Control(Control parent, Vector2 position, Vector2 clientSize)
             : this(parent, parent.GUIManager, position, clientSize)
         {
@@ -216,26 +217,29 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of. Cannot be null.</param>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
-        protected Control(GUIManagerBase gui, Vector2 position, Vector2 clientSize) : this(null, gui, position, clientSize)
+        /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
+        protected Control(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
+            : this(null, guiManager, position, clientSize)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of.</param>
-        /// <param name="parent">Parent Control of this Control.</param>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
+        /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
-        Control(Control parent, GUIManagerBase gui, Vector2 position, Vector2 clientSize)
+        /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
+        Control(Control parent, IGUIManager guiManager, Vector2 position, Vector2 clientSize)
         {
-            if (gui == null)
-                throw new ArgumentNullException("gui", "GUIManager cannot be null.");
+            if (guiManager == null)
+                throw new ArgumentNullException("guiManager", "GUIManager cannot be null.");
 
-            _gui = gui;
+            _gui = guiManager;
             _parent = parent;
 
             _border = ControlBorder.Empty;
@@ -255,9 +259,9 @@ namespace NetGore.Graphics.GUI
             }
             else
             {
-                // This control is the root, so add it directly to the GUIManager
+                // This control is the root, so add it directly to the GUI manager
                 _root = this;
-                gui.Add(this);
+                GUIManager.Add(this);
             }
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -344,9 +348,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="GUIManagerBase"/> used by this <see cref="Control"/>.
+        /// Gets the <see cref="IGUIManager"/> that manages this <see cref="Control"/>.
         /// </summary>
-        public GUIManagerBase GUIManager
+        public IGUIManager GUIManager
         {
             get { return _gui; }
         }

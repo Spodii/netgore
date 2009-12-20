@@ -37,7 +37,7 @@ namespace DemoGame.Client
         bool _disposed;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
-        GUIManagerBase _gui;
+        IGUIManager _gui;
         SpriteFont _guiFont;
         GUISettings _guiSettings;
         InfoBox _infoBox;
