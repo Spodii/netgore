@@ -524,15 +524,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets a Vector2 for the offset created by the Border.
-        /// </summary>
-        /// <returns>A Vector2 for the offset created by the Border.</returns>
-        Vector2 GetBorderOffset()
-        {
-            return new Vector2(Border.LeftWidth, Border.TopHeight);
-        }
-
-        /// <summary>
         /// Handles when the <see cref="Control.Border"/> has changed.
         /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
         /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
@@ -680,6 +671,15 @@ namespace NetGore.Graphics.GUI
                     yield return c2;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets a Vector2 for the offset created by the Border.
+        /// </summary>
+        /// <returns>A Vector2 for the offset created by the Border.</returns>
+        Vector2 GetBorderOffset()
+        {
+            return new Vector2(Border.LeftWidth, Border.TopHeight);
         }
 
         /// <summary>

@@ -2326,7 +2326,7 @@
         <Name>Effect</Name>
         <Title>Teleport</Title>
       </Category>
-      <Speed>0.0025</Speed>
+      <Speed>400</Speed>
     </Item0>
   </Animated>
 </GrhDatas>

@@ -18,8 +18,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public Label(Control parent, Vector2 position)
-            : base(parent, position, Vector2.One)
+        public Label(Control parent, Vector2 position) : base(parent, position, Vector2.One)
         {
         }
 

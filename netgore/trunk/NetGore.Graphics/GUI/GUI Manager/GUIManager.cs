@@ -31,16 +31,6 @@ namespace NetGore.Graphics.GUI
         Control _underCursor;
 
         /// <summary>
-        /// Notifies listeners when the focused <see cref="Control"/> has changed.
-        /// </summary>
-        public event GUIEventHandler OnChangeFocusedControl;
-
-        /// <summary>
-        /// Notifies listeners when the focused root <see cref="Control"/> has changed.
-        /// </summary>
-        public event GUIEventHandler OnChangeFocusedRoot;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
         /// </summary>
         /// <param name="font">Default SpriteFont to use for controls added to this <see cref="GUIManager"/>.</param>
@@ -65,6 +55,208 @@ namespace NetGore.Graphics.GUI
             _tooltip = CreateTooltip();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
+
+        /// <summary>
+        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManager"/>.
+        /// </summary>
+        public Tooltip Tooltip
+        {
+            get { return _tooltip; }
+        }
+
+        /// <summary>
+        /// Checks if a collection of keys contains a given key
+        /// </summary>
+        /// <param name="array">Collection of keys to check</param>
+        /// <param name="key">Key to check for</param>
+        /// <returns>True if the array contains the requested key, else false</returns>
+        static bool CollectionContainsKey(IEnumerable<Keys> array, Keys key)
+        {
+            if (array == null)
+            {
+                Debug.Fail("array is null.");
+                return false;
+            }
+
+            // Iterate through every array element and check for a match
+            foreach (Keys i in array)
+            {
+                if (i == key)
+                    return true;
+            }
+
+            // No matches found
+            return false;
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>.
+        /// </summary>
+        /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>. Can be null
+        /// if no <see cref="Tooltip"/> is to be used.</returns>
+        protected virtual Tooltip CreateTooltip()
+        {
+            return new Tooltip(this);
+        }
+
+        /// <summary>
+        /// Gets the top-most <see cref="Control"/> at a given point from a root <see cref="Control"/>.
+        /// </summary>
+        /// <param name="point">Point to find the top-most Control at.</param>
+        /// <param name="root">Root control to look from.</param>
+        /// <returns>Returns the top-most Control at the given <paramref name="point"/> contained in the
+        /// <paramref name="root"/> Control, or the <paramref name="root"/> Control if no child Controls
+        /// were found at the given <paramref name="point"/>, or null if the <paramref name="root"/> was
+        /// not even at the given <paramref name="point"/>.</returns>
+        static Control GetControlAtPoint(Vector2 point, Control root)
+        {
+            if (!root.IsVisible)
+                return null;
+
+            // Check that the root contains the point
+            if (!root.ContainsPoint(point))
+                return null;
+
+            // Crawl backwards through each child control until we find one that also contains the point
+            foreach (Control child in root.Controls.Reverse())
+            {
+                Control c = GetControlAtPoint(point, child);
+                if (c != null)
+                    return c;
+            }
+
+            // No child controls contained the point, so we found the deepest control containing the point
+            return root;
+        }
+
+        /// <summary>
+        /// Gets the newly pressed keys (keys that are down this frame, but were not down last frame)
+        /// </summary>
+        /// <param name="pressed">Collection of currently pressed keys</param>
+        /// <param name="lastPressed">Collection of previously pressed keys</param>
+        /// <returns>List of all the newly pressed keys, or null if there are none</returns>
+        static List<Keys> GetNewKeysDown(ICollection<Keys> pressed, IEnumerable<Keys> lastPressed)
+        {
+            if (pressed == null)
+            {
+                Debug.Fail("pressed is null.");
+                return null;
+            }
+            if (lastPressed == null)
+            {
+                Debug.Fail("lastPressed is null.");
+                return null;
+            }
+            if (pressed.Count == 0)
+                return null;
+
+            var ret = new List<Keys>(pressed.Count);
+
+            foreach (Keys key in pressed)
+            {
+                if (!CollectionContainsKey(lastPressed, key))
+                    ret.Add(key);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets the newly pressed released (keys that are up this frame, but were not up last frame)
+        /// </summary>
+        /// <param name="pressed">Collection of currently pressed keys</param>
+        /// <param name="lastPressed">Collection of previously pressed keys</param>
+        /// <returns>List of all the newly released keys, or null if there are none</returns>
+        static List<Keys> GetNewKeysUp(IEnumerable<Keys> pressed, ICollection<Keys> lastPressed)
+        {
+            if (pressed == null)
+            {
+                Debug.Fail("pressed is null.");
+                return null;
+            }
+            if (lastPressed == null)
+            {
+                Debug.Fail("lastPressed is null.");
+                return null;
+            }
+
+            if (lastPressed.Count == 0)
+                return null;
+
+            var ret = new List<Keys>(lastPressed.Count);
+
+            foreach (Keys lastKey in lastPressed)
+            {
+                if (!CollectionContainsKey(pressed, lastKey))
+                    ret.Add(lastKey);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Sets the focused root control
+        /// </summary>
+        /// <param name="newFocusedRoot">New focused root control</param>
+        void SetFocusedRoot(Control newFocusedRoot)
+        {
+            if (newFocusedRoot == null)
+            {
+                Debug.Fail("newFocuesdRoot is null.");
+                return;
+            }
+            if (!newFocusedRoot.IsRoot)
+            {
+                Debug.Fail("newFocuesdRoot is not a root control.");
+                return;
+            }
+
+            // Check that the control is not already the focused root control
+            if (newFocusedRoot != FocusedRoot)
+            {
+                // Remove the control then add it back to place it at the top of the list
+                _controls.Remove(newFocusedRoot);
+                _controls.Add(newFocusedRoot);
+
+                if (OnChangeFocusedRoot != null)
+                    OnChangeFocusedRoot(this);
+            }
+        }
+
+        /// <summary>
+        /// Finds the new focused root control (if any)
+        /// </summary>
+        void UpdateFocusedRoot()
+        {
+            // Only check for a new root if the mouse was clicked
+            if (LastMouseState.LeftButton != ButtonState.Released || MouseState.LeftButton != ButtonState.Pressed)
+                return;
+
+            // First root control to contain the mouse position is set as the focused root
+            // Controls are iterated in reverse to respect the order they were drawn
+            Vector2 screenPos = new Vector2(MouseState.X, MouseState.Y);
+
+            foreach (Control control in Controls.Reverse())
+            {
+                if (!control.ContainsPoint(screenPos))
+                    continue;
+
+                SetFocusedRoot(control.Root);
+                return;
+            }
+        }
+
+        #region IGUIManager Members
+
+        /// <summary>
+        /// Notifies listeners when the focused <see cref="Control"/> has changed.
+        /// </summary>
+        public event GUIEventHandler OnChangeFocusedControl;
+
+        /// <summary>
+        /// Notifies listeners when the focused root <see cref="Control"/> has changed.
+        /// </summary>
+        public event GUIEventHandler OnChangeFocusedRoot;
 
         /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
@@ -250,14 +442,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManager"/>.
-        /// </summary>
-        public Tooltip Tooltip
-        {
-            get { return _tooltip; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
         /// by this <see cref="IGUIManager"/> is currently under the cursor.
         /// </summary>
@@ -297,41 +481,6 @@ namespace NetGore.Graphics.GUI
                 throw new ArgumentNullException("control");
 
             return _controls.Remove(control);
-        }
-
-        /// <summary>
-        /// Checks if a collection of keys contains a given key
-        /// </summary>
-        /// <param name="array">Collection of keys to check</param>
-        /// <param name="key">Key to check for</param>
-        /// <returns>True if the array contains the requested key, else false</returns>
-        static bool CollectionContainsKey(IEnumerable<Keys> array, Keys key)
-        {
-            if (array == null)
-            {
-                Debug.Fail("array is null.");
-                return false;
-            }
-
-            // Iterate through every array element and check for a match
-            foreach (Keys i in array)
-            {
-                if (i == key)
-                    return true;
-            }
-
-            // No matches found
-            return false;
-        }
-
-        /// <summary>
-        /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>.
-        /// </summary>
-        /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>. Can be null
-        /// if no <see cref="Tooltip"/> is to be used.</returns>
-        protected virtual Tooltip CreateTooltip()
-        {
-            return new Tooltip(this);
         }
 
         /// <summary>
@@ -393,130 +542,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the top-most <see cref="Control"/> at a given point from a root <see cref="Control"/>.
-        /// </summary>
-        /// <param name="point">Point to find the top-most Control at.</param>
-        /// <param name="root">Root control to look from.</param>
-        /// <returns>Returns the top-most Control at the given <paramref name="point"/> contained in the
-        /// <paramref name="root"/> Control, or the <paramref name="root"/> Control if no child Controls
-        /// were found at the given <paramref name="point"/>, or null if the <paramref name="root"/> was
-        /// not even at the given <paramref name="point"/>.</returns>
-        static Control GetControlAtPoint(Vector2 point, Control root)
-        {
-            if (!root.IsVisible)
-                return null;
-
-            // Check that the root contains the point
-            if (!root.ContainsPoint(point))
-                return null;
-
-            // Crawl backwards through each child control until we find one that also contains the point
-            foreach (Control child in root.Controls.Reverse())
-            {
-                Control c = GetControlAtPoint(point, child);
-                if (c != null)
-                    return c;
-            }
-
-            // No child controls contained the point, so we found the deepest control containing the point
-            return root;
-        }
-
-        /// <summary>
-        /// Gets the newly pressed keys (keys that are down this frame, but were not down last frame)
-        /// </summary>
-        /// <param name="pressed">Collection of currently pressed keys</param>
-        /// <param name="lastPressed">Collection of previously pressed keys</param>
-        /// <returns>List of all the newly pressed keys, or null if there are none</returns>
-        static List<Keys> GetNewKeysDown(ICollection<Keys> pressed, IEnumerable<Keys> lastPressed)
-        {
-            if (pressed == null)
-            {
-                Debug.Fail("pressed is null.");
-                return null;
-            }
-            if (lastPressed == null)
-            {
-                Debug.Fail("lastPressed is null.");
-                return null;
-            }
-            if (pressed.Count == 0)
-                return null;
-
-            var ret = new List<Keys>(pressed.Count);
-
-            foreach (Keys key in pressed)
-            {
-                if (!CollectionContainsKey(lastPressed, key))
-                    ret.Add(key);
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets the newly pressed released (keys that are up this frame, but were not up last frame)
-        /// </summary>
-        /// <param name="pressed">Collection of currently pressed keys</param>
-        /// <param name="lastPressed">Collection of previously pressed keys</param>
-        /// <returns>List of all the newly released keys, or null if there are none</returns>
-        static List<Keys> GetNewKeysUp(IEnumerable<Keys> pressed, ICollection<Keys> lastPressed)
-        {
-            if (pressed == null)
-            {
-                Debug.Fail("pressed is null.");
-                return null;
-            }
-            if (lastPressed == null)
-            {
-                Debug.Fail("lastPressed is null.");
-                return null;
-            }
-
-            if (lastPressed.Count == 0)
-                return null;
-
-            var ret = new List<Keys>(lastPressed.Count);
-
-            foreach (Keys lastKey in lastPressed)
-            {
-                if (!CollectionContainsKey(pressed, lastKey))
-                    ret.Add(lastKey);
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Sets the focused root control
-        /// </summary>
-        /// <param name="newFocusedRoot">New focused root control</param>
-        void SetFocusedRoot(Control newFocusedRoot)
-        {
-            if (newFocusedRoot == null)
-            {
-                Debug.Fail("newFocuesdRoot is null.");
-                return;
-            }
-            if (!newFocusedRoot.IsRoot)
-            {
-                Debug.Fail("newFocuesdRoot is not a root control.");
-                return;
-            }
-
-            // Check that the control is not already the focused root control
-            if (newFocusedRoot != FocusedRoot)
-            {
-                // Remove the control then add it back to place it at the top of the list
-                _controls.Remove(newFocusedRoot);
-                _controls.Add(newFocusedRoot);
-
-                if (OnChangeFocusedRoot != null)
-                    OnChangeFocusedRoot(this);
-            }
-        }
-
-        /// <summary>
         /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
@@ -550,27 +575,6 @@ namespace NetGore.Graphics.GUI
             Tooltip.Update(currentTime);
         }
 
-        /// <summary>
-        /// Finds the new focused root control (if any)
-        /// </summary>
-        void UpdateFocusedRoot()
-        {
-            // Only check for a new root if the mouse was clicked
-            if (LastMouseState.LeftButton != ButtonState.Released || MouseState.LeftButton != ButtonState.Pressed)
-                return;
-
-            // First root control to contain the mouse position is set as the focused root
-            // Controls are iterated in reverse to respect the order they were drawn
-            Vector2 screenPos = new Vector2(MouseState.X, MouseState.Y);
-
-            foreach (Control control in Controls.Reverse())
-            {
-                if (!control.ContainsPoint(screenPos))
-                    continue;
-
-                SetFocusedRoot(control.Root);
-                return;
-            }
-        }
+        #endregion
     }
 }

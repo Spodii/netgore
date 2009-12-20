@@ -451,7 +451,8 @@ namespace NetGore.Graphics
                 // Tell all the items that were successfully added to use the new atlas texture
                 foreach (AtlasTextureItem node in successful)
                 {
-                    Rectangle r = new Rectangle(node.X + Padding, node.Y + Padding, node.Width - Padding * 2, node.Height - Padding * 2);
+                    Rectangle r = new Rectangle(node.X + Padding, node.Y + Padding, node.Width - Padding * 2,
+                                                node.Height - Padding * 2);
                     node.ITextureAtlasable.SetAtlas(_atlasTexture, r);
                 }
             }

@@ -29,6 +29,7 @@ namespace DemoGame.Client
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
         readonly SkeletonManager _skelManager = new SkeletonManager(ContentPaths.Build.Skeletons);
+        ChatBubbleManager _chatBubbleManager;
 
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
@@ -52,12 +53,6 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
-        ChatBubbleManager _chatBubbleManager;
-
-        /// <summary>
-        /// Gets the <see cref="ChatBubbleManagerBase"/>.
-        /// </summary>
-        public ChatBubbleManagerBase ChatBubbleManager { get { return _chatBubbleManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -65,6 +60,14 @@ namespace DemoGame.Client
         public GameplayScreen() : base(ScreenName)
         {
             _gameControls = new GameplayScreenControls(this);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ChatBubbleManagerBase"/>.
+        /// </summary>
+        public ChatBubbleManagerBase ChatBubbleManager
+        {
+            get { return _chatBubbleManager; }
         }
 
         public NPCChatDialogForm ChatDialogForm

@@ -49,6 +49,38 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Update the transformation matrix.
+        /// </summary>
+        void UpdateMatrix()
+        {
+            // Force the camera to stay in the map
+            if (KeepInMap)
+            {
+                // Check the min values (can do this with or without a map)
+                if (_min.X < 0)
+                    _min.X = 0;
+                if (_min.Y < 0)
+                    _min.Y = 0;
+
+                // Check the max values (requires the Map to be set)
+                if (Map != null)
+                {
+                    if (_min.X + _size.X > Map.Width)
+                        _min.X = Map.Width - _size.X;
+
+                    if (_min.Y + _size.Y > Map.Height)
+                        _min.Y = Map.Height - _size.Y;
+                }
+            }
+
+            // Update the matrix
+            Vector3 origin = new Vector3(_min, 0);
+            _matrix = Matrix.CreateTranslation(-origin) * Matrix.CreateScale(_scale) * Matrix.CreateRotationZ(_rotation);
+        }
+
+        #region ICamera2D Members
+
+        /// <summary>
         /// Gets the coordinate of the center of the <see cref="ICamera2D"/>'s view port.
         /// </summary>
         public Vector2 Center
@@ -303,36 +335,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Update the transformation matrix.
-        /// </summary>
-        void UpdateMatrix()
-        {
-            // Force the camera to stay in the map
-            if (KeepInMap)
-            {
-                // Check the min values (can do this with or without a map)
-                if (_min.X < 0)
-                    _min.X = 0;
-                if (_min.Y < 0)
-                    _min.Y = 0;
-
-                // Check the max values (requires the Map to be set)
-                if (Map != null)
-                {
-                    if (_min.X + _size.X > Map.Width)
-                        _min.X = Map.Width - _size.X;
-
-                    if (_min.Y + _size.Y > Map.Height)
-                        _min.Y = Map.Height - _size.Y;
-                }
-            }
-
-            // Update the matrix
-            Vector3 origin = new Vector3(_min, 0);
-            _matrix = Matrix.CreateTranslation(-origin) * Matrix.CreateScale(_scale) * Matrix.CreateRotationZ(_rotation);
-        }
-
-        /// <summary>
         /// Zooms the camera in and focuses on a specified point.
         /// </summary>
         /// <param name="origin">Point to zoom in on (the center of the view).</param>
@@ -344,5 +346,7 @@ namespace NetGore.Graphics
             Min = origin - size / (2f * scale);
             Scale = scale;
         }
+
+        #endregion
     }
 }

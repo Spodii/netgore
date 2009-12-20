@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -31,16 +28,6 @@ namespace DemoGame.Client
         {
             _skinManager = skinManager;
             _skinManager.OnChangeSkin += skinManager_OnChangeSkin;
-        }
-
-        /// <summary>
-        /// Handles updating the <see cref="ChatBubbleManagerBase.Border"/> when the skin changes.
-        /// </summary>
-        /// <param name="newSkinName">New name of the skin.</param>
-        /// <param name="oldSkinName">Old name of the skin.</param>
-        void skinManager_OnChangeSkin(string newSkinName, string oldSkinName)
-        {
-            Border = _skinManager.GetBorder(_controlSkinName);
         }
 
         /// <summary>
@@ -79,6 +66,16 @@ namespace DemoGame.Client
                 return asCharacter.DrawPosition;
             else
                 return target.Position;
+        }
+
+        /// <summary>
+        /// Handles updating the <see cref="ChatBubbleManagerBase.Border"/> when the skin changes.
+        /// </summary>
+        /// <param name="newSkinName">New name of the skin.</param>
+        /// <param name="oldSkinName">Old name of the skin.</param>
+        void skinManager_OnChangeSkin(string newSkinName, string oldSkinName)
+        {
+            Border = _skinManager.GetBorder(_controlSkinName);
         }
     }
 }

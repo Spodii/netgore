@@ -44,36 +44,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="IGUIManager"/>s that this <see cref="ISkinManager"/> is currently managing.
-        /// </summary>
-        public IEnumerable<IGUIManager> GUIManagers
-        {
-            get { return _guiManagers; }
-        }
-
-        /// <summary>
         /// Gets if the current skin is the default skin.
         /// </summary>
         protected bool IsCurrentSkinDefault { get; private set; }
-
-        /// <summary>
-        /// Adds an <see cref="IGUIManager"/> to this <see cref="ISkinManager"/>.
-        /// </summary>
-        /// <param name="guiManager">The <see cref="IGUIManager"/> to add.</param>
-        void ISkinManager.AddGUIManager(IGUIManager guiManager)
-        {
-            if (!_guiManagers.Contains(guiManager))
-                _guiManagers.Add(guiManager);
-        }
-
-        /// <summary>
-        /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.
-        /// </summary>
-        /// <param name="guiManager">The <see cref="IGUIManager"/> to remove.</param>
-        bool ISkinManager.RemoveGUIManager(IGUIManager guiManager)
-        {
-            return _guiManagers.Remove(guiManager);
-        }
 
         /// <summary>
         /// Handles when the skin has changed and applies the new skin to all the <see cref="Control"/>s.
@@ -152,6 +125,33 @@ namespace NetGore.Graphics.GUI
         }
 
         #region ISkinManager Members
+
+        /// <summary>
+        /// Gets the <see cref="IGUIManager"/>s that this <see cref="ISkinManager"/> is currently managing.
+        /// </summary>
+        public IEnumerable<IGUIManager> GUIManagers
+        {
+            get { return _guiManagers; }
+        }
+
+        /// <summary>
+        /// Adds an <see cref="IGUIManager"/> to this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to add.</param>
+        void ISkinManager.AddGUIManager(IGUIManager guiManager)
+        {
+            if (!_guiManagers.Contains(guiManager))
+                _guiManagers.Add(guiManager);
+        }
+
+        /// <summary>
+        /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to remove.</param>
+        bool ISkinManager.RemoveGUIManager(IGUIManager guiManager)
+        {
+            return _guiManagers.Remove(guiManager);
+        }
 
         /// <summary>
         /// Gets or sets the name of the currently active skin.

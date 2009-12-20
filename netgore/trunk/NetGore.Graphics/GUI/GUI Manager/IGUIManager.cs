@@ -23,17 +23,15 @@ namespace NetGore.Graphics.GUI
         event GUIEventHandler OnChangeFocusedRoot;
 
         /// <summary>
-        /// Gets the <see cref="ISkinManager"/> used by this <see cref="IGUIManager"/> to perform
-        /// all of the GUI skinning.
+        /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
+        /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
         /// </summary>
-        ISkinManager SkinManager { get;}
+        IEnumerable<Control> Controls { get; }
 
         /// <summary>
-        /// Gets or sets the default font for new <see cref="Control"/>s added to this <see cref="IGUIManager"/>.
-        /// Can be null, but having this value null may result in certain <see cref="Control"/>s that require
-        /// a default font throwing an <see cref="Exception"/>.
+        /// Gets the screen coordinates of the cursor.
         /// </summary>
-        SpriteFont Font { get; set; }
+        Vector2 CursorPosition { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="Control"/> that currently has focus. If the <paramref name="value"/> is null
@@ -42,21 +40,17 @@ namespace NetGore.Graphics.GUI
         Control FocusedControl { get; set; }
 
         /// <summary>
-        /// Gets the screen coordinates of the cursor.
-        /// </summary>
-        Vector2 CursorPosition { get; }
-
-        /// <summary>
-        /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
-        /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
-        /// </summary>
-        IEnumerable<Control> Controls { get; }
-
-        /// <summary>
         /// Gets the top-level <see cref="Control"/> that currently has focus, or has a child <see cref="Control"/>
         /// that has focus.
         /// </summary>
         Control FocusedRoot { get; }
+
+        /// <summary>
+        /// Gets or sets the default font for new <see cref="Control"/>s added to this <see cref="IGUIManager"/>.
+        /// Can be null, but having this value null may result in certain <see cref="Control"/>s that require
+        /// a default font throwing an <see cref="Exception"/>.
+        /// </summary>
+        SpriteFont Font { get; set; }
 
         /// <summary>
         /// Gets the latest <see cref="KeyboardState"/>. This value is updated on each call to
@@ -77,16 +71,16 @@ namespace NetGore.Graphics.GUI
         KeyboardState LastKeyboardState { get; }
 
         /// <summary>
-        /// Gets the <see cref="MouseState"/> that was used immediately before the current
-        /// <see cref="IGUIManager.MouseState"/>.
-        /// </summary>
-        MouseState LastMouseState { get; }
-
-        /// <summary>
         /// Gets the IEnumerable of <see cref="Keys"/> that was used immediately before the current
         /// <see cref="IGUIManager.KeysPressed"/>.
         /// </summary>
         IEnumerable<Keys> LastKeysPressed { get; }
+
+        /// <summary>
+        /// Gets the <see cref="MouseState"/> that was used immediately before the current
+        /// <see cref="IGUIManager.MouseState"/>.
+        /// </summary>
+        MouseState LastMouseState { get; }
 
         /// <summary>
         /// Gets the latest <see cref="MouseState"/>. This value is updated on each call to
@@ -109,10 +103,25 @@ namespace NetGore.Graphics.GUI
         IEnumerable<Keys> NewKeysUp { get; }
 
         /// <summary>
+        /// Gets the <see cref="ISkinManager"/> used by this <see cref="IGUIManager"/> to perform
+        /// all of the GUI skinning.
+        /// </summary>
+        ISkinManager SkinManager { get; }
+
+        /// <summary>
         /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
         /// by this <see cref="IGUIManager"/> is currently under the cursor.
         /// </summary>
         Control UnderCursor { get; }
+
+        /// <summary>
+        /// Adds a <see cref="Control"/> to this <see cref="IGUIManager"/> at the root level. This should only be called
+        /// by the <see cref="Control"/>'s constructor.
+        /// </summary>
+        /// <param name="control">The <see cref="Control"/> to add.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="control"/> is not a root <see cref="Control"/>.</exception>
+        void Add(Control control);
 
         /// <summary>
         /// Draws all of the <see cref="Control"/>s in this <see cref="IGUIManager"/>.
@@ -128,14 +137,13 @@ namespace NetGore.Graphics.GUI
         IEnumerable<Control> GetAllControls();
 
         /// <summary>
-        /// Adds a <see cref="Control"/> to this <see cref="IGUIManager"/> at the root level. This should only be called
-        /// by the <see cref="Control"/>'s constructor.
+        /// Gets the top-most <see cref="Control"/> at the given point.
         /// </summary>
-        /// <param name="control">The <see cref="Control"/> to add.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="control"/> is not a root <see cref="Control"/>.</exception>
-        void Add(Control control);
-        
+        /// <param name="point">Point to find the top-most <see cref="Control"/> at.</param>
+        /// <returns>The <see cref="Control"/> at the given <paramref name="point"/>, or null if no
+        /// <see cref="Control"/> was found at the given <paramref name="point"/>.</returns>
+        Control GetControlAtPoint(Vector2 point);
+
         /// <summary>
         /// Remove a <see cref="Control"/> from this <see cref="IGUIManager"/> from the root level. This should only be called
         /// by the <see cref="Control"/>'s constructor.
@@ -145,14 +153,6 @@ namespace NetGore.Graphics.GUI
         /// could not be removed or was not in this <see cref="IGUIManager"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
         bool Remove(Control control);
-
-        /// <summary>
-        /// Gets the top-most <see cref="Control"/> at the given point.
-        /// </summary>
-        /// <param name="point">Point to find the top-most <see cref="Control"/> at.</param>
-        /// <returns>The <see cref="Control"/> at the given <paramref name="point"/>, or null if no
-        /// <see cref="Control"/> was found at the given <paramref name="point"/>.</returns>
-        Control GetControlAtPoint(Vector2 point);
 
         /// <summary>
         /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.

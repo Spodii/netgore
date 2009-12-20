@@ -18,6 +18,24 @@ namespace NetGore.Graphics.GUI
         string _text = string.Empty;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
+        /// </summary>
+        public event ControlEventHandler OnChangeFont
+        {
+            add { Events.AddHandler(_eventChangeFont, value); }
+            remove { Events.RemoveHandler(_eventChangeFont, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
+        /// </summary>
+        public event ControlEventHandler OnChangeText
+        {
+            add { Events.AddHandler(_eventChangeText, value); }
+            remove { Events.RemoveHandler(_eventChangeText, value); }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TextControl"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
@@ -35,26 +53,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        protected TextControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
+        protected TextControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
+            : base(guiManager, position, clientSize)
         {
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
-        /// </summary>
-        public event ControlEventHandler OnChangeFont
-        {
-            add { Events.AddHandler(_eventChangeFont, value); }
-            remove { Events.RemoveHandler(_eventChangeFont, value); }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
-        /// </summary>
-        public event ControlEventHandler OnChangeText
-        {
-            add { Events.AddHandler(_eventChangeText, value); }
-            remove { Events.RemoveHandler(_eventChangeText, value); }
         }
 
         /// <summary>

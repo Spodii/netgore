@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
-using System.Threading;
 using log4net;
 
 namespace NetGore.Network
