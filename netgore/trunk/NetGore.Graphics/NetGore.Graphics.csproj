@@ -68,7 +68,8 @@
     <Compile Include="Background\BackgroundLayerLayout.cs" />
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
-    <Compile Include="Camera2D.cs" />
+    <Compile Include="Camera\Camera2D.cs" />
+    <Compile Include="Camera\ICamera2D.cs" />
     <Compile Include="Chat Bubble\ChatBubble.cs" />
     <Compile Include="Chat Bubble\ChatBubbleManagerBase.cs" />
     <Compile Include="Exceptions\ParticleEmitterException.cs" />

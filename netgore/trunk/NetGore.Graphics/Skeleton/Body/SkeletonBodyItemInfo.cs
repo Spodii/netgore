@@ -23,8 +23,8 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="SkeletonBodyItemInfo"/> class.
         /// </summary>
         /// <param name="categorization">The <see cref="SpriteCategorization"/> for the sprite to draw for the body item.</param>
-        /// <param name="sourceName">Name of the source n.</param>
-        /// <param name="destName">Name of the destination n (String.Empty for no destination).</param>
+        /// <param name="sourceName">Name of the source node.</param>
+        /// <param name="destName">Name of the destination node (String.Empty for no destination).</param>
         /// <param name="offset">Grh drawing offset.</param>
         /// <param name="origin">Grh drawing origin.</param>
         public SkeletonBodyItemInfo(SpriteCategorization categorization, string sourceName, string destName, Vector2 offset,
@@ -43,7 +43,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the name of the destination n.
+        /// Gets the name of the destination node.
         /// </summary>
         public string DestName
         {
@@ -61,7 +61,7 @@ namespace NetGore.Graphics
         public Vector2 Origin { get; set; }
 
         /// <summary>
-        /// Gets the name of the source n.
+        /// Gets the name of the source node.
         /// </summary>
         public string SourceName
         {

@@ -17,7 +17,7 @@ namespace DemoGame.Client
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly Camera2D _camera;
+        readonly ICamera2D _camera;
 
         /// <summary>
         /// Interface used to get the current time
@@ -33,11 +33,11 @@ namespace DemoGame.Client
         public event WorldEventHandler<Map> OnChangeMap;
 
         /// <summary>
-        /// World constructor
+        /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
-        /// <param name="getTime">Interface to get the current time</param>
-        /// <param name="camera">Primary world view camera</param>
-        public World(IGetTime getTime, Camera2D camera)
+        /// <param name="getTime">Interface to get the current time.</param>
+        /// <param name="camera">Primary world view camera.</param>
+        public World(IGetTime getTime, ICamera2D camera)
         {
             _getTime = getTime;
             _camera = camera;
@@ -46,7 +46,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the camera used for the active view.
         /// </summary>
-        public Camera2D Camera
+        public ICamera2D Camera
         {
             get { return _camera; }
         }

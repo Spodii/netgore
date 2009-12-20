@@ -30,7 +30,7 @@ namespace DemoGame.SkeletonEditor
         readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
         readonly Stopwatch _watch = new Stopwatch();
 
-        Camera2D _camera;
+        ICamera2D _camera;
         ContentManager _content;
         int _currentTime = 0;
 
@@ -118,7 +118,7 @@ namespace DemoGame.SkeletonEditor
         }
 
         /// <summary>
-        /// Gets or sets the currently selected n
+        /// Gets or sets the currently selected node
         /// </summary>
         public SkeletonNode SelectedNode
         {
@@ -371,7 +371,7 @@ namespace DemoGame.SkeletonEditor
             SetAnimByTxt();
         }
 
-        static void btnShiftNodes_Click(object sender, EventArgs e)
+        void btnShiftNodes_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Make this button shift all nodes in all seleced files by a defined amount");
         }
@@ -533,13 +533,13 @@ namespace DemoGame.SkeletonEditor
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    // Select new n
+                    // Select new node
                     var nodes = _skeleton.RootNode.GetAllNodes();
                     foreach (SkeletonNode node in nodes)
                     {
                         if (node.HitTest(_camera, _cursorPos))
                         {
-                            SelectedNode = node; // Select the n
+                            SelectedNode = node; // Select the node
                             _moveSelectedNode = true; // Enable dragging
                             break;
                         }
@@ -549,14 +549,14 @@ namespace DemoGame.SkeletonEditor
                 {
                     if (_skeleton.RootNode == null)
                     {
-                        // Create the root n
+                        // Create the root node
                         _skeleton.RootNode = new SkeletonNode(_cursorPos);
                         SelectedNode = _skeleton.RootNode;
                         SelectedNode.Name = "New Root";
                     }
                     else
                     {
-                        // Create a child n
+                        // Create a child node
                         SelectedNode = new SkeletonNode(SelectedNode, _cursorPos);
                     }
                 }
@@ -575,13 +575,13 @@ namespace DemoGame.SkeletonEditor
             {
                 if (ks.Control)
                 {
-                    // Unlocked movement, move the n and its children
+                    // Unlocked movement, move the node and its children
                     SelectedNode.MoveTo(_cursorPos);
                     UpdateNodeInfo();
                 }
                 else
                 {
-                    // Unlocked movement, move just the one n
+                    // Unlocked movement, move just the one node
                     SelectedNode.Position = _cursorPos;
                     UpdateNodeInfo();
                 }
@@ -590,13 +590,13 @@ namespace DemoGame.SkeletonEditor
             {
                 if (ks.Control)
                 {
-                    // Locked movement, the n and all of its children
+                    // Locked movement, the node and all of its children
                     SelectedNode.Rotate(_cursorPos);
                     UpdateNodeInfo();
                 }
                 else
                 {
-                    // Locked movement, move the n and its children
+                    // Locked movement, move the node and its children
                     if (SelectedNode.Parent != null)
                         SelectedNode.SetAngle(_cursorPos);
                     else
@@ -832,16 +832,16 @@ namespace DemoGame.SkeletonEditor
             switch (e.KeyCode)
             {
                 case Keys.NumPad8:
-                    _camera.Y -= TranslateRate / _camera.Scale;
+                    _camera.Translate(new Vector2(0, -TranslateRate / _camera.Scale));
                     break;
                 case Keys.NumPad4:
-                    _camera.X -= TranslateRate / _camera.Scale;
+                    _camera.Translate(new Vector2(-TranslateRate / _camera.Scale, 0));
                     break;
                 case Keys.NumPad6:
-                    _camera.X += TranslateRate / _camera.Scale;
+                    _camera.Translate(new Vector2(TranslateRate / _camera.Scale, 0));
                     break;
                 case Keys.NumPad2:
-                    _camera.Y += TranslateRate / _camera.Scale;
+                    _camera.Translate(new Vector2(0, TranslateRate / _camera.Scale));
                     break;
                 case Keys.NumPad9:
                     _camera.Zoom(_camera.Min + ((_camera.Size / 2) / _camera.Scale), _camera.Size, _camera.Scale + ScaleRate);

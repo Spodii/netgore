@@ -27,8 +27,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Checks if in the object is in view of the specified <paramref name="camera"/>.
         /// </summary>
-        /// <param name="camera"><see cref="Camera2D"/> to check if the object is in view of.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
         /// <returns>True if the object is in view of the camera, else False.</returns>
-        bool InView(Camera2D camera);
+        bool InView(ICamera2D camera);
     }
 }

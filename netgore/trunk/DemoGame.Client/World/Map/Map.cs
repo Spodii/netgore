@@ -20,12 +20,12 @@ namespace DemoGame.Client
     /// <param name="map">Map that the drawing is taking place on.</param>
     /// <param name="layer">The layer that the drawing event is related to.</param>
     /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
-    /// <param name="camera">The Camera2D that was used in the drawing.</param>
+    /// <param name="camera">The camera that was used in the drawing.</param>
     /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
     /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
     /// draw the layer.</param>
     public delegate void MapDrawEventHandler(
-        Map map, MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing);
+        Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing);
 
     /// <summary>
     /// Map object for the client
@@ -266,11 +266,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the content of the map to the screen
+        /// Draws the content of the map to the screen.
         /// </summary>
-        /// <param name="sb">SpriteBatch object used for drawing</param>
-        /// <param name="camera">Camera used to find the view area</param>
-        public void Draw(SpriteBatch sb, Camera2D camera)
+        /// <param name="sb">SpriteBatch object used for drawing.</param>
+        /// <param name="camera">Camera used to find the view area.</param>
+        public void Draw(SpriteBatch sb, ICamera2D camera)
         {
             // Draw the background
             if (OnStartDrawLayer != null)
@@ -312,7 +312,7 @@ namespace DemoGame.Client
         /// <param name="drawableEntities">List of IDrawableEntity objects to draw.</param>
         /// <param name="layer">The MapRenderLayer that is being drawn.</param>
         /// <param name="draw">If true, the layer will be drawn. If false, no drawing will be done.</param>
-        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawable> drawableEntities, MapRenderLayer layer, bool draw)
+        void DrawLayer(SpriteBatch sb, ICamera2D camera, IEnumerable<IDrawable> drawableEntities, MapRenderLayer layer, bool draw)
         {
             if (OnStartDrawLayer != null)
                 OnStartDrawLayer(this, layer, sb, camera, draw);
@@ -368,7 +368,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// When overriddeni n the derived class, allows for additional processing on Entities removed from the map.
+        /// When overridden in the derived class, allows for additional processing on Entities removed from the map.
         /// This is called after the Entity has finished being removed from the map.
         /// </summary>
         /// <param name="entity">Entity that was removed from the map.</param>

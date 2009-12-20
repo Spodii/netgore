@@ -367,6 +367,7 @@ namespace DemoGame.MapEditor
             this.cmdApplySize.TabIndex = 7;
             this.cmdApplySize.Text = "Apply";
             this.cmdApplySize.UseVisualStyleBackColor = true;
+            this.cmdApplySize.Click += cmdApplySize_Click;
             // 
             // txtMapHeight
             // 
@@ -678,6 +679,7 @@ namespace DemoGame.MapEditor
             this.btnNewEntity.TabIndex = 10;
             this.btnNewEntity.Text = "New";
             this.btnNewEntity.UseVisualStyleBackColor = true;
+            this.btnNewEntity.Click += btnNewEntity_Click;
             // 
             // pgEntity
             // 
@@ -727,6 +729,7 @@ namespace DemoGame.MapEditor
             this.btnNewBGSprite.TabIndex = 4;
             this.btnNewBGSprite.Text = "New Sprite";
             this.btnNewBGSprite.UseVisualStyleBackColor = true;
+            this.btnNewBGSprite.Click += btnNewBGSprite_Click;
             // 
             // btnNewBGLayer
             // 
@@ -736,6 +739,7 @@ namespace DemoGame.MapEditor
             this.btnNewBGLayer.TabIndex = 3;
             this.btnNewBGLayer.Text = "New Layer";
             this.btnNewBGLayer.UseVisualStyleBackColor = true;
+            this.btnNewBGLayer.Click += btnNewBGLayer_Click;
             // 
             // btnDeleteBGItem
             // 
@@ -745,6 +749,7 @@ namespace DemoGame.MapEditor
             this.btnDeleteBGItem.TabIndex = 2;
             this.btnDeleteBGItem.Text = "Delete";
             this.btnDeleteBGItem.UseVisualStyleBackColor = true;
+            this.btnDeleteBGItem.Click += btnDeleteBGItem_Click;
             // 
             // lstBGItems
             // 
@@ -848,6 +853,7 @@ namespace DemoGame.MapEditor
             this.btnAddSpawn.TabIndex = 7;
             this.btnAddSpawn.Text = "Add";
             this.btnAddSpawn.UseVisualStyleBackColor = true;
+            this.btnAddSpawn.Click += btnAddSpawn_Click;
             // 
             // btnDeleteSpawn
             // 
@@ -857,6 +863,7 @@ namespace DemoGame.MapEditor
             this.btnDeleteSpawn.TabIndex = 6;
             this.btnDeleteSpawn.Text = "Delete";
             this.btnDeleteSpawn.UseVisualStyleBackColor = true;
+            this.btnDeleteSpawn.Click += btnDeleteSpawn_Click;
             // 
             // lstNPCSpawns
             // 
@@ -975,6 +982,7 @@ namespace DemoGame.MapEditor
             this.chkDrawBackground.TabIndex = 14;
             this.chkDrawBackground.Text = "Background";
             this.chkDrawBackground.UseVisualStyleBackColor = true;
+            this.chkDrawBackground.CheckedChanged += chkDrawBackground_CheckedChanged;
             // 
             // chkDrawEntities
             // 
@@ -1007,6 +1015,7 @@ namespace DemoGame.MapEditor
             this.chkShowGrhs.TabIndex = 11;
             this.chkShowGrhs.Text = "Grhs";
             this.chkShowGrhs.UseVisualStyleBackColor = true;
+            this.chkShowGrhs.CheckedChanged += chkShowGrhs_CheckedChanged;
             // 
             // chkShowWalls
             // 
@@ -1122,6 +1131,25 @@ namespace DemoGame.MapEditor
             this.cmdNew.TabIndex = 5;
             this.cmdNew.Text = "New";
             this.cmdNew.UseVisualStyleBackColor = true;
+
+            cmdLoad.Click += cmdLoad_Click;
+            cmdNew.Click += cmdNew_Click;
+            cmdSave.Click += cmdSave_Click;
+            GameScreen.MouseDown += GameScreen_MouseDown;
+            GameScreen.MouseMove += GameScreen_MouseMove;
+            GameScreen.MouseUp += GameScreen_MouseUp;
+            lstAvailableParticleEffects.RequestCreateEffect += lstAvailableParticleEffects_RequestCreateEffect;
+            lstBGItems.SelectedIndexChanged += lstBGItems_SelectedIndexChanged;
+            lstEntities.SelectedIndexChanged += lstEntities_SelectedIndexChanged;
+            lstSelectedWalls.SelectedIndexChanged += lstSelectedWalls_SelectedIndexChanged;
+            lstSelectedWalls.SelectedValueChanged += lstSelectedWalls_SelectedValueChanged;
+            txtGridHeight.TextChanged += txtGridHeight_TextChanged;
+            txtGridWidth.TextChanged += txtGridWidth_TextChanged;
+            txtMapName.TextChanged += txtMapName_TextChanged;
+            txtMusic.TextChanged += txtMusic_TextChanged;
+            tabPageGrhs.Enter += tabPageGrhs_Enter;
+            treeGrhs.GrhAfterSelect += treeGrhs_GrhAfterSelect;
+
             // 
             // ScreenForm
             // 

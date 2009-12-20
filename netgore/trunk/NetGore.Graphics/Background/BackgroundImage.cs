@@ -148,7 +148,7 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch">SpriteBatch to draw the image to.</param>
         /// <param name="camera">Camera that describes the current view.</param>
         /// <param name="mapSize">Size of the map to draw to.</param>
-        public virtual void Draw(SpriteBatch spriteBatch, Camera2D camera, Vector2 mapSize)
+        public virtual void Draw(SpriteBatch spriteBatch, ICamera2D camera, Vector2 mapSize)
         {
             if (Sprite == null)
                 return;
@@ -164,7 +164,7 @@ namespace NetGore.Graphics
         /// <param name="camera">Camera that describes the current view.</param>
         /// <param name="mapSize">Size of the map to draw to.</param>
         /// <param name="spriteSize">Size to draw the sprite.</param>
-        public virtual void Draw(SpriteBatch spriteBatch, Camera2D camera, Vector2 mapSize, Vector2 spriteSize)
+        public virtual void Draw(SpriteBatch spriteBatch, ICamera2D camera, Vector2 mapSize, Vector2 spriteSize)
         {
             if (Sprite == null)
                 return;
@@ -208,7 +208,7 @@ namespace NetGore.Graphics
         /// <param name="camera">Camera that describes the current view.</param>
         /// <param name="spriteSize">Size of the Sprite that will be drawn.</param>
         /// <returns>The map position of the image using the given <paramref name="camera"/>.</returns>
-        public Vector2 GetPosition(Vector2 mapSize, Camera2D camera, Vector2 spriteSize)
+        public Vector2 GetPosition(Vector2 mapSize, ICamera2D camera, Vector2 spriteSize)
         {
             // Can't draw a sprite that has no size...
             if (spriteSize == Vector2.Zero)
@@ -241,7 +241,7 @@ namespace NetGore.Graphics
         /// <param name="mapSize">Size of the map that this image is on.</param>
         /// <param name="camera">Camera that describes the current view.</param>
         /// <returns>The map position of the image using the given <paramref name="camera"/>.</returns>
-        public Vector2 GetPosition(Vector2 mapSize, Camera2D camera)
+        public Vector2 GetPosition(Vector2 mapSize, ICamera2D camera)
         {
             return GetPosition(mapSize, camera, SpriteSourceSize);
         }

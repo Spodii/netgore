@@ -333,7 +333,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// When overriddeni n the derived class, allows for additional processing on Entities removed from the map.
+        /// When overridden in the derived class, allows for additional processing on Entities removed from the map.
         /// This is called after the Entity has finished being removed from the map.
         /// </summary>
         /// <param name="entity">Entity that was removed from the map.</param>

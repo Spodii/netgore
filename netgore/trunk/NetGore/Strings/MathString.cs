@@ -118,43 +118,43 @@ namespace NetGore
             while ((match = _multPar.Match(text)).Success)
             {
                 // Grab the matched value
-                string n = match.Value;
+                string mv = match.Value;
 
                 // Replace the operations as needed
-                n = n.Replace("(", "*(");
-                n = n.Replace(")", ")*");
+                mv = mv.Replace("(", "*(");
+                mv = mv.Replace(")", ")*");
 
                 // Remove the old text and insert the new
                 text = text.Remove(match.Index, match.Length);
-                text = text.Insert(match.Index, n);
+                text = text.Insert(match.Index, mv);
             }
 
             // Replace minus negative with plus
             while ((match = _repMinusMinus.Match(text)).Success)
             {
                 // Grab the matched value
-                string n = match.Value;
+                string mv = match.Value;
 
                 // Replace the operations as needed
-                n = n.Replace("--", "+");
+                mv = mv.Replace("--", "+");
 
                 // Remove the old text and insert the new
                 text = text.Remove(match.Index, match.Length);
-                text = text.Insert(match.Index, n);
+                text = text.Insert(match.Index, mv);
             }
 
             // Replace subtraction with "plus-negative"
             while ((match = _repSub.Match(text)).Success)
             {
                 // Grab the matched value
-                string n = match.Value;
+                string mv = match.Value;
 
                 // Replace the operations as needed
-                n = n.Replace("-", "+-");
+                mv = mv.Replace("-", "+-");
 
                 // Remove the old text and insert the new
                 text = text.Remove(match.Index, match.Length);
-                text = text.Insert(match.Index, n);
+                text = text.Insert(match.Index, mv);
             }
 
             return ParseSubString(text, null);

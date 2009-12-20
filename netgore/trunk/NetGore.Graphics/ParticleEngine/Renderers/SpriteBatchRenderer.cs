@@ -36,7 +36,7 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
-        void BeginSpriteBatch(Camera2D camera)
+        void BeginSpriteBatch(ICamera2D camera)
         {
             var blendMode = StartingBlendMode == SpriteBlendMode.Additive ? SpriteBlendMode.AlphaBlend : SpriteBlendMode.Additive;
             var matrix = camera.Matrix;
@@ -54,12 +54,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// When overridden in the derived class, handles rendering the <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> describing the world view.</param>
         /// <param name="additiveEmitters">The valid <see cref="ParticleEmitter"/>s where
         /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.Additive"/>.</param>
         /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
         /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
-        protected override void InternalRenderEmitter(Camera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
+        protected override void InternalRenderEmitter(ICamera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
                                                       IEnumerable<ParticleEmitter> alphaEmitters)
         {
             IEnumerable<ParticleEmitter> first;

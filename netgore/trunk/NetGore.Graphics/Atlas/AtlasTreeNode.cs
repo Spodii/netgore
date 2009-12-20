@@ -119,7 +119,7 @@ namespace NetGore.Graphics
                 if (w == Rect.Width && h == Rect.Height)
                     return this;
 
-                // Not a perfect fit, split the n up into new nodes
+                // Not a perfect fit, split the node up into new nodes
                 int diffW = Rect.Width - w;
                 int diffH = Rect.Height - h;
 
@@ -140,7 +140,7 @@ namespace NetGore.Graphics
                 // Insert the rectangle first new child
                 var node = Left.Insert(w, h, atlasItem);
 
-                // If the insert is a perfect fit, drop the n from the tree to prevent checking it again
+                // If the insert is a perfect fit, drop the node from the tree to prevent checking it again
                 if (diffW == 0 || diffH == 0)
                     Left = null;
 

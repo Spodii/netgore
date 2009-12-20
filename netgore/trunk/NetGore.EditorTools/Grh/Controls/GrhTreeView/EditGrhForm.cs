@@ -27,7 +27,7 @@ namespace NetGore.EditorTools
         /// </summary>
         static readonly char DirSep = Path.DirectorySeparatorChar;
 
-        readonly Camera2D _camera;
+        readonly ICamera2D _camera;
 
         readonly CreateWallEntityHandler _createWall;
         readonly GrhData _gd;
@@ -84,7 +84,7 @@ namespace NetGore.EditorTools
             ShowGrhInfo();
         }
 
-        public Camera2D Camera
+        public ICamera2D Camera
         {
             get { return _camera; }
         }

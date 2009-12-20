@@ -263,9 +263,9 @@ namespace NetGore.EditorTools
         #region IMapItemListBox Members
 
         /// <summary>
-        /// Gets or sets the Camera2D used to view the Map.
+        /// Gets or sets the <see cref="ICamera2D"/> used to view the Map.
         /// </summary>
-        public Camera2D Camera { get; set; }
+        public ICamera2D Camera { get; set; }
 
         /// <summary>
         /// Gets or sets the IMap containing the objects being handled.

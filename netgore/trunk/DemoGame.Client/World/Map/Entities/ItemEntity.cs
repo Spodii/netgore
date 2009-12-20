@@ -223,11 +223,13 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Checks if in view of the specified camera
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
         /// </summary>
-        /// <param name="camera">Camera to check if in view of</param>
-        /// <returns>True if in view of the camera, else false</returns>
-        public bool InView(Camera2D camera)
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>
+        /// True if the object is in view of the camera, else False.
+        /// </returns>
+        public bool InView(ICamera2D camera)
         {
             return camera.InView(this);
         }

@@ -17,8 +17,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Renders the <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <param name="camera">the <see cref="Camera2D"/> describing the world view.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> describing the world view.</param>
         /// <param name="emitters">The <see cref="ParticleEmitter"/>s to render.</param>
-        void Draw(Camera2D camera, IEnumerable<ParticleEmitter> emitters);
+        void Draw(ICamera2D camera, IEnumerable<ParticleEmitter> emitters);
     }
 }

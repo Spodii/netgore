@@ -10,7 +10,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Describes a camera for a 2D world.
     /// </summary>
-    public class Camera2D
+    public class Camera2D : ICamera2D
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         bool _keepInMap = true;
@@ -49,7 +49,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the coordinate of the center of the Camera's view port.
+        /// Gets the coordinate of the center of the <see cref="ICamera2D"/>'s view port.
         /// </summary>
         public Vector2 Center
         {
@@ -58,7 +58,7 @@ namespace NetGore.Graphics
 
         /// <summary>
         /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
-        /// outside of the range of the map.
+        /// outside of the range of the map. Only valid if <see cref="ICamera2D.Map"/> is not null.
         /// </summary>
         public bool KeepInMap
         {
@@ -74,7 +74,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the map that this camera is viewing. If null, KeepInMap will not be able to work.
+        /// Gets or sets the map that this camera is viewing.
         /// </summary>
         public IMap Map
         {
@@ -88,7 +88,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the transformation matrix to be used on the SpriteBatch.Begin call.
+        /// Gets a transformation matrix used to transform coordinates to respect the camera's settings.
         /// </summary>
         public Matrix Matrix
         {
@@ -96,7 +96,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the coordinates of the bottom-right corner of the camera.
+        /// Gets the coordinates of the bottom-right corner of the camera's visible area.
         /// </summary>
         public Vector2 Max
         {
@@ -104,7 +104,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the coordinates of the center of the top-left corner of the camera.
+        /// Gets or sets the coordinates of the center of the top-left corner of the camera's visible area.
         /// </summary>
         public Vector2 Min
         {
@@ -122,7 +122,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the camera rotation magnitude in radians.
+        /// Gets or sets the camera's rotation magnitude in radians.
         /// </summary>
         public float Rotation
         {
@@ -140,7 +140,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the camera scale percent (1 = 100% = normal).
+        /// Gets or sets the camera scale percent where 1 equals 100%, or no scaling.
         /// </summary>
         public float Scale
         {
@@ -158,7 +158,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the size of the camera's view area.
+        /// Gets or sets the size of the camera's view area in pixels.
         /// </summary>
         public Vector2 Size
         {
@@ -167,46 +167,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the top-left X coordinate of the camera position.
-        /// </summary>
-        public float X
-        {
-            get { return _min.X; }
-            set
-            {
-                // Check that the value is different
-                if (_min.X == value)
-                    return;
-
-                // Update the value and the matrix
-                _min.X = value;
-                UpdateMatrix();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the top-left Y coordinate of the camera position.
-        /// </summary>
-        public float Y
-        {
-            get { return _min.Y; }
-            set
-            {
-                // Check that the value is different
-                if (_min.Y == value)
-                    return;
-
-                // Update the value and the matrix
-                _min.Y = value;
-                UpdateMatrix();
-            }
-        }
-
-        /// <summary>
-        /// Centers the camera on an Entity so that the center of the Entity is at the center
+        /// Centers the camera on an <see cref="Entity"/> so that the center of the <see cref="Entity"/> is at the center
         /// of the camera.
         /// </summary>
-        /// <param name="entity">Entity to center on.</param>
+        /// <param name="entity">The <see cref="Entity"/> to center on.</param>
         public void CenterOn(Entity entity)
         {
             if (entity == null)
@@ -225,10 +189,19 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks if a specified object is in view of the camera
+        /// Moves the camera's position using the given <paramref name="offset"/>.
         /// </summary>
-        /// <param name="entity">Entity to check</param>
-        /// <returns>True if in the view area, else false</returns>
+        /// <param name="offset">The amount and direction to move the camera.</param>
+        public void Translate(Vector2 offset)
+        {
+            Min += offset;
+        }
+
+        /// <summary>
+        /// Checks if a specified object is in view of the camera.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to check.</param>
+        /// <returns>True if in the view area; otherwise false.</returns>
         public bool InView(Entity entity)
         {
             if (entity == null)
@@ -246,9 +219,9 @@ namespace NetGore.Graphics
         /// <summary>
         /// Checks if a specified object is in view of the camera.
         /// </summary>
-        /// <param name="grh">Grh to check.</param>
-        /// <param name="position">Position to draw the Grh at.</param>
-        /// <returns>True if in the view area, else false.</returns>
+        /// <param name="grh">The <see cref="Grh"/> to check.</param>
+        /// <param name="position">The position of the <see cref="Grh"/>.</param>
+        /// <returns>True if in the view area; otherwise false.</returns>
         public bool InView(Grh grh, Vector2 position)
         {
             if (grh == null)
@@ -365,6 +338,7 @@ namespace NetGore.Graphics
         /// <param name="origin">Point to zoom in on (the center of the view).</param>
         /// <param name="size">The original size of the camera view.</param>
         /// <param name="scale">Magnification scale in percent. Must be non-zero.</param>
+        /// <exception cref="ArgumentException"><paramref name="scale"/> is equal to 0.</exception>
         public void Zoom(Vector2 origin, Vector2 size, float scale)
         {
             Min = origin - size / (2f * scale);

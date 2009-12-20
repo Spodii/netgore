@@ -35,24 +35,24 @@ namespace NetGore.Graphics
         static Grh _joint = null;
 
         /// <summary>
-        /// Draws a skeleton
+        /// Draws a <see cref="Skeleton"/>.
         /// </summary>
-        /// <param name="skeleton">Skeleton to draw</param>
-        /// <param name="camera">Camera to use</param>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(Skeleton skeleton, Camera2D camera, SpriteBatch sb)
+        /// <param name="skeleton">The <see cref="Skeleton"/> to draw.</param>
+        /// <param name="camera">Camera to use.</param>
+        /// <param name="sb">The <see cref="SpriteBatch"/> to draw with.</param>
+        public void Draw(Skeleton skeleton, ICamera2D camera, SpriteBatch sb)
         {
             Draw(skeleton, camera, sb, null);
         }
 
         /// <summary>
-        /// Draws a skeleton
+        /// Draws a <see cref="Skeleton"/>.
         /// </summary>
-        /// <param name="skeleton">Skeleton to draw</param>
-        /// <param name="camera">Camera to use</param>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="selectedNode">SpriteBatch to draw to</param>
-        public void Draw(Skeleton skeleton, Camera2D camera, SpriteBatch sb, SkeletonNode selectedNode)
+        /// <param name="skeleton">The <see cref="Skeleton"/> to draw.</param>
+        /// <param name="camera">Camera to use.</param>
+        /// <param name="sb">The <see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="selectedNode">The <see cref="SkeletonNode"/> to draw as selected.</param>
+        public void Draw(Skeleton skeleton, ICamera2D camera, SpriteBatch sb, SkeletonNode selectedNode)
         {
             if (skeleton == null)
             {
@@ -61,7 +61,7 @@ namespace NetGore.Graphics
             }
             if (skeleton.RootNode == null)
             {
-                Debug.Fail("skeleton contains no root n.");
+                Debug.Fail("skeleton contains no root node.");
                 return;
             }
             if (sb == null)
@@ -108,9 +108,9 @@ namespace NetGore.Graphics
         /// <param name="camera">Camera to use</param>
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="selectedNode">SpriteBatch to draw to</param>
-        /// <param name="n">Current n being drawn</param>
+        /// <param name="node">Current node being drawn</param>
         /// <param name="colorIndex">Index of the color to use from the ColorList</param>
-        static void RecursiveDraw(Camera2D camera, SpriteBatch sb, SkeletonNode selectedNode, SkeletonNode node, int colorIndex)
+        static void RecursiveDraw(ICamera2D camera, SpriteBatch sb, SkeletonNode selectedNode, SkeletonNode node, int colorIndex)
         {
             // Find the color of the joint
             Color color = _colorList[colorIndex];

@@ -20,6 +20,9 @@ using Character=DemoGame.Client.Character;
 using Map=DemoGame.Client.Map;
 using World=DemoGame.Client.World;
 
+// ReSharper disable UnusedParameter.Local
+// ReSharper disable MemberCanBeMadeStatic.Local
+
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
 // LATER: Add more support for editing Grhs
@@ -63,7 +66,7 @@ namespace DemoGame.MapEditor
 
         readonly AddGrhCursor _addGrhCursor = new AddGrhCursor();
         readonly AddWallCursor _addWallCursor = new AddWallCursor();
-        readonly Camera2D _camera;
+        readonly ICamera2D _camera;
         readonly EntityCursor _entityCursor = new EntityCursor();
         readonly GrhCursor _grhCursor = new GrhCursor();
         readonly ScreenGrid _grid;
@@ -197,9 +200,9 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the camera used for the game screen
+        /// Gets the camera used for the game screen.
         /// </summary>
-        public Camera2D Camera
+        public ICamera2D Camera
         {
             get { return _camera; }
         }
@@ -1084,7 +1087,7 @@ namespace DemoGame.MapEditor
             _selTransBox = null;
         }
 
-        void treeGrhs_SelectGrh(object sender, GrhTreeViewEventArgs e)
+        void treeGrhs_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
             if (_selectedGrh.GrhData == null || e.GrhData.GrhIndex != _selectedGrh.GrhData.GrhIndex)
             {
