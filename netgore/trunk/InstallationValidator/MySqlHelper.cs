@@ -9,7 +9,7 @@ namespace InstallationValidator
     {
         public const string DbSqlFile = "db.sql";
 
-        public static readonly string DbSettingsFile = string.Format("DemoGame.ServerObjs{0}DbSettings.xml",
+        public static readonly string DbSettingsFile = string.Format("DemoGame.Server{0}DbSettings.xml",
                                                                      Path.DirectorySeparatorChar);
 
         public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema.bin", Path.DirectorySeparatorChar);
