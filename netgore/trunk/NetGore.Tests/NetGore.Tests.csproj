@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetGore\CommandLineSwitchHelperTests.cs" />
     <Compile Include="NetGore\MethodInfoHelperTests.cs" />
     <Compile Include="NetGore\RandomHelperTests.cs" />
     <Compile Include="NetGore\RandomHelperXnaTests.cs" />
