@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetGore\RandomHelperTests.cs" />
+    <Compile Include="NetGore\RandomHelperXnaTests.cs" />
     <Compile Include="NetGore\SpatialAggregateTests.cs" />
     <Compile Include="NetGore\Collections\DArrayTests.cs" />
     <Compile Include="NetGore\Collections\MeanStackTests.cs" />
