@@ -11,12 +11,12 @@ namespace NetGore
     public static class MethodInfoHelper
     {
         /// <summary>
-        /// Finds all instanced methods in the specified <paramref name="types"/> that contain the given <see cref="Attribute"/>
+        /// Finds all methods in the specified <paramref name="types"/> that contain the given <see cref="Attribute"/>
         /// specified by <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of <see cref="Attribute"/>.</typeparam>
         /// <param name="types">The class <see cref="Type"/>s to check the methods of.</param>
-        /// <returns>The <see cref="MethodInfo"/>s of the instanced methods from the given <paramref name="types"/>
+        /// <returns>The <see cref="MethodInfo"/>s of the methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
         public static IEnumerable<MethodInfo> FindMethodsWithAttribute<T>(IEnumerable<Type> types) where T : Attribute
         {
@@ -24,14 +24,14 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Finds all instanced methods in the specified <paramref name="types"/> that contain the given <see cref="Attribute"/>
+        /// Finds all methods in the specified <paramref name="types"/> that contain the given <see cref="Attribute"/>
         /// specified by <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of <see cref="Attribute"/>.</typeparam>
         /// <param name="types">The class <see cref="Type"/>s to check the methods of.</param>
         /// <param name="conditions">The additional conditions each method must pass in order to be included
         /// in the returned values.</param>
-        /// <returns>The <see cref="MethodInfo"/>s of the instanced methods from the given <paramref name="types"/>
+        /// <returns>The <see cref="MethodInfo"/>s of the methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
         public static IEnumerable<MethodInfo> FindMethodsWithAttribute<T>(IEnumerable<Type> types,
                                                                           Func<MethodInfo, bool> conditions) where T : Attribute
@@ -72,14 +72,58 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Finds all instanced methods for a collection of <see cref="Type"/>s.
+        /// Finds all instance methods in the specified <paramref name="types"/> that contain the given <see cref="Attribute"/>
+        /// specified by <typeparamref name="T"/>.
         /// </summary>
-        /// <param name="types">The <see cref="Type"/>s to find the instanced methods for.</param>
-        /// <returns>The <see cref="MethodInfo"/>s for the instanced methods in the given <paramref name="types"/>.</returns>
+        /// <typeparam name="T">The Type of <see cref="Attribute"/>.</typeparam>
+        /// <param name="types">The class <see cref="Type"/>s to check the methods of.</param>
+        /// <returns>The <see cref="MethodInfo"/>s of the instance methods from the given <paramref name="types"/>
+        /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
+        public static IEnumerable<MethodInfo> FindInstanceMethodsWithAttribute<T>(IEnumerable<Type> types) where T : Attribute
+        {
+            return FindInstanceMethodsWithAttribute<T>(types, x => true);
+        }
+
+        /// <summary>
+        /// Finds all instance methods in the specified <paramref name="types"/> that contain the given <see cref="Attribute"/>
+        /// specified by <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of <see cref="Attribute"/>.</typeparam>
+        /// <param name="types">The class <see cref="Type"/>s to check the methods of.</param>
+        /// <param name="conditions">The additional conditions each method must pass in order to be included
+        /// in the returned values.</param>
+        /// <returns>The <see cref="MethodInfo"/>s of the instance methods from the given <paramref name="types"/>
+        /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
+        public static IEnumerable<MethodInfo> FindInstanceMethodsWithAttribute<T>(IEnumerable<Type> types,
+                                                                                Func<MethodInfo, bool> conditions)
+            where T : Attribute
+        {
+            var internalConditions = new Func<MethodInfo, bool>(x => x.GetCustomAttributes(typeof(T), true).Length > 0);
+            return GetInstanceMethods(types).Where(x => internalConditions(x) && conditions(x));
+        }
+
+        /// <summary>
+        /// Finds all methods for a collection of <see cref="Type"/>s.
+        /// </summary>
+        /// <param name="types">The <see cref="Type"/>s to find the methods for.</param>
+        /// <returns>The <see cref="MethodInfo"/>s for the methods in the given <paramref name="types"/>.</returns>
         public static IEnumerable<MethodInfo> GetMethods(IEnumerable<Type> types)
         {
             const BindingFlags flags =
-                BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic |
+                BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic |
+                BindingFlags.Public;
+            return types.SelectMany(x => x.GetMethods(flags));
+        }
+
+        /// <summary>
+        /// Finds all methods for a collection of <see cref="Type"/>s.
+        /// </summary>
+        /// <param name="types">The <see cref="Type"/>s to find the methods for.</param>
+        /// <returns>The <see cref="MethodInfo"/>s for the methods in the given <paramref name="types"/>.</returns>
+        public static IEnumerable<MethodInfo> GetInstanceMethods(IEnumerable<Type> types)
+        {
+            const BindingFlags flags =
+                BindingFlags.Instance | BindingFlags.NonPublic |
                 BindingFlags.Public;
             return types.SelectMany(x => x.GetMethods(flags));
         }
@@ -87,7 +131,7 @@ namespace NetGore
         /// <summary>
         /// Finds all static methods for a collection of <see cref="Type"/>s.
         /// </summary>
-        /// <param name="types">The <see cref="Type"/>s to find the instanced methods for.</param>
+        /// <param name="types">The <see cref="Type"/>s to find the static methods for.</param>
         /// <returns>The <see cref="MethodInfo"/>s for the static methods in the given <paramref name="types"/>.</returns>
         public static IEnumerable<MethodInfo> GetStaticMethods(IEnumerable<Type> types)
         {
