@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 
@@ -50,11 +47,11 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void RandomVector2WithRangeTest()
+        public void RandomVector2WithRange2Test()
         {
             for (int i = 0; i < 50; i++)
             {
-                var value = RandomHelperXna.NextVector2(new Vector2(50, 100), new Vector2(150, 200));
+                var value = RandomHelperXna.NextVector2(50, 150, 100, 200);
                 Assert.GreaterOrEqual(value.X, 50.0f);
                 Assert.GreaterOrEqual(value.Y, 100.0f);
                 Assert.LessOrEqual(value.X, 150.0f);
@@ -63,11 +60,11 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void RandomVector2WithRange2Test()
+        public void RandomVector2WithRangeTest()
         {
             for (int i = 0; i < 50; i++)
             {
-                var value = RandomHelperXna.NextVector2(50, 150, 100, 200);
+                var value = RandomHelperXna.NextVector2(new Vector2(50, 100), new Vector2(150, 200));
                 Assert.GreaterOrEqual(value.X, 50.0f);
                 Assert.GreaterOrEqual(value.Y, 100.0f);
                 Assert.LessOrEqual(value.X, 150.0f);
