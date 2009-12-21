@@ -8,7 +8,7 @@ namespace NetGore
     /// </summary>
     public static class RandomHelper
     {
-        static readonly Random _rand = new Random(Environment.TickCount);
+        static readonly Random _rand = new Random();
 
         /// <summary>
         /// Chooses a random element in the given collection <paramref name="items"/>.
