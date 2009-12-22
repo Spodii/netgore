@@ -18,7 +18,7 @@ namespace DemoGame.MapEditor
             WinFormExceptionHelper.AddUnhandledExceptionHooks();
 #endif
 
-            GameSettings.Initialize();
+            EngineSettingsInitializer.Initialize();
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
 
             Application.EnableVisualStyles();

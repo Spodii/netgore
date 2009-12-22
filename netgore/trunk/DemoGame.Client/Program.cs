@@ -16,7 +16,7 @@ namespace DemoGame.Client
         {
             log.Info("Starting client...");
 
-            GameSettings.Initialize();
+            EngineSettingsInitializer.Initialize();
             ThreadAsserts.IsMainThread();
 
             using (var game = new DemoGame())
