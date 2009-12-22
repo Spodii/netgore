@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
-using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -144,26 +141,6 @@ namespace DemoGame.Client
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
             screenManager.MapContent.Unload();
-        }
-    }
-
-    /// <summary>
-    /// Main application entry point - does nothing more than start the primary class
-    /// </summary>
-    static class Program
-    {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        static void Main()
-        {
-            log.Info("Starting client...");
-
-            ThreadAsserts.IsMainThread();
-
-            using (var game = new DemoGame())
-            {
-                game.Run();
-            }
         }
     }
 }

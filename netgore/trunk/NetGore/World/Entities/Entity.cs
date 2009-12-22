@@ -39,15 +39,28 @@ namespace NetGore
         public event EntityEventHandler<Vector2> OnResize;
 
         /// <summary>
-        /// Entity constructor
+        /// Initializes a new instance of the <see cref="Entity"/> class.
         /// </summary>
         protected Entity()
         {
             CB = new CollisionBox(Vector2.Zero, 1.0f, 1.0f);
         }
 
+        static readonly Vector2 _gravity;
+        static readonly Vector2 _maxVelocity;
+
         /// <summary>
-        /// Entity constructor
+        /// Initializes the <see cref="Entity"/> class.
+        /// </summary>
+        static Entity()
+        {
+            // Cache the settings
+            _gravity = EngineSettings.Instance.Gravity;
+            _maxVelocity = EngineSettings.Instance.MaxVelocity;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Entity"/> class.
         /// </summary>
         /// <param name="position">Initial position of the entity</param>
         /// <param name="size">Initial size of the entity</param>
@@ -399,18 +412,19 @@ namespace NetGore
                 return;
 
             // Increase the velocity by the gravity
-            _velocity += WorldSettings.Gravity * (Weight * deltaTime);
+            Vector2 displacement = _gravity * (Weight * deltaTime);
+            Vector2.Add(ref _velocity, ref displacement, out _velocity);
 
             // Check for surpassing the maximum velocity
-            if (_velocity.X > WorldSettings.MaxVelocity.X)
-                _velocity.X = WorldSettings.MaxVelocity.X;
-            else if (_velocity.X < -WorldSettings.MaxVelocity.X)
-                _velocity.X = -WorldSettings.MaxVelocity.X;
+            if (_velocity.X > _maxVelocity.X)
+                _velocity.X = _maxVelocity.X;
+            else if (_velocity.X < -_maxVelocity.X)
+                _velocity.X = -_maxVelocity.X;
 
-            if (_velocity.Y > WorldSettings.MaxVelocity.Y)
-                _velocity.Y = WorldSettings.MaxVelocity.Y;
-            else if (_velocity.Y < -WorldSettings.MaxVelocity.Y)
-                _velocity.Y = -WorldSettings.MaxVelocity.Y;
+            if (_velocity.Y > _maxVelocity.Y)
+                _velocity.Y = _maxVelocity.Y;
+            else if (_velocity.Y < -_maxVelocity.Y)
+                _velocity.Y = -_maxVelocity.Y;
 
             // Move according to the velocity
             Move(_velocity * deltaTime);

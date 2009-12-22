@@ -36,6 +36,7 @@ namespace DemoGame.Server
         static void Main()
         {
             log.Info("Loading server...");
+            GameSettings.Initialize();
 
             ThreadAsserts.IsMainThread();
 
