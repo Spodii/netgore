@@ -32,7 +32,7 @@ namespace DemoGame.NPCChatEditor
             WinFormExceptionHelper.AddUnhandledExceptionHooks();
 #endif
 
-            GameSettings.Initialize();
+            EngineSettingsInitializer.Initialize();
             ForceLoadServerAssembly();
 
             Application.EnableVisualStyles();

@@ -7,26 +7,24 @@ using NetGore;
 
 namespace DemoGame
 {
-    public class GameSettings : EngineSettings
+    /// <summary>
+    /// Provides a clean way to initialize the <see cref="EngineSettings"/>.
+    /// </summary>
+    public class EngineSettingsInitializer : EngineSettings
     {
-        static readonly GameSettings _instance;
+        static readonly EngineSettingsInitializer _instance;
 
         /// <summary>
-        /// Gets the <see cref="GameSettings"/> instance.
+        /// Initializes the <see cref="EngineSettingsInitializer"/> class.
         /// </summary>
-        new public static GameSettings Instance { get { return _instance; } }
-
-        /// <summary>
-        /// Initializes the <see cref="GameSettings"/> class.
-        /// </summary>
-        static GameSettings()
+        static EngineSettingsInitializer()
         {
-            _instance = new GameSettings();
+            _instance = new EngineSettingsInitializer();
             Initialize(_instance);
         }
 
         /// <summary>
-        /// Initializes the <see cref="GameSettings"/> instance. This can be called any number of times, but must
+        /// Initializes the <see cref="EngineSettings"/>. This can be called any number of times, but must
         /// be called at least once before the engine components are utilized.
         /// </summary>
         public static void Initialize()
@@ -37,9 +35,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameSettings"/> class.
+        /// Initializes a new instance of the <see cref="EngineSettingsInitializer"/> class.
         /// </summary>
-        GameSettings() : base(new Vector2(0f, 0.0009f), new Vector2(1f, 1f))
+        EngineSettingsInitializer()
+            : base(new Vector2(0f, 0.0009f), new Vector2(1f, 1f))
         {
         }
     }
