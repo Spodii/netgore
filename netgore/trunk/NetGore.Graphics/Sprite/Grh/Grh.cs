@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Assists in drawing a graphic based on the GrhData
+    /// Provides an instance of a single sprite defined by a <see cref="GrhData"/>.
     /// </summary>
     public class Grh : ISprite
     {

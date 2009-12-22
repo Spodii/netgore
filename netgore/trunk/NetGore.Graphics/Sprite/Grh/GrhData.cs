@@ -12,7 +12,7 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Holds information representing how a Grh is displayed and functions
+    /// Holds information representing how a <see cref="Grh"/> is displayed and behaves.
     /// </summary>
     public class GrhData : ITextureAtlasable
     {
