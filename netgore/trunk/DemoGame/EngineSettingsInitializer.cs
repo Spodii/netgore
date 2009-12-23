@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -24,6 +21,13 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EngineSettingsInitializer"/> class.
+        /// </summary>
+        EngineSettingsInitializer() : base(new Vector2(0f, 0.0009f), new Vector2(1f, 1f))
+        {
+        }
+
+        /// <summary>
         /// Initializes the <see cref="EngineSettings"/>. This can be called any number of times, but must
         /// be called at least once before the engine components are utilized.
         /// </summary>
@@ -32,14 +36,6 @@ namespace DemoGame
             // This method is empty, but it still initializes the GameSettings. When this method is called,
             // it will force the static GameSettings constructor to be called, which will handle the actual
             // initialization. We just need this method to perform the initial invoke to get things rolling.
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EngineSettingsInitializer"/> class.
-        /// </summary>
-        EngineSettingsInitializer()
-            : base(new Vector2(0f, 0.0009f), new Vector2(1f, 1f))
-        {
         }
     }
 }

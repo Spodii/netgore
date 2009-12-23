@@ -41,12 +41,6 @@ namespace NetGore
             return new Color(r, g, b, a);
         }
 
-        public static TextureAssetName ReadTextureAssetName(this IValueReader reader, string name)
-        {
-            string s = reader.ReadString(name);
-            return new TextureAssetName(s);
-        }
-
         public static ContentAssetName ReadContentAssetName(this IValueReader reader, string name)
         {
             string s = reader.ReadString(name);
@@ -104,6 +98,12 @@ namespace NetGore
         {
             string s = reader.ReadString(name);
             return new SpriteTitle(s);
+        }
+
+        public static TextureAssetName ReadTextureAssetName(this IValueReader reader, string name)
+        {
+            string s = reader.ReadString(name);
+            return new TextureAssetName(s);
         }
 
         /// <summary>

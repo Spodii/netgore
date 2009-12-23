@@ -34,7 +34,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
         /// </summary>
-        public Character() : base(Vector2.Zero,Vector2.One)
+        public Character() : base(Vector2.Zero, Vector2.One)
         {
         }
 

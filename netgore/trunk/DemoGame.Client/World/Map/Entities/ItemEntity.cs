@@ -39,8 +39,7 @@ namespace DemoGame.Client
             remove { }
         }
 
-        public ItemEntity()
-            : base(Vector2.Zero, Vector2.Zero)
+        public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
             _grh = new Grh(null);
         }
