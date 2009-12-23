@@ -390,7 +390,6 @@ namespace NetGore.Graphics
             return sNewTitle;
         }
 
-
         /// <summary>
         /// Loads the <see cref="GrhData"/>s. This must be called before trying to access or use any
         /// <see cref="GrhData"/>s.

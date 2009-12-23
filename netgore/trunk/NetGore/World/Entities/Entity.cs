@@ -11,6 +11,8 @@ namespace NetGore
     /// </summary>
     public abstract class Entity : IDisposable
     {
+        static readonly Vector2 _gravity;
+        static readonly Vector2 _maxVelocity;
         readonly CollisionBox _collisionBox;
         CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
@@ -39,16 +41,6 @@ namespace NetGore
         public event EntityEventHandler<Vector2> OnResize;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Entity"/> class.
-        /// </summary>
-        protected Entity() : this(Vector2.Zero, Vector2.One)
-        {
-        }
-
-        static readonly Vector2 _gravity;
-        static readonly Vector2 _maxVelocity;
-
-        /// <summary>
         /// Initializes the <see cref="Entity"/> class.
         /// </summary>
         static Entity()
@@ -56,6 +48,13 @@ namespace NetGore
             // Cache the settings
             _gravity = EngineSettings.Instance.Gravity;
             _maxVelocity = EngineSettings.Instance.MaxVelocity;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Entity"/> class.
+        /// </summary>
+        protected Entity() : this(Vector2.Zero, Vector2.One)
+        {
         }
 
         /// <summary>
@@ -122,10 +121,7 @@ namespace NetGore
         public bool OnGround
         {
             get { return _onGround; }
-            internal set
-            {
-                _onGround = value;
-            }
+            internal set { _onGround = value; }
         }
 
         /// <summary>

@@ -118,7 +118,8 @@ namespace NetGore.IO
             if (assetName.EndsWith(PathSeparator))
                 assetName = assetName.Substring(0, assetName.Length - 1);
 
-            if (assetName.Length > suffixLen && assetName.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
+            if (assetName.Length > suffixLen &&
+                assetName.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
                 assetName = assetName.Substring(0, assetName.Length - suffixLen);
 
             return assetName;

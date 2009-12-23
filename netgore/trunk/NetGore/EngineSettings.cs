@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -12,33 +10,41 @@ namespace NetGore
     /// </summary>
     public class EngineSettings
     {
+        static EngineSettings _instance;
         readonly Vector2 _gravity;
         readonly Vector2 _maxVelocity;
 
-        static EngineSettings _instance;
+        public EngineSettings(Vector2 gravity, Vector2 maxVelocity)
+        {
+            _gravity = gravity;
+            _maxVelocity = maxVelocity.Abs();
+        }
 
         /// <summary>
         /// Gets the amount of velocity added to an <see cref="Entity"/> every millisecond.
         /// </summary>
-        public Vector2 Gravity { get { return _gravity; } }
-
-        /// <summary>
-        /// Gets the maximum velocity allowed for an <see cref="Entity"/> in any direction. This will always
-        /// contain positive values.
-        /// </summary>
-        public Vector2 MaxVelocity { get { return _maxVelocity; } }
+        public Vector2 Gravity
+        {
+            get { return _gravity; }
+        }
 
         /// <summary>
         /// Gets the <see cref="EngineSettings"/> instance. This value will be null until it is set through
         /// <see cref="EngineSettings.Initialize"/>. After being set, this value is guaranteed to contain
         /// the same <see cref="EngineSettings"/> reference.
         /// </summary>
-        public static EngineSettings Instance { get { return _instance; } }
-
-        public EngineSettings(Vector2 gravity, Vector2 maxVelocity)
+        public static EngineSettings Instance
         {
-            _gravity = gravity;
-            _maxVelocity = maxVelocity.Abs();
+            get { return _instance; }
+        }
+
+        /// <summary>
+        /// Gets the maximum velocity allowed for an <see cref="Entity"/> in any direction. This will always
+        /// contain positive values.
+        /// </summary>
+        public Vector2 MaxVelocity
+        {
+            get { return _maxVelocity; }
         }
 
         /// <summary>
