@@ -11,6 +11,83 @@ namespace NetGore.Tests.NetGore.IO
     public class ContentAssetNameTests
     {
         [Test]
+        public void GetAbsoluteFilePathTest()
+        {
+            string s = new ContentAssetName("myasset").GetAbsoluteFilePath(ContentPaths.Build);
+            Assert.IsTrue(s.EndsWith("Content\\myasset.xnb", StringComparison.OrdinalIgnoreCase));
+        }
+
+        [Test]
+        public void GetAbsoluteFilePathSeparatorPrefixTest()
+        {
+            string s = new ContentAssetName("\\myasset").GetAbsoluteFilePath(ContentPaths.Build);
+            Assert.IsTrue(s.EndsWith("Content\\myasset.xnb", StringComparison.OrdinalIgnoreCase));
+        }
+
+        [Test]
+        public void GetAbsoluteFilePathAlternateSeparatorPrefixTest()
+        {
+            string s = new ContentAssetName("/myasset").GetAbsoluteFilePath(ContentPaths.Build);
+            Assert.IsTrue(s.EndsWith("Content\\myasset.xnb", StringComparison.OrdinalIgnoreCase));
+        }
+
+        [Test]
+        public void SanitizeSeparatorTest()
+        {
+            const string s = @"asdf\basdf\wer\asdf";
+            Assert.AreEqual(s.Replace("\\", ContentAssetName.PathSeparator), ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
+        public void SanitizePrefixedSeparatorTest()
+        {
+            const string s = @"\asdf";
+            Assert.AreEqual("asdf", ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
+        public void SanitizePrefixedAlternateSeparatorTest()
+        {
+            const string s = @"/asdf";
+            Assert.AreEqual("asdf", ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
+        public void SanitizeSuffixedSeparatorTest()
+        {
+            const string s = @"asdf\";
+            Assert.AreEqual("asdf", ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
+        public void SanitizeSuffixedAlternateSeparatorTest()
+        {
+            const string s = @"asdf/";
+            Assert.AreEqual("asdf", ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
+        public void SanitizePrefixedAndSuffixedSeparatorTest()
+        {
+            const string s = @"\asdf\";
+            Assert.AreEqual("asdf", ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
+        public void SanitizePrefixedAndSuffixedAlternateSeparatorTest()
+        {
+            const string s = @"/asdf/";
+            Assert.AreEqual("asdf", ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
+        public void SanitizeAlternateSeparatorTest()
+        {
+            const string s = @"asdf/basdf/wer/asdf";
+            Assert.AreEqual(s.Replace("/", ContentAssetName.PathSeparator), ContentAssetName.Sanitize(s));
+        }
+
+        [Test]
         public void FromAbsoluteFilePathTest()
         {
             ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent", @"C:\whatever\path\to");

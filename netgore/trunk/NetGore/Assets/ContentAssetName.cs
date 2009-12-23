@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace NetGore.IO
 {
@@ -69,14 +70,31 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets the absolute file path for the content asset.
+        /// </summary>
+        /// <param name="rootPath">The root content path.</param>
+        /// <returns>The absolute file path for the content asset.</returns>
+        public string GetAbsoluteFilePath(ContentPaths rootPath)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var rootPathStr = rootPath.Root.ToString();
+            sb.Append(rootPathStr);
+            if (!rootPathStr.EndsWith("/") && !rootPathStr.EndsWith("\\"))
+                sb.Append(PathSeparator);
+
+            sb.Append(GetFileName());
+            sb.Replace(PathSeparator, Path.DirectorySeparatorChar.ToString());
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Gets the relative file path and name for the content asset. This must still be prefixed by a path created
         /// with the <see cref="ContentPaths"/> to generate an absolute path.
         /// </summary>
         /// <returns>The relative file path and name for the content asset..</returns>
         public string GetFileName()
         {
-            // NOTE: !! Create unit tests
-
             return _assetName + "." + ContentPaths.CompiledContentSuffix;
         }
 
@@ -88,7 +106,8 @@ namespace NetGore.IO
         /// <returns>The sanitized asset name.</returns>
         public static string Sanitize(string assetName)
         {
-            // NOTE: !! Create unit tests
+            int suffixLen = 1 + ContentPaths.CompiledContentSuffix.Length;
+
             // Replace \\ with the proper character
             assetName = assetName.Replace("\\", PathSeparator);
 
@@ -98,6 +117,9 @@ namespace NetGore.IO
 
             if (assetName.EndsWith(PathSeparator))
                 assetName = assetName.Substring(0, assetName.Length - 1);
+
+            if (assetName.Length > suffixLen && assetName.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
+                assetName = assetName.Substring(0, assetName.Length - suffixLen);
 
             return assetName;
         }
