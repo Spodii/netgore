@@ -14,8 +14,6 @@ using NetGore.IO;
 using NetGore.Network;
 using NetGore.Scripting;
 
-// TODO: When an item stops moving, send the position again to ensure it is valid
-
 namespace DemoGame.Server
 {
     /// <summary>
