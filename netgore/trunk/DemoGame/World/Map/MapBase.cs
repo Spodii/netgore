@@ -249,8 +249,6 @@ namespace DemoGame
 
         void CheckCollisionAgainstEntities(Entity entity)
         {
-            // TODO: !! Find some way to optimize this to only return interesting entities
-
             // Get the entities we have a rectangular collision with
             var spatial = _dynamicEntitySpatial;
             var collisionSources = spatial.GetEntities<Entity>(entity);
