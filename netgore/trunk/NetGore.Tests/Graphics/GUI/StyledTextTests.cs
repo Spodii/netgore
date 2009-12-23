@@ -262,18 +262,21 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void ToMultilineMultiInputDifferentLineTest()
         {
-            // TODO: $$ Test using \r\n and make sure both chars are removed
             const string originalString1 = "one \ntwo";
             const string originalString2 = "three fou\nr";
+            const string originalString3 = "fi\r\nve";
             StyledText s1 = new StyledText(originalString1, Color.Black);
             StyledText s2 = new StyledText(originalString2, Color.Black);
-            var lines = StyledText.ToMultiline(new StyledText[] { s1, s2 }, true);
+            StyledText s3 = new StyledText(originalString3, Color.Black);
+            var lines = StyledText.ToMultiline(new StyledText[] { s1, s2, s3 }, true);
 
-            Assert.AreEqual(4, lines.Count);
+            Assert.AreEqual(6, lines.Count);
             Assert.AreEqual("one ", lines[0][0].Text);
             Assert.AreEqual("two", lines[1][0].Text);
             Assert.AreEqual("three fou", lines[2][0].Text);
             Assert.AreEqual("r", lines[3][0].Text);
+            Assert.AreEqual("fi", lines[4][0].Text);
+            Assert.AreEqual("ve", lines[5][0].Text);
 
             foreach (var l in lines)
             {
