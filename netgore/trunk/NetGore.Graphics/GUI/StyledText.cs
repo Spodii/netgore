@@ -632,11 +632,12 @@ namespace NetGore.Graphics.GUI
         /// <see cref="replacementString"/>.</returns>
         public StyledText ToSingleline(string replacementString)
         {
-            // TODO: Optimize this so that the same object returns if there is no replacements
             // TODO: Create unit test for this
             string newText = _text.Replace("\r\n", replacementString);
             if (newText.Length > 0)
                 newText = newText.Replace("\n", replacementString);
+            if (newText.Length > 0)
+                newText = newText.Replace("\r", replacementString);
 
             return new StyledText(newText, Color);
         }
