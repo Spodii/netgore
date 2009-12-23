@@ -16,7 +16,7 @@ namespace DemoGame
         /// <summary>
         /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
         /// </summary>
-        protected TeleportEntityBase()
+        protected TeleportEntityBase() : base(Vector2.Zero, Vector2.One)
         {
             Weight = 0f;
         }

@@ -144,10 +144,8 @@ namespace DemoGame.Server
             [SayCommand("CreateTestDamageTrap")]
             public void CreateTestDamageTrap()
             {
-                // NOTE: This is a temporary command
-                DamageTrapEntity trap = new DamageTrapEntity();
-                trap.Resize(new Vector2(64, 64));
-                trap.Teleport(User.Position);
+                // This is just a temporary test command...
+                DamageTrapEntity trap = new DamageTrapEntity(User.Position, new Vector2(64, 64));
                 User.Map.AddEntity(trap);
             }
 

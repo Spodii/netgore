@@ -72,7 +72,7 @@ namespace DemoGame.Server
         {
         }
 
-        public ItemEntity()
+        public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
             _id = IDCreator.GetNext();
         }

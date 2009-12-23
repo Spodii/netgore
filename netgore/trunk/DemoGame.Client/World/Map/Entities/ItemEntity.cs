@@ -25,10 +25,10 @@ namespace DemoGame.Client
         readonly Grh _grh;
 
         byte _amount = 1;
-        string _description;
-        string _name;
+        string _description = string.Empty;
+        string _name = string.Empty;
         ItemType _type;
-        int _value;
+        int _value = 0;
 
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up
@@ -40,33 +40,22 @@ namespace DemoGame.Client
         }
 
         public ItemEntity()
+            : base(Vector2.Zero, Vector2.Zero)
         {
             _grh = new Grh(null);
         }
 
         public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
-            // NOTE: Can I get rid of this constructor?
             _amount = amount;
-
-            _name = string.Empty;
-            _description = string.Empty;
-            _value = 0;
-
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
         public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, int currentTime)
             : base(pos, size)
         {
-            // NOTE: Can I get rid of this constructor?
             MapEntityIndex = mapEntityIndex;
-
             _amount = 0;
-            _name = string.Empty;
-            _description = string.Empty;
-            _value = 0;
-
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 

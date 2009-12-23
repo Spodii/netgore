@@ -227,7 +227,7 @@ namespace DemoGame.Server
         /// <param name="world">World that the character belongs to.</param>
         /// <param name="isPersistent">If the Character's state is persistent. If true, Load() MUST be called
         /// at some point during the Character's constructor!</param>
-        protected Character(World world, bool isPersistent)
+        protected Character(World world, bool isPersistent) : base(Vector2.Zero, Vector2.One)
         {
             _world = world;
             _isPersistent = isPersistent;
@@ -922,7 +922,8 @@ namespace DemoGame.Server
             Alliance = _allianceManager[v.AllianceID];
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
             CharacterTemplateID = v.ID;
-            CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
+            Resize(new Vector2(BodyInfo.Width, BodyInfo.Height));
+
             _level = v.Level;
             _exp = v.Exp;
             _statPoints = v.StatPoints;
@@ -952,8 +953,8 @@ namespace DemoGame.Server
 
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
 
-            Vector2 position = new Vector2(v.X, v.Y);
-            CB = new CollisionBox(position, BodyInfo.Width, BodyInfo.Height);
+            Teleport(new Vector2(v.X, v.Y));
+            Resize(new Vector2(BodyInfo.Width, BodyInfo.Height));
 
             ((PersistentCharacterStatusEffects)StatusEffects).Load();
 
