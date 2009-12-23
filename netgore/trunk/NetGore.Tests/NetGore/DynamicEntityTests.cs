@@ -535,7 +535,7 @@ namespace NetGore.Tests.NetGore
 
         class DE : DynamicEntity
         {
-            public DE()
+            public DE() : base(Vector2.Zero, Vector2.One)
             {
                 A = true;
                 B = 5;

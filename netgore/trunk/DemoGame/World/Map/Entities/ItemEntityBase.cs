@@ -15,19 +15,11 @@ namespace DemoGame
         public const byte MaxStackSize = 99;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
+        /// Initializes a new instance of the <see cref="DynamicEntity"/> class.
         /// </summary>
-        /// <param name="pos">Position to place the item.</param>
-        /// <param name="size">Size of the item's CollisionBox.</param>
-        protected ItemEntityBase(Vector2 pos, Vector2 size)
-        {
-            CB = new CollisionBox(pos, size.X, size.Y);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
-        /// </summary>
-        protected ItemEntityBase()
+        /// <param name="position">The initial world position.</param>
+        /// <param name="size">The initial size.</param>
+        protected ItemEntityBase(Vector2 position, Vector2 size) : base(position, size)
         {
         }
 

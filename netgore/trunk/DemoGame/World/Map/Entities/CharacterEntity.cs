@@ -20,6 +20,15 @@ namespace DemoGame
         CharacterState _state = CharacterState.Idle;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
+        /// </summary>
+        /// <param name="position">The initial world position.</param>
+        /// <param name="size">The initial size.</param>
+        protected CharacterEntity(Vector2 position, Vector2 size) : base(position, size)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets (protected) the CharacterEntity's BodyInfo.
         /// </summary>
         public BodyInfo BodyInfo { get; protected set; }

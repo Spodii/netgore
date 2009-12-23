@@ -32,9 +32,9 @@ namespace DemoGame.Client
         SkeletonManager _skelManager;
 
         /// <summary>
-        /// Character constructor.
+        /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
         /// </summary>
-        protected Character()
+        public Character() : base(Vector2.Zero,Vector2.One)
         {
         }
 

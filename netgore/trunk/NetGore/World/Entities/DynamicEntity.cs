@@ -96,7 +96,9 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicEntity"/> class.
         /// </summary>
-        protected DynamicEntity()
+        /// <param name="position">The initial world position.</param>
+        /// <param name="size">The initial size.</param>
+        protected DynamicEntity(Vector2 position, Vector2 size) : base(position, size)
         {
             // Get the PropertySyncBases for this DynamicEntity instance
             // OrderBy() will make sure every PropertySync where SkipNetworkSync is true is at the end of the array

@@ -11,7 +11,7 @@ namespace NetGore
     /// </summary>
     public abstract class Entity : IDisposable
     {
-        CollisionBox _collisionBox;
+        readonly CollisionBox _collisionBox;
         CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
         bool _onGround = false;
@@ -41,9 +41,8 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="Entity"/> class.
         /// </summary>
-        protected Entity()
+        protected Entity() : this(Vector2.Zero, Vector2.One)
         {
-            CB = new CollisionBox(Vector2.Zero, 1.0f, 1.0f);
         }
 
         static readonly Vector2 _gravity;
@@ -62,25 +61,20 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="Entity"/> class.
         /// </summary>
-        /// <param name="position">Initial position of the entity</param>
-        /// <param name="size">Initial size of the entity</param>
+        /// <param name="position">The initial world position.</param>
+        /// <param name="size">The initial size.</param>
         protected Entity(Vector2 position, Vector2 size)
         {
-            CB = new CollisionBox(position, size.X, size.Y);
+            _collisionBox = new CollisionBox(position, size.X, size.Y);
         }
 
         /// <summary>
-        /// Gets or sets the collision box for the Entity.
+        /// Gets the <see cref="Entity"/>'s <see cref="CollisionBox"/> that describes the area they occupy.
         /// </summary>
         [Browsable(false)]
         public CollisionBox CB
         {
             get { return _collisionBox; }
-            set
-            {
-                // TODO: The setter on this should be private, and the CollisionBox object should never be changed.
-                _collisionBox = value;
-            }
         }
 
         /// <summary>
