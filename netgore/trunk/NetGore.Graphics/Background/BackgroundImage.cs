@@ -269,7 +269,7 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current game time.</param>
         public virtual void Update(int currentTime)
         {
-            // TODO: Sprite.Update(currentTime);
+            Sprite.Update(currentTime);
         }
 
         public virtual void Write(IValueWriter writer)
