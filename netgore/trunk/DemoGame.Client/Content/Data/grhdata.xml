@@ -8,10 +8,7 @@
         <Count>1</Count>
         <Item0>1</Item0>
       </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>Top-Left</Title>
-      </Category>
+      <Categorization>Map.Platform.Grass.Top-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Platform/Grass/Top-Left</Name>
@@ -24,10 +21,7 @@
         <Count>1</Count>
         <Item0>2</Item0>
       </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>Top-Mid</Title>
-      </Category>
+      <Categorization>Map.Platform.Grass.Top-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Platform/Grass/Top-Mid</Name>
@@ -40,10 +34,7 @@
         <Count>1</Count>
         <Item0>3</Item0>
       </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>Top-Right</Title>
-      </Category>
+      <Categorization>Map.Platform.Grass.Top-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Platform/Grass/Top-Right</Name>
@@ -56,10 +47,7 @@
         <Count>1</Count>
         <Item0>4</Item0>
       </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>Mid-Left</Title>
-      </Category>
+      <Categorization>Map.Platform.Grass.Mid-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Platform/Grass/Mid-Left</Name>
@@ -72,10 +60,7 @@
         <Count>1</Count>
         <Item0>5</Item0>
       </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>Mid-Mid</Title>
-      </Category>
+      <Categorization>Map.Platform.Grass.Mid-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Platform/Grass/Mid-Mid</Name>
@@ -88,10 +73,7 @@
         <Count>1</Count>
         <Item0>6</Item0>
       </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>Mid-Right</Title>
-      </Category>
+      <Categorization>Map.Platform.Grass.Mid-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Platform/Grass/Mid-Right</Name>
@@ -104,10 +86,7 @@
         <Count>1</Count>
         <Item0>7</Item0>
       </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>Bottom</Title>
-      </Category>
+      <Categorization>Map.Platform.Grass.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Platform/Grass/Bottom</Name>
@@ -120,10 +99,7 @@
         <Count>1</Count>
         <Item0>8</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Bottom</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Bottom</Name>
@@ -136,10 +112,7 @@
         <Count>1</Count>
         <Item0>9</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>BottomLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/BottomLeft</Name>
@@ -152,10 +125,7 @@
         <Count>1</Count>
         <Item0>10</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>BottomRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/BottomRight</Name>
@@ -168,10 +138,7 @@
         <Count>1</Count>
         <Item0>11</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Left</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Left</Name>
@@ -184,10 +151,7 @@
         <Count>1</Count>
         <Item0>12</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Right</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Right</Name>
@@ -200,10 +164,7 @@
         <Count>1</Count>
         <Item0>13</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Top</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Top</Name>
@@ -216,10 +177,7 @@
         <Count>1</Count>
         <Item0>14</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>TopLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/TopLeft</Name>
@@ -232,10 +190,7 @@
         <Count>1</Count>
         <Item0>15</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>TopRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/TopRight</Name>
@@ -248,10 +203,7 @@
         <Count>1</Count>
         <Item0>16</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Background</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Background</Name>
@@ -264,10 +216,7 @@
         <Count>1</Count>
         <Item0>17</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Bottom</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Bottom</Name>
@@ -280,10 +229,7 @@
         <Count>1</Count>
         <Item0>18</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>BottomLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/BottomLeft</Name>
@@ -296,10 +242,7 @@
         <Count>1</Count>
         <Item0>19</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>BottomRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/BottomRight</Name>
@@ -312,10 +255,7 @@
         <Count>1</Count>
         <Item0>20</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Left</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Left</Name>
@@ -328,10 +268,7 @@
         <Count>1</Count>
         <Item0>21</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Right</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Right</Name>
@@ -344,10 +281,7 @@
         <Count>1</Count>
         <Item0>22</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Top</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Top</Name>
@@ -360,10 +294,7 @@
         <Count>1</Count>
         <Item0>23</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>TopLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/TopLeft</Name>
@@ -376,10 +307,7 @@
         <Count>1</Count>
         <Item0>24</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>TopRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Form.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/TopRight</Name>
@@ -392,10 +320,7 @@
         <Count>1</Count>
         <Item0>25</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>Ticked</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.CheckBox.Ticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/CheckBox/Ticked</Name>
@@ -408,10 +333,7 @@
         <Count>1</Count>
         <Item0>26</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>TickedMouseOver</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.CheckBox.TickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/CheckBox/TickedMouseOver</Name>
@@ -424,10 +346,7 @@
         <Count>1</Count>
         <Item0>27</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>TickedPressed</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.CheckBox.TickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/CheckBox/TickedPressed</Name>
@@ -440,10 +359,7 @@
         <Count>1</Count>
         <Item0>28</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>Unticked</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.CheckBox.Unticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/CheckBox/Unticked</Name>
@@ -456,10 +372,7 @@
         <Count>1</Count>
         <Item0>29</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>UntickedMouseOver</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.CheckBox.UntickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/CheckBox/UntickedMouseOver</Name>
@@ -472,10 +385,7 @@
         <Count>1</Count>
         <Item0>30</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>UntickedPressed</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.CheckBox.UntickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/CheckBox/UntickedPressed</Name>
@@ -488,10 +398,7 @@
         <Count>1</Count>
         <Item0>31</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Background</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Background</Name>
@@ -504,10 +411,7 @@
         <Count>1</Count>
         <Item0>32</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Bottom</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Bottom</Name>
@@ -520,10 +424,7 @@
         <Count>1</Count>
         <Item0>33</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>BottomLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/BottomLeft</Name>
@@ -536,10 +437,7 @@
         <Count>1</Count>
         <Item0>34</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>BottomRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/BottomRight</Name>
@@ -552,10 +450,7 @@
         <Count>1</Count>
         <Item0>35</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Left</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Left</Name>
@@ -568,10 +463,7 @@
         <Count>1</Count>
         <Item0>36</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Right</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Right</Name>
@@ -584,10 +476,7 @@
         <Count>1</Count>
         <Item0>37</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Top</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Top</Name>
@@ -600,10 +489,7 @@
         <Count>1</Count>
         <Item0>38</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>TopLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/TopLeft</Name>
@@ -616,10 +502,7 @@
         <Count>1</Count>
         <Item0>39</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>TopRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/TopRight</Name>
@@ -632,10 +515,7 @@
         <Count>1</Count>
         <Item0>40</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Bottom</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Bottom</Name>
@@ -648,10 +528,7 @@
         <Count>1</Count>
         <Item0>41</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>BottomLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomLeft</Name>
@@ -664,10 +541,7 @@
         <Count>1</Count>
         <Item0>42</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>BottomRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomRight</Name>
@@ -680,10 +554,7 @@
         <Count>1</Count>
         <Item0>43</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Left</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Left</Name>
@@ -696,10 +567,7 @@
         <Count>1</Count>
         <Item0>44</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Right</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Right</Name>
@@ -712,10 +580,7 @@
         <Count>1</Count>
         <Item0>45</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Top</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Top</Name>
@@ -728,10 +593,7 @@
         <Count>1</Count>
         <Item0>46</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>TopLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/TopLeft</Name>
@@ -744,10 +606,7 @@
         <Count>1</Count>
         <Item0>47</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>TopRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/TopRight</Name>
@@ -760,10 +619,7 @@
         <Count>1</Count>
         <Item0>48</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Bottom</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Bottom</Name>
@@ -776,10 +632,7 @@
         <Count>1</Count>
         <Item0>49</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>BottomLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomLeft</Name>
@@ -792,10 +645,7 @@
         <Count>1</Count>
         <Item0>50</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>BottomRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomRight</Name>
@@ -808,10 +658,7 @@
         <Count>1</Count>
         <Item0>51</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Left</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Left</Name>
@@ -824,10 +671,7 @@
         <Count>1</Count>
         <Item0>52</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Right</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Right</Name>
@@ -840,10 +684,7 @@
         <Count>1</Count>
         <Item0>53</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Top</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Top</Name>
@@ -856,10 +697,7 @@
         <Count>1</Count>
         <Item0>54</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Center</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.Center</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Center</Name>
@@ -872,10 +710,7 @@
         <Count>1</Count>
         <Item0>55</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Background</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Background</Name>
@@ -888,10 +723,7 @@
         <Count>1</Count>
         <Item0>56</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Background</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Background</Name>
@@ -904,10 +736,7 @@
         <Count>1</Count>
         <Item0>57</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>TopLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopLeft</Name>
@@ -920,10 +749,7 @@
         <Count>1</Count>
         <Item0>58</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>TopRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopRight</Name>
@@ -936,10 +762,7 @@
         <Count>1</Count>
         <Item0>59</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Background</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.TextBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Background</Name>
@@ -952,10 +775,7 @@
         <Count>1</Count>
         <Item0>60</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>Bottom</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Bottom</Name>
@@ -968,10 +788,7 @@
         <Count>1</Count>
         <Item0>61</Item0>
       </Frames>
-      <Category>
-        <Name>System</Name>
-        <Title>Blank</Title>
-      </Category>
+      <Categorization>System.Blank</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/System/Blank</Name>
@@ -984,10 +801,7 @@
         <Count>1</Count>
         <Item0>62</Item0>
       </Frames>
-      <Category>
-        <Name>System</Name>
-        <Title>Joint</Title>
-      </Category>
+      <Categorization>System.Joint</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/System/Joint</Name>
@@ -1000,10 +814,7 @@
         <Count>1</Count>
         <Item0>63</Item0>
       </Frames>
-      <Category>
-        <Name>System</Name>
-        <Title>Triangle</Title>
-      </Category>
+      <Categorization>System.Triangle</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/System/Triangle</Name>
@@ -1016,10 +827,7 @@
         <Count>1</Count>
         <Item0>64</Item0>
       </Frames>
-      <Category>
-        <Name>System</Name>
-        <Title>Move</Title>
-      </Category>
+      <Categorization>System.Move</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/System/Move</Name>
@@ -1032,10 +840,7 @@
         <Count>1</Count>
         <Item0>65</Item0>
       </Frames>
-      <Category>
-        <Name>System</Name>
-        <Title>Resize</Title>
-      </Category>
+      <Categorization>System.Resize</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/System/Resize</Name>
@@ -1048,10 +853,7 @@
         <Count>1</Count>
         <Item0>66</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>ankh</Title>
-      </Category>
+      <Categorization>Particle.ankh</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/ankh</Name>
@@ -1064,10 +866,7 @@
         <Count>1</Count>
         <Item0>67</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>ball</Title>
-      </Category>
+      <Categorization>Particle.ball</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/ball</Name>
@@ -1080,10 +879,7 @@
         <Count>1</Count>
         <Item0>68</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>raindrop</Title>
-      </Category>
+      <Categorization>Particle.raindrop</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/raindrop</Name>
@@ -1096,10 +892,7 @@
         <Count>1</Count>
         <Item0>69</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>shield</Title>
-      </Category>
+      <Categorization>Particle.shield</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/shield</Name>
@@ -1112,10 +905,7 @@
         <Count>1</Count>
         <Item0>70</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>skull</Title>
-      </Category>
+      <Categorization>Particle.skull</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/skull</Name>
@@ -1128,10 +918,7 @@
         <Count>1</Count>
         <Item0>71</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>snow sharp</Title>
-      </Category>
+      <Categorization>Particle.snow sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/snow sharp</Name>
@@ -1144,10 +931,7 @@
         <Count>1</Count>
         <Item0>72</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>snow</Title>
-      </Category>
+      <Categorization>Particle.snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/snow</Name>
@@ -1160,10 +944,7 @@
         <Count>1</Count>
         <Item0>73</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>sparkle</Title>
-      </Category>
+      <Categorization>Particle.sparkle</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/sparkle</Name>
@@ -1176,10 +957,7 @@
         <Count>1</Count>
         <Item0>74</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>splatter</Title>
-      </Category>
+      <Categorization>Particle.splatter</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/splatter</Name>
@@ -1192,10 +970,7 @@
         <Count>1</Count>
         <Item0>75</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>star sharp</Title>
-      </Category>
+      <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/star sharp</Name>
@@ -1208,10 +983,7 @@
         <Count>1</Count>
         <Item0>76</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>star</Title>
-      </Category>
+      <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/star</Name>
@@ -1224,10 +996,7 @@
         <Count>1</Count>
         <Item0>77</Item0>
       </Frames>
-      <Category>
-        <Name>Particle</Name>
-        <Title>sword</Title>
-      </Category>
+      <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Particle/sword</Name>
@@ -1240,10 +1009,7 @@
         <Count>1</Count>
         <Item0>78</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>ArmLower</Title>
-      </Category>
+      <Categorization>Character.Naked.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/ArmLower</Name>
@@ -1256,10 +1022,7 @@
         <Count>1</Count>
         <Item0>79</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>ArmUpper</Title>
-      </Category>
+      <Categorization>Character.Naked.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/ArmUpper</Name>
@@ -1272,10 +1035,7 @@
         <Count>1</Count>
         <Item0>80</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>Head</Title>
-      </Category>
+      <Categorization>Character.Naked.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/Head</Name>
@@ -1288,10 +1048,7 @@
         <Count>1</Count>
         <Item0>81</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>LegLower</Title>
-      </Category>
+      <Categorization>Character.Naked.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/LegLower</Name>
@@ -1304,10 +1061,7 @@
         <Count>1</Count>
         <Item0>82</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>LegUpper</Title>
-      </Category>
+      <Categorization>Character.Naked.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/LegUpper</Name>
@@ -1320,10 +1074,7 @@
         <Count>1</Count>
         <Item0>83</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>Neck</Title>
-      </Category>
+      <Categorization>Character.Naked.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/Neck</Name>
@@ -1336,10 +1087,7 @@
         <Count>1</Count>
         <Item0>84</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>Shoe</Title>
-      </Category>
+      <Categorization>Character.Naked.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/Shoe</Name>
@@ -1352,10 +1100,7 @@
         <Count>1</Count>
         <Item0>85</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Naked</Name>
-        <Title>Torso</Title>
-      </Category>
+      <Categorization>Character.Naked.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Naked/Torso</Name>
@@ -1368,10 +1113,7 @@
         <Count>1</Count>
         <Item0>86</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>ArmLower</Title>
-      </Category>
+      <Categorization>Character.Crystal.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/ArmLower</Name>
@@ -1384,10 +1126,7 @@
         <Count>1</Count>
         <Item0>87</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>ArmUpper</Title>
-      </Category>
+      <Categorization>Character.Crystal.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/ArmUpper</Name>
@@ -1400,10 +1139,7 @@
         <Count>1</Count>
         <Item0>88</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>Head</Title>
-      </Category>
+      <Categorization>Character.Crystal.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/Head</Name>
@@ -1416,10 +1152,7 @@
         <Count>1</Count>
         <Item0>89</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>LegLower</Title>
-      </Category>
+      <Categorization>Character.Crystal.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/LegLower</Name>
@@ -1432,10 +1165,7 @@
         <Count>1</Count>
         <Item0>90</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>LegUpper</Title>
-      </Category>
+      <Categorization>Character.Crystal.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/LegUpper</Name>
@@ -1448,10 +1178,7 @@
         <Count>1</Count>
         <Item0>91</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>Neck</Title>
-      </Category>
+      <Categorization>Character.Crystal.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/Neck</Name>
@@ -1464,10 +1191,7 @@
         <Count>1</Count>
         <Item0>92</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>Shoe</Title>
-      </Category>
+      <Categorization>Character.Crystal.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/Shoe</Name>
@@ -1480,10 +1204,7 @@
         <Count>1</Count>
         <Item0>93</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Crystal</Name>
-        <Title>Torso</Title>
-      </Category>
+      <Categorization>Character.Crystal.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Crystal/Torso</Name>
@@ -1496,10 +1217,7 @@
         <Count>1</Count>
         <Item0>94</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Potion</Name>
-        <Title>blue</Title>
-      </Category>
+      <Categorization>Item.Potion.blue</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Potion/blue</Name>
@@ -1512,10 +1230,7 @@
         <Count>1</Count>
         <Item0>95</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Potion</Name>
-        <Title>red</Title>
-      </Category>
+      <Categorization>Item.Potion.red</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Potion/red</Name>
@@ -1528,10 +1243,7 @@
         <Count>1</Count>
         <Item0>96</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Melee</Name>
-        <Title>titaniumsword</Title>
-      </Category>
+      <Categorization>Item.Melee.titaniumsword</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Melee/titaniumsword</Name>
@@ -1544,10 +1256,7 @@
         <Count>1</Count>
         <Item0>97</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Head</Name>
-        <Title>crystal</Title>
-      </Category>
+      <Categorization>Item.Head.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Head/crystal</Name>
@@ -1560,10 +1269,7 @@
         <Count>1</Count>
         <Item0>98</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Feet</Name>
-        <Title>crystal</Title>
-      </Category>
+      <Categorization>Item.Feet.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Feet/crystal</Name>
@@ -1576,10 +1282,7 @@
         <Count>1</Count>
         <Item0>99</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Body</Name>
-        <Title>crystal</Title>
-      </Category>
+      <Categorization>Item.Body.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Body/crystal</Name>
@@ -1592,10 +1295,7 @@
         <Count>1</Count>
         <Item0>100</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Back</Name>
-        <Title>crystal</Title>
-      </Category>
+      <Categorization>Item.Back.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Back/crystal</Name>
@@ -1608,10 +1308,7 @@
         <Count>1</Count>
         <Item0>101</Item0>
       </Frames>
-      <Category>
-        <Name>GUI</Name>
-        <Title>addstat</Title>
-      </Category>
+      <Categorization>GUI.addstat</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/addstat</Name>
@@ -1624,10 +1321,7 @@
         <Count>1</Count>
         <Item0>102</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>BottomLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomLeft</Name>
@@ -1640,10 +1334,7 @@
         <Count>1</Count>
         <Item0>103</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>BottomRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomRight</Name>
@@ -1656,10 +1347,7 @@
         <Count>1</Count>
         <Item0>105</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>Left</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
@@ -1672,10 +1360,7 @@
         <Count>1</Count>
         <Item0>106</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>Right</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
@@ -1688,10 +1373,7 @@
         <Count>1</Count>
         <Item0>107</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>Top</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
@@ -1704,10 +1386,7 @@
         <Count>1</Count>
         <Item0>108</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>TopLeft</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</Name>
@@ -1720,10 +1399,7 @@
         <Count>1</Count>
         <Item0>109</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>TopRight</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopRight</Name>
@@ -1736,10 +1412,7 @@
         <Count>1</Count>
         <Item0>110</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.Chat Bubble</Name>
-        <Title>Background</Title>
-      </Category>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Background</Name>
@@ -1752,10 +1425,7 @@
         <Count>1</Count>
         <Item0>117</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>1</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/1</Name>
@@ -1768,10 +1438,7 @@
         <Count>1</Count>
         <Item0>118</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>2</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/2</Name>
@@ -1784,10 +1451,7 @@
         <Count>1</Count>
         <Item0>119</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>3</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/3</Name>
@@ -1800,10 +1464,7 @@
         <Count>1</Count>
         <Item0>120</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>4</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/4</Name>
@@ -1816,10 +1477,7 @@
         <Count>1</Count>
         <Item0>121</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>5</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.5</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/5</Name>
@@ -1832,10 +1490,7 @@
         <Count>1</Count>
         <Item0>122</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>6</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.6</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/6</Name>
@@ -1848,10 +1503,7 @@
         <Count>1</Count>
         <Item0>123</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>7</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.7</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/7</Name>
@@ -1864,10 +1516,7 @@
         <Count>1</Count>
         <Item0>124</Item0>
       </Frames>
-      <Category>
-        <Name>Effect._Teleport_frames_400</Name>
-        <Title>8</Title>
-      </Category>
+      <Categorization>Effect._Teleport_frames_400.8</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/8</Name>
@@ -1880,10 +1529,7 @@
         <Count>1</Count>
         <Item0>126</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Melee</Name>
-        <Title>TitaniumSword</Title>
-      </Category>
+      <Categorization>Item.Melee.TitaniumSword</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/item/melee/titaniumsword</Name>
@@ -1896,10 +1542,7 @@
         <Count>1</Count>
         <Item0>127</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Potion</Name>
-        <Title>Red</Title>
-      </Category>
+      <Categorization>Item.Potion.Red</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Potion/Red</Name>
@@ -1912,10 +1555,7 @@
         <Count>1</Count>
         <Item0>128</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Potion</Name>
-        <Title>Blue</Title>
-      </Category>
+      <Categorization>Item.Potion.Blue</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Potion/Blue</Name>
@@ -1928,10 +1568,7 @@
         <Count>1</Count>
         <Item0>129</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Back</Name>
-        <Title>Crystal</Title>
-      </Category>
+      <Categorization>Item.Back.Crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Back/Crystal</Name>
@@ -1944,10 +1581,7 @@
         <Count>1</Count>
         <Item0>130</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Body</Name>
-        <Title>Crystal</Title>
-      </Category>
+      <Categorization>Item.Body.Crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Body/Crystal</Name>
@@ -1960,10 +1594,7 @@
         <Count>1</Count>
         <Item0>131</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Feet</Name>
-        <Title>Crystal</Title>
-      </Category>
+      <Categorization>Item.Feet.Crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Feet/Crystal</Name>
@@ -1976,10 +1607,7 @@
         <Count>1</Count>
         <Item0>132</Item0>
       </Frames>
-      <Category>
-        <Name>Item.Head</Name>
-        <Title>Crystal</Title>
-      </Category>
+      <Categorization>Item.Head.Crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Item/Head/Crystal</Name>
@@ -1992,10 +1620,7 @@
         <Count>1</Count>
         <Item0>133</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Toolbar</Name>
-        <Title>Equipped</Title>
-      </Category>
+      <Categorization>GUI.Default.Toolbar.Equipped</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
@@ -2008,10 +1633,7 @@
         <Count>1</Count>
         <Item0>134</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Toolbar</Name>
-        <Title>Inventory</Title>
-      </Category>
+      <Categorization>GUI.Default.Toolbar.Inventory</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
@@ -2024,10 +1646,7 @@
         <Count>1</Count>
         <Item0>135</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Toolbar</Name>
-        <Title>Skills</Title>
-      </Category>
+      <Categorization>GUI.Default.Toolbar.Skills</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Toolbar/Skills</Name>
@@ -2040,10 +1659,7 @@
         <Count>1</Count>
         <Item0>136</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default</Name>
-        <Title>item_slot</Title>
-      </Category>
+      <Categorization>GUI.Default.item_slot</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/item_slot</Name>
@@ -2056,10 +1672,7 @@
         <Count>1</Count>
         <Item0>137</Item0>
       </Frames>
-      <Category>
-        <Name>Background</Name>
-        <Title>sky</Title>
-      </Category>
+      <Categorization>Background.sky</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Background/sky</Name>
@@ -2072,10 +1685,7 @@
         <Count>1</Count>
         <Item0>138</Item0>
       </Frames>
-      <Category>
-        <Name>Background.trees</Name>
-        <Title>dense</Title>
-      </Category>
+      <Categorization>Background.trees.dense</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Background/trees/dense</Name>
@@ -2088,10 +1698,7 @@
         <Count>1</Count>
         <Item0>139</Item0>
       </Frames>
-      <Category>
-        <Name>Background.trees</Name>
-        <Title>sparse</Title>
-      </Category>
+      <Categorization>Background.trees.sparse</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Background/trees/sparse</Name>
@@ -2104,10 +1711,7 @@
         <Count>1</Count>
         <Item0>140</Item0>
       </Frames>
-      <Category>
-        <Name>SkillIcon</Name>
-        <Title>heal</Title>
-      </Category>
+      <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/SkillIcon/heal</Name>
@@ -2120,10 +1724,7 @@
         <Count>1</Count>
         <Item0>141</Item0>
       </Frames>
-      <Category>
-        <Name>StatusIcon</Name>
-        <Title>strengthen</Title>
-      </Category>
+      <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/StatusIcon/strengthen</Name>
@@ -2136,10 +1737,7 @@
         <Count>1</Count>
         <Item0>142</Item0>
       </Frames>
-      <Category>
-        <Name>SkillIcon</Name>
-        <Title>strengthen</Title>
-      </Category>
+      <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/SkillIcon/strengthen</Name>
@@ -2152,10 +1750,7 @@
         <Count>1</Count>
         <Item0>143</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default</Name>
-        <Title>status icon border</Title>
-      </Category>
+      <Categorization>GUI.Default.status icon border</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/status icon border</Name>
@@ -2168,10 +1763,7 @@
         <Count>1</Count>
         <Item0>144</Item0>
       </Frames>
-      <Category>
-        <Name>GUI.Default.Toolbar</Name>
-        <Title>Stats</Title>
-      </Category>
+      <Categorization>GUI.Default.Toolbar.Stats</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Toolbar/Stats</Name>
@@ -2184,10 +1776,7 @@
         <Count>1</Count>
         <Item0>200</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>Head</Title>
-      </Category>
+      <Categorization>Character.Zombie.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/Head</Name>
@@ -2200,10 +1789,7 @@
         <Count>1</Count>
         <Item0>201</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>Neck</Title>
-      </Category>
+      <Categorization>Character.Zombie.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/Neck</Name>
@@ -2216,10 +1802,7 @@
         <Count>1</Count>
         <Item0>202</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>Torso</Title>
-      </Category>
+      <Categorization>Character.Zombie.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/Torso</Name>
@@ -2232,10 +1815,7 @@
         <Count>1</Count>
         <Item0>203</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>ArmUpper</Title>
-      </Category>
+      <Categorization>Character.Zombie.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/ArmUpper</Name>
@@ -2248,10 +1828,7 @@
         <Count>1</Count>
         <Item0>204</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>ArmLower</Title>
-      </Category>
+      <Categorization>Character.Zombie.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/ArmLower</Name>
@@ -2264,10 +1841,7 @@
         <Count>1</Count>
         <Item0>205</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>LegUpper</Title>
-      </Category>
+      <Categorization>Character.Zombie.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/LegUpper</Name>
@@ -2280,10 +1854,7 @@
         <Count>1</Count>
         <Item0>206</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>LegLower</Title>
-      </Category>
+      <Categorization>Character.Zombie.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/LegLower</Name>
@@ -2296,10 +1867,7 @@
         <Count>1</Count>
         <Item0>207</Item0>
       </Frames>
-      <Category>
-        <Name>Character.Zombie</Name>
-        <Title>Shoe</Title>
-      </Category>
+      <Categorization>Character.Zombie.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Character/Zombie/Shoe</Name>
@@ -2322,10 +1890,7 @@
         <Item6>123</Item6>
         <Item7>124</Item7>
       </Frames>
-      <Category>
-        <Name>Effect</Name>
-        <Title>Teleport</Title>
-      </Category>
+      <Categorization>Effect.Teleport</Categorization>
       <Speed>400</Speed>
     </Item0>
   </Animated>

@@ -18,9 +18,7 @@ namespace NetGore.Graphics
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _automaticSizeValueKey = "AutomaticSize";
-        const string _categoryNameValueKey = "Name";
-        const string _categoryNodeName = "Category";
-        const string _categoryTitleValueKey = "Title";
+        const string _categorizationValueKey = "Categorization";
         const string _framesNodeName = "Frames";
         const string _indexKey = "Index";
         const string _speedValueKey = "Speed";
@@ -345,7 +343,7 @@ namespace NetGore.Graphics
         /// <param name="source">A <see cref="Rectangle"/> describing the source area on the texture that
         /// this <see cref="GrhData"/> will draw.</param>
         /// <param name="categorization">Unique categorization.</param>
-        public void Load(ContentManager cm, GrhIndex grhIndex, string textureName, Rectangle source,
+        public void Load(ContentManager cm, GrhIndex grhIndex, TextureAssetName textureName, Rectangle source,
                          SpriteCategorization categorization)
         {
             if (cm == null)
@@ -412,10 +410,7 @@ namespace NetGore.Graphics
             GrhIndex grhIndex = r.ReadGrhIndex(_indexKey);
             var frames = r.ReadMany(_framesNodeName, ((reader, name) => reader.ReadGrhIndex(name)));
 
-            IValueReader categoryNodeReader = r.ReadNode(_categoryNodeName);
-            string categoryName = categoryNodeReader.ReadString(_categoryNameValueKey);
-            string categoryTitle = categoryNodeReader.ReadString(_categoryTitleValueKey);
-            var categorization = new SpriteCategorization(categoryName, categoryTitle);
+            var categorization = r.ReadSpriteCategorization(_categorizationValueKey);
 
             if (frames.Length <= 1)
             {
@@ -423,7 +418,7 @@ namespace NetGore.Graphics
                 bool automaticSize = r.ReadBool(_automaticSizeValueKey);
 
                 IValueReader textureNodeReader = r.ReadNode(_textureNodeName);
-                string textureName = textureNodeReader.ReadString(_textureNameValueKey);
+                var textureName = textureNodeReader.ReadTextureAssetName(_textureNameValueKey);
                 Rectangle source = textureNodeReader.ReadRectangle(_textureSourceValueKey);
 
                 Load(cm, grhIndex, textureName, source, categorization);
@@ -535,12 +530,7 @@ namespace NetGore.Graphics
             w.WriteMany(_framesNodeName, Frames.Select(x => x.GrhIndex).ToArray(), w.Write);
 
             // Category
-            w.WriteStartNode(_categoryNodeName);
-            {
-                w.Write(_categoryNameValueKey, Categorization.Category);
-                w.Write(_categoryTitleValueKey, Categorization.Title);
-            }
-            w.WriteEndNode(_categoryNodeName);
+            w.Write(_categorizationValueKey, Categorization);
 
             if (!IsAnimated)
             {

@@ -6,32 +6,26 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Defines an image that is either part of or all of a <see cref="Texture2D"/>.
+    /// Defines an image that is either part of or all of a <see cref="Texture2D"/>. This is intended as a very
+    /// basic, primitive alternative to a <see cref="Grh"/>.
     /// </summary>
     public class Sprite : ISprite
     {
-        /// <summary>
-        /// Source rectangle in the texture for the Sprite
-        /// </summary>
         Rectangle _source;
-
-        /// <summary>
-        /// Texture used by the Sprite
-        /// </summary>
         Texture2D _texture;
 
         /// <summary>
-        /// Notifies when the sprite's source has changed
+        /// Notifies listeners when the sprite's source has changed.
         /// </summary>
         public event EventHandler OnChangeSource;
 
         /// <summary>
-        /// Notifies when the texture has changed
+        /// Notifies listeners when the texture has changed.
         /// </summary>
         public event EventHandler OnChangeTexture;
 
         /// <summary>
-        /// Sprite constructor
+        /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
         public Sprite()
         {
@@ -41,8 +35,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
-        /// <param name="texture">Texture used by the Sprite</param>
-        /// <param name="source">Source rectangle in the texture for the Sprite</param>
+        /// <param name="texture">The texture used by the Sprite.</param>
+        /// <param name="source">Source rectangle in the texture for the Sprite.</param>
         public Sprite(Texture2D texture, Rectangle source)
         {
             if (texture == null)
@@ -141,7 +135,6 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the source rectangle of the sprite on the texture.
         /// </summary>
-        /// <value></value>
         public Rectangle Source
         {
             get { return _source; }
@@ -159,7 +152,6 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture containing the sprite.
         /// </summary>
-        /// <value></value>
         public Texture2D Texture
         {
             get { return _texture; }
