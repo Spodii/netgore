@@ -7,8 +7,6 @@ using System.Reflection;
 using log4net;
 using NetGore;
 
-// TODO: Should get rid of the stupid <T> on this...
-
 namespace DemoGame
 {
     /// <summary>

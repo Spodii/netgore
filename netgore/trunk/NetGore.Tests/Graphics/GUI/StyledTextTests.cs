@@ -10,6 +10,21 @@ namespace NetGore.Tests.Graphics.GUI
     public class StyledTextTests
     {
         [Test]
+        public void ToSingleLineTest()
+        {
+            StyledText a = new StyledText("abc\rdefg\r\nhij\r\nklm\nn");
+            Assert.AreEqual("abcdefghijklmn", a.ToSingleline().Text);
+        }
+
+
+        [Test]
+        public void ToSingleLineWithReplacementTest()
+        {
+            StyledText a = new StyledText("abc\rdefg\r\nhij\r\nklm\nn");
+            Assert.AreEqual("abcXdefgXhijXklmXn", a.ToSingleline("X").Text);
+        }
+
+        [Test]
         public void ConcastTestA()
         {
             StyledText s1 = new StyledText("abcd", Color.Black);
