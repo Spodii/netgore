@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
@@ -40,7 +41,7 @@ namespace NetGore.EditorTools
             string newTexture = NewTxt.Text;
             if (string.IsNullOrEmpty(newTexture))
                 return;
-            if (!GrhInfo.GrhTextureExists(newTexture))
+            if (!new ContentAssetName(newTexture).ContentExists())
                 return;
 
             // Find the selected item
@@ -144,11 +145,12 @@ namespace NetGore.EditorTools
         {
             string textureName = NewTxt.Text;
 
-            if (!string.IsNullOrEmpty(textureName) && GrhInfo.GrhTextureExists(NewTxt.Text))
+            var assetName = new ContentAssetName(NewTxt.Text);
+            if (!string.IsNullOrEmpty(textureName) && assetName.ContentExists())
             {
                 NewTxt.BackColor = EditorColors.Normal;
 
-                Texture2D texture = _cm.Load<Texture2D>("Grh/" + textureName);
+                Texture2D texture = _cm.Load<Texture2D>(assetName);
                 int w = texture.Width;
                 int h = texture.Height;
 

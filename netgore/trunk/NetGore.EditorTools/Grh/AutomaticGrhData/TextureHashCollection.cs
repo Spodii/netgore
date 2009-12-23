@@ -77,7 +77,8 @@ namespace NetGore.EditorTools
                 if (hashInfo != target && hashInfo.FileSize == target.FileSize && hashInfo.Hash == target.Hash)
                 {
                     string textureName = kvp.Key;
-                    if (GrhInfo.GrhTextureExists(textureName))
+                    var assetName = new ContentAssetName(textureName);
+                    if (assetName.ContentExists())
                         return textureName;
                 }
             }
@@ -171,7 +172,7 @@ namespace NetGore.EditorTools
             foreach (string file in files)
             {
                 // Get the current info
-                string textureName = GrhInfo.GrhTextureNameFromFile(file);
+                var textureName = new TextureAssetName(ContentAssetName.FromAbsoluteFilePath(file, _rootTextureDir).Value).Value;
                 HashInfo hashInfo = null;
                 if (Contains(textureName))
                     hashInfo = this[textureName];
