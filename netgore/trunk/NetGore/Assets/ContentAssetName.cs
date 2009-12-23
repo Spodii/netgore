@@ -55,8 +55,6 @@ namespace NetGore.IO
         /// <returns>The <see cref="ContentAssetName"/> from the <paramref name="filePath"/>.</returns>
         public static ContentAssetName FromAbsoluteFilePath(string filePath, string contentRoot)
         {
-            // NOTE: !! Create unit tests
-
             int start = contentRoot.Length;
             if (!contentRoot.EndsWith("/") && !contentRoot.EndsWith("\\") &&
                 !contentRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
