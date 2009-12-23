@@ -411,8 +411,6 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Starting server...");
 
-            var x = EngineSettings.Instance.MaxVelocity;
-
             // Create the console input buffer
             if (_consoleInputBuffer != null)
                 _consoleInputBuffer.Dispose();
