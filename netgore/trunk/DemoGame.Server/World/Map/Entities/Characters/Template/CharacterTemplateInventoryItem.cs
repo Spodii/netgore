@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 
@@ -7,7 +8,13 @@ namespace DemoGame.Server
     {
         public CharacterTemplateInventoryItem(IItemTemplateTable itemTemplate, byte min, byte max, ItemChance chance)
         {
-            // TODO: If Min > Max, swap the values, but also have a log error + debug fail
+            if (min > max)
+            {
+                var tmp = min;
+                min = max;
+                max = tmp;
+                Debug.Fail("min was less than max. Swapped to fix the problem, but could indicate a problem elsewhere.");
+            }
 
             ItemTemplate = itemTemplate;
             Min = min;
