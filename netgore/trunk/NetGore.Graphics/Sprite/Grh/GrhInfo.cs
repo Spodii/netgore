@@ -390,55 +390,6 @@ namespace NetGore.Graphics
             return sNewTitle;
         }
 
-        /// <summary>
-        /// Checks if the specified <see cref="GrhData"/> texture exists.
-        /// </summary>
-        /// <param name="textureName">Name of the <see cref="GrhData"/> texture to check.</param>
-        /// <returns>True if a texture with the specified <see cref="GrhData"/> texture exists.</returns>
-        public static bool GrhTextureExists(string textureName)
-        {
-            // TODO: Remove
-            if (string.IsNullOrEmpty(textureName))
-                throw new ArgumentNullException("textureName");
-
-            string filePath = GrhTextureNameToFile(textureName);
-
-            return File.Exists(filePath);
-        }
-
-        /// <summary>
-        /// Gets the texture name from the corresponding file.
-        /// </summary>
-        /// <param name="filePath">Path of the file to get the texture name for.</param>
-        /// <returns>The texture name from the corresponding file.</returns>
-        public static string GrhTextureNameFromFile(string filePath)
-        {
-            // TODO: Remove
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentNullException("filePath");
-
-            string grhsPath = ContentPaths.Build.Grhs;
-
-            // Trim off the start (absolute directory) and last 4 characters (file suffix: ".xnb")
-            string textureName = filePath.Substring(grhsPath.Length, filePath.Length - grhsPath.Length - 4);
-            textureName.Replace('\\', '/');
-            return textureName;
-        }
-
-        /// <summary>
-        /// Gets the file name for the corresponding Grh texture.
-        /// </summary>
-        /// <param name="textureName">Name of the Grh texture to get the file name for.</param>
-        /// <returns>The file name for the corresponding Grh texture.</returns>
-        public static string GrhTextureNameToFile(string textureName)
-        {
-            // TODO: Remove
-            if (string.IsNullOrEmpty(textureName))
-                throw new ArgumentNullException("textureName");
-
-            textureName = textureName.Replace('/', Path.DirectorySeparatorChar);
-            return ContentPaths.Build.Grhs.Join(textureName + ".xnb");
-        }
 
         /// <summary>
         /// Loads the <see cref="GrhData"/>s. This must be called before trying to access or use any

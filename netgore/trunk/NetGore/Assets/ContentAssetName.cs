@@ -62,9 +62,9 @@ namespace NetGore.IO
                 !contentRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 ++start;
 
-            int len = contentRoot.Length - start;
-            if (contentRoot.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
-                len -= 4;
+            int len = filePath.Length - start;
+            if (filePath.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
+                len -= 1 + ContentPaths.CompiledContentSuffix.Length;
 
             var substr = filePath.Substring(start, len);
             return new ContentAssetName(substr);
