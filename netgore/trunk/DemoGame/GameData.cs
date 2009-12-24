@@ -16,6 +16,14 @@ namespace DemoGame
         public const bool AllowMovementWhileChattingToNPC = false;
 
         /// <summary>
+        /// The velocity to assume all character movement animations are made at. That is, if the character is moving
+        /// with a velocity equal to this value, the animation will update at the usual speed. If it is twice as much
+        /// as this value, the character's animation will update twice as fast. This is to make the rate a character
+        /// moves proportionate to the rate their animation is moving.
+        /// </summary>
+        public const float AnimationSpeedModifier = 0.13f;
+
+        /// <summary>
         /// Maximum number of characters allowed in a single account.
         /// </summary>
         public const byte MaxCharactersPerAccount = 10;
