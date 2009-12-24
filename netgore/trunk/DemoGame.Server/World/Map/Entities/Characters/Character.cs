@@ -67,8 +67,6 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public const float CharacterMoveSpeed = 0.18f; // HACK: This is just a temporary const used until we have variable speeds.
-
         /// <summary>
         /// Amount of time the character must wait between attacks
         /// </summary>
@@ -466,6 +464,12 @@ namespace DemoGame.Server
                 Attack(c);
             }
         }
+
+        /// <summary>
+        /// Contains the cached value of the <see cref="Character.MoveSpeed"/>'s real movement velocity. This value
+        /// is automatically updated whenever the <see cref="Character.MoveSpeed"/> property changes.
+        /// </summary>
+        float _moveSpeedVelocityCache;
 
         /// <summary>
         /// Tries to attacks a specific target Character. The attack can fail if the target is an invalid
@@ -922,6 +926,7 @@ namespace DemoGame.Server
             Resize(new Vector2(BodyInfo.Width, BodyInfo.Height));
 
             _level = v.Level;
+            MoveSpeed = v.MoveSpeed;
             _exp = v.Exp;
             _statPoints = v.StatPoints;
 
@@ -941,12 +946,15 @@ namespace DemoGame.Server
             BaseStats.CopyValuesFrom(v.Stats, false);
         }
 
+        ushort _moveSpeed;
+
         void LoadFromQueryValues(ICharacterTable v)
         {
             Name = v.Name;
             _id = v.ID;
             _templateID = v.CharacterTemplateID;
             _accountID = v.AccountID;
+            MoveSpeed = v.MoveSpeed;
 
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
 
@@ -1035,7 +1043,7 @@ namespace DemoGame.Server
             if (IsMovingLeft)
                 return;
 
-            SetVelocity(new Vector2(-CharacterMoveSpeed, Velocity.Y));
+            SetVelocity(new Vector2(-_moveSpeedVelocityCache, Velocity.Y));
         }
 
         /// <summary>
@@ -1046,7 +1054,7 @@ namespace DemoGame.Server
             if (IsMovingRight)
                 return;
 
-            SetVelocity(new Vector2(CharacterMoveSpeed, Velocity.Y));
+            SetVelocity(new Vector2(_moveSpeedVelocityCache, Velocity.Y));
         }
 
         /// <summary>
@@ -1607,6 +1615,22 @@ namespace DemoGame.Server
             get { return Map.Index; }
         }
 
+        /// <summary>
+        /// Gets or sets the value of the database column `move_speed`.
+        /// </summary>
+        public ushort MoveSpeed
+        {
+            get { return _moveSpeed; }
+            set
+            {
+                _moveSpeed = value;
+                _moveSpeedVelocityCache = GameData.MovementSpeedToVelocity(_moveSpeed);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value of the database column `mp`.
+        /// </summary>
         public SPValueType MP
         {
             get { return _mp; }
