@@ -1038,7 +1038,7 @@ namespace DemoGame.Server
             if (IsMovingLeft)
                 return;
 
-            SetVelocity(Velocity + new Vector2(-CharacterMoveSpeed, 0.0f));
+            SetVelocity(new Vector2(-CharacterMoveSpeed, Velocity.Y));
         }
 
         /// <summary>
@@ -1049,7 +1049,7 @@ namespace DemoGame.Server
             if (IsMovingRight)
                 return;
 
-            SetVelocity(Velocity + new Vector2(CharacterMoveSpeed, 0.0f));
+            SetVelocity(new Vector2(CharacterMoveSpeed, Velocity.Y));
         }
 
         /// <summary>
