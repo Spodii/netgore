@@ -16,31 +16,6 @@ namespace DemoGame
         public const bool AllowMovementWhileChattingToNPC = false;
 
         /// <summary>
-        /// Converts the integer-based movement speed to a real velocity value.
-        /// </summary>
-        /// <param name="movementSpeed">The integer-based movement speed.</param>
-        /// <returns>The real velocity value for the given integer-based movement speed.</returns>
-        public static float MovementSpeedToVelocity(int movementSpeed)
-        {
-            return movementSpeed / 10000.0f;
-        }
-
-        /// <summary>
-        /// Converts a real velocity value to the integer-based movement speed.
-        /// </summary>
-        /// <param name="velocity">The real velocity value.</param>
-        /// <returns>The integer-based movement speed for the given real velocity value.</returns>
-        public static int VelocityToMovementSpeed(float velocity)
-        {
-            return (int)(velocity * 10000.0f);
-        }
-
-        /// <summary>
-        /// The maximum allowed integer-based movement speed.
-        /// </summary>
-        public const int MaxMovementSpeed = 10000;
-
-        /// <summary>
         /// The velocity to assume all character movement animations are made at. That is, if the character is moving
         /// with a velocity equal to this value, the animation will update at the usual speed. If it is twice as much
         /// as this value, the character's animation will update twice as fast. This is to make the rate a character
@@ -57,6 +32,11 @@ namespace DemoGame
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>
         public const int MaxClientSayLength = 255;
+
+        /// <summary>
+        /// The maximum allowed integer-based movement speed.
+        /// </summary>
+        public const int MaxMovementSpeed = 10000;
 
         /// <summary>
         /// Maximum length of each parameter string in the server's SendMessage.
@@ -194,6 +174,16 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Converts the integer-based movement speed to a real velocity value.
+        /// </summary>
+        /// <param name="movementSpeed">The integer-based movement speed.</param>
+        /// <returns>The real velocity value for the given integer-based movement speed.</returns>
+        public static float MovementSpeedToVelocity(int movementSpeed)
+        {
+            return movementSpeed / 10000.0f;
+        }
+
+        /// <summary>
         /// Gets the experience required for a given stat level.
         /// </summary>
         /// <param name="x">Stat level to check (current stat level).</param>
@@ -216,6 +206,16 @@ namespace DemoGame
             const float maxDistance = 200.0f;
             float dist = source.Position.QuickDistance(target.Position);
             return dist < maxDistance;
+        }
+
+        /// <summary>
+        /// Converts a real velocity value to the integer-based movement speed.
+        /// </summary>
+        /// <param name="velocity">The real velocity value.</param>
+        /// <returns>The integer-based movement speed for the given real velocity value.</returns>
+        public static int VelocityToMovementSpeed(float velocity)
+        {
+            return (int)(velocity * 10000.0f);
         }
     }
 }
