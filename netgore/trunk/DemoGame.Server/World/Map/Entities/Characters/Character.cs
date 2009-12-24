@@ -67,10 +67,7 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// HACK: This is just a temporary const used until we have variable speeds.
-        /// </summary>
-        public const float CharacterMoveSpeed = 0.18f;
+        public const float CharacterMoveSpeed = 0.18f; // HACK: This is just a temporary const used until we have variable speeds.
 
         /// <summary>
         /// Amount of time the character must wait between attacks
