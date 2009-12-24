@@ -41,7 +41,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@vbgore.com','2009-09-07 15:43:16','2009-12-20 17:37:06',NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@vbgore.com','2009-09-07 15:43:16','2009-12-24 00:24:38',NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,6 +149,7 @@ CREATE TABLE `character` (
   `respawn_x` float NOT NULL DEFAULT '50',
   `respawn_y` float NOT NULL DEFAULT '50',
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `move_speed` smallint(5) unsigned NOT NULL DEFAULT '1800',
   `cash` int(11) NOT NULL DEFAULT '0',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `exp` int(11) NOT NULL DEFAULT '0',
@@ -184,7 +185,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,1,NULL,'Spodi',1,NULL,NULL,NULL,548.8,498,1,500,200,1,1981,84,2509,395,50,50,50,50,7,11,0,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,800,250,2,800,250,1,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,500,250,2,500,250,1,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,NULL,'Talking Guy',2,NULL,0,NULL,800,529,2,800,530,1,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(5,NULL,NULL,'Shopkeeper',2,0,NULL,NULL,600,529,2,600,530,1,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(6,NULL,NULL,'Vending Machine',2,1,NULL,NULL,500,529,2,500,530,1,0,1,0,0,50,50,50,50,1,1,0,1,1,1);
+INSERT INTO `character` VALUES (1,1,NULL,'Spodi',1,NULL,NULL,NULL,443.2,377,1,500,200,1,1800,2011,85,2539,400,50,50,50,50,7,11,0,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,500,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,NULL,'Talking Guy',2,NULL,0,NULL,800,529,2,800,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(5,NULL,NULL,'Shopkeeper',2,0,NULL,NULL,600,529,2,600,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(6,NULL,NULL,'Vending Machine',2,1,NULL,NULL,500,529,2,500,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,7 +213,6 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
-INSERT INTO `character_equipped` VALUES (1,29,1);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +241,6 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
-INSERT INTO `character_inventory` VALUES (1,11,0);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -287,6 +286,7 @@ CREATE TABLE `character_template` (
   `ai_id` smallint(5) unsigned DEFAULT NULL,
   `shop_id` smallint(5) unsigned DEFAULT NULL,
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `move_speed` smallint(5) unsigned NOT NULL DEFAULT '1800',
   `respawn` smallint(5) unsigned NOT NULL DEFAULT '5',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `exp` int(11) NOT NULL DEFAULT '0',
@@ -315,7 +315,7 @@ CREATE TABLE `character_template` (
 
 LOCK TABLES `character_template` WRITE;
 /*!40000 ALTER TABLE `character_template` DISABLE KEYS */;
-INSERT INTO `character_template` VALUES (0,0,'User Template',NULL,NULL,1,5,1,0,0,0,0,50,50,1,2,0,1,1,1),(1,1,'A Test NPC',1,NULL,2,2,0,0,0,5,5,5,5,0,0,0,1,1,1);
+INSERT INTO `character_template` VALUES (0,0,'User Template',NULL,NULL,1,1800,5,1,0,0,0,0,50,50,1,2,0,1,1,1),(1,1,'A Test NPC',1,NULL,2,1800,2,0,0,0,5,5,5,5,0,0,0,1,1,1);
 /*!40000 ALTER TABLE `character_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -457,7 +457,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (11,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(29,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body');
+INSERT INTO `item` VALUES (0,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(1,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(2,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(3,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(4,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(5,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(6,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(7,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(8,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(9,1,9,16,'Healing Potion','A healing potion',3,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(10,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(11,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(12,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(13,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(14,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(15,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(16,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(17,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(18,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(19,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(20,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(21,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(22,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(23,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(24,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(25,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(26,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(27,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(28,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(29,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -644,7 +644,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2009-12-20 17:37:36');
+INSERT INTO `server_time` VALUES ('2009-12-24 00:24:48');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -898,4 +898,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-12-20 17:38:17
+-- Dump completed on 2009-12-24  0:25:37
