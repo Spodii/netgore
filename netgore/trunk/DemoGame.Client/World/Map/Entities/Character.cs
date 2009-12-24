@@ -272,6 +272,14 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// The velocity to assume all character movement animations are made at. That is, if the character is moving
+        /// with a velocity equal to this value, the animation will update at the usual speed. If it is twice as much
+        /// as this value, the character's animation will update twice as fast. This is to make the rate a character
+        /// moves proportionate to the rate their animation is moving.
+        /// </summary>
+        const float _animationSpeedModifier = 0.13f;
+
         #region IDrawable Members
 
         /// <summary>
@@ -292,6 +300,12 @@ namespace DemoGame.Client
             UpdateAnimation();
             _skelAnim.Update(currentTime);
             _interpolator.Update(this, deltaTime);
+
+            // Update the animation's speed
+            if (Velocity.X != 0)
+                _skelAnim.Speed = Math.Abs(Velocity.X) / _animationSpeedModifier;
+            else
+                _skelAnim.Speed = 1.0f;
 
             // Draw the character body
             SpriteEffects se = (Heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);

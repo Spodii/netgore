@@ -498,7 +498,6 @@ namespace NetGore.EditorTools
 
         void MenuClickAutomaticUpdate(object sender, EventArgs e)
         {
-            // HACK: I shouldn't be grabbing the ContentManager like this... but how else should I go about getting it? o.O
             ContentManager cm = GrhInfo.GrhDatas.First(x => x.ContentManager != null).ContentManager;
             if (cm == null)
                 throw new Exception("Failed to find a ContentManager to use.");
