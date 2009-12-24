@@ -272,7 +272,6 @@ namespace DemoGame.Client
             }
         }
 
-
         #region IDrawable Members
 
         /// <summary>

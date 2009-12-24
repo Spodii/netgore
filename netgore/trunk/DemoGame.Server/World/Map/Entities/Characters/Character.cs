@@ -132,6 +132,14 @@ namespace DemoGame.Server
         /// </summary>
         Map _map;
 
+        ushort _moveSpeed;
+
+        /// <summary>
+        /// Contains the cached value of the <see cref="Character.MoveSpeed"/>'s real movement velocity. This value
+        /// is automatically updated whenever the <see cref="Character.MoveSpeed"/> property changes.
+        /// </summary>
+        float _moveSpeedVelocityCache;
+
         SPValueType _mp;
 
         /// <summary>
@@ -464,12 +472,6 @@ namespace DemoGame.Server
                 Attack(c);
             }
         }
-
-        /// <summary>
-        /// Contains the cached value of the <see cref="Character.MoveSpeed"/>'s real movement velocity. This value
-        /// is automatically updated whenever the <see cref="Character.MoveSpeed"/> property changes.
-        /// </summary>
-        float _moveSpeedVelocityCache;
 
         /// <summary>
         /// Tries to attacks a specific target Character. The attack can fail if the target is an invalid
@@ -945,8 +947,6 @@ namespace DemoGame.Server
 
             BaseStats.CopyValuesFrom(v.Stats, false);
         }
-
-        ushort _moveSpeed;
 
         void LoadFromQueryValues(ICharacterTable v)
         {
