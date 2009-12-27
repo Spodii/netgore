@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Collections;
 
-namespace DemoGame.MapEditor
+namespace NetGore.EditorTools
 {
     public delegate void MapEditorCursorManagerEventHandler<TScreen>(MapEditorCursorManager<TScreen> sender) where TScreen : Form;
 

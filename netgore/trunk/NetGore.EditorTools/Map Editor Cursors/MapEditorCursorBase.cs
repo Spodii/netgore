@@ -2,9 +2,9 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.MapEditor.Properties;
+using NetGore.EditorTools.Properties;
 
-namespace DemoGame.MapEditor
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Base handler for a cursor used to modify the map in different ways. All derived classes must have a constructor
