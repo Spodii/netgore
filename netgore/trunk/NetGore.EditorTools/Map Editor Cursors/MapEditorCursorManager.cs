@@ -85,10 +85,7 @@ namespace NetGore.EditorTools
                     return;
 
                 foreach (var control in _cursorControls)
-                {
                     control.BackColor = Color.White;
-                    control.BorderStyle = BorderStyle.None;
-                }
 
                 _selectedCursor = value;
 
@@ -96,10 +93,7 @@ namespace NetGore.EditorTools
                 {
                     var selectedControl = _cursorControls.FirstOrDefault(x => x.Tag == _selectedCursor);
                     if (selectedControl != null)
-                    {
-                        selectedControl.BackColor = Color.LimeGreen;
-                        selectedControl.BorderStyle = BorderStyle.FixedSingle;
-                    }
+                        selectedControl.BackColor = Color.Lime;
                 }
 
                 if (OnChangeSelectedCursor != null)
