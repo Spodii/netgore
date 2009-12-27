@@ -147,7 +147,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Currently selected cursor from the cursor toolbar
         /// </summary>
-        EditorCursorBase _selectedTool = null;
+        MapEditorCursorBase _selectedTool = null;
 
         /// <summary>
         /// Currently selected transformation box

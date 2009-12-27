@@ -8,7 +8,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
-    class EntityCursor : EditorCursorBase
+    class EntityCursor : MapEditorCursorBase
     {
         Entity _selectedEntity = null;
         Vector2 _selectionOffset;

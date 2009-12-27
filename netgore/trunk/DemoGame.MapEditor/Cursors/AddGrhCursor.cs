@@ -5,7 +5,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
-    class AddGrhCursor : EditorCursorBase
+    class AddGrhCursor : MapEditorCursorBase
     {
         /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.

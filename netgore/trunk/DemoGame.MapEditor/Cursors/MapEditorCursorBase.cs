@@ -6,7 +6,7 @@ namespace DemoGame.MapEditor
     /// <summary>
     /// Base handler for a cursor used to modify the map in different ways.
     /// </summary>
-    abstract class EditorCursorBase
+    abstract class MapEditorCursorBase
     {
         /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
