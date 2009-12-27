@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -16,6 +17,11 @@ namespace DemoGame.MapEditor
         string _toolTip = string.Empty;
         Vector2 _toolTipPos;
 
+        /// <summary>
+        /// When overridden in the derived class, handles drawing the interface for the cursor, which is
+        /// displayed over everything else. This can include the name of entities, selection boxes, etc.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
         public override void DrawInterface(ScreenForm screen)
         {
             base.DrawInterface(screen);
@@ -23,6 +29,11 @@ namespace DemoGame.MapEditor
             screen.SpriteBatch.DrawStringShaded(screen.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been pressed.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseDown(ScreenForm screen, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
@@ -39,6 +50,11 @@ namespace DemoGame.MapEditor
                 _selectionOffset = cursorPos - _selectedEntity.Position;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when the cursor has moved.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseMove(ScreenForm screen, MouseEventArgs e)
         {
             // Get the map
@@ -91,10 +107,23 @@ namespace DemoGame.MapEditor
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been released.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseUp(ScreenForm screen, MouseEventArgs e)
         {
             // Deselect the selected entity
             _selectedEntity = null;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Entity"; }
         }
     }
 }

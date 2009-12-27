@@ -33,6 +33,11 @@ namespace DemoGame.MapEditor
             get { return _selectedWalls; }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles drawing the cursor's selection layer,
+        /// which displays a selection box for when selecting multiple objects.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
         public override void DrawSelection(ScreenForm screen)
         {
             Vector2 cursorPos = screen.CursorPos;
@@ -53,6 +58,11 @@ namespace DemoGame.MapEditor
             XNARectangle.Draw(screen.SpriteBatch, dest, drawColor);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been pressed.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseDown(ScreenForm screen, MouseEventArgs e)
         {
             Vector2 cursorPos = screen.CursorPos;
@@ -108,6 +118,11 @@ namespace DemoGame.MapEditor
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when the cursor has moved.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseMove(ScreenForm screen, MouseEventArgs e)
         {
             if (screen.SelectedTransBox == null)
@@ -221,6 +236,11 @@ namespace DemoGame.MapEditor
             _mouseDragStart = cursorPos;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been released.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseUp(ScreenForm screen, MouseEventArgs e)
         {
             Vector2 mouseDragEnd = screen.Camera.ToWorld(e.X, e.Y);
@@ -282,6 +302,10 @@ namespace DemoGame.MapEditor
             _mouseDragStart = Vector2.Zero;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when the delete button has been pressed.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
         public override void PressDelete(ScreenForm screen)
         {
             foreach (WallEntityBase selectedWall in _selectedWalls)
@@ -292,6 +316,19 @@ namespace DemoGame.MapEditor
             screen.UpdateSelectedWallsList(_selectedWalls);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Wall"; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles generic updating of the cursor. This is
+        /// called every frame.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
         public override void UpdateCursor(ScreenForm screen)
         {
             TransBox hoverBox = null;
