@@ -13,6 +13,9 @@ namespace NetGore
     {
         static readonly Vector2 _gravity;
         static readonly Vector2 _maxVelocity;
+        static readonly GameViewType _viewType;
+        static readonly bool _useGravity;
+
         readonly CollisionBox _collisionBox;
         CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
@@ -45,9 +48,13 @@ namespace NetGore
         /// </summary>
         static Entity()
         {
-            // Cache the settings
-            _gravity = EngineSettings.Instance.Gravity;
-            _maxVelocity = EngineSettings.Instance.MaxVelocity;
+            var settings = EngineSettings.Instance;
+
+            // Cache the settings we care about
+            _gravity = settings.Gravity;
+            _maxVelocity = settings.MaxVelocity;
+            _viewType = settings.ViewType;
+            _useGravity = (_gravity != Vector2.Zero);
         }
 
         /// <summary>
@@ -120,8 +127,19 @@ namespace NetGore
         [Browsable(false)]
         public bool OnGround
         {
-            get { return _onGround; }
-            internal set { _onGround = value; }
+            get {
+                // For top-down, we are always on the ground
+                if (_viewType == GameViewType.TopDown)
+                    return true;
+
+                return _onGround; }
+            internal set
+            {
+                // For top-down, we are always on the ground
+                if (_viewType == GameViewType.TopDown)
+                    _onGround = true;
+                else
+                    _onGround = value; }
         }
 
         /// <summary>
@@ -217,8 +235,11 @@ namespace NetGore
         protected virtual void HandleUpdate(IMap imap, float deltaTime)
         {
             // If the Y velocity is non-zero, assume not on the ground
-            if (Velocity.Y != 0)
-                _onGround = false;
+            if (_viewType == GameViewType.Sidescroller)
+            {
+                if (Velocity.Y != 0)
+                    OnGround = false;
+            }
 
             // If moving, perform collision detection
             if (Velocity != Vector2.Zero)
@@ -381,11 +402,12 @@ namespace NetGore
 
             Vector2 oldPos = Position;
 
-            // Treat as if not on ground, and move the CollisionBox
-            _onGround = false;
+            // Assume they are not on the ground after teleporting
+            OnGround = false;
+
+            // Teleport
             _collisionBox.Teleport(newPosition);
 
-            // Notify of movement
             if (OnMove != null)
                 OnMove(this, oldPos);
         }
@@ -397,12 +419,15 @@ namespace NetGore
         public virtual void UpdateVelocity(float deltaTime)
         {
             // Only perform movement if moving
-            if (_onGround && Velocity == Vector2.Zero)
+            if (OnGround && Velocity == Vector2.Zero)
                 return;
 
             // Increase the velocity by the gravity
-            Vector2 displacement = _gravity * (Weight * deltaTime);
-            Vector2.Add(ref _velocity, ref displacement, out _velocity);
+            if (_useGravity)
+            {
+                Vector2 displacement = _gravity * (Weight * deltaTime);
+                Vector2.Add(ref _velocity, ref displacement, out _velocity);
+            }
 
             // Check for surpassing the maximum velocity
             if (_velocity.X > _maxVelocity.X)

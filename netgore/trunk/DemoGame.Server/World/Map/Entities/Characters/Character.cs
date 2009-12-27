@@ -874,7 +874,8 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Makes the Character jump (CanJump must be true)
+        /// Makes the Character jump if <see cref="Character.CanJump"/> is true. If <see cref="Character.CanJump"/> is false,
+        /// this will do nothing.
         /// </summary>
         public void Jump()
         {
