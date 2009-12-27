@@ -92,7 +92,6 @@
     <Compile Include="NetGore\IO\PropertySyncTests.cs" />
     <Compile Include="NetGore\IO\SettingsManagerTests.cs" />
     <Compile Include="NetGore\IO\VirtualListTests.cs" />
-    <Compile Include="NetGore\IO\XmlInfoReaderTests.cs" />
     <Compile Include="NetGore\IO\XmlReaderCreationTests.cs" />
     <Compile Include="IValueReaderWriterTestHelper.cs" />
     <Compile Include="NetGore\ClampTests.cs" />
