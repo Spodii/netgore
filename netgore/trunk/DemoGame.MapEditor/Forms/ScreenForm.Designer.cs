@@ -288,6 +288,9 @@ namespace DemoGame.MapEditor
             this.GameScreen.Size = new System.Drawing.Size(800, 600);
             this.GameScreen.TabIndex = 8;
             this.GameScreen.Text = "Game Screen";
+            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
+            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
+            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
             // splitContainer3
             // 
@@ -367,6 +370,7 @@ namespace DemoGame.MapEditor
             this.cmdApplySize.TabIndex = 7;
             this.cmdApplySize.Text = "Apply";
             this.cmdApplySize.UseVisualStyleBackColor = true;
+            this.cmdApplySize.Click += new System.EventHandler(this.cmdApplySize_Click);
             // 
             // txtMapHeight
             // 
@@ -436,6 +440,7 @@ namespace DemoGame.MapEditor
             this.txtMusic.Name = "txtMusic";
             this.txtMusic.Size = new System.Drawing.Size(303, 20);
             this.txtMusic.TabIndex = 5;
+            this.txtMusic.TextChanged += new System.EventHandler(this.txtMusic_TextChanged);
             // 
             // txtMapName
             // 
@@ -444,6 +449,7 @@ namespace DemoGame.MapEditor
             this.txtMapName.Name = "txtMapName";
             this.txtMapName.Size = new System.Drawing.Size(303, 20);
             this.txtMapName.TabIndex = 1;
+            this.txtMapName.TextChanged += new System.EventHandler(this.txtMapName_TextChanged);
             // 
             // label5
             // 
@@ -464,6 +470,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.TabIndex = 5;
             this.tabPageGrhs.Text = "Grhs";
             this.tabPageGrhs.UseVisualStyleBackColor = true;
+            this.tabPageGrhs.Enter += new System.EventHandler(this.tabPageGrhs_Enter);
             // 
             // splitContainer4
             // 
@@ -522,6 +529,7 @@ namespace DemoGame.MapEditor
             this.treeGrhs.Size = new System.Drawing.Size(385, 544);
             this.treeGrhs.Sorted = true;
             this.treeGrhs.TabIndex = 9;
+            this.treeGrhs.GrhAfterSelect += new NetGore.EditorTools.GrhTreeViewEvent(this.treeGrhs_GrhAfterSelect);
             // 
             // tabPageWalls
             // 
@@ -636,6 +644,8 @@ namespace DemoGame.MapEditor
             this.lstSelectedWalls.Size = new System.Drawing.Size(379, 199);
             this.lstSelectedWalls.Sorted = true;
             this.lstSelectedWalls.TabIndex = 4;
+            this.lstSelectedWalls.SelectedIndexChanged += new System.EventHandler(this.lstSelectedWalls_SelectedIndexChanged);
+            this.lstSelectedWalls.SelectedValueChanged += new System.EventHandler(this.lstSelectedWalls_SelectedValueChanged);
             // 
             // pgWall
             // 
@@ -678,6 +688,7 @@ namespace DemoGame.MapEditor
             this.btnNewEntity.TabIndex = 10;
             this.btnNewEntity.Text = "New";
             this.btnNewEntity.UseVisualStyleBackColor = true;
+            this.btnNewEntity.Click += new System.EventHandler(this.btnNewEntity_Click);
             // 
             // pgEntity
             // 
@@ -696,6 +707,7 @@ namespace DemoGame.MapEditor
             this.lstEntities.Name = "lstEntities";
             this.lstEntities.Size = new System.Drawing.Size(373, 186);
             this.lstEntities.TabIndex = 0;
+            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
             // 
             // tabPageBackground
             // 
@@ -727,6 +739,7 @@ namespace DemoGame.MapEditor
             this.btnNewBGSprite.TabIndex = 4;
             this.btnNewBGSprite.Text = "New Sprite";
             this.btnNewBGSprite.UseVisualStyleBackColor = true;
+            this.btnNewBGSprite.Click += new System.EventHandler(this.btnNewBGSprite_Click);
             // 
             // btnNewBGLayer
             // 
@@ -736,6 +749,7 @@ namespace DemoGame.MapEditor
             this.btnNewBGLayer.TabIndex = 3;
             this.btnNewBGLayer.Text = "New Layer";
             this.btnNewBGLayer.UseVisualStyleBackColor = true;
+            this.btnNewBGLayer.Click += new System.EventHandler(this.btnNewBGLayer_Click);
             // 
             // btnDeleteBGItem
             // 
@@ -745,6 +759,7 @@ namespace DemoGame.MapEditor
             this.btnDeleteBGItem.TabIndex = 2;
             this.btnDeleteBGItem.Text = "Delete";
             this.btnDeleteBGItem.UseVisualStyleBackColor = true;
+            this.btnDeleteBGItem.Click += new System.EventHandler(this.btnDeleteBGItem_Click);
             // 
             // lstBGItems
             // 
@@ -755,6 +770,7 @@ namespace DemoGame.MapEditor
             this.lstBGItems.Name = "lstBGItems";
             this.lstBGItems.Size = new System.Drawing.Size(373, 134);
             this.lstBGItems.TabIndex = 0;
+            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
             // 
             // tabEffects
             // 
@@ -804,6 +820,7 @@ namespace DemoGame.MapEditor
             this.lstAvailableParticleEffects.Name = "lstAvailableParticleEffects";
             this.lstAvailableParticleEffects.Size = new System.Drawing.Size(373, 303);
             this.lstAvailableParticleEffects.TabIndex = 0;
+            this.lstAvailableParticleEffects.RequestCreateEffect += new NetGore.EditorTools.ParticleEffectListBoxCreateEventHandler(this.lstAvailableParticleEffects_RequestCreateEffect);
             // 
             // tabPageNPCs
             // 
@@ -848,6 +865,7 @@ namespace DemoGame.MapEditor
             this.btnAddSpawn.TabIndex = 7;
             this.btnAddSpawn.Text = "Add";
             this.btnAddSpawn.UseVisualStyleBackColor = true;
+            this.btnAddSpawn.Click += new System.EventHandler(this.btnAddSpawn_Click);
             // 
             // btnDeleteSpawn
             // 
@@ -857,6 +875,7 @@ namespace DemoGame.MapEditor
             this.btnDeleteSpawn.TabIndex = 6;
             this.btnDeleteSpawn.Text = "Delete";
             this.btnDeleteSpawn.UseVisualStyleBackColor = true;
+            this.btnDeleteSpawn.Click += new System.EventHandler(this.btnDeleteSpawn_Click);
             // 
             // lstNPCSpawns
             // 
@@ -975,6 +994,7 @@ namespace DemoGame.MapEditor
             this.chkDrawBackground.TabIndex = 14;
             this.chkDrawBackground.Text = "Background";
             this.chkDrawBackground.UseVisualStyleBackColor = true;
+            this.chkDrawBackground.CheckedChanged += new System.EventHandler(this.chkDrawBackground_CheckedChanged);
             // 
             // chkDrawEntities
             // 
@@ -1007,6 +1027,7 @@ namespace DemoGame.MapEditor
             this.chkShowGrhs.TabIndex = 11;
             this.chkShowGrhs.Text = "Grhs";
             this.chkShowGrhs.UseVisualStyleBackColor = true;
+            this.chkShowGrhs.CheckedChanged += new System.EventHandler(this.chkShowGrhs_CheckedChanged);
             // 
             // chkShowWalls
             // 
@@ -1047,6 +1068,7 @@ namespace DemoGame.MapEditor
             this.txtGridHeight.Name = "txtGridHeight";
             this.txtGridHeight.Size = new System.Drawing.Size(46, 20);
             this.txtGridHeight.TabIndex = 4;
+            this.txtGridHeight.TextChanged += new System.EventHandler(this.txtGridHeight_TextChanged);
             // 
             // label4
             // 
@@ -1063,6 +1085,7 @@ namespace DemoGame.MapEditor
             this.txtGridWidth.Name = "txtGridWidth";
             this.txtGridWidth.Size = new System.Drawing.Size(46, 20);
             this.txtGridWidth.TabIndex = 2;
+            this.txtGridWidth.TextChanged += new System.EventHandler(this.txtGridWidth_TextChanged);
             // 
             // label3
             // 
@@ -1102,6 +1125,7 @@ namespace DemoGame.MapEditor
             this.cmdSave.TabIndex = 7;
             this.cmdSave.Text = "Save";
             this.cmdSave.UseVisualStyleBackColor = true;
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
             // cmdLoad
             // 
@@ -1112,6 +1136,7 @@ namespace DemoGame.MapEditor
             this.cmdLoad.TabIndex = 6;
             this.cmdLoad.Text = "Load";
             this.cmdLoad.UseVisualStyleBackColor = true;
+            this.cmdLoad.Click += new System.EventHandler(this.cmdLoad_Click);
             // 
             // cmdNew
             // 
@@ -1122,6 +1147,7 @@ namespace DemoGame.MapEditor
             this.cmdNew.TabIndex = 5;
             this.cmdNew.Text = "New";
             this.cmdNew.UseVisualStyleBackColor = true;
+            this.cmdNew.Click += new System.EventHandler(this.cmdNew_Click);
             // 
             // ScreenForm
             // 
