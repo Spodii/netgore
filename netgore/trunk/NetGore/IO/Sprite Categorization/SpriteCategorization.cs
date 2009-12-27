@@ -80,7 +80,7 @@ namespace NetGore.IO
             if (casted != null)
                 return Equals(casted);
 
-            return base.Equals(obj);
+            return false;
         }
 
         /// <summary>

@@ -21,7 +21,9 @@ namespace DemoGame.Client
         bool _hasChatDialog;
         bool _hasShop;
         int _lastDrawnTime;
+#if !TOPDOWN
         CharacterState _lastState = CharacterState.Idle;
+#endif
         Map _map;
 
         /// <summary>
@@ -173,7 +175,12 @@ namespace DemoGame.Client
             _map = map;
             _interpolator.Teleport(Position);
 
+#if !TOPDOWN
             _characterSprite = new SkeletonCharacterSprite(this, skelManager, GameData.AnimationSpeedModifier);
+#else
+            _characterSprite = new BasicGrhCharacterSprite(this, "Character.Top Down"); 
+#endif
+
             CharacterSprite.SetSet(BodyInfo.Stand, BodyInfo.Size);
             CharacterSprite.SetBody(BodyInfo.Body);
         }
@@ -189,7 +196,8 @@ namespace DemoGame.Client
 
             base.SetHeading(newHeading);
         }
-
+        
+#if !TOPDOWN
         /// <summary>
         /// Updates the character's sprites.
         /// </summary>
@@ -200,6 +208,7 @@ namespace DemoGame.Client
                 return;
 
             _lastState = State;
+
             switch (State)
             {
                 case CharacterState.Idle:
@@ -224,6 +233,7 @@ namespace DemoGame.Client
                     break;
             }
         }
+#endif
 
         #region IDrawable Members
 
@@ -241,7 +251,10 @@ namespace DemoGame.Client
             // Update the drawable stuff
             _characterSprite.Update(currentTime);
             _interpolator.Update(this, deltaTime);
+
+#if !TOPDOWN
             UpdateAnimation();
+#endif
 
             // Draw the character body
             _characterSprite.Draw(sb, DrawPosition, Heading);

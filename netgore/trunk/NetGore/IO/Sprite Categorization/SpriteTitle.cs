@@ -40,7 +40,7 @@ namespace NetGore.IO
             if (casted != null)
                 return Equals(casted);
 
-            return base.Equals(obj);
+            return false;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace NetGore.IO
         /// like a hash table. </returns>
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(_value);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NetGore.IO
         /// <param name="other">An object to compare with this object.</param>
         public int CompareTo(SpriteTitle other)
         {
-            return _value.CompareTo(other._value);
+            return StringComparer.OrdinalIgnoreCase.Compare(_value, other._value);
         }
 
         #endregion

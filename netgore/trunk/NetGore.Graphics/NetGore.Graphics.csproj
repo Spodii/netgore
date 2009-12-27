@@ -78,6 +78,7 @@
     <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
     <Compile Include="Camera\Camera2D.cs" />
     <Compile Include="Camera\ICamera2D.cs" />
+    <Compile Include="Character Sprite\GrhCharacterSprite.cs" />
     <Compile Include="Character Sprite\ICharacterSprite.cs" />
     <Compile Include="Character Sprite\SkeletonCharacterSprite.cs" />
     <Compile Include="Chat Bubble\ChatBubble.cs" />

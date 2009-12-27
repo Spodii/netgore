@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>144</Count>
+    <Count>197</Count>
     <Item0>
       <Index>1</Index>
       <Frames>
@@ -1342,6 +1342,19 @@
       </Texture>
     </Item102>
     <Item103>
+      <Index>104</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>104</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Down</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/Down</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item103>
+    <Item104>
       <Index>105</Index>
       <Frames>
         <Count>1</Count>
@@ -1353,8 +1366,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item103>
-    <Item104>
+    </Item104>
+    <Item105>
       <Index>106</Index>
       <Frames>
         <Count>1</Count>
@@ -1366,8 +1379,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item104>
-    <Item105>
+    </Item105>
+    <Item106>
       <Index>107</Index>
       <Frames>
         <Count>1</Count>
@@ -1379,8 +1392,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item105>
-    <Item106>
+    </Item106>
+    <Item107>
       <Index>108</Index>
       <Frames>
         <Count>1</Count>
@@ -1392,8 +1405,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item106>
-    <Item107>
+    </Item107>
+    <Item108>
       <Index>109</Index>
       <Frames>
         <Count>1</Count>
@@ -1405,8 +1418,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopRight</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item107>
-    <Item108>
+    </Item108>
+    <Item109>
       <Index>110</Index>
       <Frames>
         <Count>1</Count>
@@ -1418,8 +1431,86 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Background</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item108>
-    <Item109>
+    </Item109>
+    <Item110>
+      <Index>111</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>111</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Left</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/Left</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item110>
+    <Item111>
+      <Index>112</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>112</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Right</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/Right</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item111>
+    <Item112>
+      <Index>113</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>113</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Up</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/Up</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item112>
+    <Item113>
+      <Index>114</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>114</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item113>
+    <Item114>
+      <Index>115</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>115</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item114>
+    <Item115>
+      <Index>116</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>116</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item115>
+    <Item116>
       <Index>117</Index>
       <Frames>
         <Count>1</Count>
@@ -1431,8 +1522,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/1</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item109>
-    <Item110>
+    </Item116>
+    <Item117>
       <Index>118</Index>
       <Frames>
         <Count>1</Count>
@@ -1444,8 +1535,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/2</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item110>
-    <Item111>
+    </Item117>
+    <Item118>
       <Index>119</Index>
       <Frames>
         <Count>1</Count>
@@ -1457,8 +1548,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/3</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item111>
-    <Item112>
+    </Item118>
+    <Item119>
       <Index>120</Index>
       <Frames>
         <Count>1</Count>
@@ -1470,8 +1561,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/4</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item112>
-    <Item113>
+    </Item119>
+    <Item120>
       <Index>121</Index>
       <Frames>
         <Count>1</Count>
@@ -1483,8 +1574,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/5</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item113>
-    <Item114>
+    </Item120>
+    <Item121>
       <Index>122</Index>
       <Frames>
         <Count>1</Count>
@@ -1496,8 +1587,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/6</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item114>
-    <Item115>
+    </Item121>
+    <Item122>
       <Index>123</Index>
       <Frames>
         <Count>1</Count>
@@ -1509,8 +1600,8 @@
         <Name>Grh/Effect/_Teleport_frames_400/7</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item115>
-    <Item116>
+    </Item122>
+    <Item123>
       <Index>124</Index>
       <Frames>
         <Count>1</Count>
@@ -1521,97 +1612,6 @@
       <Texture>
         <Name>Grh/Effect/_Teleport_frames_400/8</Name>
         <Source>0,0,32,64</Source>
-      </Texture>
-    </Item116>
-    <Item117>
-      <Index>126</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>126</Item0>
-      </Frames>
-      <Categorization>Item.Melee.TitaniumSword</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/item/melee/titaniumsword</Name>
-        <Source>0,0,24,24</Source>
-      </Texture>
-    </Item117>
-    <Item118>
-      <Index>127</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>127</Item0>
-      </Frames>
-      <Categorization>Item.Potion.Red</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Potion/Red</Name>
-        <Source>0,0,9,16</Source>
-      </Texture>
-    </Item118>
-    <Item119>
-      <Index>128</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>128</Item0>
-      </Frames>
-      <Categorization>Item.Potion.Blue</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Potion/Blue</Name>
-        <Source>0,0,9,16</Source>
-      </Texture>
-    </Item119>
-    <Item120>
-      <Index>129</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>129</Item0>
-      </Frames>
-      <Categorization>Item.Back.Crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Back/Crystal</Name>
-        <Source>0,0,15,25</Source>
-      </Texture>
-    </Item120>
-    <Item121>
-      <Index>130</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>130</Item0>
-      </Frames>
-      <Categorization>Item.Body.Crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Body/Crystal</Name>
-        <Source>0,0,22,22</Source>
-      </Texture>
-    </Item121>
-    <Item122>
-      <Index>131</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>131</Item0>
-      </Frames>
-      <Categorization>Item.Feet.Crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Feet/Crystal</Name>
-        <Source>0,0,15,14</Source>
-      </Texture>
-    </Item122>
-    <Item123>
-      <Index>132</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>132</Item0>
-      </Frames>
-      <Categorization>Item.Head.Crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Head/Crystal</Name>
-        <Source>0,0,11,16</Source>
       </Texture>
     </Item123>
     <Item124>
@@ -1771,6 +1771,695 @@
       </Texture>
     </Item135>
     <Item136>
+      <Index>145</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>145</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/4</Name>
+        <Source>0,0,44,55</Source>
+      </Texture>
+    </Item136>
+    <Item137>
+      <Index>146</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>146</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item137>
+    <Item138>
+      <Index>147</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>147</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item138>
+    <Item139>
+      <Index>148</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>148</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item139>
+    <Item140>
+      <Index>149</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>149</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item140>
+    <Item141>
+      <Index>150</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>150</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item141>
+    <Item142>
+      <Index>151</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>151</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item142>
+    <Item143>
+      <Index>152</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>152</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item143>
+    <Item144>
+      <Index>153</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>153</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item144>
+    <Item145>
+      <Index>154</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>154</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item145>
+    <Item146>
+      <Index>155</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>155</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item146>
+    <Item147>
+      <Index>156</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>156</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item147>
+    <Item148>
+      <Index>157</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>157</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item148>
+    <Item149>
+      <Index>158</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>158</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Down</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/Down</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item149>
+    <Item150>
+      <Index>159</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>159</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Left</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/Left</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item150>
+    <Item151>
+      <Index>160</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>160</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Right</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/Right</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item151>
+    <Item152>
+      <Index>161</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>161</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Up</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/Up</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item152>
+    <Item153>
+      <Index>162</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>162</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item153>
+    <Item154>
+      <Index>163</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>163</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item154>
+    <Item155>
+      <Index>164</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>164</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item155>
+    <Item156>
+      <Index>165</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>165</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/4</Name>
+        <Source>0,0,44,55</Source>
+      </Texture>
+    </Item156>
+    <Item157>
+      <Index>166</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>166</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item157>
+    <Item158>
+      <Index>167</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>167</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item158>
+    <Item159>
+      <Index>168</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>168</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item159>
+    <Item160>
+      <Index>169</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>169</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item160>
+    <Item161>
+      <Index>170</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>170</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item161>
+    <Item162>
+      <Index>171</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>171</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item162>
+    <Item163>
+      <Index>172</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>172</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item163>
+    <Item164>
+      <Index>173</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>173</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item164>
+    <Item165>
+      <Index>174</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>174</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item165>
+    <Item166>
+      <Index>175</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>175</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item166>
+    <Item167>
+      <Index>176</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>176</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item167>
+    <Item168>
+      <Index>177</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>177</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item168>
+    <Item169>
+      <Index>178</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>178</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Down</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/Down</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item169>
+    <Item170>
+      <Index>179</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>179</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Left</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/Left</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item170>
+    <Item171>
+      <Index>180</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>180</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Right</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/Right</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item171>
+    <Item172>
+      <Index>181</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>181</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Up</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/Up</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item172>
+    <Item173>
+      <Index>182</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>182</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Up_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item173>
+    <Item174>
+      <Index>183</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>183</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Up_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item174>
+    <Item175>
+      <Index>184</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>184</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Up_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item175>
+    <Item176>
+      <Index>185</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>185</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Up_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item176>
+    <Item177>
+      <Index>186</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>186</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Right_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item177>
+    <Item178>
+      <Index>187</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>187</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Right_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item178>
+    <Item179>
+      <Index>188</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>188</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Right_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item179>
+    <Item180>
+      <Index>189</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>189</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Right_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item180>
+    <Item181>
+      <Index>190</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>190</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Left_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item181>
+    <Item182>
+      <Index>191</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>191</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Left_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item182>
+    <Item183>
+      <Index>192</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>192</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Left_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item183>
+    <Item184>
+      <Index>193</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>193</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Left_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item184>
+    <Item185>
+      <Index>194</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>194</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Down_frames_300.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/1</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item185>
+    <Item186>
+      <Index>195</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>195</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Down_frames_300.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/2</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item186>
+    <Item187>
+      <Index>196</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>196</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Down_frames_300.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/3</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item187>
+    <Item188>
+      <Index>197</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>197</Item0>
+      </Frames>
+      <Categorization>Character.Top Down.Basic._Walk Down_frames_300.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/4</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item188>
+    <Item189>
       <Index>200</Index>
       <Frames>
         <Count>1</Count>
@@ -1782,8 +2471,8 @@
         <Name>Grh/Character/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item136>
-    <Item137>
+    </Item189>
+    <Item190>
       <Index>201</Index>
       <Frames>
         <Count>1</Count>
@@ -1795,8 +2484,8 @@
         <Name>Grh/Character/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item137>
-    <Item138>
+    </Item190>
+    <Item191>
       <Index>202</Index>
       <Frames>
         <Count>1</Count>
@@ -1808,8 +2497,8 @@
         <Name>Grh/Character/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
-    </Item138>
-    <Item139>
+    </Item191>
+    <Item192>
       <Index>203</Index>
       <Frames>
         <Count>1</Count>
@@ -1821,8 +2510,8 @@
         <Name>Grh/Character/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
-    </Item139>
-    <Item140>
+    </Item192>
+    <Item193>
       <Index>204</Index>
       <Frames>
         <Count>1</Count>
@@ -1834,8 +2523,8 @@
         <Name>Grh/Character/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
-    </Item140>
-    <Item141>
+    </Item193>
+    <Item194>
       <Index>205</Index>
       <Frames>
         <Count>1</Count>
@@ -1847,8 +2536,8 @@
         <Name>Grh/Character/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item141>
-    <Item142>
+    </Item194>
+    <Item195>
       <Index>206</Index>
       <Frames>
         <Count>1</Count>
@@ -1860,8 +2549,8 @@
         <Name>Grh/Character/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item142>
-    <Item143>
+    </Item195>
+    <Item196>
       <Index>207</Index>
       <Frames>
         <Count>1</Count>
@@ -1873,10 +2562,10 @@
         <Name>Grh/Character/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
-    </Item143>
+    </Item196>
   </Stationary>
   <Animated>
-    <Count>1</Count>
+    <Count>13</Count>
     <Item0>
       <Index>125</Index>
       <Frames>
@@ -1893,5 +2582,149 @@
       <Categorization>Effect.Teleport</Categorization>
       <Speed>400</Speed>
     </Item0>
+    <Item1>
+      <Index>198</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>154</Item0>
+        <Item1>155</Item1>
+        <Item2>156</Item2>
+        <Item3>157</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
+      <Speed>300</Speed>
+    </Item1>
+    <Item2>
+      <Index>199</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>150</Item0>
+        <Item1>151</Item1>
+        <Item2>152</Item2>
+        <Item3>153</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
+      <Speed>300</Speed>
+    </Item2>
+    <Item3>
+      <Index>208</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>146</Item0>
+        <Item1>147</Item1>
+        <Item2>148</Item2>
+        <Item3>149</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
+      <Speed>300</Speed>
+    </Item3>
+    <Item4>
+      <Index>209</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>114</Item0>
+        <Item1>115</Item1>
+        <Item2>116</Item2>
+        <Item3>145</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
+      <Speed>300</Speed>
+    </Item4>
+    <Item5>
+      <Index>210</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>174</Item0>
+        <Item1>175</Item1>
+        <Item2>176</Item2>
+        <Item3>177</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
+      <Speed>300</Speed>
+    </Item5>
+    <Item6>
+      <Index>211</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>170</Item0>
+        <Item1>171</Item1>
+        <Item2>172</Item2>
+        <Item3>173</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
+      <Speed>300</Speed>
+    </Item6>
+    <Item7>
+      <Index>212</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>166</Item0>
+        <Item1>167</Item1>
+        <Item2>168</Item2>
+        <Item3>169</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
+      <Speed>300</Speed>
+    </Item7>
+    <Item8>
+      <Index>213</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>162</Item0>
+        <Item1>163</Item1>
+        <Item2>164</Item2>
+        <Item3>165</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
+      <Speed>300</Speed>
+    </Item8>
+    <Item9>
+      <Index>214</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>194</Item0>
+        <Item1>195</Item1>
+        <Item2>196</Item2>
+        <Item3>197</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
+      <Speed>300</Speed>
+    </Item9>
+    <Item10>
+      <Index>215</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>190</Item0>
+        <Item1>191</Item1>
+        <Item2>192</Item2>
+        <Item3>193</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
+      <Speed>300</Speed>
+    </Item10>
+    <Item11>
+      <Index>216</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>186</Item0>
+        <Item1>187</Item1>
+        <Item2>188</Item2>
+        <Item3>189</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
+      <Speed>300</Speed>
+    </Item11>
+    <Item12>
+      <Index>217</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>182</Item0>
+        <Item1>183</Item1>
+        <Item2>184</Item2>
+        <Item3>185</Item3>
+      </Frames>
+      <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
+      <Speed>300</Speed>
+    </Item12>
   </Animated>
 </GrhDatas>
