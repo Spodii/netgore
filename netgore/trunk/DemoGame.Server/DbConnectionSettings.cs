@@ -1,10 +1,8 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
 using MySql.Data.MySqlClient;
-using NetGore;
 using NetGore.IO;
 
 namespace DemoGame.Server
@@ -16,10 +14,18 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        const string _databaseValueKey = "Database";
+        const string _hostValueKey = "Host";
+        const string _passValueKey = "Pass";
+        const string _portValueKey = "Port";
+        const string _rootNodeName = "DbConnectionSettings";
+
         /// <summary>
         /// The name and suffix of the settings file.
         /// </summary>
         const string _settingsFileName = "DbSettings.xml";
+
+        const string _userValueKey = "User";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
@@ -39,44 +45,6 @@ namespace DemoGame.Server
             // Read the values
             var reader = new XmlValueReader(destSettingsFile, _rootNodeName);
             Read(reader);
-        }
-
-        public void Write(IValueWriter writer)
-        {
-            writer.Write(_databaseValueKey, Database);
-            writer.Write(_hostValueKey, Host);
-            writer.Write(_passValueKey, Pass);
-            writer.Write(_portValueKey, Port);
-            writer.Write(_userValueKey, User);
-        }
-
-        public static string GetDefaultFilePath(ContentPaths contentPath)
-        {
-            return contentPath.Settings.Join(_settingsFileName);
-        }
-
-        const string _rootNodeName = "DbConnectionSettings";
-        const string _databaseValueKey = "Database";
-        const string _hostValueKey = "Host";
-        const string _passValueKey = "Pass";
-        const string _portValueKey = "Port";
-        const string _userValueKey = "User";
-
-        public void Save()
-        {
-            using (var writer = new XmlValueWriter(GetDefaultFilePath(ContentPaths.Build), _rootNodeName))
-            {
-                Write(writer);
-            }
-        }
-
-        void Read(IValueReader reader)
-        {
-            Database = reader.ReadString(_databaseValueKey);
-            Host = reader.ReadString(_hostValueKey);
-            Pass = reader.ReadString(_passValueKey);
-            Port = reader.ReadUInt(_portValueKey);
-            User = reader.ReadString(_userValueKey);
         }
 
         /// <summary>
@@ -104,6 +72,28 @@ namespace DemoGame.Server
         /// </summary>
         public string User { get; private set; }
 
+        public static string GetDefaultFilePath(ContentPaths contentPath)
+        {
+            return contentPath.Settings.Join(_settingsFileName);
+        }
+
+        void Read(IValueReader reader)
+        {
+            Database = reader.ReadString(_databaseValueKey);
+            Host = reader.ReadString(_hostValueKey);
+            Pass = reader.ReadString(_passValueKey);
+            Port = reader.ReadUInt(_portValueKey);
+            User = reader.ReadString(_userValueKey);
+        }
+
+        public void Save()
+        {
+            using (var writer = new XmlValueWriter(GetDefaultFilePath(ContentPaths.Build), _rootNodeName))
+            {
+                Write(writer);
+            }
+        }
+
         /// <summary>
         /// Makes a Sql connection string using the given settings.
         /// </summary>
@@ -111,15 +101,17 @@ namespace DemoGame.Server
         public string SqlConnectionString()
         {
             MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
-            {
-                Database = Database,
-                UserID = User,
-                Password = Pass,
-                Server = Host,
-                Port = Port,
-                IgnorePrepare = false
-            };
+            { Database = Database, UserID = User, Password = Pass, Server = Host, Port = Port, IgnorePrepare = false };
             return sb.ToString();
+        }
+
+        public void Write(IValueWriter writer)
+        {
+            writer.Write(_databaseValueKey, Database);
+            writer.Write(_hostValueKey, Host);
+            writer.Write(_passValueKey, Pass);
+            writer.Write(_portValueKey, Port);
+            writer.Write(_userValueKey, User);
         }
     }
 }

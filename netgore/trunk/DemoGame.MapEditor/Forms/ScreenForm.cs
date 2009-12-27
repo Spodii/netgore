@@ -65,8 +65,8 @@ namespace DemoGame.MapEditor
         static readonly Color _drawPreviewColor = new Color(255, 255, 255, 150);
 
         readonly ICamera2D _camera;
-        readonly ScreenGrid _grid;
         readonly MapEditorCursorManager<ScreenForm> _cursorManager;
+        readonly ScreenGrid _grid;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
 
@@ -164,9 +164,10 @@ namespace DemoGame.MapEditor
             _grid = new ScreenGrid(_camera.Size);
 
             // Create the cursors
-            _cursorManager = new MapEditorCursorManager<ScreenForm>(this, panToolBar, GameScreen, x => Map != null && !treeGrhs.IsEditingGrhData);
+            _cursorManager = new MapEditorCursorManager<ScreenForm>(this, panToolBar, GameScreen,
+                                                                    x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.OnChangeSelectedCursor += CursorManager_OnChangeSelectedCursor;
-            
+
             // Set up some of the OnChangeMap events for objects that need to reference the Map
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
             OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DbController, newMap));
@@ -185,24 +186,17 @@ namespace DemoGame.MapEditor
             _world = new World(this, _camera);
         }
 
-        void CursorManager_OnChangeSelectedCursor(MapEditorCursorManager<ScreenForm> sender)
-        {
-            WallCursor.SelectedWalls.Clear();
-            _transBoxes.Clear();
-            _selTransBox = null;
-
-            if (sender.SelectedCursor.GetType() == typeof(AddGrhCursor))
-                tcMenu.SelectTab(tabPageGrhs);
-        }
-
-        public MapEditorCursorManager<ScreenForm> CursorManager { get { return _cursorManager; } }
-
         /// <summary>
         /// Gets the camera used for the game screen.
         /// </summary>
         public ICamera2D Camera
         {
             get { return _camera; }
+        }
+
+        public MapEditorCursorManager<ScreenForm> CursorManager
+        {
+            get { return _cursorManager; }
         }
 
         /// <summary>
@@ -537,6 +531,16 @@ namespace DemoGame.MapEditor
             return new WallEntity(reader);
         }
 
+        void CursorManager_OnChangeSelectedCursor(MapEditorCursorManager<ScreenForm> sender)
+        {
+            WallCursor.SelectedWalls.Clear();
+            _transBoxes.Clear();
+            _selTransBox = null;
+
+            if (sender.SelectedCursor.GetType() == typeof(AddGrhCursor))
+                tcMenu.SelectTab(tabPageGrhs);
+        }
+
         public void DrawGame()
         {
             // Clear the background
@@ -662,11 +666,6 @@ namespace DemoGame.MapEditor
             return ret;
         }
 
-        void GameScreen_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            _mouseButton = e.Button;
-        }
-
         void GameScreen_MouseDown(object sender, MouseEventArgs e)
         {
             _mouseButton = e.Button;
@@ -679,6 +678,11 @@ namespace DemoGame.MapEditor
         {
             _mouseButton = e.Button;
             _cursorPos = _camera.ToWorld(e.X, e.Y);
+        }
+
+        void GameScreen_MouseUp(object sender, MouseEventArgs e)
+        {
+            _mouseButton = e.Button;
         }
 
         static IEnumerable<Control> GetAllControls(Control root)

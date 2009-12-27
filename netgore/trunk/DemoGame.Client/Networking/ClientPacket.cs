@@ -100,7 +100,7 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.MoveStopHorizontal);
         }
 #endif
-        
+
 #if TOPDOWN
         public static PacketWriter MoveStopVertical()
         {

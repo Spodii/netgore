@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,6 +12,14 @@ namespace DemoGame.MapEditor
     sealed class AddWallCursor : MapEditorCursorBase<ScreenForm>
     {
         /// <summary>
+        /// Gets the cursor's <see cref="Image"/>.
+        /// </summary>
+        public override Image CursorImage
+        {
+            get { return Resources.cursor_wallsadd; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
         /// </summary>
         public override string Name
@@ -21,26 +28,12 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the cursor's <see cref="Image"/>.
-        /// </summary>
-        public override System.Drawing.Image CursorImage
-        {
-            get
-            {
-                return Resources.cursor_wallsadd;
-            }
-        }
-
-        /// <summary>
         /// Gets the priority of the cursor on the toolbar. Lower values appear first.
         /// </summary>
         /// <value></value>
         public override int ToolbarPriority
         {
-            get
-            {
-                return 10;
-            }
+            get { return 10; }
         }
 
         /// <summary>

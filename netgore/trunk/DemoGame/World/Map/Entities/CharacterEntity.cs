@@ -95,9 +95,9 @@ namespace DemoGame
         }
 
 #if TOPDOWN
-        /// <summary>
-        /// Gets if the character is moving up.
-        /// </summary>
+    /// <summary>
+    /// Gets if the character is moving up.
+    /// </summary>
         [Browsable(false)]
         public bool IsMovingDown
         {
@@ -124,9 +124,9 @@ namespace DemoGame
         }
 
 #if TOPDOWN
-        /// <summary>
-        /// Gets if the character is moving up.
-        /// </summary>
+    /// <summary>
+    /// Gets if the character is moving up.
+    /// </summary>
         [Browsable(false)]
         public bool IsMovingUp
         {
@@ -234,21 +234,21 @@ namespace DemoGame
         }
 
 #if TOPDOWN
-        /// <summary>
-        /// Stops the character's horizontal movement. Any forces acting upon the character, such as gravity, will
-        /// not be affected.
-        /// </summary>
+    /// <summary>
+    /// Stops the character's horizontal movement. Any forces acting upon the character, such as gravity, will
+    /// not be affected.
+    /// </summary>
         public virtual void StopMovingHorizontal()
         {
             SetVelocity(new Vector2(0, Velocity.Y));
         }
 #endif
-        
+
 #if TOPDOWN
-        /// <summary>
-        /// Stops the character's vertical movement. Any forces acting upon the character, such as gravity, will
-        /// not be affected.
-        /// </summary>
+    /// <summary>
+    /// Stops the character's vertical movement. Any forces acting upon the character, such as gravity, will
+    /// not be affected.
+    /// </summary>
         public virtual void StopMovingVertical()
         {
             SetVelocity(new Vector2(Velocity.X, 0));

@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
-using NetGore.IO;
 using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
@@ -178,7 +176,7 @@ namespace DemoGame.Client
 #if !TOPDOWN
             _characterSprite = new SkeletonCharacterSprite(this, skelManager, GameData.AnimationSpeedModifier);
 #else
-            _characterSprite = new BasicGrhCharacterSprite(this, "Character.Top Down"); 
+            _characterSprite = new BasicGrhCharacterSprite(this, "Character.Top Down");
 #endif
 
             CharacterSprite.SetSet(BodyInfo.Stand, BodyInfo.Size);
@@ -196,7 +194,7 @@ namespace DemoGame.Client
 
             base.SetHeading(newHeading);
         }
-        
+
 #if !TOPDOWN
         /// <summary>
         /// Updates the character's sprites.

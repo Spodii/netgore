@@ -72,7 +72,7 @@ namespace DemoGame.Client
             get { return _jump; }
         }
 #endif
-        
+
 #if TOPDOWN
         public static GameControlKeys MoveDown
         {
@@ -101,7 +101,7 @@ namespace DemoGame.Client
             get { return _moveStopHorizontal; }
         }
 #endif
-        
+
 #if TOPDOWN
         public static GameControlKeys MoveStopVertical
         {
