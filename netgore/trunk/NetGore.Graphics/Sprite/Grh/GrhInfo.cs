@@ -59,6 +59,8 @@ namespace NetGore.Graphics
         static GrhInfo()
         {
             _catDic = new Dictionary<SpriteCategory, Dictionary<SpriteTitle, GrhData>>();
+            Debug.Assert(EqualityComparer<SpriteCategory>.Default.Equals("asdf", "ASDF"), "Sprite category must not be case sensitive.");
+            Debug.Assert(EqualityComparer<SpriteTitle>.Default.Equals("asdf", "ASDF"), "Sprite title must not be case sensitive.");
         }
 
         /// <summary>

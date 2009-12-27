@@ -17,7 +17,9 @@ namespace DemoGame
         public const int MaxPickupDistance = 32;
 
         Direction _heading = Direction.East;
+#if !TOPDOWN
         CharacterState _state = CharacterState.Idle;
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
@@ -138,6 +140,7 @@ namespace DemoGame
         [SyncValue]
         public virtual string Name { get; set; }
 
+#if !TOPDOWN
         /// <summary>
         /// Gets the character's current state
         /// </summary>
@@ -145,6 +148,7 @@ namespace DemoGame
         {
             get { return _state; }
         }
+#endif
 
         /// <summary>
         /// Handles collision against other entities.
@@ -259,7 +263,9 @@ namespace DemoGame
         public override void Teleport(Vector2 position)
         {
             // Force the character to stop moving
+#if !TOPDOWN
             _state = CharacterState.Falling;
+#endif
             SetVelocity(Vector2.Zero);
             StopMoving();
 
@@ -302,6 +308,7 @@ namespace DemoGame
         /// </summary>
         void UpdateState()
         {
+#if !TOPDOWN
             // Start with the idle state
             CharacterState newState = CharacterState.Idle;
 
@@ -351,6 +358,11 @@ namespace DemoGame
 
             // Set the new state
             _state = newState;
+#else
+            var newHeading = DirectionHelper.FromVector(Velocity);
+            if (newHeading.HasValue)
+                _heading = newHeading.Value;
+#endif
         }
 
         #region IUpdateableEntity Members
