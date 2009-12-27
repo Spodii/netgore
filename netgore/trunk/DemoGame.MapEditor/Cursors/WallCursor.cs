@@ -26,6 +26,14 @@ namespace DemoGame.MapEditor
         Vector2 _mouseDragStart = Vector2.Zero;
 
         /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Wall"; }
+        }
+
+        /// <summary>
         /// Gets the List of all the currently selected walls
         /// </summary>
         public List<WallEntityBase> SelectedWalls
@@ -314,14 +322,6 @@ namespace DemoGame.MapEditor
             }
             _selectedWalls.Clear();
             screen.UpdateSelectedWallsList(_selectedWalls);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Select Wall"; }
         }
 
         /// <summary>

@@ -9,6 +9,11 @@ namespace DemoGame.MapEditor
     abstract class EditorCursorBase
     {
         /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public abstract string Name { get; }
+
+        /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
@@ -59,14 +64,6 @@ namespace DemoGame.MapEditor
         /// <param name="screen">Screen that the cursor is on.</param>
         public virtual void PressDelete(ScreenForm screen)
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public abstract string Name
-        {
-            get;
         }
 
         /// <summary>

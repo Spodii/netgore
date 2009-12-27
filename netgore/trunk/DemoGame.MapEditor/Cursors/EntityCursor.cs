@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -16,6 +15,14 @@ namespace DemoGame.MapEditor
 
         string _toolTip = string.Empty;
         Vector2 _toolTipPos;
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Entity"; }
+        }
 
         /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
@@ -116,14 +123,6 @@ namespace DemoGame.MapEditor
         {
             // Deselect the selected entity
             _selectedEntity = null;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Select Entity"; }
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,6 +8,14 @@ namespace DemoGame.MapEditor
 {
     class AddWallCursor : EditorCursorBase
     {
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Add Wall"; }
+        }
+
         /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
@@ -39,14 +46,6 @@ namespace DemoGame.MapEditor
             }
 
             screen.UpdateSelectedWallsList(new List<WallEntityBase>(1) { w });
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Add Wall"; }
         }
     }
 }

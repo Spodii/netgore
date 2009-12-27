@@ -25,6 +25,14 @@ namespace DemoGame.MapEditor
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Grh"; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
@@ -174,14 +182,6 @@ namespace DemoGame.MapEditor
             }
             _selectedMapGrhs.Clear();
             _mapGrhMoveBox = null;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Select Grh"; }
         }
 
         /// <summary>
