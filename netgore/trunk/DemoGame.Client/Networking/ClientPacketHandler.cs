@@ -469,7 +469,7 @@ namespace DemoGame.Client
             if (character == null)
                 return;
 
-            character.SetPaperDoll(layers);
+            character.CharacterSprite.SetPaperDollLayers(layers);
         }
 
         [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]

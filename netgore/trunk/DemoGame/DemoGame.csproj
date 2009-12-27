@@ -80,7 +80,6 @@
     <Compile Include="DbObjs\MapTable.cs" />
     <Compile Include="World\Map\Entities\CharacterEntity.cs" />
     <Compile Include="World\Map\Entities\CharacterState.cs" />
-    <Compile Include="Direction.cs" />
     <Compile Include="World\Map\Entities\DamageTrapEntityBase.cs" />
     <Compile Include="World\Map\Entities\IPickupableEntity.cs" />
     <Compile Include="World\Map\Entities\ItemEntityBase.cs" />

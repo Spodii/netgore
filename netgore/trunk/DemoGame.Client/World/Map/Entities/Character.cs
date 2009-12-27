@@ -16,26 +16,24 @@ namespace DemoGame.Client
     public class Character : CharacterEntity, IGetTime, IDrawable
     {
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
-        string _currSkelSet;
+        ICharacterSprite _characterSprite;
+
         bool _hasChatDialog;
         bool _hasShop;
-
-        /// <summary>
-        /// The time that Draw() was last called.
-        /// </summary>
         int _lastDrawnTime;
-
         CharacterState _lastState = CharacterState.Idle;
         Map _map;
-        EventHandler _onLoopHandler;
-        SkeletonAnimation _skelAnim = null;
-        SkeletonManager _skelManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
         /// </summary>
         public Character() : base(Vector2.Zero, Vector2.One)
         {
+        }
+
+        public ICharacterSprite CharacterSprite
+        {
+            get { return _characterSprite; }
         }
 
         /// <summary>
@@ -94,25 +92,7 @@ namespace DemoGame.Client
         /// </summary>
         public void Attack()
         {
-            SkeletonSet set = _skelManager.LoadSet(BodyInfo.Punch, ContentPaths.Build);
-            set = SkeletonAnimation.CreateSmoothedSet(set, _skelAnim.Skeleton);
-            SkeletonAnimation mod = new SkeletonAnimation(GetTime(), set);
-            _skelAnim.AddModifier(mod);
-        }
-
-        /// <summary>
-        /// Changes the SkeletonSet used if different.
-        /// </summary>
-        /// <param name="setName">Name of the set to use.</param>
-        void ChangeSet(string setName)
-        {
-            // Check that the set has changed
-            if (setName == _currSkelSet)
-                return;
-
-            SkeletonSet newSet = _skelManager.LoadSet(setName, ContentPaths.Build);
-            _skelAnim.ChangeSet(newSet);
-            _currSkelSet = setName;
+            CharacterSprite.AddBodyModifier(BodyInfo.Punch);
         }
 
         /// <summary>
@@ -191,16 +171,11 @@ namespace DemoGame.Client
         {
             // HACK: This is quite a dirty way to do this
             _map = map;
-            _skelManager = skelManager;
-            _onLoopHandler = skelAnim_OnLoop;
             _interpolator.Teleport(Position);
 
-            // Set up the skeleton
-            _currSkelSet = BodyInfo.Stand;
-            SkeletonSet newSet = _skelManager.LoadSet(_currSkelSet, ContentPaths.Build);
-            _skelAnim = new SkeletonAnimation(GetTime(), newSet);
-            SkeletonBodyInfo bodyInfo = _skelManager.LoadBodyInfo(BodyInfo.Body, ContentPaths.Build);
-            _skelAnim.SkeletonBody = new SkeletonBody(bodyInfo, _skelAnim.Skeleton);
+            _characterSprite = new SkeletonCharacterSprite(this, skelManager, GameData.AnimationSpeedModifier);
+            CharacterSprite.SetSet(BodyInfo.Stand, BodyInfo.Size);
+            CharacterSprite.SetBody(BodyInfo.Body);
         }
 
         /// <summary>
@@ -213,28 +188,6 @@ namespace DemoGame.Client
                 return;
 
             base.SetHeading(newHeading);
-        }
-
-        public void SetPaperDoll(IEnumerable<string> layers)
-        {
-            _skelAnim.BodyLayers.Clear();
-            foreach (var layer in layers)
-            {
-                var bodyInfo = _skelManager.LoadBodyInfo(layer, ContentPaths.Build);
-                if (bodyInfo == null)
-                    continue;
-
-                _skelAnim.BodyLayers.Add(new SkeletonBody(bodyInfo, _skelAnim.Skeleton));
-            }
-        }
-
-        /// <summary>
-        /// Handles OnLoop events for the SkeletonAnimation to set the character's animation back to normal.
-        /// </summary>
-        void skelAnim_OnLoop(object sender, EventArgs e)
-        {
-            _skelAnim.OnLoop -= _onLoopHandler;
-            UpdateAnimation();
         }
 
         /// <summary>
@@ -250,24 +203,24 @@ namespace DemoGame.Client
             switch (State)
             {
                 case CharacterState.Idle:
-                    ChangeSet(BodyInfo.Stand);
+                    CharacterSprite.SetSet(BodyInfo.Stand, BodyInfo.Size);
                     break;
 
                 case CharacterState.Falling:
                 case CharacterState.FallingLeft:
                 case CharacterState.FallingRight:
-                    ChangeSet(BodyInfo.Fall);
+                    CharacterSprite.SetSet(BodyInfo.Fall, BodyInfo.Size);
                     break;
 
                 case CharacterState.Jumping:
                 case CharacterState.JumpingLeft:
                 case CharacterState.JumpingRight:
-                    ChangeSet(BodyInfo.Jump);
+                    CharacterSprite.SetSet(BodyInfo.Jump, BodyInfo.Size);
                     break;
 
                 case CharacterState.WalkingLeft:
                 case CharacterState.WalkingRight:
-                    ChangeSet(BodyInfo.Walk);
+                    CharacterSprite.SetSet(BodyInfo.Walk, BodyInfo.Size);
                     break;
             }
         }
@@ -280,29 +233,18 @@ namespace DemoGame.Client
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(SpriteBatch sb)
         {
-            if (_skelAnim == null)
-                return;
-
             // Get the delta time
             int currentTime = GetTime();
             int deltaTime = Math.Min(currentTime - _lastDrawnTime, GameData.MaxDrawDeltaTime);
             _lastDrawnTime = currentTime;
 
             // Update the drawable stuff
-            UpdateAnimation();
-            _skelAnim.Update(currentTime);
+            _characterSprite.Update(currentTime);
             _interpolator.Update(this, deltaTime);
-
-            // Update the animation's speed
-            if (Velocity.X != 0)
-                _skelAnim.Speed = Math.Abs(Velocity.X) / GameData.AnimationSpeedModifier;
-            else
-                _skelAnim.Speed = 1.0f;
+            UpdateAnimation();
 
             // Draw the character body
-            SpriteEffects se = (Heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
-            Vector2 p = DrawPosition + new Vector2(BodyInfo.Size.X / 2f, BodyInfo.Size.Y);
-            _skelAnim.Draw(sb, p, se);
+            _characterSprite.Draw(sb, DrawPosition, Heading);
 
             // Draw the HP/MP
             DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));
