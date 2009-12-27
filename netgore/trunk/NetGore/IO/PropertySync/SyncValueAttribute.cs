@@ -37,8 +37,8 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets or sets if this SyncValueAttribute will be skipped when synchronizing values from
-        /// the Server to the Client. Default is true.
+        /// Gets or sets if this <see cref="SyncValueAttribute"/> will be skipped when synchronizing values from
+        /// the Server to the Client or vise versa. Only applicable to network synchronization. Default is true.
         /// </summary>
         public bool SkipNetworkSync { get; set; }
     }
