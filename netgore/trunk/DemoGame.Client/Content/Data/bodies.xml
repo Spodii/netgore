@@ -1,23 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Bodies>
-	<Body Index="1">
-		<Size Width="30" Height="78" />
-		<Body SkelBody="basic" />
-		<Stand SkelSet="stand" />
-		<Walk SkelSet="walk" />
-		<Jump SkelSet="jump" />
-		<Fall SkelSet="fall" />
-		
-		<Punch SkelSet="punch" X="$width/2" Y="0" Width="$width" Height="$height/2" />
-	</Body>
-	<Body Index="2">
-		<Size Width="30" Height="78" />
-		<Body SkelBody="zombie" />
-		<Stand SkelSet="stand" />
-		<Walk SkelSet="walk" />
-		<Jump SkelSet="jump" />
-		<Fall SkelSet="fall" />
-		
-		<Punch SkelSet="punch" X="$width/2" Y="0" Width="$width" Height="$height/2" />
-	</Body>
+  <Body>
+    <Count>2</Count>
+    <Item0>
+      <Index>1</Index>
+      <Body>basic</Body>
+      <Fall>fall</Fall>
+      <Jump>jump</Jump>
+      <Punch>punch</Punch>
+      <PunchRect>15,0,30,39</PunchRect>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>30,78</Size>
+    </Item0>
+    <Item1>
+      <Index>2</Index>
+      <Body>zombie</Body>
+      <Fall>fall</Fall>
+      <Jump>jump</Jump>
+      <Punch>punch</Punch>
+      <PunchRect>15,0,30,39</PunchRect>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>30,78</Size>
+    </Item1>
+  </Body>
 </Bodies>

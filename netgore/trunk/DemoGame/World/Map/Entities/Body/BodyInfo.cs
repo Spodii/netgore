@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.IO;
 
 namespace DemoGame
 {
@@ -9,52 +10,38 @@ namespace DemoGame
     /// </summary>
     public class BodyInfo
     {
-        public readonly string Body;
-        public readonly string Fall;
+        const string _bodyValueKey = "Body";
+        const string _fallValueKey = "Fall";
+        const string _indexValueKey = "Index";
+        const string _jumpValueKey = "Jump";
+        const string _punchRectValueKey = "PunchRect";
+        const string _punchValueKey = "Punch";
+        const string _sizeValueKey = "Size";
+        const string _standValueKey = "Stand";
+        const string _walkValueKey = "Walk";
 
-        /// <summary>
-        /// Height of the body collision area in pixels
-        /// </summary>
-        public readonly float Height;
-
-        /// <summary>
-        /// Index of the body info
-        /// </summary>
-        public readonly BodyIndex Index;
-
-        public readonly string Jump;
-        public readonly string Punch;
-        public readonly Rectangle PunchRect;
-        public readonly string Stand;
-        public readonly string Walk;
-
-        /// <summary>
-        /// Width of the body collision area in pixels
-        /// </summary>
-        public readonly float Width;
-
-        /// <summary>
-        /// BodyInfo constructor
-        /// </summary>
-        /// <param name="index">Index of the BodyInfo</param>
-        /// <param name="width">Width of the body collision area in pixels</param>
-        /// <param name="height">Height of the body collision area in pixels</param>
-        public BodyInfo(BodyIndex index, float width, float height, string body, string stand, string walk, string jump,
-                        string fall, string punch, Rectangle punchRect)
+        public BodyInfo(IValueReader reader)
         {
-            Index = index;
-
-            Width = width;
-            Height = height;
-
-            Body = body;
-            Stand = stand;
-            Walk = walk;
-            Jump = jump;
-            Fall = fall;
-            Punch = punch;
-            PunchRect = punchRect;
+            Index = reader.ReadBodyIndex(_indexValueKey);
+            Body = reader.ReadString(_bodyValueKey);
+            Fall = reader.ReadString(_fallValueKey);
+            Jump = reader.ReadString(_jumpValueKey);
+            Punch = reader.ReadString(_punchValueKey);
+            PunchRect = reader.ReadRectangle(_punchRectValueKey);
+            Stand = reader.ReadString(_standValueKey);
+            Walk = reader.ReadString(_walkValueKey);
+            Size = reader.ReadVector2(_sizeValueKey);
         }
+
+        public string Body { get; private set; }
+        public string Fall { get; private set; }
+        public BodyIndex Index { get; private set; }
+        public string Jump { get; private set; }
+        public string Punch { get; private set; }
+        public Rectangle PunchRect { get; private set; }
+        public Vector2 Size { get; private set; }
+        public string Stand { get; private set; }
+        public string Walk { get; private set; }
 
         public static Rectangle GetHitRect(CharacterEntity c, Rectangle rect)
         {
@@ -72,57 +59,22 @@ namespace DemoGame
             }
         }
 
-        /// <summary>
-        /// Creates the body information from a given file
-        /// </summary>
-        /// <param name="filePath">Path to the body information file</param>
-        /// <returns>An array containing the body information</returns>
-        public static BodyInfo[] Load(string filePath)
+        public static BodyInfo Read(IValueReader reader)
         {
-            MathString ms = new MathString();
-            var results = XmlInfoReader.ReadFile(filePath, true);
+            return new BodyInfo(reader);
+        }
 
-            // Find the highest index
-            BodyIndex highestIndex = new BodyIndex(0);
-            foreach (var d in results)
-            {
-                BodyIndex currentBodyIndex = d.AsBodyIndex("Body.Index");
-                if (highestIndex < currentBodyIndex)
-                    highestIndex = currentBodyIndex;
-            }
-
-            // Create the return array
-            var ret = new BodyInfo[(int)highestIndex + 1];
-
-            // Create the return values
-            foreach (var d in results)
-            {
-                BodyIndex index = d.AsBodyIndex("Body.Index");
-                float width = d.AsFloat("Body.Size.Width");
-                float height = d.AsFloat("Body.Size.Height");
-
-                // Set the MathString variables
-                ms.Variables.Clear();
-                ms.Variables.Add("$width", width);
-                ms.Variables.Add("$height", height);
-
-                string body = d["Body.Body.SkelBody"];
-                string stand = d["Body.Stand.SkelSet"];
-                string walk = d["Body.Walk.SkelSet"];
-                string jump = d["Body.Jump.SkelSet"];
-                string fall = d["Body.Fall.SkelSet"];
-
-                string punch = d["Body.Punch.SkelSet"];
-                int punchX = (int)ms.Parse((d["Body.Punch.X"]));
-                int punchY = (int)ms.Parse((d["Body.Punch.Y"]));
-                int punchWidth = (int)ms.Parse((d["Body.Punch.Width"]));
-                int punchHeight = (int)ms.Parse((d["Body.Punch.Height"]));
-                Rectangle punchRect = new Rectangle(punchX, punchY, punchWidth, punchHeight);
-
-                ret[(int)index] = new BodyInfo(index, width, height, body, stand, walk, jump, fall, punch, punchRect);
-            }
-
-            return ret;
+        public void Write(IValueWriter writer)
+        {
+            writer.Write(_indexValueKey, Index);
+            writer.Write(_bodyValueKey, Body);
+            writer.Write(_fallValueKey, Fall);
+            writer.Write(_jumpValueKey, Jump);
+            writer.Write(_punchValueKey, Punch);
+            writer.Write(_punchRectValueKey, PunchRect);
+            writer.Write(_standValueKey, Stand);
+            writer.Write(_walkValueKey, Walk);
+            writer.Write(_sizeValueKey, Size);
         }
     }
 }

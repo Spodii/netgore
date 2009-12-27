@@ -928,7 +928,7 @@ namespace DemoGame.Server
             Alliance = _allianceManager[v.AllianceID];
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
             CharacterTemplateID = v.ID;
-            Resize(new Vector2(BodyInfo.Width, BodyInfo.Height));
+            Resize(BodyInfo.Size);
 
             _level = v.Level;
             MoveSpeed = v.MoveSpeed;
@@ -962,7 +962,7 @@ namespace DemoGame.Server
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
 
             Teleport(new Vector2(v.X, v.Y));
-            Resize(new Vector2(BodyInfo.Width, BodyInfo.Height));
+            Resize(BodyInfo.Size);
 
             ((PersistentCharacterStatusEffects)StatusEffects).Load();
 

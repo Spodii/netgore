@@ -301,7 +301,7 @@ namespace DemoGame.Client
 
             // Draw the character body
             SpriteEffects se = (Heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
-            Vector2 p = DrawPosition + new Vector2(BodyInfo.Width / 2f, BodyInfo.Height);
+            Vector2 p = DrawPosition + new Vector2(BodyInfo.Size.X / 2f, BodyInfo.Size.Y);
             _skelAnim.Draw(sb, p, se);
 
             // Draw the HP/MP
