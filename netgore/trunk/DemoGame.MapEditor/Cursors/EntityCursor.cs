@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -8,7 +10,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
-    class EntityCursor : MapEditorCursorBase
+    sealed class EntityCursor : MapEditorCursorBase<ScreenForm>
     {
         Entity _selectedEntity = null;
         Vector2 _selectionOffset;
@@ -22,6 +24,29 @@ namespace DemoGame.MapEditor
         public override string Name
         {
             get { return "Select Entity"; }
+        }
+
+        /// <summary>
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
+        /// </summary>
+        public override System.Drawing.Image CursorImage
+        {
+            get
+            {
+                return Resources.cursor_select;
+            }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        /// <value></value>
+        public override int ToolbarPriority
+        {
+            get
+            {
+                return 0;
+            }
         }
 
         /// <summary>

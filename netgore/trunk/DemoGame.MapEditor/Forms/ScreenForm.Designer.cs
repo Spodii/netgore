@@ -35,14 +35,8 @@ namespace DemoGame.MapEditor
         {
             System.Windows.Forms.SplitContainer splitContainer1;
             System.Windows.Forms.SplitContainer splitContainer2;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenForm));
             System.Windows.Forms.SplitContainer splitContainer3;
             this.panToolBar = new System.Windows.Forms.Panel();
-            this.picToolGrhsAdd = new System.Windows.Forms.PictureBox();
-            this.picToolGrhs = new System.Windows.Forms.PictureBox();
-            this.picToolWallsAdd = new System.Windows.Forms.PictureBox();
-            this.picToolWalls = new System.Windows.Forms.PictureBox();
-            this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
@@ -127,12 +121,6 @@ namespace DemoGame.MapEditor
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
-            this.panToolBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolGrhsAdd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolGrhs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolWallsAdd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolWalls)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolSelect)).BeginInit();
             splitContainer3.Panel1.SuspendLayout();
             splitContainer3.Panel2.SuspendLayout();
             splitContainer3.SuspendLayout();
@@ -211,72 +199,11 @@ namespace DemoGame.MapEditor
             // 
             this.panToolBar.BackColor = System.Drawing.SystemColors.Window;
             this.panToolBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panToolBar.Controls.Add(this.picToolGrhsAdd);
-            this.panToolBar.Controls.Add(this.picToolGrhs);
-            this.panToolBar.Controls.Add(this.picToolWallsAdd);
-            this.panToolBar.Controls.Add(this.picToolWalls);
-            this.panToolBar.Controls.Add(this.picToolSelect);
             this.panToolBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panToolBar.Location = new System.Drawing.Point(0, 0);
             this.panToolBar.Name = "panToolBar";
             this.panToolBar.Size = new System.Drawing.Size(800, 26);
             this.panToolBar.TabIndex = 7;
-            // 
-            // picToolGrhsAdd
-            // 
-            this.picToolGrhsAdd.Dock = System.Windows.Forms.DockStyle.Left;
-            this.picToolGrhsAdd.Image = ((System.Drawing.Image)(resources.GetObject("picToolGrhsAdd.Image")));
-            this.picToolGrhsAdd.InitialImage = null;
-            this.picToolGrhsAdd.Location = new System.Drawing.Point(96, 0);
-            this.picToolGrhsAdd.Name = "picToolGrhsAdd";
-            this.picToolGrhsAdd.Size = new System.Drawing.Size(24, 24);
-            this.picToolGrhsAdd.TabIndex = 4;
-            this.picToolGrhsAdd.TabStop = false;
-            // 
-            // picToolGrhs
-            // 
-            this.picToolGrhs.Dock = System.Windows.Forms.DockStyle.Left;
-            this.picToolGrhs.Image = ((System.Drawing.Image)(resources.GetObject("picToolGrhs.Image")));
-            this.picToolGrhs.InitialImage = null;
-            this.picToolGrhs.Location = new System.Drawing.Point(72, 0);
-            this.picToolGrhs.Name = "picToolGrhs";
-            this.picToolGrhs.Size = new System.Drawing.Size(24, 24);
-            this.picToolGrhs.TabIndex = 3;
-            this.picToolGrhs.TabStop = false;
-            // 
-            // picToolWallsAdd
-            // 
-            this.picToolWallsAdd.Dock = System.Windows.Forms.DockStyle.Left;
-            this.picToolWallsAdd.Image = ((System.Drawing.Image)(resources.GetObject("picToolWallsAdd.Image")));
-            this.picToolWallsAdd.InitialImage = null;
-            this.picToolWallsAdd.Location = new System.Drawing.Point(48, 0);
-            this.picToolWallsAdd.Name = "picToolWallsAdd";
-            this.picToolWallsAdd.Size = new System.Drawing.Size(24, 24);
-            this.picToolWallsAdd.TabIndex = 2;
-            this.picToolWallsAdd.TabStop = false;
-            // 
-            // picToolWalls
-            // 
-            this.picToolWalls.Dock = System.Windows.Forms.DockStyle.Left;
-            this.picToolWalls.Image = ((System.Drawing.Image)(resources.GetObject("picToolWalls.Image")));
-            this.picToolWalls.InitialImage = null;
-            this.picToolWalls.Location = new System.Drawing.Point(24, 0);
-            this.picToolWalls.Name = "picToolWalls";
-            this.picToolWalls.Size = new System.Drawing.Size(24, 24);
-            this.picToolWalls.TabIndex = 1;
-            this.picToolWalls.TabStop = false;
-            // 
-            // picToolSelect
-            // 
-            this.picToolSelect.Dock = System.Windows.Forms.DockStyle.Left;
-            this.picToolSelect.Image = ((System.Drawing.Image)(resources.GetObject("picToolSelect.Image")));
-            this.picToolSelect.InitialImage = null;
-            this.picToolSelect.Location = new System.Drawing.Point(0, 0);
-            this.picToolSelect.Name = "picToolSelect";
-            this.picToolSelect.Size = new System.Drawing.Size(24, 24);
-            this.picToolSelect.TabIndex = 0;
-            this.picToolSelect.TabStop = false;
-            this.picToolSelect.Click += new System.EventHandler(this.picToolSelect_Click);
             // 
             // GameScreen
             // 
@@ -290,7 +217,6 @@ namespace DemoGame.MapEditor
             this.GameScreen.Text = "Game Screen";
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
-            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
             // splitContainer3
             // 
@@ -1168,12 +1094,6 @@ namespace DemoGame.MapEditor
             splitContainer2.Panel1.ResumeLayout(false);
             splitContainer2.Panel2.ResumeLayout(false);
             splitContainer2.ResumeLayout(false);
-            this.panToolBar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picToolGrhsAdd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolGrhs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolWallsAdd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolWalls)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picToolSelect)).EndInit();
             splitContainer3.Panel1.ResumeLayout(false);
             splitContainer3.Panel2.ResumeLayout(false);
             splitContainer3.ResumeLayout(false);
@@ -1216,11 +1136,6 @@ namespace DemoGame.MapEditor
 
         }
         private System.Windows.Forms.Panel panToolBar;
-        public System.Windows.Forms.PictureBox picToolGrhsAdd;
-        public System.Windows.Forms.PictureBox picToolGrhs;
-        public System.Windows.Forms.PictureBox picToolWallsAdd;
-        public System.Windows.Forms.PictureBox picToolWalls;
-        public System.Windows.Forms.PictureBox picToolSelect;
         private GameScreenControl GameScreen;
         private System.Windows.Forms.TabControl tcMenu;
         private System.Windows.Forms.TabPage tabPageGeneral;
