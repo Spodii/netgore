@@ -166,7 +166,6 @@
     <None Include="Resources\cursor_select.png" />
     <None Include="Resources\cursor_grhsadd.png" />
     <None Include="Resources\cursor_grhs.png" />
-    <None Include="Resources\cursor_default.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
