@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
@@ -8,6 +7,14 @@ namespace DemoGame.MapEditor
 {
     class AddGrhCursor : EditorCursorBase
     {
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Add Grh"; }
+        }
+
         /// <summary>
         /// When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
@@ -64,14 +71,6 @@ namespace DemoGame.MapEditor
                     screen.Map.RemoveMapGrh(grh);
                 }
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Add Grh"; }
         }
     }
 }
