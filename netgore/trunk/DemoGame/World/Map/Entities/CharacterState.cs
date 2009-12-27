@@ -1,6 +1,7 @@
 using System.Linq;
 
 #if !TOPDOWN
+
 namespace DemoGame
 {
     /// <summary>
@@ -46,4 +47,5 @@ namespace DemoGame
         FallingRight
     }
 }
+
 #endif

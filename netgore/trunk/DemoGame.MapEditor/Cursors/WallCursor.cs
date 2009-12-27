@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using Color=Microsoft.Xna.Framework.Graphics.Color;
 using Point=System.Drawing.Point;
+using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {
@@ -20,34 +22,11 @@ namespace DemoGame.MapEditor
         Vector2 _mouseDragStart = Vector2.Zero;
 
         /// <summary>
-        /// Gets the List of all the currently selected walls
-        /// </summary>
-        public List<WallEntityBase> SelectedWalls
-        {
-            get { return _selectedWalls; }
-        }
-
-        /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
         /// </summary>
-        public override System.Drawing.Image CursorImage
+        public override Image CursorImage
         {
-            get
-            {
-                return Resources.cursor_walls;
-            }
-        }
-
-        /// <summary>
-        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
-        /// </summary>
-        /// <value></value>
-        public override int ToolbarPriority
-        {
-            get
-            {
-                return 5;
-            }
+            get { return Resources.cursor_walls; }
         }
 
         /// <summary>
@@ -56,6 +35,23 @@ namespace DemoGame.MapEditor
         public override string Name
         {
             get { return "Select Wall"; }
+        }
+
+        /// <summary>
+        /// Gets the List of all the currently selected walls
+        /// </summary>
+        public List<WallEntityBase> SelectedWalls
+        {
+            get { return _selectedWalls; }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        /// <value></value>
+        public override int ToolbarPriority
+        {
+            get { return 5; }
         }
 
         /// <summary>

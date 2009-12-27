@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
@@ -17,18 +16,34 @@ namespace NetGore.Graphics
     public class BasicGrhCharacterSprite : ICharacterSprite
     {
         readonly Entity _character;
+        readonly Grh _grh = new Grh(null);
         readonly SpriteCategory _rootCategory;
 
         string _bodyName = string.Empty;
         string _currentSet = string.Empty;
         int _currentTime;
-        readonly Grh _grh = new Grh(null);
 
         public BasicGrhCharacterSprite(Entity character, SpriteCategory rootCategory)
         {
             _character = character;
             _rootCategory = rootCategory;
         }
+
+        void InternalSetSet(string setName)
+        {
+            if (_currentSet.Equals(setName, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            _currentSet = setName;
+
+            var grhData = GrhInfo.GetData(_rootCategory + SpriteCategorization.Delimiter + _bodyName, setName);
+            if (grhData == null)
+                return;
+
+            _grh.SetGrh(grhData, AnimType.Loop, _currentTime);
+        }
+
+        #region ICharacterSprite Members
 
         /// <summary>
         /// Gets the character this <see cref="ICharacterSprite"/> is drawing the sprite for.
@@ -118,20 +133,6 @@ namespace NetGore.Graphics
         {
         }
 
-        void InternalSetSet(string setName)
-        {
-            if (_currentSet.Equals(setName, StringComparison.OrdinalIgnoreCase))
-                return;
-
-            _currentSet = setName;
-
-            var grhData = GrhInfo.GetData(_rootCategory + SpriteCategorization.Delimiter + _bodyName, setName);
-            if (grhData == null)
-                return;
-
-            _grh.SetGrh(grhData, AnimType.Loop, _currentTime);
-        }
-
         /// <summary>
         /// Updates the <see cref="ICharacterSprite"/>.
         /// </summary>
@@ -140,5 +141,7 @@ namespace NetGore.Graphics
         {
             _currentTime = currentTime;
         }
+
+        #endregion
     }
 }

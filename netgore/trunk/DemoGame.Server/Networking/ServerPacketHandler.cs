@@ -206,7 +206,7 @@ namespace DemoGame.Server
                 user.StopMovingHorizontal();
         }
 #endif
-        
+
 #if TOPDOWN
         [MessageHandler((byte)ClientPacketID.MoveStopVertical)]
         void RecvMoveStopVertical(IIPSocket conn, BitStream r)

@@ -1,13 +1,13 @@
-using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
 {
@@ -20,6 +20,14 @@ namespace DemoGame.MapEditor
         Vector2 _toolTipPos;
 
         /// <summary>
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
+        /// </summary>
+        public override Image CursorImage
+        {
+            get { return Resources.cursor_select; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
         /// </summary>
         public override string Name
@@ -28,26 +36,12 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
-        /// </summary>
-        public override System.Drawing.Image CursorImage
-        {
-            get
-            {
-                return Resources.cursor_select;
-            }
-        }
-
-        /// <summary>
         /// Gets the priority of the cursor on the toolbar. Lower values appear first.
         /// </summary>
         /// <value></value>
         public override int ToolbarPriority
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
         }
 
         /// <summary>

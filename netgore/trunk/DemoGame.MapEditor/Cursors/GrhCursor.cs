@@ -19,6 +19,14 @@ namespace DemoGame.MapEditor
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
+        /// Gets the cursor's <see cref="Image"/>.
+        /// </summary>
+        public override Image CursorImage
+        {
+            get { return Resources.cursor_grhs; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
         /// </summary>
         public override string Name
@@ -27,26 +35,12 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the cursor's <see cref="Image"/>.
-        /// </summary>
-        public override System.Drawing.Image CursorImage
-        {
-            get
-            {
-                return Resources.cursor_grhs;
-            }
-        }
-
-        /// <summary>
         /// Gets the priority of the cursor on the toolbar. Lower values appear first.
         /// </summary>
         /// <value></value>
         public override int ToolbarPriority
         {
-            get
-            {
-                return 15;
-            }
+            get { return 15; }
         }
 
         /// <summary>

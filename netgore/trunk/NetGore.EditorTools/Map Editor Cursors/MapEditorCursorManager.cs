@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using NetGore;
 using NetGore.Collections;
 
 namespace NetGore.EditorTools
@@ -12,12 +11,13 @@ namespace NetGore.EditorTools
 
     public class MapEditorCursorManager<TScreen> where TScreen : Form
     {
-        readonly TScreen _screen;
-        readonly List<MapEditorCursorBase<TScreen>> _cursors = new List<MapEditorCursorBase<TScreen>>();
-        readonly Control _cursorContainer;
-        readonly Control _gameScreen;
         readonly Func<MapEditorCursorBase<TScreen>, bool> _allowCursorEventChecker;
+        readonly Control _cursorContainer;
         readonly List<PictureBox> _cursorControls = new List<PictureBox>();
+        readonly List<MapEditorCursorBase<TScreen>> _cursors = new List<MapEditorCursorBase<TScreen>>();
+        readonly Control _gameScreen;
+        readonly TScreen _screen;
+        MapEditorCursorBase<TScreen> _selectedCursor;
 
         /// <summary>
         /// Notifies listeners when the selected cursor changes.
@@ -34,7 +34,7 @@ namespace NetGore.EditorTools
         /// <param name="allowCursorEventChecker">Func that checks if a cursor event is allowed to be executed. This
         /// way you can prevent cursor events at certain times.</param>
         public MapEditorCursorManager(TScreen screen, Control cursorContainer, Control gameScreen,
-            Func<MapEditorCursorBase<TScreen>, bool> allowCursorEventChecker)
+                                      Func<MapEditorCursorBase<TScreen>, bool> allowCursorEventChecker)
         {
             if (screen == null)
                 throw new ArgumentNullException("screen");
@@ -55,6 +55,86 @@ namespace NetGore.EditorTools
             _gameScreen.MouseDown += _gameScreen_MouseDown;
             _gameScreen.MouseMove += _gameScreen_MouseMove;
             _gameScreen.MouseUp += _gameScreen_MouseUp;
+        }
+
+        /// <summary>
+        /// Gets the cursors in this collection.
+        /// </summary>
+        public IEnumerable<MapEditorCursorBase<TScreen>> Cursors
+        {
+            get { return _cursors; }
+        }
+
+        /// <summary>
+        /// Gets the screen used by the cursors in this manager.
+        /// </summary>
+        public TScreen Screen
+        {
+            get { return _screen; }
+        }
+
+        /// <summary>
+        /// Gets or sets the selected cursor.
+        /// </summary>
+        public MapEditorCursorBase<TScreen> SelectedCursor
+        {
+            get { return _selectedCursor; }
+            set
+            {
+                if (_selectedCursor == value)
+                    return;
+
+                foreach (var control in _cursorControls)
+                {
+                    control.BackColor = Color.White;
+                    control.BorderStyle = BorderStyle.None;
+                }
+
+                _selectedCursor = value;
+
+                if (_selectedCursor != null)
+                {
+                    var selectedControl = _cursorControls.FirstOrDefault(x => x.Tag == _selectedCursor);
+                    if (selectedControl != null)
+                    {
+                        selectedControl.BackColor = Color.LimeGreen;
+                        selectedControl.BorderStyle = BorderStyle.FixedSingle;
+                    }
+                }
+
+                if (OnChangeSelectedCursor != null)
+                    OnChangeSelectedCursor(this);
+            }
+        }
+
+        void _gameScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
+                SelectedCursor.MouseDown(Screen, e);
+        }
+
+        void _gameScreen_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
+                SelectedCursor.MouseMove(Screen, e);
+        }
+
+        void _gameScreen_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
+                SelectedCursor.MouseUp(Screen, e);
+        }
+
+        public void DrawInterface()
+        {
+            if (SelectedCursor != null)
+                SelectedCursor.DrawInterface(Screen);
+        }
+
+        public void DrawSelection()
+        {
+            if (SelectedCursor != null)
+                SelectedCursor.DrawSelection(Screen);
         }
 
         void LoadTypeInstances()
@@ -80,25 +160,20 @@ namespace NetGore.EditorTools
             {
                 var cursorControl = new PictureBox
                 {
-                    Size = new System.Drawing.Size(24, 24),
+                    Size = new Size(24, 24),
                     Dock = DockStyle.Left,
                     Image = cursor.CursorImage,
                     BorderStyle = BorderStyle.None,
-                    BackColor = System.Drawing.Color.White,
+                    BackColor = Color.White,
                     Tag = cursor
                 };
 
-                cursorControl.Click += delegate(object sender, EventArgs e) { SelectedCursor = ((Control)sender).Tag as MapEditorCursorBase<TScreen>; };
+                cursorControl.Click +=
+                    delegate(object sender, EventArgs e) { SelectedCursor = ((Control)sender).Tag as MapEditorCursorBase<TScreen>; };
 
                 _cursorContainer.Controls.Add(cursorControl);
                 _cursorControls.Add(cursorControl);
             }
-        }
-
-        void _gameScreen_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
-                SelectedCursor.MouseUp(Screen, e);
         }
 
         public void PressDelete()
@@ -106,82 +181,6 @@ namespace NetGore.EditorTools
             if (SelectedCursor != null)
                 SelectedCursor.PressDelete(Screen);
         }
-
-        void _gameScreen_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
-                SelectedCursor.MouseMove(Screen, e);
-        }
-
-        void _gameScreen_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
-                SelectedCursor.MouseDown(Screen, e);
-        }
-
-        MapEditorCursorBase<TScreen> _selectedCursor;
-
-        public void DrawSelection()
-        {
-            if (SelectedCursor != null)
-                SelectedCursor.DrawSelection(Screen);
-        }
-
-        public void DrawInterface()
-        {
-            if (SelectedCursor != null)
-                SelectedCursor.DrawInterface(Screen);
-        }
-
-        public void Update()
-        {
-            if (SelectedCursor != null)
-                SelectedCursor.UpdateCursor(Screen);
-        }
-
-        /// <summary>
-        /// Gets or sets the selected cursor.
-        /// </summary>
-        public MapEditorCursorBase<TScreen> SelectedCursor
-        {
-            get { return _selectedCursor; }
-            set
-            {
-                if (_selectedCursor == value)
-                    return;
-
-                foreach (var control in _cursorControls)
-                {
-                    control.BackColor = System.Drawing.Color.White;
-                    control.BorderStyle = BorderStyle.None;
-                }
-
-                _selectedCursor = value;
-
-                if (_selectedCursor != null)
-                {
-                    var selectedControl = _cursorControls.FirstOrDefault(x => x.Tag == _selectedCursor);
-                    if (selectedControl != null)
-                    {
-                        selectedControl.BackColor = System.Drawing.Color.LimeGreen;
-                        selectedControl.BorderStyle = BorderStyle.FixedSingle;
-                    }
-                }
-
-                if (OnChangeSelectedCursor != null)
-                    OnChangeSelectedCursor(this);
-            }
-        }
-
-        /// <summary>
-        /// Gets the screen used by the cursors in this manager.
-        /// </summary>
-        public TScreen Screen { get { return _screen; } }
-
-        /// <summary>
-        /// Gets the cursors in this collection.
-        /// </summary>
-        public IEnumerable<MapEditorCursorBase<TScreen>> Cursors { get { return _cursors; } }
 
         /// <summary>
         /// Gets the cursor by the given <see cref="Type"/>.
@@ -191,6 +190,12 @@ namespace NetGore.EditorTools
         public MapEditorCursorBase<TScreen> TryGetCursor<T>()
         {
             return Cursors.FirstOrDefault(x => x.GetType() == typeof(T));
+        }
+
+        public void Update()
+        {
+            if (SelectedCursor != null)
+                SelectedCursor.UpdateCursor(Screen);
         }
     }
 }

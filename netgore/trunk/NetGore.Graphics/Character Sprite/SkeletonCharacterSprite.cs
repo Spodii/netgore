@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
@@ -15,10 +14,10 @@ namespace NetGore.Graphics
     {
         readonly Entity _character;
         readonly SkeletonManager _skelManager;
+        readonly float _speedModifier;
         Vector2 _bodySize;
         string _currSkelSet = string.Empty;
         SkeletonAnimation _skelAnim;
-        readonly float _speedModifier;
 
         public SkeletonCharacterSprite(Entity character, SkeletonManager skeletonManager, float speedModifier)
         {

@@ -1039,9 +1039,9 @@ namespace DemoGame.Server
         }
 
 #if TOPDOWN
-        /// <summary>
-        /// Starts moving the character down.
-        /// </summary>
+    /// <summary>
+    /// Starts moving the character down.
+    /// </summary>
         public void MoveDown()
         {
             if (IsMovingDown)
@@ -1074,9 +1074,9 @@ namespace DemoGame.Server
         }
 
 #if TOPDOWN
-        /// <summary>
-        /// Starts moving the character up.
-        /// </summary>
+    /// <summary>
+    /// Starts moving the character up.
+    /// </summary>
         public void MoveUp()
         {
             if (IsMovingUp)
