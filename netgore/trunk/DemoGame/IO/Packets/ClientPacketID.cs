@@ -20,11 +20,25 @@ namespace DemoGame
         EndNPCChatDialog,
         GetEquipmentItemInfo,
         GetInventoryItemInfo,
+#if !TOPDOWN
         Jump,
+#endif
         Login,
+#if TOPDOWN
+        MoveDown,
+#endif
         MoveLeft,
         MoveRight,
         MoveStop,
+#if TOPDOWN
+        MoveStopHorizontal,
+#endif
+#if TOPDOWN
+        MoveStopVertical,
+#endif
+#if TOPDOWN
+        MoveUp,
+#endif
         PickupItem,
         Ping,
         RaiseStat,

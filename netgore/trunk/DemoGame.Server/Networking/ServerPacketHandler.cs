@@ -142,6 +142,7 @@ namespace DemoGame.Server
                 user.SendInventoryItemStats(slot);
         }
 
+#if !TOPDOWN
         [MessageHandler((byte)ClientPacketID.Jump)]
         void RecvJump(IIPSocket conn, BitStream r)
         {
@@ -149,6 +150,7 @@ namespace DemoGame.Server
             if (TryGetUser(conn, out user) && user.CanJump)
                 user.Jump();
         }
+#endif
 
         [MessageHandler((byte)ClientPacketID.Login)]
         void RecvLogin(IIPSocket conn, BitStream r)
@@ -160,6 +162,16 @@ namespace DemoGame.Server
 
             Server.LoginAccount(conn, name, password);
         }
+
+#if TOPDOWN
+        [MessageHandler((byte)ClientPacketID.MoveDown)]
+        void RecvMoveDown(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if (TryGetUser(conn, out user) && !user.IsMovingDown)
+                user.MoveDown();
+        }
+#endif
 
         [MessageHandler((byte)ClientPacketID.MoveLeft)]
         void RecvMoveLeft(IIPSocket conn, BitStream r)
@@ -184,6 +196,36 @@ namespace DemoGame.Server
             if (TryGetUser(conn, out user) && user.IsMoving)
                 user.StopMoving();
         }
+
+#if TOPDOWN
+        [MessageHandler((byte)ClientPacketID.MoveStopHorizontal)]
+        void RecvMoveStopHorizontal(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if (TryGetUser(conn, out user) && (user.IsMovingLeft || user.IsMovingRight))
+                user.StopMovingHorizontal();
+        }
+#endif
+        
+#if TOPDOWN
+        [MessageHandler((byte)ClientPacketID.MoveStopVertical)]
+        void RecvMoveStopVertical(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if (TryGetUser(conn, out user) && (user.IsMovingUp || user.IsMovingDown))
+                user.StopMovingVertical();
+        }
+#endif
+
+#if TOPDOWN
+        [MessageHandler((byte)ClientPacketID.MoveUp)]
+        void RecvMoveUp(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if (TryGetUser(conn, out user) && !user.IsMovingUp)
+                user.MoveUp();
+        }
+#endif
 
         [MessageHandler((byte)ClientPacketID.PickupItem)]
         void RecvPickupItem(IIPSocket conn, BitStream r)
