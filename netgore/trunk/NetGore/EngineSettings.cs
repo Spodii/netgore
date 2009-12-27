@@ -13,11 +13,40 @@ namespace NetGore
         static EngineSettings _instance;
         readonly Vector2 _gravity;
         readonly Vector2 _maxVelocity;
+        readonly GameViewType _viewType;
 
-        public EngineSettings(Vector2 gravity, Vector2 maxVelocity)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EngineSettings"/> class.
+        /// </summary>
+        /// <param name="viewType">The game view type.</param>
+        /// <param name="gravity">The world gravity.</param>
+        /// <param name="maxVelocity">The max velocity for an <see cref="Entity"/>.</param>
+        /// <exception cref="ArgumentException"><paramref name="viewType"/> is not a defined <see cref="GameViewType"/>
+        /// enum value.</exception>
+        public EngineSettings(GameViewType viewType, Vector2 gravity, Vector2 maxVelocity)
         {
+            if (!EnumHelper<GameViewType>.IsDefined(viewType))
+                throw new ArgumentException("viewType");
+
+            _viewType = viewType;
             _gravity = gravity;
             _maxVelocity = maxVelocity.Abs();
+
+            // Special settings for different view types
+            switch (_viewType)
+            {
+                case GameViewType.TopDown:
+                    _gravity = Vector2.Zero;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GameViewType"/> that describes the game's perspective.
+        /// </summary>
+        public GameViewType ViewType
+        {
+            get { return _viewType; }
         }
 
         /// <summary>
