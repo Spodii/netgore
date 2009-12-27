@@ -143,7 +143,6 @@
     <Compile Include="IO\ValueReaderWriter\XmlValueHelper.cs" />
     <Compile Include="IO\ValueReaderWriter\XmlValueReader.cs" />
     <Compile Include="IO\ValueReaderWriter\XmlValueWriter.cs" />
-    <Compile Include="IO\Xml\XmlInfoReader.cs" />
     <Compile Include="MethodInfoHelper.cs" />
     <Compile Include="Network\IPAddressHelper.cs" />
     <Compile Include="Network\LatencyTracker\LatencyTrackerClient.cs" />
