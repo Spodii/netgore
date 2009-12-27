@@ -24,7 +24,17 @@ namespace DemoGame.Client
             const int minShopRate = 250;
             const int minUseRate = 250;
 
+#if !TOPDOWN
             CreateAndAdd(GameControlsKeys.Jump, minMoveRate, () => UserChar.CanJump && CanUserMove(), HandleGameControl_Jump);
+#endif
+
+#if TOPDOWN
+            CreateAndAdd(GameControlsKeys.MoveUp, minMoveRate, () => !UserChar.IsMovingUp && CanUserMove(),
+                         HandleGameControl_MoveUp);
+
+            CreateAndAdd(GameControlsKeys.MoveDown, minMoveRate, () => !UserChar.IsMovingDown && CanUserMove(),
+                         HandleGameControl_MoveDown);
+#endif
 
             CreateAndAdd(GameControlsKeys.MoveLeft, minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
                          HandleGameControl_MoveLeft);
@@ -35,6 +45,12 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.Attack, minAttackRate, CanUserMove, HandleGameControl_Attack);
 
             CreateAndAdd(GameControlsKeys.MoveStop, minMoveRate, () => UserChar.IsMoving, HandleGameControl_MoveStop);
+
+#if TOPDOWN
+            CreateAndAdd(GameControlsKeys.MoveStopHorizontal, minMoveRate, () => UserChar.IsMovingLeft || UserChar.IsMovingRight, HandleGameControl_MoveStopHorizontal);
+
+            CreateAndAdd(GameControlsKeys.MoveStopVertical, minMoveRate, () => UserChar.IsMovingUp || UserChar.IsMovingDown, HandleGameControl_MoveStopVertical);
+#endif
 
             CreateAndAdd(GameControlsKeys.UseWorld, minUseRate, CanUserMove, HandleGameControl_Use);
 
@@ -107,6 +123,7 @@ namespace DemoGame.Client
             }
         }
 
+#if !TOPDOWN
         void HandleGameControl_Jump(GameControl sender)
         {
             using (PacketWriter pw = ClientPacket.Jump())
@@ -114,6 +131,17 @@ namespace DemoGame.Client
                 Socket.Send(pw);
             }
         }
+#endif
+
+#if TOPDOWN
+        void HandleGameControl_MoveDown(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveDown())
+            {
+                Socket.Send(pw);
+            }
+        }
+#endif
 
         void HandleGameControl_MoveLeft(GameControl sender)
         {
@@ -138,6 +166,36 @@ namespace DemoGame.Client
                 Socket.Send(pw);
             }
         }
+
+#if TOPDOWN
+        void HandleGameControl_MoveStopHorizontal(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveStopHorizontal())
+            {
+                Socket.Send(pw);
+            }
+        }
+#endif
+
+#if TOPDOWN
+        void HandleGameControl_MoveStopVertical(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveStopVertical())
+            {
+                Socket.Send(pw);
+            }
+        }
+#endif
+
+#if TOPDOWN
+        void HandleGameControl_MoveUp(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveUp())
+            {
+                Socket.Send(pw);
+            }
+        }
+#endif
 
         void HandleGameControl_PickUp(GameControl sender)
         {

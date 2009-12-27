@@ -50,9 +50,11 @@ namespace DemoGame.Server
             else
                 UpdateWithTarget();
 
+#if !TOPDOWN
             // Jump randomly for no apparent reason
             if (Rand(0, 200) == 0)
                 Actor.Jump();
+#endif
         }
 
         void UpdateNoTarget()

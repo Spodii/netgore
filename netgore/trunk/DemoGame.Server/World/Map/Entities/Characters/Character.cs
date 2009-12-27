@@ -873,6 +873,7 @@ namespace DemoGame.Server
             return GameData.CharacterName.IsValid(s);
         }
 
+#if !TOPDOWN
         /// <summary>
         /// Makes the Character jump if <see cref="Character.CanJump"/> is true. If <see cref="Character.CanJump"/> is false,
         /// this will do nothing.
@@ -884,6 +885,7 @@ namespace DemoGame.Server
 
             SetVelocity(Velocity + new Vector2(0.0f, -0.48f));
         }
+#endif
 
         /// <summary>
         /// When overridden in the derived class, implements the Character being killed. This 
@@ -1036,6 +1038,19 @@ namespace DemoGame.Server
                 MP = stat.Value;
         }
 
+#if TOPDOWN
+        /// <summary>
+        /// Starts moving the character down.
+        /// </summary>
+        public void MoveDown()
+        {
+            if (IsMovingDown)
+                return;
+
+            SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
+        }
+#endif
+
         /// <summary>
         /// Starts moving the character to the left.
         /// </summary>
@@ -1057,6 +1072,19 @@ namespace DemoGame.Server
 
             SetVelocity(new Vector2(_moveSpeedVelocityCache, Velocity.Y));
         }
+
+#if TOPDOWN
+        /// <summary>
+        /// Starts moving the character up.
+        /// </summary>
+        public void MoveUp()
+        {
+            if (IsMovingUp)
+                return;
+
+            SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
+        }
+#endif
 
         /// <summary>
         /// Makes the Character raise their base Stat of the corresponding type by one point, assuming they have enough
@@ -1156,7 +1184,8 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Stops all of the character's horizontal movement.
+        /// Stop the character's controllable movement. Any forces acting upon the character, such as gravity, will
+        /// not be affected.
         /// </summary>
         public override void StopMoving()
         {

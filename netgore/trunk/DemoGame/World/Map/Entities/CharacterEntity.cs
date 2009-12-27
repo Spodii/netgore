@@ -92,6 +92,17 @@ namespace DemoGame
             get { return Velocity.X != 0; }
         }
 
+#if TOPDOWN
+        /// <summary>
+        /// Gets if the character is moving up.
+        /// </summary>
+        [Browsable(false)]
+        public bool IsMovingDown
+        {
+            get { return Velocity.Y > 0; }
+        }
+#endif
+
         /// <summary>
         /// Gets if the character is moving to the left.
         /// </summary>
@@ -109,6 +120,17 @@ namespace DemoGame
         {
             get { return Velocity.X > 0; }
         }
+
+#if TOPDOWN
+        /// <summary>
+        /// Gets if the character is moving up.
+        /// </summary>
+        [Browsable(false)]
+        public bool IsMovingUp
+        {
+            get { return Velocity.Y < 0; }
+        }
+#endif
 
         /// <summary>
         /// Gets or sets the name of the CharacterEntity.
@@ -195,12 +217,39 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Stop the character's controllable movement (ie moving left or right).
+        /// Stops the character's controllable movement. Any forces acting upon the character, such as gravity, will
+        /// not be affected.
         /// </summary>
         public virtual void StopMoving()
         {
+#if TOPDOWN
+            SetVelocity(Vector2.Zero);
+#else
             SetVelocity(new Vector2(0.0f, Velocity.Y));
+#endif
         }
+
+#if TOPDOWN
+        /// <summary>
+        /// Stops the character's horizontal movement. Any forces acting upon the character, such as gravity, will
+        /// not be affected.
+        /// </summary>
+        public virtual void StopMovingHorizontal()
+        {
+            SetVelocity(new Vector2(0, Velocity.Y));
+        }
+#endif
+        
+#if TOPDOWN
+        /// <summary>
+        /// Stops the character's vertical movement. Any forces acting upon the character, such as gravity, will
+        /// not be affected.
+        /// </summary>
+        public virtual void StopMovingVertical()
+        {
+            SetVelocity(new Vector2(Velocity.X, 0));
+        }
+#endif
 
         /// <summary>
         /// Moves the character to a new location instantly. The character's velocity will
