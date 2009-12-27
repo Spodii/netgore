@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -11,15 +12,20 @@ namespace NetGore
     /// </summary>
     public abstract class Entity : IDisposable
     {
+#if !TOPDOWN
         static readonly Vector2 _gravity;
+#endif
+
         static readonly Vector2 _maxVelocity;
-        static readonly GameViewType _viewType;
-        static readonly bool _useGravity;
 
         readonly CollisionBox _collisionBox;
         CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
+
+#if !TOPDOWN
         bool _onGround = false;
+#endif
+
         Vector2 _velocity;
         float _weight = 1.0f;
 
@@ -51,10 +57,10 @@ namespace NetGore
             var settings = EngineSettings.Instance;
 
             // Cache the settings we care about
+#if !TOPDOWN
             _gravity = settings.Gravity;
+#endif
             _maxVelocity = settings.MaxVelocity;
-            _viewType = settings.ViewType;
-            _useGravity = (_gravity != Vector2.Zero);
         }
 
         /// <summary>
@@ -122,24 +128,27 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets if the character is currently on the ground. This value only applies to moving entities.
+        /// Gets if the character is currently on the ground. This value only applies to moving entities. If using
+        /// a top-down perspective, this value is always true.
         /// </summary>
         [Browsable(false)]
         public bool OnGround
         {
-            get {
-                // For top-down, we are always on the ground
-                if (_viewType == GameViewType.TopDown)
-                    return true;
+            get
+            {
+#if TOPDOWN
+                return true;
+#else
+                return _onGround;
+#endif
+            }
 
-                return _onGround; }
             internal set
             {
-                // For top-down, we are always on the ground
-                if (_viewType == GameViewType.TopDown)
-                    _onGround = true;
-                else
-                    _onGround = value; }
+#if !TOPDOWN
+                _onGround = value;
+#endif
+            }
         }
 
         /// <summary>
@@ -234,12 +243,11 @@ namespace NetGore
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
         protected virtual void HandleUpdate(IMap imap, float deltaTime)
         {
+#if !TOPDOWN
             // If the Y velocity is non-zero, assume not on the ground
-            if (_viewType == GameViewType.Sidescroller)
-            {
-                if (Velocity.Y != 0)
-                    OnGround = false;
-            }
+            if (Velocity.Y != 0)
+                OnGround = false;
+#endif
 
             // If moving, perform collision detection
             if (Velocity != Vector2.Zero)
@@ -422,12 +430,11 @@ namespace NetGore
             if (OnGround && Velocity == Vector2.Zero)
                 return;
 
+#if !TOPDOWN
             // Increase the velocity by the gravity
-            if (_useGravity)
-            {
-                Vector2 displacement = _gravity * (Weight * deltaTime);
-                Vector2.Add(ref _velocity, ref displacement, out _velocity);
-            }
+            Vector2 displacement = _gravity * (Weight * deltaTime);
+            Vector2.Add(ref _velocity, ref displacement, out _velocity);
+#endif
 
             // Check for surpassing the maximum velocity
             if (_velocity.X > _maxVelocity.X)

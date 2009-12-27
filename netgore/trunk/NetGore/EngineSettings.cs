@@ -11,42 +11,40 @@ namespace NetGore
     public class EngineSettings
     {
         static EngineSettings _instance;
+
+#if !TOPDOWN
         readonly Vector2 _gravity;
+#endif
+
         readonly Vector2 _maxVelocity;
-        readonly GameViewType _viewType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineSettings"/> class.
         /// </summary>
-        /// <param name="viewType">The game view type.</param>
-        /// <param name="gravity">The world gravity.</param>
+        /// <param name="gravity">The world gravity. Only valid if not using a top-down perspective.</param>
         /// <param name="maxVelocity">The max velocity for an <see cref="Entity"/>.</param>
-        /// <exception cref="ArgumentException"><paramref name="viewType"/> is not a defined <see cref="GameViewType"/>
-        /// enum value.</exception>
-        public EngineSettings(GameViewType viewType, Vector2 gravity, Vector2 maxVelocity)
+        public EngineSettings(Vector2 gravity, Vector2 maxVelocity)
         {
-            if (!EnumHelper<GameViewType>.IsDefined(viewType))
-                throw new ArgumentException("viewType");
-
-            _viewType = viewType;
+#if !TOPDOWN
             _gravity = gravity;
-            _maxVelocity = maxVelocity.Abs();
+#endif
 
-            // Special settings for different view types
-            switch (_viewType)
-            {
-                case GameViewType.TopDown:
-                    _gravity = Vector2.Zero;
-                    break;
-            }
+            _maxVelocity = maxVelocity.Abs();
         }
 
         /// <summary>
-        /// Gets the <see cref="GameViewType"/> that describes the game's perspective.
+        /// Gets if a top-down perspective is used. If false, a side-view persective is being used.
         /// </summary>
-        public GameViewType ViewType
+        public bool IsTopDown
         {
-            get { return _viewType; }
+            get
+            {
+#if TOPDOWN
+                return true;
+#else
+                return false;
+#endif
+            }
         }
 
         /// <summary>
@@ -54,7 +52,14 @@ namespace NetGore
         /// </summary>
         public Vector2 Gravity
         {
-            get { return _gravity; }
+            get
+            {
+#if TOPDOWN
+                return Vector2.Zero;
+#else
+                return _gravity;
+#endif
+            }
         }
 
         /// <summary>
