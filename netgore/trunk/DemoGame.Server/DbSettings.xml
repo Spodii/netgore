@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Settings>
+<DbConnectionSettings>
 	<!-- 
 	When this file resides in the solution, it contains the default settings and the settings to use by
 	tools outside of the main project (such as the installation validator). While in here, changes to this
@@ -13,11 +13,9 @@
 	If you need to change the database connection information, please do so by changing the settings in
 	the copy in \Content\Settings\. If no file exists in there, the Server will create it when run.
 	-->
-
-  <MySql>
-    <User>root</User>
-    <Pass></Pass>
-    <Host>localhost</Host>
-    <Database>demogame</Database>
-  </MySql>
-</Settings>
+  <Database>demogame</Database>
+  <Host>localhost</Host>
+  <Pass></Pass>
+  <Port>3306</Port>
+  <User>root</User>
+</DbConnectionSettings>
