@@ -6,6 +6,7 @@ using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.EditorTools;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor

@@ -662,14 +662,22 @@ namespace DemoGame.MapEditor
             return ret;
         }
 
+        void GameScreen_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            _mouseButton = e.Button;
+        }
+
         void GameScreen_MouseDown(object sender, MouseEventArgs e)
         {
+            _mouseButton = e.Button;
+
             if (Map != null)
-            GameScreen.Focus();
+                GameScreen.Focus();
         }
 
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
         {
+            _mouseButton = e.Button;
             _cursorPos = _camera.ToWorld(e.X, e.Y);
         }
 

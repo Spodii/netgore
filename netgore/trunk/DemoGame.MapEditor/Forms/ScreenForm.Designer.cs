@@ -217,6 +217,7 @@ namespace DemoGame.MapEditor
             this.GameScreen.Text = "Game Screen";
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
+            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(GameScreen_MouseUp);
             // 
             // splitContainer3
             // 
@@ -1135,6 +1136,7 @@ namespace DemoGame.MapEditor
             this.ResumeLayout(false);
 
         }
+
         private System.Windows.Forms.Panel panToolBar;
         private GameScreenControl GameScreen;
         private System.Windows.Forms.TabControl tcMenu;

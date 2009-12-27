@@ -73,6 +73,8 @@
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
     <Compile Include="FileDialogs.cs" />
+    <Compile Include="Map Editor Cursors\MapEditorCursorBase.cs" />
+    <Compile Include="Map Editor Cursors\MapEditorCursorManager.cs" />
     <Compile Include="Particles\EmitterModifierCollectionEditor.cs" />
     <Compile Include="WinForms\IMapItemListBox.cs" />
     <Compile Include="WinForms\MapParticleEffectsListBoxBase.cs">
@@ -223,6 +225,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Grh\Controls\GrhTreeView\folderopen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_default.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

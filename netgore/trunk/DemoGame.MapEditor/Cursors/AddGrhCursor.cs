@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
+using NetGore.EditorTools;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
