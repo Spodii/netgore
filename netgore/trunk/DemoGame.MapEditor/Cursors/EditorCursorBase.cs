@@ -62,6 +62,14 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public abstract string Name
+        {
+            get;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles generic updating of the cursor. This is
         /// called every frame.
         /// </summary>

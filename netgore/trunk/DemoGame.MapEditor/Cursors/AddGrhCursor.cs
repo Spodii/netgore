@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
@@ -7,12 +8,22 @@ namespace DemoGame.MapEditor
 {
     class AddGrhCursor : EditorCursorBase
     {
+        /// <summary>
+        /// When overridden in the derived class, handles when the cursor has moved.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseMove(ScreenForm screen, MouseEventArgs e)
         {
             if (screen.chkSnapGrhGrid.Checked)
                 MouseUp(screen, e);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been released.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseUp(ScreenForm screen, MouseEventArgs e)
         {
             Vector2 cursorPos = screen.CursorPos;
@@ -53,6 +64,14 @@ namespace DemoGame.MapEditor
                     screen.Map.RemoveMapGrh(grh);
                 }
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Add Grh"; }
         }
     }
 }
