@@ -1,27 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
-    class GrhCursor : MapEditorCursorBase
+    class GrhCursor : MapEditorCursorBase<ScreenForm>
     {
-        /// <summary>
-        /// Currently selected Grh already on the map
-        /// </summary>
         readonly List<MapGrh> _selectedMapGrhs = new List<MapGrh>();
-
-        /// <summary>
-        /// MapGrh move box for moving multiple MapGrhs
-        /// </summary>
         TransBox _mapGrhMoveBox = null;
-
         Vector2 _mouseDragStart = Vector2.Zero;
-
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
@@ -30,6 +23,29 @@ namespace DemoGame.MapEditor
         public override string Name
         {
             get { return "Select Grh"; }
+        }
+
+        /// <summary>
+        /// Gets the cursor's <see cref="Image"/>.
+        /// </summary>
+        public override System.Drawing.Image CursorImage
+        {
+            get
+            {
+                return Resources.cursor_grhs;
+            }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        /// <value></value>
+        public override int ToolbarPriority
+        {
+            get
+            {
+                return 15;
+            }
         }
 
         /// <summary>

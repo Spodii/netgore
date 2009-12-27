@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using NetGore;
 
 namespace DemoGame.MapEditor
 {
-    class AddWallCursor : MapEditorCursorBase
+    sealed class AddWallCursor : MapEditorCursorBase<ScreenForm>
     {
         /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
@@ -17,6 +20,29 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Gets the cursor's <see cref="Image"/>.
+        /// </summary>
+        public override System.Drawing.Image CursorImage
+        {
+            get
+            {
+                return Resources.cursor_wallsadd;
+            }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        /// <value></value>
+        public override int ToolbarPriority
+        {
+            get
+            {
+                return 10;
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
@@ -24,7 +50,7 @@ namespace DemoGame.MapEditor
         public override void MouseDown(ScreenForm screen, MouseEventArgs e)
         {
             // Switch to the wall editing tool
-            screen.toolBarItem_Click(screen.picToolWalls, null);
+            screen.CursorManager.SelectedCursor = screen.CursorManager.TryGetCursor<WallCursor>();
 
             // Create the new wall
             WallEntity w = new WallEntity(screen.Camera.ToWorld(e.X, e.Y), Vector2.One);

@@ -1,12 +1,16 @@
+using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.MapEditor.Properties;
 
 namespace DemoGame.MapEditor
 {
     /// <summary>
-    /// Base handler for a cursor used to modify the map in different ways.
+    /// Base handler for a cursor used to modify the map in different ways. All derived classes must have a constructor
+    /// that takes no parameters.
     /// </summary>
-    abstract class MapEditorCursorBase
+    public abstract class MapEditorCursorBase<TForm> where TForm : Form
     {
         /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
@@ -14,11 +18,24 @@ namespace DemoGame.MapEditor
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets the cursor's <see cref="Image"/>.
+        /// </summary>
+        public virtual Image CursorImage { get { return Resources.cursor_default; } }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        public virtual int ToolbarPriority
+        {
+            get { return int.MaxValue; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void DrawInterface(ScreenForm screen)
+        public virtual void DrawInterface(TForm screen)
         {
         }
 
@@ -27,7 +44,7 @@ namespace DemoGame.MapEditor
         /// which displays a selection box for when selecting multiple objects.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void DrawSelection(ScreenForm screen)
+        public virtual void DrawSelection(TForm screen)
         {
         }
 
@@ -36,7 +53,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public virtual void MouseDown(ScreenForm screen, MouseEventArgs e)
+        public virtual void MouseDown(TForm screen, MouseEventArgs e)
         {
         }
 
@@ -45,7 +62,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public virtual void MouseMove(ScreenForm screen, MouseEventArgs e)
+        public virtual void MouseMove(TForm screen, MouseEventArgs e)
         {
         }
 
@@ -54,7 +71,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public virtual void MouseUp(ScreenForm screen, MouseEventArgs e)
+        public virtual void MouseUp(TForm screen, MouseEventArgs e)
         {
         }
 
@@ -62,7 +79,7 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles when the delete button has been pressed.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void PressDelete(ScreenForm screen)
+        public virtual void PressDelete(TForm screen)
         {
         }
 
@@ -71,7 +88,7 @@ namespace DemoGame.MapEditor
         /// called every frame.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void UpdateCursor(ScreenForm screen)
+        public virtual void UpdateCursor(TForm screen)
         {
             screen.Cursor = Cursors.Default;
         }

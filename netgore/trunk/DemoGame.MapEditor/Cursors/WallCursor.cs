@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -11,27 +12,11 @@ using Point=System.Drawing.Point;
 
 namespace DemoGame.MapEditor
 {
-    class WallCursor : MapEditorCursorBase
+    class WallCursor : MapEditorCursorBase<ScreenForm>
     {
-        /// <summary>
-        /// List of all the currently selected walls
-        /// </summary>
         readonly List<WallEntityBase> _selectedWalls = new List<WallEntityBase>();
-
         MouseButtons _mouseDragButton = MouseButtons.None;
-
-        /// <summary>
-        /// Map pixel coordinate the mouse started dragging at
-        /// </summary>
         Vector2 _mouseDragStart = Vector2.Zero;
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Select Wall"; }
-        }
 
         /// <summary>
         /// Gets the List of all the currently selected walls
@@ -39,6 +24,37 @@ namespace DemoGame.MapEditor
         public List<WallEntityBase> SelectedWalls
         {
             get { return _selectedWalls; }
+        }
+
+        /// <summary>
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
+        /// </summary>
+        public override System.Drawing.Image CursorImage
+        {
+            get
+            {
+                return Resources.cursor_walls;
+            }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        /// <value></value>
+        public override int ToolbarPriority
+        {
+            get
+            {
+                return 5;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Wall"; }
         }
 
         /// <summary>

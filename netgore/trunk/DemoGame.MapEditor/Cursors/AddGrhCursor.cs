@@ -1,11 +1,14 @@
+using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
-    class AddGrhCursor : MapEditorCursorBase
+    sealed class AddGrhCursor : MapEditorCursorBase<ScreenForm>
     {
         /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
@@ -13,6 +16,29 @@ namespace DemoGame.MapEditor
         public override string Name
         {
             get { return "Add Grh"; }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        /// <value></value>
+        public override int ToolbarPriority
+        {
+            get
+            {
+                return 20;
+            }
+        }
+
+        /// <summary>
+        /// Gets the cursor's <see cref="Image"/>.
+        /// </summary>
+        public override System.Drawing.Image CursorImage
+        {
+            get
+            {
+                return Resources.cursor_grhsadd;
+            }
         }
 
         /// <summary>

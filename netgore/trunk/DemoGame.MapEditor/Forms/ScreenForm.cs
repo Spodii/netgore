@@ -64,12 +64,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         static readonly Color _drawPreviewColor = new Color(255, 255, 255, 150);
 
-        readonly AddGrhCursor _addGrhCursor = new AddGrhCursor();
-        readonly AddWallCursor _addWallCursor = new AddWallCursor();
         readonly ICamera2D _camera;
-        readonly EntityCursor _entityCursor = new EntityCursor();
-        readonly GrhCursor _grhCursor = new GrhCursor();
         readonly ScreenGrid _grid;
+        readonly MapEditorCursorManager<ScreenForm> _cursorManager;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
 
@@ -145,11 +142,6 @@ namespace DemoGame.MapEditor
         SpriteBatch _sb;
 
         /// <summary>
-        /// Currently selected cursor from the cursor toolbar
-        /// </summary>
-        MapEditorCursorBase _selectedTool = null;
-
-        /// <summary>
         /// Currently selected transformation box
         /// </summary>
         TransBox _selTransBox = null;
@@ -171,6 +163,10 @@ namespace DemoGame.MapEditor
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
             _grid = new ScreenGrid(_camera.Size);
 
+            // Create the cursors
+            _cursorManager = new MapEditorCursorManager<ScreenForm>(this, panToolBar, GameScreen, x => Map != null && !treeGrhs.IsEditingGrhData);
+            CursorManager.OnChangeSelectedCursor += CursorManager_OnChangeSelectedCursor;
+            
             // Set up some of the OnChangeMap events for objects that need to reference the Map
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
             OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DbController, newMap));
@@ -189,15 +185,17 @@ namespace DemoGame.MapEditor
             _world = new World(this, _camera);
         }
 
-        public AddGrhCursor AddGrhCursor
+        void CursorManager_OnChangeSelectedCursor(MapEditorCursorManager<ScreenForm> sender)
         {
-            get { return _addGrhCursor; }
+            WallCursor.SelectedWalls.Clear();
+            _transBoxes.Clear();
+            _selTransBox = null;
+
+            if (sender.SelectedCursor.GetType() == typeof(AddGrhCursor))
+                tcMenu.SelectTab(tabPageGrhs);
         }
 
-        public AddWallCursor AddWallCursor
-        {
-            get { return _addWallCursor; }
-        }
+        public MapEditorCursorManager<ScreenForm> CursorManager { get { return _cursorManager; } }
 
         /// <summary>
         /// Gets the camera used for the game screen.
@@ -221,19 +219,9 @@ namespace DemoGame.MapEditor
             get { return _dbController; }
         }
 
-        public EntityCursor EntityCursor
-        {
-            get { return _entityCursor; }
-        }
-
         public GameScreenControl GameScreenControl
         {
             get { return GameScreen; }
-        }
-
-        public GrhCursor GrhCursor
-        {
-            get { return _grhCursor; }
         }
 
         /// <summary>
@@ -595,8 +583,7 @@ namespace DemoGame.MapEditor
             _mapBorderDrawer.Draw(_sb, Map, _camera);
 
             // Selection area
-            if (_selectedTool != null)
-                _selectedTool.DrawSelection(this);
+            CursorManager.DrawSelection();
 
             // Grid
             if (chkDrawGrid.Checked)
@@ -608,14 +595,15 @@ namespace DemoGame.MapEditor
                 box.Draw(_sb);
             }
 
+            // TODO: Move this chunk to the tool's DrawInterface()?
             // Selected Grh
-            if (_selectedTool is AddGrhCursor && _selectedGrh.GrhData != null)
+            if (CursorManager.SelectedCursor is AddGrhCursor && SelectedGrh.GrhData != null)
             {
                 Vector2 drawPos;
                 if (chkSnapGrhGrid.Checked)
-                    drawPos = _grid.AlignDown(_cursorPos);
+                    drawPos = Grid.AlignDown(_cursorPos);
                 else
-                    drawPos = _cursorPos;
+                    drawPos = CursorPos;
 
                 // If we fail to draw the selected Grh, just ignore it
                 try
@@ -628,8 +616,7 @@ namespace DemoGame.MapEditor
             }
 
             // Tool interface
-            if (_selectedTool != null)
-                _selectedTool.DrawInterface(this);
+            CursorManager.DrawInterface();
 
             // End map rendering
             _sb.End();
@@ -677,46 +664,13 @@ namespace DemoGame.MapEditor
 
         void GameScreen_MouseDown(object sender, MouseEventArgs e)
         {
-            _mouseButton = e.Button;
-            if (Map == null)
-                return;
-
+            if (Map != null)
             GameScreen.Focus();
-
-            if (treeGrhs.IsEditingGrhData)
-                return;
-
-            // Forward to the corresponding tool's reaction to the screen's MouseDown
-            _selectedTool.MouseDown(this, e);
         }
 
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
         {
-            _mouseButton = e.Button;
-            if (Map == null)
-                return;
-
-            // Update the cursor position
             _cursorPos = _camera.ToWorld(e.X, e.Y);
-
-            if (treeGrhs.IsEditingGrhData)
-                return;
-
-            // Forward to the corresponding tool's reaction to the screen's MouseMove
-            _selectedTool.MouseMove(this, e);
-        }
-
-        void GameScreen_MouseUp(object sender, MouseEventArgs e)
-        {
-            _mouseButton = e.Button;
-            if (Map == null)
-                return;
-
-            if (treeGrhs.IsEditingGrhData)
-                return;
-
-            // Forward to the corresponding tool's reaction to the screen's MouseUp
-            _selectedTool.MouseUp(this, e);
         }
 
         static IEnumerable<Control> GetAllControls(Control root)
@@ -840,13 +794,6 @@ namespace DemoGame.MapEditor
             }
             cmbWallType.SelectedItem = CollisionType.Full;
 
-            // Hook the toolbar visuals
-            foreach (PictureBox pic in panToolBar.Controls)
-            {
-                pic.MouseClick += toolBarItem_Click;
-            }
-            toolBarItem_Click(picToolSelect, null);
-
             // Hook all controls to forward camera movement keys Form
             KeyEventHandler kehDown = OnKeyDownForward;
             KeyEventHandler kehUp = OnKeyUpForward;
@@ -951,8 +898,7 @@ namespace DemoGame.MapEditor
                     break;
 
                 case Keys.Delete:
-                    if (_selectedTool != null)
-                        _selectedTool.PressDelete(this);
+                    CursorManager.PressDelete();
                     _selTransBox = null;
                     _transBoxes.Clear();
                     break;
@@ -1009,15 +955,6 @@ namespace DemoGame.MapEditor
                 OnKeyUp(e);
         }
 
-        void picToolGrhsAdd_Click(object sender, EventArgs e)
-        {
-            tcMenu.SelectTab(tabPageGrhs);
-        }
-
-        void picToolSelect_Click(object sender, EventArgs e)
-        {
-        }
-
         void ScreenForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             GrhInfo.Save(ContentPaths.Dev);
@@ -1053,48 +990,13 @@ namespace DemoGame.MapEditor
             treeGrhs.Select();
         }
 
-        internal void toolBarItem_Click(object sender, EventArgs e)
-        {
-            // Set the background colors for the tools
-            foreach (PictureBox pic in panToolBar.Controls)
-            {
-                pic.BackColor = System.Drawing.Color.White;
-                pic.BorderStyle = BorderStyle.None;
-            }
-
-            PictureBox src = (PictureBox)sender;
-            if (src == null)
-                return;
-
-            src.BackColor = System.Drawing.Color.LightGreen;
-            src.BorderStyle = BorderStyle.FixedSingle;
-
-            // Set the selected tool
-            if (src == picToolGrhs)
-                _selectedTool = GrhCursor;
-            else if (src == picToolSelect)
-                _selectedTool = EntityCursor;
-            else if (src == picToolGrhsAdd)
-                _selectedTool = AddGrhCursor;
-            else if (src == picToolWalls)
-                _selectedTool = WallCursor;
-            else if (src == picToolWallsAdd)
-                _selectedTool = AddWallCursor;
-
-            // Clear some selection stuff
-            WallCursor.SelectedWalls.Clear();
-            _transBoxes.Clear();
-            _selTransBox = null;
-        }
-
         void treeGrhs_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
-            if (_selectedGrh.GrhData == null || e.GrhData.GrhIndex != _selectedGrh.GrhData.GrhIndex)
-            {
-                _selectedGrh.SetGrh(e.GrhData.GrhIndex, AnimType.Loop, _currentTime);
-                toolBarItem_Click(picToolGrhsAdd, null);
-                picToolGrhsAdd_Click(this, null);
-            }
+            if (_selectedGrh.GrhData != null && e.GrhData.GrhIndex == _selectedGrh.GrhData.GrhIndex)
+                return;
+
+            _selectedGrh.SetGrh(e.GrhData.GrhIndex, AnimType.Loop, _currentTime);
+            CursorManager.SelectedCursor = CursorManager.TryGetCursor<AddGrhCursor>();
         }
 
         void txtGridHeight_TextChanged(object sender, EventArgs e)
@@ -1172,8 +1074,7 @@ namespace DemoGame.MapEditor
                 Cursor != Cursors.SizeNWSE && Cursor != Cursors.SizeWE)
                 return;
 
-            if (_selectedTool != null)
-                _selectedTool.UpdateCursor(this);
+            CursorManager.Update();
 
             // Set to default if it wasn't yet set
             Cursor = Cursors.Default;
