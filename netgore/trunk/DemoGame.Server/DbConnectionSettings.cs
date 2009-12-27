@@ -21,12 +21,6 @@ namespace DemoGame.Server
         /// </summary>
         const string _settingsFileName = "DbSettings.xml";
 
-        readonly string _sqlDatabase;
-        readonly string _sqlHost;
-        readonly string _sqlPass;
-        readonly string _sqlPort;
-        readonly string _sqlUser;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
@@ -43,67 +37,86 @@ namespace DemoGame.Server
             }
 
             // Read the values
-            var dic = XmlInfoReader.ReadFile(destSettingsFile).First();
-            _sqlUser = dic["MySql.User"];
-            _sqlHost = dic.AsString("MySql.Host", "localhost");
-            _sqlDatabase = dic["MySql.Database"];
-            _sqlPort = dic.AsString("MySql.Port", "3306");
-            _sqlPass = dic.AsString("MySql.Pass", string.Empty);
+            var reader = new XmlValueReader(destSettingsFile, _rootNodeName);
+            Read(reader);
+        }
+
+        public void Write(IValueWriter writer)
+        {
+            writer.Write(_databaseValueKey, Database);
+            writer.Write(_hostValueKey, Host);
+            writer.Write(_passValueKey, Pass);
+            writer.Write(_portValueKey, Port);
+            writer.Write(_userValueKey, User);
+        }
+
+        public static string GetDefaultFilePath(ContentPaths contentPath)
+        {
+            return contentPath.Settings.Join(_settingsFileName);
+        }
+
+        const string _rootNodeName = "DbConnectionSettings";
+        const string _databaseValueKey = "Database";
+        const string _hostValueKey = "Host";
+        const string _passValueKey = "Pass";
+        const string _portValueKey = "Port";
+        const string _userValueKey = "User";
+
+        public void Save()
+        {
+            using (var writer = new XmlValueWriter(GetDefaultFilePath(ContentPaths.Build), _rootNodeName))
+            {
+                Write(writer);
+            }
+        }
+
+        void Read(IValueReader reader)
+        {
+            Database = reader.ReadString(_databaseValueKey);
+            Host = reader.ReadString(_hostValueKey);
+            Pass = reader.ReadString(_passValueKey);
+            Port = reader.ReadUInt(_portValueKey);
+            User = reader.ReadString(_userValueKey);
         }
 
         /// <summary>
         /// Gets the Sql database name containing the game information.
         /// </summary>
-        public string SqlDatabase
-        {
-            get { return _sqlDatabase; }
-        }
+        public string Database { get; private set; }
 
         /// <summary>
         /// Gets the Sql connection host address.
         /// </summary>
-        public string SqlHost
-        {
-            get { return _sqlHost; }
-        }
+        public string Host { get; private set; }
 
         /// <summary>
         /// Gets the Sql connection password.
         /// </summary>
-        public string SqlPass
-        {
-            get { return _sqlPass; }
-        }
+        public string Pass { get; private set; }
 
         /// <summary>
         /// Gets the Sql Host Port number, convert to UInt
         /// </summary>
-        public uint SqlPort
-        {
-            get { return Convert.ToUInt32(_sqlPort); }
-        }
+        public uint Port { get; private set; }
 
         /// <summary>
         /// Gets the Sql user name.
         /// </summary>
-        public string SqlUser
-        {
-            get { return _sqlUser; }
-        }
+        public string User { get; private set; }
 
         /// <summary>
-        /// Makes a Sql connection string for the given settings.
+        /// Makes a Sql connection string using the given settings.
         /// </summary>
         /// <returns>Sql connection string.</returns>
         public string SqlConnectionString()
         {
             MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
             {
-                Database = SqlDatabase,
-                UserID = SqlUser,
-                Password = SqlPass,
-                Server = SqlHost,
-                Port = SqlPort,
+                Database = Database,
+                UserID = User,
+                Password = Pass,
+                Server = Host,
+                Port = Port,
                 IgnorePrepare = false
             };
             return sb.ToString();
