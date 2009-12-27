@@ -11,7 +11,7 @@ using Point=System.Drawing.Point;
 
 namespace DemoGame.MapEditor
 {
-    class WallCursor : EditorCursorBase
+    class WallCursor : MapEditorCursorBase
     {
         /// <summary>
         /// List of all the currently selected walls

@@ -6,7 +6,7 @@ using NetGore;
 
 namespace DemoGame.MapEditor
 {
-    class AddWallCursor : EditorCursorBase
+    class AddWallCursor : MapEditorCursorBase
     {
         /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.

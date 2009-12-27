@@ -8,7 +8,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
-    class GrhCursor : EditorCursorBase
+    class GrhCursor : MapEditorCursorBase
     {
         /// <summary>
         /// Currently selected Grh already on the map

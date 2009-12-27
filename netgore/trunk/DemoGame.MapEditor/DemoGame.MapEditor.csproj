@@ -70,7 +70,7 @@
     <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Cursors\AddGrhCursor.cs" />
     <Compile Include="Cursors\AddWallCursor.cs" />
-    <Compile Include="Cursors\EditorCursorBase.cs" />
+    <Compile Include="Cursors\MapEditorCursorBase.cs" />
     <Compile Include="Cursors\EntityCursor.cs" />
     <Compile Include="Cursors\GrhCursor.cs" />
     <Compile Include="Cursors\WallCursor.cs" />
