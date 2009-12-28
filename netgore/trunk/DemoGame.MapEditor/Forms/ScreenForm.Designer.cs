@@ -217,7 +217,7 @@ namespace DemoGame.MapEditor
             this.GameScreen.Text = "Game Screen";
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
-            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(GameScreen_MouseUp);
+            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
             // splitContainer3
             // 
