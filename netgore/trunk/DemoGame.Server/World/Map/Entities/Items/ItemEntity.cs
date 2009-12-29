@@ -270,7 +270,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="entity">ItemEntity that was resized.</param>
         /// <param name="oldSize">Old ItemEntity size.</param>
-        void ItemEntity_OnResize(Entity entity, Vector2 oldSize)
+        void ItemEntity_OnResize(ISpatial entity, Vector2 oldSize)
         {
             Debug.Assert(entity == this, "Why did we receive an ItemEntity_OnResize for another Entity?");
 
