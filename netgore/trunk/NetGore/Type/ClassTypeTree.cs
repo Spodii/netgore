@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// TODO: !! Use this to build the spatials and spatial aggregates automatically
-
 namespace NetGore
 {
     /// <summary>
@@ -44,6 +42,8 @@ namespace NetGore
 
             // Store the children
             _children = FinalizeChildren(childList);
+
+            HandleInitialized();
 
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
@@ -183,7 +183,8 @@ namespace NetGore
 
         /// <summary>
         /// When overridden in the derived class, handles when this <see cref="ClassTypeTree"/> has finished
-        /// being built. This allows derived classes to safely and easily attach extra data to each node.
+        /// being built. This allows derived classes to safely and easily attach extra data to each node. This is only
+        /// called on the root node, and only after the whole tree has finished being built.
         /// </summary>
         protected virtual void HandleInitialized()
         {
