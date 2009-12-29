@@ -1089,7 +1089,7 @@ namespace DemoGame
             foreach (var e in Entities)
             {
                 var w = e as WallEntityBase;
-                if (w == null || w == entity || !CollisionBox.Intersect(w.CB, newCB))
+                if (w == null || w == entity || !w.CB.Intersect(newCB))
                     continue;
 
                 // Selected wall right side to target wall left side

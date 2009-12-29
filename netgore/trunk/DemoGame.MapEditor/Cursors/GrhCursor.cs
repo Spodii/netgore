@@ -163,7 +163,7 @@ namespace DemoGame.MapEditor
                 foreach (MapGrh mg in screen.Map.MapGrhs)
                 {
                     CollisionBox cb = new CollisionBox(mg.Position, mg.Position + mg.Grh.Size);
-                    if (CollisionBox.Intersect(cb, selectBox) && !_selectedMapGrhs.Contains(mg))
+                    if (cb.Intersect(selectBox) && !_selectedMapGrhs.Contains(mg))
                         _selectedMapGrhs.Add(mg);
                 }
 
@@ -207,7 +207,7 @@ namespace DemoGame.MapEditor
                 CollisionBox cursorCB = new CollisionBox(screen.CursorPos, 1, 1);
                 CollisionBox boxCB = new CollisionBox(_mapGrhMoveBox.Position, _mapGrhMoveBox.Area.Width,
                                                       _mapGrhMoveBox.Area.Height);
-                isOverBox = CollisionBox.Intersect(cursorCB, boxCB);
+                isOverBox = cursorCB.Intersect(boxCB);
             }
 
             if (isOverBox || _selectedMapGrhs.Count != 0 && screen.MouseButton == MouseButtons.Left)

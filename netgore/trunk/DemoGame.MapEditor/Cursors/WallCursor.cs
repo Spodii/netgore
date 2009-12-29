@@ -353,7 +353,7 @@ namespace DemoGame.MapEditor
                 foreach (TransBox box in screen.TransBoxes)
                 {
                     CollisionBox boxCB = new CollisionBox(box.Position, box.Area.Width, box.Area.Height);
-                    if (CollisionBox.Intersect(cursorCB, boxCB))
+                    if (cursorCB.Intersect(boxCB))
                     {
                         hoverBox = box;
                         break;
