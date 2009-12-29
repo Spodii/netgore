@@ -12,7 +12,7 @@ namespace NetGore
     /// </summary>
     public class ClassTypeTree
     {
-        readonly List<ClassTypeTree> _children;
+        readonly IEnumerable<ClassTypeTree> _children;
         readonly Type _selfType;
         readonly ClassTypeTree _parent;
 
@@ -36,6 +36,9 @@ namespace NetGore
 
             return _children; } }
         
+        /// <summary>
+        /// Gets the root node in the tree. This will always be the same node for each node in a tree.
+        /// </summary>
         public ClassTypeTree Root
         {
             get
@@ -93,48 +96,83 @@ namespace NetGore
             return InternalFind(type);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClassTypeTree"/> class.
+        /// </summary>
+        /// <param name="types">The types to build the tree out of.</param>
         public ClassTypeTree(IEnumerable<Type> types)
         {
-            _children = new List<ClassTypeTree>();
+            var childList = new List<ClassTypeTree>();
 
+            // Remove duplicates
             types = types.Where(x => x.IsClass).Distinct();
 
+            // Grab the lowest-level types
             var baseTypes = types.Where(x => !types.Any(y => x != y && y.IsAssignableFrom(x)));
 
+            // Grab the possible child types
             var remainingTypes = types.Except(baseTypes);
             foreach (var bt in baseTypes)
             {
-                _children.Add(new ClassTypeTree(this, bt, remainingTypes));
+                // Recursively build the tree
+                childList.Add(new ClassTypeTree(this, bt, remainingTypes));
             }
 
-            _children.Add(new ClassTypeTree(this, null, null));
+            // Add the wildcard for the base level
+            childList.Add(new ClassTypeTree(this, null, null));
 
-            _children.TrimExcess();
+            // Store the children
+            _children = FinalizeChildren(childList);
         }
 
+        /// <summary>
+        /// Turns the temporary child list into the final version we want to store. This way we get nicely compacted and
+        /// processed list to remove as much overhead as possible.
+        /// </summary>
+        /// <param name="childTypes">The list of child nodes.</param>
+        /// <returns>Turns the temporary child list into the final version we want to store.</returns>
+        static IEnumerable<ClassTypeTree> FinalizeChildren(IEnumerable<ClassTypeTree> childTypes)
+        {
+            return childTypes.OrderBy(x => x.Type != null ? x.Type.Name : string.Empty).ToArray();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClassTypeTree"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="selfType">Type of the this node.</param>
+        /// <param name="types">The possible child types.</param>
         ClassTypeTree(ClassTypeTree parent, Type selfType, IEnumerable<Type> types)
         {
             _parent = parent;
             _selfType = selfType;
-
+            
+            // Abort if this is a wildcard leaf
             if (selfType == null || types == null)
                 return;
 
+            // Take all types that are not this type, and that can be assigned from this type
             types = types.Where(x => x != selfType && _selfType.IsAssignableFrom(x));
+
+            // Only take the types that cannot be assigned by the other child types, giving us only the immediate
+            // children instead of ALL children
             var childTypes = types.Where(x => !types.Any(y => x != y && x.IsSubclassOf(y)));
 
+            // Check if we have any children
             if (childTypes.Count() > 0)
             {
-                _children = new List<ClassTypeTree>();
+                var childList = new List<ClassTypeTree>();
 
+                // Recursively build the children
                 foreach (var bt in childTypes)
                 {
-                    _children.Add(new ClassTypeTree(this, bt, types));
+                    childList.Add(new ClassTypeTree(this, bt, types));
                 }
 
-                _children.Add(new ClassTypeTree(this, null, null));
+                // Add the wildcard that will catch anything that does not fit the other children
+                childList.Add(new ClassTypeTree(this, null, null));
 
-                _children.TrimExcess();
+                _children = FinalizeChildren(childList);
             }
         }
     }
