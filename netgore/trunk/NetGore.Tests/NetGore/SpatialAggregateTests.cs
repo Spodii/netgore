@@ -60,6 +60,7 @@ namespace NetGore.Tests.NetGore
         static IEnumerable<SpatialAggregate> GetSpatials(out Entity someEntity)
         {
             var aEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
+            var bEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
             someEntity = aEntities.First();
 
             var a = new LinearSpatialCollection();
@@ -70,7 +71,7 @@ namespace NetGore.Tests.NetGore
             // TODO: !! Add tests back again when I re-add the good spatials
             var b = new LinearSpatialCollection();
             b.SetAreaSize(SpatialSize);
-            b.Add(aEntities);
+            b.Add(bEntities);
 
             /*
             var b = new DynamicEntitySpatial();
