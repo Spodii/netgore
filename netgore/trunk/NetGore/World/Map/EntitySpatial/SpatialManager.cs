@@ -1,33 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
     /// <summary>
-    /// Creates an aggregate of multiple <see cref="ISpatialCollection"/>s so that many spatials can be treated
-    /// as just one.
+    /// Manages multiple <see cref="ISpatialCollection"/>s internally while making the internal
+    /// <see cref="ISpatialCollection"/>s completely transparent externally.
     /// </summary>
-    public class SpatialAggregate : ISpatialCollection
+    public class SpatialManager : ISpatialCollection
     {
-        readonly IEnumerable<ISpatialCollection> _spatials;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpatialAggregate"/> class.
-        /// </summary>
-        /// <param name="spatials">The <see cref="ISpatialCollection"/>s to join together.</param>
-        public SpatialAggregate(IEnumerable<ISpatialCollection> spatials)
-        {
-            _spatials = spatials.ToCompact();
-        }
-
-        static NotSupportedException GetNotSupportedException()
-        {
-            return new NotSupportedException("This operation is not supported by an aggregate spatial.");
-        }
-
-        #region ISpatialCollection Members
+        readonly ISpatialCollection _defaultCollection = new LinearSpatialCollection();
 
         /// <summary>
         /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
@@ -35,17 +20,18 @@ namespace NetGore
         /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
         public void SetAreaSize(Vector2 size)
         {
-            foreach (var spatial in _spatials)
-                spatial.SetAreaSize(size);
+            foreach (var spatialCollection in GetSpatialCollections())
+                spatialCollection.SetAreaSize(size);
         }
 
         /// <summary>
-        /// Adds multiple entities to the spatial collection.
+        /// Adds multiple spatials to the spatial collection.
         /// </summary>
-        /// <param name="entities">The entities to add.</param>
-        public void Add(IEnumerable<ISpatial> entities)
+        /// <param name="spatials">The spatials to add.</param>
+        public void Add(IEnumerable<ISpatial> spatials)
         {
-            throw GetNotSupportedException();
+            foreach (var spatial in spatials)
+                Add(spatial);
         }
 
         /// <summary>
@@ -55,128 +41,129 @@ namespace NetGore
         /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
         public void Add<T>(IEnumerable<T> spatials) where T : class, ISpatial
         {
-            throw GetNotSupportedException();
+            foreach (var spatial in spatials)
+                Add(spatial);
         }
 
         /// <summary>
         /// Adds a single <see cref="ISpatial"/> to the spatial collection.
         /// </summary>
-        /// <param name="entity">The <see cref="ISpatial"/> to add.</param>
-        public void Add(ISpatial entity)
+        /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+        public void Add(ISpatial spatial)
         {
-            throw GetNotSupportedException();
+            GetSpatialCollection(spatial.GetType()).Add(spatial);
         }
 
         /// <summary>
-        /// Checks if this spatial collection contains the given <paramref name="entity"/>.
+        /// Checks if this spatial collection contains the given <paramref name="spatial"/>.
         /// </summary>
-        /// <param name="entity">The <see cref="ISpatial"/> to look for.</param>
-        /// <returns>True if this spatial collection contains the given <paramref name="entity"/>; otherwise false.</returns>
-        public bool Contains(ISpatial entity)
+        /// <param name="spatial">The <see cref="ISpatial"/> to look for.</param>
+        /// <returns>True if this spatial collection contains the given <paramref name="spatial"/>; otherwise false.</returns>
+        public bool Contains(ISpatial spatial)
         {
-            return _spatials.Any(x => x.Contains(entity));
+            return GetSpatialCollection(spatial.GetType()).Contains(spatial);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="point">The map point to check.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities<T>(Vector2 point) where T : class, ISpatial
         {
-            return _spatials.Any(x => x.ContainsEntities<T>(point));
+            return GetSpatialCollection(typeof(T)).ContainsEntities<T>(point);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="point">The map point to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities(Vector2 point)
         {
-            return _spatials.Any(x => x.ContainsEntities(point));
+            return GetSpatialCollection(typeof(ISpatial)).ContainsEntities(point);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="point">The map point to check.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition) where T : class, ISpatial
         {
-            return _spatials.Any(x => x.ContainsEntities(point, condition));
+            return GetSpatialCollection(typeof(T)).ContainsEntities(point, condition);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="rect">The map area to check.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition) where T : class, ISpatial
         {
-            return _spatials.Any(x => x.ContainsEntities(rect, condition));
+            return GetSpatialCollection(typeof(T)).ContainsEntities(rect, condition);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="point">The map point to check.</param>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities(Vector2 point, Predicate<ISpatial> condition)
         {
-            return _spatials.Any(x => x.ContainsEntities(point, condition));
+            return GetSpatialCollection(typeof(ISpatial)).ContainsEntities(point, condition);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="rect">The map area to check.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities<T>(Rectangle rect) where T : class, ISpatial
         {
-            return _spatials.Any(x => x.ContainsEntities<T>(rect));
+            return GetSpatialCollection(typeof(T)).ContainsEntities(rect);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="rect">The map area to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities(Rectangle rect)
         {
-            return _spatials.Any(x => x.ContainsEntities(rect));
+            return GetSpatialCollection(typeof(ISpatial)).ContainsEntities(rect);
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="rect">The map area to check.</param>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            return _spatials.Any(x => x.ContainsEntities(rect, condition));
+            return GetSpatialCollection(typeof(ISpatial)).ContainsEntities(rect, condition);
         }
 
         /// <summary>
-        /// Gets all entities containing a given point.
+        /// Gets all spatials containing a given point.
         /// </summary>
-        /// <param name="p">Point to find the entities at.</param>
-        /// <returns>All of the entities at the given point.</returns>
+        /// <param name="p">Point to find the spatials at.</param>
+        /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetEntities(Vector2 p)
         {
-            return _spatials.SelectMany(x => x.GetEntities(p));
+            return GetSpatialCollection(typeof(ISpatial)).GetEntities(p);
         }
 
         /// <summary>
@@ -186,18 +173,18 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<ISpatial> GetEntities(Rectangle rect)
         {
-            return _spatials.SelectMany(x => x.GetEntities(rect));
+            return GetSpatialCollection(typeof(ISpatial)).GetEntities(rect);
         }
 
         /// <summary>
-        /// Gets all entities at the given point.
+        /// Gets all spatials at the given point.
         /// </summary>
-        /// <param name="p">The point to find the entities at.</param>
+        /// <param name="p">The point to find the spatials at.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <returns>All entities containing the given point that are of the given type.</returns>
+        /// <returns>All spatials containing the given point that are of the given type.</returns>
         public IEnumerable<T> GetEntities<T>(Vector2 p) where T : class, ISpatial
         {
-            return _spatials.SelectMany(x => x.GetEntities<T>(p));
+            return GetSpatialCollection(typeof(T)).GetEntities<T>(p);
         }
 
         /// <summary>
@@ -208,18 +195,18 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<T> GetEntities<T>(Rectangle rect) where T : class, ISpatial
         {
-            return _spatials.SelectMany(x => x.GetEntities<T>(rect));
+            return GetSpatialCollection(typeof(T)).GetEntities<T>(rect);
         }
 
         /// <summary>
-        /// Gets all entities containing a given point.
+        /// Gets all spatials containing a given point.
         /// </summary>
-        /// <param name="p">Point to find the entities at.</param>
+        /// <param name="p">Point to find the spatials at.</param>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>All of the entities at the given point.</returns>
+        /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetEntities(Vector2 p, Predicate<ISpatial> condition)
         {
-            return _spatials.SelectMany(x => x.GetEntities(p, condition));
+            return GetSpatialCollection(typeof(ISpatial)).GetEntities(p, condition);
         }
 
         /// <summary>
@@ -231,19 +218,19 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : class, ISpatial
         {
-            return _spatials.SelectMany(x => x.GetEntities(rect, condition));
+            return GetSpatialCollection(typeof(T)).GetEntities(rect, condition);
         }
 
         /// <summary>
-        /// Gets all entities at the given point.
+        /// Gets all spatials at the given point.
         /// </summary>
-        /// <param name="p">The point to find the entities at.</param>
+        /// <param name="p">The point to find the spatials at.</param>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <returns>All entities containing the given point that are of the given type.</returns>
+        /// <returns>All spatials containing the given point that are of the given type.</returns>
         public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) where T : class, ISpatial
         {
-            return _spatials.SelectMany(x => x.GetEntities(p, condition));
+            return GetSpatialCollection(typeof(T)).GetEntities(p, condition);
         }
 
         /// <summary>
@@ -254,7 +241,7 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<ISpatial> GetEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            return _spatials.SelectMany(x => x.GetEntities(rect, condition));
+            return GetSpatialCollection(typeof(ISpatial)).GetEntities(rect, condition);
         }
 
         /// <summary>
@@ -266,14 +253,7 @@ namespace NetGore
         /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
         public T GetEntity<T>(Rectangle rect, Predicate<T> condition) where T : class, ISpatial
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity(rect, condition);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(T)).GetEntity(rect, condition);
         }
 
         /// <summary>
@@ -284,88 +264,53 @@ namespace NetGore
         /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
         public ISpatial GetEntity(Rectangle rect, Predicate<ISpatial> condition)
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity(rect, condition);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(ISpatial)).GetEntity(rect, condition);
         }
 
         /// <summary>
         /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="p">Point to find the spatial at.</param>
         /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
         /// will be ignored.</typeparam>
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : class, ISpatial
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity(p, condition);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(T)).GetEntity(p, condition);
         }
 
         /// <summary>
         /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="p">Point to find the spatial at.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
         /// will be ignored.</typeparam>
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public T GetEntity<T>(Vector2 p) where T : class, ISpatial
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity<T>(p);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(T)).GetEntity<T>(p);
         }
 
         /// <summary>
         /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="p">Point to find the spatial at.</param>
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public ISpatial GetEntity(Vector2 p)
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity(p);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(ISpatial)).GetEntity(p);
         }
 
         /// <summary>
         /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="p">Point to find the spatial at.</param>
         /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public ISpatial GetEntity(Vector2 p, Predicate<ISpatial> condition)
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity(p, condition);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(ISpatial)).GetEntity(p, condition);
         }
 
         /// <summary>
@@ -375,14 +320,7 @@ namespace NetGore
         /// <returns>First ISpatial found at the given point, or null if none found</returns>
         public ISpatial GetEntity(Rectangle rect)
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity(rect);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(ISpatial)).GetEntity(rect);
         }
 
         /// <summary>
@@ -393,25 +331,45 @@ namespace NetGore
         /// <returns>First ISpatial found at the given point, or null if none found</returns>
         public T GetEntity<T>(Rectangle rect) where T : class, ISpatial
         {
-            foreach (var spatial in _spatials)
-            {
-                var ret = spatial.GetEntity<T>(rect);
-                if (ret != null)
-                    return ret;
-            }
-
-            return null;
+            return GetSpatialCollection(typeof(T)).GetEntity<T>(rect);
         }
 
         /// <summary>
         /// Removes an <see cref="ISpatial"/> from the spatial collection.
         /// </summary>
-        /// <param name="entity">The <see cref="ISpatial"/> to remove.</param>
-        public void Remove(ISpatial entity)
+        /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
+        public void Remove(ISpatial spatial)
         {
-            throw GetNotSupportedException();
+            GetSpatialCollection(spatial.GetType()).Remove(spatial);
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the <see cref="ISpatialCollection"/> that contains all <see cref="ISpatial"/>s of the specified
+        /// type. When overriding this method in a derived class, be sure to also override
+        /// <see cref="SpatialManager.GetSpatialCollections"/>.
+        /// </summary>
+        /// <param name="type">The type of <see cref="ISpatial"/> that the returned <see cref="ISpatialCollection"/>
+        /// must contain. The type must be <see cref="ISpatial"/> or an object that implements it.</param>
+        /// <returns>
+        /// The <see cref="ISpatialCollection"/> containing all <see cref="ISpatial"/>s of type <paramref name="type"/>.
+        /// The returned <see cref="ISpatialCollection"/> is guaranteed to return all <see cref="ISpatial"/>s of type
+        /// <paramref name="type"/>, but is not required contain only that type.
+        /// </returns>
+        protected virtual ISpatialCollection GetSpatialCollection(Type type)
+        {
+            // It really doesn't matter that the default we provide is the linear collection. It is the lightest-weight
+            // spatial, requires no extra steps to set up, and shouldn't even get touched if people override this method
+            // like they should in the first place
+            return _defaultCollection;
+        }
+
+        /// <summary>
+        /// Gets all of the <see cref="ISpatialCollection"/>s.
+        /// </summary>
+        /// <returns>All of the <see cref="ISpatialCollection"/>s.</returns>
+        protected virtual IEnumerable<ISpatialCollection> GetSpatialCollections()
+        {
+            yield return _defaultCollection;
+        }
     }
 }

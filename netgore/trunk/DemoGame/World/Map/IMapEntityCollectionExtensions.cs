@@ -5,7 +5,7 @@ using NetGore;
 namespace DemoGame
 {
     /// <summary>
-    /// Extension methods for the <see cref="IEntitySpatial"/> interface.
+    /// Extension methods for the <see cref="ISpatialCollection"/> interface.
     /// </summary>
     public static class IEntitySpatialExtensions
     {
@@ -18,7 +18,7 @@ namespace DemoGame
         /// <see cref="IUsableEntity"/>.</param>
         /// <returns>First <see cref="IUsableEntity"/> that intersects the specified area that the
         /// <paramref name="charEntity"/> is able to use, or null if none.</returns>
-        public static IUsableEntity GetUsable(this IEntitySpatial c, Rectangle rect, CharacterEntity charEntity)
+        public static IUsableEntity GetUsable(this ISpatialCollection c, Rectangle rect, CharacterEntity charEntity)
         {
             // NOTE: !! This doesn't really belong in here
             return c.GetEntities(rect).OfType<IUsableEntity>().Where(x => x.CanUse(charEntity)).FirstOrDefault();
@@ -33,7 +33,7 @@ namespace DemoGame
         /// <see cref="IUsableEntity"/>.</param>
         /// <returns>First <see cref="IUsableEntity"/> that intersects the specified area that the
         /// <paramref name="charEntity"/> is able to use, or null if none.</returns>
-        public static IUsableEntity GetUsable(this IEntitySpatial c, CollisionBox cb, CharacterEntity charEntity)
+        public static IUsableEntity GetUsable(this ISpatialCollection c, CollisionBox cb, CharacterEntity charEntity)
         {
             // NOTE: !! This doesn't really belong in here
             return c.GetUsable(cb.ToRectangle(), charEntity);

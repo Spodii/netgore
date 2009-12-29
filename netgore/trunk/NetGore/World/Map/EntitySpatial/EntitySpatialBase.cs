@@ -6,10 +6,11 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
+    /*
     /// <summary>
-    /// An implementation of <see cref="IEntitySpatial"/> that supports tracking entities that can move.
+    /// An implementation of <see cref="ISpatialCollection"/> that supports tracking entities that can move.
     /// </summary>
-    public abstract class EntitySpatialBase : IEntitySpatial
+    public abstract class EntitySpatialBase : ISpatialCollection
     {
         /// <summary>
         /// Size of each segment of the wall grid in pixels (smallest requires more
@@ -340,7 +341,7 @@ namespace NetGore
             AddToGrid(entity);
         }
 
-        #region IEntitySpatial Members
+        #region ISpatialCollection Members
 
         /// <summary>
         /// Adds multiple entities to the spatial collection.
@@ -676,4 +677,5 @@ namespace NetGore
 
         #endregion
     }
+    */
 }

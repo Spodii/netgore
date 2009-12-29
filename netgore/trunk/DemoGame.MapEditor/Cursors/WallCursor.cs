@@ -112,8 +112,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Check for wall collision for quick dragging
-                var spatial = screen.Map.GetSpatial<WallEntityBase>();
-                WallEntityBase w = spatial.GetEntity<WallEntityBase>(cursorPos);
+                WallEntityBase w = screen.Map.Spatial.GetEntity<WallEntityBase>(cursorPos);
                 if (w == null)
                     return;
 
@@ -273,8 +272,7 @@ namespace DemoGame.MapEditor
                 Vector2 size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var spatial = screen.Map.GetSpatial<WallEntityBase>();
-                var walls = spatial.GetEntities<WallEntityBase>(rect);
+                var walls = screen.Map.Spatial.GetEntities<WallEntityBase>(rect);
                 if (e.Button == MouseButtons.Left)
                 {
                     // Selection dragging

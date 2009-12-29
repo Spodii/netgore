@@ -57,7 +57,7 @@ namespace DemoGame
         /// </summary>
         readonly DArray<DynamicEntity> _dynamicEntities = new DArray<DynamicEntity>(true);
 
-        readonly DynamicEntitySpatial _dynamicEntitySpatial = new DynamicEntitySpatial();
+        readonly ISpatialCollection _spatialCollection;
 
         /// <summary>
         /// List of entities in the map
@@ -73,9 +73,6 @@ namespace DemoGame
         /// Index of the map
         /// </summary>
         readonly MapIndex _mapIndex;
-
-        readonly SpatialAggregate _spatialAggregate;
-        readonly StaticEntitySpatial _staticEntitySpatial = new StaticEntitySpatial();
 
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
 
@@ -122,9 +119,20 @@ namespace DemoGame
             _getTime = getTime;
             _mapIndex = mapIndex;
 
-            _spatialAggregate = new SpatialAggregate(new IEntitySpatial[] { _dynamicEntitySpatial, _staticEntitySpatial }, false);
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            _spatialCollection = CreateSpatialManager();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _updateStopWatch.Start();
+        }
+
+        /// <summary>
+        /// Creates the <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.
+        /// </summary>
+        /// <returns>The <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.</returns>
+        protected virtual ISpatialCollection CreateSpatialManager()
+        {
+            return new SpatialManager();
         }
 
         /// <summary>
@@ -238,7 +246,7 @@ namespace DemoGame
                 _updateableEntities.Add((IUpdateableEntity)entity);
 
             // Also add the entity to the grid
-            GetSpatial(entity.GetType()).Add(entity);
+            Spatial.Add(entity);
 
             // Add the event hooks
             entity.OnDispose += Entity_OnDispose;
@@ -249,9 +257,10 @@ namespace DemoGame
 
         void CheckCollisionAgainstEntities(Entity entity)
         {
+            // TODO: !! This is no longer optimized to not return WallEntityBases like we had before...
+
             // Get the entities we have a rectangular collision with
-            var spatial = _dynamicEntitySpatial;
-            var collisionSources = spatial.GetEntities<Entity>(entity);
+            var collisionSources = Spatial.GetEntities<Entity>(entity);
 
             foreach (var other in collisionSources)
             {
@@ -270,8 +279,7 @@ namespace DemoGame
                 return;
 
             // Get the entities we have a rectangular collision with
-            var spatial = this.GetSpatial<WallEntityBase>();
-            var collisionSources = spatial.GetEntities<WallEntityBase>(entity);
+            var collisionSources = Spatial.GetEntities<WallEntityBase>(entity);
 
             // Do real collision detection on the entities, and handle it if the collision test passes
             foreach (var wall in collisionSources)
@@ -604,7 +612,7 @@ namespace DemoGame
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
         public bool IsValidPlacementPosition(Rectangle rect)
         {
-            return IsInMapBoundaries(rect) && !this.GetSpatial<WallEntityBase>().ContainsEntities<WallEntity>(rect);
+            return IsInMapBoundaries(rect) && !Spatial.ContainsEntities<WallEntity>(rect);
         }
 
         public bool IsValidPlacementPosition(Vector2 position, Vector2 size)
@@ -642,7 +650,7 @@ namespace DemoGame
                                                 (int)cb.Min.Y - _findValidPlacementPadding,
                                                 (int)cb.Width + (_findValidPlacementPadding * 2),
                                                 (int)cb.Height + (_findValidPlacementPadding * 2));
-            var nearbyWalls = this.GetSpatial<WallEntityBase>().GetEntities<WallEntityBase>(nearbyWallsRect);
+            var nearbyWalls = Spatial.GetEntities<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
             var cbSize = cb.Size;
@@ -769,9 +777,8 @@ namespace DemoGame
             _width = nodeReader.ReadFloat(_headerNodeWidthKey);
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
 
-            // Build the entity spatial collections
-            _dynamicEntitySpatial.SetMapSize(Size);
-            _staticEntitySpatial.SetMapSize(Size);
+            // Set the size for the spatial
+            Spatial.SetAreaSize(Size);
         }
 
         /// <summary>
@@ -833,7 +840,7 @@ namespace DemoGame
             }
 
             // Remove the entity from the grid
-            GetSpatial(entity.GetType()).Remove(entity);
+            Spatial.Remove(entity);
 
             // Allow for additional processing
             EntityRemoved(entity);
@@ -1033,8 +1040,7 @@ namespace DemoGame
             _height = newSize.Y;
 
             // Update the spatial's size
-            _dynamicEntitySpatial.SetMapSize(Size);
-            _staticEntitySpatial.SetMapSize(Size);
+            Spatial.SetAreaSize(Size);
         }
 
         /// <summary>
@@ -1225,20 +1231,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the <see cref="IEntitySpatial"/> for the given type of <see cref="Entity"/>.
+        /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
-        /// <param name="type">The type of <see cref="Entity"/>.</param>
-        /// <returns>
-        /// The <see cref="IEntitySpatial"/> that contains the <paramref name="type"/>.
-        /// </returns>
-        public virtual IEntitySpatial GetSpatial(Type type)
+        public ISpatialCollection Spatial
         {
-            if (type.IsSubclassOf(typeof(WallEntityBase)) || type == typeof(WallEntityBase))
-                return _staticEntitySpatial;
-            else if (type.IsAssignableFrom(typeof(WallEntityBase)))
-                return _spatialAggregate;
-            else
-                return _dynamicEntitySpatial;
+            get { 
+                return _spatialCollection; }
         }
 
         /// <summary>

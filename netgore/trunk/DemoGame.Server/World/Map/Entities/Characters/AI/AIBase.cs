@@ -15,7 +15,6 @@ namespace DemoGame.Server
     /// </summary>
     public abstract class AIBase : IAI, IGetTime
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly Vector2 _halfScreenSize = GameData.ScreenSize / 2;
         static readonly Random _rand = new Random();
 
@@ -56,8 +55,7 @@ namespace DemoGame.Server
             var visibleArea = GetVisibleMapArea();
 
             // Get the characters that we are even hostile towards and are in view
-            var spatial = Actor.Map.GetSpatial<Character>();
-            var possibleChars = spatial.GetEntities<Character>(visibleArea, x => Actor.Alliance.IsHostile(x.Alliance));
+            var possibleChars = Actor.Map.Spatial.GetEntities<Character>(visibleArea, x => Actor.Alliance.IsHostile(x.Alliance));
 
             // If no matches, return null
             if (possibleChars.Count() == 0)

@@ -221,8 +221,9 @@ namespace NetGore
         /// Translates the collision box a defined amount from its current location
         /// </summary>
         /// <param name="distance">Translation amount</param>
-        internal void Move(Vector2 distance)
+        public void Move(Vector2 distance)
         {
+            // TODO: !! Do not have public
             _min += distance;
         }
 
@@ -423,8 +424,9 @@ namespace NetGore
         /// Resizes the CollisionBox
         /// </summary>
         /// <param name="size">New size of the CollisionBox</param>
-        internal void Resize(Vector2 size)
+        public void Resize(Vector2 size)
         {
+            // TODO: !! Do not have public
             _size = size;
         }
 
@@ -444,8 +446,9 @@ namespace NetGore
         /// Moves the collision box to a new location
         /// </summary>
         /// <param name="position">New position</param>
-        internal void Teleport(Vector2 position)
+        public void Teleport(Vector2 position)
         {
+            // TODO: !! Do not have public
             _min = position;
         }
 

@@ -11,10 +11,11 @@ namespace NetGore.Graphics
     /// A Grh instance bound to the map. This is simply a container for a map-bound Grh with no behavior
     /// besides rendering and updating, and resides completely on the Client.
     /// </summary>
-    public class MapGrh : Entity, IDrawable
+    public class MapGrh : ISpatial, IDrawable
     {
         readonly Grh _grh;
         bool _isForeground;
+        readonly CollisionBox _cb;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrh"/> class.
@@ -32,8 +33,9 @@ namespace NetGore.Graphics
             }
 
             _grh = grh;
-            Position = position;
             IsForeground = isForeground;
+
+            _cb = new CollisionBox(position, _grh.Width, _grh.Height);
         }
 
         /// <summary>
@@ -46,11 +48,12 @@ namespace NetGore.Graphics
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            Position = reader.ReadVector2("Position");
+            var position = reader.ReadVector2("Position");
             GrhIndex grhIndex = reader.ReadGrhIndex("GrhIndex");
             _isForeground = reader.ReadBool("IsForeground");
 
             _grh = new Grh(grhIndex, AnimType.Loop, currentTime);
+            _cb = new CollisionBox(position, _grh.Width, _grh.Height);
         }
 
         /// <summary>
@@ -78,15 +81,6 @@ namespace NetGore.Graphics
                 if (OnChangeRenderLayer != null)
                     OnChangeRenderLayer(this, oldLayer);
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
-        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
-        /// </summary>
-        public override bool CollidesAgainstWalls
-        {
-            get { return false; }
         }
 
         /// <summary>
@@ -153,5 +147,19 @@ namespace NetGore.Graphics
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
+        /// </summary>
+        public Vector2 Position { get { return CB.Min; } set { 
+            CB.Teleport(value); } }
+
+        /// <summary>
+        /// Gets the <see cref="CollisionBox"/> used to determine the location of the object in the world.
+        /// </summary>
+        public CollisionBox CB
+        {
+            get { return _cb; }
+        }
     }
 }

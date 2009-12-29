@@ -56,15 +56,24 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        static IEnumerable<IEntitySpatial> GetSpatials()
+        static IEnumerable<ISpatialCollection> GetSpatials()
         {
+            // TODO: !! Add tests back again when I re-add the good spatials
+            var a = new LinearSpatialCollection();
+            a.SetAreaSize(SpatialSize);
+
+            var b = new LinearSpatialCollection();
+            b.SetAreaSize(SpatialSize);
+
+            /*
             var a = new DynamicEntitySpatial();
             a.SetMapSize(SpatialSize);
 
             var b = new StaticEntitySpatial();
             b.SetMapSize(SpatialSize);
+            */
 
-            return new IEntitySpatial[] { a, b };
+            return new ISpatialCollection[] { a, b };
         }
 
         [Test]

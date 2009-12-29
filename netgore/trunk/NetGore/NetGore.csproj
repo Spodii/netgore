@@ -217,11 +217,13 @@
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
     <Compile Include="World\Map\EntitySpatial\EntitySpatialBase.cs" />
-    <Compile Include="World\Map\EntitySpatial\IEntitySpatial.cs" />
+    <Compile Include="World\Map\EntitySpatial\ISpatial.cs" />
+    <Compile Include="World\Map\EntitySpatial\ISpatialCollection.cs" />
     <Compile Include="World\Map\EntitySpatial\IEntitySpatialExtensions.cs" />
+    <Compile Include="World\Map\EntitySpatial\LinearSpatialCollection.cs" />
     <Compile Include="World\Map\EntitySpatial\SpatialAggregate.cs" />
+    <Compile Include="World\Map\EntitySpatial\SpatialManager.cs" />
     <Compile Include="World\Map\EntitySpatial\StaticEntitySpatial.cs" />
-    <Compile Include="World\Map\IMapExtensions.cs" />
     <Compile Include="World\Map\MapEntityAttribute.cs" />
     <Compile Include="World\Map\EntitySpatial\DynamicEntitySpatial.cs" />
     <Compile Include="Audio\MusicID.cs" />

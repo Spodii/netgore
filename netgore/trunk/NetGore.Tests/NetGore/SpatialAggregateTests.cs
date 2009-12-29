@@ -62,20 +62,25 @@ namespace NetGore.Tests.NetGore
             var aEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
             someEntity = aEntities.First();
 
-            var a = new DynamicEntitySpatial();
-            a.SetMapSize(SpatialSize);
+            var a = new LinearSpatialCollection();
+            a.SetAreaSize(SpatialSize);
             a.Add(aEntities);
 
+
+            // TODO: !! Add tests back again when I re-add the good spatials
+            var b = new LinearSpatialCollection();
+            b.SetAreaSize(SpatialSize);
+            b.Add(aEntities);
+
+            /*
             var b = new DynamicEntitySpatial();
             b.SetMapSize(SpatialSize);
             b.Add(CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32)));
+            */
 
             return new SpatialAggregate[]
             {
-                new SpatialAggregate(new IEntitySpatial[] { a, b }, false),
-                new SpatialAggregate(new IEntitySpatial[] { a, a }, true),
-                new SpatialAggregate(new IEntitySpatial[] { a, a, b }, true),
-                new SpatialAggregate(new IEntitySpatial[] { a }, false)
+                new SpatialAggregate(new ISpatialCollection[] { a, b })
             };
         }
 
