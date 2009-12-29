@@ -32,7 +32,6 @@ namespace DemoGame.Client
     /// </summary>
     public class Map : MapBase, IDisposable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
         const string _particleEffectsNodeName = "ParticleEffects";
@@ -43,26 +42,6 @@ namespace DemoGame.Client
         /// List of BackgroundImages on this map.
         /// </summary>
         readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
-
-        /// <summary>
-        /// List of IDrawableEntity objects in the background layer
-        /// </summary>
-        readonly List<IDrawable> _drawLayerBackground = new List<IDrawable>();
-
-        /// <summary>
-        /// List of IDrawableEntity objects in the character layer
-        /// </summary>
-        readonly List<IDrawable> _drawLayerCharacter = new List<IDrawable>();
-
-        /// <summary>
-        /// List of IDrawableEntity objects in the foreground layer
-        /// </summary>
-        readonly List<IDrawable> _drawLayerForeground = new List<IDrawable>();
-
-        /// <summary>
-        /// List of IDrawableEntity objects in the item layer
-        /// </summary>
-        readonly List<IDrawable> _drawLayerItem = new List<IDrawable>();
 
         /// <summary>
         /// Graphics device used when building the atlas
@@ -194,29 +173,9 @@ namespace DemoGame.Client
             // When in debug mode, ensure there are no duplicates
             Debug.Assert(!_mapGrhs.Contains(mg), "mg is already in the MapGrhs list.");
 
-            // Add to the MapGrh list
+            // Add to the MapGrh list and spatial
             _mapGrhs.Add(mg);
-
-            // Listen to the layer change event
-            mg.OnChangeRenderLayer += Entity_OnChangeRenderLayer;
-
-            // Set the initial layer
-            AddToRenderList(mg);
-        }
-
-        /// <summary>
-        /// Adds the <paramref name="drawableEntity"/> to the appropriate render layer list
-        /// </summary>
-        /// <param name="drawableEntity">IDrawableEntity to update</param>
-        void AddToRenderList(IDrawable drawableEntity)
-        {
-            var layerList = GetLayerList(drawableEntity.MapRenderLayer);
-
-            // In debug build, ensure there are no duplicates
-            Debug.Assert(!layerList.Contains(drawableEntity), "drawableEntity already in layer list!");
-
-            // Add to the layer list
-            layerList.Add(drawableEntity);
+            Spatial.Add(mg);
         }
 
         /// <summary>
@@ -287,105 +246,19 @@ namespace DemoGame.Client
             if (OnEndDrawLayer != null)
                 OnEndDrawLayer(this, MapRenderLayer.Background, sb, camera, DrawBackground);
 
-            // Draw the background map graphics (behind the character)
-            DrawLayer(sb, camera, _drawLayerBackground, MapRenderLayer.SpriteBackground, DrawMapGrhs);
+            // Find the drawable objects that are in view
+            var viewArea = camera.GetViewArea();
+            var drawableInView = Spatial.GetEntities<IDrawable>(viewArea);
 
-            // Draw the characters
-            DrawLayer(sb, camera, _drawLayerCharacter, MapRenderLayer.Chararacter, DrawCharacters);
+            // Sort the drawable items then draw them one by one
+            var sorted = drawableInView.OrderBy(x => x.MapRenderLayer);
 
-            // Draw the items
-            DrawLayer(sb, camera, _drawLayerItem, MapRenderLayer.Item, DrawItems);
-
-            // Draw the foreground map graphics (in front of the character)
-            DrawLayer(sb, camera, _drawLayerForeground, MapRenderLayer.SpriteForeground, DrawMapGrhs);
+            foreach (var drawable in sorted)
+                drawable.Draw(sb);
 
             // Draw the particle effects
             _particleEffectRenderer.SpriteBatch = sb;
             _particleEffectRenderer.Draw(camera, ParticleEffects);
-        }
-
-        /// <summary>
-        /// Draws an IEnumerable of IDrawableEntities.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
-        /// <param name="camera">Camera to use to check if in view.</param>
-        /// <param name="drawableEntities">List of IDrawableEntity objects to draw.</param>
-        /// <param name="layer">The MapRenderLayer that is being drawn.</param>
-        /// <param name="draw">If true, the layer will be drawn. If false, no drawing will be done.</param>
-        void DrawLayer(SpriteBatch sb, ICamera2D camera, IEnumerable<IDrawable> drawableEntities, MapRenderLayer layer, bool draw)
-        {
-            if (OnStartDrawLayer != null)
-                OnStartDrawLayer(this, layer, sb, camera, draw);
-
-            if (draw)
-            {
-                foreach (IDrawable drawableEntity in drawableEntities)
-                {
-                    if (drawableEntity.InView(camera))
-                        drawableEntity.Draw(sb);
-                }
-            }
-
-            if (OnEndDrawLayer != null)
-                OnEndDrawLayer(this, layer, sb, camera, draw);
-        }
-
-        /// <summary>
-        /// Delegate for when an IDrawableEntity's MapRenderLayer is changed
-        /// </summary>
-        /// <param name="drawableEntity">IDrawableEntity that changed their MapRenderLayer</param>
-        /// <param name="oldLayer">The previous value of MapRenderLayer</param>
-        void Entity_OnChangeRenderLayer(IDrawable drawableEntity, MapRenderLayer oldLayer)
-        {
-            // Remove the IDrawableEntity from the old layer
-            if (!GetLayerList(oldLayer).Remove(drawableEntity))
-            {
-                const string errmsg = "IDrawableEntity `{0}` not found in old layer list `{1}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, drawableEntity, oldLayer);
-                Debug.Fail(string.Format(errmsg, drawableEntity, oldLayer));
-            }
-
-            // Set the new layer
-            AddToRenderList(drawableEntity);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional processing on Entities added to the map.
-        /// This is called after the Entity has finished being added to the map.
-        /// </summary>
-        /// <param name="entity">Entity that was added to the map.</param>
-        protected override void EntityAdded(Entity entity)
-        {
-            // If the entity implements IDrawableEntity, listen to the 
-            // render layer change event and add it to the appropriate layer
-            IDrawable drawableEntity = entity as IDrawable;
-            if (drawableEntity != null)
-            {
-                drawableEntity.OnChangeRenderLayer += Entity_OnChangeRenderLayer;
-                AddToRenderList(drawableEntity);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional processing on Entities removed from the map.
-        /// This is called after the Entity has finished being removed from the map.
-        /// </summary>
-        /// <param name="entity">Entity that was removed from the map.</param>
-        protected override void EntityRemoved(Entity entity)
-        {
-            // If the entity implements IDrawableEntity, remove it from the render layer and
-            // unhook the render layer change event listener
-            IDrawable drawableEntity = entity as IDrawable;
-            if (drawableEntity != null)
-            {
-                drawableEntity.OnChangeRenderLayer -= Entity_OnChangeRenderLayer;
-                if (!GetLayerList(drawableEntity.MapRenderLayer).Remove(drawableEntity))
-                {
-                    // In debug mode, ensure that the drawableEntity was in the list
-                    Debug.Fail("drawableEntity was not in the render layer list!");
-                }
-            }
         }
 
         /// <summary>
@@ -460,53 +333,12 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the List of IDrawableEntity for a specified layer
-        /// </summary>
-        /// <param name="layer">Layer for the List we want</param>
-        /// <returns>List for the specified MapRenderLayer</returns>
-        List<IDrawable> GetLayerList(MapRenderLayer layer)
-        {
-            switch (layer)
-            {
-                case MapRenderLayer.SpriteBackground:
-                    return _drawLayerBackground;
-                case MapRenderLayer.Chararacter:
-                    return _drawLayerCharacter;
-                case MapRenderLayer.Item:
-                    return _drawLayerItem;
-                case MapRenderLayer.SpriteForeground:
-                    return _drawLayerForeground;
-                default:
-                    const string errmsg = "Could not get the list for unknown layer `{0}`.";
-                    if (log.IsFatalEnabled)
-                        log.FatalFormat(errmsg, layer);
-                    Debug.Fail(string.Format(errmsg, layer));
-                    throw new ArgumentOutOfRangeException("layer", string.Format(errmsg, layer));
-            }
-        }
-
-        /// <summary>
-        /// Gets a MapGrh matching specified conditions
-        /// </summary>
-        /// <param name="p">Point on the map contained in the MapGrh</param>
-        /// <returns>First MapGrh meeting the condition, null if none found</returns>
-        public MapGrh GetMapGrh(Vector2 p)
-        {
-            foreach (MapGrh grh in MapGrhs)
-            {
-                if (grh.CB.HitTest(p))
-                    return grh;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of the GrhIndexes used in the map.
         /// </summary>
         /// <returns>An IEnumerable of the GrhIndexes used in the map.</returns>
         IEnumerable<GrhIndex> GetMapGrhList()
         {
-            return _mapGrhs.Select(x => x.Grh.GrhData.GrhIndex).Distinct();
+            return _mapGrhs.Select(x => x.Grh.GrhData.GrhIndex).Distinct().OrderBy(x => x);
         }
 
         void LoadBackgroundImages(IValueReader r)
@@ -561,22 +393,14 @@ namespace DemoGame.Client
                 return;
             }
 
-            // Remove the listener
-            mg.OnChangeRenderLayer -= Entity_OnChangeRenderLayer;
-
-            // Remove from the MapGrhs list
+            // Remove from the MapGrhs list and spatial
             if (!_mapGrhs.Remove(mg))
             {
                 // In debug build, ensure the MapGrh was in the MapGrhs list
                 Debug.Fail("mg wasn't in the MapGrhs list.");
             }
 
-            // Remove from the render layer
-            if (!GetLayerList(mg.MapRenderLayer).Remove(mg))
-            {
-                // In debug build, ensure the MapGrh was in the render layer list in the first place
-                Debug.Fail("mg wasn't in the render layer list.");
-            }
+            Spatial.Remove(mg);
         }
 
         /// <summary>

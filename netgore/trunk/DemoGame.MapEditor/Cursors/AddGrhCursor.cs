@@ -85,10 +85,11 @@ namespace DemoGame.MapEditor
                 // On right-click delete any Grhs under the cursor
                 while (true)
                 {
-                    MapGrh grh = screen.Map.GetMapGrh(cursorPos);
-                    if (grh == null)
+                    MapGrh mapGrh = screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+                    if (mapGrh == null)
                         break;
-                    screen.Map.RemoveMapGrh(grh);
+
+                    screen.Map.RemoveMapGrh(mapGrh);
                 }
             }
         }

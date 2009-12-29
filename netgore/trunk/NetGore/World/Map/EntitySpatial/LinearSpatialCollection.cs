@@ -72,7 +72,7 @@ namespace NetGore
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
-        public bool ContainsEntities<T>(Vector2 point) where T : class, ISpatial
+        public bool ContainsEntities<T>(Vector2 point)
         {
             return ContainsEntities<T>(point, x => true);
         }
@@ -95,9 +95,9 @@ namespace NetGore
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
-        public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition) where T : class, ISpatial
+        public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition)
         {
-            return _spatials.OfType<T>().Any(x => x.CB.HitTest(point) && condition(x));
+            return _spatials.Any(x => x is T && x.CB.HitTest(point) && condition((T)x));
         }
 
         /// <summary>
@@ -108,9 +108,9 @@ namespace NetGore
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
-        public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition) where T : class, ISpatial
+        public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition)
         {
-            return _spatials.OfType<T>().Any(x => x.CB.Intersect(rect) && condition(x));
+            return _spatials.Any(x => x is T && x.CB.Intersect(rect) && condition((T)x));
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NetGore
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
-        public bool ContainsEntities<T>(Rectangle rect) where T : class, ISpatial
+        public bool ContainsEntities<T>(Rectangle rect)
         {
             return ContainsEntities<T>(rect, x => true);
         }
@@ -183,7 +183,7 @@ namespace NetGore
         /// <param name="p">The point to find the spatials at.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
         /// <returns>All spatials containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p) where T : class, ISpatial
+        public IEnumerable<T> GetEntities<T>(Vector2 p)
         {
             return GetEntities<T>(p, x => true);
         }
@@ -194,7 +194,7 @@ namespace NetGore
         /// <param name="rect">Region to check for Entities.</param>
         /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
         /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect) where T : class, ISpatial
+        public IEnumerable<T> GetEntities<T>(Rectangle rect)
         {
             return GetEntities<T>(rect, x => true);
         }
@@ -217,9 +217,9 @@ namespace NetGore
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
         /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : class, ISpatial
+        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition)
         {
-            return _spatials.OfType<T>().Where(x => x.CB.Intersect(rect) && condition(x));
+            return _spatials.Where(x => x is T && x.CB.Intersect(rect) && condition((T)x)).OfType<T>();
         }
 
         /// <summary>
@@ -229,9 +229,9 @@ namespace NetGore
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
         /// <returns>All spatials containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) where T : class, ISpatial
+        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition)
         {
-            return _spatials.OfType<T>().Where(x => x.CB.HitTest(p) && condition(x));
+            return _spatials.Where(x => x is T && x.CB.HitTest(p) && condition((T)x)).OfType<T>();
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace NetGore
         /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
         /// <param name="condition">Condition the Entities must meet.</param>
         /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
-        public T GetEntity<T>(Rectangle rect, Predicate<T> condition) where T : class, ISpatial
+        public T GetEntity<T>(Rectangle rect, Predicate<T> condition)
         {
             return GetEntities(rect, condition).FirstOrDefault();
         }
@@ -276,7 +276,7 @@ namespace NetGore
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
         /// will be ignored.</typeparam>
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : class, ISpatial
+        public T GetEntity<T>(Vector2 p, Predicate<T> condition)
         {
             return GetEntities(p, condition).FirstOrDefault();
         }
@@ -288,7 +288,7 @@ namespace NetGore
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
         /// will be ignored.</typeparam>
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p) where T : class, ISpatial
+        public T GetEntity<T>(Vector2 p)
         {
             return GetEntity<T>(p, x=> true);
         }
@@ -330,7 +330,7 @@ namespace NetGore
         /// <param name="rect">Region to check for the ISpatial</param>
         /// <typeparam name="T">Type to convert to</typeparam>
         /// <returns>First ISpatial found at the given point, or null if none found</returns>
-        public T GetEntity<T>(Rectangle rect) where T : class, ISpatial
+        public T GetEntity<T>(Rectangle rect)
         {
             return GetEntity<T>(rect, x => true);
         }

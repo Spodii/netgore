@@ -15,6 +15,12 @@ namespace NetGore.Graphics
         Vector2 Center { get; }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> that describes the region of the world area visible by the camera.
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that describes the region of the world area visible by the camera.</returns>
+        Rectangle GetViewArea();
+
+        /// <summary>
         /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
         /// outside of the range of the map. Only valid if <see cref="ICamera2D.Map"/> is not null.
         /// </summary>
