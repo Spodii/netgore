@@ -37,16 +37,16 @@ namespace NetGore
         public event EntityEventHandler OnDispose;
 
         /// <summary>
-        /// Notifies listeners that the Entity was moved, and passes the old position of the Entity.
+        /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
         [Browsable(false)]
-        public event EntityEventHandler<Vector2> OnMove;
+        public event SpatialMoveEventHandler OnMove;
 
         /// <summary>
-        /// Notifies listeners that the Entity was resized, and passes the old size of the Entity.
+        /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
         [Browsable(false)]
-        public event EntityEventHandler<Vector2> OnResize;
+        public event SpatialResizeEventHandler OnResize;
 
         /// <summary>
         /// Initializes the <see cref="Entity"/> class.

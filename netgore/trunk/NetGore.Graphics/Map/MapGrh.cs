@@ -13,9 +13,9 @@ namespace NetGore.Graphics
     /// </summary>
     public class MapGrh : ISpatial, IDrawable
     {
+        readonly CollisionBox _cb;
         readonly Grh _grh;
         bool _isForeground;
-        readonly CollisionBox _cb;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrh"/> class.
@@ -84,6 +84,24 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
+        /// </summary>
+        public Vector2 Position
+        {
+            get { return CB.Min; }
+            set {
+                if (Position == value)
+                    return;
+
+                var oldPosition = Position;
+                CB.Teleport(value);
+
+                if (OnMove != null)
+                    OnMove(this, oldPosition);
+            }
+        }
+
+        /// <summary>
         /// Updates the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
@@ -148,11 +166,7 @@ namespace NetGore.Graphics
 
         #endregion
 
-        /// <summary>
-        /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
-        /// </summary>
-        public Vector2 Position { get { return CB.Min; } set { 
-            CB.Teleport(value); } }
+        #region ISpatial Members
 
         /// <summary>
         /// Gets the <see cref="CollisionBox"/> used to determine the location of the object in the world.
@@ -161,5 +175,17 @@ namespace NetGore.Graphics
         {
             get { return _cb; }
         }
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="ISpatial"/> has moved.
+        /// </summary>
+        public event SpatialMoveEventHandler OnMove;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
+        /// </summary>
+        public event SpatialResizeEventHandler OnResize;
+
+        #endregion
     }
 }
