@@ -569,7 +569,7 @@ namespace DemoGame.MapEditor
             {
                 foreach (MapGrh mg in Map.MapGrhs)
                 {
-                    if (!_camera.InView(mg.Grh, mg.Destination))
+                    if (!_camera.InView(mg.Grh, mg.Position))
                         continue;
 
                     var boundWalls = _mapGrhWalls[mg.Grh.GrhData];
@@ -578,7 +578,7 @@ namespace DemoGame.MapEditor
 
                     foreach (WallEntityBase wall in boundWalls)
                     {
-                        EntityDrawer.Draw(_sb, wall, mg.Destination);
+                        EntityDrawer.Draw(_sb, wall, mg.Position);
                     }
                 }
             }

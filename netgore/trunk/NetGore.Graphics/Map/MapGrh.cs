@@ -11,20 +11,19 @@ namespace NetGore.Graphics
     /// A Grh instance bound to the map. This is simply a container for a map-bound Grh with no behavior
     /// besides rendering and updating, and resides completely on the Client.
     /// </summary>
-    public class MapGrh : IDrawable
+    public class MapGrh : Entity, IDrawable
     {
         readonly Grh _grh;
-        Vector2 _destination;
         bool _isForeground;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrh"/> class.
         /// </summary>
         /// <param name="grh">Grh to draw.</param>
-        /// <param name="dest">Position to draw on the map.</param>
+        /// <param name="position">Position to draw on the map.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
-        public MapGrh(Grh grh, Vector2 dest, bool isForeground)
+        public MapGrh(Grh grh, Vector2 position, bool isForeground)
         {
             if (grh == null)
             {
@@ -33,7 +32,7 @@ namespace NetGore.Graphics
             }
 
             _grh = grh;
-            _destination = dest;
+            Position = position;
             IsForeground = isForeground;
         }
 
@@ -47,20 +46,11 @@ namespace NetGore.Graphics
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            _destination = reader.ReadVector2("Position");
+            Position = reader.ReadVector2("Position");
             GrhIndex grhIndex = reader.ReadGrhIndex("GrhIndex");
             _isForeground = reader.ReadBool("IsForeground");
 
             _grh = new Grh(grhIndex, AnimType.Loop, currentTime);
-        }
-
-        /// <summary>
-        /// Gets or sets the destination to draw the <see cref="MapGrh"/>.
-        /// </summary>
-        public Vector2 Destination
-        {
-            get { return _destination; }
-            set { _destination = value; }
         }
 
         /// <summary>
@@ -91,14 +81,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks if the given point is over the <see cref="MapGrh"/>.
+        /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
+        /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
         /// </summary>
-        /// <param name="p">World point to check.</param>
-        /// <returns>True if the point is at the <see cref="MapGrh"/>, else false.</returns>
-        public bool HitTest(Vector2 p)
+        public override bool CollidesAgainstWalls
         {
-            return (Destination.X <= p.X && Destination.X + Grh.Width >= p.X && Destination.Y <= p.Y &&
-                    Destination.Y + Grh.Height >= p.Y);
+            get { return false; }
         }
 
         /// <summary>
@@ -116,7 +104,7 @@ namespace NetGore.Graphics
         /// <param name="writer">IValueWriter to write the MapGrh to.</param>
         public void Write(IValueWriter writer)
         {
-            writer.Write("Position", Destination);
+            writer.Write("Position", Position);
             writer.Write("GrhIndex", Grh.GrhData.GrhIndex);
             writer.Write("IsForeground", IsForeground);
         }
@@ -132,7 +120,7 @@ namespace NetGore.Graphics
         /// </returns>
         public bool InView(ICamera2D camera)
         {
-            return camera.InView(_grh, _destination);
+            return camera.InView(_grh, Position);
         }
 
         /// <summary>
@@ -161,7 +149,7 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(SpriteBatch sb)
         {
-            _grh.Draw(sb, _destination, Color.White);
+            _grh.Draw(sb, Position, Color.White);
         }
 
         #endregion

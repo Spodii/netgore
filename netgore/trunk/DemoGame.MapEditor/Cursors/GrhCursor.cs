@@ -71,7 +71,7 @@ namespace DemoGame.MapEditor
                 if (cursorGrh != null)
                 {
                     // Single selection
-                    _selectedEntityOffset = cursorPos - cursorGrh.Destination;
+                    _selectedEntityOffset = cursorPos - cursorGrh.Position;
                     _selectedMapGrhs.Clear();
                     _selectedMapGrhs.Add(cursorGrh);
                 }
@@ -115,9 +115,9 @@ namespace DemoGame.MapEditor
                 // Move the selected single MapGrh
                 foreach (MapGrh mg in _selectedMapGrhs)
                 {
-                    mg.Destination = cursorPos - _selectedEntityOffset;
+                    mg.Position = cursorPos - _selectedEntityOffset;
                     if (screen.chkSnapGrhGrid.Checked)
-                        mg.Destination = screen.Grid.AlignDown(mg.Destination);
+                        mg.Position = screen.Grid.AlignDown(mg.Position);
                 }
             }
             else if (e.Button == MouseButtons.Left && _mapGrhMoveBox != null)
@@ -130,7 +130,7 @@ namespace DemoGame.MapEditor
 
                     foreach (MapGrh mg in _selectedMapGrhs)
                     {
-                        mg.Destination -= offset;
+                        mg.Position -= offset;
                     }
 
                     _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
@@ -163,7 +163,7 @@ namespace DemoGame.MapEditor
                 _selectedMapGrhs.Clear();
                 foreach (MapGrh mg in screen.Map.MapGrhs)
                 {
-                    CollisionBox cb = new CollisionBox(mg.Destination, mg.Destination + mg.Grh.Size);
+                    CollisionBox cb = new CollisionBox(mg.Position, mg.Position + mg.Grh.Size);
                     if (CollisionBox.Intersect(cb, selectBox) && !_selectedMapGrhs.Contains(mg))
                         _selectedMapGrhs.Add(mg);
                 }

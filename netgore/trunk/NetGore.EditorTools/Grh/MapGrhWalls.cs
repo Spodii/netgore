@@ -88,7 +88,7 @@ namespace NetGore.EditorTools
                 // Create a new instance of each of the walls and add it to the return List
                 foreach (WallEntityBase wall in mgWalls)
                 {
-                    var position = mg.Destination + wall.Position;
+                    var position = mg.Position + wall.Position;
                     var size = wall.CB.Size;
                     var type = wall.CollisionType;
 
