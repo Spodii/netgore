@@ -72,7 +72,7 @@ namespace DemoGame.MapEditor
                 // Check if a MapGrh of the same type already exists at the location
                 foreach (MapGrh grh in screen.Map.MapGrhs)
                 {
-                    if (grh.Destination == drawPos && grh.Grh.GrhData.GrhIndex == screen.SelectedGrh.GrhData.GrhIndex)
+                    if (grh.Position == drawPos && grh.Grh.GrhData.GrhIndex == screen.SelectedGrh.GrhData.GrhIndex)
                         return;
                 }
 

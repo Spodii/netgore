@@ -629,7 +629,7 @@ namespace DemoGame.Client
             // Update the map Grhs
             foreach (MapGrh g in _mapGrhs)
             {
-                if (World.Camera.InView(g.Grh, g.Destination))
+                if (World.Camera.InView(g.Grh, g.Position))
                     g.Update(currentTime);
             }
 
