@@ -3,8 +3,9 @@ using System.Linq;
 
 namespace NetGore
 {
+    /*
     /// <summary>
-    /// An implementation of <see cref="IEntitySpatial"/> that supports tracking entities that do not move.
+    /// An implementation of <see cref="ISpatialCollection"/> that supports tracking entities that do not move.
     /// </summary>
     public class StaticEntitySpatial : EntitySpatialBase
     {
@@ -21,4 +22,5 @@ namespace NetGore
             return collection;
         }
     }
+    */
 }

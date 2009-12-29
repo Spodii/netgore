@@ -494,7 +494,7 @@ namespace DemoGame.Client
         {
             foreach (MapGrh grh in MapGrhs)
             {
-                if (grh.HitTest(p))
+                if (grh.CB.HitTest(p))
                     return grh;
             }
             return null;

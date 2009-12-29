@@ -3,8 +3,9 @@ using System.Linq;
 
 namespace NetGore
 {
+    /*
     /// <summary>
-    /// An implementation of <see cref="IEntitySpatial"/> that supports tracking entities that can move.
+    /// An implementation of <see cref="ISpatialCollection"/> that supports tracking entities that can move.
     /// </summary>
     public class DynamicEntitySpatial : EntitySpatialBase
     {
@@ -21,4 +22,5 @@ namespace NetGore
             return collection.ToImmutable();
         }
     }
+    */
 }

@@ -41,10 +41,8 @@ namespace NetGore
         void CheckCollisions(Entity entity);
 
         /// <summary>
-        /// Gets the <see cref="IEntitySpatial"/> for the given type of <see cref="Entity"/>.
+        /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
-        /// <param name="type">The type of <see cref="Entity"/>.</param>
-        /// <returns>The <see cref="IEntitySpatial"/> that contains the <paramref name="type"/>.</returns>
-        IEntitySpatial GetSpatial(Type type);
+        ISpatialCollection Spatial { get; }
     }
 }

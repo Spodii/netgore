@@ -9,7 +9,7 @@ namespace NetGore
     /// The base class of all entities, which are physical objects that reside in the virtual world, and can interact
     /// with other entities.
     /// </summary>
-    public abstract class Entity : IDisposable
+    public abstract class Entity : ISpatial, IDisposable
     {
 #if !TOPDOWN
         static readonly Vector2 _gravity;

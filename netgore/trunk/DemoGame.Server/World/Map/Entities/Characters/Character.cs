@@ -464,8 +464,7 @@ namespace DemoGame.Server
 
             // Damage all hit characters
             Rectangle hitRect = BodyInfo.GetHitRect(this, BodyInfo.PunchRect);
-            var spatial = Map.GetSpatial<Character>();
-            var hitChars = spatial.GetEntities<Character>(hitRect);
+            var hitChars = Map.Spatial.GetEntities<Character>(hitRect);
 
             foreach (Character c in hitChars)
             {
