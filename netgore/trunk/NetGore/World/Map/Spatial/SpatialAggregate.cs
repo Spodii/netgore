@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -19,7 +20,12 @@ namespace NetGore
         /// <param name="spatials">The <see cref="ISpatialCollection"/>s to join together.</param>
         public SpatialAggregate(IEnumerable<ISpatialCollection> spatials)
         {
-            _spatials = spatials.ToCompact();
+            // Expand any ISpatialCollections that are a SpatialAggregate to prevent the need for recursion
+            List<ISpatialCollection> expanded = new List<ISpatialCollection>();
+            expanded.AddRange(spatials.OfType<SpatialAggregate>().SelectMany(x => x._spatials));
+            expanded.AddRange(spatials.Where(x => !(x is SpatialAggregate)));
+
+            _spatials = expanded.Distinct().ToCompact();
         }
 
         static NotSupportedException GetNotSupportedException()

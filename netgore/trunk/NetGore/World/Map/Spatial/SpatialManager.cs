@@ -376,6 +376,7 @@ namespace NetGore
             if (!type.IsClass)
                 return _rootSpatial;
 
+            /*
             // Cache the ISpatialCollection for each Type on the first request since the tree will never change, and
             // this will allow us to avoid a lot of Type-testing and tree crawling
             ISpatialCollection spatialCollection;
@@ -384,6 +385,8 @@ namespace NetGore
                 spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
                 _spatialCollectionCache.Add(type, spatialCollection);
             }
+            */
+            var spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
 
             return spatialCollection;
         }

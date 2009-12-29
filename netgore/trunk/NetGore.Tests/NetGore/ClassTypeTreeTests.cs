@@ -31,6 +31,22 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void FindTheGapInTree1Test()
+        {
+            var root = new ClassTypeTree(new Type[] { typeof(A1), typeof(A2), typeof(A1B1C1D1) });
+            var match = root.Find(typeof(A1B1));
+            Assert.AreEqual(typeof(A1), match.Type);
+        }
+
+        [Test]
+        public void FindTheGapInTree2Test()
+        {
+            var root = new ClassTypeTree(new Type[] { typeof(A1), typeof(A2), typeof(A1B1C1D1) });
+            var match = root.Find(typeof(A1B1C1));
+            Assert.AreEqual(typeof(A1), match.Type);
+        }
+
+        [Test]
         public void GetAllNodesTest()
         {
             var root = BuildTree();
