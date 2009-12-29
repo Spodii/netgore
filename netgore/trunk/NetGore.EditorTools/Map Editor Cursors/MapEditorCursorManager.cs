@@ -85,7 +85,9 @@ namespace NetGore.EditorTools
                     return;
 
                 foreach (var control in _cursorControls)
+                {
                     control.BackColor = Color.White;
+                }
 
                 _selectedCursor = value;
 
