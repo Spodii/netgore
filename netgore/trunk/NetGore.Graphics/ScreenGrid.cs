@@ -122,6 +122,8 @@ namespace NetGore.Graphics
             }
         }
 
+        public Vector2 Size { get { return new Vector2(Width, Height); } }
+
         /// <summary>
         /// Aligns an object's position to the grid.
         /// </summary>
@@ -216,10 +218,8 @@ namespace NetGore.Graphics
                 return;
             }
 
-            Vector2 newPos;
-            newPos.X = (float)(Math.Round(entity.CB.Min.X / Width) * Width);
-            newPos.Y = (float)(Math.Round(entity.CB.Min.Y / Height) * Height);
-
+            Vector2 newPos = (entity.CB.Min / Size).Round() * Size;
+ 
             // TODO: map.SafeTeleportEntity()
             entity.Teleport(newPos);
         }
@@ -236,14 +236,12 @@ namespace NetGore.Graphics
                 return;
             }
 
-            Vector2 newSize;
-            newSize.X = (float)(Math.Round(entity.CB.Width / Width) * Width);
-            newSize.Y = (float)(Math.Round(entity.CB.Height / Height) * Height);
-
-            if (newSize.X < Width)
-                newSize.X = Width;
-            if (newSize.Y < Height)
-                newSize.Y = Height;
+            Vector2 newSize = (entity.CB.Size / Size).Round() * Size;
+  
+            if (newSize.X < Size.X)
+                newSize.X = Size.X;
+            if (newSize.Y < Size.Y)
+                newSize.Y = Size.Y;
 
             // TODO: map.SafeResizeEntity()
             entity.Resize(newSize);

@@ -74,7 +74,7 @@ namespace DemoGame.Client
             DrawCB(sb, tele.CB, tele.CollisionType, _teleSourceColor);
 
             // Dest
-            CollisionBox destCB = new CollisionBox(tele.Destination, tele.CB.Width, tele.CB.Height);
+            CollisionBox destCB = new CollisionBox(tele.CB.Min, tele.CB.Max);
             DrawCB(sb, destCB, CollisionType.Full, _teleDestColor);
 
             // Arrow
@@ -102,7 +102,7 @@ namespace DemoGame.Client
         {
             // Find the positon to draw to
             Vector2 p = wall.Position + offset;
-            Rectangle dest = new Rectangle((int)p.X, (int)p.Y, (int)wall.CB.Width, (int)wall.CB.Height);
+            Rectangle dest = new Rectangle((int)p.X, (int)p.Y, (int)wall.CB.Size.X, (int)wall.CB.Size.Y);
 
             // Draw the collision box
             switch (wall.CollisionType)

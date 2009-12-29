@@ -1441,7 +1441,7 @@ namespace DemoGame.Server
             if (Map == null)
                 return position;
 
-            var tempCB = new CollisionBox(position, CB.Width, CB.Height);
+            var tempCB = new CollisionBox(position, CB.Size.X, CB.Size.Y);
 
             Vector2 closestLegalPosition;
             bool isClosestPositionValid;

@@ -337,8 +337,8 @@ namespace NetGore.EditorTools
                 cmbWallType.SelectedItem = wall.CollisionType;
                 txtWallX.Text = wall.Position.X.ToString();
                 txtWallY.Text = wall.Position.Y.ToString();
-                txtWallW.Text = wall.CB.Width.ToString();
-                txtWallH.Text = wall.CB.Height.ToString();
+                txtWallW.Text = wall.CB.Size.X.ToString();
+                txtWallH.Text = wall.CB.Size.Y.ToString();
             }
         }
 

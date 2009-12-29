@@ -83,8 +83,6 @@ namespace NetGore.Tests.NetGore
         {
             CollisionBox cb = new CollisionBox(new Vector2(10, 10), 16, 16);
             Assert.AreEqual(cb.Size, cb.Max - cb.Min);
-            Assert.AreEqual(cb.Size.X, cb.Width);
-            Assert.AreEqual(cb.Size.Y, cb.Height);
         }
 
         [Test]
