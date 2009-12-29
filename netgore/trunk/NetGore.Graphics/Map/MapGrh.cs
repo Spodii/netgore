@@ -8,8 +8,7 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// A Grh instance bound to the map. Although it inherits the <see cref="IDrawable"/> interface,
-    /// it is not actually an <see cref="Entity"/>. It is simply a container for a map-bound Grh with no behavior
+    /// A Grh instance bound to the map. This is simply a container for a map-bound Grh with no behavior
     /// besides rendering and updating, and resides completely on the Client.
     /// </summary>
     public class MapGrh : IDrawable
