@@ -250,6 +250,7 @@ namespace DemoGame.Client
             var viewArea = camera.GetViewArea();
             var drawableInView = Spatial.GetEntities<IDrawable>(viewArea);
 
+            // TODO: !! This is a shitty filtering. Would be better if I declare a public predicate to determine the filtering. Much more powerful that way.
             if (!DrawBackground)
                 drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Background);
             if (!DrawCharacters)
