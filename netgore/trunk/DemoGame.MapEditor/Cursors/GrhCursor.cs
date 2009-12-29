@@ -65,8 +65,7 @@ namespace DemoGame.MapEditor
             if (e.Button == MouseButtons.Left)
             {
                 Vector2 cursorPos = screen.CursorPos;
-
-                MapGrh cursorGrh = screen.Map.GetMapGrh(cursorPos);
+                MapGrh cursorGrh = screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
 
                 if (cursorGrh != null)
                 {

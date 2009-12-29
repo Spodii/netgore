@@ -89,6 +89,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> that describes the region of the world area visible by the camera.
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that describes the region of the world area visible by the camera.</returns>
+        public Rectangle GetViewArea()
+        {
+            return new Rectangle((int)Min.X, (int)Min.Y, (int)Size.X, (int)Size.Y);
+        }
+
+        /// <summary>
         /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
         /// outside of the range of the map. Only valid if <see cref="ICamera2D.Map"/> is not null.
         /// </summary>
