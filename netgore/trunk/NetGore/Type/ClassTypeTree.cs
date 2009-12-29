@@ -14,6 +14,31 @@ namespace NetGore
         readonly Type _selfType;
 
         /// <summary>
+        /// Gets if this <see cref="ClassTypeTree"/> node is a leaf node (has no children).
+        /// </summary>
+        public bool IsLeaf { get { return _children == null; } }
+
+        /// <summary>
+        /// Gets all of the nodes in the whole tree.
+        /// </summary>
+        /// <returns>All of the nodes in the whole tree.</returns>
+        public IEnumerable<ClassTypeTree> GetAllNodes()
+        {
+            return Root.GetAllNodesInternal();
+        }
+
+        IEnumerable<ClassTypeTree> GetAllNodesInternal()
+        {
+            yield return this;
+
+            foreach (var child in Children)
+            {
+                foreach (var c in child.GetAllNodesInternal())
+                    yield return c;
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ClassTypeTree"/> class.
         /// </summary>
         /// <param name="types">The types to build the tree out of.</param>
@@ -42,8 +67,6 @@ namespace NetGore
 
             // Store the children
             _children = FinalizeChildren(childList);
-
-            HandleInitialized();
 
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
@@ -181,15 +204,6 @@ namespace NetGore
             return InternalFind(type);
         }
 
-        /// <summary>
-        /// When overridden in the derived class, handles when this <see cref="ClassTypeTree"/> has finished
-        /// being built. This allows derived classes to safely and easily attach extra data to each node. This is only
-        /// called on the root node, and only after the whole tree has finished being built.
-        /// </summary>
-        protected virtual void HandleInitialized()
-        {
-        }
-
         ClassTypeTree InternalFind(Type type)
         {
             if (type == _selfType)
@@ -200,7 +214,7 @@ namespace NetGore
             if (Type != null && !Type.IsAssignableFrom(type))
                 return Parent.InternalFind(type);
 
-            if (_children != null)
+            if (!IsLeaf)
             {
                 foreach (var child in Children)
                 {

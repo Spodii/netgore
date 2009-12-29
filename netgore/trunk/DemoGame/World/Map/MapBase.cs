@@ -132,7 +132,8 @@ namespace DemoGame
         /// <returns>The <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.</returns>
         protected virtual ISpatialCollection CreateSpatialManager()
         {
-            return new SpatialManager();
+            // TODO: !! Make this easier to edit the types
+            return new SpatialManager(new Type[] { typeof(Entity), typeof(DynamicEntity), typeof(CharacterEntity), typeof(WallEntityBase), typeof(ItemEntityBase)}, () => new LinearSpatialCollection());
         }
 
         /// <summary>
@@ -487,15 +488,15 @@ namespace DemoGame
 
         /// <summary>
         /// Gets the possible positions to place the given <see cref="CollisionBox"/> around an
-        /// <see cref="Entity"/>.
+        /// <see cref="ISpatial"/>.
         /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to place around.</param>
+        /// <param name="spatial">The <see cref="ISpatial"/> to place around.</param>
         /// <param name="cb">The <see cref="CollisionBox"/> describing the area to be placed.</param>
         /// <returns>An IEnumerable of the min positions to place the <paramref name="cb"/> around the
-        /// given <paramref name="entity"/>.</returns>
-        static IEnumerable<Vector2> GetPositionsAroundEntity(Entity entity, CollisionBox cb)
+        /// given <paramref name="spatial"/>.</returns>
+        static IEnumerable<Vector2> GetPositionsAroundSpatial(ISpatial spatial, CollisionBox cb)
         {
-            var srcCB = entity.CB;
+            var srcCB = spatial.CB;
 
             // Top
             yield return new Vector2(cb.Min.X, srcCB.Min.Y - cb.Height - 1);
@@ -655,7 +656,7 @@ namespace DemoGame
             // Next, find the legal positions we can place the cb
             var cbSize = cb.Size;
             var validPlacementPositions =
-                nearbyWalls.SelectMany(wall => GetPositionsAroundEntity(wall, cb)).Where(p => IsValidPlacementPosition(p, cbSize));
+                nearbyWalls.SelectMany(wall => GetPositionsAroundSpatial(wall, cb)).Where(p => IsValidPlacementPosition(p, cbSize));
 
             // If there are 0 legal positions, we're F'd in the A
             if (validPlacementPositions.Count() == 0)
