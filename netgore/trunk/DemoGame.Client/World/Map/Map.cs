@@ -250,11 +250,22 @@ namespace DemoGame.Client
             var viewArea = camera.GetViewArea();
             var drawableInView = Spatial.GetEntities<IDrawable>(viewArea);
 
+            if (!DrawBackground)
+                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Background);
+            if (!DrawCharacters)
+                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Chararacter);
+            if (!DrawItems)
+                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Item);
+            if (!DrawMapGrhs)
+                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.SpriteBackground && x.MapRenderLayer != MapRenderLayer.SpriteForeground);
+
             // Sort the drawable items then draw them one by one
             var sorted = drawableInView.OrderBy(x => x.MapRenderLayer);
 
             foreach (var drawable in sorted)
+            {
                 drawable.Draw(sb);
+            }
 
             // Draw the particle effects
             _particleEffectRenderer.SpriteBatch = sb;
