@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetGore\ClassTypeTreeTests.cs" />
     <Compile Include="TestSetUp.cs" />
     <Compile Include="NetGore\CommandLineSwitchHelperTests.cs" />
     <Compile Include="NetGore\IO\ContentAssetNameTests.cs" />
