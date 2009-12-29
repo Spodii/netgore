@@ -154,20 +154,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Checks if two CollisionBoxes occupy any common space
-        /// </summary>
-        /// <param name="cb1">First CollisionBox to check</param>
-        /// <param name="cb2">Second CollisionBox to check</param>
-        /// <returns>True if occupy any common space, else false</returns>
-        public static bool Intersect(CollisionBox cb1, CollisionBox cb2)
-        {
-            if (cb1.Max.X >= cb2.Min.X && cb1.Max.Y >= cb2.Min.Y && cb1.Min.X <= cb2.Max.X && cb1.Min.Y <= cb2.Max.Y)
-                return true;
-            else
-                return false;
-        }
-
-        /// <summary>
         /// Checks if a CollisionBox and Rectangle occupy any common space
         /// </summary>
         /// <param name="cb">CollisionBox to check</param>
@@ -188,7 +174,10 @@ namespace NetGore
         /// <returns>True if occupy any common space, else false</returns>
         public bool Intersect(CollisionBox cb)
         {
-            return Intersect(this, cb);
+            if (Max.X >= cb.Min.X && Max.Y >= cb.Min.Y && Min.X <= cb.Max.X && Min.Y <= cb.Max.Y)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
