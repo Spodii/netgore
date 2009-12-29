@@ -362,6 +362,10 @@ namespace NetGore
         /// </returns>
         ISpatialCollection GetSpatialCollection(Type type)
         {
+            // We know that anything that isn't a class will just return the root node anyways, so don't cache it
+            if (!type.IsClass)
+                return _rootSpatial;
+
             // Cache the ISpatialCollection for each Type on the first request since the tree will never change, and
             // this will allow us to avoid a lot of Type-testing and tree crawling
             ISpatialCollection spatialCollection;
