@@ -15,6 +15,16 @@ namespace NetGore
         readonly SpatialTypeTree _treeRoot;
         readonly ISpatialCollection _rootSpatial;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpatialManager"/> class.
+        /// </summary>
+        /// <param name="spatialCollectionTypes">The key <see cref="Type"/>s that will be used to build
+        /// <see cref="ISpatialCollection"/>s on. The more <see cref="Type"/>s that are included, the smaller each
+        /// <see cref="ISpatialCollection"/> will be which will allow for faster look-up for specific types, but
+        /// slower look-up for less specific types since there will be more <see cref="ISpatialCollection"/>s to crawl. It
+        /// is recommended to just include <see cref="Type"/>s that you plan to filter by.</param>
+        /// <param name="createSpatialCollection">The delegate that describes how to create the
+        /// <see cref="ISpatialCollection"/>s.</param>
         public SpatialManager(IEnumerable<Type> spatialCollectionTypes, Func<ISpatialCollection> createSpatialCollection)
         {
             _treeRoot = new SpatialTypeTree(spatialCollectionTypes, createSpatialCollection);
