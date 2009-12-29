@@ -4,13 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
+/*
 namespace NetGore
 {
-    /*
     /// <summary>
-    /// An implementation of <see cref="ISpatialCollection"/> that supports tracking entities that can move.
+    /// An implementation of <see cref="ISpatialCollection"/> that uses a grid internally to reduce the test
+    /// set for all the queries.
     /// </summary>
-    public abstract class EntitySpatialBase : ISpatialCollection
+    public abstract class GridSpatialBase : ISpatialCollection
     {
         /// <summary>
         /// Size of each segment of the wall grid in pixels (smallest requires more
@@ -21,22 +22,22 @@ namespace NetGore
         /// <summary>
         /// Two-dimensional grid of references to entities in that sector.
         /// </summary>
-        List<Entity>[,] _entityGrid;
+        List<ISpatial>[,] _entityGrid;
 
         Vector2 _mapSize;
 
-        protected IEnumerable<Entity> this[int x, int y]
+        protected IEnumerable<ISpatial> this[int x, int y]
         {
             get
             {
                 if (!IsLegalGridIndex(x, y))
-                    return Enumerable.Empty<Entity>();
+                    return Enumerable.Empty<ISpatial>();
 
                 return _entityGrid[x, y];
             }
         }
 
-        protected IEnumerable<Entity> this[Point gridIndex]
+        protected IEnumerable<ISpatial> this[Point gridIndex]
         {
             get { return this[gridIndex.X, gridIndex.Y]; }
         }
@@ -46,7 +47,7 @@ namespace NetGore
             get { return new Point(_entityGrid.GetLength(0), _entityGrid.GetLength(1)); }
         }
 
-        void AddToGrid(Entity entity)
+        void AddToGrid(ISpatial entity)
         {
             var minX = (int)entity.CB.Min.X / _entityGridSize;
             var minY = (int)entity.CB.Min.Y / _entityGridSize;
@@ -81,20 +82,20 @@ namespace NetGore
         /// Builds a two-dimensional array of Lists to use as the grid of entities.
         /// </summary>
         /// <returns>A two-dimensional array of Lists to use as the grid of entities.</returns>
-        static List<Entity>[,] BuildEntityGrid(float width, float height)
+        static List<ISpatial>[,] BuildISpatialGrid(float width, float height)
         {
             var gridWidth = (int)Math.Ceiling(width / _entityGridSize);
             var gridHeight = (int)Math.Ceiling(height / _entityGridSize);
 
             // Create the array
-            var retGrid = new List<Entity>[gridWidth,gridHeight];
+            var retGrid = new List<ISpatial>[gridWidth,gridHeight];
 
             // Create the lists
             for (var x = 0; x < gridWidth; x++)
             {
                 for (var y = 0; y < gridHeight; y++)
                 {
-                    retGrid[x, y] = new List<Entity>();
+                    retGrid[x, y] = new List<ISpatial>();
                 }
             }
 
@@ -106,17 +107,17 @@ namespace NetGore
             return true;
         }
 
-        void Entity_OnMove(Entity entity, Vector2 oldPos)
+        void ISpatial_OnMove(ISpatial entity, Vector2 oldPos)
         {
-            UpdateEntity(entity, oldPos);
-            ForceEntityInMapBoundaries(entity);
+            UpdateISpatial(entity, oldPos);
+            ForceISpatialInMapBoundaries(entity);
         }
 
         /// <summary>
-        /// Checks if an Entity is in the map's boundaries and, if it is not, moves the Entity into the map's boundaries.
+        /// Checks if an ISpatial is in the map's boundaries and, if it is not, moves the ISpatial into the map's boundaries.
         /// </summary>
-        /// <param name="entity">Entity to check.</param>
-        void ForceEntityInMapBoundaries(Entity entity)
+        /// <param name="entity">ISpatial to check.</param>
+        void ForceISpatialInMapBoundaries(ISpatial entity)
         {
             var min = entity.CB.Min;
             var max = entity.CB.Max;
@@ -134,12 +135,12 @@ namespace NetGore
                 entity.Teleport(min);
         }
 
-        IEnumerable<Entity> GetAllEntities()
+        IEnumerable<ISpatial> GetAllEntities()
         {
             if (_entityGrid == null)
-                return Enumerable.Empty<Entity>();
+                return Enumerable.Empty<ISpatial>();
 
-            List<Entity> ret = new List<Entity>();
+            List<ISpatial> ret = new List<ISpatial>();
             foreach (var segment in _entityGrid)
             {
                 ret.AddRange(segment);
@@ -153,7 +154,7 @@ namespace NetGore
         /// </summary>
         /// <param name="rect">Map area to get the grid segments for.</param>
         /// <returns>An IEnumerable of all grid segments intersected by the specified <paramref name="rect"/>.</returns>
-        protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(Rectangle rect)
+        protected IEnumerable<IEnumerable<ISpatial>> GetISpatialGrids(Rectangle rect)
         {
             var minX = rect.X / _entityGridSize;
             var minY = rect.Y / _entityGridSize;
@@ -170,7 +171,7 @@ namespace NetGore
             if (minY < 0)
                 minY = 0;
 
-            // NOTE: For some reason this last check here likes to fail a lot. I think it is because gravity pushes an Entity out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
+            // NOTE: For some reason this last check here likes to fail a lot. I think it is because gravity pushes an ISpatial out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
             if (maxY >= GridSize.Y)
                 maxY = GridSize.Y - 1;
 
@@ -216,11 +217,11 @@ namespace NetGore
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>All Entities found intersecting the given region.</returns>
-        IEnumerable<Entity> MutableGetEntities(Rectangle rect, Predicate<Entity> condition)
+        IEnumerable<ISpatial> MutableGetEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            var gridSegments = GetEntityGrids(rect);
+            var gridSegments = GetISpatialGrids(rect);
             var matches = gridSegments.SelectMany(x => x).Where(x => x.CB.Intersect(rect) && condition(x)).Distinct();
             return matches;
         }
@@ -229,10 +230,10 @@ namespace NetGore
         /// Gets all entities at the given point.
         /// </summary>
         /// <param name="p">The point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
         /// <returns>All entities containing the given point that are of the given type.</returns>
-        IEnumerable<T> MutableGetEntities<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        IEnumerable<T> MutableGetEntities<T>(Vector2 p, Predicate<T> condition) 
         {
             var gridSegment = this[MapPositionToGridIndex(p)];
             var matches = gridSegment.OfType<T>().Where(x => x.CB.HitTest(p) && condition(x));
@@ -244,12 +245,12 @@ namespace NetGore
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
-        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
         /// <returns>All Entities found intersecting the given region.</returns>
-        IEnumerable<T> MutableGetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        IEnumerable<T> MutableGetEntities<T>(Rectangle rect, Predicate<T> condition) 
         {
-            var gridSegments = GetEntityGrids(rect);
+            var gridSegments = GetISpatialGrids(rect);
             var matches = gridSegments.SelectMany(x => x).OfType<T>().Where(x => x.CB.Intersect(rect) && condition(x)).Distinct();
             return matches;
         }
@@ -258,9 +259,9 @@ namespace NetGore
         /// Gets all entities containing a given point.
         /// </summary>
         /// <param name="p">Point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>All of the entities at the given point.</returns>
-        IEnumerable<Entity> MutableGetEntities(Vector2 p, Predicate<Entity> condition)
+        IEnumerable<ISpatial> MutableGetEntities(Vector2 p, Predicate<ISpatial> condition)
         {
             var gridSegment = this[MapPositionToGridIndex(p)];
             var matches = gridSegment.Where(x => x.CB.HitTest(p) && condition(x));
@@ -277,7 +278,7 @@ namespace NetGore
             var entities = GetAllEntities();
 
             _mapSize = size;
-            _entityGrid = BuildEntityGrid(size.X, size.Y);
+            _entityGrid = BuildISpatialGrid(size.X, size.Y);
 
             // Re-add the items to the grid
             foreach (var entity in entities)
@@ -296,7 +297,7 @@ namespace NetGore
         /// <returns>The <paramref name="collection"/> as immutable.</returns>
         protected abstract IEnumerable<T> ToImmutable<T>(IEnumerable<T> collection);
 
-        public void UpdateEntity(Entity entity, Vector2 oldPos)
+        public void UpdateISpatial(ISpatial entity, Vector2 oldPos)
         {
             // NOTE: !! Does this really need to be public?
 
@@ -347,7 +348,7 @@ namespace NetGore
         /// Adds multiple entities to the spatial collection.
         /// </summary>
         /// <param name="entities">The entities to add.</param>
-        public void Add(IEnumerable<Entity> entities)
+        public void Add(IEnumerable<ISpatial> entities)
         {
             foreach (var entity in entities)
             {
@@ -356,21 +357,21 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Adds a single <see cref="Entity"/> to the spatial collection.
+        /// Adds a single <see cref="ISpatial"/> to the spatial collection.
         /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to add.</param>
-        public void Add(Entity entity)
+        /// <param name="entity">The <see cref="ISpatial"/> to add.</param>
+        public void Add(ISpatial entity)
         {
             AddToGrid(entity);
-            entity.OnMove += Entity_OnMove;
+            entity.OnMove += ISpatial_OnMove;
         }
 
         /// <summary>
         /// Checks if this spatial collection contains the given <paramref name="entity"/>.
         /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to look for.</param>
+        /// <param name="entity">The <see cref="ISpatial"/> to look for.</param>
         /// <returns>True if this spatial collection contains the given <paramref name="entity"/>; otherwise false.</returns>
-        public bool Contains(Entity entity)
+        public bool Contains(ISpatial entity)
         {
             // The first place to check would be the place the entity should be
             if (ContainsEntities(entity.CB.ToRectangle(), x => x == entity))
@@ -390,12 +391,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Removes an <see cref="Entity"/> from the spatial collection.
+        /// Removes an <see cref="ISpatial"/> from the spatial collection.
         /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to remove.</param>
-        public void Remove(Entity entity)
+        /// <param name="entity">The <see cref="ISpatial"/> to remove.</param>
+        public void Remove(ISpatial entity)
         {
-            entity.OnMove -= Entity_OnMove;
+            entity.OnMove -= ISpatial_OnMove;
 
             foreach (var gridSegment in _entityGrid)
             {
@@ -404,91 +405,91 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
         /// </summary>
-        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
         /// <param name="condition">Condition the Entities must meet.</param>
-        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
-        public T GetEntity<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
+        public T GetEntity<T>(Rectangle rect, Predicate<T> condition) 
         {
             return MutableGetEntities(rect, condition).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
         /// </summary>
-        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
-        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
-        public Entity GetEntity(Rectangle rect, Predicate<Entity> condition)
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
+        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
+        public ISpatial GetEntity(Rectangle rect, Predicate<ISpatial> condition)
         {
             return MutableGetEntities(rect, condition).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
         /// <param name="p">Point to find the entity at.</param>
-        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
         /// will be ignored.</typeparam>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p, Predicate<T> condition) 
         {
             return MutableGetEntities(p, condition).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
         /// <param name="p">Point to find the entity at.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
         /// will be ignored.</typeparam>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p) where T : Entity
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p) 
         {
             return MutableGetEntities<T>(p, EmptyPred).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
         /// <param name="p">Point to find the entity at.</param>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public Entity GetEntity(Vector2 p)
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public ISpatial GetEntity(Vector2 p)
         {
             return MutableGetEntities(p, EmptyPred).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
         /// <param name="p">Point to find the entity at.</param>
-        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public Entity GetEntity(Vector2 p, Predicate<Entity> condition)
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public ISpatial GetEntity(Vector2 p, Predicate<ISpatial> condition)
         {
             return MutableGetEntities(p, condition).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the first Entity found in the given region
+        /// Gets the first ISpatial found in the given region
         /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
-        public Entity GetEntity(Rectangle rect)
+        /// <param name="rect">Region to check for the ISpatial</param>
+        /// <returns>First ISpatial found at the given point, or null if none found</returns>
+        public ISpatial GetEntity(Rectangle rect)
         {
             return MutableGetEntities(rect, EmptyPred).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the first Entity found in the given region
+        /// Gets the first ISpatial found in the given region
         /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
+        /// <param name="rect">Region to check for the ISpatial</param>
         /// <typeparam name="T">Type to convert to</typeparam>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
-        public T GetEntity<T>(Rectangle rect) where T : Entity
+        /// <returns>First ISpatial found at the given point, or null if none found</returns>
+        public T GetEntity<T>(Rectangle rect) 
         {
             return MutableGetEntities<T>(rect, EmptyPred).FirstOrDefault();
         }
@@ -507,21 +508,21 @@ namespace NetGore
         /// Gets if the specified area or location contains any entities.
         /// </summary>
         /// <param name="rect">The map area to check.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(Rectangle rect, Predicate<Entity> condition)
+        public bool ContainsEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            return GetEntityGrids(rect).SelectMany(x => x).Any(x => x.CB.Intersect(rect) && condition(x));
+            return GetISpatialGrids(rect).SelectMany(x => x).Any(x => x.CB.Intersect(rect) && condition(x));
         }
 
         /// <summary>
         /// Gets if the specified area or location contains any entities.
         /// </summary>
         /// <param name="rect">The map area to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Rectangle rect) where T : Entity
+        public bool ContainsEntities<T>(Rectangle rect) 
         {
             return ContainsEntities<T>(rect, EmptyPred);
         }
@@ -530,13 +531,13 @@ namespace NetGore
         /// Gets if the specified area or location contains any entities.
         /// </summary>
         /// <param name="rect">The map area to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition) 
         {
-            return GetEntityGrids(rect).SelectMany(x => x).OfType<T>().Any(x => x.CB.Intersect(rect) && condition(x));
+            return GetISpatialGrids(rect).SelectMany(x => x).OfType<T>().Any(x => x.CB.Intersect(rect) && condition(x));
         }
 
         /// <summary>
@@ -553,9 +554,9 @@ namespace NetGore
         /// Gets if the specified area or location contains any entities.
         /// </summary>
         /// <param name="point">The map point to check.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(Vector2 point, Predicate<Entity> condition)
+        public bool ContainsEntities(Vector2 point, Predicate<ISpatial> condition)
         {
             var gridSegment = this[MapPositionToGridIndex(point)];
             return gridSegment.Any(x => x.CB.HitTest(point) && condition(x));
@@ -565,10 +566,10 @@ namespace NetGore
         /// Gets if the specified area or location contains any entities.
         /// </summary>
         /// <param name="point">The map point to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Vector2 point) where T : Entity
+        public bool ContainsEntities<T>(Vector2 point) 
         {
             return ContainsEntities<T>(point, EmptyPred);
         }
@@ -577,11 +578,11 @@ namespace NetGore
         /// Gets if the specified area or location contains any entities.
         /// </summary>
         /// <param name="point">The map point to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition) where T : Entity
+        public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition) 
         {
             var gridSegment = this[MapPositionToGridIndex(point)];
             return gridSegment.OfType<T>().Any(x => x.CB.HitTest(point) && condition(x));
@@ -592,7 +593,7 @@ namespace NetGore
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
         /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<Entity> GetEntities(Rectangle rect)
+        public IEnumerable<ISpatial> GetEntities(Rectangle rect)
         {
             return GetEntities(rect, EmptyPred);
         }
@@ -601,9 +602,9 @@ namespace NetGore
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
+        public IEnumerable<ISpatial> GetEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
             return MutableGetEntities(rect, condition).ToImmutable();
         }
@@ -612,9 +613,9 @@ namespace NetGore
         /// Gets all entities at the given point.
         /// </summary>
         /// <param name="p">The point to find the entities at.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
         /// <returns>All entities containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p) where T : Entity
+        public IEnumerable<T> GetEntities<T>(Vector2 p) 
         {
             return GetEntities<T>(p, EmptyPred);
         }
@@ -623,10 +624,10 @@ namespace NetGore
         /// Gets all entities at the given point.
         /// </summary>
         /// <param name="p">The point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
         /// <returns>All entities containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) 
         {
             return MutableGetEntities(p, condition).ToImmutable();
         }
@@ -635,9 +636,9 @@ namespace NetGore
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
-        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
         /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect) where T : Entity
+        public IEnumerable<T> GetEntities<T>(Rectangle rect) 
         {
             return GetEntities<T>(rect, EmptyPred);
         }
@@ -646,10 +647,10 @@ namespace NetGore
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
-        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
         /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) 
         {
             return MutableGetEntities(rect, condition).ToImmutable();
         }
@@ -659,7 +660,7 @@ namespace NetGore
         /// </summary>
         /// <param name="p">Point to find the entities at.</param>
         /// <returns>All of the entities at the given point.</returns>
-        public IEnumerable<Entity> GetEntities(Vector2 p)
+        public IEnumerable<ISpatial> GetEntities(Vector2 p)
         {
             return GetEntities(p, EmptyPred);
         }
@@ -668,14 +669,14 @@ namespace NetGore
         /// Gets all entities containing a given point.
         /// </summary>
         /// <param name="p">Point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="Entity"/> must match to be included.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>All of the entities at the given point.</returns>
-        public IEnumerable<Entity> GetEntities(Vector2 p, Predicate<Entity> condition)
+        public IEnumerable<ISpatial> GetEntities(Vector2 p, Predicate<ISpatial> condition)
         {
             return MutableGetEntities(p, condition).ToImmutable();
         }
 
         #endregion
     }
-    */
 }
+ */
