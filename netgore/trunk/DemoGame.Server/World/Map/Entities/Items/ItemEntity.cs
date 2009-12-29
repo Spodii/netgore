@@ -277,8 +277,8 @@ namespace DemoGame.Server
             // Get the sizes as a byte
             byte oldWidth = (byte)oldSize.X;
             byte oldHeight = (byte)oldSize.Y;
-            byte width = (byte)entity.CB.Width;
-            byte height = (byte)entity.CB.Height;
+            byte width = (byte)entity.CB.Size.X;
+            byte height = (byte)entity.CB.Size.Y;
 
             // Update the changed sizes
             if (oldWidth != width)
@@ -427,7 +427,7 @@ namespace DemoGame.Server
             if (map == null)
                 return position;
 
-            var tempCB = new CollisionBox(position, CB.Width, CB.Height);
+            var tempCB = new CollisionBox(position, CB.Size.X, CB.Size.Y);
 
             Vector2 closestLegalPosition;
             bool isClosestPositionValid;
@@ -496,7 +496,7 @@ namespace DemoGame.Server
         /// </summary>
         byte IItemTable.Height
         {
-            get { return (byte)CB.Height; }
+            get { return (byte)CB.Size.Y; }
         }
 
         public SPValueType HP
@@ -623,7 +623,7 @@ namespace DemoGame.Server
         /// </summary>
         byte IItemTable.Width
         {
-            get { return (byte)CB.Width; }
+            get { return (byte)CB.Size.X; }
         }
 
         /// <summary>

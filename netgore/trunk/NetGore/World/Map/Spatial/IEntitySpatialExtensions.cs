@@ -28,7 +28,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public static bool ContainsEntities(this ISpatialCollection c, CollisionBox cb, Vector2 position)
         {
-            return c.ContainsEntities(new Rectangle((int)position.X, (int)position.Y, (int)cb.Width, (int)cb.Height));
+            return c.ContainsEntities(new Rectangle((int)position.X, (int)position.Y, (int)cb.Size.X, (int)cb.Size.Y));
         }
 
         /// <summary>

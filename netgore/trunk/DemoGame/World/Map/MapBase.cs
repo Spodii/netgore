@@ -382,9 +382,9 @@ namespace DemoGame
             if (min.Y < 0)
                 min.Y = 0;
             if (max.X >= Width)
-                min.X = Width - entity.CB.Width;
+                min.X = Width - entity.CB.Size.X;
             if (max.Y >= Height)
-                min.Y = Height - entity.CB.Height;
+                min.Y = Height - entity.CB.Size.Y;
 
             if (min != entity.CB.Min)
                 entity.Teleport(min);
@@ -518,40 +518,40 @@ namespace DemoGame
             var srcCB = spatial.CB;
 
             // Top
-            yield return new Vector2(cb.Min.X, srcCB.Min.Y - cb.Height - 1);
+            yield return new Vector2(cb.Min.X, srcCB.Min.Y - cb.Size.Y - 1);
 
             // Bottom
             yield return new Vector2(cb.Min.X, srcCB.Max.Y + 1);
 
             // Left
-            yield return new Vector2(srcCB.Min.X - cb.Width - 1, cb.Min.Y);
+            yield return new Vector2(srcCB.Min.X - cb.Size.X - 1, cb.Min.Y);
 
             // Right
             yield return new Vector2(srcCB.Max.X + 1, cb.Min.Y);
 
             // Top, left-aligned
-            yield return new Vector2(srcCB.Min.X, srcCB.Min.Y - cb.Height - 1);
+            yield return new Vector2(srcCB.Min.X, srcCB.Min.Y - cb.Size.Y - 1);
 
             // Top, right-aligned
-            yield return new Vector2(srcCB.Max.X - cb.Width, srcCB.Min.Y - cb.Height - 1);
+            yield return new Vector2(srcCB.Max.X - cb.Size.X, srcCB.Min.Y - cb.Size.Y - 1);
 
             // Bottom, left-aligned
             yield return new Vector2(srcCB.Min.X, srcCB.Max.Y + 1);
 
             // Bottom, right-aligned
-            yield return new Vector2(srcCB.Max.X - cb.Width, srcCB.Max.Y + 1);
+            yield return new Vector2(srcCB.Max.X - cb.Size.X, srcCB.Max.Y + 1);
 
             // Left, top-aligned
-            yield return new Vector2(srcCB.Min.X - cb.Width - 1, srcCB.Min.Y);
+            yield return new Vector2(srcCB.Min.X - cb.Size.X - 1, srcCB.Min.Y);
 
             // Left, bottom-aligned
-            yield return new Vector2(srcCB.Min.X - cb.Width - 1, srcCB.Max.Y - cb.Height);
+            yield return new Vector2(srcCB.Min.X - cb.Size.X - 1, srcCB.Max.Y - cb.Size.Y);
 
             // Right, top-aligned
             yield return new Vector2(srcCB.Max.X + 1, srcCB.Min.Y);
 
             // Right, bottom-aligned
-            yield return new Vector2(srcCB.Max.X + 1, srcCB.Max.Y - cb.Height);
+            yield return new Vector2(srcCB.Max.X + 1, srcCB.Max.Y - cb.Size.Y);
         }
 
         public bool IsInMapBoundaries(Vector2 min, Vector2 max)
@@ -668,8 +668,8 @@ namespace DemoGame
             // First, grab the walls in the region around the cb
             var nearbyWallsRect = new Rectangle((int)cb.Min.X - _findValidPlacementPadding,
                                                 (int)cb.Min.Y - _findValidPlacementPadding,
-                                                (int)cb.Width + (_findValidPlacementPadding * 2),
-                                                (int)cb.Height + (_findValidPlacementPadding * 2));
+                                                (int)cb.Size.X + (_findValidPlacementPadding * 2),
+                                                (int)cb.Size.Y + (_findValidPlacementPadding * 2));
             var nearbyWalls = Spatial.GetEntities<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
@@ -1082,8 +1082,9 @@ namespace DemoGame
         public Vector2 SnapToWalls(Entity entity, float maxDiff)
         {
             var ret = new Vector2(entity.Position.X, entity.Position.Y);
-            var pos = entity.Position - new Vector2(maxDiff / 2, maxDiff / 2);
-            var newCB = new CollisionBox(pos, entity.CB.Width + maxDiff, entity.CB.Height + maxDiff);
+            var pos = entity.Position - new Vector2(maxDiff / 2f);
+            var size = entity.CB.Size + new Vector2(maxDiff);
+            var newCB = new CollisionBox(pos, pos + size);
 
             foreach (var e in Entities)
             {
@@ -1093,7 +1094,7 @@ namespace DemoGame
 
                 // Selected wall right side to target wall left side
                 if (Math.Abs(newCB.Max.X - w.CB.Min.X) < maxDiff)
-                    ret.X = w.CB.Min.X - entity.CB.Width;
+                    ret.X = w.CB.Min.X - entity.CB.Size.X;
 
                 // Selected wall left side to target wall right side
                 if (Math.Abs(w.CB.Max.X - newCB.Min.X) < maxDiff)
@@ -1101,7 +1102,7 @@ namespace DemoGame
 
                 // Selected wall bottom to target wall top
                 if (Math.Abs(newCB.Max.Y - w.CB.Min.Y) < maxDiff)
-                    ret.Y = w.CB.Min.Y - entity.CB.Height;
+                    ret.Y = w.CB.Min.Y - entity.CB.Size.Y;
 
                 // Selected wall top to target wall bottom
                 if (Math.Abs(w.CB.Max.Y - newCB.Min.Y) < maxDiff)

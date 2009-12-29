@@ -61,14 +61,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the height of the CollisionBox
-        /// </summary>
-        public float Height
-        {
-            get { return _size.Y; }
-        }
-
-        /// <summary>
         /// Gets the maximum (bottom-right) point of the CollisionBox
         /// </summary>
         public Vector2 Max
@@ -90,14 +82,6 @@ namespace NetGore
         public Vector2 Size
         {
             get { return _size; }
-        }
-
-        /// <summary>
-        /// Gets the width of the CollisionBox
-        /// </summary>
-        public float Width
-        {
-            get { return _size.X; }
         }
 
         public bool Contains(CollisionBox other)
@@ -344,10 +328,10 @@ namespace NetGore
             if (h < 0)
                 return Vector2.Zero;
 
-            if (h >= target.Width)
+            if (h >= target.Size.X)
                 diff = source.Max.Y - target.Min.Y;
             else
-                diff = source.Max.Y - (target.Max.Y - (target.Height * (h / target.Width)));
+                diff = source.Max.Y - (target.Max.Y - (target.Size.Y * (h / target.Size.X)));
 
             if (diff < 0.0f)
                 return Vector2.Zero;
@@ -405,7 +389,7 @@ namespace NetGore
             else
             {
                 float h = source.Min.X - target.Min.X;
-                diff = source.Max.Y - (target.Min.Y + (target.Height * (h / target.Width)));
+                diff = source.Max.Y - (target.Min.Y + (target.Size.Y * (h / target.Size.X)));
             }
 
             if (diff < 0.0f)
@@ -458,7 +442,7 @@ namespace NetGore
         /// <returns>A rectangle that represents the position and size of the CollisionBox</returns>
         public Rectangle ToRectangle()
         {
-            return new Rectangle((int)Min.X, (int)Min.Y, (int)Width, (int)Height);
+            return new Rectangle((int)Min.X, (int)Min.Y, (int)Size.X, (int)Size.Y);
         }
     }
 }
