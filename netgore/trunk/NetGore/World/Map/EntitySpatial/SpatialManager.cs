@@ -349,7 +349,7 @@ namespace NetGore
         /// <see cref="SpatialManager.GetSpatialCollections"/>.
         /// </summary>
         /// <param name="type">The type of <see cref="ISpatial"/> that the returned <see cref="ISpatialCollection"/>
-        /// must contain. The type must be <see cref="ISpatial"/> or an object that implements it.</param>
+        /// must contain.</param>
         /// <returns>
         /// The <see cref="ISpatialCollection"/> containing all <see cref="ISpatial"/>s of type <paramref name="type"/>.
         /// The returned <see cref="ISpatialCollection"/> is guaranteed to return all <see cref="ISpatial"/>s of type
