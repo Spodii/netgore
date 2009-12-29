@@ -132,8 +132,27 @@ namespace DemoGame
         /// <returns>The <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.</returns>
         protected virtual ISpatialCollection CreateSpatialManager()
         {
-            // TODO: !! Make this easier to edit the types
-            return new SpatialManager(new Type[] { typeof(Entity), typeof(DynamicEntity), typeof(CharacterEntity), typeof(WallEntityBase), typeof(ItemEntityBase)}, () => new LinearSpatialCollection());
+            return new SpatialManager(GetSpatialTypes(), CreateSpatialCollection);
+        }
+
+        /// <summary>
+        /// Describes how to create the <see cref="ISpatialCollection"/> to be used by the map. This can be overridden
+        /// in the derived class to provide a different <see cref="ISpatialCollection"/> implementation.
+        /// </summary>
+        /// <returns>The <see cref="ISpatialCollection"/> to be used by the map.</returns>
+        protected virtual ISpatialCollection CreateSpatialCollection()
+        {
+            return new LinearSpatialCollection();
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
+        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
+        /// </summary>
+        /// <returns>An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.</returns>
+        protected virtual IEnumerable<Type> GetSpatialTypes()
+        {
+            return new Type[] { typeof(Entity), typeof(DynamicEntity), typeof(CharacterEntity), typeof(WallEntityBase), typeof(ItemEntityBase) };
         }
 
         /// <summary>

@@ -186,43 +186,54 @@ namespace NetGore
 
         /// <summary>
         /// Finds the <see cref="ClassTypeTree"/> from this <see cref="ClassTypeTree"/> that best matches the
-        /// given <paramref name="type"/>. If the <paramref name="type"/> is not a class, the returned
+        /// given <paramref name="findType"/>. If the <paramref name="findType"/> is not a class, the returned
         /// <see cref="ClassTypeTree"/> will always be the root.
         /// </summary>
-        /// <param name="type">The <see cref="Type"/> to find the tree node for.</param>
+        /// <param name="findType">The <see cref="Type"/> to find the tree node for.</param>
         /// <returns>The <see cref="ClassTypeTree"/> from this <see cref="ClassTypeTree"/> that best matches the
-        /// given <paramref name="type"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
-        public ClassTypeTree Find(Type type)
+        /// given <paramref name="findType"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="findType"/> is null.</exception>
+        public ClassTypeTree Find(Type findType)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
+            if (findType == null)
+                throw new ArgumentNullException("findType");
 
-            if (!type.IsClass)
+            if (!findType.IsClass)
                 return Root;
 
-            return InternalFind(type);
+            return InternalFind(findType);
         }
 
-        ClassTypeTree InternalFind(Type type)
+        ClassTypeTree InternalFind(Type findType)
         {
-            if (type == _selfType)
+            if (findType == Type)
                 return this;
 
             // Ensure the type is assignable from this node
             // This little snippet is what allows us to use Find() from anywhere in the tree, not just from the root
-            if (Type != null && !Type.IsAssignableFrom(type))
-                return Parent.InternalFind(type);
+            if (Type != null && !Type.IsAssignableFrom(findType))
+                return Parent.InternalFind(findType);
 
             if (!IsLeaf)
             {
-                foreach (var child in Children)
+                // Grab the non-wildcard children since the last thing we want to match against is the wildcard
+                var nonWildcardChildren = Children.Where(x => x.Type != null);
+                
+                // Check if any of the child types can be assigned from (or are equal to) the type to find
+                foreach (var child in nonWildcardChildren)
                 {
-                    if (child.Type != null && child.Type.IsAssignableFrom(type))
-                        return child.InternalFind(type);
+                    if (child.Type.IsAssignableFrom(findType))
+                        return child.InternalFind(findType);
                 }
 
-                return _children.First(x => x.Type == null);
+                // The type to find didn't fit any of the children, which means that none of the children were equal to the
+                // type to find nor can the type to find be casted to the child type (that is, they are on a different branch
+                // on the type hierarchy, or they are too derived). So before we go straight for the wildcard node, we want to
+                // check if the type to find CAN be in between this node and any of the children.
+                if (nonWildcardChildren.Any(x => x.Type.IsSubclassOf(findType)))
+                    return this;
+                else
+                    return _children.First(x => x.Type == null);
             }
             else
                 return this;

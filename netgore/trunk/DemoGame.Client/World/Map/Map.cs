@@ -274,6 +274,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
+        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
+        /// </summary>
+        /// <returns>
+        /// An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.
+        /// </returns>
+        protected override IEnumerable<Type> GetSpatialTypes()
+        {
+            return base.GetSpatialTypes().Concat(new Type[] { typeof(MapGrh) }) ;
+        }
+
+        /// <summary>
         /// Finds all duplicate (same position, size and type) walls
         /// </summary>
         /// <param name="compareTo">Walls to compare against</param>
