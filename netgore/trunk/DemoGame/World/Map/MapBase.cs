@@ -277,7 +277,7 @@ namespace DemoGame
 
         void CheckCollisionAgainstEntities(Entity entity)
         {
-            // TODO: !! This is no longer optimized to not return WallEntityBases like we had before...
+            // TODO: !! This is no longer optimized to not return WallEntityBases like we had before... I wouldn't care except for that it also affects the server's performance
 
             // Get the entities we have a rectangular collision with
             var collisionSources = Spatial.GetEntities<Entity>(entity);
