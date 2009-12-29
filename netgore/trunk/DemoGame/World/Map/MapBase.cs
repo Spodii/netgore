@@ -1231,7 +1231,7 @@ namespace DemoGame
         /// <returns>
         /// The <see cref="IEntitySpatial"/> that contains the <paramref name="type"/>.
         /// </returns>
-        public IEntitySpatial GetSpatial(Type type)
+        public virtual IEntitySpatial GetSpatial(Type type)
         {
             if (type.IsSubclassOf(typeof(WallEntityBase)) || type == typeof(WallEntityBase))
                 return _staticEntitySpatial;
