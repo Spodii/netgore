@@ -30,6 +30,13 @@ namespace NetGore.Tests.NetGore
                 typeof(A1B1C2), typeof(A2), typeof(A2B1), typeof(A2B2)});
         }
 
+        [Test]
+        public void GetAllNodesTest()
+        {
+            var root = BuildTree();
+            Assert.AreEqual(12, root.GetAllNodes().Count());
+            Assert.AreEqual(root.GetAllNodes().Distinct().Count(), root.GetAllNodes().Count());
+        }
 
         [Test]
         public void FindA1B1C1D1Test()
