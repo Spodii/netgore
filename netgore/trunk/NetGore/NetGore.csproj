@@ -182,6 +182,7 @@
     <Compile Include="Type\TypeFilterCreator.cs" />
     <Compile Include="Type\TypeFilterException.cs" />
     <Compile Include="Type\TypeHelper.cs" />
+    <Compile Include="Type\ClassTypeTree.cs" />
     <Compile Include="Variable Values\IVariableValue.cs" />
     <Compile Include="Variable Values\VariableByte.cs" />
     <Compile Include="Variable Values\VariableColorConverter.cs" />
