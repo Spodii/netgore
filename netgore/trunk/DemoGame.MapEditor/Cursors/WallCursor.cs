@@ -195,35 +195,35 @@ namespace DemoGame.MapEditor
             else
             {
                 // Handle scaling
-                if (((screen.SelectedTransBox.TransType & TransBoxType.Top) > 0) && selEntity.CB.Max.Y > cursorPos.Y)
+                if (((screen.SelectedTransBox.TransType & TransBoxType.Top) > 0) && selEntity.Max.Y > cursorPos.Y)
                 {
-                    float oldMaxY = selEntity.CB.Max.Y;
-                    map.SafeTeleportEntity(selEntity, new Vector2(selEntity.CB.Min.X, cursorPos.Y));
+                    float oldMaxY = selEntity.Max.Y;
+                    map.SafeTeleportEntity(selEntity, new Vector2(selEntity.Position.X, cursorPos.Y));
                     if (screen.chkSnapWallGrid.Checked)
                         screen.Grid.SnapToGridPosition(selEntity);
 
                     selEntity.Resize(new Vector2(selEntity.Size.X, oldMaxY - selEntity.Position.Y));
                 }
 
-                if (((screen.SelectedTransBox.TransType & TransBoxType.Left) > 0) && selEntity.CB.Max.X > cursorPos.X)
+                if (((screen.SelectedTransBox.TransType & TransBoxType.Left) > 0) && selEntity.Max.X > cursorPos.X)
                 {
-                    float oldMaxX = selEntity.CB.Max.X;
-                    map.SafeTeleportEntity(selEntity, new Vector2(cursorPos.X, selEntity.CB.Min.Y));
+                    float oldMaxX = selEntity.Max.X;
+                    map.SafeTeleportEntity(selEntity, new Vector2(cursorPos.X, selEntity.Position.Y));
                     if (screen.chkSnapWallGrid.Checked)
                         screen.Grid.SnapToGridPosition(selEntity);
                     selEntity.Resize(new Vector2(oldMaxX - selEntity.Position.X, selEntity.Size.Y));
                 }
 
-                if (((screen.SelectedTransBox.TransType & TransBoxType.Bottom) > 0) && selEntity.CB.Min.Y < cursorPos.Y)
+                if (((screen.SelectedTransBox.TransType & TransBoxType.Bottom) > 0) && selEntity.Position.Y < cursorPos.Y)
                 {
                     selEntity.Resize(new Vector2(selEntity.Size.X, cursorPos.Y - selEntity.Position.Y));
                     if (screen.chkSnapWallGrid.Checked)
                         screen.Grid.SnapToGridSize(selEntity);
                 }
 
-                if (((screen.SelectedTransBox.TransType & TransBoxType.Right) > 0) && selEntity.CB.Min.X < cursorPos.X)
+                if (((screen.SelectedTransBox.TransType & TransBoxType.Right) > 0) && selEntity.Position.X < cursorPos.X)
                 {
-                    selEntity.Resize(new Vector2(cursorPos.X - selEntity.CB.Min.X, selEntity.Size.Y));
+                    selEntity.Resize(new Vector2(cursorPos.X - selEntity.Position.X, selEntity.Size.Y));
                     if (screen.chkSnapWallGrid.Checked)
                         screen.Grid.SnapToGridSize(selEntity);
                 }

@@ -1441,7 +1441,7 @@ namespace DemoGame.Server
             if (Map == null)
                 return position;
 
-            var tempRect = new Rectangle((int)position.X, (int)position.Y, (int)CB.Size.X, (int)CB.Size.Y);
+            var tempRect = new Rectangle((int)position.X, (int)position.Y, (int)Size.X, (int)Size.Y);
 
             Vector2 closestLegalPosition;
             bool isClosestPositionValid;

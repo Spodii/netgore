@@ -28,7 +28,7 @@ namespace DemoGame.MapEditor
         /// <returns>Listbox-friendly string for the WallEntity.</returns>
         public override string ToString()
         {
-            return string.Format("({0},{1})-({2},{3})", _wall.CB.Min.X, _wall.CB.Min.Y, _wall.CB.Max.X, _wall.CB.Max.Y);
+            return string.Format("{0} [{1}x{2}]", _wall.Position, _wall.Size.X, _wall.Size.Y);
         }
 
         /// <summary>

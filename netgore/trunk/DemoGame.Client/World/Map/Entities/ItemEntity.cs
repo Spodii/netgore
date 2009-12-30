@@ -145,7 +145,7 @@ namespace DemoGame.Client
         /// <returns>A deep copy of the object</returns>
         public override ItemEntityBase DeepCopy()
         {
-            return new ItemEntity(MapEntityIndex, Position, CB.Size, GraphicIndex, _grh.LastUpdated);
+            return new ItemEntity(MapEntityIndex, Position, Size, GraphicIndex, _grh.LastUpdated);
         }
 
         /// <summary>

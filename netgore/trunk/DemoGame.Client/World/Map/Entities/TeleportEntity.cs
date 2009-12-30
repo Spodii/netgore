@@ -59,7 +59,7 @@ namespace DemoGame.Client
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(SpriteBatch sb)
         {
-            Rectangle rect = CB.ToRectangle();
+            Rectangle rect = ToRectangle();
             XNARectangle.Draw(sb, rect, new Color(255, 255, 255, 100), Color.Black);
         }
 

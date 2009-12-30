@@ -122,7 +122,7 @@ namespace DemoGame.Server
 
         ItemEntity(ItemEntity s)
             : this(
-                s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
+                s.Position, s.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
                 s.EquippedBody, s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
@@ -277,8 +277,8 @@ namespace DemoGame.Server
             // Get the sizes as a byte
             byte oldWidth = (byte)oldSize.X;
             byte oldHeight = (byte)oldSize.Y;
-            byte width = (byte)entity.CB.Size.X;
-            byte height = (byte)entity.CB.Size.Y;
+            byte width = (byte)entity.Size.X;
+            byte height = (byte)entity.Size.Y;
 
             // Update the changed sizes
             if (oldWidth != width)
@@ -427,7 +427,7 @@ namespace DemoGame.Server
             if (map == null)
                 return position;
 
-            var tempRect = new Rectangle((int)position.X, (int)position.Y, (int)CB.Size.X, (int)CB.Size.Y);
+            var tempRect = new Rectangle((int)position.X, (int)position.Y, (int)Size.X, (int)Size.Y);
 
             Vector2 closestLegalPosition;
             bool isClosestPositionValid;
@@ -496,7 +496,7 @@ namespace DemoGame.Server
         /// </summary>
         byte IItemTable.Height
         {
-            get { return (byte)CB.Size.Y; }
+            get { return (byte)Size.Y; }
         }
 
         public SPValueType HP
@@ -623,7 +623,7 @@ namespace DemoGame.Server
         /// </summary>
         byte IItemTable.Width
         {
-            get { return (byte)CB.Size.X; }
+            get { return (byte)Size.X; }
         }
 
         /// <summary>

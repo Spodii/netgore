@@ -213,16 +213,16 @@ namespace DemoGame.MapEditor
         {
             var ret = new List<TransBox>(9);
 
-            Vector2 min = entity.CB.Min;
-            Vector2 max = entity.CB.Max;
+            Vector2 min = entity.Position;
+            Vector2 max = entity.Max;
 
             Vector2 halfScaleSize = ScaleSize / 2f;
 
             // Find the center of the sides for the resize and move icons
-            Vector2 sizeCenter = min + (entity.CB.Size / 2f) - halfScaleSize;
+            Vector2 sizeCenter = min + (entity.Size / 2f) - halfScaleSize;
             sizeCenter = sizeCenter.Round();
 
-            float moveCenterX = min.X + (entity.CB.Size.X / 2f) - (MoveSize.X / 2f);
+            float moveCenterX = min.X + (entity.Size.X / 2f) - (MoveSize.X / 2f);
             moveCenterX = (float)Math.Round(moveCenterX);
 
             // Move box
@@ -235,14 +235,14 @@ namespace DemoGame.MapEditor
             ret.Add(new TransBox(TransBoxType.BottomRight, entity, max));
 
             // Horizontal sides
-            if (entity.CB.Size.X > ScaleSize.X + 4)
+            if (entity.Size.X > ScaleSize.X + 4)
             {
                 ret.Add(new TransBox(TransBoxType.Top, entity, new Vector2(sizeCenter.X, min.Y - ScaleSize.Y)));
                 ret.Add(new TransBox(TransBoxType.Bottom, entity, new Vector2(sizeCenter.X, max.Y)));
             }
 
             // Veritcal sides
-            if (entity.CB.Size.Y > ScaleSize.Y + 4)
+            if (entity.Size.Y > ScaleSize.Y + 4)
             {
                 ret.Add(new TransBox(TransBoxType.Left, entity, new Vector2(min.X - ScaleSize.X, sizeCenter.Y)));
                 ret.Add(new TransBox(TransBoxType.Right, entity, new Vector2(max.X, sizeCenter.Y)));
