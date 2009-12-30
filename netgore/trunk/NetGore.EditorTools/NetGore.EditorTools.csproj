@@ -100,7 +100,6 @@
     </Compile>
     <Compile Include="Grh\GrhImageList.cs" />
     <Compile Include="CreateWallEntity\CreateWallEntityHandler.cs" />
-    <Compile Include="CreateWallEntity\CreateWallEntityWithCollisionTypeHandler.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.cs">
       <SubType>Form</SubType>
     </Compile>

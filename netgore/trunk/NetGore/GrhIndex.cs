@@ -1,8 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using NetGore;
 using NetGore.IO;
 
 namespace NetGore
@@ -11,8 +12,7 @@ namespace NetGore
     /// Represents the index of a GrhData.
     /// </summary>
     [Serializable]
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GrhIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct GrhIndex : IComparable<GrhIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
         /// Represents the largest possible value of GrhIndex. This field is constant.
@@ -30,7 +30,7 @@ namespace NetGore
         readonly ushort _value;
 
         /// <summary>
-        /// GrhIndex constructor.
+        /// Initializes a new instance of the <see cref="GrhIndex"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new GrhIndex.</param>
         public GrhIndex(int value)
@@ -44,10 +44,10 @@ namespace NetGore
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
+        /// <param name="other">Another object to compare to.</param>
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        /// <param name="other">Another object to compare to.</param>
         public bool Equals(GrhIndex other)
         {
             return other._value == _value;
@@ -56,10 +56,10 @@ namespace NetGore
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
+        /// <param name="obj">Another object to compare to.</param>
         /// <returns>
         /// True if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        /// <param name="obj">Another object to compare to.</param>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -169,28 +169,27 @@ namespace NetGore
             bitStream.Write(_value);
         }
 
-        #region IComparable Members
+        #region IComparable<GrhIndex> Members
 
         /// <summary>
-        /// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
+        /// Compares the current object with another object of the same type.
         /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: 
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: 
         ///                     Value 
         ///                     Meaning 
         ///                     Less than zero 
-        ///                     This instance is less than <paramref name="obj"/>. 
+        ///                     This object is less than the <paramref name="other"/> parameter.
         ///                     Zero 
-        ///                     This instance is equal to <paramref name="obj"/>. 
+        ///                     This object is equal to <paramref name="other"/>. 
         ///                     Greater than zero 
-        ///                     This instance is greater than <paramref name="obj"/>. 
+        ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        /// <param name="obj">An object to compare with this instance. 
-        ///                 </param><exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. 
-        ///                 </exception>
-        public int CompareTo(object obj)
+        public int CompareTo(GrhIndex other)
         {
-            return _value.CompareTo(obj);
+            return _value.CompareTo(other._value);
         }
 
         #endregion
@@ -200,6 +199,7 @@ namespace NetGore
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
         ///                     Value 
@@ -211,8 +211,6 @@ namespace NetGore
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
         public int CompareTo(int other)
         {
             return _value.CompareTo(other);
@@ -236,11 +234,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent Boolean value using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation
+        /// that supplies culture-specific formatting information.</param>
         /// <returns>
         /// A Boolean value equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         bool IConvertible.ToBoolean(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToBoolean(provider);
@@ -249,11 +247,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent Unicode character using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A Unicode character equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         char IConvertible.ToChar(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToChar(provider);
@@ -262,11 +260,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 8-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 8-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         sbyte IConvertible.ToSByte(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToSByte(provider);
@@ -275,11 +273,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 8-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 8-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         byte IConvertible.ToByte(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToByte(provider);
@@ -288,11 +286,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 16-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 16-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         short IConvertible.ToInt16(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt16(provider);
@@ -301,11 +299,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 16-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 16-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         ushort IConvertible.ToUInt16(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt16(provider);
@@ -314,11 +312,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 32-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 32-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         int IConvertible.ToInt32(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt32(provider);
@@ -327,11 +325,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 32-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 32-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         uint IConvertible.ToUInt32(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt32(provider);
@@ -340,11 +338,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 64-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 64-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         long IConvertible.ToInt64(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt64(provider);
@@ -353,11 +351,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 64-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 64-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         ulong IConvertible.ToUInt64(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt64(provider);
@@ -366,11 +364,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent single-precision floating-point number using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information. </param>
         /// <returns>
         /// A single-precision floating-point number equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         float IConvertible.ToSingle(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToSingle(provider);
@@ -379,11 +377,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent double-precision floating-point number using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A double-precision floating-point number equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         double IConvertible.ToDouble(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDouble(provider);
@@ -392,11 +390,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent <see cref="T:System.Decimal"/> number using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information. </param>
         /// <returns>
         /// A <see cref="T:System.Decimal"/> number equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         decimal IConvertible.ToDecimal(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDecimal(provider);
@@ -405,11 +403,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent <see cref="T:System.DateTime"/> using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDateTime(provider);
@@ -418,11 +416,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent <see cref="T:System.String"/> using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A <see cref="T:System.String"/> instance equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         public string ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
@@ -431,12 +429,12 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an <see cref="T:System.Object"/> of the specified <see cref="T:System.Type"/> that has an equivalent value, using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="conversionType">The <see cref="T:System.Type"/> to which the value of this instance is converted.</param>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An <see cref="T:System.Object"/> instance of type <paramref name="conversionType"/> whose value is equivalent to the value of this instance.
         /// </returns>
-        /// <param name="conversionType">The <see cref="T:System.Type"/> to which the value of this instance is converted. 
-        ///                 </param><param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
             return ((IConvertible)_value).ToType(conversionType, provider);
@@ -449,11 +447,10 @@ namespace NetGore
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
         public bool Equals(int other)
         {
             return _value.Equals(other);
@@ -466,16 +463,17 @@ namespace NetGore
         /// <summary>
         /// Formats the value of the current instance using the specified format.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing the value of the current instance in the specified format.
-        /// </returns>
         /// <param name="format">The <see cref="T:System.String"/> specifying the format to use.
         ///                     -or- 
         ///                 null to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation. 
-        ///                 </param><param name="formatProvider">The <see cref="T:System.IFormatProvider"/> to use to format the value.
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider"/> to use to format the value.
         ///                     -or- 
         ///                 null to obtain the numeric format information from the current locale setting of the operating system. 
-        ///                 </param>
+        /// </param>
+        /// <returns>
+        /// A <see cref="T:System.String"/> containing the value of the current instance in the specified format.
+        /// </returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return _value.ToString(format, formatProvider);
@@ -787,28 +785,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
-        /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="i">The field index to read.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static GrhIndex GetGrhIndex(this IDataReader dataReader, int i)
-        {
-            return GrhIndex.Read(dataReader, i);
-        }
-
-        /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
-        /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static GrhIndex GetGrhIndex(this IDataReader dataReader, string name)
-        {
-            return GrhIndex.Read(dataReader, name);
-        }
-
-        /// <summary>
         /// Parses the GrhIndex from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
@@ -817,27 +793,6 @@ namespace NetGore
         public static GrhIndex ParseGrhIndex(this Parser parser, string value)
         {
             return new GrhIndex(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static GrhIndex ReadGrhIndex(this BitStream bitStream)
-        {
-            return GrhIndex.Read(bitStream);
-        }
-
-        /// <summary>
-        /// Reads the CustomValueType from an IValueReader.
-        /// </summary>
-        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
-        /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CustomValueType read from the IValueReader.</returns>
-        public static GrhIndex ReadGrhIndex(this IValueReader valueReader, string name)
-        {
-            return GrhIndex.Read(valueReader, name);
         }
 
         /// <summary>
@@ -853,6 +808,49 @@ namespace NetGore
             bool ret = parser.TryParse(value, out tmp);
             outValue = new GrhIndex(tmp);
             return ret;
+        }
+
+        /// <summary>
+        /// Reads the GrhIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the GrhIndex from.</param>
+        /// <returns>The GrhIndex read from the BitStream.</returns>
+        public static GrhIndex ReadGrhIndex(this BitStream bitStream)
+        {
+            return GrhIndex.Read(bitStream);
+        }
+
+        /// <summary>
+        /// Reads the GrhIndex from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the GrhIndex from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The GrhIndex read from the IDataReader.</returns>
+        public static GrhIndex GetGrhIndex(this IDataReader dataReader, int i)
+        {
+            return GrhIndex.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the GrhIndex from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the GrhIndex from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The GrhIndex read from the IDataReader.</returns>
+        public static GrhIndex GetGrhIndex(this IDataReader dataReader, string name)
+        {
+            return GrhIndex.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the GrhIndex from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the GrhIndex from.</param>
+        /// <param name="name">The unique name of the value to read.</param>
+        /// <returns>The GrhIndex read from the IValueReader.</returns>
+        public static GrhIndex ReadGrhIndex(this IValueReader valueReader, string name)
+        {
+            return GrhIndex.Read(valueReader, name);
         }
 
         /// <summary>

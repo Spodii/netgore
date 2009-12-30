@@ -284,7 +284,7 @@ namespace DemoGame
 
             foreach (var other in collisionSources)
             {
-                var displacement = SpatialHelper.MTD(entity, other, other.CollisionType);
+                var displacement = SpatialHelper.MTD(entity, other);
                 if (displacement != Vector2.Zero)
                 {
                     entity.CollideInto(other, displacement);
@@ -305,7 +305,7 @@ namespace DemoGame
             foreach (var wall in collisionSources)
             {
                 // Get the displacement vector if the two entities collided
-                var displacement = SpatialHelper.MTD(entity, wall, wall.CollisionType);
+                var displacement = SpatialHelper.MTD(entity, wall);
 
                 // If there is a displacement value, forward it to the collision notifiers
                 if (displacement != Vector2.Zero)
@@ -1223,10 +1223,6 @@ namespace DemoGame
                     log.Error(errmsg);
                 return;
             }
-
-            // Check that this entity even supports collision detection
-            if (entity.CollisionType == CollisionType.None)
-                return;
 
             CheckCollisionsAgainstWalls(entity);
             CheckCollisionAgainstEntities(entity);

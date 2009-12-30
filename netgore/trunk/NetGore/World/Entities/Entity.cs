@@ -17,7 +17,6 @@ namespace NetGore
 
         static readonly Vector2 _maxVelocity;
 
-        CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
 
         Vector2 _position;
@@ -96,20 +95,6 @@ namespace NetGore
         /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
         /// </summary>
         public abstract bool CollidesAgainstWalls { get; }
-
-        /// <summary>
-        /// Gets or sets the collision type used for the entity.
-        /// </summary>
-        [Category("Entity")]
-        [DisplayName("CollisionType")]
-        [Description("The collision type used for the Entity.")]
-        [DefaultValue(CollisionType.Full)]
-        [Browsable(true)]
-        public CollisionType CollisionType
-        {
-            get { return _ct; }
-            set { _ct = value; }
-        }
 
         /// <summary>
         /// Gets if this Entity has been disposed, or is in the process of being disposed.
@@ -288,15 +273,13 @@ namespace NetGore
         /// <param name="size">New size value.</param>
         /// <param name="velocity">New velocity value.</param>
         /// <param name="weight">New weight value.</param>
-        /// <param name="collisionType">New collision type.</param>
-        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight,
-                                                 CollisionType collisionType)
+        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight
+                                                 )
         {
             _position = position;
             _size = size;
             _velocity = velocity;
             _weight = weight;
-            _ct = collisionType;
         }
 
         /// <summary>
@@ -332,16 +315,6 @@ namespace NetGore
 
             if (OnResize != null)
                 OnResize(this, oldSize);
-        }
-
-        /// <summary>
-        /// Sets the <see cref="Entity"/>'s <see cref="CollisionType"/> directly without any chance to be overridden.
-        /// This should only be used for synchronization.
-        /// </summary>
-        /// <param name="newCollisionType">The new <see cref="CollisionType"/> value.</param>
-        protected internal void SetCollisionTypeRaw(CollisionType newCollisionType)
-        {
-            _ct = newCollisionType;
         }
 
         /// <summary>

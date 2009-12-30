@@ -260,23 +260,6 @@ namespace NetGore.EditorTools
             txtH.Enabled = enabled;
         }
 
-        void cmbWallType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
-            if (wall == null)
-                return;
-
-            try
-            {
-                wall.CollisionType = (CollisionType)cmbWallType.SelectedItem;
-            }
-            catch
-            {
-                wall.CollisionType = CollisionType.Full;
-                cmbWallType.SelectedItem = CollisionType.Full;
-            }
-        }
-
         public void Draw(SpriteBatch sb)
         {
             // Update the Grh first
@@ -309,17 +292,6 @@ namespace NetGore.EditorTools
             sb.End();
         }
 
-        void EditGrhForm_Load(object sender, EventArgs e)
-        {
-            // Set the wall types
-            cmbWallType.Items.Clear();
-            foreach (CollisionType item in EnumHelper<CollisionType>.Values)
-            {
-                cmbWallType.Items.Add(item);
-            }
-            cmbWallType.SelectedItem = CollisionType.Full;
-        }
-
         void lstWalls_SelectedIndexChanged(object sender, EventArgs e)
         {
             WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
@@ -334,7 +306,6 @@ namespace NetGore.EditorTools
 
             if (isEnabled)
             {
-                cmbWallType.SelectedItem = wall.CollisionType;
                 txtWallX.Text = wall.Position.X.ToString();
                 txtWallY.Text = wall.Position.Y.ToString();
                 txtWallW.Text = wall.Size.X.ToString();

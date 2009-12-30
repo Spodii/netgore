@@ -49,7 +49,6 @@ namespace DemoGame.MapEditor
             // Create the new wall
             WallEntity w = new WallEntity(screen.Camera.ToWorld(e.X, e.Y), Vector2.One);
             screen.Map.AddEntity(w);
-            w.CollisionType = (CollisionType)screen.cmbWallType.SelectedItem;
             if (screen.chkSnapWallGrid.Checked)
                 screen.Grid.Align(w);
 

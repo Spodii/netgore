@@ -503,18 +503,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
         /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
-        /// <param name="collisionType">The <see cref="CollisionType"/> to give the <see cref="WallEntityBase"/>.</param>
-        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
-        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size, CollisionType collisionType)
-        {
-            return new WallEntity(position, size, collisionType);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
-        /// </summary>
-        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
-        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
         /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
         static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size)
         {
@@ -797,14 +785,6 @@ namespace DemoGame.MapEditor
 
             // Start the stopwatch for the elapsed time checking
             _stopWatch.Start();
-
-            // Set the wall types
-            cmbWallType.Items.Clear();
-            foreach (CollisionType item in EnumHelper<CollisionType>.Values)
-            {
-                cmbWallType.Items.Add(item);
-            }
-            cmbWallType.SelectedItem = CollisionType.Full;
 
             // Hook all controls to forward camera movement keys Form
             KeyEventHandler kehDown = OnKeyDownForward;

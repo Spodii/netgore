@@ -1,9 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using NetGore;
 using NetGore.IO;
+
+// TODO: Replace string "ushort" with the name of the underlying value type.
+// TODO: Replace string "MapIndex" with the name of this value type.
 
 namespace NetGore
 {
@@ -11,8 +15,7 @@ namespace NetGore
     /// Represents the index of a Map.
     /// </summary>
     [Serializable]
-    [StructLayout(LayoutKind.Sequential)]
-    public struct MapIndex : IConvertible, IFormattable, IComparable<int>, IEquatable<int>, IComparable<MapIndex>
+    public struct MapIndex : IComparable<MapIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
         /// Represents the largest possible value of MapIndex. This field is constant.
@@ -30,7 +33,7 @@ namespace NetGore
         readonly ushort _value;
 
         /// <summary>
-        /// MapIndex constructor.
+        /// Initializes a new instance of the <see cref="MapIndex"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new MapIndex.</param>
         public MapIndex(int value)
@@ -44,11 +47,10 @@ namespace NetGore
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
+        /// <param name="other">Another object to compare to.</param>
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        /// <param name="other">Another object to compare to. 
-        /// </param>
         public bool Equals(MapIndex other)
         {
             return other._value == _value;
@@ -57,11 +59,10 @@ namespace NetGore
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
+        /// <param name="obj">Another object to compare to.</param>
         /// <returns>
         /// True if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        /// <param name="obj">Another object to compare to. 
-        /// </param>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -99,7 +100,7 @@ namespace NetGore
         /// <returns>The MapIndex read from the IValueReader.</returns>
         public static MapIndex Read(IValueReader reader, string name)
         {
-            var value = reader.ReadUShort(name);
+            ushort value = reader.ReadUShort(name);
             return new MapIndex(value);
         }
 
@@ -111,11 +112,11 @@ namespace NetGore
         /// <returns>The MapIndex read from the IDataReader.</returns>
         public static MapIndex Read(IDataReader reader, int i)
         {
-            var value = reader.GetValue(i);
+            object value = reader.GetValue(i);
             if (value is ushort)
                 return new MapIndex((ushort)value);
 
-            var convertedValue = Convert.ToUInt16(value);
+            ushort convertedValue = Convert.ToUInt16(value);
             return new MapIndex(convertedValue);
         }
 
@@ -137,7 +138,7 @@ namespace NetGore
         /// <returns>The MapIndex read from the BitStream.</returns>
         public static MapIndex Read(BitStream bitStream)
         {
-            var value = bitStream.ReadUShort();
+            ushort value = bitStream.ReadUShort();
             return new MapIndex(value);
         }
 
@@ -171,13 +172,15 @@ namespace NetGore
             bitStream.Write(_value);
         }
 
-        #region IComparable<int> Members
+        #region IComparable<MapIndex> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
         /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: 
         ///                     Value 
         ///                     Meaning 
         ///                     Less than zero 
@@ -187,16 +190,14 @@ namespace NetGore
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
-        public int CompareTo(int other)
+        public int CompareTo(MapIndex other)
         {
-            return _value.CompareTo(other);
+            return _value.CompareTo(other._value);
         }
 
         #endregion
 
-        #region IComparable<MapIndex> Members
+        #region IComparable<int> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -213,9 +214,9 @@ namespace NetGore
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        public int CompareTo(MapIndex other)
+        public int CompareTo(int other)
         {
-            return _value.CompareTo(other._value);
+            return _value.CompareTo(other);
         }
 
         #endregion
@@ -236,11 +237,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent Boolean value using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation
+        /// that supplies culture-specific formatting information.</param>
         /// <returns>
         /// A Boolean value equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         bool IConvertible.ToBoolean(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToBoolean(provider);
@@ -249,11 +250,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent Unicode character using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A Unicode character equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         char IConvertible.ToChar(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToChar(provider);
@@ -262,11 +263,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 8-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 8-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         sbyte IConvertible.ToSByte(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToSByte(provider);
@@ -275,11 +276,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 8-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 8-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         byte IConvertible.ToByte(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToByte(provider);
@@ -288,11 +289,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 16-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 16-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         short IConvertible.ToInt16(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt16(provider);
@@ -301,11 +302,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 16-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 16-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         ushort IConvertible.ToUInt16(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt16(provider);
@@ -314,11 +315,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 32-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 32-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         int IConvertible.ToInt32(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt32(provider);
@@ -327,11 +328,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 32-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 32-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         uint IConvertible.ToUInt32(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt32(provider);
@@ -340,11 +341,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 64-bit signed integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 64-bit signed integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         long IConvertible.ToInt64(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToInt64(provider);
@@ -353,11 +354,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent 64-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An 64-bit unsigned integer equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         ulong IConvertible.ToUInt64(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToUInt64(provider);
@@ -366,11 +367,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent single-precision floating-point number using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information. </param>
         /// <returns>
         /// A single-precision floating-point number equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         float IConvertible.ToSingle(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToSingle(provider);
@@ -379,11 +380,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent double-precision floating-point number using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A double-precision floating-point number equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         double IConvertible.ToDouble(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDouble(provider);
@@ -392,11 +393,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent <see cref="T:System.Decimal"/> number using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information. </param>
         /// <returns>
         /// A <see cref="T:System.Decimal"/> number equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         decimal IConvertible.ToDecimal(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDecimal(provider);
@@ -405,11 +406,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent <see cref="T:System.DateTime"/> using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToDateTime(provider);
@@ -418,11 +419,11 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an equivalent <see cref="T:System.String"/> using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// A <see cref="T:System.String"/> instance equivalent to the value of this instance.
         /// </returns>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         public string ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
@@ -431,12 +432,12 @@ namespace NetGore
         /// <summary>
         /// Converts the value of this instance to an <see cref="T:System.Object"/> of the specified <see cref="T:System.Type"/> that has an equivalent value, using the specified culture-specific formatting information.
         /// </summary>
+        /// <param name="conversionType">The <see cref="T:System.Type"/> to which the value of this instance is converted.</param>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
         /// <returns>
         /// An <see cref="T:System.Object"/> instance of type <paramref name="conversionType"/> whose value is equivalent to the value of this instance.
         /// </returns>
-        /// <param name="conversionType">The <see cref="T:System.Type"/> to which the value of this instance is converted. 
-        ///                 </param><param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
-        ///                 </param>
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
             return ((IConvertible)_value).ToType(conversionType, provider);
@@ -449,11 +450,10 @@ namespace NetGore
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        ///                 </param>
         public bool Equals(int other)
         {
             return _value.Equals(other);
@@ -466,16 +466,17 @@ namespace NetGore
         /// <summary>
         /// Formats the value of the current instance using the specified format.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing the value of the current instance in the specified format.
-        /// </returns>
         /// <param name="format">The <see cref="T:System.String"/> specifying the format to use.
         ///                     -or- 
         ///                 null to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation. 
-        ///                 </param><param name="formatProvider">The <see cref="T:System.IFormatProvider"/> to use to format the value.
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider"/> to use to format the value.
         ///                     -or- 
         ///                 null to obtain the numeric format information from the current locale setting of the operating system. 
-        ///                 </param>
+        /// </param>
+        /// <returns>
+        /// A <see cref="T:System.String"/> containing the value of the current instance in the specified format.
+        /// </returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return _value.ToString(format, formatProvider);
@@ -787,6 +788,42 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Parses the MapIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The MapIndex parsed from the string.</returns>
+        public static MapIndex ParseMapIndex(this Parser parser, string value)
+        {
+            return new MapIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Tries to parse the MapIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed MapIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out MapIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new MapIndex(tmp);
+            return ret;
+        }
+
+        /// <summary>
+        /// Reads the MapIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the MapIndex from.</param>
+        /// <returns>The MapIndex read from the BitStream.</returns>
+        public static MapIndex ReadMapIndex(this BitStream bitStream)
+        {
+            return MapIndex.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the MapIndex from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the MapIndex from.</param>
@@ -809,27 +846,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Parses the MapIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The MapIndex parsed from the string.</returns>
-        public static MapIndex ParseMapIndex(this Parser parser, string value)
-        {
-            return new MapIndex(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Reads the MapIndex from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the MapIndex from.</param>
-        /// <returns>The MapIndex read from the BitStream.</returns>
-        public static MapIndex ReadMapIndex(this BitStream bitStream)
-        {
-            return MapIndex.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the MapIndex from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the MapIndex from.</param>
@@ -838,21 +854,6 @@ namespace NetGore
         public static MapIndex ReadMapIndex(this IValueReader valueReader, string name)
         {
             return MapIndex.Read(valueReader, name);
-        }
-
-        /// <summary>
-        /// Tries to parse the MapIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed MapIndex.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out MapIndex outValue)
-        {
-            ushort tmp;
-            var ret = parser.TryParse(value, out tmp);
-            outValue = new MapIndex(tmp);
-            return ret;
         }
 
         /// <summary>

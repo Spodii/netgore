@@ -267,7 +267,6 @@ namespace NetGore.EditorTools
             this.cmbWallType.Name = "cmbWallType";
             this.cmbWallType.Size = new System.Drawing.Size(163, 21);
             this.cmbWallType.TabIndex = 21;
-            this.cmbWallType.SelectedIndexChanged += new System.EventHandler(this.cmbWallType_SelectedIndexChanged);
             // 
             // txtWallH
             // 
@@ -504,7 +503,6 @@ namespace NetGore.EditorTools
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Grh Data Editor";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.EditGrhForm_Load);
             this.gbCategorization.ResumeLayout(false);
             this.gbCategorization.PerformLayout();
             this.gbAnimated.ResumeLayout(false);
