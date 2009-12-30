@@ -97,7 +97,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition)
         {
-            return _spatials.Any(x => x is T && x.CB.HitTest(point) && condition((T)x));
+            return _spatials.Any(x => x is T && x.HitTest(point) && condition((T)x));
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition)
         {
-            return _spatials.Any(x => x is T && x.CB.Intersect(rect) && condition((T)x));
+            return _spatials.Any(x => x is T && x.Intersect(rect) && condition((T)x));
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition)
         {
-            return _spatials.Where(x => x is T && x.CB.Intersect(rect) && condition((T)x)).OfType<T>().ToImmutable();
+            return _spatials.Where(x => x is T && x.Intersect(rect) && condition((T)x)).OfType<T>().ToImmutable();
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace NetGore
         /// <returns>All spatials containing the given point that are of the given type.</returns>
         public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition)
         {
-            return _spatials.Where(x => x is T && x.CB.HitTest(p) && condition((T)x)).OfType<T>().ToImmutable();
+            return _spatials.Where(x => x is T && x.HitTest(p) && condition((T)x)).OfType<T>().ToImmutable();
         }
 
         /// <summary>

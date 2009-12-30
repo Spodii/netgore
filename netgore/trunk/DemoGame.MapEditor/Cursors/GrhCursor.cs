@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {
@@ -157,13 +158,14 @@ namespace DemoGame.MapEditor
                     return;
 
                 // Select MapGrhs
-                Vector2 mouseDragEnd = screen.Camera.ToWorld(e.X, e.Y);
-                CollisionBox selectBox = new CollisionBox(_mouseDragStart, mouseDragEnd);
                 _selectedMapGrhs.Clear();
+
+                Vector2 mouseDragEnd = screen.Camera.ToWorld(e.X, e.Y);
+                var selectRectSize = _mouseDragStart + mouseDragEnd;
+                var selectRect = new Rectangle((int)_mouseDragStart.X, (int)_mouseDragStart.Y, (int)selectRectSize.X, (int)selectRectSize.Y);
                 foreach (MapGrh mg in screen.Map.MapGrhs)
                 {
-                    CollisionBox cb = new CollisionBox(mg.Position, mg.Position + mg.Grh.Size);
-                    if (cb.Intersect(selectBox) && !_selectedMapGrhs.Contains(mg))
+                    if (mg.Intersect(selectRect) && !_selectedMapGrhs.Contains(mg))
                         _selectedMapGrhs.Add(mg);
                 }
 
@@ -204,10 +206,10 @@ namespace DemoGame.MapEditor
             bool isOverBox = false;
             if (_mapGrhMoveBox != null)
             {
-                CollisionBox cursorCB = new CollisionBox(screen.CursorPos, 1, 1);
-                CollisionBox boxCB = new CollisionBox(_mapGrhMoveBox.Position, _mapGrhMoveBox.Area.Width,
-                                                      _mapGrhMoveBox.Area.Height);
-                isOverBox = cursorCB.Intersect(boxCB);
+                var cursorRect = new Rectangle((int)screen.CursorPos.X, (int)screen.CursorPos.Y, 1, 1);
+                var boxPos = _mapGrhMoveBox.Position;
+                var boxRect = new Rectangle((int)boxPos.X, (int)boxPos.Y, _mapGrhMoveBox.Area.Width, _mapGrhMoveBox.Area.Height);
+                isOverBox = cursorRect.Intersects(boxRect);
             }
 
             if (isOverBox || _selectedMapGrhs.Count != 0 && screen.MouseButton == MouseButtons.Left)

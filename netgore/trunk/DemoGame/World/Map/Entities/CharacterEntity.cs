@@ -51,7 +51,7 @@ namespace DemoGame
         [Browsable(false)]
         public bool CanJump
         {
-            get { return OnGround; }
+            get { return StandingOn != null; }
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace DemoGame
             Debug.Assert(deltaTime >= 0, "Unless we're going back in time, deltaTime < 0 makes no sense at all.");
 
             // Perform pre-collision detection updating
-            UpdatePreCollision(deltaTime);
+            UpdatePreCollision(imap, deltaTime);
 
             // Performs basic entity updating
             base.HandleUpdate(imap, deltaTime);
@@ -207,7 +207,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="toPickup"/> is close enough to be picked up; otherwise false.</returns>
         public bool IsInPickupRegion(Entity toPickup)
         {
-            var dist = toPickup.CB.GetDistance(CB);
+            var dist = this.GetDistance(toPickup);
             return (dist <= MaxPickupDistance);
         }
 
@@ -297,7 +297,7 @@ namespace DemoGame
         /// Performs the pre-collision detection updating.
         /// </summary>
         /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        protected virtual void UpdatePreCollision(float deltaTime)
+        protected virtual void UpdatePreCollision(IMap map, float deltaTime)
         {
             // Update velocity
             UpdateVelocity(deltaTime);
@@ -313,7 +313,7 @@ namespace DemoGame
             CharacterState newState = CharacterState.Idle;
 
             // Check the vertical state (moving up or down)
-            if (Velocity.Y != 0 || !OnGround)
+            if (Velocity.Y != 0 || StandingOn == null)
             {
                 if (Velocity.Y > 0)
                     newState = CharacterState.Falling;

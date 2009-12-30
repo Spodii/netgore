@@ -349,11 +349,11 @@ namespace DemoGame.MapEditor
             else
             {
                 // Find the TransBox being hovered over (if any)
-                CollisionBox cursorCB = new CollisionBox(screen.CursorPos, 1, 1);
+                var cursorRect = new Rectangle((int)screen.CursorPos.X, (int)screen.CursorPos.Y, 1, 1);
                 foreach (TransBox box in screen.TransBoxes)
                 {
-                    CollisionBox boxCB = new CollisionBox(box.Position, box.Area.Width, box.Area.Height);
-                    if (cursorCB.Intersect(boxCB))
+                    var boxRect = new Rectangle((int)box.Position.X, (int)box.Position.Y, box.Area.Width, box.Area.Height);
+                    if (cursorRect.Intersects(boxRect))
                     {
                         hoverBox = box;
                         break;

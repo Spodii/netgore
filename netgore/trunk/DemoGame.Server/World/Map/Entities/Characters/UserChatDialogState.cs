@@ -120,7 +120,7 @@ namespace DemoGame.Server
                 return false;
             }
 
-            if (!_user.OnGround)
+            if (_user.StandingOn == null)
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, _user, npc, "User is not on the ground");
@@ -149,7 +149,7 @@ namespace DemoGame.Server
                 return false;
             }
 
-            if (!_user.CB.Intersect(npc.CB))
+            if (!_user.Intersect(npc))
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, _user, npc, "Characters are not touching");
@@ -190,7 +190,7 @@ namespace DemoGame.Server
             }
 
             // Check for a valid range
-            if (!_user.CB.Intersect(_chattingWith.CB))
+            if (!_user.Intersect(_chattingWith))
             {
                 if (log.IsInfoEnabled)
                     log.Info("Dialog aborted since the User is no longer near the target.");

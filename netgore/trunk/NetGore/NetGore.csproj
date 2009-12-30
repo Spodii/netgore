@@ -220,9 +220,11 @@
     <Compile Include="World\Map\Spatial\EntitySpatialBase.cs" />
     <Compile Include="World\Map\Spatial\ISpatial.cs" />
     <Compile Include="World\Map\Spatial\ISpatialCollection.cs" />
-    <Compile Include="World\Map\Spatial\IEntitySpatialExtensions.cs" />
+    <Compile Include="World\Map\Spatial\ISpatialCollectionExtensions.cs" />
+    <Compile Include="World\Map\Spatial\ISpatialExtensions.cs" />
     <Compile Include="World\Map\Spatial\LinearSpatialCollection.cs" />
     <Compile Include="World\Map\Spatial\SpatialAggregate.cs" />
+    <Compile Include="World\Map\Spatial\SpatialHelper.cs" />
     <Compile Include="World\Map\Spatial\SpatialManager.cs" />
     <Compile Include="World\Map\Spatial\StaticEntitySpatial.cs" />
     <Compile Include="World\Map\MapEntityAttribute.cs" />

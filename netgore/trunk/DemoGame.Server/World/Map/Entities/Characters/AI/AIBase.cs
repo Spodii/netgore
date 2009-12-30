@@ -98,7 +98,7 @@ namespace DemoGame.Server
         protected bool IsInMeleeRange(Entity entity)
         {
             var hitRect = GetMeleeRect();
-            return entity.CB.Intersect(hitRect);
+            return entity.Intersect(hitRect);
         }
 
         /// <summary>

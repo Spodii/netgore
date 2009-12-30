@@ -60,7 +60,8 @@ namespace DemoGame.Server
             // Trim down the maps array under the assumption we won't be adding more maps
             _maps.Trim();
 
-#if true
+            // NOTE: !! Temporarily disabled
+#if false
             // NOTE: Create some test items
             Random rand = new Random();
             foreach (Map m in Maps)
