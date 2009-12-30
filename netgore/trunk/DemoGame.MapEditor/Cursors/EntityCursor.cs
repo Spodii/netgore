@@ -122,7 +122,7 @@ namespace DemoGame.MapEditor
                     _toolTip = string.Format("{0}\n{1}", hoverEntity.GetType(), hoverEntity);
 
                     // Default text to the top-right corner of the entity
-                    _toolTipPos = new Vector2(hoverEntity.CB.Max.X, hoverEntity.CB.Min.Y);
+                    _toolTipPos = new Vector2(hoverEntity.Max.X, hoverEntity.Position.Y);
 
                     // Move slightly to the center
                     _toolTipPos.X -= 5;

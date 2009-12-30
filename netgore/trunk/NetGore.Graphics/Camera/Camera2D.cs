@@ -217,7 +217,7 @@ namespace NetGore.Graphics
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            CenterOn(entity.CB.Min + (entity.CB.Size / 2));
+            CenterOn(entity.Position + (entity.Size / 2f));
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace NetGore.Graphics
         /// <param name="point">Point to center on.</param>
         public void CenterOn(Vector2 point)
         {
-            Min = point - (Size / 2);
+            Min = point - (Size / 2f);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace NetGore.Graphics
                 return false;
             }
 
-            return InView(entity.CB.Min, entity.CB.Max);
+            return InView(entity.Position, entity.Max);
         }
 
         /// <summary>

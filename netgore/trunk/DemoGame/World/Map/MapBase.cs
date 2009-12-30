@@ -374,19 +374,19 @@ namespace DemoGame
         /// <param name="entity">Entity to check.</param>
         void ForceEntityInMapBoundaries(Entity entity)
         {
-            var min = entity.CB.Min;
-            var max = entity.CB.Max;
+            var min = entity.Position;
+            var max = entity.Max;
 
             if (min.X < 0)
                 min.X = 0;
             if (min.Y < 0)
                 min.Y = 0;
             if (max.X >= Width)
-                min.X = Width - entity.CB.Size.X;
+                min.X = Width - entity.Size.X;
             if (max.Y >= Height)
-                min.Y = Height - entity.CB.Size.Y;
+                min.Y = Height - entity.Size.Y;
 
-            if (min != entity.CB.Min)
+            if (min != entity.Position)
                 entity.Teleport(min);
         }
 
@@ -557,14 +557,9 @@ namespace DemoGame
             return IsInMapBoundaries(min) && IsInMapBoundaries(max);
         }
 
-        public bool IsInMapBoundaries(CollisionBox cb)
-        {
-            return IsInMapBoundaries(cb.ToRectangle());
-        }
-
         public bool IsInMapBoundaries(Entity entity)
         {
-            return IsInMapBoundaries(entity.CB);
+            return IsInMapBoundaries(entity.ToRectangle());
         }
 
         public bool IsInMapBoundaries(Rectangle rect)
@@ -699,15 +694,15 @@ namespace DemoGame
                 return;
             }
 
-            if (entity.CB.Min.X + offset.X < 0)
-                offset.X = -entity.CB.Min.X;
-            else if (entity.CB.Max.X + offset.X > Width)
-                offset.X = entity.CB.Max.X - Width;
+            if (entity.Position.X + offset.X < 0)
+                offset.X = -entity.Position.X;
+            else if (entity.Max.X + offset.X > Width)
+                offset.X = entity.Max.X - Width;
 
-            if (entity.CB.Min.Y + offset.Y < 0)
-                offset.Y = -entity.CB.Min.Y;
-            else if (entity.CB.Max.Y + offset.Y > Height)
-                offset.Y = entity.CB.Max.Y - Height;
+            if (entity.Position.Y + offset.Y < 0)
+                offset.Y = -entity.Position.Y;
+            else if (entity.Max.Y + offset.Y > Height)
+                offset.Y = entity.Max.Y - Height;
         }
 
         /// <summary>
@@ -896,11 +891,11 @@ namespace DemoGame
             if (pos.Y < 0)
                 pos.Y = 0;
 
-            var max = pos + entity.CB.Size;
+            var max = pos + entity.Size;
             if (max.X > Width)
-                pos.X = Width - entity.CB.Size.X;
+                pos.X = Width - entity.Size.X;
             if (max.Y > Height)
-                pos.Y = Height - entity.CB.Size.Y;
+                pos.Y = Height - entity.Size.Y;
 
             // Teleport to the altered position
             entity.Teleport(pos);
@@ -1015,7 +1010,7 @@ namespace DemoGame
                     if (entity is WallEntityBase)
                     {
                         // Remove a wall if the min value passes the new dimensions, 
-                        if (entity.CB.Min.X > newSize.X || entity.CB.Max.Y > newSize.Y)
+                        if (entity.Position.X > newSize.X || entity.Max.Y > newSize.Y)
                         {
                             entity.Dispose();
                             i--;
@@ -1025,10 +1020,10 @@ namespace DemoGame
                             // Trim down a wall if the max passes the new dimensions, but the min does not
                             var newEntitySize = entity.Size;
 
-                            if (entity.CB.Max.X > newSize.X)
-                                newSize.X = entity.CB.Max.X - newSize.X;
-                            if (entity.CB.Max.Y > newSize.Y)
-                                newSize.Y = entity.CB.Max.Y - newSize.Y;
+                            if (entity.Max.X > newSize.X)
+                                newSize.X = entity.Max.X - newSize.X;
+                            if (entity.Max.Y > newSize.Y)
+                                newSize.Y = entity.Max.Y - newSize.Y;
 
                             entity.Resize(newEntitySize);
                         }
@@ -1069,7 +1064,7 @@ namespace DemoGame
         {
             var ret = new Vector2(entity.Position.X, entity.Position.Y);
             var pos = entity.Position - new Vector2(maxDiff / 2f);
-            var size = entity.CB.Size + new Vector2(maxDiff);
+            var size = entity.Size + new Vector2(maxDiff);
             var newRect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 
             foreach (var e in Entities)
@@ -1080,19 +1075,19 @@ namespace DemoGame
 
                 // Selected wall right side to target wall left side
                 if (Math.Abs(newRect.Right - w.Position.X) < maxDiff)
-                    ret.X = w.CB.Min.X - entity.CB.Size.X;
+                    ret.X = w.Position.X - entity.Size.X;
 
                 // Selected wall left side to target wall right side
                 if (Math.Abs(w.Max.X - newRect.X) < maxDiff)
-                    ret.X = w.CB.Max.X;
+                    ret.X = w.Max.X;
 
                 // Selected wall bottom to target wall top
                 if (Math.Abs(newRect.Bottom - w.Position.Y) < maxDiff)
-                    ret.Y = w.CB.Min.Y - entity.CB.Size.Y;
+                    ret.Y = w.Position.Y - entity.Size.Y;
 
                 // Selected wall top to target wall bottom
                 if (Math.Abs(w.Max.Y - newRect.Y) < maxDiff)
-                    ret.Y = w.CB.Max.Y;
+                    ret.Y = w.Max.Y;
             }
 
             return ret;

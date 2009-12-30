@@ -310,7 +310,7 @@ namespace DemoGame.Client
                         continue;
 
                     // Check for duplicate location and collision type
-                    if (a.CB.Min == b.CB.Min && a.CB.Max == b.CB.Max && a.CollisionType == b.CollisionType)
+                    if (a.Position == b.Position && a.Size == b.Size && a.CollisionType == b.CollisionType)
                     {
                         // If the return list doesn't yet contain the wall, add it
                         if (!ret.Contains(a))
@@ -345,7 +345,7 @@ namespace DemoGame.Client
                         continue;
 
                     // Check for a match and the wall not already in the return list
-                    if (a.CB.Min == b.CB.Min && a.CB.Max == b.CB.Max && a.CollisionType == b.CollisionType)
+                    if (a.Position == b.Position && a.Size == b.Size && a.CollisionType == b.CollisionType)
                     {
                         if (!ret.Contains(b))
                             ret.Add(b);

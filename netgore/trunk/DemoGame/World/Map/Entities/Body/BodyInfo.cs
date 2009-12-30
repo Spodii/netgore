@@ -53,8 +53,8 @@ namespace DemoGame
             }
             else
             {
-                int x = (int)(c.CB.Max.X - rect.X - rect.Width);
-                int y = (int)(c.CB.Max.Y - rect.Y - rect.Height);
+                int x = (int)(c.Max.X - rect.X - rect.Width);
+                int y = (int)(c.Max.Y - rect.Y - rect.Height);
                 return new Rectangle(x, y, rect.Width, rect.Height);
             }
         }

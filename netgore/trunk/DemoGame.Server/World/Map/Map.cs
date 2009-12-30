@@ -336,12 +336,12 @@ namespace DemoGame.Server
             int xPad = (int)GameData.ScreenSize.X;
             int yPad = (int)GameData.ScreenSize.Y;
 
-            Rectangle r = entityToSynchronize.CB.ToRectangle();
+            Rectangle r = entityToSynchronize.ToRectangle();
             Rectangle syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
 
             foreach (User user in Users)
             {
-                Rectangle userRegion = user.CB.ToRectangle();
+                Rectangle userRegion = user.ToRectangle();
                 if (syncRegion.Intersects(userRegion))
                     yield return user;
             }

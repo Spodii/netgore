@@ -218,7 +218,7 @@ namespace NetGore.Graphics
                 return;
             }
 
-            Vector2 newPos = (entity.CB.Min / Size).Round() * Size;
+            Vector2 newPos = (entity.Position / Size).Round() * Size;
  
             // TODO: map.SafeTeleportEntity()
             entity.Teleport(newPos);
@@ -236,7 +236,7 @@ namespace NetGore.Graphics
                 return;
             }
 
-            Vector2 newSize = (entity.CB.Size / Size).Round() * Size;
+            Vector2 newSize = (entity.Size / Size).Round() * Size;
   
             if (newSize.X < Size.X)
                 newSize.X = Size.X;

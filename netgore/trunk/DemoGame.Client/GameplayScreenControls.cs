@@ -223,7 +223,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_TalkToNPC(GameControl sender)
         {
-            CharacterEntity npc = Map.Spatial.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(),
+            CharacterEntity npc = Map.Spatial.GetEntity<CharacterEntity>(UserChar.ToRectangle(),
                                                                                                x => x.HasChatDialog);
             if (npc == null)
                 return;
@@ -236,7 +236,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_Use(GameControl sender)
         {
-            DynamicEntity useEntity = Map.Spatial.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(),
+            DynamicEntity useEntity = Map.Spatial.GetEntity<DynamicEntity>(UserChar.ToRectangle(),
                                                                                                UsableEntityFilter);
             if (useEntity == null)
                 return;

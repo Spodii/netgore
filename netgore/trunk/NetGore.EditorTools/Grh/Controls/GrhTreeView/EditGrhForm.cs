@@ -301,7 +301,7 @@ namespace NetGore.EditorTools
             // Draw the walls
             foreach (var wall in lstWalls.Items.OfType<WallEntityBase>())
             {
-                var rect = wall.CB.ToRectangle();
+                var rect = wall.ToRectangle();
                 XNARectangle.Draw(sb, rect, _autoWallColor);
             }
 
@@ -337,8 +337,8 @@ namespace NetGore.EditorTools
                 cmbWallType.SelectedItem = wall.CollisionType;
                 txtWallX.Text = wall.Position.X.ToString();
                 txtWallY.Text = wall.Position.Y.ToString();
-                txtWallW.Text = wall.CB.Size.X.ToString();
-                txtWallH.Text = wall.CB.Size.Y.ToString();
+                txtWallW.Text = wall.Size.X.ToString();
+                txtWallH.Text = wall.Size.Y.ToString();
             }
         }
 
@@ -505,7 +505,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                wall.Position = new Vector2(Parser.Current.ParseFloat(txtWallX.Text), wall.CB.Min.Y);
+                wall.Position = new Vector2(Parser.Current.ParseFloat(txtWallX.Text), wall.Position.Y);
                 txtWallX.BackColor = EditorColors.Normal;
             }
             catch
@@ -522,7 +522,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                wall.Position = new Vector2(wall.CB.Min.X, Parser.Current.ParseFloat(txtWallY.Text));
+                wall.Position = new Vector2(wall.Position.X, Parser.Current.ParseFloat(txtWallY.Text));
                 txtWallY.BackColor = EditorColors.Normal;
             }
             catch
