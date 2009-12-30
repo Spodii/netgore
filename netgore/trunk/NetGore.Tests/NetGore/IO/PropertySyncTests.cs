@@ -26,12 +26,6 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
-        public void CollisionTypeTest()
-        {
-            TestSync("mCollisionType", CollisionType.Full);
-        }
-
-        [Test]
         public void ColorTest()
         {
             TestSync("mColor", new Color(255, 243, 234, 12));
@@ -143,9 +137,6 @@ namespace NetGore.Tests.NetGore.IO
 
             [SyncValue]
             public byte mByte { get; set; }
-
-            [SyncValue]
-            public CollisionType mCollisionType { get; set; }
 
             [SyncValue]
             public Color mColor { get; set; }

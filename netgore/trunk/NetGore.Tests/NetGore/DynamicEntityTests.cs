@@ -32,7 +32,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -77,7 +76,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -118,7 +116,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -166,7 +163,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -237,7 +233,6 @@ namespace NetGore.Tests.NetGore
                 Assert.AreEqual(src.Velocity, dest.Velocity);
                 Assert.AreEqual(src.Weight, dest.Weight);
                 Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-                Assert.AreEqual(src.CollisionType, dest.CollisionType);
                 Assert.AreEqual(src.Center, dest.Center);
 
                 Assert.AreEqual(src.A, dest.A, "Index: " + i);
@@ -297,7 +292,6 @@ namespace NetGore.Tests.NetGore
                     Assert.AreEqual(src.Velocity, dest.Velocity);
                     Assert.AreEqual(src.Weight, dest.Weight);
                     Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-                    Assert.AreEqual(src.CollisionType, dest.CollisionType);
                     Assert.AreEqual(src.Center, dest.Center);
 
                     Assert.AreEqual(src.A, dest.A, "Index: " + i);
@@ -341,7 +335,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
         }
 
@@ -361,7 +354,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -402,7 +394,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -439,7 +430,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -475,7 +465,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);
@@ -512,7 +501,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Velocity, dest.Velocity);
             Assert.AreEqual(src.Weight, dest.Weight);
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
-            Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
 
             Assert.AreEqual(src.A, dest.A);

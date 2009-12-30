@@ -73,7 +73,7 @@ namespace NetGore.EditorTools
         /// instances.</param>
         /// <returns>List of each bound wall for all the <see cref="MapGrh"/>s.</returns>
         public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs,
-                                                   CreateWallEntityWithCollisionTypeHandler createWall)
+                                                   CreateWallEntityHandler createWall)
         {
             var ret = new List<WallEntityBase>();
 
@@ -90,9 +90,8 @@ namespace NetGore.EditorTools
                 {
                     var position = mg.Position + wall.Position;
                     var size = wall.Size;
-                    var type = wall.CollisionType;
 
-                    var newWallEntity = createWall(position, size, type);
+                    var newWallEntity = createWall(position, size);
                     ret.Add(newWallEntity);
                 }
             }

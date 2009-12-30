@@ -59,7 +59,7 @@ namespace DemoGame.Client
             else
             {
                 // Draw a normal entity using the CollisionBox
-                Draw(sb, entity.ToRectangle(), entity.CollisionType, _entityColor);
+                Draw(sb, entity.ToRectangle(), _entityColor);
             }
         }
 
@@ -71,11 +71,11 @@ namespace DemoGame.Client
         public static void Draw(SpriteBatch sb, TeleportEntity tele)
         {
             // Source
-            Draw(sb, tele.ToRectangle(), tele.CollisionType, _teleSourceColor);
+            Draw(sb, tele.ToRectangle(), _teleSourceColor);
 
             // Dest
             Rectangle destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X, (int)tele.Size.Y);
-            Draw(sb, destRect, CollisionType.Full, _teleDestColor);
+            Draw(sb, destRect, _teleDestColor);
 
             // Arrow
             Vector2 centerOffset = tele.Size / 2;
@@ -104,21 +104,8 @@ namespace DemoGame.Client
             Vector2 p = wall.Position + offset;
             Rectangle dest = new Rectangle((int)p.X, (int)p.Y, (int)wall.Size.X, (int)wall.Size.Y);
 
-            // Draw the collision box
-            switch (wall.CollisionType)
-            {
-                case CollisionType.Full:
-                    XNARectangle.Draw(sb, dest, _wallColor);
-                    break;
-
-                case CollisionType.TriangleTopLeft:
-                    XNATriangle.Draw(sb, dest, _wallColor, SpriteEffects.FlipHorizontally, 0f, Vector2.Zero);
-                    break;
-
-                case CollisionType.TriangleTopRight:
-                    XNATriangle.Draw(sb, dest, _wallColor, SpriteEffects.None, 0f, Vector2.Zero);
-                    break;
-            }
+            // Draw the collision area
+            XNARectangle.Draw(sb, dest, _wallColor);
         }
 
         /// <summary>
@@ -126,25 +113,10 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to.</param>
         /// <param name="rect">The <see cref="Rectangle"/> to draw.</param>
-        /// <param name="ct">Type of collision the CollisionBox supports.</param>
         /// <param name="color">Color to draw the CollisionBox.</param>
-        static void Draw(SpriteBatch sb, Rectangle rect, CollisionType ct, Color color)
+        static void Draw(SpriteBatch sb, Rectangle rect, Color color)
         {
-            // LATER: Border support for the other shapes
-            switch (ct)
-            {
-                case CollisionType.Full:
-                    XNARectangle.Draw(sb, rect, color, _borderColor);
-                    break;
-
-                case CollisionType.TriangleTopLeft:
-                    XNATriangle.Draw(sb, rect, color, SpriteEffects.FlipHorizontally, 0f, Vector2.Zero);
-                    break;
-
-                case CollisionType.TriangleTopRight:
-                    XNATriangle.Draw(sb, rect, color, SpriteEffects.None, 0f, Vector2.Zero);
-                    break;
-            }
+            XNARectangle.Draw(sb, rect, color, _borderColor);
         }
     }
 }

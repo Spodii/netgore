@@ -14,19 +14,8 @@ namespace NetGore
     /// </summary>
     public abstract class WallEntityBase : Entity
     {
-        const string _valueKeyCollisionType = "CollisionType";
         const string _valueKeyPosition = "Position";
         const string _valueKeySize = "Size";
-        static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="size">The size.</param>
-        protected WallEntityBase(Vector2 position, Vector2 size) : this(position, size, CollisionType.Full)
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
@@ -42,10 +31,8 @@ namespace NetGore
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="size">The size.</param>
-        /// <param name="collisionType">Type of the collision.</param>
-        protected WallEntityBase(Vector2 position, Vector2 size, CollisionType collisionType) : base(position, size)
+        protected WallEntityBase(Vector2 position, Vector2 size) : base(position, size)
         {
-            CollisionType = collisionType;
         }
 
         /// <summary>
@@ -106,18 +93,15 @@ namespace NetGore
         {
             Vector2 position = r.ReadVector2(_valueKeyPosition);
             Vector2 size = r.ReadVector2(_valueKeySize);
-            CollisionType ct = r.ReadEnum(_collisionTypeHelper, _valueKeyCollisionType);
 
             SetPositionRaw(position);
             SetSizeRaw(size);
-            SetCollisionTypeRaw(ct);
         }
 
         public void Write(IValueWriter w)
         {
             w.Write(_valueKeyPosition, Position);
             w.Write(_valueKeySize, Size);
-            w.WriteEnum(_collisionTypeHelper, _valueKeyCollisionType, CollisionType);
         }
     }
 }

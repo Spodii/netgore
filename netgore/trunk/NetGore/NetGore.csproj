@@ -200,12 +200,10 @@
     <Compile Include="World\AlignmentHelper.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="ConsoleInputBuffer.cs" />
-    <Compile Include="World\Entities\CollisionTypeHelper.cs" />
     <Compile Include="World\Entities\IDynamicEntityFactory.cs" />
     <Compile Include="World\Entities\IUpdateableEntity.cs" />
     <Compile Include="World\Entities\IUsableEntity.cs" />
     <Compile Include="World\Entities\BoxSide.cs" />
-    <Compile Include="World\Entities\CollisionType.cs" />
     <Compile Include="World\Entities\DynamicEntity.cs" />
     <Compile Include="World\Entities\DynamicEntityFactoryBase.cs" />
     <Compile Include="World\Entities\Entity.cs" />
@@ -245,7 +243,6 @@
     <Compile Include="World\Entities\NPCChat\NPCChatResponseBase.cs" />
     <Compile Include="IO\PropertySync\PropertySyncAlignment.cs" />
     <Compile Include="IO\PropertySync\PropertySyncBool.cs" />
-    <Compile Include="IO\PropertySync\PropertySyncCollisionType.cs" />
     <Compile Include="IO\PropertySync\PropertySyncColor.cs" />
     <Compile Include="IO\PropertySync\PropertySyncDouble.cs" />
     <Compile Include="IO\PropertySync\PropertySyncGrhIndex.cs" />

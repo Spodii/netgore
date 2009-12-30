@@ -164,19 +164,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Synchronizes the CollisionType for the base Entity.
-        /// </summary>
-        [SyncValue("CollisionType")]
-        [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Browsable(false)]
-        protected internal CollisionType syncCollisionType
-        {
-            get { return CollisionType; }
-            set { SetCollisionTypeRaw(value); }
-        }
-
-        /// <summary>
         /// Synchronizes the Position for the base Entity.
         /// </summary>
         [SyncValue("Position", SkipNetworkSync = true)]

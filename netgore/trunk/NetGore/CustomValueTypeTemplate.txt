@@ -13,8 +13,7 @@ using System.Data;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
-using NetGore.Globalization;
+using NetGore;
 using NetGore.IO;
 
 // TODO: Replace string "UnderlyingValueType" with the name of the underlying value type.
@@ -24,7 +23,6 @@ namespace NetGore // TODO: Ensure this is the namespace you want
 {
     // TODO: Add comments for the struct.
     [Serializable]
-    [StructLayout(LayoutKind.Sequential)]
     public struct CustomValueTypeName : IComparable<CustomValueTypeName>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
@@ -43,7 +41,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         readonly UnderlyingValueType _value;
 
         /// <summary>
-        /// CustomValueTypeName constructor.
+        /// Initializes a new instance of the <see cref="CustomValueTypeName"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new CustomValueTypeName.</param>
         public CustomValueTypeName(int value)
