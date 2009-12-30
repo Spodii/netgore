@@ -7,988 +7,796 @@
     <Height>800</Height>
   </Header>
   <Walls>
-    <Count>195</Count>
+    <Count>196</Count>
     <Item0>
-      <Position>1568,736</Position>
+      <Position>352,160</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item0>
     <Item1>
-      <Position>1504,736</Position>
+      <Position>1568,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item1>
     <Item2>
-      <Position>1472,736</Position>
+      <Position>1504,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item2>
     <Item3>
-      <Position>1440,736</Position>
+      <Position>1472,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item3>
     <Item4>
-      <Position>1408,736</Position>
+      <Position>1440,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item4>
     <Item5>
-      <Position>1376,736</Position>
+      <Position>1408,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item5>
     <Item6>
-      <Position>1344,736</Position>
+      <Position>1376,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item6>
     <Item7>
-      <Position>1312,736</Position>
+      <Position>1344,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item7>
     <Item8>
-      <Position>1280,736</Position>
+      <Position>1312,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item8>
     <Item9>
-      <Position>1248,736</Position>
+      <Position>1280,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item9>
     <Item10>
-      <Position>1216,736</Position>
+      <Position>1248,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item10>
     <Item11>
-      <Position>1184,736</Position>
+      <Position>1216,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item11>
     <Item12>
-      <Position>1152,736</Position>
+      <Position>1184,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item12>
     <Item13>
-      <Position>1120,736</Position>
+      <Position>1152,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item13>
     <Item14>
-      <Position>1088,736</Position>
+      <Position>1120,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item14>
     <Item15>
-      <Position>1056,736</Position>
+      <Position>1088,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item15>
     <Item16>
-      <Position>1024,736</Position>
+      <Position>1056,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item16>
     <Item17>
-      <Position>992,736</Position>
+      <Position>1024,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item17>
     <Item18>
-      <Position>640,736</Position>
+      <Position>992,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item18>
     <Item19>
-      <Position>608,736</Position>
+      <Position>640,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item19>
     <Item20>
-      <Position>576,736</Position>
+      <Position>608,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item20>
     <Item21>
-      <Position>544,736</Position>
+      <Position>576,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item21>
     <Item22>
-      <Position>512,736</Position>
+      <Position>544,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item22>
     <Item23>
-      <Position>352,736</Position>
+      <Position>512,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item23>
     <Item24>
-      <Position>320,736</Position>
+      <Position>352,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item24>
     <Item25>
-      <Position>288,736</Position>
+      <Position>320,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item25>
     <Item26>
-      <Position>256,736</Position>
+      <Position>288,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item26>
     <Item27>
-      <Position>224,736</Position>
+      <Position>256,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item27>
     <Item28>
-      <Position>192,736</Position>
+      <Position>224,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item28>
     <Item29>
-      <Position>160,736</Position>
+      <Position>192,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item29>
     <Item30>
-      <Position>128,736</Position>
+      <Position>160,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item30>
     <Item31>
-      <Position>96,736</Position>
+      <Position>128,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item31>
     <Item32>
-      <Position>64,736</Position>
+      <Position>96,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item32>
     <Item33>
-      <Position>32,736</Position>
+      <Position>64,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item33>
     <Item34>
-      <Position>0,704</Position>
+      <Position>32,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item34>
     <Item35>
-      <Position>0,672</Position>
+      <Position>0,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item35>
     <Item36>
-      <Position>0,640</Position>
+      <Position>0,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item36>
     <Item37>
-      <Position>0,608</Position>
+      <Position>0,640</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item37>
     <Item38>
-      <Position>0,576</Position>
+      <Position>0,608</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item38>
     <Item39>
-      <Position>0,544</Position>
+      <Position>0,576</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item39>
     <Item40>
-      <Position>0,512</Position>
+      <Position>0,544</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item40>
     <Item41>
-      <Position>0,480</Position>
+      <Position>0,512</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item41>
     <Item42>
-      <Position>0,448</Position>
+      <Position>0,480</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item42>
     <Item43>
-      <Position>0,416</Position>
+      <Position>0,448</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item43>
     <Item44>
-      <Position>0,384</Position>
+      <Position>0,416</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item44>
     <Item45>
-      <Position>0,352</Position>
+      <Position>0,384</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item45>
     <Item46>
-      <Position>0,320</Position>
+      <Position>0,352</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item46>
     <Item47>
-      <Position>0,288</Position>
+      <Position>0,320</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item47>
     <Item48>
-      <Position>0,256</Position>
+      <Position>0,288</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item48>
     <Item49>
-      <Position>0,224</Position>
+      <Position>0,256</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item49>
     <Item50>
-      <Position>0,192</Position>
+      <Position>0,224</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item50>
     <Item51>
-      <Position>0,160</Position>
+      <Position>0,192</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item51>
     <Item52>
-      <Position>0,128</Position>
+      <Position>0,160</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item52>
     <Item53>
-      <Position>0,96</Position>
+      <Position>0,128</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item53>
     <Item54>
-      <Position>32,0</Position>
+      <Position>0,96</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item54>
     <Item55>
-      <Position>1568,704</Position>
+      <Position>32,0</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item55>
     <Item56>
-      <Position>1568,672</Position>
+      <Position>1568,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item56>
     <Item57>
-      <Position>1568,512</Position>
+      <Position>1568,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item57>
     <Item58>
-      <Position>1568,480</Position>
+      <Position>1568,512</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item58>
     <Item59>
-      <Position>1568,448</Position>
+      <Position>1568,480</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item59>
     <Item60>
-      <Position>1568,416</Position>
+      <Position>1568,448</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item60>
     <Item61>
-      <Position>1568,384</Position>
+      <Position>1568,416</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item61>
     <Item62>
-      <Position>1568,320</Position>
+      <Position>1568,384</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item62>
     <Item63>
-      <Position>1568,288</Position>
+      <Position>1568,320</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item63>
     <Item64>
-      <Position>1568,256</Position>
+      <Position>1568,288</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item64>
     <Item65>
-      <Position>1568,352</Position>
+      <Position>1568,256</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item65>
     <Item66>
-      <Position>1568,224</Position>
+      <Position>1568,352</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item66>
     <Item67>
-      <Position>1568,192</Position>
+      <Position>1568,224</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item67>
     <Item68>
-      <Position>1568,160</Position>
+      <Position>1568,192</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item68>
     <Item69>
-      <Position>1568,128</Position>
+      <Position>1568,160</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item69>
     <Item70>
-      <Position>1568,96</Position>
+      <Position>1568,128</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item70>
     <Item71>
-      <Position>1568,64</Position>
+      <Position>1568,96</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item71>
     <Item72>
-      <Position>1504,32</Position>
+      <Position>1568,64</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item72>
     <Item73>
-      <Position>1472,32</Position>
+      <Position>1504,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item73>
     <Item74>
-      <Position>1440,32</Position>
+      <Position>1472,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item74>
     <Item75>
-      <Position>1408,32</Position>
+      <Position>1440,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item75>
     <Item76>
-      <Position>1376,32</Position>
+      <Position>1408,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item76>
     <Item77>
-      <Position>1344,32</Position>
+      <Position>1376,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item77>
     <Item78>
-      <Position>1312,32</Position>
+      <Position>1344,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item78>
     <Item79>
-      <Position>1280,32</Position>
+      <Position>1312,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item79>
     <Item80>
-      <Position>1248,32</Position>
+      <Position>1280,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item80>
     <Item81>
-      <Position>1216,32</Position>
+      <Position>1248,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item81>
     <Item82>
-      <Position>1184,32</Position>
+      <Position>1216,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item82>
     <Item83>
-      <Position>1152,32</Position>
+      <Position>1184,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item83>
     <Item84>
-      <Position>1120,32</Position>
+      <Position>1152,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item84>
     <Item85>
-      <Position>1088,32</Position>
+      <Position>1120,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item85>
     <Item86>
-      <Position>1056,32</Position>
+      <Position>1088,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item86>
     <Item87>
-      <Position>1024,32</Position>
+      <Position>1056,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item87>
     <Item88>
-      <Position>992,32</Position>
+      <Position>1024,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item88>
     <Item89>
-      <Position>960,32</Position>
+      <Position>992,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item89>
     <Item90>
-      <Position>928,32</Position>
+      <Position>960,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item90>
     <Item91>
-      <Position>896,32</Position>
+      <Position>928,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item91>
     <Item92>
-      <Position>864,32</Position>
+      <Position>896,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item92>
     <Item93>
-      <Position>832,32</Position>
+      <Position>864,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item93>
     <Item94>
-      <Position>768,32</Position>
+      <Position>832,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item94>
     <Item95>
-      <Position>736,32</Position>
+      <Position>768,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item95>
     <Item96>
-      <Position>704,32</Position>
+      <Position>736,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item96>
     <Item97>
-      <Position>672,32</Position>
+      <Position>704,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item97>
     <Item98>
-      <Position>640,32</Position>
+      <Position>672,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item98>
     <Item99>
-      <Position>608,32</Position>
+      <Position>640,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item99>
     <Item100>
-      <Position>576,32</Position>
+      <Position>608,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item100>
     <Item101>
-      <Position>544,32</Position>
+      <Position>576,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item101>
     <Item102>
-      <Position>512,32</Position>
+      <Position>544,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item102>
     <Item103>
-      <Position>480,32</Position>
+      <Position>512,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item103>
     <Item104>
-      <Position>800,32</Position>
+      <Position>480,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item104>
     <Item105>
-      <Position>448,32</Position>
+      <Position>800,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item105>
     <Item106>
-      <Position>416,32</Position>
+      <Position>448,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item106>
     <Item107>
-      <Position>384,32</Position>
+      <Position>416,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item107>
     <Item108>
-      <Position>352,32</Position>
+      <Position>384,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item108>
     <Item109>
-      <Position>320,32</Position>
+      <Position>352,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item109>
     <Item110>
-      <Position>288,32</Position>
+      <Position>320,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item110>
     <Item111>
-      <Position>256,32</Position>
+      <Position>288,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item111>
     <Item112>
-      <Position>192,0</Position>
+      <Position>256,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item112>
     <Item113>
-      <Position>160,0</Position>
+      <Position>192,0</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item113>
     <Item114>
-      <Position>128,0</Position>
+      <Position>160,0</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item114>
     <Item115>
-      <Position>96,0</Position>
+      <Position>128,0</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item115>
     <Item116>
-      <Position>64,0</Position>
+      <Position>96,0</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item116>
     <Item117>
-      <Position>416,704</Position>
+      <Position>64,0</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item117>
     <Item118>
-      <Position>448,704</Position>
+      <Position>416,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item118>
     <Item119>
-      <Position>416,736</Position>
+      <Position>448,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item119>
     <Item120>
-      <Position>448,736</Position>
+      <Position>416,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item120>
     <Item121>
-      <Position>480,736</Position>
+      <Position>448,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item121>
     <Item122>
-      <Position>384,736</Position>
+      <Position>480,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item122>
     <Item123>
-      <Position>384,704</Position>
+      <Position>384,736</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopLeft</CollisionType>
     </Item123>
     <Item124>
-      <Position>480,704</Position>
+      <Position>384,704</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopRight</CollisionType>
     </Item124>
     <Item125>
-      <Position>672,704</Position>
+      <Position>480,704</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopLeft</CollisionType>
     </Item125>
     <Item126>
-      <Position>704,672</Position>
+      <Position>672,704</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopLeft</CollisionType>
     </Item126>
     <Item127>
-      <Position>736,640</Position>
+      <Position>704,672</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopLeft</CollisionType>
     </Item127>
     <Item128>
-      <Position>768,608</Position>
+      <Position>736,640</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopLeft</CollisionType>
     </Item128>
     <Item129>
-      <Position>800,576</Position>
+      <Position>768,608</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopLeft</CollisionType>
     </Item129>
     <Item130>
-      <Position>704,704</Position>
+      <Position>800,576</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item130>
     <Item131>
-      <Position>736,704</Position>
+      <Position>704,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item131>
     <Item132>
-      <Position>768,704</Position>
+      <Position>736,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item132>
     <Item133>
-      <Position>800,704</Position>
+      <Position>768,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item133>
     <Item134>
-      <Position>832,704</Position>
+      <Position>800,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item134>
     <Item135>
-      <Position>832,672</Position>
+      <Position>832,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item135>
     <Item136>
-      <Position>832,640</Position>
+      <Position>832,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item136>
     <Item137>
-      <Position>832,608</Position>
+      <Position>832,640</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item137>
     <Item138>
-      <Position>800,608</Position>
+      <Position>832,608</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item138>
     <Item139>
-      <Position>800,640</Position>
+      <Position>800,608</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item139>
     <Item140>
-      <Position>800,672</Position>
+      <Position>800,640</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item140>
     <Item141>
-      <Position>768,672</Position>
+      <Position>800,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item141>
     <Item142>
-      <Position>736,672</Position>
+      <Position>768,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item142>
     <Item143>
-      <Position>768,640</Position>
+      <Position>736,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item143>
     <Item144>
-      <Position>832,576</Position>
+      <Position>768,640</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item144>
     <Item145>
-      <Position>864,608</Position>
+      <Position>832,576</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item145>
     <Item146>
-      <Position>896,640</Position>
+      <Position>864,608</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item146>
     <Item147>
-      <Position>928,672</Position>
+      <Position>896,640</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item147>
     <Item148>
-      <Position>960,704</Position>
+      <Position>928,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item148>
     <Item149>
-      <Position>672,736</Position>
+      <Position>960,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item149>
     <Item150>
-      <Position>704,736</Position>
+      <Position>672,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item150>
     <Item151>
-      <Position>736,736</Position>
+      <Position>704,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item151>
     <Item152>
-      <Position>768,736</Position>
+      <Position>736,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item152>
     <Item153>
-      <Position>800,736</Position>
+      <Position>768,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item153>
     <Item154>
-      <Position>832,736</Position>
+      <Position>800,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item154>
     <Item155>
-      <Position>864,736</Position>
+      <Position>832,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item155>
     <Item156>
-      <Position>896,736</Position>
+      <Position>864,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item156>
     <Item157>
-      <Position>928,736</Position>
+      <Position>896,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item157>
     <Item158>
-      <Position>960,736</Position>
+      <Position>928,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item158>
     <Item159>
-      <Position>928,704</Position>
+      <Position>960,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item159>
     <Item160>
-      <Position>896,704</Position>
+      <Position>928,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item160>
     <Item161>
-      <Position>864,704</Position>
+      <Position>896,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item161>
     <Item162>
-      <Position>864,672</Position>
+      <Position>864,704</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item162>
     <Item163>
-      <Position>896,672</Position>
+      <Position>864,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item163>
     <Item164>
-      <Position>864,640</Position>
+      <Position>896,672</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item164>
     <Item165>
-      <Position>576,576</Position>
+      <Position>864,640</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item165>
     <Item166>
-      <Position>544,576</Position>
+      <Position>576,576</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item166>
     <Item167>
-      <Position>284,673</Position>
-      <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
+      <Position>544,576</Position>
+      <Size>32,32</Size>
     </Item167>
     <Item168>
-      <Position>143,623</Position>
+      <Position>284,673</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item168>
     <Item169>
-      <Position>323,596</Position>
+      <Position>143,623</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item169>
     <Item170>
-      <Position>192,546</Position>
+      <Position>323,596</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item170>
     <Item171>
-      <Position>331,501</Position>
+      <Position>192,546</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item171>
     <Item172>
-      <Position>178,447</Position>
+      <Position>331,501</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item172>
     <Item173>
-      <Position>82,401</Position>
+      <Position>178,447</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item173>
     <Item174>
-      <Position>196,345</Position>
+      <Position>82,401</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item174>
     <Item175>
-      <Position>310,420</Position>
+      <Position>196,345</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item175>
     <Item176>
-      <Position>434,455</Position>
+      <Position>310,420</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item176>
     <Item177>
-      <Position>414,347</Position>
+      <Position>434,455</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item177>
     <Item178>
-      <Position>309,272</Position>
+      <Position>414,347</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item178>
     <Item179>
-      <Position>162,243</Position>
+      <Position>309,272</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item179>
     <Item180>
-      <Position>83,270</Position>
+      <Position>162,243</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item180>
     <Item181>
-      <Position>470,200</Position>
+      <Position>83,270</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item181>
     <Item182>
-      <Position>673,236</Position>
+      <Position>470,200</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item182>
     <Item183>
-      <Position>576,274</Position>
+      <Position>673,236</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item183>
     <Item184>
-      <Position>876,261</Position>
+      <Position>576,274</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item184>
     <Item185>
-      <Position>1057,213</Position>
+      <Position>876,261</Position>
       <Size>32,1</Size>
-      <CollisionType>Full</CollisionType>
     </Item185>
     <Item186>
-      <Position>0,736</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
+      <Position>1057,213</Position>
+      <Size>32,1</Size>
     </Item186>
     <Item187>
-      <Position>0,64</Position>
+      <Position>0,736</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item187>
     <Item188>
-      <Position>0,0</Position>
+      <Position>0,64</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopLeft</CollisionType>
     </Item188>
     <Item189>
-      <Position>1568,32</Position>
+      <Position>0,0</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopRight</CollisionType>
     </Item189>
     <Item190>
-      <Position>224,0</Position>
+      <Position>1568,32</Position>
       <Size>32,32</Size>
-      <CollisionType>TriangleTopRight</CollisionType>
     </Item190>
     <Item191>
-      <Position>0,32</Position>
+      <Position>224,0</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item191>
     <Item192>
-      <Position>224,32</Position>
+      <Position>0,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item192>
     <Item193>
-      <Position>1536,736</Position>
+      <Position>224,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
     </Item193>
     <Item194>
+      <Position>1536,736</Position>
+      <Size>32,32</Size>
+    </Item194>
+    <Item195>
       <Position>1536,32</Position>
       <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Item194>
+    </Item195>
   </Walls>
   <DynamicEntities>
     <Count>1</Count>
     <Item0>
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
-      <CollisionType>Full</CollisionType>
       <Size>23,56</Size>
       <Weight>1</Weight>
       <Destination>575,160</Destination>
@@ -1001,10 +809,10 @@
     <MapGrhs>
       <UsedIndicies>
         <Count>6</Count>
-        <Item0>2</Item0>
-        <Item1>5</Item1>
-        <Item2>1</Item2>
-        <Item3>3</Item3>
+        <Item0>1</Item0>
+        <Item1>2</Item1>
+        <Item2>3</Item2>
+        <Item3>5</Item3>
         <Item4>7</Item4>
         <Item5>125</Item5>
       </UsedIndicies>
