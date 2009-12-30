@@ -67,7 +67,6 @@ namespace NetGore.Tests.NetGore
             a.SetAreaSize(SpatialSize);
             a.Add(aEntities);
 
-
             // TODO: !! Add tests back again when I re-add the good spatials
             var b = new LinearSpatialCollection();
             b.SetAreaSize(SpatialSize);
@@ -79,10 +78,7 @@ namespace NetGore.Tests.NetGore
             b.Add(CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32)));
             */
 
-            return new SpatialAggregate[]
-            {
-                new SpatialAggregate(new ISpatialCollection[] { a, b })
-            };
+            return new SpatialAggregate[] { new SpatialAggregate(new ISpatialCollection[] { a, b }) };
         }
 
         class TestEntity : Entity

@@ -197,8 +197,8 @@ namespace NetGore
         [Category("Entity")]
         [DisplayName("Weight")]
         [Description(
-            "The weight of the Entity."+" Higher the weight, the greater the effects of the gravity, where 0 is unaffected by gravity."
-            )]
+            "The weight of the Entity." +
+            " Higher the weight, the greater the effects of the gravity, where 0 is unaffected by gravity.")]
         [DefaultValue(0.0f)]
         [Browsable(true)]
         public virtual float Weight
@@ -258,9 +258,7 @@ namespace NetGore
             if (StandingOn != null)
             {
                 if (!StandingOn.IsEntityStandingOn(this))
-                {
                     StandingOn = imap.FindStandingOn(this);
-                }
             }
 #endif
         }
@@ -273,8 +271,7 @@ namespace NetGore
         /// <param name="size">New size value.</param>
         /// <param name="velocity">New velocity value.</param>
         /// <param name="weight">New weight value.</param>
-        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight
-                                                 )
+        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight)
         {
             _position = position;
             _size = size;

@@ -1,13 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
     public static class SpatialHelper
     {
+        /// <summary>
+        /// Creates a Vector2 for the MTD based on the side.
+        /// </summary>
+        /// <param name="side">Side the collision occured on.</param>
+        /// <param name="mtd">MTD value.</param>
+        /// <returns>Vector2 for the MTD for the given <paramref name="side"/>.</returns>
+        static Vector2 CreateMTDVector(BoxSide side, float mtd)
+        {
+            switch (side)
+            {
+                case BoxSide.Top:
+                    return new Vector2(0, mtd);
+                case BoxSide.Bottom:
+                    return new Vector2(0, -mtd);
+                case BoxSide.Right:
+                    return new Vector2(mtd, 0);
+                case BoxSide.Left:
+                    return new Vector2(-mtd, 0);
+                default:
+                    return Vector2.Zero;
+            }
+        }
+
         /// <summary>
         /// Finds the Minimal Translational Distance between two <see cref="ISpatial"/>s.
         /// </summary>
@@ -53,29 +73,6 @@ namespace NetGore
                 return Vector2.Zero;
 
             return CreateMTDVector(side, mtd);
-        }
-
-        /// <summary>
-        /// Creates a Vector2 for the MTD based on the side.
-        /// </summary>
-        /// <param name="side">Side the collision occured on.</param>
-        /// <param name="mtd">MTD value.</param>
-        /// <returns>Vector2 for the MTD for the given <paramref name="side"/>.</returns>
-        static Vector2 CreateMTDVector(BoxSide side, float mtd)
-        {
-            switch (side)
-            {
-                case BoxSide.Top:
-                    return new Vector2(0, mtd);
-                case BoxSide.Bottom:
-                    return new Vector2(0, -mtd);
-                case BoxSide.Right:
-                    return new Vector2(mtd, 0);
-                case BoxSide.Left:
-                    return new Vector2(-mtd, 0);
-                default:
-                    return Vector2.Zero;
-            }
         }
     }
 }

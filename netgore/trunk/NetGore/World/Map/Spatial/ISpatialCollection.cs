@@ -12,12 +12,6 @@ namespace NetGore
     public interface ISpatialCollection
     {
         /// <summary>
-        /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
-        /// </summary>
-        /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
-        void SetAreaSize(Vector2 size);
-
-        /// <summary>
         /// Adds multiple <see cref="ISpatial"/>s to the spatial collection.
         /// </summary>
         /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
@@ -246,5 +240,11 @@ namespace NetGore
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
         void Remove(ISpatial spatial);
+
+        /// <summary>
+        /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
+        /// </summary>
+        /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
+        void SetAreaSize(Vector2 size);
     }
 }

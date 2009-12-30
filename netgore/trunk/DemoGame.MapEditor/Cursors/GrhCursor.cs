@@ -162,7 +162,8 @@ namespace DemoGame.MapEditor
 
                 Vector2 mouseDragEnd = screen.Camera.ToWorld(e.X, e.Y);
                 var selectRectSize = _mouseDragStart + mouseDragEnd;
-                var selectRect = new Rectangle((int)_mouseDragStart.X, (int)_mouseDragStart.Y, (int)selectRectSize.X, (int)selectRectSize.Y);
+                var selectRect = new Rectangle((int)_mouseDragStart.X, (int)_mouseDragStart.Y, (int)selectRectSize.X,
+                                               (int)selectRectSize.Y);
                 foreach (MapGrh mg in screen.Map.MapGrhs)
                 {
                     if (mg.Intersect(selectRect) && !_selectedMapGrhs.Contains(mg))

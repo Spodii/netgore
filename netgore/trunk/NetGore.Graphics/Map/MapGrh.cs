@@ -84,51 +84,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
-        /// </summary>
-        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
-        /// occupies.</returns>
-        public Rectangle ToRectangle()
-        {
-            return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
-        }
-
-        /// <summary>
-        /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
-        /// </summary>
-        public Vector2 Position
-        {
-            get { return _position; }
-            set {
-                if (Position == value)
-                    return;
-
-                var oldPosition = Position;
-                _position = value;
-
-                if (OnMove != null)
-                    OnMove(this, oldPosition);
-            }
-        }
-
-        /// <summary>
-        /// Gets the size of this <see cref="ISpatial"/>.
-        /// </summary>
-        public Vector2 Size
-        {
-            get {
-                return _grh.Size; }
-        }
-
-        /// <summary>
-        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
-        /// </summary>
-        public Vector2 Max
-        {
-            get { return Position + Size; }
-        }
-
-        /// <summary>
         /// Updates the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
@@ -194,6 +149,51 @@ namespace NetGore.Graphics
         #endregion
 
         #region ISpatial Members
+
+        /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
+        /// occupies.</returns>
+        public Rectangle ToRectangle()
+        {
+            return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+        }
+
+        /// <summary>
+        /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
+        /// </summary>
+        public Vector2 Position
+        {
+            get { return _position; }
+            set
+            {
+                if (Position == value)
+                    return;
+
+                var oldPosition = Position;
+                _position = value;
+
+                if (OnMove != null)
+                    OnMove(this, oldPosition);
+            }
+        }
+
+        /// <summary>
+        /// Gets the size of this <see cref="ISpatial"/>.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return _grh.Size; }
+        }
+
+        /// <summary>
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        public Vector2 Max
+        {
+            get { return Position + Size; }
+        }
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.

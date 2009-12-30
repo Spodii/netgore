@@ -251,18 +251,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
-        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
-        /// </summary>
-        /// <returns>
-        /// An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.
-        /// </returns>
-        protected override IEnumerable<Type> GetSpatialTypes()
-        {
-            return base.GetSpatialTypes().Concat(new Type[] { typeof(NPC), typeof(User) });
-        }
-
-        /// <summary>
         /// When overridden in the derived class, allows for additional processing on Entities added to the map.
         /// This is called after the Entity has finished being added to the map.
         /// </summary>
@@ -320,6 +308,18 @@ namespace DemoGame.Server
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
+        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
+        /// </summary>
+        /// <returns>
+        /// An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.
+        /// </returns>
+        protected override IEnumerable<Type> GetSpatialTypes()
+        {
+            return base.GetSpatialTypes().Concat(new Type[] { typeof(NPC), typeof(User) });
         }
 
         /// <summary>

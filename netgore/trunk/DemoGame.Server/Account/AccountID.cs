@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using NetGore;
 using NetGore.IO;
 
@@ -785,42 +784,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Parses the AccountID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The AccountID parsed from the string.</returns>
-        public static AccountID ParseAccountID(this Parser parser, string value)
-        {
-            return new AccountID(parser.ParseInt(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the AccountID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed AccountID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out AccountID outValue)
-        {
-            int tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new AccountID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the AccountID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the AccountID from.</param>
-        /// <returns>The AccountID read from the BitStream.</returns>
-        public static AccountID ReadAccountID(this BitStream bitStream)
-        {
-            return AccountID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the AccountID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the AccountID from.</param>
@@ -843,6 +806,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Parses the AccountID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The AccountID parsed from the string.</returns>
+        public static AccountID ParseAccountID(this Parser parser, string value)
+        {
+            return new AccountID(parser.ParseInt(value));
+        }
+
+        /// <summary>
+        /// Reads the AccountID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the AccountID from.</param>
+        /// <returns>The AccountID read from the BitStream.</returns>
+        public static AccountID ReadAccountID(this BitStream bitStream)
+        {
+            return AccountID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the AccountID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the AccountID from.</param>
@@ -851,6 +835,21 @@ namespace DemoGame.Server
         public static AccountID ReadAccountID(this IValueReader valueReader, string name)
         {
             return AccountID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the AccountID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed AccountID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out AccountID outValue)
+        {
+            int tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new AccountID(tmp);
+            return ret;
         }
 
         /// <summary>

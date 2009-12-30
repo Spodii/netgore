@@ -1,9 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using NetGore;
+using System.Data;
+using System.Linq;
 using NetGore.IO;
 
 // TODO: Replace string "ushort" with the name of the underlying value type.
@@ -172,6 +170,30 @@ namespace NetGore
             bitStream.Write(_value);
         }
 
+        #region IComparable<int> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        public int CompareTo(int other)
+        {
+            return _value.CompareTo(other);
+        }
+
+        #endregion
+
         #region IComparable<MapIndex> Members
 
         /// <summary>
@@ -193,30 +215,6 @@ namespace NetGore
         public int CompareTo(MapIndex other)
         {
             return _value.CompareTo(other._value);
-        }
-
-        #endregion
-
-        #region IComparable<int> Members
-
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        public int CompareTo(int other)
-        {
-            return _value.CompareTo(other);
         }
 
         #endregion
@@ -788,42 +786,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Parses the MapIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The MapIndex parsed from the string.</returns>
-        public static MapIndex ParseMapIndex(this Parser parser, string value)
-        {
-            return new MapIndex(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the MapIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed MapIndex.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out MapIndex outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new MapIndex(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the MapIndex from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the MapIndex from.</param>
-        /// <returns>The MapIndex read from the BitStream.</returns>
-        public static MapIndex ReadMapIndex(this BitStream bitStream)
-        {
-            return MapIndex.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the MapIndex from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the MapIndex from.</param>
@@ -846,6 +808,27 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Parses the MapIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The MapIndex parsed from the string.</returns>
+        public static MapIndex ParseMapIndex(this Parser parser, string value)
+        {
+            return new MapIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the MapIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the MapIndex from.</param>
+        /// <returns>The MapIndex read from the BitStream.</returns>
+        public static MapIndex ReadMapIndex(this BitStream bitStream)
+        {
+            return MapIndex.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the MapIndex from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the MapIndex from.</param>
@@ -854,6 +837,21 @@ namespace NetGore
         public static MapIndex ReadMapIndex(this IValueReader valueReader, string name)
         {
             return MapIndex.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the MapIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed MapIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out MapIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new MapIndex(tmp);
+            return ret;
         }
 
         /// <summary>

@@ -72,8 +72,7 @@ namespace NetGore.EditorTools
         /// <param name="createWall">Delegate that describes how to create the <see cref="WallEntityBase"/>
         /// instances.</param>
         /// <returns>List of each bound wall for all the <see cref="MapGrh"/>s.</returns>
-        public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs,
-                                                   CreateWallEntityHandler createWall)
+        public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs, CreateWallEntityHandler createWall)
         {
             var ret = new List<WallEntityBase>();
 

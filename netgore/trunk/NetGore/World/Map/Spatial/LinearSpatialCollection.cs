@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -16,6 +15,8 @@ namespace NetGore
         // by having as few methods implement actual "search" code as possible
 
         readonly List<ISpatial> _spatials = new List<ISpatial>();
+
+        #region ISpatialCollection Members
 
         /// <summary>
         /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
@@ -32,7 +33,9 @@ namespace NetGore
         public void Add(IEnumerable<ISpatial> spatials)
         {
             foreach (var spatial in spatials)
+            {
                 Add(spatial);
+            }
         }
 
         /// <summary>
@@ -43,7 +46,9 @@ namespace NetGore
         public void Add<T>(IEnumerable<T> spatials) where T : class, ISpatial
         {
             foreach (var spatial in spatials)
+            {
                 Add(spatial);
+            }
         }
 
         /// <summary>
@@ -290,7 +295,7 @@ namespace NetGore
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public T GetEntity<T>(Vector2 p)
         {
-            return GetEntity<T>(p, x=> true);
+            return GetEntity<T>(p, x => true);
         }
 
         /// <summary>
@@ -343,5 +348,7 @@ namespace NetGore
         {
             _spatials.Remove(spatial);
         }
+
+        #endregion
     }
 }

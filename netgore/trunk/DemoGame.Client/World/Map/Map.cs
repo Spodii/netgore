@@ -2,15 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
-using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
@@ -258,7 +254,12 @@ namespace DemoGame.Client
             if (!DrawItems)
                 drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Item);
             if (!DrawMapGrhs)
-                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.SpriteBackground && x.MapRenderLayer != MapRenderLayer.SpriteForeground);
+            {
+                drawableInView =
+                    drawableInView.Where(
+                        x =>
+                        x.MapRenderLayer != MapRenderLayer.SpriteBackground && x.MapRenderLayer != MapRenderLayer.SpriteForeground);
+            }
 
             // Sort the drawable items then draw them one by one
             var sorted = drawableInView.OrderBy(x => x.MapRenderLayer);
@@ -271,18 +272,6 @@ namespace DemoGame.Client
             // Draw the particle effects
             _particleEffectRenderer.SpriteBatch = sb;
             _particleEffectRenderer.Draw(camera, ParticleEffects);
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
-        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
-        /// </summary>
-        /// <returns>
-        /// An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.
-        /// </returns>
-        protected override IEnumerable<Type> GetSpatialTypes()
-        {
-            return base.GetSpatialTypes().Concat(new Type[] { typeof(MapGrh) }) ;
         }
 
         /// <summary>
@@ -363,6 +352,18 @@ namespace DemoGame.Client
         IEnumerable<GrhIndex> GetMapGrhList()
         {
             return _mapGrhs.Select(x => x.Grh.GrhData.GrhIndex).Distinct().OrderBy(x => x);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
+        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
+        /// </summary>
+        /// <returns>
+        /// An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.
+        /// </returns>
+        protected override IEnumerable<Type> GetSpatialTypes()
+        {
+            return base.GetSpatialTypes().Concat(new Type[] { typeof(MapGrh) });
         }
 
         void LoadBackgroundImages(IValueReader r)

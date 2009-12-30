@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Server.DbObjs;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
@@ -62,7 +60,7 @@ namespace DemoGame.Server
 
             // NOTE: !! Temporarily disabled
 #if false
-            // NOTE: Create some test items
+    // NOTE: Create some test items
             Random rand = new Random();
             foreach (Map m in Maps)
             {
