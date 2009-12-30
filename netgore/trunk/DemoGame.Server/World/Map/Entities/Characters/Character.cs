@@ -1441,11 +1441,11 @@ namespace DemoGame.Server
             if (Map == null)
                 return position;
 
-            var tempCB = new CollisionBox(position, CB.Size.X, CB.Size.Y);
+            var tempRect = new Rectangle((int)position.X, (int)position.Y, (int)CB.Size.X, (int)CB.Size.Y);
 
             Vector2 closestLegalPosition;
             bool isClosestPositionValid;
-            if (!Map.IsValidPlacementPosition(tempCB, out closestLegalPosition, out isClosestPositionValid))
+            if (!Map.IsValidPlacementPosition(tempRect, out closestLegalPosition, out isClosestPositionValid))
             {
                 if (isClosestPositionValid)
                     return closestLegalPosition;

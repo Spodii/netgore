@@ -112,7 +112,7 @@ namespace DemoGame.Client
                 return validShopOwners.FirstOrDefault();
 
             // Return closest
-            return validShopOwners.MinElement(x => x.CB.GetDistance(source.CB));
+            return validShopOwners.MinElement(x => x.GetDistance(source));
         }
 
         void HandleGameControl_Attack(GameControl sender)

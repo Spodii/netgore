@@ -39,5 +39,27 @@ namespace NetGore
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
         event SpatialResizeEventHandler OnResize;
+
+        /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
+        /// occupies.</returns>
+        Rectangle ToRectangle();
+
+        /// <summary>
+        /// Gets the world coordinates of the top-left corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        Vector2 Position { get; }
+
+        /// <summary>
+        /// Gets the size of this <see cref="ISpatial"/>.
+        /// </summary>
+        Vector2 Size { get; }
+
+        /// <summary>
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        Vector2 Max { get; }
     }
 }

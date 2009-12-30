@@ -84,6 +84,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
+        /// occupies.</returns>
+        public Rectangle ToRectangle()
+        {
+            return CB.ToRectangle();
+        }
+
+        /// <summary>
         /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
         /// </summary>
         public Vector2 Position
@@ -99,6 +109,22 @@ namespace NetGore.Graphics
                 if (OnMove != null)
                     OnMove(this, oldPosition);
             }
+        }
+
+        /// <summary>
+        /// Gets the size of this <see cref="ISpatial"/>.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return CB.Size; }
+        }
+
+        /// <summary>
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        public Vector2 Max
+        {
+            get { return CB.Max; }
         }
 
         /// <summary>

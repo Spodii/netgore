@@ -22,7 +22,7 @@ namespace NetGore
         bool _isDisposed;
 
 #if !TOPDOWN
-        bool _onGround = false;
+        WallEntityBase _standingOn;
 #endif
 
         Vector2 _velocity;
@@ -127,27 +127,46 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets if the character is currently on the ground. This value only applies to moving entities. If using
-        /// a top-down perspective, this value is always true.
+        /// Gets the <see cref="WallEntityBase"/> that the <see cref="Entity"/> is standing on, or null if they are
+        /// not standing on anything (are not on the ground). If using a top-down perspective, this value is always null.
         /// </summary>
         [Browsable(false)]
-        public bool OnGround
+        public WallEntityBase StandingOn
         {
             get
             {
 #if TOPDOWN
-                return true;
+                return null;
 #else
-                return _onGround;
+                return _standingOn;
 #endif
             }
 
             internal set
             {
 #if !TOPDOWN
-                _onGround = value;
+                if (StandingOn == value)
+                    return;
+
+                _standingOn = value;
+
+                if (StandingOn != null)
+                {
+                    _velocity.Y = 0;
+                    CB.Teleport(new Vector2(Position.X, StandingOn.Position.Y - Size.Y));
+                }
 #endif
             }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
+        /// occupies.</returns>
+        public Rectangle ToRectangle()
+        {
+            return CB.ToRectangle();
         }
 
         /// <summary>
@@ -177,6 +196,14 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        public Vector2 Max
+        {
+            get { return CB.Max; }
+        }
+
+        /// <summary>
         /// Gets the velocity of the Entity.
         /// </summary>
         [Browsable(false)]
@@ -191,7 +218,7 @@ namespace NetGore
         [Category("Entity")]
         [DisplayName("Weight")]
         [Description(
-            "The weight of the Entity. Higher the weight, the greater the effects of the gravity, where 0 is unaffected by gravity."
+            "The weight of the Entity."+" Higher the weight, the greater the effects of the gravity, where 0 is unaffected by gravity."
             )]
         [DefaultValue(0.0f)]
         [Browsable(true)]
@@ -242,46 +269,21 @@ namespace NetGore
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
         protected virtual void HandleUpdate(IMap imap, float deltaTime)
         {
-#if !TOPDOWN
-            // If the Y velocity is non-zero, assume not on the ground
-            if (Velocity.Y != 0)
-                OnGround = false;
-#endif
-
             // If moving, perform collision detection
             if (Velocity != Vector2.Zero)
                 imap.CheckCollisions(this);
-        }
 
-        /// <summary>
-        /// Checks if this <see cref="Entity"/> contains a point.
-        /// </summary>
-        /// <param name="p">Point to check against.</param>
-        /// <returns>True if this <see cref="Entity"/> contains point <paramref name="p"/>; otherwise false.</returns>
-        public bool HitTest(Vector2 p)
-        {
-            return CB.HitTest(p);
-        }
-
-        /// <summary>
-        /// Checks if the <see cref="Entity"/> intersects with a CollisionBox.
-        /// </summary>
-        /// <param name="collisionBox">CollisionBox to check against.</param>
-        /// <returns>True if the two occupy any common space, else false.</returns>
-        public bool Intersect(CollisionBox collisionBox)
-        {
-            return CB.Intersect(collisionBox);
-        }
-
-        /// <summary>
-        /// Checks if the <see cref="Entity"/> intersects with another <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="other"><see cref="Entity"/> to check against.</param>
-        /// <returns>True if this <see cref="Entity"/> and the <paramref name="other"/> <see cref="Entity"/>
-        /// occupy any of the same world space; otherwise false.</returns>
-        public bool Intersect(Entity other)
-        {
-            return CB.Intersect(other.CB);
+#if !TOPDOWN
+            // If the entity is standing on a wall, make sure they are still standing on it. If they aren't, check if they
+            // are standing on top of something else.
+            if (StandingOn != null)
+            {
+                if (!StandingOn.IsEntityStandingOn(this))
+                {
+                    StandingOn = imap.FindStandingOn(this);
+                }
+            }
+#endif
         }
 
         /// <summary>
@@ -410,7 +412,7 @@ namespace NetGore
             Vector2 oldPos = Position;
 
             // Assume they are not on the ground after teleporting
-            OnGround = false;
+            StandingOn = null;
 
             // Teleport
             _collisionBox.Teleport(newPosition);
@@ -426,13 +428,22 @@ namespace NetGore
         public virtual void UpdateVelocity(float deltaTime)
         {
             // Only perform movement if moving
-            if (OnGround && Velocity == Vector2.Zero)
+            if (StandingOn != null && Velocity == Vector2.Zero)
                 return;
 
 #if !TOPDOWN
-            // Increase the velocity by the gravity
-            Vector2 displacement = _gravity * (Weight * deltaTime);
-            Vector2.Add(ref _velocity, ref displacement, out _velocity);
+            if (StandingOn != null)
+            {
+                if (!StandingOn.IsEntityStandingOn(this))
+                    StandingOn = null;
+            }
+
+            if (StandingOn == null)
+            {
+                // Increase the velocity by the gravity
+                Vector2 displacement = _gravity * (Weight * deltaTime);
+                Vector2.Add(ref _velocity, ref displacement, out _velocity);
+            }
 #endif
 
             // Check for surpassing the maximum velocity

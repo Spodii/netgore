@@ -44,5 +44,13 @@ namespace NetGore
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
         ISpatialCollection Spatial { get; }
+
+        /// <summary>
+        /// Finds the <see cref="WallEntityBase"/> that the <paramref name="stander"/> is standing on.
+        /// </summary>
+        /// <param name="stander">The <see cref="ISpatial"/> to check for standing on a <see cref="WallEntityBase"/>.</param>
+        /// <returns>The best-fit <see cref="WallEntityBase"/> that the <paramref name="stander"/> is standing on, or
+        /// null if they are not standing on any walls.</returns>
+        WallEntityBase FindStandingOn(ISpatial stander);
     }
 }

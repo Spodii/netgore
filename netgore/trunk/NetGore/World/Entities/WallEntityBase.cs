@@ -68,7 +68,19 @@ namespace NetGore
             set { }
         }
 
-        public static void HandleCollideInto(Entity other, Vector2 displacement)
+        /// <summary>
+        /// Checks if the <paramref name="spatial"/> is standing on this <see cref="WallEntityBase"/>.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to check if standing on this <see cref="WallEntityBase"/>.</param>
+        /// <returns>True if the <paramref name="spatial"/> is standing on this <see cref="WallEntityBase"/>; otherwise
+        /// false.</returns>
+        public bool IsEntityStandingOn(ISpatial spatial)
+        {
+            var rect = spatial.GetStandingAreaRect();
+            return this.Intersect(rect);
+        }
+
+        public void HandleCollideInto(Entity other, Vector2 displacement)
         {
             // Move the other entity away from the wall
             other.Move(displacement);
@@ -80,7 +92,7 @@ namespace NetGore
                 {
                     // Collision from falling (land on feet)
                     other.SetVelocity(new Vector2(other.Velocity.X, 0.0f));
-                    other.OnGround = true;
+                    other.StandingOn = this;
                 }
                 else if (other.Velocity.Y < 0 && displacement.Y > 0)
                 {

@@ -284,7 +284,7 @@ namespace DemoGame
 
             foreach (var other in collisionSources)
             {
-                var displacement = CollisionBox.MTD(entity.CB, other.CB, other.CollisionType);
+                var displacement = SpatialHelper.MTD(entity, other, other.CollisionType);
                 if (displacement != Vector2.Zero)
                 {
                     entity.CollideInto(other, displacement);
@@ -305,11 +305,11 @@ namespace DemoGame
             foreach (var wall in collisionSources)
             {
                 // Get the displacement vector if the two entities collided
-                var displacement = CollisionBox.MTD(entity.CB, wall.CB, wall.CollisionType);
+                var displacement = SpatialHelper.MTD(entity, wall, wall.CollisionType);
 
                 // If there is a displacement value, forward it to the collision notifiers
                 if (displacement != Vector2.Zero)
-                    WallEntityBase.HandleCollideInto(entity, displacement);
+                    wall.HandleCollideInto(entity, displacement);
             }
 
             // TODO: !! Ensure position is valid
@@ -510,48 +510,46 @@ namespace DemoGame
         /// <see cref="ISpatial"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to place around.</param>
-        /// <param name="cb">The <see cref="CollisionBox"/> describing the area to be placed.</param>
-        /// <returns>An IEnumerable of the min positions to place the <paramref name="cb"/> around the
+        /// <param name="r">The <see cref="Rectangle"/> describing the area to be placed.</param>
+        /// <returns>An IEnumerable of the min positions to place the <paramref name="r"/> around the
         /// given <paramref name="spatial"/>.</returns>
-        static IEnumerable<Vector2> GetPositionsAroundSpatial(ISpatial spatial, CollisionBox cb)
+        static IEnumerable<Vector2> GetPositionsAroundSpatial(ISpatial spatial, Rectangle r)
         {
-            var srcCB = spatial.CB;
-
             // Top
-            yield return new Vector2(cb.Min.X, srcCB.Min.Y - cb.Size.Y - 1);
+            yield return new Vector2(r.X, spatial.Position.Y - r.Height - 1);
 
             // Bottom
-            yield return new Vector2(cb.Min.X, srcCB.Max.Y + 1);
+            yield return new Vector2(r.X, spatial.Max.Y + 1);
 
             // Left
-            yield return new Vector2(srcCB.Min.X - cb.Size.X - 1, cb.Min.Y);
+            yield return new Vector2(spatial.Position.X - r.Width - 1, r.Y);
 
             // Right
-            yield return new Vector2(srcCB.Max.X + 1, cb.Min.Y);
+            yield return new Vector2(spatial.Max.X + 1, r.Y);
 
             // Top, left-aligned
-            yield return new Vector2(srcCB.Min.X, srcCB.Min.Y - cb.Size.Y - 1);
+            yield return new Vector2(spatial.Position.X, spatial.Position.Y - r.Height - 1);
 
             // Top, right-aligned
-            yield return new Vector2(srcCB.Max.X - cb.Size.X, srcCB.Min.Y - cb.Size.Y - 1);
+            yield return new Vector2(spatial.Max.X - r.Width, spatial.Position.Y - r.Height - 1);
 
             // Bottom, left-aligned
-            yield return new Vector2(srcCB.Min.X, srcCB.Max.Y + 1);
+            yield return new Vector2(spatial.Position.X, spatial.Max.Y + 1);
 
             // Bottom, right-aligned
-            yield return new Vector2(srcCB.Max.X - cb.Size.X, srcCB.Max.Y + 1);
+            yield return new Vector2(spatial.Max.X - r.Width, spatial.Max.Y + 1);
 
             // Left, top-aligned
-            yield return new Vector2(srcCB.Min.X - cb.Size.X - 1, srcCB.Min.Y);
+            yield return new Vector2(spatial.Position.X - r.Width - 1, spatial.Position.Y);
 
             // Left, bottom-aligned
-            yield return new Vector2(srcCB.Min.X - cb.Size.X - 1, srcCB.Max.Y - cb.Size.Y);
+            yield return new Vector2(spatial.Position.X - r.Width - 1, spatial.Max.Y - r.Height);
 
             // Right, top-aligned
-            yield return new Vector2(srcCB.Max.X + 1, srcCB.Min.Y);
+            yield return new Vector2(spatial.Max.X + 1, spatial.Position.Y);
 
             // Right, bottom-aligned
-            yield return new Vector2(srcCB.Max.X + 1, srcCB.Max.Y - cb.Size.Y);
+            yield return new Vector2(spatial.Max.X + 1, spatial.Max.Y - r.Height);
         }
 
         public bool IsInMapBoundaries(Vector2 min, Vector2 max)
@@ -612,18 +610,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Checks if a <see cref="CollisionBox"/> is in a place that is inside of the map and does not intersect
-        /// any <see cref="WallEntityBase"/>s.
-        /// </summary>
-        /// <param name="cb">The <see cref="CollisionBox"/> containing the placement to check.</param>
-        /// <returns>True if the <see cref="CollisionBox"/> is in an area that does not intersect any
-        /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
-        public bool IsValidPlacementPosition(CollisionBox cb)
-        {
-            return IsValidPlacementPosition(cb.ToRectangle());
-        }
-
-        /// <summary>
         /// Checks if a <see cref="Rectangle"/> is in a place that is inside of the map and does not intersect
         /// any <see cref="WallEntityBase"/>s.
         /// </summary>
@@ -645,7 +631,7 @@ namespace DemoGame
         /// Checks if a <see cref="CollisionBox"/> is in a place that is inside of the map and does not intersect
         /// any <see cref="WallEntityBase"/>s.
         /// </summary>
-        /// <param name="cb">The <see cref="CollisionBox"/> containing the placement to check.</param>
+        /// <param name="r">The <see cref="Rectangle"/> that represents the area to check.</param>
         /// <param name="closestValidPosition">When this method returns false, contains the closest valid position
         /// that the <see cref="CollisionBox"/> can be at to not intersect any <see cref="WallEntityBase"/>s.</param>
         /// <param name="validPositionFound">When this method returns false, contains if the
@@ -653,29 +639,29 @@ namespace DemoGame
         /// found that the <see cref="CollisionBox"/> could occupy without causing any intersections.</param>
         /// <returns>True if the <see cref="CollisionBox"/> is in an area that does not intersect any
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
-        public bool IsValidPlacementPosition(CollisionBox cb, out Vector2 closestValidPosition, out bool validPositionFound)
+        public bool IsValidPlacementPosition(Rectangle r, out Vector2 closestValidPosition, out bool validPositionFound)
         {
             // Perform the initial check to see if we need to even find a new position
-            if (IsValidPlacementPosition(cb))
+            if (IsValidPlacementPosition(r))
             {
                 // No intersections - already a valid position
-                closestValidPosition = cb.Min;
+                closestValidPosition = new Vector2(r.X, r.Y);
                 validPositionFound = true;
                 return true;
             }
 
             // Intersections were found, so we have to find a valid position
             // First, grab the walls in the region around the cb
-            var nearbyWallsRect = new Rectangle((int)cb.Min.X - _findValidPlacementPadding,
-                                                (int)cb.Min.Y - _findValidPlacementPadding,
-                                                (int)cb.Size.X + (_findValidPlacementPadding * 2),
-                                                (int)cb.Size.Y + (_findValidPlacementPadding * 2));
+            var nearbyWallsRect = new Rectangle(r.X - _findValidPlacementPadding,
+                                                r.Y - _findValidPlacementPadding,
+                                                r.Width + (_findValidPlacementPadding * 2),
+                                                r.Height + (_findValidPlacementPadding * 2));
             var nearbyWalls = Spatial.GetEntities<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
-            var cbSize = cb.Size;
+            var cbSize = new Vector2(r.Width, r.Height);
             var validPlacementPositions =
-                nearbyWalls.SelectMany(wall => GetPositionsAroundSpatial(wall, cb)).Where(p => IsValidPlacementPosition(p, cbSize));
+                nearbyWalls.SelectMany(wall => GetPositionsAroundSpatial(wall, r)).Where(p => IsValidPlacementPosition(p, cbSize));
 
             // If there are 0 legal positions, we're F'd in the A
             if (validPlacementPositions.Count() == 0)
@@ -688,7 +674,7 @@ namespace DemoGame
             {
                 // One or more legal positions found, so find the closest one and use that
                 validPositionFound = true;
-                var cbMin = cb.Min;
+                var cbMin = new Vector2(r.X, r.Y);
                 closestValidPosition = validPlacementPositions.MinElement(x => x.QuickDistance(cbMin));
             }
 
@@ -1084,28 +1070,28 @@ namespace DemoGame
             var ret = new Vector2(entity.Position.X, entity.Position.Y);
             var pos = entity.Position - new Vector2(maxDiff / 2f);
             var size = entity.CB.Size + new Vector2(maxDiff);
-            var newCB = new CollisionBox(pos, pos + size);
+            var newRect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 
             foreach (var e in Entities)
             {
                 var w = e as WallEntityBase;
-                if (w == null || w == entity || !w.CB.Intersect(newCB))
+                if (w == null || w == entity || !w.Intersect(newRect))
                     continue;
 
                 // Selected wall right side to target wall left side
-                if (Math.Abs(newCB.Max.X - w.CB.Min.X) < maxDiff)
+                if (Math.Abs(newRect.Right - w.Position.X) < maxDiff)
                     ret.X = w.CB.Min.X - entity.CB.Size.X;
 
                 // Selected wall left side to target wall right side
-                if (Math.Abs(w.CB.Max.X - newCB.Min.X) < maxDiff)
+                if (Math.Abs(w.Max.X - newRect.X) < maxDiff)
                     ret.X = w.CB.Max.X;
 
                 // Selected wall bottom to target wall top
-                if (Math.Abs(newCB.Max.Y - w.CB.Min.Y) < maxDiff)
+                if (Math.Abs(newRect.Bottom - w.Position.Y) < maxDiff)
                     ret.Y = w.CB.Min.Y - entity.CB.Size.Y;
 
                 // Selected wall top to target wall bottom
-                if (Math.Abs(w.CB.Max.Y - newCB.Min.Y) < maxDiff)
+                if (Math.Abs(w.Max.Y - newRect.Y) < maxDiff)
                     ret.Y = w.CB.Max.Y;
             }
 
@@ -1258,6 +1244,18 @@ namespace DemoGame
         {
             get { 
                 return _spatialCollection; }
+        }
+
+        /// <summary>
+        /// Finds the <see cref="WallEntityBase"/> that the <paramref name="stander"/> is standing on.
+        /// </summary>
+        /// <param name="stander">The <see cref="ISpatial"/> to check for standing on a <see cref="WallEntityBase"/>.</param>
+        /// <returns>The best-fit <see cref="WallEntityBase"/> that the <paramref name="stander"/> is standing on, or
+        /// null if they are not standing on any walls.</returns>
+        public WallEntityBase FindStandingOn(ISpatial stander)
+        {
+            var rect = stander.GetStandingAreaRect();
+            return Spatial.GetEntity<WallEntityBase>(rect);
         }
 
         /// <summary>
