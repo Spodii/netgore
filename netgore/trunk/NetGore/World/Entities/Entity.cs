@@ -17,9 +17,11 @@ namespace NetGore
 
         static readonly Vector2 _maxVelocity;
 
-        readonly CollisionBox _collisionBox;
         CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
+
+        Vector2 _position;
+        Vector2 _size;
 
 #if !TOPDOWN
         WallEntityBase _standingOn;
@@ -76,16 +78,8 @@ namespace NetGore
         /// <param name="size">The initial size.</param>
         protected Entity(Vector2 position, Vector2 size)
         {
-            _collisionBox = new CollisionBox(position, size.X, size.Y);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Entity"/>'s <see cref="CollisionBox"/> that describes the area they occupy.
-        /// </summary>
-        [Browsable(false)]
-        public CollisionBox CB
-        {
-            get { return _collisionBox; }
+            _position = position;
+            _size = size;
         }
 
         /// <summary>
@@ -153,7 +147,7 @@ namespace NetGore
                 if (StandingOn != null)
                 {
                     _velocity.Y = 0;
-                    CB.Teleport(new Vector2(Position.X, StandingOn.Position.Y - Size.Y));
+                    _position = new Vector2(Position.X, StandingOn.Position.Y - Size.Y);
                 }
 #endif
             }
@@ -166,7 +160,7 @@ namespace NetGore
         /// occupies.</returns>
         public Rectangle ToRectangle()
         {
-            return CB.ToRectangle();
+            return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
         }
 
         /// <summary>
@@ -178,7 +172,7 @@ namespace NetGore
         [Browsable(true)]
         public Vector2 Position
         {
-            get { return CB.Min; }
+            get { return _position; }
             set { Teleport(value); }
         }
 
@@ -191,7 +185,7 @@ namespace NetGore
         [Browsable(true)]
         public Vector2 Size
         {
-            get { return _collisionBox.Size; }
+            get { return _size; }
             set { Resize(value); }
         }
 
@@ -200,7 +194,7 @@ namespace NetGore
         /// </summary>
         public Vector2 Max
         {
-            get { return CB.Max; }
+            get { return Position + Size; }
         }
 
         /// <summary>
@@ -298,8 +292,8 @@ namespace NetGore
         protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight,
                                                  CollisionType collisionType)
         {
-            CB.Teleport(position);
-            CB.Resize(size);
+            _position = position;
+            _size = size;
             _velocity = velocity;
             _weight = weight;
             _ct = collisionType;
@@ -314,9 +308,9 @@ namespace NetGore
             if (adjustment == Vector2.Zero)
                 return;
 
-            Vector2 oldPos = _collisionBox.Min;
+            Vector2 oldPos = Position;
 
-            _collisionBox.Move(adjustment);
+            _position += adjustment;
 
             // Notify of movement
             if (OnMove != null)
@@ -326,15 +320,15 @@ namespace NetGore
         /// <summary>
         /// Resizes the <see cref="Entity"/>.
         /// </summary>
-        /// <param name="size">The new size of this <see cref="Entity"/>.</param>
-        public virtual void Resize(Vector2 size)
+        /// <param name="newSize">The new size of this <see cref="Entity"/>.</param>
+        public virtual void Resize(Vector2 newSize)
         {
-            if (size == _collisionBox.Size)
+            if (newSize == Size)
                 return;
 
-            Vector2 oldSize = _collisionBox.Size;
+            Vector2 oldSize = Size;
 
-            _collisionBox.Resize(size);
+            _size = newSize;
 
             if (OnResize != null)
                 OnResize(this, oldSize);
@@ -357,7 +351,7 @@ namespace NetGore
         /// <param name="newPosition">The new <see cref="Position"/> value.</param>
         protected internal void SetPositionRaw(Vector2 newPosition)
         {
-            CB.Teleport(newPosition);
+            _position = newPosition;
         }
 
         /// <summary>
@@ -367,7 +361,7 @@ namespace NetGore
         /// <param name="newSize">The new <see cref="Size"/> value.</param>
         protected internal void SetSizeRaw(Vector2 newSize)
         {
-            CB.Resize(newSize);
+            _size = newSize;
         }
 
         /// <summary>
@@ -409,13 +403,12 @@ namespace NetGore
             if (newPosition == Position)
                 return;
 
-            Vector2 oldPos = Position;
-
             // Assume they are not on the ground after teleporting
             StandingOn = null;
 
-            // Teleport
-            _collisionBox.Teleport(newPosition);
+            // Move the entity
+            Vector2 oldPos = Position;
+            _position = newPosition;
 
             if (OnMove != null)
                 OnMove(this, oldPos);

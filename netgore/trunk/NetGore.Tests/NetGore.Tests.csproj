@@ -97,7 +97,6 @@
     <Compile Include="NetGore\IO\XmlReaderCreationTests.cs" />
     <Compile Include="IValueReaderWriterTestHelper.cs" />
     <Compile Include="NetGore\ClampTests.cs" />
-    <Compile Include="NetGore\CollisionBoxTests.cs" />
     <Compile Include="NetGore\DynamicEntityTests.cs" />
     <Compile Include="NetGore\EntityTests.cs" />
     <Compile Include="NetGore\EnumHelperTests.cs" />
