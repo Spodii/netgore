@@ -74,7 +74,8 @@ namespace DemoGame.Client
             Draw(sb, tele.ToRectangle(), _teleSourceColor);
 
             // Dest
-            Rectangle destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X, (int)tele.Size.Y);
+            Rectangle destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X,
+                                               (int)tele.Size.Y);
             Draw(sb, destRect, _teleDestColor);
 
             // Arrow

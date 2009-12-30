@@ -97,6 +97,11 @@ namespace NetGore.Graphics
             }
         }
 
+        public Vector2 Size
+        {
+            get { return new Vector2(Width, Height); }
+        }
+
         /// <summary>
         /// Vertical line for the grid.
         /// </summary>
@@ -121,8 +126,6 @@ namespace NetGore.Graphics
                 _width = value;
             }
         }
-
-        public Vector2 Size { get { return new Vector2(Width, Height); } }
 
         /// <summary>
         /// Aligns an object's position to the grid.
@@ -219,7 +222,7 @@ namespace NetGore.Graphics
             }
 
             Vector2 newPos = (entity.Position / Size).Round() * Size;
- 
+
             // TODO: map.SafeTeleportEntity()
             entity.Teleport(newPos);
         }
@@ -237,7 +240,7 @@ namespace NetGore.Graphics
             }
 
             Vector2 newSize = (entity.Size / Size).Round() * Size;
-  
+
             if (newSize.X < Size.X)
                 newSize.X = Size.X;
             if (newSize.Y < Size.Y)

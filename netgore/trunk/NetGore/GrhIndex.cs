@@ -1,9 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using NetGore;
+using System.Data;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore
@@ -785,42 +783,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Parses the GrhIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The GrhIndex parsed from the string.</returns>
-        public static GrhIndex ParseGrhIndex(this Parser parser, string value)
-        {
-            return new GrhIndex(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the GrhIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed GrhIndex.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out GrhIndex outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new GrhIndex(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the GrhIndex from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the GrhIndex from.</param>
-        /// <returns>The GrhIndex read from the BitStream.</returns>
-        public static GrhIndex ReadGrhIndex(this BitStream bitStream)
-        {
-            return GrhIndex.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the GrhIndex from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the GrhIndex from.</param>
@@ -843,6 +805,27 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Parses the GrhIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The GrhIndex parsed from the string.</returns>
+        public static GrhIndex ParseGrhIndex(this Parser parser, string value)
+        {
+            return new GrhIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the GrhIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the GrhIndex from.</param>
+        /// <returns>The GrhIndex read from the BitStream.</returns>
+        public static GrhIndex ReadGrhIndex(this BitStream bitStream)
+        {
+            return GrhIndex.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the GrhIndex from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the GrhIndex from.</param>
@@ -851,6 +834,21 @@ namespace NetGore
         public static GrhIndex ReadGrhIndex(this IValueReader valueReader, string name)
         {
             return GrhIndex.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the GrhIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed GrhIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out GrhIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new GrhIndex(tmp);
+            return ret;
         }
 
         /// <summary>

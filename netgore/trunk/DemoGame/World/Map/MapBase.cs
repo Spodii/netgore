@@ -57,8 +57,6 @@ namespace DemoGame
         /// </summary>
         readonly DArray<DynamicEntity> _dynamicEntities = new DArray<DynamicEntity>(true);
 
-        readonly ISpatialCollection _spatialCollection;
-
         /// <summary>
         /// List of entities in the map
         /// </summary>
@@ -73,6 +71,8 @@ namespace DemoGame
         /// Index of the map
         /// </summary>
         readonly MapIndex _mapIndex;
+
+        readonly ISpatialCollection _spatialCollection;
 
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
 
@@ -124,35 +124,6 @@ namespace DemoGame
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _updateStopWatch.Start();
-        }
-
-        /// <summary>
-        /// Creates the <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.
-        /// </summary>
-        /// <returns>The <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.</returns>
-        protected virtual ISpatialCollection CreateSpatialManager()
-        {
-            return new SpatialManager(GetSpatialTypes(), CreateSpatialCollection);
-        }
-
-        /// <summary>
-        /// Describes how to create the <see cref="ISpatialCollection"/> to be used by the map. This can be overridden
-        /// in the derived class to provide a different <see cref="ISpatialCollection"/> implementation.
-        /// </summary>
-        /// <returns>The <see cref="ISpatialCollection"/> to be used by the map.</returns>
-        protected virtual ISpatialCollection CreateSpatialCollection()
-        {
-            return new LinearSpatialCollection();
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
-        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
-        /// </summary>
-        /// <returns>An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.</returns>
-        protected virtual IEnumerable<Type> GetSpatialTypes()
-        {
-            return new Type[] { typeof(Entity), typeof(DynamicEntity), typeof(CharacterEntity), typeof(WallEntityBase), typeof(ItemEntityBase) };
         }
 
         /// <summary>
@@ -333,6 +304,25 @@ namespace DemoGame
                 Debug.Assert(!this.GetSpatial<WallEntityBase>().ContainsEntities<WallEntityBase>(entity.CB));
             }
             */
+        }
+
+        /// <summary>
+        /// Describes how to create the <see cref="ISpatialCollection"/> to be used by the map. This can be overridden
+        /// in the derived class to provide a different <see cref="ISpatialCollection"/> implementation.
+        /// </summary>
+        /// <returns>The <see cref="ISpatialCollection"/> to be used by the map.</returns>
+        protected virtual ISpatialCollection CreateSpatialCollection()
+        {
+            return new LinearSpatialCollection();
+        }
+
+        /// <summary>
+        /// Creates the <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.
+        /// </summary>
+        /// <returns>The <see cref="ISpatialCollection"/> to be used for the spatial objects on the map.</returns>
+        protected virtual ISpatialCollection CreateSpatialManager()
+        {
+            return new SpatialManager(GetSpatialTypes(), CreateSpatialCollection);
         }
 
         /// <summary>
@@ -552,6 +542,17 @@ namespace DemoGame
             yield return new Vector2(spatial.Max.X + 1, spatial.Max.Y - r.Height);
         }
 
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
+        /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
+        /// </summary>
+        /// <returns>An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.</returns>
+        protected virtual IEnumerable<Type> GetSpatialTypes()
+        {
+            return new Type[]
+            { typeof(Entity), typeof(DynamicEntity), typeof(CharacterEntity), typeof(WallEntityBase), typeof(ItemEntityBase) };
+        }
+
         public bool IsInMapBoundaries(Vector2 min, Vector2 max)
         {
             return IsInMapBoundaries(min) && IsInMapBoundaries(max);
@@ -647,8 +648,7 @@ namespace DemoGame
 
             // Intersections were found, so we have to find a valid position
             // First, grab the walls in the region around the cb
-            var nearbyWallsRect = new Rectangle(r.X - _findValidPlacementPadding,
-                                                r.Y - _findValidPlacementPadding,
+            var nearbyWallsRect = new Rectangle(r.X - _findValidPlacementPadding, r.Y - _findValidPlacementPadding,
                                                 r.Width + (_findValidPlacementPadding * 2),
                                                 r.Height + (_findValidPlacementPadding * 2));
             var nearbyWalls = Spatial.GetEntities<WallEntityBase>(nearbyWallsRect);
@@ -1233,8 +1233,7 @@ namespace DemoGame
         /// </summary>
         public ISpatialCollection Spatial
         {
-            get { 
-                return _spatialCollection; }
+            get { return _spatialCollection; }
         }
 
         /// <summary>

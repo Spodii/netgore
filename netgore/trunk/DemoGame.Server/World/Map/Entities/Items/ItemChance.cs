@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using NetGore;
 using NetGore.IO;
 
@@ -202,6 +201,30 @@ namespace DemoGame.Server
             bitStream.Write(_value);
         }
 
+        #region IComparable<int> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        public int CompareTo(int other)
+        {
+            return _value.CompareTo(other);
+        }
+
+        #endregion
+
         #region IComparable<ItemChance> Members
 
         /// <summary>
@@ -223,30 +246,6 @@ namespace DemoGame.Server
         public int CompareTo(ItemChance other)
         {
             return _value.CompareTo(other._value);
-        }
-
-        #endregion
-
-        #region IComparable<int> Members
-
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        public int CompareTo(int other)
-        {
-            return _value.CompareTo(other);
         }
 
         #endregion
@@ -818,42 +817,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Parses the ItemChance from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The ItemChance parsed from the string.</returns>
-        public static ItemChance ParseItemChance(this Parser parser, string value)
-        {
-            return new ItemChance(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the ItemChance from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed ItemChance.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out ItemChance outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new ItemChance(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the ItemChance from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the ItemChance from.</param>
-        /// <returns>The ItemChance read from the BitStream.</returns>
-        public static ItemChance ReadItemChance(this BitStream bitStream)
-        {
-            return ItemChance.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the ItemChance from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the ItemChance from.</param>
@@ -876,6 +839,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Parses the ItemChance from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The ItemChance parsed from the string.</returns>
+        public static ItemChance ParseItemChance(this Parser parser, string value)
+        {
+            return new ItemChance(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the ItemChance from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the ItemChance from.</param>
+        /// <returns>The ItemChance read from the BitStream.</returns>
+        public static ItemChance ReadItemChance(this BitStream bitStream)
+        {
+            return ItemChance.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the ItemChance from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the ItemChance from.</param>
@@ -884,6 +868,21 @@ namespace DemoGame.Server
         public static ItemChance ReadItemChance(this IValueReader valueReader, string name)
         {
             return ItemChance.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the ItemChance from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed ItemChance.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out ItemChance outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new ItemChance(tmp);
+            return ret;
         }
 
         /// <summary>

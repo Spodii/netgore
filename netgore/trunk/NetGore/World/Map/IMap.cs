@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -26,6 +25,11 @@ namespace NetGore
         Vector2 Size { get; }
 
         /// <summary>
+        /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
+        /// </summary>
+        ISpatialCollection Spatial { get; }
+
+        /// <summary>
         /// Gets the width of the map in pixels.
         /// </summary>
         float Width { get; }
@@ -39,11 +43,6 @@ namespace NetGore
         /// CollisionType.None, or if null, this will always return 0 and no collision detection
         /// will take place.</param>
         void CheckCollisions(Entity entity);
-
-        /// <summary>
-        /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
-        /// </summary>
-        ISpatialCollection Spatial { get; }
 
         /// <summary>
         /// Finds the <see cref="WallEntityBase"/> that the <paramref name="stander"/> is standing on.

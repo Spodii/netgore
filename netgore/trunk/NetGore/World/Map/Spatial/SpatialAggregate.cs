@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -42,7 +41,9 @@ namespace NetGore
         public void SetAreaSize(Vector2 size)
         {
             foreach (var spatial in _spatials)
+            {
                 spatial.SetAreaSize(size);
+            }
         }
 
         /// <summary>

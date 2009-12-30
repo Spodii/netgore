@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -36,11 +33,9 @@ namespace NetGore
         event SpatialResizeEventHandler OnResize;
 
         /// <summary>
-        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
         /// </summary>
-        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
-        /// occupies.</returns>
-        Rectangle ToRectangle();
+        Vector2 Max { get; }
 
         /// <summary>
         /// Gets the world coordinates of the top-left corner of this <see cref="ISpatial"/>.
@@ -53,8 +48,10 @@ namespace NetGore
         Vector2 Size { get; }
 
         /// <summary>
-        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
         /// </summary>
-        Vector2 Max { get; }
+        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
+        /// occupies.</returns>
+        Rectangle ToRectangle();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -12,8 +11,9 @@ namespace NetGore
     /// </summary>
     public class SpatialManager : ISpatialCollection
     {
-        readonly SpatialTypeTree _treeRoot;
         readonly ISpatialCollection _rootSpatial;
+        readonly IDictionary<Type, ISpatialCollection> _spatialCollectionCache = new Dictionary<Type, ISpatialCollection>();
+        readonly SpatialTypeTree _treeRoot;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpatialManager"/> class.
@@ -32,6 +32,40 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the <see cref="ISpatialCollection"/> that contains all <see cref="ISpatial"/>s of the specified
+        /// type.
+        /// </summary>
+        /// <param name="type">The type of <see cref="ISpatial"/> that the returned <see cref="ISpatialCollection"/>
+        /// must contain.</param>
+        /// <returns>
+        /// The <see cref="ISpatialCollection"/> containing all <see cref="ISpatial"/>s of type <paramref name="type"/>.
+        /// The returned <see cref="ISpatialCollection"/> is guaranteed to return all <see cref="ISpatial"/>s of type
+        /// <paramref name="type"/>, but is not required contain only that type.
+        /// </returns>
+        ISpatialCollection GetSpatialCollection(Type type)
+        {
+            // We know that anything that isn't a class will just return the root node anyways, so don't cache it
+            if (!type.IsClass)
+                return _rootSpatial;
+
+            /*
+            // Cache the ISpatialCollection for each Type on the first request since the tree will never change, and
+            // this will allow us to avoid a lot of Type-testing and tree crawling
+            ISpatialCollection spatialCollection;
+            if (!_spatialCollectionCache.TryGetValue(type, out spatialCollection))
+            {
+                spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
+                _spatialCollectionCache.Add(type, spatialCollection);
+            }
+            */
+            var spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
+
+            return spatialCollection;
+        }
+
+        #region ISpatialCollection Members
+
+        /// <summary>
         /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
         /// </summary>
         /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
@@ -47,7 +81,9 @@ namespace NetGore
         public void Add(IEnumerable<ISpatial> spatials)
         {
             foreach (var spatial in spatials)
+            {
                 Add(spatial);
+            }
         }
 
         /// <summary>
@@ -58,7 +94,9 @@ namespace NetGore
         public void Add<T>(IEnumerable<T> spatials) where T : class, ISpatial
         {
             foreach (var spatial in spatials)
+            {
                 Add(spatial);
+            }
         }
 
         /// <summary>
@@ -359,39 +397,7 @@ namespace NetGore
             GetSpatialCollection(spatial.GetType()).Remove(spatial);
         }
 
-        /// <summary>
-        /// Gets the <see cref="ISpatialCollection"/> that contains all <see cref="ISpatial"/>s of the specified
-        /// type.
-        /// </summary>
-        /// <param name="type">The type of <see cref="ISpatial"/> that the returned <see cref="ISpatialCollection"/>
-        /// must contain.</param>
-        /// <returns>
-        /// The <see cref="ISpatialCollection"/> containing all <see cref="ISpatial"/>s of type <paramref name="type"/>.
-        /// The returned <see cref="ISpatialCollection"/> is guaranteed to return all <see cref="ISpatial"/>s of type
-        /// <paramref name="type"/>, but is not required contain only that type.
-        /// </returns>
-        ISpatialCollection GetSpatialCollection(Type type)
-        {
-            // We know that anything that isn't a class will just return the root node anyways, so don't cache it
-            if (!type.IsClass)
-                return _rootSpatial;
-
-            /*
-            // Cache the ISpatialCollection for each Type on the first request since the tree will never change, and
-            // this will allow us to avoid a lot of Type-testing and tree crawling
-            ISpatialCollection spatialCollection;
-            if (!_spatialCollectionCache.TryGetValue(type, out spatialCollection))
-            {
-                spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
-                _spatialCollectionCache.Add(type, spatialCollection);
-            }
-            */
-            var spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
-
-            return spatialCollection;
-        }
-
-        readonly IDictionary<Type, ISpatialCollection> _spatialCollectionCache = new Dictionary<Type, ISpatialCollection>();
+        #endregion
 
         /// <summary>
         /// Implementation of the <see cref="ClassTypeTree"/> that attaches an <see cref="ISpatialCollection"/> to each
@@ -423,12 +429,29 @@ namespace NetGore
             /// <param name="parent">The parent.</param>
             /// <param name="selfType">Type of the this node.</param>
             /// <param name="types">The possible child types.</param>
-            SpatialTypeTree(ClassTypeTree parent, Type selfType, IEnumerable<Type> types)
-                : base(parent, selfType, types)
+            SpatialTypeTree(ClassTypeTree parent, Type selfType, IEnumerable<Type> types) : base(parent, selfType, types)
             {
             }
 
-            public ISpatialCollection SpatialCollection { get { return _spatialCollection; } }
+            public ISpatialCollection SpatialCollection
+            {
+                get { return _spatialCollection; }
+            }
+
+            /// <summary>
+            /// Creates a <see cref="ClassTypeTree"/> using the given values. This allows derived types of the
+            /// <see cref="ClassTypeTree"/> to have their derived type be used for every node in the tree.
+            /// </summary>
+            /// <param name="parent">The parent node.</param>
+            /// <param name="selfType">The type of this node.</param>
+            /// <param name="types">All of the possible child nodes.</param>
+            /// <returns>
+            /// A <see cref="ClassTypeTree"/> using the given values.
+            /// </returns>
+            protected override ClassTypeTree CreateNode(ClassTypeTree parent, Type selfType, IEnumerable<Type> types)
+            {
+                return new SpatialTypeTree(parent, selfType, types);
+            }
 
             void CreateSpatialCollection(Func<ISpatialCollection> createSpatial)
             {
@@ -448,21 +471,6 @@ namespace NetGore
                     // The leaf is easier to handle - just build a single spatial collection (not an aggregate)
                     _spatialCollection = createSpatial();
                 }
-            }
-
-            /// <summary>
-            /// Creates a <see cref="ClassTypeTree"/> using the given values. This allows derived types of the
-            /// <see cref="ClassTypeTree"/> to have their derived type be used for every node in the tree.
-            /// </summary>
-            /// <param name="parent">The parent node.</param>
-            /// <param name="selfType">The type of this node.</param>
-            /// <param name="types">All of the possible child nodes.</param>
-            /// <returns>
-            /// A <see cref="ClassTypeTree"/> using the given values.
-            /// </returns>
-            protected override ClassTypeTree CreateNode(ClassTypeTree parent, Type selfType, IEnumerable<Type> types)
-            {
-                return new SpatialTypeTree(parent, selfType, types);
             }
         }
     }

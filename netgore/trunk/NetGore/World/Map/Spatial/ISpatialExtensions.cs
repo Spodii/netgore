@@ -10,33 +10,6 @@ namespace NetGore
     public static class ISpatialExtensions
     {
         /// <summary>
-        /// Gets a <see cref="Rectangle"/> that represents the area that represents where this <see cref="ISpatial"/>
-        /// is standing.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/>.</param>
-        /// <returns>A <see cref="Rectangle"/> that represents the area that represents where this <see cref="ISpatial"/>
-        /// is standing.</returns>
-        public static Rectangle GetStandingAreaRect(this ISpatial spatial)
-        {
-            var min = spatial.Position;
-            var size = spatial.Size;
-            var r = new Rectangle((int)min.X + 1, (int)(min.Y + size.Y - 1), (int)size.X - 2, 2);
-            return r;
-        }
-
-        /// <summary>
-        /// Gets if an <see cref="ISpatial"/> and <see cref="Rectangle"/> occupy any common space.
-        /// </summary>
-        /// <param name="a">The <see cref="ISpatial"/>.</param>
-        /// <param name="b">The <see cref="Rectangle"/>.</param>
-        /// <returns>True if the two occupy any common space; otherwise false.</returns>
-        public static bool Intersect(this ISpatial a, Rectangle b)
-        {
-            // TODO: !! Rename to Intersects
-            return a.ToRectangle().Intersects(b);
-        }
-
-        /// <summary>
         /// Gets if an <see cref="ISpatial"/> is fully contained inside of another <see cref="ISpatial"/>. That is, if
         /// the <see cref="contained"/> resides completely inside of the <see cref="container"/>.
         /// </summary>
@@ -60,33 +33,6 @@ namespace NetGore
         public static bool Contains(this ISpatial container, Rectangle contained)
         {
             return container.ToRectangle().Contains(contained);
-        }
-
-        /// <summary>
-        /// Gets if an <see cref="ISpatial"/> and another <see cref="ISpatial"/> occupy any common space.
-        /// </summary>
-        /// <param name="a">The first <see cref="ISpatial"/>.</param>
-        /// <param name="b">The other <see cref="ISpatial"/>.</param>
-        /// <returns>True if the two occupy any common space; otherwise false.</returns>
-        public static bool Intersect(this ISpatial a, ISpatial b)
-        {
-            // TODO: !! Rename to Intersects
-            return a.ToRectangle().Intersects(b.ToRectangle());
-        }
-
-        /// <summary>
-        /// Checks if the <see cref="ISpatial"/> contains a point.
-        /// </summary>
-        /// <param name="spatial">The spatial.</param>
-        /// <param name="p">Point to check if the <paramref name="spatial"/> contains.</param>
-        /// <returns>True if the <paramref name="spatial"/> contains <paramref name="p"/>; otherwise false.</returns>
-        public static bool HitTest(this ISpatial spatial, Vector2 p)
-        {
-            // TODO: !! Rename to Contains
-            var min = spatial.Position;
-            var max = spatial.Max;
-
-            return (min.X <= p.X && max.X >= p.X && min.Y <= p.Y && max.Y >= p.Y);
         }
 
         /// <summary>
@@ -115,6 +61,60 @@ namespace NetGore
         public static int GetDistance(this ISpatial spatial, Rectangle other)
         {
             return spatial.ToRectangle().GetDistance(other);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the area that represents where this <see cref="ISpatial"/>
+        /// is standing.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/>.</param>
+        /// <returns>A <see cref="Rectangle"/> that represents the area that represents where this <see cref="ISpatial"/>
+        /// is standing.</returns>
+        public static Rectangle GetStandingAreaRect(this ISpatial spatial)
+        {
+            var min = spatial.Position;
+            var size = spatial.Size;
+            var r = new Rectangle((int)min.X + 1, (int)(min.Y + size.Y - 1), (int)size.X - 2, 2);
+            return r;
+        }
+
+        /// <summary>
+        /// Checks if the <see cref="ISpatial"/> contains a point.
+        /// </summary>
+        /// <param name="spatial">The spatial.</param>
+        /// <param name="p">Point to check if the <paramref name="spatial"/> contains.</param>
+        /// <returns>True if the <paramref name="spatial"/> contains <paramref name="p"/>; otherwise false.</returns>
+        public static bool HitTest(this ISpatial spatial, Vector2 p)
+        {
+            // TODO: !! Rename to Contains
+            var min = spatial.Position;
+            var max = spatial.Max;
+
+            return (min.X <= p.X && max.X >= p.X && min.Y <= p.Y && max.Y >= p.Y);
+        }
+
+        /// <summary>
+        /// Gets if an <see cref="ISpatial"/> and <see cref="Rectangle"/> occupy any common space.
+        /// </summary>
+        /// <param name="a">The <see cref="ISpatial"/>.</param>
+        /// <param name="b">The <see cref="Rectangle"/>.</param>
+        /// <returns>True if the two occupy any common space; otherwise false.</returns>
+        public static bool Intersect(this ISpatial a, Rectangle b)
+        {
+            // TODO: !! Rename to Intersects
+            return a.ToRectangle().Intersects(b);
+        }
+
+        /// <summary>
+        /// Gets if an <see cref="ISpatial"/> and another <see cref="ISpatial"/> occupy any common space.
+        /// </summary>
+        /// <param name="a">The first <see cref="ISpatial"/>.</param>
+        /// <param name="b">The other <see cref="ISpatial"/>.</param>
+        /// <returns>True if the two occupy any common space; otherwise false.</returns>
+        public static bool Intersect(this ISpatial a, ISpatial b)
+        {
+            // TODO: !! Rename to Intersects
+            return a.ToRectangle().Intersects(b.ToRectangle());
         }
     }
 }

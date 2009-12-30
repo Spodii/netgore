@@ -1,9 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using NetGore;
+using System.Data;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Audio
@@ -169,6 +167,30 @@ namespace NetGore.Audio
             bitStream.Write(_value);
         }
 
+        #region IComparable<int> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        public int CompareTo(int other)
+        {
+            return _value.CompareTo(other);
+        }
+
+        #endregion
+
         #region IComparable<SoundID> Members
 
         /// <summary>
@@ -190,30 +212,6 @@ namespace NetGore.Audio
         public int CompareTo(SoundID other)
         {
             return _value.CompareTo(other._value);
-        }
-
-        #endregion
-
-        #region IComparable<int> Members
-
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        public int CompareTo(int other)
-        {
-            return _value.CompareTo(other);
         }
 
         #endregion
@@ -785,42 +783,6 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Parses the SoundID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The SoundID parsed from the string.</returns>
-        public static SoundID ParseSoundID(this Parser parser, string value)
-        {
-            return new SoundID(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the SoundID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed SoundID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out SoundID outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new SoundID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the SoundID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the SoundID from.</param>
-        /// <returns>The SoundID read from the BitStream.</returns>
-        public static SoundID ReadSoundID(this BitStream bitStream)
-        {
-            return SoundID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the SoundID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the SoundID from.</param>
@@ -843,6 +805,27 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// Parses the SoundID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The SoundID parsed from the string.</returns>
+        public static SoundID ParseSoundID(this Parser parser, string value)
+        {
+            return new SoundID(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the SoundID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the SoundID from.</param>
+        /// <returns>The SoundID read from the BitStream.</returns>
+        public static SoundID ReadSoundID(this BitStream bitStream)
+        {
+            return SoundID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the SoundID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the SoundID from.</param>
@@ -851,6 +834,21 @@ namespace NetGore.Audio
         public static SoundID ReadSoundID(this IValueReader valueReader, string name)
         {
             return SoundID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the SoundID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed SoundID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out SoundID outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new SoundID(tmp);
+            return ret;
         }
 
         /// <summary>

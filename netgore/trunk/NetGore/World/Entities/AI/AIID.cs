@@ -1,9 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using NetGore;
+using System.Data;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.AI
@@ -785,42 +783,6 @@ namespace NetGore.AI
         }
 
         /// <summary>
-        /// Parses the AIID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The AIID parsed from the string.</returns>
-        public static AIID ParseAIID(this Parser parser, string value)
-        {
-            return new AIID(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the AIID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed AIID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out AIID outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new AIID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the AIID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the AIID from.</param>
-        /// <returns>The AIID read from the BitStream.</returns>
-        public static AIID ReadAIID(this BitStream bitStream)
-        {
-            return AIID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the AIID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the AIID from.</param>
@@ -843,6 +805,27 @@ namespace NetGore.AI
         }
 
         /// <summary>
+        /// Parses the AIID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The AIID parsed from the string.</returns>
+        public static AIID ParseAIID(this Parser parser, string value)
+        {
+            return new AIID(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the AIID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the AIID from.</param>
+        /// <returns>The AIID read from the BitStream.</returns>
+        public static AIID ReadAIID(this BitStream bitStream)
+        {
+            return AIID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the AIID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the AIID from.</param>
@@ -851,6 +834,21 @@ namespace NetGore.AI
         public static AIID ReadAIID(this IValueReader valueReader, string name)
         {
             return AIID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the AIID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed AIID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out AIID outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new AIID(tmp);
+            return ret;
         }
 
         /// <summary>

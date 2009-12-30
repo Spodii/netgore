@@ -14,31 +14,6 @@ namespace NetGore
         readonly Type _selfType;
 
         /// <summary>
-        /// Gets if this <see cref="ClassTypeTree"/> node is a leaf node (has no children).
-        /// </summary>
-        public bool IsLeaf { get { return _children == null; } }
-
-        /// <summary>
-        /// Gets all of the nodes in the whole tree.
-        /// </summary>
-        /// <returns>All of the nodes in the whole tree.</returns>
-        public IEnumerable<ClassTypeTree> GetAllNodes()
-        {
-            return Root.GetAllNodesInternal();
-        }
-
-        IEnumerable<ClassTypeTree> GetAllNodesInternal()
-        {
-            yield return this;
-
-            foreach (var child in Children)
-            {
-                foreach (var c in child.GetAllNodesInternal())
-                    yield return c;
-            }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ClassTypeTree"/> class.
         /// </summary>
         /// <param name="types">The types to build the tree out of.</param>
@@ -130,6 +105,14 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets if this <see cref="ClassTypeTree"/> node is a leaf node (has no children).
+        /// </summary>
+        public bool IsLeaf
+        {
+            get { return _children == null; }
+        }
+
+        /// <summary>
         /// Gets this node's parent node. Only null if this is the root node.
         /// </summary>
         public ClassTypeTree Parent
@@ -204,6 +187,28 @@ namespace NetGore
             return InternalFind(findType);
         }
 
+        /// <summary>
+        /// Gets all of the nodes in the whole tree.
+        /// </summary>
+        /// <returns>All of the nodes in the whole tree.</returns>
+        public IEnumerable<ClassTypeTree> GetAllNodes()
+        {
+            return Root.GetAllNodesInternal();
+        }
+
+        IEnumerable<ClassTypeTree> GetAllNodesInternal()
+        {
+            yield return this;
+
+            foreach (var child in Children)
+            {
+                foreach (var c in child.GetAllNodesInternal())
+                {
+                    yield return c;
+                }
+            }
+        }
+
         ClassTypeTree InternalFind(Type findType)
         {
             if (findType == Type)
@@ -218,7 +223,7 @@ namespace NetGore
             {
                 // Grab the non-wildcard children since the last thing we want to match against is the wildcard
                 var nonWildcardChildren = Children.Where(x => x.Type != null);
-                
+
                 // Check if any of the child types can be assigned from (or are equal to) the type to find
                 foreach (var child in nonWildcardChildren)
                 {
