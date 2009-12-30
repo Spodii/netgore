@@ -13,9 +13,10 @@ namespace NetGore.Graphics
     /// </summary>
     public class MapGrh : ISpatial, IDrawable
     {
-        readonly CollisionBox _cb;
         readonly Grh _grh;
+
         bool _isForeground;
+        Vector2 _position;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrh"/> class.
@@ -33,9 +34,8 @@ namespace NetGore.Graphics
             }
 
             _grh = grh;
+            _position = position;
             IsForeground = isForeground;
-
-            _cb = new CollisionBox(position, _grh.Width, _grh.Height);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NetGore.Graphics
             _isForeground = reader.ReadBool("IsForeground");
 
             _grh = new Grh(grhIndex, AnimType.Loop, currentTime);
-            _cb = new CollisionBox(position, _grh.Width, _grh.Height);
+            _position = position;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NetGore.Graphics
         /// occupies.</returns>
         public Rectangle ToRectangle()
         {
-            return CB.ToRectangle();
+            return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
         }
 
         /// <summary>
@@ -98,13 +98,13 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Position
         {
-            get { return CB.Min; }
+            get { return _position; }
             set {
                 if (Position == value)
                     return;
 
                 var oldPosition = Position;
-                CB.Teleport(value);
+                _position = value;
 
                 if (OnMove != null)
                     OnMove(this, oldPosition);
@@ -116,7 +116,8 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Size
         {
-            get { return CB.Size; }
+            get {
+                return _grh.Size; }
         }
 
         /// <summary>
@@ -124,7 +125,7 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Max
         {
-            get { return CB.Max; }
+            get { return Position + Size; }
         }
 
         /// <summary>
@@ -193,14 +194,6 @@ namespace NetGore.Graphics
         #endregion
 
         #region ISpatial Members
-
-        /// <summary>
-        /// Gets the <see cref="CollisionBox"/> used to determine the location of the object in the world.
-        /// </summary>
-        public CollisionBox CB
-        {
-            get { return _cb; }
-        }
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.

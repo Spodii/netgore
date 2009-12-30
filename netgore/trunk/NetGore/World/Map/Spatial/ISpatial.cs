@@ -26,11 +26,6 @@ namespace NetGore
     public interface ISpatial
     {
         /// <summary>
-        /// Gets the <see cref="CollisionBox"/> used to determine the location of the object in the world.
-        /// </summary>
-        CollisionBox CB { get; }
-
-        /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
         event SpatialMoveEventHandler OnMove;

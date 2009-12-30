@@ -205,7 +205,6 @@
     <Compile Include="World\Entities\IUpdateableEntity.cs" />
     <Compile Include="World\Entities\IUsableEntity.cs" />
     <Compile Include="World\Entities\BoxSide.cs" />
-    <Compile Include="World\Entities\CollisionBox.cs" />
     <Compile Include="World\Entities\CollisionType.cs" />
     <Compile Include="World\Entities\DynamicEntity.cs" />
     <Compile Include="World\Entities\DynamicEntityFactoryBase.cs" />
