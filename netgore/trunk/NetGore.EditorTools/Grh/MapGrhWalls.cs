@@ -89,7 +89,7 @@ namespace NetGore.EditorTools
                 foreach (WallEntityBase wall in mgWalls)
                 {
                     var position = mg.Position + wall.Position;
-                    var size = wall.CB.Size;
+                    var size = wall.Size;
                     var type = wall.CollisionType;
 
                     var newWallEntity = createWall(position, size, type);
