@@ -58,8 +58,11 @@ namespace NetGore
             /// <filterpriority>1</filterpriority>
             public IEnumerator<ISpatial> GetEnumerator()
             {
-                foreach (var spatial in _spatials)
-                    yield return spatial;
+                if (_spatials != null)
+                {
+                    foreach (var spatial in _spatials)
+                        yield return spatial;
+                }
             }
 
             /// <summary>
@@ -80,7 +83,15 @@ namespace NetGore
             /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
             public void Add(ISpatial spatial)
             {
-                Array.Resize(ref _spatials, _spatials.Length + 1);
+                if (_spatials == null)
+                {
+                    _spatials = new ISpatial[1];
+                }
+                else
+                {
+                    Array.Resize(ref _spatials, _spatials.Length + 1);
+                }
+
                 _spatials[_spatials.Length - 1] = spatial;
             }
 
@@ -90,7 +101,21 @@ namespace NetGore
             /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
             public void Remove(ISpatial spatial)
             {
-                _spatials = _spatials.Where(x => x != spatial).ToArray();
+                if (_spatials == null)
+                    return;
+
+                if (_spatials.Length == 1)
+                {
+                    if (_spatials[0] == spatial)
+                    {
+                        _spatials = null;
+                        return;
+                    }
+                }
+                else
+                {
+                    _spatials = _spatials.Where(x => x != spatial).ToArray();
+                }
             }
 
             /// <summary>
@@ -98,7 +123,7 @@ namespace NetGore
             /// </summary>
             public void Clear()
             {
-                _spatials = new ISpatial[0];
+                _spatials = null;
             }
         }
         

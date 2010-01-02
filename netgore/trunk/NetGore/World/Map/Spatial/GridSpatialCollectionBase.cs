@@ -688,7 +688,8 @@ namespace NetGore
             spatial.OnResize -= _spatialResizeHandler;
 
             // Remove the spatial from the segments
-            foreach (var segment in GetSegments(spatial))
+            // Just remove from ALL segments, just to be on the safe side
+            foreach (var segment in _gridSegments)
                 segment.Remove(spatial);
 
             Debug.Assert(!Contains(spatial), "Didn't fully and completely remove the spatial from all segments...");

@@ -25,7 +25,7 @@ namespace NetGore
         /// is recommended to just include <see cref="Type"/>s that you plan to filter by.</param>
         /// <param name="createSpatialCollection">The delegate that describes how to create the
         /// <see cref="ISpatialCollection"/>s.</param>
-        public SpatialManager(IEnumerable<Type> spatialCollectionTypes, Func<ISpatialCollection> createSpatialCollection)
+        public SpatialManager(IEnumerable<Type> spatialCollectionTypes, Func<ClassTypeTree, ISpatialCollection> createSpatialCollection)
         {
             _treeRoot = new SpatialTypeTree(spatialCollectionTypes, createSpatialCollection);
             _rootSpatial = _treeRoot.SpatialCollection;
@@ -415,7 +415,8 @@ namespace NetGore
             /// <param name="types">The types to build the tree out of.</param>
             /// <param name="createSpatial">The function used to create the <see cref="ISpatialCollection"/>
             /// for the leaf nodes.</param>
-            public SpatialTypeTree(IEnumerable<Type> types, Func<ISpatialCollection> createSpatial) : base(types)
+            public SpatialTypeTree(IEnumerable<Type> types, Func<ClassTypeTree, ISpatialCollection> createSpatial)
+                : base(types)
             {
                 // Only call CreateSpatialCollection() from this constructor since this will be the last constructor
                 // to finish (since the tree is built recursively), and it will only be called once since this is always
@@ -453,7 +454,7 @@ namespace NetGore
                 return new SpatialTypeTree(parent, selfType, types);
             }
 
-            void CreateSpatialCollection(Func<ISpatialCollection> createSpatial)
+            void CreateSpatialCollection(Func<ClassTypeTree, ISpatialCollection> createSpatial)
             {
                 // First, recurse all the way down to ensure the leaves are built first
                 if (!IsLeaf)
@@ -469,7 +470,7 @@ namespace NetGore
                 else
                 {
                     // The leaf is easier to handle - just build a single spatial collection (not an aggregate)
-                    _spatialCollection = createSpatial();
+                    _spatialCollection = createSpatial(this);
                 }
             }
         }
