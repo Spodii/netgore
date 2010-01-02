@@ -1,587 +1,618 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Microsoft.Xna.Framework;
 
-/*
 namespace NetGore
 {
+    /// <summary>
+    /// Interface for a segment of the <see cref="GridSpatialCollectionBase"/>.
+    /// </summary>
+    public interface IGridSpatialCollectionSegment : IEnumerable<ISpatial>
+    {
+        /// <summary>
+        /// Adds the <see cref="ISpatial"/> to the segment.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+        void Add(ISpatial spatial);
+
+        /// <summary>
+        /// Remove the <see cref="ISpatial"/> from the segment.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
+        void Remove(ISpatial spatial);
+
+        /// <summary>
+        /// Clears all <see cref="ISpatial"/>s from the segment.
+        /// </summary>
+        void Clear();
+    }
+
+    public class StaticGridSpatialCollection : GridSpatialCollectionBase
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticGridSpatialCollection"/> class.
+        /// </summary>
+        /// <param name="gridSegmentSize">Size of the grid segments. Must be greater than or equal to 4.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="gridSegmentSize"/> is less than 4.</exception>
+        public StaticGridSpatialCollection(int gridSegmentSize) : base(gridSegmentSize)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
+        /// </summary>
+        /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
+        protected override IGridSpatialCollectionSegment CreateSegment()
+        {
+            return new CollectionSegment();
+        }
+
+        /// <summary>
+        /// An implementation of the <see cref="IGridSpatialCollectionSegment"/> for the
+        /// <see cref="StaticGridSpatialCollection"/> that focuses on a small footprint.
+        /// </summary>
+        class CollectionSegment : IGridSpatialCollectionSegment
+        {
+            ISpatial[] _spatials;
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>1</filterpriority>
+            public IEnumerator<ISpatial> GetEnumerator()
+            {
+                foreach (var spatial in _spatials)
+                    yield return spatial;
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            /// <summary>
+            /// Adds the <see cref="ISpatial"/> to the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+            public void Add(ISpatial spatial)
+            {
+                Array.Resize(ref _spatials, _spatials.Length + 1);
+                _spatials[_spatials.Length - 1] = spatial;
+            }
+
+            /// <summary>
+            /// Remove the <see cref="ISpatial"/> from the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
+            public void Remove(ISpatial spatial)
+            {
+                _spatials = _spatials.Where(x => x != spatial).ToArray();
+            }
+
+            /// <summary>
+            /// Clears all <see cref="ISpatial"/>s from the segment.
+            /// </summary>
+            public void Clear()
+            {
+                _spatials = new ISpatial[0];
+            }
+        }
+        
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticGridSpatialCollection"/> class.
+        /// </summary>
+        public StaticGridSpatialCollection()
+        {
+        }
+    }
+
+    public class DynamicGridSpatialCollection : GridSpatialCollectionBase
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicGridSpatialCollection"/> class.
+        /// </summary>
+        /// <param name="gridSegmentSize">Size of the grid segments. Must be greater than or equal to 4.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="gridSegmentSize"/> is less than 4.</exception>
+        public DynamicGridSpatialCollection(int gridSegmentSize)
+            : base(gridSegmentSize)
+        {
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicGridSpatialCollection"/> class.
+        /// </summary>
+        public DynamicGridSpatialCollection()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
+        /// </summary>
+        /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
+        protected override IGridSpatialCollectionSegment CreateSegment()
+        {
+            return new CollectionSegment();
+        }
+
+        /// <summary>
+        /// An implementation of the <see cref="IGridSpatialCollectionSegment"/> for the
+        /// <see cref="DynamicGridSpatialCollection"/> that focuses on fast adding and removing of a small number of values.
+        /// </summary>
+        class CollectionSegment : IGridSpatialCollectionSegment
+        {
+            readonly List<ISpatial> _spatials = new List<ISpatial>();
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>1</filterpriority>
+            public IEnumerator<ISpatial> GetEnumerator()
+            {
+                return _spatials.GetEnumerator();
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            /// <summary>
+            /// Adds the <see cref="ISpatial"/> to the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+            public void Add(ISpatial spatial)
+            {
+                _spatials.Add(spatial);
+            }
+
+            /// <summary>
+            /// Remove the <see cref="ISpatial"/> from the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
+            public void Remove(ISpatial spatial)
+            {
+                _spatials.Remove(spatial);
+            }
+
+            /// <summary>
+            /// Clears all <see cref="ISpatial"/>s from the segment.
+            /// </summary>
+            public void Clear()
+            {
+                _spatials.Clear();
+            }
+        }
+    }
+
     /// <summary>
     /// An implementation of <see cref="ISpatialCollection"/> that uses a grid internally to reduce the test
     /// set for all the queries.
     /// </summary>
-    public abstract class GridSpatialBase : ISpatialCollection
+    public abstract class GridSpatialCollectionBase : ISpatialCollection
     {
         /// <summary>
-        /// Size of each segment of the wall grid in pixels (smallest requires more
-        /// memory but often less checks (to an extent))
+        /// The size of each grid segment.
         /// </summary>
-        const int _entityGridSize = 128;
+        readonly int _gridSegmentSize;
+
+        Point _gridSize;
+
+        IGridSpatialCollectionSegment[] _gridSegments;
+
+        readonly SpatialMoveEventHandler _spatialMoveHandler;
+        readonly SpatialResizeEventHandler _spatialResizeHandler; 
 
         /// <summary>
-        /// Two-dimensional grid of references to entities in that sector.
+        /// Initializes a new instance of the <see cref="GridSpatialCollectionBase"/> class.
         /// </summary>
-        List<ISpatial>[,] _entityGrid;
-
-        Vector2 _mapSize;
-
-        protected IEnumerable<ISpatial> this[int x, int y]
+        /// <param name="gridSegmentSize">Size of the grid segments. Must be greater than or equal to 4.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="gridSegmentSize"/> is less than 4.</exception>
+        protected GridSpatialCollectionBase(int gridSegmentSize)
         {
-            get
+            if (gridSegmentSize < 4)
+                throw new ArgumentOutOfRangeException("gridSegmentSize");
+
+            _spatialMoveHandler = Spatial_OnMove;
+            _spatialResizeHandler = Spatial_OnResize; 
+
+            _gridSegmentSize = gridSegmentSize;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GridSpatialCollectionBase"/> class.
+        /// </summary> 
+        protected GridSpatialCollectionBase() : this(256)
+        {
+        }
+
+        /// <summary>
+        /// Gets the 0-based size of the grid in each dimension.
+        /// </summary>
+        protected Point GridSize { get { return _gridSize; } }
+
+        /// <summary>
+        /// Gets the index of the grid segment for the given world position.
+        /// </summary>
+        /// <param name="worldPosition">The world position.</param>
+        /// <returns>The grid segment index.</returns>
+        protected Point WorldPositionToGridSegment(Vector2 worldPosition)
+        {
+            return new Point((int)(worldPosition.X / _gridSegmentSize), (int)(worldPosition.Y / _gridSegmentSize));
+        }
+
+        /// <summary>
+        /// Checks if a grid segment index is valid.
+        /// </summary>
+        /// <param name="gridIndex">The grid segment index.</param>
+        /// <returns>True if the grid segment index is valid; otherwise false.</returns>
+        protected bool IsLegalGridSegment(Point gridIndex)
+        {
+            return gridIndex.X >= 0 && gridIndex.Y >= 0 && gridIndex.X < GridSize.X && gridIndex.Y < GridSize.Y;
+        }
+
+        /// <summary>
+        /// Gets the grid segment for the specified grid index.
+        /// </summary>
+        /// <param name="gridIndex">The grid segment index.</param>
+        /// <returns>The grid segment for the specified grid index.</returns>
+        /// <exception cref="IndexOutOfRangeException">The <paramref name="gridIndex"/> is invalid.</exception>
+        protected IGridSpatialCollectionSegment GetSegment(Point gridIndex)
+        {
+            return _gridSegments[gridIndex.X + (gridIndex.Y * GridSize.X)];
+        }
+
+        /// <summary>
+        /// Gets the grid segments for the specified grid index range. Only segments in range are returned, and specifying
+        /// values out of range does not throw an exception.
+        /// </summary>
+        /// <param name="startIndex">The indices to start at.</param>
+        /// <param name="length">The number of indices to grab in each direction.</param>
+        /// <returns>The grid segments for the specified grid index range.</returns>
+        protected IEnumerable<IGridSpatialCollectionSegment> GetSegments(Point startIndex, Point length)
+        {
+            int maxX = startIndex.X + length.X;
+            int maxY = startIndex.Y + length.Y;
+
+            maxX = Math.Max(maxX, GridSize.X - 1);
+            maxY = Math.Max(maxY, GridSize.Y - 1);
+
+            for (int x = startIndex.X; x <= maxX; x++)
             {
-                if (!IsLegalGridIndex(x, y))
-                    return Enumerable.Empty<ISpatial>();
-
-                return _entityGrid[x, y];
-            }
-        }
-
-        protected IEnumerable<ISpatial> this[Point gridIndex]
-        {
-            get { return this[gridIndex.X, gridIndex.Y]; }
-        }
-
-        protected Point GridSize
-        {
-            get { return new Point(_entityGrid.GetLength(0), _entityGrid.GetLength(1)); }
-        }
-
-        void AddToGrid(ISpatial entity)
-        {
-            var minX = (int)entity.CB.Min.X / _entityGridSize;
-            var minY = (int)entity.CB.Min.Y / _entityGridSize;
-            var maxX = (int)entity.CB.Max.X / _entityGridSize;
-            var maxY = (int)entity.CB.Max.Y / _entityGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-
-            if (maxX >= GridSize.X)
-                maxX = GridSize.X - 1;
-
-            if (minY < 0)
-                minY = 0;
-
-            if (maxY >= GridSize.Y)
-                maxY = GridSize.Y - 1;
-
-            // Add to all the segments of the grid
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = minY; y <= maxY; y++)
+                for (int y = startIndex.Y; y <= maxY; y++)
                 {
-                    if (!_entityGrid[x, y].Contains(entity))
-                        _entityGrid[x, y].Add(entity);
+                    yield return GetSegment(new Point(x, y));
                 }
             }
         }
 
         /// <summary>
-        /// Builds a two-dimensional array of Lists to use as the grid of entities.
+        /// Gets the grid segments for the specified world area. Only segments in range are returned, and specifying
+        /// values out of range does not throw an exception.
         /// </summary>
-        /// <returns>A two-dimensional array of Lists to use as the grid of entities.</returns>
-        static List<ISpatial>[,] BuildISpatialGrid(float width, float height)
+        /// <param name="worldArea">The world area.</param>
+        /// <returns>The grid segments for the specified world area.</returns>
+        protected IEnumerable<IGridSpatialCollectionSegment> GetSegments(Rectangle worldArea)
         {
-            var gridWidth = (int)Math.Ceiling(width / _entityGridSize);
-            var gridHeight = (int)Math.Ceiling(height / _entityGridSize);
-
-            // Create the array
-            var retGrid = new List<ISpatial>[gridWidth,gridHeight];
-
-            // Create the lists
-            for (var x = 0; x < gridWidth; x++)
-            {
-                for (var y = 0; y < gridHeight; y++)
-                {
-                    retGrid[x, y] = new List<ISpatial>();
-                }
-            }
-
-            return retGrid;
-        }
-
-        static bool EmptyPred<T>(T e)
-        {
-            return true;
-        }
-
-        void ISpatial_OnMove(ISpatial entity, Vector2 oldPos)
-        {
-            UpdateISpatial(entity, oldPos);
-            ForceISpatialInMapBoundaries(entity);
+            Point min = WorldPositionToGridSegment(new Vector2(worldArea.X, worldArea.Y));
+            Point max = WorldPositionToGridSegment(new Vector2(worldArea.Right, worldArea.Bottom));
+            Point len = new Point(max.X - min.X, max.Y - min.Y);
+            return GetSegments(min, len);
         }
 
         /// <summary>
-        /// Checks if an ISpatial is in the map's boundaries and, if it is not, moves the ISpatial into the map's boundaries.
+        /// Adds multiple <see cref="ISpatial"/>s to the spatial collection.
         /// </summary>
-        /// <param name="entity">ISpatial to check.</param>
-        void ForceISpatialInMapBoundaries(ISpatial entity)
+        /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
+        public void Add(IEnumerable<ISpatial> spatials)
         {
-            var min = entity.CB.Min;
-            var max = entity.CB.Max;
-
-            if (min.X < 0)
-                min.X = 0;
-            if (min.Y < 0)
-                min.Y = 0;
-            if (max.X >= _mapSize.X)
-                min.X = _mapSize.X - entity.CB.Width;
-            if (max.Y >= _mapSize.Y)
-                min.Y = _mapSize.Y - entity.CB.Height;
-
-            if (min != entity.CB.Min)
-                entity.Teleport(min);
-        }
-
-        IEnumerable<ISpatial> GetAllEntities()
-        {
-            if (_entityGrid == null)
-                return Enumerable.Empty<ISpatial>();
-
-            List<ISpatial> ret = new List<ISpatial>();
-            foreach (var segment in _entityGrid)
-            {
-                ret.AddRange(segment);
-            }
-
-            return ret.Distinct();
+            foreach (var spatial in spatials)
+                Add(spatial);
         }
 
         /// <summary>
-        /// Gets the grid segment for each intersection on the entity grid.
+        /// Adds multiple <see cref="ISpatial"/>s to the spatial collection.
         /// </summary>
-        /// <param name="rect">Map area to get the grid segments for.</param>
-        /// <returns>An IEnumerable of all grid segments intersected by the specified <paramref name="rect"/>.</returns>
-        protected IEnumerable<IEnumerable<ISpatial>> GetISpatialGrids(Rectangle rect)
+        /// <typeparam name="T">The type of <see cref="ISpatial"/>.</typeparam>
+        /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
+        public void Add<T>(IEnumerable<T> spatials) where T : class, ISpatial
         {
-            var minX = rect.X / _entityGridSize;
-            var minY = rect.Y / _entityGridSize;
-            var maxX = rect.Right / _entityGridSize;
-            var maxY = rect.Bottom / _entityGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-
-            if (maxX >= GridSize.X)
-                maxX = GridSize.X - 1;
-
-            if (minY < 0)
-                minY = 0;
-
-            // NOTE: For some reason this last check here likes to fail a lot. I think it is because gravity pushes an ISpatial out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
-            if (maxY >= GridSize.Y)
-                maxY = GridSize.Y - 1;
-
-            // Return the grid segments
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = minY; y <= maxY; y++)
-                {
-                    yield return this[x, y];
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets if the given point is a legal grid index.
-        /// </summary>
-        /// <param name="point">The grid x and y co-ordinate.</param>
-        /// <returns>True if the given point is a legal grid index; otherwise false.</returns>
-        protected bool IsLegalGridIndex(Point point)
-        {
-            return IsLegalGridIndex(point.X, point.Y);
-        }
-
-        /// <summary>
-        /// Gets if the given point is a legal grid index.
-        /// </summary>
-        /// <param name="x">The grid x co-ordinate.</param>
-        /// <param name="y">The grid y co-ordinate.</param>
-        /// <returns>True if the given point is a legal grid index; otherwise false.</returns>
-        protected bool IsLegalGridIndex(int x, int y)
-        {
-            return x >= 0 && x < _entityGrid.GetLength(0) && y >= 0 && y < _entityGrid.GetLength(1);
-        }
-
-        static Point MapPositionToGridIndex(Vector2 position)
-        {
-            var x = position.X / _entityGridSize;
-            var y = position.Y / _entityGridSize;
-            return new Point((int)x, (int)y);
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        IEnumerable<ISpatial> MutableGetEntities(Rectangle rect, Predicate<ISpatial> condition)
-        {
-            var gridSegments = GetISpatialGrids(rect);
-            var matches = gridSegments.SelectMany(x => x).Where(x => x.CB.Intersect(rect) && condition(x)).Distinct();
-            return matches;
-        }
-
-        /// <summary>
-        /// Gets all entities at the given point.
-        /// </summary>
-        /// <param name="p">The point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <returns>All entities containing the given point that are of the given type.</returns>
-        IEnumerable<T> MutableGetEntities<T>(Vector2 p, Predicate<T> condition) 
-        {
-            var gridSegment = this[MapPositionToGridIndex(p)];
-            var matches = gridSegment.OfType<T>().Where(x => x.CB.HitTest(p) && condition(x));
-            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
-            return matches;
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        IEnumerable<T> MutableGetEntities<T>(Rectangle rect, Predicate<T> condition) 
-        {
-            var gridSegments = GetISpatialGrids(rect);
-            var matches = gridSegments.SelectMany(x => x).OfType<T>().Where(x => x.CB.Intersect(rect) && condition(x)).Distinct();
-            return matches;
-        }
-
-        /// <summary>
-        /// Gets all entities containing a given point.
-        /// </summary>
-        /// <param name="p">Point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>All of the entities at the given point.</returns>
-        IEnumerable<ISpatial> MutableGetEntities(Vector2 p, Predicate<ISpatial> condition)
-        {
-            var gridSegment = this[MapPositionToGridIndex(p)];
-            var matches = gridSegment.Where(x => x.CB.HitTest(p) && condition(x));
-            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
-            return matches;
-        }
-
-        /// <summary>
-        /// Sets the source map to a new size and clears out all existing entities in the grid.
-        /// </summary>
-        /// <param name="size">The new size of the source map.</param>
-        public void SetMapSize(Vector2 size)
-        {
-            var entities = GetAllEntities();
-
-            _mapSize = size;
-            _entityGrid = BuildISpatialGrid(size.X, size.Y);
-
-            // Re-add the items to the grid
-            foreach (var entity in entities)
-            {
-                AddToGrid(entity);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, returns an immutable version of the <see cref="collection"/>. This is
-        /// abstract so the code can be reused in a derived class that does not need to make the collection immutable
-        /// because it does not contains entities that move.
-        /// </summary>
-        /// <typeparam name="T">The Type of element.</typeparam>
-        /// <param name="collection">The collection to make immutable.</param>
-        /// <returns>The <paramref name="collection"/> as immutable.</returns>
-        protected abstract IEnumerable<T> ToImmutable<T>(IEnumerable<T> collection);
-
-        public void UpdateISpatial(ISpatial entity, Vector2 oldPos)
-        {
-            // NOTE: !! Does this really need to be public?
-
-            // FUTURE: Can optimize this method quite a lot by only adding/removing from changed grid segments
-
-            // Check that the entity changed grid segments by comparing the lowest grid segments
-            // of the old position and current position
-            var minX = (int)oldPos.X / _entityGridSize;
-            var minY = (int)oldPos.Y / _entityGridSize;
-            var newMinX = (int)entity.CB.Min.X / _entityGridSize;
-            var newMinY = (int)entity.CB.Min.Y / _entityGridSize;
-
-            if (minX == newMinX && minY == newMinY)
-                return; // No change in grid segment
-
-            var maxX = (int)(oldPos.X + entity.CB.Width) / _entityGridSize;
-            var maxY = (int)(oldPos.Y + entity.CB.Height) / _entityGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-
-            if (maxX >= GridSize.X)
-                maxX = GridSize.X - 1;
-
-            if (minY < 0)
-                minY = 0;
-
-            if (maxY >= GridSize.Y)
-                maxY = GridSize.Y - 1;
-
-            // Remove the entity from the old grid position
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = minY; y <= maxY; y++)
-                {
-                    _entityGrid[x, y].Remove(entity);
-                }
-            }
-
-            // Re-add the entity to the grid
-            AddToGrid(entity);
-        }
-
-        #region ISpatialCollection Members
-
-        /// <summary>
-        /// Adds multiple entities to the spatial collection.
-        /// </summary>
-        /// <param name="entities">The entities to add.</param>
-        public void Add(IEnumerable<ISpatial> entities)
-        {
-            foreach (var entity in entities)
-            {
-                Add(entity);
-            }
+            foreach (var spatial in spatials)
+                Add(spatial);
         }
 
         /// <summary>
         /// Adds a single <see cref="ISpatial"/> to the spatial collection.
         /// </summary>
-        /// <param name="entity">The <see cref="ISpatial"/> to add.</param>
-        public void Add(ISpatial entity)
+        /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+        public void Add(ISpatial spatial)
         {
-            AddToGrid(entity);
-            entity.OnMove += ISpatial_OnMove;
+            Debug.Assert(!Contains(spatial), "The spatial was already in this spatial collection!");
+
+            // Add the spatial to the segments
+            foreach (var segment in GetSegments(spatial))
+                segment.Add(spatial);
+
+            // Hook a listener for movement and resizing
+            spatial.OnMove += _spatialMoveHandler;
+            spatial.OnResize += _spatialResizeHandler;
         }
 
         /// <summary>
-        /// Checks if this spatial collection contains the given <paramref name="entity"/>.
+        /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> moves.
         /// </summary>
-        /// <param name="entity">The <see cref="ISpatial"/> to look for.</param>
-        /// <returns>True if this spatial collection contains the given <paramref name="entity"/>; otherwise false.</returns>
-        public bool Contains(ISpatial entity)
+        /// <param name="sender">The <see cref="ISpatial"/> that moved.</param>
+        /// <param name="oldPosition">The old position.</param>
+        void Spatial_OnMove(ISpatial sender, Vector2 oldPosition)
         {
-            // The first place to check would be the place the entity should be
-            if (ContainsEntities(entity.CB.ToRectangle(), x => x == entity))
-                return true;
+            // Get the grid index for the last and current positions to see if the segments have changed
+            var minSegment = WorldPositionToGridSegment(sender.Position);
+            var oldMinSegment = WorldPositionToGridSegment(sender.Position);
 
-            // If the entity isn't where it should be, check every segment
-            foreach (var gridSegment in _entityGrid)
+            if (minSegment == oldMinSegment)
+                return;
+
+            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
+
+            // The position did change, so we have to remove the spatial from the old segments and add to the new
+            foreach (var segment in GetSegments(sender, oldPosition))
+                segment.Remove(sender);
+
+            Debug.Assert(!Contains(sender), "spatial was not completely removed from the grid!");
+
+            // Add the spatial back using the new positions
+            foreach (var segment in GetSegments(sender))
+                segment.Add(sender);
+        }
+
+        /// <summary>
+        /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> resizes.
+        /// </summary>
+        /// <param name="sender">The <see cref="ISpatial"/> that resized.</param>
+        /// <param name="oldSize">The old size.</param>
+        void Spatial_OnResize(ISpatial sender, Vector2 oldSize)
+        {
+            // Get the grid index for the last and current max positions to see if the segments have changed
+            var maxSegment = WorldPositionToGridSegment(sender.Position + sender.Size);
+            var oldMaxSegment = WorldPositionToGridSegment(sender.Position + oldSize);
+
+            if (maxSegment == oldMaxSegment)
+                return;
+
+            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
+
+            // The position did change, so we have to remove the spatial from the old segments and add to the new
+            var startIndex = WorldPositionToGridSegment(sender.Position);
+            var length = WorldPositionToGridSegment(sender.Position + oldSize);
+            foreach (var segment in GetSegments(startIndex, length))
+                segment.Remove(sender);
+
+            Debug.Assert(!Contains(sender), "spatial was not completely removed from the grid!");
+
+            // Add the spatial back using the new positions
+            foreach (var segment in GetSegments(sender))
+                segment.Add(sender);
+        }
+
+        /// <summary>
+        /// Gets the grid segments that the <paramref name="spatial"/> occupies.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to get the segments for.</param>
+        /// <returns>The grid segments that the <paramref name="spatial"/> occupies.</returns>
+        protected IEnumerable<IGridSpatialCollectionSegment> GetSegments(ISpatial spatial)
+        {
+            return GetSegments(spatial, spatial.Position);
+        }
+
+        /// <summary>
+        /// Gets the grid segments that the <paramref name="spatial"/> occupies.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to get the segments for.</param>
+        /// <param name="position">The position to treat the <see cref="spatial"/> as being at.</param>
+        /// <returns>The grid segments that the <paramref name="spatial"/> occupies.</returns>
+        protected IEnumerable<IGridSpatialCollectionSegment> GetSegments(ISpatial spatial, Vector2 position)
+        {
+            var min = WorldPositionToGridSegment(position);
+            var max = WorldPositionToGridSegment(position + spatial.Size);
+            var length = new Point(max.X - min.X, max.Y - min.Y);
+
+            return GetSegments(min, length);
+        }
+
+        /// <summary>
+        /// Checks if this spatial collection contains the given <paramref name="spatial"/>.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to look for.</param>
+        /// <returns>True if this spatial collection contains the given <paramref name="spatial"/>; otherwise false.</returns>
+        public bool Contains(ISpatial spatial)
+        {
+            // First check a segment we know the spatial would occupy for a fast positive
+            var gridIndex = WorldPositionToGridSegment(spatial.Position);
+            if (IsLegalGridSegment(gridIndex))
             {
-                if (gridSegment.Contains(entity))
-                {
-                    Debug.Fail("The entity was found in the spatial, but not where it was expected to be...");
+                var segment = GetSegment(gridIndex);
+                if (segment.Contains(spatial))
                     return true;
-                }
             }
 
-            return false;
+            // They weren't in the segment, or the segment was invalid, so just scan the whole grid
+            return _gridSegments.Any(x => x.Contains(spatial));
         }
 
         /// <summary>
-        /// Removes an <see cref="ISpatial"/> from the spatial collection.
+        /// Tries to get a <see cref="IGridSpatialCollectionSegment"/> for the given world position.
         /// </summary>
-        /// <param name="entity">The <see cref="ISpatial"/> to remove.</param>
-        public void Remove(ISpatial entity)
+        /// <param name="worldPosition">The world position.</param>
+        /// <returns>The <see cref="IGridSpatialCollectionSegment"/> for the given world position, or null if the
+        /// world position was not valid.</returns>
+        protected IGridSpatialCollectionSegment TryGetSegment(Vector2 worldPosition)
         {
-            entity.OnMove -= ISpatial_OnMove;
+            var gridIndex = WorldPositionToGridSegment(worldPosition);
+            if (!IsLegalGridSegment(gridIndex))
+                return null;
 
-            foreach (var gridSegment in _entityGrid)
-            {
-                gridSegment.Remove(entity);
-            }
+            return GetSegment(gridIndex);
         }
 
         /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found in the given region.
-        /// </summary>
-        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
-        public T GetEntity<T>(Rectangle rect, Predicate<T> condition) 
-        {
-            return MutableGetEntities(rect, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found in the given region.
-        /// </summary>
-        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
-        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
-        public ISpatial GetEntity(Rectangle rect, Predicate<ISpatial> condition)
-        {
-            return MutableGetEntities(rect, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
-        /// will be ignored.</typeparam>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p, Predicate<T> condition) 
-        {
-            return MutableGetEntities(p, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
-        /// will be ignored.</typeparam>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p) 
-        {
-            return MutableGetEntities<T>(p, EmptyPred).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        public ISpatial GetEntity(Vector2 p)
-        {
-            return MutableGetEntities(p, EmptyPred).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        public ISpatial GetEntity(Vector2 p, Predicate<ISpatial> condition)
-        {
-            return MutableGetEntities(p, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first ISpatial found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the ISpatial</param>
-        /// <returns>First ISpatial found at the given point, or null if none found</returns>
-        public ISpatial GetEntity(Rectangle rect)
-        {
-            return MutableGetEntities(rect, EmptyPred).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first ISpatial found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the ISpatial</param>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <returns>First ISpatial found at the given point, or null if none found</returns>
-        public T GetEntity<T>(Rectangle rect) 
-        {
-            return MutableGetEntities<T>(rect, EmptyPred).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="rect">The map area to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(Rectangle rect)
-        {
-            return ContainsEntities(rect, EmptyPred);
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="rect">The map area to check.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(Rectangle rect, Predicate<ISpatial> condition)
-        {
-            return GetISpatialGrids(rect).SelectMany(x => x).Any(x => x.CB.Intersect(rect) && condition(x));
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="rect">The map area to check.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
-        /// <see cref="ISpatial"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Rectangle rect) 
-        {
-            return ContainsEntities<T>(rect, EmptyPred);
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="rect">The map area to check.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
-        /// <see cref="ISpatial"/> will be ignored.</typeparam>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition) 
-        {
-            return GetISpatialGrids(rect).SelectMany(x => x).OfType<T>().Any(x => x.CB.Intersect(rect) && condition(x));
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="point">The map point to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool ContainsEntities<T>(Vector2 point)
+        {
+            var segment = TryGetSegment(point);
+            if (segment == null)
+                return false;
+
+            return segment.Any(x => x is T && x.HitTest(point));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any spatials.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities(Vector2 point)
         {
-            return ContainsEntities(point, EmptyPred);
+            var segment = TryGetSegment(point);
+            if (segment == null)
+                return false;
+
+            return segment.Any(x => x.HitTest(point));
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition)
+        {
+            var segment = TryGetSegment(point);
+            if (segment == null)
+                return false;
+
+            return segment.Any(x => x is T && x.HitTest(point) && condition((T)x));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any spatials.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition)
+        {
+            var segments = GetSegments(rect);
+            return segments.Any(seg => seg.Any(x => x is T && x.Intersect(rect) && condition((T)x)));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
         /// <param name="point">The map point to check.</param>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
         public bool ContainsEntities(Vector2 point, Predicate<ISpatial> condition)
         {
-            var gridSegment = this[MapPositionToGridIndex(point)];
-            return gridSegment.Any(x => x.CB.HitTest(point) && condition(x));
+            var segment = TryGetSegment(point);
+            if (segment == null)
+                return false;
+
+            return segment.Any(x => x.HitTest(point) && condition(x));
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
-        /// <param name="point">The map point to check.</param>
+        /// <param name="rect">The map area to check.</param>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Vector2 point) 
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool ContainsEntities<T>(Rectangle rect)
         {
-            return ContainsEntities<T>(point, EmptyPred);
+            var segments = GetSegments(rect);
+            return segments.Any(seg => seg.Any(x => x is T && x.Intersect(rect)));
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
+        /// Gets if the specified area or location contains any spatials.
         /// </summary>
-        /// <param name="point">The map point to check.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
-        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="rect">The map area to check.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool ContainsEntities(Rectangle rect)
+        {
+            var segments = GetSegments(rect);
+            return segments.Any(seg => seg.Any(x => x.Intersect(rect)));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any spatials.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition) 
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool ContainsEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            var gridSegment = this[MapPositionToGridIndex(point)];
-            return gridSegment.OfType<T>().Any(x => x.CB.HitTest(point) && condition(x));
+            var segments = GetSegments(rect);
+            return segments.Any(seg => seg.Any(x => x.Intersect(rect) && condition(x)));
+        }
+
+        /// <summary>
+        /// Gets all spatials containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatials at.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetEntities(Vector2 p)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<ISpatial>();
+
+            return AsImmutable(segment.Where(x => x.HitTest(p)));
+        }
+
+        protected IEnumerable<T> AsDistinctAndImmutable<T>(IEnumerable<T> values)
+        {
+            return AsImmutable(values.Distinct());
+        }
+
+        protected virtual IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
+        {
+            return values.ToImmutable();
         }
 
         /// <summary>
@@ -591,7 +622,79 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<ISpatial> GetEntities(Rectangle rect)
         {
-            return GetEntities(rect, EmptyPred);
+            var segments = GetSegments(rect);
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect))));
+        }
+
+        /// <summary>
+        /// Gets all spatials at the given point.
+        /// </summary>
+        /// <param name="p">The point to find the spatials at.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
+        /// <returns>All spatials containing the given point that are of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>(Vector2 p)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<T>();
+
+            return AsImmutable(segment.Where(x => x.HitTest(p)).OfType<T>());
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(Rectangle rect)
+        {
+            var segments = GetSegments(rect);
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect)).OfType<T>()));
+        }
+
+        /// <summary>
+        /// Gets all spatials containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatials at.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetEntities(Vector2 p, Predicate<ISpatial> condition)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<ISpatial>();
+
+            return AsImmutable(segment.Where(x => x.HitTest(p) && condition(x)));
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition)
+        {
+            var segments = GetSegments(rect);
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect)).OfType<T>().Where(x => condition(x))));
+        }
+
+        /// <summary>
+        /// Gets all spatials at the given point.
+        /// </summary>
+        /// <param name="p">The point to find the spatials at.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
+        /// <returns>All spatials containing the given point that are of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<T>();
+
+            return AsImmutable(segment.Where(x => x.HitTest(p)).OfType<T>().Where(x => condition(x)));
         }
 
         /// <summary>
@@ -602,77 +705,242 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<ISpatial> GetEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            return MutableGetEntities(rect, condition).ToImmutable();
+            var segments = GetSegments(rect);
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect) && condition(x))));
         }
 
         /// <summary>
-        /// Gets all entities at the given point.
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
         /// </summary>
-        /// <param name="p">The point to find the entities at.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <returns>All entities containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p) 
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
+        public T GetEntity<T>(Rectangle rect, Predicate<T> condition)
         {
-            return GetEntities<T>(p, EmptyPred);
+            var segments = GetSegments(rect);
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T && spatial.Intersect(rect) && condition((T)spatial))
+                        return (T)spatial;
+                }
+            }
+
+            return default(T);
         }
 
         /// <summary>
-        /// Gets all entities at the given point.
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
         /// </summary>
-        /// <param name="p">The point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <returns>All entities containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) 
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
+        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
+        public ISpatial GetEntity(Rectangle rect, Predicate<ISpatial> condition)
         {
-            return MutableGetEntities(p, condition).ToImmutable();
+            var segments = GetSegments(rect);
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial.Intersect(rect) && condition(spatial))
+                        return spatial;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect) 
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p, Predicate<T> condition)
         {
-            return GetEntities<T>(rect, EmptyPred);
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return default(T);
+
+            foreach (var spatial in segment)
+            {
+                if (spatial is T && spatial.HitTest(p) && condition((T)spatial))
+                    return (T)spatial;
+            }
+
+            return default(T);
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) 
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p)
         {
-            return MutableGetEntities(rect, condition).ToImmutable();
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return default(T);
+
+            foreach (var spatial in segment)
+            {
+                if (spatial is T && spatial.HitTest(p))
+                    return (T)spatial;
+            }
+
+            return default(T);
         }
 
         /// <summary>
-        /// Gets all entities containing a given point.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="p">Point to find the entities at.</param>
-        /// <returns>All of the entities at the given point.</returns>
-        public IEnumerable<ISpatial> GetEntities(Vector2 p)
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public ISpatial GetEntity(Vector2 p)
         {
-            return GetEntities(p, EmptyPred);
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return null;
+
+            return segment.FirstOrDefault(x => x.HitTest(p));
         }
 
         /// <summary>
-        /// Gets all entities containing a given point.
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
         /// </summary>
-        /// <param name="p">Point to find the entities at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>All of the entities at the given point.</returns>
-        public IEnumerable<ISpatial> GetEntities(Vector2 p, Predicate<ISpatial> condition)
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        public ISpatial GetEntity(Vector2 p, Predicate<ISpatial> condition)
         {
-            return MutableGetEntities(p, condition).ToImmutable();
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return null;
+
+            return segment.FirstOrDefault(x => x.HitTest(p) && condition(x));
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the first ISpatial found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the ISpatial</param>
+        /// <returns>First ISpatial found at the given point, or null if none found</returns>
+        public ISpatial GetEntity(Rectangle rect)
+        {
+            var segments = GetSegments(rect);
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial.Intersect(rect))
+                        return spatial;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the first ISpatial found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the ISpatial</param>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <returns>First ISpatial found at the given point, or null if none found</returns>
+        public T GetEntity<T>(Rectangle rect)
+        {
+            var segments = GetSegments(rect);
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T && spatial.Intersect(rect))
+                        return (T)spatial;
+                }
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
+        /// Removes an <see cref="ISpatial"/> from the spatial collection.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
+        public void Remove(ISpatial spatial)
+        {
+            spatial.OnMove -= _spatialMoveHandler;
+            spatial.OnResize -= _spatialResizeHandler;
+
+            // Remove the spatial from the segments
+            foreach (var segment in GetSegments(spatial))
+                segment.Remove(spatial);
+
+            Debug.Assert(!Contains(spatial), "Didn't fully and completely remove the spatial from all segments...");
+        }
+
+        /// <summary>
+        /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
+        /// </summary>
+        /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
+        public void SetAreaSize(Vector2 size)
+        {
+            Point newSize = WorldPositionToGridSegment(size);
+
+            // Don't rebuild the grid of the size didn't change at all
+            if (newSize == GridSize)
+                return;
+
+            // Grab all the spatials in the grid
+            IEnumerable<ISpatial> spatials;
+            if (_gridSegments != null)
+                spatials = _gridSegments.SelectMany(x => x).Distinct();
+            else
+                spatials = Enumerable.Empty<ISpatial>();
+
+            // Grab the old segments so we can reuse as many as possible
+            var oldSegments = new Stack<IGridSpatialCollectionSegment>(_gridSegments ?? Enumerable.Empty< IGridSpatialCollectionSegment>());
+
+            // Set the new grid
+            _gridSize = newSize;
+            _gridSegments = new IGridSpatialCollectionSegment[(newSize.X + 1) * (newSize.Y + 1)];
+
+            // Instantiate the segments
+            for (int i = 0; i < _gridSegments.Length; i++)
+            {
+                IGridSpatialCollectionSegment segment;
+
+                if (oldSegments.Count > 0)
+                {
+                    segment = oldSegments.Pop();
+                    segment.Clear();
+                }
+                else
+                {
+                    segment = CreateSegment();
+                }
+
+                _gridSegments[i] = segment;
+            }
+
+            // Re-add all spatials to the grid
+            foreach (var spatial in spatials)
+            {
+                foreach (var segment in GetSegments(spatial))
+                    segment.Add(spatial);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
+        /// </summary>
+        /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
+        protected abstract IGridSpatialCollectionSegment CreateSegment();
     }
 }
- */
