@@ -310,10 +310,14 @@ namespace DemoGame
         /// Describes how to create the <see cref="ISpatialCollection"/> to be used by the map. This can be overridden
         /// in the derived class to provide a different <see cref="ISpatialCollection"/> implementation.
         /// </summary>
+        /// <param name="classTypeTree">The class type tree.</param>
         /// <returns>The <see cref="ISpatialCollection"/> to be used by the map.</returns>
-        protected virtual ISpatialCollection CreateSpatialCollection()
+        protected virtual ISpatialCollection CreateSpatialCollection(ClassTypeTree classTypeTree)
         {
-            return new LinearSpatialCollection();
+            if (classTypeTree.Type == typeof(WallEntityBase))
+                return new StaticGridSpatialCollection();
+            else
+                return new DynamicGridSpatialCollection();
         }
 
         /// <summary>
@@ -496,8 +500,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the possible positions to place the given <see cref="CollisionBox"/> around an
-        /// <see cref="ISpatial"/>.
+        /// Gets the possible positions to place the given <see cref="ISpatial"/> around a <see cref="Rectangle"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to place around.</param>
         /// <param name="r">The <see cref="Rectangle"/> describing the area to be placed.</param>
@@ -624,16 +627,16 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Checks if a <see cref="CollisionBox"/> is in a place that is inside of the map and does not intersect
+        /// Checks if a <see cref="Rectangle"/> is in a place that is inside of the map and does not intersect
         /// any <see cref="WallEntityBase"/>s.
         /// </summary>
         /// <param name="r">The <see cref="Rectangle"/> that represents the area to check.</param>
         /// <param name="closestValidPosition">When this method returns false, contains the closest valid position
-        /// that the <see cref="CollisionBox"/> can be at to not intersect any <see cref="WallEntityBase"/>s.</param>
+        /// that the <see cref="Rectangle"/> can be at to not intersect any <see cref="WallEntityBase"/>s.</param>
         /// <param name="validPositionFound">When this method returns false, contains if the
         /// <see cref="closestValidPosition"/> that was found is valid. If false, no near-by legal position could be
-        /// found that the <see cref="CollisionBox"/> could occupy without causing any intersections.</param>
-        /// <returns>True if the <see cref="CollisionBox"/> is in an area that does not intersect any
+        /// found that the <see cref="Rectangle"/> could occupy without causing any intersections.</param>
+        /// <returns>True if the <see cref="Rectangle"/> is in an area that does not intersect any
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
         public bool IsValidPlacementPosition(Rectangle r, out Vector2 closestValidPosition, out bool validPositionFound)
         {
