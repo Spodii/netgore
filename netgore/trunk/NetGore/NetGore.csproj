@@ -214,7 +214,9 @@
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
-    <Compile Include="World\Map\Spatial\EntitySpatialBase.cs" />
+    <Compile Include="World\Map\Spatial\DynamicGridSpatialCollection.cs" />
+    <Compile Include="World\Map\Spatial\GridSpatialCollectionBase.cs" />
+    <Compile Include="World\Map\Spatial\IGridSpatialCollectionSegment.cs" />
     <Compile Include="World\Map\Spatial\ISpatial.cs" />
     <Compile Include="World\Map\Spatial\ISpatialCollection.cs" />
     <Compile Include="World\Map\Spatial\ISpatialCollectionExtensions.cs" />
@@ -223,7 +225,6 @@
     <Compile Include="World\Map\Spatial\SpatialAggregate.cs" />
     <Compile Include="World\Map\Spatial\SpatialHelper.cs" />
     <Compile Include="World\Map\Spatial\SpatialManager.cs" />
-    <Compile Include="World\Map\Spatial\StaticEntitySpatial.cs" />
     <Compile Include="World\Map\MapEntityAttribute.cs" />
     <Compile Include="Audio\MusicID.cs" />
     <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
@@ -284,6 +285,9 @@
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="World\Map\MapEntityIndex.cs" />
     <Compile Include="World\Map\MapIndex.cs" />
+    <Compile Include="World\Map\Spatial\SpatialMoveEventHandler.cs" />
+    <Compile Include="World\Map\Spatial\SpatialResizeEventHandler.cs" />
+    <Compile Include="World\Map\Spatial\StaticGridSpatialCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CustomValueTypeTemplate.txt" />

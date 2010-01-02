@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Helper methods for the <see cref="ISpatial"/> and spatial-related stuff.
+    /// </summary>
     public static class SpatialHelper
     {
         /// <summary>
