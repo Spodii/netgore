@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Extension methods for the <see cref="ISpatialCollection"/> interface.
+    /// </summary>
     public static class ISpatialCollectionExtensions
     {
         /// <summary>
