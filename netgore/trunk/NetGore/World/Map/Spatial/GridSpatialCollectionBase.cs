@@ -401,11 +401,24 @@ namespace NetGore
             return AsImmutable(segment.Where(x => x.HitTest(p)));
         }
 
+        /// <summary>
+        /// Gets a distinct and immutable version of the <paramref name="values"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="values">The values to get the distinct and immutable copy of.</param>
+        /// <returns>The distinct and immutable copy of the <paramref name="values"/>.</returns>
         protected IEnumerable<T> AsDistinctAndImmutable<T>(IEnumerable<T> values)
         {
             return AsImmutable(values.Distinct());
         }
 
+        /// <summary>
+        /// Gets an immutable version of the <paramref name="values"/>. Provided as virtual for specialized derived
+        /// classes that do not need immutable values since it can guarantee the underlying collection won't change.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="values">The values to get the distinct and immutable copy of.</param>
+        /// <returns>The immutable copy of the <paramref name="values"/>.</returns>
         protected virtual IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
         {
             return values.ToImmutable();
