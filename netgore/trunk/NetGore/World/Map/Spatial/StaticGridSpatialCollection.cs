@@ -30,6 +30,18 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets an immutable version of the <paramref name="values"/>. Provided as virtual for specialized derived
+        /// classes that do not need immutable values since it can guarantee the underlying collection won't change.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="values">The values to get the distinct and immutable copy of.</param>
+        /// <returns>The immutable copy of the <paramref name="values"/>.</returns>
+        protected override IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
+        {
+            return values;
+        }
+
+        /// <summary>
         /// An implementation of the <see cref="IGridSpatialCollectionSegment"/> for the
         /// <see cref="StaticGridSpatialCollection"/> that focuses on a small footprint.
         /// </summary>
@@ -90,8 +102,6 @@ namespace NetGore
             }
         }
         
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticGridSpatialCollection"/> class.
         /// </summary>
