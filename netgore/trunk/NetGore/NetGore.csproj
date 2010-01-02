@@ -225,7 +225,6 @@
     <Compile Include="World\Map\Spatial\SpatialManager.cs" />
     <Compile Include="World\Map\Spatial\StaticEntitySpatial.cs" />
     <Compile Include="World\Map\MapEntityAttribute.cs" />
-    <Compile Include="World\Map\Spatial\DynamicEntitySpatial.cs" />
     <Compile Include="Audio\MusicID.cs" />
     <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
