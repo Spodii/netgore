@@ -16,11 +16,9 @@ namespace NetGore
         /// </summary>
         /// <param name="gridSegmentSize">Size of the grid segments. Must be greater than or equal to 4.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="gridSegmentSize"/> is less than 4.</exception>
-        public DynamicGridSpatialCollection(int gridSegmentSize)
-            : base(gridSegmentSize)
+        public DynamicGridSpatialCollection(int gridSegmentSize) : base(gridSegmentSize)
         {
         }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicGridSpatialCollection"/> class.
@@ -45,6 +43,8 @@ namespace NetGore
         class CollectionSegment : IGridSpatialCollectionSegment
         {
             readonly List<ISpatial> _spatials = new List<ISpatial>();
+
+            #region IGridSpatialCollectionSegment Members
 
             /// <summary>
             /// Returns an enumerator that iterates through the collection.
@@ -95,6 +95,8 @@ namespace NetGore
             {
                 _spatials.Clear();
             }
+
+            #endregion
         }
     }
 }

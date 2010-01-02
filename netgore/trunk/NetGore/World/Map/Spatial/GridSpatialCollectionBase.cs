@@ -17,12 +17,10 @@ namespace NetGore
         /// </summary>
         readonly int _gridSegmentSize;
 
-        Point _gridSize;
-
-        IGridSpatialCollectionSegment[] _gridSegments;
-
         readonly SpatialMoveEventHandler _spatialMoveHandler;
-        readonly SpatialResizeEventHandler _spatialResizeHandler; 
+        readonly SpatialResizeEventHandler _spatialResizeHandler;
+        IGridSpatialCollectionSegment[] _gridSegments;
+        Point _gridSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GridSpatialCollectionBase"/> class.
@@ -35,7 +33,7 @@ namespace NetGore
                 throw new ArgumentOutOfRangeException("gridSegmentSize");
 
             _spatialMoveHandler = Spatial_OnMove;
-            _spatialResizeHandler = Spatial_OnResize; 
+            _spatialResizeHandler = Spatial_OnResize;
 
             _gridSegmentSize = gridSegmentSize;
         }
@@ -50,27 +48,39 @@ namespace NetGore
         /// <summary>
         /// Gets the 0-based size of the grid in each dimension.
         /// </summary>
-        protected Point GridSize { get { return _gridSize; } }
-
-        /// <summary>
-        /// Gets the index of the grid segment for the given world position.
-        /// </summary>
-        /// <param name="worldPosition">The world position.</param>
-        /// <returns>The grid segment index.</returns>
-        protected Point WorldPositionToGridSegment(Vector2 worldPosition)
+        protected Point GridSize
         {
-            return new Point((int)(worldPosition.X / _gridSegmentSize), (int)(worldPosition.Y / _gridSegmentSize));
+            get { return _gridSize; }
         }
 
         /// <summary>
-        /// Checks if a grid segment index is valid.
+        /// Gets a distinct and immutable version of the <paramref name="values"/>.
         /// </summary>
-        /// <param name="gridIndex">The grid segment index.</param>
-        /// <returns>True if the grid segment index is valid; otherwise false.</returns>
-        protected bool IsLegalGridSegment(Point gridIndex)
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="values">The values to get the distinct and immutable copy of.</param>
+        /// <returns>The distinct and immutable copy of the <paramref name="values"/>.</returns>
+        protected IEnumerable<T> AsDistinctAndImmutable<T>(IEnumerable<T> values)
         {
-            return gridIndex.X >= 0 && gridIndex.Y >= 0 && gridIndex.X < GridSize.X && gridIndex.Y < GridSize.Y;
+            return AsImmutable(values.Distinct());
         }
+
+        /// <summary>
+        /// Gets an immutable version of the <paramref name="values"/>. Provided as virtual for specialized derived
+        /// classes that do not need immutable values since it can guarantee the underlying collection won't change.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="values">The values to get the distinct and immutable copy of.</param>
+        /// <returns>The immutable copy of the <paramref name="values"/>.</returns>
+        protected virtual IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
+        {
+            return values.ToImmutable();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
+        /// </summary>
+        /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
+        protected abstract IGridSpatialCollectionSegment CreateSegment();
 
         /// <summary>
         /// Gets the grid segment for the specified grid index.
@@ -122,100 +132,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Adds multiple <see cref="ISpatial"/>s to the spatial collection.
-        /// </summary>
-        /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
-        public void Add(IEnumerable<ISpatial> spatials)
-        {
-            foreach (var spatial in spatials)
-                Add(spatial);
-        }
-
-        /// <summary>
-        /// Adds multiple <see cref="ISpatial"/>s to the spatial collection.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/>.</typeparam>
-        /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
-        public void Add<T>(IEnumerable<T> spatials) where T : class, ISpatial
-        {
-            foreach (var spatial in spatials)
-                Add(spatial);
-        }
-
-        /// <summary>
-        /// Adds a single <see cref="ISpatial"/> to the spatial collection.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
-        public void Add(ISpatial spatial)
-        {
-            Debug.Assert(!Contains(spatial), "The spatial was already in this spatial collection!");
-
-            // Add the spatial to the segments
-            foreach (var segment in GetSegments(spatial))
-                segment.Add(spatial);
-
-            // Hook a listener for movement and resizing
-            spatial.OnMove += _spatialMoveHandler;
-            spatial.OnResize += _spatialResizeHandler;
-        }
-
-        /// <summary>
-        /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> moves.
-        /// </summary>
-        /// <param name="sender">The <see cref="ISpatial"/> that moved.</param>
-        /// <param name="oldPosition">The old position.</param>
-        void Spatial_OnMove(ISpatial sender, Vector2 oldPosition)
-        {
-            // Get the grid index for the last and current positions to see if the segments have changed
-            var minSegment = WorldPositionToGridSegment(sender.Position);
-            var oldMinSegment = WorldPositionToGridSegment(sender.Position);
-
-            if (minSegment == oldMinSegment)
-                return;
-
-            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
-
-            // The position did change, so we have to remove the spatial from the old segments and add to the new
-            foreach (var segment in GetSegments(sender, oldPosition))
-                segment.Remove(sender);
-
-            Debug.Assert(!Contains(sender), "spatial was not completely removed from the grid!");
-
-            // Add the spatial back using the new positions
-            foreach (var segment in GetSegments(sender))
-                segment.Add(sender);
-        }
-
-        /// <summary>
-        /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> resizes.
-        /// </summary>
-        /// <param name="sender">The <see cref="ISpatial"/> that resized.</param>
-        /// <param name="oldSize">The old size.</param>
-        void Spatial_OnResize(ISpatial sender, Vector2 oldSize)
-        {
-            // Get the grid index for the last and current max positions to see if the segments have changed
-            var maxSegment = WorldPositionToGridSegment(sender.Position + sender.Size);
-            var oldMaxSegment = WorldPositionToGridSegment(sender.Position + oldSize);
-
-            if (maxSegment == oldMaxSegment)
-                return;
-
-            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
-
-            // The position did change, so we have to remove the spatial from the old segments and add to the new
-            var startIndex = WorldPositionToGridSegment(sender.Position);
-            var length = WorldPositionToGridSegment(sender.Position + oldSize);
-            foreach (var segment in GetSegments(startIndex, length))
-                segment.Remove(sender);
-
-            Debug.Assert(!Contains(sender), "spatial was not completely removed from the grid!");
-
-            // Add the spatial back using the new positions
-            foreach (var segment in GetSegments(sender))
-                segment.Add(sender);
-        }
-
-        /// <summary>
         /// Gets the grid segments that the <paramref name="spatial"/> occupies.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to get the segments for.</param>
@@ -241,6 +157,151 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Checks if a grid segment index is valid.
+        /// </summary>
+        /// <param name="gridIndex">The grid segment index.</param>
+        /// <returns>True if the grid segment index is valid; otherwise false.</returns>
+        protected bool IsLegalGridSegment(Point gridIndex)
+        {
+            return gridIndex.X >= 0 && gridIndex.Y >= 0 && gridIndex.X < GridSize.X && gridIndex.Y < GridSize.Y;
+        }
+
+        /// <summary>
+        /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> moves.
+        /// </summary>
+        /// <param name="sender">The <see cref="ISpatial"/> that moved.</param>
+        /// <param name="oldPosition">The old position.</param>
+        void Spatial_OnMove(ISpatial sender, Vector2 oldPosition)
+        {
+            // Get the grid index for the last and current positions to see if the segments have changed
+            var minSegment = WorldPositionToGridSegment(sender.Position);
+            var oldMinSegment = WorldPositionToGridSegment(sender.Position);
+
+            if (minSegment == oldMinSegment)
+                return;
+
+            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
+
+            // The position did change, so we have to remove the spatial from the old segments and add to the new
+            foreach (var segment in GetSegments(sender, oldPosition))
+            {
+                segment.Remove(sender);
+            }
+
+            Debug.Assert(!Contains(sender), "spatial was not completely removed from the grid!");
+
+            // Add the spatial back using the new positions
+            foreach (var segment in GetSegments(sender))
+            {
+                segment.Add(sender);
+            }
+        }
+
+        /// <summary>
+        /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> resizes.
+        /// </summary>
+        /// <param name="sender">The <see cref="ISpatial"/> that resized.</param>
+        /// <param name="oldSize">The old size.</param>
+        void Spatial_OnResize(ISpatial sender, Vector2 oldSize)
+        {
+            // Get the grid index for the last and current max positions to see if the segments have changed
+            var maxSegment = WorldPositionToGridSegment(sender.Position + sender.Size);
+            var oldMaxSegment = WorldPositionToGridSegment(sender.Position + oldSize);
+
+            if (maxSegment == oldMaxSegment)
+                return;
+
+            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
+
+            // The position did change, so we have to remove the spatial from the old segments and add to the new
+            var startIndex = WorldPositionToGridSegment(sender.Position);
+            var length = WorldPositionToGridSegment(sender.Position + oldSize);
+            foreach (var segment in GetSegments(startIndex, length))
+            {
+                segment.Remove(sender);
+            }
+
+            Debug.Assert(!Contains(sender), "spatial was not completely removed from the grid!");
+
+            // Add the spatial back using the new positions
+            foreach (var segment in GetSegments(sender))
+            {
+                segment.Add(sender);
+            }
+        }
+
+        /// <summary>
+        /// Tries to get a <see cref="IGridSpatialCollectionSegment"/> for the given world position.
+        /// </summary>
+        /// <param name="worldPosition">The world position.</param>
+        /// <returns>The <see cref="IGridSpatialCollectionSegment"/> for the given world position, or null if the
+        /// world position was not valid.</returns>
+        protected IGridSpatialCollectionSegment TryGetSegment(Vector2 worldPosition)
+        {
+            var gridIndex = WorldPositionToGridSegment(worldPosition);
+            if (!IsLegalGridSegment(gridIndex))
+                return null;
+
+            return GetSegment(gridIndex);
+        }
+
+        /// <summary>
+        /// Gets the index of the grid segment for the given world position.
+        /// </summary>
+        /// <param name="worldPosition">The world position.</param>
+        /// <returns>The grid segment index.</returns>
+        protected Point WorldPositionToGridSegment(Vector2 worldPosition)
+        {
+            return new Point((int)(worldPosition.X / _gridSegmentSize), (int)(worldPosition.Y / _gridSegmentSize));
+        }
+
+        #region ISpatialCollection Members
+
+        /// <summary>
+        /// Adds multiple <see cref="ISpatial"/>s to the spatial collection.
+        /// </summary>
+        /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
+        public void Add(IEnumerable<ISpatial> spatials)
+        {
+            foreach (var spatial in spatials)
+            {
+                Add(spatial);
+            }
+        }
+
+        /// <summary>
+        /// Adds multiple <see cref="ISpatial"/>s to the spatial collection.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/>.</typeparam>
+        /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
+        public void Add<T>(IEnumerable<T> spatials) where T : class, ISpatial
+        {
+            foreach (var spatial in spatials)
+            {
+                Add(spatial);
+            }
+        }
+
+        /// <summary>
+        /// Adds a single <see cref="ISpatial"/> to the spatial collection.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+        public void Add(ISpatial spatial)
+        {
+            Debug.Assert(!Contains(spatial), "The spatial was already in this spatial collection!");
+
+            // Add the spatial to the segments
+            foreach (var segment in GetSegments(spatial))
+            {
+                segment.Add(spatial);
+            }
+
+            // Hook a listener for movement and resizing
+            spatial.OnMove += _spatialMoveHandler;
+            spatial.OnResize += _spatialResizeHandler;
+        }
+
+        /// <summary>
         /// Checks if this spatial collection contains the given <paramref name="spatial"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to look for.</param>
@@ -258,21 +319,6 @@ namespace NetGore
 
             // They weren't in the segment, or the segment was invalid, so just scan the whole grid
             return _gridSegments.Any(x => x.Contains(spatial));
-        }
-
-        /// <summary>
-        /// Tries to get a <see cref="IGridSpatialCollectionSegment"/> for the given world position.
-        /// </summary>
-        /// <param name="worldPosition">The world position.</param>
-        /// <returns>The <see cref="IGridSpatialCollectionSegment"/> for the given world position, or null if the
-        /// world position was not valid.</returns>
-        protected IGridSpatialCollectionSegment TryGetSegment(Vector2 worldPosition)
-        {
-            var gridIndex = WorldPositionToGridSegment(worldPosition);
-            if (!IsLegalGridSegment(gridIndex))
-                return null;
-
-            return GetSegment(gridIndex);
         }
 
         /// <summary>
@@ -402,29 +448,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets a distinct and immutable version of the <paramref name="values"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of value.</typeparam>
-        /// <param name="values">The values to get the distinct and immutable copy of.</param>
-        /// <returns>The distinct and immutable copy of the <paramref name="values"/>.</returns>
-        protected IEnumerable<T> AsDistinctAndImmutable<T>(IEnumerable<T> values)
-        {
-            return AsImmutable(values.Distinct());
-        }
-
-        /// <summary>
-        /// Gets an immutable version of the <paramref name="values"/>. Provided as virtual for specialized derived
-        /// classes that do not need immutable values since it can guarantee the underlying collection won't change.
-        /// </summary>
-        /// <typeparam name="T">The type of value.</typeparam>
-        /// <param name="values">The values to get the distinct and immutable copy of.</param>
-        /// <returns>The immutable copy of the <paramref name="values"/>.</returns>
-        protected virtual IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
-        {
-            return values.ToImmutable();
-        }
-
-        /// <summary>
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
@@ -487,7 +510,9 @@ namespace NetGore
         public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect)).OfType<T>().Where(x => condition(x))));
+            return
+                AsDistinctAndImmutable(
+                    segments.SelectMany(seg => seg.Where(x => x.Intersect(rect)).OfType<T>().Where(x => condition(x))));
         }
 
         /// <summary>
@@ -690,7 +715,9 @@ namespace NetGore
             // Remove the spatial from the segments
             // Just remove from ALL segments, just to be on the safe side
             foreach (var segment in _gridSegments)
+            {
                 segment.Remove(spatial);
+            }
 
             Debug.Assert(!Contains(spatial), "Didn't fully and completely remove the spatial from all segments...");
         }
@@ -715,7 +742,8 @@ namespace NetGore
                 spatials = Enumerable.Empty<ISpatial>();
 
             // Grab the old segments so we can reuse as many as possible
-            var oldSegments = new Stack<IGridSpatialCollectionSegment>(_gridSegments ?? Enumerable.Empty< IGridSpatialCollectionSegment>());
+            var oldSegments =
+                new Stack<IGridSpatialCollectionSegment>(_gridSegments ?? Enumerable.Empty<IGridSpatialCollectionSegment>());
 
             // Set the new grid
             _gridSize = newSize;
@@ -732,9 +760,7 @@ namespace NetGore
                     segment.Clear();
                 }
                 else
-                {
                     segment = CreateSegment();
-                }
 
                 _gridSegments[i] = segment;
             }
@@ -743,14 +769,12 @@ namespace NetGore
             foreach (var spatial in spatials)
             {
                 foreach (var segment in GetSegments(spatial))
+                {
                     segment.Add(spatial);
+                }
             }
         }
 
-        /// <summary>
-        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
-        /// </summary>
-        /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
-        protected abstract IGridSpatialCollectionSegment CreateSegment();
+        #endregion
     }
 }

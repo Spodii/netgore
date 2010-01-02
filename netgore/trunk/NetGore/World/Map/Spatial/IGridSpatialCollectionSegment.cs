@@ -15,14 +15,14 @@ namespace NetGore
         void Add(ISpatial spatial);
 
         /// <summary>
+        /// Clears all <see cref="ISpatial"/>s from the segment.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
         /// Remove the <see cref="ISpatial"/> from the segment.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
         void Remove(ISpatial spatial);
-
-        /// <summary>
-        /// Clears all <see cref="ISpatial"/>s from the segment.
-        /// </summary>
-        void Clear();
     }
 }
