@@ -21,12 +21,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
+        /// Initializes a new instance of the <see cref="StaticGridSpatialCollection"/> class.
         /// </summary>
-        /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
-        protected override IGridSpatialCollectionSegment CreateSegment()
+        public StaticGridSpatialCollection()
         {
-            return new CollectionSegment();
         }
 
         /// <summary>
@@ -42,12 +40,23 @@ namespace NetGore
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
+        /// </summary>
+        /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
+        protected override IGridSpatialCollectionSegment CreateSegment()
+        {
+            return new CollectionSegment();
+        }
+
+        /// <summary>
         /// An implementation of the <see cref="IGridSpatialCollectionSegment"/> for the
         /// <see cref="StaticGridSpatialCollection"/> that focuses on a small footprint.
         /// </summary>
         class CollectionSegment : IGridSpatialCollectionSegment
         {
             ISpatial[] _spatials;
+
+            #region IGridSpatialCollectionSegment Members
 
             /// <summary>
             /// Returns an enumerator that iterates through the collection.
@@ -61,7 +70,9 @@ namespace NetGore
                 if (_spatials != null)
                 {
                     foreach (var spatial in _spatials)
+                    {
                         yield return spatial;
+                    }
                 }
             }
 
@@ -84,13 +95,9 @@ namespace NetGore
             public void Add(ISpatial spatial)
             {
                 if (_spatials == null)
-                {
                     _spatials = new ISpatial[1];
-                }
                 else
-                {
                     Array.Resize(ref _spatials, _spatials.Length + 1);
-                }
 
                 _spatials[_spatials.Length - 1] = spatial;
             }
@@ -113,9 +120,7 @@ namespace NetGore
                     }
                 }
                 else
-                {
                     _spatials = _spatials.Where(x => x != spatial).ToArray();
-                }
             }
 
             /// <summary>
@@ -125,13 +130,8 @@ namespace NetGore
             {
                 _spatials = null;
             }
-        }
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StaticGridSpatialCollection"/> class.
-        /// </summary>
-        public StaticGridSpatialCollection()
-        {
+
+            #endregion
         }
     }
 }
