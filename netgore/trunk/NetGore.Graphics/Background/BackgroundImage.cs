@@ -22,15 +22,10 @@ namespace NetGore.Graphics
 
         static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
 
-        float _depth;
-        string _name;
-
         readonly ICamera2DProvider _cameraProvider;
         readonly IMap _map;
-
-        protected ICamera2D Camera { get { return _cameraProvider.Camera; } }
-
-        protected IMap Map { get { return _map; }}
+        float _depth;
+        string _name;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundImage"/> class.
@@ -93,6 +88,11 @@ namespace NetGore.Graphics
         [Browsable(true)]
         public Alignment Alignment { get; set; }
 
+        protected ICamera2D Camera
+        {
+            get { return _cameraProvider.Camera; }
+        }
+
         /// <summary>
         /// Gets or sets the color to use when drawing the image where RGBA 255,255,255,255 will draw
         /// the image unaltered. Default is white (ARGB: 255,255,255,255).
@@ -125,6 +125,11 @@ namespace NetGore.Graphics
 
                 _depth = value;
             }
+        }
+
+        protected IMap Map
+        {
+            get { return _map; }
         }
 
         /// <summary>
@@ -174,54 +179,6 @@ namespace NetGore.Graphics
 
                 return new Vector2(Sprite.Source.Width, Sprite.Source.Height);
             }
-        }
-
-        /// <summary>
-        /// Unused by the <see cref="BackgroundImage"/>.
-        /// </summary>
-        public event MapRenderLayerChange OnChangeRenderLayer
-        {
-            add { }
-            remove { }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
-        /// </summary>
-        public MapRenderLayer MapRenderLayer
-        {
-            get { return MapRenderLayer.Background; }
-        }
-
-        /// <summary>
-        /// Makes the object draw itself.
-        /// </summary>
-        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
-        public virtual void Draw(SpriteBatch sb)
-        {
-            if (Sprite == null)
-                return;
-
-            Vector2 position = GetPosition(Map.Size, Camera);
-            Sprite.Draw(sb, position, Color);
-        }
-
-        /// <summary>
-        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
-        /// </summary>
-        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
-        /// <returns>True if the object is in view of the camera, else False.</returns>
-        public bool InView(ICamera2D camera)
-        {
-            Vector2 position = GetPosition(Map.Size, Camera);
-            if (position.X > camera.Max.X || position.Y > camera.Max.Y)
-                return false;
-
-            Vector2 max = position + Sprite.Size;
-            if (max.X < camera.Min.X || max.Y < camera.Min.Y)
-                return false;
-
-            return true;
         }
 
         protected void Draw(SpriteBatch spriteBatch, Vector2 spriteSize)
@@ -351,5 +308,57 @@ namespace NetGore.Graphics
 
             writer.Write(_valueKeyGrhIndex, grhIndex);
         }
+
+        #region IDrawable Members
+
+        /// <summary>
+        /// Unused by the <see cref="BackgroundImage"/>.
+        /// </summary>
+        public event MapRenderLayerChange OnChangeRenderLayer
+        {
+            add { }
+            remove { }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
+        /// </summary>
+        public MapRenderLayer MapRenderLayer
+        {
+            get { return MapRenderLayer.Background; }
+        }
+
+        /// <summary>
+        /// Makes the object draw itself.
+        /// </summary>
+        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
+        public virtual void Draw(SpriteBatch sb)
+        {
+            if (Sprite == null)
+                return;
+
+            Vector2 position = GetPosition(Map.Size, Camera);
+            Sprite.Draw(sb, position, Color);
+        }
+
+        /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
+        public bool InView(ICamera2D camera)
+        {
+            Vector2 position = GetPosition(Map.Size, Camera);
+            if (position.X > camera.Max.X || position.Y > camera.Max.Y)
+                return false;
+
+            Vector2 max = position + Sprite.Size;
+            if (max.X < camera.Min.X || max.Y < camera.Min.Y)
+                return false;
+
+            return true;
+        }
+
+        #endregion
     }
 }
