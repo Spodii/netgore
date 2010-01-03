@@ -160,7 +160,7 @@ namespace DemoGame
         /// shop; otherwise false.</returns>
         public static bool IsValidDistanceToShop(Entity shopper, Entity shopOwner)
         {
-            return shopper.Intersect(shopOwner);
+            return shopper.Intersects(shopOwner);
         }
 
         /// <summary>

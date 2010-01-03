@@ -86,7 +86,7 @@ namespace NetGore
         public bool IsEntityStandingOn(ISpatial spatial)
         {
             var rect = spatial.GetStandingAreaRect();
-            return this.Intersect(rect);
+            return this.Intersects(rect);
         }
 
         void Read(IValueReader r)

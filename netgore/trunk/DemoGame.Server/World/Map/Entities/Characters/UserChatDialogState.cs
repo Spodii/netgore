@@ -149,7 +149,7 @@ namespace DemoGame.Server
                 return false;
             }
 
-            if (!_user.Intersect(npc))
+            if (!_user.Intersects(npc))
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, _user, npc, "Characters are not touching");
@@ -190,7 +190,7 @@ namespace DemoGame.Server
             }
 
             // Check for a valid range
-            if (!_user.Intersect(_chattingWith))
+            if (!_user.Intersects(_chattingWith))
             {
                 if (log.IsInfoEnabled)
                     log.Info("Dialog aborted since the User is no longer near the target.");

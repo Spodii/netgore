@@ -36,6 +36,20 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Checks if the <see cref="ISpatial"/> contains a point.
+        /// </summary>
+        /// <param name="spatial">The spatial.</param>
+        /// <param name="p">Point to check if the <paramref name="spatial"/> contains.</param>
+        /// <returns>True if the <paramref name="spatial"/> contains <paramref name="p"/>; otherwise false.</returns>
+        public static bool Contains(this ISpatial spatial, Vector2 p)
+        {
+            var min = spatial.Position;
+            var max = spatial.Max;
+
+            return (min.X <= p.X && max.X >= p.X && min.Y <= p.Y && max.Y >= p.Y);
+        }
+
+        /// <summary>
         /// Gets the distance between this <see cref="ISpatial"/> and another.
         /// </summary>
         /// <param name="spatial">The first <see cref="ISpatial"/>.</param>
@@ -79,29 +93,13 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Checks if the <see cref="ISpatial"/> contains a point.
-        /// </summary>
-        /// <param name="spatial">The spatial.</param>
-        /// <param name="p">Point to check if the <paramref name="spatial"/> contains.</param>
-        /// <returns>True if the <paramref name="spatial"/> contains <paramref name="p"/>; otherwise false.</returns>
-        public static bool HitTest(this ISpatial spatial, Vector2 p)
-        {
-            // TODO: !! Rename to Contains
-            var min = spatial.Position;
-            var max = spatial.Max;
-
-            return (min.X <= p.X && max.X >= p.X && min.Y <= p.Y && max.Y >= p.Y);
-        }
-
-        /// <summary>
         /// Gets if an <see cref="ISpatial"/> and <see cref="Rectangle"/> occupy any common space.
         /// </summary>
         /// <param name="a">The <see cref="ISpatial"/>.</param>
         /// <param name="b">The <see cref="Rectangle"/>.</param>
         /// <returns>True if the two occupy any common space; otherwise false.</returns>
-        public static bool Intersect(this ISpatial a, Rectangle b)
+        public static bool Intersects(this ISpatial a, Rectangle b)
         {
-            // TODO: !! Rename to Intersects
             return a.ToRectangle().Intersects(b);
         }
 
@@ -111,9 +109,8 @@ namespace NetGore
         /// <param name="a">The first <see cref="ISpatial"/>.</param>
         /// <param name="b">The other <see cref="ISpatial"/>.</param>
         /// <returns>True if the two occupy any common space; otherwise false.</returns>
-        public static bool Intersect(this ISpatial a, ISpatial b)
+        public static bool Intersects(this ISpatial a, ISpatial b)
         {
-            // TODO: !! Rename to Intersects
             return a.ToRectangle().Intersects(b.ToRectangle());
         }
     }

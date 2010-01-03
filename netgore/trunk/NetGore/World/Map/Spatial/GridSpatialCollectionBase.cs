@@ -334,7 +334,7 @@ namespace NetGore
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x is T && x.HitTest(point));
+            return segment.Any(x => x is T && x.Contains(point));
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace NetGore
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x.HitTest(point));
+            return segment.Any(x => x.Contains(point));
         }
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace NetGore
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x is T && x.HitTest(point) && condition((T)x));
+            return segment.Any(x => x is T && x.Contains(point) && condition((T)x));
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace NetGore
         public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x is T && x.Intersect(rect) && condition((T)x)));
+            return segments.Any(seg => seg.Any(x => x is T && x.Intersects(rect) && condition((T)x)));
         }
 
         /// <summary>
@@ -394,7 +394,7 @@ namespace NetGore
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x.HitTest(point) && condition(x));
+            return segment.Any(x => x.Contains(point) && condition(x));
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace NetGore
         public bool ContainsEntities<T>(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x is T && x.Intersect(rect)));
+            return segments.Any(seg => seg.Any(x => x is T && x.Intersects(rect)));
         }
 
         /// <summary>
@@ -418,7 +418,7 @@ namespace NetGore
         public bool ContainsEntities(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x.Intersect(rect)));
+            return segments.Any(seg => seg.Any(x => x.Intersects(rect)));
         }
 
         /// <summary>
@@ -430,7 +430,7 @@ namespace NetGore
         public bool ContainsEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x.Intersect(rect) && condition(x)));
+            return segments.Any(seg => seg.Any(x => x.Intersects(rect) && condition(x)));
         }
 
         /// <summary>
@@ -444,7 +444,7 @@ namespace NetGore
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
-            return AsImmutable(segment.Where(x => x.HitTest(p)));
+            return AsImmutable(segment.Where(x => x.Contains(p)));
         }
 
         /// <summary>
@@ -455,7 +455,7 @@ namespace NetGore
         public IEnumerable<ISpatial> GetEntities(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect))));
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect))));
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace NetGore
             if (segment == null)
                 return Enumerable.Empty<T>();
 
-            return AsImmutable(segment.Where(x => x.HitTest(p)).OfType<T>());
+            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>());
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace NetGore
         public IEnumerable<T> GetEntities<T>(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect)).OfType<T>()));
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>()));
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace NetGore
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
-            return AsImmutable(segment.Where(x => x.HitTest(p) && condition(x)));
+            return AsImmutable(segment.Where(x => x.Contains(p) && condition(x)));
         }
 
         /// <summary>
@@ -512,7 +512,7 @@ namespace NetGore
             var segments = GetSegments(rect);
             return
                 AsDistinctAndImmutable(
-                    segments.SelectMany(seg => seg.Where(x => x.Intersect(rect)).OfType<T>().Where(x => condition(x))));
+                    segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>().Where(x => condition(x))));
         }
 
         /// <summary>
@@ -528,7 +528,7 @@ namespace NetGore
             if (segment == null)
                 return Enumerable.Empty<T>();
 
-            return AsImmutable(segment.Where(x => x.HitTest(p)).OfType<T>().Where(x => condition(x)));
+            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>().Where(x => condition(x)));
         }
 
         /// <summary>
@@ -540,7 +540,7 @@ namespace NetGore
         public IEnumerable<ISpatial> GetEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersect(rect) && condition(x))));
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect) && condition(x))));
         }
 
         /// <summary>
@@ -558,7 +558,7 @@ namespace NetGore
             {
                 foreach (var spatial in segment)
                 {
-                    if (spatial is T && spatial.Intersect(rect) && condition((T)spatial))
+                    if (spatial is T && spatial.Intersects(rect) && condition((T)spatial))
                         return (T)spatial;
                 }
             }
@@ -580,7 +580,7 @@ namespace NetGore
             {
                 foreach (var spatial in segment)
                 {
-                    if (spatial.Intersect(rect) && condition(spatial))
+                    if (spatial.Intersects(rect) && condition(spatial))
                         return spatial;
                 }
             }
@@ -604,7 +604,7 @@ namespace NetGore
 
             foreach (var spatial in segment)
             {
-                if (spatial is T && spatial.HitTest(p) && condition((T)spatial))
+                if (spatial is T && spatial.Contains(p) && condition((T)spatial))
                     return (T)spatial;
             }
 
@@ -626,7 +626,7 @@ namespace NetGore
 
             foreach (var spatial in segment)
             {
-                if (spatial is T && spatial.HitTest(p))
+                if (spatial is T && spatial.Contains(p))
                     return (T)spatial;
             }
 
@@ -644,7 +644,7 @@ namespace NetGore
             if (segment == null)
                 return null;
 
-            return segment.FirstOrDefault(x => x.HitTest(p));
+            return segment.FirstOrDefault(x => x.Contains(p));
         }
 
         /// <summary>
@@ -659,7 +659,7 @@ namespace NetGore
             if (segment == null)
                 return null;
 
-            return segment.FirstOrDefault(x => x.HitTest(p) && condition(x));
+            return segment.FirstOrDefault(x => x.Contains(p) && condition(x));
         }
 
         /// <summary>
@@ -674,7 +674,7 @@ namespace NetGore
             {
                 foreach (var spatial in segment)
                 {
-                    if (spatial.Intersect(rect))
+                    if (spatial.Intersects(rect))
                         return spatial;
                 }
             }
@@ -695,7 +695,7 @@ namespace NetGore
             {
                 foreach (var spatial in segment)
                 {
-                    if (spatial is T && spatial.Intersect(rect))
+                    if (spatial is T && spatial.Intersects(rect))
                         return (T)spatial;
                 }
             }

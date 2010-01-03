@@ -248,10 +248,8 @@ namespace DemoGame
 
         void CheckCollisionAgainstEntities(Entity entity)
         {
-            // TODO: !! This is no longer optimized to not return WallEntityBases like we had before... I wouldn't care except for that it also affects the server's performance
-
             // Get the entities we have a rectangular collision with
-            var collisionSources = Spatial.GetEntities<Entity>(entity);
+            var collisionSources = Spatial.GetEntities<Entity>(entity, x => !(x is WallEntityBase));
 
             foreach (var other in collisionSources)
             {
@@ -283,7 +281,7 @@ namespace DemoGame
                     wall.HandleCollideInto(entity, displacement);
             }
 
-            // TODO: !! Ensure position is valid
+            // TODO: Ensure position is valid
             /*
             // Ensure the position we found is actually valid
             // Its not uncommon for this to return false when teleporting an Entity inside of a bunch of walls or
@@ -1073,7 +1071,7 @@ namespace DemoGame
             foreach (var e in Entities)
             {
                 var w = e as WallEntityBase;
-                if (w == null || w == entity || !w.Intersect(newRect))
+                if (w == null || w == entity || !w.Intersects(newRect))
                     continue;
 
                 // Selected wall right side to target wall left side
