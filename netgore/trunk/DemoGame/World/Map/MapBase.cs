@@ -49,7 +49,6 @@ namespace DemoGame
         const string _headerNodeWidthKey = "Width";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
-
         const string _wallsNodeName = "Walls";
 
         /// <summary>
@@ -1168,7 +1167,7 @@ namespace DemoGame
                 // This way we can be sure to update everyone even if the entities collection changed
                 if (i < _entities.Count && current == _updateableEntities[i])
                     i++;
-            }
+            } 
         }
 
         #region IMap Members
@@ -1225,6 +1224,24 @@ namespace DemoGame
                 return;
             }
 
+            // Ensure the entity is in the map still
+            var move = Vector2.Zero;
+            var entityMin = entity.Position;
+            var entityMax = entity.Max;
+
+            if (entityMin.X < 0)
+                move.X = -entityMin.X;
+            else if (entityMax.X >= Size.X)
+                move.X = Size.X - entityMax.X;
+
+            if (entityMin.Y < 0)
+                move.Y = -entityMin.Y;
+            else if (entityMax.Y >= Size.Y)
+                move.Y = Size.Y - entityMax.Y;
+
+            entity.Move(move);
+
+            // Perform collision detetion
             CheckCollisionsAgainstWalls(entity);
             CheckCollisionAgainstEntities(entity);
         }
