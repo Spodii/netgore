@@ -17,9 +17,7 @@ namespace DemoGame.Client
         /// <param name="layer">The MapRenderLayer that was drawn.</param>
         /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
         /// <param name="camera">The camera that the Map used to draw.</param>
-        /// <param name="isDrawing">If true, the Map actually drew this layer. If false, it is time for this
-        /// <paramref name="layer"/> to be drawn, but the Map did not actually draw it.</param>
-        protected override void EndDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing)
+        protected override void EndDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
         {
             if (layer != MapRenderLayer.SpriteForeground)
                 return;
@@ -38,9 +36,7 @@ namespace DemoGame.Client
         /// <param name="layer">The MapRenderLayer that is to be drawn.</param>
         /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
         /// <param name="camera">The camera that the Map used to draw.</param>
-        /// <param name="isDrawing">If true, the Map actually drew this layer. If false, it is time for this
-        /// <paramref name="layer"/> to be drawn, but the Map did not actually draw it.</param>
-        protected override void StartDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing)
+        protected override void StartDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
         {
         }
     }

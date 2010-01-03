@@ -11,7 +11,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// A single image that resides in the background of the map.
     /// </summary>
-    public abstract class BackgroundImage
+    public abstract class BackgroundImage : IDrawable
     {
         const string _valueKeyAlignment = "Alignment";
         const string _valueKeyColor = "Color";
@@ -19,23 +19,57 @@ namespace NetGore.Graphics
         const string _valueKeyGrhIndex = "GrhIndex";
         const string _valueKeyName = "Name";
         const string _valueKeyOffset = "Offset";
+
         static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
+
         float _depth;
         string _name;
 
+        readonly ICamera2DProvider _cameraProvider;
+        readonly IMap _map;
+
+        protected ICamera2D Camera { get { return _cameraProvider.Camera; } }
+
+        protected IMap Map { get { return _map; }}
+
         /// <summary>
-        /// BackgroundImage constructor.
+        /// Initializes a new instance of the <see cref="BackgroundImage"/> class.
         /// </summary>
-        protected BackgroundImage()
+        /// <param name="cameraProvider">The camera provider.</param>
+        /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
+        protected BackgroundImage(ICamera2DProvider cameraProvider, IMap map)
         {
+            if (cameraProvider == null)
+                throw new ArgumentNullException("cameraProvider");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            _cameraProvider = cameraProvider;
+            _map = map;
+
             // Set the default values
             Offset = Vector2.Zero;
             Color = Color.White;
             Alignment = Alignment.TopLeft;
         }
 
-        protected BackgroundImage(IValueReader reader, int currentTime)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BackgroundImage"/> class.
+        /// </summary>
+        /// <param name="cameraProvider">The camera provider.</param>
+        /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        /// <param name="currentTime">The current time.</param>
+        protected BackgroundImage(ICamera2DProvider cameraProvider, IMap map, IValueReader reader, int currentTime)
         {
+            if (cameraProvider == null)
+                throw new ArgumentNullException("cameraProvider");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            _cameraProvider = cameraProvider;
+            _map = map;
+
             Name = reader.ReadString(_valueKeyName);
             Alignment = reader.ReadEnum(_alignmentHelper, _valueKeyAlignment);
             Color = reader.ReadColor(_valueKeyColor);
@@ -143,33 +177,52 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the image to the specified SpriteBatch.
+        /// Unused by the <see cref="BackgroundImage"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw the image to.</param>
-        /// <param name="camera">Camera that describes the current view.</param>
-        /// <param name="mapSize">Size of the map to draw to.</param>
-        public virtual void Draw(SpriteBatch spriteBatch, ICamera2D camera, Vector2 mapSize)
+        public event MapRenderLayerChange OnChangeRenderLayer
         {
-            if (Sprite == null)
-                return;
-
-            Vector2 position = GetPosition(mapSize, camera);
-            Sprite.Draw(spriteBatch, position, Color);
+            add { }
+            remove { }
         }
 
         /// <summary>
-        /// Draws the image to the specified SpriteBatch.
+        /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw the image to.</param>
-        /// <param name="camera">Camera that describes the current view.</param>
-        /// <param name="mapSize">Size of the map to draw to.</param>
-        /// <param name="spriteSize">Size to draw the sprite.</param>
-        public virtual void Draw(SpriteBatch spriteBatch, ICamera2D camera, Vector2 mapSize, Vector2 spriteSize)
+        public MapRenderLayer MapRenderLayer
+        {
+            get { return MapRenderLayer.Background; }
+        }
+
+        /// <summary>
+        /// Makes the object draw itself.
+        /// </summary>
+        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
+        public virtual void Draw(SpriteBatch sb)
         {
             if (Sprite == null)
                 return;
 
-            Vector2 position = GetPosition(mapSize, camera, spriteSize);
+            Vector2 position = GetPosition(Map.Size, Camera);
+            Sprite.Draw(sb, position, Color);
+        }
+
+        /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
+        public bool InView(ICamera2D camera)
+        {
+            // HACK: Should probably do this correctly... eventually.
+            return true;
+        }
+
+        protected void Draw(SpriteBatch spriteBatch, Vector2 spriteSize)
+        {
+            if (Sprite == null)
+                return;
+
+            Vector2 position = GetPosition(Map.Size, Camera, spriteSize);
             Rectangle rect = new Rectangle((int)position.X, (int)position.Y, (int)spriteSize.X, (int)spriteSize.Y);
             Sprite.Draw(spriteBatch, rect, Color);
         }
@@ -208,7 +261,7 @@ namespace NetGore.Graphics
         /// <param name="camera">Camera that describes the current view.</param>
         /// <param name="spriteSize">Size of the Sprite that will be drawn.</param>
         /// <returns>The map position of the image using the given <paramref name="camera"/>.</returns>
-        public Vector2 GetPosition(Vector2 mapSize, ICamera2D camera, Vector2 spriteSize)
+        protected Vector2 GetPosition(Vector2 mapSize, ICamera2D camera, Vector2 spriteSize)
         {
             // Can't draw a sprite that has no size...
             if (spriteSize == Vector2.Zero)
@@ -241,7 +294,7 @@ namespace NetGore.Graphics
         /// <param name="mapSize">Size of the map that this image is on.</param>
         /// <param name="camera">Camera that describes the current view.</param>
         /// <returns>The map position of the image using the given <paramref name="camera"/>.</returns>
-        public Vector2 GetPosition(Vector2 mapSize, ICamera2D camera)
+        protected Vector2 GetPosition(Vector2 mapSize, ICamera2D camera)
         {
             return GetPosition(mapSize, camera, SpriteSourceSize);
         }
