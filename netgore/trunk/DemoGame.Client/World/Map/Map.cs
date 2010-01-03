@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
-using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
@@ -19,8 +17,7 @@ namespace DemoGame.Client
     /// <param name="layer">The layer that the drawing event is related to.</param>
     /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
     /// <param name="camera">The camera that was used in the drawing.</param>
-    public delegate void MapDrawEventHandler(
-        Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera);
+    public delegate void MapDrawEventHandler(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera);
 
     /// <summary>
     /// Map object for the client
@@ -51,6 +48,7 @@ namespace DemoGame.Client
         readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
 
         TextureAtlas _atlas;
+        ICamera2D _camera;
 
         /// <summary>
         /// List of atlas textures used for the graphics for the map
@@ -69,8 +67,6 @@ namespace DemoGame.Client
         /// </summary>
         public event MapDrawEventHandler OnStartDrawLayer;
 
-        ICamera2D _camera;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
@@ -78,8 +74,7 @@ namespace DemoGame.Client
         /// <param name="camera">The camera used to view the map.</param>
         /// <param name="getTime">The object used to get the current time.</param>
         /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
-        public Map(MapIndex mapIndex, ICamera2D camera, IGetTime getTime, GraphicsDevice graphics)
-            : base(mapIndex, getTime)
+        public Map(MapIndex mapIndex, ICamera2D camera, IGetTime getTime, GraphicsDevice graphics) : base(mapIndex, getTime)
         {
             _camera = camera;
             _graphics = graphics;
@@ -92,6 +87,12 @@ namespace DemoGame.Client
         {
             get { return _backgroundImages; }
         }
+
+        /// <summary>
+        /// Gets or sets a filter to be used when determining what components on the map will be drawn. If null,
+        /// all components will be drawn.
+        /// </summary>
+        public Func<IDrawable, bool> DrawFilter { get; set; }
 
         /// <summary>
         /// Gets an IEnumerable of all the MapGrhs on the Map.
@@ -178,16 +179,6 @@ namespace DemoGame.Client
         protected override WallEntityBase CreateWall(IValueReader r)
         {
             return new WallEntity(r);
-        }
-
-        /// <summary>
-        /// Gets or sets a filter to be used when determining what components on the map will be drawn. If null,
-        /// all components will be drawn.
-        /// </summary>
-        public Func<IDrawable, bool> DrawFilter
-        {
-            get;
-            set;
         }
 
         /// <summary>
@@ -344,7 +335,8 @@ namespace DemoGame.Client
         void LoadBackgroundImages(IValueReader r)
         {
             int currentTime = GetTime();
-            var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(this, this, x, currentTime));
+            var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName,
+                                                                  x => new BackgroundLayer(this, this, x, currentTime));
 
             // Add the loaded background images
             foreach (BackgroundImage bgImage in loadedBGImages)
@@ -470,15 +462,25 @@ namespace DemoGame.Client
             }
         }
 
+        #region ICamera2DProvider Members
+
         /// <summary>
         /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public ICamera2D Camera { get { return _camera; } set {
-            if (value == null)
-                throw new ArgumentNullException("value");
+        public ICamera2D Camera
+        {
+            get { return _camera; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
 
-            _camera = value; } }
+                _camera = value;
+            }
+        }
+
+        #endregion
 
         #region IDisposable Members
 

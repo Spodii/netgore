@@ -34,10 +34,6 @@ namespace DemoGame.MapEditor
 
     partial class ScreenForm : Form, IGetTime
     {
-        readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
-
-        public MapDrawFilterHelper MapDrawFilterHelper { get { return _mapDrawFilterHelper; } }
-
         /// <summary>
         /// Key to move the camera down.
         /// </summary>
@@ -73,6 +69,7 @@ namespace DemoGame.MapEditor
         readonly ScreenGrid _grid;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
+        readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
 
         /// <summary>
         /// Information on the walls bound to MapGrhs.
@@ -279,6 +276,11 @@ namespace DemoGame.MapEditor
                 if (OnChangeMap != null)
                     OnChangeMap(oldMap, _map);
             }
+        }
+
+        public MapDrawFilterHelper MapDrawFilterHelper
+        {
+            get { return _mapDrawFilterHelper; }
         }
 
         /// <summary>

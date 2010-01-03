@@ -34,7 +34,7 @@ namespace NetGore.Graphics
         /// <param name="cameraProvider">The camera provider.</param>
         /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
         public BackgroundLayer(ICamera2DProvider cameraProvider, IMap map, IValueReader reader, int currentTime)
-            : base(cameraProvider, map,reader, currentTime)
+            : base(cameraProvider, map, reader, currentTime)
         {
             HorizontalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "HorizontalLayout");
             VerticalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "VerticalLayout");
