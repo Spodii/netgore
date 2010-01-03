@@ -200,39 +200,22 @@ namespace DemoGame.Client
             var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(camera));
             drawableInView = bgInView.Concat(drawableInView);
 
-            // Sort the items that we will be drawing
-            var sorted = drawableInView.OrderBy(x => x.MapRenderLayer);
+            // Group the items to be drawn by their layer
+            var groupedDrawables = drawableInView.GroupBy(x => x.MapRenderLayer).OrderBy(x => x.Key);
 
-            // Start drawing each item, raising the appropriate events when the layer changes
-            MapRenderLayer? currentLayer = null;
-            foreach (var drawable in sorted)
+            // Loop through each layer and draw the item
+            foreach (var layer in groupedDrawables)
             {
-                // Handle when the layer changes
-                if (drawable.MapRenderLayer != currentLayer)
+                if (OnStartDrawLayer != null)
+                    OnStartDrawLayer(this, layer.Key, sb, camera);
+
+                foreach (var drawable in layer.OrderByDescending(x => x.LayerDepth))
                 {
-                    // Notify the end of the last layer
-                    if (currentLayer.HasValue)
-                    {
-                        if (OnEndDrawLayer != null)
-                            OnEndDrawLayer(this, currentLayer.Value, sb, camera);
-                    }
-
-                    // Set and notify the start of the new layer
-                    currentLayer = drawable.MapRenderLayer;
-
-                    if (OnStartDrawLayer != null)
-                        OnStartDrawLayer(this, currentLayer.Value, sb, camera);
+                    drawable.Draw(sb);
                 }
 
-                // Draw the item
-                drawable.Draw(sb);
-            }
-
-            // Raise the very last notification of the layer's drawing ending
-            if (currentLayer.HasValue)
-            {
                 if (OnEndDrawLayer != null)
-                    OnEndDrawLayer(this, currentLayer.Value, sb, camera);
+                    OnEndDrawLayer(this, layer.Key, sb, camera);
             }
 
             // Draw the particle effects

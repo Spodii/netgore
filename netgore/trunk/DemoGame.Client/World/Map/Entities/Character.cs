@@ -235,6 +235,15 @@ namespace DemoGame.Client
         #region IDrawable Members
 
         /// <summary>
+        /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
+        /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
+        /// </summary>
+        public byte LayerDepth
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
         /// Makes the object draw itself.
         /// </summary>
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>

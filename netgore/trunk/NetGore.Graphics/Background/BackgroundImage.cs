@@ -314,7 +314,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Unused by the <see cref="BackgroundImage"/>.
         /// </summary>
-        public event MapRenderLayerChange OnChangeRenderLayer
+        event MapRenderLayerChange IDrawable.OnChangeRenderLayer
         {
             add { }
             remove { }
@@ -326,6 +326,15 @@ namespace NetGore.Graphics
         public MapRenderLayer MapRenderLayer
         {
             get { return MapRenderLayer.Background; }
+        }
+
+        /// <summary>
+        /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
+        /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
+        /// </summary>
+        public byte LayerDepth
+        {
+            get { return (byte)Depth; }
         }
 
         /// <summary>
