@@ -11,18 +11,18 @@ namespace NetGore.Tests.NetGore
         public void HitTestTest()
         {
             TestEntity e = new TestEntity(Vector2.Zero, new Vector2(10, 10));
-            Assert.IsTrue(e.HitTest(new Vector2(0, 0)));
-            Assert.IsTrue(e.HitTest(new Vector2(10, 0)));
-            Assert.IsTrue(e.HitTest(new Vector2(0, 10)));
-            Assert.IsTrue(e.HitTest(new Vector2(10, 10)));
-            Assert.IsTrue(e.HitTest(new Vector2(5, 5)));
+            Assert.IsTrue(e.Contains(new Vector2(0, 0)));
+            Assert.IsTrue(e.Contains(new Vector2(10, 0)));
+            Assert.IsTrue(e.Contains(new Vector2(0, 10)));
+            Assert.IsTrue(e.Contains(new Vector2(10, 10)));
+            Assert.IsTrue(e.Contains(new Vector2(5, 5)));
 
-            Assert.IsFalse(e.HitTest(new Vector2(-1, 0)));
-            Assert.IsFalse(e.HitTest(new Vector2(0, -1)));
-            Assert.IsFalse(e.HitTest(new Vector2(-1, -1)));
-            Assert.IsFalse(e.HitTest(new Vector2(11, 0)));
-            Assert.IsFalse(e.HitTest(new Vector2(0, 11)));
-            Assert.IsFalse(e.HitTest(new Vector2(11, 11)));
+            Assert.IsFalse(e.Contains(new Vector2(-1, 0)));
+            Assert.IsFalse(e.Contains(new Vector2(0, -1)));
+            Assert.IsFalse(e.Contains(new Vector2(-1, -1)));
+            Assert.IsFalse(e.Contains(new Vector2(11, 0)));
+            Assert.IsFalse(e.Contains(new Vector2(0, 11)));
+            Assert.IsFalse(e.Contains(new Vector2(11, 11)));
         }
 
         [Test]
@@ -31,31 +31,31 @@ namespace NetGore.Tests.NetGore
             TestEntity a = new TestEntity(Vector2.Zero, new Vector2(10, 10));
             TestEntity b = new TestEntity(Vector2.Zero, new Vector2(10, 10));
 
-            Assert.IsTrue(a.Intersect(b));
+            Assert.IsTrue(a.Intersects(b));
 
             a.Teleport(new Vector2(9, 9));
-            Assert.IsTrue(a.Intersect(b));
+            Assert.IsTrue(a.Intersects(b));
 
             a.Teleport(new Vector2(-9, -9));
-            Assert.IsTrue(a.Intersect(b));
+            Assert.IsTrue(a.Intersects(b));
 
             a.Teleport(new Vector2(-9, 0));
-            Assert.IsTrue(a.Intersect(b));
+            Assert.IsTrue(a.Intersects(b));
 
             a.Teleport(new Vector2(0, -9));
-            Assert.IsTrue(a.Intersect(b));
+            Assert.IsTrue(a.Intersects(b));
 
             a.Teleport(new Vector2(-11, -11));
-            Assert.IsFalse(a.Intersect(b));
+            Assert.IsFalse(a.Intersects(b));
 
             a.Teleport(new Vector2(-11, 0));
-            Assert.IsFalse(a.Intersect(b));
+            Assert.IsFalse(a.Intersects(b));
 
             a.Teleport(new Vector2(0, -11));
-            Assert.IsFalse(a.Intersect(b));
+            Assert.IsFalse(a.Intersects(b));
 
             a.Teleport(new Vector2(11, 11));
-            Assert.IsFalse(a.Intersect(b));
+            Assert.IsFalse(a.Intersects(b));
         }
 
         [Test]

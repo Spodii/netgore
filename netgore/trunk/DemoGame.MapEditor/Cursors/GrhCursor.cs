@@ -166,7 +166,7 @@ namespace DemoGame.MapEditor
                                                (int)selectRectSize.Y);
                 foreach (MapGrh mg in screen.Map.MapGrhs)
                 {
-                    if (mg.Intersect(selectRect) && !_selectedMapGrhs.Contains(mg))
+                    if (mg.Intersects(selectRect) && !_selectedMapGrhs.Contains(mg))
                         _selectedMapGrhs.Add(mg);
                 }
 

@@ -70,6 +70,7 @@
     <Compile Include="Asserts\ThreadAsserts.cs" />
     <Compile Include="BitOps.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="DirectionHelper.cs" />
     <Compile Include="EngineSettings.cs" />
     <Compile Include="Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />

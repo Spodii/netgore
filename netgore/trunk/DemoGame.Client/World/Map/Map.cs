@@ -221,6 +221,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets a filter to be used when determining what components on the map will be drawn. If null,
+        /// all components will be drawn.
+        /// </summary>
+        public Func<IDrawable, bool> DrawFilter
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Draws the content of the map to the screen.
         /// </summary>
         /// <param name="sb">SpriteBatch object used for drawing.</param>
@@ -253,6 +263,7 @@ namespace DemoGame.Client
                 drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Chararacter);
             if (!DrawItems)
                 drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Item);
+
             if (!DrawMapGrhs)
             {
                 drawableInView =
