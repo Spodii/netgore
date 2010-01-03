@@ -213,7 +213,14 @@ namespace NetGore.Graphics
         /// <returns>True if the object is in view of the camera, else False.</returns>
         public bool InView(ICamera2D camera)
         {
-            // HACK: Should probably do this correctly... eventually.
+            Vector2 position = GetPosition(Map.Size, Camera);
+            if (position.X > camera.Max.X || position.Y > camera.Max.Y)
+                return false;
+
+            Vector2 max = position + Sprite.Size;
+            if (max.X < camera.Min.X || max.Y < camera.Min.Y)
+                return false;
+
             return true;
         }
 

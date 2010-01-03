@@ -204,7 +204,8 @@ namespace DemoGame.Client
                 drawableInView = Spatial.GetEntities<IDrawable>(viewArea);
 
             // Concat the background images (to the start of the list) since they aren't in any spatials
-            drawableInView = (_backgroundImages.Cast<IDrawable>()).Concat(drawableInView);
+            var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(camera));
+            drawableInView = bgInView.Concat(drawableInView);
 
             // Sort the items that we will be drawing
             var sorted = drawableInView.OrderBy(x => x.MapRenderLayer);
