@@ -61,6 +61,7 @@ namespace DemoGame.MapEditor
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.chkSnapWallGrid = new System.Windows.Forms.CheckBox();
             this.chkSnapWallWall = new System.Windows.Forms.CheckBox();
+            this.cmbWallType = new System.Windows.Forms.ComboBox();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
             this.lstSelectedWalls = new System.Windows.Forms.ListBox();
             this.pgWall = new System.Windows.Forms.PropertyGrid();
@@ -111,7 +112,6 @@ namespace DemoGame.MapEditor
             this.cmdSave = new System.Windows.Forms.Button();
             this.cmdLoad = new System.Windows.Forms.Button();
             this.cmdNew = new System.Windows.Forms.Button();
-            this.cmbWallType = new System.Windows.Forms.ComboBox();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -533,6 +533,15 @@ namespace DemoGame.MapEditor
             this.chkSnapWallWall.TabIndex = 6;
             this.chkSnapWallWall.Text = "Snap To Walls";
             this.chkSnapWallWall.UseVisualStyleBackColor = true;
+            // 
+            // cmbWallType
+            // 
+            this.cmbWallType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbWallType.FormattingEnabled = true;
+            this.cmbWallType.Location = new System.Drawing.Point(0, 0);
+            this.cmbWallType.Name = "cmbWallType";
+            this.cmbWallType.Size = new System.Drawing.Size(379, 21);
+            this.cmbWallType.TabIndex = 8;
             // 
             // splitContainer7
             // 
@@ -1066,15 +1075,6 @@ namespace DemoGame.MapEditor
             this.cmdNew.Text = "New";
             this.cmdNew.UseVisualStyleBackColor = true;
             this.cmdNew.Click += new System.EventHandler(this.cmdNew_Click);
-            // 
-            // cmbWallType
-            // 
-            this.cmbWallType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbWallType.FormattingEnabled = true;
-            this.cmbWallType.Location = new System.Drawing.Point(0, 0);
-            this.cmbWallType.Name = "cmbWallType";
-            this.cmbWallType.Size = new System.Drawing.Size(379, 21);
-            this.cmbWallType.TabIndex = 8;
             // 
             // ScreenForm
             // 

@@ -34,6 +34,10 @@ namespace DemoGame.MapEditor
 
     partial class ScreenForm : Form, IGetTime
     {
+        readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
+
+        public MapDrawFilterHelper MapDrawFilterHelper { get { return _mapDrawFilterHelper; } }
+
         /// <summary>
         /// Key to move the camera down.
         /// </summary>
@@ -349,7 +353,7 @@ namespace DemoGame.MapEditor
 
         void btnNewBGLayer_Click(object sender, EventArgs e)
         {
-            BackgroundLayer bgLayer = new BackgroundLayer();
+            BackgroundLayer bgLayer = new BackgroundLayer(Map, Map);
             Map.AddBackgroundImage(bgLayer);
         }
 
@@ -381,12 +385,12 @@ namespace DemoGame.MapEditor
 
         void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
         {
-            Map.DrawBackground = chkDrawBackground.Checked;
+            MapDrawFilterHelper.DrawBackground = chkDrawBackground.Checked;
         }
 
         void chkShowGrhs_CheckedChanged(object sender, EventArgs e)
         {
-            Map.DrawMapGrhs = chkShowGrhs.Checked;
+            MapDrawFilterHelper.DrawMapGrhs = chkShowGrhs.Checked;
         }
 
         void cmdApplySize_Click(object sender, EventArgs e)
@@ -421,7 +425,7 @@ namespace DemoGame.MapEditor
 
             MapIndex index = Map.GetNextFreeIndex(ContentPaths.Dev);
 
-            var newMap = new Map(index, _world, GameScreen.GraphicsDevice);
+            var newMap = new Map(index, Camera, _world, GameScreen.GraphicsDevice);
             DbController.GetQuery<InsertMapQuery>().Execute(newMap);
             newMap.SetDimensions(new Vector2(30, 20) * 32);
             newMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
@@ -495,7 +499,7 @@ namespace DemoGame.MapEditor
                 return null;
             }
 
-            return new Map(index, _world, GameScreen.GraphicsDevice);
+            return new Map(index, Camera, _world, GameScreen.GraphicsDevice);
         }
 
         /// <summary>
@@ -696,7 +700,7 @@ namespace DemoGame.MapEditor
                 if (!MapBase.TryGetIndexFromPath(file, out index))
                     continue;
 
-                using (Map tempMap = new Map(index, _world, GameScreen.GraphicsDevice))
+                using (Map tempMap = new Map(index, Camera, _world, GameScreen.GraphicsDevice))
                 {
                     tempMap.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
                     tempMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
@@ -794,7 +798,7 @@ namespace DemoGame.MapEditor
             // Read the first map
             try
             {
-                Map = new Map(new MapIndex(1), _world, GameScreen.GraphicsDevice);
+                Map = new Map(new MapIndex(1), Camera, _world, GameScreen.GraphicsDevice);
             }
             catch (Exception)
             {

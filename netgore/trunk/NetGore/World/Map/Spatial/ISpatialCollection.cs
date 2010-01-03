@@ -136,6 +136,13 @@ namespace NetGore
         IEnumerable<T> GetEntities<T>(Rectangle rect);
 
         /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>All Entities of the given type.</returns>
+        IEnumerable<T> GetEntities<T>();
+
+        /// <summary>
         /// Gets all spatials containing a given point.
         /// </summary>
         /// <param name="p">Point to find the spatials at.</param>

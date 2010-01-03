@@ -529,7 +529,7 @@ namespace DemoGame.Client
             MapIndex mapIndex = r.ReadMapIndex();
 
             // Create the new map
-            Map newMap = new Map(mapIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
+            Map newMap = new Map(mapIndex, World.Camera, World, GameplayScreen.ScreenManager.GraphicsDevice);
             newMap.Load(ContentPaths.Build, false, _dynamicEntityFactory);
 
             // Change maps

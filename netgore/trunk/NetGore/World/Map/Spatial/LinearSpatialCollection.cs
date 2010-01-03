@@ -205,6 +205,16 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>All Entities of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>()
+        {
+            return _spatials.OfType<T>().ToImmutable();
+        }
+
+        /// <summary>
         /// Gets all spatials containing a given point.
         /// </summary>
         /// <param name="p">Point to find the spatials at.</param>

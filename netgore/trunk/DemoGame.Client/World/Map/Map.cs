@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
@@ -17,16 +19,13 @@ namespace DemoGame.Client
     /// <param name="layer">The layer that the drawing event is related to.</param>
     /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
     /// <param name="camera">The camera that was used in the drawing.</param>
-    /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
-    /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
-    /// draw the layer.</param>
     public delegate void MapDrawEventHandler(
-        Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing);
+        Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera);
 
     /// <summary>
     /// Map object for the client
     /// </summary>
-    public class Map : MapBase, IDisposable
+    public class Map : MapBase, IDisposable, ICamera2DProvider
     {
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
@@ -51,11 +50,6 @@ namespace DemoGame.Client
 
         readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
 
-        /// <summary>
-        /// The world the map belongs to
-        /// </summary>
-        readonly World _world;
-
         TextureAtlas _atlas;
 
         /// <summary>
@@ -75,24 +69,18 @@ namespace DemoGame.Client
         /// </summary>
         public event MapDrawEventHandler OnStartDrawLayer;
 
-        static Map()
-        {
-            DrawBackground = true;
-            DrawCharacters = true;
-            DrawItems = true;
-            DrawMapGrhs = true;
-        }
+        ICamera2D _camera;
 
         /// <summary>
-        /// Map constructor.
+        /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
         /// <param name="mapIndex">Index of the map.</param>
-        /// <param name="parent">World the map belongs to.</param>
         /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
-        public Map(MapIndex mapIndex, World parent, GraphicsDevice graphics) : base(mapIndex, parent)
+        public Map(MapIndex mapIndex, ICamera2D camera, IGetTime getTime, GraphicsDevice graphics)
+            : base(mapIndex, getTime)
         {
+            _camera = camera;
             _graphics = graphics;
-            _world = parent;
         }
 
         /// <summary>
@@ -102,26 +90,6 @@ namespace DemoGame.Client
         {
             get { return _backgroundImages; }
         }
-
-        /// <summary>
-        /// Gets or sets if the background items are drawn.
-        /// </summary>
-        public static bool DrawBackground { get; set; }
-
-        /// <summary>
-        /// Gets or sets if the character layer is drawn.
-        /// </summary>
-        public static bool DrawCharacters { get; set; }
-
-        /// <summary>
-        /// Gets or sets if the items layer is drawn.
-        /// </summary>
-        public static bool DrawItems { get; set; }
-
-        /// <summary>
-        /// Gets or sets if the map graphics are drawn.
-        /// </summary>
-        public static bool DrawMapGrhs { get; set; }
 
         /// <summary>
         /// Gets an IEnumerable of all the MapGrhs on the Map.
@@ -139,18 +107,8 @@ namespace DemoGame.Client
             get { return _particleEffects; }
         }
 
-        /// <summary>
-        /// Gets the World the Map belongs to.
-        /// </summary>
-        public World World
-        {
-            get { return _world; }
-        }
-
         public void AddBackgroundImage(BackgroundImage bgImage)
         {
-            Debug.Assert(!_backgroundImages.Contains(bgImage), "BackgroundImage already in the list!");
-
             _backgroundImages.Add(bgImage);
         }
 
@@ -237,47 +195,50 @@ namespace DemoGame.Client
         /// <param name="camera">Camera used to find the view area.</param>
         public void Draw(SpriteBatch sb, ICamera2D camera)
         {
-            // Draw the background
-            if (OnStartDrawLayer != null)
-                OnStartDrawLayer(this, MapRenderLayer.Background, sb, camera, DrawBackground);
-
-            if (DrawBackground)
-            {
-                foreach (BackgroundImage bgImage in _backgroundImages)
-                {
-                    bgImage.Draw(sb, camera, Size);
-                }
-            }
-
-            if (OnEndDrawLayer != null)
-                OnEndDrawLayer(this, MapRenderLayer.Background, sb, camera, DrawBackground);
-
-            // Find the drawable objects that are in view
+            // Find the drawable objects that are in view and pass the filter (if one is provided)
             var viewArea = camera.GetViewArea();
-            var drawableInView = Spatial.GetEntities<IDrawable>(viewArea);
+            IEnumerable<IDrawable> drawableInView;
+            if (DrawFilter != null)
+                drawableInView = Spatial.GetEntities<IDrawable>(viewArea, x => DrawFilter(x));
+            else
+                drawableInView = Spatial.GetEntities<IDrawable>(viewArea);
 
-            // TODO: !! This is a shitty filtering. Would be better if I declare a public predicate to determine the filtering. Much more powerful that way.
-            if (!DrawBackground)
-                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Background);
-            if (!DrawCharacters)
-                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Chararacter);
-            if (!DrawItems)
-                drawableInView = drawableInView.Where(x => x.MapRenderLayer != MapRenderLayer.Item);
+            // Concat the background images (to the start of the list) since they aren't in any spatials
+            drawableInView = (_backgroundImages.Cast<IDrawable>()).Concat(drawableInView);
 
-            if (!DrawMapGrhs)
-            {
-                drawableInView =
-                    drawableInView.Where(
-                        x =>
-                        x.MapRenderLayer != MapRenderLayer.SpriteBackground && x.MapRenderLayer != MapRenderLayer.SpriteForeground);
-            }
-
-            // Sort the drawable items then draw them one by one
+            // Sort the items that we will be drawing
             var sorted = drawableInView.OrderBy(x => x.MapRenderLayer);
 
+            // Start drawing each item, raising the appropriate events when the layer changes
+            MapRenderLayer? currentLayer = null;
             foreach (var drawable in sorted)
             {
+                // Handle when the layer changes
+                if (drawable.MapRenderLayer != currentLayer)
+                {
+                    // Notify the end of the last layer
+                    if (currentLayer.HasValue)
+                    {
+                        if (OnEndDrawLayer != null)
+                            OnEndDrawLayer(this, currentLayer.Value, sb, camera);
+                    }
+
+                    // Set and notify the start of the new layer
+                    currentLayer = drawable.MapRenderLayer;
+
+                    if (OnStartDrawLayer != null)
+                        OnStartDrawLayer(this, currentLayer.Value, sb, camera);
+                }
+
+                // Draw the item
                 drawable.Draw(sb);
+            }
+
+            // Raise the very last notification of the layer's drawing ending
+            if (currentLayer.HasValue)
+            {
+                if (OnEndDrawLayer != null)
+                    OnEndDrawLayer(this, currentLayer.Value, sb, camera);
             }
 
             // Draw the particle effects
@@ -379,8 +340,8 @@ namespace DemoGame.Client
 
         void LoadBackgroundImages(IValueReader r)
         {
-            int currentTime = World.GetTime();
-            var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(x, currentTime));
+            int currentTime = GetTime();
+            var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(this, this, x, currentTime));
 
             // Add the loaded background images
             foreach (BackgroundImage bgImage in loadedBGImages)
@@ -398,7 +359,7 @@ namespace DemoGame.Client
             BuildAtlas(usedGrhIndexes);
 
             // MapGrhs
-            int currentTime = World.GetTime();
+            int currentTime = GetTime();
             var loadedMapGrhs = nodeReader.ReadManyNodes(_mapGrhsNodeName, x => new MapGrh(x, currentTime));
             foreach (MapGrh mapGrh in loadedMapGrhs)
             {
@@ -484,12 +445,12 @@ namespace DemoGame.Client
         {
             base.Update(deltaTime);
 
-            int currentTime = World.GetTime();
+            int currentTime = GetTime();
 
             // Update the map Grhs
             foreach (MapGrh g in _mapGrhs)
             {
-                if (World.Camera.InView(g.Grh, g.Position))
+                if (Camera.InView(g.Grh, g.Position))
                     g.Update(currentTime);
             }
 
@@ -505,6 +466,16 @@ namespace DemoGame.Client
                 p.Update(currentTime);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        public ICamera2D Camera { get { return _camera; } set {
+            if (value == null)
+                throw new ArgumentNullException("value");
+
+            _camera = value; } }
 
         #region IDisposable Members
 

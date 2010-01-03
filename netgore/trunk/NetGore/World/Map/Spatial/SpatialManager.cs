@@ -49,7 +49,6 @@ namespace NetGore
             if (!type.IsClass)
                 return _rootSpatial;
 
-            /*
             // Cache the ISpatialCollection for each Type on the first request since the tree will never change, and
             // this will allow us to avoid a lot of Type-testing and tree crawling
             ISpatialCollection spatialCollection;
@@ -58,8 +57,6 @@ namespace NetGore
                 spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
                 _spatialCollectionCache.Add(type, spatialCollection);
             }
-            */
-            var spatialCollection = ((SpatialTypeTree)_treeRoot.Find(type)).SpatialCollection;
 
             return spatialCollection;
         }
@@ -251,6 +248,16 @@ namespace NetGore
         public IEnumerable<T> GetEntities<T>(Rectangle rect)
         {
             return GetSpatialCollection(typeof(T)).GetEntities<T>(rect);
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>All Entities of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>()
+        {
+            return GetSpatialCollection(typeof(T)).GetEntities<T>();
         }
 
         /// <summary>

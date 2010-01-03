@@ -11,7 +11,7 @@ namespace NetGore
     /// </summary>
     public class SpatialAggregate : ISpatialCollection
     {
-        readonly IEnumerable<ISpatialCollection> _spatials;
+        readonly IEnumerable<ISpatialCollection> _spatialCollections;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpatialAggregate"/> class.
@@ -21,10 +21,10 @@ namespace NetGore
         {
             // Expand any ISpatialCollections that are a SpatialAggregate to prevent the need for recursion
             List<ISpatialCollection> expanded = new List<ISpatialCollection>();
-            expanded.AddRange(spatials.OfType<SpatialAggregate>().SelectMany(x => x._spatials));
+            expanded.AddRange(spatials.OfType<SpatialAggregate>().SelectMany(x => x._spatialCollections));
             expanded.AddRange(spatials.Where(x => !(x is SpatialAggregate)));
 
-            _spatials = expanded.Distinct().ToCompact();
+            _spatialCollections = expanded.Distinct().ToCompact();
         }
 
         static NotSupportedException GetNotSupportedException()
@@ -40,7 +40,7 @@ namespace NetGore
         /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
         public void SetAreaSize(Vector2 size)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 spatial.SetAreaSize(size);
             }
@@ -81,7 +81,7 @@ namespace NetGore
         /// <returns>True if this spatial collection contains the given <paramref name="entity"/>; otherwise false.</returns>
         public bool Contains(ISpatial entity)
         {
-            return _spatials.Any(x => x.Contains(entity));
+            return _spatialCollections.Any(x => x.Contains(entity));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities<T>(Vector2 point)
         {
-            return _spatials.Any(x => x.ContainsEntities<T>(point));
+            return _spatialCollections.Any(x => x.ContainsEntities<T>(point));
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities(Vector2 point)
         {
-            return _spatials.Any(x => x.ContainsEntities(point));
+            return _spatialCollections.Any(x => x.ContainsEntities(point));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities<T>(Vector2 point, Predicate<T> condition)
         {
-            return _spatials.Any(x => x.ContainsEntities(point, condition));
+            return _spatialCollections.Any(x => x.ContainsEntities(point, condition));
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities<T>(Rectangle rect, Predicate<T> condition)
         {
-            return _spatials.Any(x => x.ContainsEntities(rect, condition));
+            return _spatialCollections.Any(x => x.ContainsEntities(rect, condition));
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities(Vector2 point, Predicate<ISpatial> condition)
         {
-            return _spatials.Any(x => x.ContainsEntities(point, condition));
+            return _spatialCollections.Any(x => x.ContainsEntities(point, condition));
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities<T>(Rectangle rect)
         {
-            return _spatials.Any(x => x.ContainsEntities<T>(rect));
+            return _spatialCollections.Any(x => x.ContainsEntities<T>(rect));
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities(Rectangle rect)
         {
-            return _spatials.Any(x => x.ContainsEntities(rect));
+            return _spatialCollections.Any(x => x.ContainsEntities(rect));
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace NetGore
         /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
         public bool ContainsEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            return _spatials.Any(x => x.ContainsEntities(rect, condition));
+            return _spatialCollections.Any(x => x.ContainsEntities(rect, condition));
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace NetGore
         /// <returns>All of the entities at the given point.</returns>
         public IEnumerable<ISpatial> GetEntities(Vector2 p)
         {
-            return _spatials.SelectMany(x => x.GetEntities(p));
+            return _spatialCollections.SelectMany(x => x.GetEntities(p));
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<ISpatial> GetEntities(Rectangle rect)
         {
-            return _spatials.SelectMany(x => x.GetEntities(rect));
+            return _spatialCollections.SelectMany(x => x.GetEntities(rect));
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace NetGore
         /// <returns>All entities containing the given point that are of the given type.</returns>
         public IEnumerable<T> GetEntities<T>(Vector2 p)
         {
-            return _spatials.SelectMany(x => x.GetEntities<T>(p));
+            return _spatialCollections.SelectMany(x => x.GetEntities<T>(p));
         }
 
         /// <summary>
@@ -215,7 +215,17 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<T> GetEntities<T>(Rectangle rect)
         {
-            return _spatials.SelectMany(x => x.GetEntities<T>(rect));
+            return _spatialCollections.SelectMany(x => x.GetEntities<T>(rect));
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>All Entities of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>()
+        {
+            return _spatialCollections.SelectMany(x => x.GetEntities<T>());
         }
 
         /// <summary>
@@ -226,7 +236,7 @@ namespace NetGore
         /// <returns>All of the entities at the given point.</returns>
         public IEnumerable<ISpatial> GetEntities(Vector2 p, Predicate<ISpatial> condition)
         {
-            return _spatials.SelectMany(x => x.GetEntities(p, condition));
+            return _spatialCollections.SelectMany(x => x.GetEntities(p, condition));
         }
 
         /// <summary>
@@ -238,7 +248,7 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition)
         {
-            return _spatials.SelectMany(x => x.GetEntities(rect, condition));
+            return _spatialCollections.SelectMany(x => x.GetEntities(rect, condition));
         }
 
         /// <summary>
@@ -250,7 +260,7 @@ namespace NetGore
         /// <returns>All entities containing the given point that are of the given type.</returns>
         public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition)
         {
-            return _spatials.SelectMany(x => x.GetEntities(p, condition));
+            return _spatialCollections.SelectMany(x => x.GetEntities(p, condition));
         }
 
         /// <summary>
@@ -261,7 +271,7 @@ namespace NetGore
         /// <returns>All Entities found intersecting the given region.</returns>
         public IEnumerable<ISpatial> GetEntities(Rectangle rect, Predicate<ISpatial> condition)
         {
-            return _spatials.SelectMany(x => x.GetEntities(rect, condition));
+            return _spatialCollections.SelectMany(x => x.GetEntities(rect, condition));
         }
 
         /// <summary>
@@ -273,7 +283,7 @@ namespace NetGore
         /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
         public T GetEntity<T>(Rectangle rect, Predicate<T> condition)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity(rect, condition);
                 if (!Equals(ret, default(T)))
@@ -291,7 +301,7 @@ namespace NetGore
         /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
         public ISpatial GetEntity(Rectangle rect, Predicate<ISpatial> condition)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity(rect, condition);
                 if (ret != null)
@@ -311,7 +321,7 @@ namespace NetGore
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public T GetEntity<T>(Vector2 p, Predicate<T> condition)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity(p, condition);
                 if (!Equals(ret, default(T)))
@@ -330,7 +340,7 @@ namespace NetGore
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public T GetEntity<T>(Vector2 p)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity<T>(p);
                 if (!Equals(ret, default(T)))
@@ -347,7 +357,7 @@ namespace NetGore
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public ISpatial GetEntity(Vector2 p)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity(p);
                 if (ret != null)
@@ -365,7 +375,7 @@ namespace NetGore
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         public ISpatial GetEntity(Vector2 p, Predicate<ISpatial> condition)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity(p, condition);
                 if (ret != null)
@@ -382,7 +392,7 @@ namespace NetGore
         /// <returns>First ISpatial found at the given point, or null if none found</returns>
         public ISpatial GetEntity(Rectangle rect)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity(rect);
                 if (ret != null)
@@ -400,7 +410,7 @@ namespace NetGore
         /// <returns>First ISpatial found at the given point, or null if none found</returns>
         public T GetEntity<T>(Rectangle rect)
         {
-            foreach (var spatial in _spatials)
+            foreach (var spatial in _spatialCollections)
             {
                 var ret = spatial.GetEntity<T>(rect);
                 if (!Equals(ret, default(T)))

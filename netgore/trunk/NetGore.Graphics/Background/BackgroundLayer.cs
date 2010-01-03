@@ -15,16 +15,26 @@ namespace NetGore.Graphics
         static readonly BackgroundLayerLayoutHelper _backgroundLayerLayoutHelper = BackgroundLayerLayoutHelper.Instance;
 
         /// <summary>
-        /// BackgroundLayer constructor.
+        /// Initializes a new instance of the <see cref="BackgroundLayer"/> class.
         /// </summary>
-        public BackgroundLayer()
+        /// <param name="cameraProvider">The camera provider.</param>
+        /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
+        public BackgroundLayer(ICamera2DProvider cameraProvider, IMap map) : base(cameraProvider, map)
         {
             // Set the default values
             HorizontalLayout = BackgroundLayerLayout.Stretched;
             VerticalLayout = BackgroundLayerLayout.Stretched;
         }
 
-        public BackgroundLayer(IValueReader reader, int currentTime) : base(reader, currentTime)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BackgroundLayer"/> class.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="currentTime">The current time.</param>
+        /// <param name="cameraProvider">The camera provider.</param>
+        /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
+        public BackgroundLayer(ICamera2DProvider cameraProvider, IMap map, IValueReader reader, int currentTime)
+            : base(cameraProvider, map,reader, currentTime)
         {
             HorizontalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "HorizontalLayout");
             VerticalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "VerticalLayout");
@@ -54,9 +64,7 @@ namespace NetGore.Graphics
         /// Draws the image to the specified SpriteBatch.
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw the image to.</param>
-        /// <param name="camera">Camera that describes the current view.</param>
-        /// <param name="mapSize">Size of the map to draw to.</param>
-        public override void Draw(SpriteBatch spriteBatch, ICamera2D camera, Vector2 mapSize)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 spriteSize = SpriteSourceSize;
 
@@ -64,7 +72,7 @@ namespace NetGore.Graphics
             switch (HorizontalLayout)
             {
                 case BackgroundLayerLayout.Stretched:
-                    spriteSize.X = GetStretchedSize(camera.Size.X, mapSize.X, Depth);
+                    spriteSize.X = GetStretchedSize(Camera.Size.X, Map.Size.X, Depth);
                     break;
 
                 case BackgroundLayerLayout.Tiled:
@@ -75,14 +83,14 @@ namespace NetGore.Graphics
             switch (VerticalLayout)
             {
                 case BackgroundLayerLayout.Stretched:
-                    spriteSize.Y = GetStretchedSize(camera.Size.Y, mapSize.Y, Depth);
+                    spriteSize.Y = GetStretchedSize(Camera.Size.Y, Map.Size.Y, Depth);
                     break;
 
                 case BackgroundLayerLayout.Tiled:
                     throw new NotImplementedException("No support for tiling yet...");
             }
 
-            base.Draw(spriteBatch, camera, mapSize, spriteSize);
+            Draw(spriteBatch, spriteSize);
         }
 
         /// <summary>

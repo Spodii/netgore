@@ -48,9 +48,7 @@ namespace DemoGame.Client
         /// <param name="layer">The MapRenderLayer that was drawn.</param>
         /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
         /// <param name="camera">The camera that the Map used to draw.</param>
-        /// <param name="isDrawing">If true, the Map actually drew this layer. If false, it is time for this
-        /// <paramref name="layer"/> to be drawn, but the Map did not actually draw it.</param>
-        protected abstract void EndDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing);
+        protected abstract void EndDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera);
 
         /// <summary>
         /// Handles actions needed in adding a Map to this MapDrawExtensionBase. All event hooks and cached values
@@ -70,16 +68,13 @@ namespace DemoGame.Client
         /// <param name="layer">The layer that the drawing event is related to.</param>
         /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
         /// <param name="camera">The camera that was used in the drawing.</param>
-        /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
-        /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
-        /// draw the layer.</param>
-        void MapEndDrawEventForwarder(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing)
+        void MapEndDrawEventForwarder(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
         {
             Debug.Assert(map == Map, "We received a draw event for the wrong map?");
             Debug.Assert(Map != null, "How did we receive a draw event while the Map is null?");
 
             if (Enabled && Map != null)
-                EndDrawLayer(layer, spriteBatch, camera, isDrawing);
+                EndDrawLayer(layer, spriteBatch, camera);
         }
 
         /// <summary>
@@ -89,16 +84,13 @@ namespace DemoGame.Client
         /// <param name="layer">The layer that the drawing event is related to.</param>
         /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
         /// <param name="camera">The camera that was used in the drawing.</param>
-        /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
-        /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
-        /// draw the layer.</param>
-        void MapStartDrawEventForwarder(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing)
+        void MapStartDrawEventForwarder(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
         {
             Debug.Assert(map == Map, "We received a draw event for the wrong map?");
             Debug.Assert(Map != null, "How did we receive a draw event while the Map is null?");
 
             if (Enabled && Map != null)
-                StartDrawLayer(layer, spriteBatch, camera, isDrawing);
+                StartDrawLayer(layer, spriteBatch, camera);
         }
 
         /// <summary>
@@ -108,9 +100,7 @@ namespace DemoGame.Client
         /// <param name="layer">The MapRenderLayer that is to be drawn.</param>
         /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
         /// <param name="camera">The camera that the Map used to draw.</param>
-        /// <param name="isDrawing">If true, the Map actually drew this layer. If false, it is time for this
-        /// <paramref name="layer"/> to be drawn, but the Map did not actually draw it.</param>
-        protected abstract void StartDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera, bool isDrawing);
+        protected abstract void StartDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera);
 
         /// <summary>
         /// Handles actions needed in removing a Map from this MapDrawExtensionBase. All event hooks and cached values
