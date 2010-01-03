@@ -13,9 +13,14 @@ namespace NetGore.Graphics
     /// </summary>
     public class MapGrh : ISpatial, IDrawable
     {
+        const string _grhIndexKeyName = "GrhIndex";
+        const string _isForegroundKeyName = "IsForeground";
+        const string _layerDepthKeyName = "LayerDepth";
+        const string _positionKeyName = "Position";
         readonly Grh _grh;
 
         bool _isForeground;
+        byte _layerDepth;
         Vector2 _position;
 
         /// <summary>
@@ -48,9 +53,10 @@ namespace NetGore.Graphics
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            var position = reader.ReadVector2("Position");
-            GrhIndex grhIndex = reader.ReadGrhIndex("GrhIndex");
-            _isForeground = reader.ReadBool("IsForeground");
+            var position = reader.ReadVector2(_positionKeyName);
+            GrhIndex grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
+            _isForeground = reader.ReadBool(_isForegroundKeyName);
+            _layerDepth = reader.ReadByte(_layerDepthKeyName);
 
             _grh = new Grh(grhIndex, AnimType.Loop, currentTime);
             _position = position;
@@ -98,9 +104,10 @@ namespace NetGore.Graphics
         /// <param name="writer">IValueWriter to write the MapGrh to.</param>
         public void Write(IValueWriter writer)
         {
-            writer.Write("Position", Position);
-            writer.Write("GrhIndex", Grh.GrhData.GrhIndex);
-            writer.Write("IsForeground", IsForeground);
+            writer.Write(_positionKeyName, Position);
+            writer.Write(_grhIndexKeyName, Grh.GrhData.GrhIndex);
+            writer.Write(_isForegroundKeyName, IsForeground);
+            writer.Write(_layerDepthKeyName, LayerDepth);
         }
 
         #region IDrawable Members
@@ -130,6 +137,16 @@ namespace NetGore.Graphics
                 else
                     return MapRenderLayer.SpriteBackground;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
+        /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
+        /// </summary>
+        public byte LayerDepth
+        {
+            get { return _layerDepth; }
+            set { _layerDepth = value; }
         }
 
         /// <summary>
