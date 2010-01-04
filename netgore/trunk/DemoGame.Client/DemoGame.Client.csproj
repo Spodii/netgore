@@ -156,8 +156,6 @@
     <Compile Include="World\Map\Entities\NPCChat\NPCChatDialogItem.cs" />
     <Compile Include="World\Map\Entities\NPCChat\NPCChatManager.cs" />
     <Compile Include="World\Map\Entities\NPCChat\NPCChatResponse.cs" />
-    <Compile Include="World\Map\Entities\Skills\InfoManager.cs" />
-    <Compile Include="World\Map\Entities\Skills\StatusEffectInfo.cs" />
     <Compile Include="World\Map\Entities\TeleportEntity.cs" />
     <Compile Include="World\Map\Entities\User.cs" />
     <Compile Include="World\Map\Map.cs" />

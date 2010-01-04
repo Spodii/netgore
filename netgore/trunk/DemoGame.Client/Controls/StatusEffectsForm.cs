@@ -135,11 +135,11 @@ namespace DemoGame.Client
             readonly int _disableTime;
             readonly Grh _grh;
             readonly ushort _power;
-            readonly StatusEffectInfo _statusEffectInfo;
+            readonly StatusEffectInfoAttribute _statusEffectInfo;
             readonly StatusEffectType _statusEffectType;
 
             /// <summary>
-            /// StatusEffectCollectionItem constructor.
+            /// Initializes a new instance of the <see cref="StatusEffectCollectionItem"/> class.
             /// </summary>
             /// <param name="statusEffectType">The StatusEffectType to use.</param>
             /// <param name="power">The power of the StatusEffect.</param>
@@ -150,7 +150,7 @@ namespace DemoGame.Client
                 _power = power;
                 _disableTime = disableTime;
 
-                _statusEffectInfo = StatusEffectInfo.GetStatusEffectInfo(statusEffectType);
+                _statusEffectInfo = StatusEffectInfoManager<StatusEffectType>.Instance.GetStatusEffectInfo(statusEffectType);
                 _grh = new Grh(_statusEffectInfo.Icon);
             }
 
@@ -164,7 +164,7 @@ namespace DemoGame.Client
                 get { return _power; }
             }
 
-            public StatusEffectInfo StatusEffectInfo
+            public StatusEffectInfoAttribute StatusEffectInfo
             {
                 get { return _statusEffectInfo; }
             }
