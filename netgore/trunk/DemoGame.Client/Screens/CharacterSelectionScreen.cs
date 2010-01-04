@@ -56,7 +56,7 @@ namespace DemoGame.Client
             base.Activate();
         }
 
-        void characterButton_OnClick(object sender, MouseClickEventArgs e)
+        void ClickButton_CharacterSelection(object sender, MouseClickEventArgs e)
         {
             Button src = (Button)sender;
             byte index = (byte)src.Tag;
@@ -71,7 +71,7 @@ namespace DemoGame.Client
             }
         }
 
-        void cLogOut_OnClick(object sender, MouseClickEventArgs e)
+        void ClickButton_LogOut(object sender, MouseClickEventArgs e)
         {
             // Change screens
             ScreenManager.SetScreen(LoginScreen.ScreenName);
@@ -138,7 +138,7 @@ namespace DemoGame.Client
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Log out");
-            menuButtons["Log out"].OnClick += cLogOut_OnClick;
+            menuButtons["Log out"].OnClick += ClickButton_LogOut;
 
             // Create the character controls
             _characterButtons = new Button[GameData.MaxCharactersPerAccount];
@@ -147,7 +147,7 @@ namespace DemoGame.Client
                 Vector2 size = new Vector2(250, 35);
                 Vector2 pos = new Vector2((ScreenManager.ScreenWidth / 2f) - (size.X / 2), 10 + (i * (size.Y + 10)));
                 Button characterButton = new Button(cScreen, pos, size) { Text = _unusedCharacterSlotText, Tag = (byte)i };
-                characterButton.OnClick += characterButton_OnClick;
+                characterButton.OnClick += ClickButton_CharacterSelection;
                 _characterButtons[i] = characterButton;
             }
 
