@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +9,8 @@ namespace NetGore
     public class SkillCooldownManager : ISkillCooldownManager
     {
         readonly Dictionary<byte, int> _cooldownGroups = new Dictionary<byte, int>();
+
+        #region ISkillCooldownManager Members
 
         /// <summary>
         /// Sets the cooldown time for a group of skills.
@@ -47,9 +48,7 @@ namespace NetGore
 
             int groupTime = _cooldownGroups[group];
             if (groupTime > currentTime)
-            {
                 return true;
-            }
             else
             {
                 _cooldownGroups.Remove(group);
@@ -69,5 +68,7 @@ namespace NetGore
 
             return 0;
         }
+
+        #endregion
     }
 }

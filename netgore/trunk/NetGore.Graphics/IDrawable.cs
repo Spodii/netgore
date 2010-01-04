@@ -14,15 +14,15 @@ namespace NetGore.Graphics
         event MapRenderLayerChange OnChangeRenderLayer;
 
         /// <summary>
-        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
-        /// </summary>
-        MapRenderLayer MapRenderLayer { get; }
-
-        /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
         /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
         /// </summary>
         byte LayerDepth { get; }
+
+        /// <summary>
+        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
+        /// </summary>
+        MapRenderLayer MapRenderLayer { get; }
 
         /// <summary>
         /// Makes the object draw itself.

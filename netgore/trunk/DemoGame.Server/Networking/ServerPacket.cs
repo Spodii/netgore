@@ -196,14 +196,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter StartCastingSkill(SkillType skillType, ushort castTime)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.StartCastingSkill);
-            pw.WriteEnum(SkillTypeHelper.Instance, skillType);
-            pw.Write(castTime);
-            return pw;
-        }
-
         public static PacketWriter SendAccountCharacters(AccountCharacterInfo[] charInfos)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendAccountCharacters);
@@ -400,6 +392,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SetSkillGroupCooldown(byte skillGroup, ushort cooldownTime)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetSkillGroupCooldown);
+            pw.Write(skillGroup);
+            pw.Write(cooldownTime);
+            return pw;
+        }
+
         public static PacketWriter SetStatPoints(int statPoints)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetStatPoints);
@@ -421,6 +421,14 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter();
             SetUserChar(pw, mapEntityIndex);
+            return pw;
+        }
+
+        public static PacketWriter StartCastingSkill(SkillType skillType, ushort castTime)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.StartCastingSkill);
+            pw.WriteEnum(SkillTypeHelper.Instance, skillType);
+            pw.Write(castTime);
             return pw;
         }
 
@@ -509,14 +517,6 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.UseEntity);
             pw.Write(usedEntity);
             pw.Write(usedBy);
-            return pw;
-        }
-
-        public static PacketWriter SetSkillGroupCooldown(byte skillGroup, ushort cooldownTime)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetSkillGroupCooldown);
-            pw.Write(skillGroup);
-            pw.Write(cooldownTime);
             return pw;
         }
 

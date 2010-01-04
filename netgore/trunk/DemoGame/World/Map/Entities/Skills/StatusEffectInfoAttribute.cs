@@ -9,29 +9,9 @@ namespace DemoGame
     /// </summary>
     public sealed class StatusEffectInfoAttribute : Attribute
     {
-        readonly string _displayName;
         readonly string _description;
+        readonly string _displayName;
         readonly GrhIndex _icon;
-
-        /// <summary>
-        /// Gets the actual enum value that this <see cref="StatusEffectInfoAttribute"/> was attached to.
-        /// </summary>
-        public StatusEffectType Value { get; internal set; }
-
-        /// <summary>
-        /// Gets the name to display for the status effect.
-        /// </summary>
-        public string DisplayName { get { return _displayName; } }
-
-        /// <summary>
-        /// Gets the icon to display for the status effect.
-        /// </summary>
-        public GrhIndex Icon { get { return _icon; } }
-
-        /// <summary>
-        /// Gets the description of the status effect.
-        /// </summary>
-        public string Description { get { return _description; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatusEffectInfoAttribute"/> class.
@@ -45,5 +25,34 @@ namespace DemoGame
             _description = description;
             _icon = new GrhIndex(iconGrhIndex);
         }
+
+        /// <summary>
+        /// Gets the description of the status effect.
+        /// </summary>
+        public string Description
+        {
+            get { return _description; }
+        }
+
+        /// <summary>
+        /// Gets the name to display for the status effect.
+        /// </summary>
+        public string DisplayName
+        {
+            get { return _displayName; }
+        }
+
+        /// <summary>
+        /// Gets the icon to display for the status effect.
+        /// </summary>
+        public GrhIndex Icon
+        {
+            get { return _icon; }
+        }
+
+        /// <summary>
+        /// Gets the actual enum value that this <see cref="StatusEffectInfoAttribute"/> was attached to.
+        /// </summary>
+        public StatusEffectType Value { get; internal set; }
     }
 }

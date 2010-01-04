@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -13,13 +12,12 @@ namespace NetGore
     /// <typeparam name="TCharacter">The type of character.</typeparam>
     public abstract class SkillBase<TSkillType, TStatType, TCharacter> : ISkill<TSkillType, TStatType, TCharacter>
         where TSkillType : struct, IComparable, IConvertible, IFormattable
-        where TStatType : struct, IComparable, IConvertible, IFormattable
-        where TCharacter : class
+        where TStatType : struct, IComparable, IConvertible, IFormattable where TCharacter : class
     {
-        readonly TSkillType _skillType;
+        readonly ushort _castingTime;
         readonly byte _cooldownGroup;
         readonly ushort _cooldownTime;
-        readonly ushort _castingTime;
+        readonly TSkillType _skillType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillBase&lt;TSkillType, TStatType, TCharacter&gt;"/> class.
@@ -195,5 +193,4 @@ namespace NetGore
 
         #endregion
     }
-
 }

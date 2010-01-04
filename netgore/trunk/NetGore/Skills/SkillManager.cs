@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using NetGore.Collections;
 
@@ -17,8 +16,7 @@ namespace NetGore
     /// <typeparam name="TCharacter">The type of character.</typeparam>
     public class SkillManager<TSkillType, TStatType, TCharacter>
         where TSkillType : struct, IComparable, IConvertible, IFormattable
-        where TStatType : struct, IComparable, IConvertible, IFormattable
-        where TCharacter : class
+        where TStatType : struct, IComparable, IConvertible, IFormattable where TCharacter : class
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -27,6 +25,35 @@ namespace NetGore
         /// </summary>
         readonly Dictionary<TSkillType, ISkill<TSkillType, TStatType, TCharacter>> _skills =
             new Dictionary<TSkillType, ISkill<TSkillType, TStatType, TCharacter>>(EnumComparer<TSkillType>.Instance);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkillManager&lt;TSkillType, TStatType, TCharacter&gt;"/> class.
+        /// </summary>
+        public SkillManager()
+        {
+            new TypeFactory(GetTypeFilter(), TypeFactoryLoadedHandler);
+        }
+
+        /// <summary>
+        /// Gets the ISkill for the given skill type.
+        /// </summary>
+        /// <param name="skillType">The skill type to get the ISkill for.</param>
+        /// <returns>The ISkill for the given <paramref name="skillType"/>, or null if the <paramref name="skillType"/>
+        /// is invalid or contains no ISkill.</returns>
+        public ISkill<TSkillType, TStatType, TCharacter> GetSkill(TSkillType skillType)
+        {
+            ISkill<TSkillType, TStatType, TCharacter> value;
+            if (!_skills.TryGetValue(skillType, out value))
+            {
+                const string errmsg = "Failed to get the SkillBase for SkillType `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, skillType);
+                Debug.Fail(string.Format(errmsg, skillType));
+                return null;
+            }
+
+            return value;
+        }
 
         static Func<Type, bool> GetTypeFilter()
         {
@@ -65,35 +92,6 @@ namespace NetGore
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created skill object for SkillType `{0}`.", instance.SkillType);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkillManager&lt;TSkillType, TStatType, TCharacter&gt;"/> class.
-        /// </summary>
-        public SkillManager()
-        {
-            new TypeFactory(GetTypeFilter(), TypeFactoryLoadedHandler);
-        }
-
-        /// <summary>
-        /// Gets the ISkill for the given skill type.
-        /// </summary>
-        /// <param name="skillType">The skill type to get the ISkill for.</param>
-        /// <returns>The ISkill for the given <paramref name="skillType"/>, or null if the <paramref name="skillType"/>
-        /// is invalid or contains no ISkill.</returns>
-        public ISkill<TSkillType, TStatType, TCharacter> GetSkill(TSkillType skillType)
-        {
-            ISkill<TSkillType, TStatType, TCharacter> value;
-            if (!_skills.TryGetValue(skillType, out value))
-            {
-                const string errmsg = "Failed to get the SkillBase for SkillType `{0}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, skillType);
-                Debug.Fail(string.Format(errmsg, skillType));
-                return null;
-            }
-
-            return value;
         }
     }
 }

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore;
 
 namespace DemoGame
@@ -15,9 +11,27 @@ namespace DemoGame
         static readonly StatusEffectInfoManager _instance;
 
         /// <summary>
+        /// Initializes the <see cref="StatusEffectInfoManager"/> class.
+        /// </summary>
+        static StatusEffectInfoManager()
+        {
+            _instance = new StatusEffectInfoManager();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatusEffectInfoManager"/> class.
+        /// </summary>
+        StatusEffectInfoManager() : base(true)
+        {
+        }
+
+        /// <summary>
         /// Gets the <see cref="StatusEffectInfoManager"/> instance.
         /// </summary>
-        public static StatusEffectInfoManager Instance { get { return _instance; } }
+        public static StatusEffectInfoManager Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Allows for a chance to provide additional handling of when an attribute is loaded for an enum value.
@@ -29,22 +43,6 @@ namespace DemoGame
             attribute.Value = enumValue;
 
             base.HandleLoadAttribute(enumValue, attribute);
-        }
-
-        /// <summary>
-        /// Initializes the <see cref="StatusEffectInfoManager"/> class.
-        /// </summary>
-        static StatusEffectInfoManager()
-        {
-            _instance = new StatusEffectInfoManager();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StatusEffectInfoManager"/> class.
-        /// </summary>
-        StatusEffectInfoManager()
-            : base(true)
-        {
         }
     }
 }

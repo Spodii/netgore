@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -14,16 +12,6 @@ namespace DemoGame.Server
     public abstract class SkillBase : SkillBase<SkillType, StatType, Character>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Gets the cooldown group for the skill type.
-        /// </summary>
-        /// <param name="skillType">The skill type.</param>
-        /// <returns>The cooldown group for the skill type.</returns>
-        static byte GetCooldownGroup(SkillType skillType)
-        {
-            return SkillInfoManager.Instance.GetAttribute(skillType).CooldownGroup;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillBase"/> class.
@@ -148,6 +136,16 @@ namespace DemoGame.Server
             }
 
             return base.CheckValidCanUseCharacters(user, target);
+        }
+
+        /// <summary>
+        /// Gets the cooldown group for the skill type.
+        /// </summary>
+        /// <param name="skillType">The skill type.</param>
+        /// <returns>The cooldown group for the skill type.</returns>
+        static byte GetCooldownGroup(SkillType skillType)
+        {
+            return SkillInfoManager.Instance.GetAttribute(skillType).CooldownGroup;
         }
 
         /// <summary>

@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore;
-using NetGore.Collections;
 
 namespace DemoGame.Server
 {
@@ -18,13 +12,6 @@ namespace DemoGame.Server
         static readonly SkillManager _instance;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SkillManager"/> class.
-        /// </summary>
-        SkillManager()
-        {
-        }
-
-        /// <summary>
         /// Initializes the <see cref="SkillManager"/> class.
         /// </summary>
         static SkillManager()
@@ -33,8 +20,18 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SkillManager"/> class.
+        /// </summary>
+        SkillManager()
+        {
+        }
+
+        /// <summary>
         /// Gets the <see cref="SkillManager"/> instance.
         /// </summary>
-        public static SkillManager Instance { get { return _instance; } }
+        public static SkillManager Instance
+        {
+            get { return _instance; }
+        }
     }
 }

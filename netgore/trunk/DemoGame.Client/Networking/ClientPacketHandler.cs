@@ -364,15 +364,6 @@ namespace DemoGame.Client
             }
         }
 
-        [MessageHandler((byte)ServerPacketID.StartCastingSkill)]
-        void RecvStartCastingSkill(IIPSocket conn, BitStream r)
-        {
-            var skillType = r.ReadEnum(SkillTypeHelper.Instance);
-            ushort castTime = r.ReadUShort();
-
-            GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
-        }
-
         [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
@@ -563,6 +554,15 @@ namespace DemoGame.Client
             User.MPPercent = UserInfo.MPPercent;
         }
 
+        [MessageHandler((byte)ServerPacketID.SetSkillGroupCooldown)]
+        void RecvSetSkillGroupCooldown(IIPSocket conn, BitStream r)
+        {
+            byte skillGroup = r.ReadByte();
+            ushort cooldownTime = r.ReadUShort();
+
+            GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
+        }
+
         [MessageHandler((byte)ServerPacketID.SetStatPoints)]
         void RecvSetStatPoints(IIPSocket conn, BitStream r)
         {
@@ -575,6 +575,15 @@ namespace DemoGame.Client
         {
             MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
             World.UserCharIndex = mapCharIndex;
+        }
+
+        [MessageHandler((byte)ServerPacketID.StartCastingSkill)]
+        void RecvStartCastingSkill(IIPSocket conn, BitStream r)
+        {
+            var skillType = r.ReadEnum(SkillTypeHelper.Instance);
+            ushort castTime = r.ReadUShort();
+
+            GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
         }
 
         [MessageHandler((byte)ServerPacketID.StartChatDialog)]
@@ -708,15 +717,6 @@ namespace DemoGame.Client
 
             // Use it
             asUsable.Use(usedBy);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetSkillGroupCooldown)]
-        void RecvSetSkillGroupCooldown(IIPSocket conn, BitStream r)
-        {
-            byte skillGroup = r.ReadByte();
-            ushort cooldownTime = r.ReadUShort();
-
-            GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
         }
 
         [MessageHandler((byte)ServerPacketID.UseSkill)]

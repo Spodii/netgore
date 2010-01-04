@@ -35,6 +35,8 @@ namespace DemoGame.Server
         /// </summary>
         protected override void DoUpdate()
         {
+            return; // NOTE: !! Temp
+
             // Update the target
             int time = GetTime();
             if (_lastTargetUpdateTime + _targetUpdateRate < time)

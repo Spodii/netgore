@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -14,9 +12,9 @@ namespace DemoGame.Server
         readonly Character _character;
         readonly ISkillCooldownManager _cooldownManager;
 
-        ISkill<SkillType, StatType, Character> _currentCastingSkill;
         Character _castingSkillTarget;
         int _castingSkillUsageTime;
+        ISkill<SkillType, StatType, Character> _currentCastingSkill;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterSkillCaster"/> class.
@@ -33,10 +31,63 @@ namespace DemoGame.Server
         /// </summary>
         public ISkill<SkillType, StatType, Character> CurrentCastingSkill
         {
-            get
+            get { return _currentCastingSkill; }
+        }
+
+        /// <summary>
+        /// Gets if the Character is currently casting a skill.
+        /// </summary>
+        public bool IsCastingSkill
+        {
+            get { return CurrentCastingSkill != null; }
+        }
+
+        /// <summary>
+        /// Tells the skill user to start using the given <paramref name="skill"/>. This is more of a suggestion than a
+        /// request since the skill user does not actually have to start casting the skill. If this skill user decides
+        /// to use the skill, the CurrentCastingSkill must be set to the <paramref name="skill"/>.
+        /// </summary>
+        /// <param name="skill">The skill to be used.</param>
+        /// <param name="target">The optional character to use the skill on. Can be null.</param>
+        /// <returns>True if the <paramref name="skill"/> started being casted; otherwise false. This does not indicate
+        /// whether or not the skill was or will be successfully used, just that it was attempted to be used. Common
+        /// times this will return false is if there is a skill already being casted, or if the skill that was
+        /// attempted to be used still needs to cool down.</returns>
+        public bool TryStartCastingSkill(ISkill<SkillType, StatType, Character> skill, Character target)
+        {
+            // Don't interrupt a skill that the character is already casting
+            if (IsCastingSkill)
+                return false;
+
+            // Check that the group is available for usage
+            if (_cooldownManager.IsCoolingDown(skill.CooldownGroup, _character.GetTime()))
+                return false;
+
+            // Only allow immediate-usage skills when moving
+            if (_character.Velocity != Vector2.Zero && skill.CastingTime > 0)
+                return false;
+
+            // If the skill to use has no usage delay, use it immediately
+            if (skill.CastingTime == 0)
+                UseSkill(skill, target);
+            else
             {
-                return _currentCastingSkill;
+                // The skill does have a delay, so queue it for usage
+                _currentCastingSkill = skill;
+                _castingSkillTarget = target;
+                var castingTime = skill.CastingTime;
+                _castingSkillUsageTime = _character.GetTime() + castingTime;
+
+                if (_character is User)
+                {
+                    using (var pw = ServerPacket.StartCastingSkill(skill.SkillType, castingTime))
+                    {
+                        ((User)_character).Send(pw);
+                    }
+                }
             }
+
+            return true;
         }
 
         /// <summary>
@@ -60,14 +111,6 @@ namespace DemoGame.Server
 
             _currentCastingSkill = null;
             _castingSkillTarget = null;
-        }
-
-        /// <summary>
-        /// Gets if the Character is currently casting a skill.
-        /// </summary>
-        public bool IsCastingSkill
-        {
-            get { return CurrentCastingSkill != null; }
         }
 
         /// <summary>
@@ -99,56 +142,6 @@ namespace DemoGame.Server
                     _character.Map.SendToArea(_character.Center, pw);
                 }
             }
-        }
-
-        /// <summary>
-        /// Tells the skill user to start using the given <paramref name="skill"/>. This is more of a suggestion than a
-        /// request since the skill user does not actually have to start casting the skill. If this skill user decides
-        /// to use the skill, the CurrentCastingSkill must be set to the <paramref name="skill"/>.
-        /// </summary>
-        /// <param name="skill">The skill to be used.</param>
-        /// <param name="target">The optional character to use the skill on. Can be null.</param>
-        /// <returns>True if the <paramref name="skill"/> started being casted; otherwise false. This does not indicate
-        /// whether or not the skill was or will be successfully used, just that it was attempted to be used. Common
-        /// times this will return false is if there is a skill already being casted, or if the skill that was
-        /// attempted to be used still needs to cool down.</returns>
-        public bool TryStartCastingSkill(ISkill<SkillType, StatType, Character> skill, Character target)
-        {
-            // Don't interrupt a skill that the character is already casting
-            if (IsCastingSkill)
-                return false;
-
-            // Check that the group is available for usage
-            if (_cooldownManager.IsCoolingDown(skill.CooldownGroup, _character.GetTime()))
-                return false;
-
-            // Only allow immediate-usage skills when moving
-            if (_character.Velocity != Vector2.Zero && skill.CastingTime > 0)
-                return false;
-
-            // If the skill to use has no usage delay, use it immediately
-            if (skill.CastingTime == 0)
-            {
-                UseSkill(skill, target);
-            }
-            else
-            {
-                // The skill does have a delay, so queue it for usage
-                _currentCastingSkill = skill;
-                _castingSkillTarget = target;
-                var castingTime = skill.CastingTime;
-                _castingSkillUsageTime = _character.GetTime() + castingTime;
-
-                if (_character is User)
-                {
-                    using (var pw = ServerPacket.StartCastingSkill(skill.SkillType, castingTime))
-                    {
-                        ((User)_character).Send(pw);
-                    }
-                }
-            }
-
-            return true;
         }
     }
 }
