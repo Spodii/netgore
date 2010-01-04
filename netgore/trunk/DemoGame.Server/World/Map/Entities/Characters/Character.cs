@@ -1398,7 +1398,7 @@ namespace DemoGame.Server
         /// <returns>True if the skill was successfully used; otherwise false.</returns>
         public bool UseSkill(SkillType skillType)
         {
-            return UseSkill(SkillManager.GetSkill(skillType));
+            return UseSkill(SkillManager.Instance.GetSkill(skillType));
         }
 
         /// <summary>
@@ -1406,7 +1406,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="skill">The skill to use.</param>
         /// <returns>True if the skill was successfully used; otherwise false.</returns>
-        public bool UseSkill(SkillBase skill)
+        public bool UseSkill(ISkill<SkillType, StatType, Character> skill)
         {
             if (skill == null)
             {

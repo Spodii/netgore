@@ -7,7 +7,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillHeal"/> class.
         /// </summary>
-        SkillHeal() : base(SkillType.Heal)
+        SkillHeal() : base(DemoGame.SkillType.Heal)
         {
         }
 
@@ -27,7 +27,7 @@ namespace DemoGame.Server
         /// <param name="target">The optional Character that the skill was used on. Can be null if there was
         /// no targeted Character.</param>
         /// <returns>The MP cost of using this Skill.</returns>
-        public override SPValueType GetMPCost(Character user, Character target)
+        public override int GetMPCost(Character user, Character target)
         {
             return 2;
         }
