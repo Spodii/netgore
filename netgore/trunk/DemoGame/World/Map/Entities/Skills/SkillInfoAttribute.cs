@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Linq;
 using NetGore;
 
 namespace DemoGame
@@ -10,35 +10,10 @@ namespace DemoGame
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class SkillInfoAttribute : Attribute
     {
-        readonly string _displayName;
         readonly string _description;
-        readonly GrhIndex _icon;
+        readonly string _displayName;
         readonly byte _group;
-       
-        /// <summary>
-        /// Gets the actual enum value that this <see cref="SkillInfoAttribute"/> was attached to.
-        /// </summary>
-        public SkillType Value { get; internal set; }
-
-        /// <summary>
-        /// Gets the name to display for the skill.
-        /// </summary>
-        public string DisplayName { get { return _displayName; } }
-
-        /// <summary>
-        /// Gets the description of the skill.
-        /// </summary>
-        public string Description { get { return _description; } }
-
-        /// <summary>
-        /// Gets the icon to display for the skill.
-        /// </summary>
-        public GrhIndex Icon { get { return _icon; } }
-
-        /// <summary>
-        /// Gets the cooldown group of skills the skill belongs to.
-        /// </summary>
-        public byte CooldownGroup { get { return _group; } }
+        readonly GrhIndex _icon;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillInfoAttribute"/> class.
@@ -54,5 +29,42 @@ namespace DemoGame
             _icon = new GrhIndex(iconGrhIndex);
             _group = cooldownGroup;
         }
+
+        /// <summary>
+        /// Gets the cooldown group of skills the skill belongs to.
+        /// </summary>
+        public byte CooldownGroup
+        {
+            get { return _group; }
+        }
+
+        /// <summary>
+        /// Gets the description of the skill.
+        /// </summary>
+        public string Description
+        {
+            get { return _description; }
+        }
+
+        /// <summary>
+        /// Gets the name to display for the skill.
+        /// </summary>
+        public string DisplayName
+        {
+            get { return _displayName; }
+        }
+
+        /// <summary>
+        /// Gets the icon to display for the skill.
+        /// </summary>
+        public GrhIndex Icon
+        {
+            get { return _icon; }
+        }
+
+        /// <summary>
+        /// Gets the actual enum value that this <see cref="SkillInfoAttribute"/> was attached to.
+        /// </summary>
+        public SkillType Value { get; internal set; }
     }
 }

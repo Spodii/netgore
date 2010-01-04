@@ -40,7 +40,7 @@ namespace DemoGame
         UseWorld,
 
 #if TOPDOWN
-        // Top-down only
+    // Top-down only
         MoveStopHorizontal,
         MoveStopVertical,
         MoveUp,

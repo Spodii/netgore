@@ -9,12 +9,11 @@ namespace NetGore
     public interface ISkillCooldownManager
     {
         /// <summary>
-        /// Sets the cooldown time for a group of skills.
+        /// Gets the cooldown time remaining for the given group.
         /// </summary>
         /// <param name="group">The index of the skill group.</param>
-        /// <param name="time">The cooldown time in milliseconds.</param>
-        /// <param name="currentTime">The current game time in milliseconds.</param>
-        void SetCooldown(byte group, int time, int currentTime);
+        /// <returns>The cooldown time remaining for the given group.</returns>
+        int GetCooldownTime(byte group);
 
         /// <summary>
         /// Gets if a skill group is currently cooling down.
@@ -26,10 +25,11 @@ namespace NetGore
         bool IsCoolingDown(byte group, int currentTime);
 
         /// <summary>
-        /// Gets the cooldown time remaining for the given group.
+        /// Sets the cooldown time for a group of skills.
         /// </summary>
         /// <param name="group">The index of the skill group.</param>
-        /// <returns>The cooldown time remaining for the given group.</returns>
-        int GetCooldownTime(byte group);
+        /// <param name="time">The cooldown time in milliseconds.</param>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        void SetCooldown(byte group, int time, int currentTime);
     }
 }

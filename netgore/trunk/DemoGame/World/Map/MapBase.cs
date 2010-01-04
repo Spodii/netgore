@@ -1167,7 +1167,7 @@ namespace DemoGame
                 // This way we can be sure to update everyone even if the entities collection changed
                 if (i < _entities.Count && current == _updateableEntities[i])
                     i++;
-            } 
+            }
         }
 
         #region IMap Members

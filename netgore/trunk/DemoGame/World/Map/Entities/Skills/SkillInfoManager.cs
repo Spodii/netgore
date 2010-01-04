@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore;
 
 namespace DemoGame
@@ -13,23 +9,6 @@ namespace DemoGame
     public class SkillInfoManager : EnumFieldAttributeManager<SkillType, SkillInfoAttribute>
     {
         static readonly SkillInfoManager _instance;
-
-        /// <summary>
-        /// Gets the <see cref="SkillInfoManager"/> instance.
-        /// </summary>
-        public static SkillInfoManager Instance { get { return _instance; } }
-
-        /// <summary>
-        /// Allows for a chance to provide additional handling of when an attribute is loaded for an enum value.
-        /// </summary>
-        /// <param name="enumValue">The enum value.</param>
-        /// <param name="attribute">The attribute.</param>
-        protected override void HandleLoadAttribute(SkillType enumValue, SkillInfoAttribute attribute)
-        {
-            attribute.Value = enumValue;
-
-            base.HandleLoadAttribute(enumValue, attribute);
-        }
 
         /// <summary>
         /// Initializes the <see cref="SkillInfoManager"/> class.
@@ -44,6 +23,26 @@ namespace DemoGame
         /// </summary>
         SkillInfoManager() : base(true)
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SkillInfoManager"/> instance.
+        /// </summary>
+        public static SkillInfoManager Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
+        /// Allows for a chance to provide additional handling of when an attribute is loaded for an enum value.
+        /// </summary>
+        /// <param name="enumValue">The enum value.</param>
+        /// <param name="attribute">The attribute.</param>
+        protected override void HandleLoadAttribute(SkillType enumValue, SkillInfoAttribute attribute)
+        {
+            attribute.Value = enumValue;
+
+            base.HandleLoadAttribute(enumValue, attribute);
         }
     }
 }

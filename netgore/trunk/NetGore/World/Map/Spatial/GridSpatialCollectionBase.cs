@@ -175,15 +175,13 @@ namespace NetGore
         {
             // Get the grid index for the last and current positions to see if the segments have changed
             var minSegment = WorldPositionToGridSegment(sender.Position);
-            var oldMinSegment = WorldPositionToGridSegment(sender.Position);
+            var oldMinSegment = WorldPositionToGridSegment(oldPosition);
 
             if (minSegment == oldMinSegment)
                 return;
 
-            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
-
-            // The position did change, so we have to remove the spatial from the old segments and add to the new
-            foreach (var segment in GetSegments(sender, oldPosition))
+            // The position did change, so remove the ISpatial from all segments
+            foreach (var segment in _gridSegments)
             {
                 segment.Remove(sender);
             }

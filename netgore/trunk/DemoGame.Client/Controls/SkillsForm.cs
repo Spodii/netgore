@@ -15,8 +15,8 @@ namespace DemoGame.Client
     public class SkillsForm : Form, IRestorableSettings
     {
         static readonly Vector2 _iconSize = new Vector2(32, 32);
-        readonly int _lineSpacing;
         readonly ISkillCooldownManager _cooldownManager;
+        readonly int _lineSpacing;
 
         /// <summary>
         /// Notifies listeners when a skill button is clicked.
@@ -29,7 +29,8 @@ namespace DemoGame.Client
         /// <param name="cooldownManager">The skill cooldown manager.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent) : base(parent, position, new Vector2(150, 100))
+        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent)
+            : base(parent, position, new Vector2(150, 100))
         {
             _cooldownManager = cooldownManager;
 
@@ -50,7 +51,10 @@ namespace DemoGame.Client
             }
         }
 
-        public ISkillCooldownManager CooldownManager { get { return _cooldownManager; } }
+        public ISkillCooldownManager CooldownManager
+        {
+            get { return _cooldownManager; }
+        }
 
         void CreateSkillEntry(Vector2 position, SkillType skillType)
         {
@@ -79,7 +83,7 @@ namespace DemoGame.Client
             if (OnUseSkill != null)
             {
                 SkillLabel source = (SkillLabel)sender;
-                OnUseSkill((SkillType)source.SkillInfo.Value);
+                OnUseSkill(source.SkillInfo.Value);
             }
         }
 
@@ -88,7 +92,7 @@ namespace DemoGame.Client
             if (OnUseSkill != null)
             {
                 SkillPictureBox source = (SkillPictureBox)sender;
-                OnUseSkill((SkillType)source.SkillInfo.Value);
+                OnUseSkill(source.SkillInfo.Value);
             }
         }
 
@@ -118,8 +122,7 @@ namespace DemoGame.Client
 
         sealed class SkillLabel : Label
         {
-            public SkillLabel(Control parent, SkillInfoAttribute skillInfo, Vector2 position)
-                : base(parent, position)
+            public SkillLabel(Control parent, SkillInfoAttribute skillInfo, Vector2 position) : base(parent, position)
             {
                 SkillInfo = skillInfo;
                 Text = SkillInfo.DisplayName;
@@ -131,8 +134,10 @@ namespace DemoGame.Client
         sealed class SkillPictureBox : PictureBox
         {
             readonly ISkillCooldownManager _cooldownManager;
+            bool _isCoolingDown = false;
 
-            public SkillPictureBox(SkillsForm parent, SkillInfoAttribute skillInfo, Vector2 position) : base(parent, position, _iconSize)
+            public SkillPictureBox(SkillsForm parent, SkillInfoAttribute skillInfo, Vector2 position)
+                : base(parent, position, _iconSize)
             {
                 SkillInfo = skillInfo;
                 Sprite = new Grh(GrhInfo.GetData(SkillInfo.Icon));
@@ -140,15 +145,6 @@ namespace DemoGame.Client
             }
 
             public SkillInfoAttribute SkillInfo { get; private set; }
-
-            bool _isCoolingDown = false;
-
-            protected override void UpdateControl(int currentTime)
-            {
-                _isCoolingDown = _cooldownManager.IsCoolingDown(SkillInfo.CooldownGroup, currentTime);
-
-                base.UpdateControl(currentTime);
-            }
 
             /// <summary>
             /// Draws the <see cref="Control"/>.
@@ -176,6 +172,13 @@ namespace DemoGame.Client
 
                 StretchSprite = false;
                 Size = _iconSize;
+            }
+
+            protected override void UpdateControl(int currentTime)
+            {
+                _isCoolingDown = _cooldownManager.IsCoolingDown(SkillInfo.CooldownGroup, currentTime);
+
+                base.UpdateControl(currentTime);
             }
         }
     }

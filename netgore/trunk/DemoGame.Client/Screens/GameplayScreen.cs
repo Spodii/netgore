@@ -29,6 +29,7 @@ namespace DemoGame.Client
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
         readonly SkeletonManager _skelManager = new SkeletonManager(ContentPaths.Build.Skeletons);
+        readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
         ChatBubbleManager _chatBubbleManager;
 
         NPCChatDialogForm _chatDialogForm;
@@ -44,9 +45,9 @@ namespace DemoGame.Client
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
-        SkillCastProgressBar _skillCastProgressBar;
         Label _latencyLabel;
         ShopForm _shopForm;
+        SkillCastProgressBar _skillCastProgressBar;
         SkillsForm _skillsForm;
         ClientSockets _socket;
         SpriteBatch _spriteBatch;
@@ -54,8 +55,6 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
-
-        public SkillCastProgressBar SkillCastProgressBar { get { return _skillCastProgressBar; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -77,10 +76,6 @@ namespace DemoGame.Client
         {
             get { return _chatDialogForm; }
         }
-
-        readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
-
-        public ISkillCooldownManager SkillCooldownManager { get { return _skillCooldownManager; } }
 
         /// <summary>
         /// Gets the DamageTextPool
@@ -124,6 +119,16 @@ namespace DemoGame.Client
         public SkeletonManager SkeletonManager
         {
             get { return _skelManager; }
+        }
+
+        public SkillCastProgressBar SkillCastProgressBar
+        {
+            get { return _skillCastProgressBar; }
+        }
+
+        public ISkillCooldownManager SkillCooldownManager
+        {
+            get { return _skillCooldownManager; }
         }
 
         /// <summary>

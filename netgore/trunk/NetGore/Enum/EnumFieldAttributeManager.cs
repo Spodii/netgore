@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 
 namespace NetGore
@@ -14,20 +13,11 @@ namespace NetGore
     /// <typeparam name="TEnum">The type of enum.</typeparam>
     /// <typeparam name="TAttribute">The type of attribute.</typeparam>
     public class EnumFieldAttributeManager<TEnum, TAttribute> where TEnum : struct, IComparable, IConvertible, IFormattable
-        where TAttribute : Attribute
+                                                              where TAttribute : Attribute
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Dictionary<TEnum, TAttribute> _attributes = new Dictionary<TEnum, TAttribute>(EnumComparer<TEnum>.Instance);
-
-        /// <summary>
-        /// Allows for a chance to provide additional handling of when an attribute is loaded for an enum value.
-        /// </summary>
-        /// <param name="enumValue">The enum value.</param>
-        /// <param name="attribute">The attribute.</param>
-        protected virtual void HandleLoadAttribute(TEnum enumValue, TAttribute attribute)
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumFieldAttributeManager&lt;TEnum, TAttribute&gt;"/> class.
@@ -55,9 +45,7 @@ namespace NetGore
                         throw new TypeException(err, typeof(TEnum));
                     }
                     else
-                    {
                         continue;
-                    }
                 }
 
                 // Add to the dictionary
@@ -82,6 +70,15 @@ namespace NetGore
                 return attribute;
 
             return null;
+        }
+
+        /// <summary>
+        /// Allows for a chance to provide additional handling of when an attribute is loaded for an enum value.
+        /// </summary>
+        /// <param name="enumValue">The enum value.</param>
+        /// <param name="attribute">The attribute.</param>
+        protected virtual void HandleLoadAttribute(TEnum enumValue, TAttribute attribute)
+        {
         }
     }
 }

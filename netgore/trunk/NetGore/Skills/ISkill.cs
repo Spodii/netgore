@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -11,11 +10,16 @@ namespace NetGore
     /// <typeparam name="TSkillType">The type of skill type enum.</typeparam>
     /// <typeparam name="TStatType">The type of stat type enum.</typeparam>
     /// <typeparam name="TCharacter">The type of character.</typeparam>
-    public interface ISkill<TSkillType, TStatType, TCharacter>
-        where TSkillType : struct, IComparable, IConvertible, IFormattable
-        where TStatType : struct, IComparable, IConvertible, IFormattable
-        where TCharacter : class
+    public interface ISkill<TSkillType, TStatType, TCharacter> where TSkillType : struct, IComparable, IConvertible, IFormattable
+                                                               where TStatType : struct, IComparable, IConvertible, IFormattable
+                                                               where TCharacter : class
     {
+        /// <summary>
+        /// Gets the amount of time in milliseconds that must elapse between the time the skill starts to be used and
+        /// when the skill is actually used. A value of 0 means the skill will be used immediately.
+        /// </summary>
+        ushort CastingTime { get; }
+
         /// <summary>
         /// Gets a byte that represents which group of skills this skill is part of when setting the skill usage
         /// cooldown.
@@ -27,12 +31,6 @@ namespace NetGore
         /// CooldownGroup, can be used again by the character who used the skill.
         /// </summary>
         ushort CooldownTime { get; }
-
-        /// <summary>
-        /// Gets the amount of time in milliseconds that must elapse between the time the skill starts to be used and
-        /// when the skill is actually used. A value of 0 means the skill will be used immediately.
-        /// </summary>
-        ushort CastingTime { get; }
 
         /// <summary>
         /// Gets an IEnumerable of stats required by this ISkill. Can be empty, but cannot
@@ -90,5 +88,4 @@ namespace NetGore
         /// <returns>True if the Skill was successfully used; otherwise false.</returns>
         bool Use(TCharacter user, TCharacter target);
     }
-
 }
