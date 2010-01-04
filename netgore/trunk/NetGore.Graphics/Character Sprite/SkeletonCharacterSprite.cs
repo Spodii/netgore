@@ -8,22 +8,32 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// A Character sprite that uses the skeleton system.
+    /// Creates and manages a sprite for a Character that uses the skeletonal animation system.
     /// </summary>
-    public class SkeletonCharacterSprite : ICharacterSprite
+    public class SkeletonCharacterSprite : ICharacterSprite, IGetTime
     {
         readonly Entity _character;
+        readonly IGetTime _getTime;
         readonly SkeletonManager _skelManager;
         readonly float _speedModifier;
+
         Vector2 _bodySize;
         string _currSkelSet = string.Empty;
         SkeletonAnimation _skelAnim;
 
-        public SkeletonCharacterSprite(Entity character, SkeletonManager skeletonManager, float speedModifier)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonCharacterSprite"/> class.
+        /// </summary>
+        /// <param name="getTime">The interface used to get the current time.</param>
+        /// <param name="character">The character that this sprite is for.</param>
+        /// <param name="skeletonManager">The skeleton manager.</param>
+        /// <param name="speedModifier">The animation speed modifier.</param>
+        public SkeletonCharacterSprite(IGetTime getTime, Entity character, SkeletonManager skeletonManager, float speedModifier)
         {
             _character = character;
             _skelManager = skeletonManager;
             _speedModifier = speedModifier;
+            _getTime = getTime;
         }
 
         #region ICharacterSprite Members
@@ -69,7 +79,7 @@ namespace NetGore.Graphics
             SkeletonSet newSet = _skelManager.LoadSet(setName, ContentPaths.Build);
 
             if (_skelAnim == null)
-                _skelAnim = new SkeletonAnimation(0, newSet); // TODO: Get correct time
+                _skelAnim = new SkeletonAnimation(GetTime(), newSet);
 
             _skelAnim.ChangeSet(newSet);
             _currSkelSet = setName;
@@ -94,7 +104,7 @@ namespace NetGore.Graphics
         {
             SkeletonSet set = _skelManager.LoadSet(bodyModifierName, ContentPaths.Build);
             set = SkeletonAnimation.CreateSmoothedSet(set, _skelAnim.Skeleton);
-            SkeletonAnimation mod = new SkeletonAnimation(0, set); // TODO: Get real time
+            SkeletonAnimation mod = new SkeletonAnimation(GetTime(), set);
             _skelAnim.AddModifier(mod);
         }
 
@@ -124,6 +134,19 @@ namespace NetGore.Graphics
             SpriteEffects se = (heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             Vector2 p = position + new Vector2(_bodySize.X / 2f, _bodySize.Y);
             _skelAnim.Draw(spriteBatch, p, se);
+        }
+
+        #endregion
+
+        #region IGetTime Members
+
+        /// <summary>
+        /// Gets the current time in milliseconds.
+        /// </summary>
+        /// <returns>The current time in milliseconds.</returns>
+        public int GetTime()
+        {
+            return _getTime.GetTime();
         }
 
         #endregion
