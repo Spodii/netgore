@@ -14,6 +14,9 @@ namespace DemoGame.Client
         IGUIManager _gui;
         SpriteBatch _sb = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainMenuScreen"/> class.
+        /// </summary>
         public MainMenuScreen() : base(ScreenName)
         {
             PlayMusic = false;
@@ -37,11 +40,6 @@ namespace DemoGame.Client
         void cQuit_OnClick(object sender, MouseClickEventArgs e)
         {
             ScreenManager.Game.Exit();
-        }
-
-        void cScreen_OnKeyUp(object sender, KeyboardEventArgs e)
-        {
-            cLogin_OnClick(this, null);
         }
 
         /// <summary>
@@ -69,19 +67,15 @@ namespace DemoGame.Client
         public override void Initialize()
         {
             _gui = ScreenManager.CreateGUIManager("Font/Menu");
-
+            
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
-            Button cLogin = new Button(cScreen, new Vector2(60, 260), new Vector2(250, 45)) { Text = "Login" };
-            Button cNewAccount = new Button(cScreen, new Vector2(60, 320), new Vector2(250, 45)) { Text = "New Account" };
-            Button cOptions = new Button(cScreen, new Vector2(60, 380), new Vector2(250, 45)) { Text = "Options" };
-            Button cQuit = new Button(cScreen, new Vector2(60, 440), new Vector2(250, 45)) { Text = "Quit" };
 
-            cLogin.OnClick += cLogin_OnClick;
-            cQuit.OnClick += cQuit_OnClick;
-            cNewAccount.OnClick += cNewAccount_OnClick;
-            cOptions.OnClick += cOptions_OnClick;
-
-            cScreen.OnKeyUp += cScreen_OnKeyUp;
+            // Create the menu buttons
+            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "New Account", "Options", "Quit");
+            menuButtons["Login"].OnClick += cLogin_OnClick;
+            menuButtons["New Account"].OnClick += cNewAccount_OnClick;
+            menuButtons["Options"].OnClick += cOptions_OnClick;
+            menuButtons["Quit"].OnClick += cQuit_OnClick;
         }
 
         /// <summary>
@@ -92,6 +86,8 @@ namespace DemoGame.Client
         public override void LoadContent()
         {
             _sb = ScreenManager.SpriteBatch;
+
+            base.LoadContent();
         }
 
         /// <summary>

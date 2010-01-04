@@ -113,7 +113,9 @@ namespace DemoGame.Client
         public override void Initialize()
         {
             _gui = ScreenManager.CreateGUIManager("Font/Menu");
+
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
+            cScreen.OnKeyUp += cScreen_OnKeyUp;
 
             new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
             _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
@@ -122,14 +124,12 @@ namespace DemoGame.Client
             _cPasswordText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = "qwerty123" };
 
-            Button cLogin = new Button(cScreen, new Vector2(60, 380), new Vector2(250, 45)) { Text = "Login" };
-            Button cBack = new Button(cScreen, new Vector2(60, 440), new Vector2(250, 45)) { Text = "Back" };
-
             _cError = new Label(cScreen, new Vector2(60, 500)) { ForeColor = Color.Red };
 
-            cLogin.OnClick += cLogin_OnClick;
-            cBack.OnClick += cBack_OnClick;
-            cScreen.OnKeyUp += cScreen_OnKeyUp;
+            // Create the menu buttons
+            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "Back");
+            menuButtons["Login"].OnClick += cLogin_OnClick;
+            menuButtons["Back"].OnClick += cBack_OnClick;
 
             cScreen.SetFocus();
         }
