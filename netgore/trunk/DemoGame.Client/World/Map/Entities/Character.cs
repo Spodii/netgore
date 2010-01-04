@@ -173,7 +173,7 @@ namespace DemoGame.Client
             _interpolator.Teleport(Position);
 
 #if !TOPDOWN
-            _characterSprite = new SkeletonCharacterSprite(this, skelManager, GameData.AnimationSpeedModifier);
+            _characterSprite = new SkeletonCharacterSprite(this, this, skelManager, GameData.AnimationSpeedModifier);
 #else
             _characterSprite = new BasicGrhCharacterSprite(this, "Character.Top Down");
 #endif
