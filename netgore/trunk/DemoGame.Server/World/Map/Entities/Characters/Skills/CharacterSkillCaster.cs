@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using NetGore;
 
 namespace DemoGame.Server
@@ -110,6 +111,10 @@ namespace DemoGame.Server
 
             // Check that the group is available for usage
             if (_cooldownManager.IsCoolingDown(skill.CooldownGroup, _character.GetTime()))
+                return false;
+
+            // Only allow immediate-usage skills when moving
+            if (_character.Velocity != Vector2.Zero && skill.CastingTime > 0)
                 return false;
 
             // If the skill to use has no usage delay, use it immediately
