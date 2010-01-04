@@ -136,8 +136,9 @@ namespace DemoGame.Client
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 
-            Button cLogOut = new Button(cScreen, new Vector2(60, 440), new Vector2(250, 45)) { Text = "Log out" };
-            cLogOut.OnClick += cLogOut_OnClick;
+            // Create the menu buttons
+            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Log out");
+            menuButtons["Log out"].OnClick += cLogOut_OnClick;
 
             // Create the character controls
             _characterButtons = new Button[GameData.MaxCharactersPerAccount];
