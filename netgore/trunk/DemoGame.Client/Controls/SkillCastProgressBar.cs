@@ -20,10 +20,10 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public SkillCastProgressBar(Control parent) : base(parent, Vector2.Zero, new Vector2(200, 40))
+        public SkillCastProgressBar(Control parent) : base(parent, Vector2.Zero, new Vector2(200, 20))
         {
             ForeColor = Color.White;
-            Position = (new Vector2(0.5f, 0.75f) * parent.Size) - (Size / 2);
+            Position = (new Vector2(0.5f, 0.85f) * parent.Size) - (Size / 2);
             IsVisible = false;
         }
 

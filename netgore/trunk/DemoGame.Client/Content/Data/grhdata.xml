@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>197</Count>
+    <Count>206</Count>
     <Item0>
       <Index>1</Index>
       <Frames>
@@ -1615,6 +1615,97 @@
       </Texture>
     </Item123>
     <Item124>
+      <Index>126</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>126</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.Background</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Background</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item124>
+    <Item125>
+      <Index>127</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>127</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.Bottom</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Bottom</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item125>
+    <Item126>
+      <Index>128</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>128</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomLeft</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomLeft</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item126>
+    <Item127>
+      <Index>129</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>129</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomRight</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomRight</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item127>
+    <Item128>
+      <Index>130</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>130</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.Left</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Left</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item128>
+    <Item129>
+      <Index>131</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>131</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.Right</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Right</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item129>
+    <Item130>
+      <Index>132</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>132</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.Top</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</Name>
+        <Source>0,0,6,22</Source>
+      </Texture>
+    </Item130>
+    <Item131>
       <Index>133</Index>
       <Frames>
         <Count>1</Count>
@@ -1626,8 +1717,8 @@
         <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item124>
-    <Item125>
+    </Item131>
+    <Item132>
       <Index>134</Index>
       <Frames>
         <Count>1</Count>
@@ -1639,8 +1730,8 @@
         <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item125>
-    <Item126>
+    </Item132>
+    <Item133>
       <Index>135</Index>
       <Frames>
         <Count>1</Count>
@@ -1652,8 +1743,8 @@
         <Name>Grh/GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item126>
-    <Item127>
+    </Item133>
+    <Item134>
       <Index>136</Index>
       <Frames>
         <Count>1</Count>
@@ -1665,8 +1756,8 @@
         <Name>Grh/GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item127>
-    <Item128>
+    </Item134>
+    <Item135>
       <Index>137</Index>
       <Frames>
         <Count>1</Count>
@@ -1678,8 +1769,8 @@
         <Name>Grh/Background/sky</Name>
         <Source>0,0,1024,238</Source>
       </Texture>
-    </Item128>
-    <Item129>
+    </Item135>
+    <Item136>
       <Index>138</Index>
       <Frames>
         <Count>1</Count>
@@ -1691,8 +1782,8 @@
         <Name>Grh/Background/trees/dense</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item129>
-    <Item130>
+    </Item136>
+    <Item137>
       <Index>139</Index>
       <Frames>
         <Count>1</Count>
@@ -1704,8 +1795,8 @@
         <Name>Grh/Background/trees/sparse</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item130>
-    <Item131>
+    </Item137>
+    <Item138>
       <Index>140</Index>
       <Frames>
         <Count>1</Count>
@@ -1717,8 +1808,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item131>
-    <Item132>
+    </Item138>
+    <Item139>
       <Index>141</Index>
       <Frames>
         <Count>1</Count>
@@ -1730,8 +1821,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item132>
-    <Item133>
+    </Item139>
+    <Item140>
       <Index>142</Index>
       <Frames>
         <Count>1</Count>
@@ -1743,8 +1834,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item133>
-    <Item134>
+    </Item140>
+    <Item141>
       <Index>143</Index>
       <Frames>
         <Count>1</Count>
@@ -1756,8 +1847,8 @@
         <Name>Grh/GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item134>
-    <Item135>
+    </Item141>
+    <Item142>
       <Index>144</Index>
       <Frames>
         <Count>1</Count>
@@ -1769,8 +1860,8 @@
         <Name>Grh/GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item135>
-    <Item136>
+    </Item142>
+    <Item143>
       <Index>145</Index>
       <Frames>
         <Count>1</Count>
@@ -1782,8 +1873,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/4</Name>
         <Source>0,0,44,55</Source>
       </Texture>
-    </Item136>
-    <Item137>
+    </Item143>
+    <Item144>
       <Index>146</Index>
       <Frames>
         <Count>1</Count>
@@ -1795,8 +1886,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item137>
-    <Item138>
+    </Item144>
+    <Item145>
       <Index>147</Index>
       <Frames>
         <Count>1</Count>
@@ -1808,8 +1899,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item138>
-    <Item139>
+    </Item145>
+    <Item146>
       <Index>148</Index>
       <Frames>
         <Count>1</Count>
@@ -1821,8 +1912,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item139>
-    <Item140>
+    </Item146>
+    <Item147>
       <Index>149</Index>
       <Frames>
         <Count>1</Count>
@@ -1834,8 +1925,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item140>
-    <Item141>
+    </Item147>
+    <Item148>
       <Index>150</Index>
       <Frames>
         <Count>1</Count>
@@ -1847,8 +1938,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item141>
-    <Item142>
+    </Item148>
+    <Item149>
       <Index>151</Index>
       <Frames>
         <Count>1</Count>
@@ -1860,8 +1951,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item142>
-    <Item143>
+    </Item149>
+    <Item150>
       <Index>152</Index>
       <Frames>
         <Count>1</Count>
@@ -1873,8 +1964,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item143>
-    <Item144>
+    </Item150>
+    <Item151>
       <Index>153</Index>
       <Frames>
         <Count>1</Count>
@@ -1886,8 +1977,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item144>
-    <Item145>
+    </Item151>
+    <Item152>
       <Index>154</Index>
       <Frames>
         <Count>1</Count>
@@ -1899,8 +1990,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item145>
-    <Item146>
+    </Item152>
+    <Item153>
       <Index>155</Index>
       <Frames>
         <Count>1</Count>
@@ -1912,8 +2003,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item146>
-    <Item147>
+    </Item153>
+    <Item154>
       <Index>156</Index>
       <Frames>
         <Count>1</Count>
@@ -1925,8 +2016,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item147>
-    <Item148>
+    </Item154>
+    <Item155>
       <Index>157</Index>
       <Frames>
         <Count>1</Count>
@@ -1938,8 +2029,8 @@
         <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item148>
-    <Item149>
+    </Item155>
+    <Item156>
       <Index>158</Index>
       <Frames>
         <Count>1</Count>
@@ -1951,8 +2042,8 @@
         <Name>Grh/Character/Top Down/Crystal/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item149>
-    <Item150>
+    </Item156>
+    <Item157>
       <Index>159</Index>
       <Frames>
         <Count>1</Count>
@@ -1964,8 +2055,8 @@
         <Name>Grh/Character/Top Down/Crystal/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item150>
-    <Item151>
+    </Item157>
+    <Item158>
       <Index>160</Index>
       <Frames>
         <Count>1</Count>
@@ -1977,8 +2068,8 @@
         <Name>Grh/Character/Top Down/Crystal/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item151>
-    <Item152>
+    </Item158>
+    <Item159>
       <Index>161</Index>
       <Frames>
         <Count>1</Count>
@@ -1990,8 +2081,8 @@
         <Name>Grh/Character/Top Down/Crystal/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item152>
-    <Item153>
+    </Item159>
+    <Item160>
       <Index>162</Index>
       <Frames>
         <Count>1</Count>
@@ -2003,8 +2094,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item153>
-    <Item154>
+    </Item160>
+    <Item161>
       <Index>163</Index>
       <Frames>
         <Count>1</Count>
@@ -2016,8 +2107,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item154>
-    <Item155>
+    </Item161>
+    <Item162>
       <Index>164</Index>
       <Frames>
         <Count>1</Count>
@@ -2029,8 +2120,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item155>
-    <Item156>
+    </Item162>
+    <Item163>
       <Index>165</Index>
       <Frames>
         <Count>1</Count>
@@ -2042,8 +2133,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/4</Name>
         <Source>0,0,44,55</Source>
       </Texture>
-    </Item156>
-    <Item157>
+    </Item163>
+    <Item164>
       <Index>166</Index>
       <Frames>
         <Count>1</Count>
@@ -2055,8 +2146,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item157>
-    <Item158>
+    </Item164>
+    <Item165>
       <Index>167</Index>
       <Frames>
         <Count>1</Count>
@@ -2068,8 +2159,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item158>
-    <Item159>
+    </Item165>
+    <Item166>
       <Index>168</Index>
       <Frames>
         <Count>1</Count>
@@ -2081,8 +2172,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item159>
-    <Item160>
+    </Item166>
+    <Item167>
       <Index>169</Index>
       <Frames>
         <Count>1</Count>
@@ -2094,8 +2185,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item160>
-    <Item161>
+    </Item167>
+    <Item168>
       <Index>170</Index>
       <Frames>
         <Count>1</Count>
@@ -2107,8 +2198,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item161>
-    <Item162>
+    </Item168>
+    <Item169>
       <Index>171</Index>
       <Frames>
         <Count>1</Count>
@@ -2120,8 +2211,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item162>
-    <Item163>
+    </Item169>
+    <Item170>
       <Index>172</Index>
       <Frames>
         <Count>1</Count>
@@ -2133,8 +2224,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item163>
-    <Item164>
+    </Item170>
+    <Item171>
       <Index>173</Index>
       <Frames>
         <Count>1</Count>
@@ -2146,8 +2237,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item164>
-    <Item165>
+    </Item171>
+    <Item172>
       <Index>174</Index>
       <Frames>
         <Count>1</Count>
@@ -2159,8 +2250,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item165>
-    <Item166>
+    </Item172>
+    <Item173>
       <Index>175</Index>
       <Frames>
         <Count>1</Count>
@@ -2172,8 +2263,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item166>
-    <Item167>
+    </Item173>
+    <Item174>
       <Index>176</Index>
       <Frames>
         <Count>1</Count>
@@ -2185,8 +2276,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item167>
-    <Item168>
+    </Item174>
+    <Item175>
       <Index>177</Index>
       <Frames>
         <Count>1</Count>
@@ -2198,8 +2289,8 @@
         <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item168>
-    <Item169>
+    </Item175>
+    <Item176>
       <Index>178</Index>
       <Frames>
         <Count>1</Count>
@@ -2211,8 +2302,8 @@
         <Name>Grh/Character/Top Down/Basic/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item169>
-    <Item170>
+    </Item176>
+    <Item177>
       <Index>179</Index>
       <Frames>
         <Count>1</Count>
@@ -2224,8 +2315,8 @@
         <Name>Grh/Character/Top Down/Basic/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item170>
-    <Item171>
+    </Item177>
+    <Item178>
       <Index>180</Index>
       <Frames>
         <Count>1</Count>
@@ -2237,8 +2328,8 @@
         <Name>Grh/Character/Top Down/Basic/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item171>
-    <Item172>
+    </Item178>
+    <Item179>
       <Index>181</Index>
       <Frames>
         <Count>1</Count>
@@ -2250,8 +2341,8 @@
         <Name>Grh/Character/Top Down/Basic/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item172>
-    <Item173>
+    </Item179>
+    <Item180>
       <Index>182</Index>
       <Frames>
         <Count>1</Count>
@@ -2263,8 +2354,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item173>
-    <Item174>
+    </Item180>
+    <Item181>
       <Index>183</Index>
       <Frames>
         <Count>1</Count>
@@ -2276,8 +2367,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item174>
-    <Item175>
+    </Item181>
+    <Item182>
       <Index>184</Index>
       <Frames>
         <Count>1</Count>
@@ -2289,8 +2380,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item175>
-    <Item176>
+    </Item182>
+    <Item183>
       <Index>185</Index>
       <Frames>
         <Count>1</Count>
@@ -2302,8 +2393,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item176>
-    <Item177>
+    </Item183>
+    <Item184>
       <Index>186</Index>
       <Frames>
         <Count>1</Count>
@@ -2315,8 +2406,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item177>
-    <Item178>
+    </Item184>
+    <Item185>
       <Index>187</Index>
       <Frames>
         <Count>1</Count>
@@ -2328,8 +2419,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item178>
-    <Item179>
+    </Item185>
+    <Item186>
       <Index>188</Index>
       <Frames>
         <Count>1</Count>
@@ -2341,8 +2432,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item179>
-    <Item180>
+    </Item186>
+    <Item187>
       <Index>189</Index>
       <Frames>
         <Count>1</Count>
@@ -2354,8 +2445,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item180>
-    <Item181>
+    </Item187>
+    <Item188>
       <Index>190</Index>
       <Frames>
         <Count>1</Count>
@@ -2367,8 +2458,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item181>
-    <Item182>
+    </Item188>
+    <Item189>
       <Index>191</Index>
       <Frames>
         <Count>1</Count>
@@ -2380,8 +2471,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item182>
-    <Item183>
+    </Item189>
+    <Item190>
       <Index>192</Index>
       <Frames>
         <Count>1</Count>
@@ -2393,8 +2484,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item183>
-    <Item184>
+    </Item190>
+    <Item191>
       <Index>193</Index>
       <Frames>
         <Count>1</Count>
@@ -2406,8 +2497,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item191>
+    <Item192>
       <Index>194</Index>
       <Frames>
         <Count>1</Count>
@@ -2419,8 +2510,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/1</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item185>
-    <Item186>
+    </Item192>
+    <Item193>
       <Index>195</Index>
       <Frames>
         <Count>1</Count>
@@ -2432,8 +2523,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/2</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item186>
-    <Item187>
+    </Item193>
+    <Item194>
       <Index>196</Index>
       <Frames>
         <Count>1</Count>
@@ -2445,8 +2536,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/3</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item187>
-    <Item188>
+    </Item194>
+    <Item195>
       <Index>197</Index>
       <Frames>
         <Count>1</Count>
@@ -2458,8 +2549,8 @@
         <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_300/4</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item188>
-    <Item189>
+    </Item195>
+    <Item196>
       <Index>200</Index>
       <Frames>
         <Count>1</Count>
@@ -2471,8 +2562,8 @@
         <Name>Grh/Character/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item189>
-    <Item190>
+    </Item196>
+    <Item197>
       <Index>201</Index>
       <Frames>
         <Count>1</Count>
@@ -2484,8 +2575,8 @@
         <Name>Grh/Character/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item190>
-    <Item191>
+    </Item197>
+    <Item198>
       <Index>202</Index>
       <Frames>
         <Count>1</Count>
@@ -2497,8 +2588,8 @@
         <Name>Grh/Character/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
-    </Item191>
-    <Item192>
+    </Item198>
+    <Item199>
       <Index>203</Index>
       <Frames>
         <Count>1</Count>
@@ -2510,8 +2601,8 @@
         <Name>Grh/Character/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
-    </Item192>
-    <Item193>
+    </Item199>
+    <Item200>
       <Index>204</Index>
       <Frames>
         <Count>1</Count>
@@ -2523,8 +2614,8 @@
         <Name>Grh/Character/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
-    </Item193>
-    <Item194>
+    </Item200>
+    <Item201>
       <Index>205</Index>
       <Frames>
         <Count>1</Count>
@@ -2536,8 +2627,8 @@
         <Name>Grh/Character/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item194>
-    <Item195>
+    </Item201>
+    <Item202>
       <Index>206</Index>
       <Frames>
         <Count>1</Count>
@@ -2549,8 +2640,8 @@
         <Name>Grh/Character/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item195>
-    <Item196>
+    </Item202>
+    <Item203>
       <Index>207</Index>
       <Frames>
         <Count>1</Count>
@@ -2562,7 +2653,33 @@
         <Name>Grh/Character/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
-    </Item196>
+    </Item203>
+    <Item204>
+      <Index>218</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>218</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopLeft</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopLeft</Name>
+        <Source>0,0,6,22</Source>
+      </Texture>
+    </Item204>
+    <Item205>
+      <Index>219</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>219</Item0>
+      </Frames>
+      <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopRight</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopRight</Name>
+        <Source>0,0,6,22</Source>
+      </Texture>
+    </Item205>
   </Stationary>
   <Animated>
     <Count>13</Count>
@@ -2580,7 +2697,7 @@
         <Item7>124</Item7>
       </Frames>
       <Categorization>Effect.Teleport</Categorization>
-      <Speed>400</Speed>
+      <Speed>0.0025</Speed>
     </Item0>
     <Item1>
       <Index>198</Index>
@@ -2592,7 +2709,7 @@
         <Item3>157</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item1>
     <Item2>
       <Index>199</Index>
@@ -2604,7 +2721,7 @@
         <Item3>153</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item2>
     <Item3>
       <Index>208</Index>
@@ -2616,7 +2733,7 @@
         <Item3>149</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item3>
     <Item4>
       <Index>209</Index>
@@ -2628,7 +2745,7 @@
         <Item3>145</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item4>
     <Item5>
       <Index>210</Index>
@@ -2640,7 +2757,7 @@
         <Item3>177</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item5>
     <Item6>
       <Index>211</Index>
@@ -2652,7 +2769,7 @@
         <Item3>173</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item6>
     <Item7>
       <Index>212</Index>
@@ -2664,7 +2781,7 @@
         <Item3>169</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item7>
     <Item8>
       <Index>213</Index>
@@ -2676,7 +2793,7 @@
         <Item3>165</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item8>
     <Item9>
       <Index>214</Index>
@@ -2688,7 +2805,7 @@
         <Item3>197</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item9>
     <Item10>
       <Index>215</Index>
@@ -2700,7 +2817,7 @@
         <Item3>193</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item10>
     <Item11>
       <Index>216</Index>
@@ -2712,7 +2829,7 @@
         <Item3>189</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item11>
     <Item12>
       <Index>217</Index>
@@ -2724,7 +2841,7 @@
         <Item3>185</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item12>
   </Animated>
 </GrhDatas>
