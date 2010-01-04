@@ -7,7 +7,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillHeal"/> class.
         /// </summary>
-        SkillHeal() : base(DemoGame.SkillType.Heal, 0, 2000, 0)
+        SkillHeal() : base(DemoGame.SkillType.Heal, 2000, 0)
         {
         }
 

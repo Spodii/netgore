@@ -47,6 +47,7 @@ namespace DemoGame
         SetChatDialogPage,
         SetLevel,
         SetInventorySlot,
+        SetSkillGroupCooldown,
         SetStatPoints,
         SetMap,
         SetUserChar,

@@ -24,5 +24,12 @@ namespace NetGore
         /// <returns>True if the group is currently cooling down and cannot be used; false if the group is available
         /// for usage.</returns>
         bool IsCoolingDown(byte group, int currentTime);
+
+        /// <summary>
+        /// Gets the cooldown time remaining for the given group.
+        /// </summary>
+        /// <param name="group">The index of the skill group.</param>
+        /// <returns>The cooldown time remaining for the given group.</returns>
+        int GetCooldownTime(byte group);
     }
 }
