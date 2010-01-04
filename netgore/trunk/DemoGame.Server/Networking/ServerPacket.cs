@@ -196,6 +196,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter StartCastingSkill(SkillType skillType, ushort castTime)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.StartCastingSkill);
+            pw.WriteEnum(SkillTypeHelper.Instance, skillType);
+            pw.Write(castTime);
+            return pw;
+        }
+
         public static PacketWriter SendAccountCharacters(AccountCharacterInfo[] charInfos)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendAccountCharacters);

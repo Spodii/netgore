@@ -5,6 +5,9 @@ using NetGore;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Provides all the handling for making a Character use skills.
+    /// </summary>
     public class CharacterSkillCaster
     {
         readonly Character _character;
@@ -14,6 +17,10 @@ namespace DemoGame.Server
         Character _castingSkillTarget;
         int _castingSkillUsageTime;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterSkillCaster"/> class.
+        /// </summary>
+        /// <param name="character">The character.</param>
         public CharacterSkillCaster(Character character)
         {
             _character = character;
@@ -115,7 +122,16 @@ namespace DemoGame.Server
                 // The skill does have a delay, so queue it for usage
                 _currentCastingSkill = skill;
                 _castingSkillTarget = target;
-                _castingSkillUsageTime = _character.GetTime() + skill.CastingTime;
+                var castingTime = skill.CastingTime;
+                _castingSkillUsageTime = _character.GetTime() + castingTime;
+
+                if (_character is User)
+                {
+                    using (var pw = ServerPacket.StartCastingSkill(skill.SkillType, castingTime))
+                    {
+                        ((User)_character).Send(pw);
+                    }
+                }
             }
 
             return true;
