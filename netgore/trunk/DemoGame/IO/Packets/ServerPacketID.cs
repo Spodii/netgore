@@ -32,6 +32,7 @@ namespace DemoGame
         PlaySoundAtEntity,
         RemoveDynamicEntity,
         RemoveStatusEffect,
+        StartCastingSkill,
         SendAccountCharacters,
         SendEquipmentItemInfo,
         SendInventoryItemInfo,

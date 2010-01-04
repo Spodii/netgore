@@ -364,6 +364,15 @@ namespace DemoGame.Client
             }
         }
 
+        [MessageHandler((byte)ServerPacketID.StartCastingSkill)]
+        void RecvStartCastingSkill(IIPSocket conn, BitStream r)
+        {
+            var skillType = r.ReadEnum(SkillTypeHelper.Instance);
+            ushort castTime = r.ReadUShort();
+
+            GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
+        }
+
         [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
@@ -730,7 +739,9 @@ namespace DemoGame.Client
             else
                 GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
 
-            // TODO: Display the skill usage
+            // If the character that used the skill is our client's character, hide the skill cast progress bar
+            if (user == User && skillType == GameplayScreen.SkillCastProgressBar.CurrentSkillType)
+                GameplayScreen.SkillCastProgressBar.StopCasting();
         }
 
         #region IGetTime Members

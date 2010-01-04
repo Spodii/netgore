@@ -7,7 +7,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillStrengthen"/> class.
         /// </summary>
-        SkillStrengthen() : base(DemoGame.SkillType.Strengthen, 1, 10000, 3000)
+        SkillStrengthen() : base(DemoGame.SkillType.Strengthen, 1, 0, 3000)
         {
         }
 

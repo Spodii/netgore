@@ -44,6 +44,7 @@ namespace DemoGame.Client
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
+        SkillCastProgressBar _skillCastProgressBar;
         Label _latencyLabel;
         ShopForm _shopForm;
         SkillsForm _skillsForm;
@@ -53,6 +54,8 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
+
+        public SkillCastProgressBar SkillCastProgressBar { get { return _skillCastProgressBar; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -354,6 +357,8 @@ namespace DemoGame.Client
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
+
+            _skillCastProgressBar = new SkillCastProgressBar(cScreen);
 
             Toolbar toolbar = new Toolbar(cScreen, new Vector2(200, 200));
             toolbar.OnClickItem += Toolbar_OnClickItem;
