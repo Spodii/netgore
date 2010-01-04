@@ -1,59 +1,46 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 
 namespace DemoGame.Server
 {
     /// <summary>
     /// The base class for skills that describes each individual skill.
     /// </summary>
-    public abstract class SkillBase
+    public abstract class SkillBase : SkillBase<SkillType, StatType, Character>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly SkillType _skillType;
-
         /// <summary>
-        /// SkillBase constructor.
+        /// Initializes a new instance of the <see cref="SkillBase"/> class.
         /// </summary>
-        /// <param name="skillType">The type of skill that this class is for.</param>
-        protected SkillBase(SkillType skillType)
+        /// <param name="skillType">The type of skill that this object instance is for.</param>
+        protected SkillBase(SkillType skillType) : base(skillType)
         {
-            _skillType = skillType;
         }
 
         /// <summary>
-        /// Gets an IEnumerable of stats required by this <see cref="SkillBase"/>. Cannot be null.
+        /// Allows for additional processing for after the skill has been successfully used.
         /// </summary>
-        public virtual IEnumerable<KeyValuePair<StatType, int>> RequiredStats
+        /// <param name="user">User to make use this Skill.</param>
+        /// <param name="target">The optional Character that the skill was used on. Can be null if there was
+        /// no targeted Character.</param>
+        protected override void AfterUseSkill(Character user, Character target)
         {
-            get { return Enumerable.Empty<KeyValuePair<StatType, int>>(); }
-        }
+            // Apply the HP and MP costs
+            var hpCost = GetHPCost(user, target);
+            if (hpCost != 0)
+                user.HP -= hpCost;
 
-        /// <summary>
-        /// When overridden in the derived class, gets if this Skill requires a target to be specified for the skill
-        /// to be used. If this is false, the skill will never even attempt to be used unless there is a target.
-        /// </summary>
-        public abstract bool RequiresTarget { get; }
+            var mpCost = GetMPCost(user, target);
+            if (mpCost != 0)
+                user.MP -= mpCost;
 
-        /// <summary>
-        /// Gets the type of skill that this class is for.
-        /// </summary>
-        public SkillType SkillType
-        {
-            get { return _skillType; }
-        }
-
-        /// <summary>
-        /// Checks if the given Character can use this Skill.
-        /// </summary>
-        /// <param name="user">The Character to check if can use this Skill.</param>
-        /// <returns>True if the <paramref name="user"/> can use this Skill; otherwise false.</returns>
-        public bool CanUse(Character user)
-        {
-            return CanUse(user, null);
+            base.AfterUseSkill(user, target);
         }
 
         /// <summary>
@@ -62,17 +49,11 @@ namespace DemoGame.Server
         /// <param name="user">The Character to check if can use this Skill.</param>
         /// <param name="target">The optional Character that the skill was used on. Can be null if there was
         /// no targeted Character.</param>
-        /// <returns>True if the <paramref name="user"/> can use this Skill; otherwise false.</returns>
-        public virtual bool CanUse(Character user, Character target)
+        /// <returns>
+        /// True if the <paramref name="user"/> can use this Skill; otherwise false.
+        /// </returns>
+        public override bool CanUse(Character user, Character target)
         {
-            // State checks
-            if (!CheckValidCanUseCharacters(user, target))
-                return false;
-
-            // Check for a target
-            if (RequiresTarget && target == null)
-                return false;
-
             // Check for the required HP and MP
             int mpCost = GetMPCost(user, target);
             if (mpCost >= user.MP)
@@ -82,11 +63,7 @@ namespace DemoGame.Server
             if (hpCost >= user.HP)
                 return false;
 
-            // Check for the required stats
-            if (!HasRequiredStats(user))
-                return false;
-
-            return true;
+            return base.CanUse(user, target);
         }
 
         /// <summary>
@@ -95,8 +72,10 @@ namespace DemoGame.Server
         /// <param name="user">The Character to check if can use this Skill.</param>
         /// <param name="target">The optional Character that the skill was used on. Can be null if there was
         /// no targeted Character.</param>
-        /// <returns>True if the <paramref name="user"/> can use this Skill; otherwise false.</returns>
-        protected bool CheckValidCanUseCharacters(Character user, Character target)
+        /// <returns>
+        /// True if the <paramref name="user"/> can use this Skill; otherwise false.
+        /// </returns>
+        protected override bool CheckValidCanUseCharacters(Character user, Character target)
         {
             if (user.Map == null)
             {
@@ -155,7 +134,7 @@ namespace DemoGame.Server
                 }
             }
 
-            return true;
+            return base.CheckValidCanUseCharacters(user, target);
         }
 
         /// <summary>
@@ -165,7 +144,7 @@ namespace DemoGame.Server
         /// <param name="target">The optional Character that the skill was used on. Can be null if there was
         /// no targeted Character.</param>
         /// <returns>The HP cost of using this Skill.</returns>
-        public virtual SPValueType GetHPCost(Character user, Character target)
+        public virtual int GetHPCost(Character user, Character target)
         {
             return 0;
         }
@@ -177,26 +156,20 @@ namespace DemoGame.Server
         /// <param name="target">The optional Character that the skill was used on. Can be null if there was
         /// no targeted Character.</param>
         /// <returns>The MP cost of using this Skill.</returns>
-        public virtual SPValueType GetMPCost(Character user, Character target)
+        public virtual int GetMPCost(Character user, Character target)
         {
             return 0;
         }
 
         /// <summary>
-        /// When overridden in the derived class, makes the <paramref name="user"/> Character use this skill.
-        /// </summary>
-        /// <param name="user">The Character that used this skill. Will never be null.</param>
-        /// <param name="target">The optional Character that the skill was used on. Can be null if there was
-        /// no targeted Character.</param>
-        /// <returns>True if the skill was successfully used; otherwise false.</returns>
-        protected abstract bool HandleUse(Character user, Character target);
-
-        /// <summary>
-        /// Checks if the given <paramref name="character"/> has the required stats for using this Skill.
+        /// When overridden in the derived class, checks if the given <paramref name="character"/> has the required stats
+        /// for using this Skill.
         /// </summary>
         /// <param name="character">The Character using the skill. Will not be null.</param>
-        /// <returns>True if the <paramref name="character"/> has the required stats to use this skill; otherwise false.</returns>
-        public bool HasRequiredStats(Character character)
+        /// <returns>
+        /// True if the <paramref name="character"/> has the required stats to use this skill; otherwise false.
+        /// </returns>
+        public override bool HasRequiredStats(Character character)
         {
             var reqStats = RequiredStats;
             if (reqStats == null)
@@ -211,46 +184,6 @@ namespace DemoGame.Server
                 if (characterStatValue < kvp.Value)
                     return false;
             }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Uses this Skill without a target.
-        /// </summary>
-        /// <param name="user">User to make use this Skill.</param>
-        /// <returns>True if the Skill was successfully used; otherwise false.</returns>
-        public bool Use(Character user)
-        {
-            return Use(user, null);
-        }
-
-        /// <summary>
-        /// Uses this Skill.
-        /// </summary>
-        /// <param name="user">User to make use this Skill.</param>
-        /// <param name="target">The optional Character that the skill was used on. Can be null if there was
-        /// no targeted Character.</param>
-        /// <returns>True if the Skill was successfully used; otherwise false.</returns>
-        public bool Use(Character user, Character target)
-        {
-            // Ensure the skill can be used
-            if (!CanUse(user, target))
-                return false;
-
-            // Use the skill
-            bool useSuccessful = HandleUse(user, target);
-            if (!useSuccessful)
-                return false;
-
-            // Apply the HP and MP costs
-            SPValueType hpCost = GetHPCost(user, target);
-            if (hpCost != 0)
-                user.HP -= hpCost;
-
-            SPValueType mpCost = GetMPCost(user, target);
-            if (mpCost != 0)
-                user.MP -= mpCost;
 
             return true;
         }

@@ -72,6 +72,9 @@
     <Compile Include="Direction.cs" />
     <Compile Include="DirectionHelper.cs" />
     <Compile Include="EngineSettings.cs" />
+    <Compile Include="Skills\ISkill.cs" />
+    <Compile Include="Skills\SkillBase.cs" />
+    <Compile Include="Skills\SkillManager.cs" />
     <Compile Include="Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />
     <Compile Include="Collections\DArray\DArrayModifyEventArgs.cs" />
