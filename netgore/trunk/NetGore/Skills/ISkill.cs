@@ -26,13 +26,13 @@ namespace NetGore
         /// Gets the amount of time in milliseconds that must elapse before this skill, or any other skill in the same
         /// CooldownGroup, can be used again by the character who used the skill.
         /// </summary>
-        int CooldownTime { get; }
+        ushort CooldownTime { get; }
 
         /// <summary>
         /// Gets the amount of time in milliseconds that must elapse between the time the skill starts to be used and
         /// when the skill is actually used. A value of 0 means the skill will be used immediately.
         /// </summary>
-        int CastingTime { get; }
+        ushort CastingTime { get; }
 
         /// <summary>
         /// Gets an IEnumerable of stats required by this ISkill. Can be empty, but cannot
