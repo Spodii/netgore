@@ -150,7 +150,7 @@ namespace DemoGame.Client
                 _power = power;
                 _disableTime = disableTime;
 
-                _statusEffectInfo = StatusEffectInfoManager<StatusEffectType>.Instance.GetStatusEffectInfo(statusEffectType);
+                _statusEffectInfo = StatusEffectInfoManager.Instance.GetAttribute(statusEffectType);
                 _grh = new Grh(_statusEffectInfo.Icon);
             }
 

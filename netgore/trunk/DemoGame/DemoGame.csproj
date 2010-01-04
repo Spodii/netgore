@@ -71,6 +71,10 @@
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
     <Compile Include="EngineSettingsInitializer.cs" />
     <Compile Include="World\Map\Entities\Body\BodyInfoManager.cs" />
+    <Compile Include="World\Map\Entities\Skills\SkillInfoAttribute.cs" />
+    <Compile Include="World\Map\Entities\Skills\SkillInfoManager.cs" />
+    <Compile Include="World\Map\Entities\Skills\StatusEffectInfoAttribute.cs" />
+    <Compile Include="World\Map\Entities\Skills\StatusEffectInfoManager.cs" />
     <Compile Include="World\Map\IMapEntityCollectionExtensions.cs" />
     <Compile Include="IO\BitStreamExtensions.cs" />
     <Compile Include="World\Map\Entities\Body\BodyIndex.cs" />

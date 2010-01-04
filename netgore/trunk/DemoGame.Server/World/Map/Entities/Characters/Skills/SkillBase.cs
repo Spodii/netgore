@@ -22,7 +22,7 @@ namespace DemoGame.Server
         /// <returns>The cooldown group for the skill type.</returns>
         static byte GetCooldownGroup(SkillType skillType)
         {
-            return SkillInfoManager<SkillType>.Instance.GetSkillInfo(skillType).CooldownGroup;
+            return SkillInfoManager.Instance.GetAttribute(skillType).CooldownGroup;
         }
 
         /// <summary>

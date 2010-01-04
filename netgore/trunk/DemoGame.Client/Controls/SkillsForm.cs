@@ -54,7 +54,7 @@ namespace DemoGame.Client
 
         void CreateSkillEntry(Vector2 position, SkillType skillType)
         {
-            var skillInfo = SkillInfoManager<SkillType>.Instance.GetSkillInfo(skillType);
+            var skillInfo = SkillInfoManager.Instance.GetAttribute(skillType);
 
             PictureBox pb = new SkillPictureBox(this, skillInfo, position);
             pb.OnClick += SkillPicture_OnClick;

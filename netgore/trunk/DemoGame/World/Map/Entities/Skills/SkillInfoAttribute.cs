@@ -18,7 +18,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the actual enum value that this <see cref="SkillInfoAttribute"/> was attached to.
         /// </summary>
-        public object Value { get; internal set; }
+        public SkillType Value { get; internal set; }
 
         /// <summary>
         /// Gets the name to display for the skill.
