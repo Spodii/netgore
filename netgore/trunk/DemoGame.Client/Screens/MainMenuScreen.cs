@@ -22,26 +22,6 @@ namespace DemoGame.Client
             PlayMusic = false;
         }
 
-        void cLogin_OnClick(object sender, MouseClickEventArgs e)
-        {
-            ScreenManager.SetScreen(LoginScreen.ScreenName);
-        }
-
-        void cNewAccount_OnClick(object sender, MouseClickEventArgs e)
-        {
-            // Not implemented...
-        }
-
-        void cOptions_OnClick(object sender, MouseClickEventArgs e)
-        {
-            // Not implemented...
-        }
-
-        void cQuit_OnClick(object sender, MouseClickEventArgs e)
-        {
-            ScreenManager.Game.Exit();
-        }
-
         /// <summary>
         /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
         /// there is often no need to clear the screen. This will only be called while the screen is the
@@ -72,10 +52,10 @@ namespace DemoGame.Client
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "New Account", "Options", "Quit");
-            menuButtons["Login"].OnClick += cLogin_OnClick;
-            menuButtons["New Account"].OnClick += cNewAccount_OnClick;
-            menuButtons["Options"].OnClick += cOptions_OnClick;
-            menuButtons["Quit"].OnClick += cQuit_OnClick;
+            menuButtons["Login"].OnClick += delegate { ScreenManager.SetScreen(LoginScreen.ScreenName); };
+            menuButtons["New Account"].OnClick += delegate { /* Not implemented */ };
+            menuButtons["Options"].OnClick += delegate { /* Not implemented */ };
+            menuButtons["Quit"].OnClick += delegate { ScreenManager.Game.Exit(); };
         }
 
         /// <summary>

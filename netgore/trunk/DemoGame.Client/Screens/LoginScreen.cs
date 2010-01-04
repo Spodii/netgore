@@ -57,21 +57,6 @@ namespace DemoGame.Client
             base.Activate();
         }
 
-        void cBack_OnClick(object sender, MouseClickEventArgs e)
-        {
-            ScreenManager.SetScreen(MainMenuScreen.ScreenName);
-        }
-
-        void cLogin_OnClick(object sender, MouseClickEventArgs e)
-        {
-            _sockets.Connect();
-        }
-
-        void cScreen_OnKeyUp(object sender, KeyboardEventArgs e)
-        {
-            cLogin_OnClick(this, null);
-        }
-
         /// <summary>
         /// Handles screen deactivation, which occurs every time the screen changes from being
         /// the current active screen. Good place to clean up any objects created in Activate().
@@ -115,7 +100,6 @@ namespace DemoGame.Client
             _gui = ScreenManager.CreateGUIManager("Font/Menu");
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
-            cScreen.OnKeyUp += cScreen_OnKeyUp;
 
             new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
             _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
@@ -128,8 +112,8 @@ namespace DemoGame.Client
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "Back");
-            menuButtons["Login"].OnClick += cLogin_OnClick;
-            menuButtons["Back"].OnClick += cBack_OnClick;
+            menuButtons["Login"].OnClick += delegate { _sockets.Connect(); };
+            menuButtons["Back"].OnClick += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             cScreen.SetFocus();
         }

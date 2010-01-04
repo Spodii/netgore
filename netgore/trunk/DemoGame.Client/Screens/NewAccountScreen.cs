@@ -26,7 +26,6 @@ namespace DemoGame.Client.Screens
             PlayMusic = false;
         }
         
-
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
@@ -35,6 +34,13 @@ namespace DemoGame.Client.Screens
         public override void Initialize()
         {
             _gui = ScreenManager.CreateGUIManager("Font/Menu");
+
+            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
+
+            // Create the menu buttons
+            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Create Account", "Back");
+            menuButtons["Create Account"].OnClick += delegate { /* Not implemented */ };
+            menuButtons["Back"].OnClick += delegate { /* Not implemented */ };
         }
 
         /// <summary>
