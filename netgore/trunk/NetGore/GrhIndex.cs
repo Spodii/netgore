@@ -7,7 +7,7 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Represents the index of a GrhData.
+    /// Represents the index of a <see cref="GrhData"/>.
     /// </summary>
     [Serializable]
     public struct GrhIndex : IComparable<GrhIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
