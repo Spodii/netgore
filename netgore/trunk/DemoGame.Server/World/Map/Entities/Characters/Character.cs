@@ -448,6 +448,9 @@ namespace DemoGame.Server
         /// </summary>
         public void Attack()
         {
+            if (_skillCaster.IsCastingSkill)
+                return;
+
             int currTime = GetTime();
 
             // Ensure enough time has elapsed since the last attack
@@ -887,6 +890,9 @@ namespace DemoGame.Server
             if (!CanJump)
                 return;
 
+            if (_skillCaster.IsCastingSkill)
+                return;
+
             SetVelocity(Velocity + new Vector2(0.0f, -0.48f));
         }
 #endif
@@ -1051,6 +1057,9 @@ namespace DemoGame.Server
             if (IsMovingDown)
                 return;
 
+            if (_skillCaster.IsCastingSkill)
+                return;
+
             SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
         }
 #endif
@@ -1061,6 +1070,9 @@ namespace DemoGame.Server
         public void MoveLeft()
         {
             if (IsMovingLeft)
+                return;
+
+            if (_skillCaster.IsCastingSkill)
                 return;
 
             SetVelocity(new Vector2(-_moveSpeedVelocityCache, Velocity.Y));
@@ -1074,6 +1086,9 @@ namespace DemoGame.Server
             if (IsMovingRight)
                 return;
 
+            if (_skillCaster.IsCastingSkill)
+                return;
+
             SetVelocity(new Vector2(_moveSpeedVelocityCache, Velocity.Y));
         }
 
@@ -1084,6 +1099,9 @@ namespace DemoGame.Server
         public void MoveUp()
         {
             if (IsMovingUp)
+                return;
+
+            if (_skillCaster.IsCastingSkill)
                 return;
 
             SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
