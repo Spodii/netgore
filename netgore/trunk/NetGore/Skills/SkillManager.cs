@@ -18,7 +18,7 @@ namespace NetGore
     public class SkillManager<TSkillType, TStatType, TCharacter>
         where TSkillType : struct, IComparable, IConvertible, IFormattable
         where TStatType : struct, IComparable, IConvertible, IFormattable
-        where TCharacter : Entity
+        where TCharacter : class
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

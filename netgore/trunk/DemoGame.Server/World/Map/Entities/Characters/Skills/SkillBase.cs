@@ -19,7 +19,12 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="SkillBase"/> class.
         /// </summary>
         /// <param name="skillType">The type of skill that this object instance is for.</param>
-        protected SkillBase(SkillType skillType) : base(skillType)
+        /// <param name="cooldownGroup">The cooldown group.</param>
+        /// <param name="cooldownTime">The cooldown time.</param>
+        /// <param name="castingTime">The casting time.</param>
+        protected SkillBase(SkillType skillType, byte cooldownGroup, int cooldownTime, int castingTime)
+            : base(skillType,
+            cooldownGroup, cooldownTime, castingTime)
         {
         }
 

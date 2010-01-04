@@ -224,14 +224,18 @@ namespace DemoGame.Server
         /// </summary>
         public event CharacterItemEventHandler OnUseItem;
 
+        readonly CharacterSkillCaster _skillCaster;
+
         /// <summary>
-        /// Character constructor.
+        /// Initializes a new instance of the <see cref="Character"/> class.
         /// </summary>
         /// <param name="world">World that the character belongs to.</param>
         /// <param name="isPersistent">If the Character's state is persistent. If true, Load() MUST be called
         /// at some point during the Character's constructor!</param>
         protected Character(World world, bool isPersistent) : base(Vector2.Zero, Vector2.One)
         {
+            _skillCaster = new CharacterSkillCaster(this);
+
             _world = world;
             _isPersistent = isPersistent;
 
@@ -856,6 +860,7 @@ namespace DemoGame.Server
             UpdateModStats();
             UpdateSPRecovery();
             StatusEffects.Update();
+            _skillCaster.Update();
 
             base.HandleUpdate(imap, deltaTime);
 
@@ -1395,38 +1400,25 @@ namespace DemoGame.Server
         /// Makes the Character use a skill.
         /// </summary>
         /// <param name="skillType">The type of skill to use.</param>
-        /// <returns>True if the skill was successfully used; otherwise false.</returns>
-        public bool UseSkill(SkillType skillType)
+        public void UseSkill(SkillType skillType)
         {
-            return UseSkill(SkillManager.Instance.GetSkill(skillType));
+            UseSkill(SkillManager.Instance.GetSkill(skillType));
         }
 
         /// <summary>
         /// Makes the Character use a skill.
         /// </summary>
         /// <param name="skill">The skill to use.</param>
-        /// <returns>True if the skill was successfully used; otherwise false.</returns>
-        public bool UseSkill(ISkill<SkillType, StatType, Character> skill)
+        public void UseSkill(ISkill<SkillType, StatType, Character> skill)
         {
             if (skill == null)
             {
                 if (log.IsWarnEnabled)
                     log.WarnFormat("Character `{0}` tried to use a null skill in UseSkill.", this);
-                return false;
+                return;
             }
 
-            bool successful = skill.Use(this);
-
-            // Notify the clients that the skill was used
-            if (successful)
-            {
-                using (PacketWriter pw = ServerPacket.UseSkill(MapEntityIndex, null, skill.SkillType))
-                {
-                    Map.Send(pw);
-                }
-            }
-
-            return successful;
+            _skillCaster.TryStartCastingSkill(skill, null);
         }
 
         /// <summary>
