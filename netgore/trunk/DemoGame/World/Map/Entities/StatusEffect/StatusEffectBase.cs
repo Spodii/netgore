@@ -20,7 +20,7 @@ namespace DemoGame
         readonly StatusEffectType _statusEffectType;
 
         /// <summary>
-        /// StatusEffectBase constructor.
+        /// Initializes a new instance of the <see cref="StatusEffectBase"/> class.
         /// </summary>
         /// <param name="statusEffectType">The StatusEffectType that this StatusEffectBase handles.</param>
         /// <param name="mergeType">The StatusEffectMergeType that describes how to handle merging multiple
