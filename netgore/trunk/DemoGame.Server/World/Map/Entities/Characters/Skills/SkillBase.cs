@@ -16,15 +16,23 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// Gets the cooldown group for the skill type.
+        /// </summary>
+        /// <param name="skillType">The skill type.</param>
+        /// <returns>The cooldown group for the skill type.</returns>
+        static byte GetCooldownGroup(SkillType skillType)
+        {
+            return SkillInfoManager<SkillType>.Instance.GetSkillInfo(skillType).CooldownGroup;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SkillBase"/> class.
         /// </summary>
         /// <param name="skillType">The type of skill that this object instance is for.</param>
-        /// <param name="cooldownGroup">The cooldown group.</param>
         /// <param name="cooldownTime">The cooldown time.</param>
         /// <param name="castingTime">The casting time.</param>
-        protected SkillBase(SkillType skillType, byte cooldownGroup, ushort cooldownTime, ushort castingTime)
-            : base(skillType,
-            cooldownGroup, cooldownTime, castingTime)
+        protected SkillBase(SkillType skillType, ushort cooldownTime, ushort castingTime)
+            : base(skillType, GetCooldownGroup(skillType), cooldownTime, castingTime)
         {
         }
 

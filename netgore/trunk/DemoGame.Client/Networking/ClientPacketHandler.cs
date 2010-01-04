@@ -710,6 +710,15 @@ namespace DemoGame.Client
             asUsable.Use(usedBy);
         }
 
+        [MessageHandler((byte)ServerPacketID.SetSkillGroupCooldown)]
+        void RecvSetSkillGroupCooldown(IIPSocket conn, BitStream r)
+        {
+            byte skillGroup = r.ReadByte();
+            ushort cooldownTime = r.ReadUShort();
+
+            GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
+        }
+
         [MessageHandler((byte)ServerPacketID.UseSkill)]
         void RecvUseSkill(IIPSocket conn, BitStream r)
         {

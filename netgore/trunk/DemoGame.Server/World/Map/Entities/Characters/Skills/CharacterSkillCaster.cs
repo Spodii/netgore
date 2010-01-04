@@ -84,6 +84,15 @@ namespace DemoGame.Server
                 // Only set the cooldown if it was successfully used
                 _cooldownManager.SetCooldown(skill.CooldownGroup, skill.CooldownTime, _character.GetTime());
 
+                // Notify the user about the new cooldown
+                if (_character is User)
+                {
+                    using (var pw = ServerPacket.SetSkillGroupCooldown(skill.CooldownGroup, skill.CooldownTime))
+                    {
+                        ((User)_character).Send(pw);
+                    }
+                }
+
                 // Notify the clients in view that the character used a skill
                 using (var pw = ServerPacket.UseSkill(_character.MapEntityIndex, null, skill.SkillType))
                 {

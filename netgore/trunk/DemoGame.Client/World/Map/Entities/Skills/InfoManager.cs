@@ -7,6 +7,8 @@ using NetGore.IO;
 
 namespace DemoGame.Client
 {
+    // NOTE: What the hell is this class, and can I get rid of it? My guess is I made it to reduce the redundancy of the many "Manager" classes, but this seems like a shitty approach
+
     public class InfoManager<TKey, TValue>
     {
         const string _fileItemElementName = "Item";

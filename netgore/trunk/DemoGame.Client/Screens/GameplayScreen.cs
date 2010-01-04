@@ -78,6 +78,10 @@ namespace DemoGame.Client
             get { return _chatDialogForm; }
         }
 
+        readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
+
+        public ISkillCooldownManager SkillCooldownManager { get { return _skillCooldownManager; } }
+
         /// <summary>
         /// Gets the DamageTextPool
         /// </summary>
@@ -339,7 +343,7 @@ namespace DemoGame.Client
             _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
             _shopForm.OnPurchase += ShopForm_OnPurchase;
 
-            _skillsForm = new SkillsForm(new Vector2(100, 0), cScreen);
+            _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), cScreen);
             _skillsForm.OnUseSkill += SkillsForm_OnUseSkill;
 
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);

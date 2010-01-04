@@ -512,6 +512,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SetSkillGroupCooldown(byte skillGroup, ushort cooldownTime)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetSkillGroupCooldown);
+            pw.Write(skillGroup);
+            pw.Write(cooldownTime);
+            return pw;
+        }
+
         public static PacketWriter UseSkill(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
         {
             PacketWriter pw = GetWriter(ServerPacketID.UseSkill);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,6 +55,19 @@ namespace NetGore
                 _cooldownGroups.Remove(group);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Gets the cooldown time remaining for the given group.
+        /// </summary>
+        /// <param name="group">The index of the skill group.</param>
+        /// <returns>The cooldown time remaining for the given group.</returns>
+        public int GetCooldownTime(byte group)
+        {
+            if (_cooldownGroups.ContainsKey(group))
+                return _cooldownGroups[group];
+
+            return 0;
         }
     }
 }
