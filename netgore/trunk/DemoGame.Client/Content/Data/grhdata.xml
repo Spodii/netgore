@@ -1702,7 +1702,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</Name>
-        <Source>0,0,6,22</Source>
+        <Source>0,0,6,6</Source>
       </Texture>
     </Item130>
     <Item131>
@@ -2664,7 +2664,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopLeft</Name>
-        <Source>0,0,6,22</Source>
+        <Source>0,0,6,6</Source>
       </Texture>
     </Item204>
     <Item205>
@@ -2677,7 +2677,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopRight</Name>
-        <Source>0,0,6,22</Source>
+        <Source>0,0,6,6</Source>
       </Texture>
     </Item205>
   </Stationary>
@@ -2697,7 +2697,7 @@
         <Item7>124</Item7>
       </Frames>
       <Categorization>Effect.Teleport</Categorization>
-      <Speed>0.0025</Speed>
+      <Speed>400</Speed>
     </Item0>
     <Item1>
       <Index>198</Index>
@@ -2709,7 +2709,7 @@
         <Item3>157</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item1>
     <Item2>
       <Index>199</Index>
@@ -2721,7 +2721,7 @@
         <Item3>153</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item2>
     <Item3>
       <Index>208</Index>
@@ -2733,7 +2733,7 @@
         <Item3>149</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item3>
     <Item4>
       <Index>209</Index>
@@ -2745,7 +2745,7 @@
         <Item3>145</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item4>
     <Item5>
       <Index>210</Index>
@@ -2757,7 +2757,7 @@
         <Item3>177</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item5>
     <Item6>
       <Index>211</Index>
@@ -2769,7 +2769,7 @@
         <Item3>173</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item6>
     <Item7>
       <Index>212</Index>
@@ -2781,7 +2781,7 @@
         <Item3>169</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item7>
     <Item8>
       <Index>213</Index>
@@ -2793,7 +2793,7 @@
         <Item3>165</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item8>
     <Item9>
       <Index>214</Index>
@@ -2805,7 +2805,7 @@
         <Item3>197</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item9>
     <Item10>
       <Index>215</Index>
@@ -2817,7 +2817,7 @@
         <Item3>193</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item10>
     <Item11>
       <Index>216</Index>
@@ -2829,7 +2829,7 @@
         <Item3>189</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item11>
     <Item12>
       <Index>217</Index>
@@ -2841,7 +2841,7 @@
         <Item3>185</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
-      <Speed>0.003333333</Speed>
+      <Speed>300</Speed>
     </Item12>
   </Animated>
 </GrhDatas>
