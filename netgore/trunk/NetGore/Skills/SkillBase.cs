@@ -18,8 +18,8 @@ namespace NetGore
     {
         readonly TSkillType _skillType;
         readonly byte _cooldownGroup;
-        readonly int _cooldownTime;
-        readonly int _castingTime;
+        readonly ushort _cooldownTime;
+        readonly ushort _castingTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillBase&lt;TSkillType, TStatType, TCharacter&gt;"/> class.
@@ -28,7 +28,7 @@ namespace NetGore
         /// <param name="cooldownGroup">The cooldown group.</param>
         /// <param name="cooldownTime">The cooldown time.</param>
         /// <param name="castingTime">The casting time.</param>
-        protected SkillBase(TSkillType skillType, byte cooldownGroup, int cooldownTime, int castingTime)
+        protected SkillBase(TSkillType skillType, byte cooldownGroup, ushort cooldownTime, ushort castingTime)
         {
             _skillType = skillType;
             _cooldownGroup = cooldownGroup;
@@ -82,7 +82,7 @@ namespace NetGore
         /// Gets the amount of time in milliseconds that must elapse before this skill, or any other skill in the same
         /// CooldownGroup, can be used again by the character who used the skill.
         /// </summary>
-        public int CooldownTime
+        public ushort CooldownTime
         {
             get { return _cooldownTime; }
         }
@@ -91,7 +91,7 @@ namespace NetGore
         /// Gets the amount of time in milliseconds that must elapse between the time the skill starts to be used and
         /// when the skill is actually used. A value of 0 means the skill will be used immediately.
         /// </summary>
-        public int CastingTime
+        public ushort CastingTime
         {
             get { return _castingTime; }
         }

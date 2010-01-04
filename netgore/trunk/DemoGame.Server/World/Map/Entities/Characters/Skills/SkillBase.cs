@@ -22,7 +22,7 @@ namespace DemoGame.Server
         /// <param name="cooldownGroup">The cooldown group.</param>
         /// <param name="cooldownTime">The cooldown time.</param>
         /// <param name="castingTime">The casting time.</param>
-        protected SkillBase(SkillType skillType, byte cooldownGroup, int cooldownTime, int castingTime)
+        protected SkillBase(SkillType skillType, byte cooldownGroup, ushort cooldownTime, ushort castingTime)
             : base(skillType,
             cooldownGroup, cooldownTime, castingTime)
         {
