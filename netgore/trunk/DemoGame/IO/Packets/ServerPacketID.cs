@@ -19,6 +19,8 @@ namespace DemoGame
         CharDamage,
         Chat,
         ChatSay,
+        CreateAccountSuccessful,
+        CreateAccountUnsuccessful,
         CreateDynamicEntity,
         EndChatDialog,
         LoginSuccessful,

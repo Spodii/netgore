@@ -310,11 +310,12 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
+            _socket = new ClientSockets(this);
+
             _world = new World(this, new Camera2D(GameData.ScreenSize));
             _world.OnChangeMap += World_OnChangeMap;
 
             // Create the socket
-            _socket = new ClientSockets(this);
             Socket.OnDisconnect += OnDisconnect;
 
             // Create some misc goodies that require a reference to the Socket
@@ -394,6 +395,10 @@ namespace DemoGame.Client
 
         void OnDisconnect(IIPSocket conn)
         {
+            // We ony return want to the login screen if we were at this screen when the socket was disconnected
+            if (ScreenManager.ActiveScreen != this)
+                return;
+
             LoginScreen login = (LoginScreen)ScreenManager.GetScreen(LoginScreen.ScreenName);
             if (ScreenManager.ActiveScreen != login)
             {
@@ -469,9 +474,6 @@ namespace DemoGame.Client
 
             // Get the current time
             _currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
-
-            // Update the network
-            Socket.Heartbeat();
 
             if (UserChar == null)
                 return;

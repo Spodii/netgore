@@ -38,6 +38,16 @@ namespace DemoGame.Client
         public event SocketEventHandler OnLoginSuccessful;
 
         /// <summary>
+        /// Notifies listeners when a successful account creation request has been made.
+        /// </summary>
+        public event SocketEventHandler OnCreateAccountSuccessful;
+
+        /// <summary>
+        /// Notifies listeners when an unsuccessful account creation request has been made.
+        /// </summary>
+        public event SocketEventHandler OnCreateAccountUnsuccessful;
+
+        /// <summary>
         /// Notifies listeners when an unsuccessful login request has been made.
         /// </summary>
         public event SocketEventHandler<string> OnLoginUnsuccessful;
@@ -242,6 +252,20 @@ namespace DemoGame.Client
         {
             if (OnLoginSuccessful != null)
                 OnLoginSuccessful(conn);
+        }
+
+        [MessageHandler((byte)ServerPacketID.CreateAccountSuccessful)]
+        void RecvCreateAccountSuccessful(IIPSocket conn, BitStream r)
+        {
+            if (OnCreateAccountSuccessful != null)
+                OnCreateAccountSuccessful(conn);
+        }
+
+        [MessageHandler((byte)ServerPacketID.CreateAccountUnsuccessful)]
+        void RecvCreateAccountUnsuccessful(IIPSocket conn, BitStream r)
+        {
+            if (OnCreateAccountUnsuccessful != null)
+                OnCreateAccountUnsuccessful(conn);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]

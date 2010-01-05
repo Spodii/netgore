@@ -97,7 +97,7 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
-        /// active screen. Objects in here often will want to be destroyed on <see cref="Deactivate"/>().
+        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
         /// </summary>
         public virtual void Activate()
         {
@@ -106,7 +106,7 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Handles screen deactivation, which occurs every time the screen changes from being
-        /// the current active screen. Good place to clean up any objects created in <see cref="Activate"/>().
+        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
         /// </summary>
         public virtual void Deactivate()
         {
@@ -153,8 +153,8 @@ namespace NetGore.Graphics.GUI
         public abstract void Update(GameTime gameTime);
 
         /// <summary>
-        /// Updates the currently playing music based off the values defined by <see cref="PlayMusic"/>
-        /// and <see cref="ScreenMusic"/>.
+        /// Updates the currently playing music based off the values defined by <see cref="GameScreen.PlayMusic"/>
+        /// and <see cref="GameScreen.ScreenMusic"/>.
         /// </summary>
         void UpdateMusic()
         {

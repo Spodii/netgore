@@ -16,6 +16,7 @@ namespace DemoGame
 
         Attack,
         BuyFromShop,
+        CreateNewAccount,
         DropInventoryItem,
         EndNPCChatDialog,
         GetEquipmentItemInfo,

@@ -28,6 +28,8 @@ namespace DemoGame.Client
             graphics = new GraphicsDeviceManager(this);
         }
 
+        ClientSockets _sockets;
+
         /// <summary>
         /// Called after all components are initialized but before the first update in the game loop.
         /// </summary>
@@ -43,10 +45,11 @@ namespace DemoGame.Client
             LoadGrhInfo();
 
             // Create the screens
+            screenManager.Add(new GameplayScreen());
             screenManager.Add(new MainMenuScreen());
             screenManager.Add(new LoginScreen());
             screenManager.Add(new CharacterSelectionScreen());
-            screenManager.Add(new GameplayScreen());
+            screenManager.Add(new NewAccountScreen());
             screenManager.SetScreen(MainMenuScreen.ScreenName);
 
             // NOTE: Temporary volume reduction
@@ -56,6 +59,15 @@ namespace DemoGame.Client
                                              screenManager.SoundManager.Volume = 0.7f;
                                              screenManager.MusicManager.Volume = 0.2f;
                                          });
+
+            _sockets = ClientSockets.Instance;
+            screenManager.OnUpdate += screenManager_OnUpdate;
+        }
+
+        void screenManager_OnUpdate(ScreenManager screenManager)
+        {
+            // Update the sockets
+            _sockets.Heartbeat();
         }
 
         /// <summary>

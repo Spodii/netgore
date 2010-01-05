@@ -101,6 +101,7 @@ namespace DemoGame.Client
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 
+            // Create the login fields
             new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
             _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
 
@@ -174,9 +175,6 @@ namespace DemoGame.Client
             int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
 
             _gui.Update(currentTime);
-
-            if (_sockets != null)
-                _sockets.Heartbeat();
         }
     }
 }

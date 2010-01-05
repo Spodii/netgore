@@ -68,7 +68,7 @@ namespace DemoGame.Server.Queries
                 return false;
             if (!GameData.AccountPassword.IsValid(password))
                 return false;
-            if (string.IsNullOrEmpty(email))
+            if (!GameData.AccountEmail.IsValid(email))
                 return false;
 
             bool success;

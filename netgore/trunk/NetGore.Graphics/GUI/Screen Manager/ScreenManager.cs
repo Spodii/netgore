@@ -10,6 +10,8 @@ using NetGore.Audio;
 
 namespace NetGore.Graphics.GUI
 {
+    public delegate void ScreenManagerEventHandler(ScreenManager screenManager);
+
     /// <summary>
     /// Manages a collection of screens, allowing for selecting which screen(s) is/are
     /// active and updating and drawing them as needed. Also allows for interaction
@@ -30,6 +32,11 @@ namespace NetGore.Graphics.GUI
         GameScreen _activeScreen;
         SpriteFont _menuFont;
         SpriteBatch _sb;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="ScreenManager"/> updates.
+        /// </summary>
+        public event ScreenManagerEventHandler OnUpdate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenManager"/> class.
@@ -314,10 +321,11 @@ namespace NetGore.Graphics.GUI
         /// <param name="gameTime">Time elapsed since the last call to Update.</param>
         public override void Update(GameTime gameTime)
         {
-            if (_activeScreen == null)
-                return;
+            if (OnUpdate != null)
+                OnUpdate(this);
 
-            _activeScreen.Update(gameTime);
+            if (_activeScreen != null)
+                _activeScreen.Update(gameTime);
         }
     }
 }

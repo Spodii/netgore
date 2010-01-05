@@ -163,6 +163,18 @@ namespace DemoGame.Server
             Server.LoginAccount(conn, name, password);
         }
 
+        [MessageHandler((byte)ClientPacketID.CreateNewAccount)]
+        void RecvCreateNewAccount(IIPSocket conn, BitStream r)
+        {
+            ThreadAsserts.IsMainThread();
+
+            string name = r.ReadString();
+            string password = r.ReadString();
+            string email = r.ReadString();
+
+            Server.CreateAccount(conn, name, password, email);
+        }
+
 #if TOPDOWN
         [MessageHandler((byte)ClientPacketID.MoveDown)]
         void RecvMoveDown(IIPSocket conn, BitStream r)
