@@ -39,19 +39,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Activate()
         {
-            if (_gpScreen == null)
-            {
-                _gpScreen = ScreenManager.GetScreen(GameplayScreen.ScreenName) as GameplayScreen;
-                if (_gpScreen == null)
-                    throw new Exception("Failed to find 'game' screen.");
-            }
-
-            if (_sockets == null)
-            {
-                _sockets = _gpScreen.Socket;
-                if (_sockets == null)
-                    throw new Exception("Failed to reference the ClientSockets.");
-            }
+            _sockets = ClientSockets.Instance;
 
             base.Activate();
         }
@@ -183,9 +171,6 @@ namespace DemoGame.Client
             }
 
             _gui.Update(currentTime);
-
-            if (_sockets != null)
-                _sockets.Heartbeat();
         }
     }
 }

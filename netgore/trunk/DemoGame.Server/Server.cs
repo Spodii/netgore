@@ -26,7 +26,7 @@ namespace DemoGame.Server
         /// <summary>
         /// The minimum number of milliseconds a connection should be inactive to be considered dead.
         /// </summary>
-        const int _inactiveConnectionTimeOut = 5000;
+        const int _inactiveConnectionTimeOut = 20000;
 
         /// <summary>
         /// The number of milliseconds to wait before checking for inactive connections to remove.
@@ -347,6 +347,45 @@ namespace DemoGame.Server
             if (motdLines.Length > 0)
                 _motd.AddRange(motdLines);
             _motd.TrimExcess();
+        }
+
+        /// <summary>
+        /// Handles the request to create a new account.
+        /// </summary>
+        /// <param name="conn">Connection that the request was made on.</param>
+        /// <param name="name">Name of the account.</param>
+        /// <param name="password">Entered password for this account.</param>
+        /// <param name="email">The email address.</param>
+        public void CreateAccount(IIPSocket conn, string name, string password, string email)
+        {
+            ThreadAsserts.IsMainThread();
+
+            if (conn == null)
+            {
+                if (log.IsErrorEnabled)
+                    log.Error("conn is null.");
+                return;
+            }
+
+            // Create the account
+            AccountID id;
+            bool success = UserAccount.TryCreateAccount(DbController, name, password, email, out id);
+
+            // Send the appropriate success message
+            if (success)
+            {
+                using (var pw = ServerPacket.CreateAccountSuccessful())
+                {
+                    conn.Send(pw);
+                }
+            }
+            else
+            {
+                using (var pw = ServerPacket.CreateAccountUnsuccessful())
+                {
+                    conn.Send(pw);
+                }
+            }
         }
 
         /// <summary>

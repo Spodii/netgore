@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using NetGore;
@@ -14,9 +15,17 @@ namespace DemoGame.Client
         const int _updateLatencyInterval = 5000;
         readonly ClientPacketHandler _packetHandler;
         readonly int _udpPort;
+
+        static ClientSockets _instance;
+
         IIPSocket _conn = null;
         int _lastPingTime;
         LatencyTrackerClient _latencyTracker;
+
+        /// <summary>
+        /// Gets the last <see cref="ClientSockets"/> instance. Will be null if it has not been created yet.
+        /// </summary>
+        public static ClientSockets Instance { get { return _instance; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
@@ -24,6 +33,11 @@ namespace DemoGame.Client
         /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
         public ClientSockets(GameplayScreen gameplayScreen)
         {
+            if (_instance != null)
+                throw new Exception("ClientSockets instance was already created. Use that instead.");
+
+            _instance = this;
+
             _packetHandler = new ClientPacketHandler(this, gameplayScreen, DynamicEntityFactory.Instance);
             OnConnect += onConnect;
 

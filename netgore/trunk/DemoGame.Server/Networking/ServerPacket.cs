@@ -108,6 +108,16 @@ namespace DemoGame.Server
             return GetWriter(ServerPacketID.LoginSuccessful);
         }
 
+        public static PacketWriter CreateAccountSuccessful()
+        {
+            return GetWriter(ServerPacketID.CreateAccountSuccessful);
+        }
+
+        public static PacketWriter CreateAccountUnsuccessful()
+        {
+            return GetWriter(ServerPacketID.CreateAccountUnsuccessful);
+        }
+
         /// <summary>
         /// Tells the user their login attempt was unsuccessful.
         /// </summary>

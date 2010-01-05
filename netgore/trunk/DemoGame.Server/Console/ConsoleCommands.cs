@@ -90,7 +90,7 @@ namespace DemoGame.Server
             if (!GameData.AccountPassword.IsValid(accountPassword))
                 return "Invalid account password.";
 
-            if (string.IsNullOrEmpty(email))
+            if (!GameData.AccountEmail.IsValid(email))
                 return "Invalid email address.";
 
             AccountID accountID;

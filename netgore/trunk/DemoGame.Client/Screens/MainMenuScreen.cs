@@ -53,7 +53,7 @@ namespace DemoGame.Client
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "New Account", "Options", "Quit");
             menuButtons["Login"].OnClick += delegate { ScreenManager.SetScreen(LoginScreen.ScreenName); };
-            menuButtons["New Account"].OnClick += delegate { /* Not implemented */ };
+            menuButtons["New Account"].OnClick += delegate { ScreenManager.SetScreen(NewAccountScreen.ScreenName); };
             menuButtons["Options"].OnClick += delegate { /* Not implemented */ };
             menuButtons["Quit"].OnClick += delegate { ScreenManager.Game.Exit(); };
         }

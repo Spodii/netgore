@@ -76,6 +76,11 @@ namespace DemoGame
                                                                              CharType.Punctuation);
 
         /// <summary>
+        /// The rules for the account email addresses.
+        /// </summary>
+        public static readonly StringRules AccountEmail = new StringRules(3, 30, CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+
+        /// <summary>
         /// The rules for the character names.
         /// </summary>
         public static readonly StringRules CharacterName = new StringRules(3, 15, CharType.Alpha);
