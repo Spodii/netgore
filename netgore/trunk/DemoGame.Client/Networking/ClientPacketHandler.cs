@@ -247,6 +247,19 @@ namespace DemoGame.Client
             GameplayScreen.ChatDialogForm.EndDialog();
         }
 
+        [MessageHandler((byte)ServerPacketID.Emote)]
+        void RecvEmote(IIPSocket conn, BitStream r)
+        {
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            var emoticon = r.ReadEnum(EmoticonHelper.Instance);
+
+            var entity = Map.GetDynamicEntity(mapEntityIndex);
+            if (entity == null)
+                return;
+
+            EmoticonDisplayManager.Instance.Add(entity, emoticon, GetTime());
+        }
+
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {

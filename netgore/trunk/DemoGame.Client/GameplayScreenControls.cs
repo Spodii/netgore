@@ -23,6 +23,7 @@ namespace DemoGame.Client
             const int minPickupRate = 150;
             const int minShopRate = 250;
             const int minUseRate = 250;
+            const int minEmoteRate = 1000;
 
 #if !TOPDOWN
             CreateAndAdd(GameControlsKeys.Jump, minMoveRate, () => UserChar.CanJump && CanUserMove(), HandleGameControl_Jump);
@@ -59,6 +60,14 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.TalkToNPC, minNPCChatRate, CanUserMove, HandleGameControl_TalkToNPC);
 
             CreateAndAdd(GameControlsKeys.PickUp, minPickupRate, CanUserMove, HandleGameControl_PickUp);
+
+            CreateAndAdd(GameControlsKeys.EmoteEllipsis, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Ellipsis));
+            CreateAndAdd(GameControlsKeys.EmoteExclamation, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Exclamation));
+            CreateAndAdd(GameControlsKeys.EmoteHeartbroken, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Heartbroken));
+            CreateAndAdd(GameControlsKeys.EmoteHearts, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Hearts));
+            CreateAndAdd(GameControlsKeys.EmoteMeat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
+            CreateAndAdd(GameControlsKeys.EmoteQuestion, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Question));
+            CreateAndAdd(GameControlsKeys.EmoteSweat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Sweat));
         }
 
         public GameplayScreen GameplayScreen
@@ -118,6 +127,14 @@ namespace DemoGame.Client
         void HandleGameControl_Attack(GameControl sender)
         {
             using (PacketWriter pw = ClientPacket.Attack())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_Emote(Emoticon emoticon)
+        {
+            using (PacketWriter pw = ClientPacket.Emoticon(emoticon))
             {
                 Socket.Send(pw);
             }

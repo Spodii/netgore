@@ -73,6 +73,18 @@ namespace DemoGame.Server
         const int _attackTimeout = 500;
 
         /// <summary>
+        /// Makes the <see cref="Character"/> use an <see cref="Emoticon"/>.
+        /// </summary>
+        /// <param name="emoticon">The emoticon to use.</param>
+        public void Emote(Emoticon emoticon)
+        {
+            using (var pw = ServerPacket.Emote(MapEntityIndex, emoticon))
+            {
+                Map.SendToArea(this, pw);
+            }
+        }
+
+        /// <summary>
         /// How frequently the SP is recovered in milliseconds.
         /// </summary>
         const int _spRecoveryRate = 3000;
@@ -466,7 +478,7 @@ namespace DemoGame.Server
             // Inform the map that the user has performed an attack
             using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
             {
-                Map.SendToArea(Position, charAttack);
+                Map.SendToArea(this, charAttack);
             }
 
             // Damage all hit characters
@@ -592,7 +604,7 @@ namespace DemoGame.Server
             // Apply damage
             using (PacketWriter pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {
-                Map.SendToArea(Position, pw);
+                Map.SendToArea(this, pw);
             }
 
             int newHP = HP - damage;

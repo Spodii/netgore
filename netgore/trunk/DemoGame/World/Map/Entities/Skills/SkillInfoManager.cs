@@ -6,7 +6,7 @@ namespace DemoGame
     /// <summary>
     /// Contains the <see cref="SkillInfoAttribute"/> for the appropriate <see cref="SkillType"/>.
     /// </summary>
-    public class SkillInfoManager : EnumFieldAttributeManager<SkillType, SkillInfoAttribute>
+    public sealed class SkillInfoManager : EnumFieldAttributeManager<SkillType, SkillInfoAttribute>
     {
         static readonly SkillInfoManager _instance;
 

@@ -139,7 +139,7 @@ namespace DemoGame.Server
                 // Notify the clients in view that the character used a skill
                 using (var pw = ServerPacket.UseSkill(_character.MapEntityIndex, null, skill.SkillType))
                 {
-                    _character.Map.SendToArea(_character.Center, pw);
+                    _character.Map.SendToArea(_character, pw);
                 }
             }
         }

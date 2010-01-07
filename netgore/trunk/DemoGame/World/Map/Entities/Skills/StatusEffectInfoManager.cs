@@ -6,7 +6,7 @@ namespace DemoGame
     /// <summary>
     /// Contains the <see cref="StatusEffectInfoManager"/> for the appropriate <see cref="SkillType"/>.
     /// </summary>
-    public class StatusEffectInfoManager : EnumFieldAttributeManager<StatusEffectType, StatusEffectInfoAttribute>
+    public sealed class StatusEffectInfoManager : EnumFieldAttributeManager<StatusEffectType, StatusEffectInfoAttribute>
     {
         static readonly StatusEffectInfoManager _instance;
 

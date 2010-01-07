@@ -496,6 +496,7 @@ namespace DemoGame.Client
             _damageTextPool.Update(_currentTime);
             _guiSettings.Update(_currentTime);
             _chatBubbleManager.Update(_currentTime);
+            _emoticonDisplayManager.Update(_currentTime);
 
             if (UserChar != null)
                 _gameControls.Update(_gui, _currentTime);
@@ -503,6 +504,8 @@ namespace DemoGame.Client
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
         }
+
+        static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
         void World_OnChangeMap(World world, Map map)
         {

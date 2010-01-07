@@ -27,6 +27,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter Emote(MapEntityIndex mapEntityIndex, Emoticon emoticon)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.Emote);
+            pw.Write(mapEntityIndex);
+            pw.WriteEnum(EmoticonHelper.Instance, emoticon);
+            return pw;
+        }
+
         public static PacketWriter CharAttack(MapEntityIndex mapEntityIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharAttack);

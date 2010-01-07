@@ -10,28 +10,31 @@ namespace DemoGame.Client
     public static class GameControlsKeys
     {
         static readonly GameControlKeys _attack;
-#if !TOPDOWN
-        static readonly GameControlKeys _jump;
-#endif
-#if TOPDOWN
-        static readonly GameControlKeys _moveDown;
-#endif
         static readonly GameControlKeys _moveLeft;
         static readonly GameControlKeys _moveRight;
         static readonly GameControlKeys _moveStop;
-#if TOPDOWN
-        static readonly GameControlKeys _moveStopHorizontal;
-#endif
-#if TOPDOWN
-        static readonly GameControlKeys _moveStopVertical;
-#endif
-#if TOPDOWN
-        static readonly GameControlKeys _moveUp;
-#endif
         static readonly GameControlKeys _pickUp;
         static readonly GameControlKeys _talkToNPC;
         static readonly GameControlKeys _useShop;
         static readonly GameControlKeys _useWorld;
+        static readonly GameControlKeys _emoteEllipsis;
+        static readonly GameControlKeys _emoteExclamation;
+        static readonly GameControlKeys _emoteHeartbroken;
+        static readonly GameControlKeys _emoteHearts;
+        static readonly GameControlKeys _emoteMeat;
+        static readonly GameControlKeys _emoteQuestion;
+        static readonly GameControlKeys _emoteSweat;
+
+#if !TOPDOWN
+        static readonly GameControlKeys _jump;
+#endif
+
+#if TOPDOWN
+        static readonly GameControlKeys _moveDown;
+        static readonly GameControlKeys _moveStopHorizontal;
+        static readonly GameControlKeys _moveStopVertical;
+        static readonly GameControlKeys _moveUp;
+#endif
 
         /// <summary>
         /// Initializes the <see cref="GameControlsKeys"/> class.
@@ -59,6 +62,49 @@ namespace DemoGame.Client
             _useShop = new GameControlKeys("Use Shop", Keys.LeftAlt);
             _talkToNPC = new GameControlKeys("Talk To NPC", Keys.LeftAlt);
             _pickUp = new GameControlKeys("Pick Up", Keys.Space);
+
+            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", Keys.D1);
+            _emoteExclamation = new GameControlKeys("Emote Exclamation", Keys.D2);
+            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", Keys.D3);
+            _emoteHearts = new GameControlKeys("Emote Hearts", Keys.D4);
+            _emoteMeat = new GameControlKeys("Emote Meat", Keys.D5);
+            _emoteQuestion = new GameControlKeys("Emote Question", Keys.D6);
+            _emoteSweat = new GameControlKeys("Emote Sweat", Keys.D7);
+        }
+
+        public static GameControlKeys EmoteEllipsis
+        {
+            get { return _emoteEllipsis; }
+        }
+
+        public static GameControlKeys EmoteExclamation
+        {
+            get { return _emoteExclamation; }
+        }
+
+        public static GameControlKeys EmoteHeartbroken
+        {
+            get { return _emoteHeartbroken; }
+        }
+
+        public static GameControlKeys EmoteHearts
+        {
+            get { return _emoteHearts; }
+        }
+
+        public static GameControlKeys EmoteMeat
+        {
+            get { return _emoteMeat; }
+        }
+
+        public static GameControlKeys EmoteQuestion
+        {
+            get { return _emoteQuestion; }
+        }
+
+        public static GameControlKeys EmoteSweat
+        {
+            get { return _emoteSweat; }
         }
 
         public static GameControlKeys Attack
