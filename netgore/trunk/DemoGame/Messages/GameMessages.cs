@@ -26,14 +26,14 @@ namespace DemoGame
         readonly string _language;
 
         /// <summary>
-        /// GameMessages constructor.
+        /// Initializes a new instance of the <see cref="GameMessages"/> class.
         /// </summary>
         public GameMessages() : this(_defaultLanguageName)
         {
         }
 
         /// <summary>
-        /// GameMessages constructor.
+        /// Initializes a new instance of the <see cref="GameMessages"/> class.
         /// </summary>
         /// <param name="language">Name of the language to load.</param>
         public GameMessages(string language)
