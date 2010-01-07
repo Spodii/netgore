@@ -485,6 +485,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (0,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(1,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(2,1,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(3,1,9,16,'Healing Potion','A healing potion',2,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(4,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(5,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(6,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(7,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(8,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(9,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(10,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(11,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(12,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(13,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(14,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(15,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(16,1,9,16,'Healing Potion','A healing potion',3,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(17,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(18,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(19,3,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(20,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(21,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(22,1,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(23,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(24,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(25,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(26,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(27,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(28,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(29,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(30,4,22,22,'Crystal Armor','Body armor made out of crystal',2,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(31,1,9,16,'Healing Potion','A healing potion',1,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -671,7 +672,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-01-07 10:07:29');
+INSERT INTO `server_time` VALUES ('2010-01-07 11:10:48');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -925,4 +926,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-01-07 10:08:17
+-- Dump completed on 2010-01-07 11:25:25
