@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>206</Count>
+    <Count>234</Count>
     <Item0>
       <Index>1</Index>
       <Frames>
@@ -2680,9 +2680,373 @@
         <Source>0,0,6,6</Source>
       </Texture>
     </Item205>
+    <Item206>
+      <Index>220</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>220</Item0>
+      </Frames>
+      <Categorization>Emoticons._Sweat_frames_400.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Sweat_frames_400/1</Name>
+        <Source>0,0,12,26</Source>
+      </Texture>
+    </Item206>
+    <Item207>
+      <Index>221</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>221</Item0>
+      </Frames>
+      <Categorization>Emoticons._Sweat_frames_400.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Sweat_frames_400/2</Name>
+        <Source>0,0,12,26</Source>
+      </Texture>
+    </Item207>
+    <Item208>
+      <Index>222</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>222</Item0>
+      </Frames>
+      <Categorization>Emoticons._Sweat_frames_400.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Sweat_frames_400/3</Name>
+        <Source>0,0,12,26</Source>
+      </Texture>
+    </Item208>
+    <Item209>
+      <Index>223</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>223</Item0>
+      </Frames>
+      <Categorization>Emoticons._Sweat_frames_400.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Sweat_frames_400/4</Name>
+        <Source>0,0,12,26</Source>
+      </Texture>
+    </Item209>
+    <Item210>
+      <Index>224</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>224</Item0>
+      </Frames>
+      <Categorization>Emoticons._Question_frames_400.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Question_frames_400/1</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item210>
+    <Item211>
+      <Index>225</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>225</Item0>
+      </Frames>
+      <Categorization>Emoticons._Question_frames_400.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Question_frames_400/2</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item211>
+    <Item212>
+      <Index>226</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>226</Item0>
+      </Frames>
+      <Categorization>Emoticons._Question_frames_400.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Question_frames_400/3</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item212>
+    <Item213>
+      <Index>227</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>227</Item0>
+      </Frames>
+      <Categorization>Emoticons._Question_frames_400.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Question_frames_400/4</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item213>
+    <Item214>
+      <Index>228</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>228</Item0>
+      </Frames>
+      <Categorization>Emoticons._Meat_frames_400.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Meat_frames_400/1</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item214>
+    <Item215>
+      <Index>229</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>229</Item0>
+      </Frames>
+      <Categorization>Emoticons._Meat_frames_400.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Meat_frames_400/2</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item215>
+    <Item216>
+      <Index>230</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>230</Item0>
+      </Frames>
+      <Categorization>Emoticons._Meat_frames_400.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Meat_frames_400/3</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item216>
+    <Item217>
+      <Index>231</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>231</Item0>
+      </Frames>
+      <Categorization>Emoticons._Meat_frames_400.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Meat_frames_400/4</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item217>
+    <Item218>
+      <Index>232</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>232</Item0>
+      </Frames>
+      <Categorization>Emoticons._Hearts_frames_400.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Hearts_frames_400/1</Name>
+        <Source>0,0,24,20</Source>
+      </Texture>
+    </Item218>
+    <Item219>
+      <Index>233</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>233</Item0>
+      </Frames>
+      <Categorization>Emoticons._Hearts_frames_400.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Hearts_frames_400/2</Name>
+        <Source>0,0,24,20</Source>
+      </Texture>
+    </Item219>
+    <Item220>
+      <Index>234</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>234</Item0>
+      </Frames>
+      <Categorization>Emoticons._Hearts_frames_400.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Hearts_frames_400/3</Name>
+        <Source>0,0,24,20</Source>
+      </Texture>
+    </Item220>
+    <Item221>
+      <Index>235</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>235</Item0>
+      </Frames>
+      <Categorization>Emoticons._Hearts_frames_400.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Hearts_frames_400/4</Name>
+        <Source>0,0,24,20</Source>
+      </Texture>
+    </Item221>
+    <Item222>
+      <Index>236</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>236</Item0>
+      </Frames>
+      <Categorization>Emoticons._Heartbroken_frames_400.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Heartbroken_frames_400/1</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item222>
+    <Item223>
+      <Index>237</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>237</Item0>
+      </Frames>
+      <Categorization>Emoticons._Heartbroken_frames_400.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Heartbroken_frames_400/2</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item223>
+    <Item224>
+      <Index>238</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>238</Item0>
+      </Frames>
+      <Categorization>Emoticons._Heartbroken_frames_400.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Heartbroken_frames_400/3</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item224>
+    <Item225>
+      <Index>239</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>239</Item0>
+      </Frames>
+      <Categorization>Emoticons._Heartbroken_frames_400.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Heartbroken_frames_400/4</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item225>
+    <Item226>
+      <Index>240</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>240</Item0>
+      </Frames>
+      <Categorization>Emoticons._Exclamation_frames_400.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Exclamation_frames_400/1</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item226>
+    <Item227>
+      <Index>241</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>241</Item0>
+      </Frames>
+      <Categorization>Emoticons._Exclamation_frames_400.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Exclamation_frames_400/2</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item227>
+    <Item228>
+      <Index>242</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>242</Item0>
+      </Frames>
+      <Categorization>Emoticons._Exclamation_frames_400.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Exclamation_frames_400/3</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item228>
+    <Item229>
+      <Index>243</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>243</Item0>
+      </Frames>
+      <Categorization>Emoticons._Exclamation_frames_400.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Exclamation_frames_400/4</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item229>
+    <Item230>
+      <Index>244</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>244</Item0>
+      </Frames>
+      <Categorization>Emoticons._Ellipsis_frames_400.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Ellipsis_frames_400/1</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item230>
+    <Item231>
+      <Index>245</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>245</Item0>
+      </Frames>
+      <Categorization>Emoticons._Ellipsis_frames_400.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Ellipsis_frames_400/2</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item231>
+    <Item232>
+      <Index>246</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>246</Item0>
+      </Frames>
+      <Categorization>Emoticons._Ellipsis_frames_400.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Ellipsis_frames_400/3</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item232>
+    <Item233>
+      <Index>247</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>247</Item0>
+      </Frames>
+      <Categorization>Emoticons._Ellipsis_frames_400.4</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Emoticons/_Ellipsis_frames_400/4</Name>
+        <Source>0,0,20,20</Source>
+      </Texture>
+    </Item233>
   </Stationary>
   <Animated>
-    <Count>13</Count>
+    <Count>20</Count>
     <Item0>
       <Index>125</Index>
       <Frames>
@@ -2697,7 +3061,7 @@
         <Item7>124</Item7>
       </Frames>
       <Categorization>Effect.Teleport</Categorization>
-      <Speed>400</Speed>
+      <Speed>0.0025</Speed>
     </Item0>
     <Item1>
       <Index>198</Index>
@@ -2709,7 +3073,7 @@
         <Item3>157</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item1>
     <Item2>
       <Index>199</Index>
@@ -2721,7 +3085,7 @@
         <Item3>153</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item2>
     <Item3>
       <Index>208</Index>
@@ -2733,7 +3097,7 @@
         <Item3>149</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item3>
     <Item4>
       <Index>209</Index>
@@ -2745,7 +3109,7 @@
         <Item3>145</Item3>
       </Frames>
       <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item4>
     <Item5>
       <Index>210</Index>
@@ -2757,7 +3121,7 @@
         <Item3>177</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item5>
     <Item6>
       <Index>211</Index>
@@ -2769,7 +3133,7 @@
         <Item3>173</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item6>
     <Item7>
       <Index>212</Index>
@@ -2781,7 +3145,7 @@
         <Item3>169</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item7>
     <Item8>
       <Index>213</Index>
@@ -2793,7 +3157,7 @@
         <Item3>165</Item3>
       </Frames>
       <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item8>
     <Item9>
       <Index>214</Index>
@@ -2805,7 +3169,7 @@
         <Item3>197</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item9>
     <Item10>
       <Index>215</Index>
@@ -2817,7 +3181,7 @@
         <Item3>193</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item10>
     <Item11>
       <Index>216</Index>
@@ -2829,7 +3193,7 @@
         <Item3>189</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item11>
     <Item12>
       <Index>217</Index>
@@ -2841,7 +3205,91 @@
         <Item3>185</Item3>
       </Frames>
       <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
-      <Speed>300</Speed>
+      <Speed>0.003333333</Speed>
     </Item12>
+    <Item13>
+      <Index>248</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>244</Item0>
+        <Item1>245</Item1>
+        <Item2>246</Item2>
+        <Item3>247</Item3>
+      </Frames>
+      <Categorization>Emoticons.Ellipsis</Categorization>
+      <Speed>400</Speed>
+    </Item13>
+    <Item14>
+      <Index>249</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>240</Item0>
+        <Item1>241</Item1>
+        <Item2>242</Item2>
+        <Item3>243</Item3>
+      </Frames>
+      <Categorization>Emoticons.Exclamation</Categorization>
+      <Speed>400</Speed>
+    </Item14>
+    <Item15>
+      <Index>250</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>236</Item0>
+        <Item1>237</Item1>
+        <Item2>238</Item2>
+        <Item3>239</Item3>
+      </Frames>
+      <Categorization>Emoticons.Heartbroken</Categorization>
+      <Speed>400</Speed>
+    </Item15>
+    <Item16>
+      <Index>251</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>232</Item0>
+        <Item1>233</Item1>
+        <Item2>234</Item2>
+        <Item3>235</Item3>
+      </Frames>
+      <Categorization>Emoticons.Hearts</Categorization>
+      <Speed>400</Speed>
+    </Item16>
+    <Item17>
+      <Index>252</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>228</Item0>
+        <Item1>229</Item1>
+        <Item2>230</Item2>
+        <Item3>231</Item3>
+      </Frames>
+      <Categorization>Emoticons.Meat</Categorization>
+      <Speed>400</Speed>
+    </Item17>
+    <Item18>
+      <Index>253</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>224</Item0>
+        <Item1>225</Item1>
+        <Item2>226</Item2>
+        <Item3>227</Item3>
+      </Frames>
+      <Categorization>Emoticons.Question</Categorization>
+      <Speed>400</Speed>
+    </Item18>
+    <Item19>
+      <Index>254</Index>
+      <Frames>
+        <Count>4</Count>
+        <Item0>220</Item0>
+        <Item1>221</Item1>
+        <Item2>222</Item2>
+        <Item3>223</Item3>
+      </Frames>
+      <Categorization>Emoticons.Sweat</Categorization>
+      <Speed>400</Speed>
+    </Item19>
   </Animated>
 </GrhDatas>
