@@ -99,21 +99,21 @@ namespace DemoGame.Server
                 u.Dispose();
         }
 
-        ///<summary>
-        ///Return MD5 hash of string
+        /// <summary>
+        /// Encodes a password in a hash.
         /// </summary>
+        /// <param name="originalPassword">The original password.</param>
+        /// <returns>The hash-encoded password.</returns>
         public static string EncodePassword(string originalPassword)
         {
-            Byte[] originalBytes;
-            Byte[] encodedBytes;
-            MD5 md5;
+            MD5 md5 = new MD5CryptoServiceProvider();
+            
+            byte[] originalBytes = ASCIIEncoding.Default.GetBytes(originalPassword);
+            byte[] encodedBytes = md5.ComputeHash(originalBytes);
 
-            md5 = new MD5CryptoServiceProvider();
+            string ret = BitConverter.ToString(encodedBytes);
+            ret = ret.Replace("-", string.Empty).ToLower();
 
-            originalBytes = ASCIIEncoding.Default.GetBytes(originalPassword);
-            encodedBytes = md5.ComputeHash(originalBytes);
-
-            string ret = Regex.Replace(BitConverter.ToString(encodedBytes), "-", "").ToLower();
             return ret;
         }
 
@@ -203,6 +203,8 @@ namespace DemoGame.Server
 
             // Get the characters in this account
             userAccount.LoadCharacterIDs();
+
+            dbController.GetQuery<InsertAccountIPQuery>().Execute(userAccount.ID, socket.IP);
 
             return AccountLoginResult.Successful;
         }
@@ -391,33 +393,37 @@ namespace DemoGame.Server
         /// Tries to create a new user account.
         /// </summary>
         /// <param name="dbController">The DbController</param>
+        /// <param name="socket">The socket containing the connection trying to create the account. Can be null.</param>
         /// <param name="name">The account name.</param>
         /// <param name="password">The account password.</param>
         /// <param name="email">The account email address.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(IDbController dbController, string name, string password, string email)
+        public static bool TryCreateAccount(IDbController dbController, IIPSocket socket, string name, string password, string email)
         {
             AccountID accountID;
-            return TryCreateAccount(dbController, name, password, email, out accountID);
+            return TryCreateAccount(dbController, socket, name, password, email, out accountID);
         }
 
         /// <summary>
         /// Tries to create a new user account.
         /// </summary>
         /// <param name="dbController">The DbController</param>
+        /// <param name="socket">The socket containing the connection trying to create the account. Can be null.</param>
         /// <param name="name">The account name.</param>
         /// <param name="password">The account password.</param>
         /// <param name="email">The account email address.</param>
         /// <param name="accountID">When this method returns true, contains the AccountID for the created
         /// <see cref="UserAccount"/>.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(IDbController dbController, string name, string password, string email,
+        public static bool TryCreateAccount(IDbController dbController, IIPSocket socket, string name, string password, string email,
                                             out AccountID accountID)
         {
             AccountIDCreator idCreator = dbController.GetQuery<AccountIDCreator>();
             accountID = idCreator.GetNext();
 
-            bool success = dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email);
+            uint ip = socket != null ? socket.IP : 0;
+
+            bool success = dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email, ip);
 
             if (!success)
             {
@@ -426,21 +432,6 @@ namespace DemoGame.Server
             }
 
             return success;
-        }
-
-        /// <summary>
-        /// Tries to create a new user account.
-        /// </summary>
-        /// <param name="dbController">The DbController</param>
-        /// <param name="accountID">The account ID.</param>
-        /// <param name="name">The account name.</param>
-        /// <param name="password">The account password.</param>
-        /// <param name="email">The account email address.</param>
-        /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(IDbController dbController, AccountID accountID, string name, string password,
-                                            string email)
-        {
-            return dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email);
         }
 
         /// <summary>
