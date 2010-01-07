@@ -192,6 +192,15 @@ namespace DemoGame.Server
             string password = r.ReadString();
             string email = r.ReadString();
 
+            // Ensure the connection isn't logged in
+            User user;
+            if (TryGetUser(conn, out user))
+            {
+                const string errmsg = "User `{0}` tried to create a new account while already logged in.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user);
+            }
+
             Server.CreateAccount(conn, name, password, email);
         }
 
@@ -603,9 +612,9 @@ namespace DemoGame.Server
             // Check for a valid connection
             if (conn == null)
             {
-                Debug.Fail("conn is null.");
-                if (log.IsWarnEnabled)
-                    log.Warn("conn is null.");
+                const string errmsg = "conn is null.";
+                Debug.Fail(errmsg);
+                log.Warn(errmsg);
                 user = null;
                 return false;
             }
@@ -618,8 +627,9 @@ namespace DemoGame.Server
             {
                 if (failRecover)
                 {
-                    Debug.Fail("user is null.");
-                    log.Error("user is null.");
+                    const string errmsg = "user is null.";
+                    Debug.Fail(errmsg);
+                    log.Error(errmsg);
                 }
                 return false;
             }
