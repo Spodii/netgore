@@ -334,10 +334,6 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current time.</param>
         public void SetGrh(GrhData grhData, AnimType anim, int currentTime)
         {
-            // Only set the new Grh if it is different
-            if (_grhData == grhData)
-                return;
-
             _grhData = grhData;
             _frame = 0;
             _anim = anim;
