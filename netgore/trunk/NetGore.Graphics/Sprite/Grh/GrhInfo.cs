@@ -554,6 +554,9 @@ namespace NetGore.Graphics
                 // Search for the automatic animation folder while ignoring the speed, allowing us to update if
                 // the speed changes
                 var parentDir = Directory.GetParent(tmpDir);
+                if (parentDir == null)
+                    throw new GrhDataException(gd, string.Format("Could not find parent directory for automatic animated GrhData `{0}`.", gd));
+
                 var directories = parentDir.GetDirectories("_" + gd.Categorization.Title + "_frames*");
                 if (directories.Count() > 1)
                     throw new GrhDataException(gd, string.Format("More than one potential match for automatic GrhData `{0}` found!", gd));
