@@ -18,7 +18,6 @@ namespace DemoGame.Client
         const string _unusedCharacterSlotText = "unused";
 
         Button[] _characterButtons;
-        GameplayScreen _gpScreen = null;
         IGUIManager _gui;
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
