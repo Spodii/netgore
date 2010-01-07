@@ -136,6 +136,11 @@ namespace DemoGame.Server.Queries
             public readonly string Email;
 
             /// <summary>
+            /// The IP address.
+            /// </summary>
+            public readonly uint IP;
+
+            /// <summary>
             /// The name.
             /// </summary>
             public readonly string Name;
@@ -144,11 +149,6 @@ namespace DemoGame.Server.Queries
             /// The password.
             /// </summary>
             public readonly string Password;
-            
-            /// <summary>
-            /// The IP address.
-            /// </summary>
-            public readonly uint IP;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> class.

@@ -9,7 +9,9 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertAccountIPQuery : DbQueryNonReader<InsertAccountIPQuery.QueryArgs>
     {
-        static readonly string _queryStr = string.Format("INSERT IGNORE INTO `{0}` SET `account_id`=@accountID, `ip`=@ip, `time`=NOW()", AccountIpsTable.TableName);
+        static readonly string _queryStr =
+            string.Format("INSERT IGNORE INTO `{0}` SET `account_id`=@accountID, `ip`=@ip, `time`=NOW()",
+                          AccountIpsTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertAccountIPQuery"/> class.

@@ -120,16 +120,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Removes the <paramref name="bgImage"/> from the map.
-        /// </summary>
-        /// <param name="bgImage">The <see cref="BackgroundImage"/> to remove.</param>
-        /// <returns>True if successfully removed; otherwise false.</returns>
-        public bool RemoveBackgroundImage(BackgroundImage bgImage)
-        {
-            return _backgroundImages.Remove(bgImage);
-        }
-
-        /// <summary>
         /// Adds a MapGrh to the map
         /// </summary>
         /// <param name="mg">MapGrh to add to the map</param>
@@ -368,6 +358,16 @@ namespace DemoGame.Client
             LoadGrhs(reader);
             LoadBackgroundImages(reader);
             _particleEffects.Read(reader, _particleEffectsNodeName);
+        }
+
+        /// <summary>
+        /// Removes the <paramref name="bgImage"/> from the map.
+        /// </summary>
+        /// <param name="bgImage">The <see cref="BackgroundImage"/> to remove.</param>
+        /// <returns>True if successfully removed; otherwise false.</returns>
+        public bool RemoveBackgroundImage(BackgroundImage bgImage)
+        {
+            return _backgroundImages.Remove(bgImage);
         }
 
         /// <summary>

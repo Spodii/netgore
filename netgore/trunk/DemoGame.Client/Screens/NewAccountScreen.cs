@@ -12,13 +12,13 @@ namespace DemoGame.Client
     class NewAccountScreen : GameScreen
     {
         public const string ScreenName = "new account";
+        TextBox _cEmailText;
 
         TextBox _cNameText;
         TextBox _cPasswordText;
-        TextBox _cEmailText;
+        Button _createAccountButton;
         Label _errorLabel;
         IGUIManager _gui;
-        Button _createAccountButton;
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 
@@ -28,6 +28,11 @@ namespace DemoGame.Client
         public NewAccountScreen() : base(ScreenName)
         {
             PlayMusic = false;
+        }
+
+        void _sockets_OnDisconnect(IIPSocket conn)
+        {
+            _createAccountButton.IsEnabled = true;
         }
 
         /// <summary>
@@ -52,31 +57,6 @@ namespace DemoGame.Client
             _errorLabel.IsVisible = false;
 
             base.Activate();
-        }
-
-        void _sockets_OnDisconnect(IIPSocket conn)
-        {
-            _createAccountButton.IsEnabled = true;
-        }
-
-        void PacketHandler_OnCreateAccount(IIPSocket conn, bool successful, string errorMessage)
-        {
-            if (!successful)
-            {
-                string s = "Failed to create account: ";
-                if (!string.IsNullOrEmpty(s))
-                    s += errorMessage;
-                else
-                    s += "Unspecified error returned from server.";
-
-                ShowError(s);
-            }
-            else
-            {
-                ShowMessage("Account successfully created!");
-            }
-
-            _sockets.Disconnect();
         }
 
         void ClickButton_CreateAccount(object sender, MouseClickEventArgs e)
@@ -110,6 +90,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Handles screen deactivation, which occurs every time the screen changes from being
+        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
+        /// </summary>
+        public override void Deactivate()
+        {
+            if (_sockets.IsConnected)
+                _sockets.Disconnect();
+
+            base.Deactivate();
+        }
+
+        /// <summary>
         /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
         /// there is often no need to clear the screen. This will only be called while the screen is the
         /// active screen.
@@ -127,18 +119,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles screen deactivation, which occurs every time the screen changes from being
-        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
-        /// </summary>
-        public override void Deactivate()
-        {
-            if (_sockets.IsConnected)
-                _sockets.Disconnect();
-
-            base.Deactivate();
-        }
-
-        /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
         /// use this instead of the constructor. This is invoked only once.
@@ -153,13 +133,16 @@ namespace DemoGame.Client
 
             // Create the new account fields
             new Label(cScreen, new Vector2(60, 180)) { Text = "Name:" };
-            _cNameText = new TextBox(cScreen, new Vector2(220, 180), new Vector2(200, 40)) { IsMultiLine = false, Text = string.Empty };
+            _cNameText = new TextBox(cScreen, new Vector2(220, 180), new Vector2(200, 40))
+            { IsMultiLine = false, Text = string.Empty };
 
             new Label(cScreen, new Vector2(60, 260)) { Text = "Password:" };
-            _cPasswordText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = string.Empty };
+            _cPasswordText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
+            { IsMultiLine = false, Text = string.Empty };
 
             new Label(cScreen, new Vector2(60, 320)) { Text = "Email:" };
-            _cEmailText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40)) { IsMultiLine = false, Text = string.Empty };
+            _cEmailText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
+            { IsMultiLine = false, Text = string.Empty };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Create Account", "Back");
@@ -181,10 +164,22 @@ namespace DemoGame.Client
             base.LoadContent();
         }
 
-        void ShowMessage(string message)
+        void PacketHandler_OnCreateAccount(IIPSocket conn, bool successful, string errorMessage)
         {
-            ShowError(message);
-            _errorLabel.ForeColor = Color.Green;
+            if (!successful)
+            {
+                string s = "Failed to create account: ";
+                if (!string.IsNullOrEmpty(s))
+                    s += errorMessage;
+                else
+                    s += "Unspecified error returned from server.";
+
+                ShowError(s);
+            }
+            else
+                ShowMessage("Account successfully created!");
+
+            _sockets.Disconnect();
         }
 
         void ShowError(string errorMsg)
@@ -194,12 +189,20 @@ namespace DemoGame.Client
             _errorLabel.ForeColor = Color.Red;
         }
 
+        void ShowMessage(string message)
+        {
+            ShowError(message);
+            _errorLabel.ForeColor = Color.Green;
+        }
+
         void sockets_OnConnect(IIPSocket conn)
         {
             ShowMessage("Connected to server. Sending new account request...");
 
             using (var pw = ClientPacket.CreateNewAccount(_cNameText.Text, _cPasswordText.Text, _cEmailText.Text))
+            {
                 _sockets.Send(pw);
+            }
         }
 
         void sockets_OnFailedConnect(IIPSocket conn)

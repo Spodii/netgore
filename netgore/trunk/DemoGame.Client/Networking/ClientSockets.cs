@@ -13,19 +13,13 @@ namespace DemoGame.Client
     class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
         const int _updateLatencyInterval = 5000;
+        static ClientSockets _instance;
         readonly ClientPacketHandler _packetHandler;
         readonly int _udpPort;
-
-        static ClientSockets _instance;
 
         IIPSocket _conn = null;
         int _lastPingTime;
         LatencyTrackerClient _latencyTracker;
-
-        /// <summary>
-        /// Gets the last <see cref="ClientSockets"/> instance. Will be null if it has not been created yet.
-        /// </summary>
-        public static ClientSockets Instance { get { return _instance; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
@@ -43,6 +37,14 @@ namespace DemoGame.Client
 
             // Bind the UDP port
             _udpPort = BindUDP();
+        }
+
+        /// <summary>
+        /// Gets the last <see cref="ClientSockets"/> instance. Will be null if it has not been created yet.
+        /// </summary>
+        public static ClientSockets Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

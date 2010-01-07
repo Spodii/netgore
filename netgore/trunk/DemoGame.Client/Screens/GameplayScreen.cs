@@ -25,6 +25,7 @@ namespace DemoGame.Client
         public const string ScreenName = "game";
 
         const string _latencyString = "Latency: {0} ms";
+        static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
@@ -504,8 +505,6 @@ namespace DemoGame.Client
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
         }
-
-        static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
         void World_OnChangeMap(World world, Map map)
         {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using DemoGame.Emoticons;
 using NetGore;
 
@@ -25,8 +22,7 @@ namespace DemoGame
         /// <summary>
         /// Initializes a new instance of the <see cref="EmoticonInfoManager"/> class.
         /// </summary>
-        EmoticonInfoManager()
-            : base(true)
+        EmoticonInfoManager() : base(true)
         {
         }
 

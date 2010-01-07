@@ -344,7 +344,7 @@ namespace DemoGame.MapEditor
 
         void btnDeleteBGItem_Click(object sender, EventArgs e)
         {
-            var selectedBgImage =lstBGItems.SelectedItem as BackgroundImage;
+            var selectedBgImage = lstBGItems.SelectedItem as BackgroundImage;
             if (selectedBgImage != null)
                 Map.RemoveBackgroundImage(selectedBgImage);
         }
@@ -838,6 +838,12 @@ namespace DemoGame.MapEditor
                 pgEntity.SelectedObject = lstEntities.SelectedItem;
         }
 
+        void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (pgSelectedPE.SelectedObject != lstMapParticleEffects.SelectedItem)
+                pgSelectedPE.SelectedObject = lstMapParticleEffects.SelectedItem;
+        }
+
         void lstSelectedWalls_SelectedIndexChanged(object sender, EventArgs e)
         {
             WallEntityBase selected = lstSelectedWalls.SelectedItem as WallEntityBase;
@@ -1216,12 +1222,6 @@ namespace DemoGame.MapEditor
                     w.WriteEndNode(_displayNodeName);
                 }
             }
-        }
-
-        private void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (pgSelectedPE.SelectedObject != lstMapParticleEffects.SelectedItem)
-                pgSelectedPE.SelectedObject = lstMapParticleEffects.SelectedItem;
         }
     }
 }

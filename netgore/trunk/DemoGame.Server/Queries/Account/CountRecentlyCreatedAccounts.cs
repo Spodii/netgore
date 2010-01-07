@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,8 +9,10 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CountRecentlyCreatedAccounts : DbQueryReader<uint>
     {
-        static readonly string _queryStr = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `creator_ip`=@ip AND `time_created` > DATE_SUB(NOW(), INTERVAL 60 MINUTE)",
-            AccountTable.TableName);
+        static readonly string _queryStr =
+            string.Format(
+                "SELECT COUNT(*) FROM `{0}` WHERE `creator_ip`=@ip AND `time_created` > DATE_SUB(NOW(), INTERVAL 60 MINUTE)",
+                AccountTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountRecentlyCreatedAccounts"/> class.

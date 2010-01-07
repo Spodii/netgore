@@ -17,6 +17,7 @@ namespace DemoGame.Client
     {
         readonly GraphicsDeviceManager graphics;
         IEnumerable<TextureAtlas> _globalAtlases;
+        ClientSockets _sockets;
         ScreenManager screenManager;
 
         /// <summary>
@@ -27,8 +28,6 @@ namespace DemoGame.Client
             // Create the graphics manager and device
             graphics = new GraphicsDeviceManager(this);
         }
-
-        ClientSockets _sockets;
 
         /// <summary>
         /// Called after all components are initialized but before the first update in the game loop.
@@ -62,12 +61,6 @@ namespace DemoGame.Client
 
             _sockets = ClientSockets.Instance;
             screenManager.OnUpdate += screenManager_OnUpdate;
-        }
-
-        void screenManager_OnUpdate(ScreenManager screenManager)
-        {
-            // Update the sockets
-            _sockets.Heartbeat();
         }
 
         /// <summary>
@@ -153,6 +146,12 @@ namespace DemoGame.Client
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
             screenManager.MapContent.Unload();
+        }
+
+        void screenManager_OnUpdate(ScreenManager screenManager)
+        {
+            // Update the sockets
+            _sockets.Heartbeat();
         }
     }
 }

@@ -28,12 +28,6 @@ namespace DemoGame
         /// is created from the console.
         /// </summary>
         public const uint DefaultCreateAccountIP = 0;
-        
-        /// <summary>
-        /// The maximum accounts that can be created for a single IP address over a given period of time. The period
-        /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
-        /// </summary>
-        public const int MaxRecentlyCreatedAccounts = 3;
 
         /// <summary>
         /// Maximum number of characters allowed in a single account.
@@ -49,6 +43,12 @@ namespace DemoGame
         /// The maximum allowed integer-based movement speed.
         /// </summary>
         public const int MaxMovementSpeed = 10000;
+
+        /// <summary>
+        /// The maximum accounts that can be created for a single IP address over a given period of time. The period
+        /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
+        /// </summary>
+        public const int MaxRecentlyCreatedAccounts = 3;
 
         /// <summary>
         /// Maximum length of each parameter string in the server's SendMessage.
@@ -76,6 +76,12 @@ namespace DemoGame
         public const ushort MaxStatusEffectPower = 500;
 
         /// <summary>
+        /// The rules for the account email addresses.
+        /// </summary>
+        public static readonly StringRules AccountEmail = new StringRules(3, 30,
+                                                                          CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+
+        /// <summary>
         /// The rules for the account names.
         /// </summary>
         public static readonly StringRules AccountName = new StringRules(3, 30, CharType.Alpha | CharType.Numeric);
@@ -86,11 +92,6 @@ namespace DemoGame
         public static readonly StringRules AccountPassword = new StringRules(3, 30,
                                                                              CharType.Alpha | CharType.Numeric |
                                                                              CharType.Punctuation);
-
-        /// <summary>
-        /// The rules for the account email addresses.
-        /// </summary>
-        public static readonly StringRules AccountEmail = new StringRules(3, 30, CharType.Alpha | CharType.Numeric | CharType.Punctuation);
 
         /// <summary>
         /// The rules for the character names.

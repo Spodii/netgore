@@ -33,11 +33,12 @@ namespace DemoGame.Client
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
             // Create the input and output TextBoxes
-            _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = false, IsEnabled = true, Font = Font, MaxInputTextLength = GameData.MaxClientSayLength };
+            _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32))
+            { IsMultiLine = false, IsEnabled = true, Font = Font, MaxInputTextLength = GameData.MaxClientSayLength };
             _input.OnKeyDown += Input_OnKeyDown;
 
             _output = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = true, IsEnabled = false, Font = Font };
-            
+
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Force the initial repositioning
