@@ -116,14 +116,13 @@ namespace DemoGame.Server
             return GetWriter(ServerPacketID.LoginSuccessful);
         }
 
-        public static PacketWriter CreateAccountSuccessful()
+        public static PacketWriter CreateAccount(bool successful, string failureMessage)
         {
-            return GetWriter(ServerPacketID.CreateAccountSuccessful);
-        }
-
-        public static PacketWriter CreateAccountUnsuccessful()
-        {
-            return GetWriter(ServerPacketID.CreateAccountUnsuccessful);
+            var pw = GetWriter(ServerPacketID.CreateAccount);
+            pw.Write(successful);
+            if (!successful)
+                pw.Write(failureMessage);
+            return pw;
         }
 
         /// <summary>

@@ -20,6 +20,15 @@ using NetGore.NPCChat;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// Handles when a CreateAccount message is received.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="successful">If the account was successfully created.</param>
+    /// <param name="errorMessage">If <paramref name="successful"/> is false, contains the error message from
+    /// the server.</param>
+    delegate void SocketCreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
+
     class ClientPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -33,19 +42,14 @@ namespace DemoGame.Client
         readonly ISocketSender _socketSender;
 
         /// <summary>
+        /// Notifies listeners when a successful account creation request has been made.
+        /// </summary>
+        public event SocketCreateAccountEventHandler OnCreateAccount;
+
+        /// <summary>
         /// Notifies listeners when a successful login request has been made.
         /// </summary>
         public event SocketEventHandler OnLoginSuccessful;
-
-        /// <summary>
-        /// Notifies listeners when a successful account creation request has been made.
-        /// </summary>
-        public event SocketEventHandler OnCreateAccountSuccessful;
-
-        /// <summary>
-        /// Notifies listeners when an unsuccessful account creation request has been made.
-        /// </summary>
-        public event SocketEventHandler OnCreateAccountUnsuccessful;
 
         /// <summary>
         /// Notifies listeners when an unsuccessful login request has been made.
@@ -267,18 +271,14 @@ namespace DemoGame.Client
                 OnLoginSuccessful(conn);
         }
 
-        [MessageHandler((byte)ServerPacketID.CreateAccountSuccessful)]
-        void RecvCreateAccountSuccessful(IIPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.CreateAccount)]
+        void RecvCreateAccount(IIPSocket conn, BitStream r)
         {
-            if (OnCreateAccountSuccessful != null)
-                OnCreateAccountSuccessful(conn);
-        }
+            bool successful = r.ReadBool();
+            string errorMessage = successful ? string.Empty : r.ReadString();
 
-        [MessageHandler((byte)ServerPacketID.CreateAccountUnsuccessful)]
-        void RecvCreateAccountUnsuccessful(IIPSocket conn, BitStream r)
-        {
-            if (OnCreateAccountUnsuccessful != null)
-                OnCreateAccountUnsuccessful(conn);
+            if (OnCreateAccount != null)
+                OnCreateAccount(conn, successful, errorMessage);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]

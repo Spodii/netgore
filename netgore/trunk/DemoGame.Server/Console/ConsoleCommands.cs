@@ -94,12 +94,13 @@ namespace DemoGame.Server
                 return "Invalid email address.";
 
             AccountID accountID;
-            bool success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID);
+            string errorMessage;
+            bool success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID, out errorMessage);
 
             if (success)
                 return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);
             else
-                return "Failed to create new account. Make sure the name is available.";
+                return "Failed to create new account: " + errorMessage;
         }
 
         public string ExecuteCommand(string commandString)

@@ -397,39 +397,60 @@ namespace DemoGame.Server
         /// <param name="name">The account name.</param>
         /// <param name="password">The account password.</param>
         /// <param name="email">The account email address.</param>
-        /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(IDbController dbController, IIPSocket socket, string name, string password, string email)
-        {
-            AccountID accountID;
-            return TryCreateAccount(dbController, socket, name, password, email, out accountID);
-        }
-
-        /// <summary>
-        /// Tries to create a new user account.
-        /// </summary>
-        /// <param name="dbController">The DbController</param>
-        /// <param name="socket">The socket containing the connection trying to create the account. Can be null.</param>
-        /// <param name="name">The account name.</param>
-        /// <param name="password">The account password.</param>
-        /// <param name="email">The account email address.</param>
         /// <param name="accountID">When this method returns true, contains the AccountID for the created
         /// <see cref="UserAccount"/>.</param>
+        /// <param name="errorMessage">When this method returns false, contains a message describing why the
+        /// account failed to be created.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
         public static bool TryCreateAccount(IDbController dbController, IIPSocket socket, string name, string password, string email,
-                                            out AccountID accountID)
+                                            out AccountID accountID, out string errorMessage)
         {
+            accountID = new AccountID(0);
+            errorMessage = string.Empty;
+
+            // Check for valid values
+            if (!GameData.AccountName.IsValid(name))
+            {
+                errorMessage = "Invalid name";
+                return false;
+            }
+
+            if (!GameData.AccountPassword.IsValid(password))
+            {
+                errorMessage = "Invalid password";
+                return false;
+            }
+
+            if (!GameData.AccountEmail.IsValid(email))
+            {
+                errorMessage = "Invalid email";
+                return false;
+            }
+            
+            // Get the IP to use
+            uint ip = socket != null ? socket.IP : GameData.DefaultCreateAccountIP;
+
+            // Check if too many accounts have been created from this IP
+            if (ip != GameData.DefaultCreateAccountIP)
+            {
+                int recentCreatedCount = dbController.GetQuery<CountRecentlyCreatedAccounts>().Execute(ip);
+                if (recentCreatedCount >= GameData.MaxRecentlyCreatedAccounts)
+                {
+                    errorMessage = "Too many accounts have been created from this IP recently";
+                    return false;
+                }
+            }
+
+            // Get the account ID
             AccountIDCreator idCreator = dbController.GetQuery<AccountIDCreator>();
             accountID = idCreator.GetNext();
 
-            uint ip = socket != null ? socket.IP : 0;
-
+            // Try to execute the query
             bool success = dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email, ip);
 
+            // If unsuccessful, free the account ID so it can be reused
             if (!success)
-            {
                 idCreator.FreeID(accountID);
-                accountID = new AccountID(0);
-            }
 
             return success;
         }

@@ -190,10 +190,8 @@ namespace DemoGame.Server
         /// Finds a user based on their connection information.
         /// </summary>
         /// <param name="conn">Client connection information.</param>
-        /// <param name="failRecover">If true, will try to find the User even if the <paramref name="conn"/> isn't properly
-        /// bound to the User.</param>
         /// <returns>User bound to the connection if any, else null.</returns>
-        public User GetUser(IIPSocket conn, bool failRecover)
+        public User GetUser(IIPSocket conn)
         {
             UserAccount userAccount = GetUserAccount(conn);
             if (userAccount == null)
@@ -201,9 +199,6 @@ namespace DemoGame.Server
 
             if (userAccount.User != null)
                 return userAccount.User;
-
-            if (!failRecover)
-                return null;
 
             const string errmsg = "User not bound to UserAccount.User property.";
             Debug.Fail(errmsg);
@@ -222,16 +217,6 @@ namespace DemoGame.Server
 
             // Return value, which will be null if none found
             return ret;
-        }
-
-        /// <summary>
-        /// Finds a user based on their connection information
-        /// </summary>
-        /// <param name="conn">Client connection information</param>
-        /// <returns>User bound to the connection if any, else null</returns>
-        public User GetUser(IIPSocket conn)
-        {
-            return GetUser(conn, true);
         }
 
         /// <summary>

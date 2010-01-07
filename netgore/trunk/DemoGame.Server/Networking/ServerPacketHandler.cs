@@ -83,7 +83,7 @@ namespace DemoGame.Server
         void RecvAttack(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) != null)
                 user.Attack();
         }
 
@@ -94,7 +94,7 @@ namespace DemoGame.Server
             byte amount = r.ReadByte();
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.ShoppingState.TryPurchase(slot, amount);
@@ -114,7 +114,7 @@ namespace DemoGame.Server
             }
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.Emote(emoticon);
@@ -126,7 +126,7 @@ namespace DemoGame.Server
             InventorySlot slot = r.ReadInventorySlot();
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.Inventory.Drop(slot);
@@ -136,7 +136,7 @@ namespace DemoGame.Server
         void RecvEndNPCChatDialog(IIPSocket conn, BitStream r)
         {
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.ChatState.EndChat();
@@ -148,7 +148,7 @@ namespace DemoGame.Server
             EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
 
             User user;
-            if (TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) != null)
                 user.SendEquipmentItemStats(slot);
         }
 
@@ -158,7 +158,7 @@ namespace DemoGame.Server
             InventorySlot slot = r.ReadInventorySlot();
 
             User user;
-            if (TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) != null)
                 user.SendInventoryItemStats(slot);
         }
 
@@ -167,7 +167,7 @@ namespace DemoGame.Server
         void RecvJump(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && user.CanJump)
+            if (((user = TryGetUser(conn)) != null) && user.CanJump)
                 user.Jump();
         }
 #endif
@@ -193,12 +193,13 @@ namespace DemoGame.Server
             string email = r.ReadString();
 
             // Ensure the connection isn't logged in
-            User user;
-            if (TryGetUser(conn, out user))
+            var user = TryGetUser(conn, false);
+            if (user != null)
             {
                 const string errmsg = "User `{0}` tried to create a new account while already logged in.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, user);
+                return;
             }
 
             Server.CreateAccount(conn, name, password, email);
@@ -218,7 +219,7 @@ namespace DemoGame.Server
         void RecvMoveLeft(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && !user.IsMovingLeft)
+            if (((user = TryGetUser(conn)) != null) && !user.IsMovingLeft)
                 user.MoveLeft();
         }
 
@@ -226,7 +227,7 @@ namespace DemoGame.Server
         void RecvMoveRight(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && !user.IsMovingRight)
+            if (((user = TryGetUser(conn)) != null) && !user.IsMovingRight)
                 user.MoveRight();
         }
 
@@ -234,7 +235,7 @@ namespace DemoGame.Server
         void RecvMoveStop(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && user.IsMoving)
+            if (((user = TryGetUser(conn)) != null) && user.IsMoving)
                 user.StopMoving();
         }
 
@@ -301,7 +302,7 @@ namespace DemoGame.Server
         {
             // Get the User
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             using (PacketWriter pw = ServerPacket.Ping())
@@ -331,7 +332,7 @@ namespace DemoGame.Server
 
             // Get the User
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             // Raise the user's stat
@@ -344,7 +345,7 @@ namespace DemoGame.Server
             string text = r.ReadString(GameData.MaxClientSayLength);
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             _sayHandler.Process(user, text);
@@ -400,7 +401,7 @@ namespace DemoGame.Server
             byte responseIndex = r.ReadByte();
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.ChatState.EnterResponse(responseIndex);
@@ -413,7 +414,7 @@ namespace DemoGame.Server
             byte amount = r.ReadByte();
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.ShoppingState.TrySellInventory(slot, amount);
@@ -466,7 +467,7 @@ namespace DemoGame.Server
             EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
 
             User user;
-            if (TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) != null)
                 user.Equipped.RemoveAt(slot);
         }
 
@@ -476,7 +477,7 @@ namespace DemoGame.Server
             InventorySlot slot = r.ReadInventorySlot();
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.UseInventoryItem(slot);
@@ -500,7 +501,7 @@ namespace DemoGame.Server
             }
 
             User user;
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
                 return;
 
             user.UseSkill(skillType);
@@ -596,9 +597,17 @@ namespace DemoGame.Server
             return true;
         }
 
+        /// <summary>
+        /// Tries to get the <see cref="Map"/> and <see cref="User"/> from an <see cref="IIPSocket"/>.
+        /// </summary>
+        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="Map"/> and <see cref="User"/> from.</param>
+        /// <param name="user">When this method returns true, contains the <see cref="User"/>.</param>
+        /// <param name="map">When this method returns true, contains the <see cref="Map"/>.</param>
+        /// <returns>True if the <paramref name="user"/> and <paramref name="map"/> were successfully found; otherwise
+        /// false.</returns>
         bool TryGetMap(IIPSocket conn, out User user, out Map map)
         {
-            if (!TryGetUser(conn, out user))
+            if ((user = TryGetUser(conn)) == null)
             {
                 map = null;
                 return false;
@@ -607,7 +616,16 @@ namespace DemoGame.Server
             return TryGetMap(user, out map);
         }
 
-        bool TryGetUser(IIPSocket conn, out User user, bool failRecover)
+        /// <summary>
+        /// Tries to get the <see cref="User"/> from an <see cref="IIPSocket"/>.
+        /// </summary>
+        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="User"/> from.</param>
+        /// <param name="errorOnFailure">If true, an error will be printed if the <see cref="User"/> for the
+        /// <paramref name="conn"/> could not be found. This should only be false when it is expected that
+        /// there will be no <see cref="User"/>.</param>
+        /// <returns>The <see cref="User"/> from the <paramref name="conn"/>, or null if no <see cref="User"/>
+        /// could be found.</returns>
+        User TryGetUser(IIPSocket conn, bool errorOnFailure)
         {
             // Check for a valid connection
             if (conn == null)
@@ -615,31 +633,35 @@ namespace DemoGame.Server
                 const string errmsg = "conn is null.";
                 Debug.Fail(errmsg);
                 log.Warn(errmsg);
-                user = null;
-                return false;
+                return null;
             }
 
             // Get the user
-            user = World.GetUser(conn, failRecover);
+            var user = World.GetUser(conn);
 
             // Check for a valid user
             if (user == null)
             {
-                if (failRecover)
+                if (errorOnFailure)
                 {
                     const string errmsg = "user is null.";
                     Debug.Fail(errmsg);
                     log.Error(errmsg);
                 }
-                return false;
             }
 
-            return true;
+            return user;
         }
 
-        bool TryGetUser(IIPSocket conn, out User user)
+        /// <summary>
+        /// Tries to get the <see cref="User"/> from an <see cref="IIPSocket"/>.
+        /// </summary>
+        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="User"/> from.</param>
+        /// <returns>The <see cref="User"/> from the <paramref name="conn"/>, or null if no <see cref="User"/>
+        /// could be found.</returns>
+        User TryGetUser(IIPSocket conn)
         {
-            return TryGetUser(conn, out user, true);
+            return TryGetUser(conn, true);
         }
 
         #region IGetTime Members

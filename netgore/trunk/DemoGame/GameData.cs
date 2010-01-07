@@ -24,6 +24,18 @@ namespace DemoGame
         public const float AnimationSpeedModifier = 0.13f;
 
         /// <summary>
+        /// The IP address to use by default when creating accounts when no IP can be specified, such as if the account
+        /// is created from the console.
+        /// </summary>
+        public const uint DefaultCreateAccountIP = 0;
+        
+        /// <summary>
+        /// The maximum accounts that can be created for a single IP address over a given period of time. The period
+        /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
+        /// </summary>
+        public const int MaxRecentlyCreatedAccounts = 3;
+
+        /// <summary>
         /// Maximum number of characters allowed in a single account.
         /// </summary>
         public const byte MaxCharactersPerAccount = 10;

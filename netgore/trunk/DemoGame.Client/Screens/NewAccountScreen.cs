@@ -46,8 +46,7 @@ namespace DemoGame.Client
             _sockets.OnConnect += sockets_OnConnect;
             _sockets.OnDisconnect += _sockets_OnDisconnect;
             _sockets.OnFailedConnect += sockets_OnFailedConnect;
-            _sockets.PacketHandler.OnCreateAccountSuccessful += PacketHandler_OnCreateAccountSuccessful;
-            _sockets.PacketHandler.OnCreateAccountUnsuccessful += PacketHandler_OnCreateAccountUnsuccessful;
+            _sockets.PacketHandler.OnCreateAccount += PacketHandler_OnCreateAccount;
 
             _createAccountButton.IsEnabled = true;
             _errorLabel.IsVisible = false;
@@ -60,16 +59,22 @@ namespace DemoGame.Client
             _createAccountButton.IsEnabled = true;
         }
 
-        void PacketHandler_OnCreateAccountUnsuccessful(IIPSocket conn)
+        void PacketHandler_OnCreateAccount(IIPSocket conn, bool successful, string errorMessage)
         {
-            ShowError("Failed to create account - account name is probably already in use.\\nPlease try a different name.");
+            if (!successful)
+            {
+                string s = "Failed to create account: ";
+                if (!string.IsNullOrEmpty(s))
+                    s += errorMessage;
+                else
+                    s += "Unspecified error returned from server.";
 
-            _sockets.Disconnect();
-        }
-
-        void PacketHandler_OnCreateAccountSuccessful(IIPSocket conn)
-        {
-            ShowMessage("Account successfully created!");
+                ShowError(s);
+            }
+            else
+            {
+                ShowMessage("Account successfully created!");
+            }
 
             _sockets.Disconnect();
         }

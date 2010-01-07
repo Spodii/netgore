@@ -162,6 +162,7 @@
     <Compile Include="DynamicEntityFactory.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
+    <Compile Include="Queries\Account\CountRecentlyCreatedAccounts.cs" />
     <Compile Include="Queries\Account\CreateAccountQuery.cs" />
     <Compile Include="Queries\Account\CreateUserOnAccountQuery.cs" />
     <Compile Include="Queries\Account\InsertAccountIPQuery.cs" />
