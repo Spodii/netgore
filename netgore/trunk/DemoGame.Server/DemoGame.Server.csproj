@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -92,6 +92,7 @@
     <Compile Include="Account\AccountID.cs" />
     <Compile Include="Account\AccountIDCreator.cs" />
     <Compile Include="DbConnectionSettings.cs" />
+    <Compile Include="DbObjs\AccountIpsTable.cs" />
     <Compile Include="DbObjs\AccountTable.cs" />
     <Compile Include="DbObjs\AllianceAttackableTable.cs" />
     <Compile Include="DbObjs\AllianceHostileTable.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="DbObjs\CharacterTemplateEquippedTable.cs" />
     <Compile Include="DbObjs\CharacterTemplateInventoryTable.cs" />
     <Compile Include="DbObjs\CharacterTemplateTable.cs" />
+    <Compile Include="DbObjs\DbExtensions\AccountIpsTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\AccountTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\AllianceAttackableTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\AllianceHostileTableDbExtensions.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\UserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\GameConstantTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IAccountIpsTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceAttackableTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceHostileTable.cs" />
@@ -161,6 +164,7 @@
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
     <Compile Include="Queries\Account\CreateAccountQuery.cs" />
     <Compile Include="Queries\Account\CreateUserOnAccountQuery.cs" />
+    <Compile Include="Queries\Account\InsertAccountIPQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountCharacterIDsQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountIDFromNameQuery.cs" />
     <Compile Include="Queries\Account\SetAccountCurrentIPNullQuery.cs" />

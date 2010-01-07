@@ -17,8 +17,8 @@ namespace DemoGame.Server.Queries
 
         static readonly string _queryStr =
             string.Format(
-                "INSERT INTO `{0}` (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`)" +
-                " VALUES (@id,@name,@password,@email,NOW(),NOW())", AccountTable.TableName);
+                "INSERT INTO `{0}` (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`,`creator_ip`)" +
+                " VALUES (@id,@name,@password,@email,NOW(),NOW(),@ip)", AccountTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountQuery"/> class.
@@ -61,8 +61,9 @@ namespace DemoGame.Server.Queries
         /// <param name="name">The name.</param>
         /// <param name="password">The password.</param>
         /// <param name="email">The email.</param>
+        /// <param name="ip">The IP address.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public bool TryExecute(AccountID accountID, string name, string password, string email)
+        public bool TryExecute(AccountID accountID, string name, string password, string email, uint ip)
         {
             if (!GameData.AccountName.IsValid(name))
                 return false;
@@ -73,7 +74,7 @@ namespace DemoGame.Server.Queries
 
             bool success;
 
-            var queryArgs = new QueryArgs(accountID, name, password, email);
+            var queryArgs = new QueryArgs(accountID, name, password, email, ip);
             try
             {
                 using (var r = ExecuteReader(queryArgs))
@@ -141,6 +142,11 @@ namespace DemoGame.Server.Queries
             /// The password.
             /// </summary>
             public readonly string Password;
+            
+            /// <summary>
+            /// The IP address.
+            /// </summary>
+            public readonly uint IP;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> class.
@@ -149,12 +155,14 @@ namespace DemoGame.Server.Queries
             /// <param name="name">The name.</param>
             /// <param name="password">The password.</param>
             /// <param name="email">The email.</param>
-            public QueryArgs(AccountID accountID, string name, string password, string email)
+            /// <param name="ip">The IP address.</param>
+            public QueryArgs(AccountID accountID, string name, string password, string email, uint ip)
             {
                 AccountID = accountID;
                 Name = name;
                 Password = password;
                 Email = email;
+                IP = ip;
             }
         }
     }

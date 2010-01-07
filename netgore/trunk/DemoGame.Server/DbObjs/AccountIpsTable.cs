@@ -5,14 +5,14 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Provides a strongly-typed structure for the database table `alliance`.
+/// Provides a strongly-typed structure for the database table `account_ips`.
 /// </summary>
-public class AllianceTable : IAllianceTable
+public class AccountIpsTable : IAccountIpsTable
 {
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"id", "name" };
+ static  readonly System.String[] _dbColumns = new string[] {"account_id", "ip", "time" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -26,7 +26,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 /// <summary>
 /// Array of the database column names for columns that are primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"id" };
+ static  readonly System.String[] _dbColumnsKeys = new string[] {"account_id", "time" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
 /// </summary>
@@ -40,7 +40,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"name" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"ip" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -54,47 +54,69 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 /// <summary>
 /// The name of the database table that this class represents.
 /// </summary>
-public const System.String TableName = "alliance";
+public const System.String TableName = "account_ips";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 2;
+public const System.Int32 ColumnCount = 3;
 /// <summary>
-/// The field that maps onto the database column `id`.
+/// The field that maps onto the database column `account_id`.
 /// </summary>
-System.Byte _iD;
+System.Int32 _accountID;
 /// <summary>
-/// The field that maps onto the database column `name`.
+/// The field that maps onto the database column `ip`.
 /// </summary>
-System.String _name;
+System.UInt32 _ip;
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `id`.
-/// The underlying database type is `tinyint(3) unsigned`.
+/// The field that maps onto the database column `time`.
 /// </summary>
-public DemoGame.Server.AllianceID ID
+System.DateTime _time;
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `account_id`.
+/// The underlying database type is `int(11)`. The database column contains the comment: 
+/// "The ID of the account.".
+/// </summary>
+public DemoGame.Server.AccountID AccountID
 {
 get
 {
-return (DemoGame.Server.AllianceID)_iD;
+return (DemoGame.Server.AccountID)_accountID;
 }
 set
 {
-this._iD = (System.Byte)value;
+this._accountID = (System.Int32)value;
 }
 }
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `name`.
-/// The underlying database type is `varchar(255)`.
+/// Gets or sets the value for the field that maps onto the database column `ip`.
+/// The underlying database type is `int(10) unsigned`. The database column contains the comment: 
+/// "The IP that logged into the account.".
 /// </summary>
-public System.String Name
+public System.UInt32 Ip
 {
 get
 {
-return (System.String)_name;
+return (System.UInt32)_ip;
 }
 set
 {
-this._name = (System.String)value;
+this._ip = (System.UInt32)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `time`.
+/// The underlying database type is `datetime`. The database column contains the comment: 
+/// "When this IP last logged into this account.".
+/// </summary>
+public System.DateTime Time
+{
+get
+{
+return (System.DateTime)_time;
+}
+set
+{
+this._time = (System.DateTime)value;
 }
 }
 
@@ -105,31 +127,33 @@ this._name = (System.String)value;
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-public IAllianceTable DeepCopy()
+public IAccountIpsTable DeepCopy()
 {
-return new AllianceTable(this);
+return new AccountIpsTable(this);
 }
 /// <summary>
-/// AllianceTable constructor.
+/// AccountIpsTable constructor.
 /// </summary>
-public AllianceTable()
+public AccountIpsTable()
 {
 }
 /// <summary>
-/// AllianceTable constructor.
+/// AccountIpsTable constructor.
 /// </summary>
-/// <param name="iD">The initial value for the corresponding property.</param>
-/// <param name="name">The initial value for the corresponding property.</param>
-public AllianceTable(DemoGame.Server.AllianceID @iD, System.String @name)
+/// <param name="accountID">The initial value for the corresponding property.</param>
+/// <param name="ip">The initial value for the corresponding property.</param>
+/// <param name="time">The initial value for the corresponding property.</param>
+public AccountIpsTable(DemoGame.Server.AccountID @accountID, System.UInt32 @ip, System.DateTime @time)
 {
-this.ID = (DemoGame.Server.AllianceID)@iD;
-this.Name = (System.String)@name;
+this.AccountID = (DemoGame.Server.AccountID)@accountID;
+this.Ip = (System.UInt32)@ip;
+this.Time = (System.DateTime)@time;
 }
 /// <summary>
-/// AllianceTable constructor.
+/// AccountIpsTable constructor.
 /// </summary>
-/// <param name="source">IAllianceTable to copy the initial values from.</param>
-public AllianceTable(IAllianceTable source)
+/// <param name="source">IAccountIpsTable to copy the initial values from.</param>
+public AccountIpsTable(IAccountIpsTable source)
 {
 CopyValuesFrom(source);
 }
@@ -150,20 +174,22 @@ CopyValues(this, dic);
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(IAllianceTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
+public static void CopyValues(IAccountIpsTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@id"] = (DemoGame.Server.AllianceID)source.ID;
-dic["@name"] = (System.String)source.Name;
+dic["@account_id"] = (DemoGame.Server.AccountID)source.AccountID;
+dic["@ip"] = (System.UInt32)source.Ip;
+dic["@time"] = (System.DateTime)source.Time;
 }
 
 /// <summary>
-/// Copies the values from the given <paramref name="source"/> into this AllianceTable.
+/// Copies the values from the given <paramref name="source"/> into this AccountIpsTable.
 /// </summary>
-/// <param name="source">The IAllianceTable to copy the values from.</param>
-public void CopyValuesFrom(IAllianceTable source)
+/// <param name="source">The IAccountIpsTable to copy the values from.</param>
+public void CopyValuesFrom(IAccountIpsTable source)
 {
-this.ID = (DemoGame.Server.AllianceID)source.ID;
-this.Name = (System.String)source.Name;
+this.AccountID = (DemoGame.Server.AccountID)source.AccountID;
+this.Ip = (System.UInt32)source.Ip;
+this.Time = (System.DateTime)source.Time;
 }
 
 /// <summary>
@@ -177,11 +203,14 @@ public System.Object GetValue(System.String columnName)
 {
 switch (columnName)
 {
-case "id":
-return ID;
+case "account_id":
+return AccountID;
 
-case "name":
-return Name;
+case "ip":
+return Ip;
+
+case "time":
+return Time;
 
 default:
 throw new ArgumentException("Field not found.","columnName");
@@ -197,12 +226,16 @@ public void SetValue(System.String columnName, System.Object value)
 {
 switch (columnName)
 {
-case "id":
-this.ID = (DemoGame.Server.AllianceID)value;
+case "account_id":
+this.AccountID = (DemoGame.Server.AccountID)value;
 break;
 
-case "name":
-this.Name = (System.String)value;
+case "ip":
+this.Ip = (System.UInt32)value;
+break;
+
+case "time":
+this.Time = (System.DateTime)value;
 break;
 
 default:
@@ -221,11 +254,14 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 {
 switch (columnName)
 {
-case "id":
-return new ColumnMetadata("id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+case "account_id":
+return new ColumnMetadata("account_id", "The ID of the account.", "int(11)", null, typeof(System.Int32), false, true, false);
 
-case "name":
-return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
+case "ip":
+return new ColumnMetadata("ip", "The IP that logged into the account.", "int(10) unsigned", null, typeof(System.UInt32), false, false, false);
+
+case "time":
+return new ColumnMetadata("time", "When this IP last logged into this account.", "datetime", null, typeof(System.DateTime), false, true, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

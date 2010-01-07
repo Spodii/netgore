@@ -369,7 +369,7 @@ namespace DemoGame.Server
 
             // Create the account
             AccountID id;
-            bool success = UserAccount.TryCreateAccount(DbController, name, password, email, out id);
+            bool success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id);
 
             // Send the appropriate success message
             if (success)

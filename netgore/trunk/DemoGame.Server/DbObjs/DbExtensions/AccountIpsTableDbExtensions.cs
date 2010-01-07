@@ -5,10 +5,10 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Contains extension methods for class AllianceHostileTable that assist in performing
+/// Contains extension methods for class AccountIpsTable that assist in performing
 /// reads and writes to and from a database.
 /// </summary>
-public static  class AllianceHostileTableDbExtensions
+public static  class AccountIpsTableDbExtensions
 {
 /// <summary>
 /// Copies the column values into the given DbParameterValues using the database column name
@@ -17,11 +17,11 @@ public static  class AllianceHostileTableDbExtensions
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(this IAllianceHostileTable source, NetGore.Db.DbParameterValues paramValues)
+public static void CopyValues(this IAccountIpsTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@alliance_id"] = (System.Byte)source.AllianceID;
-paramValues["@hostile_id"] = (System.Byte)source.HostileID;
-paramValues["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
+paramValues["@account_id"] = (System.Int32)source.AccountID;
+paramValues["@ip"] = (System.UInt32)source.Ip;
+paramValues["@time"] = (System.DateTime)source.Time;
 }
 
 /// <summary>
@@ -31,18 +31,18 @@ paramValues["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this AllianceHostileTable source, System.Data.IDataReader dataReader)
+public static void ReadValues(this AccountIpsTable source, System.Data.IDataReader dataReader)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("alliance_id");
-source.AllianceID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+i = dataReader.GetOrdinal("account_id");
+source.AccountID = (DemoGame.Server.AccountID)(DemoGame.Server.AccountID)dataReader.GetInt32(i);
 
-i = dataReader.GetOrdinal("hostile_id");
-source.HostileID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+i = dataReader.GetOrdinal("ip");
+source.Ip = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-i = dataReader.GetOrdinal("placeholder");
-source.Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
+i = dataReader.GetOrdinal("time");
+source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 }
 
 /// <summary>
@@ -55,24 +55,24 @@ source.Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this AllianceHostileTable source, System.Data.IDataReader dataReader)
+public static void TryReadValues(this AccountIpsTable source, System.Data.IDataReader dataReader)
 {
 for (int i = 0; i < dataReader.FieldCount; i++)
 {
 switch (dataReader.GetName(i))
 {
-case "alliance_id":
-source.AllianceID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+case "account_id":
+source.AccountID = (DemoGame.Server.AccountID)(DemoGame.Server.AccountID)dataReader.GetInt32(i);
 break;
 
 
-case "hostile_id":
-source.HostileID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+case "ip":
+source.Ip = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 break;
 
 
-case "placeholder":
-source.Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
+case "time":
+source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 break;
 
 
@@ -91,24 +91,24 @@ break;
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(this IAllianceHostileTable source, NetGore.Db.DbParameterValues paramValues)
+public static void TryCopyValues(this IAccountIpsTable source, NetGore.Db.DbParameterValues paramValues)
 {
 for (int i = 0; i < paramValues.Count; i++)
 {
 switch (paramValues.GetParameterName(i))
 {
-case "@alliance_id":
-paramValues[i] = (System.Byte)source.AllianceID;
+case "@account_id":
+paramValues[i] = (System.Int32)source.AccountID;
 break;
 
 
-case "@hostile_id":
-paramValues[i] = (System.Byte)source.HostileID;
+case "@ip":
+paramValues[i] = (System.UInt32)source.Ip;
 break;
 
 
-case "@placeholder":
-paramValues[i] = (System.Nullable<System.Byte>)source.Placeholder;
+case "@time":
+paramValues[i] = (System.DateTime)source.Time;
 break;
 
 

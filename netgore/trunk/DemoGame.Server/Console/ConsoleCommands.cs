@@ -94,7 +94,7 @@ namespace DemoGame.Server
                 return "Invalid email address.";
 
             AccountID accountID;
-            bool success = UserAccount.TryCreateAccount(DbController, accountName, accountPassword, email, out accountID);
+            bool success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID);
 
             if (success)
                 return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);

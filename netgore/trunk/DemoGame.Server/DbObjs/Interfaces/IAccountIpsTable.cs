@@ -3,9 +3,9 @@ using System.Linq;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Interface for a class that can be used to serialize values to the database table `alliance_hostile`.
+/// Interface for a class that can be used to serialize values to the database table `account_ips`.
 /// </summary>
-public interface IAllianceHostileTable
+public interface IAccountIpsTable
 {
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -14,26 +14,26 @@ public interface IAllianceHostileTable
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-IAllianceHostileTable DeepCopy();
+IAccountIpsTable DeepCopy();
 
 /// <summary>
-/// Gets the value of the database column `alliance_id`.
+/// Gets the value of the database column `account_id`.
 /// </summary>
-DemoGame.Server.AllianceID AllianceID
+DemoGame.Server.AccountID AccountID
 {
 get;
 }
 /// <summary>
-/// Gets the value of the database column `hostile_id`.
+/// Gets the value of the database column `ip`.
 /// </summary>
-DemoGame.Server.AllianceID HostileID
+System.UInt32 Ip
 {
 get;
 }
 /// <summary>
-/// Gets the value of the database column `placeholder`.
+/// Gets the value of the database column `time`.
 /// </summary>
-System.Nullable<System.Byte> Placeholder
+System.DateTime Time
 {
 get;
 }
