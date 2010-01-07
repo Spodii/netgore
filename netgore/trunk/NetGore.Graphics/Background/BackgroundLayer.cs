@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
+// TODO: Add support for BackgroundLayerLayout.Stretched
+
 namespace NetGore.Graphics
 {
     /// <summary>
