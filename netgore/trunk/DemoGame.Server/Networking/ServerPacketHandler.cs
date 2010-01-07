@@ -210,7 +210,7 @@ namespace DemoGame.Server
         void RecvMoveDown(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && !user.IsMovingDown)
+            if ((user = TryGetUser(conn)) != null && !user.IsMovingDown)
                 user.MoveDown();
         }
 #endif
@@ -244,7 +244,7 @@ namespace DemoGame.Server
         void RecvMoveStopHorizontal(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && (user.IsMovingLeft || user.IsMovingRight))
+            if ((user = TryGetUser(conn)) != null && (user.IsMovingLeft || user.IsMovingRight))
                 user.StopMovingHorizontal();
         }
 #endif
@@ -254,7 +254,7 @@ namespace DemoGame.Server
         void RecvMoveStopVertical(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && (user.IsMovingUp || user.IsMovingDown))
+            if ((user = TryGetUser(conn)) != null && (user.IsMovingUp || user.IsMovingDown))
                 user.StopMovingVertical();
         }
 #endif
@@ -264,7 +264,7 @@ namespace DemoGame.Server
         void RecvMoveUp(IIPSocket conn, BitStream r)
         {
             User user;
-            if (TryGetUser(conn, out user) && !user.IsMovingUp)
+            if ((user = TryGetUser(conn)) != null && !user.IsMovingUp)
                 user.MoveUp();
         }
 #endif
