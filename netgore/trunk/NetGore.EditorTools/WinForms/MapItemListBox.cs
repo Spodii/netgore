@@ -222,8 +222,8 @@ namespace NetGore.EditorTools
             }
 
             var existingItems = Items.OfType<TItem>();
-            var toAdd = allItems.Except(existingItems).ToArray();
-            var toRemove = allItems.Except(existingItems).ToArray();
+            var toAdd = allItems.Except(existingItems).ToImmutable();
+            var toRemove = existingItems.Except(allItems).ToImmutable();
 
             try
             {
