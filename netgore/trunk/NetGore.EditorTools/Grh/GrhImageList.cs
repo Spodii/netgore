@@ -116,7 +116,13 @@ namespace NetGore.EditorTools
             Image img = CreateImage(grhData);
 
             if (ImageList.Images.ContainsKey(key))
+            {
+                var tempImg = ImageList.Images[key];
                 ImageList.Images.RemoveByKey(key);
+
+                if (tempImg != null)
+                    tempImg.Dispose();
+            }
 
             if (img == null)
             {
