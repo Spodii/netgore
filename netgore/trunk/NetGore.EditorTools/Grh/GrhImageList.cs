@@ -256,7 +256,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Contains the information for a single <see cref="GrhImageList"/> item in the cache.
         /// </summary>
-        struct GrhImageListCacheItem
+        class GrhImageListCacheItem
         {
             /// <summary>
             /// The <see cref="GrhIndex"/> of the cached item.
