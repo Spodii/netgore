@@ -108,8 +108,13 @@ namespace NetGore.EditorTools
         {
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(72, 72);
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
-            g.DrawRectangle(new Pen(color, width * 2), 0, 0, width, height);
+            using (var g = System.Drawing.Graphics.FromImage(bmp))
+            {
+                using (var pen = new Pen(color, width * 2))
+                {
+                    g.DrawRectangle(pen, 0, 0, width, height);
+                }
+            }
             return bmp;
         }
     }
