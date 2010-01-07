@@ -253,7 +253,7 @@ namespace DemoGame.SkeletonEditor
             this.gbSkeletonIO.Size = new System.Drawing.Size(191, 43);
             this.gbSkeletonIO.TabIndex = 31;
             this.gbSkeletonIO.TabStop = false;
-            this.gbSkeletonIO.Text = "Read / Write";
+            this.gbSkeletonIO.Text = "Load / Save";
             // 
             // btnSkeletonSaveAs
             // 
@@ -261,7 +261,7 @@ namespace DemoGame.SkeletonEditor
             this.btnSkeletonSaveAs.Name = "btnSkeletonSaveAs";
             this.btnSkeletonSaveAs.Size = new System.Drawing.Size(55, 23);
             this.btnSkeletonSaveAs.TabIndex = 30;
-            this.btnSkeletonSaveAs.Text = "Write As";
+            this.btnSkeletonSaveAs.Text = "Save As";
             this.btnSkeletonSaveAs.UseVisualStyleBackColor = true;
             this.btnSkeletonSaveAs.Click += new System.EventHandler(this.btnSkeletonSaveAs_Click);
             // 
@@ -271,7 +271,7 @@ namespace DemoGame.SkeletonEditor
             this.btnSkeletonSave.Name = "btnSkeletonSave";
             this.btnSkeletonSave.Size = new System.Drawing.Size(55, 23);
             this.btnSkeletonSave.TabIndex = 29;
-            this.btnSkeletonSave.Text = "Write";
+            this.btnSkeletonSave.Text = "Save";
             this.btnSkeletonSave.UseVisualStyleBackColor = true;
             this.btnSkeletonSave.Click += new System.EventHandler(this.btnSkeletonSave_Click);
             // 
@@ -281,7 +281,7 @@ namespace DemoGame.SkeletonEditor
             this.btnSkeletonLoad.Name = "btnSkeletonLoad";
             this.btnSkeletonLoad.Size = new System.Drawing.Size(55, 23);
             this.btnSkeletonLoad.TabIndex = 28;
-            this.btnSkeletonLoad.Text = "Read";
+            this.btnSkeletonLoad.Text = "Load";
             this.btnSkeletonLoad.UseVisualStyleBackColor = true;
             this.btnSkeletonLoad.Click += new System.EventHandler(this.btnSkeletonLoad_Click);
             // 
@@ -469,7 +469,7 @@ namespace DemoGame.SkeletonEditor
             this.gbAnimIO.Size = new System.Drawing.Size(191, 43);
             this.gbAnimIO.TabIndex = 30;
             this.gbAnimIO.TabStop = false;
-            this.gbAnimIO.Text = "Read / Write";
+            this.gbAnimIO.Text = "Load / Save";
             // 
             // btnAnimSaveAs
             // 
@@ -477,7 +477,7 @@ namespace DemoGame.SkeletonEditor
             this.btnAnimSaveAs.Name = "btnAnimSaveAs";
             this.btnAnimSaveAs.Size = new System.Drawing.Size(55, 23);
             this.btnAnimSaveAs.TabIndex = 30;
-            this.btnAnimSaveAs.Text = "Write As";
+            this.btnAnimSaveAs.Text = "Save As";
             this.btnAnimSaveAs.UseVisualStyleBackColor = true;
             this.btnAnimSaveAs.Click += new System.EventHandler(this.btnAnimSaveAs_Click);
             // 
@@ -487,7 +487,7 @@ namespace DemoGame.SkeletonEditor
             this.btnAnimSave.Name = "btnAnimSave";
             this.btnAnimSave.Size = new System.Drawing.Size(55, 23);
             this.btnAnimSave.TabIndex = 29;
-            this.btnAnimSave.Text = "Write";
+            this.btnAnimSave.Text = "Save";
             this.btnAnimSave.UseVisualStyleBackColor = true;
             this.btnAnimSave.Click += new System.EventHandler(this.btnAnimSave_Click);
             // 
@@ -497,7 +497,7 @@ namespace DemoGame.SkeletonEditor
             this.btnAnimLoad.Name = "btnAnimLoad";
             this.btnAnimLoad.Size = new System.Drawing.Size(55, 23);
             this.btnAnimLoad.TabIndex = 28;
-            this.btnAnimLoad.Text = "Read";
+            this.btnAnimLoad.Text = "Load";
             this.btnAnimLoad.UseVisualStyleBackColor = true;
             this.btnAnimLoad.Click += new System.EventHandler(this.btnAnimLoad_Click);
             // 
@@ -581,7 +581,7 @@ namespace DemoGame.SkeletonEditor
             this.gbBodyIO.Size = new System.Drawing.Size(191, 43);
             this.gbBodyIO.TabIndex = 31;
             this.gbBodyIO.TabStop = false;
-            this.gbBodyIO.Text = "Read / Write";
+            this.gbBodyIO.Text = "Load / Save";
             // 
             // btnBodySaveAs
             // 
@@ -589,7 +589,7 @@ namespace DemoGame.SkeletonEditor
             this.btnBodySaveAs.Name = "btnBodySaveAs";
             this.btnBodySaveAs.Size = new System.Drawing.Size(55, 23);
             this.btnBodySaveAs.TabIndex = 30;
-            this.btnBodySaveAs.Text = "Write As";
+            this.btnBodySaveAs.Text = "Save As";
             this.btnBodySaveAs.UseVisualStyleBackColor = true;
             this.btnBodySaveAs.Click += new System.EventHandler(this.btnBodySaveAs_Click);
             // 
@@ -599,7 +599,7 @@ namespace DemoGame.SkeletonEditor
             this.btnBodySave.Name = "btnBodySave";
             this.btnBodySave.Size = new System.Drawing.Size(55, 23);
             this.btnBodySave.TabIndex = 29;
-            this.btnBodySave.Text = "Write";
+            this.btnBodySave.Text = "Save";
             this.btnBodySave.UseVisualStyleBackColor = true;
             this.btnBodySave.Click += new System.EventHandler(this.btnBodySave_Click);
             // 
@@ -609,7 +609,7 @@ namespace DemoGame.SkeletonEditor
             this.btnBodyLoad.Name = "btnBodyLoad";
             this.btnBodyLoad.Size = new System.Drawing.Size(55, 23);
             this.btnBodyLoad.TabIndex = 28;
-            this.btnBodyLoad.Text = "Read";
+            this.btnBodyLoad.Text = "Load";
             this.btnBodyLoad.UseVisualStyleBackColor = true;
             this.btnBodyLoad.Click += new System.EventHandler(this.btnBodyLoad_Click);
             // 
