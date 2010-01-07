@@ -180,7 +180,7 @@ namespace DemoGame.Server
             }
 
             // Check for a matching password
-            if (!EncodePassword(password).Equals(userAccount.Password, StringComparison.Ordinal))
+            if (!EncodePassword(password).Equals(userAccount.Password, StringComparison.OrdinalIgnoreCase))
             {
                 userAccount = null;
                 return AccountLoginResult.InvalidPassword;
