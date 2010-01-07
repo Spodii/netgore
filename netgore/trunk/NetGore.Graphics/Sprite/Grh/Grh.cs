@@ -36,7 +36,7 @@ namespace NetGore.Graphics
         int _lastUpdated = 0;
 
         /// <summary>
-        /// Creates a stationary Grh.
+        /// Initializes a new instance of the <see cref="Grh"/> class.
         /// </summary>
         /// <param name="grhIndex">Index of the stationary Grh.</param>
         public Grh(GrhIndex grhIndex)
@@ -45,7 +45,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates a stationary Grh.
+        /// Initializes a new instance of the <see cref="Grh"/> class.
         /// </summary>
         /// <param name="grhData">GrhData to create from.</param>
         public Grh(GrhData grhData)
@@ -54,7 +54,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates a Grh.
+        /// Initializes a new instance of the <see cref="Grh"/> class.
+        /// </summary>
+        public Grh()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Grh"/> class.
         /// </summary>
         /// <param name="grhIndex">Index of the Grh.</param>
         /// <param name="anim">Animation type.</param>

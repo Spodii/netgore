@@ -18,6 +18,7 @@ namespace DemoGame
         BuyFromShop,
         CreateNewAccount,
         DropInventoryItem,
+        Emoticon,
         EndNPCChatDialog,
         GetEquipmentItemInfo,
         GetInventoryItemInfo,

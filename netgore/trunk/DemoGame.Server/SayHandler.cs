@@ -49,7 +49,7 @@ namespace DemoGame.Server
 
             using (PacketWriter pw = ServerPacket.ChatSay(user.Name, user.MapEntityIndex, text))
             {
-                user.Map.SendToArea(user.Center, pw);
+                user.Map.SendToArea(user, pw);
             }
         }
 

@@ -31,6 +31,13 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter Emoticon(Emoticon emoticon)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.Emoticon);
+            pw.WriteEnum(EmoticonHelper.Instance, emoticon);
+            return pw;
+        }
+
         public static PacketWriter EndNPCChatDialog()
         {
             return GetWriter(ClientPacketID.EndNPCChatDialog);

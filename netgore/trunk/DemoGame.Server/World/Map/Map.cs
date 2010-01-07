@@ -473,13 +473,22 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Send a packet to every user in the map within a reasonable
-        /// range from the origin. Use this for packets that only affect
-        /// those who are already in view from the origin such as brief
-        /// visual effects.
+        /// Send a packet to every user in the map within a reasonable range from the origin. Use this for packets
+        /// that only affect those who are already in view from the origin such as brief visual effects.
         /// </summary>
-        /// <param name="origin">Position in which the event creating the packet triggered</param>
-        /// <param name="data">BitStream containing the data to send</param>
+        /// <param name="origin">The <see cref="ISpatial"/> that the event comes from.</param>
+        /// <param name="data">BitStream containing the data to send.</param>
+        public void SendToArea(ISpatial origin, BitStream data)
+        {
+            SendToArea(origin.Position + (origin.Size / 2f), data);
+        }
+
+        /// <summary>
+        /// Send a packet to every user in the map within a reasonable range from the origin. Use this for packets
+        /// that only affect those who are already in view from the origin such as brief visual effects.
+        /// </summary>
+        /// <param name="origin">Position in which the event creating the packet triggered.</param>
+        /// <param name="data">BitStream containing the data to send.</param>
         public void SendToArea(Vector2 origin, BitStream data)
         {
             if (data == null)
@@ -491,14 +500,11 @@ namespace DemoGame.Server
 
             foreach (User user in Users)
             {
-                if (user != null)
-                {
-                    Vector2 p = user.Position;
-                    if (p.X > min.X && p.Y > min.Y && p.X < max.X && p.Y < max.Y)
-                        user.Send(data);
-                }
-                else
-                    Debug.Fail("Null user found in Map's Users list.");
+                Debug.Assert(user != null, "There shouldn't be null users in the Users list!");
+
+                Vector2 p = user.Position;
+                if (p.X > min.X && p.Y > min.Y && p.X < max.X && p.Y < max.Y)
+                    user.Send(data);
             }
         }
 

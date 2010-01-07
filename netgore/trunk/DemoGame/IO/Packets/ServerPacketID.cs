@@ -22,6 +22,7 @@ namespace DemoGame
         CreateAccountSuccessful,
         CreateAccountUnsuccessful,
         CreateDynamicEntity,
+        Emote,
         EndChatDialog,
         LoginSuccessful,
         LoginUnsuccessful,

@@ -100,6 +100,26 @@ namespace DemoGame.Server
             user.ShoppingState.TryPurchase(slot, amount);
         }
 
+        [MessageHandler((byte)ClientPacketID.Emoticon)]
+        void RecvEmoticon(IIPSocket conn, BitStream r)
+        {
+            var emoticon = r.ReadEnum(EmoticonHelper.Instance);
+
+            if (!EnumHelper<Emoticon>.IsDefined(emoticon))
+            {
+                const string errmsg = "Attempted to use undefined emoticon `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, emoticon);
+                return;
+            }
+
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.Emote(emoticon);
+        }
+
         [MessageHandler((byte)ClientPacketID.DropInventoryItem)]
         void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
