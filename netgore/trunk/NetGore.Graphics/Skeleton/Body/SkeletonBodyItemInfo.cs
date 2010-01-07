@@ -13,24 +13,23 @@ namespace NetGore.Graphics
         const string _offsetValueKey = "Offset";
         const string _originValueKey = "Origin";
         const string _sourceValueKey = "Source";
-        const string _spriteCategorizationValueKey = "Sprite";
+        const string _grhIndexValueKey = "GrhIndex";
 
         string _destName;
         string _sourceName;
-        SpriteCategorization _spriteCategorization;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBodyItemInfo"/> class.
         /// </summary>
-        /// <param name="categorization">The <see cref="SpriteCategorization"/> for the sprite to draw for the body item.</param>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/> for the sprite to draw for the body item.</param>
         /// <param name="sourceName">Name of the source node.</param>
         /// <param name="destName">Name of the destination node (String.Empty for no destination).</param>
         /// <param name="offset">Grh drawing offset.</param>
         /// <param name="origin">Grh drawing origin.</param>
-        public SkeletonBodyItemInfo(SpriteCategorization categorization, string sourceName, string destName, Vector2 offset,
+        public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset,
                                     Vector2 origin)
         {
-            _spriteCategorization = categorization;
+            GrhIndex = grhIndex;
             _sourceName = sourceName;
             _destName = destName;
             Offset = offset;
@@ -69,16 +68,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the categorization information of the sprite to use.
+        /// Gets or sets the <see cref="GrhIndex"/> for the sprite to draw for this body item.
         /// </summary>
-        public SpriteCategorization SpriteCategorization
-        {
-            get { return _spriteCategorization; }
-        }
+        public GrhIndex GrhIndex { get; set; }
 
         public void Read(IValueReader reader)
         {
-            _spriteCategorization = reader.ReadSpriteCategorization(_spriteCategorizationValueKey);
+            GrhIndex = reader.ReadGrhIndex(_grhIndexValueKey);
             _sourceName = reader.ReadString(_sourceValueKey);
             _destName = reader.ReadString(_destValueKey);
             Offset = reader.ReadVector2(_offsetValueKey);
@@ -87,7 +83,7 @@ namespace NetGore.Graphics
 
         public void Write(IValueWriter writer)
         {
-            writer.Write(_spriteCategorizationValueKey, _spriteCategorization);
+            writer.Write(_grhIndexValueKey, GrhIndex);
             writer.Write(_sourceValueKey, SourceName);
             writer.Write(_destValueKey, DestName);
             writer.Write(_offsetValueKey, Offset);
