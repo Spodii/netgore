@@ -111,7 +111,8 @@ namespace NetGore.EditorTools
             string key = GetImageKey(grhData);
             Image img = CreateImage(grhData);
 
-            // If the image already exists, remove the old one and add this new one
+            // If the image already exists, remove the old one and add this new one. This should only happen if, for some
+            // reason, we try to add the GrhData to the image list twice.
             if (ImageList.Images.ContainsKey(key))
             {
                 var tempImg = ImageList.Images[key];
