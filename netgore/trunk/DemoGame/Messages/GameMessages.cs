@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -25,24 +27,31 @@ namespace DemoGame
         const string _languageFileSuffix = ".txt";
 
         /// <summary>
-        /// Reference to the GameMessages of the default language.
+        /// The <see cref="GameMessages"/> instance for the default language.
         /// </summary>
-        static readonly GameMessages _defaultMessages = new GameMessages();
+        static readonly GameMessages _defaultMessages;
+
+        /// <summary>
+        /// Contains the instances of the <see cref="GameMessages"/> indexed by language.
+        /// </summary>
+        static readonly Dictionary<string, GameMessages> _instances;
 
         readonly string _language;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameMessages"/> class.
+        /// Initializes the <see cref="GameMessages"/> class.
         /// </summary>
-        public GameMessages() : this(_defaultLanguageName)
+        static GameMessages()
         {
+            _instances = new Dictionary<string, GameMessages>(StringComparer.OrdinalIgnoreCase);
+            _defaultMessages = Create();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameMessages"/> class.
         /// </summary>
         /// <param name="language">Name of the language to load.</param>
-        public GameMessages(string language)
+        GameMessages(string language)
             : base(ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix), _defaultMessages)
         {
             _language = language;
@@ -60,22 +69,48 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the IEqualityComparer to use for collections created by this collection.
-        /// </summary>
-        /// <returns>
-        /// The IEqualityComparer to use for collections created by this collection.
-        /// </returns>
-        protected override System.Collections.Generic.IEqualityComparer<GameMessage> GetEqualityComparer()
-        {
-            return EnumComparer<GameMessage>.Instance;
-        }
-
-        /// <summary>
         /// Gets the name of this language.
         /// </summary>
         public string Language
         {
             get { return _language; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GameMessages"/> for the default language.
+        /// </summary>
+        /// <returns>The <see cref="GameMessages"/> for the default language.</returns>
+        public static GameMessages Create()
+        {
+            return Create(_defaultLanguageName);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GameMessages"/> for the specified language.
+        /// </summary>
+        /// <param name="language">The game message language.</param>
+        /// <returns>The <see cref="GameMessages"/> for the specified language.</returns>
+        public static GameMessages Create(string language)
+        {
+            GameMessages instance;
+            if (!_instances.TryGetValue(language, out instance))
+            {
+                instance = new GameMessages(language);
+                _instances.Add(language, instance);
+            }
+
+            return instance;
+        }
+
+        /// <summary>
+        /// Gets the IEqualityComparer to use for collections created by this collection.
+        /// </summary>
+        /// <returns>
+        /// The IEqualityComparer to use for collections created by this collection.
+        /// </returns>
+        protected override IEqualityComparer<GameMessage> GetEqualityComparer()
+        {
+            return EnumComparer<GameMessage>.Instance;
         }
 
         /// <summary>
