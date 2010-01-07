@@ -297,7 +297,7 @@ namespace NetGore.Network
             ProcessRecvBuffer();
 
             // We can start receiving again since we are done playing with the receive buffer
-            if (_socket.Connected)
+            if (_socket != null && _socket.Connected)
             {
                 e.SetBuffer(_recvBufferPos, MaxRecvSize); // Inconsistant size with the other SetBuffer for recv
                 if (!_socket.ReceiveAsync(e))
