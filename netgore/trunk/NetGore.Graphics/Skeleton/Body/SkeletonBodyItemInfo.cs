@@ -10,10 +10,10 @@ namespace NetGore.Graphics
     public class SkeletonBodyItemInfo
     {
         const string _destValueKey = "Destination";
+        const string _grhIndexValueKey = "GrhIndex";
         const string _offsetValueKey = "Offset";
         const string _originValueKey = "Origin";
         const string _sourceValueKey = "Source";
-        const string _grhIndexValueKey = "GrhIndex";
 
         string _destName;
         string _sourceName;
@@ -26,8 +26,7 @@ namespace NetGore.Graphics
         /// <param name="destName">Name of the destination node (String.Empty for no destination).</param>
         /// <param name="offset">Grh drawing offset.</param>
         /// <param name="origin">Grh drawing origin.</param>
-        public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset,
-                                    Vector2 origin)
+        public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset, Vector2 origin)
         {
             GrhIndex = grhIndex;
             _sourceName = sourceName;
@@ -50,6 +49,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GrhIndex"/> for the sprite to draw for this body item.
+        /// </summary>
+        public GrhIndex GrhIndex { get; set; }
+
+        /// <summary>
         /// Gets or sets the Grh drawing offset.
         /// </summary>
         public Vector2 Offset { get; set; }
@@ -66,11 +70,6 @@ namespace NetGore.Graphics
         {
             get { return _sourceName; }
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GrhIndex"/> for the sprite to draw for this body item.
-        /// </summary>
-        public GrhIndex GrhIndex { get; set; }
 
         public void Read(IValueReader reader)
         {

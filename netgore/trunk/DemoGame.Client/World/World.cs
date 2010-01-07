@@ -16,6 +16,8 @@ namespace DemoGame.Client
     public class World : WorldBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly MapDrawEventHandler _drawEmoticonHandler = DrawEmoticonsHandler;
+        static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
         readonly ICamera2D _camera;
 
@@ -69,9 +71,7 @@ namespace DemoGame.Client
 
                 // Remove the map event hooks from the old map
                 if (_map != null)
-                {
                     _map.OnEndDrawLayer -= _drawEmoticonHandler;
-                }
 
                 // Set the map
                 _map = value;
@@ -79,29 +79,11 @@ namespace DemoGame.Client
 
                 // Add the map event hooks to the new map
                 if (_map != null)
-                {
                     _map.OnEndDrawLayer += _drawEmoticonHandler;
-                }
 
                 if (OnChangeMap != null)
                     OnChangeMap(this, _map);
             }
-        }
-
-        static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
-        static readonly MapDrawEventHandler _drawEmoticonHandler = DrawEmoticonsHandler;
-
-        /// <summary>
-        /// Handles drawing the emoticons.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="layer">The layer.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        static void DrawEmoticonsHandler(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
-        {
-            if (layer == MapRenderLayer.Chararacter)
-                _emoticonDisplayManager.Draw(spriteBatch);
         }
 
         /// <summary>
@@ -138,6 +120,19 @@ namespace DemoGame.Client
         public void Draw(SpriteBatch sb)
         {
             _map.Draw(sb, Camera);
+        }
+
+        /// <summary>
+        /// Handles drawing the emoticons.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="layer">The layer.</param>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        /// <param name="camera">The camera.</param>
+        static void DrawEmoticonsHandler(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
+        {
+            if (layer == MapRenderLayer.Chararacter)
+                _emoticonDisplayManager.Draw(spriteBatch);
         }
 
         /// <summary>

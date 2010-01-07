@@ -187,19 +187,19 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the maximum length of the Text in characters. If this value is less than or equal to 0, then
+        /// no limit will be assumed. The limitation only applies to input characters through key events. This limit
+        /// can still be surpassed by manually setting the text.
+        /// </summary>
+        public int MaxInputTextLength { get; set; }
+
+        /// <summary>
         /// Gets the maximum number of possible visible lines. Only valid is <see cref="IsMultiLine"/> is true.
         /// </summary>
         public int MaxVisibleLines
         {
             get { return _maxVisibleLines; }
         }
-
-        /// <summary>
-        /// Gets or sets the maximum length of the Text in characters. If this value is less than or equal to 0, then
-        /// no limit will be assumed. The limitation only applies to input characters through key events. This limit
-        /// can still be surpassed by manually setting the text.
-        /// </summary>
-        public int MaxInputTextLength { get; set; }
 
         /// <summary>
         /// Gets or sets the text in this <see cref="TextBox"/>. Please beware that setting the text through this

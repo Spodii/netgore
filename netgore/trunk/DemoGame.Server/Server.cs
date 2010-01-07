@@ -162,6 +162,36 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles the request to create a new account.
+        /// </summary>
+        /// <param name="conn">Connection that the request was made on.</param>
+        /// <param name="name">Name of the account.</param>
+        /// <param name="password">Entered password for this account.</param>
+        /// <param name="email">The email address.</param>
+        public void CreateAccount(IIPSocket conn, string name, string password, string email)
+        {
+            ThreadAsserts.IsMainThread();
+
+            if (conn == null)
+            {
+                if (log.IsErrorEnabled)
+                    log.Error("conn is null.");
+                return;
+            }
+
+            // Create the account
+            AccountID id;
+            string errorMessage;
+            bool success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id, out errorMessage);
+
+            // Send the appropriate success message
+            using (var pw = ServerPacket.CreateAccount(success, errorMessage))
+            {
+                conn.Send(pw);
+            }
+        }
+
+        /// <summary>
         /// Creates a <see cref="ScriptTypeCollection"/> with the specified name.
         /// </summary>
         /// <param name="name">Name of the <see cref="ScriptTypeCollection"/>.</param>
@@ -347,36 +377,6 @@ namespace DemoGame.Server
             if (motdLines.Length > 0)
                 _motd.AddRange(motdLines);
             _motd.TrimExcess();
-        }
-
-        /// <summary>
-        /// Handles the request to create a new account.
-        /// </summary>
-        /// <param name="conn">Connection that the request was made on.</param>
-        /// <param name="name">Name of the account.</param>
-        /// <param name="password">Entered password for this account.</param>
-        /// <param name="email">The email address.</param>
-        public void CreateAccount(IIPSocket conn, string name, string password, string email)
-        {
-            ThreadAsserts.IsMainThread();
-
-            if (conn == null)
-            {
-                if (log.IsErrorEnabled)
-                    log.Error("conn is null.");
-                return;
-            }
-
-            // Create the account
-            AccountID id;
-            string errorMessage;
-            bool success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id, out errorMessage);
-
-            // Send the appropriate success message
-            using (var pw = ServerPacket.CreateAccount(success, errorMessage))
-            {
-                conn.Send(pw);
-            }
         }
 
         /// <summary>

@@ -95,7 +95,8 @@ namespace DemoGame.Server
 
             AccountID accountID;
             string errorMessage;
-            bool success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID, out errorMessage);
+            bool success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID,
+                                                        out errorMessage);
 
             if (success)
                 return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);

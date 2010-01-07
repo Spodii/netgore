@@ -62,8 +62,10 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.PickUp, minPickupRate, CanUserMove, HandleGameControl_PickUp);
 
             CreateAndAdd(GameControlsKeys.EmoteEllipsis, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Ellipsis));
-            CreateAndAdd(GameControlsKeys.EmoteExclamation, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Exclamation));
-            CreateAndAdd(GameControlsKeys.EmoteHeartbroken, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Heartbroken));
+            CreateAndAdd(GameControlsKeys.EmoteExclamation, minEmoteRate, () => true,
+                         x => HandleGameControl_Emote(Emoticon.Exclamation));
+            CreateAndAdd(GameControlsKeys.EmoteHeartbroken, minEmoteRate, () => true,
+                         x => HandleGameControl_Emote(Emoticon.Heartbroken));
             CreateAndAdd(GameControlsKeys.EmoteHearts, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Hearts));
             CreateAndAdd(GameControlsKeys.EmoteMeat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
             CreateAndAdd(GameControlsKeys.EmoteQuestion, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Question));

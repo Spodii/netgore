@@ -47,14 +47,17 @@ namespace DemoGame.Client
         public override void Initialize()
         {
             _gui = ScreenManager.CreateGUIManager("Font/Menu");
-            
+
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "New Account", "Options", "Quit");
             menuButtons["Login"].OnClick += delegate { ScreenManager.SetScreen(LoginScreen.ScreenName); };
             menuButtons["New Account"].OnClick += delegate { ScreenManager.SetScreen(NewAccountScreen.ScreenName); };
-            menuButtons["Options"].OnClick += delegate { /* Not implemented */ };
+            menuButtons["Options"].OnClick += delegate
+                                              {
+                                                  /* Not implemented */
+                                              };
             menuButtons["Quit"].OnClick += delegate { ScreenManager.Game.Exit(); };
         }
 

@@ -27,14 +27,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter Emote(MapEntityIndex mapEntityIndex, Emoticon emoticon)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.Emote);
-            pw.Write(mapEntityIndex);
-            pw.WriteEnum(EmoticonHelper.Instance, emoticon);
-            return pw;
-        }
-
         public static PacketWriter CharAttack(MapEntityIndex mapEntityIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharAttack);
@@ -66,6 +58,15 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter CreateAccount(bool successful, string failureMessage)
+        {
+            var pw = GetWriter(ServerPacketID.CreateAccount);
+            pw.Write(successful);
+            if (!successful)
+                pw.Write(failureMessage);
+            return pw;
+        }
+
         public static void CreateDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)
         {
             pw.Write(ServerPacketID.CreateDynamicEntity);
@@ -77,6 +78,14 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter();
             CreateDynamicEntity(pw, dynamicEntity);
+            return pw;
+        }
+
+        public static PacketWriter Emote(MapEntityIndex mapEntityIndex, Emoticon emoticon)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.Emote);
+            pw.Write(mapEntityIndex);
+            pw.WriteEnum(EmoticonHelper.Instance, emoticon);
             return pw;
         }
 
@@ -114,15 +123,6 @@ namespace DemoGame.Server
         public static PacketWriter LoginSuccessful()
         {
             return GetWriter(ServerPacketID.LoginSuccessful);
-        }
-
-        public static PacketWriter CreateAccount(bool successful, string failureMessage)
-        {
-            var pw = GetWriter(ServerPacketID.CreateAccount);
-            pw.Write(successful);
-            if (!successful)
-                pw.Write(failureMessage);
-            return pw;
         }
 
         /// <summary>

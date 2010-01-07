@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
@@ -107,7 +106,7 @@ namespace DemoGame.Server
         public static string EncodePassword(string originalPassword)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
-            
+
             byte[] originalBytes = ASCIIEncoding.Default.GetBytes(originalPassword);
             byte[] encodedBytes = md5.ComputeHash(originalBytes);
 
@@ -402,8 +401,8 @@ namespace DemoGame.Server
         /// <param name="errorMessage">When this method returns false, contains a message describing why the
         /// account failed to be created.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(IDbController dbController, IIPSocket socket, string name, string password, string email,
-                                            out AccountID accountID, out string errorMessage)
+        public static bool TryCreateAccount(IDbController dbController, IIPSocket socket, string name, string password,
+                                            string email, out AccountID accountID, out string errorMessage)
         {
             accountID = new AccountID(0);
             errorMessage = string.Empty;
@@ -426,7 +425,7 @@ namespace DemoGame.Server
                 errorMessage = "Invalid email";
                 return false;
             }
-            
+
             // Get the IP to use
             uint ip = socket != null ? socket.IP : GameData.DefaultCreateAccountIP;
 

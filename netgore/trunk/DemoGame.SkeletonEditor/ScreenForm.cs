@@ -146,9 +146,8 @@ namespace DemoGame.SkeletonEditor
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
             var spriteCategorization = new SpriteCategorization("Character.Naked", "Body");
             var grhData = GrhInfo.GetData(spriteCategorization);
-            SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(grhData.GrhIndex,
-                                                                         _skeleton.RootNode.Name, string.Empty, Vector2.Zero,
-                                                                         Vector2.Zero);
+            SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(grhData.GrhIndex, _skeleton.RootNode.Name, string.Empty,
+                                                                         Vector2.Zero, Vector2.Zero);
             SkeletonBodyItem bodyItem = new SkeletonBodyItem(bodyItemInfo);
             SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
             UpdateBodyList();

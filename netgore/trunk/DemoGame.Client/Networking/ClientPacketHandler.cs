@@ -226,6 +226,16 @@ namespace DemoGame.Client
                 GameplayScreen.ChatBubbleManager.Add(entity, text, GetTime());
         }
 
+        [MessageHandler((byte)ServerPacketID.CreateAccount)]
+        void RecvCreateAccount(IIPSocket conn, BitStream r)
+        {
+            bool successful = r.ReadBool();
+            string errorMessage = successful ? string.Empty : r.ReadString();
+
+            if (OnCreateAccount != null)
+                OnCreateAccount(conn, successful, errorMessage);
+        }
+
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
         void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
@@ -245,12 +255,6 @@ namespace DemoGame.Client
                                dynamicEntity.GetType());
         }
 
-        [MessageHandler((byte)ServerPacketID.EndChatDialog)]
-        void RecvEndChatDialog(IIPSocket conn, BitStream r)
-        {
-            GameplayScreen.ChatDialogForm.EndDialog();
-        }
-
         [MessageHandler((byte)ServerPacketID.Emote)]
         void RecvEmote(IIPSocket conn, BitStream r)
         {
@@ -264,21 +268,17 @@ namespace DemoGame.Client
             EmoticonDisplayManager.Instance.Add(entity, emoticon, GetTime());
         }
 
+        [MessageHandler((byte)ServerPacketID.EndChatDialog)]
+        void RecvEndChatDialog(IIPSocket conn, BitStream r)
+        {
+            GameplayScreen.ChatDialogForm.EndDialog();
+        }
+
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
             if (OnLoginSuccessful != null)
                 OnLoginSuccessful(conn);
-        }
-
-        [MessageHandler((byte)ServerPacketID.CreateAccount)]
-        void RecvCreateAccount(IIPSocket conn, BitStream r)
-        {
-            bool successful = r.ReadBool();
-            string errorMessage = successful ? string.Empty : r.ReadString();
-
-            if (OnCreateAccount != null)
-                OnCreateAccount(conn, successful, errorMessage);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]
