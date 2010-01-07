@@ -40,6 +40,9 @@ namespace NetGore.IO
         /// to this collection from this secondary collection.</param>
         protected MessageCollectionBase(string file, IEnumerable<KeyValuePair<T, string>> secondary)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Loading MessageCollectionBase from file `{0}`.", file);
+
             _messages = Load(file, secondary);
         }
 
@@ -56,8 +59,8 @@ namespace NetGore.IO
                     continue;
 
                 dest.Add(sourceMsg.Key, sourceMsg.Value);
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Added message `{0}` from default messages.", sourceMsg.Key.ToString());
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Added message `{0}` from default messages.", sourceMsg.Key.ToString());
             }
         }
 
@@ -74,8 +77,8 @@ namespace NetGore.IO
             string ret;
             if (!_messages.TryGetValue(id, out ret))
             {
-                if (log.IsInfoEnabled)
-                    log.WarnFormat("Failed to load message `{0}`.", id.ToString());
+                if (log.IsWarnEnabled)
+                    log.WarnFormat("Failed to load message `{0}` since the ID did not exist in the dictionary.", id.ToString());
                 return null;
             }
 
