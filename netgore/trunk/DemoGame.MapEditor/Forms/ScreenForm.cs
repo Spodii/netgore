@@ -344,8 +344,9 @@ namespace DemoGame.MapEditor
 
         void btnDeleteBGItem_Click(object sender, EventArgs e)
         {
-            // TODO: Add background item deletion support
-            Debug.Fail("Not implemented...");
+            var selectedBgImage =lstBGItems.SelectedItem as BackgroundImage;
+            if (selectedBgImage != null)
+                Map.RemoveBackgroundImage(selectedBgImage);
         }
 
         void btnDeleteSpawn_Click(object sender, EventArgs e)
@@ -357,12 +358,6 @@ namespace DemoGame.MapEditor
         {
             BackgroundLayer bgLayer = new BackgroundLayer(Map, Map);
             Map.AddBackgroundImage(bgLayer);
-        }
-
-        void btnNewBGSprite_Click(object sender, EventArgs e)
-        {
-            // TODO: Add background sprite support...
-            Debug.Fail("Not implemented...");
         }
 
         void btnNewEntity_Click(object sender, EventArgs e)

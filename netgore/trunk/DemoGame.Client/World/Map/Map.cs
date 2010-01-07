@@ -110,9 +110,23 @@ namespace DemoGame.Client
             get { return _particleEffects; }
         }
 
+        /// <summary>
+        /// Adds the <paramref name="bgImage"/> to the map.
+        /// </summary>
+        /// <param name="bgImage">The <see cref="BackgroundImage"/> to add.</param>
         public void AddBackgroundImage(BackgroundImage bgImage)
         {
             _backgroundImages.Add(bgImage);
+        }
+
+        /// <summary>
+        /// Removes the <paramref name="bgImage"/> from the map.
+        /// </summary>
+        /// <param name="bgImage">The <see cref="BackgroundImage"/> to remove.</param>
+        /// <returns>True if successfully removed; otherwise false.</returns>
+        public bool RemoveBackgroundImage(BackgroundImage bgImage)
+        {
+            return _backgroundImages.Remove(bgImage);
         }
 
         /// <summary>

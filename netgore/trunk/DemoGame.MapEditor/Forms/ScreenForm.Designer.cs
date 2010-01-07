@@ -72,7 +72,6 @@ namespace DemoGame.MapEditor
             this.lstEntities = new DemoGame.MapEditor.EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.pgBGItem = new System.Windows.Forms.PropertyGrid();
-            this.btnNewBGSprite = new System.Windows.Forms.Button();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
             this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
@@ -639,7 +638,6 @@ namespace DemoGame.MapEditor
             // tabPageBackground
             // 
             this.tabPageBackground.Controls.Add(this.pgBGItem);
-            this.tabPageBackground.Controls.Add(this.btnNewBGSprite);
             this.tabPageBackground.Controls.Add(this.btnNewBGLayer);
             this.tabPageBackground.Controls.Add(this.btnDeleteBGItem);
             this.tabPageBackground.Controls.Add(this.lstBGItems);
@@ -657,16 +655,6 @@ namespace DemoGame.MapEditor
             this.pgBGItem.Size = new System.Drawing.Size(373, 397);
             this.pgBGItem.TabIndex = 5;
             this.pgBGItem.ToolbarVisible = false;
-            // 
-            // btnNewBGSprite
-            // 
-            this.btnNewBGSprite.Location = new System.Drawing.Point(163, 143);
-            this.btnNewBGSprite.Name = "btnNewBGSprite";
-            this.btnNewBGSprite.Size = new System.Drawing.Size(74, 24);
-            this.btnNewBGSprite.TabIndex = 4;
-            this.btnNewBGSprite.Text = "New Sprite";
-            this.btnNewBGSprite.UseVisualStyleBackColor = true;
-            this.btnNewBGSprite.Click += new System.EventHandler(this.btnNewBGSprite_Click);
             // 
             // btnNewBGLayer
             // 
@@ -1152,7 +1140,6 @@ namespace DemoGame.MapEditor
         private EntityListBox lstEntities;
         private System.Windows.Forms.TabPage tabPageBackground;
         private System.Windows.Forms.PropertyGrid pgBGItem;
-        private System.Windows.Forms.Button btnNewBGSprite;
         private System.Windows.Forms.Button btnNewBGLayer;
         private System.Windows.Forms.Button btnDeleteBGItem;
         private BackgroundItemListBox lstBGItems;
