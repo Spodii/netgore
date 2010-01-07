@@ -18,7 +18,7 @@ namespace NetGore.Graphics
         public SkeletonBodyItem(SkeletonBodyItemInfo itemInfo)
         {
             _itemInfo = itemInfo;
-            var grhData = GrhInfo.GetData(_itemInfo.SpriteCategorization);
+            var grhData = GrhInfo.GetData(_itemInfo.GrhIndex);
             if (grhData != null)
                 Grh = new Grh(grhData, AnimType.Loop, 0);
         }

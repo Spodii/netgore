@@ -3,14 +3,14 @@
   <BodyItems>
     <Count>2</Count>
     <Item0>
-      <Sprite>Character.Crystal.Head</Sprite>
+      <GrhIndex>88</GrhIndex>
       <Source>Head</Source>
       <Destination />
       <Offset>0,-1</Offset>
       <Origin>9,9</Origin>
     </Item0>
     <Item1>
-      <Sprite>Character.Crystal.Neck</Sprite>
+      <GrhIndex>91</GrhIndex>
       <Source>Neck</Source>
       <Destination>Head</Destination>
       <Offset>0,0</Offset>
