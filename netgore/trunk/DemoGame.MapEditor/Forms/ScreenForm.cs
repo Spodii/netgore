@@ -1217,5 +1217,11 @@ namespace DemoGame.MapEditor
                 }
             }
         }
+
+        private void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (pgSelectedPE.SelectedObject != lstMapParticleEffects.SelectedItem)
+                pgSelectedPE.SelectedObject = lstMapParticleEffects.SelectedItem;
+        }
     }
 }
