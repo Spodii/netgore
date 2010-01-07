@@ -105,16 +105,13 @@ namespace NetGore.EditorTools
         /// <param name="grhData">GrhData to add.</param>
         static void AddImage(GrhData grhData)
         {
-            if (grhData == null)
-                return;
-
-            if (grhData.TextureName == null)
+            if (grhData == null || grhData.TextureName == null)
                 return;
 
             string key = GetImageKey(grhData);
-
             Image img = CreateImage(grhData);
 
+            // If the image already exists, remove the old one and add this new one
             if (ImageList.Images.ContainsKey(key))
             {
                 var tempImg = ImageList.Images[key];
@@ -124,6 +121,7 @@ namespace NetGore.EditorTools
                     tempImg.Dispose();
             }
 
+            // Check that the image was created successfully
             if (img == null)
             {
                 const string errmsg =
