@@ -39,14 +39,17 @@ namespace DemoGame.Client
         #region IDrawable Members
 
         /// <summary>
-        /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
+        /// Unused by the <see cref="TeleportEntity"/>.
         /// </summary>
-        public event MapRenderLayerChange OnChangeRenderLayer;
+        event MapRenderLayerChange IDrawable.OnChangeRenderLayer
+        {
+            add { }
+            remove { }
+        }
 
         /// <summary>
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
-        /// <value></value>
         [Browsable(false)]
         public MapRenderLayer MapRenderLayer
         {

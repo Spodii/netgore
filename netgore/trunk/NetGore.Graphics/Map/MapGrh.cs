@@ -218,9 +218,13 @@ namespace NetGore.Graphics
         public event SpatialMoveEventHandler OnMove;
 
         /// <summary>
-        /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
+        /// Unused by the <see cref="MapGrh"/>.
         /// </summary>
-        public event SpatialResizeEventHandler OnResize;
+        event SpatialResizeEventHandler ISpatial.OnResize
+        {
+            add { }
+            remove { }
+        }
 
         #endregion
     }
