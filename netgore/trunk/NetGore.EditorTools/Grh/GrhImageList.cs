@@ -105,7 +105,7 @@ namespace NetGore.EditorTools
         /// <param name="grhData">GrhData to add.</param>
         static void AddImage(GrhData grhData)
         {
-            if (grhData == null || grhData.TextureName == null)
+            if (grhData == null || grhData.IsAnimated)
                 return;
 
             string key = GetImageKey(grhData);
