@@ -83,6 +83,31 @@ namespace NetGore
         /// Combines all items in an IEnumerable together into a delimited string.
         /// </summary>
         /// <param name="source">A sequence that contains elements to be imploded.</param>
+        /// <returns>All items in an IEnumerable together into a delimited string.</returns>
+        public static string Implode(this IEnumerable<string> source)
+        {
+            return Implode(source, _defaultImplodeDelimiter);
+        }
+
+        /// <summary>
+        /// Combines all items in an IEnumerable together into a delimited string.
+        /// </summary>
+        /// <param name="source">A sequence that contains elements to be imploded.</param>
+        /// <returns>All items in an IEnumerable together into a delimited string.</returns>
+        public static string Implode<T>(this IEnumerable<T> source)
+        {
+            return Implode(source, _defaultImplodeDelimiter);
+        }
+
+        /// <summary>
+        /// The default delimiter to use for Implode.
+        /// </summary>
+        const string _defaultImplodeDelimiter = ", ";
+
+        /// <summary>
+        /// Combines all items in an IEnumerable together into a delimited string.
+        /// </summary>
+        /// <param name="source">A sequence that contains elements to be imploded.</param>
         /// <param name="delimiter">Character to use when combining the characters.</param>
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
         public static string Implode(this IEnumerable<string> source, string delimiter)

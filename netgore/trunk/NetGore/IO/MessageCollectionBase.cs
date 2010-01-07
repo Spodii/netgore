@@ -125,6 +125,12 @@ namespace NetGore.IO
             return parsed;
         }
 
+        /// <summary>
+        /// Loads the messages from a file.
+        /// </summary>
+        /// <param name="filePath">The full path of the file to load the message from.</param>
+        /// <param name="secondary">The collection of messages to add missing messages from.</param>
+        /// <returns>A dictionary containing the loaded messages.</returns>
         Dictionary<T, string> Load(string filePath, IEnumerable<KeyValuePair<T, string>> secondary)
         {
             // Check if the file exists
@@ -136,7 +142,7 @@ namespace NetGore.IO
                 throw new FileNotFoundException();
             }
 
-            var loadedMessages = new Dictionary<T, string>();
+            var loadedMessages = new Dictionary<T, string>(GetEqualityComparer());
 
             // Load all the lines in the file
             var lines = File.ReadAllLines(filePath);
@@ -180,6 +186,15 @@ namespace NetGore.IO
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets the IEqualityComparer to use for collections created by this collection.
+        /// </summary>
+        /// <returns>The IEqualityComparer to use for collections created by this collection.</returns>
+        protected virtual IEqualityComparer<T> GetEqualityComparer()
+        {
+            return EqualityComparer<T>.Default;
         }
 
         /// <summary>

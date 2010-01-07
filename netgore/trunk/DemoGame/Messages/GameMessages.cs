@@ -1,4 +1,8 @@
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame
@@ -8,6 +12,8 @@ namespace DemoGame
     /// </summary>
     public class GameMessages : MessageCollectionBase<GameMessage>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Name of the default language to use.
         /// </summary>
@@ -40,6 +46,28 @@ namespace DemoGame
             : base(ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix), _defaultMessages)
         {
             _language = language;
+
+            // Ensure we have all the messages loaded
+            var missingKeys = EnumHelper<GameMessage>.Values.Except(this.Select(y => y.Key));
+            if (missingKeys.Count() > 0)
+            {
+                const string errmsg = "GameMessages `{0}` for language `{1}` did not contain all GameMessages. Missing keys: {2}";
+                string err = string.Format(errmsg, this, _language, missingKeys.Implode());
+                if (log.IsErrorEnabled)
+                    log.Error(err);
+                Debug.Fail(err);
+            }
+        }
+
+        /// <summary>
+        /// Gets the IEqualityComparer to use for collections created by this collection.
+        /// </summary>
+        /// <returns>
+        /// The IEqualityComparer to use for collections created by this collection.
+        /// </returns>
+        protected override System.Collections.Generic.IEqualityComparer<GameMessage> GetEqualityComparer()
+        {
+            return EnumComparer<GameMessage>.Instance;
         }
 
         /// <summary>
