@@ -17,47 +17,24 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class AutomaticGrhDataUpdater
     {
-        static int _defaultAnimationSpeed = 400;
-
-        /// <summary>
-        /// Gets or sets the default speed of a new animation when no speed is specified.
-        /// </summary>
-        public static int DefaultAnimationSpeed
-        {
-            get { return _defaultAnimationSpeed; }
-            set { _defaultAnimationSpeed = value; }
-        }
-
         /// <summary>
         /// Finds the directories used to store the frames for automatic animations.
         /// </summary>
         /// <param name="rootDir">Root directory to search from.</param>
         /// <returns>List of AnimationRegexInfos for each of the directories with the proper syntax for
         /// containing the frames of an animation.</returns>
-        static List<AnimationRegexInfo> FindFrameDirs(string rootDir)
+        static List<AutomaticAnimationInfo> FindFrameDirs(string rootDir)
         {
-            // The regex to match against the frames folders for automatic animations
-            const string matchRegex = ".+_(?<Title>.+)_frames_?(?<Speed>\\d+)?";
-            Regex r = new Regex(matchRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
             // Get all directories
             var dirs = Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories);
 
             // Filter out only those that match our regex
-            var ret = new List<AnimationRegexInfo>();
+            var ret = new List<AutomaticAnimationInfo>();
             foreach (string dir in dirs)
             {
-                Match m = r.Match(dir);
-                if (!m.Success)
-                    continue;
-
-                string title = m.Groups["Title"].Value;
-                int speed = DefaultAnimationSpeed;
-                if (m.Groups["Speed"].Success)
-                    speed = Parser.Invariant.ParseInt(m.Groups["Speed"].Value);
-
-                var animationRegexInfo = new AnimationRegexInfo(dir, title, speed);
-                ret.Add(animationRegexInfo);
+                var animationRegexInfo = GrhInfo.GetAutomaticAnimationInfo(dir);
+                if (animationRegexInfo != null)
+                    ret.Add(animationRegexInfo);
             }
 
             return ret;
@@ -236,7 +213,7 @@ namespace NetGore.EditorTools
             var frameDirInfos = FindFrameDirs(rootGrhDir);
 
             var ret = new List<GrhData>();
-            foreach (AnimationRegexInfo frameDirInfo in frameDirInfos)
+            foreach (AutomaticAnimationInfo frameDirInfo in frameDirInfos)
             {
                 // Convert the parent path to the relative directory, then get the info from that
                 DirectoryInfo parentDir = Directory.GetParent(frameDirInfo.Dir);
@@ -333,40 +310,6 @@ namespace NetGore.EditorTools
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Describes a directory containing frames for an automatic animation.
-        /// </summary>
-        class AnimationRegexInfo
-        {
-            /// <summary>
-            /// Absolute path to the frames directory.
-            /// </summary>
-            public readonly string Dir;
-
-            /// <summary>
-            /// Speed to give the animation.
-            /// </summary>
-            public readonly int Speed;
-
-            /// <summary>
-            /// Title to give the animation.
-            /// </summary>
-            public readonly string Title;
-
-            /// <summary>
-            /// AnimationRegexInfo constructor.
-            /// </summary>
-            /// <param name="dir">Absolute path to the frames directory.</param>
-            /// <param name="title">Title to give the animation.</param>
-            /// <param name="speed">Speed to give the animation.</param>
-            public AnimationRegexInfo(string dir, string title, int speed)
-            {
-                Dir = dir;
-                Title = title;
-                Speed = speed;
-            }
         }
     }
 }

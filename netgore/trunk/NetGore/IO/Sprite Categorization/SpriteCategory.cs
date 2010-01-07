@@ -14,6 +14,31 @@ namespace NetGore.IO
         readonly string _value;
 
         /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(SpriteCategory a, SpriteCategory b)
+        {
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+                return ReferenceEquals(a, b);
+
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(SpriteCategory a, SpriteCategory b)
+        {
+            return !(a == b);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SpriteCategory"/> class.
         /// </summary>
         /// <param name="value">The sprite category. This value will be automatically sanitized.</param>

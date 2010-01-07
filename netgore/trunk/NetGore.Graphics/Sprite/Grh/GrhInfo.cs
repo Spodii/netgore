@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
@@ -11,10 +12,73 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
+    /// Contains the information derived from an automatic animated <see cref="GrhData"/>'s file path.
+    /// </summary>
+    public class AutomaticAnimationInfo
+    {
+        /// <summary>
+        /// Absolute path to the frames directory.
+        /// </summary>
+        public readonly string Dir;
+
+        /// <summary>
+        /// Speed of the animation.
+        /// </summary>
+        public readonly int Speed;
+
+        /// <summary>
+        /// Title of the animation sprite.
+        /// </summary>
+        public readonly string Title;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutomaticAnimationInfo"/> class.
+        /// </summary>
+        /// <param name="dir">Absolute path to the animation's frames directory.</param>
+        /// <param name="title">Title to give the animation.</param>
+        /// <param name="speed">Speed to give the animation.</param>
+        public AutomaticAnimationInfo(string dir, string title, int speed)
+        {
+            Dir = dir;
+            Title = title;
+            Speed = speed;
+        }
+    }
+
+    /// <summary>
     /// Holds the <see cref="GrhData"/>s and related methods.
     /// </summary>
     public static class GrhInfo
     {
+        static readonly Regex _automaticAnimationRegex = new Regex(".+_(?<Title>.+)_frames_(?<Speed>\\d+)",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+
+        /// <summary>
+        /// Attempts to get the <see cref="AutomaticAnimationInfo"/> for the <paramref name="directory"/>.
+        /// </summary>
+        /// <param name="directory">The absolute directory path to try to get the <see cref="AutomaticAnimationInfo"/>
+        /// for.</param>
+        /// <returns>The <see cref="AutomaticAnimationInfo"/> for the <paramref name="directory"/>, or null if
+        /// the <paramref name="directory"/> is invalid or does not match the pattern for an automatic animation.</returns>
+        public static AutomaticAnimationInfo GetAutomaticAnimationInfo(string directory)
+        {
+            const int defaultSpeed = 400;
+
+            // Get the regex match
+            Match match = _automaticAnimationRegex.Match(directory);
+            if (!match.Success)
+                return null;
+
+            // Grab the different parts, and return the values
+            string title = match.Groups["Title"].Value;
+            int speed = defaultSpeed;
+            if (match.Groups["Speed"].Success)
+                speed = Parser.Invariant.ParseInt(match.Groups["Speed"].Value);
+
+            var animationRegexInfo = new AutomaticAnimationInfo(directory, title, speed);
+            return animationRegexInfo;
+        }
+
         const string _animatedGrhDatasNodeName = "Animated";
         const string _nonAnimatedGrhDatasNodeName = "Stationary";
         const string _rootNodeName = "GrhDatas";
@@ -419,7 +483,7 @@ namespace NetGore.Graphics
                 _grhDatas.OnAdd += AddHandler;
                 _grhDatas.OnRemove += RemoveHandler;
 
-                // Read the GrhDatas (non-aniamted first, followed by animated)
+                // Read the GrhDatas (non-animated first, followed by animated)
                 XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
 
                 var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => new GrhData(x, cm));
@@ -434,6 +498,8 @@ namespace NetGore.Graphics
                     _grhDatas[(int)gd.GrhIndex] = gd;
                 }
 
+                UpdateAutomaticAnimations();
+
                 // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
                 // while in the Client, and the Client is what counts, baby!
                 _grhDatas.Trim();
@@ -442,6 +508,81 @@ namespace NetGore.Graphics
             {
                 _isLoading = false;
             }
+        }
+
+        /// <summary>
+        /// Checks if a <see cref="GrhData"/> is an animation created automatically.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to check if it is an animation that was created automatically.</param>
+        /// <returns>True if the <paramref name="grhData"/> is an animation that was created automatically; otherwise
+        /// false.</returns>
+        public static bool IsAutomaticAnimation(GrhData grhData)
+        {
+            // Must be animated
+            if (!grhData.IsAnimated)
+                return false;
+
+            // Check that all frames contain the same category
+            var firstCategory = grhData.Frames.First().Categorization.Category;
+            if (!grhData.Frames.All(x => x.Categorization.Category == firstCategory))
+                return false;
+
+            // Check that the first category matches the automatic animation pattern
+            // Only need to check the first since all categories are the same
+            if (GetAutomaticAnimationInfo(firstCategory.ToString()) == null)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Silently updates all of the automatic animations.
+        /// </summary>
+        static void UpdateAutomaticAnimations()
+        {
+            // Grab all the automatic animated GrhDatas
+            var autoAnims = GrhDatas.Where(IsAutomaticAnimation).ToArray();
+
+            foreach (var gd in autoAnims)
+            {
+                // Get the directory
+                var category = gd.Frames.First().Categorization.Category.ToString();
+                var pathSep = Path.DirectorySeparatorChar.ToString();
+                var subDir = category.Replace(SpriteCategorization.Delimiter, pathSep);
+                var tmpDir = ContentPaths.Build.Grhs.Join(subDir);
+
+                // Search for the automatic animation folder while ignoring the speed, allowing us to update if
+                // the speed changes
+                var parentDir = Directory.GetParent(tmpDir);
+                var directories = parentDir.GetDirectories("_" + gd.Categorization.Title + "_frames*");
+                if (directories.Count() > 1)
+                    throw new GrhDataException(gd, string.Format("More than one potential match for automatic GrhData `{0}` found!", gd));
+                var directory = directories.First().FullName;
+
+                // Finally, get the information from the directory path
+                var aaInfo = GetAutomaticAnimationInfo(directory);
+
+                // Check if we need to update the speed
+                if (Math.Round(1f / gd.Speed) != aaInfo.Speed)
+                {
+                    gd.Speed = 1f / aaInfo.Speed;
+                    int lastUnderscore = category.LastIndexOf('_');
+                    var newCategory = new SpriteCategory(category.Substring(0, lastUnderscore + 1) + aaInfo.Speed);
+                    foreach (var frame in gd.Frames)
+                    {
+                        var textureName = newCategory.ToString();
+                        textureName = textureName.Replace(SpriteCategorization.Delimiter, ContentAssetName.PathSeparator);
+                        textureName += ContentAssetName.PathSeparator;
+                        var frameTexName = frame.TextureName.ToString();
+                        textureName += frameTexName.Substring(frameTexName.LastIndexOf(ContentAssetName.PathSeparator) + 1);
+                        frame.ChangeTexture(new TextureAssetName(textureName));
+
+                        frame.SetCategorization(new SpriteCategorization(newCategory, frame.Categorization.Title));
+                    }
+                }
+            }
+
+            Save(ContentPaths.Dev);
         }
 
         /// <summary>

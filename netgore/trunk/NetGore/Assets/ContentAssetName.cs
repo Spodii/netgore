@@ -10,7 +10,7 @@ namespace NetGore.IO
     /// An immutable string that represents the name, or virtual path, to a content asset.
     /// </summary>
     [TypeConverter(typeof(ContentAssetNameConverter))]
-    public class ContentAssetName
+    public class ContentAssetName : IEquatable<ContentAssetName>, IComparable<ContentAssetName>
     {
         /// <summary>
         /// The string used to separate the directories.
@@ -20,12 +20,61 @@ namespace NetGore.IO
         readonly string _assetName;
 
         /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures
+        /// like a hash table. </returns>
+        public override int GetHashCode()
+        {
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(Value);
+        }
+
+        /// <summary>
+        /// Checks if this object is equal to another object.
+        /// </summary>
+        /// <param name="obj">The other object.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public override bool Equals(object obj)
+        {
+            var casted = obj as ContentAssetName;
+            if (casted != null)
+                return Equals(casted);
+
+            return false;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ContentAssetName"/> class.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>
         public ContentAssetName(string assetName)
         {
             _assetName = Sanitize(assetName);
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ContentAssetName a, ContentAssetName b)
+        {
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+                return ReferenceEquals(a, b);
+
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ContentAssetName a, ContentAssetName b)
+        {
+            return !(a == b);
         }
 
         /// <summary>
@@ -123,6 +172,30 @@ namespace NetGore.IO
                 assetName = assetName.Substring(0, assetName.Length - suffixLen);
 
             return assetName;
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(ContentAssetName other)
+        {
+            return Value.Equals(other.Value, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public int CompareTo(ContentAssetName other)
+        {
+            return StringComparer.OrdinalIgnoreCase.Compare(Value, other.Value);
         }
 
         /// <summary>
