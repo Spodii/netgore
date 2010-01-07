@@ -890,7 +890,7 @@ namespace DemoGame.SkeletonEditor
             try
             {
                 // Create the engine objects
-                _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
+                _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
                 _content = new ContentManager(GameScreen.Services, "Content");
                 _sb = new SpriteBatch(GameScreen.GraphicsDevice);
                 GrhInfo.Load(ContentPaths.Dev, _content);
@@ -904,7 +904,6 @@ namespace DemoGame.SkeletonEditor
 
                 _sb = new SpriteBatch(GameScreen.GraphicsDevice);
 
-                _camera.Min = new Vector2(-400, -400);
                 LoadFrame(Skeleton.GetFilePath(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev));
                 LoadAnim(SkeletonSet.GetFilePath(SkeletonLoader.WalkingSkeletonSetName, ContentPaths.Dev));
                 LoadBody(SkeletonBodyInfo.GetFilePath(SkeletonLoader.BasicSkeletonBodyName, ContentPaths.Dev));
