@@ -241,6 +241,9 @@ namespace DemoGame.Client
             if (string.IsNullOrEmpty(text))
                 return;
 
+            if (text.Length > GameData.MaxClientSayLength)
+                text = text.Substring(0, GameData.MaxClientSayLength);
+
             using (PacketWriter pw = ClientPacket.Say(text))
             {
                 Socket.Send(pw);

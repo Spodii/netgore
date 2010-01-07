@@ -31,7 +31,7 @@ namespace DemoGame
         /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>
-        public const int MaxClientSayLength = 255;
+        public const int MaxClientSayLength = 250;
 
         /// <summary>
         /// The maximum allowed integer-based movement speed.
