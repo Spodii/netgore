@@ -69,6 +69,8 @@
   <ItemGroup>
     <Compile Include="Asserts\ThreadAsserts.cs" />
     <Compile Include="BitOps.cs" />
+    <Compile Include="Collections\Object Pool\IObjectPool.cs" />
+    <Compile Include="Collections\Object Pool\IPoolable.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="DirectionHelper.cs" />
     <Compile Include="EngineSettings.cs" />
