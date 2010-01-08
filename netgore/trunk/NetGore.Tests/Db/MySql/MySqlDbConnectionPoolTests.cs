@@ -15,7 +15,7 @@ namespace NetGore.Tests.Db.MySql
             DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
             IDbConnection conn;
-            using (PooledDbConnection connPool = pool.Create())
+            using (PooledDbConnection connPool = pool.Acquire())
             {
                 conn = connPool.Connection;
             }
@@ -27,7 +27,7 @@ namespace NetGore.Tests.Db.MySql
         {
             DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
-            using (PooledDbConnection connPool = pool.Create())
+            using (PooledDbConnection connPool = pool.Acquire())
             {
                 DbConnection conn = connPool.Connection;
                 Assert.IsNotNull(conn);
@@ -40,25 +40,25 @@ namespace NetGore.Tests.Db.MySql
         {
             DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
-            Assert.AreEqual(0, pool.Count);
-            using (PooledDbConnection a = pool.Create())
+            Assert.AreEqual(0, pool.LiveObjects);
+            using (PooledDbConnection a = pool.Acquire())
             {
-                Assert.AreEqual(1, pool.Count);
-                using (PooledDbConnection b = pool.Create())
+                Assert.AreEqual(1, pool.LiveObjects);
+                using (PooledDbConnection b = pool.Acquire())
                 {
-                    Assert.AreEqual(2, pool.Count);
-                    using (PooledDbConnection c = pool.Create())
+                    Assert.AreEqual(2, pool.LiveObjects);
+                    using (PooledDbConnection c = pool.Acquire())
                     {
-                        Assert.AreEqual(3, pool.Count);
+                        Assert.AreEqual(3, pool.LiveObjects);
                         Assert.IsNotNull(a);
                         Assert.IsNotNull(b);
                         Assert.IsNotNull(c);
                     }
-                    Assert.AreEqual(2, pool.Count);
+                    Assert.AreEqual(2, pool.LiveObjects);
                 }
-                Assert.AreEqual(1, pool.Count);
+                Assert.AreEqual(1, pool.LiveObjects);
             }
-            Assert.AreEqual(0, pool.Count);
+            Assert.AreEqual(0, pool.LiveObjects);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace NetGore.Tests.Db.MySql
         {
             DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
 
-            using (PooledDbConnection connPool = pool.Create())
+            using (PooledDbConnection connPool = pool.Acquire())
             {
                 using (DbCommand cmd = connPool.Connection.CreateCommand())
                 {

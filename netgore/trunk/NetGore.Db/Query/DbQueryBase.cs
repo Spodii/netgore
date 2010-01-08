@@ -358,7 +358,7 @@ namespace NetGore.Db
             if (_disposed)
                 throw new MethodAccessException(_disposedErrorMessage);
 
-            return ConnectionPool.Create();
+            return ConnectionPool.Acquire();
         }
 
         /// <summary>

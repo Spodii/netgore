@@ -9,360 +9,515 @@ using log4net;
 namespace NetGore.Collections
 {
     /// <summary>
-    /// Basic object pool layout. More complex pools can override this to allow for overriding of the
-    /// Create() and Destroy() methods to do some custom handling of individual items (ie setting parameters).
+    /// Interface for an object that can be added to an object pool.
     /// </summary>
-    /// <typeparam name="T">Type of the item to be pooled.</typeparam>
-    public class ObjectPool<T> : IObjectPool<T> where T : IPoolable<T>, new()
+    public interface IPoolable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        /// <summary>
+        /// Gets or sets the index of the object in the pool. This value should never be used by anything
+        /// other than the pool that owns this object.
+        /// </summary>
+        int PoolIndex { get; set; }
+    }
+
+    /// <summary>
+    /// Interface for an object pool.
+    /// </summary>
+    /// <typeparam name="T">The type of object to be pooled.</typeparam>
+    public interface IObjectPool<T> where T : class, IPoolable
+    {
+        /// <summary>
+        /// Gets the number of live objects in the pool.
+        /// </summary>
+        int LiveObjects { get; }
 
         /// <summary>
-        /// Stack of all the LinkedListNodes that have been freed and need to be reused
+        /// Gets a free object instance from the pool.
         /// </summary>
-        readonly Stack<LinkedListNode<T>> _free = new Stack<LinkedListNode<T>>(16);
+        /// <returns>A free object instance from the pool.</returns>
+        T Acquire();
 
         /// <summary>
-        /// LinkedList containing all the active pool objects
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed. No exceptions will be thrown for trying to free
+        /// an object that does not belong to this pool.
         /// </summary>
-        readonly LinkedList<T> _pool = new LinkedList<T>();
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        void Free(T poolObject);
 
         /// <summary>
-        /// Highest used node in the pool, which lets us end enumerating earlier. A null value
-        /// means that the whole pool will be iterated through.
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed.
         /// </summary>
-        LinkedListNode<T> _highNode = null;
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <param name="throwArgumentException">Whether or not an <see cref="ArgumentException"/> will be thrown for
+        /// objects that do not belong to this pool.</param>
+        /// <exception cref="ArgumentException"><paramref name="throwArgumentException"/> is tru and the 
+        /// <paramref name="poolObject"/> does not belong to this pool.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        void Free(T poolObject, bool throwArgumentException);
 
         /// <summary>
-        /// Adds a node to the end of the pool and sets it as the highest node.
-        /// Can be overridden to add a thread synchronization lock.
+        /// Frees all live objects in the pool that match the given <paramref name="condition"/>.
         /// </summary>
-        /// <param name="node">The node to add.</param>
-        protected internal virtual void AddNodeToEnd(LinkedListNode<T> node)
+        /// <param name="condition">The condition used to determine if an object should be freed.</param>
+        /// <returns>The number of objects that were freed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="condition"/> is null.</exception>
+        int FreeAll(Func<T, bool> condition);
+
+        /// <summary>
+        /// Performs the <paramref name="action"/> on all live objects in the object pool.
+        /// </summary>
+        /// <param name="action">The action to perform on all live objects in the object pool.</param>
+        void Perform(Action<T> action);
+
+        /// <summary>
+        /// Frees all live objects in the pool.
+        /// </summary>
+        void Clear();
+    }
+
+    /// <summary>
+    /// Manages a pool of reusable objects.
+    /// </summary>
+    /// <typeparam name="T">The type of object to pool.</typeparam>
+    public class ObjectPool<T> : IObjectPool<T> where T : class, IPoolable
+    {
+        /// <summary>
+        /// Delegate describing how to create an object for the object pool.
+        /// </summary>
+        /// <param name="objectPool">The object pool that created the object.</param>
+        /// <returns>The object instance.</returns>
+        public delegate T ObjectPoolObjectCreator(ObjectPool<T> objectPool);
+
+        /// <summary>
+        /// Delegate for handling events on the objects in the pool.
+        /// </summary>
+        /// <param name="poolObject">The object the event is related to.</param>
+        public delegate void ObjectPoolObjectHandler(T poolObject);
+
+        ObjectPoolObjectCreator _creator;
+
+        readonly object _threadSync;
+
+        int _liveObjects;
+        T[] _poolObjects;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectPool&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="creator">The delegate used to create new object instances.</param>
+        /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
+        /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
+        public ObjectPool(ObjectPoolObjectCreator creator, bool threadSafe)
+            : this(creator, null, null, threadSafe)
         {
-            // Add the node to the end of the item pool list
-            _pool.AddLast(node);
-
-            // This is clearly the highest node in use since it has the highest index
-            _highNode = node;
         }
 
         /// <summary>
-        /// Checks if the <paramref name="poolData"/> contains the highest node. If it does, set it as the
-        /// new highest node.
-        /// Can be overridden to add a thread synchronization lock.
+        /// Initializes a new instance of the <see cref="ObjectPool&lt;T&gt;"/> class.
         /// </summary>
-        /// <param name="poolData">The node pool data.</param>
-        protected internal virtual void CheckSetHighNode(PoolData<T> poolData)
+        /// <param name="creator">The delegate used to create new object instances.</param>
+        /// <param name="initializer">The delegate used to initialize an object as it is acquired from the pool
+        /// (when Acquire() is called). Can be null.</param>
+        /// <param name="deinitializer">The delegate used to deinitialize an object as it is freed (when Free()
+        /// is called). Can be null.</param>
+        /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
+        /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
+        public ObjectPool(ObjectPoolObjectCreator creator, ObjectPoolObjectHandler initializer,
+                          ObjectPoolObjectHandler deinitializer, bool threadSafe)
+            : this(16, creator, initializer, deinitializer, threadSafe)
         {
-            if (poolData.PoolIndex > _highNode.Value.PoolData.PoolIndex)
-                _highNode = poolData.PoolNode;
         }
 
         /// <summary>
-        /// Clears out the object pool.
-        /// Can be overridden to add a thread synchronization lock.
+        /// Initializes a new instance of the <see cref="ObjectPool&lt;T&gt;"/> class.
         /// </summary>
-        protected internal virtual void ClearPool()
+        /// <param name="initialSize">The initial size of the pool.</param>
+        /// <param name="creator">The delegate used to create new object instances.</param>
+        /// <param name="initializer">The delegate used to initialize an object as it is acquired from the pool
+        /// (when Acquire() is called). Can be null.</param>
+        /// <param name="deinitializer">The delegate used to deinitialize an object as it is freed (when Free()
+        /// is called). Can be null.</param>
+        /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
+        /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
+        public ObjectPool(int initialSize, ObjectPoolObjectCreator creator, ObjectPoolObjectHandler initializer,
+                          ObjectPoolObjectHandler deinitializer, bool threadSafe)
         {
-            _pool.Clear();
-        }
+            if (threadSafe)
+                _threadSync = new object();
 
-        /// <summary>
-        /// Frees the given <paramref name="node"/> and updates the highest node.
-        /// Can be overridden to add a thread synchronization lock.
-        /// </summary>
-        /// <param name="node">The node being destroyed.</param>
-        protected internal virtual void DestroyNode(LinkedListNode<T> node)
-        {
-            // Push to the free list for later use
-            _free.Push(node);
+            // Store our delegates
+            Creator = creator;
+            Initializer = initializer;
+            Deinitializer = deinitializer;
 
-            // If we destroyed the highest node, find the next highest node
-            if (node == _highNode)
-                GetNextHighNode();
-        }
-
-        /// <summary>
-        /// Gets the next free node.
-        /// Can be overridden to add a thread synchronization lock.
-        /// </summary>
-        /// <returns>Next free node if one exists, else null.</returns>
-        protected internal virtual LinkedListNode<T> GetFree()
-        {
-            // If the stack count is 0, theres no free nodes
-            if (_free.Count == 0)
-                return null;
-
-            // Pop off and return the next item in the stack
-            return _free.Pop();
-        }
-
-        /// <summary>
-        /// Updates the <see cref="_highNode"/> by looping backwards through the nodes until either
-        /// the list has been depleted or a live node is found
-        /// </summary>
-        void GetNextHighNode()
-        {
-            // While the current high node is not activated and is not the first in the
-            // pool, move to the previous node
-            while (!_highNode.Value.PoolData.IsActivated && _highNode != _pool.First)
+            // Create the initial pool and the object instances
+            _poolObjects = new T[initialSize];
+            for (int i = 0; i < _poolObjects.Length; i++)
             {
-                _highNode = _highNode.Previous;
+                _poolObjects[i] = CreateObject(i);
+            }
+
+            AssertValidPoolIndexForLiveObjects();
+        }
+
+        /// <summary>
+        /// Gets or sets the delegate used to create new object instances. Cannot be null.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        public ObjectPoolObjectCreator Creator
+        {
+            get { return _creator; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _creator = value;
             }
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
-        /// object is created for the pool. This is only called when a new object is created, not activated. This is
-        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
+        /// Gets or sets the delegate used to deinitialize an object as it is freed (when Free()
+        /// is called). Can be null.
         /// </summary>
-        /// <param name="item">New object that was created.</param>
-        protected virtual void HandleNewPoolObject(T item)
+        public ObjectPoolObjectHandler Deinitializer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delegate used to initialize an object as it is acquired from the pool
+        /// (when Acquire() is called). Can be null.
+        /// </summary>
+        public ObjectPoolObjectHandler Initializer { get; set; }
+
+        /// <summary>
+        /// Gets the index of the last live object.
+        /// </summary>
+        int LastLiveObjectIndex
         {
+            get { return LiveObjects - 1; }
+        }
+
+        /// <summary>
+        /// Ensures the indices are all correct.
+        /// </summary>
+        [Conditional("DEBUG")]
+        void AssertValidPoolIndexForLiveObjects()
+        {
+            for (int i = 0; i < LiveObjects; i++)
+            {
+                var obj = _poolObjects[i];
+                Debug.Assert(obj.PoolIndex == i);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new instance of the poolable object.
+        /// </summary>
+        /// <param name="index">The index of the object in the pool array.</param>
+        /// <returns>A new instance of the poolable object.</returns>
+        T CreateObject(int index)
+        {
+            T obj = Creator(this);
+            obj.PoolIndex = index;
+            return obj;
+        }
+
+        /// <summary>
+        /// Expands the size of the object pool array.
+        /// </summary>
+        void ExpandPool()
+        {
+            int oldLength = _poolObjects.Length;
+
+            // Expand the pool
+            Array.Resize(ref _poolObjects, _poolObjects.Length << 2);
+
+            // Allocate the new object instances
+            for (int i = oldLength; i < _poolObjects.Length; i++)
+            {
+                Debug.Assert(_poolObjects[i] == null);
+                _poolObjects[i] = CreateObject(i);
+            }
+
+            AssertValidPoolIndexForLiveObjects();
+        }
+
+        /// <summary>
+        /// Swaps two objects in the object pool.
+        /// </summary>
+        /// <param name="aIndex">The index of the first object.</param>
+        /// <param name="bIndex">The index of the second object.</param>
+        void SwapPoolObjects(int aIndex, int bIndex)
+        {
+            // Grab the object references
+            var aObject = _poolObjects[aIndex];
+            var bObject = _poolObjects[bIndex];
+
+            // Swap the references in the array and update the indexes
+            _poolObjects[bIndex] = aObject;
+            aObject.PoolIndex = bIndex;
+
+            _poolObjects[aIndex] = bObject;
+            bObject.PoolIndex = aIndex;
+
+            Debug.Assert(_poolObjects[aIndex].PoolIndex == aIndex);
+            Debug.Assert(_poolObjects[bIndex].PoolIndex == bIndex);
+        }
+
+
+        T InternalAcquire()
+        {
+            // Expand the pool if needed
+            if (LiveObjects >= _poolObjects.Length - 1)
+                ExpandPool();
+
+            Debug.Assert(LiveObjects < _poolObjects.Length);
+
+            // Grab the next free object
+            T ret = _poolObjects[_liveObjects++];
+
+            Debug.Assert(ret.PoolIndex == LiveObjects - 1);
+
+            return ret;
         }
 
         #region IObjectPool<T> Members
 
         /// <summary>
-        /// Clears all nodes, dead and alive, from the pool.
+        /// Returns a free object instance from the pool.
         /// </summary>
-        public void Clear()
+        /// <returns>A free object instance from the pool.</returns>
+        public T Acquire()
         {
-            Clear(true);
-        }
+            T ret;
 
-        /// <summary>
-        /// Clears all nodes, dead and alive, from the pool.
-        /// </summary>
-        /// <param name="destroy">If true, the Destroy() method will be raised on all
-        /// the alive objects.</param>
-        public void Clear(bool destroy)
-        {
-            // Call Destroy() on the alive nodes if needed
-            if (destroy)
+            // Use thread synchronization if needed
+            if (_threadSync != null)
             {
-                foreach (var obj in this)
+                lock (_threadSync)
                 {
-                    obj.Deactivate();
+                    ret = InternalAcquire();
                 }
-            }
-
-            // Remove the nodes
-            ClearPool();
-        }
-
-        /// <summary>
-        /// Gets an item to use from the pool.
-        /// </summary>
-        /// <returns>Item to use.</returns>
-        public virtual T Create()
-        {
-            var node = GetFree();
-            PoolData<T> poolData;
-            T item;
-
-            // If null, we have to create the item
-            if (node == null)
-            {
-                // Create the item
-                item = new T();
-
-                // Create the node
-                node = new LinkedListNode<T>(item);
-
-                // Create the pool data and assign it the item and node
-                // The index is assigned by the size of the pool at the current time, giving us
-                // an easy counter that will increment from 0
-                poolData = new PoolData<T>(node, _pool.Count);
-
-                // Make the item assign the pool data reference
-                item.SetPoolData(this, poolData);
-
-                // Allow for additional handling
-                HandleNewPoolObject(item);
-
-                AddNodeToEnd(node);
             }
             else
             {
-                item = node.Value;
-                poolData = item.PoolData;
-
-                // If the index of this node is higher than the index of the highest node,
-                // set this node to the highest node
-                CheckSetHighNode(poolData);
+                ret = InternalAcquire();
             }
 
-            // Activate the item
-            poolData.Activate();
+            // Initialize
+            if (Initializer != null)
+                Initializer(ret);
 
-            return item;
+            return ret;
         }
 
         /// <summary>
-        /// Deactivates the <paramref name="item"/> in the pool, making it no longer in use.
+        /// Gets the number of live objects in the pool.
         /// </summary>
-        /// <param name="item">Item to deactivate.</param>
-        public virtual void Destroy(T item)
+        public int LiveObjects
         {
-            var poolData = item.PoolData;
-            var node = poolData.PoolNode;
+            get { return _liveObjects; }
+        }
 
-            // Call the deactivation
-            poolData.Deactivate();
+        /// <summary>
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed. No exceptions will be thrown for trying to free
+        /// an object that does not belong to this pool.
+        /// </summary>
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        public void Free(T poolObject)
+        {
+            Free(poolObject, false);
+        }
 
-            if (node == null)
+        void InternalFree(T poolObject, bool throwArgumentException)
+        {
+            // Ensure the object is in the living objects
+            if (poolObject.PoolIndex > LastLiveObjectIndex)
+                return;
+
+            // Ensure that this object belongs to this pool instance
+            if (_poolObjects[poolObject.PoolIndex] != poolObject)
             {
-                const string errmsg = "item.PoolData.PoolNode is null.";
-                Debug.Fail(errmsg);
-                if (log.IsFatalEnabled)
-                    log.Fatal(errmsg);
-                throw new Exception(errmsg);
+                if (throwArgumentException)
+                {
+                    const string errmsg =
+                        "The poolObject belongs to a different pool than this one, or the IPoolable.Index was altered externally.";
+                    throw new ArgumentException(errmsg, "poolObject");
+                }
+                else
+                {
+                    return;
+                }
             }
 
-            DestroyNode(node);
+            Debug.Assert(_poolObjects[poolObject.PoolIndex] == poolObject);
+
+            // The object does belong to this pool, so free it by deinitializing it, then swapping it with the last
+            // live object in the pool so we only have to relocate two objects. By deincrementing the live object count,
+            // we which will push the object we just swapped to the end of the live objects block into the dead objects block,
+            // effectively marking it as not live.
+            if (Deinitializer != null)
+                Deinitializer(poolObject);
+
+            SwapPoolObjects(poolObject.PoolIndex, --_liveObjects);
+
+            Debug.Assert(poolObject.PoolIndex >= LiveObjects);
         }
 
         /// <summary>
-        /// Gets the number of live items in the ObjectPool.
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed.
         /// </summary>
-        public int Count
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <param name="throwArgumentException">Whether or not an <see cref="ArgumentException"/> will be thrown for
+        /// objects that do not belong to this pool.</param>
+        /// <exception cref="ArgumentException"><paramref name="throwArgumentException"/> is tru and the 
+        /// <paramref name="poolObject"/> does not belong to this pool.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        public void Free(T poolObject, bool throwArgumentException)
         {
-            get { return _pool.Count - _free.Count; }
+            if (poolObject == null)
+                throw new ArgumentNullException("poolObject");
+
+            // Use thread synchronization if needed
+            if (_threadSync != null)
+            {
+                lock (_threadSync)
+                {
+                    InternalFree(poolObject, throwArgumentException);
+                }
+            }
+            else
+            {
+                InternalFree(poolObject, throwArgumentException);
+            }
+        }
+
+        int InternalFreeAll(Func<T, bool> condition)
+        {
+            int count = 0;
+
+            // Loop through all live objects
+            int i = 0;
+            while (i < LiveObjects)
+            {
+                // Check the condition
+                var current = _poolObjects[i];
+                if (condition(current))
+                {
+                    // Free the object (the same way Free() does it, but without the validation checks)
+                    Debug.Assert(_poolObjects[current.PoolIndex] == current);
+                    if (Deinitializer != null)
+                        Deinitializer(current);
+
+                    SwapPoolObjects(current.PoolIndex, --_liveObjects);
+
+                    // Increase the count for how many objects we removed
+                    ++count;
+                }
+                else
+                {
+                    // Move on to the next object. Only do this when we didn't remove an object so that way we will
+                    // re-check the object we just swapped with.
+                    ++i;
+                }
+            }
+
+            return count;
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a collection
+        /// Frees all live objects in the pool that match the given <paramref name="condition"/>.
         /// </summary>
-        /// <returns>An System.Collections.IEnumerator object of type T that can be used 
-        /// to iterate through the collection</returns>
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        /// <param name="condition">The condition used to determine if an object should be freed.</param>
+        /// <returns>The number of objects that were freed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="condition"/> is null.</exception>
+        public int FreeAll(Func<T, bool> condition)
         {
-            return new Enumerator(this);
+            if (condition == null)
+                throw new ArgumentNullException("condition");
+
+            // Use thread synchronization if needed
+            int ret;
+            if (_threadSync != null)
+            {
+                lock (_threadSync)
+                {
+                    ret = InternalFreeAll(condition);
+                }
+            }
+            else
+            {
+                ret = InternalFreeAll(condition);
+            }
+
+            return ret;
+        }
+
+        void InternalPerform(Action<T> action)
+        {
+            for (int i = 0; i < LiveObjects; i++)
+                action(_poolObjects[i]);
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a collection
+        /// Performs the <paramref name="action"/> on all live objects in the object pool.
         /// </summary>
-        /// <returns>An System.Collections.IEnumerator object that can be used 
-        /// to iterate through the collection</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <param name="action">The action to perform on all live objects in the object pool.</param>
+        public void Perform(Action<T> action)
         {
-            return new Enumerator(this);
+            // Use thread synchronization if needed
+            if (_threadSync != null)
+            {
+                lock (_threadSync)
+                {
+                    InternalPerform(action);
+                }
+            }
+            else
+            {
+                InternalPerform(action);
+            }
+        }
+
+        void InternalClear()
+        {
+            // Call the deinitializer on all the live objects
+            if (Deinitializer != null)
+            {
+                for (int i = 0; i < LiveObjects; i++)
+                {
+                    Deinitializer(_poolObjects[i]);
+                }
+            }
+
+            // Decrease the live objects count to zero, marking all objects in the array as dead
+            _liveObjects = 0;
+        }
+
+        /// <summary>
+        /// Frees all live objects in the pool.
+        /// </summary>
+        public void Clear()
+        {
+            // Use thread synchronization if needed
+            if (_threadSync != null)
+            {
+                lock (_threadSync)
+                {
+                    InternalClear();
+                }
+            }
+            else
+            {
+                InternalClear();
+            }
         }
 
         #endregion
-
-        /// <summary>
-        /// Enumerator for an ObjectPoolBase
-        /// </summary>
-        public struct Enumerator : IEnumerator<T>
-        {
-            readonly LinkedListNode<T> _high;
-            readonly LinkedList<T> _list;
-            T _current;
-
-            LinkedListNode<T> _node;
-
-            /// <summary>
-            /// ObjectPoolBase enumerator constructor
-            /// </summary>
-            /// <param name="pool">ObjectPoolBase to enumerate through</param>
-            internal Enumerator(ObjectPool<T> pool)
-            {
-                _high = pool._highNode;
-                _list = pool._pool;
-                _current = default(T);
-
-                // If the highest used node isn't a valid one, set the _node
-                // to null from the start to instantly break the enumerating
-                // since there are no elements to enumerate through
-                if (_high == null || (_high == _list.First && !_high.Value.PoolData.IsActivated))
-                    _node = null;
-                else
-                    _node = _list.First;
-            }
-
-            #region IEnumerator<T> Members
-
-            /// <summary>
-            /// Gets the element in the collection at the current position of the enumerator
-            /// </summary>
-            public T Current
-            {
-                get { return _current; }
-            }
-
-            /// <summary>
-            /// Gets the element in the collection at the current position of the enumerator
-            /// </summary>
-            object IEnumerator.Current
-            {
-                get { return _current; }
-            }
-
-            /// <summary>
-            /// Advances the enumerator to the next element of the collection
-            /// </summary>
-            /// <returns>True if the enumerator was successfully advanced to the next element; 
-            /// False if the enumerator has passed the end of the collection.</returns>
-            public bool MoveNext()
-            {
-                // Use a temporary variable to store the value so we don't
-                // change the value until we change to a valid value
-                T newValue;
-
-                // Loop until a null node or we break from inside the loop
-                while (_node != null)
-                {
-                    newValue = _node.Value;
-
-                    // If we reached the highest valid node, use the value but
-                    // set the node as null which will break the enumeration
-                    // on the next MoveNext()
-                    if (_node == _high)
-                    {
-                        _node = null;
-                        _current = newValue;
-                        return true;
-                    }
-
-                    // Move to the next node
-                    _node = _node.Next;
-
-                    // If we found a live node, set the value as the 
-                    // current value and use it
-                    if (newValue.PoolData.IsActivated)
-                    {
-                        _current = newValue;
-                        return true;
-                    }
-                }
-
-                // Node null found
-                return false;
-            }
-
-            /// <summary>
-            /// Sets the enumerator to its initial position, which is before 
-            /// the first element in the collection
-            /// </summary>
-            void IEnumerator.Reset()
-            {
-                _current = default(T);
-                _node = _list.First;
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, 
-            /// releasing, or resetting unmanaged resources
-            /// </summary>
-            public void Dispose()
-            {
-            }
-
-            #endregion
-        }
     }
 }

@@ -115,7 +115,7 @@ namespace NetGore.Db
         /// <returns>Next available connection.</returns>
         public IPoolableDbConnection GetConnection()
         {
-            PooledDbConnection poolableConn = _connectionPool.Create();
+            PooledDbConnection poolableConn = _connectionPool.Acquire();
             return poolableConn;
         }
 

@@ -23,9 +23,9 @@ namespace NetGore.Tests.Db.MySql
 
                 for (int i = 0; i < 100; i++)
                 {
-                    Assert.AreEqual(0, cp.Count);
+                    Assert.AreEqual(0, cp.LiveObjects);
                     nonReader.Execute(new QueryTestValues(5, 10, 15));
-                    Assert.AreEqual(0, cp.Count);
+                    Assert.AreEqual(0, cp.LiveObjects);
                 }
             }
         }

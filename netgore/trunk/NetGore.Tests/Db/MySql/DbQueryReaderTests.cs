@@ -53,10 +53,10 @@ namespace NetGore.Tests.Db.MySql
 
                 for (int i = 0; i < 100; i++)
                 {
-                    Assert.AreEqual(0, cp.Count);
+                    Assert.AreEqual(0, cp.LiveObjects);
                     using (IDataReader r = ((IDbQueryReader<QueryTestValues>)reader).ExecuteReader(testValues))
                     {
-                        Assert.AreEqual(1, cp.Count);
+                        Assert.AreEqual(1, cp.LiveObjects);
                         Assert.IsTrue(r.Read());
                         Assert.AreEqual(5 + 10 + 15, r[0]);
                     }
@@ -70,21 +70,21 @@ namespace NetGore.Tests.Db.MySql
             QueryTestValues v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
             int expectedPoolSize = initialDepth - depth;
 
-            Assert.AreEqual(expectedPoolSize, cp.Count);
+            Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
             using (IDataReader r = reader.ExecuteReader(v))
             {
                 expectedPoolSize++;
 
-                Assert.AreEqual(expectedPoolSize, cp.Count);
+                Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
                 Assert.IsTrue(r.Read());
                 Assert.AreEqual(v.A + v.B + v.C, r[0]);
                 if (depth > 0)
                     SelectTestRecurse(reader, depth - 1, initialDepth);
-                Assert.AreEqual(expectedPoolSize, cp.Count);
+                Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
 
                 expectedPoolSize--;
             }
-            Assert.AreEqual(expectedPoolSize, cp.Count);
+            Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
         }
 
         static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth)

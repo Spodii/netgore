@@ -26,7 +26,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Object pool used to spawn <see cref="EmoticonDisplayInfo"/> instances.
         /// </summary>
-        readonly ObjectPool<EmoticonDisplayInfo> _objectPool = new ObjectPool<EmoticonDisplayInfo>();
+        readonly ObjectPool<EmoticonDisplayInfo> _objectPool = new ObjectPool<EmoticonDisplayInfo>(x => new EmoticonDisplayInfo(), false);
 
         /// <summary>
         /// Initializes the <see cref="EmoticonDisplayManager"/> class.
@@ -78,7 +78,7 @@ namespace DemoGame.Client
             }
             else
             {
-                obj = _objectPool.Create();
+                obj = _objectPool.Acquire();
                 keyExists = false;
             }
 
@@ -138,7 +138,7 @@ namespace DemoGame.Client
                 foreach (var kvp in toRemove)
                 {
                     _activeEmoticons.Remove(kvp.Key);
-                    _objectPool.Destroy(kvp.Value);
+                    _objectPool.Free(kvp.Value);
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Contains the information for a single display of an <see cref="Emoticon"/>.
         /// </summary>
-        class EmoticonDisplayInfo : IPoolable<EmoticonDisplayInfo>
+        class EmoticonDisplayInfo : IPoolable
         {
             /// <summary>
             /// How long a stationary emoticon will live for, in milliseconds.
@@ -158,7 +158,6 @@ namespace DemoGame.Client
             int _initializeTime;
 
             bool _isAlive;
-            PoolData<EmoticonDisplayInfo> _poolData;
 
             /// <summary>
             /// Gets if the <see cref="EmoticonDisplayInfo"/> is still alive. If false, the emoticon will no longer
@@ -230,45 +229,15 @@ namespace DemoGame.Client
                 }
             }
 
-            #region IPoolable<EmoticonDisplayInfo> Members
-
             /// <summary>
-            /// Gets the PoolData associated with this poolable item.
+            /// Gets or sets the index of the object in the pool. This value should never be used by anything
+            /// other than the pool that owns this object.
             /// </summary>
-            PoolData<EmoticonDisplayInfo> IPoolable<EmoticonDisplayInfo>.PoolData
+            int IPoolable.PoolIndex
             {
-                get { return _poolData; }
+                get;
+                set;
             }
-
-            /// <summary>
-            /// Notifies the item that it has been activated by the pool and that it will start being used.
-            /// All preperation work that could not be done in the constructor should be done here.
-            /// </summary>
-            void IPoolable<EmoticonDisplayInfo>.Activate()
-            {
-            }
-
-            /// <summary>
-            /// Notifies the item that it has been deactivated by the pool. The item may or may not ever be
-            /// activated again, so clean up where needed.
-            /// </summary>
-            void IPoolable<EmoticonDisplayInfo>.Deactivate()
-            {
-            }
-
-            /// <summary>
-            /// Sets the PoolData for this item. This is only called once in the object's lifetime;
-            /// right after the object is constructed.
-            /// </summary>
-            /// <param name="objectPool">Pool that created this object.</param>
-            /// <param name="poolData">PoolData assigned to this object.</param>
-            void IPoolable<EmoticonDisplayInfo>.SetPoolData(IObjectPool<EmoticonDisplayInfo> objectPool,
-                                                            PoolData<EmoticonDisplayInfo> poolData)
-            {
-                _poolData = poolData;
-            }
-
-            #endregion
         }
     }
 }
