@@ -125,7 +125,7 @@ namespace NetGore.EditorTools
             var ret = new Dictionary<string, List<GrhData>>(StringComparer.OrdinalIgnoreCase);
 
             // Loop through every stationary GrhData
-            foreach (GrhData gd in GrhInfo.GrhDatas.Where(x => !x.IsAnimated))
+            foreach (var gd in GrhInfo.GrhDatas.OfType<StationaryGrhData>())
             {
                 var textureName = gd.TextureName.ToString();
                 List<GrhData> dictList;
@@ -245,19 +245,22 @@ namespace NetGore.EditorTools
 
                 // If the GrhData does not already exist, create it
                 // If it does exist, update the frames and speed
-                GrhData gd = GrhInfo.GetData(categorization);
+                var gd = GrhInfo.GetData(categorization);
                 if (gd == null)
                 {
                     // Create the new GrhData
                     gd = GrhInfo.CreateGrhData(indices, frameDirInfo.Speed, categorization);
-                    gd.AutomaticSize = true;
                     ret.Add(gd);
                 }
                 else
                 {
                     // Re-load the GrhData with the new values
-                    gd.Speed = frameDirInfo.Speed;
-                    gd.SetFrames(indices);
+                    var animatedGD = gd as AnimatedGrhData;
+                    if (animatedGD != null)
+                    {
+                        animatedGD.Speed = frameDirInfo.Speed;
+                        animatedGD.SetFrames(indices);
+                    }
                     gd.SetCategorization(categorization);
                 }
             }
@@ -304,7 +307,7 @@ namespace NetGore.EditorTools
                 Vector2 size = GetTextureSize(texture);
 
                 // Create the GrhData
-                GrhData gd = GrhInfo.CreateGrhData(cm, categorization, relative, Vector2.Zero, size);
+                var gd = GrhInfo.CreateGrhData(cm, categorization, relative, Vector2.Zero, size);
                 gd.AutomaticSize = true;
                 ret.Add(gd);
             }

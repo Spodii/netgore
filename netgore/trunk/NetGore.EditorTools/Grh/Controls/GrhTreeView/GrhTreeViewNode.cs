@@ -56,29 +56,32 @@ namespace NetGore.EditorTools
 
             try
             {
-                if (GrhData.Frames.Length == 1)
+                var stationary = GrhData as StationaryGrhData;
+                var animated = GrhData as AnimatedGrhData;
+
+                if (stationary != null)
                 {
                     // Stationary
-                    Rectangle sourceRect = GrhData.SourceRect;
+                    Rectangle sourceRect = stationary.SourceRect;
 
                     sb.AppendLine("Grh: " + GrhData.GrhIndex);
-                    sb.AppendLine("Texture: " + GrhData.TextureName);
+                    sb.AppendLine("Texture: " + stationary.TextureName);
                     sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
                     sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
                 }
-                else
+                else if (animated != null)
                 {
                     // Animated
                     const string framePadding = "  ";
                     const string frameSeperator = ",";
 
                     sb.AppendLine("Grh: " + GrhData.GrhIndex);
-                    sb.AppendLine("Frames: " + GrhData.Frames.Length);
+                    sb.AppendLine("Frames: " + animated.Frames.Length);
 
                     sb.Append(framePadding);
-                    for (int i = 0; i < GrhData.Frames.Length; i++)
+                    for (int i = 0; i < animated.Frames.Length; i++)
                     {
-                        sb.Append(GrhData.Frames[i].GrhIndex);
+                        sb.Append(animated.Frames[i].GrhIndex);
 
                         if ((i + 1) % 6 == 0)
                         {
@@ -94,9 +97,13 @@ namespace NetGore.EditorTools
                     }
 
                     sb.AppendLine();
-                    sb.Append("Speed: " + (1f / GrhData.Speed));
+                    sb.Append("Speed: " + (1f / animated.Speed));
 
                     return sb.ToString();
+                }
+                else
+                {
+                    throw new Exception("Unknown GrhData type...");
                 }
             }
             catch (ContentLoadException)
@@ -125,21 +132,26 @@ namespace NetGore.EditorTools
         void SetIconImage()
         {
             // Set the preview picture
-            if (!GrhData.IsAnimated)
+            if (GrhData is StationaryGrhData)
             {
                 // Static image
                 string imageKey = GrhImageList.GetImageKey(GrhData);
                 SetImageKeys(imageKey);
             }
-            else
+            else if (GrhData is AnimatedGrhData)
             {
                 // Animation
+                var asAnimated = GrhData as AnimatedGrhData;
                 if (_animationGrh == null)
                 {
                     _animationGrh = new Grh(GrhData, AnimType.Loop, Environment.TickCount);
-                    string imageKey = GrhImageList.GetImageKey(GrhData.Frames[0]);
+                    string imageKey = GrhImageList.GetImageKey(asAnimated.Frames[0]);
                     SetImageKeys(imageKey);
                 }
+            }
+            else
+            {
+                throw new Exception("Unsupported GrhData type...");
             }
         }
 

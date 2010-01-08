@@ -18,7 +18,7 @@ namespace DemoGame.Client
         readonly GraphicsDeviceManager graphics;
         IEnumerable<TextureAtlas> _globalAtlases;
         ClientSockets _sockets;
-        ScreenManager screenManager;
+        ScreenManager _screenManager;
 
         /// <summary>
         /// Sets up all the primary components of the game
@@ -37,30 +37,30 @@ namespace DemoGame.Client
             base.BeginRun();
 
             // Create the screen manager
-            screenManager = new ScreenManager(this, new SkinManager("Default"), "Content");
-            Components.Add(screenManager);
+            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Content");
+            Components.Add(_screenManager);
 
             // Read the GrhInfo
             LoadGrhInfo();
 
             // Create the screens
-            screenManager.Add(new GameplayScreen());
-            screenManager.Add(new MainMenuScreen());
-            screenManager.Add(new LoginScreen());
-            screenManager.Add(new CharacterSelectionScreen());
-            screenManager.Add(new NewAccountScreen());
-            screenManager.SetScreen(MainMenuScreen.ScreenName);
+            _screenManager.Add(new GameplayScreen());
+            _screenManager.Add(new MainMenuScreen());
+            _screenManager.Add(new LoginScreen());
+            _screenManager.Add(new CharacterSelectionScreen());
+            _screenManager.Add(new NewAccountScreen());
+            _screenManager.SetScreen(MainMenuScreen.ScreenName);
 
             // NOTE: Temporary volume reduction
             // We use the thread pool due to the potentially long time it can take to load the audio engine
             ThreadPool.QueueUserWorkItem(delegate
                                          {
-                                             screenManager.SoundManager.Volume = 0.7f;
-                                             screenManager.MusicManager.Volume = 0.2f;
+                                             _screenManager.SoundManager.Volume = 0.7f;
+                                             _screenManager.MusicManager.Volume = 0.2f;
                                          });
 
             _sockets = ClientSockets.Instance;
-            screenManager.OnUpdate += screenManager_OnUpdate;
+            _screenManager.OnUpdate += screenManager_OnUpdate;
         }
 
         /// <summary>
@@ -121,13 +121,13 @@ namespace DemoGame.Client
             // Read the Grh info, using the MapContent for the ContentManager since all
             // but the map GrhDatas should end up in an atlas. For anything that does not
             // end up in an atlas, this will provide them a way to load still.
-            GrhInfo.Load(ContentPaths.Build, screenManager.MapContent);
+            GrhInfo.Load(ContentPaths.Build, _screenManager.MapContent);
 
             // Organize the GrhDatas for the atlases
             var gdChars = new List<ITextureAtlasable>();
             var gdGUI = new List<ITextureAtlasable>();
             var gdNonMap = new List<ITextureAtlasable>();
-            foreach (var gd in GrhInfo.GrhDatas.Where(x => !x.IsAnimated))
+            foreach (var gd in GrhInfo.GrhDatas.OfType<StationaryGrhData>())
             {
                 if (gd.Categorization.Category.ToString().StartsWith("character", StringComparison.OrdinalIgnoreCase))
                     gdChars.Add(gd);
@@ -145,7 +145,7 @@ namespace DemoGame.Client
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
-            screenManager.MapContent.Unload();
+            _screenManager.MapContent.Unload();
         }
 
         void screenManager_OnUpdate(ScreenManager screenManager)

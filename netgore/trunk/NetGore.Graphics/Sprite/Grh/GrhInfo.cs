@@ -232,22 +232,22 @@ namespace NetGore.Graphics
             AddToDictionary(gd);
         }
 
-        public static GrhData CreateGrhData(GrhIndex[] frames, float speed, SpriteCategorization categorization)
+        public static AnimatedGrhData CreateGrhData(GrhIndex[] frames, float speed, SpriteCategorization categorization)
         {
             GrhIndex grhIndex = NextFreeIndex();
-            GrhData gd = new GrhData();
-            gd.Load(grhIndex, frames, speed, categorization);
+            var gd = new AnimatedGrhData(grhIndex, categorization) { Speed = speed };
+            gd.SetFrames(frames);
             AddGrhData(gd);
             return gd;
         }
 
-        public static GrhData CreateGrhData(ContentManager contentManager, SpriteCategorization categorization, string texture,
+        public static StationaryGrhData CreateGrhData(ContentManager contentManager, SpriteCategorization categorization, string texture,
                                             Vector2 pos, Vector2 size)
         {
             return CreateGrhData(NextFreeIndex(), contentManager, categorization, texture, pos, size);
         }
 
-        public static GrhData CreateGrhData(ContentManager contentManager, SpriteCategory category)
+        public static StationaryGrhData CreateGrhData(ContentManager contentManager, SpriteCategory category)
         {
             var index = NextFreeIndex();
             var title = GetUniqueTitle(category, "tmp" + index);
@@ -255,13 +255,14 @@ namespace NetGore.Graphics
             return CreateGrhData(index, contentManager, categorization, string.Empty, Vector2.Zero, Vector2.Zero);
         }
 
-        static GrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, SpriteCategorization categorization,
+        static StationaryGrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, SpriteCategorization categorization,
                                      string texture, Vector2 pos, Vector2 size)
         {
             Rectangle source = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 
-            GrhData gd = new GrhData();
-            gd.Load(contentManager, grhIndex, texture, source, categorization);
+            var gd = new StationaryGrhData(contentManager, grhIndex, categorization);
+            gd.ChangeTexture(texture, source);
+
             AddGrhData(gd);
             return gd;
         }
@@ -294,9 +295,9 @@ namespace NetGore.Graphics
         /// Finds all of the <see cref="GrhData"/>s that reference a texture that does not exist.
         /// </summary>
         /// <returns>IEnumerable of all of the <see cref="GrhData"/>s that reference a texture that does not exist.</returns>
-        public static IEnumerable<GrhData> FindMissingTextures()
+        public static IEnumerable<StationaryGrhData> FindMissingTextures()
         {
-            var nonanimated = GrhDatas.Where(x => !x.IsAnimated);
+            var nonanimated = GrhDatas.OfType<StationaryGrhData>();
             var invalidTextures = nonanimated.Where(x => !x.TextureName.ContentExists());
             return invalidTextures;
         }
@@ -486,14 +487,14 @@ namespace NetGore.Graphics
                 // Read the GrhDatas (non-animated first, followed by animated)
                 XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
 
-                var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => new GrhData(x, cm));
-                foreach (GrhData gd in nonAnimatedGrhDatas)
+                var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x =>StationaryGrhData.Read(x, cm));
+                foreach (var gd in nonAnimatedGrhDatas)
                 {
                     _grhDatas[(int)gd.GrhIndex] = gd;
                 }
 
-                var animatedGrhDatas = reader.ReadManyNodes(_animatedGrhDatasNodeName, x => new GrhData(x, cm));
-                foreach (GrhData gd in animatedGrhDatas)
+                var animatedGrhDatas = reader.ReadManyNodes(_animatedGrhDatasNodeName, x => AnimatedGrhData.Read(x));
+                foreach (var gd in animatedGrhDatas)
                 {
                     _grhDatas[(int)gd.GrhIndex] = gd;
                 }
@@ -519,12 +520,16 @@ namespace NetGore.Graphics
         public static bool IsAutomaticAnimation(GrhData grhData)
         {
             // Must be animated
-            if (!grhData.IsAnimated)
+            if (grhData is StationaryGrhData)
                 return false;
 
+            // TODO: %% Automatic animated GrhData...
+
+            var gd = (AnimatedGrhData)grhData;
+
             // Check that all frames contain the same category
-            var firstCategory = grhData.Frames.First().Categorization.Category;
-            if (!grhData.Frames.All(x => x.Categorization.Category == firstCategory))
+            var firstCategory = gd.Frames.First().Categorization.Category;
+            if (!gd.Frames.All(x => x.Categorization.Category == firstCategory))
                 return false;
 
             // Check that the first category matches the automatic animation pattern
@@ -541,10 +546,12 @@ namespace NetGore.Graphics
         static void UpdateAutomaticAnimations()
         {
             // Grab all the automatic animated GrhDatas
-            var autoAnims = GrhDatas.Where(IsAutomaticAnimation).ToArray();
+            var autoAnims = GrhDatas.OfType<AnimatedGrhData>().Where(IsAutomaticAnimation).ToArray();
 
             foreach (var gd in autoAnims)
             {
+                // TODO: %% Automatic animated GrhData...
+
                 // Get the directory
                 var category = gd.Frames.First().Categorization.Category.ToString();
                 var pathSep = Path.DirectorySeparatorChar.ToString();
@@ -649,8 +656,8 @@ namespace NetGore.Graphics
 
             // Organize the GrhDatas by if they are animated or not
             var nonNullGrhDatas = GrhDatas.Where(x => x != null);
-            var nonAnimatedGrhDatas = nonNullGrhDatas.Where(x => !x.IsAnimated).ToArray();
-            var animatedGrhDatas = nonNullGrhDatas.Where(x => x.IsAnimated).ToArray();
+            var nonAnimatedGrhDatas = nonNullGrhDatas.OfType<StationaryGrhData>().ToArray();
+            var animatedGrhDatas = nonNullGrhDatas.OfType<AnimatedGrhData>().ToArray();
 
             // Write
             using (IValueWriter writer = new XmlValueWriter(tempPath, _rootNodeName))

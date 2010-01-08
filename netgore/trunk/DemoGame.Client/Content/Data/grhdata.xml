@@ -4,10 +4,6 @@
     <Count>234</Count>
     <Item0>
       <Index>1</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>1</Item0>
-      </Frames>
       <Categorization>Map.Platform.Grass.Top-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -17,10 +13,6 @@
     </Item0>
     <Item1>
       <Index>2</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>2</Item0>
-      </Frames>
       <Categorization>Map.Platform.Grass.Top-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -30,10 +22,6 @@
     </Item1>
     <Item2>
       <Index>3</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>3</Item0>
-      </Frames>
       <Categorization>Map.Platform.Grass.Top-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -43,10 +31,6 @@
     </Item2>
     <Item3>
       <Index>4</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>4</Item0>
-      </Frames>
       <Categorization>Map.Platform.Grass.Mid-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -56,10 +40,6 @@
     </Item3>
     <Item4>
       <Index>5</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>5</Item0>
-      </Frames>
       <Categorization>Map.Platform.Grass.Mid-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -69,10 +49,6 @@
     </Item4>
     <Item5>
       <Index>6</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>6</Item0>
-      </Frames>
       <Categorization>Map.Platform.Grass.Mid-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -82,10 +58,6 @@
     </Item5>
     <Item6>
       <Index>7</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>7</Item0>
-      </Frames>
       <Categorization>Map.Platform.Grass.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -95,10 +67,6 @@
     </Item6>
     <Item7>
       <Index>8</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>8</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -108,10 +76,6 @@
     </Item7>
     <Item8>
       <Index>9</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>9</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -121,10 +85,6 @@
     </Item8>
     <Item9>
       <Index>10</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>10</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -134,10 +94,6 @@
     </Item9>
     <Item10>
       <Index>11</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>11</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -147,10 +103,6 @@
     </Item10>
     <Item11>
       <Index>12</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>12</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -160,10 +112,6 @@
     </Item11>
     <Item12>
       <Index>13</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>13</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -173,10 +121,6 @@
     </Item12>
     <Item13>
       <Index>14</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>14</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -186,10 +130,6 @@
     </Item13>
     <Item14>
       <Index>15</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>15</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -199,10 +139,6 @@
     </Item14>
     <Item15>
       <Index>16</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>16</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -212,10 +148,6 @@
     </Item15>
     <Item16>
       <Index>17</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>17</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -225,10 +157,6 @@
     </Item16>
     <Item17>
       <Index>18</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>18</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -238,10 +166,6 @@
     </Item17>
     <Item18>
       <Index>19</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>19</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -251,10 +175,6 @@
     </Item18>
     <Item19>
       <Index>20</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>20</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -264,10 +184,6 @@
     </Item19>
     <Item20>
       <Index>21</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>21</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -277,10 +193,6 @@
     </Item20>
     <Item21>
       <Index>22</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>22</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -290,10 +202,6 @@
     </Item21>
     <Item22>
       <Index>23</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>23</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -303,10 +211,6 @@
     </Item22>
     <Item23>
       <Index>24</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>24</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Form.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -316,10 +220,6 @@
     </Item23>
     <Item24>
       <Index>25</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>25</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.CheckBox.Ticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -329,10 +229,6 @@
     </Item24>
     <Item25>
       <Index>26</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>26</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.CheckBox.TickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -342,10 +238,6 @@
     </Item25>
     <Item26>
       <Index>27</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>27</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.CheckBox.TickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -355,10 +247,6 @@
     </Item26>
     <Item27>
       <Index>28</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>28</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.CheckBox.Unticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -368,10 +256,6 @@
     </Item27>
     <Item28>
       <Index>29</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>29</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.CheckBox.UntickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -381,10 +265,6 @@
     </Item28>
     <Item29>
       <Index>30</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>30</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.CheckBox.UntickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -394,10 +274,6 @@
     </Item29>
     <Item30>
       <Index>31</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>31</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -407,10 +283,6 @@
     </Item30>
     <Item31>
       <Index>32</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>32</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -420,10 +292,6 @@
     </Item31>
     <Item32>
       <Index>33</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>33</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -433,10 +301,6 @@
     </Item32>
     <Item33>
       <Index>34</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>34</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -446,10 +310,6 @@
     </Item33>
     <Item34>
       <Index>35</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>35</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -459,10 +319,6 @@
     </Item34>
     <Item35>
       <Index>36</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>36</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -472,10 +328,6 @@
     </Item35>
     <Item36>
       <Index>37</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>37</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -485,10 +337,6 @@
     </Item36>
     <Item37>
       <Index>38</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>38</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -498,10 +346,6 @@
     </Item37>
     <Item38>
       <Index>39</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>39</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -511,10 +355,6 @@
     </Item38>
     <Item39>
       <Index>40</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>40</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -524,10 +364,6 @@
     </Item39>
     <Item40>
       <Index>41</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>41</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -537,10 +373,6 @@
     </Item40>
     <Item41>
       <Index>42</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>42</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -550,10 +382,6 @@
     </Item41>
     <Item42>
       <Index>43</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>43</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -563,10 +391,6 @@
     </Item42>
     <Item43>
       <Index>44</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>44</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -576,10 +400,6 @@
     </Item43>
     <Item44>
       <Index>45</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>45</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -589,10 +409,6 @@
     </Item44>
     <Item45>
       <Index>46</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>46</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -602,10 +418,6 @@
     </Item45>
     <Item46>
       <Index>47</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>47</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -615,10 +427,6 @@
     </Item46>
     <Item47>
       <Index>48</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>48</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -628,10 +436,6 @@
     </Item47>
     <Item48>
       <Index>49</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>49</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -641,10 +445,6 @@
     </Item48>
     <Item49>
       <Index>50</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>50</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -654,10 +454,6 @@
     </Item49>
     <Item50>
       <Index>51</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>51</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -667,10 +463,6 @@
     </Item50>
     <Item51>
       <Index>52</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>52</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -680,10 +472,6 @@
     </Item51>
     <Item52>
       <Index>53</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>53</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -693,10 +481,6 @@
     </Item52>
     <Item53>
       <Index>54</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>54</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.Center</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -706,10 +490,6 @@
     </Item53>
     <Item54>
       <Index>55</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>55</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.Pressed.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -719,10 +499,6 @@
     </Item54>
     <Item55>
       <Index>56</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>56</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -732,10 +508,6 @@
     </Item55>
     <Item56>
       <Index>57</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>57</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -745,10 +517,6 @@
     </Item56>
     <Item57>
       <Index>58</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>58</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Button.MouseOver.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -758,10 +526,6 @@
     </Item57>
     <Item58>
       <Index>59</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>59</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.TextBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -771,10 +535,6 @@
     </Item58>
     <Item59>
       <Index>60</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>60</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -784,10 +544,6 @@
     </Item59>
     <Item60>
       <Index>61</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>61</Item0>
-      </Frames>
       <Categorization>System.Blank</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -797,10 +553,6 @@
     </Item60>
     <Item61>
       <Index>62</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>62</Item0>
-      </Frames>
       <Categorization>System.Joint</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -810,10 +562,6 @@
     </Item61>
     <Item62>
       <Index>63</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>63</Item0>
-      </Frames>
       <Categorization>System.Triangle</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -823,10 +571,6 @@
     </Item62>
     <Item63>
       <Index>64</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>64</Item0>
-      </Frames>
       <Categorization>System.Move</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -836,10 +580,6 @@
     </Item63>
     <Item64>
       <Index>65</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>65</Item0>
-      </Frames>
       <Categorization>System.Resize</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -849,10 +589,6 @@
     </Item64>
     <Item65>
       <Index>66</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>66</Item0>
-      </Frames>
       <Categorization>Particle.ankh</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -862,10 +598,6 @@
     </Item65>
     <Item66>
       <Index>67</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>67</Item0>
-      </Frames>
       <Categorization>Particle.ball</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -875,10 +607,6 @@
     </Item66>
     <Item67>
       <Index>68</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>68</Item0>
-      </Frames>
       <Categorization>Particle.raindrop</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -888,10 +616,6 @@
     </Item67>
     <Item68>
       <Index>69</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>69</Item0>
-      </Frames>
       <Categorization>Particle.shield</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -901,10 +625,6 @@
     </Item68>
     <Item69>
       <Index>70</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>70</Item0>
-      </Frames>
       <Categorization>Particle.skull</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -914,10 +634,6 @@
     </Item69>
     <Item70>
       <Index>71</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>71</Item0>
-      </Frames>
       <Categorization>Particle.snow sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -927,10 +643,6 @@
     </Item70>
     <Item71>
       <Index>72</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>72</Item0>
-      </Frames>
       <Categorization>Particle.snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -940,10 +652,6 @@
     </Item71>
     <Item72>
       <Index>73</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>73</Item0>
-      </Frames>
       <Categorization>Particle.sparkle</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -953,10 +661,6 @@
     </Item72>
     <Item73>
       <Index>74</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>74</Item0>
-      </Frames>
       <Categorization>Particle.splatter</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -966,10 +670,6 @@
     </Item73>
     <Item74>
       <Index>75</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>75</Item0>
-      </Frames>
       <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -979,10 +679,6 @@
     </Item74>
     <Item75>
       <Index>76</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>76</Item0>
-      </Frames>
       <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -992,10 +688,6 @@
     </Item75>
     <Item76>
       <Index>77</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>77</Item0>
-      </Frames>
       <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1005,10 +697,6 @@
     </Item76>
     <Item77>
       <Index>78</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>78</Item0>
-      </Frames>
       <Categorization>Character.Naked.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1018,10 +706,6 @@
     </Item77>
     <Item78>
       <Index>79</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>79</Item0>
-      </Frames>
       <Categorization>Character.Naked.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1031,10 +715,6 @@
     </Item78>
     <Item79>
       <Index>80</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>80</Item0>
-      </Frames>
       <Categorization>Character.Naked.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1044,10 +724,6 @@
     </Item79>
     <Item80>
       <Index>81</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>81</Item0>
-      </Frames>
       <Categorization>Character.Naked.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1057,10 +733,6 @@
     </Item80>
     <Item81>
       <Index>82</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>82</Item0>
-      </Frames>
       <Categorization>Character.Naked.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1070,10 +742,6 @@
     </Item81>
     <Item82>
       <Index>83</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>83</Item0>
-      </Frames>
       <Categorization>Character.Naked.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1083,10 +751,6 @@
     </Item82>
     <Item83>
       <Index>84</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>84</Item0>
-      </Frames>
       <Categorization>Character.Naked.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1096,10 +760,6 @@
     </Item83>
     <Item84>
       <Index>85</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>85</Item0>
-      </Frames>
       <Categorization>Character.Naked.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1109,10 +769,6 @@
     </Item84>
     <Item85>
       <Index>86</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>86</Item0>
-      </Frames>
       <Categorization>Character.Crystal.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1122,10 +778,6 @@
     </Item85>
     <Item86>
       <Index>87</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>87</Item0>
-      </Frames>
       <Categorization>Character.Crystal.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1135,10 +787,6 @@
     </Item86>
     <Item87>
       <Index>88</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>88</Item0>
-      </Frames>
       <Categorization>Character.Crystal.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1148,10 +796,6 @@
     </Item87>
     <Item88>
       <Index>89</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>89</Item0>
-      </Frames>
       <Categorization>Character.Crystal.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1161,10 +805,6 @@
     </Item88>
     <Item89>
       <Index>90</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>90</Item0>
-      </Frames>
       <Categorization>Character.Crystal.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1174,10 +814,6 @@
     </Item89>
     <Item90>
       <Index>91</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>91</Item0>
-      </Frames>
       <Categorization>Character.Crystal.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1187,10 +823,6 @@
     </Item90>
     <Item91>
       <Index>92</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>92</Item0>
-      </Frames>
       <Categorization>Character.Crystal.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1200,10 +832,6 @@
     </Item91>
     <Item92>
       <Index>93</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>93</Item0>
-      </Frames>
       <Categorization>Character.Crystal.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1213,10 +841,6 @@
     </Item92>
     <Item93>
       <Index>94</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>94</Item0>
-      </Frames>
       <Categorization>Item.Potion.blue</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1226,10 +850,6 @@
     </Item93>
     <Item94>
       <Index>95</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>95</Item0>
-      </Frames>
       <Categorization>Item.Potion.red</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1239,10 +859,6 @@
     </Item94>
     <Item95>
       <Index>96</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>96</Item0>
-      </Frames>
       <Categorization>Item.Melee.titaniumsword</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1252,10 +868,6 @@
     </Item95>
     <Item96>
       <Index>97</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>97</Item0>
-      </Frames>
       <Categorization>Item.Head.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1265,10 +877,6 @@
     </Item96>
     <Item97>
       <Index>98</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>98</Item0>
-      </Frames>
       <Categorization>Item.Feet.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1278,10 +886,6 @@
     </Item97>
     <Item98>
       <Index>99</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>99</Item0>
-      </Frames>
       <Categorization>Item.Body.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1291,10 +895,6 @@
     </Item98>
     <Item99>
       <Index>100</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>100</Item0>
-      </Frames>
       <Categorization>Item.Back.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1304,10 +904,6 @@
     </Item99>
     <Item100>
       <Index>101</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>101</Item0>
-      </Frames>
       <Categorization>GUI.addstat</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1317,10 +913,6 @@
     </Item100>
     <Item101>
       <Index>102</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>102</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1330,10 +922,6 @@
     </Item101>
     <Item102>
       <Index>103</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>103</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1343,10 +931,6 @@
     </Item102>
     <Item103>
       <Index>104</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>104</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1356,10 +940,6 @@
     </Item103>
     <Item104>
       <Index>105</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>105</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1369,10 +949,6 @@
     </Item104>
     <Item105>
       <Index>106</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>106</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1382,10 +958,6 @@
     </Item105>
     <Item106>
       <Index>107</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>107</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1395,10 +967,6 @@
     </Item106>
     <Item107>
       <Index>108</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>108</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1408,10 +976,6 @@
     </Item107>
     <Item108>
       <Index>109</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>109</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1421,10 +985,6 @@
     </Item108>
     <Item109>
       <Index>110</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>110</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.Chat Bubble.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1434,10 +994,6 @@
     </Item109>
     <Item110>
       <Index>111</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>111</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1447,10 +1003,6 @@
     </Item110>
     <Item111>
       <Index>112</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>112</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1460,10 +1012,6 @@
     </Item111>
     <Item112>
       <Index>113</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>113</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1473,10 +1021,6 @@
     </Item112>
     <Item113>
       <Index>114</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>114</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1486,10 +1030,6 @@
     </Item113>
     <Item114>
       <Index>115</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>115</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1499,10 +1039,6 @@
     </Item114>
     <Item115>
       <Index>116</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>116</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1512,10 +1048,6 @@
     </Item115>
     <Item116>
       <Index>117</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>117</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1525,10 +1057,6 @@
     </Item116>
     <Item117>
       <Index>118</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>118</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1538,10 +1066,6 @@
     </Item117>
     <Item118>
       <Index>119</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>119</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1551,10 +1075,6 @@
     </Item118>
     <Item119>
       <Index>120</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>120</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1564,10 +1084,6 @@
     </Item119>
     <Item120>
       <Index>121</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>121</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.5</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1577,10 +1093,6 @@
     </Item120>
     <Item121>
       <Index>122</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>122</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.6</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1590,10 +1102,6 @@
     </Item121>
     <Item122>
       <Index>123</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>123</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.7</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1603,10 +1111,6 @@
     </Item122>
     <Item123>
       <Index>124</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>124</Item0>
-      </Frames>
       <Categorization>Effect._Teleport_frames_400.8</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1616,10 +1120,6 @@
     </Item123>
     <Item124>
       <Index>126</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>126</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1629,10 +1129,6 @@
     </Item124>
     <Item125>
       <Index>127</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>127</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1642,10 +1138,6 @@
     </Item125>
     <Item126>
       <Index>128</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>128</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1655,10 +1147,6 @@
     </Item126>
     <Item127>
       <Index>129</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>129</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1668,10 +1156,6 @@
     </Item127>
     <Item128>
       <Index>130</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>130</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1681,10 +1165,6 @@
     </Item128>
     <Item129>
       <Index>131</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>131</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1694,10 +1174,6 @@
     </Item129>
     <Item130>
       <Index>132</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>132</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1707,10 +1183,6 @@
     </Item130>
     <Item131>
       <Index>133</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>133</Item0>
-      </Frames>
       <Categorization>GUI.Default.Toolbar.Equipped</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1720,10 +1192,6 @@
     </Item131>
     <Item132>
       <Index>134</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>134</Item0>
-      </Frames>
       <Categorization>GUI.Default.Toolbar.Inventory</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1733,10 +1201,6 @@
     </Item132>
     <Item133>
       <Index>135</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>135</Item0>
-      </Frames>
       <Categorization>GUI.Default.Toolbar.Skills</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1746,10 +1210,6 @@
     </Item133>
     <Item134>
       <Index>136</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>136</Item0>
-      </Frames>
       <Categorization>GUI.Default.item_slot</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1759,10 +1219,6 @@
     </Item134>
     <Item135>
       <Index>137</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>137</Item0>
-      </Frames>
       <Categorization>Background.sky</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1772,10 +1228,6 @@
     </Item135>
     <Item136>
       <Index>138</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>138</Item0>
-      </Frames>
       <Categorization>Background.trees.dense</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1785,10 +1237,6 @@
     </Item136>
     <Item137>
       <Index>139</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>139</Item0>
-      </Frames>
       <Categorization>Background.trees.sparse</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1798,10 +1246,6 @@
     </Item137>
     <Item138>
       <Index>140</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>140</Item0>
-      </Frames>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1811,10 +1255,6 @@
     </Item138>
     <Item139>
       <Index>141</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>141</Item0>
-      </Frames>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1824,10 +1264,6 @@
     </Item139>
     <Item140>
       <Index>142</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>142</Item0>
-      </Frames>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1837,10 +1273,6 @@
     </Item140>
     <Item141>
       <Index>143</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>143</Item0>
-      </Frames>
       <Categorization>GUI.Default.status icon border</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1850,10 +1282,6 @@
     </Item141>
     <Item142>
       <Index>144</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>144</Item0>
-      </Frames>
       <Categorization>GUI.Default.Toolbar.Stats</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1863,10 +1291,6 @@
     </Item142>
     <Item143>
       <Index>145</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>145</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1876,10 +1300,6 @@
     </Item143>
     <Item144>
       <Index>146</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>146</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1889,10 +1309,6 @@
     </Item144>
     <Item145>
       <Index>147</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>147</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1902,10 +1318,6 @@
     </Item145>
     <Item146>
       <Index>148</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>148</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1915,10 +1327,6 @@
     </Item146>
     <Item147>
       <Index>149</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>149</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1928,10 +1336,6 @@
     </Item147>
     <Item148>
       <Index>150</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>150</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1941,10 +1345,6 @@
     </Item148>
     <Item149>
       <Index>151</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>151</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1954,10 +1354,6 @@
     </Item149>
     <Item150>
       <Index>152</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>152</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1967,10 +1363,6 @@
     </Item150>
     <Item151>
       <Index>153</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>153</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1980,10 +1372,6 @@
     </Item151>
     <Item152>
       <Index>154</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>154</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -1993,10 +1381,6 @@
     </Item152>
     <Item153>
       <Index>155</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>155</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2006,10 +1390,6 @@
     </Item153>
     <Item154>
       <Index>156</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>156</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2019,10 +1399,6 @@
     </Item154>
     <Item155>
       <Index>157</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>157</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2032,10 +1408,6 @@
     </Item155>
     <Item156>
       <Index>158</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>158</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2045,10 +1417,6 @@
     </Item156>
     <Item157>
       <Index>159</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>159</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2058,10 +1426,6 @@
     </Item157>
     <Item158>
       <Index>160</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>160</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2071,10 +1435,6 @@
     </Item158>
     <Item159>
       <Index>161</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>161</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2084,10 +1444,6 @@
     </Item159>
     <Item160>
       <Index>162</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>162</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2097,10 +1453,6 @@
     </Item160>
     <Item161>
       <Index>163</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>163</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2110,10 +1462,6 @@
     </Item161>
     <Item162>
       <Index>164</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>164</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2123,10 +1471,6 @@
     </Item162>
     <Item163>
       <Index>165</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>165</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2136,10 +1480,6 @@
     </Item163>
     <Item164>
       <Index>166</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>166</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2149,10 +1489,6 @@
     </Item164>
     <Item165>
       <Index>167</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>167</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2162,10 +1498,6 @@
     </Item165>
     <Item166>
       <Index>168</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>168</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2175,10 +1507,6 @@
     </Item166>
     <Item167>
       <Index>169</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>169</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2188,10 +1516,6 @@
     </Item167>
     <Item168>
       <Index>170</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>170</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2201,10 +1525,6 @@
     </Item168>
     <Item169>
       <Index>171</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>171</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2214,10 +1534,6 @@
     </Item169>
     <Item170>
       <Index>172</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>172</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2227,10 +1543,6 @@
     </Item170>
     <Item171>
       <Index>173</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>173</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2240,10 +1552,6 @@
     </Item171>
     <Item172>
       <Index>174</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>174</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2253,10 +1561,6 @@
     </Item172>
     <Item173>
       <Index>175</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>175</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2266,10 +1570,6 @@
     </Item173>
     <Item174>
       <Index>176</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>176</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2279,10 +1579,6 @@
     </Item174>
     <Item175>
       <Index>177</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>177</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2292,10 +1588,6 @@
     </Item175>
     <Item176>
       <Index>178</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>178</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2305,10 +1597,6 @@
     </Item176>
     <Item177>
       <Index>179</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>179</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2318,10 +1606,6 @@
     </Item177>
     <Item178>
       <Index>180</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>180</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2331,10 +1615,6 @@
     </Item178>
     <Item179>
       <Index>181</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>181</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2344,10 +1624,6 @@
     </Item179>
     <Item180>
       <Index>182</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>182</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Up_frames_150.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2357,10 +1633,6 @@
     </Item180>
     <Item181>
       <Index>183</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>183</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Up_frames_150.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2370,10 +1642,6 @@
     </Item181>
     <Item182>
       <Index>184</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>184</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Up_frames_150.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2383,10 +1651,6 @@
     </Item182>
     <Item183>
       <Index>185</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>185</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Up_frames_150.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2396,10 +1660,6 @@
     </Item183>
     <Item184>
       <Index>186</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>186</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Right_frames_150.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2409,10 +1669,6 @@
     </Item184>
     <Item185>
       <Index>187</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>187</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Right_frames_150.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2422,10 +1678,6 @@
     </Item185>
     <Item186>
       <Index>188</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>188</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Right_frames_150.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2435,10 +1687,6 @@
     </Item186>
     <Item187>
       <Index>189</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>189</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Right_frames_150.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2448,10 +1696,6 @@
     </Item187>
     <Item188>
       <Index>190</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>190</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Left_frames_150.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2461,10 +1705,6 @@
     </Item188>
     <Item189>
       <Index>191</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>191</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Left_frames_150.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2474,10 +1714,6 @@
     </Item189>
     <Item190>
       <Index>192</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>192</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Left_frames_150.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2487,10 +1723,6 @@
     </Item190>
     <Item191>
       <Index>193</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>193</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Left_frames_150.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2500,10 +1732,6 @@
     </Item191>
     <Item192>
       <Index>194</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>194</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Down_frames_150.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2513,10 +1741,6 @@
     </Item192>
     <Item193>
       <Index>195</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>195</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Down_frames_150.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2526,10 +1750,6 @@
     </Item193>
     <Item194>
       <Index>196</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>196</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Down_frames_150.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2539,10 +1759,6 @@
     </Item194>
     <Item195>
       <Index>197</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>197</Item0>
-      </Frames>
       <Categorization>Character.Top Down.Basic._Walk Down_frames_150.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2552,10 +1768,6 @@
     </Item195>
     <Item196>
       <Index>200</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>200</Item0>
-      </Frames>
       <Categorization>Character.Zombie.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2565,10 +1777,6 @@
     </Item196>
     <Item197>
       <Index>201</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>201</Item0>
-      </Frames>
       <Categorization>Character.Zombie.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2578,10 +1786,6 @@
     </Item197>
     <Item198>
       <Index>202</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>202</Item0>
-      </Frames>
       <Categorization>Character.Zombie.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2591,10 +1795,6 @@
     </Item198>
     <Item199>
       <Index>203</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>203</Item0>
-      </Frames>
       <Categorization>Character.Zombie.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2604,10 +1804,6 @@
     </Item199>
     <Item200>
       <Index>204</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>204</Item0>
-      </Frames>
       <Categorization>Character.Zombie.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2617,10 +1813,6 @@
     </Item200>
     <Item201>
       <Index>205</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>205</Item0>
-      </Frames>
       <Categorization>Character.Zombie.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2630,10 +1822,6 @@
     </Item201>
     <Item202>
       <Index>206</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>206</Item0>
-      </Frames>
       <Categorization>Character.Zombie.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2643,10 +1831,6 @@
     </Item202>
     <Item203>
       <Index>207</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>207</Item0>
-      </Frames>
       <Categorization>Character.Zombie.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2656,10 +1840,6 @@
     </Item203>
     <Item204>
       <Index>218</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>218</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2669,10 +1849,6 @@
     </Item204>
     <Item205>
       <Index>219</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>219</Item0>
-      </Frames>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2682,10 +1858,6 @@
     </Item205>
     <Item206>
       <Index>220</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>220</Item0>
-      </Frames>
       <Categorization>Emoticons._Sweat_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2695,10 +1867,6 @@
     </Item206>
     <Item207>
       <Index>221</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>221</Item0>
-      </Frames>
       <Categorization>Emoticons._Sweat_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2708,10 +1876,6 @@
     </Item207>
     <Item208>
       <Index>222</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>222</Item0>
-      </Frames>
       <Categorization>Emoticons._Sweat_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2721,10 +1885,6 @@
     </Item208>
     <Item209>
       <Index>223</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>223</Item0>
-      </Frames>
       <Categorization>Emoticons._Sweat_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2734,10 +1894,6 @@
     </Item209>
     <Item210>
       <Index>224</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>224</Item0>
-      </Frames>
       <Categorization>Emoticons._Question_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2747,10 +1903,6 @@
     </Item210>
     <Item211>
       <Index>225</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>225</Item0>
-      </Frames>
       <Categorization>Emoticons._Question_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2760,10 +1912,6 @@
     </Item211>
     <Item212>
       <Index>226</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>226</Item0>
-      </Frames>
       <Categorization>Emoticons._Question_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2773,10 +1921,6 @@
     </Item212>
     <Item213>
       <Index>227</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>227</Item0>
-      </Frames>
       <Categorization>Emoticons._Question_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2786,10 +1930,6 @@
     </Item213>
     <Item214>
       <Index>228</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>228</Item0>
-      </Frames>
       <Categorization>Emoticons._Meat_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2799,10 +1939,6 @@
     </Item214>
     <Item215>
       <Index>229</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>229</Item0>
-      </Frames>
       <Categorization>Emoticons._Meat_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2812,10 +1948,6 @@
     </Item215>
     <Item216>
       <Index>230</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>230</Item0>
-      </Frames>
       <Categorization>Emoticons._Meat_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2825,10 +1957,6 @@
     </Item216>
     <Item217>
       <Index>231</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>231</Item0>
-      </Frames>
       <Categorization>Emoticons._Meat_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2838,10 +1966,6 @@
     </Item217>
     <Item218>
       <Index>232</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>232</Item0>
-      </Frames>
       <Categorization>Emoticons._Hearts_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2851,10 +1975,6 @@
     </Item218>
     <Item219>
       <Index>233</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>233</Item0>
-      </Frames>
       <Categorization>Emoticons._Hearts_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2864,10 +1984,6 @@
     </Item219>
     <Item220>
       <Index>234</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>234</Item0>
-      </Frames>
       <Categorization>Emoticons._Hearts_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2877,10 +1993,6 @@
     </Item220>
     <Item221>
       <Index>235</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>235</Item0>
-      </Frames>
       <Categorization>Emoticons._Hearts_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2890,10 +2002,6 @@
     </Item221>
     <Item222>
       <Index>236</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>236</Item0>
-      </Frames>
       <Categorization>Emoticons._Heartbroken_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2903,10 +2011,6 @@
     </Item222>
     <Item223>
       <Index>237</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>237</Item0>
-      </Frames>
       <Categorization>Emoticons._Heartbroken_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2916,10 +2020,6 @@
     </Item223>
     <Item224>
       <Index>238</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>238</Item0>
-      </Frames>
       <Categorization>Emoticons._Heartbroken_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2929,10 +2029,6 @@
     </Item224>
     <Item225>
       <Index>239</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>239</Item0>
-      </Frames>
       <Categorization>Emoticons._Heartbroken_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2942,10 +2038,6 @@
     </Item225>
     <Item226>
       <Index>240</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>240</Item0>
-      </Frames>
       <Categorization>Emoticons._Exclamation_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2955,10 +2047,6 @@
     </Item226>
     <Item227>
       <Index>241</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>241</Item0>
-      </Frames>
       <Categorization>Emoticons._Exclamation_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2968,10 +2056,6 @@
     </Item227>
     <Item228>
       <Index>242</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>242</Item0>
-      </Frames>
       <Categorization>Emoticons._Exclamation_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2981,10 +2065,6 @@
     </Item228>
     <Item229>
       <Index>243</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>243</Item0>
-      </Frames>
       <Categorization>Emoticons._Exclamation_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -2994,10 +2074,6 @@
     </Item229>
     <Item230>
       <Index>244</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>244</Item0>
-      </Frames>
       <Categorization>Emoticons._Ellipsis_frames_400.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -3007,10 +2083,6 @@
     </Item230>
     <Item231>
       <Index>245</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>245</Item0>
-      </Frames>
       <Categorization>Emoticons._Ellipsis_frames_400.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -3020,10 +2092,6 @@
     </Item231>
     <Item232>
       <Index>246</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>246</Item0>
-      </Frames>
       <Categorization>Emoticons._Ellipsis_frames_400.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -3033,10 +2101,6 @@
     </Item232>
     <Item233>
       <Index>247</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>247</Item0>
-      </Frames>
       <Categorization>Emoticons._Ellipsis_frames_400.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
@@ -3049,6 +2113,8 @@
     <Count>20</Count>
     <Item0>
       <Index>125</Index>
+      <Categorization>Effect.Teleport</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>8</Count>
         <Item0>117</Item0>
@@ -3060,11 +2126,11 @@
         <Item6>123</Item6>
         <Item7>124</Item7>
       </Frames>
-      <Categorization>Effect.Teleport</Categorization>
-      <Speed>400</Speed>
     </Item0>
     <Item1>
       <Index>198</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>154</Item0>
@@ -3072,11 +2138,11 @@
         <Item2>156</Item2>
         <Item3>157</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
-      <Speed>300</Speed>
     </Item1>
     <Item2>
       <Index>199</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>150</Item0>
@@ -3084,11 +2150,11 @@
         <Item2>152</Item2>
         <Item3>153</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
-      <Speed>300</Speed>
     </Item2>
     <Item3>
       <Index>208</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>146</Item0>
@@ -3096,11 +2162,11 @@
         <Item2>148</Item2>
         <Item3>149</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
-      <Speed>300</Speed>
     </Item3>
     <Item4>
       <Index>209</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>114</Item0>
@@ -3108,11 +2174,11 @@
         <Item2>116</Item2>
         <Item3>145</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
-      <Speed>300</Speed>
     </Item4>
     <Item5>
       <Index>210</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>174</Item0>
@@ -3120,11 +2186,11 @@
         <Item2>176</Item2>
         <Item3>177</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
-      <Speed>300</Speed>
     </Item5>
     <Item6>
       <Index>211</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>170</Item0>
@@ -3132,11 +2198,11 @@
         <Item2>172</Item2>
         <Item3>173</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
-      <Speed>300</Speed>
     </Item6>
     <Item7>
       <Index>212</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>166</Item0>
@@ -3144,11 +2210,11 @@
         <Item2>168</Item2>
         <Item3>169</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
-      <Speed>300</Speed>
     </Item7>
     <Item8>
       <Index>213</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
+      <Speed>299</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>162</Item0>
@@ -3156,11 +2222,11 @@
         <Item2>164</Item2>
         <Item3>165</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
-      <Speed>300</Speed>
     </Item8>
     <Item9>
       <Index>214</Index>
+      <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
+      <Speed>149</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>194</Item0>
@@ -3168,11 +2234,11 @@
         <Item2>196</Item2>
         <Item3>197</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
-      <Speed>150</Speed>
     </Item9>
     <Item10>
       <Index>215</Index>
+      <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
+      <Speed>149</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>190</Item0>
@@ -3180,11 +2246,11 @@
         <Item2>192</Item2>
         <Item3>193</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
-      <Speed>150</Speed>
     </Item10>
     <Item11>
       <Index>216</Index>
+      <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
+      <Speed>149</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>186</Item0>
@@ -3192,11 +2258,11 @@
         <Item2>188</Item2>
         <Item3>189</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
-      <Speed>150</Speed>
     </Item11>
     <Item12>
       <Index>217</Index>
+      <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
+      <Speed>149</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>182</Item0>
@@ -3204,11 +2270,11 @@
         <Item2>184</Item2>
         <Item3>185</Item3>
       </Frames>
-      <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
-      <Speed>150</Speed>
     </Item12>
     <Item13>
       <Index>248</Index>
+      <Categorization>Emoticons.Ellipsis</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>244</Item0>
@@ -3216,11 +2282,11 @@
         <Item2>246</Item2>
         <Item3>247</Item3>
       </Frames>
-      <Categorization>Emoticons.Ellipsis</Categorization>
-      <Speed>400</Speed>
     </Item13>
     <Item14>
       <Index>249</Index>
+      <Categorization>Emoticons.Exclamation</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>240</Item0>
@@ -3228,11 +2294,11 @@
         <Item2>242</Item2>
         <Item3>243</Item3>
       </Frames>
-      <Categorization>Emoticons.Exclamation</Categorization>
-      <Speed>400</Speed>
     </Item14>
     <Item15>
       <Index>250</Index>
+      <Categorization>Emoticons.Heartbroken</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>236</Item0>
@@ -3240,11 +2306,11 @@
         <Item2>238</Item2>
         <Item3>239</Item3>
       </Frames>
-      <Categorization>Emoticons.Heartbroken</Categorization>
-      <Speed>400</Speed>
     </Item15>
     <Item16>
       <Index>251</Index>
+      <Categorization>Emoticons.Hearts</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>232</Item0>
@@ -3252,11 +2318,11 @@
         <Item2>234</Item2>
         <Item3>235</Item3>
       </Frames>
-      <Categorization>Emoticons.Hearts</Categorization>
-      <Speed>400</Speed>
     </Item16>
     <Item17>
       <Index>252</Index>
+      <Categorization>Emoticons.Meat</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>228</Item0>
@@ -3264,11 +2330,11 @@
         <Item2>230</Item2>
         <Item3>231</Item3>
       </Frames>
-      <Categorization>Emoticons.Meat</Categorization>
-      <Speed>400</Speed>
     </Item17>
     <Item18>
       <Index>253</Index>
+      <Categorization>Emoticons.Question</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>224</Item0>
@@ -3276,11 +2342,11 @@
         <Item2>226</Item2>
         <Item3>227</Item3>
       </Frames>
-      <Categorization>Emoticons.Question</Categorization>
-      <Speed>400</Speed>
     </Item18>
     <Item19>
       <Index>254</Index>
+      <Categorization>Emoticons.Sweat</Categorization>
+      <Speed>400</Speed>
       <Frames>
         <Count>4</Count>
         <Item0>220</Item0>
@@ -3288,8 +2354,6 @@
         <Item2>222</Item2>
         <Item3>223</Item3>
       </Frames>
-      <Categorization>Emoticons.Sweat</Categorization>
-      <Speed>400</Speed>
     </Item19>
   </Animated>
 </GrhDatas>
