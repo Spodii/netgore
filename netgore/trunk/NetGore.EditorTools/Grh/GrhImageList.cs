@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -105,7 +106,7 @@ namespace NetGore.EditorTools
         /// <param name="grhData">GrhData to add.</param>
         static void AddImage(GrhData grhData)
         {
-            if (grhData == null || grhData.IsAnimated)
+            if (grhData == null || !(grhData is StationaryGrhData))
                 return;
 
             string key = GetImageKey(grhData);
@@ -141,21 +142,22 @@ namespace NetGore.EditorTools
         /// <returns>The Image for the <paramref name="grhData"/>.</returns>
         static Image CreateImage(GrhData grhData)
         {
-            if (grhData == null || grhData.TextureName == null)
+            var gd = grhData as StationaryGrhData;
+            if (gd == null || gd.TextureName == null)
                 return null;
 
             GrhImageListCacheItem cacheItem;
-            if (_imageCache.TryGetValue(grhData.GrhIndex, out cacheItem))
+            if (_imageCache.TryGetValue(gd.GrhIndex, out cacheItem))
             {
-                if (grhData.OriginalSourceRect == cacheItem.SourceRect)
+                if (gd.OriginalSourceRect == cacheItem.SourceRect)
                     return cacheItem.Image;
             }
 
             int destWidth = ImageList.ImageSize.Width;
             int destHeight = ImageList.ImageSize.Height;
 
-            Rectangle sourceRect = grhData.SourceRect;
-            return ImageHelper.CreateFromTexture(grhData.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height,
+            Rectangle sourceRect = gd.SourceRect;
+            return ImageHelper.CreateFromTexture(gd.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height,
                                                  destWidth, destHeight);
         }
 
@@ -226,7 +228,7 @@ namespace NetGore.EditorTools
             var grhDatas = GrhInfo.GrhDatas.ToArray();
             var validItems = new Stack<GrhImageListCacheItem>(grhDatas.Length);
 
-            foreach (GrhData gd in grhDatas)
+            foreach (var gd in grhDatas)
             {
                 string key = GetImageKey(gd);
                 Image image = ImageList.Images[key];
@@ -234,7 +236,15 @@ namespace NetGore.EditorTools
                 if (image == null)
                     continue;
 
-                GrhImageListCacheItem item = new GrhImageListCacheItem(gd.GrhIndex, image, gd.OriginalSourceRect);
+                Rectangle rect;
+                if (gd is StationaryGrhData)
+                    rect = ((StationaryGrhData)gd).OriginalSourceRect;
+                else if (gd is AnimatedGrhData)
+                    rect = new Rectangle();
+                else
+                    throw new Exception("Unsupported GrhData type...");
+
+                GrhImageListCacheItem item = new GrhImageListCacheItem(gd.GrhIndex, image, rect);
                 validItems.Push(item);
             }
 

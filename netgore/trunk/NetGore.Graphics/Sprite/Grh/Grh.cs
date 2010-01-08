@@ -102,28 +102,21 @@ namespace NetGore.Graphics
                 if (GrhData == null)
                     return null;
 
-                return GrhData.Frames[(int)_frame];
+                if (GrhData is AnimatedGrhData)
+                    return ((AnimatedGrhData)GrhData).Frames[(int)_frame];
+                else if (GrhData is StationaryGrhData)
+                    return GrhData;
+                else
+                    throw new Exception("Unsupported GrhData type...");
             }
         }
 
         /// <summary>
-        /// Gets or sets the current frame of the animation.
+        /// Gets the current frame of the animation.
         /// </summary>
         public float Frame
         {
             get { return _frame; }
-            set
-            {
-                if (value < GrhData.Frames.Length)
-                    _frame = value;
-                else
-                {
-                    const string errmsg = "Requested frame index exceeds total number of frames";
-                    if (log.IsFatalEnabled)
-                        log.Fatal(errmsg);
-                    throw new ArgumentOutOfRangeException("value", errmsg);
-                }
-            }
         }
 
         /// <summary>
@@ -132,20 +125,6 @@ namespace NetGore.Graphics
         public GrhData GrhData
         {
             get { return _grhData; }
-        }
-
-        /// <summary>
-        /// Gets the height of the current frame in pixels.
-        /// </summary>
-        public int Height
-        {
-            get
-            {
-                if (CurrentGrhData == null)
-                    return 0;
-
-                return CurrentGrhData.Height;
-            }
         }
 
         /// <summary>
@@ -161,21 +140,7 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Size
         {
-            get { return new Vector2(Width, Height); }
-        }
-
-        /// <summary>
-        /// Gets the width of the current frame in pixels.
-        /// </summary>
-        public int Width
-        {
-            get
-            {
-                if (CurrentGrhData == null)
-                    return 0;
-
-                return CurrentGrhData.Width;
-            }
+            get { return CurrentGrhData != null ? CurrentGrhData.Size : Vector2.Zero; }
         }
 
         /// <summary>
@@ -200,7 +165,7 @@ namespace NetGore.Graphics
             {
                 const string errmsg = "Failed to render Grh `{0}` - GrhData returning null texture for `{3}`!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this, GrhData.TextureName);
+                    log.WarnFormat(errmsg, this, ((StationaryGrhData)GrhData).TextureName);
                 return false;
             }
 
@@ -388,8 +353,9 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current total real time in total milliseconds.</param>
         public virtual void Update(int currentTime)
         {
-            // Check for a valid root GrhData object
-            if (_grhData == null)
+            // Check for an animated GrhData
+            var asAnimated = GrhData as AnimatedGrhData;
+            if (asAnimated == null)
                 return;
 
             // Don't update if not animated
@@ -397,13 +363,13 @@ namespace NetGore.Graphics
                 return;
 
             // Store the temporary new frame
-            float tmpFrame = _frame + ((currentTime - _lastUpdated) * _grhData.Speed);
+            float tmpFrame = _frame + ((currentTime - _lastUpdated) * asAnimated.Speed);
 
             // Set the last updated time to now
             _lastUpdated = currentTime;
 
             // Check if the frame limit has been exceeded
-            if (tmpFrame >= _grhData.Frames.Length)
+            if (tmpFrame >= asAnimated.Frames.Length)
             {
                 if (_anim == AnimType.LoopOnce)
                 {
@@ -415,7 +381,7 @@ namespace NetGore.Graphics
                 else
                 {
                     // Animation is looping so get the frame back into range
-                    tmpFrame = tmpFrame % _grhData.Frames.Length;
+                    tmpFrame = tmpFrame % asAnimated.Frames.Length;
                 }
             }
 
@@ -430,9 +396,11 @@ namespace NetGore.Graphics
         {
             get
             {
-                if (CurrentGrhData == null)
+                var asStationary = CurrentGrhData as StationaryGrhData;
+                if (asStationary == null)
                     return Rectangle.Empty;
-                return CurrentGrhData.SourceRect;
+
+                return asStationary.SourceRect;
             }
         }
 
@@ -443,9 +411,11 @@ namespace NetGore.Graphics
         {
             get
             {
-                if (CurrentGrhData == null)
+                var asStationary = CurrentGrhData as StationaryGrhData;
+                if (asStationary == null)
                     return null;
-                return CurrentGrhData.Texture;
+
+                return asStationary.Texture;
             }
         }
 

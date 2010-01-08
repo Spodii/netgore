@@ -51,7 +51,7 @@ namespace NetGore.EditorTools
 
             // Change all of the GrhDatas
             string currTexture = selectedItem.TextureName;
-            foreach (GrhData gd in selectedItem.GrhDatas)
+            foreach (var gd in selectedItem.GrhDatas.OfType<StationaryGrhData>())
             {
                 if (gd.TextureName.ToString() != currTexture)
                     Debug.Fail("Somehow we got a GrhData with a wrong texture!");
@@ -60,7 +60,7 @@ namespace NetGore.EditorTools
             }
 
             // Ensure we got everything
-            Debug.Assert(GrhInfo.GrhDatas.Where(x => x.TextureName.ToString() == currTexture).Count() == 0,
+            Debug.Assert(GrhInfo.GrhDatas.OfType<StationaryGrhData>().Where(x => x.TextureName.ToString() == currTexture).Count() == 0,
                          "One or more textures failed to be changed!");
 
             RemoveSelectedTextureListItem();
@@ -99,7 +99,7 @@ namespace NetGore.EditorTools
         static Dictionary<string, List<GrhData>> CreateTextureDict(IEnumerable<GrhData> grhDatas)
         {
             var ret = new Dictionary<string, List<GrhData>>();
-            foreach (GrhData gd in grhDatas)
+            foreach (var gd in grhDatas.OfType<StationaryGrhData>())
             {
                 List<GrhData> list;
                 if (!ret.TryGetValue(gd.TextureName.ToString(), out list))

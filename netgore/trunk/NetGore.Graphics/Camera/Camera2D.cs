@@ -271,7 +271,7 @@ namespace NetGore.Graphics
                 return false;
             }
 
-            return InView(position, position + new Vector2(grh.Width, grh.Height));
+            return InView(position, position + grh.Size);
         }
 
         /// <summary>

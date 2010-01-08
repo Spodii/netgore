@@ -110,6 +110,8 @@ namespace NetGore.EditorTools
         void btnAccept_Click(object sender, EventArgs e)
         {
             // TODO: Clean this up a lot by adding more specialized textboxes, and using .IsValid()
+            StationaryGrhData gdStationary = _gd as StationaryGrhData;
+            AnimatedGrhData gdAnimated = _gd as AnimatedGrhData;
 
             // Validate the category and title, making sure its unique
             if (!ValidateCategorization(true))
@@ -175,6 +177,8 @@ namespace NetGore.EditorTools
             // Get the categorization
             var categorization = new SpriteCategorization(txtCategory.GetSanitizedText(), txtTitle.Text);
 
+            /*
+             // TODO: %% Add back...
             // Set the information
             if (radioStationary.Checked)
             {
@@ -208,6 +212,7 @@ namespace NetGore.EditorTools
                 float speed = Parser.Current.ParseFloat(txtSpeed.Text);
                 _gd.Load(newIndex, frames, 1f / speed, categorization);
             }
+            */
 
             // Set the MapGrhWalls
             var walls = new List<WallEntityBase>();
@@ -335,6 +340,8 @@ namespace NetGore.EditorTools
 
         void ShowGrhInfo()
         {
+            /*
+             // TODO: %% Add back...
             txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);
             txtTitle.Text = _gd.Categorization.Title.ToString();
             txtIndex.Text = _gd.GrhIndex.ToString();
@@ -375,10 +382,13 @@ namespace NetGore.EditorTools
                     lstWalls.AddItemAndReselect(wall);
                 }
             }
+            */
         }
 
         void txtH_TextChanged(object sender, EventArgs e)
         {
+            /*
+             // TODO: %% Add back...
             uint o;
             if (Parser.Current.TryParse(txtH.Text, out o))
             {
@@ -389,6 +399,7 @@ namespace NetGore.EditorTools
             }
             else
                 txtH.BackColor = EditorColors.Error;
+           */
         }
 
         void txtIndex_TextChanged(object sender, EventArgs e)
@@ -422,6 +433,8 @@ namespace NetGore.EditorTools
 
         void txtW_TextChanged(object sender, EventArgs e)
         {
+            /*
+             // TODO: %% Add back...
             uint o;
             if (Parser.Current.TryParse(txtW.Text, out o))
             {
@@ -432,6 +445,7 @@ namespace NetGore.EditorTools
             }
             else
                 txtW.BackColor = EditorColors.Error;
+             */
         }
 
         void txtWallH_TextChanged(object sender, EventArgs e)
@@ -504,6 +518,8 @@ namespace NetGore.EditorTools
 
         void txtX_TextChanged(object sender, EventArgs e)
         {
+            /*
+             // TODO: %% Add back...
             uint o;
             if (Parser.Current.TryParse(txtX.Text, out o))
             {
@@ -514,10 +530,13 @@ namespace NetGore.EditorTools
             }
             else
                 txtX.BackColor = EditorColors.Error;
+             */
         }
 
         void txtY_TextChanged(object sender, EventArgs e)
         {
+            /*
+             // TODO: %% Add back...
             uint o;
             if (Parser.Current.TryParse(txtY.Text, out o))
             {
@@ -528,6 +547,7 @@ namespace NetGore.EditorTools
             }
             else
                 txtY.BackColor = EditorColors.Error;
+             */
         }
 
         bool ValidateCategorization(bool showMessage)

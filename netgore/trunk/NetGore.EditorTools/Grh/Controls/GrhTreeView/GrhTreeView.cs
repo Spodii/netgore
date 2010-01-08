@@ -183,7 +183,7 @@ namespace NetGore.EditorTools
             // Display a form showing which textures need to be fixed
             // The GrhTreeView will be disabled until the MissingTexturesForm is closed
             Enabled = false;
-            MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing, _contentManager);
+            MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing.Cast<GrhData>(), _contentManager);
             frm.FormClosed += delegate
                               {
                                   RebuildTree();
@@ -498,7 +498,7 @@ namespace NetGore.EditorTools
 
         void MenuClickAutomaticUpdate(object sender, EventArgs e)
         {
-            ContentManager cm = GrhInfo.GrhDatas.First(x => x.ContentManager != null).ContentManager;
+            ContentManager cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
             if (cm == null)
                 throw new Exception("Failed to find a ContentManager to use.");
 

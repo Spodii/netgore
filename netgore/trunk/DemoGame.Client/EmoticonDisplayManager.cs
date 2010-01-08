@@ -217,7 +217,7 @@ namespace DemoGame.Client
                 _grh.Update(currentTime);
 
                 // Check if the emoticon is still alive
-                if (_grh.GrhData.IsAnimated)
+                if (_grh.GrhData is AnimatedGrhData)
                 {
                     // If animated, check if the animation is still going
                     _isAlive = (_grh.AnimType == AnimType.LoopOnce);

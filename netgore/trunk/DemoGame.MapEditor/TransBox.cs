@@ -226,10 +226,10 @@ namespace DemoGame.MapEditor
             moveCenterX = (float)Math.Round(moveCenterX);
 
             // Move box
-            ret.Add(new TransBox(TransBoxType.Move, entity, new Vector2(moveCenterX, min.Y - Move.Height - 8)));
+            ret.Add(new TransBox(TransBoxType.Move, entity, new Vector2(moveCenterX, min.Y - Move.Size.Y - 8)));
 
             // Four corners
-            ret.Add(new TransBox(TransBoxType.TopLeft, entity, new Vector2(min.X - ScaleSize.X, min.Y - Scale.Height)));
+            ret.Add(new TransBox(TransBoxType.TopLeft, entity, new Vector2(min.X - ScaleSize.X, min.Y - Scale.Size.Y)));
             ret.Add(new TransBox(TransBoxType.TopRight, entity, new Vector2(max.X, min.Y - ScaleSize.Y)));
             ret.Add(new TransBox(TransBoxType.BottomLeft, entity, new Vector2(min.X - ScaleSize.X, max.Y)));
             ret.Add(new TransBox(TransBoxType.BottomRight, entity, max));

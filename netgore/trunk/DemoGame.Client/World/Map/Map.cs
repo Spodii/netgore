@@ -156,13 +156,22 @@ namespace DemoGame.Client
             // Loop through each index
             foreach (GrhIndex index in grhIndexes)
             {
-                GrhData gd = GrhInfo.GetData(index);
+                GrhData gd = GrhInfo.GetData(index) ;
 
                 // Every frame of the GrhData gets added
-                // For animations, this is one per each frame
-                // For stationary, this will just grab a copy of itself from Frames[0]
-                foreach (GrhData frame in gd.Frames)
+                // For animations, grab each frame
+                // For stationary, use the GrhData itself
+                if (gd is AnimatedGrhData)
                 {
+                    foreach (StationaryGrhData frame in ((AnimatedGrhData)gd).Frames)
+                    {
+                        if (!atlasItems.Contains(frame))
+                            atlasItems.Add(frame);
+                    }
+                }
+                else if (gd is StationaryGrhData)
+                {
+                    var frame = (StationaryGrhData)gd;
                     if (!atlasItems.Contains(frame))
                         atlasItems.Add(frame);
                 }
