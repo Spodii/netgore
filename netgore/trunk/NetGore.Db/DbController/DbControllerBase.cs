@@ -152,7 +152,7 @@ namespace NetGore.Db
         {
             try
             {
-                using (var poolableConn = pool.Create())
+                using (var poolableConn = pool.Acquire())
                 {
                     using (var cmd = poolableConn.Connection.CreateCommand())
                     {
@@ -211,7 +211,7 @@ namespace NetGore.Db
         {
             var ret = new List<string>();
 
-            using (var conn = _connectionPool.Create())
+            using (var conn = _connectionPool.Acquire())
             {
                 using (var cmd = conn.Connection.CreateCommand())
                 {

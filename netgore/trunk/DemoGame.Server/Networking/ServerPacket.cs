@@ -101,7 +101,7 @@ namespace DemoGame.Server
         /// <returns>PacketWriter to use.</returns>
         public static PacketWriter GetWriter()
         {
-            return _writerPool.Create();
+            return _writerPool.Acquire();
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DemoGame.Server
         /// <returns>PacketWriter to use.</returns>
         static PacketWriter GetWriter(ServerPacketID id)
         {
-            PacketWriter pw = _writerPool.Create();
+            PacketWriter pw = _writerPool.Acquire();
             pw.Write(id);
             return pw;
         }

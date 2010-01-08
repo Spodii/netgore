@@ -11,7 +11,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Represents the text used to display the damage to an entity
     /// </summary>
-    public class DamageText : IPoolable<DamageText>
+    public class DamageText : IPoolable
     {
         /// <summary>
         /// Gravity to apply to the text (has nothing to do with the World's gravity)
@@ -32,8 +32,6 @@ namespace DemoGame.Client
         /// Time at which the text was last updated
         /// </summary>
         int _lastUpdate;
-
-        PoolData<DamageText> _poolData;
 
         /// <summary>
         /// Current position of the text
@@ -89,13 +87,6 @@ namespace DemoGame.Client
         /// <param name="sf">SpriteFont to draw with</param>
         public void Draw(SpriteBatch sb, SpriteFont sf)
         {
-            // Do not draw if it is not alive
-            if (!_poolData.IsActivated)
-            {
-                Debug.Fail("Tried to update inactivated pool item.");
-                return;
-            }
-
             sb.DrawString(sf, _text, _pos, new Color(255, 255, 255, (byte)_alpha));
         }
 
@@ -105,13 +96,6 @@ namespace DemoGame.Client
         /// <param name="currTime">Current time</param>
         public void Update(int currTime)
         {
-            // Do not update if it is not alive
-            if (!_poolData.IsActivated)
-            {
-                Debug.Fail("Tried to update inactivated pool item.");
-                return;
-            }
-
             // Get the delta time
             float delta = currTime - _lastUpdate;
             _lastUpdate = currTime;
@@ -125,26 +109,14 @@ namespace DemoGame.Client
             _velocity += _gravity * delta;
         }
 
-        #region IPoolable<DamageText> Members
-
-        PoolData<DamageText> IPoolable<DamageText>.PoolData
+        /// <summary>
+        /// Gets or sets the index of the object in the pool. This value should never be used by anything
+        /// other than the pool that owns this object.
+        /// </summary>
+        int IPoolable.PoolIndex
         {
-            get { return _poolData; }
+            get;
+            set;
         }
-
-        void IPoolable<DamageText>.SetPoolData(IObjectPool<DamageText> objectPool, PoolData<DamageText> poolData)
-        {
-            _poolData = poolData;
-        }
-
-        void IPoolable<DamageText>.Activate()
-        {
-        }
-
-        void IPoolable<DamageText>.Deactivate()
-        {
-        }
-
-        #endregion
     }
 }

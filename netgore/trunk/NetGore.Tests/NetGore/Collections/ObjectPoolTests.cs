@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.Collections;
@@ -5,130 +6,147 @@ using NUnit.Framework;
 
 namespace NetGore.Tests.Collections
 {
-    class TestPoolItem : IPoolable<TestPoolItem>
-    {
-        PoolData<TestPoolItem> _poolData;
-
-        #region IPoolable<TestPoolItem> Members
-
-        public PoolData<TestPoolItem> PoolData
-        {
-            get { return _poolData; }
-        }
-
-        public void Activate()
-        {
-        }
-
-        public void Deactivate()
-        {
-        }
-
-        public void SetPoolData(IObjectPool<TestPoolItem> objectPool, PoolData<TestPoolItem> poolData)
-        {
-            _poolData = poolData;
-        }
-
-        #endregion
-    }
-
-    class TestPool : ObjectPool<TestPoolItem>
-    {
-    }
-
     [TestFixture]
     public class ObjectPoolTests
     {
-        [Test]
-        public void CountTest()
+        static ObjectPool<MyTestObj> CreateTestPool()
         {
-            TestPool pool = new TestPool();
+            return new ObjectPool<MyTestObj>(x => new MyTestObj(), null, null, false);
+        }
 
-            var pooled = new Stack<TestPoolItem>();
+        [Test]
+        public void ExtensiveAllocationTest()
+        {
+            var pool = CreateTestPool();
+            List<MyTestObj> objs = new List<MyTestObj>(1000);
+            int expectedLive = 0;
 
-            for (int i = 1; i < 20; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                pooled.Push(pool.Create());
-                Assert.AreEqual(i, pool.Count);
+                objs.Add(pool.Acquire());
+                expectedLive++;
             }
 
-            while (pooled.Count > 0)
+            Assert.AreEqual(expectedLive, pool.LiveObjects);
+
+            for (int i = 250; i < 150; i -= 2)
             {
-                int start = pool.Count;
-                pool.Destroy(pooled.Pop());
-                Assert.AreEqual(start - 1, pool.Count);
+                pool.Free(objs[i]);
+                objs.RemoveAt(i);
+                expectedLive--;
             }
 
-            Assert.AreEqual(0, pool.Count);
-        }
+            Assert.AreEqual(expectedLive, pool.LiveObjects);
 
-        static void CreateSpeedTest<T>(IObjectPool<T> pool) where T : IPoolable<T>, new()
-        {
-            for (int i = 0; i < 500000; i++)
+            for (int i = 0; i < 50; i += 2)
             {
-                pool.Create();
-            }
-        }
-
-        [Test]
-        public void CreateSpeedTestNotThreadSafe()
-        {
-            CreateSpeedTest(new ObjectPool<TestPoolItem>());
-        }
-
-        [Test]
-        public void CreateSpeedTestThreadSafe()
-        {
-            CreateSpeedTest(new ThreadSafeObjectPool<TestPoolItem>());
-        }
-
-        static void Destroy2SpeedTest<T>(IObjectPool<T> pool) where T : IPoolable<T>, new()
-        {
-            Stack<T> stack = new Stack<T>();
-
-            for (int i = 0; i < 500000; i++)
-            {
-                var c = pool.Create();
-                stack.Push(c);
+                objs.Add(pool.Acquire());
+                expectedLive++;
             }
 
-            while (stack.Count > 0)
+            Assert.AreEqual(expectedLive, pool.LiveObjects);
+
+            foreach (var obj in objs)
             {
-                pool.Destroy(stack.Pop());
+                pool.Free(obj);
             }
+
+            Assert.AreEqual(0, pool.LiveObjects);
         }
 
         [Test]
-        public void Destroy2SpeedTestNotThreadSafe()
+        public void NullCreatorTest()
         {
-            Destroy2SpeedTest(new ObjectPool<TestPoolItem>());
+            Assert.Throws<ArgumentNullException>(() => new ObjectPool<MyTestObj>(null, false));
         }
 
         [Test]
-        public void Destroy2SpeedTestThreadSafe()
+        public void SimpleAllocationTest()
         {
-            Destroy2SpeedTest(new ThreadSafeObjectPool<TestPoolItem>());
+            var pool = CreateTestPool();
+            Assert.AreEqual(0, pool.LiveObjects);
+
+            var obj = pool.Acquire();
+            Assert.AreEqual(1, pool.LiveObjects);
+
+            pool.Free(obj);
+            Assert.AreEqual(0, pool.LiveObjects);
         }
 
-        static void DestroySpeedTest<T>(IObjectPool<T> pool) where T : IPoolable<T>, new()
+        [Test]
+        public void FreeNullParameterTest()
         {
-            for (int i = 0; i < 500000; i++)
+            var pool = CreateTestPool();
+
+            Assert.Throws<ArgumentNullException>(() => pool.Free(null));
+        }
+
+        [Test]
+        public void FreeInvalidObjectTest()
+        {
+            var pool = CreateTestPool();
+
+            pool.Free(new MyTestObj());
+        }
+
+        [Test]
+        public void FreeAllNullParameterTest()
+        {
+            var pool = CreateTestPool();
+
+            Assert.Throws<ArgumentNullException>(() => pool.FreeAll(null));
+        }
+
+        [Test]
+        public void FreeAllTest()
+        {
+            var pool = CreateTestPool();
+            MyTestObj testObj = null;
+            for (int i = 0; i < 25; i++)
             {
-                var c = pool.Create();
-                pool.Destroy(c);
+                testObj = pool.Acquire();
             }
+
+            Assert.AreEqual(25, pool.LiveObjects);
+
+            pool.FreeAll(x => x == null);
+            Assert.AreEqual(25, pool.LiveObjects);
+
+            pool.FreeAll(x => x == testObj);
+            Assert.AreEqual(24, pool.LiveObjects);
+
+            pool.FreeAll(x => x == testObj);
+            Assert.AreEqual(24, pool.LiveObjects);
+
+            pool.FreeAll(x => x != testObj);
+            Assert.AreEqual(0, pool.LiveObjects);
         }
 
         [Test]
-        public void DestroySpeedTestNotThreadSafe()
+        public void ClearTest()
         {
-            DestroySpeedTest(new ObjectPool<TestPoolItem>());
+            var pool = CreateTestPool();
+            for (int i = 0; i < 25; i++)
+                pool.Acquire();
+
+            Assert.AreEqual(25, pool.LiveObjects);
+
+            pool.Clear();
+            Assert.AreEqual(0, pool.LiveObjects);
         }
 
-        [Test]
-        public void DestroySpeedTestThreadSafe()
+        public class MyTestObj : IPoolable
         {
-            DestroySpeedTest(new ThreadSafeObjectPool<TestPoolItem>());
+            #region IPoolable Members
+
+            /// <summary>
+            /// Gets or sets the index of the object in the pool. This value should never be used by anything
+            /// other than the pool that owns this object.
+            /// </summary>
+            /// <value></value>
+            public int PoolIndex { get; set; }
+
+            #endregion
         }
     }
 }

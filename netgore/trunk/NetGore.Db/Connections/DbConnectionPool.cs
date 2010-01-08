@@ -8,8 +8,9 @@ namespace NetGore.Db
     /// <summary>
     /// Base class for a pool of database connections.
     /// </summary>
-    public abstract class DbConnectionPool : ThreadSafeObjectPool<PooledDbConnection>, IDisposable
+    public abstract class DbConnectionPool : IObjectPool<PooledDbConnection>, IDisposable
     {
+        readonly ObjectPool<PooledDbConnection> _pool;
         readonly string _connectionString;
         bool _disposed;
 
@@ -20,6 +21,15 @@ namespace NetGore.Db
         protected DbConnectionPool(string connectionString)
         {
             _connectionString = connectionString;
+            _pool = new ObjectPool<PooledDbConnection>(CreateNewObj, x => x.Connection.Open(), x => x.Connection.Close(), true);
+        }
+
+        PooledDbConnection CreateNewObj(IObjectPool<PooledDbConnection> objectPool)
+        {
+            var ret = new PooledDbConnection(objectPool);
+            var conn = CreateConnection(ConnectionString);
+            ret.SetConnection(conn);
+            return ret;
         }
 
         /// <summary>
@@ -45,17 +55,6 @@ namespace NetGore.Db
         /// <returns>DbParameter that is compatible with the connections in this DbConnectionPool.</returns>
         public abstract DbParameter CreateParameter(string parameterName);
 
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
-        /// object is created for the pool. This is only called when a new object is created, not activated. This is
-        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
-        /// </summary>
-        /// <param name="item">New object that was created.</param>
-        protected override void HandleNewPoolObject(PooledDbConnection item)
-        {
-            item.SetConnection(CreateConnection(ConnectionString));
-        }
-
         #region IDisposable Members
 
         /// <summary>
@@ -67,13 +66,80 @@ namespace NetGore.Db
                 return;
 
             _disposed = true;
-
-            foreach (var item in this)
-            {
-                item.Dispose();
-            }
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the number of live objects in the pool.
+        /// </summary>
+        public int LiveObjects
+        {
+            get { return _pool.LiveObjects; }
+        }
+
+        /// <summary>
+        /// Gets a free object instance from the pool.
+        /// </summary>
+        /// <returns>A free object instance from the pool.</returns>
+        public PooledDbConnection Acquire()
+        {
+            return _pool.Acquire();
+        }
+
+        /// <summary>
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed. No exceptions will be thrown for trying to free
+        /// an object that does not belong to this pool.
+        /// </summary>
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        public void Free(PooledDbConnection poolObject)
+        {
+            _pool.Free(poolObject);
+        }
+
+        /// <summary>
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed.
+        /// </summary>
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <param name="throwArgumentException">Whether or not an <see cref="ArgumentException"/> will be thrown for
+        /// objects that do not belong to this pool.</param>
+        /// <exception cref="ArgumentException"><paramref name="throwArgumentException"/> is tru and the 
+        /// <paramref name="poolObject"/> does not belong to this pool.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        public void Free(PooledDbConnection poolObject, bool throwArgumentException)
+        {
+            _pool.Free(poolObject, throwArgumentException);
+        }
+
+        /// <summary>
+        /// Frees all live objects in the pool that match the given <paramref name="condition"/>.
+        /// </summary>
+        /// <param name="condition">The condition used to determine if an object should be freed.</param>
+        /// <returns>The number of objects that were freed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="condition"/> is null.</exception>
+        public int FreeAll(Func<PooledDbConnection, bool> condition)
+        {
+            return _pool.FreeAll(condition);
+        }
+
+        /// <summary>
+        /// Performs the <paramref name="action"/> on all live objects in the object pool.
+        /// </summary>
+        /// <param name="action">The action to perform on all live objects in the object pool.</param>
+        public void Perform(Action<PooledDbConnection> action)
+        {
+            _pool.Perform(action);
+        }
+
+        /// <summary>
+        /// Frees all live objects in the pool.
+        /// </summary>
+        public void Clear()
+        {
+            _pool.Clear();
+        }
     }
 }

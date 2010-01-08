@@ -8,8 +8,10 @@ namespace DemoGame.Client
     /// <summary>
     /// ObjectPool and pool handler for all of the <see cref="DamageText"/>s.
     /// </summary>
-    public class DamageTextPool : ObjectPool<DamageText>
+    public class DamageTextPool
     {
+        readonly ObjectPool<DamageText> _pool = new ObjectPool<DamageText>(x => new DamageText(), false);
+
         /// <summary>
         /// Creates a new DamageText and places it into the pool
         /// </summary>
@@ -18,7 +20,7 @@ namespace DemoGame.Client
         /// <param name="currTime">Current time</param>
         public void Create(int damage, Entity entity, int currTime)
         {
-            DamageText obj = Create();
+            DamageText obj = _pool.Acquire();
             obj.Activate(damage, entity, currTime);
         }
 
@@ -29,10 +31,7 @@ namespace DemoGame.Client
         /// <param name="sf">SpriteFont to draw the damage text with</param>
         public void Draw(SpriteBatch sb, SpriteFont sf)
         {
-            foreach (DamageText obj in this)
-            {
-                obj.Draw(sb, sf);
-            }
+            _pool.Perform(x => x.Draw(sb, sf));
         }
 
         /// <summary>
@@ -41,15 +40,18 @@ namespace DemoGame.Client
         /// <param name="currentTime">Current time</param>
         public void Update(int currentTime)
         {
-            foreach (DamageText obj in this)
-            {
-                // Perform the individual DamageText update
-                obj.Update(currentTime);
+            bool collectGarbage = false;
 
-                // Kill off the object if its alpha falls below 20
-                if (obj.Alpha < 20)
-                    Destroy(obj);
-            }
+            _pool.Perform(delegate(DamageText x)
+            {
+                x.Update(currentTime);
+
+                if (x.Alpha < 20)
+                    collectGarbage = true;
+            });
+
+            if (collectGarbage)
+                _pool.FreeAll(x => x.Alpha < 20);
         }
     }
 }

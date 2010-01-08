@@ -8,11 +8,16 @@ namespace NetGore.Db
     /// <summary>
     /// Object that is used to wrap around a DbConnection that is used in an ObjectPool.
     /// </summary>
-    public class PooledDbConnection : IPoolableDbConnection, IPoolable<PooledDbConnection>
+    public class PooledDbConnection : IPoolableDbConnection, IPoolable
     {
+        readonly IObjectPool<PooledDbConnection> _objectPool;
+
         DbConnection _connection;
-        IObjectPool<PooledDbConnection> _objectPool;
-        PoolData<PooledDbConnection> _poolData;
+
+        internal PooledDbConnection(IObjectPool<PooledDbConnection> objectPool)
+        {
+            _objectPool = objectPool;
+        }
 
         /// <summary>
         /// Sets the DbConnection to be used by this IPoolableDbConnection. This should only be called by the
@@ -29,46 +34,13 @@ namespace NetGore.Db
             _connection = connection;
         }
 
-        #region IPoolable<PooledDbConnection> Members
+        #region IPoolable Members
 
         /// <summary>
-        /// Gets the PoolData associated with this poolable item
+        /// Gets or sets the index of the object in the pool. This value should never be used by anything
+        /// other than the pool that owns this object.
         /// </summary>
-        PoolData<PooledDbConnection> IPoolable<PooledDbConnection>.PoolData
-        {
-            get { return _poolData; }
-        }
-
-        /// <summary>
-        /// Notifies the item that it has been activated by the pool and that it will start being used.
-        /// All preperation work that could not be done in the constructor should be done here.
-        /// </summary>
-        void IPoolable<PooledDbConnection>.Activate()
-        {
-            _connection.Open();
-        }
-
-        /// <summary>
-        /// Notifies the item that it has been deactivated by the pool. The item may or may not ever be
-        /// activated again, so clean up where needed.
-        /// </summary>
-        void IPoolable<PooledDbConnection>.Deactivate()
-        {
-            _connection.Close();
-        }
-
-        /// <summary>
-        /// Sets the PoolData for this item. This is only called once in the object's lifetime;
-        /// right after the object is constructed.
-        /// </summary>
-        /// <param name="objectPool">Pool that created this object</param>
-        /// <param name="poolData">PoolData assigned to this object</param>
-        void IPoolable<PooledDbConnection>.SetPoolData(IObjectPool<PooledDbConnection> objectPool,
-                                                       PoolData<PooledDbConnection> poolData)
-        {
-            _objectPool = objectPool;
-            _poolData = poolData;
-        }
+        int IPoolable.PoolIndex { get; set; }
 
         #endregion
 
@@ -87,7 +59,7 @@ namespace NetGore.Db
         /// </summary>
         public void Dispose()
         {
-            _objectPool.Destroy(this);
+            _objectPool.Free(this);
         }
 
         #endregion
