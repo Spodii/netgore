@@ -297,13 +297,13 @@ namespace NetGore.EditorTools
                 return;
             }
 
-            GrhIndex oldGrhIndex = current.GrhIndex;
+            var oldGrhData = current;
 
             // Update the Grh
             _animationGrh.Update(Environment.TickCount);
 
             // Check that the GrhIndex changed from the update
-            if (oldGrhIndex != _animationGrh.CurrentGrhData.GrhIndex)
+            if (oldGrhData != _animationGrh.CurrentGrhData)
             {
                 // Change the image
                 string imageKey = GrhImageList.GetImageKey(current);
