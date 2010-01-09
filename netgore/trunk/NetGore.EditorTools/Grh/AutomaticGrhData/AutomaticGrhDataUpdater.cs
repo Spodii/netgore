@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,6 +17,8 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class AutomaticGrhDataUpdater
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Finds all of the texture files from the root directory.
         /// </summary>
@@ -163,7 +167,19 @@ namespace NetGore.EditorTools
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
         public static IEnumerable<GrhData> UpdateAll(ContentManager cm, string rootGrhDir)
         {
-            return UpdateStationary(cm, rootGrhDir).Concat(UpdateAnimated(cm, rootGrhDir));
+            var created = UpdateStationary(cm, rootGrhDir).Concat(UpdateAnimated(cm, rootGrhDir));
+
+            if (log.IsInfoEnabled)
+                log.WarnFormat("Automatic GrhData creation update resulted in `{0}` new GrhData(s).", created.Count());
+
+            if (log.IsDebugEnabled && created.Count() > 0)
+            {
+                log.Debug("The following GrhDatas were created:");
+                foreach (var c in created)
+                    log.Debug(" * " + c);
+            }
+
+            return created;
         }
 
         /// <summary>
@@ -174,6 +190,9 @@ namespace NetGore.EditorTools
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
         public static IEnumerable<GrhData> UpdateAnimated(ContentManager cm, string rootGrhDir)
         {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Searching for automatic animated GrhDatas from root `{0}`.");
+
             List<GrhData> ret = new List<GrhData>();
 
             // Find all directories that match the needed pattern
@@ -193,12 +212,15 @@ namespace NetGore.EditorTools
                     partialDir = partialDir.Substring(1);
 
                 // Get the categorization
-                string categoryStr;
                 int lastDirSep = partialDir.LastIndexOf(Path.DirectorySeparatorChar);
                 if (lastDirSep < 0)
-                    categoryStr = string.Empty;
-                else
-                    categoryStr = partialDir.Substring(0, lastDirSep);
+                {
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.");
+                    continue;
+                }
+
+                string categoryStr = partialDir.Substring(0, lastDirSep);
 
                 var categorization = new SpriteCategorization(new SpriteCategory(categoryStr), new SpriteTitle(animInfo.Title));
 
@@ -206,6 +228,9 @@ namespace NetGore.EditorTools
                 var gd = GrhInfo.CreateAutomaticAnimatedGrhData(cm, categorization);
                 if (gd != null)
                     ret.Add(gd);
+
+                if (log.IsInfoEnabled)
+                    log.WarnFormat("Automatic creation of animated GrhData `{0}`.", gd);
             }
 
             return ret;
@@ -219,6 +244,9 @@ namespace NetGore.EditorTools
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
         public static IEnumerable<GrhData> UpdateStationary(ContentManager cm, string rootGrhDir)
         {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Searching for automatic stationary GrhDatas from root `{0}`.");
+
             // Get a List of all of the textures from the root directory
             var textures = FindTextures(rootGrhDir);
 
@@ -240,6 +268,13 @@ namespace NetGore.EditorTools
             {
                 // Go back to the relative path, and use it to figure out the categorization
                 string relative = TextureAbsoluteToRelativePath(trimLen, texture);
+                if (relative.LastIndexOf(SpriteCategorization.Delimiter) < 0)
+                {
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.");
+                    continue;
+                }
+
                 var categorization = SpriteCategorization.SplitCategoryAndTitle(relative);
 
                 // Ensure the GrhData doesn't already exist
@@ -253,6 +288,9 @@ namespace NetGore.EditorTools
                 var gd = GrhInfo.CreateGrhData(cm, categorization, relative, Vector2.Zero, size);
                 gd.AutomaticSize = true;
                 ret.Add(gd);
+
+                if (log.IsInfoEnabled)
+                    log.WarnFormat("Automatic creation of stationary GrhData `{0}`.", gd);
             }
 
             return ret;
