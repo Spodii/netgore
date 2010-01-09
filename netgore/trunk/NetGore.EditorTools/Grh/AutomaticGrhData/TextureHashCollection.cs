@@ -26,6 +26,9 @@ namespace NetGore.EditorTools
         readonly Dictionary<string, HashInfo> _textureHash =
             new Dictionary<string, HashInfo>(StringComparer.CurrentCultureIgnoreCase);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureHashCollection"/> class.
+        /// </summary>
         public TextureHashCollection()
         {
             _dataFile = ContentPaths.Build.Data.Join("grhhashes.xml");
