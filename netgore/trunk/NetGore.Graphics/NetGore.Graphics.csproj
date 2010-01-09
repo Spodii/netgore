@@ -167,6 +167,7 @@
     <Compile Include="ParticleEngine\Renderers\ParticleRendererBase.cs" />
     <Compile Include="ParticleEngine\Renderers\SpriteBatchRenderer.cs" />
     <Compile Include="Sprite\Grh\AnimatedGrhData.cs" />
+    <Compile Include="Sprite\Grh\AutomaticAnimatedGrhData.cs" />
     <Compile Include="Sprite\Grh\AutomaticAnimationInfo.cs" />
     <Compile Include="Sprite\Grh\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />
