@@ -38,7 +38,7 @@ namespace NetGore.EditorTools
             this.label10 = new System.Windows.Forms.Label();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtCategory = new GrhDataCategoryTextBox();
+            this.txtCategory = new NetGore.EditorTools.GrhDataCategoryTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.radioStationary = new System.Windows.Forms.RadioButton();
             this.radioAnimated = new System.Windows.Forms.RadioButton();
@@ -72,8 +72,9 @@ namespace NetGore.EditorTools
             this.label5 = new System.Windows.Forms.Label();
             this.txtX = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.txtTexture = new NetGore.EditorTools.GrhDataTextureTextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pgGrhData = new System.Windows.Forms.PropertyGrid();
             this.gbCategorization.SuspendLayout();
             this.gbAnimated.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -133,10 +134,13 @@ namespace NetGore.EditorTools
             // 
             // txtCategory
             // 
+            this.txtCategory.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.txtCategory.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtCategory.Location = new System.Drawing.Point(6, 35);
             this.txtCategory.Name = "txtCategory";
             this.txtCategory.Size = new System.Drawing.Size(200, 20);
             this.txtCategory.TabIndex = 5;
+            this.txtCategory.TrackTextChanged = false;
             // 
             // label1
             // 
@@ -469,6 +473,16 @@ namespace NetGore.EditorTools
             this.label4.TabIndex = 7;
             this.label4.Text = "X:";
             // 
+            // txtTexture
+            // 
+            this.txtTexture.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.txtTexture.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.txtTexture.Location = new System.Drawing.Point(6, 38);
+            this.txtTexture.Name = "txtTexture";
+            this.txtTexture.Size = new System.Drawing.Size(200, 20);
+            this.txtTexture.TabIndex = 6;
+            this.txtTexture.TrackTextChanged = false;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -478,16 +492,17 @@ namespace NetGore.EditorTools
             this.label3.TabIndex = 5;
             this.label3.Text = "Texture:";
             // 
-            // txtTexture
+            // pgGrhData
             // 
-            this.txtTexture.Location = new System.Drawing.Point(6, 38);
-            this.txtTexture.Name = "txtTexture";
-            this.txtTexture.Size = new System.Drawing.Size(200, 20);
-            this.txtTexture.TabIndex = 6;
+            this.pgGrhData.Location = new System.Drawing.Point(12, 339);
+            this.pgGrhData.Name = "pgGrhData";
+            this.pgGrhData.Size = new System.Drawing.Size(390, 302);
+            this.pgGrhData.TabIndex = 13;
             // 
             // EditGrhForm
             // 
-            this.ClientSize = new System.Drawing.Size(414, 341);
+            this.ClientSize = new System.Drawing.Size(414, 653);
+            this.Controls.Add(this.pgGrhData);
             this.Controls.Add(this.gbStationary);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
@@ -559,6 +574,7 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.Label label4;
         private GrhDataTextureTextBox txtTexture;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PropertyGrid pgGrhData;
 
     }
 }

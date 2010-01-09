@@ -337,6 +337,57 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Replaces an existing GrhData with a new <see cref="StationaryGrhData"/>.
+        /// </summary>
+        /// <param name="grhIndex">The index of the <see cref="GrhData"/> to convert.</param>
+        /// <returns>The created <see cref="StationaryGrhData"/>, or null if the replacement failed.</returns>
+        public static StationaryGrhData ReplaceExistingWithStationary(GrhIndex grhIndex)
+        {
+            var gd = GetData(grhIndex);
+            if (gd == null)
+                return null;
+
+            if (gd is StationaryGrhData)
+                return (StationaryGrhData)gd;
+
+            var newGD = new StationaryGrhData(GetContentManager(), gd.GrhIndex, gd.Categorization);
+            Delete(gd);
+            AddGrhData(newGD);
+
+            return newGD;
+        }
+
+        /// <summary>
+        /// Replaces an existing GrhData with a new <see cref="AnimatedGrhData"/>.
+        /// </summary>
+        /// <param name="grhIndex">The index of the <see cref="GrhData"/> to convert.</param>
+        /// <returns>The created <see cref="AnimatedGrhData"/>, or null if the replacement failed.</returns>
+        public static AnimatedGrhData ReplaceExistingWithAnimated(GrhIndex grhIndex)
+        {
+            var gd = GetData(grhIndex);
+            if (gd == null)
+                return null;
+
+            if (gd is AnimatedGrhData)
+                return (AnimatedGrhData)gd;
+
+            var newGD = new AnimatedGrhData(gd.GrhIndex, gd.Categorization);
+            Delete(gd);
+            AddGrhData(newGD);
+
+            return newGD;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ContentManager"/>.
+        /// </summary>
+        /// <returns>A <see cref="ContentManager"/>.</returns>
+        static ContentManager GetContentManager()
+        {
+            return GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
+        }
+
+        /// <summary>
         /// Gets the <see cref="GrhData"/> by the given categorization information.
         /// </summary>
         /// <param name="categorization">Categorization of the <see cref="GrhData"/>.</param>
@@ -476,7 +527,11 @@ namespace NetGore.Graphics
             var gd = (AnimatedGrhData)grhData;
 
             // Check that all frames contain the same category
-            var firstCategory = gd.Frames.First().Categorization.Category;
+            var first = gd.GetFrame(0);
+            if (first == null)
+                return false;
+
+            var firstCategory = first.Categorization.Category;
             if (!gd.Frames.All(x => x.Categorization.Category == firstCategory))
                 return false;
 
@@ -630,7 +685,8 @@ namespace NetGore.Graphics
                 // TODO: %% Automatic animated GrhData...
 
                 // Get the directory
-                var category = gd.Frames.First().Categorization.Category.ToString();
+                var firstFrame = gd.GetFrame(0);
+                var category = firstFrame.Categorization.Category.ToString();
                 var pathSep = Path.DirectorySeparatorChar.ToString();
                 var subDir = category.Replace(SpriteCategorization.Delimiter, pathSep);
                 var tmpDir = ContentPaths.Build.Grhs.Join(subDir);

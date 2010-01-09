@@ -93,9 +93,8 @@ namespace NetGore.Graphics
 
         /// <summary>
         /// Gets the GrhData to use for drawing based on the current frame. 
-        /// On non-animated Grhs, this will be a reference to itself.
         /// </summary>
-        public GrhData CurrentGrhData
+        public StationaryGrhData CurrentGrhData
         {
             get
             {
@@ -103,11 +102,11 @@ namespace NetGore.Graphics
                     return null;
 
                 if (GrhData is AnimatedGrhData)
-                    return ((AnimatedGrhData)GrhData).Frames[(int)_frame];
+                    return ((AnimatedGrhData)GrhData).GetFrame((int)_frame);
                 else if (GrhData is StationaryGrhData)
-                    return GrhData;
+                    return (StationaryGrhData)GrhData;
                 else
-                    throw new Exception("Unsupported GrhData type...");
+                    throw new UnsupportedGrhDataTypeException(GrhData);
             }
         }
 
@@ -369,7 +368,7 @@ namespace NetGore.Graphics
             _lastUpdated = currentTime;
 
             // Check if the frame limit has been exceeded
-            if (tmpFrame >= asAnimated.Frames.Length)
+            if (tmpFrame >= asAnimated.FramesCount)
             {
                 if (_anim == AnimType.LoopOnce)
                 {
@@ -381,7 +380,7 @@ namespace NetGore.Graphics
                 else
                 {
                     // Animation is looping so get the frame back into range
-                    tmpFrame = tmpFrame % asAnimated.Frames.Length;
+                    tmpFrame = tmpFrame % asAnimated.FramesCount;
                 }
             }
 
@@ -396,7 +395,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                var asStationary = CurrentGrhData as StationaryGrhData;
+                var asStationary = CurrentGrhData;
                 if (asStationary == null)
                     return Rectangle.Empty;
 
@@ -411,7 +410,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                var asStationary = CurrentGrhData as StationaryGrhData;
+                var asStationary = CurrentGrhData;
                 if (asStationary == null)
                     return null;
 
