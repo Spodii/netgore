@@ -35,8 +35,7 @@ namespace NetGore.Graphics
         /// </summary>
         public event GrhDataChangeTextureHandler OnChangeTexture;
 
-        public StationaryGrhData(ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
-            : base(grhIndex, cat)
+        public StationaryGrhData(ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             _cm = cm;
             AutomaticSize = true;
@@ -50,8 +49,7 @@ namespace NetGore.Graphics
             AutomaticSize = true;
         }
 
-        StationaryGrhData(IValueReader r, ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
-            : base(grhIndex, cat)
+        StationaryGrhData(IValueReader r, ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             _cm = cm;
 

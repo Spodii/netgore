@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -16,46 +15,6 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class AutomaticGrhDataUpdater
     {
-        /// <summary>
-        /// Gets the directories that are not for automatic animations.
-        /// </summary>
-        /// <param name="rootDir">The root directory.</param>
-        /// <returns>The directories that contain textures that are not for automatic animations.</returns>
-        static IEnumerable<string> GetStationaryDirectories(string rootDir)
-        {
-            yield return rootDir;
-
-            foreach (var dir in Directory.GetDirectories(rootDir))
-            {
-                if (AutomaticAnimatedGrhData.IsAutomaticAnimatedGrhDataDirectory(dir))
-                    continue;
-
-                foreach (var dir2 in GetStationaryDirectories(dir))
-                    yield return dir2;
-            }
-        }
-
-        /// <summary>
-        /// Gets the directories that are for automatic animations.
-        /// </summary>
-        /// <param name="rootDir">The root directory.</param>
-        /// <returns>The directories that contain textures and are for automatic animations.</returns>
-        static IEnumerable<string> GetAnimatedDirectories(string rootDir)
-        {
-            if (AutomaticAnimatedGrhData.IsAutomaticAnimatedGrhDataDirectory(rootDir))
-            {
-                yield return rootDir;
-            }
-            else
-            {
-                foreach (var dir in Directory.GetDirectories(rootDir))
-                {
-                    foreach (var dir2 in GetAnimatedDirectories(dir))
-                        yield return dir2;
-                }
-            }
-        }
-
         /// <summary>
         /// Finds all of the texture files from the root directory.
         /// </summary>
@@ -110,6 +69,27 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the directories that are for automatic animations.
+        /// </summary>
+        /// <param name="rootDir">The root directory.</param>
+        /// <returns>The directories that contain textures and are for automatic animations.</returns>
+        static IEnumerable<string> GetAnimatedDirectories(string rootDir)
+        {
+            if (AutomaticAnimatedGrhData.IsAutomaticAnimatedGrhDataDirectory(rootDir))
+                yield return rootDir;
+            else
+            {
+                foreach (var dir in Directory.GetDirectories(rootDir))
+                {
+                    foreach (var dir2 in GetAnimatedDirectories(dir))
+                    {
+                        yield return dir2;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the amount to trim off of a directory to make it relative to the specified <paramref name="rootDir"/>.
         /// </summary>
         /// <param name="rootDir">Root directory to make other directories relative to.</param>
@@ -121,6 +101,27 @@ namespace NetGore.EditorTools
             if (!rootDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 len++;
             return len;
+        }
+
+        /// <summary>
+        /// Gets the directories that are not for automatic animations.
+        /// </summary>
+        /// <param name="rootDir">The root directory.</param>
+        /// <returns>The directories that contain textures that are not for automatic animations.</returns>
+        static IEnumerable<string> GetStationaryDirectories(string rootDir)
+        {
+            yield return rootDir;
+
+            foreach (var dir in Directory.GetDirectories(rootDir))
+            {
+                if (AutomaticAnimatedGrhData.IsAutomaticAnimatedGrhDataDirectory(dir))
+                    continue;
+
+                foreach (var dir2 in GetStationaryDirectories(dir))
+                {
+                    yield return dir2;
+                }
+            }
         }
 
         /// <summary>
@@ -187,19 +188,17 @@ namespace NetGore.EditorTools
 
                 // Get the virtual directory (remove the root)
                 var partialDir = dir.Substring(rootGrhDir.Length);
-                if (partialDir.StartsWith(Path.DirectorySeparatorChar.ToString()) || partialDir.StartsWith(Path.AltDirectorySeparatorChar.ToString()))
+                if (partialDir.StartsWith(Path.DirectorySeparatorChar.ToString()) ||
+                    partialDir.StartsWith(Path.AltDirectorySeparatorChar.ToString()))
                     partialDir = partialDir.Substring(1);
 
                 // Get the categorization
                 string categoryStr;
                 int lastDirSep = partialDir.LastIndexOf(Path.DirectorySeparatorChar);
                 if (lastDirSep < 0)
-                {
                     categoryStr = string.Empty;
-                }
-                else{
-                    categoryStr = partialDir.Substring(0,lastDirSep);
-                }
+                else
+                    categoryStr = partialDir.Substring(0, lastDirSep);
 
                 var categorization = new SpriteCategorization(new SpriteCategory(categoryStr), new SpriteTitle(animInfo.Title));
 

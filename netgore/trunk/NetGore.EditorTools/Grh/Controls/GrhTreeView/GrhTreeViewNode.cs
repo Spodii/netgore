@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -36,33 +35,6 @@ namespace NetGore.EditorTools
             get { return _animationGrh != null; }
         }
 
-        public static GrhTreeViewNode Create(GrhTreeView grhTreeView, GrhData grhData)
-        {
-            var existingNode = grhTreeView.FindGrhDataNode(grhData);
-            if (existingNode != null)
-            {
-                existingNode.Update();
-                return existingNode;
-            }
-
-            return new GrhTreeViewNode(grhTreeView, grhData);
-        }
-
-        static string GetToolTipText(StationaryGrhData grhData)
-        {
-            // Stationary
-            Rectangle sourceRect = grhData.SourceRect;
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine("Grh: " + grhData.GrhIndex);
-            sb.AppendLine("Texture: " + grhData.TextureName);
-            sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
-            sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
-
-            return sb.ToString();
-        }
-
         static void AppendFramesToolTipText(IEnumerable<StationaryGrhData> frames, StringBuilder sb)
         {
             const string framePadding = "  ";
@@ -90,6 +62,33 @@ namespace NetGore.EditorTools
                     sb.Append(frameSeperator);
                 }
             }
+        }
+
+        public static GrhTreeViewNode Create(GrhTreeView grhTreeView, GrhData grhData)
+        {
+            var existingNode = grhTreeView.FindGrhDataNode(grhData);
+            if (existingNode != null)
+            {
+                existingNode.Update();
+                return existingNode;
+            }
+
+            return new GrhTreeViewNode(grhTreeView, grhData);
+        }
+
+        static string GetToolTipText(StationaryGrhData grhData)
+        {
+            // Stationary
+            Rectangle sourceRect = grhData.SourceRect;
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Grh: " + grhData.GrhIndex);
+            sb.AppendLine("Texture: " + grhData.TextureName);
+            sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
+            sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+
+            return sb.ToString();
         }
 
         static string GetToolTipText(AutomaticAnimatedGrhData grhData)
@@ -132,17 +131,11 @@ namespace NetGore.EditorTools
             try
             {
                 if (GrhData is StationaryGrhData)
-                {
                     ret = GetToolTipText((StationaryGrhData)GrhData);
-                }
                 else if (GrhData is AnimatedGrhData)
-                {
                     ret = GetToolTipText((AnimatedGrhData)GrhData);
-                }
                 else if (GrhData is AutomaticAnimatedGrhData)
-                {
                     ret = GetToolTipText((AutomaticAnimatedGrhData)GrhData);
-                }
             }
             catch (ContentLoadException)
             {
@@ -183,13 +176,9 @@ namespace NetGore.EditorTools
             string imageKey;
             var frame = grhData.GetFrame(0);
             if (frame != null)
-            {
                 imageKey = GrhImageList.GetImageKey(frame);
-            }
             else
-            {
                 imageKey = null;
-            }
 
             SetImageKeys(imageKey);
         }
@@ -204,13 +193,9 @@ namespace NetGore.EditorTools
             string imageKey;
             var frame = grhData.GetFrame(0);
             if (frame != null)
-            {
                 imageKey = GrhImageList.GetImageKey(frame);
-            }
             else
-            {
                 imageKey = null;
-            }
 
             SetImageKeys(imageKey);
         }
@@ -219,21 +204,13 @@ namespace NetGore.EditorTools
         {
             // Set the preview picture
             if (GrhData is StationaryGrhData)
-            {
                 SetIconImage((StationaryGrhData)GrhData);
-            }
             else if (GrhData is AnimatedGrhData)
-            {
                 SetIconImage((AnimatedGrhData)GrhData);
-            }
             else if (GrhData is AutomaticAnimatedGrhData)
-            {
                 SetIconImage((AutomaticAnimatedGrhData)GrhData);
-            }
             else
-            {
                 throw new UnsupportedGrhDataTypeException(GrhData);
-            }
         }
 
         void SetImageKeys(string imageKey)

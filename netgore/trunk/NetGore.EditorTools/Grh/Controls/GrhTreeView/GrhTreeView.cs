@@ -264,9 +264,7 @@ namespace NetGore.EditorTools
         void DuplicateNode(TreeNode node, string oldCategoryStart, string newCategoryStart)
         {
             if (node is GrhTreeViewNode)
-            {
                 DuplicateGrhDataNode((GrhTreeViewNode)node, oldCategoryStart, newCategoryStart);
-            }
             else if (node is GrhTreeViewFolderNode)
             {
                 var grhDataNodes = ((GrhTreeViewFolderNode)node).GetChildGrhDataNodes(true).ToImmutable();
