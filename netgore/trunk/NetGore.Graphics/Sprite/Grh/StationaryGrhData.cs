@@ -24,7 +24,7 @@ namespace NetGore.Graphics
 
         readonly ContentManager _cm;
         Rectangle _atlasSourceRect;
-        bool _automaticSize = true;
+        bool _automaticSize = false;
         bool _isUsingAtlas = false;
         Rectangle _sourceRect;
         Texture2D _texture;
@@ -39,6 +39,7 @@ namespace NetGore.Graphics
             : base(grhIndex, cat)
         {
             _cm = cm;
+            AutomaticSize = true;
         }
 
         internal StationaryGrhData(AutomaticAnimatedGrhData autoGrhData, TextureAssetName assetName)
@@ -46,6 +47,7 @@ namespace NetGore.Graphics
         {
             _cm = autoGrhData.ContentManager;
             _textureName = assetName;
+            AutomaticSize = true;
         }
 
         StationaryGrhData(IValueReader r, ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
@@ -59,8 +61,8 @@ namespace NetGore.Graphics
             var textureSource = textureReader.ReadRectangle(_textureSourceValueKey);
 
             _textureName = textureName;
-            _automaticSize = automaticSize;
             _sourceRect = textureSource;
+            AutomaticSize = automaticSize;
         }
 
         /// <summary>

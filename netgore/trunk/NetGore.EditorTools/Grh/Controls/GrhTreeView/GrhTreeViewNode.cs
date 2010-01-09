@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -62,27 +63,22 @@ namespace NetGore.EditorTools
             return sb.ToString();
         }
 
-        static string GetToolTipText(AnimatedGrhData grhData)
+        static void AppendFramesToolTipText(IEnumerable<StationaryGrhData> frames, StringBuilder sb)
         {
-            // Animated
             const string framePadding = "  ";
             const string frameSeperator = ",";
 
-            StringBuilder sb = new StringBuilder();
+            int count = frames.Count();
 
-            sb.AppendLine("Grh: " + grhData.GrhIndex);
-            sb.AppendLine("Frames: " + grhData.FramesCount);
-
+            sb.AppendLine("Frames: " + count);
             sb.Append(framePadding);
-            for (int i = 0; i < grhData.FramesCount; i++)
-            {
-                var frame = grhData.GetFrame(i);
-                if (frame == null)
-                    continue;
 
+            int i = 0;
+            foreach (var frame in frames)
+            {
                 sb.Append(frame.GrhIndex);
 
-                if ((i + 1) % 6 == 0)
+                if ((++i) % 6 == 0)
                 {
                     // Add a break every 6 indices
                     sb.AppendLine();
@@ -94,7 +90,31 @@ namespace NetGore.EditorTools
                     sb.Append(frameSeperator);
                 }
             }
+        }
 
+        static string GetToolTipText(AutomaticAnimatedGrhData grhData)
+        {
+            // Automatic Animated
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("*Automatic Animated GrhData*");
+            sb.AppendLine("Grh: " + grhData.GrhIndex);
+            AppendFramesToolTipText(grhData.Frames, sb);
+            sb.AppendLine();
+            sb.Append("Speed: " + (1f / grhData.Speed));
+
+            return sb.ToString();
+        }
+
+        static string GetToolTipText(AnimatedGrhData grhData)
+        {
+            // Animated
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Grh: " + grhData.GrhIndex);
+            AppendFramesToolTipText(grhData.Frames, sb);
             sb.AppendLine();
             sb.Append("Speed: " + (1f / grhData.Speed));
 
@@ -119,9 +139,9 @@ namespace NetGore.EditorTools
                 {
                     ret = GetToolTipText((AnimatedGrhData)GrhData);
                 }
-                else
+                else if (GrhData is AutomaticAnimatedGrhData)
                 {
-                    throw new UnsupportedGrhDataTypeException(GrhData);
+                    ret = GetToolTipText((AutomaticAnimatedGrhData)GrhData);
                 }
             }
             catch (ContentLoadException)
@@ -174,6 +194,27 @@ namespace NetGore.EditorTools
             SetImageKeys(imageKey);
         }
 
+        void SetIconImage(AutomaticAnimatedGrhData grhData)
+        {
+            if (_animationGrh != null)
+                return;
+
+            _animationGrh = new Grh(grhData, AnimType.Loop, Environment.TickCount);
+
+            string imageKey;
+            var frame = grhData.GetFrame(0);
+            if (frame != null)
+            {
+                imageKey = GrhImageList.GetImageKey(frame);
+            }
+            else
+            {
+                imageKey = null;
+            }
+
+            SetImageKeys(imageKey);
+        }
+
         void SetIconImage()
         {
             // Set the preview picture
@@ -184,6 +225,10 @@ namespace NetGore.EditorTools
             else if (GrhData is AnimatedGrhData)
             {
                 SetIconImage((AnimatedGrhData)GrhData);
+            }
+            else if (GrhData is AutomaticAnimatedGrhData)
+            {
+                SetIconImage((AutomaticAnimatedGrhData)GrhData);
             }
             else
             {

@@ -1,278 +1,368 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>234</Count>
+    <Count>150</Count>
     <Item0>
-      <Index>1</Index>
-      <Categorization>Map.Platform.Grass.Top-Left</Categorization>
+      <Index>137</Index>
+      <Categorization>Background.sky</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Map/Platform/Grass/Top-Left</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/Background/sky</Name>
+        <Source>0,0,1024,238</Source>
       </Texture>
     </Item0>
     <Item1>
-      <Index>2</Index>
-      <Categorization>Map.Platform.Grass.Top-Mid</Categorization>
+      <Index>138</Index>
+      <Categorization>Background.trees.dense</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Map/Platform/Grass/Top-Mid</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/Background/trees/dense</Name>
+        <Source>0,0,1024,512</Source>
       </Texture>
     </Item1>
     <Item2>
-      <Index>3</Index>
-      <Categorization>Map.Platform.Grass.Top-Right</Categorization>
+      <Index>139</Index>
+      <Categorization>Background.trees.sparse</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Map/Platform/Grass/Top-Right</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/Background/trees/sparse</Name>
+        <Source>0,0,1024,512</Source>
       </Texture>
     </Item2>
     <Item3>
-      <Index>4</Index>
-      <Categorization>Map.Platform.Grass.Mid-Left</Categorization>
+      <Index>86</Index>
+      <Categorization>Character.Crystal.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Map/Platform/Grass/Mid-Left</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/Character/Crystal/ArmLower</Name>
+        <Source>0,0,6,20</Source>
       </Texture>
     </Item3>
     <Item4>
-      <Index>5</Index>
-      <Categorization>Map.Platform.Grass.Mid-Mid</Categorization>
+      <Index>87</Index>
+      <Categorization>Character.Crystal.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Map/Platform/Grass/Mid-Mid</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/Character/Crystal/ArmUpper</Name>
+        <Source>0,0,6,12</Source>
       </Texture>
     </Item4>
     <Item5>
-      <Index>6</Index>
-      <Categorization>Map.Platform.Grass.Mid-Right</Categorization>
+      <Index>88</Index>
+      <Categorization>Character.Crystal.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Map/Platform/Grass/Mid-Right</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/Character/Crystal/Head</Name>
+        <Source>0,0,19,20</Source>
       </Texture>
     </Item5>
     <Item6>
-      <Index>7</Index>
-      <Categorization>Map.Platform.Grass.Bottom</Categorization>
+      <Index>89</Index>
+      <Categorization>Character.Crystal.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Map/Platform/Grass/Bottom</Name>
-        <Source>0,0,32,1</Source>
+        <Name>Grh/Character/Crystal/LegLower</Name>
+        <Source>0,0,13,19</Source>
       </Texture>
     </Item6>
     <Item7>
-      <Index>8</Index>
-      <Categorization>GUI.Default.Controls.TextBox.Bottom</Categorization>
+      <Index>90</Index>
+      <Categorization>Character.Crystal.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/Bottom</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Crystal/LegUpper</Name>
+        <Source>0,0,12,22</Source>
       </Texture>
     </Item7>
     <Item8>
-      <Index>9</Index>
-      <Categorization>GUI.Default.Controls.TextBox.BottomLeft</Categorization>
+      <Index>91</Index>
+      <Categorization>Character.Crystal.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/BottomLeft</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Crystal/Neck</Name>
+        <Source>0,0,5,9</Source>
       </Texture>
     </Item8>
     <Item9>
-      <Index>10</Index>
-      <Categorization>GUI.Default.Controls.TextBox.BottomRight</Categorization>
+      <Index>92</Index>
+      <Categorization>Character.Crystal.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/BottomRight</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Crystal/Shoe</Name>
+        <Source>0,0,6,18</Source>
       </Texture>
     </Item9>
     <Item10>
-      <Index>11</Index>
-      <Categorization>GUI.Default.Controls.TextBox.Left</Categorization>
+      <Index>93</Index>
+      <Categorization>Character.Crystal.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/Left</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Crystal/Torso</Name>
+        <Source>0,0,14,28</Source>
       </Texture>
     </Item10>
     <Item11>
-      <Index>12</Index>
-      <Categorization>GUI.Default.Controls.TextBox.Right</Categorization>
+      <Index>78</Index>
+      <Categorization>Character.Naked.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/Right</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Naked/ArmLower</Name>
+        <Source>0,0,6,20</Source>
       </Texture>
     </Item11>
     <Item12>
-      <Index>13</Index>
-      <Categorization>GUI.Default.Controls.TextBox.Top</Categorization>
+      <Index>79</Index>
+      <Categorization>Character.Naked.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/Top</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Naked/ArmUpper</Name>
+        <Source>0,0,6,12</Source>
       </Texture>
     </Item12>
     <Item13>
-      <Index>14</Index>
-      <Categorization>GUI.Default.Controls.TextBox.TopLeft</Categorization>
+      <Index>80</Index>
+      <Categorization>Character.Naked.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/TopLeft</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Naked/Head</Name>
+        <Source>0,0,19,19</Source>
       </Texture>
     </Item13>
     <Item14>
-      <Index>15</Index>
-      <Categorization>GUI.Default.Controls.TextBox.TopRight</Categorization>
+      <Index>81</Index>
+      <Categorization>Character.Naked.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/TopRight</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/Character/Naked/LegLower</Name>
+        <Source>0,0,13,19</Source>
       </Texture>
     </Item14>
     <Item15>
-      <Index>16</Index>
-      <Categorization>GUI.Default.Controls.Form.Background</Categorization>
+      <Index>82</Index>
+      <Categorization>Character.Naked.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/Background</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/Character/Naked/LegUpper</Name>
+        <Source>0,0,12,22</Source>
       </Texture>
     </Item15>
     <Item16>
-      <Index>17</Index>
-      <Categorization>GUI.Default.Controls.Form.Bottom</Categorization>
+      <Index>83</Index>
+      <Categorization>Character.Naked.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/Bottom</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/Character/Naked/Neck</Name>
+        <Source>0,0,5,9</Source>
       </Texture>
     </Item16>
     <Item17>
-      <Index>18</Index>
-      <Categorization>GUI.Default.Controls.Form.BottomLeft</Categorization>
+      <Index>84</Index>
+      <Categorization>Character.Naked.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/BottomLeft</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/Character/Naked/Shoe</Name>
+        <Source>0,0,6,16</Source>
       </Texture>
     </Item17>
     <Item18>
-      <Index>19</Index>
-      <Categorization>GUI.Default.Controls.Form.BottomRight</Categorization>
+      <Index>85</Index>
+      <Categorization>Character.Naked.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/BottomRight</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/Character/Naked/Torso</Name>
+        <Source>0,0,14,28</Source>
       </Texture>
     </Item18>
     <Item19>
-      <Index>20</Index>
-      <Categorization>GUI.Default.Controls.Form.Left</Categorization>
+      <Index>178</Index>
+      <Categorization>Character.Top Down.Basic.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/Left</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/Character/Top Down/Basic/Down</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item19>
     <Item20>
-      <Index>21</Index>
-      <Categorization>GUI.Default.Controls.Form.Right</Categorization>
+      <Index>179</Index>
+      <Categorization>Character.Top Down.Basic.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/Right</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/Character/Top Down/Basic/Left</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item20>
     <Item21>
-      <Index>22</Index>
-      <Categorization>GUI.Default.Controls.Form.Top</Categorization>
+      <Index>180</Index>
+      <Categorization>Character.Top Down.Basic.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/Top</Name>
-        <Source>0,0,6,22</Source>
+        <Name>Grh/Character/Top Down/Basic/Right</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item21>
     <Item22>
-      <Index>23</Index>
-      <Categorization>GUI.Default.Controls.Form.TopLeft</Categorization>
+      <Index>181</Index>
+      <Categorization>Character.Top Down.Basic.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/TopLeft</Name>
-        <Source>0,0,6,22</Source>
+        <Name>Grh/Character/Top Down/Basic/Up</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item22>
     <Item23>
-      <Index>24</Index>
-      <Categorization>GUI.Default.Controls.Form.TopRight</Categorization>
+      <Index>158</Index>
+      <Categorization>Character.Top Down.Crystal.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/TopRight</Name>
-        <Source>0,0,6,22</Source>
+        <Name>Grh/Character/Top Down/Crystal/Down</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item23>
     <Item24>
-      <Index>25</Index>
-      <Categorization>GUI.Default.Controls.CheckBox.Ticked</Categorization>
+      <Index>159</Index>
+      <Categorization>Character.Top Down.Crystal.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/CheckBox/Ticked</Name>
-        <Source>0,0,15,15</Source>
+        <Name>Grh/Character/Top Down/Crystal/Left</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item24>
     <Item25>
-      <Index>26</Index>
-      <Categorization>GUI.Default.Controls.CheckBox.TickedMouseOver</Categorization>
+      <Index>160</Index>
+      <Categorization>Character.Top Down.Crystal.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/CheckBox/TickedMouseOver</Name>
-        <Source>0,0,15,15</Source>
+        <Name>Grh/Character/Top Down/Crystal/Right</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item25>
     <Item26>
-      <Index>27</Index>
-      <Categorization>GUI.Default.Controls.CheckBox.TickedPressed</Categorization>
+      <Index>161</Index>
+      <Categorization>Character.Top Down.Crystal.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/CheckBox/TickedPressed</Name>
-        <Source>0,0,15,15</Source>
+        <Name>Grh/Character/Top Down/Crystal/Up</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item26>
     <Item27>
-      <Index>28</Index>
-      <Categorization>GUI.Default.Controls.CheckBox.Unticked</Categorization>
+      <Index>104</Index>
+      <Categorization>Character.Top Down.Zombie.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/CheckBox/Unticked</Name>
-        <Source>0,0,15,15</Source>
+        <Name>Grh/Character/Top Down/Zombie/Down</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item27>
     <Item28>
-      <Index>29</Index>
-      <Categorization>GUI.Default.Controls.CheckBox.UntickedMouseOver</Categorization>
+      <Index>111</Index>
+      <Categorization>Character.Top Down.Zombie.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/CheckBox/UntickedMouseOver</Name>
-        <Source>0,0,15,15</Source>
+        <Name>Grh/Character/Top Down/Zombie/Left</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item28>
     <Item29>
-      <Index>30</Index>
-      <Categorization>GUI.Default.Controls.CheckBox.UntickedPressed</Categorization>
+      <Index>112</Index>
+      <Categorization>Character.Top Down.Zombie.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/CheckBox/UntickedPressed</Name>
-        <Source>0,0,15,15</Source>
+        <Name>Grh/Character/Top Down/Zombie/Right</Name>
+        <Source>0,0,44,54</Source>
       </Texture>
     </Item29>
     <Item30>
+      <Index>113</Index>
+      <Categorization>Character.Top Down.Zombie.Up</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Top Down/Zombie/Up</Name>
+        <Source>0,0,44,54</Source>
+      </Texture>
+    </Item30>
+    <Item31>
+      <Index>204</Index>
+      <Categorization>Character.Zombie.ArmLower</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/ArmLower</Name>
+        <Source>0,0,5,21</Source>
+      </Texture>
+    </Item31>
+    <Item32>
+      <Index>203</Index>
+      <Categorization>Character.Zombie.ArmUpper</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/ArmUpper</Name>
+        <Source>0,0,6,10</Source>
+      </Texture>
+    </Item32>
+    <Item33>
+      <Index>200</Index>
+      <Categorization>Character.Zombie.Head</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/Head</Name>
+        <Source>0,0,19,19</Source>
+      </Texture>
+    </Item33>
+    <Item34>
+      <Index>206</Index>
+      <Categorization>Character.Zombie.LegLower</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/LegLower</Name>
+        <Source>0,0,13,19</Source>
+      </Texture>
+    </Item34>
+    <Item35>
+      <Index>205</Index>
+      <Categorization>Character.Zombie.LegUpper</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/LegUpper</Name>
+        <Source>0,0,12,22</Source>
+      </Texture>
+    </Item35>
+    <Item36>
+      <Index>201</Index>
+      <Categorization>Character.Zombie.Neck</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/Neck</Name>
+        <Source>0,0,5,9</Source>
+      </Texture>
+    </Item36>
+    <Item37>
+      <Index>207</Index>
+      <Categorization>Character.Zombie.Shoe</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/Shoe</Name>
+        <Source>0,0,6,17</Source>
+      </Texture>
+    </Item37>
+    <Item38>
+      <Index>202</Index>
+      <Categorization>Character.Zombie.Torso</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Character/Zombie/Torso</Name>
+        <Source>0,0,16,28</Source>
+      </Texture>
+    </Item38>
+    <Item39>
+      <Index>101</Index>
+      <Categorization>GUI.addstat</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/addstat</Name>
+        <Source>0,0,12,12</Source>
+      </Texture>
+    </Item39>
+    <Item40>
       <Index>31</Index>
       <Categorization>GUI.Default.Controls.Button.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -280,8 +370,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Background</Name>
         <Source>0,0,7,7</Source>
       </Texture>
-    </Item30>
-    <Item31>
+    </Item40>
+    <Item41>
       <Index>32</Index>
       <Categorization>GUI.Default.Controls.Button.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -289,8 +379,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Bottom</Name>
         <Source>0,0,7,5</Source>
       </Texture>
-    </Item31>
-    <Item32>
+    </Item41>
+    <Item42>
       <Index>33</Index>
       <Categorization>GUI.Default.Controls.Button.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -298,8 +388,8 @@
         <Name>Grh/GUI/Default/Controls/Button/BottomLeft</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item32>
-    <Item33>
+    </Item42>
+    <Item43>
       <Index>34</Index>
       <Categorization>GUI.Default.Controls.Button.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -307,8 +397,8 @@
         <Name>Grh/GUI/Default/Controls/Button/BottomRight</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item33>
-    <Item34>
+    </Item43>
+    <Item44>
       <Index>35</Index>
       <Categorization>GUI.Default.Controls.Button.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -316,116 +406,17 @@
         <Name>Grh/GUI/Default/Controls/Button/Left</Name>
         <Source>0,0,5,7</Source>
       </Texture>
-    </Item34>
-    <Item35>
-      <Index>36</Index>
-      <Categorization>GUI.Default.Controls.Button.Right</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Right</Name>
-        <Source>0,0,5,7</Source>
-      </Texture>
-    </Item35>
-    <Item36>
-      <Index>37</Index>
-      <Categorization>GUI.Default.Controls.Button.Top</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Top</Name>
-        <Source>0,0,7,5</Source>
-      </Texture>
-    </Item36>
-    <Item37>
-      <Index>38</Index>
-      <Categorization>GUI.Default.Controls.Button.TopLeft</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/TopLeft</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item37>
-    <Item38>
-      <Index>39</Index>
-      <Categorization>GUI.Default.Controls.Button.TopRight</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/TopRight</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item38>
-    <Item39>
-      <Index>40</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.Bottom</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/Bottom</Name>
-        <Source>0,0,7,5</Source>
-      </Texture>
-    </Item39>
-    <Item40>
-      <Index>41</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.BottomLeft</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomLeft</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item40>
-    <Item41>
-      <Index>42</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.BottomRight</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomRight</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item41>
-    <Item42>
-      <Index>43</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.Left</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/Left</Name>
-        <Source>0,0,5,7</Source>
-      </Texture>
-    </Item42>
-    <Item43>
-      <Index>44</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.Right</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/Right</Name>
-        <Source>0,0,5,7</Source>
-      </Texture>
-    </Item43>
-    <Item44>
-      <Index>45</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.Top</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/Top</Name>
-        <Source>0,0,7,5</Source>
-      </Texture>
     </Item44>
     <Item45>
-      <Index>46</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.TopLeft</Categorization>
+      <Index>56</Index>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/TopLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Name>Grh/GUI/Default/Controls/Button/MouseOver/Background</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
     </Item45>
     <Item46>
-      <Index>47</Index>
-      <Categorization>GUI.Default.Controls.Button.Pressed.TopRight</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/Pressed/TopRight</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item46>
-    <Item47>
       <Index>48</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -433,8 +424,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Bottom</Name>
         <Source>0,0,7,5</Source>
       </Texture>
-    </Item47>
-    <Item48>
+    </Item46>
+    <Item47>
       <Index>49</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -442,8 +433,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomLeft</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item48>
-    <Item49>
+    </Item47>
+    <Item48>
       <Index>50</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -451,8 +442,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomRight</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item49>
-    <Item50>
+    </Item48>
+    <Item49>
       <Index>51</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -460,8 +451,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Left</Name>
         <Source>0,0,5,7</Source>
       </Texture>
-    </Item50>
-    <Item51>
+    </Item49>
+    <Item50>
       <Index>52</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -469,8 +460,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Right</Name>
         <Source>0,0,5,7</Source>
       </Texture>
-    </Item51>
-    <Item52>
+    </Item50>
+    <Item51>
       <Index>53</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -478,14 +469,23 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Top</Name>
         <Source>0,0,7,5</Source>
       </Texture>
-    </Item52>
-    <Item53>
-      <Index>54</Index>
-      <Categorization>GUI.Default.Controls.TextBox.Center</Categorization>
+    </Item51>
+    <Item52>
+      <Index>57</Index>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/Center</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopLeft</Name>
+        <Source>0,0,5,5</Source>
+      </Texture>
+    </Item52>
+    <Item53>
+      <Index>58</Index>
+      <Categorization>GUI.Default.Controls.Button.MouseOver.TopRight</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopRight</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item53>
     <Item54>
@@ -498,492 +498,114 @@
       </Texture>
     </Item54>
     <Item55>
-      <Index>56</Index>
-      <Categorization>GUI.Default.Controls.Button.MouseOver.Background</Categorization>
+      <Index>40</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/MouseOver/Background</Name>
-        <Source>0,0,7,7</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/Bottom</Name>
+        <Source>0,0,7,5</Source>
       </Texture>
     </Item55>
     <Item56>
-      <Index>57</Index>
-      <Categorization>GUI.Default.Controls.Button.MouseOver.TopLeft</Categorization>
+      <Index>41</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopLeft</Name>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomLeft</Name>
         <Source>0,0,5,5</Source>
       </Texture>
     </Item56>
     <Item57>
-      <Index>58</Index>
-      <Categorization>GUI.Default.Controls.Button.MouseOver.TopRight</Categorization>
+      <Index>42</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopRight</Name>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomRight</Name>
         <Source>0,0,5,5</Source>
       </Texture>
     </Item57>
     <Item58>
-      <Index>59</Index>
-      <Categorization>GUI.Default.Controls.TextBox.Background</Categorization>
+      <Index>43</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/TextBox/Background</Name>
-        <Source>0,0,4,4</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/Left</Name>
+        <Source>0,0,5,7</Source>
       </Texture>
     </Item58>
     <Item59>
-      <Index>60</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.Bottom</Categorization>
+      <Index>44</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/Bottom</Name>
-        <Source>0,0,5,5</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/Right</Name>
+        <Source>0,0,5,7</Source>
       </Texture>
     </Item59>
     <Item60>
-      <Index>61</Index>
-      <Categorization>System.Blank</Categorization>
+      <Index>45</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/System/Blank</Name>
-        <Source>0,0,2,2</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/Top</Name>
+        <Source>0,0,7,5</Source>
       </Texture>
     </Item60>
     <Item61>
-      <Index>62</Index>
-      <Categorization>System.Joint</Categorization>
+      <Index>46</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/System/Joint</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/TopLeft</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item61>
     <Item62>
-      <Index>63</Index>
-      <Categorization>System.Triangle</Categorization>
+      <Index>47</Index>
+      <Categorization>GUI.Default.Controls.Button.Pressed.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/System/Triangle</Name>
-        <Source>0,0,30,30</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Pressed/TopRight</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item62>
     <Item63>
-      <Index>64</Index>
-      <Categorization>System.Move</Categorization>
+      <Index>36</Index>
+      <Categorization>GUI.Default.Controls.Button.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/System/Move</Name>
-        <Source>0,0,17,17</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Right</Name>
+        <Source>0,0,5,7</Source>
       </Texture>
     </Item63>
     <Item64>
-      <Index>65</Index>
-      <Categorization>System.Resize</Categorization>
+      <Index>37</Index>
+      <Categorization>GUI.Default.Controls.Button.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/System/Resize</Name>
-        <Source>0,0,6,6</Source>
+        <Name>Grh/GUI/Default/Controls/Button/Top</Name>
+        <Source>0,0,7,5</Source>
       </Texture>
     </Item64>
     <Item65>
-      <Index>66</Index>
-      <Categorization>Particle.ankh</Categorization>
+      <Index>38</Index>
+      <Categorization>GUI.Default.Controls.Button.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Particle/ankh</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/GUI/Default/Controls/Button/TopLeft</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item65>
     <Item66>
-      <Index>67</Index>
-      <Categorization>Particle.ball</Categorization>
+      <Index>39</Index>
+      <Categorization>GUI.Default.Controls.Button.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Particle/ball</Name>
-        <Source>0,0,32,32</Source>
+        <Name>Grh/GUI/Default/Controls/Button/TopRight</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item66>
     <Item67>
-      <Index>68</Index>
-      <Categorization>Particle.raindrop</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/raindrop</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item67>
-    <Item68>
-      <Index>69</Index>
-      <Categorization>Particle.shield</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/shield</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item68>
-    <Item69>
-      <Index>70</Index>
-      <Categorization>Particle.skull</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/skull</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item69>
-    <Item70>
-      <Index>71</Index>
-      <Categorization>Particle.snow sharp</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/snow sharp</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item70>
-    <Item71>
-      <Index>72</Index>
-      <Categorization>Particle.snow</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/snow</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item71>
-    <Item72>
-      <Index>73</Index>
-      <Categorization>Particle.sparkle</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/sparkle</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item72>
-    <Item73>
-      <Index>74</Index>
-      <Categorization>Particle.splatter</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/splatter</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item73>
-    <Item74>
-      <Index>75</Index>
-      <Categorization>Particle.star sharp</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/star sharp</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item74>
-    <Item75>
-      <Index>76</Index>
-      <Categorization>Particle.star</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/star</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item75>
-    <Item76>
-      <Index>77</Index>
-      <Categorization>Particle.sword</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Particle/sword</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item76>
-    <Item77>
-      <Index>78</Index>
-      <Categorization>Character.Naked.ArmLower</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/ArmLower</Name>
-        <Source>0,0,6,20</Source>
-      </Texture>
-    </Item77>
-    <Item78>
-      <Index>79</Index>
-      <Categorization>Character.Naked.ArmUpper</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/ArmUpper</Name>
-        <Source>0,0,6,12</Source>
-      </Texture>
-    </Item78>
-    <Item79>
-      <Index>80</Index>
-      <Categorization>Character.Naked.Head</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/Head</Name>
-        <Source>0,0,19,19</Source>
-      </Texture>
-    </Item79>
-    <Item80>
-      <Index>81</Index>
-      <Categorization>Character.Naked.LegLower</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/LegLower</Name>
-        <Source>0,0,13,19</Source>
-      </Texture>
-    </Item80>
-    <Item81>
-      <Index>82</Index>
-      <Categorization>Character.Naked.LegUpper</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/LegUpper</Name>
-        <Source>0,0,12,22</Source>
-      </Texture>
-    </Item81>
-    <Item82>
-      <Index>83</Index>
-      <Categorization>Character.Naked.Neck</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/Neck</Name>
-        <Source>0,0,5,9</Source>
-      </Texture>
-    </Item82>
-    <Item83>
-      <Index>84</Index>
-      <Categorization>Character.Naked.Shoe</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/Shoe</Name>
-        <Source>0,0,6,16</Source>
-      </Texture>
-    </Item83>
-    <Item84>
-      <Index>85</Index>
-      <Categorization>Character.Naked.Torso</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Naked/Torso</Name>
-        <Source>0,0,14,28</Source>
-      </Texture>
-    </Item84>
-    <Item85>
-      <Index>86</Index>
-      <Categorization>Character.Crystal.ArmLower</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/ArmLower</Name>
-        <Source>0,0,6,20</Source>
-      </Texture>
-    </Item85>
-    <Item86>
-      <Index>87</Index>
-      <Categorization>Character.Crystal.ArmUpper</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/ArmUpper</Name>
-        <Source>0,0,6,12</Source>
-      </Texture>
-    </Item86>
-    <Item87>
-      <Index>88</Index>
-      <Categorization>Character.Crystal.Head</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/Head</Name>
-        <Source>0,0,19,20</Source>
-      </Texture>
-    </Item87>
-    <Item88>
-      <Index>89</Index>
-      <Categorization>Character.Crystal.LegLower</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/LegLower</Name>
-        <Source>0,0,13,19</Source>
-      </Texture>
-    </Item88>
-    <Item89>
-      <Index>90</Index>
-      <Categorization>Character.Crystal.LegUpper</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/LegUpper</Name>
-        <Source>0,0,12,22</Source>
-      </Texture>
-    </Item89>
-    <Item90>
-      <Index>91</Index>
-      <Categorization>Character.Crystal.Neck</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/Neck</Name>
-        <Source>0,0,5,9</Source>
-      </Texture>
-    </Item90>
-    <Item91>
-      <Index>92</Index>
-      <Categorization>Character.Crystal.Shoe</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/Shoe</Name>
-        <Source>0,0,6,18</Source>
-      </Texture>
-    </Item91>
-    <Item92>
-      <Index>93</Index>
-      <Categorization>Character.Crystal.Torso</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Crystal/Torso</Name>
-        <Source>0,0,14,28</Source>
-      </Texture>
-    </Item92>
-    <Item93>
-      <Index>94</Index>
-      <Categorization>Item.Potion.blue</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Potion/blue</Name>
-        <Source>0,0,9,16</Source>
-      </Texture>
-    </Item93>
-    <Item94>
-      <Index>95</Index>
-      <Categorization>Item.Potion.red</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Potion/red</Name>
-        <Source>0,0,9,16</Source>
-      </Texture>
-    </Item94>
-    <Item95>
-      <Index>96</Index>
-      <Categorization>Item.Melee.titaniumsword</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Melee/titaniumsword</Name>
-        <Source>0,0,24,24</Source>
-      </Texture>
-    </Item95>
-    <Item96>
-      <Index>97</Index>
-      <Categorization>Item.Head.crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Head/crystal</Name>
-        <Source>0,0,11,16</Source>
-      </Texture>
-    </Item96>
-    <Item97>
-      <Index>98</Index>
-      <Categorization>Item.Feet.crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Feet/crystal</Name>
-        <Source>0,0,15,14</Source>
-      </Texture>
-    </Item97>
-    <Item98>
-      <Index>99</Index>
-      <Categorization>Item.Body.crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Body/crystal</Name>
-        <Source>0,0,22,22</Source>
-      </Texture>
-    </Item98>
-    <Item99>
-      <Index>100</Index>
-      <Categorization>Item.Back.crystal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Item/Back/crystal</Name>
-        <Source>0,0,15,25</Source>
-      </Texture>
-    </Item99>
-    <Item100>
-      <Index>101</Index>
-      <Categorization>GUI.addstat</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/addstat</Name>
-        <Source>0,0,12,12</Source>
-      </Texture>
-    </Item100>
-    <Item101>
-      <Index>102</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.BottomLeft</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomLeft</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item101>
-    <Item102>
-      <Index>103</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.BottomRight</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomRight</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item102>
-    <Item103>
-      <Index>104</Index>
-      <Categorization>Character.Top Down.Zombie.Down</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/Down</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item103>
-    <Item104>
-      <Index>105</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.Left</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item104>
-    <Item105>
-      <Index>106</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.Right</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item105>
-    <Item106>
-      <Index>107</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.Top</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item106>
-    <Item107>
-      <Index>108</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.TopLeft</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item107>
-    <Item108>
-      <Index>109</Index>
-      <Categorization>GUI.Default.Controls.Chat Bubble.TopRight</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Controls/Chat Bubble/TopRight</Name>
-        <Source>0,0,5,5</Source>
-      </Texture>
-    </Item108>
-    <Item109>
       <Index>110</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -991,134 +613,215 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Background</Name>
         <Source>0,0,5,5</Source>
       </Texture>
-    </Item109>
-    <Item110>
-      <Index>111</Index>
-      <Categorization>Character.Top Down.Zombie.Left</Categorization>
+    </Item67>
+    <Item68>
+      <Index>60</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Character/Top Down/Zombie/Left</Name>
-        <Source>0,0,44,54</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/Bottom</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item110>
-    <Item111>
-      <Index>112</Index>
-      <Categorization>Character.Top Down.Zombie.Right</Categorization>
+    </Item68>
+    <Item69>
+      <Index>102</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Character/Top Down/Zombie/Right</Name>
-        <Source>0,0,44,54</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomLeft</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item111>
-    <Item112>
-      <Index>113</Index>
-      <Categorization>Character.Top Down.Zombie.Up</Categorization>
+    </Item69>
+    <Item70>
+      <Index>103</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Character/Top Down/Zombie/Up</Name>
-        <Source>0,0,44,54</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomRight</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item112>
-    <Item113>
-      <Index>114</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.1</Categorization>
+    </Item70>
+    <Item71>
+      <Index>105</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item113>
-    <Item114>
-      <Index>115</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.2</Categorization>
+    </Item71>
+    <Item72>
+      <Index>106</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item114>
-    <Item115>
-      <Index>116</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.3</Categorization>
+    </Item72>
+    <Item73>
+      <Index>107</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item115>
-    <Item116>
-      <Index>117</Index>
-      <Categorization>Effect._Teleport_frames_400.1</Categorization>
+    </Item73>
+    <Item74>
+      <Index>108</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/1</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item116>
-    <Item117>
-      <Index>118</Index>
-      <Categorization>Effect._Teleport_frames_400.2</Categorization>
+    </Item74>
+    <Item75>
+      <Index>109</Index>
+      <Categorization>GUI.Default.Controls.Chat Bubble.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/2</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/Chat Bubble/TopRight</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item117>
-    <Item118>
-      <Index>119</Index>
-      <Categorization>Effect._Teleport_frames_400.3</Categorization>
+    </Item75>
+    <Item76>
+      <Index>25</Index>
+      <Categorization>GUI.Default.Controls.CheckBox.Ticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/3</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/CheckBox/Ticked</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item118>
-    <Item119>
-      <Index>120</Index>
-      <Categorization>Effect._Teleport_frames_400.4</Categorization>
+    </Item76>
+    <Item77>
+      <Index>26</Index>
+      <Categorization>GUI.Default.Controls.CheckBox.TickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/4</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/CheckBox/TickedMouseOver</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item119>
-    <Item120>
-      <Index>121</Index>
-      <Categorization>Effect._Teleport_frames_400.5</Categorization>
+    </Item77>
+    <Item78>
+      <Index>27</Index>
+      <Categorization>GUI.Default.Controls.CheckBox.TickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/5</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/CheckBox/TickedPressed</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item120>
-    <Item121>
-      <Index>122</Index>
-      <Categorization>Effect._Teleport_frames_400.6</Categorization>
+    </Item78>
+    <Item79>
+      <Index>28</Index>
+      <Categorization>GUI.Default.Controls.CheckBox.Unticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/6</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/CheckBox/Unticked</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item121>
-    <Item122>
-      <Index>123</Index>
-      <Categorization>Effect._Teleport_frames_400.7</Categorization>
+    </Item79>
+    <Item80>
+      <Index>29</Index>
+      <Categorization>GUI.Default.Controls.CheckBox.UntickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/7</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/CheckBox/UntickedMouseOver</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item122>
-    <Item123>
-      <Index>124</Index>
-      <Categorization>Effect._Teleport_frames_400.8</Categorization>
+    </Item80>
+    <Item81>
+      <Index>30</Index>
+      <Categorization>GUI.Default.Controls.CheckBox.UntickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Effect/_Teleport_frames_400/8</Name>
-        <Source>0,0,32,64</Source>
+        <Name>Grh/GUI/Default/Controls/CheckBox/UntickedPressed</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item123>
-    <Item124>
+    </Item81>
+    <Item82>
+      <Index>16</Index>
+      <Categorization>GUI.Default.Controls.Form.Background</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/Background</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item82>
+    <Item83>
+      <Index>17</Index>
+      <Categorization>GUI.Default.Controls.Form.Bottom</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/Bottom</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item83>
+    <Item84>
+      <Index>18</Index>
+      <Categorization>GUI.Default.Controls.Form.BottomLeft</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/BottomLeft</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item84>
+    <Item85>
+      <Index>19</Index>
+      <Categorization>GUI.Default.Controls.Form.BottomRight</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/BottomRight</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item85>
+    <Item86>
+      <Index>20</Index>
+      <Categorization>GUI.Default.Controls.Form.Left</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/Left</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item86>
+    <Item87>
+      <Index>21</Index>
+      <Categorization>GUI.Default.Controls.Form.Right</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/Right</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item87>
+    <Item88>
+      <Index>22</Index>
+      <Categorization>GUI.Default.Controls.Form.Top</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/Top</Name>
+        <Source>0,0,6,22</Source>
+      </Texture>
+    </Item88>
+    <Item89>
+      <Index>23</Index>
+      <Categorization>GUI.Default.Controls.Form.TopLeft</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/TopLeft</Name>
+        <Source>0,0,6,22</Source>
+      </Texture>
+    </Item89>
+    <Item90>
+      <Index>24</Index>
+      <Categorization>GUI.Default.Controls.Form.TopRight</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/TopRight</Name>
+        <Source>0,0,6,22</Source>
+      </Texture>
+    </Item90>
+    <Item91>
       <Index>126</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1126,8 +829,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Background</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item124>
-    <Item125>
+    </Item91>
+    <Item92>
       <Index>127</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1135,8 +838,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Bottom</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item125>
-    <Item126>
+    </Item92>
+    <Item93>
       <Index>128</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1144,8 +847,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomLeft</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item126>
-    <Item127>
+    </Item93>
+    <Item94>
       <Index>129</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1153,8 +856,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomRight</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item127>
-    <Item128>
+    </Item94>
+    <Item95>
       <Index>130</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1162,8 +865,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Left</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item128>
-    <Item129>
+    </Item95>
+    <Item96>
       <Index>131</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1171,8 +874,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Right</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item129>
-    <Item130>
+    </Item96>
+    <Item97>
       <Index>132</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1180,665 +883,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item130>
-    <Item131>
-      <Index>133</Index>
-      <Categorization>GUI.Default.Toolbar.Equipped</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item131>
-    <Item132>
-      <Index>134</Index>
-      <Categorization>GUI.Default.Toolbar.Inventory</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item132>
-    <Item133>
-      <Index>135</Index>
-      <Categorization>GUI.Default.Toolbar.Skills</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Toolbar/Skills</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item133>
-    <Item134>
-      <Index>136</Index>
-      <Categorization>GUI.Default.item_slot</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/item_slot</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item134>
-    <Item135>
-      <Index>137</Index>
-      <Categorization>Background.sky</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Background/sky</Name>
-        <Source>0,0,1024,238</Source>
-      </Texture>
-    </Item135>
-    <Item136>
-      <Index>138</Index>
-      <Categorization>Background.trees.dense</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Background/trees/dense</Name>
-        <Source>0,0,1024,512</Source>
-      </Texture>
-    </Item136>
-    <Item137>
-      <Index>139</Index>
-      <Categorization>Background.trees.sparse</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Background/trees/sparse</Name>
-        <Source>0,0,1024,512</Source>
-      </Texture>
-    </Item137>
-    <Item138>
-      <Index>140</Index>
-      <Categorization>SkillIcon.heal</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/SkillIcon/heal</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item138>
-    <Item139>
-      <Index>141</Index>
-      <Categorization>StatusIcon.strengthen</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/StatusIcon/strengthen</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item139>
-    <Item140>
-      <Index>142</Index>
-      <Categorization>SkillIcon.strengthen</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/SkillIcon/strengthen</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item140>
-    <Item141>
-      <Index>143</Index>
-      <Categorization>GUI.Default.status icon border</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/status icon border</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item141>
-    <Item142>
-      <Index>144</Index>
-      <Categorization>GUI.Default.Toolbar.Stats</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/GUI/Default/Toolbar/Stats</Name>
-        <Source>0,0,32,32</Source>
-      </Texture>
-    </Item142>
-    <Item143>
-      <Index>145</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Up_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Up_frames_300/4</Name>
-        <Source>0,0,44,55</Source>
-      </Texture>
-    </Item143>
-    <Item144>
-      <Index>146</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item144>
-    <Item145>
-      <Index>147</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item145>
-    <Item146>
-      <Index>148</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item146>
-    <Item147>
-      <Index>149</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Right_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Right_frames_300/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item147>
-    <Item148>
-      <Index>150</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item148>
-    <Item149>
-      <Index>151</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item149>
-    <Item150>
-      <Index>152</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item150>
-    <Item151>
-      <Index>153</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Left_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Left_frames_300/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item151>
-    <Item152>
-      <Index>154</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item152>
-    <Item153>
-      <Index>155</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item153>
-    <Item154>
-      <Index>156</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item154>
-    <Item155>
-      <Index>157</Index>
-      <Categorization>Character.Top Down.Zombie._Walk Down_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Zombie/_Walk Down_frames_300/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item155>
-    <Item156>
-      <Index>158</Index>
-      <Categorization>Character.Top Down.Crystal.Down</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/Down</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item156>
-    <Item157>
-      <Index>159</Index>
-      <Categorization>Character.Top Down.Crystal.Left</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/Left</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item157>
-    <Item158>
-      <Index>160</Index>
-      <Categorization>Character.Top Down.Crystal.Right</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/Right</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item158>
-    <Item159>
-      <Index>161</Index>
-      <Categorization>Character.Top Down.Crystal.Up</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/Up</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item159>
-    <Item160>
-      <Index>162</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item160>
-    <Item161>
-      <Index>163</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item161>
-    <Item162>
-      <Index>164</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item162>
-    <Item163>
-      <Index>165</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Up_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Up_frames_300/4</Name>
-        <Source>0,0,44,55</Source>
-      </Texture>
-    </Item163>
-    <Item164>
-      <Index>166</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item164>
-    <Item165>
-      <Index>167</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item165>
-    <Item166>
-      <Index>168</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item166>
-    <Item167>
-      <Index>169</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Right_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Right_frames_300/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item167>
-    <Item168>
-      <Index>170</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item168>
-    <Item169>
-      <Index>171</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item169>
-    <Item170>
-      <Index>172</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item170>
-    <Item171>
-      <Index>173</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Left_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Left_frames_300/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item171>
-    <Item172>
-      <Index>174</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item172>
-    <Item173>
-      <Index>175</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item173>
-    <Item174>
-      <Index>176</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item174>
-    <Item175>
-      <Index>177</Index>
-      <Categorization>Character.Top Down.Crystal._Walk Down_frames_300.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Crystal/_Walk Down_frames_300/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item175>
-    <Item176>
-      <Index>178</Index>
-      <Categorization>Character.Top Down.Basic.Down</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/Down</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item176>
-    <Item177>
-      <Index>179</Index>
-      <Categorization>Character.Top Down.Basic.Left</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/Left</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item177>
-    <Item178>
-      <Index>180</Index>
-      <Categorization>Character.Top Down.Basic.Right</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/Right</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item178>
-    <Item179>
-      <Index>181</Index>
-      <Categorization>Character.Top Down.Basic.Up</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/Up</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item179>
-    <Item180>
-      <Index>182</Index>
-      <Categorization>Character.Top Down.Basic._Walk Up_frames_150.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_150/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item180>
-    <Item181>
-      <Index>183</Index>
-      <Categorization>Character.Top Down.Basic._Walk Up_frames_150.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_150/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item181>
-    <Item182>
-      <Index>184</Index>
-      <Categorization>Character.Top Down.Basic._Walk Up_frames_150.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_150/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item182>
-    <Item183>
-      <Index>185</Index>
-      <Categorization>Character.Top Down.Basic._Walk Up_frames_150.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Up_frames_150/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item183>
-    <Item184>
-      <Index>186</Index>
-      <Categorization>Character.Top Down.Basic._Walk Right_frames_150.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_150/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item184>
-    <Item185>
-      <Index>187</Index>
-      <Categorization>Character.Top Down.Basic._Walk Right_frames_150.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_150/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item185>
-    <Item186>
-      <Index>188</Index>
-      <Categorization>Character.Top Down.Basic._Walk Right_frames_150.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_150/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item186>
-    <Item187>
-      <Index>189</Index>
-      <Categorization>Character.Top Down.Basic._Walk Right_frames_150.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Right_frames_150/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item187>
-    <Item188>
-      <Index>190</Index>
-      <Categorization>Character.Top Down.Basic._Walk Left_frames_150.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_150/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item188>
-    <Item189>
-      <Index>191</Index>
-      <Categorization>Character.Top Down.Basic._Walk Left_frames_150.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_150/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item189>
-    <Item190>
-      <Index>192</Index>
-      <Categorization>Character.Top Down.Basic._Walk Left_frames_150.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_150/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item190>
-    <Item191>
-      <Index>193</Index>
-      <Categorization>Character.Top Down.Basic._Walk Left_frames_150.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Left_frames_150/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item191>
-    <Item192>
-      <Index>194</Index>
-      <Categorization>Character.Top Down.Basic._Walk Down_frames_150.1</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_150/1</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item192>
-    <Item193>
-      <Index>195</Index>
-      <Categorization>Character.Top Down.Basic._Walk Down_frames_150.2</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_150/2</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item193>
-    <Item194>
-      <Index>196</Index>
-      <Categorization>Character.Top Down.Basic._Walk Down_frames_150.3</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_150/3</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item194>
-    <Item195>
-      <Index>197</Index>
-      <Categorization>Character.Top Down.Basic._Walk Down_frames_150.4</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Top Down/Basic/_Walk Down_frames_150/4</Name>
-        <Source>0,0,44,54</Source>
-      </Texture>
-    </Item195>
-    <Item196>
-      <Index>200</Index>
-      <Categorization>Character.Zombie.Head</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/Head</Name>
-        <Source>0,0,19,19</Source>
-      </Texture>
-    </Item196>
-    <Item197>
-      <Index>201</Index>
-      <Categorization>Character.Zombie.Neck</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/Neck</Name>
-        <Source>0,0,5,9</Source>
-      </Texture>
-    </Item197>
-    <Item198>
-      <Index>202</Index>
-      <Categorization>Character.Zombie.Torso</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/Torso</Name>
-        <Source>0,0,16,28</Source>
-      </Texture>
-    </Item198>
-    <Item199>
-      <Index>203</Index>
-      <Categorization>Character.Zombie.ArmUpper</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/ArmUpper</Name>
-        <Source>0,0,6,10</Source>
-      </Texture>
-    </Item199>
-    <Item200>
-      <Index>204</Index>
-      <Categorization>Character.Zombie.ArmLower</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/ArmLower</Name>
-        <Source>0,0,5,21</Source>
-      </Texture>
-    </Item200>
-    <Item201>
-      <Index>205</Index>
-      <Categorization>Character.Zombie.LegUpper</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/LegUpper</Name>
-        <Source>0,0,12,22</Source>
-      </Texture>
-    </Item201>
-    <Item202>
-      <Index>206</Index>
-      <Categorization>Character.Zombie.LegLower</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/LegLower</Name>
-        <Source>0,0,13,19</Source>
-      </Texture>
-    </Item202>
-    <Item203>
-      <Index>207</Index>
-      <Categorization>Character.Zombie.Shoe</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Character/Zombie/Shoe</Name>
-        <Source>0,0,6,17</Source>
-      </Texture>
-    </Item203>
-    <Item204>
+    </Item97>
+    <Item98>
       <Index>218</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1846,8 +892,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopLeft</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item204>
-    <Item205>
+    </Item98>
+    <Item99>
       <Index>219</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1855,505 +901,542 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopRight</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item205>
-    <Item206>
-      <Index>220</Index>
-      <Categorization>Emoticons._Sweat_frames_400.1</Categorization>
+    </Item99>
+    <Item100>
+      <Index>59</Index>
+      <Categorization>GUI.Default.Controls.TextBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Sweat_frames_400/1</Name>
-        <Source>0,0,12,26</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/Background</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item206>
-    <Item207>
-      <Index>221</Index>
-      <Categorization>Emoticons._Sweat_frames_400.2</Categorization>
+    </Item100>
+    <Item101>
+      <Index>8</Index>
+      <Categorization>GUI.Default.Controls.TextBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Sweat_frames_400/2</Name>
-        <Source>0,0,12,26</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/Bottom</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item207>
-    <Item208>
-      <Index>222</Index>
-      <Categorization>Emoticons._Sweat_frames_400.3</Categorization>
+    </Item101>
+    <Item102>
+      <Index>9</Index>
+      <Categorization>GUI.Default.Controls.TextBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Sweat_frames_400/3</Name>
-        <Source>0,0,12,26</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/BottomLeft</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item208>
-    <Item209>
-      <Index>223</Index>
-      <Categorization>Emoticons._Sweat_frames_400.4</Categorization>
+    </Item102>
+    <Item103>
+      <Index>10</Index>
+      <Categorization>GUI.Default.Controls.TextBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Sweat_frames_400/4</Name>
-        <Source>0,0,12,26</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/BottomRight</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item209>
-    <Item210>
-      <Index>224</Index>
-      <Categorization>Emoticons._Question_frames_400.1</Categorization>
+    </Item103>
+    <Item104>
+      <Index>54</Index>
+      <Categorization>GUI.Default.Controls.TextBox.Center</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Question_frames_400/1</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/Center</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item210>
-    <Item211>
-      <Index>225</Index>
-      <Categorization>Emoticons._Question_frames_400.2</Categorization>
+    </Item104>
+    <Item105>
+      <Index>11</Index>
+      <Categorization>GUI.Default.Controls.TextBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Question_frames_400/2</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/Left</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item211>
-    <Item212>
-      <Index>226</Index>
-      <Categorization>Emoticons._Question_frames_400.3</Categorization>
+    </Item105>
+    <Item106>
+      <Index>12</Index>
+      <Categorization>GUI.Default.Controls.TextBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Question_frames_400/3</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/Right</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item212>
-    <Item213>
-      <Index>227</Index>
-      <Categorization>Emoticons._Question_frames_400.4</Categorization>
+    </Item106>
+    <Item107>
+      <Index>13</Index>
+      <Categorization>GUI.Default.Controls.TextBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Question_frames_400/4</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/Top</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item213>
-    <Item214>
-      <Index>228</Index>
-      <Categorization>Emoticons._Meat_frames_400.1</Categorization>
+    </Item107>
+    <Item108>
+      <Index>14</Index>
+      <Categorization>GUI.Default.Controls.TextBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Meat_frames_400/1</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/TopLeft</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item214>
-    <Item215>
-      <Index>229</Index>
-      <Categorization>Emoticons._Meat_frames_400.2</Categorization>
+    </Item108>
+    <Item109>
+      <Index>15</Index>
+      <Categorization>GUI.Default.Controls.TextBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Meat_frames_400/2</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/Controls/TextBox/TopRight</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item215>
-    <Item216>
-      <Index>230</Index>
-      <Categorization>Emoticons._Meat_frames_400.3</Categorization>
+    </Item109>
+    <Item110>
+      <Index>136</Index>
+      <Categorization>GUI.Default.item_slot</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Meat_frames_400/3</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/item_slot</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item216>
-    <Item217>
-      <Index>231</Index>
-      <Categorization>Emoticons._Meat_frames_400.4</Categorization>
+    </Item110>
+    <Item111>
+      <Index>143</Index>
+      <Categorization>GUI.Default.status icon border</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Meat_frames_400/4</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/GUI/Default/status icon border</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item217>
-    <Item218>
-      <Index>232</Index>
-      <Categorization>Emoticons._Hearts_frames_400.1</Categorization>
+    </Item111>
+    <Item112>
+      <Index>133</Index>
+      <Categorization>GUI.Default.Toolbar.Equipped</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Hearts_frames_400/1</Name>
-        <Source>0,0,24,20</Source>
+        <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item218>
-    <Item219>
-      <Index>233</Index>
-      <Categorization>Emoticons._Hearts_frames_400.2</Categorization>
+    </Item112>
+    <Item113>
+      <Index>134</Index>
+      <Categorization>GUI.Default.Toolbar.Inventory</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Hearts_frames_400/2</Name>
-        <Source>0,0,24,20</Source>
+        <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item219>
-    <Item220>
-      <Index>234</Index>
-      <Categorization>Emoticons._Hearts_frames_400.3</Categorization>
+    </Item113>
+    <Item114>
+      <Index>135</Index>
+      <Categorization>GUI.Default.Toolbar.Skills</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Hearts_frames_400/3</Name>
-        <Source>0,0,24,20</Source>
+        <Name>Grh/GUI/Default/Toolbar/Skills</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item220>
-    <Item221>
-      <Index>235</Index>
-      <Categorization>Emoticons._Hearts_frames_400.4</Categorization>
+    </Item114>
+    <Item115>
+      <Index>144</Index>
+      <Categorization>GUI.Default.Toolbar.Stats</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Hearts_frames_400/4</Name>
-        <Source>0,0,24,20</Source>
+        <Name>Grh/GUI/Default/Toolbar/Stats</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item221>
-    <Item222>
-      <Index>236</Index>
-      <Categorization>Emoticons._Heartbroken_frames_400.1</Categorization>
+    </Item115>
+    <Item116>
+      <Index>100</Index>
+      <Categorization>Item.Back.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Heartbroken_frames_400/1</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Item/Back/crystal</Name>
+        <Source>0,0,15,25</Source>
       </Texture>
-    </Item222>
-    <Item223>
-      <Index>237</Index>
-      <Categorization>Emoticons._Heartbroken_frames_400.2</Categorization>
+    </Item116>
+    <Item117>
+      <Index>99</Index>
+      <Categorization>Item.Body.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Heartbroken_frames_400/2</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Item/Body/crystal</Name>
+        <Source>0,0,22,22</Source>
       </Texture>
-    </Item223>
-    <Item224>
-      <Index>238</Index>
-      <Categorization>Emoticons._Heartbroken_frames_400.3</Categorization>
+    </Item117>
+    <Item118>
+      <Index>98</Index>
+      <Categorization>Item.Feet.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Heartbroken_frames_400/3</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Item/Feet/crystal</Name>
+        <Source>0,0,15,14</Source>
       </Texture>
-    </Item224>
-    <Item225>
-      <Index>239</Index>
-      <Categorization>Emoticons._Heartbroken_frames_400.4</Categorization>
+    </Item118>
+    <Item119>
+      <Index>97</Index>
+      <Categorization>Item.Head.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Heartbroken_frames_400/4</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Item/Head/crystal</Name>
+        <Source>0,0,11,16</Source>
       </Texture>
-    </Item225>
-    <Item226>
-      <Index>240</Index>
-      <Categorization>Emoticons._Exclamation_frames_400.1</Categorization>
+    </Item119>
+    <Item120>
+      <Index>96</Index>
+      <Categorization>Item.Melee.titaniumsword</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Exclamation_frames_400/1</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Item/Melee/titaniumsword</Name>
+        <Source>0,0,24,24</Source>
       </Texture>
-    </Item226>
-    <Item227>
-      <Index>241</Index>
-      <Categorization>Emoticons._Exclamation_frames_400.2</Categorization>
+    </Item120>
+    <Item121>
+      <Index>94</Index>
+      <Categorization>Item.Potion.blue</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Exclamation_frames_400/2</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Item/Potion/blue</Name>
+        <Source>0,0,9,16</Source>
       </Texture>
-    </Item227>
-    <Item228>
-      <Index>242</Index>
-      <Categorization>Emoticons._Exclamation_frames_400.3</Categorization>
+    </Item121>
+    <Item122>
+      <Index>95</Index>
+      <Categorization>Item.Potion.red</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Exclamation_frames_400/3</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Item/Potion/red</Name>
+        <Source>0,0,9,16</Source>
       </Texture>
-    </Item228>
-    <Item229>
-      <Index>243</Index>
-      <Categorization>Emoticons._Exclamation_frames_400.4</Categorization>
+    </Item122>
+    <Item123>
+      <Index>7</Index>
+      <Categorization>Map.Platform.Grass.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Exclamation_frames_400/4</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Map/Platform/Grass/Bottom</Name>
+        <Source>0,0,32,1</Source>
       </Texture>
-    </Item229>
-    <Item230>
-      <Index>244</Index>
-      <Categorization>Emoticons._Ellipsis_frames_400.1</Categorization>
+    </Item123>
+    <Item124>
+      <Index>4</Index>
+      <Categorization>Map.Platform.Grass.Mid-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Ellipsis_frames_400/1</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Map/Platform/Grass/Mid-Left</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item230>
-    <Item231>
-      <Index>245</Index>
-      <Categorization>Emoticons._Ellipsis_frames_400.2</Categorization>
+    </Item124>
+    <Item125>
+      <Index>5</Index>
+      <Categorization>Map.Platform.Grass.Mid-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Ellipsis_frames_400/2</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Map/Platform/Grass/Mid-Mid</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item231>
-    <Item232>
-      <Index>246</Index>
-      <Categorization>Emoticons._Ellipsis_frames_400.3</Categorization>
+    </Item125>
+    <Item126>
+      <Index>6</Index>
+      <Categorization>Map.Platform.Grass.Mid-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Ellipsis_frames_400/3</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Map/Platform/Grass/Mid-Right</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item232>
-    <Item233>
-      <Index>247</Index>
-      <Categorization>Emoticons._Ellipsis_frames_400.4</Categorization>
+    </Item126>
+    <Item127>
+      <Index>1</Index>
+      <Categorization>Map.Platform.Grass.Top-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Emoticons/_Ellipsis_frames_400/4</Name>
-        <Source>0,0,20,20</Source>
+        <Name>Grh/Map/Platform/Grass/Top-Left</Name>
+        <Source>0,0,32,32</Source>
       </Texture>
-    </Item233>
+    </Item127>
+    <Item128>
+      <Index>2</Index>
+      <Categorization>Map.Platform.Grass.Top-Mid</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Map/Platform/Grass/Top-Mid</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item128>
+    <Item129>
+      <Index>3</Index>
+      <Categorization>Map.Platform.Grass.Top-Right</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Map/Platform/Grass/Top-Right</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item129>
+    <Item130>
+      <Index>66</Index>
+      <Categorization>Particle.ankh</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/ankh</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item130>
+    <Item131>
+      <Index>67</Index>
+      <Categorization>Particle.ball</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/ball</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item131>
+    <Item132>
+      <Index>68</Index>
+      <Categorization>Particle.raindrop</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/raindrop</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item132>
+    <Item133>
+      <Index>69</Index>
+      <Categorization>Particle.shield</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/shield</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item133>
+    <Item134>
+      <Index>70</Index>
+      <Categorization>Particle.skull</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/skull</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item134>
+    <Item135>
+      <Index>72</Index>
+      <Categorization>Particle.snow</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/snow</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item135>
+    <Item136>
+      <Index>71</Index>
+      <Categorization>Particle.snow sharp</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/snow sharp</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item136>
+    <Item137>
+      <Index>73</Index>
+      <Categorization>Particle.sparkle</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/sparkle</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item137>
+    <Item138>
+      <Index>74</Index>
+      <Categorization>Particle.splatter</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/splatter</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item138>
+    <Item139>
+      <Index>76</Index>
+      <Categorization>Particle.star</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/star</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item139>
+    <Item140>
+      <Index>75</Index>
+      <Categorization>Particle.star sharp</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/star sharp</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item140>
+    <Item141>
+      <Index>77</Index>
+      <Categorization>Particle.sword</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/sword</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item141>
+    <Item142>
+      <Index>140</Index>
+      <Categorization>SkillIcon.heal</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/SkillIcon/heal</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item142>
+    <Item143>
+      <Index>142</Index>
+      <Categorization>SkillIcon.strengthen</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/SkillIcon/strengthen</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item143>
+    <Item144>
+      <Index>141</Index>
+      <Categorization>StatusIcon.strengthen</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/StatusIcon/strengthen</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item144>
+    <Item145>
+      <Index>61</Index>
+      <Categorization>System.Blank</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/System/Blank</Name>
+        <Source>0,0,2,2</Source>
+      </Texture>
+    </Item145>
+    <Item146>
+      <Index>62</Index>
+      <Categorization>System.Joint</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/System/Joint</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item146>
+    <Item147>
+      <Index>64</Index>
+      <Categorization>System.Move</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/System/Move</Name>
+        <Source>0,0,17,17</Source>
+      </Texture>
+    </Item147>
+    <Item148>
+      <Index>65</Index>
+      <Categorization>System.Resize</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/System/Resize</Name>
+        <Source>0,0,6,6</Source>
+      </Texture>
+    </Item148>
+    <Item149>
+      <Index>63</Index>
+      <Categorization>System.Triangle</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/System/Triangle</Name>
+        <Source>0,0,30,30</Source>
+      </Texture>
+    </Item149>
   </Stationary>
   <Animated>
+    <Count>0</Count>
+  </Animated>
+  <AutomaticAnimated>
     <Count>20</Count>
     <Item0>
-      <Index>125</Index>
-      <Categorization>Effect.Teleport</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>8</Count>
-        <Item0>117</Item0>
-        <Item1>118</Item1>
-        <Item2>119</Item2>
-        <Item3>120</Item3>
-        <Item4>121</Item4>
-        <Item5>122</Item5>
-        <Item6>123</Item6>
-        <Item7>124</Item7>
-      </Frames>
-    </Item0>
-    <Item1>
-      <Index>198</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>154</Item0>
-        <Item1>155</Item1>
-        <Item2>156</Item2>
-        <Item3>157</Item3>
-      </Frames>
-    </Item1>
-    <Item2>
-      <Index>199</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>150</Item0>
-        <Item1>151</Item1>
-        <Item2>152</Item2>
-        <Item3>153</Item3>
-      </Frames>
-    </Item2>
-    <Item3>
-      <Index>208</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>146</Item0>
-        <Item1>147</Item1>
-        <Item2>148</Item2>
-        <Item3>149</Item3>
-      </Frames>
-    </Item3>
-    <Item4>
-      <Index>209</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>114</Item0>
-        <Item1>115</Item1>
-        <Item2>116</Item2>
-        <Item3>145</Item3>
-      </Frames>
-    </Item4>
-    <Item5>
-      <Index>210</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>174</Item0>
-        <Item1>175</Item1>
-        <Item2>176</Item2>
-        <Item3>177</Item3>
-      </Frames>
-    </Item5>
-    <Item6>
-      <Index>211</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>170</Item0>
-        <Item1>171</Item1>
-        <Item2>172</Item2>
-        <Item3>173</Item3>
-      </Frames>
-    </Item6>
-    <Item7>
-      <Index>212</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>166</Item0>
-        <Item1>167</Item1>
-        <Item2>168</Item2>
-        <Item3>169</Item3>
-      </Frames>
-    </Item7>
-    <Item8>
-      <Index>213</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
-      <Speed>299</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>162</Item0>
-        <Item1>163</Item1>
-        <Item2>164</Item2>
-        <Item3>165</Item3>
-      </Frames>
-    </Item8>
-    <Item9>
       <Index>214</Index>
       <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
-      <Speed>149</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>194</Item0>
-        <Item1>195</Item1>
-        <Item2>196</Item2>
-        <Item3>197</Item3>
-      </Frames>
-    </Item9>
-    <Item10>
+    </Item0>
+    <Item1>
       <Index>215</Index>
       <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
-      <Speed>149</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>190</Item0>
-        <Item1>191</Item1>
-        <Item2>192</Item2>
-        <Item3>193</Item3>
-      </Frames>
-    </Item10>
-    <Item11>
+    </Item1>
+    <Item2>
       <Index>216</Index>
       <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
-      <Speed>149</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>186</Item0>
-        <Item1>187</Item1>
-        <Item2>188</Item2>
-        <Item3>189</Item3>
-      </Frames>
-    </Item11>
-    <Item12>
+    </Item2>
+    <Item3>
       <Index>217</Index>
       <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
-      <Speed>149</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>182</Item0>
-        <Item1>183</Item1>
-        <Item2>184</Item2>
-        <Item3>185</Item3>
-      </Frames>
+    </Item3>
+    <Item4>
+      <Index>210</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
+    </Item4>
+    <Item5>
+      <Index>211</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
+    </Item5>
+    <Item6>
+      <Index>212</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
+    </Item6>
+    <Item7>
+      <Index>213</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
+    </Item7>
+    <Item8>
+      <Index>198</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
+    </Item8>
+    <Item9>
+      <Index>199</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
+    </Item9>
+    <Item10>
+      <Index>208</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
+    </Item10>
+    <Item11>
+      <Index>209</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
+    </Item11>
+    <Item12>
+      <Index>125</Index>
+      <Categorization>Effect.Teleport</Categorization>
     </Item12>
     <Item13>
       <Index>248</Index>
       <Categorization>Emoticons.Ellipsis</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>244</Item0>
-        <Item1>245</Item1>
-        <Item2>246</Item2>
-        <Item3>247</Item3>
-      </Frames>
     </Item13>
     <Item14>
       <Index>249</Index>
       <Categorization>Emoticons.Exclamation</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>240</Item0>
-        <Item1>241</Item1>
-        <Item2>242</Item2>
-        <Item3>243</Item3>
-      </Frames>
     </Item14>
     <Item15>
       <Index>250</Index>
       <Categorization>Emoticons.Heartbroken</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>236</Item0>
-        <Item1>237</Item1>
-        <Item2>238</Item2>
-        <Item3>239</Item3>
-      </Frames>
     </Item15>
     <Item16>
       <Index>251</Index>
       <Categorization>Emoticons.Hearts</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>232</Item0>
-        <Item1>233</Item1>
-        <Item2>234</Item2>
-        <Item3>235</Item3>
-      </Frames>
     </Item16>
     <Item17>
       <Index>252</Index>
       <Categorization>Emoticons.Meat</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>228</Item0>
-        <Item1>229</Item1>
-        <Item2>230</Item2>
-        <Item3>231</Item3>
-      </Frames>
     </Item17>
     <Item18>
       <Index>253</Index>
       <Categorization>Emoticons.Question</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>224</Item0>
-        <Item1>225</Item1>
-        <Item2>226</Item2>
-        <Item3>227</Item3>
-      </Frames>
     </Item18>
     <Item19>
       <Index>254</Index>
       <Categorization>Emoticons.Sweat</Categorization>
-      <Speed>400</Speed>
-      <Frames>
-        <Count>4</Count>
-        <Item0>220</Item0>
-        <Item1>221</Item1>
-        <Item2>222</Item2>
-        <Item3>223</Item3>
-      </Frames>
     </Item19>
-  </Animated>
+  </AutomaticAnimated>
 </GrhDatas>

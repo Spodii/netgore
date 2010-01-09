@@ -105,6 +105,8 @@ namespace NetGore.Graphics
                     return ((AnimatedGrhData)GrhData).GetFrame((int)_frame);
                 else if (GrhData is StationaryGrhData)
                     return (StationaryGrhData)GrhData;
+                else if (GrhData is AutomaticAnimatedGrhData)
+                    return ((AutomaticAnimatedGrhData)GrhData).GetFrame((int)_frame);
                 else
                     throw new UnsupportedGrhDataTypeException(GrhData);
             }
@@ -347,28 +349,38 @@ namespace NetGore.Graphics
         #region ISprite Members
 
         /// <summary>
-        /// Updates the Grh if it is animated.
+        /// Performs updating for when the <see cref="GrhData"/> is an <see cref="AnimatedGrhData"/>.
         /// </summary>
-        /// <param name="currentTime">Current total real time in total milliseconds.</param>
-        public virtual void Update(int currentTime)
+        /// <param name="currentTime">The current time.</param>
+        void UpdateAnimatedGrhData(int currentTime)
         {
-            // Check for an animated GrhData
-            var asAnimated = GrhData as AnimatedGrhData;
-            if (asAnimated == null)
-                return;
+            var c = (AnimatedGrhData)GrhData;
+            UpdateFrameIndex(currentTime, c.Speed, c.FramesCount);
+        }
 
-            // Don't update if not animated
-            if (_anim == AnimType.None)
-                return;
+        /// <summary>
+        /// Performs updating for when the <see cref="GrhData"/> is an <see cref="AutomaticAnimatedGrhData"/>.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        void UpdateAutomaticAnimatedGrhData(int currentTime)
+        {
+            var c = (AutomaticAnimatedGrhData)GrhData;
+            UpdateFrameIndex(currentTime, c.Speed, c.FramesCount);
+        }
 
+        /// <summary>
+        /// Updates the current frame.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <param name="animateSpeed">The animation speed.</param>
+        /// <param name="framesCount">The number of frames.</param>
+        void UpdateFrameIndex(int currentTime, float animateSpeed, int framesCount)
+        {
             // Store the temporary new frame
-            float tmpFrame = _frame + ((currentTime - _lastUpdated) * asAnimated.Speed);
-
-            // Set the last updated time to now
-            _lastUpdated = currentTime;
+            float tmpFrame = _frame + ((currentTime - _lastUpdated) * animateSpeed);
 
             // Check if the frame limit has been exceeded
-            if (tmpFrame >= asAnimated.FramesCount)
+            if (tmpFrame >= framesCount)
             {
                 if (_anim == AnimType.LoopOnce)
                 {
@@ -380,12 +392,31 @@ namespace NetGore.Graphics
                 else
                 {
                     // Animation is looping so get the frame back into range
-                    tmpFrame = tmpFrame % asAnimated.FramesCount;
+                    tmpFrame = tmpFrame % framesCount;
                 }
             }
 
             // Set the new frame
             _frame = tmpFrame;
+        }
+
+        /// <summary>
+        /// Updates the Grh if it is animated.
+        /// </summary>
+        /// <param name="currentTime">Current total real time in total milliseconds.</param>
+        public virtual void Update(int currentTime)
+        {
+            // Update by type
+            if (_anim != AnimType.None)
+            {
+                if (GrhData is AnimatedGrhData)
+                    UpdateAnimatedGrhData(currentTime);
+                else if (GrhData is AutomaticAnimatedGrhData)
+                    UpdateAutomaticAnimatedGrhData(currentTime);
+            }
+
+            // Set the last updated time to now
+            _lastUpdated = currentTime;
         }
 
         /// <summary>

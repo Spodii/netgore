@@ -243,6 +243,8 @@ namespace NetGore.EditorTools
         void DuplicateGrhDataNode(GrhTreeViewNode node, string oldCategoryStart, string newCategoryStart)
         {
             var gd = node.GrhData;
+            if (gd is AutomaticAnimatedGrhData)
+                return;
 
             // Replace the start of the categorization to the new category
             var newCategory = newCategoryStart;
@@ -262,7 +264,9 @@ namespace NetGore.EditorTools
         void DuplicateNode(TreeNode node, string oldCategoryStart, string newCategoryStart)
         {
             if (node is GrhTreeViewNode)
+            {
                 DuplicateGrhDataNode((GrhTreeViewNode)node, oldCategoryStart, newCategoryStart);
+            }
             else if (node is GrhTreeViewFolderNode)
             {
                 var grhDataNodes = ((GrhTreeViewFolderNode)node).GetChildGrhDataNodes(true).ToImmutable();
@@ -548,6 +552,8 @@ namespace NetGore.EditorTools
                 return;
 
             GrhData gd = GetGrhData(node);
+            if (gd is AutomaticAnimatedGrhData)
+                return;
 
             if (gd != null && node.Nodes.Count == 0)
             {
@@ -598,6 +604,10 @@ namespace NetGore.EditorTools
             return count;
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.AfterLabelEdit"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.NodeLabelEditEventArgs"/> that contains the event data.</param>
         protected override void OnAfterLabelEdit(NodeLabelEditEventArgs e)
         {
             base.OnAfterLabelEdit(e);
@@ -611,6 +621,10 @@ namespace NetGore.EditorTools
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.AfterSelect"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeViewEventArgs"/> that contains the event data.</param>
         protected override void OnAfterSelect(TreeViewEventArgs e)
         {
             base.OnAfterSelect(e);
@@ -623,6 +637,10 @@ namespace NetGore.EditorTools
                 GrhAfterSelect(this, new GrhTreeViewEventArgs(gd, e));
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.BeforeSelect"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeViewCancelEventArgs"/> that contains the event data.</param>
         protected override void OnBeforeSelect(TreeViewCancelEventArgs e)
         {
             base.OnBeforeSelect(e);
@@ -635,6 +653,10 @@ namespace NetGore.EditorTools
                 GrhBeforeSelect(this, new GrhTreeViewCancelEventArgs(gd, e));
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.DragDrop"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DragEventArgs"/> that contains the event data.</param>
         protected override void OnDragDrop(DragEventArgs e)
         {
             base.OnDragDrop(e);
@@ -695,6 +717,10 @@ namespace NetGore.EditorTools
             SelectedNode = addedNode;
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.DragEnter"/> event.
+        /// </summary>
+        /// <param name="drgevent">A <see cref="T:System.Windows.Forms.DragEventArgs"/> that contains the event data.</param>
         protected override void OnDragEnter(DragEventArgs drgevent)
         {
             drgevent.Effect = DragDropEffects.Move;
@@ -702,6 +728,10 @@ namespace NetGore.EditorTools
             base.OnDragEnter(drgevent);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.DragOver"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DragEventArgs"/> that contains the event data.</param>
         protected override void OnDragOver(DragEventArgs e)
         {
             base.OnDragOver(e);
@@ -722,6 +752,10 @@ namespace NetGore.EditorTools
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.ItemDrag"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.Windows.Forms.ItemDragEventArgs"/> that contains the event data.</param>
         protected override void OnItemDrag(ItemDragEventArgs e)
         {
             base.OnItemDrag(e);
@@ -733,6 +767,10 @@ namespace NetGore.EditorTools
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -745,6 +783,11 @@ namespace NetGore.EditorTools
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.NodeMouseClick"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeNodeMouseClickEventArgs"/> that contains the
+        /// event data.</param>
         protected override void OnNodeMouseClick(TreeNodeMouseClickEventArgs e)
         {
             base.OnNodeMouseClick(e);
@@ -763,6 +806,11 @@ namespace NetGore.EditorTools
                 GrhMouseClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.NodeMouseDoubleClick"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeNodeMouseClickEventArgs"/> that contains the
+        /// event data.</param>
         protected override void OnNodeMouseDoubleClick(TreeNodeMouseClickEventArgs e)
         {
             base.OnNodeMouseDoubleClick(e);
@@ -773,7 +821,7 @@ namespace NetGore.EditorTools
 
             // Get the GrhData for the node double-clicked, raising the GrhMouseDoubleClick event if valid
             GrhData gd = GetGrhData(e.Node);
-            if (gd != null)
+            if (gd != null && !(gd is AutomaticAnimatedGrhData))
                 GrhMouseDoubleClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
         }
 

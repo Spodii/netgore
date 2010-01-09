@@ -36,9 +36,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the frames in the GrhData
+        /// Gets the frames in the <see cref="AnimatedGrhData"/>.
         /// </summary>
-        public StationaryGrhData[] Frames
+        public IEnumerable<StationaryGrhData> Frames
         {
             get { return _frames; }
         }
