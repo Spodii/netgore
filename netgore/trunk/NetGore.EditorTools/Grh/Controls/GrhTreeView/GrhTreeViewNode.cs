@@ -19,22 +19,38 @@ namespace NetGore.EditorTools
 
         Grh _animationGrh = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhTreeViewNode"/> class.
+        /// </summary>
+        /// <param name="treeView">The <see cref="GrhTreeView"/> this node belongs to.</param>
+        /// <param name="grhData">The <see cref="GrhData"/> this node contains.</param>
         GrhTreeViewNode(GrhTreeView treeView, GrhData grhData)
         {
             _grhData = grhData;
             Update(treeView);
         }
 
+        /// <summary>
+        /// Gets the <see cref="GrhData"/> for this node.
+        /// </summary>
         public GrhData GrhData
         {
             get { return _grhData; }
         }
 
+        /// <summary>
+        /// Gets if the image for this node ever needs to update.
+        /// </summary>
         public bool NeedsToUpdateImage
         {
             get { return _animationGrh != null; }
         }
 
+        /// <summary>
+        /// Appends the frame information to the given <paramref name="sb"/>.
+        /// </summary>
+        /// <param name="frames">The frames to append the information for.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to append to.</param>
         static void AppendFramesToolTipText(IEnumerable<StationaryGrhData> frames, StringBuilder sb)
         {
             const string framePadding = "  ";
@@ -64,6 +80,12 @@ namespace NetGore.EditorTools
             }
         }
 
+        /// <summary>
+        /// Creates a new <see cref="GrhTreeViewNode"/>.
+        /// </summary>
+        /// <param name="grhTreeView">The <see cref="GrhTreeView"/> that will contain the node.</param>
+        /// <param name="grhData">The <see cref="GrhData"/> that the node will contain.</param>
+        /// <returns>The new <see cref="GrhTreeViewNode"/>.</returns>
         public static GrhTreeViewNode Create(GrhTreeView grhTreeView, GrhData grhData)
         {
             var existingNode = grhTreeView.FindGrhDataNode(grhData);
@@ -76,7 +98,12 @@ namespace NetGore.EditorTools
             return new GrhTreeViewNode(grhTreeView, grhData);
         }
 
-        static string GetToolTipText(StationaryGrhData grhData)
+        /// <summary>
+        /// Gets the tool tip text for a <see cref="StationaryGrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
+        /// <returns>The tool tip text for a <see cref="StationaryGrhData"/>.</returns>
+        static string GetToolTipTextStationary(StationaryGrhData grhData)
         {
             // Stationary
             Rectangle sourceRect = grhData.SourceRect;
@@ -91,26 +118,17 @@ namespace NetGore.EditorTools
             return sb.ToString();
         }
 
-        static string GetToolTipText(AutomaticAnimatedGrhData grhData)
+        /// <summary>
+        /// Gets the tool tip text for any animated <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/>.</param>
+        /// <returns>The tool tip text for any animated <see cref="GrhData"/>.</returns>
+        static string GetToolTipTextAnimated(GrhData grhData)
         {
-            // Automatic Animated
-
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("*Automatic Animated GrhData*");
-            sb.AppendLine("Grh: " + grhData.GrhIndex);
-            AppendFramesToolTipText(grhData.Frames, sb);
-            sb.AppendLine();
-            sb.Append("Speed: " + (1f / grhData.Speed));
-
-            return sb.ToString();
-        }
-
-        static string GetToolTipText(AnimatedGrhData grhData)
-        {
-            // Animated
-
-            StringBuilder sb = new StringBuilder();
+            if (grhData is AutomaticAnimatedGrhData)
+                sb.AppendLine("*Automatic Animated GrhData*");
 
             sb.AppendLine("Grh: " + grhData.GrhIndex);
             AppendFramesToolTipText(grhData.Frames, sb);
@@ -131,11 +149,9 @@ namespace NetGore.EditorTools
             try
             {
                 if (GrhData is StationaryGrhData)
-                    ret = GetToolTipText((StationaryGrhData)GrhData);
-                else if (GrhData is AnimatedGrhData)
-                    ret = GetToolTipText((AnimatedGrhData)GrhData);
-                else if (GrhData is AutomaticAnimatedGrhData)
-                    ret = GetToolTipText((AutomaticAnimatedGrhData)GrhData);
+                    ret = GetToolTipTextStationary((StationaryGrhData)GrhData);
+                else
+                    ret = GetToolTipTextAnimated(GrhData);
             }
             catch (ContentLoadException)
             {
@@ -160,16 +176,29 @@ namespace NetGore.EditorTools
                 parent.RemoveIfEmpty();
         }
 
-        void SetIconImage(StationaryGrhData grhData)
+        /// <summary>
+        /// Sets the icon for a stationary <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
+        void SetIconImageStationary(StationaryGrhData grhData)
         {
             string imageKey = GrhImageList.GetImageKey(grhData);
             SetImageKeys(imageKey);
         }
 
-        void SetIconImage(AnimatedGrhData grhData)
+        /// <summary>
+        /// Sets the icon for an animated <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/>.</param>
+        void SetIconImageAnimated(GrhData grhData)
         {
+            // If we have already created the Grh for animations, we just need to make sure we have the
+            // correct GrhData set on it
             if (_animationGrh != null)
+            {
+                _animationGrh.SetGrh(grhData);
                 return;
+            }
 
             _animationGrh = new Grh(grhData, AnimType.Loop, Environment.TickCount);
 
@@ -183,36 +212,22 @@ namespace NetGore.EditorTools
             SetImageKeys(imageKey);
         }
 
-        void SetIconImage(AutomaticAnimatedGrhData grhData)
-        {
-            if (_animationGrh != null)
-                return;
-
-            _animationGrh = new Grh(grhData, AnimType.Loop, Environment.TickCount);
-
-            string imageKey;
-            var frame = grhData.GetFrame(0);
-            if (frame != null)
-                imageKey = GrhImageList.GetImageKey(frame);
-            else
-                imageKey = null;
-
-            SetImageKeys(imageKey);
-        }
-
+        /// <summary>
+        /// Sets the icon for the node.
+        /// </summary>
         void SetIconImage()
         {
             // Set the preview picture
             if (GrhData is StationaryGrhData)
-                SetIconImage((StationaryGrhData)GrhData);
-            else if (GrhData is AnimatedGrhData)
-                SetIconImage((AnimatedGrhData)GrhData);
-            else if (GrhData is AutomaticAnimatedGrhData)
-                SetIconImage((AutomaticAnimatedGrhData)GrhData);
+                SetIconImageStationary((StationaryGrhData)GrhData);
             else
-                throw new UnsupportedGrhDataTypeException(GrhData);
+                SetIconImageAnimated(GrhData);
         }
 
+        /// <summary>
+        /// Sets all of the image keys to the given <paramref name="imageKey"/>.
+        /// </summary>
+        /// <param name="imageKey">The image key to use.</param>
         void SetImageKeys(string imageKey)
         {
             if (ImageKey == imageKey)
@@ -269,7 +284,7 @@ namespace NetGore.EditorTools
             SetIconImage();
         }
 
-        public void UpdateIconImage()
+        internal void UpdateIconImage()
         {
             if (!NeedsToUpdateImage)
                 return;

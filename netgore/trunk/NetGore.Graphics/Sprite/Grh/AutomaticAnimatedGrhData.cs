@@ -3,29 +3,54 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
 namespace NetGore.Graphics
 {
+    /// <summary>
+    /// A <see cref="GrhData"/> that is animated, and the frames are automatically created at run-time from the appropriate
+    /// directory based off of the <see cref="AutomaticAnimatedGrhData"/>'s categorization.
+    /// </summary>
     public sealed class AutomaticAnimatedGrhData : GrhData
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The delimiter used on the directory names for the <see cref="AutomaticAnimatedGrhData"/>.
         /// </summary>
         public const string DirectoryNameDelimiter = "_";
 
-        static readonly Regex _automaticAnimationRegex = new Regex(".+_(?<Title>.+)_frames_(?<Speed>\\d+)",
-                                                                   RegexOptions.Compiled | RegexOptions.IgnoreCase |
-                                                                   RegexOptions.ExplicitCapture);
+        /// <summary>
+        /// The Regex used to match folders used for <see cref="AutomaticAnimatedGrhData"/>s.
+        /// </summary>
+        static readonly Regex _aaFolderRegex;
 
         readonly ContentManager _cm;
         readonly StationaryGrhData[] _frames;
         readonly Vector2 _size;
         readonly float _speed;
 
+        /// <summary>
+        /// Initializes the <see cref="AutomaticAnimatedGrhData"/> class.
+        /// </summary>
+        static AutomaticAnimatedGrhData()
+        {
+            // Build the folder-matching Regex
+            string regexStr = string.Format("{0}(?<Title>.+){0}frames{0}(?<Speed>\\d+)", DirectoryNameDelimiter);
+            _aaFolderRegex = new Regex(regexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutomaticAnimatedGrhData"/> class.
+        /// </summary>
+        /// <param name="cm">The <see cref="ContentManager"/> used for creating the frames.</param>
+        /// <param name="grhIndex">The unique <see cref="GrhIndex"/>.</param>
+        /// <param name="cat">The categorization.</param>
         internal AutomaticAnimatedGrhData(ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             var framesDir = GetFramesDirectory();
@@ -42,23 +67,30 @@ namespace NetGore.Graphics
             _size = GetMaxSize(_frames);
         }
 
+        /// <summary>
+        /// Gets the <see cref="ContentManager"/> used by the <see cref="AutomaticAnimatedGrhData"/>.
+        /// </summary>
         public ContentManager ContentManager
         {
             get { return _cm; }
         }
 
         /// <summary>
-        /// Gets the frames in the <see cref="AutomaticAnimatedGrhData"/>.
+        /// When overridden in the derived class, gets the frames in an animated <see cref="GrhData"/>, or an
+        /// IEnumerable containing a reference to its self if stationary.
         /// </summary>
-        public IEnumerable<StationaryGrhData> Frames
+        /// <value></value>
+        public override IEnumerable<StationaryGrhData> Frames
         {
             get { return _frames; }
         }
 
         /// <summary>
-        /// Gets the number of frames in this <see cref="AutomaticAnimatedGrhData"/>.
+        /// When overridden in the derived class, gets the number of frames in this <see cref="GrhData"/>. If this
+        /// is not an animated <see cref="GrhData"/>, this value will always return 0.
         /// </summary>
-        public int FramesCount
+        /// <value></value>
+        public override int FramesCount
         {
             get { return _frames.Length; }
         }
@@ -72,18 +104,28 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the speed multiplier of the Grh animation where each frame lasts 1f/Speed milliseconds.
+        /// When overridden in the derived class, gets the speed multiplier of the <see cref="GrhData"/> animation where each
+        /// frame lasts 1f/Speed milliseconds. For non-animated <see cref="GrhData"/>s, this value will always be 0.
         /// </summary>
-        public float Speed
+        public override float Speed
         {
             get { return _speed; }
         }
 
+        /// <summary>
+        /// Creates the <see cref="StationaryGrhData"/> frames for this <see cref="AutomaticAnimatedGrhData"/>.
+        /// </summary>
+        /// <param name="directory">The directory containing the frames.</param>
+        /// <returns>An array of the <see cref="StationaryGrhData"/> frames.</returns>
         StationaryGrhData[] CreateFrames(string directory)
         {
+            // Find all the valid content files
             var allFiles = Directory.GetFiles(directory, "*." + ContentPaths.CompiledContentSuffix, SearchOption.TopDirectoryOnly);
+
+            // Filter out the files with invalid naming conventions, and sort them so we animate in the correct order
             var files = SortAndFilterFrameFiles(allFiles);
 
+            // Build the individual frames
             var frames = new StationaryGrhData[files.Length];
             for (int i = 0; i < frames.Length; i++)
             {
@@ -122,7 +164,7 @@ namespace NetGore.Graphics
             const int defaultSpeed = 400;
 
             // Get the regex match
-            Match match = _automaticAnimationRegex.Match(directory);
+            Match match = _aaFolderRegex.Match(directory);
             if (!match.Success)
                 return null;
 
@@ -137,11 +179,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="StationaryGrhData"/> for the given frame.
+        /// When overridden in the derived class, gets the frame in an animated <see cref="GrhData"/> with the
+        /// corresponding index, or null if the index is out of range. If stationary, this will always return
+        /// a reference to its self, no matter what the index is.
         /// </summary>
-        /// <param name="frameIndex">The index of the frame.</param>
-        /// <returns>The <see cref="StationaryGrhData"/> for the given frame, or null if invalid.</returns>
-        public StationaryGrhData GetFrame(int frameIndex)
+        /// <param name="frameIndex">The index of the frame to get.</param>
+        /// <returns>
+        /// The frame with the given <paramref name="frameIndex"/>, or null if the <paramref name="frameIndex"/>
+        /// is invalid, or a reference to its self if this is not an animated <see cref="GrhData"/>.
+        /// </returns>
+        public override StationaryGrhData GetFrame(int frameIndex)
         {
             if (frameIndex < 0 || frameIndex >= _frames.Length)
                 return null;
@@ -149,28 +196,43 @@ namespace NetGore.Graphics
             return _frames[frameIndex];
         }
 
+        /// <summary>
+        /// Gets the directory that contains the frames for this <see cref="AutomaticAnimatedGrhData"/>. The directory
+        /// is scanned for on-demand based off of the categorization.
+        /// </summary>
+        /// <returns>The directory that contains the frames for this <see cref="AutomaticAnimatedGrhData"/>, or null
+        /// if the directory could not be found.</returns>
         string GetFramesDirectory()
         {
             string category = Categorization.Category.ToString();
             string categoryAsFilePath = category.Replace(SpriteCategorization.Delimiter, Path.DirectorySeparatorChar.ToString());
             var rootDir = ContentPaths.Build.Grhs.Join(categoryAsFilePath);
 
-            var potentialDirs = Directory.GetDirectories(rootDir,
-                                                         string.Format("{0}{1}{0}frames{0}*", DirectoryNameDelimiter,
-                                                                       Categorization.Title));
+            // Create the filter that will be used to find the directory containing the frames
+            string dirNameFilter = string.Format("{0}{1}{0}frames{0}*", DirectoryNameDelimiter, Categorization.Title);
 
-            if (potentialDirs.Count() > 1)
+            // Try to find the directory
+            string[] potentialDirs;
+            try
             {
-                throw new GrhDataException(this,
-                                           "Multiple potential source directories found for the AutomatedGrhData. Make sure you don't have duplicate titles.");
+                potentialDirs = Directory.GetDirectories(rootDir, dirNameFilter);
             }
-            else if (potentialDirs.Count() == 0)
+            catch (DirectoryNotFoundException)
             {
-                GrhInfo.Delete(this);
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat("Could not find the directory for AutomaticAnimatedGrhData `{0}`.", this);
                 return null;
             }
 
-            return potentialDirs.First();
+            // Ensure we only have one valid directory
+            if (potentialDirs.Count() > 1)
+            {
+                const string errmsg =
+                    "Multiple potential source directories found for the AutomatedGrhData. Make sure you don't have duplicate titles.";
+                throw new GrhDataException(this, errmsg);
+            }
+
+            return potentialDirs.FirstOrDefault();
         }
 
         /// <summary>
@@ -180,7 +242,7 @@ namespace NetGore.Graphics
         /// <returns>If the given <paramref name="directory"/> is for an <see cref="AutomaticAnimatedGrhData"/>.</returns>
         public static bool IsAutomaticAnimatedGrhDataDirectory(string directory)
         {
-            return _automaticAnimationRegex.IsMatch(directory);
+            return _aaFolderRegex.IsMatch(directory);
         }
 
         /// <summary>
@@ -200,6 +262,11 @@ namespace NetGore.Graphics
             return new AutomaticAnimatedGrhData(cm, grhIndex, categorization);
         }
 
+        /// <summary>
+        /// Filters out the invalid frame files and sorts them by name.
+        /// </summary>
+        /// <param name="files">The paths to the files that are to be used as the frames.</param>
+        /// <returns>The files that have a valid name, ordered numerically by file name.</returns>
         static string[] SortAndFilterFrameFiles(IEnumerable<string> files)
         {
             List<KeyValuePair<int, string>> validFiles = new List<KeyValuePair<int, string>>(files.Count());
@@ -208,14 +275,18 @@ namespace NetGore.Graphics
             foreach (var file in files)
             {
                 string fileName = Path.GetFileNameWithoutExtension(file);
+
+                // If we can't parse it as an int, then we won't include it
                 int o;
-                if (!int.TryParse(fileName, out o))
+                if (!Parser.Invariant.TryParse(fileName, out o))
                     continue;
 
+                // Add the parsed value and the original name to the list of valid files to prevent having to re-parse
+                // the name as an int again
                 validFiles.Add(new KeyValuePair<int, string>(o, file));
             }
 
-            // Sort and return
+            // Sort by the parsed int and return the sorted file names
             return validFiles.OrderBy(x => x.Key).Select(x => x.Value).ToArray();
         }
 

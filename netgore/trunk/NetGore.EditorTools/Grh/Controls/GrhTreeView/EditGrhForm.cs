@@ -51,6 +51,8 @@ namespace NetGore.EditorTools
                 throw new ArgumentNullException("mapGrhWalls");
             if (createWall == null)
                 throw new ArgumentNullException("createWall");
+            if (gd is AutomaticAnimatedGrhData)
+                throw new ArgumentException("Cannot edit an AutomaticAnimatedGrhData.", "gd");
 
             WasCanceled = false;
 
@@ -219,7 +221,7 @@ namespace NetGore.EditorTools
                 }
 
                 float speed = Parser.Current.ParseFloat(txtSpeed.Text);
-                gdAnimated.Speed = speed;
+                gdAnimated.SetSpeed(speed);
             }
 
             // Set the MapGrhWalls
@@ -391,9 +393,7 @@ namespace NetGore.EditorTools
             if (_gd is StationaryGrhData)
                 ShowGrhInfoForStationary((StationaryGrhData)_gd);
             else if (_gd is AnimatedGrhData)
-                ShowGrhInfoForAnimated((AnimatedGrhData)_gd);
-            else if (_gd is AutomaticAnimatedGrhData)
-                ShowGrhInfoForAutomaticAnimated((AutomaticAnimatedGrhData)_gd);
+                ShowGrhInfoForAnimated(_gd);
             else
                 throw new UnsupportedGrhDataTypeException(_gd);
 
@@ -409,23 +409,7 @@ namespace NetGore.EditorTools
             }
         }
 
-        void ShowGrhInfoForAnimated(AnimatedGrhData grhData)
-        {
-            radioStationary.Checked = false;
-            radioAnimated.Checked = true;
-            txtFrames.Text = string.Empty;
-
-            for (int i = 0; i < grhData.FramesCount; i++)
-            {
-                var frame = grhData.GetFrame(i);
-                if (frame != null)
-                    txtFrames.Text += frame.GrhIndex + Environment.NewLine;
-            }
-
-            txtSpeed.Text = (1f / grhData.Speed).ToString();
-        }
-
-        void ShowGrhInfoForAutomaticAnimated(AutomaticAnimatedGrhData grhData)
+        void ShowGrhInfoForAnimated(GrhData grhData)
         {
             radioStationary.Checked = false;
             radioAnimated.Checked = true;
