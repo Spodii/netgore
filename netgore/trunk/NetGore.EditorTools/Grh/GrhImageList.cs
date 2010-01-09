@@ -306,7 +306,7 @@ namespace NetGore.EditorTools
 
                 MemoryStream ms = new MemoryStream(b);
                 Image img = Image.FromStream(ms);
-
+                
                 return new GrhImageListCacheItem(new GrhIndex(i), img, new Rectangle(x, y, w, h));
             }
 
