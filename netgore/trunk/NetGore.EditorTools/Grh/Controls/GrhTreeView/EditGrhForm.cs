@@ -381,6 +381,22 @@ namespace NetGore.EditorTools
             gbAnimated.Visible = false;
         }
 
+        void ShowGrhInfoForAutomaticAnimated(AutomaticAnimatedGrhData grhData)
+        {
+            radioStationary.Checked = false;
+            radioAnimated.Checked = true;
+            txtFrames.Text = string.Empty;
+
+            for (int i = 0; i < grhData.FramesCount; i++)
+            {
+                var frame = grhData.GetFrame(i);
+                if (frame != null)
+                    txtFrames.Text += frame.GrhIndex + Environment.NewLine;
+            }
+
+            txtSpeed.Text = (1f / grhData.Speed).ToString();
+        }
+
         void ShowGrhInfoForAnimated(AnimatedGrhData grhData)
         {
             radioStationary.Checked = false;
@@ -425,6 +441,10 @@ namespace NetGore.EditorTools
             else if (_gd is AnimatedGrhData)
             {
                 ShowGrhInfoForAnimated((AnimatedGrhData)_gd);
+            }
+            else if (_gd is AutomaticAnimatedGrhData)
+            {
+                ShowGrhInfoForAutomaticAnimated((AutomaticAnimatedGrhData)_gd);
             }
             else
             {

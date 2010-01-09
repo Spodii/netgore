@@ -43,6 +43,7 @@ namespace NetGore.IO
             string dir = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
+
             _writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true });
 
             if (_writer == null)
