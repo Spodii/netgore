@@ -86,7 +86,7 @@ namespace NetGore.Graphics
         }
 
         internal StationaryGrhData(AutomaticAnimatedGrhData autoGrhData, TextureAssetName assetName)
-            : base(new GrhIndex(GrhIndex.MaxValue), autoGrhData.Categorization)
+            : base(AutomaticAnimatedGrhData.FrameGrhIndex, autoGrhData.Categorization)
         {
             _cm = autoGrhData.ContentManager;
             _textureName = assetName;

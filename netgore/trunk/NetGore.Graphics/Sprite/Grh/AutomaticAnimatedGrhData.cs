@@ -21,6 +21,13 @@ namespace NetGore.Graphics
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// The <see cref="GrhIndex"/> used by the frames for the <see cref="AutomaticAnimatedGrhData"/>. All frames
+        /// use the same single <see cref="GrhIndex"/> because they are generated on-the-fly and cannot be
+        /// acquired by index.
+        /// </summary>
+        public static readonly GrhIndex FrameGrhIndex = new GrhIndex(GrhIndex.MaxValue);
+
+        /// <summary>
         /// The delimiter used on the directory names for the <see cref="AutomaticAnimatedGrhData"/>.
         /// </summary>
         public const string DirectoryNameDelimiter = "_";
