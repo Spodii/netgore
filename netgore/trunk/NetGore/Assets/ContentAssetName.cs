@@ -20,61 +20,12 @@ namespace NetGore.IO
         readonly string _assetName;
 
         /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures
-        /// like a hash table. </returns>
-        public override int GetHashCode()
-        {
-            return StringComparer.OrdinalIgnoreCase.GetHashCode(Value);
-        }
-
-        /// <summary>
-        /// Checks if this object is equal to another object.
-        /// </summary>
-        /// <param name="obj">The other object.</param>
-        /// <returns>True if the two are equal; otherwise false.</returns>
-        public override bool Equals(object obj)
-        {
-            var casted = obj as ContentAssetName;
-            if (casted != null)
-                return Equals(casted);
-
-            return false;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ContentAssetName"/> class.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>
         public ContentAssetName(string assetName)
         {
             _assetName = Sanitize(assetName);
-        }
-
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="a">A.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ContentAssetName a, ContentAssetName b)
-        {
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
-                return ReferenceEquals(a, b);
-
-            return a.Equals(b);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="a">A.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ContentAssetName a, ContentAssetName b)
-        {
-            return !(a == b);
         }
 
         /// <summary>
@@ -95,6 +46,20 @@ namespace NetGore.IO
         {
             var filePath = ContentPaths.Build.Root.Join(GetFileName());
             return File.Exists(filePath);
+        }
+
+        /// <summary>
+        /// Checks if this object is equal to another object.
+        /// </summary>
+        /// <param name="obj">The other object.</param>
+        /// <returns>True if the two are equal; otherwise false.</returns>
+        public override bool Equals(object obj)
+        {
+            var casted = obj as ContentAssetName;
+            if (casted != null)
+                return Equals(casted);
+
+            return false;
         }
 
         /// <summary>
@@ -148,6 +113,16 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures
+        /// like a hash table. </returns>
+        public override int GetHashCode()
+        {
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(Value);
+        }
+
+        /// <summary>
         /// Sanitizes the asset name. This will fix aspects of the asset name that can be fixed without
         /// making too large of assumptions.
         /// </summary>
@@ -175,16 +150,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
+        /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(ContentAssetName other)
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString()
         {
-            return Value.Equals(other.Value, StringComparison.OrdinalIgnoreCase);
+            return _assetName;
         }
+
+        #region IComparable<ContentAssetName> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -198,13 +172,47 @@ namespace NetGore.IO
             return StringComparer.OrdinalIgnoreCase.Compare(Value, other.Value);
         }
 
+        #endregion
+
+        #region IEquatable<ContentAssetName> Members
+
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(ContentAssetName other)
         {
-            return _assetName;
+            return Value.Equals(other.Value, StringComparison.OrdinalIgnoreCase);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(ContentAssetName a, ContentAssetName b)
+        {
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+                return ReferenceEquals(a, b);
+
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(ContentAssetName a, ContentAssetName b)
+        {
+            return !(a == b);
         }
 
         /// <summary>

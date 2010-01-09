@@ -102,9 +102,7 @@ namespace NetGore.EditorTools
                     return sb.ToString();
                 }
                 else
-                {
                     throw new Exception("Unknown GrhData type...");
-                }
             }
             catch (ContentLoadException)
             {
@@ -150,9 +148,7 @@ namespace NetGore.EditorTools
                 }
             }
             else
-            {
                 throw new Exception("Unsupported GrhData type...");
-            }
         }
 
         void SetImageKeys(string imageKey)

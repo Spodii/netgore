@@ -20,6 +20,11 @@ namespace NetGore.Graphics
         readonly SpriteCategory _rootCategory;
 
         /// <summary>
+        /// The <see cref="Direction"/> the character was facing when the body modifier was set.
+        /// </summary>
+        Direction _bodyModifierDirection;
+
+        /// <summary>
         /// The current body. This joins with the root category to create the sprite category to grab the sprites from.
         /// </summary>
         string _bodyName = string.Empty;
@@ -121,11 +126,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// The <see cref="Direction"/> the character was facing when the body modifier was set.
-        /// </summary>
-        Direction _bodyModifierDirection;
-
-        /// <summary>
         /// Adds a sprite body modifier that alters some, but not all, of the body. <see cref="ICharacterSprite"/>s
         /// that do not support dynamic sprites treat this the same as <see cref="ICharacterSprite.SetBody"/>.
         /// </summary>
@@ -172,7 +172,7 @@ namespace NetGore.Graphics
                 if (_grh.AnimType == AnimType.None || _bodyModifierDirection != heading)
                     _currentBodyModifier = null;
             }
-            
+
             // If we are moving, the body modifier is not set, or the sprite is invalid, use the non-modifier set
             if (Character.Velocity != Vector2.Zero || _currentBodyModifier == null || _grh.GrhData == null)
             {

@@ -26,7 +26,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Object pool used to spawn <see cref="EmoticonDisplayInfo"/> instances.
         /// </summary>
-        readonly ObjectPool<EmoticonDisplayInfo> _objectPool = new ObjectPool<EmoticonDisplayInfo>(x => new EmoticonDisplayInfo(), false);
+        readonly ObjectPool<EmoticonDisplayInfo> _objectPool = new ObjectPool<EmoticonDisplayInfo>(
+            x => new EmoticonDisplayInfo(), false);
 
         /// <summary>
         /// Initializes the <see cref="EmoticonDisplayManager"/> class.
@@ -229,15 +230,15 @@ namespace DemoGame.Client
                 }
             }
 
+            #region IPoolable Members
+
             /// <summary>
             /// Gets or sets the index of the object in the pool. This value should never be used by anything
             /// other than the pool that owns this object.
             /// </summary>
-            int IPoolable.PoolIndex
-            {
-                get;
-                set;
-            }
+            int IPoolable.PoolIndex { get; set; }
+
+            #endregion
         }
     }
 }

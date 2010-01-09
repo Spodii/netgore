@@ -20,31 +20,6 @@ namespace NetGore.IO
         readonly SpriteTitle _title;
 
         /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="a">A.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(SpriteCategorization a, SpriteCategorization b)
-        {
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
-                return ReferenceEquals(a, b);
-
-            return a.Equals(b);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="a">A.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(SpriteCategorization a, SpriteCategorization b)
-        {
-            return !(a == b);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SpriteCategorization"/> class.
         /// </summary>
         /// <param name="category">The category.</param>
@@ -187,5 +162,30 @@ namespace NetGore.IO
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(SpriteCategorization a, SpriteCategorization b)
+        {
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+                return ReferenceEquals(a, b);
+
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(SpriteCategorization a, SpriteCategorization b)
+        {
+            return !(a == b);
+        }
     }
 }

@@ -156,7 +156,7 @@ namespace DemoGame.Client
             // Loop through each index
             foreach (GrhIndex index in grhIndexes)
             {
-                GrhData gd = GrhInfo.GetData(index) ;
+                GrhData gd = GrhInfo.GetData(index);
 
                 // Every frame of the GrhData gets added
                 // For animations, grab each frame

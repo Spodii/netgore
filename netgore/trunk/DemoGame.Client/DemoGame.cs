@@ -17,8 +17,8 @@ namespace DemoGame.Client
     {
         readonly GraphicsDeviceManager graphics;
         IEnumerable<TextureAtlas> _globalAtlases;
-        ClientSockets _sockets;
         ScreenManager _screenManager;
+        ClientSockets _sockets;
 
         /// <summary>
         /// Sets up all the primary components of the game

@@ -43,12 +43,12 @@ namespace DemoGame.Client
             bool collectGarbage = false;
 
             _pool.Perform(delegate(DamageText x)
-            {
-                x.Update(currentTime);
+                          {
+                              x.Update(currentTime);
 
-                if (x.Alpha < 20)
-                    collectGarbage = true;
-            });
+                              if (x.Alpha < 20)
+                                  collectGarbage = true;
+                          });
 
             if (collectGarbage)
                 _pool.FreeAll(x => x.Alpha < 20);

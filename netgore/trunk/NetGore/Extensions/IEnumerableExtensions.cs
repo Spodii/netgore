@@ -12,6 +12,11 @@ namespace NetGore
     public static class IEnumerableExtensions
     {
         /// <summary>
+        /// The default delimiter to use for Implode.
+        /// </summary>
+        const string _defaultImplodeDelimiter = ", ";
+
+        /// <summary>
         /// Checks if two IEnumerables contain the exact same elements. Order does not matter.
         /// </summary>
         /// <typeparam name="T">The Type of object.</typeparam>
@@ -98,11 +103,6 @@ namespace NetGore
         {
             return Implode(source, _defaultImplodeDelimiter);
         }
-
-        /// <summary>
-        /// The default delimiter to use for Implode.
-        /// </summary>
-        const string _defaultImplodeDelimiter = ", ";
 
         /// <summary>
         /// Combines all items in an IEnumerable together into a delimited string.

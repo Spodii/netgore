@@ -65,6 +65,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets the IEqualityComparer to use for collections created by this collection.
+        /// </summary>
+        /// <returns>The IEqualityComparer to use for collections created by this collection.</returns>
+        protected virtual IEqualityComparer<T> GetEqualityComparer()
+        {
+            return EqualityComparer<T>.Default;
+        }
+
+        /// <summary>
         /// Gets the specified message, parsed using the supplied parameters.
         /// </summary>
         /// <param name="id">ID of the message to get.</param>
@@ -189,15 +198,6 @@ namespace NetGore.IO
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Gets the IEqualityComparer to use for collections created by this collection.
-        /// </summary>
-        /// <returns>The IEqualityComparer to use for collections created by this collection.</returns>
-        protected virtual IEqualityComparer<T> GetEqualityComparer()
-        {
-            return EqualityComparer<T>.Default;
         }
 
         /// <summary>

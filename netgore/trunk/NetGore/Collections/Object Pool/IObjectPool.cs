@@ -21,6 +21,11 @@ namespace NetGore.Collections
         T Acquire();
 
         /// <summary>
+        /// Frees all live objects in the pool.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
         /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
         /// in any way, and be treated like it has been disposed. No exceptions will be thrown for trying to free
         /// an object that does not belong to this pool.
@@ -54,10 +59,5 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="action">The action to perform on all live objects in the object pool.</param>
         void Perform(Action<T> action);
-
-        /// <summary>
-        /// Frees all live objects in the pool.
-        /// </summary>
-        void Clear();
     }
 }
