@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 
 namespace NetGore.Collections
 {
@@ -27,9 +23,8 @@ namespace NetGore.Collections
         /// <param name="poolObject">The object the event is related to.</param>
         public delegate void ObjectPoolObjectHandler(T poolObject);
 
-        ObjectPoolObjectCreator _creator;
-
         readonly object _threadSync;
+        ObjectPoolObjectCreator _creator;
 
         int _liveObjects;
         T[] _poolObjects;
@@ -40,8 +35,7 @@ namespace NetGore.Collections
         /// <param name="creator">The delegate used to create new object instances.</param>
         /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
         /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
-        public ObjectPool(ObjectPoolObjectCreator creator, bool threadSafe)
-            : this(creator, null, null, threadSafe)
+        public ObjectPool(ObjectPoolObjectCreator creator, bool threadSafe) : this(creator, null, null, threadSafe)
         {
         }
 
@@ -174,29 +168,6 @@ namespace NetGore.Collections
             AssertValidPoolIndexForLiveObjects();
         }
 
-        /// <summary>
-        /// Swaps two objects in the object pool.
-        /// </summary>
-        /// <param name="aIndex">The index of the first object.</param>
-        /// <param name="bIndex">The index of the second object.</param>
-        void SwapPoolObjects(int aIndex, int bIndex)
-        {
-            // Grab the object references
-            var aObject = _poolObjects[aIndex];
-            var bObject = _poolObjects[bIndex];
-
-            // Swap the references in the array and update the indexes
-            _poolObjects[bIndex] = aObject;
-            aObject.PoolIndex = bIndex;
-
-            _poolObjects[aIndex] = bObject;
-            bObject.PoolIndex = aIndex;
-
-            Debug.Assert(_poolObjects[aIndex].PoolIndex == aIndex);
-            Debug.Assert(_poolObjects[bIndex].PoolIndex == bIndex);
-        }
-
-
         T InternalAcquire()
         {
             // Expand the pool if needed
@@ -213,54 +184,19 @@ namespace NetGore.Collections
             return ret;
         }
 
-        #region IObjectPool<T> Members
-
-        /// <summary>
-        /// Returns a free object instance from the pool.
-        /// </summary>
-        /// <returns>A free object instance from the pool.</returns>
-        public T Acquire()
+        void InternalClear()
         {
-            T ret;
-
-            // Use thread synchronization if needed
-            if (_threadSync != null)
+            // Call the deinitializer on all the live objects
+            if (Deinitializer != null)
             {
-                lock (_threadSync)
+                for (int i = 0; i < LiveObjects; i++)
                 {
-                    ret = InternalAcquire();
+                    Deinitializer(_poolObjects[i]);
                 }
             }
-            else
-            {
-                ret = InternalAcquire();
-            }
 
-            // Initialize
-            if (Initializer != null)
-                Initializer(ret);
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets the number of live objects in the pool.
-        /// </summary>
-        public int LiveObjects
-        {
-            get { return _liveObjects; }
-        }
-
-        /// <summary>
-        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
-        /// in any way, and be treated like it has been disposed. No exceptions will be thrown for trying to free
-        /// an object that does not belong to this pool.
-        /// </summary>
-        /// <param name="poolObject">The object to be freed.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
-        public void Free(T poolObject)
-        {
-            Free(poolObject, false);
+            // Decrease the live objects count to zero, marking all objects in the array as dead
+            _liveObjects = 0;
         }
 
         void InternalFree(T poolObject, bool throwArgumentException)
@@ -279,9 +215,7 @@ namespace NetGore.Collections
                     throw new ArgumentException(errmsg, "poolObject");
                 }
                 else
-                {
                     return;
-                }
             }
 
             Debug.Assert(_poolObjects[poolObject.PoolIndex] == poolObject);
@@ -296,35 +230,6 @@ namespace NetGore.Collections
             SwapPoolObjects(poolObject.PoolIndex, --_liveObjects);
 
             Debug.Assert(poolObject.PoolIndex >= LiveObjects);
-        }
-
-        /// <summary>
-        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
-        /// in any way, and be treated like it has been disposed.
-        /// </summary>
-        /// <param name="poolObject">The object to be freed.</param>
-        /// <param name="throwArgumentException">Whether or not an <see cref="ArgumentException"/> will be thrown for
-        /// objects that do not belong to this pool.</param>
-        /// <exception cref="ArgumentException"><paramref name="throwArgumentException"/> is tru and the 
-        /// <paramref name="poolObject"/> does not belong to this pool.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
-        public void Free(T poolObject, bool throwArgumentException)
-        {
-            if (poolObject == null)
-                throw new ArgumentNullException("poolObject");
-
-            // Use thread synchronization if needed
-            if (_threadSync != null)
-            {
-                lock (_threadSync)
-                {
-                    InternalFree(poolObject, throwArgumentException);
-                }
-            }
-            else
-            {
-                InternalFree(poolObject, throwArgumentException);
-            }
         }
 
         int InternalFreeAll(Func<T, bool> condition)
@@ -360,6 +265,111 @@ namespace NetGore.Collections
             return count;
         }
 
+        void InternalPerform(Action<T> action)
+        {
+            for (int i = 0; i < LiveObjects; i++)
+            {
+                action(_poolObjects[i]);
+            }
+        }
+
+        /// <summary>
+        /// Swaps two objects in the object pool.
+        /// </summary>
+        /// <param name="aIndex">The index of the first object.</param>
+        /// <param name="bIndex">The index of the second object.</param>
+        void SwapPoolObjects(int aIndex, int bIndex)
+        {
+            // Grab the object references
+            var aObject = _poolObjects[aIndex];
+            var bObject = _poolObjects[bIndex];
+
+            // Swap the references in the array and update the indexes
+            _poolObjects[bIndex] = aObject;
+            aObject.PoolIndex = bIndex;
+
+            _poolObjects[aIndex] = bObject;
+            bObject.PoolIndex = aIndex;
+
+            Debug.Assert(_poolObjects[aIndex].PoolIndex == aIndex);
+            Debug.Assert(_poolObjects[bIndex].PoolIndex == bIndex);
+        }
+
+        #region IObjectPool<T> Members
+
+        /// <summary>
+        /// Returns a free object instance from the pool.
+        /// </summary>
+        /// <returns>A free object instance from the pool.</returns>
+        public T Acquire()
+        {
+            T ret;
+
+            // Use thread synchronization if needed
+            if (_threadSync != null)
+            {
+                lock (_threadSync)
+                {
+                    ret = InternalAcquire();
+                }
+            }
+            else
+                ret = InternalAcquire();
+
+            // Initialize
+            if (Initializer != null)
+                Initializer(ret);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets the number of live objects in the pool.
+        /// </summary>
+        public int LiveObjects
+        {
+            get { return _liveObjects; }
+        }
+
+        /// <summary>
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed. No exceptions will be thrown for trying to free
+        /// an object that does not belong to this pool.
+        /// </summary>
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        public void Free(T poolObject)
+        {
+            Free(poolObject, false);
+        }
+
+        /// <summary>
+        /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
+        /// in any way, and be treated like it has been disposed.
+        /// </summary>
+        /// <param name="poolObject">The object to be freed.</param>
+        /// <param name="throwArgumentException">Whether or not an <see cref="ArgumentException"/> will be thrown for
+        /// objects that do not belong to this pool.</param>
+        /// <exception cref="ArgumentException"><paramref name="throwArgumentException"/> is tru and the 
+        /// <paramref name="poolObject"/> does not belong to this pool.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="poolObject"/> is null.</exception>
+        public void Free(T poolObject, bool throwArgumentException)
+        {
+            if (poolObject == null)
+                throw new ArgumentNullException("poolObject");
+
+            // Use thread synchronization if needed
+            if (_threadSync != null)
+            {
+                lock (_threadSync)
+                {
+                    InternalFree(poolObject, throwArgumentException);
+                }
+            }
+            else
+                InternalFree(poolObject, throwArgumentException);
+        }
+
         /// <summary>
         /// Frees all live objects in the pool that match the given <paramref name="condition"/>.
         /// </summary>
@@ -381,17 +391,9 @@ namespace NetGore.Collections
                 }
             }
             else
-            {
                 ret = InternalFreeAll(condition);
-            }
 
             return ret;
-        }
-
-        void InternalPerform(Action<T> action)
-        {
-            for (int i = 0; i < LiveObjects; i++)
-                action(_poolObjects[i]);
         }
 
         /// <summary>
@@ -409,24 +411,7 @@ namespace NetGore.Collections
                 }
             }
             else
-            {
                 InternalPerform(action);
-            }
-        }
-
-        void InternalClear()
-        {
-            // Call the deinitializer on all the live objects
-            if (Deinitializer != null)
-            {
-                for (int i = 0; i < LiveObjects; i++)
-                {
-                    Deinitializer(_poolObjects[i]);
-                }
-            }
-
-            // Decrease the live objects count to zero, marking all objects in the array as dead
-            _liveObjects = 0;
         }
 
         /// <summary>
@@ -443,9 +428,7 @@ namespace NetGore.Collections
                 }
             }
             else
-            {
                 InternalClear();
-            }
         }
 
         #endregion

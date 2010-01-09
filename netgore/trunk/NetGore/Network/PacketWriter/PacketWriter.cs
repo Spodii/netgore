@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Timers;
 using log4net;
 using NetGore.Collections;
 using NetGore.IO;
@@ -26,14 +24,23 @@ namespace NetGore.Network
         /// <summary>
         /// Initializes a new instance of the <see cref="PacketWriter"/> class.
         /// </summary>
-        internal PacketWriter(IObjectPool<PacketWriter> objectPool)
-            : base(BitStreamMode.Write, 128, false)
+        internal PacketWriter(IObjectPool<PacketWriter> objectPool) : base(BitStreamMode.Write, 128, false)
         {
             _objectPool = objectPool;
 
             ReadMode = BitStreamBufferMode.Static;
             WriteMode = BitStreamBufferMode.Dynamic;
         }
+
+        /// <summary>
+        /// When overridden in the derived class, performs disposing of the object.
+        /// </summary>
+        protected override void HandleDispose()
+        {
+            _objectPool.Free(this);
+        }
+
+        #region IDisposable Members
 
         /// <summary>
         /// Returns the PacketWriter back to the ObjectPool whence it came. After this is called, it is
@@ -45,22 +52,16 @@ namespace NetGore.Network
             HandleDispose();
         }
 
-        /// <summary>
-        /// When overridden in the derived class, performs disposing of the object.
-        /// </summary>
-        protected override void HandleDispose()
-        {
-            _objectPool.Free(this);
-        }
+        #endregion
+
+        #region IPoolable Members
 
         /// <summary>
         /// Gets or sets the index of the object in the pool. This value should never be used by anything
         /// other than the pool that owns this object.
         /// </summary>
-        int IPoolable.PoolIndex
-        {
-            get;
-            set;
-        }
+        int IPoolable.PoolIndex { get; set; }
+
+        #endregion
     }
 }

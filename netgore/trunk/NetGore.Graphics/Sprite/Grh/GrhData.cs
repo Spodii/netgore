@@ -84,6 +84,12 @@ namespace NetGore.Graphics
             return dc;
         }
 
+        protected internal static void ReadHeader(IValueReader r, out GrhIndex grhIndex, out SpriteCategorization cat)
+        {
+            grhIndex = r.ReadGrhIndex(_indexValueKey);
+            cat = r.ReadSpriteCategorization(_categorizationValueKey);
+        }
+
         /// <summary>
         /// Sets the categorization for the <see cref="GrhData"/>.
         /// </summary>
@@ -111,12 +117,6 @@ namespace NetGore.Graphics
         public override string ToString()
         {
             return string.Format("[{0}] {1}", GrhIndex, Categorization);
-        }
-
-        protected internal static void ReadHeader(IValueReader r, out GrhIndex grhIndex, out SpriteCategorization cat)
-        {
-            grhIndex = r.ReadGrhIndex(_indexValueKey);
-            cat = r.ReadSpriteCategorization(_categorizationValueKey);
         }
 
         /// <summary>
@@ -162,23 +162,6 @@ namespace NetGore.Graphics
         {
             _frames = new StationaryGrhData[0];
             _speed = 1f / 300f;
-        }
-
-
-        /// <summary>
-        /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
-        /// <returns>
-        /// The <see cref="GrhData"/> read from the <see cref="IValueReader"/>.
-        /// </returns>
-        public static AnimatedGrhData Read(IValueReader r)
-        {
-            GrhIndex grhIndex;
-            SpriteCategorization categorization;
-            ReadHeader(r, out grhIndex, out categorization);
-
-            return new AnimatedGrhData(r, grhIndex, categorization);
         }
 
         internal AnimatedGrhData(IValueReader r, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
@@ -267,6 +250,22 @@ namespace NetGore.Graphics
             return ret;
         }
 
+        /// <summary>
+        /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
+        /// <returns>
+        /// The <see cref="GrhData"/> read from the <see cref="IValueReader"/>.
+        /// </returns>
+        public static AnimatedGrhData Read(IValueReader r)
+        {
+            GrhIndex grhIndex;
+            SpriteCategorization categorization;
+            ReadHeader(r, out grhIndex, out categorization);
+
+            return new AnimatedGrhData(r, grhIndex, categorization);
+        }
+
         public void SetFrames(IEnumerable<GrhIndex> frameIndices)
         {
             SetFrames(CreateFrames(frameIndices.ToArray()));
@@ -308,25 +307,6 @@ namespace NetGore.Graphics
         Rectangle _sourceRect;
         Texture2D _texture;
         TextureAssetName _textureName;
-
-
-
-        /// <summary>
-        /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
-        /// <param name="cm">The <see cref="ContentManager"/> used to load content.</param>
-        /// <returns>
-        /// The <see cref="GrhData"/> read from the <see cref="IValueReader"/>.
-        /// </returns>
-        public static StationaryGrhData Read(IValueReader r, ContentManager cm)
-        {
-            GrhIndex grhIndex;
-            SpriteCategorization categorization;
-            ReadHeader(r, out grhIndex, out categorization);
-
-            return new StationaryGrhData(r,cm, grhIndex, categorization);
-        }
 
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s texture has changed.
@@ -537,6 +517,23 @@ namespace NetGore.Graphics
         public Rectangle GetOriginalSource()
         {
             return _sourceRect;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
+        /// <param name="cm">The <see cref="ContentManager"/> used to load content.</param>
+        /// <returns>
+        /// The <see cref="GrhData"/> read from the <see cref="IValueReader"/>.
+        /// </returns>
+        public static StationaryGrhData Read(IValueReader r, ContentManager cm)
+        {
+            GrhIndex grhIndex;
+            SpriteCategorization categorization;
+            ReadHeader(r, out grhIndex, out categorization);
+
+            return new StationaryGrhData(r, cm, grhIndex, categorization);
         }
 
         /// <summary>

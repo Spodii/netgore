@@ -9,6 +9,21 @@ namespace NetGore.Tests.Collections
     [TestFixture]
     public class ObjectPoolTests
     {
+        [Test]
+        public void ClearTest()
+        {
+            var pool = CreateTestPool();
+            for (int i = 0; i < 25; i++)
+            {
+                pool.Acquire();
+            }
+
+            Assert.AreEqual(25, pool.LiveObjects);
+
+            pool.Clear();
+            Assert.AreEqual(0, pool.LiveObjects);
+        }
+
         static ObjectPool<MyTestObj> CreateTestPool()
         {
             return new ObjectPool<MyTestObj>(x => new MyTestObj(), null, null, false);
@@ -55,41 +70,6 @@ namespace NetGore.Tests.Collections
         }
 
         [Test]
-        public void NullCreatorTest()
-        {
-            Assert.Throws<ArgumentNullException>(() => new ObjectPool<MyTestObj>(null, false));
-        }
-
-        [Test]
-        public void SimpleAllocationTest()
-        {
-            var pool = CreateTestPool();
-            Assert.AreEqual(0, pool.LiveObjects);
-
-            var obj = pool.Acquire();
-            Assert.AreEqual(1, pool.LiveObjects);
-
-            pool.Free(obj);
-            Assert.AreEqual(0, pool.LiveObjects);
-        }
-
-        [Test]
-        public void FreeNullParameterTest()
-        {
-            var pool = CreateTestPool();
-
-            Assert.Throws<ArgumentNullException>(() => pool.Free(null));
-        }
-
-        [Test]
-        public void FreeInvalidObjectTest()
-        {
-            var pool = CreateTestPool();
-
-            pool.Free(new MyTestObj());
-        }
-
-        [Test]
         public void FreeAllNullParameterTest()
         {
             var pool = CreateTestPool();
@@ -123,15 +103,37 @@ namespace NetGore.Tests.Collections
         }
 
         [Test]
-        public void ClearTest()
+        public void FreeInvalidObjectTest()
         {
             var pool = CreateTestPool();
-            for (int i = 0; i < 25; i++)
-                pool.Acquire();
 
-            Assert.AreEqual(25, pool.LiveObjects);
+            pool.Free(new MyTestObj());
+        }
 
-            pool.Clear();
+        [Test]
+        public void FreeNullParameterTest()
+        {
+            var pool = CreateTestPool();
+
+            Assert.Throws<ArgumentNullException>(() => pool.Free(null));
+        }
+
+        [Test]
+        public void NullCreatorTest()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ObjectPool<MyTestObj>(null, false));
+        }
+
+        [Test]
+        public void SimpleAllocationTest()
+        {
+            var pool = CreateTestPool();
+            Assert.AreEqual(0, pool.LiveObjects);
+
+            var obj = pool.Acquire();
+            Assert.AreEqual(1, pool.LiveObjects);
+
+            pool.Free(obj);
             Assert.AreEqual(0, pool.LiveObjects);
         }
 

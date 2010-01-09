@@ -109,14 +109,14 @@ namespace DemoGame.Client
             _velocity += _gravity * delta;
         }
 
+        #region IPoolable Members
+
         /// <summary>
         /// Gets or sets the index of the object in the pool. This value should never be used by anything
         /// other than the pool that owns this object.
         /// </summary>
-        int IPoolable.PoolIndex
-        {
-            get;
-            set;
-        }
+        int IPoolable.PoolIndex { get; set; }
+
+        #endregion
     }
 }

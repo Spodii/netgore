@@ -10,8 +10,8 @@ namespace NetGore.Db
     /// </summary>
     public abstract class DbConnectionPool : IObjectPool<PooledDbConnection>, IDisposable
     {
-        readonly ObjectPool<PooledDbConnection> _pool;
         readonly string _connectionString;
+        readonly ObjectPool<PooledDbConnection> _pool;
         bool _disposed;
 
         /// <summary>
@@ -22,14 +22,6 @@ namespace NetGore.Db
         {
             _connectionString = connectionString;
             _pool = new ObjectPool<PooledDbConnection>(CreateNewObj, x => x.Connection.Open(), x => x.Connection.Close(), true);
-        }
-
-        PooledDbConnection CreateNewObj(IObjectPool<PooledDbConnection> objectPool)
-        {
-            var ret = new PooledDbConnection(objectPool);
-            var conn = CreateConnection(ConnectionString);
-            ret.SetConnection(conn);
-            return ret;
         }
 
         /// <summary>
@@ -46,6 +38,14 @@ namespace NetGore.Db
         /// <param name="connectionString">ConnectionString to create the DbConnection with.</param>
         /// <returns>DbConnection to be used with this ObjectPool.</returns>
         protected abstract DbConnection CreateConnection(string connectionString);
+
+        PooledDbConnection CreateNewObj(IObjectPool<PooledDbConnection> objectPool)
+        {
+            var ret = new PooledDbConnection(objectPool);
+            var conn = CreateConnection(ConnectionString);
+            ret.SetConnection(conn);
+            return ret;
+        }
 
         /// <summary>
         /// When overridden in the derived class, creates and returns a DbParameter that is compatible with
@@ -69,6 +69,8 @@ namespace NetGore.Db
         }
 
         #endregion
+
+        #region IObjectPool<PooledDbConnection> Members
 
         /// <summary>
         /// Gets the number of live objects in the pool.
@@ -141,5 +143,7 @@ namespace NetGore.Db
         {
             _pool.Clear();
         }
+
+        #endregion
     }
 }

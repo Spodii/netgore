@@ -1,5 +1,6 @@
 using System.Linq;
 using NetGore.Collections;
+using NetGore.IO;
 
 namespace NetGore.Network
 {
@@ -11,7 +12,7 @@ namespace NetGore.Network
         /// <summary>
         /// Initializes a new instance of the <see cref="PacketWriterPool"/> class.
         /// </summary>
-        public PacketWriterPool() : base(x => new PacketWriter(x), x => x.Reset( NetGore.IO.BitStreamMode.Write), null, true)
+        public PacketWriterPool() : base(x => new PacketWriter(x), x => x.Reset(BitStreamMode.Write), null, true)
         {
         }
     }
