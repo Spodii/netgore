@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -21,8 +22,8 @@ namespace NetGore.EditorTools
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static readonly Dictionary<GrhIndex, GrhImageListCacheItem> _imageCache =
-            new Dictionary<GrhIndex, GrhImageListCacheItem>();
+        static readonly Dictionary<string, GrhImageListCacheItem> _imageCache =
+            new Dictionary<string, GrhImageListCacheItem>(StringComparer.OrdinalIgnoreCase);
 
         static readonly ImageList _imageList = new ImageList();
 
@@ -45,17 +46,21 @@ namespace NetGore.EditorTools
             var cacheItems = Load();
             foreach (GrhImageListCacheItem item in cacheItems)
             {
-                _imageCache.Add(item.GrhIndex, item);
+                _imageCache.Add(item.Key, item);
             }
+
+            // Get the existing GrhDatas before hooking to the events just in case hooking to the events results in
+            // GrhDatas being added... or something...
+            var existingGrhDatas = GrhInfo.GrhDatas.ToImmutable();
 
             // Listen for new GrhDatas being added/removed
             GrhInfo.OnAdd += GrhInfo_OnAdd;
             GrhInfo.OnRemove += GrhInfo_OnRemove;
 
             // Add the existing GrhDatas
-            foreach (var gd in GrhInfo.GrhDatas.OfType<StationaryGrhData>())
+            foreach (var gd in existingGrhDatas)
             {
-                AddImage(gd);
+                GrhInfo_OnAdd(gd);
             }
         }
 
@@ -131,7 +136,9 @@ namespace NetGore.EditorTools
                     log.ErrorFormat(errmsg, grhData);
             }
             else
+            {
                 ImageList.Images.Add(key, img);
+            }
         }
 
         /// <summary>
@@ -144,19 +151,28 @@ namespace NetGore.EditorTools
             if (grhData == null || grhData.TextureName == null)
                 return null;
 
+            // Check if the item is in the cache
             GrhImageListCacheItem cacheItem;
-            if (_imageCache.TryGetValue(grhData.GrhIndex, out cacheItem))
+            var key  =GetImageKey(grhData);
+            if (_imageCache.TryGetValue(key, out cacheItem))
             {
                 if (grhData.OriginalSourceRect == cacheItem.SourceRect)
+                {
+                    // Item was in the cache and fits the conditions, so use it
                     return cacheItem.Image;
+                }
+                else
+                {
+                    // Conditions didn't match the conditions of the cached copy, so remove it from the cache
+                    _imageCache.Remove(key);
+                }
             }
 
-            int destWidth = ImageList.ImageSize.Width;
-            int destHeight = ImageList.ImageSize.Height;
-
-            Rectangle sourceRect = grhData.SourceRect;
-            return ImageHelper.CreateFromTexture(grhData.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height,
-                                                 destWidth, destHeight);
+            // Item wasn't in the cache, so we have to create it
+            Rectangle src = grhData.SourceRect;
+            var dest = ImageList.ImageSize;
+            return ImageHelper.CreateFromTexture(grhData.Texture, src.X, src.Y, src.Width, src.Height,
+                                                 dest.Width, dest.Height);
         }
 
         /// <summary>
@@ -166,7 +182,20 @@ namespace NetGore.EditorTools
         /// <returns>The image key for the <paramref name="grhData"/>.</returns>
         public static string GetImageKey(StationaryGrhData grhData)
         {
-            return grhData.GrhIndex.ToString();
+            if (grhData.GrhIndex != AutomaticAnimatedGrhData.FrameGrhIndex)
+            {
+                // For normal GrhDatas, we return the unique GrhIndex
+                return grhData.GrhIndex.ToString();
+            }
+            else
+            {
+                // When we have a frame for an AutomaticAnimatedGrhData, we prefix a "_" and the use the texture name
+                string textureName = grhData.TextureName.ToString();
+                if (string.IsNullOrEmpty(textureName))
+                    return string.Empty;
+                else
+                    return "_" + textureName;
+            }
         }
 
         /// <summary>
@@ -175,10 +204,17 @@ namespace NetGore.EditorTools
         /// <param name="grhData">GrhData that was added.</param>
         static void GrhInfo_OnAdd(GrhData grhData)
         {
-            if (!(grhData is StationaryGrhData))
-                return;
-
-            AddImage((StationaryGrhData)grhData);
+            if (grhData is StationaryGrhData)
+            {
+                // For stationary GrhDatas, its easy enough - just add it
+                AddImage((StationaryGrhData)grhData);
+            }
+            else if (grhData is AutomaticAnimatedGrhData)
+            {
+                // For AutomaticAnimatedGrhDatas, we will want to loop through the frames to add them
+                foreach (var frame in grhData.Frames)
+                    AddImage(frame);
+            }
         }
 
         /// <summary>
@@ -187,11 +223,21 @@ namespace NetGore.EditorTools
         /// <param name="grhData">GrhData that was removed.</param>
         static void GrhInfo_OnRemove(GrhData grhData)
         {
-            if (!(grhData is StationaryGrhData))
-                return;
-
-            string key = GetImageKey((StationaryGrhData)grhData);
-            ImageList.Images.RemoveByKey(key);
+            if (grhData is StationaryGrhData)
+            {
+                // For stationary GrhDatas, just remove it
+                string key = GetImageKey((StationaryGrhData)grhData);
+                ImageList.Images.RemoveByKey(key);
+            }
+            else if (grhData is AutomaticAnimatedGrhData)
+            {
+                // For AutomaticAnimatedGrhDatas, we have to remove each frame
+                foreach (var frame in grhData.Frames)
+                {
+                    string key = GetImageKey(frame);
+                    ImageList.Images.RemoveByKey(key);
+                }
+            }
         }
 
         /// <summary>
@@ -232,7 +278,8 @@ namespace NetGore.EditorTools
             var grhDatas = GrhInfo.GrhDatas.OfType<StationaryGrhData>().ToArray();
             var validItems = new Stack<GrhImageListCacheItem>(grhDatas.Length);
 
-            foreach (var gd in grhDatas)
+            // Only save the unique GrhDatas that we have an image for
+            foreach (var gd in GrhInfo.GrhDatas.SelectMany(x => x.Frames).Distinct())
             {
                 string key = GetImageKey(gd);
                 Image image = ImageList.Images[key];
@@ -240,7 +287,7 @@ namespace NetGore.EditorTools
                 if (image == null)
                     continue;
 
-                GrhImageListCacheItem item = new GrhImageListCacheItem(gd.GrhIndex, image, gd.OriginalSourceRect);
+                GrhImageListCacheItem item = new GrhImageListCacheItem(key, image, gd.OriginalSourceRect);
                 validItems.Push(item);
             }
 
@@ -251,7 +298,7 @@ namespace NetGore.EditorTools
                     int count = validItems.Count;
                     w.Write(count);
 
-                    foreach (GrhImageListCacheItem item in validItems.OrderBy(x => x.GrhIndex))
+                    foreach (GrhImageListCacheItem item in validItems)
                     {
                         item.Write(w);
                     }
@@ -265,9 +312,9 @@ namespace NetGore.EditorTools
         class GrhImageListCacheItem
         {
             /// <summary>
-            /// The <see cref="GrhIndex"/> of the cached item.
+            /// The key of the cached item.
             /// </summary>
-            public readonly GrhIndex GrhIndex;
+            public readonly string Key;
 
             /// <summary>
             /// The <see cref="Image"/> for the <see cref="GrhData"/>.
@@ -282,12 +329,12 @@ namespace NetGore.EditorTools
             /// <summary>
             /// Initializes a new instance of the <see cref="GrhImageListCacheItem"/> struct.
             /// </summary>
-            /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
+            /// <param name="key">The key.</param>
             /// <param name="image">The image.</param>
             /// <param name="sourceRect">The source rect.</param>
-            public GrhImageListCacheItem(GrhIndex grhIndex, Image image, Rectangle sourceRect)
+            public GrhImageListCacheItem(string key, Image image, Rectangle sourceRect)
             {
-                GrhIndex = grhIndex;
+                Key = key;
                 Image = image;
                 SourceRect = sourceRect;
             }
@@ -298,16 +345,16 @@ namespace NetGore.EditorTools
                 int y = r.ReadInt32();
                 int w = r.ReadInt32();
                 int h = r.ReadInt32();
-                int i = r.ReadInt32();
+                string key = r.ReadString();
 
-                int l = r.ReadInt32();
-                var b = new byte[l];
-                r.Read(b, 0, l);
+                int len = r.ReadInt32();
+                var b = new byte[len];
+                r.Read(b, 0, len);
 
                 MemoryStream ms = new MemoryStream(b);
                 Image img = Image.FromStream(ms);
                 
-                return new GrhImageListCacheItem(new GrhIndex(i), img, new Rectangle(x, y, w, h));
+                return new GrhImageListCacheItem(key, img, new Rectangle(x, y, w, h));
             }
 
             public void Write(BinaryWriter w)
@@ -316,7 +363,7 @@ namespace NetGore.EditorTools
                 w.Write(SourceRect.Y);
                 w.Write(SourceRect.Width);
                 w.Write(SourceRect.Height);
-                w.Write((int)GrhIndex);
+                w.Write(Key);
 
                 byte[] asArray;
                 using (MemoryStream ms = new MemoryStream())
