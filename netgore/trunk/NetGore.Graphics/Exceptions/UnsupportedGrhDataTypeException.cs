@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Graphics
 {
@@ -14,8 +12,11 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="T:System.Exception"/> class with a specified error message.
         /// </summary>
         /// <param name="grhData">The <see cref="GrhData"/> related to the <see cref="Exception"/>.</param>
-        public UnsupportedGrhDataTypeException(GrhData grhData) : base(grhData, string.Format("GrhData `{0}` is of derived type `{1}`, which is not supported by this operation.",
-            grhData, grhData.GetType()))
+        public UnsupportedGrhDataTypeException(GrhData grhData)
+            : base(
+                grhData,
+                string.Format("GrhData `{0}` is of derived type `{1}`, which is not supported by this operation.", grhData,
+                              grhData.GetType()))
         {
         }
     }

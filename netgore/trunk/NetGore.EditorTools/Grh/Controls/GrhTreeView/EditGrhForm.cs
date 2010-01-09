@@ -31,11 +31,10 @@ namespace NetGore.EditorTools
 
         readonly CreateWallEntityHandler _createWall;
 
-        GrhData _gd;
-
         readonly Grh _grh;
         readonly MapGrhWalls _mapGrhWalls;
         readonly Stopwatch _stopwatch;
+        GrhData _gd;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditGrhForm"/> class.
@@ -361,7 +360,8 @@ namespace NetGore.EditorTools
 
             if (!(_gd is StationaryGrhData))
             {
-                const string msg = "Are you sure you wish to convert this GrhData to stationary? Most GrhData values will be lost.";
+                const string msg =
+                    "Are you sure you wish to convert this GrhData to stationary? Most GrhData values will be lost.";
                 const string cap = "Convert to stationary?";
                 if (MessageBox.Show(msg, cap, MessageBoxButtons.YesNo) == DialogResult.No)
                     return;
@@ -381,7 +381,35 @@ namespace NetGore.EditorTools
             gbAnimated.Visible = false;
         }
 
-        void ShowGrhInfoForAutomaticAnimated(AutomaticAnimatedGrhData grhData)
+        void ShowGrhInfo()
+        {
+            txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);
+            txtTitle.Text = _gd.Categorization.Title.ToString();
+            txtIndex.Text = _gd.GrhIndex.ToString();
+
+            // Show the type-specific info
+            if (_gd is StationaryGrhData)
+                ShowGrhInfoForStationary((StationaryGrhData)_gd);
+            else if (_gd is AnimatedGrhData)
+                ShowGrhInfoForAnimated((AnimatedGrhData)_gd);
+            else if (_gd is AutomaticAnimatedGrhData)
+                ShowGrhInfoForAutomaticAnimated((AutomaticAnimatedGrhData)_gd);
+            else
+                throw new UnsupportedGrhDataTypeException(_gd);
+
+            // Bound walls
+            lstWalls.Items.Clear();
+            var walls = _mapGrhWalls[_gd];
+            if (walls != null)
+            {
+                foreach (WallEntityBase wall in walls)
+                {
+                    lstWalls.AddItemAndReselect(wall);
+                }
+            }
+        }
+
+        void ShowGrhInfoForAnimated(AnimatedGrhData grhData)
         {
             radioStationary.Checked = false;
             radioAnimated.Checked = true;
@@ -397,7 +425,7 @@ namespace NetGore.EditorTools
             txtSpeed.Text = (1f / grhData.Speed).ToString();
         }
 
-        void ShowGrhInfoForAnimated(AnimatedGrhData grhData)
+        void ShowGrhInfoForAutomaticAnimated(AutomaticAnimatedGrhData grhData)
         {
             radioStationary.Checked = false;
             radioAnimated.Checked = true;
@@ -425,42 +453,6 @@ namespace NetGore.EditorTools
             txtW.Text = r.Width.ToString();
             txtH.Text = r.Height.ToString();
             txtTexture.ChangeTextToDefault(grhData.TextureName.ToString(), true);
-        }
-
-        void ShowGrhInfo()
-        {
-            txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);
-            txtTitle.Text = _gd.Categorization.Title.ToString();
-            txtIndex.Text = _gd.GrhIndex.ToString();
-
-            // Show the type-specific info
-            if (_gd is StationaryGrhData)
-            {
-                ShowGrhInfoForStationary((StationaryGrhData)_gd);
-            }
-            else if (_gd is AnimatedGrhData)
-            {
-                ShowGrhInfoForAnimated((AnimatedGrhData)_gd);
-            }
-            else if (_gd is AutomaticAnimatedGrhData)
-            {
-                ShowGrhInfoForAutomaticAnimated((AutomaticAnimatedGrhData)_gd);
-            }
-            else
-            {
-                throw new UnsupportedGrhDataTypeException(_gd);
-            }
-
-            // Bound walls
-            lstWalls.Items.Clear();
-            var walls = _mapGrhWalls[_gd];
-            if (walls != null)
-            {
-                foreach (WallEntityBase wall in walls)
-                {
-                    lstWalls.AddItemAndReselect(wall);
-                }
-            }
         }
 
         void txtH_TextChanged(object sender, EventArgs e)

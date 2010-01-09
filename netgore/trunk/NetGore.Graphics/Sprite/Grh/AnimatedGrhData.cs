@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -49,19 +48,6 @@ namespace NetGore.Graphics
         public int FramesCount
         {
             get { return _frames.Length; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="StationaryGrhData"/> for the given frame.
-        /// </summary>
-        /// <param name="frameIndex">The index of the frame.</param>
-        /// <returns>The <see cref="StationaryGrhData"/> for the given frame, or null if invalid.</returns>
-        public StationaryGrhData GetFrame(int frameIndex)
-        {
-            if (frameIndex < 0 || frameIndex >= _frames.Length)
-                return null;
-
-            return _frames[frameIndex];
         }
 
         /// <summary>
@@ -119,6 +105,19 @@ namespace NetGore.Graphics
             var copy = new AnimatedGrhData(newGrhIndex, newCategorization) { _frames = copyArray, Speed = Speed };
 
             return copy;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="StationaryGrhData"/> for the given frame.
+        /// </summary>
+        /// <param name="frameIndex">The index of the frame.</param>
+        /// <returns>The <see cref="StationaryGrhData"/> for the given frame, or null if invalid.</returns>
+        public StationaryGrhData GetFrame(int frameIndex)
+        {
+            if (frameIndex < 0 || frameIndex >= _frames.Length)
+                return null;
+
+            return _frames[frameIndex];
         }
 
         /// <summary>

@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -346,8 +345,6 @@ namespace NetGore.Graphics
             return GrhData.Categorization + " [" + GrhData.GrhIndex + "]";
         }
 
-        #region ISprite Members
-
         /// <summary>
         /// Performs updating for when the <see cref="GrhData"/> is an <see cref="AnimatedGrhData"/>.
         /// </summary>
@@ -399,6 +396,8 @@ namespace NetGore.Graphics
             // Set the new frame
             _frame = tmpFrame;
         }
+
+        #region ISprite Members
 
         /// <summary>
         /// Updates the Grh if it is animated.

@@ -19,28 +19,6 @@ namespace NetGore.Graphics
         SpriteCategorization _categorization;
 
         /// <summary>
-        /// Gets the largest size of all the <see cref="GrhData"/>s.
-        /// </summary>
-        /// <param name="grhDatas">The <see cref="GrhData"/>s.</param>
-        /// <returns>The largest size of all the <see cref="GrhData"/>s.</returns>
-        protected static Vector2 GetMaxSize(IEnumerable<GrhData> grhDatas)
-        {
-            if (grhDatas == null || grhDatas.Count() == 0)
-                return Vector2.Zero;
-
-            Vector2 ret = Vector2.Zero;
-            foreach (var f in grhDatas)
-            {
-                if (f.Size.X > ret.X)
-                    ret.X = f.Size.X;
-                if (f.Size.Y > ret.Y)
-                    ret.Y = f.Size.Y;
-            }
-
-            return ret;
-        }
-
-        /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
         /// </summary>
         public event GrhDataChangeCategorizationHandler OnChangeCategorization;
@@ -104,6 +82,28 @@ namespace NetGore.Graphics
             GrhInfo.AddGrhData(dc);
 
             return dc;
+        }
+
+        /// <summary>
+        /// Gets the largest size of all the <see cref="GrhData"/>s.
+        /// </summary>
+        /// <param name="grhDatas">The <see cref="GrhData"/>s.</param>
+        /// <returns>The largest size of all the <see cref="GrhData"/>s.</returns>
+        protected static Vector2 GetMaxSize(IEnumerable<GrhData> grhDatas)
+        {
+            if (grhDatas == null || grhDatas.Count() == 0)
+                return Vector2.Zero;
+
+            Vector2 ret = Vector2.Zero;
+            foreach (var f in grhDatas)
+            {
+                if (f.Size.X > ret.X)
+                    ret.X = f.Size.X;
+                if (f.Size.Y > ret.Y)
+                    ret.Y = f.Size.Y;
+            }
+
+            return ret;
         }
 
         protected internal static void ReadHeader(IValueReader r, out GrhIndex grhIndex, out SpriteCategorization cat)

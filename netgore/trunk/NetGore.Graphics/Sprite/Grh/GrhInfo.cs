@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
@@ -170,6 +169,26 @@ namespace NetGore.Graphics
             AddToDictionary(gd);
         }
 
+        /// <summary>
+        /// Creates a new <see cref="AutomaticAnimatedGrhData"/>. This should only be called from the
+        /// AutomaticGrhDataUpdater.
+        /// </summary>
+        /// <param name="contentManager">The content manager.</param>
+        /// <param name="categorization">The categorization for the <see cref="AutomaticAnimatedGrhData"/>.</param>
+        /// <returns>The new <see cref="AutomaticAnimatedGrhData"/>, or null if none created.</returns>
+        public static AutomaticAnimatedGrhData CreateAutomaticAnimatedGrhData(ContentManager contentManager,
+                                                                              SpriteCategorization categorization)
+        {
+            // Check if the GrhData already exists
+            if (GetData(categorization) != null)
+                return null;
+
+            var index = NextFreeIndex();
+            var gd = new AutomaticAnimatedGrhData(contentManager, index, categorization);
+            AddGrhData(gd);
+            return gd;
+        }
+
         public static AnimatedGrhData CreateGrhData(GrhIndex[] frames, float speed, SpriteCategorization categorization)
         {
             GrhIndex grhIndex = NextFreeIndex();
@@ -183,25 +202,6 @@ namespace NetGore.Graphics
                                                       string texture, Vector2 pos, Vector2 size)
         {
             return CreateGrhData(NextFreeIndex(), contentManager, categorization, texture, pos, size);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="AutomaticAnimatedGrhData"/>. This should only be called from the
-        /// AutomaticGrhDataUpdater.
-        /// </summary>
-        /// <param name="contentManager">The content manager.</param>
-        /// <param name="categorization">The categorization for the <see cref="AutomaticAnimatedGrhData"/>.</param>
-        /// <returns>The new <see cref="AutomaticAnimatedGrhData"/>, or null if none created.</returns>
-        public static AutomaticAnimatedGrhData CreateAutomaticAnimatedGrhData(ContentManager contentManager, SpriteCategorization categorization)
-        {
-            // Check if the GrhData already exists
-            if (GetData(categorization) != null)
-                return null;
-
-            var index = NextFreeIndex();
-            var gd = new AutomaticAnimatedGrhData(contentManager, index, categorization);
-            AddGrhData(gd);
-            return gd;
         }
 
         public static StationaryGrhData CreateGrhData(ContentManager contentManager, SpriteCategory category)
@@ -269,6 +269,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets a <see cref="ContentManager"/>.
+        /// </summary>
+        /// <returns>A <see cref="ContentManager"/>.</returns>
+        static ContentManager GetContentManager()
+        {
+            return GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
+        }
+
+        /// <summary>
         /// Gets the <see cref="GrhData"/> by the given categorization information.
         /// </summary>
         /// <param name="category">Category of the <see cref="GrhData"/>.</param>
@@ -290,57 +299,6 @@ namespace NetGore.Graphics
                 return ret;
             else
                 return null;
-        }
-
-        /// <summary>
-        /// Replaces an existing GrhData with a new <see cref="StationaryGrhData"/>.
-        /// </summary>
-        /// <param name="grhIndex">The index of the <see cref="GrhData"/> to convert.</param>
-        /// <returns>The created <see cref="StationaryGrhData"/>, or null if the replacement failed.</returns>
-        public static StationaryGrhData ReplaceExistingWithStationary(GrhIndex grhIndex)
-        {
-            var gd = GetData(grhIndex);
-            if (gd == null)
-                return null;
-
-            if (gd is StationaryGrhData)
-                return (StationaryGrhData)gd;
-
-            var newGD = new StationaryGrhData(GetContentManager(), gd.GrhIndex, gd.Categorization);
-            Delete(gd);
-            AddGrhData(newGD);
-
-            return newGD;
-        }
-
-        /// <summary>
-        /// Replaces an existing GrhData with a new <see cref="AnimatedGrhData"/>.
-        /// </summary>
-        /// <param name="grhIndex">The index of the <see cref="GrhData"/> to convert.</param>
-        /// <returns>The created <see cref="AnimatedGrhData"/>, or null if the replacement failed.</returns>
-        public static AnimatedGrhData ReplaceExistingWithAnimated(GrhIndex grhIndex)
-        {
-            var gd = GetData(grhIndex);
-            if (gd == null)
-                return null;
-
-            if (gd is AnimatedGrhData)
-                return (AnimatedGrhData)gd;
-
-            var newGD = new AnimatedGrhData(gd.GrhIndex, gd.Categorization);
-            Delete(gd);
-            AddGrhData(newGD);
-
-            return newGD;
-        }
-
-        /// <summary>
-        /// Gets a <see cref="ContentManager"/>.
-        /// </summary>
-        /// <returns>A <see cref="ContentManager"/>.</returns>
-        static ContentManager GetContentManager()
-        {
-            return GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
         }
 
         /// <summary>
@@ -507,7 +465,8 @@ namespace NetGore.Graphics
                     _grhDatas[(int)gd.GrhIndex] = gd;
                 }
 
-                var autoAnimatedGrhDatas = reader.ReadManyNodes(_autoAnimatedGrhDatasNodeName, x => AutomaticAnimatedGrhData.Read(x, cm));
+                var autoAnimatedGrhDatas = reader.ReadManyNodes(_autoAnimatedGrhDatasNodeName,
+                                                                x => AutomaticAnimatedGrhData.Read(x, cm));
                 foreach (var gd in autoAnimatedGrhDatas)
                 {
                     _grhDatas[(int)gd.GrhIndex] = gd;
@@ -567,6 +526,48 @@ namespace NetGore.Graphics
 
             if (OnRemove != null)
                 OnRemove(e.Item);
+        }
+
+        /// <summary>
+        /// Replaces an existing GrhData with a new <see cref="AnimatedGrhData"/>.
+        /// </summary>
+        /// <param name="grhIndex">The index of the <see cref="GrhData"/> to convert.</param>
+        /// <returns>The created <see cref="AnimatedGrhData"/>, or null if the replacement failed.</returns>
+        public static AnimatedGrhData ReplaceExistingWithAnimated(GrhIndex grhIndex)
+        {
+            var gd = GetData(grhIndex);
+            if (gd == null)
+                return null;
+
+            if (gd is AnimatedGrhData)
+                return (AnimatedGrhData)gd;
+
+            var newGD = new AnimatedGrhData(gd.GrhIndex, gd.Categorization);
+            Delete(gd);
+            AddGrhData(newGD);
+
+            return newGD;
+        }
+
+        /// <summary>
+        /// Replaces an existing GrhData with a new <see cref="StationaryGrhData"/>.
+        /// </summary>
+        /// <param name="grhIndex">The index of the <see cref="GrhData"/> to convert.</param>
+        /// <returns>The created <see cref="StationaryGrhData"/>, or null if the replacement failed.</returns>
+        public static StationaryGrhData ReplaceExistingWithStationary(GrhIndex grhIndex)
+        {
+            var gd = GetData(grhIndex);
+            if (gd == null)
+                return null;
+
+            if (gd is StationaryGrhData)
+                return (StationaryGrhData)gd;
+
+            var newGD = new StationaryGrhData(GetContentManager(), gd.GrhIndex, gd.Categorization);
+            Delete(gd);
+            AddGrhData(newGD);
+
+            return newGD;
         }
 
         /// <summary>
