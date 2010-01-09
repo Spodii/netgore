@@ -183,6 +183,27 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the number of frames in this <see cref="AnimatedGrhData"/>.
+        /// </summary>
+        public int FramesCount
+        {
+            get { return _frames.Length; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="StationaryGrhData"/> for the given frame.
+        /// </summary>
+        /// <param name="frameIndex">The index of the frame.</param>
+        /// <returns>The <see cref="StationaryGrhData"/> for the given frame, or null if invalid.</returns>
+        public StationaryGrhData GetFrame(int frameIndex)
+        {
+            if (frameIndex < 0 || frameIndex >= _frames.Length)
+                return null;
+
+            return _frames[frameIndex];
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the size of the <see cref="GrhData"/>'s sprite in pixels.
         /// </summary>
         /// <value></value>

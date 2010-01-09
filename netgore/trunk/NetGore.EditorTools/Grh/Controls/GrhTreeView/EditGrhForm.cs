@@ -30,7 +30,9 @@ namespace NetGore.EditorTools
         readonly ICamera2D _camera;
 
         readonly CreateWallEntityHandler _createWall;
-        readonly GrhData _gd;
+
+        GrhData _gd;
+
         readonly Grh _grh;
         readonly MapGrhWalls _mapGrhWalls;
         readonly Stopwatch _stopwatch;
@@ -117,13 +119,11 @@ namespace NetGore.EditorTools
             if (!ValidateCategorization(true))
                 return;
 
-            GrhIndex[] frames = null;
-
             if (radioAnimated.Checked)
             {
                 // Generate the frames
                 var framesText = txtFrames.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                frames = new GrhIndex[framesText.Length];
+                var frames = new GrhIndex[framesText.Length];
                 for (int i = 0; i < framesText.Length; i++)
                 {
                     // First check if it was entered as by the index
@@ -177,13 +177,17 @@ namespace NetGore.EditorTools
             // Get the categorization
             var categorization = new SpriteCategorization(txtCategory.GetSanitizedText(), txtTitle.Text);
 
-            /*
-             // TODO: %% Add back...
             // Set the information
             if (radioStationary.Checked)
             {
+                if (gdStationary == null)
+                {
+                    MessageBox.Show("For some reason, could not cast the GrhData to StationaryGrhData...");
+                    return;
+                }
+
                 // Stationary
-                ContentManager cm = _gd.ContentManager;
+                ContentManager cm = gdStationary.ContentManager;
                 int x = Parser.Current.ParseInt(txtX.Text);
                 int y = Parser.Current.ParseInt(txtY.Text);
                 int w = Parser.Current.ParseInt(txtW.Text);
@@ -202,17 +206,22 @@ namespace NetGore.EditorTools
                     return;
                 }
 
-                _gd.ChangeTexture(textureName, new Rectangle(x, y, w, h));
+                gdStationary.ChangeTexture(textureName, new Rectangle(x, y, w, h));
                 _gd.SetCategorization(categorization);
-                _gd.AutomaticSize = autoSize;
+                gdStationary.AutomaticSize = autoSize;
             }
             else
             {
                 // Animated
+                if (gdAnimated == null)
+                {
+                    MessageBox.Show("For some reason, could not cast the GrhData to AnimatedGrhData...");
+                    return;
+                }
+
                 float speed = Parser.Current.ParseFloat(txtSpeed.Text);
-                _gd.Load(newIndex, frames, 1f / speed, categorization);
+                gdAnimated.Speed = speed;
             }
-            */
 
             // Set the MapGrhWalls
             var walls = new List<WallEntityBase>();
@@ -320,56 +329,106 @@ namespace NetGore.EditorTools
 
         void radioAnimated_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioAnimated.Checked)
+            if (!radioAnimated.Checked)
+                return;
+
+            if (!(_gd is AnimatedGrhData))
             {
-                radioStationary.Checked = false;
-                gbStationary.Visible = false;
-                gbAnimated.Visible = true;
+                const string msg = "Are you sure you wish to convert this GrhData to animated? Most GrhData values will be lost.";
+                const string cap = "Convert to animated?";
+                if (MessageBox.Show(msg, cap, MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+
+                var newGD = GrhInfo.ReplaceExistingWithAnimated(_gd.GrhIndex);
+                if (newGD == null)
+                {
+                    MessageBox.Show("Conversion to animated failed for some reason...");
+                    return;
+                }
+
+                _gd = newGD;
             }
+
+            radioStationary.Checked = false;
+            gbStationary.Visible = false;
+            gbAnimated.Visible = true;
         }
 
         void radioStationary_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioStationary.Checked)
+            if (!radioStationary.Checked)
+                return;
+
+            if (!(_gd is StationaryGrhData))
             {
-                radioAnimated.Checked = false;
-                gbStationary.Visible = true;
-                gbAnimated.Visible = false;
+                const string msg = "Are you sure you wish to convert this GrhData to stationary? Most GrhData values will be lost.";
+                const string cap = "Convert to stationary?";
+                if (MessageBox.Show(msg, cap, MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+
+                var newGD = GrhInfo.ReplaceExistingWithStationary(_gd.GrhIndex);
+                if (newGD == null)
+                {
+                    MessageBox.Show("Conversion to stationary failed for some reason...");
+                    return;
+                }
+
+                _gd = newGD;
             }
+
+            radioAnimated.Checked = false;
+            gbStationary.Visible = true;
+            gbAnimated.Visible = false;
+        }
+
+        void ShowGrhInfoForAnimated(AnimatedGrhData grhData)
+        {
+            radioStationary.Checked = false;
+            radioAnimated.Checked = true;
+            txtFrames.Text = string.Empty;
+
+            for (int i = 0; i < grhData.FramesCount; i++)
+            {
+                var frame = grhData.GetFrame(i);
+                if (frame != null)
+                    txtFrames.Text += frame.GrhIndex + Environment.NewLine;
+            }
+
+            txtSpeed.Text = (1f / grhData.Speed).ToString();
+        }
+
+        void ShowGrhInfoForStationary(StationaryGrhData grhData)
+        {
+            // Stationary
+            chkAutoSize.Checked = grhData.AutomaticSize;
+            radioStationary.Checked = true;
+            radioAnimated.Checked = false;
+            Rectangle r = grhData.GetOriginalSource();
+            txtX.Text = r.X.ToString();
+            txtY.Text = r.Y.ToString();
+            txtW.Text = r.Width.ToString();
+            txtH.Text = r.Height.ToString();
+            txtTexture.ChangeTextToDefault(grhData.TextureName.ToString(), true);
         }
 
         void ShowGrhInfo()
         {
-            /*
-             // TODO: %% Add back...
             txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);
             txtTitle.Text = _gd.Categorization.Title.ToString();
             txtIndex.Text = _gd.GrhIndex.ToString();
-            chkAutoSize.Checked = _gd.AutomaticSize;
 
-            if (_gd.Frames == null || _gd.Frames.Length == 1)
+            // Show the type-specific info
+            if (_gd is StationaryGrhData)
             {
-                // Stationary
-                radioStationary.Checked = true;
-                radioAnimated.Checked = false;
-                Rectangle r = _gd.GetOriginalSource();
-                txtX.Text = r.X.ToString();
-                txtY.Text = r.Y.ToString();
-                txtW.Text = r.Width.ToString();
-                txtH.Text = r.Height.ToString();
-                txtTexture.ChangeTextToDefault(_gd.TextureName.ToString(), true);
+                ShowGrhInfoForStationary((StationaryGrhData)_gd);
+            }
+            else if (_gd is AnimatedGrhData)
+            {
+                ShowGrhInfoForAnimated((AnimatedGrhData)_gd);
             }
             else
             {
-                // Animated
-                radioStationary.Checked = false;
-                radioAnimated.Checked = true;
-                txtFrames.Text = string.Empty;
-                for (int i = 0; i < _gd.Frames.Length; i++)
-                {
-                    txtFrames.Text += _gd.Frames[i].GrhIndex + Environment.NewLine;
-                }
-                txtSpeed.Text = (1f / _gd.Speed).ToString();
+                throw new UnsupportedGrhDataTypeException(_gd);
             }
 
             // Bound walls
@@ -382,24 +441,24 @@ namespace NetGore.EditorTools
                     lstWalls.AddItemAndReselect(wall);
                 }
             }
-            */
         }
 
         void txtH_TextChanged(object sender, EventArgs e)
         {
-            /*
-             // TODO: %% Add back...
+            var asStationary = _gd as StationaryGrhData;
+            if (asStationary == null)
+                return;
+
             uint o;
             if (Parser.Current.TryParse(txtH.Text, out o))
             {
-                if (o == _gd.GetOriginalSource().Height)
+                if (o == asStationary.GetOriginalSource().Height)
                     txtH.BackColor = EditorColors.Normal;
                 else
                     txtH.BackColor = EditorColors.Changed;
             }
             else
                 txtH.BackColor = EditorColors.Error;
-           */
         }
 
         void txtIndex_TextChanged(object sender, EventArgs e)
@@ -433,19 +492,20 @@ namespace NetGore.EditorTools
 
         void txtW_TextChanged(object sender, EventArgs e)
         {
-            /*
-             // TODO: %% Add back...
+            var asStationary = _gd as StationaryGrhData;
+            if (asStationary == null)
+                return;
+
             uint o;
             if (Parser.Current.TryParse(txtW.Text, out o))
             {
-                if (o == _gd.GetOriginalSource().Width)
+                if (o == asStationary.GetOriginalSource().Width)
                     txtW.BackColor = EditorColors.Normal;
                 else
                     txtW.BackColor = EditorColors.Changed;
             }
             else
                 txtW.BackColor = EditorColors.Error;
-             */
         }
 
         void txtWallH_TextChanged(object sender, EventArgs e)
@@ -518,36 +578,38 @@ namespace NetGore.EditorTools
 
         void txtX_TextChanged(object sender, EventArgs e)
         {
-            /*
-             // TODO: %% Add back...
+            var asStationary = _gd as StationaryGrhData;
+            if (asStationary == null)
+                return;
+
             uint o;
             if (Parser.Current.TryParse(txtX.Text, out o))
             {
-                if (o == _gd.GetOriginalSource().X)
+                if (o == asStationary.GetOriginalSource().X)
                     txtX.BackColor = EditorColors.Normal;
                 else
                     txtX.BackColor = EditorColors.Changed;
             }
             else
                 txtX.BackColor = EditorColors.Error;
-             */
         }
 
         void txtY_TextChanged(object sender, EventArgs e)
         {
-            /*
-             // TODO: %% Add back...
+            var asStationary = _gd as StationaryGrhData;
+            if (asStationary == null)
+                return;
+
             uint o;
             if (Parser.Current.TryParse(txtY.Text, out o))
             {
-                if (o == _gd.GetOriginalSource().Y)
+                if (o == asStationary.GetOriginalSource().Y)
                     txtY.BackColor = EditorColors.Normal;
                 else
                     txtY.BackColor = EditorColors.Changed;
             }
             else
                 txtY.BackColor = EditorColors.Error;
-             */
         }
 
         bool ValidateCategorization(bool showMessage)

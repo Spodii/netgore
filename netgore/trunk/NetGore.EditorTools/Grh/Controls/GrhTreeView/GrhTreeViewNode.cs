@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -46,69 +47,88 @@ namespace NetGore.EditorTools
             return new GrhTreeViewNode(grhTreeView, grhData);
         }
 
+        static string GetToolTipText(StationaryGrhData grhData)
+        {
+            // Stationary
+            Rectangle sourceRect = grhData.SourceRect;
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Grh: " + grhData.GrhIndex);
+            sb.AppendLine("Texture: " + grhData.TextureName);
+            sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
+            sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+
+            return sb.ToString();
+        }
+
+        static string GetToolTipText(AnimatedGrhData grhData)
+        {
+            // Animated
+            const string framePadding = "  ";
+            const string frameSeperator = ",";
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Grh: " + grhData.GrhIndex);
+            sb.AppendLine("Frames: " + grhData.FramesCount);
+
+            sb.Append(framePadding);
+            for (int i = 0; i < grhData.FramesCount; i++)
+            {
+                var frame = grhData.GetFrame(i);
+                if (frame == null)
+                    continue;
+
+                sb.Append(frame.GrhIndex);
+
+                if ((i + 1) % 6 == 0)
+                {
+                    // Add a break every 6 indices
+                    sb.AppendLine();
+                    sb.Append(framePadding);
+                }
+                else
+                {
+                    // Separate the frame indicies
+                    sb.Append(frameSeperator);
+                }
+            }
+
+            sb.AppendLine();
+            sb.Append("Speed: " + (1f / grhData.Speed));
+
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Creates the tooltip text to use for a <see cref="GrhData"/>.
         /// </summary>
         /// <returns>The tooltip text to use for a <see cref="GrhData"/>.</returns>
         string GetToolTipText()
         {
-            StringBuilder sb = new StringBuilder();
+            string ret = string.Empty;
 
             try
             {
-                var stationary = GrhData as StationaryGrhData;
-                var animated = GrhData as AnimatedGrhData;
-
-                if (stationary != null)
+                if (GrhData is StationaryGrhData)
                 {
-                    // Stationary
-                    Rectangle sourceRect = stationary.SourceRect;
-
-                    sb.AppendLine("Grh: " + GrhData.GrhIndex);
-                    sb.AppendLine("Texture: " + stationary.TextureName);
-                    sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
-                    sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+                    ret = GetToolTipText((StationaryGrhData)GrhData);
                 }
-                else if (animated != null)
+                else if (GrhData is AnimatedGrhData)
                 {
-                    // Animated
-                    const string framePadding = "  ";
-                    const string frameSeperator = ",";
-
-                    sb.AppendLine("Grh: " + GrhData.GrhIndex);
-                    sb.AppendLine("Frames: " + animated.Frames.Length);
-
-                    sb.Append(framePadding);
-                    for (int i = 0; i < animated.Frames.Length; i++)
-                    {
-                        sb.Append(animated.Frames[i].GrhIndex);
-
-                        if ((i + 1) % 6 == 0)
-                        {
-                            // Add a break every 6 indices
-                            sb.AppendLine();
-                            sb.Append(framePadding);
-                        }
-                        else
-                        {
-                            // Separate the frame indicies
-                            sb.Append(frameSeperator);
-                        }
-                    }
-
-                    sb.AppendLine();
-                    sb.Append("Speed: " + (1f / animated.Speed));
-
-                    return sb.ToString();
+                    ret = GetToolTipText((AnimatedGrhData)GrhData);
                 }
                 else
-                    throw new Exception("Unknown GrhData type...");
+                {
+                    throw new UnsupportedGrhDataTypeException(GrhData);
+                }
             }
             catch (ContentLoadException)
             {
             }
 
-            return sb.ToString();
+            return ret;
         }
 
         void InsertIntoTree(GrhTreeView treeView)
@@ -127,28 +147,48 @@ namespace NetGore.EditorTools
                 parent.RemoveIfEmpty();
         }
 
+        void SetIconImage(StationaryGrhData grhData)
+        {
+            string imageKey = GrhImageList.GetImageKey(grhData);
+            SetImageKeys(imageKey);
+        }
+
+        void SetIconImage(AnimatedGrhData grhData)
+        {
+            if (_animationGrh != null)
+                return;
+
+            _animationGrh = new Grh(grhData, AnimType.Loop, Environment.TickCount);
+
+            string imageKey;
+            var frame = grhData.GetFrame(0);
+            if (frame != null)
+            {
+                imageKey = GrhImageList.GetImageKey(frame);
+            }
+            else
+            {
+                imageKey = null;
+            }
+
+            SetImageKeys(imageKey);
+        }
+
         void SetIconImage()
         {
             // Set the preview picture
             if (GrhData is StationaryGrhData)
             {
-                // Static image
-                string imageKey = GrhImageList.GetImageKey(GrhData);
-                SetImageKeys(imageKey);
+                SetIconImage((StationaryGrhData)GrhData);
             }
             else if (GrhData is AnimatedGrhData)
             {
-                // Animation
-                var asAnimated = GrhData as AnimatedGrhData;
-                if (_animationGrh == null)
-                {
-                    _animationGrh = new Grh(GrhData, AnimType.Loop, Environment.TickCount);
-                    string imageKey = GrhImageList.GetImageKey(asAnimated.Frames[0]);
-                    SetImageKeys(imageKey);
-                }
+                SetIconImage((AnimatedGrhData)GrhData);
             }
             else
-                throw new Exception("Unsupported GrhData type...");
+            {
+                throw new UnsupportedGrhDataTypeException(GrhData);
+            }
         }
 
         void SetImageKeys(string imageKey)
@@ -213,7 +253,14 @@ namespace NetGore.EditorTools
                 return;
 
             // Store the GrhIndex of the animation before updating it to compare if there was a change
-            GrhIndex oldGrhIndex = _animationGrh.CurrentGrhData.GrhIndex;
+            var current = _animationGrh.CurrentGrhData;
+            if (current == null)
+            {
+                SetImageKeys(null);
+                return;
+            }
+
+            GrhIndex oldGrhIndex = current.GrhIndex;
 
             // Update the Grh
             _animationGrh.Update(Environment.TickCount);
@@ -222,7 +269,7 @@ namespace NetGore.EditorTools
             if (oldGrhIndex != _animationGrh.CurrentGrhData.GrhIndex)
             {
                 // Change the image
-                string imageKey = GrhImageList.GetImageKey(_animationGrh.CurrentGrhData);
+                string imageKey = GrhImageList.GetImageKey(current);
                 SetImageKeys(imageKey);
             }
         }
