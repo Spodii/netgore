@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -24,7 +25,7 @@ namespace NetGore.Graphics
             _speed = 1f / 300f;
         }
 
-        internal AnimatedGrhData(IValueReader r, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
+        AnimatedGrhData(IValueReader r, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             var speed = r.ReadInt(_speedValueKey);
             var frames = r.ReadMany(_framesNodeName, (xreader, xname) => xreader.ReadGrhIndex(xname));
@@ -73,7 +74,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the speed multiplier of the Grh animation where each frame lasts "Speed" milliseconds.
+        /// Gets or sets the speed multiplier of the Grh animation where each frame lasts 1f/Speed milliseconds.
         /// </summary>
         public float Speed
         {
@@ -99,6 +100,17 @@ namespace NetGore.Graphics
             return frames;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates a new <see cref="GrhData"/> equal to this <see cref="GrhData"/>
+        /// except for the specified parameters.
+        /// </summary>
+        /// <param name="newCategorization">The <see cref="SpriteCategorization"/> to give to the new
+        /// <see cref="GrhData"/>.</param>
+        /// <param name="newGrhIndex">The <see cref="GrhIndex"/> to give to the new
+        /// <see cref="GrhData"/>.</param>
+        /// <returns>
+        /// A deep copy of this <see cref="GrhData"/>.
+        /// </returns>
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
         {
             var copyArray = new StationaryGrhData[_frames.Length];
@@ -107,28 +119,6 @@ namespace NetGore.Graphics
             var copy = new AnimatedGrhData(newGrhIndex, newCategorization) { _frames = copyArray, Speed = Speed };
 
             return copy;
-        }
-
-        /// <summary>
-        /// Gets the largest size of all the <see cref="GrhData"/>s.
-        /// </summary>
-        /// <param name="grhDatas">The <see cref="GrhData"/>s.</param>
-        /// <returns>The largest size of all the <see cref="GrhData"/>s.</returns>
-        static Vector2 GetMaxSize(IEnumerable<GrhData> grhDatas)
-        {
-            if (grhDatas == null || grhDatas.Count() == 0)
-                return Vector2.Zero;
-
-            Vector2 ret = Vector2.Zero;
-            foreach (var f in grhDatas)
-            {
-                if (f.Size.X > ret.X)
-                    ret.X = f.Size.X;
-                if (f.Size.Y > ret.Y)
-                    ret.Y = f.Size.Y;
-            }
-
-            return ret;
         }
 
         /// <summary>

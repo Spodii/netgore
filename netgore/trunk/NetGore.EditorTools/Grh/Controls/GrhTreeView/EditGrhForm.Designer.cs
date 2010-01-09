@@ -74,7 +74,6 @@ namespace NetGore.EditorTools
             this.label4 = new System.Windows.Forms.Label();
             this.txtTexture = new NetGore.EditorTools.GrhDataTextureTextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.pgGrhData = new System.Windows.Forms.PropertyGrid();
             this.gbCategorization.SuspendLayout();
             this.gbAnimated.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -492,17 +491,9 @@ namespace NetGore.EditorTools
             this.label3.TabIndex = 5;
             this.label3.Text = "Texture:";
             // 
-            // pgGrhData
-            // 
-            this.pgGrhData.Location = new System.Drawing.Point(12, 339);
-            this.pgGrhData.Name = "pgGrhData";
-            this.pgGrhData.Size = new System.Drawing.Size(390, 302);
-            this.pgGrhData.TabIndex = 13;
-            // 
             // EditGrhForm
             // 
-            this.ClientSize = new System.Drawing.Size(414, 653);
-            this.Controls.Add(this.pgGrhData);
+            this.ClientSize = new System.Drawing.Size(414, 339);
             this.Controls.Add(this.gbStationary);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
@@ -574,7 +565,6 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.Label label4;
         private GrhDataTextureTextBox txtTexture;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.PropertyGrid pgGrhData;
 
     }
 }
