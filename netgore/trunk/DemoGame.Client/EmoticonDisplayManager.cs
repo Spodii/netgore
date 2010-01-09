@@ -217,16 +217,16 @@ namespace DemoGame.Client
                 _grh.Update(currentTime);
 
                 // Check if the emoticon is still alive
-                if (_grh.GrhData is AnimatedGrhData)
-                {
-                    // If animated, check if the animation is still going
-                    _isAlive = (_grh.AnimType == AnimType.LoopOnce);
-                }
-                else
+                if (_grh.GrhData.FramesCount <= 1)
                 {
                     // For stationary, check that the target amount of time has elapsed
                     if (currentTime > _initializeTime + _stationaryEmoticonLife)
                         _isAlive = false;
+                }
+                else
+                {
+                    // If animated, check if the animation is still going
+                    _isAlive = (_grh.AnimType == AnimType.LoopOnce);
                 }
             }
 

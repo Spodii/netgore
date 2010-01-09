@@ -151,38 +151,20 @@ namespace DemoGame.Client
                 return;
             }
 
-            var atlasItems = new List<ITextureAtlasable>();
-
-            // Loop through each index
-            foreach (GrhIndex index in grhIndexes)
-            {
-                GrhData gd = GrhInfo.GetData(index);
-
-                // Every frame of the GrhData gets added
-                // For animations, grab each frame
-                // For stationary, use the GrhData itself
-                if (gd is AnimatedGrhData)
-                {
-                    foreach (StationaryGrhData frame in ((AnimatedGrhData)gd).Frames)
-                    {
-                        if (!atlasItems.Contains(frame))
-                            atlasItems.Add(frame);
-                    }
-                }
-                else if (gd is StationaryGrhData)
-                {
-                    var frame = (StationaryGrhData)gd;
-                    if (!atlasItems.Contains(frame))
-                        atlasItems.Add(frame);
-                }
-            }
+            // First, grab the GrhData for each GrhIndex, making sure to skip null GrhDatas. Then,
+            // grab all the frames and add them. Stationary GrhDatas will end up adding their self, while
+            // animated ones will add all their frames, so this will end up adding them all no matter the type.
+            // Finally, use Distinct to ensure we have no duplicates.
+            var validGrhDatas = grhIndexes.Select(x => GrhInfo.GetData(x)).Where(x => x != null);
+            var atlasItems = validGrhDatas.SelectMany(x => x.Frames);
+            atlasItems = atlasItems.Distinct();
 
             // Dispose of the old atlas if needed
             if (_atlas != null && !_atlas.IsDisposed)
                 _atlas.Dispose();
 
             // Generate the atlas out of all the items
-            _atlas = new TextureAtlas(_graphics, atlasItems);
+            _atlas = new TextureAtlas(_graphics, atlasItems.Cast<ITextureAtlasable>());
         }
 
         /// <summary>

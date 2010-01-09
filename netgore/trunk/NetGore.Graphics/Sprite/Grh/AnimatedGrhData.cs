@@ -35,17 +35,20 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the frames in the <see cref="AnimatedGrhData"/>.
+        /// When overridden in the derived class, gets the frames in an animated <see cref="GrhData"/>, or an
+        /// IEnumerable containing a reference to its self if stationary.
         /// </summary>
-        public IEnumerable<StationaryGrhData> Frames
+        /// <value></value>
+        public override IEnumerable<StationaryGrhData> Frames
         {
             get { return _frames; }
         }
 
         /// <summary>
-        /// Gets the number of frames in this <see cref="AnimatedGrhData"/>.
+        /// When overridden in the derived class, gets the number of frames in this <see cref="GrhData"/>. If this
+        /// is not an animated <see cref="GrhData"/>, this value will always return 0.
         /// </summary>
-        public int FramesCount
+        public override int FramesCount
         {
             get { return _frames.Length; }
         }
@@ -62,10 +65,22 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the speed multiplier of the Grh animation where each frame lasts 1f/Speed milliseconds.
         /// </summary>
-        public float Speed
+        public override float Speed
         {
             get { return _speed; }
-            set { _speed = value; }
+        }
+        
+        /// <summary>
+        /// Sets the speed of the <see cref="AnimatedGrhData"/>.
+        /// </summary>
+        /// <param name="newSpeed">The new speed.</param>
+        public void SetSpeed(float newSpeed)
+        {
+            // Ensure we are using the right units
+            if (newSpeed > 1.0f)
+                newSpeed = 1f / newSpeed;
+
+            _speed = newSpeed;
         }
 
         StationaryGrhData[] CreateFrames(GrhIndex[] frameIndices)
@@ -102,17 +117,23 @@ namespace NetGore.Graphics
             var copyArray = new StationaryGrhData[_frames.Length];
             Array.Copy(_frames, copyArray, _frames.Length);
 
-            var copy = new AnimatedGrhData(newGrhIndex, newCategorization) { _frames = copyArray, Speed = Speed };
+            var copy = new AnimatedGrhData(newGrhIndex, newCategorization) { _frames = copyArray};
+            copy.SetSpeed(Speed);
 
             return copy;
         }
 
         /// <summary>
-        /// Gets the <see cref="StationaryGrhData"/> for the given frame.
+        /// When overridden in the derived class, gets the frame in an animated <see cref="GrhData"/> with the
+        /// corresponding index, or null if the index is out of range. If stationary, this will always return
+        /// a reference to its self, no matter what the index is.
         /// </summary>
-        /// <param name="frameIndex">The index of the frame.</param>
-        /// <returns>The <see cref="StationaryGrhData"/> for the given frame, or null if invalid.</returns>
-        public StationaryGrhData GetFrame(int frameIndex)
+        /// <param name="frameIndex">The index of the frame to get.</param>
+        /// <returns>
+        /// The frame with the given <paramref name="frameIndex"/>, or null if the <paramref name="frameIndex"/>
+        /// is invalid, or a reference to its self if this is not an animated <see cref="GrhData"/>.
+        /// </returns>
+        public override StationaryGrhData GetFrame(int frameIndex)
         {
             if (frameIndex < 0 || frameIndex >= _frames.Length)
                 return null;

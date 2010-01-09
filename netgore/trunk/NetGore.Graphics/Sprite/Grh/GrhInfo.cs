@@ -192,7 +192,8 @@ namespace NetGore.Graphics
         public static AnimatedGrhData CreateGrhData(GrhIndex[] frames, float speed, SpriteCategorization categorization)
         {
             GrhIndex grhIndex = NextFreeIndex();
-            var gd = new AnimatedGrhData(grhIndex, categorization) { Speed = speed };
+            var gd = new AnimatedGrhData(grhIndex, categorization);
+            gd.SetSpeed(speed);
             gd.SetFrames(frames);
             AddGrhData(gd);
             return gd;

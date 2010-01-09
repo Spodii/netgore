@@ -22,6 +22,50 @@ namespace NetGore.Graphics
         const string _textureNodeName = "Texture";
         const string _textureSourceValueKey = "Source";
 
+        /// <summary>
+        /// When overridden in the derived class, gets the speed multiplier of the <see cref="GrhData"/> animation where each
+        /// frame lasts 1f/Speed milliseconds. For non-animated <see cref="GrhData"/>s, this value will always be 0.
+        /// </summary>
+        public override float Speed
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the number of frames in this <see cref="GrhData"/>. If this
+        /// is not an animated <see cref="GrhData"/>, this value will always return 0.
+        /// </summary>
+        /// <value></value>
+        public override int FramesCount
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the frame in an animated <see cref="GrhData"/> with the
+        /// corresponding index, or null if the index is out of range. If stationary, this will always return
+        /// a reference to its self, no matter what the index is.
+        /// </summary>
+        /// <param name="frameIndex">The index of the frame to get.</param>
+        /// <returns>
+        /// The frame with the given <paramref name="frameIndex"/>, or null if the <paramref name="frameIndex"/>
+        /// is invalid, or a reference to its self if this is not an animated <see cref="GrhData"/>.
+        /// </returns>
+        public override StationaryGrhData GetFrame(int frameIndex)
+        {
+            return this;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the frames in an animated <see cref="GrhData"/>, or an
+        /// IEnumerable containing a reference to its self if stationary.
+        /// </summary>
+        /// <value></value>
+        public override System.Collections.Generic.IEnumerable<StationaryGrhData> Frames
+        {
+            get { return new StationaryGrhData[] { this }; }
+        }
+
         readonly ContentManager _cm;
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
