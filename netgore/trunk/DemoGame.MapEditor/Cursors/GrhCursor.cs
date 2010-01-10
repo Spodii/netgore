@@ -94,42 +94,43 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseDown(ScreenForm screen, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left)
             {
-                Vector2 cursorPos = screen.CursorPos;
-                MapGrh cursorGrh = screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+                _mouseDragStart = Vector2.Zero;
+                return;
+            }
 
-                if (cursorGrh != null)
-                {
-                    // Single selection
-                    _selectedEntityOffset = cursorPos - cursorGrh.Position;
-                    _selectedMapGrhs.Clear();
-                    _selectedMapGrhs.Add(cursorGrh);
-                }
-                else
-                {
-                    // Batch selection
-                    if (_mapGrhMoveBox != null)
-                    {
-                        Vector2 v = _mapGrhMoveBox.Position;
-                        Vector2 cp = cursorPos;
-                        float w = _mapGrhMoveBox.Area.Width;
-                        float h = _mapGrhMoveBox.Area.Height;
+            Vector2 cursorPos = screen.CursorPos;
+            MapGrh cursorGrh = screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
 
-                        if ((v.X <= cp.X) && (v.X + w >= cp.X) && (v.Y <= cp.Y) && (v.Y + h >= cp.Y))
-                        {
-                            screen.SelectedTransBox = _mapGrhMoveBox;
-                            return;
-                        }
-
-                        _mapGrhMoveBox = null;
-                        _selectedMapGrhs.Clear();
-                    }
-                    _mouseDragStart = screen.Camera.ToWorld(e.X, e.Y);
-                }
+            if (cursorGrh != null)
+            {
+                // Single selection
+                _selectedEntityOffset = cursorPos - cursorGrh.Position;
+                _selectedMapGrhs.Clear();
+                _selectedMapGrhs.Add(cursorGrh);
             }
             else
-                _mouseDragStart = Vector2.Zero;
+            {
+                // Batch selection
+                if (_mapGrhMoveBox != null)
+                {
+                    Vector2 v = _mapGrhMoveBox.Position;
+                    Vector2 cp = cursorPos;
+                    float w = _mapGrhMoveBox.Area.Width;
+                    float h = _mapGrhMoveBox.Area.Height;
+
+                    if ((v.X <= cp.X) && (v.X + w >= cp.X) && (v.Y <= cp.Y) && (v.Y + h >= cp.Y))
+                    {
+                        screen.SelectedTransBox = _mapGrhMoveBox;
+                        return;
+                    }
+
+                    _mapGrhMoveBox = null;
+                    _selectedMapGrhs.Clear();
+                }
+                _mouseDragStart = screen.Camera.ToWorld(e.X, e.Y);
+            }
         }
 
         /// <summary>
@@ -146,9 +147,10 @@ namespace DemoGame.MapEditor
                 // Move the selected single MapGrh
                 foreach (MapGrh mg in _selectedMapGrhs)
                 {
-                    mg.Position = cursorPos - _selectedEntityOffset;
+                    var pos = cursorPos - _selectedEntityOffset;
                     if (_mnuSnapToGrid.Checked)
-                        mg.Position = screen.Grid.AlignDown(mg.Position);
+                        pos = screen.Grid.AlignDown(pos);
+                    mg.Position = pos;
                 }
             }
             else if (e.Button == MouseButtons.Left && _mapGrhMoveBox != null)
