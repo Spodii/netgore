@@ -165,7 +165,12 @@ namespace DemoGame.MapEditor
             _grid = new ScreenGrid(_camera.Size);
 
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
-            _selectedObjectsManager.OnChangeSelected += (x => scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2);
+            _selectedObjectsManager.OnChangeSelected +=
+                (x => scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2);
+            _selectedObjectsManager.OnChangeFocused +=
+                ((x, y) =>
+                 scTabsAndSelected.Panel2Collapsed =
+                 (_selectedObjectsManager.SelectedObjects.Count() < 2 && _selectedObjectsManager.Focused == null));
 
             // Create and set up the cursor manager
             _cursorManager = new MapEditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
