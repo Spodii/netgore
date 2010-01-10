@@ -61,6 +61,7 @@ namespace DemoGame.MapEditor
 
         readonly ICamera2D _camera;
         readonly MapEditorCursorManager<ScreenForm> _cursorManager;
+        readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
         readonly ScreenGrid _grid;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
@@ -76,6 +77,8 @@ namespace DemoGame.MapEditor
         /// </summary>
         readonly Grh _selectedGrh = new Grh(null, AnimType.Loop, 0);
 
+        readonly SelectedObjectsManager<object> _selectedObjectsManager;
+
         readonly MapEditorSettings _settings;
 
         /// <summary>
@@ -89,9 +92,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
 
-        readonly SelectedObjectsManager<object> _selectedObjectsManager;
-
-        public SelectedObjectsManager<object> SelectedObjectsManager { get { return _selectedObjectsManager; } }
+        readonly ToolTip _toolTip = new ToolTip();
 
         /// <summary>
         /// List of all the active transformation boxes
@@ -153,10 +154,6 @@ namespace DemoGame.MapEditor
 
         public event MapChangeEventHandler OnChangeMap;
 
-        public ToolTip ToolTip { get { return _toolTip; } }
-
-        readonly ToolTip _toolTip = new ToolTip();
-
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             _switches = switches;
@@ -170,7 +167,7 @@ namespace DemoGame.MapEditor
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
 
             // Create and set up the cursor manager
-            _cursorManager = new MapEditorCursorManager<ScreenForm>(this,ToolTip, panToolBar, GameScreen,
+            _cursorManager = new MapEditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
                                                                     x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.OnChangeSelectedCursor += CursorManager_OnChangeSelectedCursor;
@@ -300,6 +297,11 @@ namespace DemoGame.MapEditor
             get { return _selectedGrh; }
         }
 
+        public SelectedObjectsManager<object> SelectedObjectsManager
+        {
+            get { return _selectedObjectsManager; }
+        }
+
         /// <summary>
         /// Gets or sets the selected transformation box
         /// </summary>
@@ -323,6 +325,11 @@ namespace DemoGame.MapEditor
         public SpriteFont SpriteFont
         {
             get { return _spriteFont; }
+        }
+
+        public ToolTip ToolTip
+        {
+            get { return _toolTip; }
         }
 
         /// <summary>
@@ -591,8 +598,6 @@ namespace DemoGame.MapEditor
             GameScreen.GraphicsDevice.Present();
         }
 
-        readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
-
         /// <summary>
         /// Finds which control has focus and no children controls
         /// </summary>
@@ -820,6 +825,10 @@ namespace DemoGame.MapEditor
             DbController.GetQuery<UpdateMapQuery>().Execute(map);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
