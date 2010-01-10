@@ -15,11 +15,49 @@ using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {
-    class WallCursor : MapEditorCursorBase<ScreenForm>
+    sealed class WallCursor : MapEditorCursorBase<ScreenForm>
     {
         readonly List<WallEntityBase> _selectedWalls = new List<WallEntityBase>();
         MouseButtons _mouseDragButton = MouseButtons.None;
         Vector2 _mouseDragStart = Vector2.Zero;
+
+        readonly ContextMenu _contextMenu;
+        readonly MenuItem _mnuSnapToGrid;
+        readonly MenuItem _mnuSnapToWalls;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WallCursor"/> class.
+        /// </summary>
+        public WallCursor()
+        {
+            _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
+            _mnuSnapToWalls = new MenuItem("Snap to walls", Menu_SnapToWalls_Click) { Checked = true };
+            _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid, _mnuSnapToWalls });
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
+
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
+        }
+
+        void Menu_SnapToWalls_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToWalls.Checked = !_mnuSnapToWalls.Checked;
+        }
 
         /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
@@ -184,11 +222,11 @@ namespace DemoGame.MapEditor
                     map.SafeTeleportEntity(selEntity, cursorPos + offset);
 
                     // Wall-to-wall snapping
-                    if (screen.chkSnapWallWall.Checked)
+                    if (_mnuSnapToWalls.Checked)
                         map.SafeTeleportEntity(selEntity, map.SnapToWalls(selEntity));
 
                     // Wall-to-grid snapping
-                    if (screen.chkSnapWallGrid.Checked)
+                    if (_mnuSnapToGrid.Checked)
                         screen.Grid.Align(selEntity);
                 }
             }
@@ -199,7 +237,7 @@ namespace DemoGame.MapEditor
                 {
                     float oldMaxY = selEntity.Max.Y;
                     map.SafeTeleportEntity(selEntity, new Vector2(selEntity.Position.X, cursorPos.Y));
-                    if (screen.chkSnapWallGrid.Checked)
+                    if (_mnuSnapToGrid.Checked)
                         screen.Grid.SnapToGridPosition(selEntity);
 
                     selEntity.Resize(new Vector2(selEntity.Size.X, oldMaxY - selEntity.Position.Y));
@@ -209,7 +247,7 @@ namespace DemoGame.MapEditor
                 {
                     float oldMaxX = selEntity.Max.X;
                     map.SafeTeleportEntity(selEntity, new Vector2(cursorPos.X, selEntity.Position.Y));
-                    if (screen.chkSnapWallGrid.Checked)
+                    if (_mnuSnapToGrid.Checked)
                         screen.Grid.SnapToGridPosition(selEntity);
                     selEntity.Resize(new Vector2(oldMaxX - selEntity.Position.X, selEntity.Size.Y));
                 }
@@ -217,14 +255,14 @@ namespace DemoGame.MapEditor
                 if (((screen.SelectedTransBox.TransType & TransBoxType.Bottom) > 0) && selEntity.Position.Y < cursorPos.Y)
                 {
                     selEntity.Resize(new Vector2(selEntity.Size.X, cursorPos.Y - selEntity.Position.Y));
-                    if (screen.chkSnapWallGrid.Checked)
+                    if (_mnuSnapToGrid.Checked)
                         screen.Grid.SnapToGridSize(selEntity);
                 }
 
                 if (((screen.SelectedTransBox.TransType & TransBoxType.Right) > 0) && selEntity.Position.X < cursorPos.X)
                 {
                     selEntity.Resize(new Vector2(cursorPos.X - selEntity.Position.X, selEntity.Size.Y));
-                    if (screen.chkSnapWallGrid.Checked)
+                    if (_mnuSnapToGrid.Checked)
                         screen.Grid.SnapToGridSize(selEntity);
                 }
             }

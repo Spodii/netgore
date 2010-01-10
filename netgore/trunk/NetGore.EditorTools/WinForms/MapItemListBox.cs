@@ -225,6 +225,9 @@ namespace NetGore.EditorTools
             var toAdd = allItems.Except(existingItems).ToImmutable();
             var toRemove = existingItems.Except(allItems).ToImmutable();
 
+            if (toAdd.Count() == 0 && toRemove.Count() == 0)
+                return;
+
             try
             {
                 BeginUpdate();

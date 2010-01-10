@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineSwitch.cs" />
+    <Compile Include="Cursors\AddEntityCursor.cs" />
     <Compile Include="Cursors\AddGrhCursor.cs" />
     <Compile Include="Cursors\AddWallCursor.cs" />
     <Compile Include="Cursors\EntityCursor.cs" />
@@ -79,16 +80,10 @@
     <Compile Include="Forms\Controls\ListBoxes\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\Controls\ListBoxes\EntityListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\Controls\ListBoxes\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Controls\ListBoxes\PersistentNPCListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\ListBoxes\WallListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\FocusedSpatialDrawer.cs" />

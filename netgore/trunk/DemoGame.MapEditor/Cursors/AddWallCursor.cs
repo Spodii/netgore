@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,6 +12,37 @@ namespace DemoGame.MapEditor
 {
     sealed class AddWallCursor : MapEditorCursorBase<ScreenForm>
     {
+        readonly ContextMenu _contextMenu;
+        readonly MenuItem _mnuSnapToGrid;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddWallCursor"/> class.
+        /// </summary>
+        public AddWallCursor()
+        {
+            _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
+            _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
+
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
+        }
+
         /// <summary>
         /// Gets the cursor's <see cref="Image"/>.
         /// </summary>
@@ -49,7 +81,7 @@ namespace DemoGame.MapEditor
             // Create the new wall
             WallEntity w = new WallEntity(screen.Camera.ToWorld(e.X, e.Y), Vector2.One);
             screen.Map.AddEntity(w);
-            if (screen.chkSnapWallGrid.Checked)
+            if (_mnuSnapToGrid.Checked)
                 screen.Grid.Align(w);
 
             // Create the transformation boxes for the wall and select the bottom/right one

@@ -181,11 +181,6 @@ namespace DemoGame.MapEditor
             OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DbController, newMap));
             OnChangeMap += SetMapGUITexts;
 
-            // Set up the EntityTypes
-            cmbEntityTypes.Items.Clear();
-            cmbEntityTypes.Items.AddRange(MapFileEntityAttribute.GetTypes().ToArray());
-            cmbEntityTypes.SelectedIndex = 0;
-
             // Read the settings
             _settings = new MapEditorSettings(this);
 
@@ -364,26 +359,6 @@ namespace DemoGame.MapEditor
         {
             BackgroundLayer bgLayer = new BackgroundLayer(Map, Map);
             Map.AddBackgroundImage(bgLayer);
-        }
-
-        void btnNewEntity_Click(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            // Get the selected type
-            Type selectedType = cmbEntityTypes.SelectedItem as Type;
-            if (selectedType == null)
-                return;
-
-            // Create the Entity
-            Entity entity = (Entity)Activator.CreateInstance(selectedType);
-            Map.AddEntity(entity);
-
-            // Move to the center of the screen
-            Vector2 size = new Vector2(64);
-            entity.Position = Camera.Min + (Camera.Size / 2) - (size / 2);
-            entity.Size = size;
         }
 
         void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
@@ -784,6 +759,7 @@ namespace DemoGame.MapEditor
             HookFormKeyEvents(this, kehDown, kehUp);
 
             // Read the first map
+            // ReSharper disable EmptyGeneralCatchClause
             try
             {
                 Map = new Map(new MapIndex(1), Camera, _world, GameScreen.GraphicsDevice);
@@ -792,6 +768,7 @@ namespace DemoGame.MapEditor
             {
                 // Doesn't matter if we fail to load the first map...
             }
+            // ReSharper restore EmptyGeneralCatchClause
 
             // Set up the MapItemListBoxes
             foreach (var lb in GetAllControls(this).OfType<IMapItemListBox>())
@@ -830,12 +807,6 @@ namespace DemoGame.MapEditor
         {
             if (lstBGItems.SelectedItem != null)
                 _selectedObjectsManager.SetSelected(lstBGItems.SelectedItem);
-        }
-
-        void lstEntities_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstEntities.SelectedItem != null)
-                _selectedObjectsManager.SetSelected(lstEntities.SelectedItem);
         }
 
         void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
@@ -1099,7 +1070,6 @@ namespace DemoGame.MapEditor
             const string _displayNodeName = "Display";
             const string _gridNodeName = "Grid";
             const string _rootNodeName = "MapEditorSettings";
-            const string _wallsNodeName = "Walls";
             readonly ScreenForm _screenForm;
 
             // ReSharper disable MemberCanBePrivate.Local
@@ -1123,10 +1093,6 @@ namespace DemoGame.MapEditor
 
                 XmlValueReader r = new XmlValueReader(FilePath, _rootNodeName);
 
-                IValueReader rWalls = r.ReadNode(_wallsNodeName);
-                _screenForm.chkSnapWallWall.Checked = rWalls.ReadBool("SnapWallsToWalls");
-                _screenForm.chkSnapWallGrid.Checked = rWalls.ReadBool("SnapWallsToGrid");
-
                 IValueReader rGrid = r.ReadNode(_gridNodeName);
                 _screenForm._grid.Width = rGrid.ReadFloat("Width");
                 _screenForm._grid.Height = rGrid.ReadFloat("Height");
@@ -1146,13 +1112,6 @@ namespace DemoGame.MapEditor
             {
                 using (XmlValueWriter w = new XmlValueWriter(FilePath, _rootNodeName))
                 {
-                    w.WriteStartNode(_wallsNodeName);
-                    {
-                        w.Write("SnapWallsToWalls", _screenForm.chkSnapWallWall.Checked);
-                        w.Write("SnapWallsToGrid", _screenForm.chkSnapWallGrid.Checked);
-                    }
-                    w.WriteEndNode(_wallsNodeName);
-
                     w.WriteStartNode(_gridNodeName);
                     {
                         w.Write("Width", _screenForm._grid.Width);
