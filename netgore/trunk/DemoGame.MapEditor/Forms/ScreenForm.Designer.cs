@@ -90,7 +90,7 @@ namespace DemoGame.MapEditor
             this.label4 = new System.Windows.Forms.Label();
             this.txtGridWidth = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.scSelectedItems = new System.Windows.Forms.SplitContainer();
             this.pgSelected = new System.Windows.Forms.PropertyGrid();
             this.lstSelected = new System.Windows.Forms.ListBox();
             this.btnOptimize = new System.Windows.Forms.Button();
@@ -139,9 +139,9 @@ namespace DemoGame.MapEditor
             this.tabPageSettings.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.splitContainer9.Panel1.SuspendLayout();
-            this.splitContainer9.Panel2.SuspendLayout();
-            this.splitContainer9.SuspendLayout();
+            this.scSelectedItems.Panel1.SuspendLayout();
+            this.scSelectedItems.Panel2.SuspendLayout();
+            this.scSelectedItems.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -247,7 +247,7 @@ namespace DemoGame.MapEditor
             // 
             // splitContainer4.Panel2
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.splitContainer9);
+            this.splitContainer4.Panel2.Controls.Add(this.scSelectedItems);
             this.splitContainer4.Size = new System.Drawing.Size(382, 601);
             this.splitContainer4.SplitterDistance = 328;
             this.splitContainer4.TabIndex = 0;
@@ -843,22 +843,22 @@ namespace DemoGame.MapEditor
             this.label3.TabIndex = 1;
             this.label3.Text = "Width:";
             // 
-            // splitContainer9
+            // scSelectedItems
             // 
-            this.splitContainer9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer9.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer9.Name = "splitContainer9";
+            this.scSelectedItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scSelectedItems.Location = new System.Drawing.Point(0, 0);
+            this.scSelectedItems.Name = "scSelectedItems";
             // 
-            // splitContainer9.Panel1
+            // scSelectedItems.Panel1
             // 
-            this.splitContainer9.Panel1.Controls.Add(this.pgSelected);
+            this.scSelectedItems.Panel1.Controls.Add(this.pgSelected);
             // 
-            // splitContainer9.Panel2
+            // scSelectedItems.Panel2
             // 
-            this.splitContainer9.Panel2.Controls.Add(this.lstSelected);
-            this.splitContainer9.Size = new System.Drawing.Size(380, 267);
-            this.splitContainer9.SplitterDistance = 207;
-            this.splitContainer9.TabIndex = 0;
+            this.scSelectedItems.Panel2.Controls.Add(this.lstSelected);
+            this.scSelectedItems.Size = new System.Drawing.Size(380, 267);
+            this.scSelectedItems.SplitterDistance = 207;
+            this.scSelectedItems.TabIndex = 0;
             // 
             // pgSelected
             // 
@@ -986,9 +986,9 @@ namespace DemoGame.MapEditor
             this.groupBox3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.splitContainer9.Panel1.ResumeLayout(false);
-            this.splitContainer9.Panel2.ResumeLayout(false);
-            this.splitContainer9.ResumeLayout(false);
+            this.scSelectedItems.Panel1.ResumeLayout(false);
+            this.scSelectedItems.Panel2.ResumeLayout(false);
+            this.scSelectedItems.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1036,7 +1036,7 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtGridWidth;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.SplitContainer splitContainer9;
+        private System.Windows.Forms.SplitContainer scSelectedItems;
         private System.Windows.Forms.PropertyGrid pgSelected;
         private System.Windows.Forms.ListBox lstSelected;
         public GrhTreeView treeGrhs;
