@@ -105,8 +105,8 @@ namespace NetGore
             int maxX = startIndex.X + length.X;
             int maxY = startIndex.Y + length.Y;
 
-            maxX = Math.Max(maxX, GridSize.X - 1);
-            maxY = Math.Max(maxY, GridSize.Y - 1);
+            maxX = Math.Min(maxX, GridSize.X - 1);
+            maxY = Math.Min(maxY, GridSize.Y - 1);
 
             for (int x = startIndex.X; x <= maxX; x++)
             {

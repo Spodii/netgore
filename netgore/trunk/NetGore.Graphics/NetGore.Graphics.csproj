@@ -135,9 +135,11 @@
     <Compile Include="GUI\Tooltip\TooltipArgs.cs" />
     <Compile Include="GUI\Tooltip\TooltipHandler.cs" />
     <Compile Include="IDrawable.cs" />
+    <Compile Include="Map\DrawableSorter.cs" />
     <Compile Include="Map\MapGrh.cs" />
     <Compile Include="Map\MapRenderLayer.cs" />
     <Compile Include="Map\MapRenderLayerChange.cs" />
+    <Compile Include="Map\MapRenderLayerHelper.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierFactory.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\EmitterCircularMovementModifier.cs" />

@@ -119,6 +119,8 @@ namespace DemoGame.Client
             _backgroundImages.Add(bgImage);
         }
 
+        readonly DrawableSorter _drawableSorter = new DrawableSorter();
+
         /// <summary>
         /// Adds a MapGrh to the map
         /// </summary>
@@ -195,16 +197,13 @@ namespace DemoGame.Client
             var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(camera));
             drawableInView = bgInView.Concat(drawableInView);
 
-            // Group the items to be drawn by their layer
-            var groupedDrawables = drawableInView.GroupBy(x => x.MapRenderLayer).OrderBy(x => x.Key);
-
-            // Loop through each layer and draw the item
-            foreach (var layer in groupedDrawables)
+            // Sort all the items, then start drawing them layer-by-layer, item-by-item
+            foreach (var layer in _drawableSorter.GetSorted(drawableInView))
             {
                 if (OnStartDrawLayer != null)
                     OnStartDrawLayer(this, layer.Key, sb, camera);
 
-                foreach (var drawable in layer.OrderByDescending(x => x.LayerDepth))
+                foreach (var drawable in layer.Value)
                 {
                     drawable.Draw(sb);
                 }

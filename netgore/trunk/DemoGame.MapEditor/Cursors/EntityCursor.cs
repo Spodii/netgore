@@ -15,6 +15,7 @@ namespace DemoGame.MapEditor
     {
         Entity _selectedEntity = null;
         Vector2 _selectionOffset;
+        object _toolTipObject = null;
 
         string _toolTip = string.Empty;
         Vector2 _toolTipPos;
@@ -117,20 +118,16 @@ namespace DemoGame.MapEditor
                 // Set the tooltip to the entity under the cursor
                 Entity hoverEntity = screen.Map.Spatial.GetEntity<Entity>(screen.CursorPos);
                 if (hoverEntity == null)
-                    _toolTip = string.Empty;
-                else
                 {
-                    // Set the tooltip text
-                    _toolTip = string.Format("{0}\n{1}", hoverEntity.GetType(), hoverEntity);
-
-                    // Default text to the top-right corner of the entity
+                    _toolTip = string.Empty;
+                    _toolTipObject = null;
+                }
+                else if (_toolTipObject != hoverEntity)
+                {
+                    _toolTipObject = hoverEntity;
+                    _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X, hoverEntity.Size.Y);
                     _toolTipPos = new Vector2(hoverEntity.Max.X, hoverEntity.Position.Y);
-
-                    // Move slightly to the center
-                    _toolTipPos.X -= 5;
-
-                    // Move up to fit all the added lines
-                    _toolTipPos.Y -= screen.SpriteFont.LineSpacing * _toolTip.Split('\n').Length;
+                    _toolTipPos -= new Vector2(5, screen.SpriteFont.LineSpacing * _toolTip.Split('\n').Length);
                 }
             }
         }

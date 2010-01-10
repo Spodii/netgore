@@ -312,7 +312,7 @@ namespace DemoGame
         protected virtual ISpatialCollection CreateSpatialCollection(ClassTypeTree classTypeTree)
         {
             if (classTypeTree.Type == typeof(WallEntityBase))
-                return new StaticGridSpatialCollection();
+                return new DynamicGridSpatialCollection();
             else
                 return new DynamicGridSpatialCollection();
         }
