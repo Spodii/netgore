@@ -38,7 +38,7 @@ namespace DemoGame.MapEditor
             System.Windows.Forms.SplitContainer splitContainer3;
             this.panToolBar = new System.Windows.Forms.Panel();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.scTabsAndSelected = new System.Windows.Forms.SplitContainer();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.MapSizeGroupBox = new System.Windows.Forms.GroupBox();
@@ -110,9 +110,9 @@ namespace DemoGame.MapEditor
             splitContainer3.Panel1.SuspendLayout();
             splitContainer3.Panel2.SuspendLayout();
             splitContainer3.SuspendLayout();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.Panel2.SuspendLayout();
-            this.splitContainer4.SuspendLayout();
+            this.scTabsAndSelected.Panel1.SuspendLayout();
+            this.scTabsAndSelected.Panel2.SuspendLayout();
+            this.scTabsAndSelected.SuspendLayout();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
@@ -220,7 +220,7 @@ namespace DemoGame.MapEditor
             // 
             // splitContainer3.Panel1
             // 
-            splitContainer3.Panel1.Controls.Add(this.splitContainer4);
+            splitContainer3.Panel1.Controls.Add(this.scTabsAndSelected);
             // 
             // splitContainer3.Panel2
             // 
@@ -233,24 +233,24 @@ namespace DemoGame.MapEditor
             splitContainer3.SplitterDistance = 601;
             splitContainer3.TabIndex = 0;
             // 
-            // splitContainer4
+            // scTabsAndSelected
             // 
-            this.splitContainer4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.scTabsAndSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.scTabsAndSelected.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scTabsAndSelected.Location = new System.Drawing.Point(0, 0);
+            this.scTabsAndSelected.Name = "scTabsAndSelected";
+            this.scTabsAndSelected.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer4.Panel1
+            // scTabsAndSelected.Panel1
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.tcMenu);
+            this.scTabsAndSelected.Panel1.Controls.Add(this.tcMenu);
             // 
-            // splitContainer4.Panel2
+            // scTabsAndSelected.Panel2
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.scSelectedItems);
-            this.splitContainer4.Size = new System.Drawing.Size(382, 601);
-            this.splitContainer4.SplitterDistance = 328;
-            this.splitContainer4.TabIndex = 0;
+            this.scTabsAndSelected.Panel2.Controls.Add(this.scSelectedItems);
+            this.scTabsAndSelected.Size = new System.Drawing.Size(382, 601);
+            this.scTabsAndSelected.SplitterDistance = 328;
+            this.scTabsAndSelected.TabIndex = 0;
             // 
             // tcMenu
             // 
@@ -953,9 +953,9 @@ namespace DemoGame.MapEditor
             splitContainer3.Panel1.ResumeLayout(false);
             splitContainer3.Panel2.ResumeLayout(false);
             splitContainer3.ResumeLayout(false);
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel2.ResumeLayout(false);
-            this.splitContainer4.ResumeLayout(false);
+            this.scTabsAndSelected.Panel1.ResumeLayout(false);
+            this.scTabsAndSelected.Panel2.ResumeLayout(false);
+            this.scTabsAndSelected.ResumeLayout(false);
             this.tcMenu.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
             this.MapSizeGroupBox.ResumeLayout(false);
@@ -1000,7 +1000,7 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnNew;
-        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.SplitContainer scTabsAndSelected;
         private System.Windows.Forms.TabControl tcMenu;
         private System.Windows.Forms.TabPage tabPageGeneral;
         private System.Windows.Forms.GroupBox MapSizeGroupBox;
