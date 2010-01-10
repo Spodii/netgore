@@ -176,7 +176,9 @@ namespace NetGore.EditorTools
             {
                 log.Debug("The following GrhDatas were created:");
                 foreach (var c in created)
+                {
                     log.Debug(" * " + c);
+                }
             }
 
             return created;

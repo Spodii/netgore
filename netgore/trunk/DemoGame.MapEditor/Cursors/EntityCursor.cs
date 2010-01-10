@@ -15,9 +15,9 @@ namespace DemoGame.MapEditor
     {
         Entity _selectedEntity = null;
         Vector2 _selectionOffset;
-        object _toolTipObject = null;
 
         string _toolTip = string.Empty;
+        object _toolTipObject = null;
         Vector2 _toolTipPos;
 
         /// <summary>
@@ -125,7 +125,8 @@ namespace DemoGame.MapEditor
                 else if (_toolTipObject != hoverEntity)
                 {
                     _toolTipObject = hoverEntity;
-                    _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X, hoverEntity.Size.Y);
+                    _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X,
+                                             hoverEntity.Size.Y);
                     _toolTipPos = new Vector2(hoverEntity.Max.X, hoverEntity.Position.Y);
                     _toolTipPos -= new Vector2(5, screen.SpriteFont.LineSpacing * _toolTip.Split('\n').Length);
                 }
