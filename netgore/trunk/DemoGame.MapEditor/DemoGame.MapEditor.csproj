@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
+    <None Include="Resources\cursor_entitiesadd.png" />
     <None Include="Resources\Untitled.png" />
     <None Include="Resources\cursor_select1.png" />
     <None Include="Resources\cursor_wallsadd.png" />
