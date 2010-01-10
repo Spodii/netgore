@@ -170,7 +170,8 @@ namespace DemoGame.MapEditor
             _cursorManager = new MapEditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
                                                                     x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
-            CursorManager.OnChangeSelectedCursor += CursorManager_OnChangeSelectedCursor;
+            CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
+            CursorManager.OnChangeCurrentCursor += CursorManager_OnChangeCurrentCursor;
 
             // Set up some of the OnChangeMap events for objects that need to reference the Map
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
@@ -508,13 +509,17 @@ namespace DemoGame.MapEditor
             return new WallEntity(reader);
         }
 
-        void CursorManager_OnChangeSelectedCursor(MapEditorCursorManager<ScreenForm> sender)
+        void CursorManager_OnChangeCurrentCursor(MapEditorCursorManager<ScreenForm> sender)
         {
             WallCursor.SelectedWalls.Clear();
             _transBoxes.Clear();
             _selTransBox = null;
 
-            if (sender.SelectedCursor.GetType() == typeof(AddGrhCursor))
+            var cursor = sender.GetCurrentCursor();
+            if (cursor == null)
+                return;
+
+            if (cursor is AddGrhCursor)
                 tcMenu.SelectTab(tabPageGrhs);
         }
 
@@ -871,6 +876,8 @@ namespace DemoGame.MapEditor
         void OnKeyDownForward(object sender, KeyEventArgs e)
         {
             _keyEventArgs = e;
+            _cursorManager.UseAlternateCursor = e.Shift;
+
             if (IsKeyToForward(e.KeyCode))
                 OnKeyDown(e);
         }
@@ -908,6 +915,8 @@ namespace DemoGame.MapEditor
         void OnKeyUpForward(object sender, KeyEventArgs e)
         {
             _keyEventArgs = e;
+            _cursorManager.UseAlternateCursor = e.Shift;
+
             if (IsKeyToForward(e.KeyCode))
                 OnKeyUp(e);
         }
@@ -953,7 +962,6 @@ namespace DemoGame.MapEditor
                 return;
 
             _selectedGrh.SetGrh(e.GrhData.GrhIndex, AnimType.Loop, _currentTime);
-            CursorManager.SelectedCursor = CursorManager.TryGetCursor<AddGrhCursor>();
         }
 
         void txtGridHeight_TextChanged(object sender, EventArgs e)

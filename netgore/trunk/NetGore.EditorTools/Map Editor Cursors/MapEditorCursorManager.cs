@@ -9,6 +9,10 @@ namespace NetGore.EditorTools
 {
     public delegate void MapEditorCursorManagerEventHandler<TScreen>(MapEditorCursorManager<TScreen> sender) where TScreen : Form;
 
+    /// <summary>
+    /// Manages multiple cursors for the map editor.
+    /// </summary>
+    /// <typeparam name="TScreen">The type of the screen form the cursors are used on.</typeparam>
     public class MapEditorCursorManager<TScreen> where TScreen : Form
     {
         readonly Func<MapEditorCursorBase<TScreen>, bool> _allowCursorEventChecker;
@@ -19,12 +23,34 @@ namespace NetGore.EditorTools
         readonly TScreen _screen;
         readonly ToolTip _toolTip;
 
+        MapEditorCursorBase<TScreen> _selectedAltCursor;
         MapEditorCursorBase<TScreen> _selectedCursor;
 
         /// <summary>
-        /// Notifies listeners when the selected cursor changes.
+        /// Notifies listeners when the currently active cursor changes.
         /// </summary>
-        public event MapEditorCursorManagerEventHandler<TScreen> OnChangeSelectedCursor;
+        public event MapEditorCursorManagerEventHandler<TScreen> OnChangeCurrentCursor;
+
+        bool _useAlternateCursor;
+
+        /// <summary>
+        /// Gets or sets whether to use the alternate cursor. This also applies to what cursor is selected when
+        /// selecting by clicking the cursor's <see cref="Control"/>.
+        /// </summary>
+        public bool UseAlternateCursor
+        {
+            get { return _useAlternateCursor; }
+            set
+            {
+                if (_useAlternateCursor != value)
+                    _useAlternateCursor = value;
+
+                _useAlternateCursor = value;
+
+                if (OnChangeCurrentCursor != null)
+                    OnChangeCurrentCursor(this);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapEditorCursorManager&lt;TScreen&gt;"/> class.
@@ -55,6 +81,7 @@ namespace NetGore.EditorTools
             LoadTypeInstances();
 
             _selectedCursor = Cursors.FirstOrDefault();
+            _selectedAltCursor = Cursors.Where(x => x != _selectedCursor).FirstOrDefault();
 
             _gameScreen.MouseDown += _gameScreen_MouseDown;
             _gameScreen.MouseMove += _gameScreen_MouseMove;
@@ -78,6 +105,26 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets or sets the alternate selected cursor.
+        /// </summary>
+        public MapEditorCursorBase<TScreen> SelectedAltCursor
+        {
+            get { return _selectedAltCursor; }
+            set
+            {
+                if (SelectedCursor == value || SelectedAltCursor == value)
+                    return;
+
+                _selectedAltCursor = value;
+
+                if (_useAlternateCursor && OnChangeCurrentCursor != null)
+                    OnChangeCurrentCursor(this);
+
+                ApplyCursorControlColoring();
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the selected cursor.
         /// </summary>
         public MapEditorCursorBase<TScreen> SelectedCursor
@@ -85,59 +132,124 @@ namespace NetGore.EditorTools
             get { return _selectedCursor; }
             set
             {
-                if (_selectedCursor == value)
+                if (SelectedCursor == value || SelectedAltCursor == value)
                     return;
-
-                foreach (var control in _cursorControls)
-                {
-                    control.BackColor = Color.White;
-                }
 
                 _selectedCursor = value;
 
-                if (_selectedCursor != null)
-                {
-                    var selectedControl = _cursorControls.FirstOrDefault(x => x.Tag == _selectedCursor);
-                    if (selectedControl != null)
-                        selectedControl.BackColor = Color.Lime;
-                }
+                if (!_useAlternateCursor && OnChangeCurrentCursor != null)
+                    OnChangeCurrentCursor(this);
 
-                if (OnChangeSelectedCursor != null)
-                    OnChangeSelectedCursor(this);
+                ApplyCursorControlColoring();
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ToolTip"/> used by this object.
+        /// </summary>
+        public ToolTip ToolTip
+        {
+            get { return _toolTip; }
         }
 
         void _gameScreen_MouseDown(object sender, MouseEventArgs e)
         {
-            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
-                SelectedCursor.MouseDown(Screen, e);
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null && _allowCursorEventChecker(cursor))
+                cursor.MouseDown(Screen, e);
         }
 
         void _gameScreen_MouseMove(object sender, MouseEventArgs e)
         {
-            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
-                SelectedCursor.MouseMove(Screen, e);
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null && _allowCursorEventChecker(cursor))
+                cursor.MouseMove(Screen, e);
         }
 
         void _gameScreen_MouseUp(object sender, MouseEventArgs e)
         {
-            if (SelectedCursor != null && _allowCursorEventChecker(SelectedCursor))
-                SelectedCursor.MouseUp(Screen, e);
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null && _allowCursorEventChecker(cursor))
+                cursor.MouseUp(Screen, e);
         }
 
+        /// <summary>
+        /// Sets the coloring for the cursor <see cref="PictureBox"/>es.
+        /// </summary>
+        void ApplyCursorControlColoring()
+        {
+            PictureBox primary = null;
+            if (_selectedCursor != null)
+                primary = _cursorControls.FirstOrDefault(x => x.Tag == _selectedCursor);
+
+            PictureBox secondary = null;
+            if (_selectedAltCursor != null)
+                secondary = _cursorControls.FirstOrDefault(x => x.Tag == _selectedAltCursor);
+
+            foreach (var control in _cursorControls)
+            {
+                if (control == primary)
+                    SetControlBackColor(control, Color.Lime);
+                else if (control == secondary)
+                    SetControlBackColor(control, Color.Aqua);
+                else
+                    SetControlBackColor(control, Color.White);
+            }
+        }
+
+        /// <summary>
+        /// Handles when a cursor <see cref="PictureBox"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void CursorControlClickHandler(object sender, EventArgs e)
+        {
+            var c = ((Control)sender).Tag as MapEditorCursorBase<TScreen>;
+            if (c == null)
+                return;
+
+            if (UseAlternateCursor)
+                SelectedAltCursor = c;
+            else
+                SelectedCursor = c;
+        }
+
+        /// <summary>
+        /// Draws the interface for the current cursor.
+        /// </summary>
         public void DrawInterface()
         {
-            if (SelectedCursor != null)
-                SelectedCursor.DrawInterface(Screen);
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null)
+                cursor.DrawInterface(Screen);
         }
 
+        /// <summary>
+        /// Draws the selection for the current cursor.
+        /// </summary>
         public void DrawSelection()
         {
-            if (SelectedCursor != null)
-                SelectedCursor.DrawSelection(Screen);
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null)
+                cursor.DrawSelection(Screen);
         }
 
-        public ToolTip ToolTip { get { return _toolTip; } }
+        /// <summary>
+        /// Gets the current cursor with respect to whether or not the alternate cursor is set to be used.
+        /// </summary>
+        /// <returns>The current cursor with respect to whether or not the alternate cursor is set to be used.</returns>
+        public MapEditorCursorBase<TScreen> GetCurrentCursor()
+        {
+            if (UseAlternateCursor && SelectedAltCursor != null)
+                return SelectedAltCursor;
+            else
+                return SelectedCursor;
+        }
 
         void LoadTypeInstances()
         {
@@ -158,6 +270,8 @@ namespace NetGore.EditorTools
                 _cursors.Add(instance);
             }
 
+            EventHandler clickHandler = CursorControlClickHandler;
+
             foreach (var cursor in Cursors.OrderByDescending(x => x.ToolbarPriority))
             {
                 var cursorControl = new PictureBox
@@ -176,21 +290,32 @@ namespace NetGore.EditorTools
                     string s = cursor.Name;
                     if (cursorControl.ContextMenu != null)
                         s += " (right-click for cursor settings)";
+
                     ToolTip.SetToolTip(cursorControl, s);
                 }
 
-                cursorControl.Click +=
-                    delegate(object sender, EventArgs e) { SelectedCursor = ((Control)sender).Tag as MapEditorCursorBase<TScreen>; };
+                cursorControl.Click += clickHandler;
 
                 _cursorContainer.Controls.Add(cursorControl);
                 _cursorControls.Add(cursorControl);
             }
         }
 
+        /// <summary>
+        /// Sends the PressDelete event to the current cursor.
+        /// </summary>
         public void PressDelete()
         {
-            if (SelectedCursor != null)
-                SelectedCursor.PressDelete(Screen);
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null)
+                cursor.PressDelete(Screen);
+        }
+
+        static void SetControlBackColor(Control control, Color color)
+        {
+            if (control.BackColor != color)
+                control.BackColor = color;
         }
 
         /// <summary>
@@ -203,10 +328,15 @@ namespace NetGore.EditorTools
             return Cursors.OfType<T>().FirstOrDefault();
         }
 
+        /// <summary>
+        /// Updates the current cursor.
+        /// </summary>
         public void Update()
         {
-            if (SelectedCursor != null)
-                SelectedCursor.UpdateCursor(Screen);
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null)
+                cursor.UpdateCursor(Screen);
         }
     }
 }
