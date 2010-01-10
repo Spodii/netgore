@@ -164,9 +164,10 @@ namespace DemoGame.MapEditor
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
             _grid = new ScreenGrid(_camera.Size);
 
-            // Create the cursors
+            // Create and set up the cursor manager
             _cursorManager = new MapEditorCursorManager<ScreenForm>(this, panToolBar, GameScreen,
                                                                     x => Map != null && !treeGrhs.IsEditingGrhData);
+            CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.OnChangeSelectedCursor += CursorManager_OnChangeSelectedCursor;
 
             // Set up some of the OnChangeMap events for objects that need to reference the Map
