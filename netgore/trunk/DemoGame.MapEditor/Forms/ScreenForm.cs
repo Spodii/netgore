@@ -165,12 +165,8 @@ namespace DemoGame.MapEditor
             _grid = new ScreenGrid(_camera.Size);
 
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
-            _selectedObjectsManager.OnChangeSelected +=
-                (x => scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2);
-            _selectedObjectsManager.OnChangeFocused +=
-                ((x, y) =>
-                 scTabsAndSelected.Panel2Collapsed =
-                 (_selectedObjectsManager.SelectedObjects.Count() < 2 && _selectedObjectsManager.Focused == null));
+            _selectedObjectsManager.OnChangeSelected += SelectedObjectsManager_OnChangeSelected;
+            _selectedObjectsManager.OnChangeFocused += SelectedObjectsManager_OnChangeFocused;
 
             // Create and set up the cursor manager
             _cursorManager = new MapEditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
@@ -190,6 +186,17 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
+        }
+
+        void SelectedObjectsManager_OnChangeSelected(SelectedObjectsManager<object> sender)
+        {
+            scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2;
+        }
+
+        void SelectedObjectsManager_OnChangeFocused(SelectedObjectsManager<object> sender, object newFocused)
+        {
+            scTabsAndSelected.Panel2Collapsed =
+                 (_selectedObjectsManager.SelectedObjects.Count() == 0 && _selectedObjectsManager.Focused == null);
         }
 
         /// <summary>
