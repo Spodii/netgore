@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
@@ -30,22 +32,11 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when a mouse button has been pressed.
+        /// Gets the cursor's <see cref="Image"/>.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        /// <param name="e">Mouse events.</param>
-        public override void MouseDown(ScreenForm screen, MouseEventArgs e)
+        public override Image CursorImage
         {
-            if (_selectedType == null)
-                return;
-
-            // Create the Entity
-            Entity entity = (Entity)Activator.CreateInstance(_selectedType);
-            screen.Map.AddEntity(entity);
-
-            // Move to the center of the screen
-            entity.Size = new Vector2(64);
-            entity.Position = screen.CursorPos - (entity.Size / 2f);
+            get { return Resources.cursor_entitiesadd; }
         }
 
         /// <summary>
@@ -82,6 +73,25 @@ namespace DemoGame.MapEditor
 
             mi.Checked = true;
             _selectedType = type;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been pressed.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
+        public override void MouseDown(ScreenForm screen, MouseEventArgs e)
+        {
+            if (_selectedType == null)
+                return;
+
+            // Create the Entity
+            Entity entity = (Entity)Activator.CreateInstance(_selectedType);
+            screen.Map.AddEntity(entity);
+
+            // Move to the center of the screen
+            entity.Size = new Vector2(64);
+            entity.Position = screen.CursorPos - (entity.Size / 2f);
         }
     }
 }

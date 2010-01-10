@@ -37,7 +37,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override Image CursorImage
         {
-            get { return Resources.cursor_select; }
+            get { return Resources.cursor_entities; }
         }
 
         /// <summary>

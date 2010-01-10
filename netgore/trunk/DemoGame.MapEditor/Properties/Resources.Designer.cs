@@ -60,6 +60,20 @@ namespace DemoGame.MapEditor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap cursor_entities {
+            get {
+                object obj = ResourceManager.GetObject("cursor_entities", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_entitiesadd {
+            get {
+                object obj = ResourceManager.GetObject("cursor_entitiesadd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap cursor_grhs {
             get {
                 object obj = ResourceManager.GetObject("cursor_grhs", resourceCulture);
@@ -70,13 +84,6 @@ namespace DemoGame.MapEditor.Properties {
         internal static System.Drawing.Bitmap cursor_grhsadd {
             get {
                 object obj = ResourceManager.GetObject("cursor_grhsadd", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap cursor_select {
-            get {
-                object obj = ResourceManager.GetObject("cursor_select", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
