@@ -230,7 +230,7 @@ namespace NetGore.EditorTools
                     ret.Add(gd);
 
                 if (log.IsInfoEnabled)
-                    log.WarnFormat("Automatic creation of animated GrhData `{0}`.", gd);
+                    log.InfoFormat("Automatic creation of animated GrhData `{0}`.", gd);
             }
 
             return ret;
@@ -244,6 +244,8 @@ namespace NetGore.EditorTools
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
         public static IEnumerable<GrhData> UpdateStationary(ContentManager cm, string rootGrhDir)
         {
+            char[] dirSepChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+
             if (log.IsInfoEnabled)
                 log.InfoFormat("Searching for automatic stationary GrhDatas from root `{0}`.");
 
@@ -268,7 +270,7 @@ namespace NetGore.EditorTools
             {
                 // Go back to the relative path, and use it to figure out the categorization
                 string relative = TextureAbsoluteToRelativePath(trimLen, texture);
-                if (relative.LastIndexOf(SpriteCategorization.Delimiter) < 0)
+                if (relative.LastIndexOfAny(dirSepChars) < 0)
                 {
                     if (log.IsWarnEnabled)
                         log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.");
@@ -290,7 +292,7 @@ namespace NetGore.EditorTools
                 ret.Add(gd);
 
                 if (log.IsInfoEnabled)
-                    log.WarnFormat("Automatic creation of stationary GrhData `{0}`.", gd);
+                    log.InfoFormat("Automatic creation of stationary GrhData `{0}`.", gd);
             }
 
             return ret;
