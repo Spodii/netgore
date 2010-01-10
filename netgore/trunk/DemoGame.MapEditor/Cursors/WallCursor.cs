@@ -313,10 +313,7 @@ namespace DemoGame.MapEditor
             }
 
             // Update the selected walls list
-            if (_selectedWalls.Count > 0)
-                screen.UpdateSelectedWallsList(_selectedWalls);
-            else if (_selectedWalls.Count == 0)
-                screen.lstSelectedWalls.SelectedItems.Clear();
+            screen.SelectedObjectsManager.SetSelectedObjects(_selectedWalls.OfType<object>());
 
             _mouseDragStart = Vector2.Zero;
         }
@@ -331,8 +328,9 @@ namespace DemoGame.MapEditor
             {
                 screen.Map.RemoveEntity(selectedWall);
             }
+
             _selectedWalls.Clear();
-            screen.UpdateSelectedWallsList(_selectedWalls);
+            screen.SelectedObjectsManager.Clear();
         }
 
         /// <summary>

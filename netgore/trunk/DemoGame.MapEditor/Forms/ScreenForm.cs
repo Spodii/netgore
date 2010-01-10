@@ -59,11 +59,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         const Keys _cameraUp = Keys.W;
 
-        /// <summary>
-        /// Color of the Grh preview when placing new Grhs.
-        /// </summary>
-        static readonly Color _drawPreviewColor = new Color(255, 255, 255, 150);
-
         readonly ICamera2D _camera;
         readonly MapEditorCursorManager<ScreenForm> _cursorManager;
         readonly ScreenGrid _grid;
@@ -93,6 +88,10 @@ namespace DemoGame.MapEditor
         /// The switches used when creating this form.
         /// </summary>
         readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
+
+        readonly SelectedObjectsManager<object> _selectedObjectsManager;
+
+        public SelectedObjectsManager<object> SelectedObjectsManager { get { return _selectedObjectsManager; } }
 
         /// <summary>
         /// List of all the active transformation boxes
@@ -154,6 +153,10 @@ namespace DemoGame.MapEditor
 
         public event MapChangeEventHandler OnChangeMap;
 
+        public ToolTip ToolTip { get { return _toolTip; } }
+
+        readonly ToolTip _toolTip = new ToolTip();
+
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             _switches = switches;
@@ -164,8 +167,10 @@ namespace DemoGame.MapEditor
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
             _grid = new ScreenGrid(_camera.Size);
 
+            _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
+
             // Create and set up the cursor manager
-            _cursorManager = new MapEditorCursorManager<ScreenForm>(this, panToolBar, GameScreen,
+            _cursorManager = new MapEditorCursorManager<ScreenForm>(this,ToolTip, panToolBar, GameScreen,
                                                                     x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.OnChangeSelectedCursor += CursorManager_OnChangeSelectedCursor;
@@ -589,28 +594,11 @@ namespace DemoGame.MapEditor
                 box.Draw(_sb);
             }
 
-            // TODO: Move this chunk to the tool's DrawInterface()?
-            // Selected Grh
-            if (CursorManager.SelectedCursor is AddGrhCursor && SelectedGrh.GrhData != null)
-            {
-                Vector2 drawPos;
-                if (chkSnapGrhGrid.Checked)
-                    drawPos = Grid.AlignDown(_cursorPos);
-                else
-                    drawPos = CursorPos;
-
-                // If we fail to draw the selected Grh, just ignore it
-                try
-                {
-                    _selectedGrh.Draw(_sb, drawPos, _drawPreviewColor);
-                }
-                catch (Exception)
-                {
-                }
-            }
-
             // Tool interface
             CursorManager.DrawInterface();
+
+            // Focused selected object
+            _focusedSpatialDrawer.Draw(SelectedObjectsManager.Focused as ISpatial, _sb);
 
             // End map rendering
             _sb.End();
@@ -627,6 +615,8 @@ namespace DemoGame.MapEditor
             _sb.End();
             GameScreen.GraphicsDevice.Present();
         }
+
+        readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
 
         /// <summary>
         /// Finds which control has focus and no children controls
@@ -814,14 +804,23 @@ namespace DemoGame.MapEditor
             CreateMapDrawExtensionBase<MapEntityBoxDrawer>(chkDrawEntities);
             CreateMapDrawExtensionBase<MapWallDrawer>(chkShowWalls);
             MapSpawnDrawer v = CreateMapDrawExtensionBase<MapSpawnDrawer>(chkDrawSpawnAreas);
-            // NOTE: Using SelectedIndexChanged for this may be a stupid idea...
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
         }
 
         void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)
         {
-            // TODO: Error handling for when the effect fails to load
-            var effect = ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev, effectName);
+            ParticleEmitter effect;
+
+            try
+            {
+                effect = ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev, effectName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load particle emitter: " + ex);
+                return;
+            }
+
             effect.Origin = Camera.Center;
             effect.SetEmitterLife(0, 0);
             Map.ParticleEffects.Add(effect);
@@ -829,42 +828,20 @@ namespace DemoGame.MapEditor
 
         void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (pgBGItem.SelectedObject != lstBGItems.SelectedItem)
-                pgBGItem.SelectedObject = lstBGItems.SelectedItem;
+            if (lstBGItems.SelectedItem != null)
+                _selectedObjectsManager.SetSelected(lstBGItems.SelectedItem);
         }
 
         void lstEntities_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (pgEntity.SelectedObject != lstEntities.SelectedItem)
-                pgEntity.SelectedObject = lstEntities.SelectedItem;
+            if (lstEntities.SelectedItem != null)
+                _selectedObjectsManager.SetSelected(lstEntities.SelectedItem);
         }
 
         void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (pgSelectedPE.SelectedObject != lstMapParticleEffects.SelectedItem)
-                pgSelectedPE.SelectedObject = lstMapParticleEffects.SelectedItem;
-        }
-
-        void lstSelectedWalls_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            WallEntityBase selected = lstSelectedWalls.SelectedItem as WallEntityBase;
-            if (selected == null)
-                return;
-
-            if (pgWall.SelectedObject != selected)
-                pgWall.SelectedObject = selected;
-        }
-
-        void lstSelectedWalls_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            WallCursor.SelectedWalls.Clear();
-            foreach (ListboxWall lbw in lstSelectedWalls.SelectedItems)
-            {
-                WallCursor.SelectedWalls.Add(lbw);
-            }
+            if (lstMapParticleEffects.SelectedItem != null)
+                _selectedObjectsManager.SetSelected(lstMapParticleEffects.SelectedItem);
         }
 
         void Map_OnSave(MapBase map)
@@ -1102,32 +1079,6 @@ namespace DemoGame.MapEditor
 
             // Update the selected grh
             _selectedGrh.Update(_currentTime);
-        }
-
-        /// <summary>
-        /// Updates the list of selected walls
-        /// </summary>
-        public void UpdateSelectedWallsList(List<WallEntityBase> selectedWalls)
-        {
-            lstSelectedWalls.Items.Clear();
-            var tmpSelectedWalls = selectedWalls.ToArray();
-            foreach (WallEntityBase wall in tmpSelectedWalls)
-            {
-                lstSelectedWalls.AddItemAndReselect(new ListboxWall(wall));
-            }
-
-            tcMenu.SelectTab(tabPageWalls);
-            lstSelectedWalls.Focus();
-
-            for (int i = 0; i < lstSelectedWalls.Items.Count; i++)
-            {
-                lstSelectedWalls.SetSelected(i, true);
-            }
-
-            if (selectedWalls.Count == 1)
-                pgWall.SelectedObject = selectedWalls[0];
-            else
-                pgWall.SelectedObject = null;
         }
 
         #region IGetTime Members
