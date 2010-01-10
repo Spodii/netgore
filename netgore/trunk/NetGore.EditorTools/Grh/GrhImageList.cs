@@ -136,9 +136,7 @@ namespace NetGore.EditorTools
                     log.ErrorFormat(errmsg, grhData);
             }
             else
-            {
                 ImageList.Images.Add(key, img);
-            }
         }
 
         /// <summary>
@@ -153,7 +151,7 @@ namespace NetGore.EditorTools
 
             // Check if the item is in the cache
             GrhImageListCacheItem cacheItem;
-            var key  =GetImageKey(grhData);
+            var key = GetImageKey(grhData);
             if (_imageCache.TryGetValue(key, out cacheItem))
             {
                 if (grhData.OriginalSourceRect == cacheItem.SourceRect)
@@ -171,8 +169,7 @@ namespace NetGore.EditorTools
             // Item wasn't in the cache, so we have to create it
             Rectangle src = grhData.SourceRect;
             var dest = ImageList.ImageSize;
-            return ImageHelper.CreateFromTexture(grhData.Texture, src.X, src.Y, src.Width, src.Height,
-                                                 dest.Width, dest.Height);
+            return ImageHelper.CreateFromTexture(grhData.Texture, src.X, src.Y, src.Width, src.Height, dest.Width, dest.Height);
         }
 
         /// <summary>
@@ -213,7 +210,9 @@ namespace NetGore.EditorTools
             {
                 // For AutomaticAnimatedGrhDatas, we will want to loop through the frames to add them
                 foreach (var frame in grhData.Frames)
+                {
                     AddImage(frame);
+                }
             }
         }
 
@@ -312,14 +311,14 @@ namespace NetGore.EditorTools
         class GrhImageListCacheItem
         {
             /// <summary>
-            /// The key of the cached item.
-            /// </summary>
-            public readonly string Key;
-
-            /// <summary>
             /// The <see cref="Image"/> for the <see cref="GrhData"/>.
             /// </summary>
             public readonly Image Image;
+
+            /// <summary>
+            /// The key of the cached item.
+            /// </summary>
+            public readonly string Key;
 
             /// <summary>
             /// The <see cref="Microsoft.Xna.Framework.Rectangle"/> describing the source that the <see cref="Image"/> came from.
@@ -353,7 +352,7 @@ namespace NetGore.EditorTools
 
                 MemoryStream ms = new MemoryStream(b);
                 Image img = Image.FromStream(ms);
-                
+
                 return new GrhImageListCacheItem(key, img, new Rectangle(x, y, w, h));
             }
 

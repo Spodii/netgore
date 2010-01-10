@@ -69,19 +69,6 @@ namespace NetGore.Graphics
         {
             get { return _speed; }
         }
-        
-        /// <summary>
-        /// Sets the speed of the <see cref="AnimatedGrhData"/>.
-        /// </summary>
-        /// <param name="newSpeed">The new speed.</param>
-        public void SetSpeed(float newSpeed)
-        {
-            // Ensure we are using the right units
-            if (newSpeed > 1.0f)
-                newSpeed = 1f / newSpeed;
-
-            _speed = newSpeed;
-        }
 
         StationaryGrhData[] CreateFrames(GrhIndex[] frameIndices)
         {
@@ -117,7 +104,7 @@ namespace NetGore.Graphics
             var copyArray = new StationaryGrhData[_frames.Length];
             Array.Copy(_frames, copyArray, _frames.Length);
 
-            var copy = new AnimatedGrhData(newGrhIndex, newCategorization) { _frames = copyArray};
+            var copy = new AnimatedGrhData(newGrhIndex, newCategorization) { _frames = copyArray };
             copy.SetSpeed(Speed);
 
             return copy;
@@ -166,6 +153,19 @@ namespace NetGore.Graphics
         {
             _frames = frames.ToArray();
             _size = GetMaxSize(_frames);
+        }
+
+        /// <summary>
+        /// Sets the speed of the <see cref="AnimatedGrhData"/>.
+        /// </summary>
+        /// <param name="newSpeed">The new speed.</param>
+        public void SetSpeed(float newSpeed)
+        {
+            // Ensure we are using the right units
+            if (newSpeed > 1.0f)
+                newSpeed = 1f / newSpeed;
+
+            _speed = newSpeed;
         }
 
         /// <summary>

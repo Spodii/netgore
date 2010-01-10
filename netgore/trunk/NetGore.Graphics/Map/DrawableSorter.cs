@@ -15,6 +15,8 @@ namespace DemoGame.Client
         /// </summary>
         static readonly int _requiredArraySize;
 
+        readonly List<IDrawable>[] _layers;
+
         /// <summary>
         /// Initializes the <see cref="DrawableSorter"/> class.
         /// </summary>
@@ -22,8 +24,6 @@ namespace DemoGame.Client
         {
             _requiredArraySize = MapRenderLayerHelper.Instance.MaxValue + 1;
         }
-
-        readonly List<IDrawable>[] _layers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawableSorter"/> class.
@@ -63,7 +63,9 @@ namespace DemoGame.Client
             // Return the results for each layer, making sure to sort them as we return them
             for (int i = 0; i < _layers.Length; i++)
             {
-                yield return new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i, _layers[i].OrderByDescending(x => x.LayerDepth));
+                yield return
+                    new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i,
+                                                                             _layers[i].OrderByDescending(x => x.LayerDepth));
             }
         }
     }

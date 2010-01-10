@@ -19,34 +19,6 @@ namespace NetGore.Graphics
         SpriteCategorization _categorization;
 
         /// <summary>
-        /// When overridden in the derived class, gets the speed multiplier of the <see cref="GrhData"/> animation where each
-        /// frame lasts 1f/Speed milliseconds. For non-animated <see cref="GrhData"/>s, this value will always be 0.
-        /// </summary>
-        public abstract float Speed { get; }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the frames in an animated <see cref="GrhData"/>, or an
-        /// IEnumerable containing a reference to its self if stationary.
-        /// </summary>
-        public abstract IEnumerable<StationaryGrhData> Frames { get; }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the frame in an animated <see cref="GrhData"/> with the
-        /// corresponding index, or null if the index is out of range. If stationary, this will always return
-        /// a reference to its self, no matter what the index is.
-        /// </summary>
-        /// <param name="frameIndex">The index of the frame to get.</param>
-        /// <returns>The frame with the given <paramref name="frameIndex"/>, or null if the <paramref name="frameIndex"/>
-        /// is invalid, or a reference to its self if this is not an animated <see cref="GrhData"/>.</returns>
-        public abstract StationaryGrhData GetFrame(int frameIndex);
-
-        /// <summary>
-        /// When overridden in the derived class, gets the number of frames in this <see cref="GrhData"/>. If this
-        /// is not an animated <see cref="GrhData"/>, this value will always return 0.
-        /// </summary>
-        public abstract int FramesCount { get; }
-
-        /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
         /// </summary>
         public event GrhDataChangeCategorizationHandler OnChangeCategorization;
@@ -66,6 +38,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the frames in an animated <see cref="GrhData"/>, or an
+        /// IEnumerable containing a reference to its self if stationary.
+        /// </summary>
+        public abstract IEnumerable<StationaryGrhData> Frames { get; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the number of frames in this <see cref="GrhData"/>. If this
+        /// is not an animated <see cref="GrhData"/>, this value will always return 0.
+        /// </summary>
+        public abstract int FramesCount { get; }
+
+        /// <summary>
         /// Gets the index of the <see cref="GrhData"/>.
         /// </summary>
         public GrhIndex GrhIndex
@@ -77,6 +61,12 @@ namespace NetGore.Graphics
         /// When overridden in the derived class, gets the size of the <see cref="GrhData"/>'s sprite in pixels.
         /// </summary>
         public abstract Vector2 Size { get; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the speed multiplier of the <see cref="GrhData"/> animation where each
+        /// frame lasts 1f/Speed milliseconds. For non-animated <see cref="GrhData"/>s, this value will always be 0.
+        /// </summary>
+        public abstract float Speed { get; }
 
         /// <summary>
         /// When overridden in the derived class, creates a new <see cref="GrhData"/> equal to this <see cref="GrhData"/>
@@ -111,6 +101,16 @@ namespace NetGore.Graphics
 
             return dc;
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the frame in an animated <see cref="GrhData"/> with the
+        /// corresponding index, or null if the index is out of range. If stationary, this will always return
+        /// a reference to its self, no matter what the index is.
+        /// </summary>
+        /// <param name="frameIndex">The index of the frame to get.</param>
+        /// <returns>The frame with the given <paramref name="frameIndex"/>, or null if the <paramref name="frameIndex"/>
+        /// is invalid, or a reference to its self if this is not an animated <see cref="GrhData"/>.</returns>
+        public abstract StationaryGrhData GetFrame(int frameIndex);
 
         /// <summary>
         /// Gets the largest size of all the <see cref="GrhData"/>s.

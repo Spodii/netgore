@@ -35,6 +35,8 @@ namespace DemoGame.Client
         /// </summary>
         readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
 
+        readonly DrawableSorter _drawableSorter = new DrawableSorter();
+
         /// <summary>
         /// Graphics device used when building the atlas
         /// </summary>
@@ -118,8 +120,6 @@ namespace DemoGame.Client
         {
             _backgroundImages.Add(bgImage);
         }
-
-        readonly DrawableSorter _drawableSorter = new DrawableSorter();
 
         /// <summary>
         /// Adds a MapGrh to the map

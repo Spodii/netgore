@@ -99,23 +99,25 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the tool tip text for a <see cref="StationaryGrhData"/>.
+        /// Creates the tooltip text to use for a <see cref="GrhData"/>.
         /// </summary>
-        /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
-        /// <returns>The tool tip text for a <see cref="StationaryGrhData"/>.</returns>
-        static string GetToolTipTextStationary(StationaryGrhData grhData)
+        /// <returns>The tooltip text to use for a <see cref="GrhData"/>.</returns>
+        string GetToolTipText()
         {
-            // Stationary
-            Rectangle sourceRect = grhData.SourceRect;
+            string ret = string.Empty;
 
-            StringBuilder sb = new StringBuilder();
+            try
+            {
+                if (GrhData is StationaryGrhData)
+                    ret = GetToolTipTextStationary((StationaryGrhData)GrhData);
+                else
+                    ret = GetToolTipTextAnimated(GrhData);
+            }
+            catch (ContentLoadException)
+            {
+            }
 
-            sb.AppendLine("Grh: " + grhData.GrhIndex);
-            sb.AppendLine("Texture: " + grhData.TextureName);
-            sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
-            sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
-
-            return sb.ToString();
+            return ret;
         }
 
         /// <summary>
@@ -139,25 +141,23 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Creates the tooltip text to use for a <see cref="GrhData"/>.
+        /// Gets the tool tip text for a <see cref="StationaryGrhData"/>.
         /// </summary>
-        /// <returns>The tooltip text to use for a <see cref="GrhData"/>.</returns>
-        string GetToolTipText()
+        /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
+        /// <returns>The tool tip text for a <see cref="StationaryGrhData"/>.</returns>
+        static string GetToolTipTextStationary(StationaryGrhData grhData)
         {
-            string ret = string.Empty;
+            // Stationary
+            Rectangle sourceRect = grhData.SourceRect;
 
-            try
-            {
-                if (GrhData is StationaryGrhData)
-                    ret = GetToolTipTextStationary((StationaryGrhData)GrhData);
-                else
-                    ret = GetToolTipTextAnimated(GrhData);
-            }
-            catch (ContentLoadException)
-            {
-            }
+            StringBuilder sb = new StringBuilder();
 
-            return ret;
+            sb.AppendLine("Grh: " + grhData.GrhIndex);
+            sb.AppendLine("Texture: " + grhData.TextureName);
+            sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
+            sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+
+            return sb.ToString();
         }
 
         void InsertIntoTree(GrhTreeView treeView)
@@ -177,13 +177,15 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Sets the icon for a stationary <see cref="GrhData"/>.
+        /// Sets the icon for the node.
         /// </summary>
-        /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
-        void SetIconImageStationary(StationaryGrhData grhData)
+        void SetIconImage()
         {
-            string imageKey = GrhImageList.GetImageKey(grhData);
-            SetImageKeys(imageKey);
+            // Set the preview picture
+            if (GrhData is StationaryGrhData)
+                SetIconImageStationary((StationaryGrhData)GrhData);
+            else
+                SetIconImageAnimated(GrhData);
         }
 
         /// <summary>
@@ -213,15 +215,13 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Sets the icon for the node.
+        /// Sets the icon for a stationary <see cref="GrhData"/>.
         /// </summary>
-        void SetIconImage()
+        /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
+        void SetIconImageStationary(StationaryGrhData grhData)
         {
-            // Set the preview picture
-            if (GrhData is StationaryGrhData)
-                SetIconImageStationary((StationaryGrhData)GrhData);
-            else
-                SetIconImageAnimated(GrhData);
+            string imageKey = GrhImageList.GetImageKey(grhData);
+            SetImageKeys(imageKey);
         }
 
         /// <summary>
