@@ -76,6 +76,14 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        public override int ToolbarPriority
+        {
+            get { return 1; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
