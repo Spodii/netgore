@@ -54,33 +54,27 @@ namespace DemoGame.MapEditor
             this.label5 = new System.Windows.Forms.Label();
             this.tabPageGrhs = new System.Windows.Forms.TabPage();
             this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
-            this.tabPageWalls = new System.Windows.Forms.TabPage();
-            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.chkSnapWallGrid = new System.Windows.Forms.CheckBox();
-            this.chkSnapWallWall = new System.Windows.Forms.CheckBox();
-            this.cmbWallType = new System.Windows.Forms.ComboBox();
-            this.tabPageEntities = new System.Windows.Forms.TabPage();
-            this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
-            this.btnNewEntity = new System.Windows.Forms.Button();
-            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
-            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tabEffects = new System.Windows.Forms.TabPage();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.lstMapParticleEffects = new DemoGame.MapEditor.MapParticleEffectsListBox();
             this.lstAvailableParticleEffects = new NetGore.EditorTools.ParticleEffectListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
             this.tcSpawns = new System.Windows.Forms.TabControl();
             this.tpSpawns = new System.Windows.Forms.TabPage();
-            this.btnAddSpawn = new System.Windows.Forms.Button();
-            this.btnDeleteSpawn = new System.Windows.Forms.Button();
+            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
             this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
+            this.btnDeleteSpawn = new System.Windows.Forms.Button();
+            this.btnAddSpawn = new System.Windows.Forms.Button();
             this.tpPersistent = new System.Windows.Forms.TabPage();
+            this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
-            this.btnAddPersistentNPC = new System.Windows.Forms.Button();
             this.btnDeletePersistentNPC = new System.Windows.Forms.Button();
+            this.btnAddPersistentNPC = new System.Windows.Forms.Button();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.chkDrawPersistentNPCs = new System.Windows.Forms.CheckBox();
@@ -124,19 +118,24 @@ namespace DemoGame.MapEditor
             this.MapSizeGroupBox.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPageGrhs.SuspendLayout();
-            this.tabPageWalls.SuspendLayout();
-            this.splitContainer6.Panel1.SuspendLayout();
-            this.splitContainer6.SuspendLayout();
-            this.splitContainer7.Panel1.SuspendLayout();
-            this.splitContainer7.Panel2.SuspendLayout();
-            this.splitContainer7.SuspendLayout();
-            this.tabPageEntities.SuspendLayout();
             this.tabPageBackground.SuspendLayout();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.Panel2.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
             this.tabEffects.SuspendLayout();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
             this.tabPageNPCs.SuspendLayout();
             this.tcSpawns.SuspendLayout();
             this.tpSpawns.SuspendLayout();
+            this.splitContainer7.Panel1.SuspendLayout();
+            this.splitContainer7.Panel2.SuspendLayout();
+            this.splitContainer7.SuspendLayout();
             this.tpPersistent.SuspendLayout();
+            this.splitContainer8.Panel1.SuspendLayout();
+            this.splitContainer8.Panel2.SuspendLayout();
+            this.splitContainer8.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -161,7 +160,7 @@ namespace DemoGame.MapEditor
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(splitContainer3);
-            splitContainer1.Size = new System.Drawing.Size(1295, 711);
+            splitContainer1.Size = new System.Drawing.Size(1186, 630);
             splitContainer1.SplitterDistance = 800;
             splitContainer1.TabIndex = 9;
             // 
@@ -182,7 +181,7 @@ namespace DemoGame.MapEditor
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(this.GameScreen);
-            splitContainer2.Size = new System.Drawing.Size(800, 711);
+            splitContainer2.Size = new System.Drawing.Size(800, 630);
             splitContainer2.SplitterDistance = 26;
             splitContainer2.TabIndex = 0;
             // 
@@ -230,8 +229,8 @@ namespace DemoGame.MapEditor
             splitContainer3.Panel2.Controls.Add(this.btnSave);
             splitContainer3.Panel2.Controls.Add(this.btnLoad);
             splitContainer3.Panel2.Controls.Add(this.btnNew);
-            splitContainer3.Size = new System.Drawing.Size(491, 711);
-            splitContainer3.SplitterDistance = 679;
+            splitContainer3.Size = new System.Drawing.Size(382, 630);
+            splitContainer3.SplitterDistance = 601;
             splitContainer3.TabIndex = 0;
             // 
             // splitContainer4
@@ -249,16 +248,14 @@ namespace DemoGame.MapEditor
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer9);
-            this.splitContainer4.Size = new System.Drawing.Size(491, 679);
-            this.splitContainer4.SplitterDistance = 608;
+            this.splitContainer4.Size = new System.Drawing.Size(382, 601);
+            this.splitContainer4.SplitterDistance = 328;
             this.splitContainer4.TabIndex = 0;
             // 
             // tcMenu
             // 
             this.tcMenu.Controls.Add(this.tabPageGeneral);
             this.tcMenu.Controls.Add(this.tabPageGrhs);
-            this.tcMenu.Controls.Add(this.tabPageWalls);
-            this.tcMenu.Controls.Add(this.tabPageEntities);
             this.tcMenu.Controls.Add(this.tabPageBackground);
             this.tcMenu.Controls.Add(this.tabEffects);
             this.tcMenu.Controls.Add(this.tabPageNPCs);
@@ -267,7 +264,7 @@ namespace DemoGame.MapEditor
             this.tcMenu.Location = new System.Drawing.Point(0, 0);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
-            this.tcMenu.Size = new System.Drawing.Size(489, 606);
+            this.tcMenu.Size = new System.Drawing.Size(380, 326);
             this.tcMenu.TabIndex = 3;
             // 
             // tabPageGeneral
@@ -277,7 +274,7 @@ namespace DemoGame.MapEditor
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeneral.Name = "tabPageGeneral";
             this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageGeneral.Size = new System.Drawing.Size(481, 580);
+            this.tabPageGeneral.Size = new System.Drawing.Size(372, 300);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.ToolTipText = "General map information";
@@ -294,7 +291,7 @@ namespace DemoGame.MapEditor
             this.MapSizeGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.MapSizeGroupBox.Location = new System.Drawing.Point(3, 55);
             this.MapSizeGroupBox.Name = "MapSizeGroupBox";
-            this.MapSizeGroupBox.Size = new System.Drawing.Size(475, 49);
+            this.MapSizeGroupBox.Size = new System.Drawing.Size(366, 49);
             this.MapSizeGroupBox.TabIndex = 7;
             this.MapSizeGroupBox.TabStop = false;
             this.MapSizeGroupBox.Text = "Map Size";
@@ -357,7 +354,7 @@ namespace DemoGame.MapEditor
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(475, 52);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(366, 52);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
             // NameLabel
@@ -375,7 +372,7 @@ namespace DemoGame.MapEditor
             this.txtMusic.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMusic.Location = new System.Drawing.Point(73, 28);
             this.txtMusic.Name = "txtMusic";
-            this.txtMusic.Size = new System.Drawing.Size(399, 20);
+            this.txtMusic.Size = new System.Drawing.Size(290, 20);
             this.txtMusic.TabIndex = 5;
             this.txtMusic.TextChanged += new System.EventHandler(this.txtMusic_TextChanged);
             // 
@@ -384,7 +381,7 @@ namespace DemoGame.MapEditor
             this.txtMapName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMapName.Location = new System.Drawing.Point(73, 3);
             this.txtMapName.Name = "txtMapName";
-            this.txtMapName.Size = new System.Drawing.Size(399, 20);
+            this.txtMapName.Size = new System.Drawing.Size(290, 20);
             this.txtMapName.TabIndex = 1;
             this.txtMapName.TextChanged += new System.EventHandler(this.txtMapName_TextChanged);
             // 
@@ -403,7 +400,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.Controls.Add(this.treeGrhs);
             this.tabPageGrhs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGrhs.Name = "tabPageGrhs";
-            this.tabPageGrhs.Size = new System.Drawing.Size(481, 580);
+            this.tabPageGrhs.Size = new System.Drawing.Size(372, 300);
             this.tabPageGrhs.TabIndex = 5;
             this.tabPageGrhs.Text = "Grhs";
             this.tabPageGrhs.UseVisualStyleBackColor = true;
@@ -419,206 +416,123 @@ namespace DemoGame.MapEditor
             this.treeGrhs.Location = new System.Drawing.Point(0, 0);
             this.treeGrhs.Name = "treeGrhs";
             this.treeGrhs.ShowNodeToolTips = true;
-            this.treeGrhs.Size = new System.Drawing.Size(481, 580);
+            this.treeGrhs.Size = new System.Drawing.Size(372, 300);
             this.treeGrhs.Sorted = true;
             this.treeGrhs.TabIndex = 10;
             this.treeGrhs.GrhAfterSelect += new NetGore.EditorTools.GrhTreeViewEvent(this.treeGrhs_GrhAfterSelect);
             // 
-            // tabPageWalls
-            // 
-            this.tabPageWalls.Controls.Add(this.splitContainer6);
-            this.tabPageWalls.Location = new System.Drawing.Point(4, 22);
-            this.tabPageWalls.Name = "tabPageWalls";
-            this.tabPageWalls.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWalls.Size = new System.Drawing.Size(481, 580);
-            this.tabPageWalls.TabIndex = 1;
-            this.tabPageWalls.Text = "Walls";
-            this.tabPageWalls.ToolTipText = "Collision walls";
-            this.tabPageWalls.UseVisualStyleBackColor = true;
-            // 
-            // splitContainer6
-            // 
-            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer6.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer6.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer6.Name = "splitContainer6";
-            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer6.Panel1
-            // 
-            this.splitContainer6.Panel1.Controls.Add(this.splitContainer7);
-            this.splitContainer6.Size = new System.Drawing.Size(475, 574);
-            this.splitContainer6.SplitterDistance = 51;
-            this.splitContainer6.TabIndex = 9;
-            // 
-            // splitContainer7
-            // 
-            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer7.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer7.Name = "splitContainer7";
-            this.splitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer7.Panel1
-            // 
-            this.splitContainer7.Panel1.Controls.Add(this.chkSnapWallGrid);
-            this.splitContainer7.Panel1.Controls.Add(this.chkSnapWallWall);
-            // 
-            // splitContainer7.Panel2
-            // 
-            this.splitContainer7.Panel2.Controls.Add(this.cmbWallType);
-            this.splitContainer7.Size = new System.Drawing.Size(475, 51);
-            this.splitContainer7.SplitterDistance = 25;
-            this.splitContainer7.TabIndex = 0;
-            // 
-            // chkSnapWallGrid
-            // 
-            this.chkSnapWallGrid.AutoSize = true;
-            this.chkSnapWallGrid.Checked = true;
-            this.chkSnapWallGrid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSnapWallGrid.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chkSnapWallGrid.Location = new System.Drawing.Point(96, 0);
-            this.chkSnapWallGrid.Name = "chkSnapWallGrid";
-            this.chkSnapWallGrid.Size = new System.Drawing.Size(89, 25);
-            this.chkSnapWallGrid.TabIndex = 7;
-            this.chkSnapWallGrid.Text = "Snap To Grid";
-            this.chkSnapWallGrid.UseVisualStyleBackColor = true;
-            // 
-            // chkSnapWallWall
-            // 
-            this.chkSnapWallWall.AutoSize = true;
-            this.chkSnapWallWall.Checked = true;
-            this.chkSnapWallWall.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSnapWallWall.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chkSnapWallWall.Location = new System.Drawing.Point(0, 0);
-            this.chkSnapWallWall.Name = "chkSnapWallWall";
-            this.chkSnapWallWall.Size = new System.Drawing.Size(96, 25);
-            this.chkSnapWallWall.TabIndex = 6;
-            this.chkSnapWallWall.Text = "Snap To Walls";
-            this.chkSnapWallWall.UseVisualStyleBackColor = true;
-            // 
-            // cmbWallType
-            // 
-            this.cmbWallType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbWallType.FormattingEnabled = true;
-            this.cmbWallType.Location = new System.Drawing.Point(0, 0);
-            this.cmbWallType.Name = "cmbWallType";
-            this.cmbWallType.Size = new System.Drawing.Size(475, 21);
-            this.cmbWallType.TabIndex = 8;
-            // 
-            // tabPageEntities
-            // 
-            this.tabPageEntities.Controls.Add(this.cmbEntityTypes);
-            this.tabPageEntities.Controls.Add(this.btnNewEntity);
-            this.tabPageEntities.Controls.Add(this.lstEntities);
-            this.tabPageEntities.Location = new System.Drawing.Point(4, 22);
-            this.tabPageEntities.Name = "tabPageEntities";
-            this.tabPageEntities.Size = new System.Drawing.Size(481, 580);
-            this.tabPageEntities.TabIndex = 7;
-            this.tabPageEntities.Text = "Entities";
-            this.tabPageEntities.UseVisualStyleBackColor = true;
-            // 
-            // cmbEntityTypes
-            // 
-            this.cmbEntityTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEntityTypes.FormattingEnabled = true;
-            this.cmbEntityTypes.Location = new System.Drawing.Point(3, 195);
-            this.cmbEntityTypes.Name = "cmbEntityTypes";
-            this.cmbEntityTypes.Size = new System.Drawing.Size(308, 21);
-            this.cmbEntityTypes.TabIndex = 11;
-            // 
-            // btnNewEntity
-            // 
-            this.btnNewEntity.Location = new System.Drawing.Point(317, 192);
-            this.btnNewEntity.Name = "btnNewEntity";
-            this.btnNewEntity.Size = new System.Drawing.Size(59, 24);
-            this.btnNewEntity.TabIndex = 10;
-            this.btnNewEntity.Text = "New";
-            this.btnNewEntity.UseVisualStyleBackColor = true;
-            this.btnNewEntity.Click += new System.EventHandler(this.btnNewEntity_Click);
-            // 
-            // lstEntities
-            // 
-            this.lstEntities.Camera = null;
-            this.lstEntities.FormattingEnabled = true;
-            this.lstEntities.Location = new System.Drawing.Point(3, 3);
-            this.lstEntities.Map = null;
-            this.lstEntities.Name = "lstEntities";
-            this.lstEntities.Size = new System.Drawing.Size(373, 186);
-            this.lstEntities.TabIndex = 0;
-            this.lstEntities.SelectedValueChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
-            // 
             // tabPageBackground
             // 
-            this.tabPageBackground.Controls.Add(this.btnNewBGLayer);
-            this.tabPageBackground.Controls.Add(this.btnDeleteBGItem);
-            this.tabPageBackground.Controls.Add(this.lstBGItems);
+            this.tabPageBackground.Controls.Add(this.splitContainer5);
             this.tabPageBackground.Location = new System.Drawing.Point(4, 22);
             this.tabPageBackground.Name = "tabPageBackground";
-            this.tabPageBackground.Size = new System.Drawing.Size(481, 580);
+            this.tabPageBackground.Size = new System.Drawing.Size(372, 300);
             this.tabPageBackground.TabIndex = 6;
             this.tabPageBackground.Text = "Background";
             this.tabPageBackground.UseVisualStyleBackColor = true;
             // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.lstBGItems);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.btnNewBGLayer);
+            this.splitContainer5.Panel2.Controls.Add(this.btnDeleteBGItem);
+            this.splitContainer5.Size = new System.Drawing.Size(372, 300);
+            this.splitContainer5.SplitterDistance = 271;
+            this.splitContainer5.TabIndex = 4;
+            // 
+            // lstBGItems
+            // 
+            this.lstBGItems.Camera = null;
+            this.lstBGItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstBGItems.FormattingEnabled = true;
+            this.lstBGItems.Location = new System.Drawing.Point(0, 0);
+            this.lstBGItems.Map = null;
+            this.lstBGItems.Name = "lstBGItems";
+            this.lstBGItems.Size = new System.Drawing.Size(372, 264);
+            this.lstBGItems.TabIndex = 1;
+            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
+            // 
             // btnNewBGLayer
             // 
-            this.btnNewBGLayer.Location = new System.Drawing.Point(83, 143);
+            this.btnNewBGLayer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnNewBGLayer.Location = new System.Drawing.Point(74, 0);
             this.btnNewBGLayer.Name = "btnNewBGLayer";
-            this.btnNewBGLayer.Size = new System.Drawing.Size(74, 24);
-            this.btnNewBGLayer.TabIndex = 3;
+            this.btnNewBGLayer.Size = new System.Drawing.Size(74, 25);
+            this.btnNewBGLayer.TabIndex = 5;
             this.btnNewBGLayer.Text = "New Layer";
             this.btnNewBGLayer.UseVisualStyleBackColor = true;
             this.btnNewBGLayer.Click += new System.EventHandler(this.btnNewBGLayer_Click);
             // 
             // btnDeleteBGItem
             // 
-            this.btnDeleteBGItem.Location = new System.Drawing.Point(3, 143);
+            this.btnDeleteBGItem.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnDeleteBGItem.Location = new System.Drawing.Point(0, 0);
             this.btnDeleteBGItem.Name = "btnDeleteBGItem";
-            this.btnDeleteBGItem.Size = new System.Drawing.Size(74, 24);
-            this.btnDeleteBGItem.TabIndex = 2;
+            this.btnDeleteBGItem.Size = new System.Drawing.Size(74, 25);
+            this.btnDeleteBGItem.TabIndex = 4;
             this.btnDeleteBGItem.Text = "Delete";
             this.btnDeleteBGItem.UseVisualStyleBackColor = true;
             this.btnDeleteBGItem.Click += new System.EventHandler(this.btnDeleteBGItem_Click);
             // 
-            // lstBGItems
-            // 
-            this.lstBGItems.Camera = null;
-            this.lstBGItems.FormattingEnabled = true;
-            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
-            this.lstBGItems.Map = null;
-            this.lstBGItems.Name = "lstBGItems";
-            this.lstBGItems.Size = new System.Drawing.Size(373, 134);
-            this.lstBGItems.TabIndex = 0;
-            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
-            // 
             // tabEffects
             // 
-            this.tabEffects.Controls.Add(this.lstMapParticleEffects);
-            this.tabEffects.Controls.Add(this.lstAvailableParticleEffects);
+            this.tabEffects.Controls.Add(this.splitContainer6);
             this.tabEffects.Location = new System.Drawing.Point(4, 22);
             this.tabEffects.Name = "tabEffects";
-            this.tabEffects.Size = new System.Drawing.Size(481, 580);
+            this.tabEffects.Size = new System.Drawing.Size(372, 300);
             this.tabEffects.TabIndex = 8;
             this.tabEffects.Text = "Effects";
             this.tabEffects.UseVisualStyleBackColor = true;
             // 
+            // splitContainer6
+            // 
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.lstMapParticleEffects);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.lstAvailableParticleEffects);
+            this.splitContainer6.Size = new System.Drawing.Size(372, 300);
+            this.splitContainer6.SplitterDistance = 144;
+            this.splitContainer6.TabIndex = 4;
+            // 
             // lstMapParticleEffects
             // 
             this.lstMapParticleEffects.Camera = null;
+            this.lstMapParticleEffects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstMapParticleEffects.FormattingEnabled = true;
-            this.lstMapParticleEffects.Location = new System.Drawing.Point(3, 3);
+            this.lstMapParticleEffects.Location = new System.Drawing.Point(0, 0);
             this.lstMapParticleEffects.Map = null;
             this.lstMapParticleEffects.Name = "lstMapParticleEffects";
-            this.lstMapParticleEffects.Size = new System.Drawing.Size(379, 147);
-            this.lstMapParticleEffects.TabIndex = 3;
+            this.lstMapParticleEffects.Size = new System.Drawing.Size(372, 134);
+            this.lstMapParticleEffects.TabIndex = 4;
             this.lstMapParticleEffects.SelectedIndexChanged += new System.EventHandler(this.lstMapParticleEffects_SelectedIndexChanged);
             // 
             // lstAvailableParticleEffects
             // 
+            this.lstAvailableParticleEffects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstAvailableParticleEffects.FormattingEnabled = true;
-            this.lstAvailableParticleEffects.Location = new System.Drawing.Point(3, 156);
+            this.lstAvailableParticleEffects.Location = new System.Drawing.Point(0, 0);
             this.lstAvailableParticleEffects.Name = "lstAvailableParticleEffects";
-            this.lstAvailableParticleEffects.Size = new System.Drawing.Size(373, 121);
-            this.lstAvailableParticleEffects.TabIndex = 0;
+            this.lstAvailableParticleEffects.Size = new System.Drawing.Size(372, 147);
+            this.lstAvailableParticleEffects.TabIndex = 1;
             this.lstAvailableParticleEffects.RequestCreateEffect += new NetGore.EditorTools.ParticleEffectListBoxCreateEventHandler(this.lstAvailableParticleEffects_RequestCreateEffect);
             // 
             // tabPageNPCs
@@ -626,7 +540,7 @@ namespace DemoGame.MapEditor
             this.tabPageNPCs.Controls.Add(this.tcSpawns);
             this.tabPageNPCs.Location = new System.Drawing.Point(4, 22);
             this.tabPageNPCs.Name = "tabPageNPCs";
-            this.tabPageNPCs.Size = new System.Drawing.Size(481, 580);
+            this.tabPageNPCs.Size = new System.Drawing.Size(372, 300);
             this.tabPageNPCs.TabIndex = 4;
             this.tabPageNPCs.Text = "NPCs";
             this.tabPageNPCs.ToolTipText = "Mob and NPC spawning and settings";
@@ -636,93 +550,136 @@ namespace DemoGame.MapEditor
             // 
             this.tcSpawns.Controls.Add(this.tpSpawns);
             this.tcSpawns.Controls.Add(this.tpPersistent);
-            this.tcSpawns.Location = new System.Drawing.Point(3, 3);
+            this.tcSpawns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcSpawns.Location = new System.Drawing.Point(0, 0);
             this.tcSpawns.Name = "tcSpawns";
             this.tcSpawns.SelectedIndex = 0;
-            this.tcSpawns.Size = new System.Drawing.Size(375, 200);
+            this.tcSpawns.Size = new System.Drawing.Size(372, 300);
             this.tcSpawns.TabIndex = 7;
             // 
             // tpSpawns
             // 
-            this.tpSpawns.Controls.Add(this.btnAddSpawn);
-            this.tpSpawns.Controls.Add(this.btnDeleteSpawn);
-            this.tpSpawns.Controls.Add(this.lstNPCSpawns);
+            this.tpSpawns.Controls.Add(this.splitContainer7);
             this.tpSpawns.Location = new System.Drawing.Point(4, 22);
             this.tpSpawns.Name = "tpSpawns";
             this.tpSpawns.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSpawns.Size = new System.Drawing.Size(367, 174);
+            this.tpSpawns.Size = new System.Drawing.Size(364, 274);
             this.tpSpawns.TabIndex = 0;
             this.tpSpawns.Text = "Spawns";
             this.tpSpawns.UseVisualStyleBackColor = true;
             // 
-            // btnAddSpawn
+            // splitContainer7
             // 
-            this.btnAddSpawn.Location = new System.Drawing.Point(285, 147);
-            this.btnAddSpawn.Name = "btnAddSpawn";
-            this.btnAddSpawn.Size = new System.Drawing.Size(74, 24);
-            this.btnAddSpawn.TabIndex = 7;
-            this.btnAddSpawn.Text = "Add";
-            this.btnAddSpawn.UseVisualStyleBackColor = true;
-            this.btnAddSpawn.Click += new System.EventHandler(this.btnAddSpawn_Click);
+            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer7.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer7.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer7.Name = "splitContainer7";
+            this.splitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer7.Panel1
+            // 
+            this.splitContainer7.Panel1.Controls.Add(this.lstNPCSpawns);
+            // 
+            // splitContainer7.Panel2
+            // 
+            this.splitContainer7.Panel2.Controls.Add(this.btnDeleteSpawn);
+            this.splitContainer7.Panel2.Controls.Add(this.btnAddSpawn);
+            this.splitContainer7.Size = new System.Drawing.Size(358, 268);
+            this.splitContainer7.SplitterDistance = 239;
+            this.splitContainer7.TabIndex = 8;
+            // 
+            // lstNPCSpawns
+            // 
+            this.lstNPCSpawns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstNPCSpawns.FormattingEnabled = true;
+            this.lstNPCSpawns.Location = new System.Drawing.Point(0, 0);
+            this.lstNPCSpawns.Name = "lstNPCSpawns";
+            this.lstNPCSpawns.PropertyGrid = null;
+            this.lstNPCSpawns.Size = new System.Drawing.Size(358, 238);
+            this.lstNPCSpawns.TabIndex = 6;
             // 
             // btnDeleteSpawn
             // 
-            this.btnDeleteSpawn.Location = new System.Drawing.Point(205, 147);
+            this.btnDeleteSpawn.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDeleteSpawn.Location = new System.Drawing.Point(210, 0);
             this.btnDeleteSpawn.Name = "btnDeleteSpawn";
-            this.btnDeleteSpawn.Size = new System.Drawing.Size(74, 24);
-            this.btnDeleteSpawn.TabIndex = 6;
+            this.btnDeleteSpawn.Size = new System.Drawing.Size(74, 25);
+            this.btnDeleteSpawn.TabIndex = 9;
             this.btnDeleteSpawn.Text = "Delete";
             this.btnDeleteSpawn.UseVisualStyleBackColor = true;
             this.btnDeleteSpawn.Click += new System.EventHandler(this.btnDeleteSpawn_Click);
             // 
-            // lstNPCSpawns
+            // btnAddSpawn
             // 
-            this.lstNPCSpawns.FormattingEnabled = true;
-            this.lstNPCSpawns.Location = new System.Drawing.Point(6, 6);
-            this.lstNPCSpawns.Name = "lstNPCSpawns";
-            this.lstNPCSpawns.PropertyGrid = null;
-            this.lstNPCSpawns.Size = new System.Drawing.Size(353, 134);
-            this.lstNPCSpawns.TabIndex = 5;
+            this.btnAddSpawn.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAddSpawn.Location = new System.Drawing.Point(284, 0);
+            this.btnAddSpawn.Name = "btnAddSpawn";
+            this.btnAddSpawn.Size = new System.Drawing.Size(74, 25);
+            this.btnAddSpawn.TabIndex = 8;
+            this.btnAddSpawn.Text = "Add";
+            this.btnAddSpawn.UseVisualStyleBackColor = true;
+            this.btnAddSpawn.Click += new System.EventHandler(this.btnAddSpawn_Click);
             // 
             // tpPersistent
             // 
-            this.tpPersistent.Controls.Add(this.lstPersistentNPCs);
-            this.tpPersistent.Controls.Add(this.btnAddPersistentNPC);
-            this.tpPersistent.Controls.Add(this.btnDeletePersistentNPC);
+            this.tpPersistent.Controls.Add(this.splitContainer8);
             this.tpPersistent.Location = new System.Drawing.Point(4, 22);
             this.tpPersistent.Name = "tpPersistent";
             this.tpPersistent.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPersistent.Size = new System.Drawing.Size(367, 174);
+            this.tpPersistent.Size = new System.Drawing.Size(364, 274);
             this.tpPersistent.TabIndex = 1;
             this.tpPersistent.Text = "Persistent";
             this.tpPersistent.UseVisualStyleBackColor = true;
             // 
+            // splitContainer8
+            // 
+            this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer8.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer8.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer8.Name = "splitContainer8";
+            this.splitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer8.Panel1
+            // 
+            this.splitContainer8.Panel1.Controls.Add(this.lstPersistentNPCs);
+            // 
+            // splitContainer8.Panel2
+            // 
+            this.splitContainer8.Panel2.Controls.Add(this.btnDeletePersistentNPC);
+            this.splitContainer8.Panel2.Controls.Add(this.btnAddPersistentNPC);
+            this.splitContainer8.Size = new System.Drawing.Size(358, 268);
+            this.splitContainer8.SplitterDistance = 239;
+            this.splitContainer8.TabIndex = 12;
+            // 
             // lstPersistentNPCs
             // 
+            this.lstPersistentNPCs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstPersistentNPCs.FormattingEnabled = true;
-            this.lstPersistentNPCs.Location = new System.Drawing.Point(6, 6);
+            this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
             this.lstPersistentNPCs.Name = "lstPersistentNPCs";
             this.lstPersistentNPCs.PropertyGrid = null;
-            this.lstPersistentNPCs.Size = new System.Drawing.Size(311, 134);
-            this.lstPersistentNPCs.TabIndex = 11;
-            // 
-            // btnAddPersistentNPC
-            // 
-            this.btnAddPersistentNPC.Location = new System.Drawing.Point(243, 145);
-            this.btnAddPersistentNPC.Name = "btnAddPersistentNPC";
-            this.btnAddPersistentNPC.Size = new System.Drawing.Size(74, 24);
-            this.btnAddPersistentNPC.TabIndex = 10;
-            this.btnAddPersistentNPC.Text = "Add";
-            this.btnAddPersistentNPC.UseVisualStyleBackColor = true;
+            this.lstPersistentNPCs.Size = new System.Drawing.Size(358, 238);
+            this.lstPersistentNPCs.TabIndex = 12;
             // 
             // btnDeletePersistentNPC
             // 
-            this.btnDeletePersistentNPC.Location = new System.Drawing.Point(163, 145);
+            this.btnDeletePersistentNPC.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDeletePersistentNPC.Location = new System.Drawing.Point(210, 0);
             this.btnDeletePersistentNPC.Name = "btnDeletePersistentNPC";
-            this.btnDeletePersistentNPC.Size = new System.Drawing.Size(74, 24);
-            this.btnDeletePersistentNPC.TabIndex = 9;
+            this.btnDeletePersistentNPC.Size = new System.Drawing.Size(74, 25);
+            this.btnDeletePersistentNPC.TabIndex = 12;
             this.btnDeletePersistentNPC.Text = "Delete";
             this.btnDeletePersistentNPC.UseVisualStyleBackColor = true;
+            // 
+            // btnAddPersistentNPC
+            // 
+            this.btnAddPersistentNPC.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAddPersistentNPC.Location = new System.Drawing.Point(284, 0);
+            this.btnAddPersistentNPC.Name = "btnAddPersistentNPC";
+            this.btnAddPersistentNPC.Size = new System.Drawing.Size(74, 25);
+            this.btnAddPersistentNPC.TabIndex = 11;
+            this.btnAddPersistentNPC.Text = "Add";
+            this.btnAddPersistentNPC.UseVisualStyleBackColor = true;
             // 
             // tabPageSettings
             // 
@@ -730,7 +687,7 @@ namespace DemoGame.MapEditor
             this.tabPageSettings.Controls.Add(this.groupBox1);
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
-            this.tabPageSettings.Size = new System.Drawing.Size(481, 580);
+            this.tabPageSettings.Size = new System.Drawing.Size(372, 300);
             this.tabPageSettings.TabIndex = 3;
             this.tabPageSettings.Text = "Settings";
             this.tabPageSettings.ToolTipText = "Map editor settings";
@@ -899,8 +856,8 @@ namespace DemoGame.MapEditor
             // splitContainer9.Panel2
             // 
             this.splitContainer9.Panel2.Controls.Add(this.lstSelected);
-            this.splitContainer9.Size = new System.Drawing.Size(489, 65);
-            this.splitContainer9.SplitterDistance = 267;
+            this.splitContainer9.Size = new System.Drawing.Size(380, 267);
+            this.splitContainer9.SplitterDistance = 207;
             this.splitContainer9.TabIndex = 0;
             // 
             // pgSelected
@@ -908,7 +865,7 @@ namespace DemoGame.MapEditor
             this.pgSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgSelected.Location = new System.Drawing.Point(0, 0);
             this.pgSelected.Name = "pgSelected";
-            this.pgSelected.Size = new System.Drawing.Size(267, 65);
+            this.pgSelected.Size = new System.Drawing.Size(207, 267);
             this.pgSelected.TabIndex = 1;
             this.pgSelected.ToolbarVisible = false;
             // 
@@ -918,7 +875,7 @@ namespace DemoGame.MapEditor
             this.lstSelected.FormattingEnabled = true;
             this.lstSelected.Location = new System.Drawing.Point(0, 0);
             this.lstSelected.Name = "lstSelected";
-            this.lstSelected.Size = new System.Drawing.Size(218, 56);
+            this.lstSelected.Size = new System.Drawing.Size(169, 264);
             this.lstSelected.TabIndex = 0;
             // 
             // btnOptimize
@@ -926,7 +883,7 @@ namespace DemoGame.MapEditor
             this.btnOptimize.Dock = System.Windows.Forms.DockStyle.Left;
             this.btnOptimize.Location = new System.Drawing.Point(260, 0);
             this.btnOptimize.Name = "btnOptimize";
-            this.btnOptimize.Size = new System.Drawing.Size(65, 28);
+            this.btnOptimize.Size = new System.Drawing.Size(65, 25);
             this.btnOptimize.TabIndex = 10;
             this.btnOptimize.Text = "Optimize";
             this.btnOptimize.UseVisualStyleBackColor = true;
@@ -936,7 +893,7 @@ namespace DemoGame.MapEditor
             this.btnSaveAs.Dock = System.Windows.Forms.DockStyle.Left;
             this.btnSaveAs.Location = new System.Drawing.Point(195, 0);
             this.btnSaveAs.Name = "btnSaveAs";
-            this.btnSaveAs.Size = new System.Drawing.Size(65, 28);
+            this.btnSaveAs.Size = new System.Drawing.Size(65, 25);
             this.btnSaveAs.TabIndex = 9;
             this.btnSaveAs.Text = "Save As";
             this.btnSaveAs.UseVisualStyleBackColor = true;
@@ -946,7 +903,7 @@ namespace DemoGame.MapEditor
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Left;
             this.btnSave.Location = new System.Drawing.Point(130, 0);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(65, 28);
+            this.btnSave.Size = new System.Drawing.Size(65, 25);
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -957,7 +914,7 @@ namespace DemoGame.MapEditor
             this.btnLoad.Dock = System.Windows.Forms.DockStyle.Left;
             this.btnLoad.Location = new System.Drawing.Point(65, 0);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(65, 28);
+            this.btnLoad.Size = new System.Drawing.Size(65, 25);
             this.btnLoad.TabIndex = 6;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
@@ -968,7 +925,7 @@ namespace DemoGame.MapEditor
             this.btnNew.Dock = System.Windows.Forms.DockStyle.Left;
             this.btnNew.Location = new System.Drawing.Point(0, 0);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(65, 28);
+            this.btnNew.Size = new System.Drawing.Size(65, 25);
             this.btnNew.TabIndex = 5;
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
@@ -978,7 +935,7 @@ namespace DemoGame.MapEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1305, 721);
+            this.ClientSize = new System.Drawing.Size(1196, 640);
             this.Controls.Add(splitContainer1);
             this.KeyPreview = true;
             this.Name = "ScreenForm";
@@ -1006,20 +963,24 @@ namespace DemoGame.MapEditor
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tabPageGrhs.ResumeLayout(false);
-            this.tabPageWalls.ResumeLayout(false);
-            this.splitContainer6.Panel1.ResumeLayout(false);
-            this.splitContainer6.ResumeLayout(false);
-            this.splitContainer7.Panel1.ResumeLayout(false);
-            this.splitContainer7.Panel1.PerformLayout();
-            this.splitContainer7.Panel2.ResumeLayout(false);
-            this.splitContainer7.ResumeLayout(false);
-            this.tabPageEntities.ResumeLayout(false);
             this.tabPageBackground.ResumeLayout(false);
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            this.splitContainer5.Panel2.ResumeLayout(false);
+            this.splitContainer5.ResumeLayout(false);
             this.tabEffects.ResumeLayout(false);
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            this.splitContainer6.ResumeLayout(false);
             this.tabPageNPCs.ResumeLayout(false);
             this.tcSpawns.ResumeLayout(false);
             this.tpSpawns.ResumeLayout(false);
+            this.splitContainer7.Panel1.ResumeLayout(false);
+            this.splitContainer7.Panel2.ResumeLayout(false);
+            this.splitContainer7.ResumeLayout(false);
             this.tpPersistent.ResumeLayout(false);
+            this.splitContainer8.Panel1.ResumeLayout(false);
+            this.splitContainer8.Panel2.ResumeLayout(false);
+            this.splitContainer8.ResumeLayout(false);
             this.tabPageSettings.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -1054,33 +1015,12 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.TextBox txtMapName;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabPageGrhs;
-        private System.Windows.Forms.TabPage tabPageWalls;
-        private System.Windows.Forms.SplitContainer splitContainer6;
-        private System.Windows.Forms.SplitContainer splitContainer7;
-        public System.Windows.Forms.CheckBox chkSnapWallGrid;
-        public System.Windows.Forms.CheckBox chkSnapWallWall;
-        public System.Windows.Forms.ComboBox cmbWallType;
-        private System.Windows.Forms.TabPage tabPageEntities;
-        private System.Windows.Forms.ComboBox cmbEntityTypes;
-        private System.Windows.Forms.Button btnNewEntity;
-        private EntityListBox lstEntities;
         private System.Windows.Forms.TabPage tabPageBackground;
-        private System.Windows.Forms.Button btnNewBGLayer;
-        private System.Windows.Forms.Button btnDeleteBGItem;
-        private BackgroundItemListBox lstBGItems;
         private System.Windows.Forms.TabPage tabEffects;
-        private MapParticleEffectsListBox lstMapParticleEffects;
-        private ParticleEffectListBox lstAvailableParticleEffects;
         private System.Windows.Forms.TabPage tabPageNPCs;
         private System.Windows.Forms.TabControl tcSpawns;
         private System.Windows.Forms.TabPage tpSpawns;
-        private System.Windows.Forms.Button btnAddSpawn;
-        private System.Windows.Forms.Button btnDeleteSpawn;
-        private NPCSpawnsListBox lstNPCSpawns;
         private System.Windows.Forms.TabPage tpPersistent;
-        private PersistentNPCListBox lstPersistentNPCs;
-        private System.Windows.Forms.Button btnAddPersistentNPC;
-        private System.Windows.Forms.Button btnDeletePersistentNPC;
         private System.Windows.Forms.TabPage tabPageSettings;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox chkDrawPersistentNPCs;
@@ -1100,5 +1040,20 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.PropertyGrid pgSelected;
         private System.Windows.Forms.ListBox lstSelected;
         public GrhTreeView treeGrhs;
+        private System.Windows.Forms.SplitContainer splitContainer5;
+        private System.Windows.Forms.Button btnNewBGLayer;
+        private System.Windows.Forms.Button btnDeleteBGItem;
+        private BackgroundItemListBox lstBGItems;
+        private System.Windows.Forms.SplitContainer splitContainer6;
+        private MapParticleEffectsListBox lstMapParticleEffects;
+        private ParticleEffectListBox lstAvailableParticleEffects;
+        private System.Windows.Forms.SplitContainer splitContainer7;
+        private NPCSpawnsListBox lstNPCSpawns;
+        private System.Windows.Forms.Button btnDeleteSpawn;
+        private System.Windows.Forms.Button btnAddSpawn;
+        private System.Windows.Forms.SplitContainer splitContainer8;
+        private PersistentNPCListBox lstPersistentNPCs;
+        private System.Windows.Forms.Button btnDeletePersistentNPC;
+        private System.Windows.Forms.Button btnAddPersistentNPC;
     }
 }
