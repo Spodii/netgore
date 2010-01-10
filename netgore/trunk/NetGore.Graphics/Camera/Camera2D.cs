@@ -251,7 +251,7 @@ namespace NetGore.Graphics
                 return false;
             }
 
-            return InView(entity.Position, entity.Max);
+            return InView(entity.Position, entity.Size);
         }
 
         /// <summary>
@@ -271,31 +271,19 @@ namespace NetGore.Graphics
                 return false;
             }
 
-            return InView(position, position + grh.Size);
+            return InView(position, grh.Size);
         }
 
         /// <summary>
         /// Checks if a specified object is in view of the screen.
         /// </summary>
-        /// <param name="min">Minimum (top-left) vector.</param>
-        /// <param name="max">Maximum (bottom-right) vector.</param>
+        /// <param name="position">Position of the object.</param>
+        /// <param name="size">The size of the object.</param>
         /// <returns>True if in the view area, else false.</returns>
-        public bool InView(Vector2 min, Vector2 max)
+        public bool InView(Vector2 position, Vector2 size)
         {
-            return (max.X > Min.X && max.Y > Min.Y && min.X < Min.X + _size.X && min.Y < Min.Y + _size.Y);
-        }
-
-        /// <summary>
-        /// Checks if a specified object is in view of the screen.
-        /// </summary>
-        /// <param name="x">X coordinate of the object.</param>
-        /// <param name="y">Y coordinate of the object.</param>
-        /// <param name="width">Width of the object.</param>
-        /// <param name="height">Height of the object.</param>
-        /// <returns>True if in the view area, else false.</returns>
-        public bool InView(float x, float y, float width, float height)
-        {
-            return (x + width > Min.X && y + height > Min.Y && x < Min.X + _size.X && y < Min.Y + _size.Y);
+            var max = position + size;
+            return (max.X > Min.X) && (max.Y > Min.Y) && (position.X < Max.X) && (position.Y < Max.Y);
         }
 
         /// <summary>
