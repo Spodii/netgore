@@ -12,12 +12,43 @@ using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {
-    class GrhCursor : MapEditorCursorBase<ScreenForm>
+    sealed class GrhCursor : MapEditorCursorBase<ScreenForm>
     {
         readonly List<MapGrh> _selectedMapGrhs = new List<MapGrh>();
+        readonly ContextMenu _contextMenu;
+        readonly MenuItem _mnuSnapToGrid;
+
         TransBox _mapGrhMoveBox = null;
         Vector2 _mouseDragStart = Vector2.Zero;
         Vector2 _selectedEntityOffset = Vector2.Zero;
+
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhCursor"/> class.
+        /// </summary>
+        public GrhCursor()
+        {
+            _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
+            _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
 
         /// <summary>
         /// Gets the cursor's <see cref="Image"/>.
@@ -116,7 +147,7 @@ namespace DemoGame.MapEditor
                 foreach (MapGrh mg in _selectedMapGrhs)
                 {
                     mg.Position = cursorPos - _selectedEntityOffset;
-                    if (screen.chkSnapGrhGrid.Checked)
+                    if (_mnuSnapToGrid.Checked)
                         mg.Position = screen.Grid.AlignDown(mg.Position);
                 }
             }
@@ -139,6 +170,11 @@ namespace DemoGame.MapEditor
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been released.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
         public override void MouseUp(ScreenForm screen, MouseEventArgs e)
         {
             Vector2 cursorPos = screen.CursorPos;

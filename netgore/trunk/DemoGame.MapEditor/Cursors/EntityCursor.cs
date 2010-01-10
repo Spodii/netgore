@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,12 +14,23 @@ namespace DemoGame.MapEditor
 {
     sealed class EntityCursor : MapEditorCursorBase<ScreenForm>
     {
-        Entity _selectedEntity = null;
-        Vector2 _selectionOffset;
+        readonly ContextMenu _contextMenu;
+        readonly MenuItem _mnuIgnoreWalls;
 
+        Vector2 _selectionOffset;
         string _toolTip = string.Empty;
         object _toolTipObject = null;
         Vector2 _toolTipPos;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityCursor"/> class.
+        /// </summary>
+        public EntityCursor()
+        {
+            _mnuIgnoreWalls = new MenuItem("Ignore Walls", Menu_IgnoreWalls_Click) { Checked = true };
+            _contextMenu =
+                new ContextMenu(new MenuItem[] { _mnuIgnoreWalls });
+        }
 
         /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
@@ -58,6 +70,42 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
+
+        Entity GetEntityUnderCursor(ScreenForm screen)
+        {
+            Vector2 cursorPos = screen.CursorPos;
+            return screen.Map.Spatial.GetEntity<Entity>(cursorPos, GetEntityUnderCursorFilter);
+        }
+
+        bool GetEntityUnderCursorFilter(Entity entity)
+        {
+            if (entity is CharacterEntity)
+                return false;
+
+            if (_mnuIgnoreWalls.Checked && entity is WallEntityBase)
+                return false;
+
+            return true;
+        }
+
+        void Menu_IgnoreWalls_Click(object sender, EventArgs e)
+        {
+            _mnuIgnoreWalls.Checked = !_mnuIgnoreWalls.Checked;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
@@ -67,16 +115,13 @@ namespace DemoGame.MapEditor
             if (e.Button != MouseButtons.Left)
                 return;
 
-            Vector2 cursorPos = screen.CursorPos;
-
             // Set the selected entity to the first entity we find at the cursor
-            _selectedEntity = screen.Map.Spatial.GetEntity<Entity>(cursorPos,
-                                                                   entity =>
-                                                                   !(entity is WallEntityBase || entity is CharacterEntity));
+            screen.SelectedObjectsManager.SetSelected(GetEntityUnderCursor(screen));
 
             // Set the offset
-            if (_selectedEntity != null)
-                _selectionOffset = cursorPos - _selectedEntity.Position;
+            var focusedEntity = screen.SelectedObjectsManager.Focused as Entity;
+            if (focusedEntity != null)
+                _selectionOffset = screen.CursorPos - focusedEntity.Position;
         }
 
         /// <summary>
@@ -86,6 +131,8 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseMove(ScreenForm screen, MouseEventArgs e)
         {
+            var focusedEntity = screen.SelectedObjectsManager.Focused as Entity;
+
             // Get the map
             Map map = screen.Map;
             if (map == null)
@@ -95,28 +142,32 @@ namespace DemoGame.MapEditor
             if (!map.IsInMapBoundaries(screen.CursorPos))
                 return;
 
-            if (_selectedEntity != null)
+            if (focusedEntity != null)
             {
-                if (screen.KeyEventArgs.Control)
+                if (e.Button == MouseButtons.Left)
                 {
-                    // Resize the entity
-                    Vector2 size = screen.CursorPos - _selectedEntity.Position;
-                    if (size.X < 4)
-                        size.X = 4;
-                    if (size.Y < 4)
-                        size.Y = 4;
-                    map.SafeResizeEntity(_selectedEntity, size);
-                }
-                else
-                {
-                    // Move the entity
-                    map.SafeTeleportEntity(_selectedEntity, screen.CursorPos - _selectionOffset);
+                    if (screen.KeyEventArgs.Control)
+                    {
+                        // Resize the entity
+                        Vector2 size = screen.CursorPos - focusedEntity.Position;
+                        if (size.X < 4)
+                            size.X = 4;
+                        if (size.Y < 4)
+                            size.Y = 4;
+                        map.SafeResizeEntity(focusedEntity, size);
+                    }
+                    else
+                    {
+                        // Move the entity
+                        map.SafeTeleportEntity(focusedEntity, screen.CursorPos - _selectionOffset);
+                    }
                 }
             }
             else
             {
                 // Set the tooltip to the entity under the cursor
-                Entity hoverEntity = screen.Map.Spatial.GetEntity<Entity>(screen.CursorPos);
+                Entity hoverEntity = GetEntityUnderCursor(screen);
+
                 if (hoverEntity == null)
                 {
                     _toolTip = string.Empty;
@@ -131,17 +182,6 @@ namespace DemoGame.MapEditor
                     _toolTipPos -= new Vector2(5, screen.SpriteFont.LineSpacing * _toolTip.Split('\n').Length);
                 }
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when a mouse button has been released.
-        /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        /// <param name="e">Mouse events.</param>
-        public override void MouseUp(ScreenForm screen, MouseEventArgs e)
-        {
-            // Deselect the selected entity
-            _selectedEntity = null;
         }
     }
 }

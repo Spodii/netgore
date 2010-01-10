@@ -17,6 +17,8 @@ namespace NetGore.EditorTools
         readonly List<MapEditorCursorBase<TScreen>> _cursors = new List<MapEditorCursorBase<TScreen>>();
         readonly Control _gameScreen;
         readonly TScreen _screen;
+        readonly ToolTip _toolTip;
+
         MapEditorCursorBase<TScreen> _selectedCursor;
 
         /// <summary>
@@ -28,12 +30,13 @@ namespace NetGore.EditorTools
         /// Initializes a new instance of the <see cref="MapEditorCursorManager&lt;TScreen&gt;"/> class.
         /// </summary>
         /// <param name="screen">The primary form the cursors are on.</param>
+        /// <param name="toolTip">The tool tip. Can be null.</param>
         /// <param name="cursorContainer">The <see cref="Control"/> that the cursors are to be added to.</param>
         /// <param name="gameScreen">The <see cref="Control"/> that contains the actual game screen. Mouse
         /// events for cursors will be added to this.</param>
         /// <param name="allowCursorEventChecker">Func that checks if a cursor event is allowed to be executed. This
         /// way you can prevent cursor events at certain times.</param>
-        public MapEditorCursorManager(TScreen screen, Control cursorContainer, Control gameScreen,
+        public MapEditorCursorManager(TScreen screen, ToolTip toolTip, Control cursorContainer, Control gameScreen,
                                       Func<MapEditorCursorBase<TScreen>, bool> allowCursorEventChecker)
         {
             if (screen == null)
@@ -44,6 +47,7 @@ namespace NetGore.EditorTools
                 throw new ArgumentNullException("gameScreen");
 
             _screen = screen;
+            _toolTip = toolTip;
             _cursorContainer = cursorContainer;
             _gameScreen = gameScreen;
             _allowCursorEventChecker = allowCursorEventChecker;
@@ -133,6 +137,8 @@ namespace NetGore.EditorTools
                 SelectedCursor.DrawSelection(Screen);
         }
 
+        public ToolTip ToolTip { get { return _toolTip; } }
+
         void LoadTypeInstances()
         {
             TypeFilterCreator filterCreator = new TypeFilterCreator
@@ -161,8 +167,17 @@ namespace NetGore.EditorTools
                     Image = cursor.CursorImage,
                     BorderStyle = BorderStyle.None,
                     BackColor = Color.White,
-                    Tag = cursor
+                    Tag = cursor,
+                    ContextMenu = cursor.GetContextMenu(this)
                 };
+
+                if (ToolTip != null)
+                {
+                    string s = cursor.Name;
+                    if (cursorControl.ContextMenu != null)
+                        s += " (right-click for cursor settings)";
+                    ToolTip.SetToolTip(cursorControl, s);
+                }
 
                 cursorControl.Click +=
                     delegate(object sender, EventArgs e) { SelectedCursor = ((Control)sender).Tag as MapEditorCursorBase<TScreen>; };
@@ -183,9 +198,9 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <typeparam name="T">The type of cursor to get.</typeparam>
         /// <returns>The cursor of the specified type, or null if no cursor was found.</returns>
-        public MapEditorCursorBase<TScreen> TryGetCursor<T>()
+        public T TryGetCursor<T>() where T : MapEditorCursorBase<TScreen>
         {
-            return Cursors.FirstOrDefault(x => x.GetType() == typeof(T));
+            return Cursors.OfType<T>().FirstOrDefault();
         }
 
         public void Update()
