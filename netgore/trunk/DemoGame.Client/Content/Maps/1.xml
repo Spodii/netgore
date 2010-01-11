@@ -2072,7 +2072,7 @@
             <Min>50</Min>
             <Max>50</Max>
           </ReleaseSpeed>
-          <SpriteCategorization>Particle.skull</SpriteCategorization>
+          <Grh>67</Grh>
           <CustomValues />
           <ParticleModifiers>
             <Count>1</Count>

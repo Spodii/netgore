@@ -39,7 +39,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _releaseRotationKeyName = "ReleaseRotation";
         const string _releaseScaleKeyName = "ReleaseScale";
         const string _releaseSpeedKeyName = "ReleaseSpeed";
-        const string _spriteCategorizationKeyName = "SpriteCategorization";
+        const string _grhIndexKeyName = "Grh";
 
         static readonly IEnumerable<Type> _emitterTypes =
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).OrderBy(x => x.Name).ToCompact();
@@ -63,15 +63,7 @@ namespace NetGore.Graphics.ParticleEngine
         int _nextReleaseTime;
         Vector2 _origin;
         ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
-        Grh _sprite;
-        SpriteCategorization _spriteCategorization;
-
-        /// <summary>
-        /// Used to spread out sprite loading attempts when trying to load the sprite when it is null on Update().
-        /// This way we suffer very little from an invalid Sprite, but still give the emitter a chance to reload
-        /// the sprite.
-        /// </summary>
-        ushort _tryLoadSpriteTimeout = 0;
+        readonly Grh _sprite = new Grh();
 
         /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
@@ -358,29 +350,14 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the <see cref="ISprite"/> to draw the <see cref="Particle"/>s.
         /// </summary>
-        [Browsable(false)]
+        [Category(_emitterCategoryName)]
+        [Browsable(true)]
+        [DisplayName("GrhData")]
+        [Description("The GrhData that is drawn for the emitted particles.")]
+        [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Grh Sprite
         {
             get { return _sprite; }
-        }
-
-        /// <summary>
-        /// Gets or sets the category for the <see cref="ISprite"/> used by this <see cref="ParticleEmitter"/>.
-        /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("The sprite categorization that defines which sprite to use to draw the Particles.")]
-        [DisplayName("Sprite")]
-        public SpriteCategorization SpriteCategorization
-        {
-            get { return _spriteCategorization; }
-            set
-            {
-                if (_spriteCategorization == value)
-                    return;
-
-                _spriteCategorization = value;
-                TryLoadSprite();
-            }
         }
 
         /// <summary>
@@ -399,7 +376,7 @@ namespace NetGore.Graphics.ParticleEngine
             destination.ReleaseRotation = ReleaseRotation;
             destination.ReleaseScale = ReleaseScale;
             destination.ReleaseSpeed = ReleaseSpeed;
-            destination.SpriteCategorization = SpriteCategorization;
+            destination.Sprite.SetGrh(Sprite.GrhData, Sprite.AnimType, Sprite.LastUpdated);
             destination.ParticleModifiers = ParticleModifiers.DeepCopy();
         }
 
@@ -469,7 +446,7 @@ namespace NetGore.Graphics.ParticleEngine
             ReleaseRotation = reader.ReadVariableFloat(_releaseRotationKeyName);
             ReleaseScale = reader.ReadVariableFloat(_releaseScaleKeyName);
             ReleaseSpeed = reader.ReadVariableFloat(_releaseSpeedKeyName);
-            SpriteCategorization = reader.ReadSpriteCategorization(_spriteCategorizationKeyName);
+            Sprite.SetGrh(reader.ReadGrhIndex(_grhIndexKeyName));
 
             // Read the custom values
             var customValuesReader = reader.ReadNode(_customValuesNodeName);
@@ -584,26 +561,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Tries to load the <see cref="_sprite"/> using the <see cref="SpriteCategorization"/>.
-        /// </summary>
-        void TryLoadSprite()
-        {
-            // Get the GrhData
-            var grhData = GrhInfo.GetData(_spriteCategorization);
-            if (grhData == null)
-            {
-                // Invalid GrhData...
-                _sprite = null;
-                return;
-            }
-
-            // Load the sprite
-            _sprite = new Grh(grhData);
-
-            _tryLoadSpriteTimeout = 0;
-        }
-
-        /// <summary>
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.
         /// </summary>
         /// <param name="currentTime">The current time.</param>>
@@ -627,15 +584,8 @@ namespace NetGore.Graphics.ParticleEngine
             EmitterModifiers.ProcessEmitter(this, elapsedTime);
 
             // Check if the sprite is loaded
-            if (Sprite == null)
-            {
-                // Try every update the first 5 times, then after that only try every 150 updates
-                if (++_tryLoadSpriteTimeout < 5 || _tryLoadSpriteTimeout % 150 == 0)
-                    TryLoadSprite();
-
-                if (Sprite == null)
-                    return;
-            }
+            if (Sprite == null || Sprite.GrhData == null)
+                return;
 
             // Update the current time on the modifiers
             ParticleModifiers.UpdateCurrentTime(currentTime);
@@ -702,7 +652,7 @@ namespace NetGore.Graphics.ParticleEngine
             writer.Write(_releaseRotationKeyName, ReleaseRotation);
             writer.Write(_releaseScaleKeyName, ReleaseScale);
             writer.Write(_releaseSpeedKeyName, ReleaseSpeed);
-            writer.Write(_spriteCategorizationKeyName, SpriteCategorization);
+            writer.Write(_grhIndexKeyName, Sprite.GrhData != null ? Sprite.GrhData.GrhIndex : new GrhIndex(0));
 
             // Write the custom values
             writer.WriteStartNode(_customValuesNodeName);

@@ -281,7 +281,7 @@ namespace NetGore.Graphics
         /// <param name="grhIndex">New Grh index to use for the stationary Grh.</param>
         public void SetGrh(GrhIndex grhIndex)
         {
-            SetGrh(grhIndex, AnimType.None, 0);
+            SetGrh(grhIndex, AnimType, LastUpdated);
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace NetGore.Graphics
             if (GrhData == grhData)
                 return;
 
-            SetGrh(grhData, AnimType.None, 0);
+            SetGrh(grhData, AnimType, LastUpdated);
         }
 
         /// <summary>
@@ -327,6 +327,7 @@ namespace NetGore.Graphics
                     log.ErrorFormat(errmsg, grhIndex);
                 return;
             }
+
             SetGrh(grhData, anim, currentTime);
         }
 
@@ -338,7 +339,7 @@ namespace NetGore.Graphics
         /// </returns>
         public override string ToString()
         {
-            return GrhData.Categorization + " [" + GrhData.GrhIndex + "]";
+            return "Grh: " + (GrhData != null ? GrhData.ToString() : "(No GrhData loaded)");
         }
 
         /// <summary>
