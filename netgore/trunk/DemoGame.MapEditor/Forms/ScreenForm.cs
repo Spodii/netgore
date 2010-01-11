@@ -20,8 +20,8 @@ using Character=DemoGame.Client.Character;
 using Map=DemoGame.Client.Map;
 using World=DemoGame.Client.World;
 
-// ReSharper disable UnusedParameter.Local
 // ReSharper disable MemberCanBeMadeStatic.Local
+// ReSharper disable UnusedParameter.Local
 
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
@@ -30,10 +30,10 @@ using World=DemoGame.Client.World;
 
 namespace DemoGame.MapEditor
 {
-    delegate void MapChangeEventHandler(Map oldMap, Map newMap);
-
     partial class ScreenForm : Form, IGetTime
     {
+        public delegate void MapChangeEventHandler(Map oldMap, Map newMap);
+
         /// <summary>
         /// Key to move the camera down.
         /// </summary>
@@ -106,8 +106,6 @@ namespace DemoGame.MapEditor
         /// List of all the active transformation boxes
         /// </summary>
         readonly List<TransBox> _transBoxes = new List<TransBox>(9);
-
-        readonly WallCursor _wallCursor = new WallCursor();
 
         /// <summary>
         /// Current world - used for reference by the map being edited only.
@@ -308,13 +306,16 @@ namespace DemoGame.MapEditor
             get { return _selectedGrh; }
         }
 
-        public SelectedObjectsManager<object> SelectedObjectsManager
+        /// <summary>
+        /// Gets the manager for selected objects.
+        /// </summary>
+        public SelectedObjectsManager<object> SelectedObjs
         {
             get { return _selectedObjectsManager; }
         }
 
         /// <summary>
-        /// Gets or sets the selected transformation box
+        /// Gets or sets the selected transformation box.
         /// </summary>
         public TransBox SelectedTransBox
         {
@@ -323,7 +324,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the SpriteBatch used for rendering
+        /// Gets the SpriteBatch used for rendering.
         /// </summary>
         public SpriteBatch SpriteBatch
         {
@@ -331,7 +332,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the SpriteFont used to draw text to the screen
+        /// Gets the SpriteFont used to draw text to the screen.
         /// </summary>
         public SpriteFont SpriteFont
         {
@@ -344,16 +345,11 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the transformation box created
+        /// Gets the transformation box created.
         /// </summary>
         public List<TransBox> TransBoxes
         {
             get { return _transBoxes; }
-        }
-
-        public WallCursor WallCursor
-        {
-            get { return _wallCursor; }
         }
 
         void btnAddSpawn_Click(object sender, EventArgs e)
@@ -587,7 +583,7 @@ namespace DemoGame.MapEditor
             CursorManager.DrawInterface();
 
             // Focused selected object
-            _focusedSpatialDrawer.Draw(SelectedObjectsManager.Focused as ISpatial, _sb);
+            _focusedSpatialDrawer.Draw(SelectedObjs.Focused as ISpatial, _sb);
 
             // End map rendering
             _sb.End();
@@ -794,6 +790,8 @@ namespace DemoGame.MapEditor
             CreateMapDrawExtensionBase<MapWallDrawer>(chkShowWalls);
             MapSpawnDrawer v = CreateMapDrawExtensionBase<MapSpawnDrawer>(chkDrawSpawnAreas);
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
+
+            SelectedObjs.Clear();
         }
 
         void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)

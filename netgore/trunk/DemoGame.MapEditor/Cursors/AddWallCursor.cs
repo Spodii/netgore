@@ -92,7 +92,7 @@ namespace DemoGame.MapEditor
                 }
             }
 
-            Container.SelectedObjectsManager.SetSelected(w);
+            Container.SelectedObjs.SetSelected(w);
         }
     }
 }

@@ -127,7 +127,7 @@ namespace DemoGame.MapEditor
                 _selectedEntityOffset = cursorPos - cursorGrh.Position;
                 _selectedMapGrhs.Clear();
                 _selectedMapGrhs.Add(cursorGrh);
-                Container.SelectedObjectsManager.SetSelected(cursorGrh);
+                Container.SelectedObjs.SetSelected(cursorGrh);
             }
             else
             {
@@ -222,7 +222,7 @@ namespace DemoGame.MapEditor
                 var selectAreaObjs = Container.Map.Spatial.GetEntities<MapGrh>(rect);
                 _selectedMapGrhs.AddRange(selectAreaObjs);
 
-                Container.SelectedObjectsManager.SetManySelected(_selectedMapGrhs.OfType<object>());
+                Container.SelectedObjs.SetManySelected(_selectedMapGrhs.OfType<object>());
 
                 // Move transbox
                 if (_selectedMapGrhs.Count > 1)

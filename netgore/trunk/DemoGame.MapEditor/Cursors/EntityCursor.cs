@@ -109,10 +109,10 @@ namespace DemoGame.MapEditor
                 return;
 
             // Set the selected entity to the first entity we find at the cursor
-            Container.SelectedObjectsManager.SetSelected(GetEntityUnderCursor(Container));
+            Container.SelectedObjs.SetSelected(GetEntityUnderCursor(Container));
 
             // Set the offset
-            var focusedEntity = Container.SelectedObjectsManager.Focused as Entity;
+            var focusedEntity = Container.SelectedObjs.Focused as Entity;
             if (focusedEntity != null)
                 _selectionOffset = Container.CursorPos - focusedEntity.Position;
         }
@@ -129,7 +129,7 @@ namespace DemoGame.MapEditor
             if (map == null || !map.IsInMapBoundaries(Container.CursorPos))
                 return;
 
-            var focusedEntity = Container.SelectedObjectsManager.Focused as Entity;
+            var focusedEntity = Container.SelectedObjs.Focused as Entity;
 
             if (focusedEntity != null)
             {
