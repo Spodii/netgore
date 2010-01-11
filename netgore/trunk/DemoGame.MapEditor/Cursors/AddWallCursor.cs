@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.EditorTools;
 
 namespace DemoGame.MapEditor
@@ -22,25 +20,6 @@ namespace DemoGame.MapEditor
         {
             _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
             _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
-        /// to display additional functions and settings.
-        /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
-        /// <returns>
-        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
-        /// or null for no <see cref="ContextMenu"/>.
-        /// </returns>
-        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
-        {
-            return _contextMenu;
-        }
-
-        void Menu_SnapToGrid_Click(object sender, EventArgs e)
-        {
-            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
         }
 
         /// <summary>
@@ -66,6 +45,25 @@ namespace DemoGame.MapEditor
         public override int ToolbarPriority
         {
             get { return 10; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
+
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
         }
 
         /// <summary>

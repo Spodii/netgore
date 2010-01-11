@@ -28,8 +28,7 @@ namespace DemoGame.MapEditor
         public EntityCursor()
         {
             _mnuIgnoreWalls = new MenuItem("Ignore Walls", Menu_IgnoreWalls_Click) { Checked = true };
-            _contextMenu =
-                new ContextMenu(new MenuItem[] { _mnuIgnoreWalls });
+            _contextMenu = new ContextMenu(new MenuItem[] { _mnuIgnoreWalls });
         }
 
         /// <summary>

@@ -26,31 +26,12 @@ namespace NetGore.EditorTools
         MapEditorCursorBase<TScreen> _selectedAltCursor;
         MapEditorCursorBase<TScreen> _selectedCursor;
 
+        bool _useAlternateCursor;
+
         /// <summary>
         /// Notifies listeners when the currently active cursor changes.
         /// </summary>
         public event MapEditorCursorManagerEventHandler<TScreen> OnChangeCurrentCursor;
-
-        bool _useAlternateCursor;
-
-        /// <summary>
-        /// Gets or sets whether to use the alternate cursor. This also applies to what cursor is selected when
-        /// selecting by clicking the cursor's <see cref="Control"/>.
-        /// </summary>
-        public bool UseAlternateCursor
-        {
-            get { return _useAlternateCursor; }
-            set
-            {
-                if (_useAlternateCursor != value)
-                    _useAlternateCursor = value;
-
-                _useAlternateCursor = value;
-
-                if (OnChangeCurrentCursor != null)
-                    OnChangeCurrentCursor(this);
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapEditorCursorManager&lt;TScreen&gt;"/> class.
@@ -150,6 +131,25 @@ namespace NetGore.EditorTools
         public ToolTip ToolTip
         {
             get { return _toolTip; }
+        }
+
+        /// <summary>
+        /// Gets or sets whether to use the alternate cursor. This also applies to what cursor is selected when
+        /// selecting by clicking the cursor's <see cref="Control"/>.
+        /// </summary>
+        public bool UseAlternateCursor
+        {
+            get { return _useAlternateCursor; }
+            set
+            {
+                if (_useAlternateCursor != value)
+                    _useAlternateCursor = value;
+
+                _useAlternateCursor = value;
+
+                if (OnChangeCurrentCursor != null)
+                    OnChangeCurrentCursor(this);
+            }
         }
 
         void _gameScreen_MouseDown(object sender, MouseEventArgs e)

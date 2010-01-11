@@ -6,30 +6,20 @@ using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
 {
     sealed class AddGrhCursor : MapEditorCursorBase<ScreenForm>
     {
+        /// <summary>
+        /// Color of the Grh preview when placing new Grhs.
+        /// </summary>
+        static readonly Color _drawPreviewColor = new Color(255, 255, 255, 150);
+
         readonly ContextMenu _contextMenu;
-        readonly MenuItem _mnuSnapToGrid;
         readonly MenuItem _mnuForeground;
-
-        public MenuItem SnapToGridMenuItem { get { return _mnuSnapToGrid; } }
-
-        public bool AddToForeground { get { return _mnuForeground.Checked; } }
-
-        public bool SnapToGrid { get { return SnapToGridMenuItem.Checked; } }
-
-        void Menu_SnapToGrid_Click(object sender, EventArgs e)
-        {
-            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
-        }
-
-        void Menu_Foreground_Click(object sender, EventArgs e)
-        {
-            _mnuForeground.Checked = !_mnuForeground.Checked;
-        }
+        readonly MenuItem _mnuSnapToGrid;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddGrhCursor"/> class.
@@ -41,22 +31,13 @@ namespace DemoGame.MapEditor
             _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid, _mnuForeground });
         }
 
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
-        /// to display additional functions and settings.
-        /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
-        /// <returns>
-        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
-        /// or null for no <see cref="ContextMenu"/>.
-        /// </returns>
-        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        public bool AddToForeground
         {
-            return _contextMenu;
+            get { return _mnuForeground.Checked; }
         }
 
         /// <summary>
-        /// Gets the cursor's <see cref="Image"/>.
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
         /// </summary>
         public override Image CursorImage
         {
@@ -71,6 +52,16 @@ namespace DemoGame.MapEditor
             get { return "Add Grh"; }
         }
 
+        public bool SnapToGrid
+        {
+            get { return SnapToGridMenuItem.Checked; }
+        }
+
+        public MenuItem SnapToGridMenuItem
+        {
+            get { return _mnuSnapToGrid; }
+        }
+
         /// <summary>
         /// Gets the priority of the cursor on the toolbar. Lower values appear first.
         /// </summary>
@@ -79,22 +70,6 @@ namespace DemoGame.MapEditor
         {
             get { return 20; }
         }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when the cursor has moved.
-        /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        /// <param name="e">Mouse events.</param>
-        public override void MouseMove(ScreenForm screen, MouseEventArgs e)
-        {
-            if (_mnuSnapToGrid.Checked)
-                MouseUp(screen, e);
-        }
-
-        /// <summary>
-        /// Color of the Grh preview when placing new Grhs.
-        /// </summary>
-        static readonly Microsoft.Xna.Framework.Graphics.Color _drawPreviewColor = new Microsoft.Xna.Framework.Graphics.Color(255, 255, 255, 150);
 
         /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
@@ -122,6 +97,41 @@ namespace DemoGame.MapEditor
             }
 
             base.DrawInterface(screen);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
+
+        void Menu_Foreground_Click(object sender, EventArgs e)
+        {
+            _mnuForeground.Checked = !_mnuForeground.Checked;
+        }
+
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the cursor has moved.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        /// <param name="e">Mouse events.</param>
+        public override void MouseMove(ScreenForm screen, MouseEventArgs e)
+        {
+            if (_mnuSnapToGrid.Checked)
+                MouseUp(screen, e);
         }
 
         /// <summary>

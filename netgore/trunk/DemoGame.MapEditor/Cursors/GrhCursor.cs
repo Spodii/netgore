@@ -8,24 +8,20 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using Color=Microsoft.Xna.Framework.Graphics.Color;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {
     sealed class GrhCursor : MapEditorCursorBase<ScreenForm>
     {
-        readonly List<MapGrh> _selectedMapGrhs = new List<MapGrh>();
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
+        readonly List<MapGrh> _selectedMapGrhs = new List<MapGrh>();
 
         TransBox _mapGrhMoveBox = null;
         Vector2 _mouseDragStart = Vector2.Zero;
         Vector2 _selectedEntityOffset = Vector2.Zero;
-
-        void Menu_SnapToGrid_Click(object sender, EventArgs e)
-        {
-            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhCursor"/> class.
@@ -34,20 +30,6 @@ namespace DemoGame.MapEditor
         {
             _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
             _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
-        /// to display additional functions and settings.
-        /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
-        /// <returns>
-        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
-        /// or null for no <see cref="ContextMenu"/>.
-        /// </returns>
-        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
-        {
-            return _contextMenu;
         }
 
         /// <summary>
@@ -85,6 +67,46 @@ namespace DemoGame.MapEditor
             // Selected Grh move box
             if (_mapGrhMoveBox != null)
                 _mapGrhMoveBox.Draw(screen.SpriteBatch);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles drawing the cursor's selection layer,
+        /// which displays a selection box for when selecting multiple objects.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        public override void DrawSelection(ScreenForm screen)
+        {
+            Vector2 cursorPos = screen.CursorPos;
+
+            if (_mouseDragStart == Vector2.Zero || screen.SelectedTransBox != null)
+                return;
+
+            var drawColor = new Color(0, 255, 0, 150);
+
+            Vector2 min = new Vector2(Math.Min(cursorPos.X, _mouseDragStart.X), Math.Min(cursorPos.Y, _mouseDragStart.Y));
+            Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
+
+            Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
+            XNARectangle.Draw(screen.SpriteBatch, dest, drawColor);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
+
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
         }
 
         /// <summary>
@@ -132,27 +154,6 @@ namespace DemoGame.MapEditor
                 }
                 _mouseDragStart = screen.Camera.ToWorld(e.X, e.Y);
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles drawing the cursor's selection layer,
-        /// which displays a selection box for when selecting multiple objects.
-        /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public override void DrawSelection(ScreenForm screen)
-        {
-            Vector2 cursorPos = screen.CursorPos;
-
-            if (_mouseDragStart == Vector2.Zero || screen.SelectedTransBox != null)
-                return;
-
-            var drawColor = new Microsoft.Xna.Framework.Graphics.Color(0, 255, 0, 150);
-
-            Vector2 min = new Vector2(Math.Min(cursorPos.X, _mouseDragStart.X), Math.Min(cursorPos.Y, _mouseDragStart.Y));
-            Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
-
-            Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
-            XNARectangle.Draw(screen.SpriteBatch, dest, drawColor);
         }
 
         /// <summary>
@@ -231,9 +232,7 @@ namespace DemoGame.MapEditor
 
                 // Move transbox
                 if (_selectedMapGrhs.Count > 1)
-                {
                     _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
-                }
                 else
                 {
                     _mapGrhMoveBox = null;
