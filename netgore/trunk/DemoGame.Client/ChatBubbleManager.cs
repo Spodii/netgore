@@ -54,9 +54,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the top-left corner to use for drawing for the given <paramref name="target"/>.
         /// </summary>
-        /// <param name="target">The <see cref="Entity"/> to attach the bubble to.</param>
+        /// <param name="target">The <see cref="ISpatial"/> to attach the bubble to.</param>
         /// <returns>The coordinate of the top-left corner of the <paramref name="target"/> to use for drawing.</returns>
-        static Vector2 GetTopLeftDrawCorner(Entity target)
+        static Vector2 GetTopLeftDrawCorner(ISpatial target)
         {
             Character asCharacter;
 

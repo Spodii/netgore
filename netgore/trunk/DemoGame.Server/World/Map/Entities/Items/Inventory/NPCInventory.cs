@@ -4,8 +4,11 @@ namespace DemoGame.Server
 {
     public class NPCInventory : CharacterInventory
     {
-        // ReSharper disable SuggestBaseTypeForParameter
-        public NPCInventory(NPC npc) : base(npc) // ReSharper restore SuggestBaseTypeForParameter
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPCInventory"/> class.
+        /// </summary>
+        /// <param name="npc">The NPC.</param>
+        public NPCInventory(Character npc) : base(npc)
         {
         }
     }

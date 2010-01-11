@@ -10,10 +10,10 @@ namespace DemoGame.Server
         readonly UserInventoryUpdater _inventoryUpdater;
 
         /// <summary>
-        /// UserInventory constructor
+        /// Initializes a new instance of the <see cref="UserInventory"/> class.
         /// </summary>
         /// <param name="user">User that the inventory is for</param>
-        public UserInventory(User user) : base(user)
+        public UserInventory(Character user) : base(user)
         {
             _inventoryUpdater = new UserInventoryUpdater(this);
         }
