@@ -106,6 +106,9 @@ namespace NetGore.EditorTools
         /// <returns>True if the editing started successfully; otherwise false.</returns>
         public bool BeginEditGrhData(TreeNode node)
         {
+            if (_compactMode)
+                return false;
+
             return BeginEditGrhData(node, GetGrhData(node), false);
         }
 
@@ -116,6 +119,9 @@ namespace NetGore.EditorTools
         /// <returns>True if the editing started successfully; otherwise false.</returns>
         public bool BeginEditGrhData(GrhData gd)
         {
+            if (_compactMode)
+                return false;
+
             return BeginEditGrhData(gd, false);
         }
 
@@ -222,12 +228,43 @@ namespace NetGore.EditorTools
                 DeleteNode((GrhTreeViewFolderNode)node);
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.TreeView"/> and optionally
+        /// releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to
+        /// release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
-
             if (disposing)
-                GrhImageList.Save();
+            {
+                if (!_compactMode)
+                {
+                    GrhImageList.Save();
+                }
+
+                if (_animTimer != null)
+                {
+                    _animTimer.Stop();
+                    _animTimer.Dispose();
+                }
+
+                if (_editGrhDataForm != null)
+                {
+                    _editGrhDataForm.Dispose();
+                }
+
+                if (_contextMenu != null)
+                {
+                    _contextMenu.Dispose();
+                }
+
+                Nodes.Clear();
+
+                GrhInfo.OnRemove -= GrhInfo_OnRemove;
+            }
+
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -323,8 +360,17 @@ namespace NetGore.EditorTools
             return current;
         }
 
+        /// <summary>
+        /// Finds the <see cref="GrhTreeViewNode"/> for the given <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to find the <see cref="GrhTreeViewNode"/> for.</param>
+        /// <returns>The <see cref="GrhTreeViewNode"/> that is for the given <paramref name="grhData"/>, or null
+        /// if invalid or not found.</returns>
         public GrhTreeViewNode FindGrhDataNode(GrhData grhData)
         {
+            if (grhData == null)
+                return null;
+
             var folder = FindFolder(grhData.Categorization.Category.ToString());
             if (folder != null)
             {
@@ -365,7 +411,7 @@ namespace NetGore.EditorTools
             var casted = node as GrhTreeViewNode;
             if (casted != null)
                 return casted.GrhData;
-
+            
             return null;
         }
 
@@ -398,7 +444,7 @@ namespace NetGore.EditorTools
 
         void GrhTreeView_GrhMouseDoubleClick(object sender, GrhTreeNodeMouseClickEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && !(e.GrhData is AutomaticAnimatedGrhData))
                 BeginEditGrhData(e.Node);
         }
 
@@ -425,7 +471,39 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Initializes the <see cref="GrhTreeView"/>.
+        /// Initializes the <see cref="GrhTreeView"/>. Requires that the <see cref="GrhData"/>s are already
+        /// loaded and won't provide any additional features.
+        /// </summary>
+        public void InitializeCompact()
+        {
+            AllowDrop = false;
+            Nodes.Clear();
+
+            // Create the animate timer
+            _animTimer.Interval = 150;
+            _animTimer.Tick += UpdateAnimations;
+            _animTimer.Start();
+
+            // Set the sort method
+            TreeViewNodeSorter = this;
+
+            // Create the ImageList containing the Grhs as an image
+            ImageList = GrhImageList.ImageList;
+
+            // Iterate through all the GrhDatas
+            foreach (GrhData grhData in GrhInfo.GrhDatas)
+                AddGrhToTree(grhData);
+
+            GrhInfo.OnRemove += GrhInfo_OnRemove;
+
+            // Perform the initial sort
+            Sort();
+        }
+
+        bool _compactMode = true;
+
+        /// <summary>
+        /// Initializes the <see cref="GrhTreeView"/> with all features.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/> used for loading content needed by the
         /// <see cref="GrhTreeView"/>.</param>
@@ -447,21 +525,15 @@ namespace NetGore.EditorTools
             _gameScreenSize = gameScreenSize;
             _createWall = createWall;
             _mapGrhWalls = mapGrhWalls;
-            GrhInfo.OnRemove += GrhInfo_OnRemove;
 
-            // Remove all nodes
-            Nodes.Clear();
+            // Check for missing textures
+            CheckForMissingTextures();
 
-            // Create the animate timer
-            _animTimer.Interval = 150;
-            _animTimer.Tick += UpdateAnimations;
-            _animTimer.Start();
+            // Perform the compact initialization
+            InitializeCompact();
 
-            // Set the sort method
-            TreeViewNodeSorter = this;
-
-            // Create the ImageList containing the Grhs as an image
-            ImageList = GrhImageList.ImageList;
+            // Perform some extended initialization goodness
+            _compactMode = false;
 
             // Event hooks
             GrhMouseDoubleClick += GrhTreeView_GrhMouseDoubleClick;
@@ -474,18 +546,6 @@ namespace NetGore.EditorTools
             ContextMenu = _contextMenu;
 
             AllowDrop = true;
-
-            // Check for missing textures
-            CheckForMissingTextures();
-
-            // Iterate through all the GrhDatas
-            foreach (GrhData grhData in GrhInfo.GrhDatas)
-            {
-                AddGrhToTree(grhData);
-            }
-
-            // Perform the initial sort
-            Sort();
         }
 
         /// <summary>
@@ -608,6 +668,9 @@ namespace NetGore.EditorTools
         /// <param name="e">A <see cref="T:System.Windows.Forms.NodeLabelEditEventArgs"/> that contains the event data.</param>
         protected override void OnAfterLabelEdit(NodeLabelEditEventArgs e)
         {
+            if (_compactMode)
+                return;
+
             base.OnAfterLabelEdit(e);
 
             if (e.Node != null && e.Label != null)
@@ -657,6 +720,9 @@ namespace NetGore.EditorTools
         /// <param name="e">A <see cref="T:System.Windows.Forms.DragEventArgs"/> that contains the event data.</param>
         protected override void OnDragDrop(DragEventArgs e)
         {
+            if (_compactMode)
+                return;
+
             base.OnDragDrop(e);
 
             foreach (TreeNode child in Nodes)
@@ -721,6 +787,9 @@ namespace NetGore.EditorTools
         /// <param name="drgevent">A <see cref="T:System.Windows.Forms.DragEventArgs"/> that contains the event data.</param>
         protected override void OnDragEnter(DragEventArgs drgevent)
         {
+            if (_compactMode)
+                return;
+
             drgevent.Effect = DragDropEffects.Move;
 
             base.OnDragEnter(drgevent);
@@ -733,6 +802,9 @@ namespace NetGore.EditorTools
         protected override void OnDragOver(DragEventArgs e)
         {
             base.OnDragOver(e);
+
+            if (_compactMode)
+                return;
 
             TreeNode nodeOver = GetNodeAt(PointToClient(new Point(e.X, e.Y)));
             if (nodeOver != null)
@@ -756,6 +828,9 @@ namespace NetGore.EditorTools
         /// <param name="e">An <see cref="T:System.Windows.Forms.ItemDragEventArgs"/> that contains the event data.</param>
         protected override void OnItemDrag(ItemDragEventArgs e)
         {
+            if (_compactMode)
+                return;
+
             base.OnItemDrag(e);
 
             if (e.Button == MouseButtons.Left)
@@ -771,6 +846,9 @@ namespace NetGore.EditorTools
         /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (_compactMode)
+                return;
+
             base.OnKeyDown(e);
 
             if (e.KeyCode == Keys.Delete)
@@ -819,7 +897,7 @@ namespace NetGore.EditorTools
 
             // Get the GrhData for the node double-clicked, raising the GrhMouseDoubleClick event if valid
             GrhData gd = GetGrhData(e.Node);
-            if (gd != null && !(gd is AutomaticAnimatedGrhData))
+            if (gd != null)
                 GrhMouseDoubleClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
         }
 

@@ -20,6 +20,12 @@ namespace NetGore
             "NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools";
 
         /// <summary>
+        /// The fully qualified name for the GrhEditor.
+        /// </summary>
+        public const string GrhEditorTypeName =
+            "NetGore.EditorTools.GrhEditor, NetGore.EditorTools";
+
+        /// <summary>
         /// The fully qualified type name for the UITypeEditor.
         /// </summary>
         public const string UITypeEditorTypeName =
