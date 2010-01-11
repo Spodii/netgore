@@ -75,6 +75,8 @@
     <Compile Include="DirectionHelper.cs" />
     <Compile Include="EngineSettings.cs" />
     <Compile Include="Enum\EnumFieldAttributeManager.cs" />
+    <Compile Include="IO\RestorableSettings\IPersistable.cs" />
+    <Compile Include="IO\RestorableSettings\PersistableHelper.cs" />
     <Compile Include="Skills\ISkill.cs" />
     <Compile Include="Skills\ISkillCooldownManager.cs" />
     <Compile Include="Skills\SkillBase.cs" />
