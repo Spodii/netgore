@@ -168,7 +168,7 @@ namespace DemoGame.MapEditor
 
             GameScreen.ScreenForm = this;
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
-            _grid = new ScreenGrid(_camera.Size);
+            _grid = new ScreenGrid(Camera.Size);
 
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
             _selectedObjectsManager.OnChangeSelected += SelectedObjectsManager_OnChangeSelected;
@@ -202,6 +202,9 @@ namespace DemoGame.MapEditor
             get { return _camera; }
         }
 
+        /// <summary>
+        /// Gets the cursor manager.
+        /// </summary>
         public MapEditorCursorManager<ScreenForm> CursorManager
         {
             get { return _cursorManager; }
@@ -571,7 +574,7 @@ namespace DemoGame.MapEditor
 
             // Grid
             if (chkDrawGrid.Checked)
-                _grid.Draw(_sb, _camera);
+                Grid.Draw(_sb,Camera);
 
             // On-screen wall editor
             foreach (TransBox box in _transBoxes)
@@ -643,7 +646,7 @@ namespace DemoGame.MapEditor
             _cursorPos = _camera.ToWorld(e.X, e.Y);
         }
 
-        void GameScreen_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta > 0)
                 CursorManager.MoveMouseWheel(1);
@@ -1002,7 +1005,7 @@ namespace DemoGame.MapEditor
 
             float result;
             if (Parser.Current.TryParse(txtGridHeight.Text, out result))
-                _grid.Height = result;
+                Grid.Height = result;
         }
 
         void txtGridWidth_TextChanged(object sender, EventArgs e)
@@ -1012,7 +1015,7 @@ namespace DemoGame.MapEditor
 
             float result;
             if (Parser.Current.TryParse(txtGridWidth.Text, out result))
-                _grid.Width = result;
+                Grid.Width = result;
         }
 
         void txtMapHeight_TextChanged(object sender, EventArgs e)
@@ -1142,8 +1145,8 @@ namespace DemoGame.MapEditor
                 XmlValueReader r = new XmlValueReader(FilePath, _rootNodeName);
 
                 IValueReader rGrid = r.ReadNode(_gridNodeName);
-                _screenForm._grid.Width = rGrid.ReadFloat("Width");
-                _screenForm._grid.Height = rGrid.ReadFloat("Height");
+                _screenForm.Grid.Width = rGrid.ReadFloat("Width");
+                _screenForm.Grid.Height = rGrid.ReadFloat("Height");
 
                 IValueReader rDisplay = r.ReadNode(_displayNodeName);
                 _screenForm.chkDrawGrid.Checked = rDisplay.ReadBool("Grid");
@@ -1162,8 +1165,8 @@ namespace DemoGame.MapEditor
                 {
                     w.WriteStartNode(_gridNodeName);
                     {
-                        w.Write("Width", _screenForm._grid.Width);
-                        w.Write("Height", _screenForm._grid.Height);
+                        w.Write("Width", _screenForm.Grid.Width);
+                        w.Write("Height", _screenForm.Grid.Height);
                     }
                     w.WriteEndNode(_gridNodeName);
 
