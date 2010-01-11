@@ -168,7 +168,7 @@ namespace DemoGame.MapEditor
                 // On right-click delete any Grhs under the cursor
                 while (true)
                 {
-                    MapGrh mapGrh = Container.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+                    MapGrh mapGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
                     if (mapGrh == null)
                         break;
 

@@ -248,7 +248,7 @@ namespace DemoGame
         void CheckCollisionAgainstEntities(Entity entity)
         {
             // Get the entities we have a rectangular collision with
-            var collisionSources = Spatial.GetEntities<Entity>(entity, x => !(x is WallEntityBase));
+            var collisionSources = Spatial.GetMany<Entity>(entity, x => !(x is WallEntityBase));
 
             foreach (var other in collisionSources)
             {
@@ -267,7 +267,7 @@ namespace DemoGame
                 return;
 
             // Get the entities we have a rectangular collision with
-            var collisionSources = Spatial.GetEntities<WallEntityBase>(entity);
+            var collisionSources = Spatial.GetMany<WallEntityBase>(entity);
 
             // Do real collision detection on the entities, and handle it if the collision test passes
             foreach (var wall in collisionSources)
@@ -614,7 +614,7 @@ namespace DemoGame
         /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
         public bool IsValidPlacementPosition(Rectangle rect)
         {
-            return IsInMapBoundaries(rect) && !Spatial.ContainsEntities<WallEntity>(rect);
+            return IsInMapBoundaries(rect) && !Spatial.Contains<WallEntity>(rect);
         }
 
         public bool IsValidPlacementPosition(Vector2 position, Vector2 size)
@@ -651,7 +651,7 @@ namespace DemoGame
             var nearbyWallsRect = new Rectangle(r.X - _findValidPlacementPadding, r.Y - _findValidPlacementPadding,
                                                 r.Width + (_findValidPlacementPadding * 2),
                                                 r.Height + (_findValidPlacementPadding * 2));
-            var nearbyWalls = Spatial.GetEntities<WallEntityBase>(nearbyWallsRect);
+            var nearbyWalls = Spatial.GetMany<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
             var cbSize = new Vector2(r.Width, r.Height);
@@ -1263,7 +1263,7 @@ namespace DemoGame
         public WallEntityBase FindStandingOn(ISpatial stander)
         {
             var rect = stander.GetStandingAreaRect();
-            return Spatial.GetEntity<WallEntityBase>(rect);
+            return Spatial.Get<WallEntityBase>(rect);
         }
 
         /// <summary>
