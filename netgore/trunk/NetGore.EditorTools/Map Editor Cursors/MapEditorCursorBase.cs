@@ -51,6 +51,20 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public virtual ContextMenu GetContextMenu(MapEditorCursorManager<TForm> cursorManager)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
         /// <param name="screen">Screen that the cursor is on.</param>
@@ -75,20 +89,6 @@ namespace NetGore.EditorTools
         /// <param name="e">Mouse events.</param>
         public virtual void MouseUp(TForm screen, MouseEventArgs e)
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
-        /// to display additional functions and settings.
-        /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
-        /// <returns>
-        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
-        /// or null for no <see cref="ContextMenu"/>.
-        /// </returns>
-        public virtual ContextMenu GetContextMenu(MapEditorCursorManager<TForm> cursorManager)
-        {
-            return null;
         }
 
         /// <summary>

@@ -17,13 +17,12 @@ namespace DemoGame.MapEditor
 {
     sealed class WallCursor : MapEditorCursorBase<ScreenForm>
     {
-        readonly List<WallEntityBase> _selectedWalls = new List<WallEntityBase>();
-        MouseButtons _mouseDragButton = MouseButtons.None;
-        Vector2 _mouseDragStart = Vector2.Zero;
-
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
         readonly MenuItem _mnuSnapToWalls;
+        readonly List<WallEntityBase> _selectedWalls = new List<WallEntityBase>();
+        MouseButtons _mouseDragButton = MouseButtons.None;
+        Vector2 _mouseDragStart = Vector2.Zero;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WallCursor"/> class.
@@ -33,30 +32,6 @@ namespace DemoGame.MapEditor
             _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
             _mnuSnapToWalls = new MenuItem("Snap to walls", Menu_SnapToWalls_Click) { Checked = true };
             _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid, _mnuSnapToWalls });
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
-        /// to display additional functions and settings.
-        /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
-        /// <returns>
-        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
-        /// or null for no <see cref="ContextMenu"/>.
-        /// </returns>
-        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
-        {
-            return _contextMenu;
-        }
-
-        void Menu_SnapToGrid_Click(object sender, EventArgs e)
-        {
-            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
-        }
-
-        void Menu_SnapToWalls_Click(object sender, EventArgs e)
-        {
-            _mnuSnapToWalls.Checked = !_mnuSnapToWalls.Checked;
         }
 
         /// <summary>
@@ -115,6 +90,30 @@ namespace DemoGame.MapEditor
 
             Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
             XNARectangle.Draw(screen.SpriteBatch, dest, drawColor);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
+        /// to display additional functions and settings.
+        /// </summary>
+        /// <param name="cursorManager">The cursor manager.</param>
+        /// <returns>
+        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
+        /// or null for no <see cref="ContextMenu"/>.
+        /// </returns>
+        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        {
+            return _contextMenu;
+        }
+
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
+        }
+
+        void Menu_SnapToWalls_Click(object sender, EventArgs e)
+        {
+            _mnuSnapToWalls.Checked = !_mnuSnapToWalls.Checked;
         }
 
         /// <summary>
