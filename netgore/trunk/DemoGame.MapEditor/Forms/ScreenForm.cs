@@ -741,6 +741,8 @@ namespace DemoGame.MapEditor
 
         void LoadEditor()
         {
+            scTabsAndSelected.Panel2Collapsed = true;
+
             // Read the database connection
             DbConnectionSettings settings = new DbConnectionSettings();
             _dbController = new ServerDbController(settings.SqlConnectionString());
@@ -792,6 +794,9 @@ namespace DemoGame.MapEditor
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
 
             SelectedObjs.Clear();
+
+            // NOTE: !! TEMP
+            SelectedObjs.SetSelected(Map.Spatial.GetEntity<MapGrh>(new Rectangle(0, 0, 128, 128)));
         }
 
         void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)

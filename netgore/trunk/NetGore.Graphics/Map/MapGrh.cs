@@ -66,6 +66,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the <see cref="Grh"/> for the <see cref="MapGrh"/>.
         /// </summary>
+        [Browsable(true)]
+        [DisplayName("GrhData")]
+        [Description("The GrhData that is drawn for this MapGrh.")]
+        [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Grh Grh
         {
             get { return _grh; }
@@ -152,7 +156,7 @@ namespace NetGore.Graphics
         [Browsable(true)]
         [DisplayName("Layer Depth")]
         [Description("The drawing depth of the object. Objects with lower values are drawn above those with higher values.")]
-        [DefaultValue(false)]
+        [DefaultValue(0)]
         public byte LayerDepth
         {
             get { return _layerDepth; }

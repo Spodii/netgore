@@ -222,8 +222,8 @@ namespace NetGore.EditorTools
             }
 
             var existingItems = Items.OfType<TItem>();
-            var toAdd = allItems.Except(existingItems).ToImmutable();
-            var toRemove = existingItems.Except(allItems).ToImmutable();
+            var toAdd = allItems.Except(existingItems).ToArray();
+            var toRemove = existingItems.Except(allItems).ToArray();
 
             if (toAdd.Count() == 0 && toRemove.Count() == 0)
                 return;
@@ -234,15 +234,10 @@ namespace NetGore.EditorTools
 
                 // Remove the extra items
                 foreach (TItem item in toRemove)
-                {
-                    this.RemoveItemAndReselect(item);
-                }
+                    Items.Remove(item);
 
                 // Add the new items
-                foreach (TItem item in toAdd)
-                {
-                    this.AddItemAndReselect(item);
-                }
+                Items.AddRange(toAdd);
 
                 // Refresh the items
                 RefreshItems();
