@@ -65,7 +65,7 @@ namespace DemoGame.Client
             {
                 yield return
                     new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i,
-                                                                             _layers[i].OrderByDescending(x => x.LayerDepth));
+                                                                             _layers[i].OrderBy(x => x.LayerDepth));
             }
         }
     }

@@ -155,13 +155,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
-        /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
+        /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
+        /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
         /// </summary>
         [Category(_mapGrhCategoryName)]
         [Browsable(true)]
         [DisplayName("Layer Depth")]
-        [Description("The drawing depth of the object. Objects with lower values are drawn above those with higher values.")]
+        [Description("The drawing depth of the object. Objects with higher values are drawn above those with lower values.")]
         [DefaultValue((byte)0)]
         public byte LayerDepth
         {
