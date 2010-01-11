@@ -200,7 +200,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// PropertySyncBase constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncBase"/> class.
         /// </summary>
         /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
