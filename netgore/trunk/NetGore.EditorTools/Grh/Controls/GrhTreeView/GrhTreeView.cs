@@ -21,7 +21,7 @@ namespace NetGore.EditorTools
     public class GrhTreeView : TreeView, IComparer
     {
         /// <summary>
-        /// Timer to update the animated Grhs in the grh tree
+        /// Timer to update the animated <see cref="Grh"/>s in the <see cref="GrhTreeView"/>.
         /// </summary>
         readonly Timer _animTimer = new Timer();
 
@@ -33,27 +33,27 @@ namespace NetGore.EditorTools
         MapGrhWalls _mapGrhWalls;
 
         /// <summary>
-        /// Notofies listeners after a new Grh node is selected.
+        /// Notofies listeners after a new <see cref="GrhData"/> node is selected.
         /// </summary>
         public event GrhTreeViewEvent GrhAfterSelect;
 
         /// <summary>
-        /// Notifies listeners before a new Grh node is selected.
+        /// Notifies listeners before a new <see cref="GrhData"/> node is selected.
         /// </summary>
         public event GrhTreeViewCancelEvent GrhBeforeSelect;
 
         /// <summary>
-        /// Notifies listeners when a Grh node is clicked.
+        /// Notifies listeners when a <see cref="GrhData"/> node is clicked.
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseClick;
 
         /// <summary>
-        /// Notifies listeners when a Grh node is double-clicked.
+        /// Notifies listeners when a <see cref="GrhData"/> node is double-clicked.
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
 
         /// <summary>
-        /// Gets or sets the size of the Grh preview images
+        /// Gets or sets the size of the <see cref="GrhData"/> preview images.
         /// </summary>
         [Description("Size of the Grh images in pixels")]
         public Size ImageSize
@@ -91,7 +91,7 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Adds a Grh to the tree or updates it if it already exists.
+        /// Adds a <see cref="GrhData"/> to the tree or updates it if it already exists.
         /// </summary>
         /// <param name="gd"><see cref="GrhData"/> to add or update.</param>
         void AddGrhToTree(GrhData gd)
