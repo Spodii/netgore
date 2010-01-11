@@ -346,7 +346,7 @@ namespace DemoGame.MapEditor
             }
 
             // Update the selected walls list
-            Container.SelectedObjectsManager.SetManySelected(_selectedWalls.OfType<object>());
+            Container.SelectedObjs.SetManySelected(_selectedWalls.OfType<object>());
 
             _mouseDragStart = Vector2.Zero;
         }
@@ -362,7 +362,7 @@ namespace DemoGame.MapEditor
             }
 
             _selectedWalls.Clear();
-            Container.SelectedObjectsManager.Clear();
+            Container.SelectedObjs.Clear();
         }
 
         /// <summary>
