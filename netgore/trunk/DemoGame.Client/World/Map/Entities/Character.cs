@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -238,6 +239,7 @@ namespace DemoGame.Client
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
         /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
         /// </summary>
+        [Browsable(false)]
         public byte LayerDepth
         {
             get { return 0; }

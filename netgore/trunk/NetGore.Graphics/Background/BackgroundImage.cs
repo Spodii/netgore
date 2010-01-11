@@ -88,6 +88,10 @@ namespace NetGore.Graphics
         [Browsable(true)]
         public Alignment Alignment { get; set; }
 
+        /// <summary>
+        /// Gets the <see cref="ICamera2D"/> used to view the <see cref="BackgroundImage"/>.
+        /// </summary>
+        [Browsable(false)]
         protected ICamera2D Camera
         {
             get { return _cameraProvider.Camera; }
@@ -127,6 +131,10 @@ namespace NetGore.Graphics
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="IMap"/> the <see cref="BackgroundImage"/> is on.
+        /// </summary>
+        [Browsable(false)]
         protected IMap Map
         {
             get { return _map; }
@@ -323,6 +331,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
         /// </summary>
+        [Browsable(false)]
         public MapRenderLayer MapRenderLayer
         {
             get { return MapRenderLayer.Background; }
@@ -332,6 +341,7 @@ namespace NetGore.Graphics
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
         /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
         /// </summary>
+        [Browsable(false)]
         public byte LayerDepth
         {
             get { return (byte)Depth; }
