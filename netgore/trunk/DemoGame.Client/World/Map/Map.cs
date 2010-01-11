@@ -189,9 +189,9 @@ namespace DemoGame.Client
             var viewArea = camera.GetViewArea();
             IEnumerable<IDrawable> drawableInView;
             if (DrawFilter != null)
-                drawableInView = Spatial.GetEntities<IDrawable>(viewArea, x => DrawFilter(x));
+                drawableInView = Spatial.GetMany<IDrawable>(viewArea, x => DrawFilter(x));
             else
-                drawableInView = Spatial.GetEntities<IDrawable>(viewArea);
+                drawableInView = Spatial.GetMany<IDrawable>(viewArea);
 
             // Concat the background images (to the start of the list) since they aren't in any spatials
             var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(camera));

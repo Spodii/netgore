@@ -80,7 +80,7 @@ namespace DemoGame.MapEditor
         Entity GetEntityUnderCursor(ScreenForm screen)
         {
             Vector2 cursorPos = screen.CursorPos;
-            return screen.Map.Spatial.GetEntity<Entity>(cursorPos, GetEntityUnderCursorFilter);
+            return screen.Map.Spatial.Get<Entity>(cursorPos, GetEntityUnderCursorFilter);
         }
 
         bool GetEntityUnderCursorFilter(Entity entity)

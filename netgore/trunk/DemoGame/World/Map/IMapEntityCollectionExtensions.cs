@@ -20,7 +20,7 @@ namespace DemoGame
         /// <paramref name="charEntity"/> is able to use, or null if none.</returns>
         public static IUsableEntity GetUsable(this ISpatialCollection c, Rectangle rect, CharacterEntity charEntity)
         {
-            return c.GetEntity<IUsableEntity>(rect, x => x.CanUse(charEntity));
+            return c.Get<IUsableEntity>(rect, x => x.CanUse(charEntity));
         }
     }
 }

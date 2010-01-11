@@ -16,10 +16,10 @@ namespace NetGore.Tests.NetGore
             Entity someEntity;
             foreach (var spatial in GetSpatials(out someEntity))
             {
-                var all = spatial.GetEntities(new Rectangle(0, 0, (int)SpatialSize.X, (int)SpatialSize.Y));
+                var all = spatial.GetMany(new Rectangle(0, 0, (int)SpatialSize.X, (int)SpatialSize.Y));
                 foreach (var a in all)
                 {
-                    Assert.IsTrue(spatial.Contains(a));
+                    Assert.IsTrue(spatial.CollectionContains(a));
                 }
             }
         }
@@ -30,7 +30,7 @@ namespace NetGore.Tests.NetGore
             Entity someEntity;
             foreach (var spatial in GetSpatials(out someEntity))
             {
-                Assert.IsTrue(spatial.Contains(someEntity));
+                Assert.IsTrue(spatial.CollectionContains(someEntity));
             }
         }
 
@@ -51,7 +51,7 @@ namespace NetGore.Tests.NetGore
             Entity someEntity;
             foreach (var spatial in GetSpatials(out someEntity))
             {
-                var all = spatial.GetEntities(new Rectangle(0, 0, (int)SpatialSize.X, (int)SpatialSize.Y));
+                var all = spatial.GetMany(new Rectangle(0, 0, (int)SpatialSize.X, (int)SpatialSize.Y));
                 var distinct = all.Distinct();
                 Assert.AreEqual(distinct.Count(), all.Count());
             }

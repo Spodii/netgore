@@ -53,7 +53,7 @@ namespace DemoGame.Server
             var visibleArea = GetVisibleMapArea();
 
             // Get the characters that we are even hostile towards and are in view
-            var possibleChars = Actor.Map.Spatial.GetEntities<Character>(visibleArea, x => Actor.Alliance.IsHostile(x.Alliance));
+            var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea, x => Actor.Alliance.IsHostile(x.Alliance));
 
             // If no matches, return null
             if (possibleChars.Count() == 0)

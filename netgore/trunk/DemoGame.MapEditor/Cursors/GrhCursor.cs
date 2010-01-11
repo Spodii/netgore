@@ -119,7 +119,7 @@ namespace DemoGame.MapEditor
             }
 
             Vector2 cursorPos = Container.CursorPos;
-            MapGrh cursorGrh = Container.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+            MapGrh cursorGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
 
             if (cursorGrh != null)
             {
@@ -219,7 +219,7 @@ namespace DemoGame.MapEditor
                 Vector2 size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var selectAreaObjs = Container.Map.Spatial.GetEntities<MapGrh>(rect);
+                var selectAreaObjs = Container.Map.Spatial.GetMany<MapGrh>(rect);
                 _selectedMapGrhs.AddRange(selectAreaObjs);
 
                 Container.SelectedObjs.SetManySelected(_selectedMapGrhs.OfType<object>());

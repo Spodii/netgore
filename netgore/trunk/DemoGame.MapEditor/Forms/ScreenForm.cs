@@ -796,7 +796,7 @@ namespace DemoGame.MapEditor
             SelectedObjs.Clear();
 
             // NOTE: !! TEMP
-            SelectedObjs.SetSelected(Map.Spatial.GetEntity<MapGrh>(new Rectangle(0, 0, 128, 128)));
+            SelectedObjs.SetSelected(Map.Spatial.Get<MapGrh>(new Rectangle(0, 0, 128, 128)));
         }
 
         void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)
