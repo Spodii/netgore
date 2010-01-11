@@ -65,7 +65,7 @@ namespace DemoGame.MapEditor
         {
             // Selected Grh move box
             if (_mapGrhMoveBox != null)
-                _mapGrhMoveBox.Draw(Screen.SpriteBatch);
+                _mapGrhMoveBox.Draw(Container.SpriteBatch);
         }
 
         /// <summary>
@@ -74,9 +74,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override void DrawSelection()
         {
-            Vector2 cursorPos = Screen.CursorPos;
+            Vector2 cursorPos = Container.CursorPos;
 
-            if (_mouseDragStart == Vector2.Zero || Screen.SelectedTransBox != null)
+            if (_mouseDragStart == Vector2.Zero || Container.SelectedTransBox != null)
                 return;
 
             var drawColor = new Color(0, 255, 0, 150);
@@ -85,7 +85,7 @@ namespace DemoGame.MapEditor
             Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
 
             Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
-            XNARectangle.Draw(Screen.SpriteBatch, dest, drawColor);
+            XNARectangle.Draw(Container.SpriteBatch, dest, drawColor);
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace DemoGame.MapEditor
                 return;
             }
 
-            Vector2 cursorPos = Screen.CursorPos;
-            MapGrh cursorGrh = Screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+            Vector2 cursorPos = Container.CursorPos;
+            MapGrh cursorGrh = Container.Map.Spatial.GetEntity<MapGrh>(cursorPos);
 
             if (cursorGrh != null)
             {
@@ -127,7 +127,7 @@ namespace DemoGame.MapEditor
                 _selectedEntityOffset = cursorPos - cursorGrh.Position;
                 _selectedMapGrhs.Clear();
                 _selectedMapGrhs.Add(cursorGrh);
-                Screen.SelectedObjectsManager.SetSelected(cursorGrh);
+                Container.SelectedObjectsManager.SetSelected(cursorGrh);
             }
             else
             {
@@ -141,14 +141,14 @@ namespace DemoGame.MapEditor
 
                     if ((v.X <= cp.X) && (v.X + w >= cp.X) && (v.Y <= cp.Y) && (v.Y + h >= cp.Y))
                     {
-                        Screen.SelectedTransBox = _mapGrhMoveBox;
+                        Container.SelectedTransBox = _mapGrhMoveBox;
                         return;
                     }
 
                     _mapGrhMoveBox = null;
                     _selectedMapGrhs.Clear();
                 }
-                _mouseDragStart = Screen.Camera.ToWorld(e.X, e.Y);
+                _mouseDragStart = Container.Camera.ToWorld(e.X, e.Y);
             }
         }
 
@@ -158,7 +158,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseMove(MouseEventArgs e)
         {
-            Vector2 cursorPos = Screen.CursorPos;
+            Vector2 cursorPos = Container.CursorPos;
 
             if (_selectedMapGrhs.Count == 1)
             {
@@ -167,13 +167,13 @@ namespace DemoGame.MapEditor
                 {
                     var pos = cursorPos - _selectedEntityOffset;
                     if (_mnuSnapToGrid.Checked)
-                        pos = Screen.Grid.AlignDown(pos);
+                        pos = Container.Grid.AlignDown(pos);
                     mg.Position = pos;
                 }
             }
             else if (e.Button == MouseButtons.Left && _mapGrhMoveBox != null)
             {
-                if (Screen.SelectedTransBox == _mapGrhMoveBox)
+                if (Container.SelectedTransBox == _mapGrhMoveBox)
                 {
                     Vector2 offset = _mapGrhMoveBox.Position - cursorPos;
                     offset.X = (float)Math.Round(offset.X);
@@ -185,7 +185,7 @@ namespace DemoGame.MapEditor
                     }
 
                     _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
-                    Screen.SelectedTransBox = _mapGrhMoveBox;
+                    Container.SelectedTransBox = _mapGrhMoveBox;
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 cursorPos = Screen.CursorPos;
+            Vector2 cursorPos = Container.CursorPos;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -213,16 +213,16 @@ namespace DemoGame.MapEditor
 
                 _selectedMapGrhs.Clear();
 
-                Vector2 mouseDragEnd = Screen.Camera.ToWorld(e.X, e.Y);
+                Vector2 mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
                 Vector2 min = _mouseDragStart.Min(mouseDragEnd);
                 Vector2 max = _mouseDragStart.Max(mouseDragEnd);
                 Vector2 size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var selectAreaObjs = Screen.Map.Spatial.GetEntities<MapGrh>(rect);
+                var selectAreaObjs = Container.Map.Spatial.GetEntities<MapGrh>(rect);
                 _selectedMapGrhs.AddRange(selectAreaObjs);
 
-                Screen.SelectedObjectsManager.SetManySelected(_selectedMapGrhs.OfType<object>());
+                Container.SelectedObjectsManager.SetManySelected(_selectedMapGrhs.OfType<object>());
 
                 // Move transbox
                 if (_selectedMapGrhs.Count > 1)
@@ -230,7 +230,7 @@ namespace DemoGame.MapEditor
                 else
                 {
                     _mapGrhMoveBox = null;
-                    Screen.SelectedTransBox = null;
+                    Container.SelectedTransBox = null;
                     _selectedMapGrhs.Clear();
                 }
 
@@ -245,7 +245,7 @@ namespace DemoGame.MapEditor
         {
             foreach (MapGrh mg in _selectedMapGrhs)
             {
-                Screen.Map.RemoveMapGrh(mg);
+                Container.Map.RemoveMapGrh(mg);
             }
 
             _selectedMapGrhs.Clear();
@@ -261,16 +261,16 @@ namespace DemoGame.MapEditor
             bool isOverBox = false;
             if (_mapGrhMoveBox != null)
             {
-                var cursorRect = new Rectangle((int)Screen.CursorPos.X, (int)Screen.CursorPos.Y, 1, 1);
+                var cursorRect = new Rectangle((int)Container.CursorPos.X, (int)Container.CursorPos.Y, 1, 1);
                 var boxPos = _mapGrhMoveBox.Position;
                 var boxRect = new Rectangle((int)boxPos.X, (int)boxPos.Y, _mapGrhMoveBox.Area.Width, _mapGrhMoveBox.Area.Height);
                 isOverBox = cursorRect.Intersects(boxRect);
             }
 
-            if (isOverBox || _selectedMapGrhs.Count != 0 && Screen.MouseButton == MouseButtons.Left)
-                Screen.Cursor = Cursors.SizeAll;
+            if (isOverBox || _selectedMapGrhs.Count != 0 && Container.MouseButton == MouseButtons.Left)
+                Container.Cursor = Cursors.SizeAll;
             else
-                Screen.Cursor = Cursors.Default;
+                Container.Cursor = Cursors.Default;
         }
     }
 }

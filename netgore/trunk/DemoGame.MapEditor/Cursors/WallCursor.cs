@@ -81,9 +81,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override void DrawSelection()
         {
-            Vector2 cursorPos = Screen.CursorPos;
+            Vector2 cursorPos = Container.CursorPos;
 
-            if (_mouseDragStart == Vector2.Zero || _mouseDragButton == MouseButtons.None || Screen.SelectedTransBox != null)
+            if (_mouseDragStart == Vector2.Zero || _mouseDragButton == MouseButtons.None || Container.SelectedTransBox != null)
                 return;
 
             Color drawColor;
@@ -96,7 +96,7 @@ namespace DemoGame.MapEditor
             Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
 
             Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
-            XNARectangle.Draw(Screen.SpriteBatch, dest, drawColor);
+            XNARectangle.Draw(Container.SpriteBatch, dest, drawColor);
         }
 
         /// <summary>
@@ -128,53 +128,53 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseDown(MouseEventArgs e)
         {
-            Vector2 cursorPos = Screen.CursorPos;
+            Vector2 cursorPos = Container.CursorPos;
 
             // Set the dragging values
-            _mouseDragStart = Screen.Camera.ToWorld(e.X, e.Y);
+            _mouseDragStart = Container.Camera.ToWorld(e.X, e.Y);
             _mouseDragButton = e.Button;
 
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (Screen.TransBoxes.Count > 0)
+            if (Container.TransBoxes.Count > 0)
             {
                 // Check for resize box collision
                 Rectangle r = new Rectangle((int)_mouseDragStart.X, (int)_mouseDragStart.Y, 1, 1);
-                Screen.SelectedTransBox = null;
-                foreach (TransBox box in Screen.TransBoxes)
+                Container.SelectedTransBox = null;
+                foreach (TransBox box in Container.TransBoxes)
                 {
                     if (!r.Intersects(box.Area))
                         continue;
 
-                    Screen.SelectedTransBox = box;
+                    Container.SelectedTransBox = box;
                     break;
                 }
             }
             else
             {
                 // Check for wall collision for quick dragging
-                WallEntityBase w = Screen.Map.Spatial.GetEntity<WallEntityBase>(cursorPos);
+                WallEntityBase w = Container.Map.Spatial.GetEntity<WallEntityBase>(cursorPos);
                 if (w == null)
                     return;
 
                 _selectedWalls.Clear();
                 _selectedWalls.Add(w);
-                TransBox.SurroundEntity(w, Screen.TransBoxes);
-                foreach (TransBox transBox in Screen.TransBoxes)
+                TransBox.SurroundEntity(w, Container.TransBoxes);
+                foreach (TransBox transBox in Container.TransBoxes)
                 {
                     if (transBox.TransType != TransBoxType.Move)
                         continue;
 
                     cursorPos = transBox.Position;
                     cursorPos.X -= (TransBox.MoveSize.X / 2) + 16f;
-                    GameScreenControl gameScreen = Screen.GameScreenControl;
+                    GameScreenControl gameScreen = Container.GameScreenControl;
                     Point pts = gameScreen.PointToScreen(gameScreen.Location);
-                    Vector2 screenPos = Screen.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
+                    Vector2 screenPos = Container.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
 
                     Cursor.Position = new Point((int)screenPos.X, (int)screenPos.Y);
-                    Screen.SelectedTransBox = transBox;
-                    Screen.CursorPos = cursorPos;
+                    Container.SelectedTransBox = transBox;
+                    Container.CursorPos = cursorPos;
                     break;
                 }
             }
@@ -186,14 +186,14 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseMove(MouseEventArgs e)
         {
-            if (Screen.SelectedTransBox == null)
+            if (Container.SelectedTransBox == null)
                 return;
 
-            Vector2 cursorPos = Screen.CursorPos;
-            Map map = Screen.Map;
-            Entity selEntity = Screen.SelectedTransBox.Entity;
+            Vector2 cursorPos = Container.CursorPos;
+            Map map = Container.Map;
+            Entity selEntity = Container.SelectedTransBox.Entity;
 
-            if (Screen.SelectedTransBox.TransType == TransBoxType.Move)
+            if (Container.SelectedTransBox.TransType == TransBoxType.Move)
             {
                 if (selEntity == null)
                 {
@@ -217,7 +217,7 @@ namespace DemoGame.MapEditor
                 else
                 {
                     // Move one
-                    Vector2 offset = selEntity.Position - Screen.SelectedTransBox.Position - (TransBox.MoveSize / 2);
+                    Vector2 offset = selEntity.Position - Container.SelectedTransBox.Position - (TransBox.MoveSize / 2);
                     offset.X = (float)Math.Round(offset.X);
                     offset.Y = (float)Math.Round(offset.Y);
 
@@ -230,64 +230,64 @@ namespace DemoGame.MapEditor
 
                     // Wall-to-grid snapping
                     if (_mnuSnapToGrid.Checked)
-                        Screen.Grid.Align(selEntity);
+                        Container.Grid.Align(selEntity);
                 }
             }
             else
             {
                 // Handle scaling
-                if (((Screen.SelectedTransBox.TransType & TransBoxType.Top) > 0) && selEntity.Max.Y > cursorPos.Y)
+                if (((Container.SelectedTransBox.TransType & TransBoxType.Top) > 0) && selEntity.Max.Y > cursorPos.Y)
                 {
                     float oldMaxY = selEntity.Max.Y;
                     map.SafeTeleportEntity(selEntity, new Vector2(selEntity.Position.X, cursorPos.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Screen.Grid.SnapToGridPosition(selEntity);
+                        Container.Grid.SnapToGridPosition(selEntity);
 
                     selEntity.Resize(new Vector2(selEntity.Size.X, oldMaxY - selEntity.Position.Y));
                 }
 
-                if (((Screen.SelectedTransBox.TransType & TransBoxType.Left) > 0) && selEntity.Max.X > cursorPos.X)
+                if (((Container.SelectedTransBox.TransType & TransBoxType.Left) > 0) && selEntity.Max.X > cursorPos.X)
                 {
                     float oldMaxX = selEntity.Max.X;
                     map.SafeTeleportEntity(selEntity, new Vector2(cursorPos.X, selEntity.Position.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Screen.Grid.SnapToGridPosition(selEntity);
+                        Container.Grid.SnapToGridPosition(selEntity);
                     selEntity.Resize(new Vector2(oldMaxX - selEntity.Position.X, selEntity.Size.Y));
                 }
 
-                if (((Screen.SelectedTransBox.TransType & TransBoxType.Bottom) > 0) && selEntity.Position.Y < cursorPos.Y)
+                if (((Container.SelectedTransBox.TransType & TransBoxType.Bottom) > 0) && selEntity.Position.Y < cursorPos.Y)
                 {
                     selEntity.Resize(new Vector2(selEntity.Size.X, cursorPos.Y - selEntity.Position.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Screen.Grid.SnapToGridSize(selEntity);
+                        Container.Grid.SnapToGridSize(selEntity);
                 }
 
-                if (((Screen.SelectedTransBox.TransType & TransBoxType.Right) > 0) && selEntity.Position.X < cursorPos.X)
+                if (((Container.SelectedTransBox.TransType & TransBoxType.Right) > 0) && selEntity.Position.X < cursorPos.X)
                 {
                     selEntity.Resize(new Vector2(cursorPos.X - selEntity.Position.X, selEntity.Size.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Screen.Grid.SnapToGridSize(selEntity);
+                        Container.Grid.SnapToGridSize(selEntity);
                 }
             }
 
             // Recreate the transformation boxes
-            Screen.TransBoxes.Clear();
+            Container.TransBoxes.Clear();
             if (selEntity == null)
             {
                 TransBox newTransBox = new TransBox(TransBoxType.Move, null, cursorPos);
-                Screen.SelectedTransBox = newTransBox;
-                Screen.TransBoxes.Add(newTransBox);
+                Container.SelectedTransBox = newTransBox;
+                Container.TransBoxes.Add(newTransBox);
             }
             else
             {
-                TransBox.SurroundEntity(selEntity, Screen.TransBoxes);
+                TransBox.SurroundEntity(selEntity, Container.TransBoxes);
 
                 // Find the new selected transformation box
-                foreach (TransBox box in Screen.TransBoxes)
+                foreach (TransBox box in Container.TransBoxes)
                 {
-                    if (box.TransType == Screen.SelectedTransBox.TransType)
+                    if (box.TransType == Container.SelectedTransBox.TransType)
                     {
-                        Screen.SelectedTransBox = box;
+                        Container.SelectedTransBox = box;
                         break;
                     }
                 }
@@ -303,21 +303,21 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 mouseDragEnd = Screen.Camera.ToWorld(e.X, e.Y);
+            Vector2 mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
 
-            if (_mouseDragStart != Vector2.Zero && Screen.SelectedTransBox == null)
+            if (_mouseDragStart != Vector2.Zero && Container.SelectedTransBox == null)
             {
                 Vector2 min = _mouseDragStart.Min(mouseDragEnd);
                 Vector2 max = _mouseDragStart.Max(mouseDragEnd);
                 Vector2 size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var selectAreaObjs = Screen.Map.Spatial.GetEntities<WallEntityBase>(rect);
+                var selectAreaObjs = Container.Map.Spatial.GetEntities<WallEntityBase>(rect);
                 if (e.Button == MouseButtons.Left)
                 {
                     // Selection dragging
                     // When holding down control, add to the selection by not deleting current selection
-                    if (!Screen.KeyEventArgs.Control)
+                    if (!Container.KeyEventArgs.Control)
                         _selectedWalls.Clear();
 
                     // Add all selected to the list if they are not already in it
@@ -331,22 +331,22 @@ namespace DemoGame.MapEditor
             }
 
             // Release the selected resize box
-            Screen.SelectedTransBox = null;
+            Container.SelectedTransBox = null;
 
-            Screen.TransBoxes.Clear();
+            Container.TransBoxes.Clear();
 
             // With multiple selected walls, add a single move box for all of them
             if (_selectedWalls.Count > 1)
-                Screen.TransBoxes.Add(new TransBox(TransBoxType.Move, null, mouseDragEnd));
+                Container.TransBoxes.Add(new TransBox(TransBoxType.Move, null, mouseDragEnd));
 
             // Create the transformation boxes
             foreach (WallEntityBase wall in _selectedWalls)
             {
-                TransBox.SurroundEntity(wall, Screen.TransBoxes);
+                TransBox.SurroundEntity(wall, Container.TransBoxes);
             }
 
             // Update the selected walls list
-            Screen.SelectedObjectsManager.SetManySelected(_selectedWalls.OfType<object>());
+            Container.SelectedObjectsManager.SetManySelected(_selectedWalls.OfType<object>());
 
             _mouseDragStart = Vector2.Zero;
         }
@@ -358,11 +358,11 @@ namespace DemoGame.MapEditor
         {
             foreach (WallEntityBase selectedWall in _selectedWalls)
             {
-                Screen.Map.RemoveEntity(selectedWall);
+                Container.Map.RemoveEntity(selectedWall);
             }
 
             _selectedWalls.Clear();
-            Screen.SelectedObjectsManager.Clear();
+            Container.SelectedObjectsManager.Clear();
         }
 
         /// <summary>
@@ -373,13 +373,13 @@ namespace DemoGame.MapEditor
         {
             TransBox hoverBox = null;
 
-            if (Screen.SelectedTransBox != null)
-                hoverBox = Screen.SelectedTransBox; // Set to the selected TransBox
+            if (Container.SelectedTransBox != null)
+                hoverBox = Container.SelectedTransBox; // Set to the selected TransBox
             else
             {
                 // Find the TransBox being hovered over (if any)
-                var cursorRect = new Rectangle((int)Screen.CursorPos.X, (int)Screen.CursorPos.Y, 1, 1);
-                foreach (TransBox box in Screen.TransBoxes)
+                var cursorRect = new Rectangle((int)Container.CursorPos.X, (int)Container.CursorPos.Y, 1, 1);
+                foreach (TransBox box in Container.TransBoxes)
                 {
                     var boxRect = new Rectangle((int)box.Position.X, (int)box.Position.Y, box.Area.Width, box.Area.Height);
                     if (cursorRect.Intersects(boxRect))
@@ -396,32 +396,32 @@ namespace DemoGame.MapEditor
                 switch (hoverBox.TransType)
                 {
                     case TransBoxType.Move:
-                        Screen.Cursor = Cursors.SizeAll;
+                        Container.Cursor = Cursors.SizeAll;
                         return;
 
                     case TransBoxType.Left:
                     case TransBoxType.Right:
-                        Screen.Cursor = Cursors.SizeWE;
+                        Container.Cursor = Cursors.SizeWE;
                         return;
 
                     case TransBoxType.Top:
                     case TransBoxType.Bottom:
-                        Screen.Cursor = Cursors.SizeNS;
+                        Container.Cursor = Cursors.SizeNS;
                         return;
 
                     case TransBoxType.BottomLeft:
                     case TransBoxType.TopRight:
-                        Screen.Cursor = Cursors.SizeNESW;
+                        Container.Cursor = Cursors.SizeNESW;
                         return;
 
                     case TransBoxType.BottomRight:
                     case TransBoxType.TopLeft:
-                        Screen.Cursor = Cursors.SizeNWSE;
+                        Container.Cursor = Cursors.SizeNWSE;
                         return;
                 }
             }
 
-            Screen.Cursor = Cursors.Default;
+            Container.Cursor = Cursors.Default;
         }
     }
 }

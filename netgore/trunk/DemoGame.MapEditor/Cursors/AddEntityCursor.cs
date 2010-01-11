@@ -93,11 +93,11 @@ namespace DemoGame.MapEditor
 
             // Create the Entity
             Entity entity = (Entity)Activator.CreateInstance(_selectedType);
-            Screen.Map.AddEntity(entity);
+            Container.Map.AddEntity(entity);
 
             // Move to the center of the screen
             entity.Size = new Vector2(64);
-            entity.Position = Screen.CursorPos - (entity.Size / 2f);
+            entity.Position = Container.CursorPos - (entity.Size / 2f);
         }
     }
 }

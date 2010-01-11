@@ -77,20 +77,20 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override void DrawInterface()
         {
-            var grh = Screen.SelectedGrh;
+            var grh = Container.SelectedGrh;
             if (grh.GrhData == null)
                 return;
 
             Vector2 drawPos;
             if (_mnuSnapToGrid.Checked)
-                drawPos = Screen.Grid.AlignDown(Screen.CursorPos);
+                drawPos = Container.Grid.AlignDown(Container.CursorPos);
             else
-                drawPos = Screen.CursorPos;
+                drawPos = Container.CursorPos;
 
             // If we fail to draw the selected Grh, just ignore it
             try
             {
-                grh.Draw(Screen.SpriteBatch, drawPos, _drawPreviewColor);
+                grh.Draw(Container.SpriteBatch, drawPos, _drawPreviewColor);
             }
             catch (Exception)
             {
@@ -136,43 +136,43 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 cursorPos = Screen.CursorPos;
+            Vector2 cursorPos = Container.CursorPos;
 
             // On left-click place the Grh on the map
             if (e.Button == MouseButtons.Left)
             {
                 // Check for a valid MapGrh
-                if (Screen.SelectedGrh.GrhData == null)
+                if (Container.SelectedGrh.GrhData == null)
                     return;
 
                 // Find the position the MapGrh will be created at
                 Vector2 drawPos;
                 if (_mnuSnapToGrid.Checked)
-                    drawPos = Screen.Grid.AlignDown(cursorPos);
+                    drawPos = Container.Grid.AlignDown(cursorPos);
                 else
                     drawPos = cursorPos;
 
                 // Check if a MapGrh of the same type already exists at the location
-                foreach (MapGrh grh in Screen.Map.MapGrhs)
+                foreach (MapGrh grh in Container.Map.MapGrhs)
                 {
-                    if (grh.Position == drawPos && grh.Grh.GrhData.GrhIndex == Screen.SelectedGrh.GrhData.GrhIndex)
+                    if (grh.Position == drawPos && grh.Grh.GrhData.GrhIndex == Container.SelectedGrh.GrhData.GrhIndex)
                         return;
                 }
 
                 // Add the MapGrh to the map
-                Grh g = new Grh(Screen.SelectedGrh.GrhData, AnimType.Loop, Screen.GetTime());
-                Screen.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
+                Grh g = new Grh(Container.SelectedGrh.GrhData, AnimType.Loop, Container.GetTime());
+                Container.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
             }
             else if (e.Button == MouseButtons.Right)
             {
                 // On right-click delete any Grhs under the cursor
                 while (true)
                 {
-                    MapGrh mapGrh = Screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+                    MapGrh mapGrh = Container.Map.Spatial.GetEntity<MapGrh>(cursorPos);
                     if (mapGrh == null)
                         break;
 
-                    Screen.Map.RemoveMapGrh(mapGrh);
+                    Container.Map.RemoveMapGrh(mapGrh);
                 }
             }
         }

@@ -72,27 +72,27 @@ namespace DemoGame.MapEditor
         public override void MouseDown(MouseEventArgs e)
         {
             // Switch to the wall editing tool
-            Screen.CursorManager.SelectedCursor = Screen.CursorManager.TryGetCursor<WallCursor>();
+            Container.CursorManager.SelectedCursor = Container.CursorManager.TryGetCursor<WallCursor>();
 
             // Create the new wall
-            WallEntity w = new WallEntity(Screen.Camera.ToWorld(e.X, e.Y), Vector2.One);
-            Screen.Map.AddEntity(w);
+            WallEntity w = new WallEntity(Container.Camera.ToWorld(e.X, e.Y), Vector2.One);
+            Container.Map.AddEntity(w);
             if (_mnuSnapToGrid.Checked)
-                Screen.Grid.Align(w);
+                Container.Grid.Align(w);
 
             // Create the transformation boxes for the wall and select the bottom/right one
-            Screen.TransBoxes.Clear();
-            TransBox.SurroundEntity(w, Screen.TransBoxes);
-            foreach (TransBox tBox in Screen.TransBoxes)
+            Container.TransBoxes.Clear();
+            TransBox.SurroundEntity(w, Container.TransBoxes);
+            foreach (TransBox tBox in Container.TransBoxes)
             {
                 if (tBox.TransType == TransBoxType.BottomRight)
                 {
-                    Screen.SelectedTransBox = tBox;
+                    Container.SelectedTransBox = tBox;
                     break;
                 }
             }
 
-            Screen.SelectedObjectsManager.SetSelected(w);
+            Container.SelectedObjectsManager.SetSelected(w);
         }
     }
 }
