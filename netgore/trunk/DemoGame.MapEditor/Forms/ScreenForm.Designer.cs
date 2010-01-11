@@ -206,6 +206,7 @@ namespace DemoGame.MapEditor
             this.GameScreen.TabIndex = 8;
             this.GameScreen.Text = "Game Screen";
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
+            this.GameScreen.MouseWheel += new System.Windows.Forms.MouseEventHandler(GameScreen_MouseWheel);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 

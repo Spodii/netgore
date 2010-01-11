@@ -333,8 +333,24 @@ namespace NetGore.EditorTools
             }
         }
 
+
         /// <summary>
-        /// Sends the PressDelete event to the current cursor.
+        /// Tells the active cursor to handle the mouse wheel scrolling.
+        /// </summary>
+        /// <param name="amount">How much the mouse wheel has scrolled, and which direction.</param>
+        public void MoveMouseWheel(int amount)
+        {
+            if (amount == 0)
+                return;
+
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null)
+                cursor.MoveMouseWheel(amount);
+        }
+
+        /// <summary>
+        /// Tells the active cursor to handle the Delete button being pressed.
         /// </summary>
         public void PressDelete()
         {
