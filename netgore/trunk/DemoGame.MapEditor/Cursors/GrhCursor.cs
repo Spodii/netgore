@@ -153,6 +153,20 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles when the mouse wheel has moved.
+        /// </summary>
+        /// <param name="amount">How much the mouse wheel has scrolled, and which direction.</param>
+        public override void MoveMouseWheel(int amount)
+        {
+            // Change the layer for the focused MapGrh
+            var mapGrh = Container.SelectedObjs.Focused as MapGrh;
+            if (mapGrh == null)
+                return;
+
+            mapGrh.LayerDepth = (byte)(mapGrh.LayerDepth + amount).Clamp(byte.MinValue, byte.MaxValue);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
         /// <param name="e">Mouse events.</param>

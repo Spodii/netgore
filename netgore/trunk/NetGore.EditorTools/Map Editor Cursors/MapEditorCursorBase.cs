@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -151,6 +152,14 @@ namespace NetGore.EditorTools
         /// called every frame.
         /// </summary>
         public virtual void UpdateCursor()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the mouse wheel has moved.
+        /// </summary>
+        /// <param name="amount">How much the mouse wheel has scrolled, and which direction.</param>
+        public virtual void MoveMouseWheel(int amount)
         {
         }
     }

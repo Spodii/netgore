@@ -643,6 +643,14 @@ namespace DemoGame.MapEditor
             _cursorPos = _camera.ToWorld(e.X, e.Y);
         }
 
+        void GameScreen_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+                CursorManager.MoveMouseWheel(1);
+            else if (e.Delta < 0)
+                CursorManager.MoveMouseWheel(-1);
+        }
+
         void GameScreen_MouseUp(object sender, MouseEventArgs e)
         {
             _mouseButton = e.Button;
