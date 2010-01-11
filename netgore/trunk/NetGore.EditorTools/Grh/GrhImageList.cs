@@ -28,6 +28,40 @@ namespace NetGore.EditorTools
         static readonly ImageList _imageList = new ImageList();
 
         /// <summary>
+        /// Gets the <see cref="Image"/> for a <see cref="Grh"/>.
+        /// </summary>
+        /// <param name="grh">The <see cref="Grh"/> to get the image for.</param>
+        /// <returns>The <see cref="Image"/> for the <paramref name="grh"/>, or null if invalid.</returns>
+        public static Image TryGetImage(Grh grh)
+        {
+            if (grh == null)
+                return null;
+
+            return TryGetImage(grh.CurrentGrhData);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Image"/> for a <see cref="GrhData"/>.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to get the image for.</param>
+        /// <returns>The <see cref="Image"/> for the <paramref name="grhData"/>, or null if invalid.</returns>
+        public static Image TryGetImage(GrhData grhData)
+        {
+            if (grhData == null)
+                return null;
+
+            var imageKey = GetImageKey(grhData.GetFrame(0));
+            if (string.IsNullOrEmpty(imageKey))
+                return null;
+
+            var images = ImageList.Images;
+            if (!images.ContainsKey(imageKey))
+                return null;
+
+            return images[imageKey];
+        }
+
+        /// <summary>
         /// Initializes the <see cref="GrhImageList"/> class.
         /// </summary>
         static GrhImageList()
@@ -179,6 +213,9 @@ namespace NetGore.EditorTools
         /// <returns>The image key for the <paramref name="grhData"/>.</returns>
         public static string GetImageKey(StationaryGrhData grhData)
         {
+            if (grhData == null)
+                return string.Empty;
+
             if (grhData.GrhIndex != AutomaticAnimatedGrhData.FrameGrhIndex)
             {
                 // For normal GrhDatas, we return the unique GrhIndex
