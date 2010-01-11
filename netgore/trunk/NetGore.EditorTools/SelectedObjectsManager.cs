@@ -3,36 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
-using NetGore.EditorTools;
 
-namespace DemoGame.MapEditor
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Keeps track of which object(s) are currently selected and manages displaying and updating them.
     /// </summary>
     public class SelectedObjectsManager<T> where T : class
     {
-        readonly List<T> _selectedObjs = new List<T>();
-
-        T _focused;
-
         public delegate void ChangeFocusedHandler(SelectedObjectsManager<T> sender, T newFocused);
 
         public delegate void SelectedObjectManagerEventHandler(SelectedObjectsManager<T> sender);
 
         readonly PropertyGrid _propertyGrid;
-        readonly ListBox _selectedListBox;
         readonly EventHandler _selectedIndexChangedHandler;
+        readonly ListBox _selectedListBox;
+        readonly List<T> _selectedObjs = new List<T>();
+
+        T _focused;
 
         /// <summary>
-        /// Gets the <see cref="PropertyGrid"/> used to display the properties of the focused object.
+        /// Notifies listeners when the focused object has changed.
         /// </summary>
-        public PropertyGrid PropertyGrid { get { return _propertyGrid; } }
+        public event ChangeFocusedHandler OnChangeFocused;
 
         /// <summary>
-        /// Gets the <see cref="ListBox"/> used to display the selected objects.
+        /// Notifies listeners when the selected objects have changed.
         /// </summary>
-        public ListBox SelectedListBox { get { return _selectedListBox; } }
+        public event SelectedObjectManagerEventHandler OnChangeSelected;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedObjectsManager&lt;T&gt;"/> class.
@@ -54,9 +52,60 @@ namespace DemoGame.MapEditor
             _selectedListBox.SelectedIndexChanged += _selectedIndexChangedHandler;
         }
 
-        void SelectedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Gets the object that has the focus. This will only be null if no objects are in the selection.
+        /// </summary>
+        public T Focused
         {
-            Focused = ((ListBox)sender).SelectedItem as T;
+            get { return _focused; }
+            private set
+            {
+                if (_focused == value)
+                    return;
+
+                _focused = value;
+
+                ChangeFocused();
+                if (OnChangeFocused != null)
+                    OnChangeFocused(this, _focused);
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="PropertyGrid"/> used to display the properties of the focused object.
+        /// </summary>
+        public PropertyGrid PropertyGrid
+        {
+            get { return _propertyGrid; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ListBox"/> used to display the selected objects.
+        /// </summary>
+        public ListBox SelectedListBox
+        {
+            get { return _selectedListBox; }
+        }
+
+        /// <summary>
+        /// Gets all of the currently selected objects.
+        /// </summary>
+        public IEnumerable<T> SelectedObjects
+        {
+            get { return _selectedObjs; }
+        }
+
+        /// <summary>
+        /// Adds a new object to the collection of selected objects.
+        /// </summary>
+        /// <param name="obj">The object to add.</param>
+        public void AddSelected(T obj)
+        {
+            if (_selectedObjs.Contains(obj))
+                return;
+
+            _selectedObjs.Add(obj);
+            UpdateSelection();
         }
 
         /// <summary>
@@ -85,37 +134,32 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Notifies listeners when the focused object has changed.
+        /// Clears all selected objects.
         /// </summary>
-        public event ChangeFocusedHandler OnChangeFocused;
-
-        /// <summary>
-        /// Notifies listeners when the selected objects have changed.
-        /// </summary>
-        public event SelectedObjectManagerEventHandler OnChangeSelected;
-
-        /// <summary>
-        /// Gets all of the currently selected objects.
-        /// </summary>
-        public IEnumerable<T> SelectedObjects { get { return _selectedObjs; } }
-
-        /// <summary>
-        /// Gets the object that has the focus. This will only be null if no objects are in the selection.
-        /// </summary>
-        public T Focused
+        public void Clear()
         {
-            get { return _focused; }
-            private set
-            {
-                if (_focused == value)
-                    return;
+            if (_selectedObjs.Count == 0)
+                return;
 
-                _focused = value;
+            _selectedObjs.Clear();
+            UpdateSelection();
+        }
 
-                ChangeFocused();
-                if (OnChangeFocused != null)
-                    OnChangeFocused(this, _focused);
-            }
+        /// <summary>
+        /// Removes an object from the selected objects.
+        /// </summary>
+        /// <param name="obj">The object to remove.</param>
+        public void Remove(T obj)
+        {
+            if (!_selectedObjs.Remove(obj))
+                return;
+
+            UpdateSelection();
+        }
+
+        void SelectedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Focused = ((ListBox)sender).SelectedItem as T;
         }
 
         /// <summary>
@@ -152,54 +196,27 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Handles when the selected objects have changed.
+        /// Gets the currently selected objects.
         /// </summary>
-        void UpdateSelection()
+        /// <param name="selectedObjs">The currently selected objects.</param>
+        public void SetManySelected(IEnumerable<T> selectedObjs)
         {
-            // Notify that the collection has changed
-            ChangeSelected();
-            if (OnChangeSelected != null)
-                OnChangeSelected(this);
+            // Check if to clear instead
+            if (selectedObjs == null || selectedObjs.Count() == 0)
+            {
+                Clear();
+                return;
+            }
 
-            // Ensure the focused object is valid
-            if (Focused == null || !_selectedObjs.Contains(Focused))
-                Focused = _selectedObjs.FirstOrDefault();
-        }
+            selectedObjs = selectedObjs.Distinct();
 
-        /// <summary>
-        /// Removes an object from the selected objects.
-        /// </summary>
-        /// <param name="obj">The object to remove.</param>
-        public void Remove(T obj)
-        {
-            if (!_selectedObjs.Remove(obj))
+            // Ignore if we already have this exact set as the current selection
+            if (selectedObjs.ContainSameElements(_selectedObjs))
                 return;
 
-            UpdateSelection();
-        }
-
-        /// <summary>
-        /// Clears all selected objects.
-        /// </summary>
-        public void Clear()
-        {
-            if (_selectedObjs.Count == 0)
-                return;
-
+            // Set the new selected objects and update
             _selectedObjs.Clear();
-            UpdateSelection();
-        }
-
-        /// <summary>
-        /// Adds a new object to the collection of selected objects.
-        /// </summary>
-        /// <param name="obj">The object to add.</param>
-        public void AddSelected(T obj)
-        {
-            if (_selectedObjs.Contains(obj))
-                return;
-
-            _selectedObjs.Add(obj);
+            _selectedObjs.AddRange(selectedObjs);
             UpdateSelection();
         }
 
@@ -227,28 +244,18 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the currently selected objects.
+        /// Handles when the selected objects have changed.
         /// </summary>
-        /// <param name="selectedObjs">The currently selected objects.</param>
-        public void SetSelectedObjects(IEnumerable<T> selectedObjs)
+        void UpdateSelection()
         {
-            // Check if to clear instead
-            if (selectedObjs == null || selectedObjs.Count() == 0)
-            {
-                Clear();
-                return;
-            }
+            // Notify that the collection has changed
+            ChangeSelected();
+            if (OnChangeSelected != null)
+                OnChangeSelected(this);
 
-            selectedObjs = selectedObjs.Distinct();
-
-            // Ignore if we already have this exact set as the current selection
-            if (selectedObjs.ContainSameElements(_selectedObjs))
-                return;
-
-            // Set the new selected objects and update
-            _selectedObjs.Clear();
-            _selectedObjs.AddRange(selectedObjs);
-            UpdateSelection();
+            // Ensure the focused object is valid
+            if (Focused == null || !_selectedObjs.Contains(Focused))
+                Focused = _selectedObjs.FirstOrDefault();
         }
     }
 }

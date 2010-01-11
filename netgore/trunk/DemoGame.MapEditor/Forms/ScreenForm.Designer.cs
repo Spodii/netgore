@@ -877,6 +877,7 @@ namespace DemoGame.MapEditor
             this.lstSelected.Name = "lstSelected";
             this.lstSelected.Size = new System.Drawing.Size(169, 264);
             this.lstSelected.TabIndex = 0;
+            this.lstSelected.Click += new System.EventHandler(this.lstSelected_Click);
             // 
             // btnOptimize
             // 

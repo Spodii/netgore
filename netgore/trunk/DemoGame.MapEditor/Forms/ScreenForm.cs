@@ -59,6 +59,14 @@ namespace DemoGame.MapEditor
         /// </summary>
         const Keys _cameraUp = Keys.W;
 
+        /// <summary>
+        /// The <see cref="Type"/> of the <see cref="Control"/>s that, when they have focus, the key strokes
+        /// will not be sent to the game screen. For instance, TextBoxes can be added to prevent moving the
+        /// map all over the place when typing something into them. This also works for any derived type, so
+        /// entering the type <see cref="Control"/> will result in the camera never moving.
+        /// </summary>
+        static readonly Type[] _focusOverrideTypes = new Type[] { typeof(TextBox), typeof(ListBox) };
+
         readonly ICamera2D _camera;
         readonly MapEditorCursorManager<ScreenForm> _cursorManager;
         readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
@@ -186,17 +194,6 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
-        }
-
-        void SelectedObjectsManager_OnChangeSelected(SelectedObjectsManager<object> sender)
-        {
-            scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2;
-        }
-
-        void SelectedObjectsManager_OnChangeFocused(SelectedObjectsManager<object> sender, object newFocused)
-        {
-            scTabsAndSelected.Panel2Collapsed =
-                 (_selectedObjectsManager.SelectedObjects.Count() == 0 && _selectedObjectsManager.Focused == null);
         }
 
         /// <summary>
@@ -838,6 +835,16 @@ namespace DemoGame.MapEditor
                 _selectedObjectsManager.SetSelected(lstMapParticleEffects.SelectedItem);
         }
 
+        void lstSelected_Click(object sender, EventArgs e)
+        {
+            var current = lstSelected.SelectedItem as ISpatial;
+            if (current == null)
+                return;
+
+            if (current == _focusedSpatialDrawer.Focused)
+                _focusedSpatialDrawer.ResetIndicator();
+        }
+
         void Map_OnSave(MapBase map)
         {
             DbController.GetQuery<UpdateMapQuery>().Execute(map);
@@ -852,8 +859,12 @@ namespace DemoGame.MapEditor
             base.OnKeyDown(e);
 
             Control focusControl = FindFocusControl(this);
-            if (focusControl != null && focusControl.GetType() == typeof(TextBox))
-                return;
+            if (focusControl != null)
+            {
+                var focusControlType = focusControl.GetType();
+                if (_focusOverrideTypes.Any(x => x.IsAssignableFrom(focusControlType)))
+                    return;
+            }
 
             Vector2 startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
 
@@ -901,17 +912,13 @@ namespace DemoGame.MapEditor
 
             switch (e.KeyCode)
             {
-                case Keys.Up:
-                case Keys.W:
-                case Keys.S:
-                case Keys.Down:
+                case _cameraUp:
+                case _cameraDown:
                     _moveCamera.Y = 0;
                     break;
 
-                case Keys.Right:
-                case Keys.D:
-                case Keys.A:
-                case Keys.Left:
+                case _cameraLeft:
+                case _cameraRight:
                     _moveCamera.X = 0;
                     break;
             }
@@ -956,6 +963,17 @@ namespace DemoGame.MapEditor
                 Dispose();
                 throw;
             }
+        }
+
+        void SelectedObjectsManager_OnChangeFocused(SelectedObjectsManager<object> sender, object newFocused)
+        {
+            scTabsAndSelected.Panel2Collapsed = (_selectedObjectsManager.SelectedObjects.Count() == 0 &&
+                                                 _selectedObjectsManager.Focused == null);
+        }
+
+        void SelectedObjectsManager_OnChangeSelected(SelectedObjectsManager<object> sender)
+        {
+            scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2;
         }
 
         void SetMapGUITexts(Map oldMap, Map newMap)

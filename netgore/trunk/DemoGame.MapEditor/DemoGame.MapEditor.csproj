@@ -86,8 +86,6 @@
     <Compile Include="Forms\Controls\ListBoxes\PersistentNPCListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\FocusedSpatialDrawer.cs" />
-    <Compile Include="SelectedObjectsManager.cs" />
     <Compile Include="ListboxWall.cs" />
     <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
