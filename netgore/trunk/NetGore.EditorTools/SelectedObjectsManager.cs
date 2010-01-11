@@ -156,9 +156,31 @@ namespace NetGore.EditorTools
             UpdateSelection();
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the SelectedListBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void SelectedListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Focused = ((ListBox)sender).SelectedItem as T;
+            Focused = SelectedListBox.SelectedItem as T;
+            if (Focused == null)
+                return;
+
+            if (SelectedListBox.SelectedItems.Count > 1)
+            {
+                List<T> objs = new List<T>(SelectedListBox.SelectedItems.Count);
+                foreach (var item in 
+                SelectedListBox.SelectedItems)
+                {
+                    var o = item as T;
+                    if (o != null)
+                        objs.Add(o);
+                }
+
+                if (objs.Count > 0)
+                    PropertyGrid.SelectedObjects = objs.ToArray();
+            }
         }
 
         /// <summary>

@@ -875,6 +875,7 @@ namespace DemoGame.MapEditor
             this.lstSelected.FormattingEnabled = true;
             this.lstSelected.Location = new System.Drawing.Point(0, 0);
             this.lstSelected.Name = "lstSelected";
+            this.lstSelected.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lstSelected.Size = new System.Drawing.Size(169, 264);
             this.lstSelected.TabIndex = 0;
             this.lstSelected.Click += new System.EventHandler(this.lstSelected_Click);
