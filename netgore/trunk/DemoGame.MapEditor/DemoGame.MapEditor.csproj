@@ -115,6 +115,7 @@
     </Compile>
     <BaseApplicationManifest Include="Properties\app.manifest" />
     <Compile Include="TransBox.cs" />
+    <Compile Include="TransBoxType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">
