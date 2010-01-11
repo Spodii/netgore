@@ -98,11 +98,32 @@ namespace NetGore.EditorTools
 
                 _selectedAltCursor = value;
 
-                if (_useAlternateCursor && OnChangeCurrentCursor != null)
-                    OnChangeCurrentCursor(this);
+                if (_useAlternateCursor)
+                    HandleCurrentCursorChanged();
 
                 ApplyCursorControlColoring();
             }
+        }
+
+        MapEditorCursorBase<TScreen> _lastCurrentCursor;
+
+        /// <summary>
+        /// Handles what happens when the current cursor changes.
+        /// </summary>
+        void HandleCurrentCursorChanged()
+        {
+            var cursor = GetCurrentCursor();
+
+            if (_lastCurrentCursor != null)
+                _lastCurrentCursor.Deactivate();
+
+            _lastCurrentCursor = cursor;
+
+            if (cursor != null)
+                cursor.Activate();
+
+            if (OnChangeCurrentCursor != null)
+                OnChangeCurrentCursor(this);
         }
 
         /// <summary>
@@ -118,8 +139,8 @@ namespace NetGore.EditorTools
 
                 _selectedCursor = value;
 
-                if (!_useAlternateCursor && OnChangeCurrentCursor != null)
-                    OnChangeCurrentCursor(this);
+                if (!_useAlternateCursor)
+                    HandleCurrentCursorChanged();   
 
                 ApplyCursorControlColoring();
             }
@@ -147,8 +168,7 @@ namespace NetGore.EditorTools
 
                 _useAlternateCursor = value;
 
-                if (OnChangeCurrentCursor != null)
-                    OnChangeCurrentCursor(this);
+                HandleCurrentCursorChanged();
             }
         }
 
@@ -157,7 +177,7 @@ namespace NetGore.EditorTools
             var cursor = GetCurrentCursor();
 
             if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseDown(Screen, e);
+                cursor.MouseDown(e);
         }
 
         void _gameScreen_MouseMove(object sender, MouseEventArgs e)
@@ -165,7 +185,7 @@ namespace NetGore.EditorTools
             var cursor = GetCurrentCursor();
 
             if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseMove(Screen, e);
+                cursor.MouseMove(e);
         }
 
         void _gameScreen_MouseUp(object sender, MouseEventArgs e)
@@ -173,7 +193,7 @@ namespace NetGore.EditorTools
             var cursor = GetCurrentCursor();
 
             if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseUp(Screen, e);
+                cursor.MouseUp(e);
         }
 
         /// <summary>
@@ -225,7 +245,7 @@ namespace NetGore.EditorTools
             var cursor = GetCurrentCursor();
 
             if (cursor != null)
-                cursor.DrawInterface(Screen);
+                cursor.DrawInterface();
         }
 
         /// <summary>
@@ -236,7 +256,7 @@ namespace NetGore.EditorTools
             var cursor = GetCurrentCursor();
 
             if (cursor != null)
-                cursor.DrawSelection(Screen);
+                cursor.DrawSelection();
         }
 
         /// <summary>
@@ -253,6 +273,7 @@ namespace NetGore.EditorTools
 
         void LoadTypeInstances()
         {
+            // Get the type filter and set up the factory
             TypeFilterCreator filterCreator = new TypeFilterCreator
             {
                 IsAbstract = false,
@@ -264,12 +285,21 @@ namespace NetGore.EditorTools
 
             var typeFactory = new TypeFactory(filterCreator.GetFilter());
 
+            // Create the instances
             foreach (var type in typeFactory)
             {
                 var instance = (MapEditorCursorBase<TScreen>)TypeFactory.GetTypeInstance(type);
                 _cursors.Add(instance);
             }
 
+            // Invoke the initialize method on each cursor instance. We do this now instead of in the prior loop to allow
+            // all the constructors to be called first
+            foreach (var cursor in _cursors)
+            {
+                cursor.InvokeInitialize(Screen, this);
+            }
+
+            // Now that we have called initialize on them all, set up all the cursors
             EventHandler clickHandler = CursorControlClickHandler;
 
             foreach (var cursor in Cursors.OrderByDescending(x => x.ToolbarPriority))
@@ -282,7 +312,7 @@ namespace NetGore.EditorTools
                     BorderStyle = BorderStyle.None,
                     BackColor = Color.White,
                     Tag = cursor,
-                    ContextMenu = cursor.GetContextMenu(this)
+                    ContextMenu = cursor.GetContextMenu()
                 };
 
                 if (ToolTip != null)
@@ -309,7 +339,7 @@ namespace NetGore.EditorTools
             var cursor = GetCurrentCursor();
 
             if (cursor != null)
-                cursor.PressDelete(Screen);
+                cursor.PressDelete();
         }
 
         static void SetControlBackColor(Control control, Color color)
@@ -336,7 +366,7 @@ namespace NetGore.EditorTools
             var cursor = GetCurrentCursor();
 
             if (cursor != null)
-                cursor.UpdateCursor(Screen);
+                cursor.UpdateCursor();
         }
     }
 }

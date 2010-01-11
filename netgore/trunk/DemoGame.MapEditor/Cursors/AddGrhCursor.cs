@@ -75,40 +75,37 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public override void DrawInterface(ScreenForm screen)
+        public override void DrawInterface()
         {
-            if (screen.SelectedGrh.GrhData != null)
+            var grh = Screen.SelectedGrh;
+            if (grh.GrhData == null)
+                return;
+
+            Vector2 drawPos;
+            if (_mnuSnapToGrid.Checked)
+                drawPos = Screen.Grid.AlignDown(Screen.CursorPos);
+            else
+                drawPos = Screen.CursorPos;
+
+            // If we fail to draw the selected Grh, just ignore it
+            try
             {
-                Vector2 drawPos;
-                if (_mnuSnapToGrid.Checked)
-                    drawPos = screen.Grid.AlignDown(screen.CursorPos);
-                else
-                    drawPos = screen.CursorPos;
-
-                // If we fail to draw the selected Grh, just ignore it
-                try
-                {
-                    screen.SelectedGrh.Draw(screen.SpriteBatch, drawPos, _drawPreviewColor);
-                }
-                catch (Exception)
-                {
-                }
+                grh.Draw(Screen.SpriteBatch, drawPos, _drawPreviewColor);
             }
-
-            base.DrawInterface(screen);
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
         /// to display additional functions and settings.
         /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
         /// <returns>
         /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
         /// or null for no <see cref="ContextMenu"/>.
         /// </returns>
-        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        public override ContextMenu GetContextMenu()
         {
             return _contextMenu;
         }
@@ -126,58 +123,56 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public override void MouseMove(ScreenForm screen, MouseEventArgs e)
+        public override void MouseMove(MouseEventArgs e)
         {
             if (_mnuSnapToGrid.Checked)
-                MouseUp(screen, e);
+                MouseUp(e);
         }
 
         /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been released.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public override void MouseUp(ScreenForm screen, MouseEventArgs e)
+        public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 cursorPos = screen.CursorPos;
+            Vector2 cursorPos = Screen.CursorPos;
 
             // On left-click place the Grh on the map
             if (e.Button == MouseButtons.Left)
             {
                 // Check for a valid MapGrh
-                if (screen.SelectedGrh.GrhData == null)
+                if (Screen.SelectedGrh.GrhData == null)
                     return;
 
                 // Find the position the MapGrh will be created at
                 Vector2 drawPos;
                 if (_mnuSnapToGrid.Checked)
-                    drawPos = screen.Grid.AlignDown(cursorPos);
+                    drawPos = Screen.Grid.AlignDown(cursorPos);
                 else
                     drawPos = cursorPos;
 
                 // Check if a MapGrh of the same type already exists at the location
-                foreach (MapGrh grh in screen.Map.MapGrhs)
+                foreach (MapGrh grh in Screen.Map.MapGrhs)
                 {
-                    if (grh.Position == drawPos && grh.Grh.GrhData.GrhIndex == screen.SelectedGrh.GrhData.GrhIndex)
+                    if (grh.Position == drawPos && grh.Grh.GrhData.GrhIndex == Screen.SelectedGrh.GrhData.GrhIndex)
                         return;
                 }
 
                 // Add the MapGrh to the map
-                Grh g = new Grh(screen.SelectedGrh.GrhData, AnimType.Loop, screen.GetTime());
-                screen.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
+                Grh g = new Grh(Screen.SelectedGrh.GrhData, AnimType.Loop, Screen.GetTime());
+                Screen.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
             }
             else if (e.Button == MouseButtons.Right)
             {
                 // On right-click delete any Grhs under the cursor
                 while (true)
                 {
-                    MapGrh mapGrh = screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+                    MapGrh mapGrh = Screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
                     if (mapGrh == null)
                         break;
 
-                    screen.Map.RemoveMapGrh(mapGrh);
+                    Screen.Map.RemoveMapGrh(mapGrh);
                 }
             }
         }
