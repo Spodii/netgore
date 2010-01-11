@@ -9,14 +9,32 @@ namespace NetGore.EditorTools
     /// Base handler for a cursor used to modify the map in different ways. All derived classes must have a constructor
     /// that takes no parameters.
     /// </summary>
-    public abstract class MapEditorCursorBase<TForm> where TForm : Form
+    public abstract class MapEditorCursorBase<TContainer>
     {
+        MapEditorCursorManager<TContainer> _cursorManager;
+
+        /// <summary>
+        /// Gets the object that the cursors are controlling or are contained in.
+        /// </summary>
+        public TContainer Container
+        {
+            get { return CursorManager.Container; }
+        }
+
         /// <summary>
         /// Gets the cursor's <see cref="Image"/>.
         /// </summary>
         public virtual Image CursorImage
         {
             get { return Resources.cursor_default; }
+        }
+
+        /// <summary>
+        /// Gets the cursor manager that this cursor belongs to.
+        /// </summary>
+        public MapEditorCursorManager<TContainer> CursorManager
+        {
+            get { return _cursorManager; }
         }
 
         /// <summary>
@@ -30,6 +48,20 @@ namespace NetGore.EditorTools
         public virtual int ToolbarPriority
         {
             get { return int.MaxValue; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public virtual void Activate()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public virtual void Deactivate()
+        {
         }
 
         /// <summary>
@@ -69,30 +101,15 @@ namespace NetGore.EditorTools
         {
         }
 
-        TForm _screen;
-        MapEditorCursorManager<TForm> _cursorManager;
-
-        /// <summary>
-        /// Gets the screen that the cursor is on.
-        /// </summary>
-        public TForm Screen { get { return _screen; } }
-
-        /// <summary>
-        /// Gets the cursor manager that this cursor belongs to.
-        /// </summary>
-        public MapEditorCursorManager<TForm> CursorManager { get { return _cursorManager; } }
-
         /// <summary>
         /// Invokes the initialize method.
         /// </summary>
-        /// <param name="screen">The owner form.</param>
         /// <param name="cursorManager">The owner cursor manager.</param>
-        internal void InvokeInitialize(TForm screen, MapEditorCursorManager<TForm> cursorManager)
+        internal void InvokeInitialize(MapEditorCursorManager<TContainer> cursorManager)
         {
             if (_cursorManager != null)
                 return;
 
-            _screen = screen;
             _cursorManager = cursorManager;
 
             Initialize();
@@ -130,26 +147,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
-        /// </summary>
-        public virtual void Activate()
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
-        /// </summary>
-        public virtual void Deactivate()
-        {
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles generic updating of the cursor. This is
         /// called every frame.
         /// </summary>
         public virtual void UpdateCursor()
         {
-            Screen.Cursor = Cursors.Default;
         }
     }
 }
