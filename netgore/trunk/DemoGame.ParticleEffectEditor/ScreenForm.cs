@@ -102,10 +102,10 @@ namespace DemoGame.ParticleEffectEditor
         {
             var ret = new PointEmitter
             {
-                SpriteCategorization = new SpriteCategorization(_defaultCategory, "ball"),
                 Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
                 ReleaseRate = 35
             };
+            ret.Sprite.SetGrh(GrhInfo.GetData(new SpriteCategorization(_defaultCategory, "ball")));
 
             var colorModifier = new ParticleColorModifier
             { ReleaseColor = new Color(0, 255, 0, 255), UltimateColor = new Color(0, 0, 255, 175) };
