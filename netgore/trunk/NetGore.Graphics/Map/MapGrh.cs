@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -71,8 +72,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets if the <see cref="MapGrh"/> is in the foreground.
+        /// Gets or sets if the <see cref="MapGrh"/> is in the foreground layer, in front of characters and items.
         /// </summary>
+        [Browsable(true)]
+        [DisplayName("IsForeground")]
+        [Description("If the MapGrh is in the foreground layer, in front of characters and items.")]
+        [DefaultValue(false)]
         public bool IsForeground
         {
             get { return _isForeground; }
@@ -127,6 +132,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
+        [Browsable(false)]
         public MapRenderLayer MapRenderLayer
         {
             get
@@ -143,6 +149,10 @@ namespace NetGore.Graphics
         /// Gets or sets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
         /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
         /// </summary>
+        [Browsable(true)]
+        [DisplayName("Layer Depth")]
+        [Description("The drawing depth of the object. Objects with lower values are drawn above those with higher values.")]
+        [DefaultValue(false)]
         public byte LayerDepth
         {
             get { return _layerDepth; }
@@ -180,6 +190,9 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
         /// </summary>
+        [DisplayName("Position")]
+        [Description("Location of the top-left corner of the MapGrh on the map.")]
+        [Browsable(true)]
         public Vector2 Position
         {
             get { return _position; }
@@ -199,6 +212,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the size of this <see cref="ISpatial"/>.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Size
         {
             get { return _grh.Size; }
@@ -207,6 +221,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Max
         {
             get { return Position + Size; }

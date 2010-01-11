@@ -11,6 +11,8 @@ namespace NetGore
     /// </summary>
     public abstract class Entity : ISpatial, IDisposable
     {
+        const string _entityCategoryString = "Entity";
+
 #if !TOPDOWN
         static readonly Vector2 _gravity;
 #endif
@@ -151,7 +153,7 @@ namespace NetGore
         /// <summary>
         /// Gets or sets the position of the top-left corner of the entity.
         /// </summary>
-        [Category("Entity")]
+        [Category(_entityCategoryString)]
         [DisplayName("Position")]
         [Description("Location of the top-left corner of the Entity on the map.")]
         [Browsable(true)]
@@ -164,7 +166,7 @@ namespace NetGore
         /// <summary>
         /// Gets or sets the size of the Entity.
         /// </summary>
-        [Category("Entity")]
+        [Category(_entityCategoryString)]
         [DisplayName("Size")]
         [Description("Size of the Entity.")]
         [Browsable(true)]
@@ -177,6 +179,7 @@ namespace NetGore
         /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Max
         {
             get { return Position + Size; }
@@ -194,7 +197,7 @@ namespace NetGore
         /// <summary>
         /// Gets or sets the weight of the Entity (used in gravity calculations).
         /// </summary>
-        [Category("Entity")]
+        [Category(_entityCategoryString)]
         [DisplayName("Weight")]
         [Description(
             "The weight of the Entity." +
