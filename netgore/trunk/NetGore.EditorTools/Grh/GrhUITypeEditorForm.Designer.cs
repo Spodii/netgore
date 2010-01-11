@@ -37,7 +37,7 @@
             this.gtv.ImageSize = new System.Drawing.Size(0, 0);
             this.gtv.Location = new System.Drawing.Point(0, 0);
             this.gtv.Name = "gtv";
-            this.gtv.Size = new System.Drawing.Size(284, 262);
+            this.gtv.Size = new System.Drawing.Size(308, 494);
             this.gtv.TabIndex = 0;
             this.gtv.GrhMouseDoubleClick += new NetGore.EditorTools.GrhTreeNodeMouseClickEvent(this.gtv_GrhMouseDoubleClick);
             // 
@@ -45,7 +45,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(308, 494);
             this.Controls.Add(this.gtv);
             this.MinimizeBox = false;
             this.Name = "GrhUITypeEditorForm";
