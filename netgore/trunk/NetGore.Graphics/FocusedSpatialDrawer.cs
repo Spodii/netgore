@@ -12,7 +12,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// The initial number of steps to display.
         /// </summary>
-        const int _maxSteps = 50;
+        const int _maxSteps = 700;
 
         static readonly Color _highlightBorderColor = new Color(0, 0, 0, 150);
         static readonly Color _highlightColor = new Color(0, 255, 0, 100);
@@ -81,7 +81,7 @@ namespace NetGore.Graphics
                 XNARectangle.Draw(sb, ApplyStepping(r, _steps), _trackColor, _trackInnerBorderColor);
                 XNARectangle.Draw(sb, ApplyStepping(r, _steps - 1), _trackColor, _trackOutterBorderColor);
                 XNARectangle.Draw(sb, ApplyStepping(r, _steps + 1), _trackColor, _trackOutterBorderColor);
-                _steps -= 4;
+                _steps -= 4 + (_steps / 10);
             }
         }
 
