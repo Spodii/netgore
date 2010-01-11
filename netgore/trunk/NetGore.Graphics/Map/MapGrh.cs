@@ -64,10 +64,12 @@ namespace NetGore.Graphics
             _position = position;
         }
 
+        const string _mapGrhCategoryName = "MapGrh";
+
         /// <summary>
         /// Gets the <see cref="Grh"/> for the <see cref="MapGrh"/>.
         /// </summary>
-        [Category("MapGrh")]
+        [Category(_mapGrhCategoryName)]
         [Browsable(true)]
         [DisplayName("GrhData")]
         [Description("The GrhData that is drawn for this MapGrh.")]
@@ -80,7 +82,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets if the <see cref="MapGrh"/> is in the foreground layer, in front of characters and items.
         /// </summary>
-        [Category("MapGrh")]
+        [Category(_mapGrhCategoryName)]
         [Browsable(true)]
         [DisplayName("IsForeground")]
         [Description("If the MapGrh is in the foreground layer, in front of characters and items.")]
@@ -156,7 +158,7 @@ namespace NetGore.Graphics
         /// Gets or sets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A lower
         /// layer depth results in the object being drawn on top of (in front of) objects with a higher value.
         /// </summary>
-        [Category("MapGrh")]
+        [Category(_mapGrhCategoryName)]
         [Browsable(true)]
         [DisplayName("Layer Depth")]
         [Description("The drawing depth of the object. Objects with lower values are drawn above those with higher values.")]
@@ -198,7 +200,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
         /// </summary>
-        [Category("MapGrh")]
+        [Category(_mapGrhCategoryName)]
         [DisplayName("Position")]
         [Description("Location of the top-left corner of the MapGrh on the map.")]
         [Browsable(true)]
