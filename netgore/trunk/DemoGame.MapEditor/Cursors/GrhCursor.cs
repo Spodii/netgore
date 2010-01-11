@@ -61,24 +61,22 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public override void DrawInterface(ScreenForm screen)
+        public override void DrawInterface()
         {
             // Selected Grh move box
             if (_mapGrhMoveBox != null)
-                _mapGrhMoveBox.Draw(screen.SpriteBatch);
+                _mapGrhMoveBox.Draw(Screen.SpriteBatch);
         }
 
         /// <summary>
         /// When overridden in the derived class, handles drawing the cursor's selection layer,
         /// which displays a selection box for when selecting multiple objects.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public override void DrawSelection(ScreenForm screen)
+        public override void DrawSelection()
         {
-            Vector2 cursorPos = screen.CursorPos;
+            Vector2 cursorPos = Screen.CursorPos;
 
-            if (_mouseDragStart == Vector2.Zero || screen.SelectedTransBox != null)
+            if (_mouseDragStart == Vector2.Zero || Screen.SelectedTransBox != null)
                 return;
 
             var drawColor = new Color(0, 255, 0, 150);
@@ -87,19 +85,18 @@ namespace DemoGame.MapEditor
             Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
 
             Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
-            XNARectangle.Draw(screen.SpriteBatch, dest, drawColor);
+            XNARectangle.Draw(Screen.SpriteBatch, dest, drawColor);
         }
 
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
         /// to display additional functions and settings.
         /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
         /// <returns>
         /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
         /// or null for no <see cref="ContextMenu"/>.
         /// </returns>
-        public override ContextMenu GetContextMenu(MapEditorCursorManager<ScreenForm> cursorManager)
+        public override ContextMenu GetContextMenu()
         {
             return _contextMenu;
         }
@@ -112,9 +109,8 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public override void MouseDown(ScreenForm screen, MouseEventArgs e)
+        public override void MouseDown(MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
@@ -122,8 +118,8 @@ namespace DemoGame.MapEditor
                 return;
             }
 
-            Vector2 cursorPos = screen.CursorPos;
-            MapGrh cursorGrh = screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
+            Vector2 cursorPos = Screen.CursorPos;
+            MapGrh cursorGrh = Screen.Map.Spatial.GetEntity<MapGrh>(cursorPos);
 
             if (cursorGrh != null)
             {
@@ -131,7 +127,7 @@ namespace DemoGame.MapEditor
                 _selectedEntityOffset = cursorPos - cursorGrh.Position;
                 _selectedMapGrhs.Clear();
                 _selectedMapGrhs.Add(cursorGrh);
-                screen.SelectedObjectsManager.SetSelected(cursorGrh);
+                Screen.SelectedObjectsManager.SetSelected(cursorGrh);
             }
             else
             {
@@ -145,25 +141,24 @@ namespace DemoGame.MapEditor
 
                     if ((v.X <= cp.X) && (v.X + w >= cp.X) && (v.Y <= cp.Y) && (v.Y + h >= cp.Y))
                     {
-                        screen.SelectedTransBox = _mapGrhMoveBox;
+                        Screen.SelectedTransBox = _mapGrhMoveBox;
                         return;
                     }
 
                     _mapGrhMoveBox = null;
                     _selectedMapGrhs.Clear();
                 }
-                _mouseDragStart = screen.Camera.ToWorld(e.X, e.Y);
+                _mouseDragStart = Screen.Camera.ToWorld(e.X, e.Y);
             }
         }
 
         /// <summary>
         /// When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public override void MouseMove(ScreenForm screen, MouseEventArgs e)
+        public override void MouseMove(MouseEventArgs e)
         {
-            Vector2 cursorPos = screen.CursorPos;
+            Vector2 cursorPos = Screen.CursorPos;
 
             if (_selectedMapGrhs.Count == 1)
             {
@@ -172,13 +167,13 @@ namespace DemoGame.MapEditor
                 {
                     var pos = cursorPos - _selectedEntityOffset;
                     if (_mnuSnapToGrid.Checked)
-                        pos = screen.Grid.AlignDown(pos);
+                        pos = Screen.Grid.AlignDown(pos);
                     mg.Position = pos;
                 }
             }
             else if (e.Button == MouseButtons.Left && _mapGrhMoveBox != null)
             {
-                if (screen.SelectedTransBox == _mapGrhMoveBox)
+                if (Screen.SelectedTransBox == _mapGrhMoveBox)
                 {
                     Vector2 offset = _mapGrhMoveBox.Position - cursorPos;
                     offset.X = (float)Math.Round(offset.X);
@@ -190,7 +185,7 @@ namespace DemoGame.MapEditor
                     }
 
                     _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
-                    screen.SelectedTransBox = _mapGrhMoveBox;
+                    Screen.SelectedTransBox = _mapGrhMoveBox;
                 }
             }
         }
@@ -198,11 +193,10 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been released.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public override void MouseUp(ScreenForm screen, MouseEventArgs e)
+        public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 cursorPos = screen.CursorPos;
+            Vector2 cursorPos = Screen.CursorPos;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -219,16 +213,16 @@ namespace DemoGame.MapEditor
 
                 _selectedMapGrhs.Clear();
 
-                Vector2 mouseDragEnd = screen.Camera.ToWorld(e.X, e.Y);
+                Vector2 mouseDragEnd = Screen.Camera.ToWorld(e.X, e.Y);
                 Vector2 min = _mouseDragStart.Min(mouseDragEnd);
                 Vector2 max = _mouseDragStart.Max(mouseDragEnd);
                 Vector2 size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var selectAreaObjs = screen.Map.Spatial.GetEntities<MapGrh>(rect);
+                var selectAreaObjs = Screen.Map.Spatial.GetEntities<MapGrh>(rect);
                 _selectedMapGrhs.AddRange(selectAreaObjs);
 
-                screen.SelectedObjectsManager.SetManySelected(_selectedMapGrhs.OfType<object>());
+                Screen.SelectedObjectsManager.SetManySelected(_selectedMapGrhs.OfType<object>());
 
                 // Move transbox
                 if (_selectedMapGrhs.Count > 1)
@@ -236,7 +230,7 @@ namespace DemoGame.MapEditor
                 else
                 {
                     _mapGrhMoveBox = null;
-                    screen.SelectedTransBox = null;
+                    Screen.SelectedTransBox = null;
                     _selectedMapGrhs.Clear();
                 }
 
@@ -247,13 +241,13 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// When overridden in the derived class, handles when the delete button has been pressed.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public override void PressDelete(ScreenForm screen)
+        public override void PressDelete()
         {
             foreach (MapGrh mg in _selectedMapGrhs)
             {
-                screen.Map.RemoveMapGrh(mg);
+                Screen.Map.RemoveMapGrh(mg);
             }
+
             _selectedMapGrhs.Clear();
             _mapGrhMoveBox = null;
         }
@@ -262,22 +256,21 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles generic updating of the cursor. This is
         /// called every frame.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public override void UpdateCursor(ScreenForm screen)
+        public override void UpdateCursor()
         {
             bool isOverBox = false;
             if (_mapGrhMoveBox != null)
             {
-                var cursorRect = new Rectangle((int)screen.CursorPos.X, (int)screen.CursorPos.Y, 1, 1);
+                var cursorRect = new Rectangle((int)Screen.CursorPos.X, (int)Screen.CursorPos.Y, 1, 1);
                 var boxPos = _mapGrhMoveBox.Position;
                 var boxRect = new Rectangle((int)boxPos.X, (int)boxPos.Y, _mapGrhMoveBox.Area.Width, _mapGrhMoveBox.Area.Height);
                 isOverBox = cursorRect.Intersects(boxRect);
             }
 
-            if (isOverBox || _selectedMapGrhs.Count != 0 && screen.MouseButton == MouseButtons.Left)
-                screen.Cursor = Cursors.SizeAll;
+            if (isOverBox || _selectedMapGrhs.Count != 0 && Screen.MouseButton == MouseButtons.Left)
+                Screen.Cursor = Cursors.SizeAll;
             else
-                screen.Cursor = Cursors.Default;
+                Screen.Cursor = Cursors.Default;
         }
     }
 }

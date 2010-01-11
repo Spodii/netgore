@@ -36,8 +36,7 @@ namespace NetGore.EditorTools
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void DrawInterface(TForm screen)
+        public virtual void DrawInterface()
         {
         }
 
@@ -45,8 +44,7 @@ namespace NetGore.EditorTools
         /// When overridden in the derived class, handles drawing the cursor's selection layer, 
         /// which displays a selection box for when selecting multiple objects.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void DrawSelection(TForm screen)
+        public virtual void DrawSelection()
         {
         }
 
@@ -54,48 +52,94 @@ namespace NetGore.EditorTools
         /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
         /// to display additional functions and settings.
         /// </summary>
-        /// <param name="cursorManager">The cursor manager.</param>
         /// <returns>
         /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
         /// or null for no <see cref="ContextMenu"/>.
         /// </returns>
-        public virtual ContextMenu GetContextMenu(MapEditorCursorManager<TForm> cursorManager)
+        public virtual ContextMenu GetContextMenu()
         {
             return null;
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for setting up the cursor. This is always called
+        /// after the constructor but before any of the other virtual methods, and is only called once.
+        /// </summary>
+        protected virtual void Initialize()
+        {
+        }
+
+        TForm _screen;
+        MapEditorCursorManager<TForm> _cursorManager;
+
+        /// <summary>
+        /// Gets the screen that the cursor is on.
+        /// </summary>
+        public TForm Screen { get { return _screen; } }
+
+        /// <summary>
+        /// Gets the cursor manager that this cursor belongs to.
+        /// </summary>
+        public MapEditorCursorManager<TForm> CursorManager { get { return _cursorManager; } }
+
+        /// <summary>
+        /// Invokes the initialize method.
+        /// </summary>
+        /// <param name="screen">The owner form.</param>
+        /// <param name="cursorManager">The owner cursor manager.</param>
+        internal void InvokeInitialize(TForm screen, MapEditorCursorManager<TForm> cursorManager)
+        {
+            if (_cursorManager != null)
+                return;
+
+            _screen = screen;
+            _cursorManager = cursorManager;
+
+            Initialize();
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public virtual void MouseDown(TForm screen, MouseEventArgs e)
+        public virtual void MouseDown(MouseEventArgs e)
         {
         }
 
         /// <summary>
         /// When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public virtual void MouseMove(TForm screen, MouseEventArgs e)
+        public virtual void MouseMove(MouseEventArgs e)
         {
         }
 
         /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been released.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
         /// <param name="e">Mouse events.</param>
-        public virtual void MouseUp(TForm screen, MouseEventArgs e)
+        public virtual void MouseUp(MouseEventArgs e)
         {
         }
 
         /// <summary>
         /// When overridden in the derived class, handles when the delete button has been pressed.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void PressDelete(TForm screen)
+        public virtual void PressDelete()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public virtual void Activate()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public virtual void Deactivate()
         {
         }
 
@@ -103,10 +147,9 @@ namespace NetGore.EditorTools
         /// When overridden in the derived class, handles generic updating of the cursor. This is
         /// called every frame.
         /// </summary>
-        /// <param name="screen">Screen that the cursor is on.</param>
-        public virtual void UpdateCursor(TForm screen)
+        public virtual void UpdateCursor()
         {
-            screen.Cursor = Cursors.Default;
+            Screen.Cursor = Cursors.Default;
         }
     }
 }

@@ -521,16 +521,8 @@ namespace DemoGame.MapEditor
 
         void CursorManager_OnChangeCurrentCursor(MapEditorCursorManager<ScreenForm> sender)
         {
-            WallCursor.SelectedWalls.Clear();
             _transBoxes.Clear();
             _selTransBox = null;
-
-            var cursor = sender.GetCurrentCursor();
-            if (cursor == null)
-                return;
-
-            if (cursor is AddGrhCursor)
-                tcMenu.SelectTab(tabPageGrhs);
         }
 
         public void DrawGame()
