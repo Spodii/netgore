@@ -212,7 +212,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Grh\Controls\GrhTreeView\Folder.png" />
     <EmbeddedResource Include="Grh\Controls\GrhTreeView\EditGrhForm.resx">
       <DependentUpon>EditGrhForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -234,9 +233,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Grh\Controls\GrhTreeView\folderopen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
