@@ -146,7 +146,7 @@ namespace NetGore
             return !failed;
         }
 
-        bool FilterAttributes(Type type, bool mustBeRequired)
+        bool FilterAttributes(ICustomAttributeProvider type, bool mustBeRequired)
         {
             if (mustBeRequired != RequireAttributes)
                 return true;

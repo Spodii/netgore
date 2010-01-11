@@ -329,9 +329,7 @@ namespace DemoGame.Server
         /// <param name="entityToSynchronize">The DyanmicEntity to synchronize.</param>
         /// <returns>An IEnumerable of Users close enough to the <paramref name="entityToSynchronize"/> that they
         /// need to have the <paramref name="entityToSynchronize"/>'s Position and Velocity synchronized.</returns>
-        // ReSharper disable SuggestBaseTypeForParameter
-        IEnumerable<User> GetUsersToSyncPandVTo(DynamicEntity entityToSynchronize)
-            // ReSharper restore SuggestBaseTypeForParameter
+        IEnumerable<User> GetUsersToSyncPandVTo(ISpatial entityToSynchronize)
         {
             int xPad = (int)GameData.ScreenSize.X;
             int yPad = (int)GameData.ScreenSize.Y;

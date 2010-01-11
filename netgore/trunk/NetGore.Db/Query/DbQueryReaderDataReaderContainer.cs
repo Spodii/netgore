@@ -16,7 +16,7 @@ namespace NetGore.Db
         readonly DbQueryBase _dbQueryBase;
         readonly IPoolableDbConnection _poolableConn;
 
-        internal DbQueryReaderDataReaderContainer(DbQueryBase dbQueryBase, IPoolableDbConnection poolableConn, DbCommand command,
+        internal DbQueryReaderDataReaderContainer(DbQueryBase dbQueryBase, IPoolableDbConnection poolableConn, IDbCommand command,
                                                   IDataReader dataReader) : base(command, dataReader)
         {
             // We must use a DbCommand on the parameter, not IDbCommand, because Dispose explicitly casts to a DbCommand
