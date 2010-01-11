@@ -92,6 +92,7 @@
     <Compile Include="Extensions\ContentManagerExtensions.cs" />
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
+    <Compile Include="FocusedSpatialDrawer.cs" />
     <Compile Include="GUI\Control Bases\Control.cs" />
     <Compile Include="GUI\EventArgs\ControlEventHandler.cs" />
     <Compile Include="GUI\Control Bases\SpriteControl.cs" />

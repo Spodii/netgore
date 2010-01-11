@@ -109,6 +109,7 @@ namespace DemoGame.MapEditor
                 _selectedEntityOffset = cursorPos - cursorGrh.Position;
                 _selectedMapGrhs.Clear();
                 _selectedMapGrhs.Add(cursorGrh);
+                screen.SelectedObjectsManager.SetSelected(cursorGrh);
             }
             else
             {
@@ -131,6 +132,27 @@ namespace DemoGame.MapEditor
                 }
                 _mouseDragStart = screen.Camera.ToWorld(e.X, e.Y);
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles drawing the cursor's selection layer,
+        /// which displays a selection box for when selecting multiple objects.
+        /// </summary>
+        /// <param name="screen">Screen that the cursor is on.</param>
+        public override void DrawSelection(ScreenForm screen)
+        {
+            Vector2 cursorPos = screen.CursorPos;
+
+            if (_mouseDragStart == Vector2.Zero || screen.SelectedTransBox != null)
+                return;
+
+            var drawColor = new Microsoft.Xna.Framework.Graphics.Color(0, 255, 0, 150);
+
+            Vector2 min = new Vector2(Math.Min(cursorPos.X, _mouseDragStart.X), Math.Min(cursorPos.Y, _mouseDragStart.Y));
+            Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
+
+            Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
+            XNARectangle.Draw(screen.SpriteBatch, dest, drawColor);
         }
 
         /// <summary>
@@ -190,33 +212,35 @@ namespace DemoGame.MapEditor
             {
                 if (_selectedMapGrhs.Count == 1)
                     _selectedMapGrhs.Clear();
-                if (_selectedMapGrhs.Count > 0)
-                    return;
-                if (_mouseDragStart == Vector2.Zero)
+
+                if (_selectedMapGrhs.Count > 0 || _mouseDragStart == Vector2.Zero)
                     return;
 
-                // Select MapGrhs
                 _selectedMapGrhs.Clear();
 
                 Vector2 mouseDragEnd = screen.Camera.ToWorld(e.X, e.Y);
-                var selectRectSize = _mouseDragStart + mouseDragEnd;
-                var selectRect = new Rectangle((int)_mouseDragStart.X, (int)_mouseDragStart.Y, (int)selectRectSize.X,
-                                               (int)selectRectSize.Y);
-                foreach (MapGrh mg in screen.Map.MapGrhs)
-                {
-                    if (mg.Intersects(selectRect) && !_selectedMapGrhs.Contains(mg))
-                        _selectedMapGrhs.Add(mg);
-                }
+                Vector2 min = _mouseDragStart.Min(mouseDragEnd);
+                Vector2 max = _mouseDragStart.Max(mouseDragEnd);
+                Vector2 size = max - min;
+
+                var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
+                var selectAreaObjs = screen.Map.Spatial.GetEntities<MapGrh>(rect);
+                _selectedMapGrhs.AddRange(selectAreaObjs);
+
+                screen.SelectedObjectsManager.SetManySelected(_selectedMapGrhs.OfType<object>());
 
                 // Move transbox
                 if (_selectedMapGrhs.Count > 1)
+                {
                     _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
+                }
                 else
                 {
                     _mapGrhMoveBox = null;
                     screen.SelectedTransBox = null;
                     _selectedMapGrhs.Clear();
                 }
+
                 _mouseDragStart = Vector2.Zero;
             }
         }

@@ -310,7 +310,7 @@ namespace DemoGame.MapEditor
                 Vector2 size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var walls = screen.Map.Spatial.GetEntities<WallEntityBase>(rect);
+                var selectAreaObjs = screen.Map.Spatial.GetEntities<WallEntityBase>(rect);
                 if (e.Button == MouseButtons.Left)
                 {
                     // Selection dragging
@@ -319,19 +319,12 @@ namespace DemoGame.MapEditor
                         _selectedWalls.Clear();
 
                     // Add all selected to the list if they are not already in it
-                    foreach (WallEntityBase wall in walls)
-                    {
-                        if (!_selectedWalls.Contains(wall))
-                            _selectedWalls.Add(wall);
-                    }
+                    _selectedWalls.AddRange(selectAreaObjs);
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
                     // Deselection dragging
-                    foreach (WallEntityBase wall in walls)
-                    {
-                        _selectedWalls.Remove(wall);
-                    }
+                    _selectedWalls.RemoveAll(x => selectAreaObjs.Contains(x));
                 }
             }
 
@@ -351,7 +344,7 @@ namespace DemoGame.MapEditor
             }
 
             // Update the selected walls list
-            screen.SelectedObjectsManager.SetSelectedObjects(_selectedWalls.OfType<object>());
+            screen.SelectedObjectsManager.SetManySelected(_selectedWalls.OfType<object>());
 
             _mouseDragStart = Vector2.Zero;
         }
