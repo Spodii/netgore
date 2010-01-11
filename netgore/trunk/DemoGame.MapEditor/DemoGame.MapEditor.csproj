@@ -156,14 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
-    <None Include="Resources\cursor_entitiesadd.png" />
-    <None Include="Resources\Untitled.png" />
-    <None Include="Resources\cursor_select1.png" />
-    <None Include="Resources\cursor_wallsadd.png" />
-    <None Include="Resources\cursor_walls.png" />
-    <None Include="Resources\cursor_select.png" />
-    <None Include="Resources\cursor_grhsadd.png" />
-    <None Include="Resources\cursor_grhs.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
