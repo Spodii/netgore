@@ -216,15 +216,15 @@ namespace NetGore.EditorTools
             if (grhData == null)
                 return string.Empty;
 
-            if (grhData.GrhIndex != AutomaticAnimatedGrhData.FrameGrhIndex)
+            if (grhData.GrhIndex.IsInvalid)
             {
                 // For normal GrhDatas, we return the unique GrhIndex
                 return grhData.GrhIndex.ToString();
             }
             else
             {
-                // When we have a frame for an AutomaticAnimatedGrhData, we prefix a "_" and the use the texture name
-                string textureName = grhData.TextureName.ToString();
+                // When we have a frame for a GrhData with an invalid GrhIndex, we prefix a "_" and the use the texture name
+                string textureName = grhData.TextureName != null ? grhData.TextureName.ToString() : null;
                 if (string.IsNullOrEmpty(textureName))
                     return string.Empty;
                 else

@@ -18,12 +18,27 @@ namespace NetGore.Graphics
         Vector2 _size;
         float _speed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AnimatedGrhData"/> class.
+        /// </summary>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
+        /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
         public AnimatedGrhData(GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             _frames = new StationaryGrhData[0];
             _speed = 1f / 300f;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AnimatedGrhData"/> class.
+        /// </summary>
+        /// <param name="r">The <see cref="IValueReader"/>.</param>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
+        /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
         AnimatedGrhData(IValueReader r, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             var speed = r.ReadInt(_speedValueKey);

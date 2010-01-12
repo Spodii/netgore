@@ -26,13 +26,6 @@ namespace NetGore.Graphics
         public const string DirectoryNameDelimiter = "_";
 
         /// <summary>
-        /// The <see cref="GrhIndex"/> used by the frames for the <see cref="AutomaticAnimatedGrhData"/>. All frames
-        /// use the same single <see cref="GrhIndex"/> because they are generated on-the-fly and cannot be
-        /// acquired by index.
-        /// </summary>
-        public static readonly GrhIndex FrameGrhIndex = GrhIndex.Invalid;
-
-        /// <summary>
         /// The Regex used to match folders used for <see cref="AutomaticAnimatedGrhData"/>s.
         /// </summary>
         static readonly Regex _aaFolderRegex;
@@ -56,8 +49,10 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="AutomaticAnimatedGrhData"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/> used for creating the frames.</param>
-        /// <param name="grhIndex">The unique <see cref="GrhIndex"/>.</param>
-        /// <param name="cat">The categorization.</param>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
+        /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
         internal AutomaticAnimatedGrhData(ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             var framesDir = GetFramesDirectory();

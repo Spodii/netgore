@@ -15,12 +15,12 @@ namespace NetGore
         /// <summary>
         /// Represents the largest possible value of GrhIndex. This field is constant.
         /// </summary>
-        public const int MaxValue = ushort.MaxValue - 1;
+        public const int MaxValue = ushort.MaxValue;
 
         /// <summary>
         /// Represents the smallest possible value of GrhIndex. This field is constant.
         /// </summary>
-        public const int MinValue = ushort.MinValue;
+        public const int MinValue = 1;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
@@ -28,10 +28,9 @@ namespace NetGore
         readonly ushort _value;
 
         /// <summary>
-        /// Represents a <see cref="GrhIndex"/> value that is to always be considered invalid. Trying to create a
-        /// <see cref="GrhIndex"/> with this value will result in a <see cref="ArgumentOutOfRangeException"/>.
+        /// Represents a <see cref="GrhIndex"/> value that is to always be considered invalid.
         /// </summary>
-        public static readonly GrhIndex Invalid = new GrhIndex(true);
+        public static readonly GrhIndex Invalid = new GrhIndex();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhIndex"/> struct.
@@ -46,13 +45,9 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GrhIndex"/> struct.
+        /// Gets if this <see cref="GrhIndex"/> is equal to the <see cref="GrhIndex.Invalid"/>.
         /// </summary>
-        /// <param name="invalid">Just... it'll always be true. I just need an overload.</param>
-        GrhIndex(bool invalid)
-        {
-            _value = ushort.MaxValue;
-        }
+        public bool IsInvalid { get { return this == Invalid; } }
 
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
