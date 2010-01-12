@@ -19,14 +19,13 @@ namespace NetGore.EditorTools
         /// <param name="root">The root <see cref="Control"/> to search from.</param>
         /// <returns>All of the <see cref="Control"/>s that implement <see cref="IPersistable"/> from the given
         /// <paramref name="root"/> <see cref="Control"/>, including the <paramref name="root"/>.</returns>
-        public static IEnumerable<IPersistable> GetPersistableControls(this Control root)
+        public static IEnumerable<Control> GetPersistableControls(this Control root)
         {
             if (root != null)
             {
-                // Return this Control
-                var asPersistable = root as IPersistable;
-                if (asPersistable != null)
-                    yield return asPersistable;
+                // Return this Control if it implements IPersistable
+                if (root is IPersistable)
+                    yield return root;
 
                 // Check all children and call this method on them recursively
                 foreach (var child in root.Controls.OfType<Control>())
