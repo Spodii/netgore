@@ -7,6 +7,9 @@ using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
+    /// <summary>
+    /// Extension methods for the <see cref="IValueReader"/>.
+    /// </summary>
     public static class IValueReaderExtensions
     {
         /// <summary>
