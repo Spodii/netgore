@@ -83,8 +83,8 @@
     <Compile Include="IO\PropertySync\IPropertySync.cs" />
     <Compile Include="IO\PropertySync\PropertySyncHelper.cs" />
     <Compile Include="IO\PropertySync\SyncValueAttributeInfo.cs" />
-    <Compile Include="IO\RestorableSettings\IPersistable.cs" />
-    <Compile Include="IO\RestorableSettings\PersistableHelper.cs" />
+    <Compile Include="IO\Persistable\IPersistable.cs" />
+    <Compile Include="IO\Persistable\PersistableHelper.cs" />
     <Compile Include="Skills\ISkill.cs" />
     <Compile Include="Skills\ISkillCooldownManager.cs" />
     <Compile Include="Skills\SkillBase.cs" />
