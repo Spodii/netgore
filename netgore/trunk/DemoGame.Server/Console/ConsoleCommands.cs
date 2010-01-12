@@ -259,6 +259,22 @@ namespace DemoGame.Server
             return GetCommandHeader("Total Users: {0}", users.Count()) + userInfo;
         }
 
+        [ConsoleCommand("ToggleAI")]
+        public string ToggleAI()
+        {
+            if (!DemoGame.AI.AISettings.AIDisabled)
+            {
+                DemoGame.AI.AISettings.AIDisabled = true;
+                return "AI has been disabled.";
+            }
+            else
+            {
+                DemoGame.AI.AISettings.AIDisabled = false;
+                return "AI has been enabled.";
+            }
+        }
+
+
         class ConsoleCommandParser : StringCommandParser<ConsoleCommandAttribute>
         {
             public ConsoleCommandParser() : base(typeof(ConsoleCommands))
