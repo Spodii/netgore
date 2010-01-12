@@ -79,7 +79,7 @@ namespace DemoGame.Server
 
                     if (item == null)
                     {
-                        sendItemGraphic = new GrhIndex(0);
+                        sendItemGraphic = GrhIndex.Invalid;
                         sendItemAmount = 0;
                     }
                     else

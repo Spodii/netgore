@@ -122,7 +122,7 @@ namespace DemoGame.Client
                 return;
 
             // Only need to clear the item if one already exists in the slot
-            item.GraphicIndex = new GrhIndex(0);
+            item.GraphicIndex = GrhIndex.Invalid;
             item.Amount = 0;
         }
 
