@@ -13,12 +13,7 @@ namespace DemoGame
     {
         static readonly StatTypeHelper _statTypeHelper = StatTypeHelper.Instance;
 
-        /// <summary>
-        /// PropertySyncCollisionType constructor.
-        /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncStatType(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncStatType(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

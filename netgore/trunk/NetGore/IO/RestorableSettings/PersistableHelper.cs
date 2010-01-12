@@ -15,9 +15,9 @@ namespace NetGore.IO
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         public static void Write(object obj, IValueWriter writer)
         {
-            var propertySyncs = PropertySyncBase.GetPropertySyncs(obj);
+            var propertySyncs = PropertySyncHelper.GetPropertySyncs(obj.GetType());
             foreach (var ps in propertySyncs)
-                ps.WriteValue(writer);
+                ps.WriteValue(obj, writer);
         }
 
         /// <summary>
@@ -28,9 +28,9 @@ namespace NetGore.IO
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public static void Read(object obj, IValueReader reader)
         {
-            var propertySyncs = PropertySyncBase.GetPropertySyncs(obj);
+            var propertySyncs = PropertySyncHelper.GetPropertySyncs(obj.GetType());
             foreach (var ps in propertySyncs)
-                ps.ReadValue(reader);
+                ps.ReadValue(obj, reader);
         }
     }
 }

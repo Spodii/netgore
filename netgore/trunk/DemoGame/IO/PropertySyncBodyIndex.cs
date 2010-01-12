@@ -11,12 +11,7 @@ namespace DemoGame
     [PropertySyncHandler(typeof(BodyIndex))]
     public sealed class PropertySyncBodyIndex : PropertySyncBase<BodyIndex>
     {
-        /// <summary>
-        /// PropertySyncBodyIndex constructor.
-        /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncBodyIndex(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncBodyIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -28,7 +23,8 @@ namespace DemoGame
         /// <returns>Value read from the IValueReader.</returns>
         protected override BodyIndex Read(string name, IValueReader reader)
         {
-            return reader.ReadBodyIndex(name);
+            var v = reader.ReadBodyIndex(name);
+            return v;
         }
 
         /// <summary>

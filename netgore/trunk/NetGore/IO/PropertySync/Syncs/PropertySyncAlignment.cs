@@ -12,12 +12,7 @@ namespace NetGore
     {
         static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncAlignment"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncAlignment(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncAlignment(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

@@ -5,17 +5,12 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Double.
+    /// Implementation of a PropertySyncBase that handles synchronizing a ULong.
     /// </summary>
-    [PropertySyncHandler(typeof(double))]
-    public sealed class PropertySyncDouble : PropertySyncBase<double>
+    [PropertySyncHandler(typeof(ulong))]
+    public sealed class PropertySyncULong : PropertySyncBase<ulong>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncDouble"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncDouble(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncULong(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -25,9 +20,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override double Read(string name, IValueReader reader)
+        protected override ulong Read(string name, IValueReader reader)
         {
-            return reader.ReadDouble(name);
+            return reader.ReadULong(name);
         }
 
         /// <summary>
@@ -36,7 +31,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, double value)
+        protected override void Write(string name, IValueWriter writer, ulong value)
         {
             writer.Write(name, value);
         }

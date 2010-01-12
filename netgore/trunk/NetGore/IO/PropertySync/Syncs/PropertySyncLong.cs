@@ -1,22 +1,16 @@
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework;
 using NetGore.IO;
 
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Vector2.
+    /// Implementation of a PropertySyncBase that handles synchronizing a Long.
     /// </summary>
-    [PropertySyncHandler(typeof(Vector2))]
-    public sealed class PropertySyncVector2 : PropertySyncBase<Vector2>
+    [PropertySyncHandler(typeof(long))]
+    public sealed class PropertySyncLong : PropertySyncBase<long>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncVector2"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncVector2(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncLong(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -26,9 +20,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override Vector2 Read(string name, IValueReader reader)
+        protected override long Read(string name, IValueReader reader)
         {
-            return reader.ReadVector2(name);
+            return reader.ReadLong(name);
         }
 
         /// <summary>
@@ -37,7 +31,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, Vector2 value)
+        protected override void Write(string name, IValueWriter writer, long value)
         {
             writer.Write(name, value);
         }

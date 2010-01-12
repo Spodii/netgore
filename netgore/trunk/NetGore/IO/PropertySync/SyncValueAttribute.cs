@@ -4,7 +4,7 @@ using System.Linq;
 namespace NetGore
 {
     /// <summary>
-    /// Attribute for a Property that will have its value synchronized by a <see cref="PropertySyncBase"/>.
+    /// Attribute for a Property that will have its value synchronized by a <see cref="IPropertySync"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class SyncValueAttribute : Attribute

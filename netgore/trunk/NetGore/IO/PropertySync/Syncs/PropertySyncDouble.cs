@@ -1,22 +1,16 @@
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Color.
+    /// Implementation of a PropertySyncBase that handles synchronizing a Double.
     /// </summary>
-    [PropertySyncHandler(typeof(Color))]
-    public sealed class PropertySyncColor : PropertySyncBase<Color>
+    [PropertySyncHandler(typeof(double))]
+    public sealed class PropertySyncDouble : PropertySyncBase<double>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncColor"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncColor(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncDouble(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -26,9 +20,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override Color Read(string name, IValueReader reader)
+        protected override double Read(string name, IValueReader reader)
         {
-            return reader.ReadColor(name);
+            return reader.ReadDouble(name);
         }
 
         /// <summary>
@@ -37,7 +31,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, Color value)
+        protected override void Write(string name, IValueWriter writer, double value)
         {
             writer.Write(name, value);
         }

@@ -13,12 +13,7 @@ namespace DemoGame
     {
         static readonly ItemTypeHelper _itemTypeHelper = ItemTypeHelper.Instance;
 
-        /// <summary>
-        /// PropertySyncCollisionType constructor.
-        /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncItemType(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncItemType(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
