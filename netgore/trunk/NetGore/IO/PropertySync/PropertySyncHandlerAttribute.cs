@@ -6,13 +6,13 @@ namespace NetGore
     /// <summary>
     /// Attribute that marks a class as a PropertySyncHandler that handles the specified type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public sealed class PropertySyncHandlerAttribute : Attribute
     {
         readonly Type _handledType;
 
         /// <summary>
-        /// PropertySyncHandlerAttribute constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncHandlerAttribute"/> class.
         /// </summary>
         /// <param name="handledType">The Property value Type that the class handles.</param>
         public PropertySyncHandlerAttribute(Type handledType)

@@ -5,17 +5,12 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing an unsigned 32-bit integer.
+    /// Implementation of a PropertySyncBase that handles synchronizing a GrhIndex.
     /// </summary>
-    [PropertySyncHandler(typeof(uint))]
-    public sealed class PropertySyncUInt : PropertySyncBase<uint>
+    [PropertySyncHandler(typeof(GrhIndex))]
+    public sealed class PropertySyncGrhIndex : PropertySyncBase<GrhIndex>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncUInt"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncUInt(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncGrhIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -25,9 +20,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override uint Read(string name, IValueReader reader)
+        protected override GrhIndex Read(string name, IValueReader reader)
         {
-            return reader.ReadUInt(name);
+            return reader.ReadGrhIndex(name);
         }
 
         /// <summary>
@@ -36,7 +31,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, uint value)
+        protected override void Write(string name, IValueWriter writer, GrhIndex value)
         {
             writer.Write(name, value);
         }

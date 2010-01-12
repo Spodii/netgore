@@ -5,17 +5,12 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Long.
+    /// Implementation of a PropertySyncBase that handles synchronizing a MapEntityIndex.
     /// </summary>
-    [PropertySyncHandler(typeof(long))]
-    public sealed class PropertySyncLong : PropertySyncBase<long>
+    [PropertySyncHandler(typeof(MapEntityIndex))]
+    public sealed class PropertySyncMapEntityIndex : PropertySyncBase<MapEntityIndex>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncLong"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncLong(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncMapEntityIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -25,9 +20,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override long Read(string name, IValueReader reader)
+        protected override MapEntityIndex Read(string name, IValueReader reader)
         {
-            return reader.ReadLong(name);
+            return reader.ReadMapEntityIndex(name);
         }
 
         /// <summary>
@@ -36,7 +31,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, long value)
+        protected override void Write(string name, IValueWriter writer, MapEntityIndex value)
         {
             writer.Write(name, value);
         }

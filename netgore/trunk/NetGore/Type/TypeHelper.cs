@@ -16,6 +16,82 @@ namespace NetGore
         const bool _gacDefault = false;
 
         /// <summary>
+        /// Gets all of the custom attributes for a PropertyInfo, including those attached to
+        /// abstract Properties on base classes.
+        /// </summary>
+        /// <typeparam name="T">The Type of attribute to find.</typeparam>
+        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
+        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
+        /// <returns>
+        /// An IEnumerable of all of the custom attributes for a PropertyInfo.
+        /// </returns>
+        public static IEnumerable<T> GetAllCustomAttributes<T>(PropertyInfo propInfo, BindingFlags flags) where T : Attribute
+        {
+            return InternalGetAllCustomAttributes<T>(propInfo, propInfo.DeclaringType, flags).Distinct();
+        }
+
+        /// <summary>
+        /// Gets all of the custom attributes for a PropertyInfo, including those attached to interfaces and abstract
+        /// Properties on base classes.
+        /// </summary>
+        /// <typeparam name="T">The Type of attribute to find.</typeparam>
+        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
+        /// <param name="type">Type of the class to search for the PropertyInfos in.</param>
+        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
+        /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
+        static IEnumerable<T> InternalGetAllCustomAttributes<T>(PropertyInfo propInfo, Type type,
+                                                                  BindingFlags flags) where T : Attribute
+        {
+            // Get the attributes for this type
+            var customAttributes = propInfo.GetCustomAttributes(typeof(T), false).OfType<T>();
+            foreach (var attrib in customAttributes)
+            {
+                yield return attrib;
+            }
+
+            // Get the base type
+            Type baseType = type.BaseType;
+
+            // Get the property for the base type
+            PropertyInfo baseProp = baseType.GetProperty(propInfo.Name, flags);
+
+            // If the property for the base type exists, find the attributes for it
+            if (baseProp != null)
+            {
+                var baseAttributes = InternalGetAllCustomAttributes<T>(baseProp, baseType, flags);
+                foreach (var attrib in baseAttributes)
+                {
+                    yield return attrib;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets if the <paramref name="type"/> is public through the whole declaration tree. For example, a nested
+        /// class will only return true if it is public, and so is the class it is nested in. Any non-public
+        /// type in the hierarchy will result in a false value.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>True if the <paramref name="type"/> is a class and public through the whole declaration tree.</returns>
+        public static bool IsClassTypeTreePublic(Type type)
+        {
+            if (!type.IsClass)
+                return false;
+
+            if (type.IsNested)
+            {
+                if (!type.IsNestedPublic)
+                    return false;
+
+                return IsClassTypeTreePublic(type.DeclaringType);
+            }
+            else
+            {
+                return type.IsPublic;
+            }
+        }
+
+        /// <summary>
         /// Gets all Types from every Assembly.
         /// </summary>
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.

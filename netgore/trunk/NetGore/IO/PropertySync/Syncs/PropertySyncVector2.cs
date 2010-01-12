@@ -1,21 +1,17 @@
 using System.Linq;
 using System.Reflection;
+using Microsoft.Xna.Framework;
 using NetGore.IO;
 
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a string.
+    /// Implementation of a PropertySyncBase that handles synchronizing a Vector2.
     /// </summary>
-    [PropertySyncHandler(typeof(string))]
-    public sealed class PropertySyncString : PropertySyncBase<string>
+    [PropertySyncHandler(typeof(Vector2))]
+    public sealed class PropertySyncVector2 : PropertySyncBase<Vector2>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncString"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncString(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncVector2(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -25,9 +21,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override string Read(string name, IValueReader reader)
+        protected override Vector2 Read(string name, IValueReader reader)
         {
-            return reader.ReadString(name);
+            return reader.ReadVector2(name);
         }
 
         /// <summary>
@@ -36,7 +32,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, string value)
+        protected override void Write(string name, IValueWriter writer, Vector2 value)
         {
             writer.Write(name, value);
         }

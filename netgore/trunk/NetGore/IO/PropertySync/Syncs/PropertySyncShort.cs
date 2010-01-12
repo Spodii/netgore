@@ -5,17 +5,12 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a boolean.
+    /// Implementation of a PropertySyncBase that handles synchronizing a signed 16-bit integer.
     /// </summary>
-    [PropertySyncHandler(typeof(bool))]
-    public sealed class PropertySyncBool : PropertySyncBase<bool>
+    [PropertySyncHandler(typeof(short))]
+    public sealed class PropertySyncShort : PropertySyncBase<short>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncBool"/> class.
-        /// </summary>
-        /// <param name="bindObject">Object that this property is to be bound to.</param>
-        /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncBool(object bindObject, PropertyInfo p) : base(bindObject, p)
+        public PropertySyncShort(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -25,9 +20,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override bool Read(string name, IValueReader reader)
+        protected override short Read(string name, IValueReader reader)
         {
-            return reader.ReadBool(name);
+            return reader.ReadShort(name);
         }
 
         /// <summary>
@@ -36,7 +31,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, bool value)
+        protected override void Write(string name, IValueWriter writer, short value)
         {
             writer.Write(name, value);
         }

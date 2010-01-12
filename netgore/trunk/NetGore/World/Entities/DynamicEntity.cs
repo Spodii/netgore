@@ -61,7 +61,7 @@ namespace NetGore
         /// is guarenteed to have SkipNetworkSync equal false. Any PropertySync after the index at
         /// <see cref="_lastNetworkSyncIndex"/>, if any, are guarenteed to have SkipNetworkSync equal true.
         /// </summary>
-        readonly PropertySyncBase[] _propertySyncs;
+        readonly IPropertySync[] _propertySyncs;
 
         /// <summary>
         /// If we know if one of the PropertySync's value have changed.
@@ -102,7 +102,7 @@ namespace NetGore
         {
             // Get the PropertySyncBases for this DynamicEntity instance
             // OrderBy() will make sure every PropertySync where SkipNetworkSync is true is at the end of the array
-            _propertySyncs = PropertySyncBase.GetPropertySyncs(this).OrderBy(x => x.SkipNetworkSync).ToArray();
+            _propertySyncs = PropertySyncHelper.GetPropertySyncs(GetType()).OrderBy(x => x.SkipNetworkSync).ToArray();
 
             // Store the index of the last PropertySync that needs to be synchronized over the network
             _lastNetworkSyncIndex = (byte)(_propertySyncs.Count(x => !x.SkipNetworkSync) - 1);
@@ -136,7 +136,7 @@ namespace NetGore
                 // Check each property, stopping at the first non-synchronized one
                 for (int i = 0; i <= _lastNetworkSyncIndex; i++)
                 {
-                    if (_propertySyncs[i].HasValueChanged())
+                    if (_propertySyncs[i].HasValueChanged(this))
                     {
                         _isSynchronized = false;
                         return false;
@@ -255,10 +255,10 @@ namespace NetGore
             {
                 // Get the PropertySync to be deserialized
                 uint propIndex = reader.ReadUInt("PropertyIndex", lastIndex, highestPropertyIndex);
-                PropertySyncBase propertySync = _propertySyncs[propIndex];
+                IPropertySync propertySync = _propertySyncs[propIndex];
 
                 // Read the value into the property
-                propertySync.ReadValue(reader);
+                propertySync.ReadValue(this, reader);
 
                 // Allow for additional post-deserializtion processing
                 DeserializeProprety(reader, propertySync);
@@ -302,7 +302,7 @@ namespace NetGore
         /// <param name="reader">IValueReader that the property value is being deserialized from.</param>
         /// <param name="propertySync">PropertySyncBase for the property that is being deserialized.</param>
         // ReSharper disable UnusedParameter.Global
-        protected virtual void DeserializeProprety(IValueReader reader, PropertySyncBase propertySync)
+        protected virtual void DeserializeProprety(IValueReader reader, IPropertySync propertySync)
             // ReSharper restore UnusedParameter.Global
         {
         }
@@ -371,7 +371,7 @@ namespace NetGore
         {
             for (int i = 0; i < _propertySyncs.Length; i++)
             {
-                _propertySyncs[i].ReadValue(reader);
+                _propertySyncs[i].ReadValue(this, reader);
             }
 
             // Perform post-creation tasks
@@ -393,8 +393,8 @@ namespace NetGore
             var writeIndices = new Queue<int>(_lastNetworkSyncIndex + 1);
             for (int i = 0; i <= _lastNetworkSyncIndex; i++)
             {
-                PropertySyncBase propertySync = _propertySyncs[i];
-                if (!propertySync.SkipNetworkSync && propertySync.HasValueChanged())
+                IPropertySync propertySync = _propertySyncs[i];
+                if (!propertySync.SkipNetworkSync && propertySync.HasValueChanged(this))
                     writeIndices.Enqueue(i);
             }
 
@@ -411,8 +411,8 @@ namespace NetGore
                 writer.Write("PropertyIndex", propIndex, lastIndex, highestPropertyIndex);
 
                 // Write the actual property value
-                PropertySyncBase propertySync = _propertySyncs[propIndex];
-                propertySync.WriteValue(writer);
+                IPropertySync propertySync = _propertySyncs[propIndex];
+                propertySync.WriteValue(this, writer);
 
                 // Allow for additonal handling
                 SerializeProperty(writer, propertySync);
@@ -451,7 +451,7 @@ namespace NetGore
         /// <param name="writer">IValueWriter that the property value is being serialized to.</param>
         /// <param name="propertySync">PropertySyncBase for the property that is being serialized.</param>
         // ReSharper disable UnusedParameter.Global
-        protected virtual void SerializeProperty(IValueWriter writer, PropertySyncBase propertySync)
+        protected virtual void SerializeProperty(IValueWriter writer, IPropertySync propertySync)
             // ReSharper restore UnusedParameter.Global
         {
         }
@@ -495,7 +495,7 @@ namespace NetGore
         {
             for (int i = 0; i < _propertySyncs.Length; i++)
             {
-                _propertySyncs[i].WriteValue(writer);
+                _propertySyncs[i].WriteValue(this, writer);
             }
 
             // Obviously synchronized if we write all the values

@@ -125,11 +125,11 @@ namespace NetGore.Tests.NetGore.IO
         /// </summary>
         class TestClass
         {
-            readonly PropertySyncBase[] _propertySyncs;
+            readonly IPropertySync[] _propertySyncs;
 
             public TestClass()
             {
-                _propertySyncs = PropertySyncBase.GetPropertySyncs(this).ToArray();
+                _propertySyncs = PropertySyncHelper.GetPropertySyncs(GetType()).ToArray();
             }
 
             [SyncValue]
@@ -187,7 +187,7 @@ namespace NetGore.Tests.NetGore.IO
                 for (int i = 0; i < count; i++)
                 {
                     int propIndex = reader.ReadByte("PropertyIndex" + i);
-                    _propertySyncs[propIndex].ReadValue(reader);
+                    _propertySyncs[propIndex].ReadValue(this, reader);
                 }
             }
 
@@ -197,7 +197,7 @@ namespace NetGore.Tests.NetGore.IO
 
                 for (int i = 0; i < _propertySyncs.Length; i++)
                 {
-                    if (_propertySyncs[i].HasValueChanged())
+                    if (_propertySyncs[i].HasValueChanged(this))
                         changed.Enqueue(i);
                 }
 
@@ -207,7 +207,7 @@ namespace NetGore.Tests.NetGore.IO
                 foreach (var i in changed)
                 {
                     writer.Write("PropertyIndex" + index++, (byte)i);
-                    _propertySyncs[i].WriteValue(writer);
+                    _propertySyncs[i].WriteValue(this, writer);
                 }
             }
         }
