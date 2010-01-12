@@ -222,6 +222,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets if the <see cref="CheckBox"/> is ticked.
         /// </summary>
+        [SyncValue]
         public bool Value
         {
             get { return _value; }

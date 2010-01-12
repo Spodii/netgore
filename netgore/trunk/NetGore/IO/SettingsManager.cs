@@ -10,16 +10,13 @@ using log4net;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Manages the settings of a collection of IRestorableSettings objects by saving the settings to file for
+    /// Manages the settings of a collection of <see cref="IPersistable"/> objects by saving the settings to file for
     /// all managed objects, along with loading the previous settings for objects when they are added to the manager.
     /// </summary>
     public class SettingsManager : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        const string _itemsNodeName = "Items";
-        const string _objectValueKey = "Object";
-        const string _valuesNodeName = "Values";
-
+        
         /// <summary>
         /// File path being used.
         /// </summary>
@@ -27,16 +24,16 @@ namespace NetGore.IO
 
         /// <summary>
         /// Contains the collection of loaded settings that have not yet been loaded back. Values in here wait until
-        /// an IRestorableSettings is added through Add() that has the same key as in this. When a match is found,
+        /// an <see cref="IPersistable"/>s is added through Add() that has the same key as in this. When a match is found,
         /// the item is removed from this collection. Therefore, if this collection is empty, all settings have been restored.
         /// </summary>
-        readonly List<NodeItems> _loadedNodeItems;
+        readonly Dictionary<string, IValueReader> _loadedNodeItems;
 
         /// <summary>
-        /// Dictionary of IRestorableSettings objects being tracked, indexed by their unique identifier.
+        /// Dictionary of <see cref="IPersistable"/> objects being tracked, indexed by their unique identifier.
         /// </summary>
-        readonly Dictionary<string, IRestorableSettings> _objs =
-            new Dictionary<string, IRestorableSettings>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, IPersistable> _objs =
+            new Dictionary<string, IPersistable>(StringComparer.OrdinalIgnoreCase);
 
         readonly string _rootNode;
         bool _disposed = false;
@@ -54,10 +51,7 @@ namespace NetGore.IO
 
             // Load the existing settings
             var loadedItems = LoadSettings(filePath);
-            if (loadedItems != null)
-                _loadedNodeItems = loadedItems.ToList();
-            else
-                _loadedNodeItems = new List<NodeItems>();
+            _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>();
         }
 
         /// <summary>
@@ -80,10 +74,7 @@ namespace NetGore.IO
                 loadedItems = LoadSettings(secondaryPath);
 
             // If the values are null, we have to just make a new list, otherwise use the values
-            if (loadedItems != null)
-                _loadedNodeItems = loadedItems.ToList();
-            else
-                _loadedNodeItems = new List<NodeItems>();
+            _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>();
         }
 
         /// <summary>
@@ -113,11 +104,7 @@ namespace NetGore.IO
                 }
             }
 
-            // If the values are null, we have to just make a new list, otherwise use the values
-            if (loadedItems != null)
-                _loadedNodeItems = loadedItems.ToList();
-            else
-                _loadedNodeItems = new List<NodeItems>();
+            _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>();
         }
 
         /// <summary>
@@ -149,29 +136,38 @@ namespace NetGore.IO
         /// Adds an object to be tracked by this GUISettings and loads the previous settings for the object
         /// if possible.
         /// </summary>
-        /// <param name="key">Unique identifier of the IRestorableSettings object.</param>
-        /// <param name="obj">IRestorableSettings object to load and save the settings for.</param>
+        /// <param name="key">Unique identifier of the <see cref="IPersistable"/> object.</param>
+        /// <param name="obj"><see cref="IPersistable"/> object to load and save the settings for.</param>
         /// <exception cref="ArgumentException">An object with the given <paramref name="key"/> already exists
         /// in this collection.</exception>
-        public void Add(string key, IRestorableSettings obj)
+        public void Add(string key, IPersistable obj)
         {
             // Add to the gui items to track
             _objs.Add(key, obj);
 
             // Check if the settings need to be restored
-            int index = _loadedNodeItems.FindIndex(x => x.Name.Equals(key, StringComparison.OrdinalIgnoreCase));
-
-            if (index >= 0)
+            IValueReader valueReader;
+            if (_loadedNodeItems.TryGetValue(key, out valueReader))
             {
-                // Restore the settings and remove from the collection
-                var loadDict = _loadedNodeItems[index].ToDictionary();
-                _loadedNodeItems.RemoveAt(index);
-                obj.Load(loadDict);
+                try
+                {
+                    obj.ReadState(valueReader);
+                }
+                catch (Exception ex)
+                {
+                    // If we fail to read the state, just absorb the exception while printing an error
+                    const string errmsg = "Failed to load settings for object `{0}` with key `{1}`: {2}";
+                    string err = string.Format(errmsg, obj, key, ex);
+                    log.Error(err);
+                    Debug.Fail(err);
+                }
+
+                _loadedNodeItems.Remove(key);
             }
         }
 
         /// <summary>
-        /// Asynchronously saves the settings for all the tracked IRestorableSettings objects.
+        /// Asynchronously saves the settings for all the tracked <see cref="IPersistable"/> objects.
         /// </summary>
         public void AsyncSave()
         {
@@ -187,12 +183,18 @@ namespace NetGore.IO
             ((SettingsManager)sender).Save();
         }
 
+        const string _itemsNodeName = "Items";
+        const string _itemNodeName = "Item";
+        const string _keyValueName = "Key";
+        const string _valueNodeName = "Values";
+        const string _countValueName = "Count";
+
         /// <summary>
         /// Loads the existing settings into memory.
         /// </summary>
         /// <param name="path">Path of the file to load the settings from.</param>
-        /// <returns>An IEnumerable of all the NodeItems loaded, if any, or null if there was an error in loading.</returns>
-        IEnumerable<NodeItems> LoadSettings(string path)
+        /// <returns>A Dictionary of all the items loaded, if any, or null if there was an error in loading.</returns>
+        Dictionary<string, IValueReader> LoadSettings(string path)
         {
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
                 return null;
@@ -201,12 +203,28 @@ namespace NetGore.IO
             if (fi.Length < 1)
                 return null;
 
-            IEnumerable<NodeItems> nodeItems;
+            Dictionary<string, IValueReader> nodeReaders = new Dictionary<string, IValueReader>();
 
             try
             {
                 IValueReader reader = new XmlValueReader(path, _rootNode);
-                nodeItems = reader.ReadManyNodes(_itemsNodeName, x => Read(x));
+                int count = reader.ReadInt(_countValueName);
+
+                reader = reader.ReadNode(_itemsNodeName);
+                for (int i = 0; i < count; i++)
+                {
+                    var nodeReader = reader.ReadNode(_itemNodeName + i);
+                    var keyName = nodeReader.ReadString(_keyValueName);
+
+                    var valueReader = nodeReader.ReadNode(_valueNodeName);
+
+                    nodeReaders.Add(keyName, valueReader);
+                }
+            }
+            catch (KeyNotFoundException)
+            {
+                // No biggie if a key is missing
+                return null;
             }
             catch (Exception ex)
             {
@@ -217,44 +235,38 @@ namespace NetGore.IO
                 return null;
             }
 
-            return nodeItems;
+            return nodeReaders;
         }
 
         /// <summary>
-        /// Reads the NodeItems from an IValueReader.
-        /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <returns>The NodeItems from the IValueReader.</returns>
-        static NodeItems Read(IValueReader reader)
-        {
-            string obj = reader.ReadString(_objectValueKey);
-            var values = reader.ReadManyNodes(_valuesNodeName, x => new NodeItem(x));
-
-            return new NodeItems(obj, values);
-        }
-
-        /// <summary>
-        /// Saves the settings for all the tracked <see cref="IRestorableSettings"/> objects.
+        /// Saves the settings for all the tracked <see cref="IPersistable"/> objects.
         /// </summary>
         public void Save()
         {
+            var objs = _objs.ToArray();
+
             using (IValueWriter w = new XmlValueWriter(_filePath, _rootNode))
             {
-                w.WriteManyNodes(_itemsNodeName, _objs, Write);
+                w.WriteStartNode(_itemsNodeName);
+                {
+                    w.Write(_countValueName, objs.Length);
+                    for (int i = 0; i < objs.Length; i++)
+                    {
+                        w.WriteStartNode(_itemNodeName + i);
+                        {
+                            var obj = objs[i];
+                            w.Write(_keyValueName, obj.Key);
+                            w.WriteStartNode(_valueNodeName);
+                            {
+                                obj.Value.WriteState(w);
+                            }
+                            w.WriteEndNode(_valueNodeName);
+                        }
+                        w.WriteEndNode(_itemNodeName + i);
+                    }
+                }
+                w.WriteEndNode(_itemsNodeName);
             }
-        }
-
-        /// <summary>
-        /// Writes the items to an IValueWriter.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="item">Items to write.</param>
-        static void Write(IValueWriter writer, KeyValuePair<string, IRestorableSettings> item)
-        {
-            var values = item.Value.Save();
-
-            writer.Write(_objectValueKey, item.Key);
-            writer.WriteManyNodes(_valuesNodeName, values, ((pwriter, pitem) => pitem.Write(pwriter)));
         }
 
         #region IDisposable Members

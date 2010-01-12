@@ -118,6 +118,7 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets if this <see cref="TextBox"/> supports multiple lines. When changing from multiple lines to
         /// a single line, all line breaks will be forever lost and replaced with a space instead.
         /// </summary>
+        [SyncValue]
         public bool IsMultiLine
         {
             get { return _isMultiLine; }
@@ -191,6 +192,7 @@ namespace NetGore.Graphics.GUI
         /// no limit will be assumed. The limitation only applies to input characters through key events. This limit
         /// can still be surpassed by manually setting the text.
         /// </summary>
+        [SyncValue]
         public int MaxInputTextLength { get; set; }
 
         /// <summary>

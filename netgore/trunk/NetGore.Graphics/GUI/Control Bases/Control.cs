@@ -8,13 +8,14 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NetGore.IO;
 
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
     /// Base class of all controls
     /// </summary>
-    public abstract class Control : IDisposable
+    public abstract class Control : IDisposable, IPersistable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly object _eventBeginDrag = new object();
@@ -309,6 +310,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets if the Control supports movement by dragging with the mouse
         /// </summary>
+        [SyncValue]
         public bool CanDrag
         {
             get { return _canDrag; }
@@ -318,6 +320,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets if the Control can get focus
         /// </summary>
+        [SyncValue]
         public bool CanFocus
         {
             get { return _canFocus; }
@@ -327,6 +330,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets the size of the client area (internal area, not including the borders) of the Control.
         /// </summary>
+        [SyncValue]
         public Vector2 ClientSize
         {
             get { return Size - Border.Size; }
@@ -342,6 +346,9 @@ namespace NetGore.Graphics.GUI
             get { return _controls; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="EventHandlerList"/> for this <see cref="Control"/>.
+        /// </summary>
         protected EventHandlerList Events
         {
             get { return _eventHandlerList; }
@@ -367,6 +374,7 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets if the <see cref="Control"/> is bound to the area of its parent. Only valid if the
         /// <see cref="Control"/> has a parent.
         /// </summary>
+        [SyncValue]
         public bool IsBoundToParentArea
         {
             get { return _isBoundToParentArea; }
@@ -376,6 +384,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets if the <see cref="Control"/> is enabled.
         /// </summary>
+        [SyncValue]
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -401,6 +410,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets if the Control is visible.
         /// </summary>
+        [SyncValue]
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -426,6 +436,7 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets the position of this Control reletive to its parent, where point (0,0) represents the top-left
         /// corner of the client area of the parent Control.
         /// </summary>
+        [SyncValue]
         public Vector2 Position
         {
             get { return _position; }
@@ -1475,5 +1486,24 @@ namespace NetGore.Graphics.GUI
         }
 
         #endregion
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public virtual void ReadState(IValueReader reader)
+        {
+            PersistableHelper.Read(this, reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public virtual void WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
+        }
     }
 }

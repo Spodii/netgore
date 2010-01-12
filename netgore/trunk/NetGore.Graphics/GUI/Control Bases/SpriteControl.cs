@@ -76,6 +76,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets if the <see cref="SpriteControl.Sprite"/> is drawn stretched when drawn.
         /// </summary>
+        [SyncValue]
         public bool StretchSprite
         {
             get { return _stretch; }

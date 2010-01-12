@@ -135,10 +135,7 @@
     <Compile Include="IO\EnumIOHelper.cs" />
     <Compile Include="IO\FilePathString.cs" />
     <Compile Include="IO\MessageCollectionBase.cs" />
-    <Compile Include="IO\RestorableSettings\IRestorableSettings.cs" />
-    <Compile Include="IO\RestorableSettings\NodeItem.cs" />
-    <Compile Include="IO\RestorableSettings\NodeItems.cs" />
-    <Compile Include="IO\RestorableSettings\SettingsManager.cs" />
+    <Compile Include="IO\SettingsManager.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteCategorization.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteCategorizationConverter.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteCategory.cs" />

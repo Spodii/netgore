@@ -79,6 +79,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the default foreground color used by the TextControl.
         /// </summary>
+        [SyncValue]
         public Color ForeColor
         {
             get { return _foreColor; }

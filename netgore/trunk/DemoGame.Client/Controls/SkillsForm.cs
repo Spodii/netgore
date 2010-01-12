@@ -12,7 +12,7 @@ namespace DemoGame.Client
 {
     public delegate void UseSkillHandler(SkillType skillType);
 
-    public class SkillsForm : Form, IRestorableSettings
+    public class SkillsForm : Form
     {
         static readonly Vector2 _iconSize = new Vector2(32, 32);
         readonly ISkillCooldownManager _cooldownManager;
@@ -95,30 +95,6 @@ namespace DemoGame.Client
                 OnUseSkill(source.SkillInfo.Value);
             }
         }
-
-        #region IRestorableSettings Members
-
-        /// <summary>
-        /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
-        /// </summary>
-        /// <param name="items">NodeItems containing the values to restore.</param>
-        public void Load(IDictionary<string, string> items)
-        {
-            Position = new Vector2(items.AsFloat("X", Position.X), items.AsFloat("Y", Position.Y));
-            IsVisible = items.AsBool("IsVisible", IsVisible);
-        }
-
-        /// <summary>
-        /// Returns the key and value pairs needed to restore the settings.
-        /// </summary>
-        /// <returns>The key and value pairs needed to restore the settings.</returns>
-        public IEnumerable<NodeItem> Save()
-        {
-            return new NodeItem[]
-            { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
-        }
-
-        #endregion
 
         sealed class SkillLabel : Label
         {
