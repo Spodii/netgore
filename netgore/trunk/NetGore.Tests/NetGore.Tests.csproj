@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NetGore\ClassTypeTreeTests.cs" />
+    <Compile Include="NetGore\GrhIndexTests.cs" />
     <Compile Include="NetGore\IO\PersistableTests.cs" />
     <Compile Include="NetGore\IO\PropertyInterfaceTests.cs" />
     <Compile Include="NetGore\TypeHelperTests.cs" />
