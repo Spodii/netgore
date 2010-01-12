@@ -7,35 +7,38 @@ using NetGore.Collections;
 
 namespace NetGore.EditorTools
 {
-
     /// <summary>
-    /// Manages multiple cursors for the map editor.
+    /// Manages multiple <see cref="EditorCursor&lt;TContainer&gt;"/>.
     /// </summary>
     /// <typeparam name="TContainer">The type of the container the cursors are in.</typeparam>
-    public class MapEditorCursorManager<TContainer> 
+    public class EditorCursorManager<TContainer>
     {
-        readonly Func<MapEditorCursorBase<TContainer>, bool> _allowCursorEventChecker;
+        /// <summary>
+        /// Delegate for handling events from the <see cref="EditorCursorManager&lt;TScreen&gt;"/>.
+        /// </summary>
+        /// <param name="sender">The object the event came from.</param>
+        public delegate void EditorCursorManagerEventHandler(EditorCursorManager<TContainer> sender);
+
+        readonly Func<EditorCursor<TContainer>, bool> _allowCursorEventChecker;
+        readonly TContainer _container;
         readonly Control _cursorContainer;
         readonly List<PictureBox> _cursorControls = new List<PictureBox>();
-        readonly List<MapEditorCursorBase<TContainer>> _cursors = new List<MapEditorCursorBase<TContainer>>();
+        readonly List<EditorCursor<TContainer>> _cursors = new List<EditorCursor<TContainer>>();
         readonly Control _gameScreen;
-        readonly TContainer _container;
         readonly ToolTip _toolTip;
 
-        public delegate void MapEditorCursorManagerEventHandler(MapEditorCursorManager<TContainer> sender);
-
-        MapEditorCursorBase<TContainer> _selectedAltCursor;
-        MapEditorCursorBase<TContainer> _selectedCursor;
-
+        EditorCursor<TContainer> _lastCurrentCursor;
+        EditorCursor<TContainer> _selectedAltCursor;
+        EditorCursor<TContainer> _selectedCursor;
         bool _useAlternateCursor;
 
         /// <summary>
         /// Notifies listeners when the currently active cursor changes.
         /// </summary>
-        public event MapEditorCursorManagerEventHandler OnChangeCurrentCursor;
+        public event EditorCursorManagerEventHandler OnChangeCurrentCursor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapEditorCursorManager&lt;TScreen&gt;"/> class.
+        /// Initializes a new instance of the <see cref="EditorCursorManager&lt;TScreen&gt;"/> class.
         /// </summary>
         /// <param name="container">The container the cursors are in. Recommended that you use the Form
         /// the cursors are on or the screen the cursors are for.</param>
@@ -45,8 +48,8 @@ namespace NetGore.EditorTools
         /// events for cursors will be added to this.</param>
         /// <param name="allowCursorEventChecker">Func that checks if a cursor event is allowed to be executed. This
         /// way you can prevent cursor events at certain times.</param>
-        public MapEditorCursorManager(TContainer container, ToolTip toolTip, Control cursorContainer, Control gameScreen,
-                                      Func<MapEditorCursorBase<TContainer>, bool> allowCursorEventChecker)
+        public EditorCursorManager(TContainer container, ToolTip toolTip, Control cursorContainer, Control gameScreen,
+                                   Func<EditorCursor<TContainer>, bool> allowCursorEventChecker)
         {
             if (Equals(container, default(TContainer)))
                 throw new ArgumentNullException("container");
@@ -72,14 +75,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the cursors in this collection.
-        /// </summary>
-        public IEnumerable<MapEditorCursorBase<TContainer>> Cursors
-        {
-            get { return _cursors; }
-        }
-
-        /// <summary>
         /// Gets the container used by the cursors in this manager.
         /// </summary>
         public TContainer Container
@@ -88,9 +83,17 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the cursors in this collection.
+        /// </summary>
+        public IEnumerable<EditorCursor<TContainer>> Cursors
+        {
+            get { return _cursors; }
+        }
+
+        /// <summary>
         /// Gets or sets the alternate selected cursor.
         /// </summary>
-        public MapEditorCursorBase<TContainer> SelectedAltCursor
+        public EditorCursor<TContainer> SelectedAltCursor
         {
             get { return _selectedAltCursor; }
             set
@@ -107,31 +110,10 @@ namespace NetGore.EditorTools
             }
         }
 
-        MapEditorCursorBase<TContainer> _lastCurrentCursor;
-
-        /// <summary>
-        /// Handles what happens when the current cursor changes.
-        /// </summary>
-        void HandleCurrentCursorChanged()
-        {
-            var cursor = GetCurrentCursor();
-
-            if (_lastCurrentCursor != null)
-                _lastCurrentCursor.Deactivate();
-
-            _lastCurrentCursor = cursor;
-
-            if (cursor != null)
-                cursor.Activate();
-
-            if (OnChangeCurrentCursor != null)
-                OnChangeCurrentCursor(this);
-        }
-
         /// <summary>
         /// Gets or sets the selected cursor.
         /// </summary>
-        public MapEditorCursorBase<TContainer> SelectedCursor
+        public EditorCursor<TContainer> SelectedCursor
         {
             get { return _selectedCursor; }
             set
@@ -142,7 +124,7 @@ namespace NetGore.EditorTools
                 _selectedCursor = value;
 
                 if (!_useAlternateCursor)
-                    HandleCurrentCursorChanged();   
+                    HandleCurrentCursorChanged();
 
                 ApplyCursorControlColoring();
             }
@@ -229,7 +211,7 @@ namespace NetGore.EditorTools
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void CursorControlClickHandler(object sender, EventArgs e)
         {
-            var c = ((Control)sender).Tag as MapEditorCursorBase<TContainer>;
+            var c = ((Control)sender).Tag as EditorCursor<TContainer>;
             if (c == null)
                 return;
 
@@ -265,12 +247,31 @@ namespace NetGore.EditorTools
         /// Gets the current cursor with respect to whether or not the alternate cursor is set to be used.
         /// </summary>
         /// <returns>The current cursor with respect to whether or not the alternate cursor is set to be used.</returns>
-        public MapEditorCursorBase<TContainer> GetCurrentCursor()
+        public EditorCursor<TContainer> GetCurrentCursor()
         {
             if (UseAlternateCursor && SelectedAltCursor != null)
                 return SelectedAltCursor;
             else
                 return SelectedCursor;
+        }
+
+        /// <summary>
+        /// Handles what happens when the current cursor changes.
+        /// </summary>
+        void HandleCurrentCursorChanged()
+        {
+            var cursor = GetCurrentCursor();
+
+            if (_lastCurrentCursor != null)
+                _lastCurrentCursor.Deactivate();
+
+            _lastCurrentCursor = cursor;
+
+            if (cursor != null)
+                cursor.Activate();
+
+            if (OnChangeCurrentCursor != null)
+                OnChangeCurrentCursor(this);
         }
 
         void LoadTypeInstances()
@@ -282,7 +283,7 @@ namespace NetGore.EditorTools
                 IsClass = true,
                 ConstructorParameters = Type.EmptyTypes,
                 RequireConstructor = true,
-                Subclass = typeof(MapEditorCursorBase<TContainer>)
+                Subclass = typeof(EditorCursor<TContainer>)
             };
 
             var typeFactory = new TypeFactory(filterCreator.GetFilter());
@@ -290,7 +291,7 @@ namespace NetGore.EditorTools
             // Create the instances
             foreach (var type in typeFactory)
             {
-                var instance = (MapEditorCursorBase<TContainer>)TypeFactory.GetTypeInstance(type);
+                var instance = (EditorCursor<TContainer>)TypeFactory.GetTypeInstance(type);
                 _cursors.Add(instance);
             }
 
@@ -333,7 +334,6 @@ namespace NetGore.EditorTools
             }
         }
 
-
         /// <summary>
         /// Tells the active cursor to handle the mouse wheel scrolling.
         /// </summary>
@@ -371,7 +371,7 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <typeparam name="T">The type of cursor to get.</typeparam>
         /// <returns>The cursor of the specified type, or null if no cursor was found.</returns>
-        public T TryGetCursor<T>() where T : MapEditorCursorBase<TContainer>
+        public T TryGetCursor<T>() where T : EditorCursor<TContainer>
         {
             return Cursors.OfType<T>().FirstOrDefault();
         }

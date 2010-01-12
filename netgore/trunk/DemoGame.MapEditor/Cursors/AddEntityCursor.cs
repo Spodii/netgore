@@ -9,7 +9,7 @@ using NetGore.EditorTools;
 
 namespace DemoGame.MapEditor
 {
-    sealed class AddEntityCursor : MapEditorCursorBase<ScreenForm>
+    sealed class AddEntityCursor : EditorCursor<ScreenForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem[] _menuEntityTypeChild;

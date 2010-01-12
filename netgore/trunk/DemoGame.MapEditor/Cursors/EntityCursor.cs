@@ -12,7 +12,7 @@ using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
 {
-    sealed class EntityCursor : MapEditorCursorBase<ScreenForm>
+    sealed class EntityCursor : EditorCursor<ScreenForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuIgnoreWalls;

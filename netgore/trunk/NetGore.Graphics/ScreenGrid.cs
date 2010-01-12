@@ -9,36 +9,13 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Draws a grid to the screen.
+    /// Creates a grid of uniform size that can be drawn to the screen.
     /// </summary>
-    public class ScreenGrid
+    public class ScreenGrid : IPersistable
     {
-        /// <summary>
-        /// Color of the lines
-        /// </summary>
         Color _color = new Color(255, 255, 255, 75);
-
-        /// <summary>
-        /// Gap between lines on the y-axis
-        /// </summary>
-        float _height = 32;
-
-        /// <summary>
-        /// Rectangle for drawing horizontal lines
-        /// </summary>
-        Rectangle _hLine;
-
         Vector2 _screenSize;
-
-        /// <summary>
-        /// Rectangle for drawing vertical lines
-        /// </summary>
-        Rectangle _vLine;
-
-        /// <summary>
-        /// Gap between lines on the x-axis
-        /// </summary>
-        float _width = 32;
+        Vector2 _size = new Vector2(32);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenGrid"/> class.
@@ -52,6 +29,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the color of the grid lines.
         /// </summary>
+        [SyncValue]
         public Color Color
         {
             get { return _color; }
@@ -65,21 +43,14 @@ namespace NetGore.Graphics
         /// or equal to zero.</exception>
         public float Height
         {
-            get { return _height; }
+            get { return Size.Y; }
             set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException("value", "Height must be greater than 0.");
-                _height = value;
-            }
-        }
 
-        /// <summary>
-        /// Horizontal line for the grid.
-        /// </summary>
-        public Rectangle HLine
-        {
-            get { return _hLine; }
+                _size.Y = value;
+            }
         }
 
         /// <summary>
@@ -87,29 +58,24 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 ScreenSize
         {
-            get { return _screenSize; }
-            set
-            {
-                if (_screenSize == value)
-                    return;
-
-                _screenSize = value;
-                _vLine = new Rectangle(0, 0, 1, (int)_screenSize.Y);
-                _hLine = new Rectangle(0, 0, (int)_screenSize.X, 1);
-            }
-        }
-
-        public Vector2 Size
-        {
-            get { return new Vector2(Width, Height); }
+            get;
+            set;
         }
 
         /// <summary>
-        /// Vertical line for the grid.
+        /// Gets the size of the <see cref="ScreenGrid"/>.
         /// </summary>
-        public Rectangle VLine
+        [SyncValue]
+        public Vector2 Size
         {
-            get { return _vLine; }
+            get { return _size; }
+            set
+            {
+                if (value.X <= 0 || value.Y <= 0)
+                    throw new ArgumentOutOfRangeException("value", "Size's X and Y both must be greater than 0.");
+
+                _size = value;
+            }
         }
 
         /// <summary>
@@ -119,13 +85,13 @@ namespace NetGore.Graphics
         /// or equal to zero.</exception>
         public float Width
         {
-            get { return _width; }
+            get { return Size.X; }
             set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException("value", "Width must be greater than 0.");
 
-                _width = value;
+                _size.X = value;
             }
         }
 
@@ -185,15 +151,14 @@ namespace NetGore.Graphics
             Vector2 p2 = new Vector2();
 
             Vector2 min = camera.Min;
-            min.X -= min.X % _width;
-            min.Y -= min.Y % _height;
+            min -= new Vector2(min.X % Size.X, min.Y % Size.Y);
 
             Vector2 max = camera.Min + _screenSize;
 
             // Vertical lines
             p1.Y = camera.Min.Y;
             p2.Y = p1.Y + _screenSize.Y;
-            for (float x = min.X; x < max.X; x += _width)
+            for (float x = min.X; x < max.X; x += Size.X)
             {
                 p1.X = x;
                 p2.X = x;
@@ -203,7 +168,7 @@ namespace NetGore.Graphics
             // Horizontal lines
             p1.X = camera.Min.X;
             p2.X = p1.X + _screenSize.X;
-            for (float y = min.Y; y < max.Y; y += _height)
+            for (float y = min.Y; y < max.Y; y += Size.Y)
             {
                 p1.Y = y;
                 p2.Y = y;
@@ -250,6 +215,25 @@ namespace NetGore.Graphics
 
             // TODO: map.SafeResizeEntity()
             entity.Resize(newSize);
+        }
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            PersistableHelper.Read(this, reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
         }
     }
 }
