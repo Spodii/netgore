@@ -438,11 +438,16 @@ namespace NetGore.Tests.IO
             }
         }
 
-        class InterfaceTester : IRestorableSettings
+        class InterfaceTester : IPersistable
         {
-            public string A;
-            public int B;
-            public float C;
+            [SyncValue]
+            public string A { get; set; }
+
+            [SyncValue]
+            public int B { get; set; }
+
+            [SyncValue]
+            public float C { get; set; }
 
             public bool HaveSameValues(InterfaceTester other)
             {
@@ -454,29 +459,24 @@ namespace NetGore.Tests.IO
                 return (l.A == r.A) && (l.B == r.B) && (l.C == r.C);
             }
 
-            #region IRestorableSettings Members
-
             /// <summary>
-            /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
+            /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+            /// same order as they were written.
             /// </summary>
-            /// <param name="items">NodeItems containing the values to restore.</param>
-            public void Load(IDictionary<string, string> items)
+            /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+            public void ReadState(IValueReader reader)
             {
-                A = items["A"];
-                B = Parser.Invariant.ParseInt(items["B"]);
-                C = Parser.Invariant.ParseFloat(items["C"]);
+                PersistableHelper.Read(this, reader);
             }
 
             /// <summary>
-            /// Returns the key and value pairs needed to restore the settings.
+            /// Writes the state of the object to an <see cref="IValueWriter"/>.
             /// </summary>
-            /// <returns>The key and value pairs needed to restore the settings.</returns>
-            public IEnumerable<NodeItem> Save()
+            /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+            public void WriteState(IValueWriter writer)
             {
-                return new NodeItem[] { new NodeItem("A", A), new NodeItem("B", B), new NodeItem("C", C) };
+                PersistableHelper.Write(this, writer);
             }
-
-            #endregion
         }
     }
 }

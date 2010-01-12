@@ -16,7 +16,7 @@ namespace DemoGame.Client
     /// <param name="control">Control that raised the event.</param>
     delegate void ToolbarEventHandler(Toolbar toolbar, ToolbarItemType itemType, Control control);
 
-    class Toolbar : Form, IRestorableSettings
+    class Toolbar : Form
     {
         /// <summary>
         /// Size of each toolbar item in pixels.
@@ -173,30 +173,6 @@ namespace DemoGame.Client
             if (_items != null)
                 ClientSize = FindNeededClientSize();
         }
-
-        #region IRestorableSettings Members
-
-        /// <summary>
-        /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
-        /// </summary>
-        /// <param name="items">NodeItems containing the values to restore.</param>
-        public void Load(IDictionary<string, string> items)
-        {
-            Position = new Vector2(items.AsFloat("X", Position.X), items.AsFloat("Y", Position.Y));
-            IsVisible = items.AsBool("IsVisible", IsVisible);
-        }
-
-        /// <summary>
-        /// Returns the key and value pairs needed to restore the settings.
-        /// </summary>
-        /// <returns>The key and value pairs needed to restore the settings.</returns>
-        public IEnumerable<NodeItem> Save()
-        {
-            return new NodeItem[]
-            { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
-        }
-
-        #endregion
 
         class ToolbarItem : PictureBox
         {

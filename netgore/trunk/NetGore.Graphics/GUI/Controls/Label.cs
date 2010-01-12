@@ -35,6 +35,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets if the <see cref="Label"/> will automatically resize when the text or font changes.
         /// </summary>
+        [SyncValue]
         public bool AutoResize { get; set; }
 
         /// <summary>
