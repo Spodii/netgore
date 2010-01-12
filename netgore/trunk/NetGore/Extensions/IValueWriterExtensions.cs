@@ -203,6 +203,30 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Writes a Point.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, Point value)
+        {
+            if (writer.SupportsNameLookup)
+            {
+                // We are using name lookup, so we have to combine the values so we use only one name
+                string x = Parser.Invariant.ToString(value.X);
+                string y = Parser.Invariant.ToString(value.Y);
+                writer.Write(name, x + "," + y);
+            }
+            else
+            {
+                // Not using name lookup, so just write them out
+                writer.Write(null, value.X);
+                writer.Write(null, value.Y);
+            }
+        }
+
+        /// <summary>
         /// Writes a Rectangle.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
