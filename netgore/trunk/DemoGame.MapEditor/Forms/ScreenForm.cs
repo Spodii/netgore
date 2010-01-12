@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -30,7 +29,7 @@ using World=DemoGame.Client.World;
 
 namespace DemoGame.MapEditor
 {
-    partial class ScreenForm : Form, IGetTime
+    partial class ScreenForm : PersistableForm, IGetTime
     {
         public delegate void MapChangeEventHandler(Map oldMap, Map newMap);
 
@@ -68,11 +67,12 @@ namespace DemoGame.MapEditor
         static readonly Type[] _focusOverrideTypes = new Type[] { typeof(TextBox), typeof(ListBox) };
 
         readonly ICamera2D _camera;
-        readonly MapEditorCursorManager<ScreenForm> _cursorManager;
+        readonly EditorCursorManager<ScreenForm> _cursorManager;
         readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
         readonly ScreenGrid _grid;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
+        readonly MapDrawExtensionCollection _mapDrawExtensionCollection = new MapDrawExtensionCollection();
         readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
 
         /// <summary>
@@ -87,7 +87,8 @@ namespace DemoGame.MapEditor
 
         readonly SelectedObjectsManager<object> _selectedObjectsManager;
 
-        readonly MapEditorSettings _settings;
+        readonly SettingsManager _settingsManager = new SettingsManager("MapEditor",
+                                                                        ContentPaths.Build.Settings.Join("MapEditor.xml"));
 
         /// <summary>
         /// Stopwatch used for calculating the game time (cant use XNA's GameTime since the
@@ -158,8 +159,15 @@ namespace DemoGame.MapEditor
         /// </summary>
         SpriteFont _spriteFont;
 
+        /// <summary>
+        /// Notifies listeners when the map has changed.
+        /// </summary>
         public event MapChangeEventHandler OnChangeMap;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenForm"/> class.
+        /// </summary>
+        /// <param name="switches">The command-line switches.</param>
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             _switches = switches;
@@ -175,20 +183,15 @@ namespace DemoGame.MapEditor
             _selectedObjectsManager.OnChangeFocused += SelectedObjectsManager_OnChangeFocused;
 
             // Create and set up the cursor manager
-            _cursorManager = new MapEditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
+            _cursorManager = new EditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
                                                                     x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
-            CursorManager.OnChangeCurrentCursor += CursorManager_OnChangeCurrentCursor;
-
-            // Set up some of the OnChangeMap events for objects that need to reference the Map
-            OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
-            OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DbController, newMap));
-            OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DbController, newMap));
-            OnChangeMap += SetMapGUITexts;
-
-            // Read the settings
-            _settings = new MapEditorSettings(this);
+            CursorManager.OnChangeCurrentCursor += delegate
+            {
+                _transBoxes.Clear();
+                _selTransBox = null;
+            };
 
             // Create the world
             _world = new World(this, _camera);
@@ -205,7 +208,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets the cursor manager.
         /// </summary>
-        public MapEditorCursorManager<ScreenForm> CursorManager
+        public EditorCursorManager<ScreenForm> CursorManager
         {
             get { return _cursorManager; }
         }
@@ -288,6 +291,14 @@ namespace DemoGame.MapEditor
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="MapDrawExtensionCollection"/>.
+        /// </summary>
+        public MapDrawExtensionCollection MapDrawExtensionCollection
+        {
+            get { return _mapDrawExtensionCollection; }
+        }
+
         public MapDrawFilterHelper MapDrawFilterHelper
         {
             get { return _mapDrawFilterHelper; }
@@ -324,6 +335,14 @@ namespace DemoGame.MapEditor
         {
             get { return _selTransBox; }
             set { _selTransBox = value; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SettingsManager"/>.
+        /// </summary>
+        public SettingsManager SettingsManager
+        {
+            get { return _settingsManager; }
         }
 
         /// <summary>
@@ -456,14 +475,13 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Creates an instance of a MapDrawExtensionBase that automatically updates the Map and Enabled properties.
+        /// Creates an instance of a <see cref="MapDrawExtensionBase"/> that is toggled on and off from a <see cref="CheckBox"/>,
+        /// and adds it to the <see cref="MapDrawExtensionCollection"/>.
         /// </summary>
         /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
         /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
         /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
-        // ReSharper disable UnusedMethodReturnValue.Local
-        T CreateMapDrawExtensionBase<T>(CheckBox checkBox) where T : MapDrawExtensionBase, new()
-            // ReSharper restore UnusedMethodReturnValue.Local
+        T CreateMapDrawExtension<T>(CheckBox checkBox) where T : MapDrawExtensionBase, new()
         {
             // Create the instance of the MapDrawExtensionBase
             T instance = new T { Map = Map, Enabled = checkBox.Checked };
@@ -471,8 +489,8 @@ namespace DemoGame.MapEditor
             // Handle when the CheckBox value changes
             checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
 
-            // Handle when the Map changes
-            OnChangeMap += ((oldMap, newMap) => instance.Map = newMap);
+            // Add to the collection
+            _mapDrawExtensionCollection.Add(instance);
 
             return instance;
         }
@@ -516,12 +534,6 @@ namespace DemoGame.MapEditor
         static WallEntityBase CreateWallEntity(IValueReader reader)
         {
             return new WallEntity(reader);
-        }
-
-        void CursorManager_OnChangeCurrentCursor(MapEditorCursorManager<ScreenForm> sender)
-        {
-            _transBoxes.Clear();
-            _selTransBox = null;
         }
 
         public void DrawGame()
@@ -574,7 +586,7 @@ namespace DemoGame.MapEditor
 
             // Grid
             if (chkDrawGrid.Checked)
-                Grid.Draw(_sb,Camera);
+                Grid.Draw(_sb, Camera);
 
             // On-screen wall editor
             foreach (TransBox box in _transBoxes)
@@ -646,6 +658,11 @@ namespace DemoGame.MapEditor
             _cursorPos = _camera.ToWorld(e.X, e.Y);
         }
 
+        void GameScreen_MouseUp(object sender, MouseEventArgs e)
+        {
+            _mouseButton = e.Button;
+        }
+
         void GameScreen_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta > 0)
@@ -654,21 +671,20 @@ namespace DemoGame.MapEditor
                 CursorManager.MoveMouseWheel(-1);
         }
 
-        void GameScreen_MouseUp(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.OnChangeMap"/>
+        /// event when possible.
+        /// </summary>
+        protected virtual void HandleChangeMap(Map oldMap, Map newMap)
         {
-            _mouseButton = e.Button;
-        }
+            // Forward the change to some controls
+            _camera.Map = newMap;
+            lstNPCSpawns.SetMap(DbController, newMap);
+            lstPersistentNPCs.SetMap(DbController, newMap);
 
-        static IEnumerable<Control> GetAllControls(Control root)
-        {
-            var ret = new List<Control> { root };
-
-            foreach (Control child in root.Controls)
-            {
-                ret.AddRange(GetAllControls(child));
-            }
-
-            return ret;
+            // Handle the change on some controls manually
+            txtMapName.Text = newMap.Name ?? string.Empty;
+            txtMusic.Text = newMap.Music ?? string.Empty;
         }
 
         void HandleSwitch_SaveAllMaps(string[] parameters)
@@ -792,17 +808,20 @@ namespace DemoGame.MapEditor
             // ReSharper restore EmptyGeneralCatchClause
 
             // Set up the MapItemListBoxes
-            foreach (var lb in GetAllControls(this).OfType<IMapItemListBox>())
+            foreach (var lb in this.GetControls().OfType<IMapItemListBox>())
             {
                 lb.IMap = Map;
                 lb.Camera = Camera;
             }
 
             // Set up the MapExtensionBases
-            CreateMapDrawExtensionBase<MapEntityBoxDrawer>(chkDrawEntities);
-            CreateMapDrawExtensionBase<MapWallDrawer>(chkShowWalls);
-            MapSpawnDrawer v = CreateMapDrawExtensionBase<MapSpawnDrawer>(chkDrawSpawnAreas);
+            CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);
+            CreateMapDrawExtension<MapWallDrawer>(chkShowWalls);
+            MapSpawnDrawer v = CreateMapDrawExtension<MapSpawnDrawer>(chkDrawSpawnAreas);
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
+
+            // Populate the SettingsManager
+            PopulateSettingsManager();
 
             SelectedObjs.Clear();
         }
@@ -944,10 +963,25 @@ namespace DemoGame.MapEditor
                 OnKeyUp(e);
         }
 
+        /// <summary>
+        /// Adds all the <see cref="IPersistable"/>s to the <see cref="SettingsManager"/>.
+        /// </summary>
+        void PopulateSettingsManager()
+        {
+            // Add the Controls that implement IPersistable
+            var persistableControls = this.GetPersistableControls();
+            var keyValuePairs =
+                persistableControls.Select(x => new KeyValuePair<string, IPersistable>("Control_" + x.Name, (IPersistable)x));
+            SettingsManager.Add(keyValuePairs);
+
+            // Manually add the other things that implement IPersistable
+            SettingsManager.Add("Grid", _grid);
+        }
+
         void ScreenForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             GrhInfo.Save(ContentPaths.Dev);
-            _settings.Save();
+            SettingsManager.Save();
         }
 
         void ScreenForm_Load(object sender, EventArgs e)
@@ -977,12 +1011,6 @@ namespace DemoGame.MapEditor
         void SelectedObjectsManager_OnChangeSelected(SelectedObjectsManager<object> sender)
         {
             scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2;
-        }
-
-        void SetMapGUITexts(Map oldMap, Map newMap)
-        {
-            txtMapName.Text = newMap.Name ?? string.Empty;
-            txtMusic.Text = newMap.Music ?? string.Empty;
         }
 
         void tabPageGrhs_Enter(object sender, EventArgs e)
@@ -1115,75 +1143,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        class MapEditorSettings
-        {
-            const string _displayNodeName = "Display";
-            const string _gridNodeName = "Grid";
-            const string _rootNodeName = "MapEditorSettings";
-            readonly ScreenForm _screenForm;
-
-            // ReSharper disable MemberCanBePrivate.Local
-
-            public MapEditorSettings(ScreenForm screenForm)
-            {
-                _screenForm = screenForm;
-                Load();
-            }
-
-            public static string FilePath // ReSharper restore MemberCanBePrivate.Local
-            {
-                get { return ContentPaths.Build.Settings.Join("MapEditorSettings.xml"); }
-            }
-
-            // ReSharper disable MemberCanBePrivate.Local
-            public void Load() // ReSharper restore MemberCanBePrivate.Local
-            {
-                if (!File.Exists(FilePath))
-                    return;
-
-                XmlValueReader r = new XmlValueReader(FilePath, _rootNodeName);
-
-                IValueReader rGrid = r.ReadNode(_gridNodeName);
-                _screenForm.Grid.Width = rGrid.ReadFloat("Width");
-                _screenForm.Grid.Height = rGrid.ReadFloat("Height");
-
-                IValueReader rDisplay = r.ReadNode(_displayNodeName);
-                _screenForm.chkDrawGrid.Checked = rDisplay.ReadBool("Grid");
-                _screenForm.chkShowGrhs.Checked = rDisplay.ReadBool("Grhs");
-                _screenForm.chkShowWalls.Checked = rDisplay.ReadBool("Walls");
-                _screenForm.chkDrawAutoWalls.Checked = rDisplay.ReadBool("AutoWalls");
-                _screenForm.chkDrawEntities.Checked = rDisplay.ReadBool("Entities");
-                _screenForm.chkDrawBackground.Checked = rDisplay.ReadBool("Background");
-                _screenForm.chkDrawSpawnAreas.Checked = rDisplay.ReadBool("SpawnAreas");
-                _screenForm.chkDrawPersistentNPCs.Checked = rDisplay.ReadBool("PersistentNPCs");
-            }
-
-            public void Save()
-            {
-                using (XmlValueWriter w = new XmlValueWriter(FilePath, _rootNodeName))
-                {
-                    w.WriteStartNode(_gridNodeName);
-                    {
-                        w.Write("Width", _screenForm.Grid.Width);
-                        w.Write("Height", _screenForm.Grid.Height);
-                    }
-                    w.WriteEndNode(_gridNodeName);
-
-                    w.WriteStartNode(_displayNodeName);
-                    {
-                        w.Write("Grid", _screenForm.chkDrawGrid.Checked);
-                        w.Write("Grhs", _screenForm.chkShowGrhs.Checked);
-                        w.Write("Walls", _screenForm.chkShowWalls.Checked);
-                        w.Write("AutoWalls", _screenForm.chkDrawAutoWalls.Checked);
-                        w.Write("Entities", _screenForm.chkDrawEntities.Checked);
-                        w.Write("Background", _screenForm.chkDrawBackground.Checked);
-                        w.Write("SpawnAreas", _screenForm.chkDrawSpawnAreas.Checked);
-                        w.Write("PersistentNPCs", _screenForm.chkDrawPersistentNPCs.Checked);
-                    }
-                    w.WriteEndNode(_displayNodeName);
-                }
-            }
-        }
     }
 }

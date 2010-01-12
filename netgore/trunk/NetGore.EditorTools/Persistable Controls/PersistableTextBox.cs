@@ -19,20 +19,22 @@ namespace NetGore.EditorTools
         /// same order as they were written.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        public void ReadState(IValueReader reader)
+        public virtual void ReadState(IValueReader reader)
         {
             Multiline = reader.ReadBool(_multilineValueKey);
             Text = reader.ReadString(_textValueKey);
+            PersistableHelper.Read(this, reader);
         }
 
         /// <summary>
         /// Writes the state of the object to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-        public void WriteState(IValueWriter writer)
+        public virtual void WriteState(IValueWriter writer)
         {
             writer.Write(_multilineValueKey, Multiline);
             writer.Write(_textValueKey, Text);
+            PersistableHelper.Write(this, writer);
         }
 
         #endregion

@@ -10,7 +10,7 @@ using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
 {
-    sealed class AddGrhCursor : MapEditorCursorBase<ScreenForm>
+    sealed class AddGrhCursor : EditorCursor<ScreenForm>
     {
         /// <summary>
         /// Color of the Grh preview when placing new Grhs.

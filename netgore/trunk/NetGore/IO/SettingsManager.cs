@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Timers;
 using log4net;
+using Timer=System.Timers.Timer;
 
 namespace NetGore.IO
 {
@@ -16,7 +18,18 @@ namespace NetGore.IO
     public class SettingsManager : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
+        const string _countValueName = "Count";
+
+        /// <summary>
+        /// The initial auto-save rate.
+        /// </summary>
+        const int _initialAutoSaveRate = 60000;
+
+        const string _itemNodeName = "Item";
+        const string _itemsNodeName = "Items";
+        const string _keyValueName = "Key";
+        const string _valueNodeName = "Values";
+
         /// <summary>
         /// File path being used.
         /// </summary>
@@ -32,10 +45,12 @@ namespace NetGore.IO
         /// <summary>
         /// Dictionary of <see cref="IPersistable"/> objects being tracked, indexed by their unique identifier.
         /// </summary>
-        readonly Dictionary<string, IPersistable> _objs =
-            new Dictionary<string, IPersistable>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, IPersistable> _objs = new Dictionary<string, IPersistable>(StringComparer.OrdinalIgnoreCase);
 
         readonly string _rootNode;
+        readonly object _saveLock = new object();
+        Timer _autoSaveTimer;
+
         bool _disposed = false;
 
         /// <summary>
@@ -44,14 +59,8 @@ namespace NetGore.IO
         /// <param name="rootNode">Name of the root node. Used to ensure the correct file is loaded when
         /// loading settings. Not required to be unique, but recommended.</param>
         /// <param name="filePath">Primary file path to use, and first place to check for settings.</param>
-        public SettingsManager(string rootNode, string filePath)
+        public SettingsManager(string rootNode, string filePath) : this(rootNode, filePath, string.Empty)
         {
-            _rootNode = rootNode;
-            _filePath = filePath;
-
-            // Load the existing settings
-            var loadedItems = LoadSettings(filePath);
-            _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>();
         }
 
         /// <summary>
@@ -64,17 +73,8 @@ namespace NetGore.IO
         /// <paramref name="filePath"/>, but the settings can be loaded from somewhere else, like a default
         /// settings file.</param>
         public SettingsManager(string rootNode, string filePath, string secondaryPath)
+            : this(rootNode, filePath, new string[] { secondaryPath })
         {
-            _rootNode = rootNode;
-            _filePath = filePath;
-
-            // Try to load from the primary path, then the secondary if the primary fails
-            var loadedItems = LoadSettings(filePath);
-            if (loadedItems == null && !string.IsNullOrEmpty(secondaryPath))
-                loadedItems = LoadSettings(secondaryPath);
-
-            // If the values are null, we have to just make a new list, otherwise use the values
-            _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>();
         }
 
         /// <summary>
@@ -105,6 +105,47 @@ namespace NetGore.IO
             }
 
             _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>();
+
+            // Set up the auto-save timer
+            AutoSaveRate = _initialAutoSaveRate;
+        }
+
+        /// <summary>
+        /// Gets or sets the rate in milliseconds at which the <see cref="SettingsManager"/> is automatically saved. If the
+        /// value is less than or equal to 0, auto-saving will be disabled.
+        /// </summary>
+        public int AutoSaveRate
+        {
+            get { return _autoSaveTimer == null ? 0 : (int)_autoSaveTimer.Interval; }
+            set
+            {
+                if (value > 0)
+                {
+                    // Check if the value is already set
+                    if (_autoSaveTimer != null && value == (int)_autoSaveTimer.Interval)
+                        return;
+
+                    // Positive value and not what we already have, so check if we need to create the timer
+                    if (_autoSaveTimer == null)
+                    {
+                        _autoSaveTimer = new Timer { AutoReset = false };
+                        _autoSaveTimer.Elapsed += AutoSaveTimer_Elapsed;
+                        _autoSaveTimer.Start();
+                    }
+
+                    _autoSaveTimer.Interval = value;
+                }
+                else
+                {
+                    // Check if the timer is already null
+                    if (_autoSaveTimer == null)
+                        return;
+
+                    // Dispose of the timer
+                    _autoSaveTimer.Dispose();
+                    _autoSaveTimer = null;
+                }
+            }
         }
 
         /// <summary>
@@ -125,7 +166,7 @@ namespace NetGore.IO
 
         /// <summary>
         /// Gets the name of the root node used for Xml file. Only an Xml file that contains the same
-        /// root node name as this will be able to be loaded by this SettingsManager.
+        /// root node name as this will be able to be loaded by this <see cref="SettingsManager"/>.
         /// </summary>
         public string RootNode
         {
@@ -133,8 +174,35 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Adds an object to be tracked by this GUISettings and loads the previous settings for the object
-        /// if possible.
+        /// Adds an object to be tracked by this <see cref="SettingsManager"/> and loads the previous settings
+        /// for the object if possible.
+        /// </summary>
+        /// <param name="objs">The persistable object and unique key pairs.</param>
+        /// <exception cref="ArgumentException">An object with the key provided by any of the <paramref name="objs"/>
+        /// already exists in this collection.</exception>
+        public void Add(IEnumerable<KeyValuePair<string, IPersistable>> objs)
+        {
+            foreach (var obj in objs)
+            {
+                Add(obj.Key, obj.Value);
+            }
+        }
+
+        /// <summary>
+        /// Adds an object to be tracked by this <see cref="SettingsManager"/> and loads the previous settings
+        /// for the object if possible.
+        /// </summary>
+        /// <param name="obj">The persistable object and unique key pair.</param>
+        /// <exception cref="ArgumentException">An object with the key provided by the <paramref name="obj"/> already exists
+        /// in this collection.</exception>
+        public void Add(KeyValuePair<string, IPersistable> obj)
+        {
+            Add(obj.Key, obj.Value);
+        }
+
+        /// <summary>
+        /// Adds an object to be tracked by this <see cref="SettingsManager"/> and loads the previous settings
+        /// for the object if possible.
         /// </summary>
         /// <param name="key">Unique identifier of the <see cref="IPersistable"/> object.</param>
         /// <param name="obj"><see cref="IPersistable"/> object to load and save the settings for.</param>
@@ -183,11 +251,23 @@ namespace NetGore.IO
             ((SettingsManager)sender).Save();
         }
 
-        const string _itemsNodeName = "Items";
-        const string _itemNodeName = "Item";
-        const string _keyValueName = "Key";
-        const string _valueNodeName = "Values";
-        const string _countValueName = "Count";
+        /// <summary>
+        /// Handles the Elapsed event of the AutoSaveTimer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Timers.ElapsedEventArgs"/> instance containing the event data.</param>
+        void AutoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            // Ensure the timer is stopped so we don't try saving multiple times at once
+            _autoSaveTimer.Stop();
+
+            // Perform the save
+            Save();
+
+            // Start the timer back up
+            _autoSaveTimer.AutoReset = false;
+            _autoSaveTimer.Start();
+        }
 
         /// <summary>
         /// Loads the existing settings into memory.
@@ -208,9 +288,10 @@ namespace NetGore.IO
             try
             {
                 IValueReader reader = new XmlValueReader(path, _rootNode);
-                int count = reader.ReadInt(_countValueName);
 
                 reader = reader.ReadNode(_itemsNodeName);
+                int count = reader.ReadInt(_countValueName);
+
                 for (int i = 0; i < count; i++)
                 {
                     var nodeReader = reader.ReadNode(_itemNodeName + i);
@@ -220,11 +301,6 @@ namespace NetGore.IO
 
                     nodeReaders.Add(keyName, valueReader);
                 }
-            }
-            catch (KeyNotFoundException)
-            {
-                // No biggie if a key is missing
-                return null;
             }
             catch (Exception ex)
             {
@@ -245,27 +321,31 @@ namespace NetGore.IO
         {
             var objs = _objs.ToArray();
 
-            using (IValueWriter w = new XmlValueWriter(_filePath, _rootNode))
+            // Lock to ensure we never try to save from multiple threads at once
+            lock (_saveLock)
             {
-                w.WriteStartNode(_itemsNodeName);
+                using (IValueWriter w = new XmlValueWriter(_filePath, _rootNode))
                 {
-                    w.Write(_countValueName, objs.Length);
-                    for (int i = 0; i < objs.Length; i++)
+                    w.WriteStartNode(_itemsNodeName);
                     {
-                        w.WriteStartNode(_itemNodeName + i);
+                        w.Write(_countValueName, objs.Length);
+                        for (int i = 0; i < objs.Length; i++)
                         {
-                            var obj = objs[i];
-                            w.Write(_keyValueName, obj.Key);
-                            w.WriteStartNode(_valueNodeName);
+                            w.WriteStartNode(_itemNodeName + i);
                             {
-                                obj.Value.WriteState(w);
+                                var obj = objs[i];
+                                w.Write(_keyValueName, obj.Key);
+                                w.WriteStartNode(_valueNodeName);
+                                {
+                                    obj.Value.WriteState(w);
+                                }
+                                w.WriteEndNode(_valueNodeName);
                             }
-                            w.WriteEndNode(_valueNodeName);
+                            w.WriteEndNode(_itemNodeName + i);
                         }
-                        w.WriteEndNode(_itemNodeName + i);
                     }
+                    w.WriteEndNode(_itemsNodeName);
                 }
-                w.WriteEndNode(_itemsNodeName);
             }
         }
 

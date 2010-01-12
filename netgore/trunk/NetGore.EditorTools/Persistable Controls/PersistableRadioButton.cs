@@ -18,18 +18,20 @@ namespace NetGore.EditorTools
         /// same order as they were written.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        public void ReadState(IValueReader reader)
+        public virtual void ReadState(IValueReader reader)
         {
             Checked = reader.ReadBool(_checkedValueKey);
+            PersistableHelper.Read(this, reader);
         }
 
         /// <summary>
         /// Writes the state of the object to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-        public void WriteState(IValueWriter writer)
+        public virtual void WriteState(IValueWriter writer)
         {
             writer.Write(_checkedValueKey, Checked);
+            PersistableHelper.Write(this, writer);
         }
 
         #endregion

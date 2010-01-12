@@ -163,6 +163,7 @@
     <Compile Include="World\Map\Entities\User.cs" />
     <Compile Include="World\Map\Map.cs" />
     <Compile Include="World\Map\MapDrawExtensionBase.cs" />
+    <Compile Include="World\Map\MapDrawExtensionCollection.cs" />
     <Compile Include="World\Map\MapDrawFilterHelper.cs" />
     <Compile Include="World\Map\MapEntityBoxDrawer.cs" />
     <Compile Include="World\Map\MapWallDrawer.cs" />

@@ -10,9 +10,9 @@ namespace NetGore.EditorTools
     /// Base handler for a cursor used to modify the map in different ways. All derived classes must have a constructor
     /// that takes no parameters.
     /// </summary>
-    public abstract class MapEditorCursorBase<TContainer>
+    public abstract class EditorCursor<TContainer>
     {
-        MapEditorCursorManager<TContainer> _cursorManager;
+        EditorCursorManager<TContainer> _cursorManager;
 
         /// <summary>
         /// Gets the object that the cursors are controlling or are contained in.
@@ -33,7 +33,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets the cursor manager that this cursor belongs to.
         /// </summary>
-        public MapEditorCursorManager<TContainer> CursorManager
+        public EditorCursorManager<TContainer> CursorManager
         {
             get { return _cursorManager; }
         }
@@ -106,7 +106,7 @@ namespace NetGore.EditorTools
         /// Invokes the initialize method.
         /// </summary>
         /// <param name="cursorManager">The owner cursor manager.</param>
-        internal void InvokeInitialize(MapEditorCursorManager<TContainer> cursorManager)
+        internal void InvokeInitialize(EditorCursorManager<TContainer> cursorManager)
         {
             if (_cursorManager != null)
                 return;

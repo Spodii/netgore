@@ -13,7 +13,7 @@ using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {
-    sealed class GrhCursor : MapEditorCursorBase<ScreenForm>
+    sealed class GrhCursor : EditorCursor<ScreenForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;

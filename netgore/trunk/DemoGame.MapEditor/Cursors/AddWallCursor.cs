@@ -8,7 +8,7 @@ using NetGore.EditorTools;
 
 namespace DemoGame.MapEditor
 {
-    sealed class AddWallCursor : MapEditorCursorBase<ScreenForm>
+    sealed class AddWallCursor : EditorCursor<ScreenForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
