@@ -70,10 +70,9 @@ namespace NetGore.Graphics
             Color = reader.ReadColor(_valueKeyColor);
             Depth = reader.ReadFloat(_valueKeyDepth);
             Offset = reader.ReadVector2(_valueKeyOffset);
-
             GrhIndex grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
-            GrhData grhData = GrhInfo.GetData(grhIndex);
-            Grh grh = new Grh(grhData, AnimType.Loop, currentTime);
+
+            Grh grh = new Grh(grhIndex, AnimType.Loop, currentTime);
 
             Sprite = grh;
         }
@@ -311,7 +310,7 @@ namespace NetGore.Graphics
                 grhIndex = Sprite.GrhData.GrhIndex;
             else
             {
-                grhIndex = new GrhIndex(0);
+                grhIndex = GrhIndex.Invalid;
                 Debug.Fail("Why is the Sprite not set? That doesn't seem right...");
             }
 

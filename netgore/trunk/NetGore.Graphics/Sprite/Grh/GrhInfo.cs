@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
@@ -114,6 +116,8 @@ namespace NetGore.Graphics
         /// <param name="e">Event args.</param>
         static void AddHandler(object sender, DArrayModifyEventArgs<GrhData> e)
         {
+            Debug.Assert(e.Index != GrhIndex.Invalid);
+
             GrhData gd = e.Item;
             if (gd == null)
             {
@@ -216,6 +220,8 @@ namespace NetGore.Graphics
         static StationaryGrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager,
                                                SpriteCategorization categorization, string texture, Vector2 pos, Vector2 size)
         {
+            Debug.Assert(!grhIndex.IsInvalid);
+
             Rectangle source = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 
             var gd = new StationaryGrhData(contentManager, grhIndex, categorization);
@@ -234,20 +240,38 @@ namespace NetGore.Graphics
             if (grhData == null)
                 throw new ArgumentNullException("grhData");
 
-            Delete(grhData.GrhIndex);
-        }
+            var grhIndex = grhData.GrhIndex;
 
-        /// <summary>
-        /// Deletes a <see cref="GrhData"/>.
-        /// </summary>
-        /// <param name="grhIndex">Index of the <see cref="GrhData"/> to delete.</param>
-        public static void Delete(GrhIndex grhIndex)
-        {
-            if (!_grhDatas.CanGet((int)grhIndex))
+            if (grhIndex.IsInvalid)
                 return;
+
+            // Insure the index is valid
+            if (!_grhDatas.CanGet((int)grhIndex))
+            {
+                const string errmsg = "Attempted to delete GrhData `{0}`, but GrhIndex `{1}` could not be acquired.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, grhData, grhIndex);
+                Debug.Fail(string.Format(errmsg, grhData, grhIndex));
+                return;
+            }
+            
+            // Make sure we are deleting the correct GrhData
+            int i = (int)grhIndex;
+            if (_grhDatas[i] != grhData)
+            {
+                const string errmsg = "Attempted to delete GrhData `{0}`, but GrhIndex `{1}` is already in use by" +
+                    " a different GrhData `{2}`. Most likely, the GrhData we tried to delete is already deleted, and" +
+                    " the GrhIndex has been recycled to a new GrhData. Stop trying to delete dead stuff, will ya!?";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, grhData, grhIndex, _grhDatas[i]);
+                Debug.Fail(string.Format(errmsg, grhData, grhIndex, _grhDatas[i]));
+                return;
+            }
 
             _grhDatas.RemoveAt((int)grhIndex);
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Finds all of the <see cref="GrhData"/>s that reference a texture that does not exist.
@@ -319,6 +343,9 @@ namespace NetGore.Graphics
         /// <returns>GrhData matching the given information if found, or null if no matches</returns>
         public static GrhData GetData(GrhIndex grhIndex)
         {
+            if (grhIndex.IsInvalid)
+                return null;
+
             if (_grhDatas.CanGet((int)grhIndex))
                 return _grhDatas[(int)grhIndex];
             else
@@ -441,37 +468,47 @@ namespace NetGore.Graphics
             if (!File.Exists(path))
                 throw new FileNotFoundException("GrhData file not found.", path);
 
+            // Create a little delegate to add the GrhDatas by index to reduce code bloat without exposing this to other methods
+            Action<IEnumerable<GrhData>> grhDataAdder = delegate(IEnumerable<GrhData> grhDatas)
+            {
+                foreach (var grhData in grhDatas)
+                {
+                    int index = (int)grhData.GrhIndex;
+                    Debug.Assert(!_grhDatas.CanGet(index) || _grhDatas[index] == null, "Index already occupied!");
+
+                    if (!grhData.GrhIndex.IsInvalid)
+                    {
+                        _grhDatas[index] = grhData;
+                    }
+                    else
+                    {
+                        const string errmsg = "Tried to add GrhData `{0}` which has an invalid GrhIndex.";
+                        string err = string.Format(errmsg, grhData);
+                        log.Fatal(err);
+                        Debug.Fail(err);
+                    }
+                }
+            };
+
             try
             {
                 _isLoading = true;
 
                 // Create the GrhData DArray
-                _grhDatas = new DArray<GrhData>(1024, false);
+                if (_grhDatas == null)
+                    _grhDatas = new DArray<GrhData>(256, false);
+                else
+                    _grhDatas.Clear();
                 _catDic.Clear();
                 _grhDatas.OnAdd += AddHandler;
                 _grhDatas.OnRemove += RemoveHandler;
 
-                // Read the GrhDatas (non-animated first, followed by animated)
+                // Read and add the GrhDatas in order by their type
                 XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
 
-                var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => StationaryGrhData.Read(x, cm));
-                foreach (var gd in nonAnimatedGrhDatas)
-                {
-                    _grhDatas[(int)gd.GrhIndex] = gd;
-                }
-
-                var animatedGrhDatas = reader.ReadManyNodes(_animatedGrhDatasNodeName, x => AnimatedGrhData.Read(x));
-                foreach (var gd in animatedGrhDatas)
-                {
-                    _grhDatas[(int)gd.GrhIndex] = gd;
-                }
-
-                var autoAnimatedGrhDatas = reader.ReadManyNodes(_autoAnimatedGrhDatasNodeName,
-                                                                x => AutomaticAnimatedGrhData.Read(x, cm));
-                foreach (var gd in autoAnimatedGrhDatas)
-                {
-                    _grhDatas[(int)gd.GrhIndex] = gd;
-                }
+                grhDataAdder(reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => StationaryGrhData.Read(x, cm)));
+                grhDataAdder(reader.ReadManyNodes(_animatedGrhDatasNodeName, x => AnimatedGrhData.Read(x)));
+                grhDataAdder(reader.ReadManyNodes(_autoAnimatedGrhDatasNodeName, x => AutomaticAnimatedGrhData.Read(x, cm)));
 
                 // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
                 // while in the Client, and the Client is what counts, baby!
@@ -493,7 +530,7 @@ namespace NetGore.Graphics
                 return new GrhIndex(_grhDatas.NextFreeIndex());
 
             // Start at the first index
-            int i = 1;
+            int i = GrhIndex.MinValue;
 
             // Just loop through the indicies until we find one thats not in use or
             // passes the length of the GrhDatas array (which means its obviously not in use)
@@ -501,6 +538,8 @@ namespace NetGore.Graphics
             {
                 i++;
             }
+
+            Debug.Assert(i != GrhIndex.Invalid);
 
             return new GrhIndex(i);
         }
@@ -512,8 +551,26 @@ namespace NetGore.Graphics
         static void RemoveFromDictionary(GrhData gd)
         {
             Dictionary<SpriteTitle, GrhData> titleDic;
-            if (_catDic.TryGetValue(gd.Categorization.Category, out titleDic))
-                titleDic.Remove(gd.Categorization.Title);
+            if (!_catDic.TryGetValue(gd.Categorization.Category, out titleDic))
+            {
+                const string errmsg = "Tried to remove GrhData `{0}` from the categorization dictionary with the" +
+                    " categorization of `{1}`, but the whole category does not exist!" +
+                    " This likely means some bad issue in the GrhInfo class...";
+                string err = string.Format(errmsg, gd, gd.Categorization);
+                log.Fatal(err);
+                Debug.Fail(err);
+                return;
+            }
+
+            if (!titleDic.Remove(gd.Categorization.Title))
+            {
+                const string errmsg = "Tried to remove GrhData `{0}` from the categorization dictionary with the" +
+                    " categorization of `{1}`, but the GrhData did not exist in the title dictionary!" +
+                    " This likely means some bad issue in the GrhInfo class...";
+                string err = string.Format(errmsg, gd, gd.Categorization);
+                log.Fatal(err);
+                Debug.Fail(err);
+            }
         }
 
         /// <summary>
@@ -523,6 +580,8 @@ namespace NetGore.Graphics
         /// <param name="e">Event args</param>
         static void RemoveHandler(object sender, DArrayModifyEventArgs<GrhData> e)
         {
+            Debug.Assert(e.Index != GrhIndex.Invalid);
+
             RemoveFromDictionary(e.Item);
 
             if (OnRemove != null)

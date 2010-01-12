@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using NetGore.IO;
 
@@ -12,6 +14,8 @@ namespace NetGore.Graphics
     /// </summary>
     public abstract class GrhData
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         const string _categorizationValueKey = "Categorization";
         const string _indexValueKey = "Index";
 
@@ -23,8 +27,40 @@ namespace NetGore.Graphics
         /// </summary>
         public event GrhDataChangeCategorizationHandler OnChangeCategorization;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhData"/> class.
+        /// </summary>
+        /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
+        protected GrhData(SpriteCategorization cat)
+        {
+            // This is the only way we allow GrhDatas with an invalid GrhIndex. It should only ever be called for
+            // GrhDatas that will NOT persist, such as the AutomaticAnimatedGrhData's frames.
+            _categorization = cat;
+            _grhIndex = GrhIndex.Invalid;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhData"/> class.
+        /// </summary>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
+        /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
         protected GrhData(GrhIndex grhIndex, SpriteCategorization cat)
         {
+            if (cat == null)
+                throw new ArgumentNullException("cat");
+
+            if (grhIndex.IsInvalid)
+            {
+                const string errmsg ="Failed to create GrhData with category `{0}`." +
+                    " No GrhData may be created with a GrhIndex equal to GrhIndex.Invalid";
+                string err = string.Format(errmsg, cat);
+                log.Error(err);
+                throw new ArgumentOutOfRangeException("grhIndex", err);
+            }
+
             _categorization = cat;
             _grhIndex = grhIndex;
         }

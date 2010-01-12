@@ -270,7 +270,7 @@ namespace NetGore.Graphics
             _isForeground = reader.ReadBool(_isForegroundKeyName);
             _layerDepth = reader.ReadShort(_layerDepthKeyName);
 
-            if (grhIndex != GrhIndex.Invalid)
+            if (!grhIndex.IsInvalid)
                 _grh.SetGrh(grhIndex);
         }
 

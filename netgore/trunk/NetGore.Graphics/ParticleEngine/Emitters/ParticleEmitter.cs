@@ -652,7 +652,7 @@ namespace NetGore.Graphics.ParticleEngine
             writer.Write(_releaseRotationKeyName, ReleaseRotation);
             writer.Write(_releaseScaleKeyName, ReleaseScale);
             writer.Write(_releaseSpeedKeyName, ReleaseSpeed);
-            writer.Write(_grhIndexKeyName, Sprite.GrhData != null ? Sprite.GrhData.GrhIndex : new GrhIndex(0));
+            writer.Write(_grhIndexKeyName, Sprite.GrhData != null ? Sprite.GrhData.GrhIndex : GrhIndex.Invalid);
 
             // Write the custom values
             writer.WriteStartNode(_customValuesNodeName);

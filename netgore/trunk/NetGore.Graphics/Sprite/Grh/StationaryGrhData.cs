@@ -36,20 +36,42 @@ namespace NetGore.Graphics
         /// </summary>
         public event GrhDataChangeTextureHandler OnChangeTexture;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StationaryGrhData"/> class.
+        /// </summary>
+        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
+        /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
         public StationaryGrhData(ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             _cm = cm;
             AutomaticSize = true;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StationaryGrhData"/> class.
+        /// </summary>
+        /// <param name="autoGrhData">The <see cref="AutomaticAnimatedGrhData"/>.</param>
+        /// <param name="assetName">Name of the asset.</param>
         internal StationaryGrhData(AutomaticAnimatedGrhData autoGrhData, TextureAssetName assetName)
-            : base(AutomaticAnimatedGrhData.FrameGrhIndex, autoGrhData.Categorization)
+            : base(autoGrhData.Categorization)
         {
             _cm = autoGrhData.ContentManager;
             _textureName = assetName;
             AutomaticSize = true;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StationaryGrhData"/> class.
+        /// </summary>
+        /// <param name="r">The <see cref="IValueReader"/>.</param>
+        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
+        /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
         StationaryGrhData(IValueReader r, ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             _cm = cm;
