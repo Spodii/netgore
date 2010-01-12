@@ -31,6 +31,11 @@ namespace NetGore.IO
         const string _valueNodeName = "Values";
 
         /// <summary>
+        /// The <see cref="StringComparer"/> to use for the created dictionaries.
+        /// </summary>
+        static readonly StringComparer _keyStringComparer = StringComparer.OrdinalIgnoreCase;
+
+        /// <summary>
         /// File path being used.
         /// </summary>
         readonly string _filePath;
@@ -45,7 +50,7 @@ namespace NetGore.IO
         /// <summary>
         /// Dictionary of <see cref="IPersistable"/> objects being tracked, indexed by their unique identifier.
         /// </summary>
-        readonly Dictionary<string, IPersistable> _objs = new Dictionary<string, IPersistable>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, IPersistable> _objs = new Dictionary<string, IPersistable>(_keyStringComparer);
 
         readonly string _rootNode;
         readonly object _saveLock = new object();
@@ -104,7 +109,7 @@ namespace NetGore.IO
                 }
             }
 
-            _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>();
+            _loadedNodeItems = loadedItems ?? new Dictionary<string, IValueReader>(_keyStringComparer);
 
             // Set up the auto-save timer
             AutoSaveRate = _initialAutoSaveRate;
@@ -283,7 +288,7 @@ namespace NetGore.IO
             if (fi.Length < 1)
                 return null;
 
-            Dictionary<string, IValueReader> nodeReaders = new Dictionary<string, IValueReader>();
+            Dictionary<string, IValueReader> nodeReaders = new Dictionary<string, IValueReader>(_keyStringComparer);
 
             try
             {
