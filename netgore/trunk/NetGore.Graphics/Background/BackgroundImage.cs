@@ -113,6 +113,7 @@ namespace NetGore.Graphics
         /// image moves with the camera. A depth of 1.0 will move as fast as the camera, while a depth of
         /// 2.0 will move at half the speed of the camera. Must be greater than or equal to 1.0. Default is 1.0.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than 1.0.</exception>
         [Category("Position")]
         [DisplayName("Depth")]
         [Description(
@@ -342,9 +343,29 @@ namespace NetGore.Graphics
         /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
         /// </summary>
         [Browsable(false)]
-        public byte LayerDepth
+        public int LayerDepth
         {
-            get { return (byte)Depth; }
+            get { return ImageDepthToLayerDepth(Depth); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDrawable.LayerDepth"/> value from the <see cref="BackgroundImage.LayerDepth"/>.
+        /// </summary>
+        /// <param name="layerDepth">The <see cref="IDrawable.LayerDepth"/> value.</param>
+        /// <returns>The <see cref="BackgroundImage.LayerDepth"/> value for the <paramref name="layerDepth"/>.</returns>
+        public static float LayerDepthToImageDepth(int layerDepth)
+        {
+            return layerDepth * -0.01f;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BackgroundImage.LayerDepth"/> value from the <see cref="IDrawable.LayerDepth"/>.
+        /// </summary>
+        /// <param name="imageDepth">The <see cref="BackgroundImage.LayerDepth"/> value.</param>
+        /// <returns>The <see cref="IDrawable.LayerDepth"/> value for the <paramref name="imageDepth"/>.</returns>
+        public static int ImageDepthToLayerDepth(float imageDepth)
+        {
+            return (int)(imageDepth * -100);
         }
 
         /// <summary>

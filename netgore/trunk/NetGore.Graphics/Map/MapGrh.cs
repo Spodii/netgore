@@ -12,7 +12,7 @@ namespace NetGore.Graphics
     /// A Grh instance bound to the map. This is simply a container for a map-bound Grh with no behavior
     /// besides rendering and updating, and resides completely on the Client.
     /// </summary>
-    public class MapGrh : ISpatial, IDrawable
+    public class MapGrh : ISpatial, IDrawable, IPersistable
     {
         const string _grhIndexKeyName = "GrhIndex";
         const string _isForegroundKeyName = "IsForeground";
@@ -22,7 +22,7 @@ namespace NetGore.Graphics
         readonly Grh _grh;
 
         bool _isForeground;
-        byte _layerDepth;
+        short _layerDepth;
         Vector2 _position;
 
         /// <summary>
@@ -55,13 +55,9 @@ namespace NetGore.Graphics
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            var position = reader.ReadVector2(_positionKeyName);
-            GrhIndex grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
-            _isForeground = reader.ReadBool(_isForegroundKeyName);
-            _layerDepth = reader.ReadByte(_layerDepthKeyName);
+            _grh = new Grh(null, AnimType.Loop, currentTime);
 
-            _grh = new Grh(grhIndex, AnimType.Loop, currentTime);
-            _position = position;
+            ReadState(reader);
         }
 
         const string _mapGrhCategoryName = "MapGrh";
@@ -121,7 +117,7 @@ namespace NetGore.Graphics
             writer.Write(_positionKeyName, Position);
             writer.Write(_grhIndexKeyName, Grh.GrhData.GrhIndex);
             writer.Write(_isForegroundKeyName, IsForeground);
-            writer.Write(_layerDepthKeyName, LayerDepth);
+            writer.Write(_layerDepthKeyName, _layerDepth);
         }
 
         #region IDrawable Members
@@ -157,16 +153,24 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
         /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
+        /// The value must be between short.MinValue and short.MaxValue.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than short.MinValue
+        /// or greater than short.MaxValue.</exception>
         [Category(_mapGrhCategoryName)]
         [Browsable(true)]
         [DisplayName("Layer Depth")]
         [Description("The drawing depth of the object. Objects with higher values are drawn above those with lower values.")]
         [DefaultValue((byte)0)]
-        public byte LayerDepth
+        public int LayerDepth
         {
             get { return _layerDepth; }
-            set { _layerDepth = value; }
+            set {
+                if (value < short.MinValue || value > short.MaxValue)
+                    throw new ArgumentOutOfRangeException("value", "value must be between short.MinValue and short.MaxValue.");
+                
+                _layerDepth = (short)value; 
+            }
         }
 
         /// <summary>
@@ -253,5 +257,33 @@ namespace NetGore.Graphics
         }
 
         #endregion
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            Position = reader.ReadVector2(_positionKeyName);
+            GrhIndex grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
+            _isForeground = reader.ReadBool(_isForegroundKeyName);
+            _layerDepth = reader.ReadShort(_layerDepthKeyName);
+
+            if (grhIndex != GrhIndex.Invalid)
+                _grh.SetGrh(grhIndex);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            writer.Write(_positionKeyName, Position);
+            writer.Write(_grhIndexKeyName, Grh.GrhData != null ? Grh.GrhData.GrhIndex : GrhIndex.Invalid);
+            writer.Write(_isForegroundKeyName, IsForeground);
+            writer.Write(_layerDepthKeyName, _layerDepth);
+        }
     }
 }

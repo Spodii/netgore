@@ -17,7 +17,7 @@ namespace NetGore.Graphics
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
         /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
         /// </summary>
-        byte LayerDepth { get; }
+        int LayerDepth { get; }
 
         /// <summary>
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.

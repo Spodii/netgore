@@ -30,7 +30,7 @@ namespace NetGore.Graphics
         /// use the same single <see cref="GrhIndex"/> because they are generated on-the-fly and cannot be
         /// acquired by index.
         /// </summary>
-        public static readonly GrhIndex FrameGrhIndex = new GrhIndex(GrhIndex.MaxValue);
+        public static readonly GrhIndex FrameGrhIndex = GrhIndex.Invalid;
 
         /// <summary>
         /// The Regex used to match folders used for <see cref="AutomaticAnimatedGrhData"/>s.

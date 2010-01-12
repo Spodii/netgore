@@ -15,7 +15,7 @@ namespace NetGore
         /// <summary>
         /// Represents the largest possible value of GrhIndex. This field is constant.
         /// </summary>
-        public const int MaxValue = ushort.MaxValue;
+        public const int MaxValue = ushort.MaxValue - 1;
 
         /// <summary>
         /// Represents the smallest possible value of GrhIndex. This field is constant.
@@ -28,6 +28,12 @@ namespace NetGore
         readonly ushort _value;
 
         /// <summary>
+        /// Represents a <see cref="GrhIndex"/> value that is to always be considered invalid. Trying to create a
+        /// <see cref="GrhIndex"/> with this value will result in a <see cref="ArgumentOutOfRangeException"/>.
+        /// </summary>
+        public static readonly GrhIndex Invalid = new GrhIndex(true);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GrhIndex"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new GrhIndex.</param>
@@ -37,6 +43,15 @@ namespace NetGore
                 throw new ArgumentOutOfRangeException("value");
 
             _value = (ushort)value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhIndex"/> struct.
+        /// </summary>
+        /// <param name="invalid">Just... it'll always be true. I just need an overload.</param>
+        GrhIndex(bool invalid)
+        {
+            _value = ushort.MaxValue;
         }
 
         /// <summary>
