@@ -186,7 +186,7 @@ namespace DemoGame.Client
         /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
         /// </summary>
         [Browsable(false)]
-        public byte LayerDepth
+        public int LayerDepth
         {
             get { return 0; }
         }
