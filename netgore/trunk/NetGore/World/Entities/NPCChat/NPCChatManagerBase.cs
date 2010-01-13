@@ -142,30 +142,14 @@ namespace NetGore.NPCChat
         /// </summary>
         public void Save()
         {
-            var filePath = GetFilePath(ContentPaths.Dev);
-            var buildFilePath = GetFilePath(ContentPaths.Build);
-            var tempFilePath = filePath + ".temp";
-
-            if (File.Exists(tempFilePath))
-                File.Delete(tempFilePath);
-
             var dialogs = _npcChatDialogs.Where(x => x != null);
-            using (var writer = new XmlValueWriter(tempFilePath, "ChatDialogs"))
+
+            // Write
+            var filePath = GetFilePath(ContentPaths.Dev);
+            using (var writer = new XmlValueWriter(filePath, "ChatDialogs"))
             {
                 writer.WriteManyNodes("ChatDialogs", dialogs, ((w, item) => item.Write(w)));
             }
-
-            if (File.Exists(filePath))
-                File.Delete(filePath);
-
-            File.Copy(tempFilePath, filePath);
-
-            if (File.Exists(buildFilePath))
-                File.Delete(buildFilePath);
-
-            File.Copy(tempFilePath, buildFilePath);
-
-            File.Delete(tempFilePath);
         }
 
         #region IEnumerable<NPCChatDialogBase> Members
