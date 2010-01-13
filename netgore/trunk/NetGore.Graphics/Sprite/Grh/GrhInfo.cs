@@ -636,13 +636,6 @@ namespace NetGore.Graphics
         /// <param name="contentPath">ContentPath to save the GrhData to.</param>
         public static void Save(ContentPaths contentPath)
         {
-            string path = GetGrhDataFilePath(contentPath);
-
-            string tempPath = path + ".temp";
-
-            // Ensure the directory exists
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-
             // Grab the GrhDatas by their type
             var gds = GrhDatas.Where(x => x != null).OrderBy(x => x.Categorization.ToString(), StringComparer.OrdinalIgnoreCase);
             var stationaryGrhDatas = gds.OfType<StationaryGrhData>().ToArray();
@@ -650,16 +643,13 @@ namespace NetGore.Graphics
             var autoAnimatedGrhDatas = gds.OfType<AutomaticAnimatedGrhData>().ToArray();
 
             // Write
-            using (IValueWriter writer = new XmlValueWriter(tempPath, _rootNodeName))
+            string path = GetGrhDataFilePath(contentPath);
+            using (IValueWriter writer = new XmlValueWriter(path, _rootNodeName))
             {
                 writer.WriteManyNodes(_nonAnimatedGrhDatasNodeName, stationaryGrhDatas, ((w, item) => item.Write(w)));
                 writer.WriteManyNodes(_animatedGrhDatasNodeName, animatedGrhDatas, ((w, item) => item.Write(w)));
                 writer.WriteManyNodes(_autoAnimatedGrhDatasNodeName, autoAnimatedGrhDatas, ((w, item) => item.Write(w)));
             }
-
-            // Now that the temporary file has been successfully written, replace the existing file with it
-            File.Delete(path);
-            File.Move(tempPath, path);
         }
     }
 }
