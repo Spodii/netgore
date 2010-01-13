@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 
 namespace NetGore.IO
@@ -22,9 +23,32 @@ namespace NetGore.IO
         /// Initializes a new instance of the <see cref="TempFile"/> class.
         /// </summary>
         /// <param name="filePath">The file path.</param>
-        internal TempFile(string filePath)
+        TempFile(string filePath)
         {
             _filePath = filePath;
+        }
+
+        /// <summary>
+        /// Moves the temporary file to the target file path, then disposes of the <see cref="TempFile"/>. Any directories
+        /// needed will be created.
+        /// </summary>
+        /// <param name="targetFilePath">The file path to move the temp file to.</param>
+        public void MoveTo(string targetFilePath)
+        {
+            // Check if we need to create the directory
+            string dir = Path.GetDirectoryName(targetFilePath);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            // If the file already exists, delete it
+            if (File.Exists(targetFilePath))
+                File.Delete(targetFilePath);
+
+            // Copy over the file
+            File.Move(_filePath, targetFilePath);
+  
+            // Dispose of the TempFile
+            Dispose();
         }
 
         /// <summary>

@@ -29,6 +29,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// If we are writing to file, contains the temporary file we write to before copying over the finished
+        /// file to the desired location.
+        /// </summary>
+        readonly TempFile _tempFile;
+
+        /// <summary>
+        /// If we are writing to file, contains the final destination path we want to use.
+        /// </summary>
+        readonly string _filePath;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
         /// <param name="filePath">The path to the file to write to.</param>
@@ -40,11 +51,11 @@ namespace NetGore.IO
             _useEnumNames = useEnumNames;
             _disposeWriter = true;
 
-            string dir = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
+            _filePath = filePath;
+            _tempFile = new TempFile();
 
-            _writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true });
+            // Create the writer to write to the temp file
+            _writer = XmlWriter.Create(_tempFile.FilePath, new XmlWriterSettings { Indent = true });
 
             if (_writer == null)
                 throw new ArgumentException("filePath");
@@ -506,10 +517,14 @@ namespace NetGore.IO
             _disposed = true;
             _writer.WriteEndElement();
 
+            // Dispose of the writer if we need to
             if (_disposeWriter)
             {
                 _writer.WriteEndDocument();
                 _writer.Close();
+
+                // If we are writing to file, we have to move the temp file to the actual desired path
+                _tempFile.MoveTo(_filePath);
             }
         }
 

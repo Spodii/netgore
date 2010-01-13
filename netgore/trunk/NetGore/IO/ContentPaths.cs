@@ -88,7 +88,7 @@ namespace NetGore.IO
         /// <summary>
         /// The current free file index.
         /// </summary>
-        static volatile int _freeFileIndex = 0;
+        static volatile uint _freeFileIndex;
 
         readonly PathString _data;
         readonly PathString _engine;
@@ -111,6 +111,9 @@ namespace NetGore.IO
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             _appRoot = Path.GetFullPath(baseDir);
 
+            // Set the _freeFileIndex to a random initial value
+            _freeFileIndex = (uint)new Random().Next();
+
             // Set the temp files path
             _temp = _appRoot.Join(_tempFolder);
             if (!Directory.Exists(_temp))
@@ -118,10 +121,8 @@ namespace NetGore.IO
 
             _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
 
-            // Delete temp files in another thread since we don't want to wait for it, and we will almost
-            // definitely delete files faster than we request them (if we don't, we'll just end up skipping them
-            // and end up with a little bit of garbage nobody cares about)
-            ThreadPool.QueueUserWorkItem(delegate { DeleteTempFiles(); });
+            // Delete temp files
+            DeleteTempFiles();
         }
 
         /// <summary>
@@ -395,13 +396,13 @@ namespace NetGore.IO
         {
             const string errmsg = "Temp file deletion failed: {0}";
 
-            int index = ++_freeFileIndex;
+            uint index = ++_freeFileIndex;
 
             string filePath = _temp.Join(index + _tempFileSuffix);
 
-            // Delete the file if it already exists
-            // For some exceptions, recursively retry with the next temp file until
-            // we get it right (or the stack overflows :] )
+            // Delete the file if it already exists (like if the temp files didn't clean out properly from the last
+            // time the program ran). For some exceptions, recursively retry with the next temp file until
+            // we get it right (or the stack overflows :] ).
             try
             {
                 if (File.Exists(filePath))

@@ -143,8 +143,8 @@
     <Compile Include="IO\Sprite Categorization\SpriteTitle.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteTitleConverter.cs" />
     <Compile Include="IO\TempFile.cs" />
-    <Compile Include="IO\ValueReaderWriter\BinaryValueReader.cs" />
-    <Compile Include="IO\ValueReaderWriter\BinaryValueWriter.cs" />
+    <Compile Include="IO\ValueReaderWriter\Binary\BinaryValueReader.cs" />
+    <Compile Include="IO\ValueReaderWriter\Binary\BinaryValueWriter.cs" />
     <Compile Include="IO\ValueReaderWriter\IEnumValueReader.cs" />
     <Compile Include="IO\ValueReaderWriter\IEnumValueWriter.cs" />
     <Compile Include="IO\ValueReaderWriter\IValueReader.cs" />
@@ -153,9 +153,9 @@
     <Compile Include="IO\ValueReaderWriter\ReadManyNodesHandler.cs" />
     <Compile Include="IO\ValueReaderWriter\WriteManyHandler.cs" />
     <Compile Include="IO\ValueReaderWriter\WriteManyNodesHandler.cs" />
-    <Compile Include="IO\ValueReaderWriter\XmlValueHelper.cs" />
-    <Compile Include="IO\ValueReaderWriter\XmlValueReader.cs" />
-    <Compile Include="IO\ValueReaderWriter\XmlValueWriter.cs" />
+    <Compile Include="IO\ValueReaderWriter\Xml\XmlValueHelper.cs" />
+    <Compile Include="IO\ValueReaderWriter\Xml\XmlValueReader.cs" />
+    <Compile Include="IO\ValueReaderWriter\Xml\XmlValueWriter.cs" />
     <Compile Include="MethodInfoHelper.cs" />
     <Compile Include="Network\IPAddressHelper.cs" />
     <Compile Include="Network\LatencyTracker\LatencyTrackerClient.cs" />
