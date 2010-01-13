@@ -11,7 +11,11 @@ namespace NetGore.IO
     /// </summary>
     public class BinaryValueWriter : IValueWriter
     {
-        readonly string _destinationFile = null;
+        /// <summary>
+        /// If we are writing to file, contains the final destination path we want to use.
+        /// </summary>
+        readonly string _filePath;
+
         readonly bool _useEnumNames = true;
         readonly BitStream _writer;
         Stack<int> _nodeOffsetStack = null;
@@ -60,13 +64,7 @@ namespace NetGore.IO
         public BinaryValueWriter(string filePath, bool useEnumNames) : this(new BitStream(BitStreamMode.Write, 8192))
         {
             _useEnumNames = useEnumNames;
-            _destinationFile = filePath;
-
-            string dir = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
-            File.WriteAllBytes(filePath, new byte[] { 0 });
+            _filePath = filePath;
         }
 
         #region IValueWriter Members
@@ -460,10 +458,17 @@ namespace NetGore.IO
         /// </summary>
         public virtual void Dispose()
         {
-            if (_destinationFile != null)
+            // Flush out the writer to the file
+            if (_filePath != null)
             {
                 var bytes = _writer.GetBufferCopy();
-                File.WriteAllBytes(_destinationFile, bytes);
+
+                // Write to a temp file first
+                var tempFile = new TempFile();
+                File.WriteAllBytes(tempFile.FilePath, bytes);
+
+                // Move to the actual destination
+                tempFile.MoveTo(_filePath);
             }
         }
 
