@@ -141,7 +141,7 @@ namespace NetGore.IO
             _skeletons = GetChildPath(_root, SkeletonsFolder);
             _fx = GetChildPath(_root, FxFolder);
             _textures = GetChildPath(_root, _texturesFolder);
-            _settings = GetChildPath(_root, SettingsFolder);
+            _settings = GetChildPath(_root.Back(), SettingsFolder);
             _languages = GetChildPath(_root, LanguagesFolder);
         }
 
