@@ -133,7 +133,7 @@
     <Compile Include="IO\Bits\BitStreamSeekOrigin.cs" />
     <Compile Include="IO\ContentPaths.cs" />
     <Compile Include="IO\EnumIOHelper.cs" />
-    <Compile Include="IO\FilePathString.cs" />
+    <Compile Include="IO\PathString.cs" />
     <Compile Include="IO\MessageCollectionBase.cs" />
     <Compile Include="IO\SettingsManager.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteCategorization.cs" />
