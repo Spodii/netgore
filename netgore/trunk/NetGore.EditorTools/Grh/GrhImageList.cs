@@ -216,7 +216,7 @@ namespace NetGore.EditorTools
             if (grhData == null)
                 return string.Empty;
 
-            if (grhData.GrhIndex.IsInvalid)
+            if (!grhData.GrhIndex.IsInvalid)
             {
                 // For normal GrhDatas, we return the unique GrhIndex
                 return grhData.GrhIndex.ToString();
