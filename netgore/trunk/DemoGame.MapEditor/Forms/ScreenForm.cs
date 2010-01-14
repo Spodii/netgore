@@ -681,7 +681,7 @@ namespace DemoGame.MapEditor
             // Forward the change to some controls
             _camera.Map = newMap;
             lstNPCSpawns.SetMap(DbController, newMap);
-            lstPersistentNPCs.SetMap(DbController, newMap);
+            // TODO: $$$$$ lstPersistentNPCs.SetMap(DbController, newMap);
 
             // Handle the change on some controls manually
             txtMapName.Text = newMap.Name ?? string.Empty;

@@ -66,7 +66,7 @@ namespace NetGore.IO.PropertySync
         /// <param name="sva">The <see cref="SyncValueAttribute"/>.</param>
         public SyncValueAttributeInfo(PropertyInfo pi, SyncValueAttribute sva) : base(pi, sva)
         {
-            _propertyInterface = PropertyInterface<object, T>.Instance.Get(pi);
+            _propertyInterface = PropertyInterface<object, T>.Instance[pi];
         }
 
         /// <summary>

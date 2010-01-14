@@ -65,7 +65,7 @@ namespace NetGore.IO.PropertySync
         /// <returns>The <see cref="IPropertySync"/> instances for the given <paramref name="type"/>.</returns>
         public static IPropertySync[] GetPropertySyncs(Type type)
         {
-            var infos = _factory.Get(type);
+            var infos = _factory[type];
             IPropertySync[] ret = new IPropertySync[infos.Length];
 
             // Loop through each of the property sync infos
@@ -87,7 +87,10 @@ namespace NetGore.IO.PropertySync
             return ret;
         }
 
-        class SyncValueAttributeInfoFactory : ThreadSafeSingletonFactory<Type, SyncValueAttributeInfo[]>
+        /// <summary>
+        /// Contains the <see cref="SyncValueAttributeInfo"/>s for a given <see cref="Type"/>.
+        /// </summary>
+        class SyncValueAttributeInfoFactory : ThreadSafeHashFactory<Type, SyncValueAttributeInfo[]>
         {
             static readonly SyncValueAttributeInfoFactory _instance;
 
@@ -102,20 +105,23 @@ namespace NetGore.IO.PropertySync
             /// <summary>
             /// Initializes a new instance of the <see cref="SyncValueAttributeInfoFactory"/> class.
             /// </summary>
-            SyncValueAttributeInfoFactory()
+            SyncValueAttributeInfoFactory() : base(CreateValue)
             {
             }
 
+            /// <summary>
+            /// Gets the <see cref="SyncValueAttributeInfoFactory"/> instance.
+            /// </summary>
             public static SyncValueAttributeInfoFactory Instance
             {
                 get { return _instance; }
             }
 
             /// <summary>
-            /// When overridden in the derived class, creates the value for the given <paramref name="key"/>.
+            /// Creates the <see cref="SyncValueAttributeInfo"/>s for the given <paramref name="key"/>.
             /// </summary>
             /// <param name="key">The key to create the value for.</param>
-            protected override SyncValueAttributeInfo[] CreateInstance(Type key)
+            static SyncValueAttributeInfo[] CreateValue(Type key)
             {
                 const BindingFlags flags =
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetProperty |
