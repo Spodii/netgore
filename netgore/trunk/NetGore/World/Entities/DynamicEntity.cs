@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore.Audio;
 using NetGore.IO;
+using NetGore.IO.PropertySync;
 
 /* NOTE ON THE POSITION AND VELOCITY SYNCING:
  * --------------------------------------------------------------------------------------------------------------

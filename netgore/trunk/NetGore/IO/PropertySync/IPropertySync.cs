@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Interface for an object that detects when an object's property value has changed and can read/write

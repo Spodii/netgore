@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Attribute that marks a class as a PropertySyncHandler that handles the specified type.

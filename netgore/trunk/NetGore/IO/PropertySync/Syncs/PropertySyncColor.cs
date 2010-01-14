@@ -3,7 +3,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a Color.
@@ -11,6 +11,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(Color))]
     public sealed class PropertySyncColor : PropertySyncBase<Color>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncColor"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncColor(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

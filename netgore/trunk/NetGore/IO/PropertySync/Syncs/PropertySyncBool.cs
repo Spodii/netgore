@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a boolean.
@@ -10,6 +10,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(bool))]
     public sealed class PropertySyncBool : PropertySyncBase<bool>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncBool"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncBool(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.IO
 {
     /// <summary>
     /// An immutable string that represents a file or directory path. This can be implicitly converted

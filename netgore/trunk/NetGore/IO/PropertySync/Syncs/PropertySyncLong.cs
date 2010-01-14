@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a Long.
@@ -10,6 +10,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(long))]
     public sealed class PropertySyncLong : PropertySyncBase<long>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncLong"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncLong(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Contains the information needed for creating an <see cref="IPropertySync"/>.

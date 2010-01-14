@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a string.
@@ -10,6 +10,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(string))]
     public sealed class PropertySyncString : PropertySyncBase<string>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncString"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncString(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

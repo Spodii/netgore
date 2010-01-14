@@ -2,6 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore;
 using NetGore.IO;
+using NetGore.IO.PropertySync;
 
 namespace DemoGame
 {
@@ -11,6 +12,10 @@ namespace DemoGame
     [PropertySyncHandler(typeof(BodyIndex))]
     public sealed class PropertySyncBodyIndex : PropertySyncBase<BodyIndex>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncBodyIndex"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncBodyIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

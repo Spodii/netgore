@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a GrhIndex.
@@ -10,6 +10,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(GrhIndex))]
     public sealed class PropertySyncGrhIndex : PropertySyncBase<GrhIndex>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncGrhIndex"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncGrhIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
