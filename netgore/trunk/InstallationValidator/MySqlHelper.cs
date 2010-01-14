@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using NetGore;
+using NetGore.Db;
 
 namespace InstallationValidator
 {
@@ -24,7 +25,7 @@ namespace InstallationValidator
             "server_time", "shop", "shop_item"
         };
 
-        public static DBConnectionSettings ConnectionSettings;
+        public static DbConnectionSettings ConnectionSettings;
         public static string MySqlPath = FindMySqlFile("mysql.exe");
 
         /// <summary>
