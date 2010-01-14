@@ -10,17 +10,17 @@ namespace NetGore.Graphics
     /// </summary>
     public class SkeletonManager
     {
-        static readonly IFactory<ContentPaths, SkeletonManager> _skeletonManagerCache;
-        readonly IFactory<string, SkeletonBodyInfo> _bodyInfoCache;
+        static readonly ICache<ContentPaths, SkeletonManager> _skeletonManagerCache;
+        readonly ICache<string, SkeletonBodyInfo> _bodyInfoCache;
         readonly ContentPaths _contentPath;
-        readonly IFactory<string, SkeletonSet> _setCache;
+        readonly ICache<string, SkeletonSet> _setCache;
 
         /// <summary>
         /// Initializes the <see cref="SkeletonManager"/> class.
         /// </summary>
         static SkeletonManager()
         {
-            _skeletonManagerCache = new ThreadSafeHashFactory<ContentPaths, SkeletonManager>(x => new SkeletonManager(x));
+            _skeletonManagerCache = new ThreadSafeHashCache<ContentPaths, SkeletonManager>(x => new SkeletonManager(x));
         }
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace NetGore.Graphics
             _contentPath = contentPath;
 
             var keyComparer = StringComparer.OrdinalIgnoreCase;
-            _bodyInfoCache = new HashFactory<string, SkeletonBodyInfo>(x => new SkeletonBodyInfo(x, ContentPath), keyComparer);
-            _setCache = new HashFactory<string, SkeletonSet>(x => new SkeletonSet(x, ContentPath), keyComparer);
+            _bodyInfoCache = new HashCache<string, SkeletonBodyInfo>(x => new SkeletonBodyInfo(x, ContentPath), keyComparer);
+            _setCache = new HashCache<string, SkeletonSet>(x => new SkeletonSet(x, ContentPath), keyComparer);
         }
 
         /// <summary>

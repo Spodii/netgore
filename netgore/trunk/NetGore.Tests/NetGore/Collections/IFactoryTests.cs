@@ -11,15 +11,15 @@ namespace NetGore.Tests.NetGore.Collections
     [TestFixture]
     public class IFactoryTests
     {
-        static IEnumerable<IFactory<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator) where TValue : class
+        static IEnumerable<ICache<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator) where TValue : class
         {
             return CreateFactories(valueCreator, null);
         }
 
-        static IEnumerable<IFactory<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> equalityComparer) where TValue : class
+        static IEnumerable<ICache<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> equalityComparer) where TValue : class
         {
-            yield return new HashFactory<TKey, TValue>(valueCreator, equalityComparer);
-            yield return new ThreadSafeHashFactory<TKey, TValue>(valueCreator, equalityComparer);
+            yield return new HashCache<TKey, TValue>(valueCreator, equalityComparer);
+            yield return new ThreadSafeHashCache<TKey, TValue>(valueCreator, equalityComparer);
         }
 
         [Test]

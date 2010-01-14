@@ -10,7 +10,7 @@ using NetGore.Collections;
 
 namespace NetGore.IO
 {
-    public class PropertyInterface<TObj, T> : ThreadSafeHashFactory<PropertyInfo, IPropertyInterface<TObj, T>>
+    public class PropertyInterface<TObj, T> : ThreadSafeHashCache<PropertyInfo, IPropertyInterface<TObj, T>>
     {
         static readonly PropertyInterface<TObj, T> _instance;
 

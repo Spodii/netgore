@@ -90,7 +90,7 @@ namespace NetGore.IO.PropertySync
         /// <summary>
         /// Contains the <see cref="SyncValueAttributeInfo"/>s for a given <see cref="Type"/>.
         /// </summary>
-        class SyncValueAttributeInfoFactory : ThreadSafeHashFactory<Type, SyncValueAttributeInfo[]>
+        class SyncValueAttributeInfoFactory : ThreadSafeHashCache<Type, SyncValueAttributeInfo[]>
         {
             static readonly SyncValueAttributeInfoFactory _instance;
 
