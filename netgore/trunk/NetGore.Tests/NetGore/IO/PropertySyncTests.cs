@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
+using NetGore.IO.PropertySync;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Local

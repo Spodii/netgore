@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a signed 32-bit integer.
@@ -10,6 +10,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(int))]
     public sealed class PropertySyncInt : PropertySyncBase<int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncInt"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncInt(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a MapEntityIndex.
@@ -10,6 +10,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(MapEntityIndex))]
     public sealed class PropertySyncMapEntityIndex : PropertySyncBase<MapEntityIndex>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncMapEntityIndex"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncMapEntityIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

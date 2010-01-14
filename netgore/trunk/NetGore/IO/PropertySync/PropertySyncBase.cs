@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// An abstract implementation of the <see cref="IPropertySync"/>.

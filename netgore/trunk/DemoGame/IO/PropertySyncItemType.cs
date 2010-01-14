@@ -2,6 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore;
 using NetGore.IO;
+using NetGore.IO.PropertySync;
 
 namespace DemoGame
 {
@@ -13,6 +14,10 @@ namespace DemoGame
     {
         static readonly ItemTypeHelper _itemTypeHelper = ItemTypeHelper.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncItemType"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncItemType(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

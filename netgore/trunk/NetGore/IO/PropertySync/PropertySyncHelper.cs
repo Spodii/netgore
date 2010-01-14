@@ -6,7 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.Collections;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Provides helper methods for the <see cref="IPropertySync"/>.

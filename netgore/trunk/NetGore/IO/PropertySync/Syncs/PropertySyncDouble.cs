@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a Double.
@@ -10,6 +10,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(double))]
     public sealed class PropertySyncDouble : PropertySyncBase<double>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncDouble"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncDouble(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

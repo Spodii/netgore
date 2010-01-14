@@ -2,7 +2,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a Alignment.
@@ -12,6 +12,10 @@ namespace NetGore
     {
         static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncAlignment"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncAlignment(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }

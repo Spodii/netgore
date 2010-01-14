@@ -3,7 +3,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.IO.PropertySync
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a Vector2.
@@ -11,6 +11,10 @@ namespace NetGore
     [PropertySyncHandler(typeof(Vector2))]
     public sealed class PropertySyncVector2 : PropertySyncBase<Vector2>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertySyncVector2"/> class.
+        /// </summary>
+        /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         public PropertySyncVector2(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
