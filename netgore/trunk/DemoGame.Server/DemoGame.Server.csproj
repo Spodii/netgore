@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -91,7 +91,6 @@
   <ItemGroup>
     <Compile Include="Account\AccountID.cs" />
     <Compile Include="Account\AccountIDCreator.cs" />
-    <Compile Include="DbConnectionSettings.cs" />
     <Compile Include="DbObjs\AccountIpsTable.cs" />
     <Compile Include="DbObjs\AccountTable.cs" />
     <Compile Include="DbObjs\AllianceAttackableTable.cs" />

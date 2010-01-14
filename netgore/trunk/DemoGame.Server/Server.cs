@@ -10,6 +10,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
+using NetGore.Db.MySql;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.Scripting;
@@ -79,7 +80,7 @@ namespace DemoGame.Server
         public Server()
         {
             DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController = new ServerDbController(settings.SqlConnectionString());
+            _dbController = new ServerDbController(settings.GetMySqlConnectionString());
             DbTableValidator.ValidateTables(_dbController);
 
             ValidateDbControllerQueryAttributes();
