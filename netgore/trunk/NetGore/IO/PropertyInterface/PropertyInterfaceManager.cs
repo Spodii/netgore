@@ -10,7 +10,7 @@ using NetGore.Collections;
 
 namespace NetGore.IO
 {
-    public class PropertyInterface<TObj, T> : ThreadSafeSingletonFactory<PropertyInfo, IPropertyInterface<TObj, T>>
+    public class PropertyInterface<TObj, T> : ThreadSafeHashFactory<PropertyInfo, IPropertyInterface<TObj, T>>
     {
         static readonly PropertyInterface<TObj, T> _instance;
 
@@ -28,29 +28,19 @@ namespace NetGore.IO
             if (pi == null)
                 throw new ArgumentException("propertyName");
 
-            return Get(pi);
+            return this[pi];
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyInterface&lt;TObj, T&gt;"/> class.
         /// </summary>
-        PropertyInterface()
+        PropertyInterface() : base(x => new ExpressionPropertyInterface(x))
         {
         }
 
         public static PropertyInterface<TObj, T> Instance
         {
             get { return _instance; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates the value for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to create the value for.</param>
-        /// <returns></returns>
-        protected override IPropertyInterface<TObj, T> CreateInstance(PropertyInfo key)
-        {
-            return new ExpressionPropertyInterface(key);
         }
 
         class ExpressionPropertyInterface : IPropertyInterface<TObj, T>

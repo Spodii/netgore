@@ -8,5 +8,11 @@ namespace DemoGame.Client
     /// </summary>
     public class NPC : Character
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPC"/> class.
+        /// </summary>
+        NPC()
+        {
+        }
     }
 }

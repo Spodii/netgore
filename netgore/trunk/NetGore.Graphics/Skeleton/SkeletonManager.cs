@@ -1,73 +1,79 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using NetGore.Collections;
 using NetGore.IO;
 
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Content manager for skeletons
+    /// Contains all of the information for <see cref="Skeleton"/>s.
     /// </summary>
     public class SkeletonManager
     {
-        /// <summary>
-        /// Dictionary of SkeletonBodyInfos, identified by their partial file name
-        /// </summary>
-        readonly Dictionary<string, SkeletonBodyInfo> _bodyInfo =
-            new Dictionary<string, SkeletonBodyInfo>(StringComparer.OrdinalIgnoreCase);
-
-        readonly string _dir;
+        static readonly IFactory<ContentPaths, SkeletonManager> _skeletonManagerCache;
+        readonly IFactory<string, SkeletonBodyInfo> _bodyInfoCache;
+        readonly ContentPaths _contentPath;
+        readonly IFactory<string, SkeletonSet> _setCache;
 
         /// <summary>
-        /// Dictionary of SkeletonSets, identified by their partial file name
+        /// Initializes the <see cref="SkeletonManager"/> class.
         /// </summary>
-        readonly Dictionary<string, SkeletonSet> _sets = new Dictionary<string, SkeletonSet>(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>
-        /// SkeletonManager constructor
-        /// </summary>
-        /// <param name="dir">Directory to load from</param>
-        public SkeletonManager(string dir)
+        static SkeletonManager()
         {
-            _dir = dir;
+            _skeletonManagerCache = new ThreadSafeHashFactory<ContentPaths, SkeletonManager>(x => new SkeletonManager(x));
         }
 
         /// <summary>
-        /// Gets or the directory to load from.
+        /// Initializes a new instance of the <see cref="SkeletonManager"/> class.
         /// </summary>
-        public string Dir
+        /// <param name="contentPath">The content path.</param>
+        SkeletonManager(ContentPaths contentPath)
         {
-            get { return _dir; }
+            _contentPath = contentPath;
+
+            var keyComparer = StringComparer.OrdinalIgnoreCase;
+            _bodyInfoCache = new HashFactory<string, SkeletonBodyInfo>(x => new SkeletonBodyInfo(x, ContentPath), keyComparer);
+            _setCache = new HashFactory<string, SkeletonSet>(x => new SkeletonSet(x, ContentPath), keyComparer);
         }
 
-        public SkeletonBodyInfo LoadBodyInfo(string skeletonBodyInfoName, ContentPaths contentPath)
+        /// <summary>
+        /// Gets the root <see cref="ContentPaths"/> to use for loading data for the skeletons.
+        /// </summary>
+        public ContentPaths ContentPath
         {
-            SkeletonBodyInfo ret;
-
-            // Get the value from the dictionary
-            if (!_bodyInfo.TryGetValue(skeletonBodyInfoName, out ret))
-            {
-                // Value did not already exist, load it
-                ret = new SkeletonBodyInfo(skeletonBodyInfoName, contentPath);
-                _bodyInfo.Add(skeletonBodyInfoName, ret);
-            }
-
-            return ret;
+            get { return _contentPath; }
         }
 
-        public SkeletonSet LoadSet(string skeletonSetName, ContentPaths contentPath)
+        /// <summary>
+        /// Creates a <see cref="SkeletonManager"/> for the specified <see cref="ContentPaths"/>.
+        /// </summary>
+        /// <param name="contentPath">The content path.</param>
+        /// <returns>The <see cref="SkeletonManager"/> for the specified <see cref="ContentPaths"/>.</returns>
+        public static SkeletonManager Create(ContentPaths contentPath)
         {
-            SkeletonSet ret;
+            return _skeletonManagerCache[contentPath];
+        }
 
-            // Get the value from the dictionary
-            if (!_sets.TryGetValue(skeletonSetName, out ret))
-            {
-                // Value did not already exist, so load it
-                ret = new SkeletonSet(skeletonSetName, contentPath);
-                _sets.Add(skeletonSetName, ret);
-            }
+        /// <summary>
+        /// Gets a <see cref="SkeletonBodyInfo"/>.
+        /// </summary>
+        /// <param name="skeletonBodyInfoName">The name of the <see cref="SkeletonBodyInfo"/>.</param>
+        /// <returns>The <see cref="SkeletonBodyInfo"/> with the given <paramref name="skeletonBodyInfoName"/>, or null
+        /// if the the <paramref name="skeletonBodyInfoName"/> is invalid.</returns>
+        public SkeletonBodyInfo GetBodyInfo(string skeletonBodyInfoName)
+        {
+            return _bodyInfoCache[skeletonBodyInfoName];
+        }
 
-            return ret;
+        /// <summary>
+        /// Gets a <see cref="SkeletonSet"/>.
+        /// </summary>
+        /// <param name="skeletonSetName">The name of the <see cref="SkeletonSet"/>.</param>
+        /// <returns>The <see cref="SkeletonSet"/> with the given <paramref name="skeletonSetName"/>, or null
+        /// if the the <paramref name="skeletonSetName"/> is invalid.</returns>
+        public SkeletonSet GetSet(string skeletonSetName)
+        {
+            return _setCache[skeletonSetName];
         }
     }
 }

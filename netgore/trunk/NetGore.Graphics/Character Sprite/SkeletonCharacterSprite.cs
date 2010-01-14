@@ -55,7 +55,7 @@ namespace NetGore.Graphics
             _skelAnim.BodyLayers.Clear();
             foreach (var layer in layers)
             {
-                var bodyInfo = _skelManager.LoadBodyInfo(layer, ContentPaths.Build);
+                var bodyInfo = _skelManager.GetBodyInfo(layer);
                 if (bodyInfo == null)
                     continue;
 
@@ -76,7 +76,7 @@ namespace NetGore.Graphics
 
             _bodySize = bodySize;
 
-            SkeletonSet newSet = _skelManager.LoadSet(setName, ContentPaths.Build);
+            SkeletonSet newSet = _skelManager.GetSet(setName);
 
             if (_skelAnim == null)
                 _skelAnim = new SkeletonAnimation(GetTime(), newSet);
@@ -91,7 +91,7 @@ namespace NetGore.Graphics
         /// <param name="bodyName">The name of the sprite body.</param>
         public void SetBody(string bodyName)
         {
-            SkeletonBodyInfo bodyInfo = _skelManager.LoadBodyInfo(bodyName, ContentPaths.Build);
+            SkeletonBodyInfo bodyInfo = _skelManager.GetBodyInfo(bodyName);
             _skelAnim.SkeletonBody = new SkeletonBody(bodyInfo, _skelAnim.Skeleton);
         }
 
@@ -102,7 +102,7 @@ namespace NetGore.Graphics
         /// <param name="bodyModifierName">The name of the sprite body modifier.</param>
         public void AddBodyModifier(string bodyModifierName)
         {
-            SkeletonSet set = _skelManager.LoadSet(bodyModifierName, ContentPaths.Build);
+            SkeletonSet set = _skelManager.GetSet(bodyModifierName);
             set = SkeletonAnimation.CreateSmoothedSet(set, _skelAnim.Skeleton);
             SkeletonAnimation mod = new SkeletonAnimation(GetTime(), set);
             _skelAnim.AddModifier(mod);

@@ -29,7 +29,7 @@ namespace DemoGame.Client
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
-        readonly SkeletonManager _skelManager = new SkeletonManager(ContentPaths.Build.Skeletons);
+        readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
         ChatBubbleManager _chatBubbleManager;
 

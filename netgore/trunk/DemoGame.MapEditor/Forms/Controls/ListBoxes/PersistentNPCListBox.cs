@@ -2,7 +2,11 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.Client;
+using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Db;
+using NetGore.Graphics;
 
 // NOTE: Don't worry, I'll get around to this at some point. -Spodi
 
@@ -14,21 +18,12 @@ namespace DemoGame.MapEditor
     public class PersistentNPCListBox : ListBox
     {
         IDbController _dbController;
-        MapBase _map;
+        Map _map;
 
-        public PersistentNPCListBox()
+        protected override void OnSelectedIndexChanged(EventArgs e)
         {
-            SelectedIndexChanged += HandleSelectedIndexChanged;
-        }
+            base.OnSelectedIndexChanged(e);
 
-        /// <summary>
-        /// Gets or sets the PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.
-        /// </summary>
-        [Description("The PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.")]
-        public PropertyGrid PropertyGrid { get; set; }
-
-        void HandleSelectedIndexChanged(object sender, EventArgs e)
-        {
             if (PropertyGrid == null)
                 return;
 
@@ -40,7 +35,18 @@ namespace DemoGame.MapEditor
             //    PropertyGrid.SelectedObject = selected.Value;
         }
 
-        public void SetMap(IDbController dbController, MapBase map)
+        /// <summary>
+        /// Gets or sets the PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.
+        /// </summary>
+        [Description("The PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.")]
+        public PropertyGrid PropertyGrid { get; set; }
+
+        /// <summary>
+        /// Loads and populates the collection for the given map.
+        /// </summary>
+        /// <param name="dbController">The <see cref="IDbController"/> to use to communicate with the database.</param>
+        /// <param name="map">The map.</param>
+        public void Load(IDbController dbController, Map map)
         {
             if (map == null)
                 throw new ArgumentNullException("map");
@@ -49,6 +55,32 @@ namespace DemoGame.MapEditor
 
             _map = map;
             _dbController = dbController;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDbController"/> used to communicate with the database.
+        /// </summary>
+        public IDbController DbController { get { return _dbController; } }
+
+        /// <summary>
+        /// Gets the current map.
+        /// </summary>
+        public Map Map { get { return _map; } }
+
+        /// <summary>
+        /// Populates the list with the persistent NPCs.
+        /// </summary>
+        void PopulateItems()
+        {
+            // Get the values from the database
+            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(Map.Index);
+            foreach (var characterID in persistentNPCIDs)
+            {
+                var c = new Character();
+                // TODO: $$$$$ c.Initialize(Map, SkeletonManager
+            }
+
+            Items.Clear();
         }
 
         class PersistentNPCListBoxItem
