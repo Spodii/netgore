@@ -69,8 +69,10 @@
   <ItemGroup>
     <Compile Include="Asserts\ThreadAsserts.cs" />
     <Compile Include="BitOps.cs" />
-    <Compile Include="Collections\HashFactory.cs" />
-    <Compile Include="Collections\IFactory.cs" />
+    <Compile Include="Collections\Factory\HashFactory.cs" />
+    <Compile Include="Collections\Factory\HashFactoryBase.cs" />
+    <Compile Include="Collections\Factory\IFactory.cs" />
+    <Compile Include="Collections\Factory\ThreadSafeHashFactory.cs" />
     <Compile Include="Collections\Object Pool\IObjectPool.cs" />
     <Compile Include="Collections\Object Pool\IPoolable.cs" />
     <Compile Include="Direction.cs" />
