@@ -2,14 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using MySql.Data.MySqlClient;
 using NetGore.IO;
 
 namespace InstallationValidator.SchemaChecker
 {
+    /// <summary>
+    /// Describes the schema for a database column.
+    /// </summary>
     [Serializable]
     public class ColumnSchema
     {
+        const string _keyValueName = "Key";
+        const string _valuesNodeName = "Values";
+        const string _valueValueName = "Value";
+
         /// <summary>
         /// All the schema value names possible for the <see cref="ColumnSchema"/>.
         /// </summary>
@@ -19,82 +25,12 @@ namespace InstallationValidator.SchemaChecker
             "NUMERIC_SCALE", "COLUMN_TYPE", "CHARACTER_SET_NAME", "COLUMN_KEY", "EXTRA", "COLUMN_DEFAULT", "IS_NULLABLE"
         };
 
-        /// <summary>
-        /// Gets the name of the column.
-        /// </summary>
-        public string Name
-        {
-            get { return this["COLUMN_NAME"]; }
-        }
-
-        /// <summary>
-        /// Gets the name of the table this column is on.
-        /// </summary>
-        public string TableName
-        {
-            get { return this["TABLE_NAME"]; }
-        }
-
-        /// <summary>
-        /// Checks if the values of this <see cref="ColumnSchema"/> are equal to the values in the
-        /// <paramref name="other"/>.
-        /// </summary>
-        /// <param name="other">The other <see cref="ColumnSchema"/>.</param>
-        /// <returns>True if all values are equal; otherwise false.</returns>
-        public bool EqualValues(ColumnSchema other)
-        {
-            foreach (var kvp in _values)
-            {
-                var otherValue = other[kvp.Key];
-
-                var v1 = string.IsNullOrEmpty(otherValue) ? null : otherValue;
-                var v2 = string.IsNullOrEmpty(kvp.Value) ? null : kvp.Value;
-
-                if (v1 != v2)
-                    return false;
-            }
-
-            return true;
-        }
-
         readonly IDictionary<string, string> _values;
 
         /// <summary>
-        /// Gets an IEnumerable of all the schema value names possible for the <see cref="ColumnSchema"/>.
+        /// Initializes a new instance of the <see cref="ColumnSchema"/> class.
         /// </summary>
-        public static IEnumerable<string> ValueNames
-        {
-            get { return _valueNames; }
-        }
-
-        public string this[string key]
-        {
-            get { return _values[key]; }
-        }
-
-        const string _valuesNodeName = "Values";
-        const string _keyValueName = "Key";
-        const string _valueValueName = "Value";
-
-        static void WriteKVP(IValueWriter writer, KeyValuePair<string, string> value)
-        {
-            writer.Write(_keyValueName, value.Key);
-            writer.Write(_valueValueName, value.Value ?? string.Empty);
-        }
-
-        static KeyValuePair<string, string> ReadKVP(IValueReader reader)
-        {
-            string key = reader.ReadString(_keyValueName);
-            string value = reader.ReadString(_valueValueName);
-            return new KeyValuePair<string, string>(key, value);
-        }
-
-        public void Write(IValueWriter writer)
-        {
-            var v =  _values.OrderBy(x => x.Key).ToArray();
-            writer.WriteManyNodes(_valuesNodeName, v, WriteKVP);
-        }
-
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public ColumnSchema(IValueReader reader)
         {
             var values = reader.ReadManyNodes<KeyValuePair<string, string>>(_valuesNodeName, ReadKVP);
@@ -119,6 +55,81 @@ namespace InstallationValidator.SchemaChecker
             _values = ReadValues(r);
         }
 
+        /// <summary>
+        /// Gets the value for the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The value for the given <paramref name="key"/>, or null if the key does not exist.</returns>
+        public string this[string key]
+        {
+            get
+            {
+                string ret;
+                if (_values.TryGetValue(key, out ret))
+                    return ret;
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the column.
+        /// </summary>
+        public string Name
+        {
+            get { return this["COLUMN_NAME"]; }
+        }
+
+        /// <summary>
+        /// Gets the name of the table this column is on.
+        /// </summary>
+        public string TableName
+        {
+            get { return this["TABLE_NAME"]; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the schema value names possible for the <see cref="ColumnSchema"/>.
+        /// </summary>
+        public static IEnumerable<string> ValueNames
+        {
+            get { return _valueNames; }
+        }
+
+        /// <summary>
+        /// Checks if the values of this <see cref="ColumnSchema"/> are equal to the values in the
+        /// <paramref name="other"/>.
+        /// </summary>
+        /// <param name="other">The other <see cref="ColumnSchema"/>.</param>
+        /// <returns>True if all values are equal; otherwise false.</returns>
+        public bool EqualValues(ColumnSchema other)
+        {
+            foreach (var kvp in _values)
+            {
+                var otherValue = other[kvp.Key];
+
+                var v1 = string.IsNullOrEmpty(otherValue) ? null : otherValue;
+                var v2 = string.IsNullOrEmpty(kvp.Value) ? null : kvp.Value;
+
+                if (v1 != v2)
+                    return false;
+            }
+
+            return true;
+        }
+
+        static KeyValuePair<string, string> ReadKVP(IValueReader reader)
+        {
+            string key = reader.ReadString(_keyValueName);
+            string value = reader.ReadString(_valueValueName);
+            return new KeyValuePair<string, string>(key, value);
+        }
+
+        /// <summary>
+        /// Reads the <see cref="ColumnSchema"/> values from an <see cref="IDataReader"/>.
+        /// </summary>
+        /// <param name="r">The <see cref="IDataReader"/> to read the values from.</param>
+        /// <returns>The read values.</returns>
         public static IDictionary<string, string> ReadValues(IDataReader r)
         {
             Dictionary<string, string> d = new Dictionary<string, string>(_valueNames.Length);
@@ -132,6 +143,22 @@ namespace InstallationValidator.SchemaChecker
             }
 
             return d;
+        }
+
+        /// <summary>
+        /// Writes the <see cref="ColumnSchema"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(IValueWriter writer)
+        {
+            var v = _values.OrderBy(x => x.Key).ToArray();
+            writer.WriteManyNodes(_valuesNodeName, v, WriteKVP);
+        }
+
+        static void WriteKVP(IValueWriter writer, KeyValuePair<string, string> value)
+        {
+            writer.Write(_keyValueName, value.Key);
+            writer.Write(_valueValueName, value.Value ?? string.Empty);
         }
     }
 }
