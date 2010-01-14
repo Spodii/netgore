@@ -72,32 +72,33 @@ namespace InstallationValidator.SchemaChecker
             get { return _values[key]; }
         }
 
+        const string _valuesNodeName = "Values";
+        const string _keyValueName = "Key";
+        const string _valueValueName = "Value";
+
+        static void WriteKVP(IValueWriter writer, KeyValuePair<string, string> value)
+        {
+            writer.Write(_keyValueName, value.Key);
+            writer.Write(_valueValueName, value.Value ?? string.Empty);
+        }
+
+        static KeyValuePair<string, string> ReadKVP(IValueReader reader)
+        {
+            string key = reader.ReadString(_keyValueName);
+            string value = reader.ReadString(_valueValueName);
+            return new KeyValuePair<string, string>(key, value);
+        }
+
         public void Write(IValueWriter writer)
         {
-            for (int i = 0; i < _valueNames.Length; i++)
-            {
-                var valueName = _valueNames[i];
-                string value;
-                if (!_values.TryGetValue(valueName, out value))
-                    value = string.Empty;
-
-                writer.Write(valueName, value);
-            }
+            var v =  _values.OrderBy(x => x.Key).ToArray();
+            writer.WriteManyNodes(_valuesNodeName, v, WriteKVP);
         }
 
         public ColumnSchema(IValueReader reader)
         {
-            _values = new Dictionary<string, string>(_valueNames.Length);
-
-            for (int i = 0; i < _valueNames.Length; i++)
-            {
-                var valueName = _valueNames[i];
-                string value = reader.ReadString(valueName);
-                if (string.IsNullOrEmpty(value))
-                    value = null;
-
-                _values.Add(valueName, value);
-            }
+            var values = reader.ReadManyNodes<KeyValuePair<string, string>>(_valuesNodeName, ReadKVP);
+            _values = values.ToDictionary(x => x.Key, x => x.Value);
         }
 
         /// <summary>
