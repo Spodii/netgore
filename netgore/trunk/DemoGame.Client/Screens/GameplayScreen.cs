@@ -314,7 +314,9 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            _socket = new ClientSockets(this);
+            ClientSockets.Initialize(this);
+
+            _socket = ClientSockets.Instance;
 
             _world = new World(this, new Camera2D(GameData.ScreenSize));
             _world.OnChangeMap += World_OnChangeMap;
