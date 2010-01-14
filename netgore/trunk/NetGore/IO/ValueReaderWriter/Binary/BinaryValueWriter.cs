@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.IO
 {
@@ -11,6 +13,8 @@ namespace NetGore.IO
     /// </summary>
     public class BinaryValueWriter : IValueWriter
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// If we are writing to file, contains the final destination path we want to use.
         /// </summary>
@@ -18,6 +22,8 @@ namespace NetGore.IO
 
         readonly bool _useEnumNames = true;
         readonly BitStream _writer;
+
+        bool _isDisposed;
         Stack<int> _nodeOffsetStack = null;
 
         /// <summary>
@@ -65,6 +71,32 @@ namespace NetGore.IO
         {
             _useEnumNames = useEnumNames;
             _filePath = filePath;
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="BinaryValueWriter"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="BinaryValueWriter"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~BinaryValueWriter()
+        {
+            if (log.IsWarnEnabled)
+            {
+                const string errmsg =
+                    "Finalizer called on object `{0}`. This should be avoided at all costs by properly using Dispose().";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+            }
+
+            Dispose();
         }
 
         #region IValueWriter Members
@@ -458,6 +490,19 @@ namespace NetGore.IO
         /// </summary>
         public virtual void Dispose()
         {
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to dispose of already-disposed object `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
+            _isDisposed = true;
+
+            GC.SuppressFinalize(this);
+
             // Flush out the writer to the file
             if (_filePath != null)
             {
