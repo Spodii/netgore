@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
 using InstallationValidator;
-using InstallationValidator.SchemaChecker;
 using NetGore;
 using NetGore.Db;
+using NetGore.Db.Schema;
 
 namespace CodeReleasePreparer
 {

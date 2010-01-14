@@ -8,7 +8,7 @@ using NetGore;
 using NetGore.Db;
 using NetGore.IO;
 
-namespace InstallationValidator.SchemaChecker
+namespace NetGore.Db.Schema
 {
     /// <summary>
     /// Reads the schema for a database.

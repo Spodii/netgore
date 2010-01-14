@@ -51,10 +51,6 @@
     <Compile Include="MySqlHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SchemaChecker\ColumnSchema.cs" />
-    <Compile Include="SchemaChecker\SchemaComparer.cs" />
-    <Compile Include="SchemaChecker\SchemaReader.cs" />
-    <Compile Include="SchemaChecker\TableSchema.cs" />
     <Compile Include="Tester.cs" />
     <Compile Include="Tests\CheckForMySqlConnector.cs" />
     <Compile Include="Tests\CheckForXNA.cs" />
