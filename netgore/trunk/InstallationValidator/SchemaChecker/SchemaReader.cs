@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using MySql.Data.MySqlClient;
 using NetGore;
@@ -12,6 +10,9 @@ using NetGore.IO;
 
 namespace InstallationValidator.SchemaChecker
 {
+    /// <summary>
+    /// Reads the schema for a database.
+    /// </summary>
     [Serializable]
     public class SchemaReader
     {
@@ -21,13 +22,16 @@ namespace InstallationValidator.SchemaChecker
             "SELECT {0}" + " FROM COLUMNS AS {2}" + " LEFT JOIN TABLES AS t" +
             " ON {2}.TABLE_NAME = t.TABLE_NAME AND c.TABLE_SCHEMA = t.TABLE_SCHEMA" + " WHERE t.TABLE_SCHEMA = '{1}'";
 
+        const string _rootNodeName = "DbSchema";
+        const string _tablesNodeName = "Tables";
+
         readonly IEnumerable<TableSchema> _tableSchemas;
 
-        public IEnumerable<TableSchema> TableSchemas
-        {
-            get { return _tableSchemas; }
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchemaReader"/> class.
+        /// </summary>
+        /// <param name="dbSettings">The <see cref="DbConnectionSettings"/> for connecting to the database to read
+        /// the schema of.</param>
         public SchemaReader(DbConnectionSettings dbSettings)
         {
             var conn = OpenConnection(dbSettings);
@@ -35,6 +39,27 @@ namespace InstallationValidator.SchemaChecker
             CloseConnection(conn);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchemaReader"/> class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public SchemaReader(IValueReader reader)
+        {
+            _tableSchemas = reader.ReadManyNodes(_tablesNodeName, r => new TableSchema(r)).ToCompact();
+        }
+
+        /// <summary>
+        /// Gets the schema for the database tables.
+        /// </summary>
+        public IEnumerable<TableSchema> TableSchemas
+        {
+            get { return _tableSchemas; }
+        }
+
+        /// <summary>
+        /// Closes the connection.
+        /// </summary>
+        /// <param name="conn">The conn.</param>
         static void CloseConnection(IDbConnection conn)
         {
             conn.Close();
@@ -69,7 +94,7 @@ namespace InstallationValidator.SchemaChecker
             var ret = tableColumns.Select(x => new TableSchema(x.Key, x.Value));
 
             // ToArray() required to serialize, otherwise it is a LINQ statement
-            return ret.ToArray(); 
+            return ret.ToArray();
         }
 
         static string GetColumnsString()
@@ -92,9 +117,26 @@ namespace InstallationValidator.SchemaChecker
             return string.Format(_queryStr, GetColumnsString(), dbSettings.Database, _columnsAlias);
         }
 
+        /// <summary>
+        /// Loads a <see cref="SchemaReader"/> from the specified file path.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>The loaded <see cref="SchemaReader"/></returns>
+        public static SchemaReader Load(string filePath)
+        {
+            var reader = new XmlValueReader(filePath, _rootNodeName);
+            return new SchemaReader(reader);
+        }
+
+        /// <summary>
+        /// Opens the connection.
+        /// </summary>
+        /// <param name="dbSettings">The db settings.</param>
+        /// <returns>The <see cref="MySqlConnection"/>.</returns>
         static MySqlConnection OpenConnection(DbConnectionSettings dbSettings)
         {
-            MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder { UserID = dbSettings.User, Password = dbSettings.Pass, Server = dbSettings.Host, Database = "information_schema" };
+            MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder
+            { UserID = dbSettings.User, Password = dbSettings.Pass, Server = dbSettings.Host, Database = "information_schema" };
 
             var conn = new MySqlConnection(s.ToString());
             conn.Open();
@@ -102,11 +144,10 @@ namespace InstallationValidator.SchemaChecker
             return conn;
         }
 
-        public SchemaReader(IValueReader reader)
-        {
-            _tableSchemas = reader.ReadManyNodes(_tablesNodeName, r => new TableSchema(r)).ToCompact();
-        }
-
+        /// <summary>
+        /// Saves the values to the specified file path.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
         public void Save(string filePath)
         {
             var tables = _tableSchemas.ToArray();
@@ -115,15 +156,6 @@ namespace InstallationValidator.SchemaChecker
             {
                 writer.WriteManyNodes(_tablesNodeName, tables, (w, table) => table.Write(w));
             }
-        }
-
-        const string _rootNodeName = "DbSchema";
-        const string _tablesNodeName = "Tables";
-
-        public static SchemaReader Load(string filePath)
-        {
-            var reader = new XmlValueReader(filePath, _rootNodeName);
-            return new SchemaReader(reader);
         }
     }
 }

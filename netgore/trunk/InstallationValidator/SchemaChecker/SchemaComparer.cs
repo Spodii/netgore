@@ -10,6 +10,12 @@ namespace InstallationValidator.SchemaChecker
     /// </summary>
     public static class SchemaComparer
     {
+        /// <summary>
+        /// Compares two <see cref="SchemaReader"/>s.
+        /// </summary>
+        /// <param name="main">The first <see cref="SchemaReader"/>.</param>
+        /// <param name="sub">The other <see cref="SchemaReader"/>.</param>
+        /// <returns>Text describing the difference between the two <see cref="SchemaReader"/>s.</returns>
         public static IEnumerable<string> Compare(SchemaReader main, SchemaReader sub)
         {
             List<ColumnSchema> missingColumns = new List<ColumnSchema>();
