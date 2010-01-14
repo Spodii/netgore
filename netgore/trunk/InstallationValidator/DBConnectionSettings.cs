@@ -67,12 +67,12 @@ namespace NetGore
         public DBConnectionSettings(string filePath)
         {
             var dic = XmlInfoReader.ReadFile(filePath)[0];
-            _user = dic["MySql.User"];
-            _host = dic["MySql.Host"];
-            _database = dic["MySql.Database"];
+            _user = dic["User"];
+            _host = dic["Host"];
+            _database = dic["Database"];
 
-            if (dic.ContainsKey("MySql.Pass"))
-                _pass = dic["MySql.Pass"];
+            if (dic.ContainsKey("Pass"))
+                _pass = dic["Pass"];
             else
                 _pass = string.Empty;
         }
