@@ -26,7 +26,8 @@ namespace NetGore.Collections
         void Clear();
 
         /// <summary>
-        /// Gets if this cache is thread-safe.
+        /// Gets if this factory is safe to use from multiple threads at once. If this value is false, this factory
+        /// should never be accessed from multiple threads.
         /// </summary>
         bool IsThreadSafe { get; }
     }

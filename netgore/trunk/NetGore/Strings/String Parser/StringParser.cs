@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using NetGore.Collections;
 
 namespace NetGore
 {
@@ -23,16 +24,26 @@ namespace NetGore
         };
 
         /// <summary>
-        /// Lock for the _parsers Dictionary.
-        /// </summary>
-        static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-
-        /// <summary>
-        /// Dictionary of the MethodInfo for each Type. This is updated on-demand, so it will initially be empty
+        /// Factory of the MethodInfo for each Type. This is updated on-demand, so it will initially be empty
         /// until Types that are not in _handledSystemTypes are requested. The value can be null when there is no
         /// parsing method available for the Type.
         /// </summary>
-        static readonly Dictionary<Type, MethodInfo> _parsers = new Dictionary<Type, MethodInfo>();
+        static readonly IFactory<Type, MethodInfo> _parsers;
+
+        /// <summary>
+        /// Initializes the <see cref="StringParser"/> class.
+        /// </summary>
+        static StringParser()
+        {
+            var methodParameterType = new Type[] { typeof(string) };
+
+            // The creator will first check for a method named "Parse" that takes a string and returns our value
+            // type. If none is found, check to see if there is an implicit operator to cast from our type to
+            // a string.
+            Func<Type, MethodInfo> creator = x => GetMethodInfo("parse", x, methodParameterType) ?? GetOperatorMethodInfo(x);
+
+            _parsers = new ThreadSafeHashFactory<Type, MethodInfo>(creator);
+        }
 
         /// <summary>
         /// Gets the Parser to use for all the parsing done in this class.
@@ -52,7 +63,7 @@ namespace NetGore
             if (_handledSystemTypes.Contains(type))
                 return true;
 
-            if (GetParseMethodInfo(type) != null)
+            if (_parsers[type] != null)
                 return true;
 
             return false;
@@ -98,49 +109,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the MethodInfo for a Type.
-        /// </summary>
-        /// <param name="type">The Type to get the MethodInfo for.</param>
-        /// <returns>The MethodInfo for parsing the <paramref name="type"/>. Can be null.</returns>
-        static MethodInfo GetParseMethodInfo(Type type)
-        {
-            MethodInfo method;
-
-            _lock.EnterUpgradeableReadLock();
-            try
-            {
-                if (!_parsers.TryGetValue(type, out method))
-                {
-                    // Find the Parse method for the type
-                    method = GetMethodInfo("parse", type, new Type[] { typeof(string) });
-
-                    // ReSharper disable ConvertIfStatementToNullCoalescingExpression
-                    // Check for any implicit or explicit operators that we can use
-                    if (method == null)
-                        method = GetOperatorMethodInfo(type);
-                    // ReSharper restore ConvertIfStatementToNullCoalescingExpression
-
-                    // Add to the dictionary
-                    _lock.EnterWriteLock();
-                    try
-                    {
-                        _parsers.Add(type, method);
-                    }
-                    finally
-                    {
-                        _lock.ExitWriteLock();
-                    }
-                }
-            }
-            finally
-            {
-                _lock.ExitUpgradeableReadLock();
-            }
-
-            return method;
-        }
-
-        /// <summary>
         /// Tries to parse a string to the given <paramref name="type"/>.
         /// </summary>
         /// <param name="s">The string to parse.</param>
@@ -155,7 +123,7 @@ namespace NetGore
                 return true;
 
             // Get the parse method for this Type
-            MethodInfo method = GetParseMethodInfo(type);
+            MethodInfo method = _parsers[type];
             if (method == null)
             {
                 value = null;
