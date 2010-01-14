@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace InstallationValidator.SchemaChecker
+namespace NetGore.Db.Schema
 {
     /// <summary>
     /// Used to compare two <see cref="SchemaReader"/> results.

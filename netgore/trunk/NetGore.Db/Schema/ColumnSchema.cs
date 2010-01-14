@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using NetGore.IO;
 
-namespace InstallationValidator.SchemaChecker
+namespace NetGore.Db.Schema
 {
     /// <summary>
     /// Describes the schema for a database column.

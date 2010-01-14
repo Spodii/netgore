@@ -14,7 +14,7 @@ namespace CodeReleasePreparer
         /// <summary>
         /// If true, ONLY the database schema part will be built. Otherwise, a complete clean will be done.
         /// </summary>
-        const bool _buildSchemaOnly = true;
+        const bool _buildSchemaOnly = false;
 
         static readonly string _mysqldumpPath = MySqlHelper.FindMySqlFile("mysqldump.exe");
         static readonly string _mysqlPath = MySqlHelper.FindMySqlFile("mysql.exe");

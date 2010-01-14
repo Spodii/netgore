@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using InstallationValidator.SchemaChecker;
+using NetGore.Db.Schema;
 
 namespace InstallationValidator.Tests
 {
