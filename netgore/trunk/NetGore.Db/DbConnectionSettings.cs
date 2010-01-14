@@ -26,7 +26,8 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
-        public DbConnectionSettings()
+        /// <param name="filePath">The file path to load the settings from.</param>
+        public DbConnectionSettings(string filePath)
         {
             // Copy over the default settings file to the destination settings file
             // This way, project developers don't end up constantly overwriting each other's database settings
@@ -36,12 +37,20 @@ namespace NetGore.Db
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Settings file for local server settings copied to `{0}`.", destSettingsFile);
 
-                File.Copy(_settingsFileName, destSettingsFile);
+                File.Copy(filePath, destSettingsFile);
             }
 
             // Read the values
             var reader = new XmlValueReader(destSettingsFile, _rootNodeName);
             ((IPersistable)this).ReadState(reader);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
+        /// </summary>
+        public DbConnectionSettings()
+            : this(_settingsFileName)
+        {
         }
 
         /// <summary>

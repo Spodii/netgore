@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using MySql.Data.MySqlClient;
 using NetGore;
+using NetGore.Db;
 
 namespace InstallationValidator.SchemaChecker
 {
@@ -26,7 +27,7 @@ namespace InstallationValidator.SchemaChecker
             get { return _tableSchemas; }
         }
 
-        public SchemaReader(DBConnectionSettings dbSettings)
+        public SchemaReader(DbConnectionSettings dbSettings)
         {
             var conn = OpenConnection(dbSettings);
             _tableSchemas = ExecuteQuery(conn, dbSettings);
@@ -39,7 +40,7 @@ namespace InstallationValidator.SchemaChecker
             conn.Dispose();
         }
 
-        static IEnumerable<TableSchema> ExecuteQuery(MySqlConnection conn, DBConnectionSettings dbSettings)
+        static IEnumerable<TableSchema> ExecuteQuery(MySqlConnection conn, DbConnectionSettings dbSettings)
         {
             Dictionary<string, List<ColumnSchema>> tableColumns = new Dictionary<string, List<ColumnSchema>>();
 
@@ -85,12 +86,12 @@ namespace InstallationValidator.SchemaChecker
             return sb.ToString();
         }
 
-        static string GetQueryString(DBConnectionSettings dbSettings)
+        static string GetQueryString(DbConnectionSettings dbSettings)
         {
             return string.Format(_queryStr, GetColumnsString(), dbSettings.Database, _columnsAlias);
         }
 
-        static MySqlConnection OpenConnection(DBConnectionSettings dbSettings)
+        static MySqlConnection OpenConnection(DbConnectionSettings dbSettings)
         {
             MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder { UserID = dbSettings.User, Password = dbSettings.Pass, Server = dbSettings.Host, Database = "information_schema" };
 
