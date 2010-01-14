@@ -20,6 +20,7 @@ namespace DemoGame.Client
         IGUIManager _gui;
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
+        Button _btnLogin;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginScreen"/> class.
@@ -113,7 +114,8 @@ namespace DemoGame.Client
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "Back");
-            menuButtons["Login"].OnClick += delegate { _sockets.Connect(); };
+            _btnLogin = menuButtons["Login"];
+            _btnLogin.OnClick += delegate { _sockets.Connect(); };
             menuButtons["Back"].OnClick += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             cScreen.SetFocus();
@@ -173,6 +175,8 @@ namespace DemoGame.Client
         public override void Update(GameTime gameTime)
         {
             int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
+
+            _btnLogin.IsEnabled = !(_sockets.IsConnecting || _sockets.IsConnected);
 
             _gui.Update(currentTime);
         }

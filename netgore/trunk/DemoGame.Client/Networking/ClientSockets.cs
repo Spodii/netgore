@@ -12,8 +12,9 @@ namespace DemoGame.Client
     /// </summary>
     class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
-        const int _updateLatencyInterval = 5000;
         static ClientSockets _instance;
+
+        const int _updateLatencyInterval = 5000;
         readonly ClientPacketHandler _packetHandler;
         readonly int _udpPort;
 
@@ -25,15 +26,18 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
         /// </summary>
         /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
+        /// <exception cref="MethodAccessException">An instance of this object has already been created.</exception>
         public ClientSockets(GameplayScreen gameplayScreen)
         {
             if (_instance != null)
-                throw new Exception("ClientSockets instance was already created. Use that instead.");
+                throw new MethodAccessException("ClientSockets instance was already created. Use that instead.");
 
             _instance = this;
 
             _packetHandler = new ClientPacketHandler(this, gameplayScreen, DynamicEntityFactory.Instance);
-            OnConnect += onConnect;
+            OnConnect += SocketManager_OnConnect;
+            OnDisconnect += delegate { _isConnecting = false; };
+            OnFailedConnect += delegate { _isConnecting = false; };
 
             // Bind the UDP port
             _udpPort = BindUDP();
@@ -72,10 +76,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Starts the client's connection to the server.
+        /// Starts the client's connection to the server, or does nothing if <see cref="ClientSockets.IsConnecting"/>
+        /// or <see cref="ClientSockets.IsConnected"/> is true.
         /// </summary>
         public void Connect()
         {
+            if (IsConnecting || IsConnected)
+                return;
+
+            _isConnecting = true;
+
             Connect(GameData.ServerIP, GameData.ServerTCPPort);
         }
 
@@ -100,15 +110,31 @@ namespace DemoGame.Client
                 Ping();
         }
 
+        bool _isConnecting = false;
+
+        /// <summary>
+        /// Gets if the socket is currently trying to connect, and is waiting for the connection to be made or rejected.
+        /// </summary>
+        public bool IsConnecting
+        {
+            get {
+                if (_conn != null)
+                    return false;
+
+                return _isConnecting; }
+        }
+
         /// <summary>
         /// Sets the active connection when the connection is made so it can be used.
         /// </summary>
         /// <param name="conn">Incoming connection.</param>
-        void onConnect(IIPSocket conn)
+        void SocketManager_OnConnect(IIPSocket conn)
         {
             _conn = conn;
             _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
             Ping();
+
+            _isConnecting = false;
 
             // Make sure the very first thing we send is the Client's UDP port so the server knows what
             // port to use when sending the data
