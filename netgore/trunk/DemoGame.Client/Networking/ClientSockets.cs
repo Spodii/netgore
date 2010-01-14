@@ -8,7 +8,7 @@ using NetGore.Network;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Client socket manager
+    /// The client socket manager.
     /// </summary>
     class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
@@ -23,16 +23,30 @@ namespace DemoGame.Client
         LatencyTrackerClient _latencyTracker;
 
         /// <summary>
+        /// Initializes the <see cref="ClientSockets"/> instance. This only needs to be called once.
+        /// </summary>
+        /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
+        /// <exception cref="ArgumentNullException"><see cref="gameplayScreen"/> is null.</exception>
+        public static void Initialize(GameplayScreen gameplayScreen)
+        {
+            if (gameplayScreen == null)
+                throw new ArgumentNullException("gameplayScreen");
+
+            if (Instance != null)
+                return;
+
+            _instance = new ClientSockets(gameplayScreen);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
         /// </summary>
         /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
         /// <exception cref="MethodAccessException">An instance of this object has already been created.</exception>
-        public ClientSockets(GameplayScreen gameplayScreen)
+        ClientSockets(GameplayScreen gameplayScreen)
         {
             if (_instance != null)
                 throw new MethodAccessException("ClientSockets instance was already created. Use that instead.");
-
-            _instance = this;
 
             _packetHandler = new ClientPacketHandler(this, gameplayScreen, DynamicEntityFactory.Instance);
             OnConnect += SocketManager_OnConnect;
