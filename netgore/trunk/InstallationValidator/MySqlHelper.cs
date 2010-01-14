@@ -59,11 +59,19 @@ namespace InstallationValidator
 
         public static string FindMySqlFile(string fileName)
         {
+            var path1 = Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql";
+            var path2 = Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql";
+
+            if (path1 == path2)
+            {
+                path1 = path2.Replace(" (x86)", string.Empty);
+            }
+
             var filePath =
                 FileFinder.Find(fileName,
-                                Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql") ??
+                                path1) ??
                 FileFinder.Find(fileName,
-                                Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql");
+                                path2);
 
             return filePath;
         }
