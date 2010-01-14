@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MySql.Data.MySqlClient;
+
+namespace NetGore.Db.MySql
+{
+    /// <summary>
+    /// Extension methods for the <see cref="DbConnectionSettings"/>.
+    /// </summary>
+    public static class DbConnectionSettingsExtensions
+    {
+        /// <summary>
+        /// Makes a MySql connection string using the given settings.
+        /// </summary>
+        /// <returns>The MySql connection string.</returns>
+        public static string GetMySqlConnectionString(this DbConnectionSettings settings)
+        {
+            MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder { Database = settings.Database, UserID = settings.User, Password = settings.Pass, Server = settings.Host, Port = settings.Port, IgnorePrepare = false };
+            return sb.ToString();
+        }
+    }
+}
