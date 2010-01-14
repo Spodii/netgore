@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
+using NetGore.IO;
 
 namespace InstallationValidator.SchemaChecker
 {
@@ -24,6 +26,21 @@ namespace InstallationValidator.SchemaChecker
         {
             _tableName = tableName;
             _columns = columns;
+        }
+
+        public TableSchema(IValueReader reader)
+        {
+            _tableName = reader.ReadString(_tableNameValueKey);
+            _columns = reader.ReadManyNodes(_columnsNodeName, r => new ColumnSchema(r)).ToCompact();
+        }
+
+        const string _columnsNodeName = "Columns";
+        const string _tableNameValueKey = "TableName";
+
+        public void Write(IValueWriter writer)
+        {
+            writer.Write(_tableNameValueKey, _tableName);
+            writer.WriteManyNodes(_columnsNodeName, _columns.ToArray(), (w, x) => x.Write(w));
         }
     }
 }

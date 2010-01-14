@@ -8,6 +8,7 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using NetGore;
 using NetGore.Db;
+using NetGore.IO;
 
 namespace InstallationValidator.SchemaChecker
 {
@@ -101,31 +102,28 @@ namespace InstallationValidator.SchemaChecker
             return conn;
         }
 
-        public void Serialize(string filePath)
+        public SchemaReader(IValueReader reader)
         {
-            using (var s = new FileStream(filePath, FileMode.Create))
+            _tableSchemas = reader.ReadManyNodes(_tablesNodeName, r => new TableSchema(r)).ToCompact();
+        }
+
+        public void Save(string filePath)
+        {
+            var tables = _tableSchemas.ToArray();
+
+            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
             {
-                BinaryFormatter f = GetBinaryFormatter();
-                f.Serialize(s, this);
+                writer.WriteManyNodes(_tablesNodeName, tables, (w, table) => table.Write(w));
             }
         }
 
-        static BinaryFormatter GetBinaryFormatter()
+        const string _rootNodeName = "DbSchema";
+        const string _tablesNodeName = "Tables";
+
+        public static SchemaReader Load(string filePath)
         {
-            return new BinaryFormatter();
-        }
-
-        public static SchemaReader Deserialize(string filePath)
-        {
-            SchemaReader ret;
-
-            using (var s = new FileStream(filePath, FileMode.Open))
-            {
-                BinaryFormatter f = GetBinaryFormatter();
-                ret = (SchemaReader)f.Deserialize(s);
-            }
-
-            return ret;
+            var reader = new XmlValueReader(filePath, _rootNodeName);
+            return new SchemaReader(reader);
         }
     }
 }

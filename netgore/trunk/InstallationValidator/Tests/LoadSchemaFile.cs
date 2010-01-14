@@ -38,7 +38,7 @@ namespace InstallationValidator.Tests
 
             try
             {
-                var schema = SchemaReader.Deserialize(schemaFile);
+                var schema = SchemaReader.Load(schemaFile);
                 _schema = schema;
             }
             catch (Exception ex)

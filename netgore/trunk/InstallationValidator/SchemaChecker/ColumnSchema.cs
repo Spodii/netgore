@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using NetGore.IO;
 
 namespace InstallationValidator.SchemaChecker
 {
@@ -45,7 +46,11 @@ namespace InstallationValidator.SchemaChecker
             foreach (var kvp in _values)
             {
                 var otherValue = other[kvp.Key];
-                if (otherValue != kvp.Value)
+
+                var v1 = string.IsNullOrEmpty(otherValue) ? null : otherValue;
+                var v2 = string.IsNullOrEmpty(kvp.Value) ? null : kvp.Value;
+
+                if (v1 != v2)
                     return false;
             }
 
@@ -65,6 +70,34 @@ namespace InstallationValidator.SchemaChecker
         public string this[string key]
         {
             get { return _values[key]; }
+        }
+
+        public void Write(IValueWriter writer)
+        {
+            for (int i = 0; i < _valueNames.Length; i++)
+            {
+                var valueName = _valueNames[i];
+                string value;
+                if (!_values.TryGetValue(valueName, out value))
+                    value = string.Empty;
+
+                writer.Write(valueName, value);
+            }
+        }
+
+        public ColumnSchema(IValueReader reader)
+        {
+            _values = new Dictionary<string, string>(_valueNames.Length);
+
+            for (int i = 0; i < _valueNames.Length; i++)
+            {
+                var valueName = _valueNames[i];
+                string value = reader.ReadString(valueName);
+                if (string.IsNullOrEmpty(value))
+                    value = null;
+
+                _values.Add(valueName, value);
+            }
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System.Linq;
 using InstallationValidator;
 using InstallationValidator.SchemaChecker;
 using NetGore;
+using NetGore.Db;
 
 namespace CodeReleasePreparer
 {
@@ -15,13 +16,13 @@ namespace CodeReleasePreparer
         public static void Save()
         {
             // Load the database settings
-            var dbSettings = new DBConnectionSettings(Paths.Root + MySqlHelper.DbSettingsFile);
+            var dbSettings = new DbConnectionSettings(Paths.Root + MySqlHelper.DbSettingsFile);
 
             // Get the schema
             var schema = new SchemaReader(dbSettings);
 
             // Save
-            schema.Serialize(Paths.Root + MySqlHelper.DbSchemaFile);
+            schema.Save(Paths.Root + MySqlHelper.DbSchemaFile);
         }
     }
 }
