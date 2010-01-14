@@ -24,11 +24,11 @@ namespace NetGore
         };
 
         /// <summary>
-        /// Factory of the MethodInfo for each Type. This is updated on-demand, so it will initially be empty
+        /// Cache of the MethodInfo for each Type. This is updated on-demand, so it will initially be empty
         /// until Types that are not in _handledSystemTypes are requested. The value can be null when there is no
         /// parsing method available for the Type.
         /// </summary>
-        static readonly IFactory<Type, MethodInfo> _parsers;
+        static readonly ICache<Type, MethodInfo> _parsers;
 
         /// <summary>
         /// Initializes the <see cref="StringParser"/> class.
@@ -42,7 +42,7 @@ namespace NetGore
             // a string.
             Func<Type, MethodInfo> creator = x => GetMethodInfo("parse", x, methodParameterType) ?? GetOperatorMethodInfo(x);
 
-            _parsers = new ThreadSafeHashFactory<Type, MethodInfo>(creator);
+            _parsers = new ThreadSafeHashCache<Type, MethodInfo>(creator);
         }
 
         /// <summary>

@@ -11,26 +11,26 @@ namespace NetGore.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of key.</typeparam>
     /// <typeparam name="TValue">The type of value.</typeparam>
-    public class ThreadSafeHashFactory<TKey, TValue> : IFactory<TKey, TValue> where TValue : class
+    public class ThreadSafeHashCache<TKey, TValue> : ICache<TKey, TValue> where TValue : class
     {
         readonly IDictionary<TKey, TValue> _cache;
         readonly Func<TKey, TValue> _valueCreator;
         readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadSafeHashFactory&lt;TKey, TValue&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ThreadSafeHashCache&lt;TKey, TValue&gt;"/> class.
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
-        public ThreadSafeHashFactory(Func<TKey, TValue> valueCreator) : this(valueCreator, null)
+        public ThreadSafeHashCache(Func<TKey, TValue> valueCreator) : this(valueCreator, null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadSafeHashFactory&lt;TKey, TValue&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ThreadSafeHashCache&lt;TKey, TValue&gt;"/> class.
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
         /// <param name="keyComparer">The key comparer.</param>
-        public ThreadSafeHashFactory(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> keyComparer)
+        public ThreadSafeHashCache(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> keyComparer)
         {
             if (valueCreator == null)
                 throw new ArgumentNullException("valueCreator");
@@ -104,7 +104,8 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Gets if this cache is thread-safe.
+        /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
+        /// should never be accessed from multiple threads.
         /// </summary>
         public bool IsThreadSafe { get { return false; } }
 

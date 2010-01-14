@@ -11,7 +11,7 @@ namespace NetGore.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of key.</typeparam>
     /// <typeparam name="TValue">The type of value.</typeparam>
-    public interface IFactory<TKey, TValue> where TValue : class
+    public interface ICache<TKey, TValue> where TValue : class
     {
         /// <summary>
         /// Gets the item from the cache with the given <paramref name="key"/>.
@@ -26,7 +26,7 @@ namespace NetGore.Collections
         void Clear();
 
         /// <summary>
-        /// Gets if this factory is safe to use from multiple threads at once. If this value is false, this factory
+        /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
         /// should never be accessed from multiple threads.
         /// </summary>
         bool IsThreadSafe { get; }
