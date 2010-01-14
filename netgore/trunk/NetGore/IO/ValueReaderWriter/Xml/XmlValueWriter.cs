@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
+using log4net;
 
 // NOTE: This class won't work if you forget to call Dispose. Would be nice to use a destructor to fix that.
 
@@ -13,11 +15,26 @@ namespace NetGore.IO
     /// </summary>
     public class XmlValueWriter : IValueWriter
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly bool _disposeWriter;
+
+        /// <summary>
+        /// If we are writing to file, contains the final destination path we want to use.
+        /// </summary>
+        readonly string _filePath;
+
         readonly Stack<string> _nodeStack = new Stack<string>(4);
+
+        /// <summary>
+        /// If we are writing to file, contains the temporary file we write to before copying over the finished
+        /// file to the desired location.
+        /// </summary>
+        readonly TempFile _tempFile;
+
         readonly bool _useEnumNames = true;
         readonly XmlWriter _writer;
-        bool _disposed;
+
+        bool _isDisposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
@@ -27,17 +44,6 @@ namespace NetGore.IO
         public XmlValueWriter(string filePath, string nodeName) : this(filePath, nodeName, true)
         {
         }
-
-        /// <summary>
-        /// If we are writing to file, contains the temporary file we write to before copying over the finished
-        /// file to the desired location.
-        /// </summary>
-        readonly TempFile _tempFile;
-
-        /// <summary>
-        /// If we are writing to file, contains the final destination path we want to use.
-        /// </summary>
-        readonly string _filePath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
@@ -110,6 +116,32 @@ namespace NetGore.IO
             _writer = writer;
             _writer.WriteStartElement(nodeName);
             _writer.WriteAttributeString(attributeName, attributeValue);
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="XmlValueWriter"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="XmlValueWriter"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~XmlValueWriter()
+        {
+            if (log.IsWarnEnabled)
+            {
+                const string errmsg =
+                    "Finalizer called on object `{0}`. This should be avoided at all costs by properly using Dispose().";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+            }
+
+            Dispose();
         }
 
         #region IValueWriter Members
@@ -511,10 +543,19 @@ namespace NetGore.IO
         /// </summary>
         public virtual void Dispose()
         {
-            if (_disposed)
-                throw new MemberAccessException("Object already disposed!");
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to dispose of already-disposed object `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
 
-            _disposed = true;
+            _isDisposed = true;
+
+            GC.SuppressFinalize(this);
+
             _writer.WriteEndElement();
 
             // Dispose of the writer if we need to
