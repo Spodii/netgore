@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using NetGore;
 
 namespace InstallationValidator
@@ -9,11 +10,12 @@ namespace InstallationValidator
     {
         public const string DbSqlFile = "db.sql";
 
+        public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema.bin",
+                                                                   Path.DirectorySeparatorChar);
+
         public static readonly string DbSettingsFile = string.Format("DemoGame.Server{0}DbSettings.xml",
                                                                      Path.DirectorySeparatorChar);
 
-        public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema.bin", Path.DirectorySeparatorChar);
- 
         public static readonly string[] DbTables = new string[]
         {
             "account", "alliance", "alliance_attackable", "alliance_hostile", "character", "character_equipped",
@@ -63,15 +65,9 @@ namespace InstallationValidator
             var path2 = Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql";
 
             if (path1 == path2)
-            {
                 path1 = path2.Replace(" (x86)", string.Empty);
-            }
 
-            var filePath =
-                FileFinder.Find(fileName,
-                                path1) ??
-                FileFinder.Find(fileName,
-                                path2);
+            var filePath = FileFinder.Find(fileName, path1) ?? FileFinder.Find(fileName, path2);
 
             return filePath;
         }
