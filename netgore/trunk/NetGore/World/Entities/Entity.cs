@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.Audio;
 
 namespace NetGore
 {
@@ -9,7 +10,7 @@ namespace NetGore
     /// The base class of all entities, which are physical objects that reside in the virtual world, and can interact
     /// with other entities.
     /// </summary>
-    public abstract class Entity : ISpatial, IDisposable
+    public abstract class Entity : ISpatial, IAudioEmitter, IDisposable
     {
         const string _entityCategoryString = "Entity";
 
