@@ -170,7 +170,7 @@ namespace NetGore.Graphics
         [DisplayName("Sprite")]
         [Description("The sprite to draw.")]
         [Browsable(true)]
-        [TypeConverter(typeof(GrhConverter))]
+        [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Grh Sprite { get { return _sprite; } }
 
         readonly Grh _sprite;
