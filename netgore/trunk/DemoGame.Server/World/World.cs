@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
+using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
@@ -17,6 +19,7 @@ namespace DemoGame.Server
     /// </summary>
     public class World : WorldBase, IDisposable
     {
+        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
@@ -56,9 +59,8 @@ namespace DemoGame.Server
             // Trim down the maps array under the assumption we won't be adding more maps
             _maps.Trim();
 
-            // NOTE: !! Temporarily disabled
-#if false
-    // NOTE: Create some test items
+#if true
+            // NOTE: Create some test items
             Random rand = new Random();
             foreach (Map m in Maps)
             {
@@ -248,7 +250,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets all the Users in the world.
         /// </summary>
-        /// <returns>An array of all the Users in the world.</returns>
+        /// <returns>All the Users in the world.</returns>
         public IEnumerable<User> GetUsers()
         {
             return _users.Values.ToImmutable();
