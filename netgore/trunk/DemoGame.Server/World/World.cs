@@ -18,14 +18,12 @@ namespace DemoGame.Server
     public class World : WorldBase, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
-
         readonly DArray<Map> _maps;
         readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
         readonly Server _server;
-        readonly TSDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
+        readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
         bool _disposed;
 
