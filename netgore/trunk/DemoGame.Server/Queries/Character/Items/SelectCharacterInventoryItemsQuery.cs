@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterInventoryItemsQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryString =
-            string.Format("SELECT {0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
+            string.Format("SELECT {1}.slot AS \"character_inventory_slot\",{0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
                           ItemTable.TableName, CharacterInventoryTable.TableName);
 
         /// <summary>
@@ -21,17 +21,21 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<IItemTable> Execute(CharacterID characterID)
+        public IEnumerable<KeyValuePair<InventorySlot, IItemTable>> Execute(CharacterID characterID)
         {
-            var retValues = new List<IItemTable>();
+            var retValues = new List<KeyValuePair<InventorySlot, IItemTable>>();
 
             using (var r = ExecuteReader(characterID))
             {
                 while (r.Read())
                 {
+                    var slot = r.GetInventorySlot("character_inventory_slot");
+
                     var values = new ItemTable();
                     values.ReadValues(r);
-                    retValues.Add(values);
+
+                    var kvp = new KeyValuePair<InventorySlot, IItemTable>(slot, values);
+                    retValues.Add(kvp);
                 }
             }
 

@@ -185,21 +185,27 @@ namespace DemoGame.Server
         {
             _isLoading = true;
 
-            // TODO: Need to track the slots, too, I guess
-            InventorySlot slot = new InventorySlot(0);
             var queryResults = DbController.GetQuery<SelectCharacterInventoryItemsQuery>().Execute(Character.ID);
-            foreach (IItemTable values in queryResults)
+            foreach (var values in queryResults)
             {
                 // Make sure no item is already in the slot... just in case
-                if (this[slot] != null)
+                if (this[values.Key] != null)
                 {
-                    Debug.Fail("An item is already in this slot.");
-                    this[slot].Dispose();
+                    const string errmsg = "Character `{0}` already had an item in slot `{1}` ({2})." + 
+                        " It is going to have to be disposed to make room for the newest loaded item `{3}`." + 
+                        " If this ever happens, its likely a problem.";
+
+                    var item = this[values.Key];
+
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, Character, values.Key, item, values.Value);
+                    Debug.Fail(string.Format(errmsg, Character, values.Key, item, values.Value));
+
+                    item.Dispose();
                 }
 
                 // Set the item into the slot
-                this[slot] = new ItemEntity(values);
-                slot++;
+                this[values.Key] = new ItemEntity(values.Value);
             }
 
             _isLoading = false;
