@@ -165,6 +165,8 @@ namespace DemoGame.MapEditor
         /// </summary>
         public event MapChangeEventHandler OnChangeMap;
 
+        readonly IMapBoundControl[] _mapBoundControls;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
@@ -179,9 +181,13 @@ namespace DemoGame.MapEditor
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
             _grid = new ScreenGrid(Camera.Size);
 
+            // Set up the object manager
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
             _selectedObjectsManager.OnChangeSelected += SelectedObjectsManager_OnChangeSelected;
             _selectedObjectsManager.OnChangeFocused += SelectedObjectsManager_OnChangeFocused;
+
+            // Get the IMapBoundControls
+            _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
 
             // Create and set up the cursor manager
             _cursorManager = new EditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
@@ -678,12 +684,14 @@ namespace DemoGame.MapEditor
         /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.OnChangeMap"/>
         /// event when possible.
         /// </summary>
-        protected virtual void HandleChangeMap(Map oldMap, Map newMap)
+        void HandleChangeMap(Map oldMap, Map newMap)
         {
-            // Forward the change to some controls
+            // Forward the change to some controls manually
             _camera.Map = newMap;
-            lstNPCSpawns.Map = newMap;
-            lstPersistentNPCs.Map = newMap;
+
+            // Automatically update all the controls that implement IMapBoundControl
+            foreach (var c in _mapBoundControls)
+                c.IMap = newMap;
 
             // Handle the change on some controls manually
             txtMapName.Text = newMap.Name ?? string.Empty;
@@ -809,13 +817,6 @@ namespace DemoGame.MapEditor
                 // Doesn't matter if we fail to load the first map...
             }
             // ReSharper restore EmptyGeneralCatchClause
-
-            // Set up the MapItemListBoxes
-            foreach (var lb in this.GetControls().OfType<IMapItemListBox>())
-            {
-                lb.IMap = Map;
-                lb.Camera = Camera;
-            }
 
             // Set up the MapExtensionBases
             CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);

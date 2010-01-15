@@ -311,9 +311,8 @@ namespace DemoGame.Client
 
         void LoadBackgroundImages(IValueReader r)
         {
-            int currentTime = GetTime();
             var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName,
-                                                                  x => new BackgroundLayer(this, this, x, currentTime));
+                                                                  x => new BackgroundLayer(this, this, x));
 
             // Add the loaded background images
             foreach (BackgroundImage bgImage in loadedBGImages)

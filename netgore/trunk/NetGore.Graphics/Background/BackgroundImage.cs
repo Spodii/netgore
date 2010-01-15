@@ -46,6 +46,8 @@ namespace NetGore.Graphics
             Offset = Vector2.Zero;
             Color = Color.White;
             Alignment = Alignment.TopLeft;
+
+            _sprite = new Grh(null, AnimType.Loop, map.GetTime());
         }
 
         /// <summary>
@@ -54,8 +56,7 @@ namespace NetGore.Graphics
         /// <param name="cameraProvider">The camera provider.</param>
         /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        /// <param name="currentTime">The current time.</param>
-        protected BackgroundImage(ICamera2DProvider cameraProvider, IMap map, IValueReader reader, int currentTime)
+        protected BackgroundImage(ICamera2DProvider cameraProvider, IMap map, IValueReader reader)
         {
             if (cameraProvider == null)
                 throw new ArgumentNullException("cameraProvider");
@@ -72,9 +73,7 @@ namespace NetGore.Graphics
             Offset = reader.ReadVector2(_valueKeyOffset);
             GrhIndex grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
 
-            Grh grh = new Grh(grhIndex, AnimType.Loop, currentTime);
-
-            Sprite = grh;
+            _sprite = new Grh(grhIndex, AnimType.Loop, map.GetTime());
         }
 
         /// <summary>
@@ -165,14 +164,16 @@ namespace NetGore.Graphics
         public Vector2 Offset { get; set; }
 
         /// <summary>
-        /// Gets or sets the sprite to draw. 
+        /// Gets the sprite to draw. 
         /// </summary>
         [Category("Display")]
         [DisplayName("Sprite")]
         [Description("The sprite to draw.")]
         [Browsable(true)]
         [TypeConverter(typeof(GrhConverter))]
-        public Grh Sprite { get; set; }
+        public Grh Sprite { get { return _sprite; } }
+
+        readonly Grh _sprite;
 
         /// <summary>
         /// Gets the size of the Sprite source image.
@@ -182,7 +183,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                if (Sprite == null)
+                if (!IsSpriteSet())
                     return Vector2.Zero;
 
                 return new Vector2(Sprite.Source.Width, Sprite.Source.Height);
@@ -191,7 +192,7 @@ namespace NetGore.Graphics
 
         protected void Draw(SpriteBatch spriteBatch, Vector2 spriteSize)
         {
-            if (Sprite == null)
+            if (!IsSpriteSet())
                 return;
 
             Vector2 position = GetPosition(Map.Size, Camera, spriteSize);
@@ -294,6 +295,9 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current game time.</param>
         public virtual void Update(int currentTime)
         {
+            if (!IsSpriteSet())
+                return;
+
             Sprite.Update(currentTime);
         }
 
@@ -306,7 +310,7 @@ namespace NetGore.Graphics
             writer.Write(_valueKeyOffset, Offset);
 
             GrhIndex grhIndex;
-            if (Sprite != null && Sprite.GrhData != null)
+            if (IsSpriteSet())
                 grhIndex = Sprite.GrhData.GrhIndex;
             else
             {
@@ -373,11 +377,20 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         public virtual void Draw(SpriteBatch sb)
         {
-            if (Sprite == null)
+            if (!IsSpriteSet())
                 return;
 
             Vector2 position = GetPosition(Map.Size, Camera);
             Sprite.Draw(sb, position, Color);
+        }
+
+        /// <summary>
+        /// Gets if the Sprite is set and valid.
+        /// </summary>
+        /// <returns>True if the Sprite is set; otherwise false.</returns>
+        bool IsSpriteSet()
+        {
+            return Sprite != null && Sprite.GrhData != null;
         }
 
         /// <summary>
@@ -387,6 +400,9 @@ namespace NetGore.Graphics
         /// <returns>True if the object is in view of the camera, else False.</returns>
         public bool InView(ICamera2D camera)
         {
+            if (!IsSpriteSet())
+                return false;
+
             Vector2 position = GetPosition(Map.Size, Camera);
             if (position.X > camera.Max.X || position.Y > camera.Max.Y)
                 return false;

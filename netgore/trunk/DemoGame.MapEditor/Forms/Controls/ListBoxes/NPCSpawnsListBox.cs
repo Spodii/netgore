@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
+using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
 
@@ -12,7 +13,7 @@ namespace DemoGame.MapEditor
     /// <summary>
     /// A ListBox specifically for the MapSpawnValues on a Map.
     /// </summary>
-    public class NPCSpawnsListBox : ListBox
+    public class NPCSpawnsListBox : ListBox, IMapBoundControl
     {
         MapBase _map;
 
@@ -141,6 +142,15 @@ namespace DemoGame.MapEditor
             {
                 return v.Value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
+        /// </summary>
+        IMap IMapBoundControl.IMap
+        {
+            get { return Map; }
+            set { Map = (MapBase)value; }
         }
     }
 }

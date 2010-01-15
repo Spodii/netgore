@@ -7,17 +7,16 @@ using DemoGame.Client;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
+using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.IO;
-
-// NOTE: Don't worry, I'll get around to this at some point. -Spodi
 
 namespace DemoGame.MapEditor
 {
     /// <summary>
     /// ListBox specifically for Persistent NPCs.
     /// </summary>
-    public class PersistentNPCListBox : ListBox
+    public class PersistentNPCListBox : ListBox, IMapBoundControl
     {
         Map _map;
 
@@ -59,6 +58,15 @@ namespace DemoGame.MapEditor
             }
 
             Items.AddRange(addedChars.OrderBy(x => x.CharacterID).ToArray());
+        }
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
+        /// </summary>
+        IMap IMapBoundControl.IMap
+        {
+            get { return Map; }
+            set { Map = (Map)value; }
         }
     }
 }
