@@ -31,8 +31,8 @@ namespace NetGore.EditorTools
                 // Check all children and call this method on them recursively
                 foreach (var child in root.Controls.OfType<Control>())
                 {
-                    foreach (var persistableChild in GetPersistableControls(child))
-                        yield return persistableChild;
+                    foreach (var child2 in GetControls(child, filter))
+                        yield return child2;
                 }
             }
         }

@@ -99,7 +99,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SelectedObjectsManager.cs" />
-    <Compile Include="WinForms\IMapItemListBox.cs" />
+    <Compile Include="WinForms\IMapBoundControl.cs" />
     <Compile Include="WinForms\MapParticleEffectsListBoxBase.cs">
       <SubType>Component</SubType>
     </Compile>

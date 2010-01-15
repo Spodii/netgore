@@ -31,12 +31,11 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundLayer"/> class.
         /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="currentTime">The current time.</param>
         /// <param name="cameraProvider">The camera provider.</param>
         /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
-        public BackgroundLayer(ICamera2DProvider cameraProvider, IMap map, IValueReader reader, int currentTime)
-            : base(cameraProvider, map, reader, currentTime)
+        /// <param name="reader">The reader.</param>
+        public BackgroundLayer(ICamera2DProvider cameraProvider, IMap map, IValueReader reader)
+            : base(cameraProvider, map, reader)
         {
             HorizontalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "HorizontalLayout");
             VerticalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "VerticalLayout");

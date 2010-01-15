@@ -12,7 +12,7 @@ namespace NetGore.EditorTools
     /// </summary>
     /// <typeparam name="TMap">Type of Map.</typeparam>
     /// <typeparam name="TItem">Type of collection item.</typeparam>
-    public abstract class MapItemListBox<TMap, TItem> : ListBox, IMapItemListBox where TMap : class, IMap where TItem : class
+    public abstract class MapItemListBox<TMap, TItem> : ListBox, IMapBoundControl where TMap : class, IMap where TItem : class
     {
         TMap _map;
         Timer _updateTimer;
@@ -78,13 +78,15 @@ namespace NetGore.EditorTools
         /// </summary>
         protected virtual void UpdateItems()
         {
-            if (Map == null || Camera == null)
+            // If the map is not set, clear the list
+            if (Map == null)
             {
                 if (Items.Count > 0)
                     Items.Clear();
                 return;
             }
 
+            // Get all the items and, if there is none, clear the list
             var allItems = GetItems();
             if (allItems == null || allItems.Count() == 0)
             {
@@ -93,13 +95,16 @@ namespace NetGore.EditorTools
                 return;
             }
 
+            // Find what items need to be added and removed to/from the current list
             var existingItems = Items.OfType<TItem>();
             var toAdd = allItems.Except(existingItems).ToArray();
             var toRemove = existingItems.Except(allItems).ToArray();
 
+            // If nothing needs to change, return
             if (toAdd.Count() == 0 && toRemove.Count() == 0)
                 return;
 
+            // Remove the extra items and add the new ones
             try
             {
                 BeginUpdate();
@@ -133,15 +138,10 @@ namespace NetGore.EditorTools
         #region IMapItemListBox Members
 
         /// <summary>
-        /// Gets or sets the <see cref="ICamera2D"/> used to view the Map.
-        /// </summary>
-        public ICamera2D Camera { get; set; }
-
-        /// <summary>
         /// Gets or sets the IMap containing the objects being handled.
         /// </summary>
         [Browsable(false)]
-        IMap IMapItemListBox.IMap
+        IMap IMapBoundControl.IMap
         {
             get { return Map; }
             set { Map = (TMap)value; }

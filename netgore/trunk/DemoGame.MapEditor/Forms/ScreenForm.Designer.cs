@@ -454,7 +454,6 @@ namespace DemoGame.MapEditor
             // 
             // lstBGItems
             // 
-            this.lstBGItems.Camera = null;
             this.lstBGItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstBGItems.FormattingEnabled = true;
             this.lstBGItems.Location = new System.Drawing.Point(0, 0);
@@ -516,7 +515,6 @@ namespace DemoGame.MapEditor
             // 
             // lstMapParticleEffects
             // 
-            this.lstMapParticleEffects.Camera = null;
             this.lstMapParticleEffects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstMapParticleEffects.FormattingEnabled = true;
             this.lstMapParticleEffects.Location = new System.Drawing.Point(0, 0);
