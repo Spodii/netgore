@@ -14,12 +14,25 @@ namespace DemoGame.MapEditor
     /// </summary>
     public class NPCSpawnsListBox : ListBox
     {
-        IDbController _dbController;
         MapBase _map;
 
         public NPCSpawnsListBox()
         {
             SelectedIndexChanged += HandleSelectedIndexChanged;
+        }
+
+        public MapBase Map
+        {
+            get { return _map; }
+            set
+            {
+                if (Map == value)
+                    return;
+
+                _map = value;
+
+                ReloadSpawns();
+            }
         }
 
         /// <summary>
@@ -30,13 +43,13 @@ namespace DemoGame.MapEditor
 
         public void AddNewItem()
         {
-            if (_map == null)
+            if (Map == null)
             {
                 MessageBox.Show("The map must be set before a new spawn can be created!");
                 return;
             }
 
-            MapSpawnValues newSpawn = new MapSpawnValues(_dbController, _map.Index, new CharacterTemplateID(1));
+            MapSpawnValues newSpawn = new MapSpawnValues(DbControllerBase.GetInstance(), Map.Index, new CharacterTemplateID(1));
             NPCSpawnsListBoxItem newItem = new NPCSpawnsListBoxItem(newSpawn);
 
             this.AddItemAndReselect(newItem);
@@ -101,22 +114,12 @@ namespace DemoGame.MapEditor
         {
             Items.Clear();
 
-            var spawnInfo = MapSpawnValues.Load(_dbController, _map.Index);
+            if (Map == null)
+                return;
+
+            var spawnInfo = MapSpawnValues.Load(DbControllerBase.GetInstance(), Map.Index);
             var asArray = spawnInfo.Select(x => new NPCSpawnsListBoxItem(x)).ToArray();
             Items.AddRange(asArray);
-        }
-
-        public void SetMap(IDbController dbController, MapBase map)
-        {
-            if (map == null)
-                throw new ArgumentNullException("map");
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
-
-            _map = map;
-            _dbController = dbController;
-
-            ReloadSpawns();
         }
 
         class NPCSpawnsListBoxItem

@@ -90,6 +90,7 @@
     <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MapEditorCharacter.cs" />
     <Compile Include="MapEditorDynamicEntityFactory.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Forms\ScreenForm.cs">

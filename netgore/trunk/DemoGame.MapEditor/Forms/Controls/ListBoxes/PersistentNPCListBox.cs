@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,6 +8,7 @@ using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
 using NetGore.Graphics;
+using NetGore.IO;
 
 // NOTE: Don't worry, I'll get around to this at some point. -Spodi
 
@@ -17,93 +19,46 @@ namespace DemoGame.MapEditor
     /// </summary>
     public class PersistentNPCListBox : ListBox
     {
-        IDbController _dbController;
         Map _map;
 
-        protected override void OnSelectedIndexChanged(EventArgs e)
+        /// <summary>
+        /// Gets or sets the current map.
+        /// </summary>
+        public Map Map
         {
-            base.OnSelectedIndexChanged(e);
+            get { return _map; }
+            set
+            {
+                if (Map == value)
+                    return;
 
-            if (PropertyGrid == null)
-                return;
+                _map = value;
 
-            PersistentNPCListBoxItem selected = SelectedItem as PersistentNPCListBoxItem;
-            if (selected == null)
-                return;
-
-            //if (PropertyGrid.SelectedObject != selected.Value)
-            //    PropertyGrid.SelectedObject = selected.Value;
+                PopulateItems();
+            }
         }
-
-        /// <summary>
-        /// Gets or sets the PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.
-        /// </summary>
-        [Description("The PropertyGrid to display the property values for the selected NPC in this PersistentNPCListBox.")]
-        public PropertyGrid PropertyGrid { get; set; }
-
-        /// <summary>
-        /// Loads and populates the collection for the given map.
-        /// </summary>
-        /// <param name="dbController">The <see cref="IDbController"/> to use to communicate with the database.</param>
-        /// <param name="map">The map.</param>
-        public void Load(IDbController dbController, Map map)
-        {
-            if (map == null)
-                throw new ArgumentNullException("map");
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
-
-            _map = map;
-            _dbController = dbController;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IDbController"/> used to communicate with the database.
-        /// </summary>
-        public IDbController DbController { get { return _dbController; } }
-
-        /// <summary>
-        /// Gets the current map.
-        /// </summary>
-        public Map Map { get { return _map; } }
 
         /// <summary>
         /// Populates the list with the persistent NPCs.
         /// </summary>
         void PopulateItems()
         {
-            // Get the values from the database
-            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(Map.Index);
+            Items.Clear();
+            if (Map == null)
+                return;
+
+            // Get the indicies of the characters set to spawn on this map from the database
+            var dbController = DbControllerBase.GetInstance();
+            var persistentNPCIDs = dbController.GetQuery<SelectPersistentMapNPCsByRespawnMapQuery>().Execute(Map.Index);
+            var addedChars = new List<MapEditorCharacter>();
             foreach (var characterID in persistentNPCIDs)
             {
-                var c = new Character();
-                // TODO: $$$$$ c.Initialize(Map, SkeletonManager
+                // Create the character
+                var c = new MapEditorCharacter(characterID, Map);
+                addedChars.Add(c);
             }
 
-            Items.Clear();
-        }
-
-        class PersistentNPCListBoxItem
-        {
-            /*
-            public readonly NPC Value;
-
-            public PersistentNPCListBoxItem(MapSpawnValues v)
-            {
-                Value = v;
-            }
-
-            public override string ToString()
-            {
-                return string.Format("Char ID: {0}  Count: {1}  Region: {2}", Value.CharacterTemplateID, Value.SpawnAmount,
-                                     Value.SpawnArea);
-            }
-
-            public static implicit operator MapSpawnValues(NPCSpawnsListBoxItem v)
-            {
-                return v.Value;
-            }
-            */
+            Items.AddRange(addedChars.OrderBy(x => x.CharacterID).ToArray());
         }
     }
 }
