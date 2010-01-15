@@ -558,9 +558,13 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Updates the map.
+        /// </summary>
+        /// <param name="deltaTime">The amount of time that elapsed since the last update.</param>
         public override void Update(int deltaTime)
         {
-            // NOTE: This assert will have to be removed once we add support for multithreaded World updates
+            // This assert will have to be removed once/if we add support for multithreaded World updates
             ThreadAsserts.IsMainThread();
 
             // If there are no Users on the Map, update the inactive counter or skip updating if already inactive

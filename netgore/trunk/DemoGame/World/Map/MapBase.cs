@@ -1143,8 +1143,9 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Updates the map
+        /// Updates the map.
         /// </summary>
+        /// <param name="deltaTime">The amount of time that elapsed since the last update.</param>
         public virtual void Update(int deltaTime)
         {
             // Update the Entities
