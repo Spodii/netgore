@@ -63,11 +63,11 @@ namespace NetGore.Graphics
                     _min.Y = 0;
 
                 // Check the max values
-                if (_min.X + _size.X > Map.Width)
-                    _min.X = Map.Width - _size.X;
+                if (Max.X > Map.Width)
+                    _min.X = Map.Width - Size.X;
 
-                if (_min.Y + _size.Y > Map.Height)
-                    _min.Y = Map.Height - _size.Y;
+                if (Max.Y > Map.Height)
+                    _min.Y = Map.Height - Size.Y;
             }
 
             // Update the matrix

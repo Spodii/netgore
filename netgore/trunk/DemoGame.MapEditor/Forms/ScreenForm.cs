@@ -287,6 +287,8 @@ namespace DemoGame.MapEditor
                 txtMapHeight.Text = Map.Height.ToString();
 
                 // Notify listeners
+                HandleChangeMap(oldMap, _map);
+
                 if (OnChangeMap != null)
                     OnChangeMap(oldMap, _map);
             }
@@ -680,8 +682,8 @@ namespace DemoGame.MapEditor
         {
             // Forward the change to some controls
             _camera.Map = newMap;
-            lstNPCSpawns.SetMap(DbController, newMap);
-            // TODO: $$$$$ lstPersistentNPCs.SetMap(DbController, newMap);
+            lstNPCSpawns.Map = newMap;
+            lstPersistentNPCs.Map = newMap;
 
             // Handle the change on some controls manually
             txtMapName.Text = newMap.Name ?? string.Empty;
@@ -856,6 +858,13 @@ namespace DemoGame.MapEditor
         {
             if (lstMapParticleEffects.SelectedItem != null)
                 _selectedObjectsManager.SetSelected(lstMapParticleEffects.SelectedItem);
+        }
+
+
+        private void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstPersistentNPCs.SelectedItem != null)
+                _selectedObjectsManager.SetSelected(lstPersistentNPCs.SelectedItem);
         }
 
         void lstSelected_Click(object sender, EventArgs e)

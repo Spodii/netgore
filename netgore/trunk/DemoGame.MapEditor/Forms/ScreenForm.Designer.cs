@@ -658,9 +658,9 @@ namespace DemoGame.MapEditor
             this.lstPersistentNPCs.FormattingEnabled = true;
             this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
             this.lstPersistentNPCs.Name = "lstPersistentNPCs";
-            this.lstPersistentNPCs.PropertyGrid = null;
             this.lstPersistentNPCs.Size = new System.Drawing.Size(358, 238);
             this.lstPersistentNPCs.TabIndex = 12;
+            this.lstPersistentNPCs.SelectedIndexChanged += new System.EventHandler(this.lstPersistentNPCs_SelectedIndexChanged);
             // 
             // btnDeletePersistentNPC
             // 
