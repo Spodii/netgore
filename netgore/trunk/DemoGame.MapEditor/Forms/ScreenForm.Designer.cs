@@ -201,14 +201,9 @@ namespace DemoGame.MapEditor
             this.GameScreen.Location = new System.Drawing.Point(0, 0);
             this.GameScreen.Name = "GameScreen";
             this.GameScreen.Padding = new System.Windows.Forms.Padding(5);
-            this.GameScreen.ScreenForm = null;
             this.GameScreen.Size = new System.Drawing.Size(800, 600);
             this.GameScreen.TabIndex = 8;
             this.GameScreen.Text = "Game Screen";
-            this.GameScreen.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseWheel);
-            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
-            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
-            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
             // splitContainer3
             // 

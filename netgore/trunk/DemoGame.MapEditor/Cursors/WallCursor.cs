@@ -168,7 +168,7 @@ namespace DemoGame.MapEditor
 
                     cursorPos = transBox.Position;
                     cursorPos.X -= (TransBox.MoveSize.X / 2) + 16f;
-                    GameScreenControl gameScreen = Container.GameScreenControl;
+                    var gameScreen = Container.GameScreenControl;
                     Point pts = gameScreen.PointToScreen(gameScreen.Location);
                     Vector2 screenPos = Container.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
 

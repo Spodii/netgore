@@ -136,11 +136,6 @@ namespace DemoGame.MapEditor
         Map _map;
 
         /// <summary>
-        /// Currently pressed mouse button
-        /// </summary>
-        MouseButtons _mouseButton = MouseButtons.None;
-
-        /// <summary>
         /// Modifier values for the camera moving
         /// </summary>
         Vector2 _moveCamera;
@@ -177,7 +172,6 @@ namespace DemoGame.MapEditor
 
             InitializeComponent();
 
-            GameScreen.ScreenForm = this;
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
             _grid = new ScreenGrid(Camera.Size);
 
@@ -202,6 +196,11 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
+
+            // Set up the GameScreenControl
+            GameScreen.Camera = _camera;
+            GameScreen.UpdateHandler = UpdateGame;
+            GameScreen.DrawHandler = DrawGame;
         }
 
         /// <summary>
@@ -220,23 +219,21 @@ namespace DemoGame.MapEditor
             get { return _cursorManager; }
         }
 
-        /// <summary>
-        /// Gets or sets the cursor position, taking the camera position into consideration.
-        /// </summary>
-        public Vector2 CursorPos
-        {
-            get { return _cursorPos; }
-            set { _cursorPos = value; }
-        }
-
         IDbController DbController
         {
             get { return _dbController; }
         }
 
+        /// <summary>
+        /// Gets or sets the position of the cursor in the world.
+        /// </summary>
+        public Vector2 CursorPos { get { return GameScreen.CursorPos; } set { GameScreen.CursorPos = value; } }
+
         public GameScreenControl GameScreenControl
         {
-            get { return GameScreen; }
+            get { 
+                // TODO: asdfasdfasdf
+                return GameScreen; }
         }
 
         /// <summary>
@@ -318,7 +315,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         public MouseButtons MouseButton
         {
-            get { return _mouseButton; }
+            get { return GameScreen.MouseButton; }
         }
 
         /// <summary>
@@ -545,7 +542,7 @@ namespace DemoGame.MapEditor
             return new WallEntity(reader);
         }
 
-        public void DrawGame()
+        void DrawGame()
         {
             // Clear the background
             GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -651,33 +648,6 @@ namespace DemoGame.MapEditor
             }
 
             return ret;
-        }
-
-        void GameScreen_MouseDown(object sender, MouseEventArgs e)
-        {
-            _mouseButton = e.Button;
-
-            if (Map != null)
-                GameScreen.Focus();
-        }
-
-        void GameScreen_MouseMove(object sender, MouseEventArgs e)
-        {
-            _mouseButton = e.Button;
-            _cursorPos = _camera.ToWorld(e.X, e.Y);
-        }
-
-        void GameScreen_MouseUp(object sender, MouseEventArgs e)
-        {
-            _mouseButton = e.Button;
-        }
-
-        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
-        {
-            if (e.Delta > 0)
-                CursorManager.MoveMouseWheel(1);
-            else if (e.Delta < 0)
-                CursorManager.MoveMouseWheel(-1);
         }
 
         /// <summary>
@@ -1121,12 +1091,12 @@ namespace DemoGame.MapEditor
             Cursor = Cursors.Default;
         }
 
-        public void UpdateGame()
+        void UpdateGame()
         {
             // Update the time
             int currTime = (int)_stopWatch.ElapsedMilliseconds;
             int deltaTime = currTime - _currentTime;
-            _currentTime = (int)_stopWatch.ElapsedMilliseconds;
+            _currentTime = currTime;
 
             // Check for a map
             if (Map == null)
