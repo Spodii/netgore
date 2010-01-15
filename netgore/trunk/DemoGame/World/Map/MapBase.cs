@@ -1166,7 +1166,7 @@ namespace DemoGame
 
                 // Only increment if the current has not changed
                 // This way we can be sure to update everyone even if the entities collection changed
-                if (i < _entities.Count && current == _updateableEntities[i])
+                if (i < _updateableEntities.Count && current == _updateableEntities[i])
                     i++;
             }
         }
