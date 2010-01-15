@@ -686,6 +686,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         void HandleChangeMap(Map oldMap, Map newMap)
         {
+            // Clear the selected item
+            SelectedObjs.Clear();
+
             // Forward the change to some controls manually
             _camera.Map = newMap;
 
