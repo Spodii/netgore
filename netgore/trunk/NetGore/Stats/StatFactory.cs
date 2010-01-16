@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using NetGore;
 
@@ -9,6 +9,8 @@ namespace NetGore.Stats
     /// </summary>
     public static class StatFactory<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
+        // TODO: Have to make it so people can easily define HOW their stats are created instead of always using StatValueShort
+
         /// <summary>
         /// Creates an IStat.
         /// </summary>
