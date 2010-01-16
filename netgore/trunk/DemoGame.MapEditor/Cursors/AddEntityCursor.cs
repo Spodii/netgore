@@ -97,7 +97,7 @@ namespace DemoGame.MapEditor
 
             // Move to the center of the screen
             entity.Size = new Vector2(64);
-            entity.Position = Container.GameScreenControl.CursorPos - (entity.Size / 2f);
+            entity.Position = Container.GameScreen.CursorPos - (entity.Size / 2f);
         }
     }
 }
