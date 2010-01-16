@@ -10,9 +10,10 @@ namespace NetGore.Db
     public abstract class DbQueryNonReader : DbQueryBase, IDbQueryNonReader
     {
         /// <summary>
-        /// DbQueryNonReader constructor.
+        /// Initializes a new instance of the <see cref="DbQueryNonReader"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
         /// <param name="commandText">String containing the command to use for the query.</param>
         protected DbQueryNonReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {
@@ -21,8 +22,8 @@ namespace NetGore.Db
         /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
+        /// <returns>IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return null;
@@ -69,7 +70,8 @@ namespace NetGore.Db
         /// <summary>
         /// DbQueryNonReader constructor.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
         /// <param name="commandText">String containing the command to use for the query.</param>
         protected DbQueryNonReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {

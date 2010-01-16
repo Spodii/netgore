@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using DemoGame.Server;
 using NetGore;
 using NetGore.Db.ClassCreator;
 using NetGore.Stats;
@@ -72,7 +73,7 @@ namespace DemoGame.DbClassCreator
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);
 
                 // Custom external types
-                const string accountID = "DemoGame.Server.AccountID";
+                string accountID = typeof(AccountID).FullName;
                 const string aiID = "NetGore.AI.AIID";
                 const string allianceID = "DemoGame.Server.AllianceID";
                 const string characterID = "DemoGame.Server.CharacterID";

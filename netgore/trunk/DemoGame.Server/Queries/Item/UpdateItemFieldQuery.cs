@@ -29,7 +29,8 @@ namespace DemoGame.Server.Queries
 
             _connectionPool = connectionPool;
 
-            _fieldQueryCache = new HashCache<string, InternalUpdateItemFieldQuery>(x => new InternalUpdateItemFieldQuery(_connectionPool, x));
+            _fieldQueryCache = new HashCache<string, InternalUpdateItemFieldQuery>(x => 
+                new InternalUpdateItemFieldQuery(_connectionPool, string.Format(_queryString, x)));
 
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
@@ -63,6 +64,11 @@ namespace DemoGame.Server.Queries
 
         sealed class InternalUpdateItemFieldQuery : DbQueryNonReader<QueryArgs>
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InternalUpdateItemFieldQuery"/> class.
+            /// </summary>
+            /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+            /// <param name="commandText">String containing the command to use for the query.</param>
             public InternalUpdateItemFieldQuery(DbConnectionPool connectionPool, string commandText)
                 : base(connectionPool, commandText)
             {
@@ -95,9 +101,21 @@ namespace DemoGame.Server.Queries
         /// </summary>
         public struct QueryArgs
         {
+            /// <summary>
+            /// >The item ID. 
+            /// </summary>
             public readonly ItemID ItemID;
+
+            /// <summary>
+            /// The value.
+            /// </summary>
             public readonly object Value;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
+            /// </summary>
+            /// <param name="itemID">The item ID.</param>
+            /// <param name="value">The value.</param>
             public QueryArgs(ItemID itemID, object value)
             {
                 ItemID = itemID;
