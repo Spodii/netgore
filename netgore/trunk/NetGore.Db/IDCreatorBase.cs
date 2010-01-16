@@ -5,12 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-// NOTE: This isn't going to be safe if there is more than one IDCreatorBase instance for a table.
-
-// TODO: Redo this so it supports generics instead of considering everything an int. Would be nice if it was more "safe", too.
-
 namespace NetGore.Db
 {
+    // NOTE: This isn't going to be safe if there is more than one IDCreatorBase instance for a table.
+    // TODO: Redo this so it supports generics instead of considering everything an int. Would be nice if it was more "safe", too.
+
     /// <summary>
     /// A thread-safe object that is used to get and track free IDs. It makes use of the database
     /// to find the free IDs when needed.
