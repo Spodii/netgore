@@ -78,10 +78,16 @@
     <Compile Include="DirectionHelper.cs" />
     <Compile Include="EngineSettings.cs" />
     <Compile Include="Enum\EnumFieldAttributeManager.cs" />
+    <Compile Include="Extensions\Vector3Extensions.cs" />
+    <Compile Include="Extensions\Vector4Extensions.cs" />
     <Compile Include="IO\PropertyInterface\IPropertyInterface.cs" />
     <Compile Include="IO\PropertyInterface\PropertyInterfaceManager.cs" />
     <Compile Include="IO\PropertySync\IPropertySync.cs" />
     <Compile Include="IO\PropertySync\PropertySyncHelper.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncPoint.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncRectangle.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncVector3.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncVector4.cs" />
     <Compile Include="IO\PropertySync\SyncValueAttributeInfo.cs" />
     <Compile Include="IO\Persistable\IPersistable.cs" />
     <Compile Include="IO\Persistable\PersistableHelper.cs" />
