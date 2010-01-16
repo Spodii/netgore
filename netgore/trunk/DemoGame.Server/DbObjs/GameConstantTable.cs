@@ -12,7 +12,7 @@ public class GameConstantTable : IGameConstantTable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"max_account_name_length", "max_account_password_length", "max_character_name_length", "max_characters_per_account", "max_shop_items", "max_status_effect_power", "min_account_name_length", "min_account_password_length", "min_character_name_length", "screen_height", "screen_width", "server_ip", "server_ping_port", "server_tcp_port", "world_physics_update_rate" };
+ static  readonly System.String[] _dbColumns = new string[] {"max_account_name_length", "max_account_password_length", "max_character_name_length", "max_characters_per_account", "max_inventory_size", "max_shop_items", "max_status_effect_power", "min_account_name_length", "min_account_password_length", "min_character_name_length", "screen_height", "screen_width", "server_ip", "server_ping_port", "server_tcp_port", "world_physics_update_rate" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -40,7 +40,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"max_account_name_length", "max_account_password_length", "max_character_name_length", "max_characters_per_account", "max_shop_items", "max_status_effect_power", "min_account_name_length", "min_account_password_length", "min_character_name_length", "screen_height", "screen_width", "server_ip", "server_ping_port", "server_tcp_port", "world_physics_update_rate" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"max_account_name_length", "max_account_password_length", "max_character_name_length", "max_characters_per_account", "max_inventory_size", "max_shop_items", "max_status_effect_power", "min_account_name_length", "min_account_password_length", "min_character_name_length", "screen_height", "screen_width", "server_ip", "server_ping_port", "server_tcp_port", "world_physics_update_rate" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -58,7 +58,7 @@ public const System.String TableName = "game_constant";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 15;
+public const System.Int32 ColumnCount = 16;
 /// <summary>
 /// The field that maps onto the database column `max_account_name_length`.
 /// </summary>
@@ -75,6 +75,10 @@ System.Byte _maxCharacterNameLength;
 /// The field that maps onto the database column `max_characters_per_account`.
 /// </summary>
 System.Byte _maxCharactersPerAccount;
+/// <summary>
+/// The field that maps onto the database column `max_inventory_size`.
+/// </summary>
+System.Byte _maxInventorySize;
 /// <summary>
 /// The field that maps onto the database column `max_shop_items`.
 /// </summary>
@@ -177,6 +181,21 @@ return (System.Byte)_maxCharactersPerAccount;
 set
 {
 this._maxCharactersPerAccount = (System.Byte)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `max_inventory_size`.
+/// The underlying database type is `tinyint(3) unsigned`.
+/// </summary>
+public System.Byte MaxInventorySize
+{
+get
+{
+return (System.Byte)_maxInventorySize;
+}
+set
+{
+this._maxInventorySize = (System.Byte)value;
 }
 }
 /// <summary>
@@ -369,6 +388,7 @@ public GameConstantTable()
 /// <param name="maxAccountPasswordLength">The initial value for the corresponding property.</param>
 /// <param name="maxCharacterNameLength">The initial value for the corresponding property.</param>
 /// <param name="maxCharactersPerAccount">The initial value for the corresponding property.</param>
+/// <param name="maxInventorySize">The initial value for the corresponding property.</param>
 /// <param name="maxShopItems">The initial value for the corresponding property.</param>
 /// <param name="maxStatusEffectPower">The initial value for the corresponding property.</param>
 /// <param name="minAccountNameLength">The initial value for the corresponding property.</param>
@@ -380,12 +400,13 @@ public GameConstantTable()
 /// <param name="serverPingPort">The initial value for the corresponding property.</param>
 /// <param name="serverTcpPort">The initial value for the corresponding property.</param>
 /// <param name="worldPhysicsUpdateRate">The initial value for the corresponding property.</param>
-public GameConstantTable(System.Byte @maxAccountNameLength, System.Byte @maxAccountPasswordLength, System.Byte @maxCharacterNameLength, System.Byte @maxCharactersPerAccount, System.Byte @maxShopItems, System.UInt16 @maxStatusEffectPower, System.Byte @minAccountNameLength, System.Byte @minAccountPasswordLength, System.Byte @minCharacterNameLength, System.UInt16 @screenHeight, System.UInt16 @screenWidth, System.String @serverIp, System.UInt16 @serverPingPort, System.UInt16 @serverTcpPort, System.UInt16 @worldPhysicsUpdateRate)
+public GameConstantTable(System.Byte @maxAccountNameLength, System.Byte @maxAccountPasswordLength, System.Byte @maxCharacterNameLength, System.Byte @maxCharactersPerAccount, System.Byte @maxInventorySize, System.Byte @maxShopItems, System.UInt16 @maxStatusEffectPower, System.Byte @minAccountNameLength, System.Byte @minAccountPasswordLength, System.Byte @minCharacterNameLength, System.UInt16 @screenHeight, System.UInt16 @screenWidth, System.String @serverIp, System.UInt16 @serverPingPort, System.UInt16 @serverTcpPort, System.UInt16 @worldPhysicsUpdateRate)
 {
 this.MaxAccountNameLength = (System.Byte)@maxAccountNameLength;
 this.MaxAccountPasswordLength = (System.Byte)@maxAccountPasswordLength;
 this.MaxCharacterNameLength = (System.Byte)@maxCharacterNameLength;
 this.MaxCharactersPerAccount = (System.Byte)@maxCharactersPerAccount;
+this.MaxInventorySize = (System.Byte)@maxInventorySize;
 this.MaxShopItems = (System.Byte)@maxShopItems;
 this.MaxStatusEffectPower = (System.UInt16)@maxStatusEffectPower;
 this.MinAccountNameLength = (System.Byte)@minAccountNameLength;
@@ -429,6 +450,7 @@ dic["@max_account_name_length"] = (System.Byte)source.MaxAccountNameLength;
 dic["@max_account_password_length"] = (System.Byte)source.MaxAccountPasswordLength;
 dic["@max_character_name_length"] = (System.Byte)source.MaxCharacterNameLength;
 dic["@max_characters_per_account"] = (System.Byte)source.MaxCharactersPerAccount;
+dic["@max_inventory_size"] = (System.Byte)source.MaxInventorySize;
 dic["@max_shop_items"] = (System.Byte)source.MaxShopItems;
 dic["@max_status_effect_power"] = (System.UInt16)source.MaxStatusEffectPower;
 dic["@min_account_name_length"] = (System.Byte)source.MinAccountNameLength;
@@ -452,6 +474,7 @@ this.MaxAccountNameLength = (System.Byte)source.MaxAccountNameLength;
 this.MaxAccountPasswordLength = (System.Byte)source.MaxAccountPasswordLength;
 this.MaxCharacterNameLength = (System.Byte)source.MaxCharacterNameLength;
 this.MaxCharactersPerAccount = (System.Byte)source.MaxCharactersPerAccount;
+this.MaxInventorySize = (System.Byte)source.MaxInventorySize;
 this.MaxShopItems = (System.Byte)source.MaxShopItems;
 this.MaxStatusEffectPower = (System.UInt16)source.MaxStatusEffectPower;
 this.MinAccountNameLength = (System.Byte)source.MinAccountNameLength;
@@ -487,6 +510,9 @@ return MaxCharacterNameLength;
 
 case "max_characters_per_account":
 return MaxCharactersPerAccount;
+
+case "max_inventory_size":
+return MaxInventorySize;
 
 case "max_shop_items":
 return MaxShopItems;
@@ -549,6 +575,10 @@ break;
 
 case "max_characters_per_account":
 this.MaxCharactersPerAccount = (System.Byte)value;
+break;
+
+case "max_inventory_size":
+this.MaxInventorySize = (System.Byte)value;
 break;
 
 case "max_shop_items":
@@ -622,6 +652,9 @@ return new ColumnMetadata("max_character_name_length", "", "tinyint(3) unsigned"
 
 case "max_characters_per_account":
 return new ColumnMetadata("max_characters_per_account", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+
+case "max_inventory_size":
+return new ColumnMetadata("max_inventory_size", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
 
 case "max_shop_items":
 return new ColumnMetadata("max_shop_items", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);

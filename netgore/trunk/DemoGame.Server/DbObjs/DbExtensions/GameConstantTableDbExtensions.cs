@@ -23,6 +23,7 @@ paramValues["@max_account_name_length"] = (System.Byte)source.MaxAccountNameLeng
 paramValues["@max_account_password_length"] = (System.Byte)source.MaxAccountPasswordLength;
 paramValues["@max_character_name_length"] = (System.Byte)source.MaxCharacterNameLength;
 paramValues["@max_characters_per_account"] = (System.Byte)source.MaxCharactersPerAccount;
+paramValues["@max_inventory_size"] = (System.Byte)source.MaxInventorySize;
 paramValues["@max_shop_items"] = (System.Byte)source.MaxShopItems;
 paramValues["@max_status_effect_power"] = (System.UInt16)source.MaxStatusEffectPower;
 paramValues["@min_account_name_length"] = (System.Byte)source.MinAccountNameLength;
@@ -58,6 +59,9 @@ source.MaxCharacterNameLength = (System.Byte)(System.Byte)dataReader.GetByte(i);
 
 i = dataReader.GetOrdinal("max_characters_per_account");
 source.MaxCharactersPerAccount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+
+i = dataReader.GetOrdinal("max_inventory_size");
+source.MaxInventorySize = (System.Byte)(System.Byte)dataReader.GetByte(i);
 
 i = dataReader.GetOrdinal("max_shop_items");
 source.MaxShopItems = (System.Byte)(System.Byte)dataReader.GetByte(i);
@@ -126,6 +130,11 @@ break;
 
 case "max_characters_per_account":
 source.MaxCharactersPerAccount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+break;
+
+
+case "max_inventory_size":
+source.MaxInventorySize = (System.Byte)(System.Byte)dataReader.GetByte(i);
 break;
 
 
@@ -222,6 +231,11 @@ break;
 
 case "@max_characters_per_account":
 paramValues[i] = (System.Byte)source.MaxCharactersPerAccount;
+break;
+
+
+case "@max_inventory_size":
+paramValues[i] = (System.Byte)source.MaxInventorySize;
 break;
 
 

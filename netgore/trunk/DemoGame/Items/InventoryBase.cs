@@ -9,23 +9,14 @@ using NetGore;
 
 namespace DemoGame
 {
-    public abstract class InventoryBase
-    {
-        /// <summary>
-        /// The maximum size (number of different item sets) of the Inventory. Any slot greater than or equal to
-        /// the MaxInventorySize is considered invalid.
-        /// </summary>
-        public const int MaxInventorySize = 6 * 6; // TODO: Move this to GameData, and store the value in the database
-    }
-
     /// <summary>
     /// Base class for an Inventory that contains ItemEntities.
     /// </summary>
-    public abstract class InventoryBase<T> : InventoryBase, IEnumerable<KeyValuePair<InventorySlot, T>> where T : ItemEntityBase
+    public abstract class InventoryBase<T> : IEnumerable<KeyValuePair<InventorySlot, T>> where T : ItemEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly T[] _buffer = new T[MaxInventorySize];
+        readonly T[] _buffer = new T[GameData.MaxInventorySize];
 
         /// <summary>
         /// Gets or sets (protected) the item in the Inventory at the given <paramref name="slot"/>.
@@ -222,7 +213,7 @@ namespace DemoGame
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            for (int i = 0; i < MaxInventorySize; i++)
+            for (int i = 0; i < _buffer.Length; i++)
             {
                 if (this[new InventorySlot(i)] == item)
                     return new InventorySlot(i);
@@ -307,7 +298,7 @@ namespace DemoGame
         protected bool TryFindEmptySlot(out InventorySlot emptySlot)
         {
             // Iterate through each slot
-            for (int i = 0; i < MaxInventorySize; i++)
+            for (int i = 0; i < _buffer.Length; i++)
             {
                 // Return on the first null item
                 if (this[new InventorySlot(i)] == null)
@@ -333,7 +324,7 @@ namespace DemoGame
         protected bool TryFindStackableSlot(ItemEntityBase item, out InventorySlot stackableSlot)
         {
             // Iterate through each slot
-            for (int i = 0; i < MaxInventorySize; i++)
+            for (int i = 0; i < _buffer.Length; i++)
             {
                 T invItem = this[new InventorySlot(i)];
 

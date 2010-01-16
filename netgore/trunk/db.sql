@@ -425,6 +425,7 @@ CREATE TABLE `game_constant` (
   `min_character_name_length` tinyint(3) unsigned NOT NULL,
   `max_character_name_length` tinyint(3) unsigned NOT NULL,
   `max_shop_items` tinyint(3) unsigned NOT NULL,
+  `max_inventory_size` tinyint(3) unsigned NOT NULL,
   `max_status_effect_power` smallint(5) unsigned NOT NULL,
   `screen_width` smallint(5) unsigned NOT NULL,
   `screen_height` smallint(5) unsigned NOT NULL,
@@ -441,7 +442,7 @@ CREATE TABLE `game_constant` (
 
 LOCK TABLES `game_constant` WRITE;
 /*!40000 ALTER TABLE `game_constant` DISABLE KEYS */;
-INSERT INTO `game_constant` VALUES (10,3,30,3,30,3,15,36,500,1024,768,44446,44445,'127.0.0.1',20);
+INSERT INTO `game_constant` VALUES (10,3,30,3,30,3,15,36,0,500,1024,768,44446,44445,'127.0.0.1',20);
 /*!40000 ALTER TABLE `game_constant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -926,4 +927,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-01-16  1:07:04
+-- Dump completed on 2010-01-16  1:23:23

@@ -12,7 +12,7 @@ namespace DemoGame.Server
     /// </summary>
     class UserInventoryUpdater
     {
-        readonly BitArray _slotChanged = new BitArray(CharacterInventory.MaxInventorySize);
+        readonly BitArray _slotChanged = new BitArray(GameData.MaxInventorySize);
 
         readonly UserInventory _userInventory;
 
@@ -64,14 +64,15 @@ namespace DemoGame.Server
             try
             {
                 // Loop through all slots
-                for (InventorySlot slot = new InventorySlot(0); slot < CharacterInventory.MaxInventorySize; slot++)
+                for (int slot = 0; slot < GameData.MaxInventorySize; slot++)
                 {
                     // Skip unchanged slots
-                    if (!_slotChanged[(int)slot])
+                    if (!_slotChanged[slot])
                         continue;
 
                     // Get the item in the slot
-                    ItemEntity item = UserInventory[slot];
+                    var invSlot = new InventorySlot(slot);
+                    ItemEntity item = UserInventory[invSlot];
 
                     // Get the values to send, which depends on if the slot is empty (item == null) or not
                     GrhIndex sendItemGraphic;
@@ -95,7 +96,7 @@ namespace DemoGame.Server
                         pw.Reset();
 
                     // Pack the data and send it
-                    ServerPacket.SetInventorySlot(pw, slot, sendItemGraphic, sendItemAmount);
+                    ServerPacket.SetInventorySlot(pw, invSlot, sendItemGraphic, sendItemAmount);
                     OwnerUser.Send(pw);
                 }
             }
