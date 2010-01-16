@@ -162,70 +162,50 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="compareTo">Walls to compare against</param>
         /// <returns>A list of all duplicate walls in the map</returns>
-        public List<WallEntityBase> FindDuplicateWalls(IEnumerable<WallEntityBase> compareTo)
+        public IEnumerable<WallEntityBase> FindDuplicateWalls(IEnumerable<WallEntityBase> compareTo)
         {
             // List to store all the duplicates
             var ret = new List<WallEntityBase>(32);
 
             // Loop through each entity in the map
-            foreach (Entity entity in Entities)
+            foreach (var a in Entities.OfType<WallEntityBase>())
             {
-                // Check if the map is a WallEntity
-                WallEntityBase a = entity as WallEntityBase;
-                if (a == null)
-                    continue;
-
                 // Loop through each WallEntity in the comparison enum
                 foreach (WallEntityBase b in compareTo)
                 {
-                    if (b == null)
-                        continue;
-
                     // Check for duplicate location and collision type
-                    if (a.Position == b.Position && a.Size == b.Size)
+                    if (a.Position == b.Position && a.Size == b.Size && a.GetType() == b.GetType())
                     {
-                        // If the return list doesn't yet contain the wall, add it
-                        if (!ret.Contains(a))
-                            ret.Add(a);
+                        ret.Add(a);
                     }
                 }
             }
 
-            return ret;
+            return ret.Distinct();
         }
 
         /// <summary>
-        /// Finds all duplicate (same position, size and type) walls
+        /// Finds all duplicate <see cref="WallEntityBase"/>s.
         /// </summary>
-        /// <returns>A list of all duplicate walls in the map</returns>
-        public List<WallEntityBase> FindDuplicateWalls()
+        /// <returns>A list of all duplicate walls in the map.</returns>
+        public IEnumerable<WallEntityBase> FindDuplicateWalls()
         {
             var ret = new List<WallEntityBase>();
 
             // Initial loop (all walls but the last)
-            for (int i = 0; i < Entities.Count() - 1; i++)
+            foreach (var wall in Entities.OfType<WallEntityBase>())
             {
-                WallEntityBase a = GetEntity(i) as WallEntityBase; // Skip if not a WallEntity
-                if (a == null)
-                    continue;
-
-                // Comparison loop (all walls after the initial)
-                for (int j = i + 1; j < Entities.Count(); j++)
+                // Get the overlapping walls
+                foreach (var wall2 in Spatial.GetMany<WallEntityBase>(wall))
                 {
-                    WallEntityBase b = GetEntity(j) as WallEntityBase; // Skip if not a WallEntity
-                    if (b == null)
-                        continue;
-
-                    // Check for a match and the wall not already in the return list
-                    if (a.Position == b.Position && a.Size == b.Size)
+                    if (wall.Position == wall2.Position && wall.Size == wall2.Size && wall.GetType() == wall2.GetType())
                     {
-                        if (!ret.Contains(b))
-                            ret.Add(b);
+                        ret.Add(wall2);
                     }
                 }
             }
 
-            return ret;
+            return ret.Distinct();
         }
 
         /// <summary>
