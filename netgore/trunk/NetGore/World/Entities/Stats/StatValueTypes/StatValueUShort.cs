@@ -17,7 +17,7 @@ namespace NetGore
         readonly ushort _value;
 
         /// <summary>
-        /// StatValueUShort constructor.
+        /// Initializes a new instance of the <see cref="StatValueUShort"/> struct.
         /// </summary>
         /// <param name="value">The initial value.</param>
         public StatValueUShort(ushort value)

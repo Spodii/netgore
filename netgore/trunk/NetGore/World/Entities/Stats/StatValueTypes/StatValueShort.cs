@@ -16,7 +16,7 @@ namespace NetGore
         readonly short _value;
 
         /// <summary>
-        /// StatValueShort constructor.
+        /// Initializes a new instance of the <see cref="StatValueShort"/> struct.
         /// </summary>
         /// <param name="value">The initial value.</param>
         public StatValueShort(short value)
