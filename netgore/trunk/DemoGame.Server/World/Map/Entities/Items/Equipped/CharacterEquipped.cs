@@ -20,6 +20,10 @@ namespace DemoGame.Server
         readonly EquippedPaperDoll _paperDoll;
         bool _disposed = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterEquipped"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the instance is for.</param>
         protected CharacterEquipped(Character character)
         {
             if (character == null)
@@ -28,8 +32,6 @@ namespace DemoGame.Server
             _character = character;
             _isPersistent = character.IsPersistent;
             _paperDoll = new EquippedPaperDoll(Character);
-
-            AddListeners();
         }
 
         /// <summary>
@@ -43,13 +45,6 @@ namespace DemoGame.Server
         public IDbController DbController
         {
             get { return Character.DbController; }
-        }
-
-        void AddListeners()
-        {
-            // TODO: Add two virtual methods, AfterEquip() and AfterRemove(), to replace the need for these event hooks
-            OnEquip += CharacterEquipped_OnEquip;
-            OnRemove += CharacterEquipped_OnRemove;
         }
 
         /// <summary>
@@ -78,8 +73,16 @@ namespace DemoGame.Server
             return Character.Inventory.CanAdd((ItemEntity)item);
         }
 
-        void CharacterEquipped_OnEquip(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
+        /// <summary>
+        /// When overridden in the derived class, handles when an item has been equipped.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected override void HandleOnEquip(ItemEntity item, EquipmentSlot slot)
         {
+            if (_ignoreEquippedBaseEvents)
+                return;
+
             Debug.Assert(item != null);
 
             if (_isPersistent)
@@ -93,8 +96,16 @@ namespace DemoGame.Server
             _paperDoll.NotifyAdded(slot, item);
         }
 
-        void CharacterEquipped_OnRemove(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
+        /// <summary>
+        /// When overridden in the derived class, handles when an item has been removed.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected override void HandleOnRemove(ItemEntity item, EquipmentSlot slot)
         {
+            if (_ignoreEquippedBaseEvents)
+                return;
+
             Debug.Assert(item != null);
 
             if (_isPersistent)
@@ -145,7 +156,7 @@ namespace DemoGame.Server
             var items = DbController.GetQuery<SelectCharacterEquippedItemsQuery>().Execute(Character.ID);
 
             // Remove the listeners since we don't want to update the database when loading
-            RemoveListeners();
+            _ignoreEquippedBaseEvents = true;
 
             // Load all the items
             foreach (var item in items)
@@ -160,15 +171,13 @@ namespace DemoGame.Server
                     Debug.Fail("Uhm, the Character couldn't load their equipped item. What should we do...?");
             }
 
-            // Add the listeners back
-            AddListeners();
+            _ignoreEquippedBaseEvents = false;
         }
 
-        void RemoveListeners()
-        {
-            OnEquip -= CharacterEquipped_OnEquip;
-            OnRemove -= CharacterEquipped_OnRemove;
-        }
+        /// <summary>
+        /// When true, the <see cref="HandleOnEquip"/> and <see cref="HandleOnRemove"/> methods will be ignored.
+        /// </summary>
+        bool _ignoreEquippedBaseEvents = false;
 
         protected virtual void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {

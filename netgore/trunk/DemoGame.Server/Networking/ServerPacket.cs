@@ -366,7 +366,17 @@ namespace DemoGame.Server
         {
             pw.Write(ServerPacketID.SetInventorySlot);
             pw.Write(slot);
-            pw.Write(graphic);
+
+            if (graphic.IsInvalid)
+            {
+                pw.Write(false);
+            }
+            else
+            {
+                pw.Write(true);
+                pw.Write(graphic);
+            }
+
             pw.Write(amount);
         }
 

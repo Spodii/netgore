@@ -1476,6 +1476,7 @@ namespace DemoGame.Server
                 else
                 {
                     // TODO: Could not find a valid position for the Character
+                    Debug.Fail("What to do, what to do...");
                 }
             }
 
