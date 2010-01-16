@@ -326,6 +326,82 @@ namespace NetGore.Tests.Graphics.GUI
         }
 
         [Test]
+        public void EmptyIEnumerableToStringTest()
+        {
+            Assert.AreEqual(string.Empty, StyledText.ToString(new StyledText[0]));
+        }
+
+        [Test]
+        public void EmptyIEnumerableToStringWithDelimiterTest()
+        {
+            Assert.AreEqual(string.Empty, StyledText.ToString(new StyledText[0], "WWW"));
+        }
+
+        [Test]
+        public void NullIEnumerableToStringTest()
+        {
+            Assert.AreEqual(string.Empty, StyledText.ToString(null));
+        }
+
+        [Test]
+        public void NullIEnumerableToStringWithDelimiterTest()
+        {
+            Assert.AreEqual(string.Empty, StyledText.ToString(null, "WWW"));
+        }
+
+        [Test]
+        public void IEnumerableToStringTest()
+        {
+            StyledText a = new StyledText("abc");
+            StyledText b = new StyledText("123");
+            StyledText c = new StyledText("xyz");
+            var v = new StyledText[] { a, b, c };
+
+            Assert.AreEqual("abc123xyz", StyledText.ToString(v));
+        }
+
+        [Test]
+        public void IEnumerableToStringWithDelimiterTest()
+        {
+            StyledText a = new StyledText("abc");
+            StyledText b = new StyledText("123");
+            StyledText c = new StyledText("xyz");
+            var v = new StyledText[] { a, b, c };
+
+            Assert.AreEqual("abcWWW123WWWxyz", StyledText.ToString(v, "WWW"));
+        }
+
+        [Test]
+        public void HasSameStyleFalseTest()
+        {
+            StyledText a = new StyledText("abc", Color.Red);
+            StyledText b = new StyledText("123", Color.Green);
+
+            Assert.IsFalse(a.HasSameStyle(b));
+            Assert.IsFalse(b.HasSameStyle(a));
+        }
+
+        [Test]
+        public void HasSameStyleTrueTest()
+        {
+            StyledText a = new StyledText("abc", Color.Red);
+            StyledText b = new StyledText("123", a);
+
+            Assert.IsTrue(a.HasSameStyle(b));
+            Assert.IsTrue(b.HasSameStyle(a));
+        }
+
+        [Test]
+        public void ToStringTest()
+        {
+            StyledText a = new StyledText("abc", Color.Red);
+            StyledText b = new StyledText("123", a);
+
+            Assert.AreEqual("abc", a.ToString());
+            Assert.AreEqual("123", b.ToString());
+        }
+
+        [Test]
         public void ToSingleLineTest()
         {
             StyledText a = new StyledText("abc\rdefg\r\nhij\r\nklm\nn");
