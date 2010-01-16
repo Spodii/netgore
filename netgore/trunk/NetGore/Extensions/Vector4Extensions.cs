@@ -128,7 +128,8 @@ namespace NetGore
         /// <see cref="Vector4"/>.</returns>
         public static Vector4 Round(this Vector4 source)
         {
-            return new Vector4((float)Math.Round(source.X), (float)Math.Round(source.Y), (float)Math.Round(source.Z), (float)Math.Round(source.W));
+            return new Vector4((float)Math.Round(source.X), (float)Math.Round(source.Y), (float)Math.Round(source.Z),
+                               (float)Math.Round(source.W));
         }
 
         /// <summary>

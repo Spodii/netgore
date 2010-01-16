@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DemoGame.Server;
 using NetGore;
 using NetGore.Db.ClassCreator;

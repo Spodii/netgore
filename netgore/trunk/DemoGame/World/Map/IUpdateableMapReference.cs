@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore;
 
 namespace DemoGame
@@ -16,6 +13,6 @@ namespace DemoGame
         /// Gets or sets the map that the <see cref="IUpdateableMapReference"/> is on. This should only be set
         /// by the map that the object was added to.
         /// </summary>
-        IMap Map { get; set;}
+        IMap Map { get; set; }
     }
 }

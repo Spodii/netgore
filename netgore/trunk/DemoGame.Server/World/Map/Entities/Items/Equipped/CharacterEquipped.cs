@@ -21,6 +21,11 @@ namespace DemoGame.Server
         bool _disposed = false;
 
         /// <summary>
+        /// When true, the <see cref="HandleOnEquip"/> and <see cref="HandleOnRemove"/> methods will be ignored.
+        /// </summary>
+        bool _ignoreEquippedBaseEvents = false;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEquipped"/> class.
         /// </summary>
         /// <param name="character">The <see cref="Character"/> the instance is for.</param>
@@ -173,11 +178,6 @@ namespace DemoGame.Server
 
             _ignoreEquippedBaseEvents = false;
         }
-
-        /// <summary>
-        /// When true, the <see cref="HandleOnEquip"/> and <see cref="HandleOnRemove"/> methods will be ignored.
-        /// </summary>
-        bool _ignoreEquippedBaseEvents = false;
 
         protected virtual void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {

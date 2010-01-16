@@ -24,12 +24,6 @@ namespace DemoGame
         public const float AnimationSpeedModifier = 0.13f;
 
         /// <summary>
-        /// The maximum size (number of different item sets) of the Inventory. Any slot greater than or equal to
-        /// the MaxInventorySize is considered invalid.
-        /// </summary>
-        public const int MaxInventorySize = 6 * 6;
-
-        /// <summary>
         /// The IP address to use by default when creating accounts when no IP can be specified, such as if the account
         /// is created from the console.
         /// </summary>
@@ -44,6 +38,12 @@ namespace DemoGame
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>
         public const int MaxClientSayLength = 250;
+
+        /// <summary>
+        /// The maximum size (number of different item sets) of the Inventory. Any slot greater than or equal to
+        /// the MaxInventorySize is considered invalid.
+        /// </summary>
+        public const int MaxInventorySize = 6 * 6;
 
         /// <summary>
         /// The maximum accounts that can be created for a single IP address over a given period of time. The period
@@ -171,6 +171,20 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
+        /// the given <paramref name="spatial"/>.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> doing the picking-up.</param>
+        /// <returns>A <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
+        /// the given <paramref name="spatial"/>.</returns>
+        public static Rectangle GetPickupRegion(ISpatial spatial)
+        {
+            const int padding = 70;
+            var r = spatial.ToRectangle();
+            return new Rectangle(r.X - padding, r.Y - padding, r.Width + (padding * 2), r.Height + (padding * 2));
+        }
+
+        /// <summary>
         /// Gets if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to shop.
         /// </summary>
         /// <param name="shopper">The Entity doing the shopping.</param>
@@ -180,6 +194,19 @@ namespace DemoGame
         public static bool IsValidDistanceToShop(Entity shopper, Entity shopOwner)
         {
             return shopper.Intersects(shopOwner);
+        }
+
+        /// <summary>
+        /// Checks if an <see cref="ISpatial"/> is close enough to another <see cref="ISpatial"/> to pick it up.
+        /// </summary>
+        /// <param name="grabber">The <see cref="ISpatial"/> doing the picking up.</param>
+        /// <param name="toGrab">The <see cref="ISpatial"/> being picked up.</param>
+        /// <returns>True if the <paramref name="grabber"/> is close enough to the <paramref name="toGrab"/>
+        /// to pick it up; otherwise false.</returns>
+        public static bool IsValidPickupDistance(ISpatial grabber, ISpatial toGrab)
+        {
+            var region = GetPickupRegion(grabber);
+            return toGrab.Intersects(region);
         }
 
         /// <summary>
@@ -210,33 +237,6 @@ namespace DemoGame
         public static int StatCost(int x)
         {
             return (x / 10) + 1;
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
-        /// the given <paramref name="spatial"/>.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/> doing the picking-up.</param>
-        /// <returns>A <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
-        /// the given <paramref name="spatial"/>.</returns>
-        public static Rectangle GetPickupRegion(ISpatial spatial)
-        {
-            const int padding = 70;
-            var r = spatial.ToRectangle();
-            return new Rectangle(r.X - padding, r.Y - padding, r.Width + (padding * 2), r.Height + (padding * 2));
-        }
-
-        /// <summary>
-        /// Checks if an <see cref="ISpatial"/> is close enough to another <see cref="ISpatial"/> to pick it up.
-        /// </summary>
-        /// <param name="grabber">The <see cref="ISpatial"/> doing the picking up.</param>
-        /// <param name="toGrab">The <see cref="ISpatial"/> being picked up.</param>
-        /// <returns>True if the <paramref name="grabber"/> is close enough to the <paramref name="toGrab"/>
-        /// to pick it up; otherwise false.</returns>
-        public static bool IsValidPickupDistance(ISpatial grabber, ISpatial toGrab)
-        {
-            var region = GetPickupRegion(grabber);
-            return toGrab.Intersects(region);
         }
 
         /// <summary>

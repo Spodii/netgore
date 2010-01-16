@@ -368,9 +368,7 @@ namespace DemoGame.Server
             pw.Write(slot);
 
             if (graphic.IsInvalid)
-            {
                 pw.Write(false);
-            }
             else
             {
                 pw.Write(true);

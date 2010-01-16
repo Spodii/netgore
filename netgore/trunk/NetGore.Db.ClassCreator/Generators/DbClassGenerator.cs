@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NetGore.Db.ClassCreator.Properties;
-using NetGore.IO;
 
 namespace NetGore.Db.ClassCreator
 {

@@ -65,7 +65,7 @@ namespace NetGore.Tests.NetGore
             src.M = new GrhIndex(10091);
             src.L = new Vector2(213, 123);
             src.Q = new Vector3(123, 412, 1931);
-            src.R = new Vector4(109,12,190,51);
+            src.R = new Vector4(109, 12, 190, 51);
 
             writer = new BitStream(BitStreamMode.Write, 2048);
             src.Serialize(writer);
@@ -567,8 +567,8 @@ namespace NetGore.Tests.NetGore
                 N = "afoiwurekj sadfoiwerkjl asdfa1309813";
                 O = new Color(13, 124, 11, 12);
                 P = Alignment.Center;
-                Q = new Vector3(51,1231,52);
-                R = new Vector4(501, 1238, 61,1231);
+                Q = new Vector3(51, 1231, 52);
+                R = new Vector4(501, 1238, 61, 1231);
             }
 
             [SyncValue]

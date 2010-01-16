@@ -29,8 +29,9 @@ namespace DemoGame.Server.Queries
 
             _connectionPool = connectionPool;
 
-            _fieldQueryCache = new HashCache<string, InternalUpdateItemFieldQuery>(x => 
-                new InternalUpdateItemFieldQuery(_connectionPool, string.Format(_queryString, x)));
+            _fieldQueryCache =
+                new HashCache<string, InternalUpdateItemFieldQuery>(
+                    x => new InternalUpdateItemFieldQuery(_connectionPool, string.Format(_queryString, x)));
 
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
