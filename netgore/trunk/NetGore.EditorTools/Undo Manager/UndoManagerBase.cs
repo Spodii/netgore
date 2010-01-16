@@ -26,7 +26,12 @@ namespace NetGore.EditorTools
         {
             //If there are any undone events (events after the cursor index in the list), remove them.
             if (_cursorIndex < _events.Count() - 1)
+            {
+                foreach (IUndoEvent eve in _events.GetRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1)))
+                    eve.Dispose();
+                
                 _events.RemoveRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1));
+            }
 
             //Add the IUndoEvent to the list.
             _events.Add(undoEvent);
