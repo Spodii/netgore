@@ -213,18 +213,30 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets if the distance between two points is short enough to allow picking-up.
+        /// Gets a <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
+        /// the given <paramref name="spatial"/>.
         /// </summary>
-        /// <param name="source">The Entity doing the picking-up.</param>
-        /// <param name="target">The Entity to be picked-up.</param>
-        /// <returns>True if the <paramref name="source"/> is close enough to the <paramref name="target"/> to
-        /// pick it up, otherwise false.</returns>
-        public static bool ValidServerPickupDistance(Entity source, Entity target)
+        /// <param name="spatial">The <see cref="ISpatial"/> doing the picking-up.</param>
+        /// <returns>A <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
+        /// the given <paramref name="spatial"/>.</returns>
+        public static Rectangle GetPickupRegion(ISpatial spatial)
         {
-            // TODO: Make use of this!
-            const float maxDistance = 200.0f;
-            float dist = source.Position.QuickDistance(target.Position);
-            return dist < maxDistance;
+            const int padding = 70;
+            var r = spatial.ToRectangle();
+            return new Rectangle(r.X - padding, r.Y - padding, r.Width + (padding * 2), r.Height + (padding * 2));
+        }
+
+        /// <summary>
+        /// Checks if an <see cref="ISpatial"/> is close enough to another <see cref="ISpatial"/> to pick it up.
+        /// </summary>
+        /// <param name="grabber">The <see cref="ISpatial"/> doing the picking up.</param>
+        /// <param name="toGrab">The <see cref="ISpatial"/> being picked up.</param>
+        /// <returns>True if the <paramref name="grabber"/> is close enough to the <paramref name="toGrab"/>
+        /// to pick it up; otherwise false.</returns>
+        public static bool IsValidPickupDistance(ISpatial grabber, ISpatial toGrab)
+        {
+            var region = GetPickupRegion(grabber);
+            return toGrab.Intersects(region);
         }
 
         /// <summary>

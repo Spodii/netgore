@@ -285,7 +285,7 @@ namespace DemoGame.Server
                 return;
 
             // Ensure the distance is valid
-            if (!user.IsInPickupRegion(item))
+            if (!GameData.IsValidPickupDistance(user, item))
             {
                 const string errmsg = "User `{0}` failed to pick up item `{1}` - distance was too great.";
                 if (log.IsInfoEnabled)
