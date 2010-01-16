@@ -4,7 +4,7 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
     /// Describes a single <see cref="IStat"/>, containing the <see cref="StatType"/> and value current stat value.

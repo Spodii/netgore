@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
     /// An enum containing the type of collections for Stats.

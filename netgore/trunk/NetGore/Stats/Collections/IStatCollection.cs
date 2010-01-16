@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
     /// Interface for a collection of IStats that provides access to the IStat's value through the StatType.

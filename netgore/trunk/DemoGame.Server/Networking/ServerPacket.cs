@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Network;
+using NetGore.Stats;
 
 namespace DemoGame.Server
 {

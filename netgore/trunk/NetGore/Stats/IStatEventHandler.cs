@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
     /// Handles basic IStat events.

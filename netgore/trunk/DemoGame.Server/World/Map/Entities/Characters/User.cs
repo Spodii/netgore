@@ -10,6 +10,7 @@ using NetGore.AI;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
+using NetGore.Stats;
 
 namespace DemoGame.Server
 {
