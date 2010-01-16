@@ -92,7 +92,7 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets or sets the CodeFormatter to use. Default is the CSharpCodeFormatter.
+        /// Gets or sets the CodeFormatter to use. Default is the <see cref="CSharpCodeFormatter"/>.
         /// </summary>
         public CodeFormatter Formatter { get; set; }
 
