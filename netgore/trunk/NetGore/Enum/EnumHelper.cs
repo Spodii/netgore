@@ -11,7 +11,7 @@ namespace NetGore
     /// Provides helper methods for <see cref="Enum"/>s.
     /// </summary>
     /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
-    /// <exception cref="MethodAccessException"><typeparamref name="T"/> is not an Enum.</exception>
+    /// <exception cref="TypeInitializationException"><typeparamref name="T"/> is not an Enum.</exception>
     public static class EnumHelper<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         static readonly byte _bitsRequired;
@@ -20,8 +20,6 @@ namespace NetGore
         static readonly int _minValue;
         static readonly Func<T, int> _toInt;
         static readonly IEnumerable<T> _values;
-
-        // TODO: Unit tests for all of this
 
         /// <summary>
         /// Initializes the <see cref="EnumHelper&lt;T&gt;"/> class.
@@ -204,8 +202,12 @@ namespace NetGore
         /// Gets a Func that will cast an int to <typeparamref name="T"/>.
         /// </summary>
         /// <returns>A Func that will cast an int to <typeparamref name="T"/>.</returns>
+        /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
         public static Func<int, T> GetFromIntFunc()
         {
+            if (!SupportsCastOperations)
+                throw CastOperationsNotSupportedException();
+
             return _fromInt;
         }
 
@@ -213,8 +215,12 @@ namespace NetGore
         /// Gets a Func that will cast <typeparamref name="T"/> to an int.
         /// </summary>
         /// <returns>A Func that will cast <typeparamref name="T"/> to an int.</returns>
+        /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
         public static Func<T, int> GetToIntFunc()
         {
+            if (!SupportsCastOperations)
+                throw CastOperationsNotSupportedException();
+
             return _toInt;
         }
 
@@ -236,6 +242,8 @@ namespace NetGore
         /// </summary>
         /// <param name="value">A string containing the name or value to convert.</param>
         /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        /// <exception cref="ArgumentException"><paramref name="value"/> is not equal to the name of any of
+        /// the defined enum values.</exception>
         public static T Parse(string value)
         {
             return (T)Enum.Parse(typeof(T), value);
@@ -249,6 +257,8 @@ namespace NetGore
         /// <param name="value">A string containing the name or value to convert.</param>
         /// <param name="ignoreCase">If true, ignore case; otherwise, regard case.</param>
         /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        /// <exception cref="ArgumentException"><paramref name="value"/> is not equal to the name of any of
+        /// the defined enum values.</exception>
         public static T Parse(string value, bool ignoreCase)
         {
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
@@ -284,6 +294,7 @@ namespace NetGore
         /// </summary>
         /// <param name="bitStream">The <see cref="BitStream"/> to read from.</param>
         /// <returns>The value read from the <see cref="bitStream"/>.</returns>
+        /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
         public static T ReadValue(BitStream bitStream)
         {
             var v = (int)(bitStream.ReadUInt(_bitsRequired) + _minValue);
@@ -296,6 +307,7 @@ namespace NetGore
         /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>The value read from the <paramref name="reader"/>.</returns>
+        /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
         public static T ReadValue(IValueReader reader, string name)
         {
             var v = (int)(reader.ReadUInt(name, _bitsRequired) + _minValue);
@@ -402,6 +414,7 @@ namespace NetGore
         /// </summary>
         /// <param name="bitStream">The <see cref="BitStream"/> to write to.</param>
         /// <param name="value">The value to write.</param>
+        /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
         public static void WriteValue(BitStream bitStream, T value)
         {
             var signedV = ToInt(value) - _minValue;
@@ -417,6 +430,7 @@ namespace NetGore
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">The value to write.</param>
+        /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
         public static void WriteValue(IValueWriter writer, string name, T value)
         {
             var signedV = ToInt(value) - _minValue;

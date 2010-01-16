@@ -794,7 +794,6 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnum<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             if (UseEnumNames)
                 return ReadEnumName<T>();
             else
@@ -808,7 +807,6 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumName<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             return EnumHelper<T>.ReadName(this);
         }
 
@@ -819,7 +817,6 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumValue<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             return EnumHelper<T>.ReadValue(this);
         }
 
@@ -2732,7 +2729,6 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnum<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             if (UseEnumNames)
                 WriteEnumName(value);
             else
@@ -2746,7 +2742,6 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             EnumHelper<T>.WriteName(this, value);
         }
 
@@ -2757,7 +2752,6 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumValue<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             EnumHelper<T>.WriteValue(this, value);
         }
 
@@ -2919,7 +2913,6 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             return ReadEnumName<T>();
         }
 
@@ -2932,7 +2925,6 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnum<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            // TODO: Unit tests
             if (UseEnumNames)
                 return ReadEnumName<T>();
             else
