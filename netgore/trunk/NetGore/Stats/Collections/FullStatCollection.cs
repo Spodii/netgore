@@ -19,9 +19,10 @@ namespace NetGore.Stats
         readonly EnumIOHelper<TStatType> _enumIOHelper;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FullStatCollection"/> class.
+        /// Initializes a new instance of the <see cref="FullStatCollection&lt;TStatType&gt;"/> class.
         /// </summary>
         /// <param name="collectionType">The type of StatTypes that this collection contains.</param>
+        /// <param name="enumIOHelper">The enum IO helper.</param>
         public FullStatCollection(StatCollectionType collectionType, EnumIOHelper<TStatType> enumIOHelper)
         {
             if (enumIOHelper == null)

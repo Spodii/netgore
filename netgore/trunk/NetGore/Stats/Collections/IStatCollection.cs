@@ -10,6 +10,8 @@ namespace NetGore.Stats
     public interface IStatCollection<TStatType> : IEnumerable<IStat<TStatType>> 
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
+        // TODO: IStatCollection tests...
+
         /// <summary>
         /// Gets or sets the value of the stat with the given <paramref name="statType"/>.
         /// </summary>
