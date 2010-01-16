@@ -209,7 +209,7 @@ namespace DemoGame
         /// value is the value of for the stat with the corresponding StatType.</returns>
         public IEnumerable<KeyValuePair<StatType, int>> ToKeyValuePairs()
         {
-            return this.xxxToKeyValuePairs();
+            return this.ToKeyValuePairs();
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace DemoGame
         /// in any other way.</param>
         public void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains)
         {
-            CopyValuesFrom(values.xxxToKeyValuePairs(), checkContains);
+            CopyValuesFrom(values.ToKeyValuePairs(), checkContains);
         }
 
         #endregion
