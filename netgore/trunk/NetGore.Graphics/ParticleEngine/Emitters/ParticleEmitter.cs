@@ -436,7 +436,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             // Read the primary values
             Name = reader.ReadString(_nameKeyName);
-            BlendMode = reader.ReadEnum(SpriteBlendModeHelper.Instance, _blendModeKeyName);
+            BlendMode = reader.ReadEnum < SpriteBlendMode>(_blendModeKeyName);
             Budget = reader.ReadInt(_budgetKeyName);
             Life = reader.ReadVariableInt(_lifeKeyName);
             Origin = reader.ReadVector2(_originKeyName);

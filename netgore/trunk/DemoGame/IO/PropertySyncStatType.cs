@@ -12,8 +12,6 @@ namespace DemoGame
     [PropertySyncHandler(typeof(StatType))]
     public sealed class PropertySyncStatType : PropertySyncBase<StatType>
     {
-        static readonly StatTypeHelper _statTypeHelper = StatTypeHelper.Instance;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertySyncStatType"/> class.
         /// </summary>
@@ -30,7 +28,7 @@ namespace DemoGame
         /// <returns>Value read from the IValueReader.</returns>
         protected override StatType Read(string name, IValueReader reader)
         {
-            return reader.ReadEnum(_statTypeHelper, name);
+            return reader.ReadEnum<StatType>(name);
         }
 
         /// <summary>
@@ -41,7 +39,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, StatType value)
         {
-            writer.WriteEnum(_statTypeHelper, name, value);
+            writer.WriteEnum(name, value);
         }
     }
 }

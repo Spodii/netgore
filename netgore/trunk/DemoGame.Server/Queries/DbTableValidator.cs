@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
+using NetGore;
 using NetGore.Db;
 using NetGore.Stats;
 
@@ -46,7 +47,7 @@ namespace DemoGame.Server.Queries
         /// <param name="db">The DbController to use for performing the validation checks.</param>
         static void ValidateCharacterTable(IDbController db)
         {
-            EnsureStatColumnsExist(db, CharacterTable.TableName, StatTypeHelper.Values, StatCollectionType.Base);
+            EnsureStatColumnsExist(db, CharacterTable.TableName, EnumHelper<StatType>.Values, StatCollectionType.Base);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace DemoGame.Server.Queries
         /// <param name="db">The DbController to use for performing the validation checks.</param>
         static void ValidateCharacterTemplateTable(IDbController db)
         {
-            EnsureStatColumnsExist(db, CharacterTemplateTable.TableName, StatTypeHelper.Values, StatCollectionType.Base);
+            EnsureStatColumnsExist(db, CharacterTemplateTable.TableName, EnumHelper<StatType>.Values, StatCollectionType.Base);
         }
 
         /// <summary>

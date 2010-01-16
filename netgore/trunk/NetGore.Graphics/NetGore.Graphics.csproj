@@ -75,7 +75,6 @@
     <Compile Include="Background\BackgroundImage.cs" />
     <Compile Include="Background\BackgroundLayerLayout.cs" />
     <Compile Include="Background\BackgroundLayer.cs" />
-    <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
     <Compile Include="Camera\Camera2D.cs" />
     <Compile Include="Camera\ICamera2D.cs" />
     <Compile Include="Character Sprite\GrhCharacterSprite.cs" />
@@ -145,7 +144,6 @@
     <Compile Include="Map\MapDrawingExtension\MapDrawingExtensionCollection.cs" />
     <Compile Include="Map\MapGrh.cs" />
     <Compile Include="Map\MapRenderLayer.cs" />
-    <Compile Include="Map\MapRenderLayerHelper.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierFactory.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\EmitterCircularMovementModifier.cs" />
@@ -155,7 +153,6 @@
     <Compile Include="ParticleEngine\Emitters\PointEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonOrigin.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonEmitter.cs" />
-    <Compile Include="ParticleEngine\Emitters\PolygonOriginHelper.cs" />
     <Compile Include="ParticleEngine\Emitters\PolygonPointCollection.cs" />
     <Compile Include="ParticleEngine\Emitters\RectEmitter.cs" />
     <Compile Include="ParticleEngine\MapParticleEffectCollection.cs" />

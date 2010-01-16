@@ -24,8 +24,8 @@ namespace DemoGame
         /// </summary>
         static BitStreamExtensions()
         {
-            _clientPacketIDBits = ClientPacketIDHelper.Instance.BitsRequired;
-            _serverPacketIDBits = ServerPacketIDHelper.Instance.BitsRequired;
+            _clientPacketIDBits = EnumHelper<ClientPacketID>.BitsRequired;
+            _serverPacketIDBits = EnumHelper<ServerPacketID>.BitsRequired;
 
             if (_clientPacketIDBits <= 0)
                 throw new Exception("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
@@ -100,7 +100,7 @@ namespace DemoGame
         /// must contain the StatType being read.</param>
         public static void ReadStat(this BitStream bitStream, IStatCollection<StatType> statCollection)
         {
-            StatType statType = bitStream.ReadEnum(StatTypeHelper.Instance);
+            StatType statType = bitStream.ReadEnum<StatType>();
             var stat = statCollection.GetStat(statType);
             stat.Read(bitStream);
         }
@@ -272,7 +272,7 @@ namespace DemoGame
         /// <param name="stat">IStat to write.</param>
         public static void Write(this BitStream bitStream, IStat<StatType> stat)
         {
-            bitStream.WriteEnum(StatTypeHelper.Instance, stat.StatType);
+            bitStream.WriteEnum(stat.StatType);
             stat.Write(bitStream);
         }
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 
 namespace DemoGame
 {
@@ -169,7 +170,7 @@ namespace DemoGame
         {
             var usedStatTypes = new List<StatType>();
 
-            foreach (StatType statType in StatTypeHelper.Values)
+            foreach (var statType in EnumHelper < StatType>.Values)
             {
                 int value;
                 if (TryGetStatModifier(statType, 1, out value))

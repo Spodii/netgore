@@ -8,7 +8,7 @@ namespace DemoGame
     /// </summary>
     public abstract class CharacterStatsBase : FullStatCollection<StatType>
     {
-        protected CharacterStatsBase(StatCollectionType statCollectionType) : base(statCollectionType, StatTypeHelper.Instance)
+        protected CharacterStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
         {
         }
     }

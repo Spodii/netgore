@@ -10,8 +10,6 @@ namespace NetGore.IO.PropertySync
     [PropertySyncHandler(typeof(Alignment))]
     public sealed class PropertySyncAlignment : PropertySyncBase<Alignment>
     {
-        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertySyncAlignment"/> class.
         /// </summary>
@@ -28,7 +26,7 @@ namespace NetGore.IO.PropertySync
         /// <returns>Value read from the IValueReader.</returns>
         protected override Alignment Read(string name, IValueReader reader)
         {
-            return reader.ReadEnum(_alignmentHelper, name);
+            return reader.ReadEnum<Alignment>(name);
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace NetGore.IO.PropertySync
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, Alignment value)
         {
-            writer.WriteEnum(_alignmentHelper, name, value);
+            writer.WriteEnum(name, value);
         }
     }
 }

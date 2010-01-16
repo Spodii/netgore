@@ -32,7 +32,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Contains the sum of the stat modifiers for each ActiveStatusEffect for each StatType.
         /// </summary>
-        readonly FullStatCollection<StatType> _modStats = new FullStatCollection<StatType>(StatCollectionType.Modified, StatTypeHelper.Instance);
+        readonly FullStatCollection<StatType> _modStats = new FullStatCollection<StatType>(StatCollectionType.Modified);
 
         int _lastUpdateTime;
 

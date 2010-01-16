@@ -154,11 +154,10 @@ namespace NetGore.IO
         /// the name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value)
+        void WriteEnum<T>(string name, T value)
             where T : struct, IComparable, IConvertible, IFormattable;
 
         /// <summary>
@@ -174,11 +173,10 @@ namespace NetGore.IO
         /// Writes an Enum of type <typeparamref name="T"/> using the value of the Enum instead of the name.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value)
+        void WriteEnumValue<T>(string name, T value)
             where T : struct, IComparable, IConvertible, IFormattable;
 
         /// <summary>

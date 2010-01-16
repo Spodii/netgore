@@ -14,8 +14,6 @@ namespace NetGore.Graphics
     /// </summary>
     public class BackgroundLayer : BackgroundImage
     {
-        static readonly BackgroundLayerLayoutHelper _backgroundLayerLayoutHelper = BackgroundLayerLayoutHelper.Instance;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundLayer"/> class.
         /// </summary>
@@ -28,6 +26,9 @@ namespace NetGore.Graphics
             VerticalLayout = BackgroundLayerLayout.Stretched;
         }
 
+        const string _horizontalLayoutKey = "HorizontalLayout";
+        const string _verticalLayoutKey = "VerticalLayout";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundLayer"/> class.
         /// </summary>
@@ -37,8 +38,8 @@ namespace NetGore.Graphics
         public BackgroundLayer(ICamera2DProvider cameraProvider, IMap map, IValueReader reader)
             : base(cameraProvider, map, reader)
         {
-            HorizontalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "HorizontalLayout");
-            VerticalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "VerticalLayout");
+            HorizontalLayout = reader.ReadEnum<BackgroundLayerLayout>(_horizontalLayoutKey);
+            VerticalLayout = reader.ReadEnum<BackgroundLayerLayout>(_verticalLayoutKey);
         }
 
         /// <summary>
@@ -110,8 +111,8 @@ namespace NetGore.Graphics
         {
             base.Write(writer);
 
-            writer.WriteEnum(_backgroundLayerLayoutHelper, "HorizontalLayout", HorizontalLayout);
-            writer.WriteEnum(_backgroundLayerLayoutHelper, "VerticalLayout", VerticalLayout);
+            writer.WriteEnum(_horizontalLayoutKey, HorizontalLayout);
+            writer.WriteEnum(_verticalLayoutKey, VerticalLayout);
         }
     }
 }

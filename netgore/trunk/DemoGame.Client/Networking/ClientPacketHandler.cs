@@ -76,7 +76,7 @@ namespace DemoGame.Client
             _dynamicEntityFactory = dynamicEntityFactory;
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
-            _ppManager = new MessageProcessorManager(this, ServerPacketIDHelper.Instance.BitsRequired);
+            _ppManager = new MessageProcessorManager(this, EnumHelper<ServerPacketID>.BitsRequired);
         }
 
         public AccountCharacterInfos AccountCharacterInfos
@@ -163,7 +163,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadEnum(StatusEffectTypeHelper.Instance);
+            StatusEffectType statusEffectType = r.ReadEnum<StatusEffectType>();
             ushort power = r.ReadUShort();
             ushort secsLeft = r.ReadUShort();
 
@@ -259,7 +259,7 @@ namespace DemoGame.Client
         void RecvEmote(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
-            var emoticon = r.ReadEnum(EmoticonHelper.Instance);
+            var emoticon = r.ReadEnum<Emoticon>();
 
             var entity = Map.GetDynamicEntity(mapEntityIndex);
             if (entity == null)
@@ -404,7 +404,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadEnum(StatusEffectTypeHelper.Instance);
+            StatusEffectType statusEffectType = r.ReadEnum<StatusEffectType>();
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
@@ -427,7 +427,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SendEquipmentItemInfo)]
         void RecvSendEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
+            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
             GameplayScreen.EquipmentInfoRequester.ReceiveInfo(slot, r);
         }
 
@@ -617,7 +617,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.StartCastingSkill)]
         void RecvStartCastingSkill(IIPSocket conn, BitStream r)
         {
-            var skillType = r.ReadEnum(SkillTypeHelper.Instance);
+            var skillType = r.ReadEnum<SkillType>();
             ushort castTime = r.ReadUShort();
 
             GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
@@ -662,7 +662,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]
         void RecvUpdateEquipmentSlot(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
+            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
             bool hasValue = r.ReadBool();
 
             if (hasValue)
@@ -764,7 +764,7 @@ namespace DemoGame.Client
             MapEntityIndex? targetID = null;
             if (hasTarget)
                 targetID = r.ReadMapEntityIndex();
-            SkillType skillType = r.ReadEnum(SkillTypeHelper.Instance);
+            SkillType skillType = r.ReadEnum<SkillType>();
 
             CharacterEntity user = Map.GetDynamicEntity<CharacterEntity>(userID);
             CharacterEntity target = null;

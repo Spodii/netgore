@@ -190,13 +190,12 @@ namespace NetGore.IO
         /// Reads an Enum of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(IEnumValueReader<T> reader, string name)
+        public T ReadEnumValue<T>(string name)
             where T : struct, IComparable, IConvertible, IFormattable
         {
-            return reader.ReadEnum(this, name);
+            return EnumHelper<T>.ReadValue(this, name);
         }
 
         /// <summary>
@@ -207,9 +206,7 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = ReadString(name);
-            T value = EnumIOHelper<T>.FromName(str);
-            return value;
+            return EnumHelper<T>.ReadName(this, name);
         }
 
         /// <summary>
@@ -217,12 +214,14 @@ namespace NetGore.IO
         /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnum<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            return EnumIOHelper<T>.ReadEnum(this, reader, name);
+            if (UseEnumNames)
+                return ReadEnumName<T>(name);
+            else
+                return ReadEnumValue<T>(name);
         }
 
         /// <summary>

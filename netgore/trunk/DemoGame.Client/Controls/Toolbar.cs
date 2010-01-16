@@ -117,7 +117,7 @@ namespace DemoGame.Client
         /// <returns>ISprite for the given index.</returns>
         ISprite GetItemSprite(int index)
         {
-            var title = EnumIOHelper<ToolbarItemType>.ToName((ToolbarItemType)index);
+            var title = EnumHelper<ToolbarItemType>.ToName((ToolbarItemType)index);
             return GUIManager.SkinManager.GetSprite("Toolbar", title);
         }
 

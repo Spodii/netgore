@@ -141,7 +141,6 @@
     <Compile Include="IO\Bits\BitStreamMode.cs" />
     <Compile Include="IO\Bits\BitStreamSeekOrigin.cs" />
     <Compile Include="IO\ContentPaths.cs" />
-    <Compile Include="IO\EnumIOHelper.cs" />
     <Compile Include="IO\PathString.cs" />
     <Compile Include="IO\MessageCollectionBase.cs" />
     <Compile Include="IO\SettingsManager.cs" />
@@ -154,8 +153,6 @@
     <Compile Include="IO\TempFile.cs" />
     <Compile Include="IO\ValueReaderWriter\Binary\BinaryValueReader.cs" />
     <Compile Include="IO\ValueReaderWriter\Binary\BinaryValueWriter.cs" />
-    <Compile Include="IO\ValueReaderWriter\IEnumValueReader.cs" />
-    <Compile Include="IO\ValueReaderWriter\IEnumValueWriter.cs" />
     <Compile Include="IO\ValueReaderWriter\IValueReader.cs" />
     <Compile Include="IO\ValueReaderWriter\IValueWriter.cs" />
     <Compile Include="IO\ValueReaderWriter\ReadManyHandler.cs" />
@@ -198,7 +195,6 @@
     <Compile Include="Scripting\ScriptLanguage.cs" />
     <Compile Include="Scripting\ScriptTypeCollection.cs" />
     <Compile Include="Scripting\ScriptTypeHelper.cs" />
-    <Compile Include="SpriteBlendModeHelper.cs" />
     <Compile Include="SystemPerformance.cs" />
     <Compile Include="Type\TypeFilterCreator.cs" />
     <Compile Include="Type\TypeFilterException.cs" />
@@ -213,12 +209,12 @@
     <Compile Include="Variable Values\VariableSByte.cs" />
     <Compile Include="Variable Values\VariableShort.cs" />
     <Compile Include="Variable Values\VariableUShort.cs" />
+    <Compile Include="World\AlignmentHelper.cs" />
     <Compile Include="World\Entities\AI\AIAttribute.cs" />
     <Compile Include="World\Entities\AI\AIFactoryBase.cs" />
     <Compile Include="World\Entities\AI\AIID.cs" />
     <Compile Include="World\Entities\AI\IAI.cs" />
     <Compile Include="World\Alignment.cs" />
-    <Compile Include="World\AlignmentHelper.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="ConsoleInputBuffer.cs" />
     <Compile Include="World\Entities\IDynamicEntityFactory.cs" />
