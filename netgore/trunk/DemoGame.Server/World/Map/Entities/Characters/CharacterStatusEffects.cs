@@ -30,7 +30,7 @@ namespace DemoGame.Server
 #endif
 
         /// <summary>
-        /// Contains the sum of the stat modifiers for each ActiveStatusEffect for each StatType.
+        /// Contains the sum of the stat modifiers for each ActiveStatusEffect for each <see cref="StatType"/>.
         /// </summary>
         readonly FullStatCollection<StatType> _modStats = new FullStatCollection<StatType>(StatCollectionType.Modified);
 

@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing an unsigned 32-bit integer.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="uint"/>.
     /// </summary>
     [PropertySyncHandler(typeof(uint))]
     public sealed class PropertySyncUInt : PropertySyncBase<uint>

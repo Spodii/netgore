@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a 32-bit floating point number.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="float"/>.
     /// </summary>
     [PropertySyncHandler(typeof(float))]
     public sealed class PropertySyncFloat : PropertySyncBase<float>

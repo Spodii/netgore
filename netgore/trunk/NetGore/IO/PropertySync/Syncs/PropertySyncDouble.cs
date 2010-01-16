@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Double.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="double"/>.
     /// </summary>
     [PropertySyncHandler(typeof(double))]
     public sealed class PropertySyncDouble : PropertySyncBase<double>

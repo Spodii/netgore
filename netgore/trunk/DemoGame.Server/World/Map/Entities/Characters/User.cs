@@ -185,7 +185,7 @@ namespace DemoGame.Server
         /// <summary>
         /// When overridden in the derived class, creates the CharacterStatsBase for this Character.
         /// </summary>
-        /// <param name="statCollectionType">The type of StatCollectionType to create.</param>
+        /// <param name="statCollectionType">The type of <see cref="StatCollectionType"/> to create.</param>
         /// <returns>
         /// The CharacterStatsBase for this Character.
         /// </returns>
@@ -497,10 +497,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles when an ActiveStatusEffect is added to this Character's StatusEffects.
+        /// Handles when an <see cref="ActiveStatusEffect"/> is added to this Character's StatusEffects.
         /// </summary>
         /// <param name="effects">The CharacterStatusEffects the event took place on.</param>
-        /// <param name="ase">The ActiveStatusEffect that was added.</param>
+        /// <param name="ase">The <see cref="ActiveStatusEffect"/> that was added.</param>
         protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects, ActiveStatusEffect ase)
         {
             base.StatusEffects_HandleOnAdd(effects, ase);
@@ -515,10 +515,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles when an ActiveStatusEffect is removed from this Character's StatusEffects.
+        /// Handles when an <see cref="ActiveStatusEffect"/> is removed from this Character's StatusEffects.
         /// </summary>
         /// <param name="effects">The CharacterStatusEffects the event took place on.</param>
-        /// <param name="ase">The ActiveStatusEffect that was removed.</param>
+        /// <param name="ase">The <see cref="ActiveStatusEffect"/> that was removed.</param>
         protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects effects, ActiveStatusEffect ase)
         {
             base.StatusEffects_HandleOnRemove(effects, ase);

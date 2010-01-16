@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a string.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="string"/>.
     /// </summary>
     [PropertySyncHandler(typeof(string))]
     public sealed class PropertySyncString : PropertySyncBase<string>

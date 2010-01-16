@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing an unsigned 8-bit integer.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="byte"/>.
     /// </summary>
     [PropertySyncHandler(typeof(byte))]
     public sealed class PropertySyncByte : PropertySyncBase<byte>

@@ -5,7 +5,7 @@ using NetGore.IO.PropertySync;
 namespace DemoGame
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing an ItemType.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing an ItemType.
     /// </summary>
     [PropertySyncHandler(typeof(ItemType))]
     public sealed class PropertySyncItemType : PropertySyncBase<ItemType>

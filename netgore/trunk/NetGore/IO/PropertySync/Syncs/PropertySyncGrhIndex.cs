@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a GrhIndex.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="GrhIndex"/>.
     /// </summary>
     [PropertySyncHandler(typeof(GrhIndex))]
     public sealed class PropertySyncGrhIndex : PropertySyncBase<GrhIndex>

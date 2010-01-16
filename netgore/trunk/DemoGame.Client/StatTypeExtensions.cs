@@ -10,11 +10,12 @@ namespace DemoGame.Client
         static readonly Dictionary<StatType, StatType> _baseToMod = new Dictionary<StatType, StatType>();
 
         /// <summary>
-        /// Gets the mod StatType for the given base StatType.
+        /// Gets the mod <see cref="StatType"/> for the given base <see cref="StatType"/>.
         /// </summary>
-        /// <param name="baseStat">Base StatType to find the mod StatType for.</param>
-        /// <returns>Mod StatType for the given base StatType.</returns>
-        /// <exception cref="ArgumentException">No mod StatType for the given base StatType.</exception>
+        /// <param name="baseStat">Base <see cref="StatType"/> to find the mod <see cref="StatType"/> for.</param>
+        /// <returns>Mod <see cref="StatType"/> for the given base <see cref="StatType"/>.</returns>
+        /// <exception cref="ArgumentException">No mod <see cref="StatType"/> for the given base
+        /// <see cref="StatType"/>.</exception>
         public static StatType GetMod(this StatType baseStat)
         {
             StatType modStat;

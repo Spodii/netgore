@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Vector2.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="Vector2"/>.
     /// </summary>
     [PropertySyncHandler(typeof(Vector2))]
     public sealed class PropertySyncVector2 : PropertySyncBase<Vector2>

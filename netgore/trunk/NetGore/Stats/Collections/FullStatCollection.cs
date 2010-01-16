@@ -7,9 +7,11 @@ using System.Linq;
 namespace NetGore.Stats
 {
     /// <summary>
-    /// A specialized collection that contains every StatType. This is the ideal IStatCollection to use when you want
-    /// the collection to always contain every StatType.
+    /// A specialized collection that contains every <typeparamref name="TStatType"/>. This is the ideal
+    /// <see cref="IStatCollection{StatType}"/> to use when you want the collection to always contain every
+    /// <typeparamref name="TStatType"/>.
     /// </summary>
+    /// <typeparam name="TStatType">The type of stat.</typeparam>
     public class FullStatCollection<TStatType> : IStatCollection<TStatType>
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
@@ -42,7 +44,7 @@ namespace NetGore.Stats
         /// <summary>
         /// Initializes a new instance of the <see cref="FullStatCollection{TStatType}"/> class.
         /// </summary>
-        /// <param name="collectionType">The type of StatTypes that this collection contains.</param>
+        /// <param name="collectionType">The type of <typeparamref name="TStatType"/>s that this collection contains.</param>
         public FullStatCollection(StatCollectionType collectionType)
         {
             _collectionType = collectionType;
@@ -56,9 +58,9 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FullStatCollection"/> class.
+        /// Initializes a new instance of the <see cref="FullStatCollection{StatType}"/> class.
         /// </summary>
-        /// <param name="source">The FullStatCollection to copy the values from.</param>
+        /// <param name="source">The <see cref="FullStatCollection{StatType}"/> to copy the values from.</param>
         FullStatCollection(FullStatCollection<TStatType> source)
         {
             _collectionType = source._collectionType;
@@ -71,10 +73,11 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Checks if the values of this FullStatCollection are equal to the values of another FullStatCollection.
+        /// Checks if the values of this <see cref="FullStatCollection{StatType}"/> are equal to the values of
+        /// another <see cref="FullStatCollection{StatType}"/>.
         /// </summary>
-        /// <param name="other">The FullStatCollection to compare against.</param>
-        /// <returns>True if the values of this FullStatCollection are equal to the values
+        /// <param name="other">The <see cref="FullStatCollection{StatType}"/> to compare against.</param>
+        /// <returns>True if the values of this <see cref="FullStatCollection{StatType}"/> are equal to the values
         /// of <paramref name="other"/>.</returns>
         public bool AreValuesEqual(FullStatCollection<TStatType> other)
         {
@@ -82,18 +85,18 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Creates a deep copy of this FullStatCollection/
+        /// Creates a deep copy of this <see cref="FullStatCollection{StatType}"/>.
         /// </summary>
-        /// <returns>A deep copy of this FullStatCollection/</returns>
+        /// <returns>A deep copy of this <see cref="FullStatCollection{StatType}"/>.</returns>
         public FullStatCollection<TStatType> DeepCopy()
         {
             return new FullStatCollection<TStatType>(this);
         }
 
         /// <summary>
-        /// Sets the value of all stats in this collection.
+        /// Sets the value of all stats in this <see cref="FullStatCollection{StatType}"/>.
         /// </summary>
-        /// <param name="value">Value to set the stats to.</param>
+        /// <param name="value">Value to set all of the stat values to.</param>
         public void SetAll(int value)
         {
             foreach (var stat in _stats)
@@ -130,10 +133,9 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Gets or sets the value of the stat with the given <paramref name="statType"/>.
+        /// Gets or sets the <see cref="System.Int32"/> with the specified stat type.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get or set the value for.</param>
-        /// <returns>The value of the stat with the given <paramref name="statType"/>.</returns>
+        /// <value></value>
         public int this[TStatType statType]
         {
             get { return _stats[_statTypeToInt(statType)].Value; }
@@ -141,8 +143,9 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Gets the StatCollectionType that this collection is for.
+        /// Gets the <see cref="StatCollectionType"/> that this collection is for.
         /// </summary>
+        /// <value></value>
         public StatCollectionType StatCollectionType
         {
             get { return _collectionType; }
@@ -151,32 +154,38 @@ namespace NetGore.Stats
         /// <summary>
         /// Checks if this collection contains the stat with the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType to check if exists in the collection.</param>
-        /// <returns>True if this collection contains the stat with the given <paramref name="statType"/>;
-        /// otherwise false.</returns>
+        /// <param name="statType">The type of the stat to check if exists in the collection.</param>
+        /// <returns>
+        /// True if this collection contains the <see cref="IStat{TStatType}"/> with the given
+        /// <paramref name="statType"/>; otherwise false.
+        /// </returns>
         public bool Contains(TStatType statType)
         {
             return true;
         }
 
         /// <summary>
-        /// Gets the IStat for the stat of the given <paramref name="statType"/>.
+        /// Gets the <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get.</param>
-        /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
+        /// <param name="statType">The stat type of the stat to get.</param>
+        /// <returns>
+        /// The <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
+        /// </returns>
         public IStat<TStatType> GetStat(TStatType statType)
         {
             return _stats[_statTypeToInt(statType)];
         }
 
         /// <summary>
-        /// Tries to get the IStat for the stat of the given <paramref name="statType"/>.
+        /// Tries to get the <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get.</param>
-        /// <param name="stat">The IStat for the stat of the given <paramref name="statType"/>. If this method
-        /// returns false, this value will be null.</param>
-        /// <returns>True if the stat with the given <paramref name="statType"/> was found and
-        /// successfully returned; otherwise false.</returns>
+        /// <param name="statType">The stat type of the stat to get.</param>
+        /// <param name="stat">The <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
+        /// If this method returns false, this value will be null.</param>
+        /// <returns>
+        /// True if the <see cref="IStat{StatType}"/> with the given <paramref name="statType"/> was found and
+        /// successfully returned; otherwise false.
+        /// </returns>
         public bool TryGetStat(TStatType statType, out IStat<TStatType> stat)
         {
             stat = GetStat(statType);
@@ -186,11 +195,13 @@ namespace NetGore.Stats
         /// <summary>
         /// Tries to get the value of the stat of the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get.</param>
+        /// <param name="statType">The stat type of the stat to get.</param>
         /// <param name="value">The value of the stat of the given <paramref name="statType"/>. If this method
         /// returns false, this value will be 0.</param>
-        /// <returns>True if the stat with the given <paramref name="statType"/> was found and
-        /// successfully returned; otherwise false.</returns>
+        /// <returns>
+        /// True if the stat with the given <paramref name="statType"/> was found and
+        /// successfully returned; otherwise false.
+        /// </returns>
         public bool TryGetStatValue(TStatType statType, out int value)
         {
             value = this[statType];
@@ -198,16 +209,17 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
-        /// into this IStatCollection.
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given
+        /// <typeparamref name="TStatType"/> into this <see cref="IStatCollection{TStatType}"/>.
         /// </summary>
-        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
-        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
-        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
-        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
-        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
-        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
-        /// in any other way.</param>
+        /// <param name="values">IEnumerable of stat types and stat values to copy into this
+        /// <see cref="IStatCollection{TStatType}"/>.</param>
+        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
+        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value.
+        /// Any stat type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be
+        /// skipped. If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
+        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
+        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
         public void CopyValuesFrom(IEnumerable<KeyValuePair<TStatType, int>> values, bool checkContains)
         {
             foreach (var value in values)
@@ -220,16 +232,17 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
-        /// into this IStatCollection.
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given stat type
+        /// into this <see cref="IStatCollection{TStatType}"/>.
         /// </summary>
-        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
-        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
-        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
-        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
-        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
-        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
-        /// in any other way.</param>
+        /// <param name="values">IEnumerable of <typeparamref name="TStatType"/>s and stat values to copy into this
+        /// <see cref="IStatCollection{TStatType}"/>.</param>
+        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
+        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value. Any stat
+        /// type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be skipped.
+        /// If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
+        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
+        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
         public void CopyValuesFrom(IEnumerable<IStat<TStatType>> values, bool checkContains)
         {
             CopyValuesFrom(values.ToKeyValuePairs(), checkContains);

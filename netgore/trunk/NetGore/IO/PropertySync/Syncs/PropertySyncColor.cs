@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Color.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="Color"/>.
     /// </summary>
     [PropertySyncHandler(typeof(Color))]
     public sealed class PropertySyncColor : PropertySyncBase<Color>

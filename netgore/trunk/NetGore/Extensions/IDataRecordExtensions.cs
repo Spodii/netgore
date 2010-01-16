@@ -10,10 +10,10 @@ namespace NetGore
     public static class IDataRecordExtensions
     {
         /// <summary>
-        /// Gets the ordinal for an IDataRecord as a byte, throwing an InvalidCastException if the
+        /// Gets the ordinal for an <see cref="IDataRecord"/> as a byte, throwing an <see cref="InvalidCastException"/> if the
         /// retreived ordinal is not able to convert to a byte without data loss.
         /// </summary>
-        /// <param name="dataRecord">IDataRecord to load the ordinal from.</param>
+        /// <param name="dataRecord"><see cref="IDataRecord"/> to load the ordinal from.</param>
         /// <param name="name">The name of the field to find.</param>
         /// <returns>Index of the named field.</returns>
         public static byte GetOrdinalAsByte(this IDataRecord dataRecord, string name)

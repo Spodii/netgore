@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a boolean.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="bool"/>.
     /// </summary>
     [PropertySyncHandler(typeof(bool))]
     public sealed class PropertySyncBool : PropertySyncBase<bool>
