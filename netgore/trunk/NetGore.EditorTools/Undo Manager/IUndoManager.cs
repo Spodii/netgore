@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace NetGore.EditorTools
 {
@@ -39,8 +38,6 @@ namespace NetGore.EditorTools
         /// <returns>The IUndoEvent at the specified index if it exists, if not - null.</returns>
         IUndoEvent TryGetEvent(int index);
 
-        // Try to pop the last event, and if it exists, call Undo on it.
-
         /// <summary>
         /// Attempts to redo the last undone event.
         /// </summary>
@@ -52,7 +49,5 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <returns>True if successful, false if not.</returns>
         bool TryUndo();
-
-        // If there are any events you can call "Redo" on, call it. Otherwise, false.
     }
 }
