@@ -19,7 +19,7 @@ namespace NetGore.AI
         readonly TypeFactory _typeFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AIFactoryBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="AIFactoryBase{T}"/> class.
         /// </summary>
         /// <param name="subclass">The Type of the subclass that all AI classes must be derived from. If null, the
         /// subclass will not be enforced.</param>

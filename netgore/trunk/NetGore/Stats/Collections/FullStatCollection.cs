@@ -27,7 +27,7 @@ namespace NetGore.Stats
         readonly IStat<TStatType>[] _stats;
 
         /// <summary>
-        /// Initializes the <see cref="FullStatCollection&lt;TStatType&gt;"/> class.
+        /// Initializes the <see cref="FullStatCollection{TStatType}"/> class.
         /// </summary>
         static FullStatCollection()
         {
@@ -40,7 +40,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FullStatCollection&lt;TStatType&gt;"/> class.
+        /// Initializes a new instance of the <see cref="FullStatCollection{TStatType}"/> class.
         /// </summary>
         /// <param name="collectionType">The type of StatTypes that this collection contains.</param>
         public FullStatCollection(StatCollectionType collectionType)

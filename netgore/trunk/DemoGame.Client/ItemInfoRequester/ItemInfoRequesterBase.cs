@@ -19,7 +19,7 @@ namespace DemoGame.Client
         T _slot;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemInfoRequesterBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ItemInfoRequesterBase{T}"/> class.
         /// </summary>
         /// <param name="socket">The socket.</param>
         protected ItemInfoRequesterBase(ISocketSender socket)

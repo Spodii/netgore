@@ -30,7 +30,7 @@ namespace NetGore.Collections
         T[] _poolObjects;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectPool&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ObjectPool{T}"/> class.
         /// </summary>
         /// <param name="creator">The delegate used to create new object instances.</param>
         /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
@@ -40,7 +40,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectPool&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ObjectPool{T}"/> class.
         /// </summary>
         /// <param name="creator">The delegate used to create new object instances.</param>
         /// <param name="initializer">The delegate used to initialize an object as it is acquired from the pool
@@ -56,7 +56,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectPool&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ObjectPool{T}"/> class.
         /// </summary>
         /// <param name="initialSize">The initial size of the pool.</param>
         /// <param name="creator">The delegate used to create new object instances.</param>

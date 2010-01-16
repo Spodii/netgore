@@ -13,7 +13,7 @@ namespace NetGore.Collections
         readonly T[] _source;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImmutableArray&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ImmutableArray{T}"/> class.
         /// </summary>
         /// <param name="source">The source array to make an immutable array from.</param>
         public ImmutableArray(T[] source)
@@ -156,7 +156,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Not supported by the <see cref="ImmutableArray&lt;T&gt;"/>.
+        /// Not supported by the <see cref="ImmutableArray{T}"/>.
         /// </summary>
         /// <param name="item">Unused.</param>
         /// <exception cref="NotSupportedException">Method is accessed.</exception>
@@ -166,7 +166,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Not supported by the <see cref="ImmutableArray&lt;T&gt;"/>.
+        /// Not supported by the <see cref="ImmutableArray{T}"/>.
         /// </summary>
         /// <exception cref="NotSupportedException">Method is accessed.</exception>
         public void Clear()
@@ -188,7 +188,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Not supported by the <see cref="ImmutableArray&lt;T&gt;"/>.
+        /// Not supported by the <see cref="ImmutableArray{T}"/>.
         /// </summary>
         /// <param name="item">Unused.</param>
         /// <returns>None.</returns>

@@ -27,7 +27,7 @@ namespace NetGore
             new Dictionary<TSkillType, ISkill<TSkillType, TStatType, TCharacter>>(EnumComparer<TSkillType>.Instance);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SkillManager&lt;TSkillType, TStatType, TCharacter&gt;"/> class.
+        /// Initializes a new instance of the <see cref="SkillManager{TSkillType, TStatType, TCharacter}"/> class.
         /// </summary>
         public SkillManager()
         {

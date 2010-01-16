@@ -18,7 +18,7 @@ namespace NetGore
         readonly ISayCommands<T> _sayCommands;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SayHandlerBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="SayHandlerBase{T}"/> class.
         /// </summary>
         /// <param name="sayCommands">The object containing the Say commands.</param>
         protected SayHandlerBase(ISayCommands<T> sayCommands)

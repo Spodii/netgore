@@ -18,7 +18,7 @@ namespace NetGore.Collections
         readonly Func<TKey, TValue> _valueCreator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadSafeHashCache&lt;TKey, TValue&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ThreadSafeHashCache{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
         public ThreadSafeHashCache(Func<TKey, TValue> valueCreator) : this(valueCreator, null)
@@ -26,7 +26,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadSafeHashCache&lt;TKey, TValue&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ThreadSafeHashCache{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
         /// <param name="keyComparer">The key comparer.</param>

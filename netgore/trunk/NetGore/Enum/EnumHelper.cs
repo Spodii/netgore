@@ -22,7 +22,7 @@ namespace NetGore
         static readonly IEnumerable<T> _values;
 
         /// <summary>
-        /// Initializes the <see cref="EnumHelper&lt;T&gt;"/> class.
+        /// Initializes the <see cref="EnumHelper{T}"/> class.
         /// </summary>
         static EnumHelper()
         {

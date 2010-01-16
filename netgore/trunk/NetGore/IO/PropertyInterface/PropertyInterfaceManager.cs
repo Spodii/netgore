@@ -11,7 +11,7 @@ namespace NetGore.IO
         static readonly PropertyInterface<TObj, T> _instance;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyInterface&lt;TObj, T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="PropertyInterface{TObj, T}"/> class.
         /// </summary>
         static PropertyInterface()
         {
@@ -19,7 +19,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyInterface&lt;TObj, T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="PropertyInterface{TObj, T}"/> class.
         /// </summary>
         PropertyInterface() : base(x => new ExpressionPropertyInterface(x))
         {

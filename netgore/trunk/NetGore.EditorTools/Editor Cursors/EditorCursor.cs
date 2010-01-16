@@ -8,13 +8,13 @@ using NetGore.Collections;
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// Manages multiple <see cref="EditorCursor&lt;TContainer&gt;"/>.
+    /// Manages multiple <see cref="EditorCursor{TContainer}"/>.
     /// </summary>
     /// <typeparam name="TContainer">The type of the container the cursors are in.</typeparam>
     public class EditorCursorManager<TContainer>
     {
         /// <summary>
-        /// Delegate for handling events from the <see cref="EditorCursorManager&lt;TScreen&gt;"/>.
+        /// Delegate for handling events from the <see cref="EditorCursorManager{TScreen}"/>.
         /// </summary>
         /// <param name="sender">The object the event came from.</param>
         public delegate void EditorCursorManagerEventHandler(EditorCursorManager<TContainer> sender);
@@ -38,7 +38,7 @@ namespace NetGore.EditorTools
         public event EditorCursorManagerEventHandler OnChangeCurrentCursor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditorCursorManager&lt;TScreen&gt;"/> class.
+        /// Initializes a new instance of the <see cref="EditorCursorManager{TScreen}"/> class.
         /// </summary>
         /// <param name="container">The container the cursors are in. Recommended that you use the Form
         /// the cursors are on or the screen the cursors are for.</param>

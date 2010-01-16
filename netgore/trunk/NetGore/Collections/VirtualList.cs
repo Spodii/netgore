@@ -6,7 +6,7 @@ using System.Linq;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Provides an interface for a class like <see cref="System.Collections.Generic.List&lt;T&gt;"/>,
+    /// Provides an interface for a class like <see cref="System.Collections.Generic.List{T}"/>,
     /// but allows you to override the key methods.
     /// </summary>
     /// <typeparam name="T">The type of element.</typeparam>
@@ -395,8 +395,8 @@ namespace NetGore.IO
         #endregion
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="NetGore.IO.VirtualList&lt;T&gt;"/>
-        /// to <see cref="System.Collections.Generic.List&lt;T&gt;"/>.
+        /// Performs an explicit conversion from <see cref="NetGore.IO.VirtualList{T}"/>
+        /// to <see cref="System.Collections.Generic.List{T}"/>.
         /// </summary>
         /// <param name="l">The list.</param>
         /// <returns>The result of the conversion.</returns>

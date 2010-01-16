@@ -20,7 +20,7 @@ namespace NetGore.Db
         readonly DArray<TItem> _items = new DArray<TItem>(32, false);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbTableDataManager&lt;TID, TItem&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DbTableDataManager{TID, TItem}"/> class.
         /// </summary>
         /// <param name="dbController">The IDbController.</param>
         protected DbTableDataManager(IDbController dbController)
