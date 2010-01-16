@@ -14,7 +14,7 @@ namespace NetGore.IO.PropertySync
         T _lastSentValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="PropertySyncBase{T}"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         protected PropertySyncBase(SyncValueAttributeInfo syncValueAttributeInfo)

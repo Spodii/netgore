@@ -6,8 +6,10 @@ using NetGore.IO;
 namespace NetGore.Stats
 {
     /// <summary>
-    /// Describes a single <see cref="IStat"/>, containing the <see cref="StatType"/> and value current stat value.
+    /// Describes a single <see cref="IStat{TStatType}"/>, containing the <typeparamref name="TStatType"/>
+    /// and value current stat value.
     /// </summary>
+    /// <typeparam name="TStatType">The type of stats.</typeparam>
     public class Stat<TStatType> : IStat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
@@ -21,7 +23,7 @@ namespace NetGore.Stats
         IStatValueType _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Stat"/> class.
+        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
         /// </summary>
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         public Stat(IStat<TStatType> istatToCopy)
@@ -31,7 +33,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Stat"/> class.
+        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
         /// </summary>
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
@@ -42,7 +44,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Stat"/> class.
+        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
@@ -53,7 +55,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Stat"/> class.
+        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
@@ -182,7 +184,7 @@ namespace NetGore.Stats
         where TStatType : struct, IComparable, IConvertible, IFormattable where TStatValueType : IStatValueType, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Stat&lt;TStatType, TStatValueType&gt;"/> class.
+        /// Initializes a new instance of the <see cref="Stat{TStatType,TStatValueType}"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="initialValue">The initial value to assign to this Stat.</param>
@@ -191,7 +193,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Stat&lt;TStatType, TStatValueType&gt;"/> class.
+        /// Initializes a new instance of the <see cref="Stat{TStatType, TStatValueType}"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         public Stat(TStatType statType) : base(statType, new TStatValueType())

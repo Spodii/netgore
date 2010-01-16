@@ -61,7 +61,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DArray&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DArray{T}"/> class.
         /// </summary>
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>
         public DArray(bool trackFree) : this(_defaultSize, trackFree)
@@ -69,7 +69,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DArray&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DArray{T}"/> class.
         /// </summary>
         /// <param name="initialSize">Initial size of the internal buffer (default 8)</param>
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>
@@ -87,7 +87,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DArray&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DArray{T}"/> class.
         /// </summary>
         /// <param name="content">Initial content to put in the DArray</param>
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>

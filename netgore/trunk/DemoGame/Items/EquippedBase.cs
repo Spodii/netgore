@@ -28,9 +28,9 @@ namespace DemoGame
         readonly T[] _equipped = new T[_highestSlotIndex + 1];
   
         /// <summary>
-        /// Handles an event from the <see cref="EquippedBase&lt;T&gt;"/>.
+        /// Handles an event from the <see cref="EquippedBase{T}"/>.
         /// </summary>
-        /// <param name="equippedBase">The <see cref="EquippedBase&lt;T&gt;"/>.</param>
+        /// <param name="equippedBase">The <see cref="EquippedBase{T}"/>.</param>
         /// <param name="item">The item the event is related to.</param>
         /// <param name="slot">The slot of the item the event is related to.</param>
     public delegate void EventHandler(EquippedBase<T> equippedBase, T item, EquipmentSlot slot);

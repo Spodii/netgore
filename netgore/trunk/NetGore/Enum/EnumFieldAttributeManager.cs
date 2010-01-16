@@ -20,7 +20,7 @@ namespace NetGore
         readonly Dictionary<TEnum, TAttribute> _attributes = new Dictionary<TEnum, TAttribute>(EnumComparer<TEnum>.Instance);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnumFieldAttributeManager&lt;TEnum, TAttribute&gt;"/> class.
+        /// Initializes a new instance of the <see cref="EnumFieldAttributeManager{TEnum, TAttribute}"/> class.
         /// </summary>
         /// <param name="requireAttribute">If true, all of the enum's defined values must contain the attribute
         /// <typeparamref name="TAttribute"/>. If any fields are missing this attribute, a <see cref="TypeException"/>

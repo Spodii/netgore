@@ -18,7 +18,7 @@ namespace NetGore.Stats
             new Dictionary<TStatType, IStat<TStatType>>(EnumComparer<TStatType>.Instance);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicStatCollection&lt;TStatType&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DynamicStatCollection{TStatType}"/> class.
         /// </summary>
         /// <param name="statCollectionType">The type of the collection.</param>
         protected DynamicStatCollection(StatCollectionType statCollectionType)

@@ -20,7 +20,7 @@ namespace NetGore
         readonly TSkillType _skillType;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SkillBase&lt;TSkillType, TStatType, TCharacter&gt;"/> class.
+        /// Initializes a new instance of the <see cref="SkillBase{TSkillType, TStatType, TCharacter}"/> class.
         /// </summary>
         /// <param name="skillType">The type of skill that this object instance is for.</param>
         /// <param name="cooldownGroup">The cooldown group.</param>

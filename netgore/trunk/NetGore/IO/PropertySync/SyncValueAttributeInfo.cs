@@ -59,7 +59,7 @@ namespace NetGore.IO.PropertySync
         readonly IPropertyInterface<object, T> _propertyInterface;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SyncValueAttributeInfo&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="SyncValueAttributeInfo{T}"/> class.
         /// </summary>
         /// <param name="pi">The <see cref="PropertyInfo"/>.</param>
         /// <param name="sva">The <see cref="SyncValueAttribute"/>.</param>

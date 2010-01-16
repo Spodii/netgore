@@ -12,7 +12,7 @@ namespace NetGore.EditorTools
         readonly T _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypedListControlItem&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="TypedListControlItem{T}"/> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="value">The value.</param>

@@ -141,7 +141,7 @@ namespace NetGore.Audio
         readonly Dictionary<string, T> _itemsByName = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AudioManagerBase&lt;T, TIndex&gt;"/> class.
+        /// Initializes a new instance of the <see cref="AudioManagerBase{T, TIndex}"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
         /// <param name="dataFilePath">The file path to the audio data to load.</param>

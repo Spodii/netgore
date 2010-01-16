@@ -87,14 +87,14 @@ namespace NetGore.Db.ClassCreator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /// &lt;summary&gt;
+        ///   Looks up a localized string similar to /// {summary}
         ////// A Dictionary-like lookup table for the Enum values of the type collection `[COLUMNCOLLECTIONNAME]` for the
         ////// table that this class represents. Majority of the code for this class was automatically generated and
         ////// only other automatically generated code should be using this class.
-        ////// &lt;/summary&gt;
+        ////// {/summary}
         ///private class [CLASSNAME]
         ///{
-        ///    /// &lt;summary&gt;
+        ///    /// {summary}
         ///    /// Array containing the actual values. The index of this array is found through the value returned
         ///    /// from the _lookupTable.
         ///    [rest of string was truncated]&quot;;.

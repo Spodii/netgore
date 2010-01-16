@@ -32,7 +32,7 @@ namespace NetGore.EditorTools
         public event SelectedObjectManagerEventHandler OnChangeSelected;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectedObjectsManager&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="SelectedObjectsManager{T}"/> class.
         /// </summary>
         /// <param name="propertyGrid">The <see cref="PropertyGrid"/> used to display the properties of the
         /// focused object.</param>

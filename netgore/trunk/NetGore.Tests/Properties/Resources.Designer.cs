@@ -62,7 +62,7 @@ namespace NetGore.Tests.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;Bodies&gt;
+        ///{Bodies}
         ///	&lt;Body Index=&quot;1&quot;&gt;
         ///		&lt;Size Width=&quot;30&quot; Height=&quot;78&quot; /&gt;
         ///		&lt;Body SkelBody=&quot;basic&quot; /&gt;
@@ -72,7 +72,7 @@ namespace NetGore.Tests.Properties {
         ///		&lt;Fall SkelSet=&quot;fall&quot; /&gt;
         ///		
         ///		&lt;Punch SkelSet=&quot;punch&quot; X=&quot;$width/2&quot; Y=&quot;0&quot; Width=&quot;$width&quot; Height=&quot;$height/2&quot; /&gt;
-        ///	&lt;/Body&gt;
+        ///	{/Body}
         ///	&lt;Body Index=&quot;2&quot;&gt;
         ///		&lt;Size Width=&quot;300&quot; Height=&quot;78&quot; /&gt;
         ///		&lt;Body SkelBody=&quot;aa&quot; /&gt;
