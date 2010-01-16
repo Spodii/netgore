@@ -2,7 +2,7 @@
 using System.Linq;
 using NetGore;
 
-namespace DemoGame.Emoticons
+namespace DemoGame
 {
     /// <summary>
     /// Provides some additional metadata about the <see cref="Emoticon"/> enum values.
