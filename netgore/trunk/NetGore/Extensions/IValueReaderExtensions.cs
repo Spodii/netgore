@@ -296,11 +296,11 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads a Vector2.
+        /// Reads a <see cref="Vector2"/>.
         /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
+        /// <returns>Value read from the <paramref name="reader"/>.</returns>
         public static Vector2 ReadVector2(this IValueReader reader, string name)
         {
             if (reader.SupportsNameLookup)
@@ -316,6 +316,60 @@ namespace NetGore
                 float x = reader.ReadFloat(null);
                 float y = reader.ReadFloat(null);
                 return new Vector2(x, y);
+            }
+        }
+
+        /// <summary>
+        /// Reads a <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the <paramref name="reader"/>.</returns>
+        public static Vector3 ReadVector3(this IValueReader reader, string name)
+        {
+            if (reader.SupportsNameLookup)
+            {
+                string value = reader.ReadString(name);
+                var split = value.Split(',');
+                float x = Parser.Invariant.ParseFloat(split[0]);
+                float y = Parser.Invariant.ParseFloat(split[1]);
+                float z = Parser.Invariant.ParseFloat(split[2]);
+                return new Vector3(x, y, z);
+            }
+            else
+            {
+                float x = reader.ReadFloat(null);
+                float y = reader.ReadFloat(null);
+                float z = reader.ReadFloat(null);
+                return new Vector3(x, y, z);
+            }
+        }
+
+        /// <summary>
+        /// Reads a <see cref="Vector4"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the <paramref name="reader"/>.</returns>
+        public static Vector4 ReadVector4(this IValueReader reader, string name)
+        {
+            if (reader.SupportsNameLookup)
+            {
+                string value = reader.ReadString(name);
+                var split = value.Split(',');
+                float x = Parser.Invariant.ParseFloat(split[0]);
+                float y = Parser.Invariant.ParseFloat(split[1]);
+                float z = Parser.Invariant.ParseFloat(split[2]);
+                float w = Parser.Invariant.ParseFloat(split[3]);
+                return new Vector4(x, y, z, w);
+            }
+            else
+            {
+                float x = reader.ReadFloat(null);
+                float y = reader.ReadFloat(null);
+                float z = reader.ReadFloat(null);
+                float w = reader.ReadFloat(null);
+                return new Vector4(x, y, z, w);
             }
         }
     }

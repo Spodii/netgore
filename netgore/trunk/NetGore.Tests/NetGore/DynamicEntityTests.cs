@@ -50,6 +50,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
 
             Assert.AreNotEqual(src.SkipA, dest.SkipA);
             Assert.AreNotEqual(src.SkipB, dest.SkipB);
@@ -62,6 +64,8 @@ namespace NetGore.Tests.NetGore
             src.P = Alignment.Left;
             src.M = new GrhIndex(10091);
             src.L = new Vector2(213, 123);
+            src.Q = new Vector3(123, 412, 1931);
+            src.R = new Vector4(109,12,190,51);
 
             writer = new BitStream(BitStreamMode.Write, 2048);
             src.Serialize(writer);
@@ -94,6 +98,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
 
             Assert.AreNotEqual(src.SkipA, dest.SkipA);
             Assert.AreNotEqual(src.SkipB, dest.SkipB);
@@ -134,6 +140,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
 
             Assert.AreNotEqual(src.SkipA, dest.SkipA);
             Assert.AreNotEqual(src.SkipB, dest.SkipB);
@@ -149,6 +157,8 @@ namespace NetGore.Tests.NetGore
             src.SkipA = 111;
             src.SkipB = 111;
             src.SkipC = 111;
+            src.Q = new Vector3(213, 123, 41);
+            src.R = new Vector4(51, 213, 123, 41);
 
             writer = new BitStream(BitStreamMode.Write, 2048);
             src.Serialize(writer);
@@ -181,6 +191,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
 
             Assert.AreNotEqual(src.SkipA, dest.SkipA);
             Assert.AreNotEqual(src.SkipB, dest.SkipB);
@@ -251,6 +263,8 @@ namespace NetGore.Tests.NetGore
                 Assert.AreEqual(src.N, dest.N, "Index: " + i);
                 Assert.AreEqual(src.O, dest.O, "Index: " + i);
                 Assert.AreEqual(src.P, dest.P, "Index: " + i);
+                Assert.AreEqual(src.Q, dest.Q, "Index: " + i);
+                Assert.AreEqual(src.R, dest.R, "Index: " + i);
             }
         }
 
@@ -310,6 +324,8 @@ namespace NetGore.Tests.NetGore
                     Assert.AreEqual(src.N, dest.N, "Index: " + i);
                     Assert.AreEqual(src.O, dest.O, "Index: " + i);
                     Assert.AreEqual(src.P, dest.P, "Index: " + i);
+                    Assert.AreEqual(src.Q.Round(), dest.Q.Round(), "Index: " + i);
+                    Assert.AreEqual(src.R.Round(), dest.R.Round(), "Index: " + i);
                 }
             }
             finally
@@ -372,6 +388,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
 
             src.A = false;
             src.D = 100;
@@ -412,6 +430,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
         }
 
         [Test]
@@ -448,6 +468,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
 
             src.Position = new Vector2(10981, -123);
             src.SetVelocity(new Vector2(0.114f, 10.181f));
@@ -483,6 +505,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
         }
 
         [Test]
@@ -519,6 +543,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.N, dest.N);
             Assert.AreEqual(src.O, dest.O);
             Assert.AreEqual(src.P, dest.P);
+            Assert.AreEqual(src.Q, dest.Q);
+            Assert.AreEqual(src.R, dest.R);
         }
 
         class DE : DynamicEntity
@@ -541,6 +567,8 @@ namespace NetGore.Tests.NetGore
                 N = "afoiwurekj sadfoiwerkjl asdfa1309813";
                 O = new Color(13, 124, 11, 12);
                 P = Alignment.Center;
+                Q = new Vector3(51,1231,52);
+                R = new Vector4(501, 1238, 61,1231);
             }
 
             [SyncValue]
@@ -599,6 +627,12 @@ namespace NetGore.Tests.NetGore
 
             [SyncValue]
             public Alignment P { get; set; }
+
+            [SyncValue]
+            public Vector3 Q { get; set; }
+
+            [SyncValue]
+            public Vector4 R { get; set; }
 
             public int SkipA { get; set; }
             public byte SkipB { get; set; }

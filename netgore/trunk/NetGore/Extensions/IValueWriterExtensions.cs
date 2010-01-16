@@ -179,9 +179,9 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes a Vector2.
+        /// Writes a <see cref="Vector2"/>.
         /// </summary>
-        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
@@ -199,6 +199,60 @@ namespace NetGore
                 // Not using name lookup, so just write them out
                 writer.Write(null, value.X);
                 writer.Write(null, value.Y);
+            }
+        }
+
+        /// <summary>
+        /// Writes a <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, Vector3 value)
+        {
+            if (writer.SupportsNameLookup)
+            {
+                // We are using name lookup, so we have to combine the values so we use only one name
+                string x = Parser.Invariant.ToString(value.X);
+                string y = Parser.Invariant.ToString(value.Y);
+                string z = Parser.Invariant.ToString(value.Z);
+                writer.Write(name, x + "," + y + "," + z);
+            }
+            else
+            {
+                // Not using name lookup, so just write them out
+                writer.Write(null, value.X);
+                writer.Write(null, value.Y);
+                writer.Write(null, value.Z);
+            }
+        }
+
+        /// <summary>
+        /// Writes a <see cref="Vector4"/>.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, Vector4 value)
+        {
+            if (writer.SupportsNameLookup)
+            {
+                // We are using name lookup, so we have to combine the values so we use only one name
+                string x = Parser.Invariant.ToString(value.X);
+                string y = Parser.Invariant.ToString(value.Y);
+                string z = Parser.Invariant.ToString(value.Z);
+                string w = Parser.Invariant.ToString(value.W);
+                writer.Write(name, x + "," + y + "," + z + "," + w);
+            }
+            else
+            {
+                // Not using name lookup, so just write them out
+                writer.Write(null, value.X);
+                writer.Write(null, value.Y);
+                writer.Write(null, value.Z);
+                writer.Write(null, value.W);
             }
         }
 
