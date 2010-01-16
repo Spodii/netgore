@@ -71,7 +71,7 @@ namespace DemoGame.Client
             Vector2 offset = _padding;
             Vector2 offsetMultiplier = _itemSize + _padding;
 
-            for (int i = 0; i < Inventory.MaxInventorySize; i++)
+            for (int i = 0; i < GameData.MaxInventorySize; i++)
             {
                 int x = i % _columns;
                 int y = i / _columns;

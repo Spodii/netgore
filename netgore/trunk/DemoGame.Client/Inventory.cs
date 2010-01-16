@@ -11,10 +11,10 @@ namespace DemoGame.Client
     /// <summary>
     /// A very simple client-side Inventory, used only by the User's character
     /// </summary>
-    public class Inventory : InventoryBase
+    public class Inventory
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly ItemEntity[] _buffer = new ItemEntity[MaxInventorySize];
+        readonly ItemEntity[] _buffer = new ItemEntity[GameData.MaxInventorySize];
 
         readonly ISocketSender _socket;
 

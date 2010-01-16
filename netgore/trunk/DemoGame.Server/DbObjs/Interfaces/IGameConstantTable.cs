@@ -45,6 +45,13 @@ System.Byte MaxCharactersPerAccount
 get;
 }
 /// <summary>
+/// Gets the value of the database column `max_inventory_size`.
+/// </summary>
+System.Byte MaxInventorySize
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `max_shop_items`.
 /// </summary>
 System.Byte MaxShopItems

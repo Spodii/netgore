@@ -14,7 +14,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="slot"/> is in legal range; otherwise false.</returns>
         public static bool IsLegalValue(this InventorySlot slot)
         {
-            return slot >= 0 && slot < InventoryBase.MaxInventorySize;
+            return slot >= 0 && slot < GameData.MaxInventorySize;
         }
     }
 }
