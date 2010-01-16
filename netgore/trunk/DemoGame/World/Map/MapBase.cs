@@ -1069,12 +1069,8 @@ namespace DemoGame
             var size = entity.Size + new Vector2(maxDiff);
             var newRect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 
-            foreach (var e in Entities)
+            foreach (var w in Spatial.GetMany<WallEntityBase>(newRect, x => x != entity))
             {
-                var w = e as WallEntityBase;
-                if (w == null || w == entity || !w.Intersects(newRect))
-                    continue;
-
                 // Selected wall right side to target wall left side
                 if (Math.Abs(newRect.Right - w.Position.X) < maxDiff)
                     ret.X = w.Position.X - entity.Size.X;
