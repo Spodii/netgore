@@ -127,13 +127,11 @@ namespace DemoGame.Client
             get { return GameplayScreen.World; }
         }
 
-        static List<StyledText> CreateChatText(string name, string method, string message)
+        static List<StyledText> CreateChatText(string name, string message)
         {
-            if (string.IsNullOrEmpty(method))
-                return new List<StyledText> { new StyledText(name + ": ", Color.Green), new StyledText(message, Color.Black) };
-            else
-                return new List<StyledText>
-                { new StyledText(name + " " + method + ": ", Color.Green), new StyledText(message, Color.Black) };
+            var left = new StyledText(name + ": ", Color.Green);
+            var right = new StyledText(message, Color.Black);
+            return new List<StyledText> { left, right };
         }
 
         static void LogFailPlaySound(SoundID soundID)
@@ -211,8 +209,7 @@ namespace DemoGame.Client
             MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
             string text = r.ReadString(GameData.MaxServerSayLength);
 
-            // TODO: Should use a GameMessage so we don't have the constant "says"
-            var chatText = CreateChatText(name, "says", text);
+            var chatText = CreateChatText(name, text);
             GameplayScreen.AppendToChatOutput(chatText);
 
             DynamicEntity entity;
@@ -784,6 +781,8 @@ namespace DemoGame.Client
                 GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", user.Name, skillType, target.Name));
             else
                 GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
+
+            // TODO: Add skill effects
 
             // If the character that used the skill is our client's character, hide the skill cast progress bar
             if (user == User && skillType == GameplayScreen.SkillCastProgressBar.CurrentSkillType)
