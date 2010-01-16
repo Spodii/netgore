@@ -14,7 +14,7 @@ namespace DemoGame
         readonly IStat[] _stats;
 
         /// <summary>
-        /// FullStatCollection constructor.
+        /// Initializes a new instance of the <see cref="FullStatCollection"/> class.
         /// </summary>
         /// <param name="collectionType">The type of StatTypes that this collection contains.</param>
         public FullStatCollection(StatCollectionType collectionType)
@@ -31,7 +31,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// FullStatCollection constructor.
+        /// Initializes a new instance of the <see cref="FullStatCollection"/> class.
         /// </summary>
         /// <param name="source">The FullStatCollection to copy the values from.</param>
         FullStatCollection(FullStatCollection source)
@@ -209,7 +209,7 @@ namespace DemoGame
         /// value is the value of for the stat with the corresponding StatType.</returns>
         public IEnumerable<KeyValuePair<StatType, int>> ToKeyValuePairs()
         {
-            return this.ToKeyValuePairs();
+            return ToKeyValuePairs();
         }
 
         /// <summary>
