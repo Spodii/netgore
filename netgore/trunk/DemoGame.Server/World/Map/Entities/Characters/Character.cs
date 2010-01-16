@@ -591,7 +591,7 @@ namespace DemoGame.Server
         /// <summary>
         /// When overridden in the derived class, creates the CharacterStatsBase for this Character.
         /// </summary>
-        /// <param name="statCollectionType">The type of StatCollectionType to create.</param>
+        /// <param name="statCollectionType">The type of <see cref="StatCollectionType"/> to create.</param>
         /// <returns>The CharacterStatsBase for this Character.</returns>
         protected abstract CharacterStatsBase CreateStats(StatCollectionType statCollectionType);
 

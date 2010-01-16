@@ -290,7 +290,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Creates an ItemStats from the given collection of IStats.
+        /// Creates an <see cref="ItemStats"/> from the given collection of <see cref="IStat{StatType}"/>s.
         /// </summary>
         ItemStats NewItemStats(IEnumerable<KeyValuePair<StatType, int>> statValues, StatCollectionType statCollectionType)
         {

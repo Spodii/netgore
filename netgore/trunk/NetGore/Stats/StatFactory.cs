@@ -4,18 +4,21 @@ using System.Linq;
 namespace NetGore.Stats
 {
     /// <summary>
-    /// Provides helper methods for creating and managing IStats and StatTypes.
+    /// Provides helper methods for creating and managing <see cref="IStat{StatType}"/>s and
+    /// <typeparamref name="TStatType"/>s.
     /// </summary>
+    /// <typeparam name="TStatType">The type of stat.</typeparam>
     public static class StatFactory<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         // TODO: Have to make it so people can easily define HOW their stats are created instead of always using StatValueShort
 
         /// <summary>
-        /// Creates an IStat.
+        /// Creates an <see cref="IStat{StatType}"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the IStat to create.</param>
-        /// <param name="statCollectionType">The StatCollectionType to create the IStat for.</param>
-        /// <returns>The IStat created using the given <paramref name="statType"/> and
+        /// <param name="statType">The <typeparamref name="TStatType"/> of the <see cref="IStat{StatType}"/> to create.</param>
+        /// <param name="statCollectionType">The <see cref="StatCollectionType"/> to create the
+        /// <see cref="IStat{StatType}"/> for.</param>
+        /// <returns>The <see cref="IStat{StatType}"/> created using the given <paramref name="statType"/> and
         /// <paramref name="statCollectionType"/>.</returns>
         public static IStat<TStatType> CreateStat(TStatType statType, StatCollectionType statCollectionType)
         {
@@ -23,12 +26,13 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Creates an IStat.
+        /// Creates an <see cref="IStat{StatType}"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the IStat to create.</param>
-        /// <param name="statCollectionType">The StatCollectionType to create the IStat for.</param>
-        /// <param name="initialValue">The initial value to give the IStat.</param>
-        /// <returns>The IStat created using the given <paramref name="statType"/> and
+        /// <param name="statType">The <typeparamref name="TStatType"/> of the <see cref="IStat{StatType}"/> to create.</param>
+        /// <param name="statCollectionType">The <see cref="StatCollectionType"/> to create the
+        /// <see cref="IStat{StatType}"/> for.</param>
+        /// <param name="initialValue">The initial value to give the <see cref="IStat{StatType}"/>.</param>
+        /// <returns>The <see cref="IStat{StatType}"/> created using the given <paramref name="statType"/> and
         /// <paramref name="statCollectionType"/> with an initial value of <paramref name="initialValue"/>.</returns>
         public static IStat<TStatType> CreateStat(TStatType statType, StatCollectionType statCollectionType, int initialValue)
         {

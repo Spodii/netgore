@@ -93,11 +93,11 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an IStat from the BitStream.
+        /// Reads an <see cref="IStat{StatType}"/> from the <see cref="BitStream"/>.
         /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <param name="statCollection">IStatCollection that the stat value will be loaded into. This IStatCollection
-        /// must contain the StatType being read.</param>
+        /// <param name="bitStream"><see cref="BitStream"/> to read from.</param>
+        /// <param name="statCollection"><see cref="IStatCollection{StatType}"/> that the stat value will be loaded
+        /// into. This <see cref="IStatCollection{StatType}"/> must contain the <see cref="StatType"/> being read.</param>
         public static void ReadStat(this BitStream bitStream, IStatCollection<StatType> statCollection)
         {
             StatType statType = bitStream.ReadEnum<StatType>();
@@ -110,8 +110,8 @@ namespace DemoGame
         /// This is because only non-zero stats are sent.
         /// </summary>
         /// <param name="bitStream">BitStream to read from</param>
-        /// <param name="statCollection">IStatCollection to read the stat values into. This IStatCollection
-        /// must contain all of the StatTypes being read.</param>
+        /// <param name="statCollection"><see cref="IStatCollection{StatType}"/> to read the stat values into. This
+        /// <see cref="IStatCollection{StatType}"/> must contain all of the <see cref="StatType"/>s being read.</param>
         public static void ReadStatCollection(this BitStream bitStream, IStatCollection<StatType> statCollection)
         {
             // Set all current stats to zero
@@ -266,7 +266,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Writes an IStat to the BitStream.
+        /// Writes an <see cref="IStat{StatType}"/> to the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="stat">IStat to write.</param>
@@ -278,7 +278,7 @@ namespace DemoGame
 
         /// <summary>
         /// Writes a collection of stats to the BitStream. Only non-zero value stats are written since since the reader
-        /// will zero all stat values first. All stats will be sent, even if the IStat.CanWrite is false.
+        /// will zero all stat values first.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="statCollection">IStatCollection containing the stat values to write.</param>

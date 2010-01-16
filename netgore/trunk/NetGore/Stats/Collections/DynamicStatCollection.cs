@@ -6,9 +6,11 @@ using System.Linq;
 namespace NetGore.Stats
 {
     /// <summary>
-    /// An IStatCollection implementation that can contain as few or as many StatTypes as needed. New StatTypes
-    /// can be added to the collection whenever needed.
+    /// An <see cref="IStatCollection{TStatType}"/> implementation that can contain as few or as many
+    /// <typeparamref name="TStatType"/>s as needed. New <typeparamref name="TStatType"/>s can be added to the collection
+    /// whenever needed.
     /// </summary>
+    /// <typeparam name="TStatType">The type of stat.</typeparam>
     public class DynamicStatCollection<TStatType> : IStatCollection<TStatType>
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
@@ -27,7 +29,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Adds an IStat to the collection.
+        /// Adds an <see cref="IStat{StatType}"/> to the collection.
         /// </summary>
         /// <param name="stat">IStat to add to the collection.</param>
         protected void Add(IStat<TStatType> stat)
@@ -36,7 +38,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Adds IStats to the collection.
+        /// Adds <see cref="IStat{StatType}"/>s to the collection.
         /// </summary>
         /// <param name="stats">IStats to add to the collection.</param>
         protected void Add(IEnumerable<IStat<TStatType>> stats)
@@ -48,7 +50,7 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Adds IStats to the collection.
+        /// Adds <see cref="IStat{StatType}"/>s to the collection.
         /// </summary>
         /// <param name="stats">IStats to add to the collection.</param>
         protected void Add(params IStat<TStatType>[] stats)
@@ -60,11 +62,13 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Gets an IStat from this StatCollectionBase, or creates the IStat for the <paramref name="statType"/>
-        /// if the IStat did not already exist in the collection.
+        /// Gets an <see cref="IStat{StatType}"/> from this <see cref="DynamicStatCollection{StatType}"/>, or creates the
+        /// <see cref="IStat{StatType}"/> for the <paramref name="statType"/> if the <see cref="IStat{StatType}"/>
+        /// did not already exist in the collection.
         /// </summary>
         /// <param name="statType">Type of stat to get.</param>
-        /// <returns>The IStat in this StatCollectionBase for Stat type <param name="statType"</returns>
+        /// <returns>The <see cref="IStat{StatType}"/> in this <see cref="DynamicStatCollection{StatType}"/> for the
+        /// <paramref name="statType"/>.</returns>
         protected IStat<TStatType> GetStatOrCreate(TStatType statType)
         {
             IStat<TStatType> stat;
@@ -78,10 +82,12 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when an IStat is added to this StatCollectionBase. This will
-        /// be invoked once and only once for every IStat added to this StatCollectionBase.
+        /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> is added to this
+        /// <see cref="DynamicStatCollection{StatType}"/>. This will be invoked once and only once for every
+        /// <see cref="IStat{StatType}"/> added to this <see cref="DynamicStatCollection{StatType}"/>.
         /// </summary>
-        /// <param name="stat">The IStat that was added to this StatCollectionBase.</param>
+        /// <param name="stat">The <see cref="IStat{StatType}"/> that was added to this
+        /// <see cref="DynamicStatCollection{StatType}"/>.</param>
         protected virtual void HandleStatAdded(IStat<TStatType> stat)
         {
         }
@@ -111,10 +117,9 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Gets or sets the value of the stat with the given <paramref name="statType"/>.
+        /// Gets or sets the <see cref="System.Int32"/> with the specified stat type.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get or set the value for.</param>
-        /// <returns>The value of the stat with the given <paramref name="statType"/>.</returns>
+        /// <value></value>
         public int this[TStatType statType]
         {
             get
@@ -135,32 +140,38 @@ namespace NetGore.Stats
         /// <summary>
         /// Checks if this collection contains the stat with the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType to check if exists in the collection.</param>
-        /// <returns>True if this collection contains the stat with the given <paramref name="statType"/>;
-        /// otherwise false.</returns>
+        /// <param name="statType">The type of the stat to check if exists in the collection.</param>
+        /// <returns>
+        /// True if this collection contains the <see cref="IStat{TStatType}"/> with the given
+        /// <paramref name="statType"/>; otherwise false.
+        /// </returns>
         public bool Contains(TStatType statType)
         {
             return _stats.ContainsKey(statType);
         }
 
         /// <summary>
-        /// Gets the IStat for the stat of the given <paramref name="statType"/>.
+        /// Gets the <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get.</param>
-        /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
+        /// <param name="statType">The stat type of the stat to get.</param>
+        /// <returns>
+        /// The <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
+        /// </returns>
         public virtual IStat<TStatType> GetStat(TStatType statType)
         {
             return _stats[statType];
         }
 
         /// <summary>
-        /// Tries to get the IStat for the stat of the given <paramref name="statType"/>.
+        /// Tries to get the <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get.</param>
-        /// <param name="stat">The IStat for the stat of the given <paramref name="statType"/>. If this method
-        /// returns false, this value will be null.</param>
-        /// <returns>True if the stat with the given <paramref name="statType"/> was found and
-        /// successfully returned; otherwise false.</returns>
+        /// <param name="statType">The stat type of the stat to get.</param>
+        /// <param name="stat">The <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
+        /// If this method returns false, this value will be null.</param>
+        /// <returns>
+        /// True if the <see cref="IStat{StatType}"/> with the given <paramref name="statType"/> was found and
+        /// successfully returned; otherwise false.
+        /// </returns>
         public bool TryGetStat(TStatType statType, out IStat<TStatType> stat)
         {
             return _stats.TryGetValue(statType, out stat);
@@ -169,11 +180,13 @@ namespace NetGore.Stats
         /// <summary>
         /// Tries to get the value of the stat of the given <paramref name="statType"/>.
         /// </summary>
-        /// <param name="statType">The StatType of the stat to get.</param>
+        /// <param name="statType">The stat type of the stat to get.</param>
         /// <param name="value">The value of the stat of the given <paramref name="statType"/>. If this method
         /// returns false, this value will be 0.</param>
-        /// <returns>True if the stat with the given <paramref name="statType"/> was found and
-        /// successfully returned; otherwise false.</returns>
+        /// <returns>
+        /// True if the stat with the given <paramref name="statType"/> was found and
+        /// successfully returned; otherwise false.
+        /// </returns>
         public bool TryGetStatValue(TStatType statType, out int value)
         {
             IStat<TStatType> stat;
@@ -188,16 +201,17 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
-        /// into this IStatCollection.
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given
+        /// <typeparamref name="TStatType"/> into this <see cref="IStatCollection{TStatType}"/>.
         /// </summary>
-        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
-        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
-        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
-        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
-        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
-        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
-        /// in any other way.</param>
+        /// <param name="values">IEnumerable of stat types and stat values to copy into this
+        /// <see cref="IStatCollection{TStatType}"/>.</param>
+        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
+        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value.
+        /// Any stat type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be
+        /// skipped. If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
+        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
+        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
         public void CopyValuesFrom(IEnumerable<KeyValuePair<TStatType, int>> values, bool checkContains)
         {
             foreach (var value in values)
@@ -210,24 +224,26 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
-        /// into this IStatCollection.
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given stat type
+        /// into this <see cref="IStatCollection{TStatType}"/>.
         /// </summary>
-        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
-        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
-        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
-        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
-        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
-        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
-        /// in any other way.</param>
+        /// <param name="values">IEnumerable of <typeparamref name="TStatType"/>s and stat values to copy into this
+        /// <see cref="IStatCollection{TStatType}"/>.</param>
+        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
+        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value. Any stat
+        /// type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be skipped.
+        /// If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
+        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
+        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
         public void CopyValuesFrom(IEnumerable<IStat<TStatType>> values, bool checkContains)
         {
             CopyValuesFrom(values.ToKeyValuePairs(), checkContains);
         }
 
         /// <summary>
-        /// Gets the StatCollectionType that this collection is for.
+        /// Gets the <see cref="StatCollectionType"/> that this collection is for.
         /// </summary>
+        /// <value></value>
         public StatCollectionType StatCollectionType
         {
             get { return _statCollectionType; }

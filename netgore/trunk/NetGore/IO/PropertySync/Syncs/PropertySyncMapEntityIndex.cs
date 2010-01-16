@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a MapEntityIndex.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="MapEntityIndex"/>.
     /// </summary>
     [PropertySyncHandler(typeof(MapEntityIndex))]
     public sealed class PropertySyncMapEntityIndex : PropertySyncBase<MapEntityIndex>

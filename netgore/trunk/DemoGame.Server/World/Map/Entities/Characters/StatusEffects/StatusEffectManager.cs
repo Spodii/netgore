@@ -10,15 +10,16 @@ using NetGore.Collections;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Manages all of the individual StatusEffectBases for the corresponding StatusEffectType. StatusEffect instances
-    /// should be acquired through this manager instead of creating new instances of the class.
+    /// Manages all of the individual <see cref="StatusEffectBase"/>s for the corresponding <see cref="StatusEffectType"/>.
+    /// <see cref="StatusEffectBase"/> instances should be acquired through this manager instead of creating new
+    /// instances of the class.
     /// </summary>
     public static class StatusEffectManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Dictionary that allows for lookup of a StatusEffectBase for the given StatusEffectType.
+        /// Dictionary that allows for lookup of a <see cref="StatusEffectBase"/> for the given <see cref="StatusEffectType"/>.
         /// </summary>
         static readonly Dictionary<StatusEffectType, StatusEffectBase> _statusEffects =
             new Dictionary<StatusEffectType, StatusEffectBase>(EnumComparer<StatusEffectType>.Instance);
@@ -56,11 +57,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the StatusEffectBase for the given StatusEffectType.
+        /// Gets the <see cref="StatusEffectBase"/> for the given <see cref="StatusEffectType"/>.
         /// </summary>
-        /// <param name="statusEffectType">The StatusEffectType to get the StatusEffectBase for.</param>
-        /// <returns>The StatusEffectBase for the given <paramref name="statusEffectType"/>,
-        /// or null if the <paramref name="statusEffectType"/> is invalid or contains no StatusEffectBase.</returns>
+        /// <param name="statusEffectType">The <see cref="StatusEffectType"/> to get the <see cref="StatusEffectBase"/>
+        /// for.</param>
+        /// <returns>The <see cref="StatusEffectBase"/> for the given <paramref name="statusEffectType"/>,
+        /// or null if the <paramref name="statusEffectType"/> is invalid or contains no
+        /// <see cref="StatusEffectBase"/>.</returns>
         public static StatusEffectBase GetStatusEffect(StatusEffectType statusEffectType)
         {
             StatusEffectBase value;

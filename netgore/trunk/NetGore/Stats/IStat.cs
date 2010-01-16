@@ -9,65 +9,70 @@ namespace NetGore.Stats
     /// Interface for the primary holder object of stat information, containing the type of stat, events, and the
     /// actual value of the stat.
     /// </summary>
+    /// <typeparam name="TStatType">The type of stat.</typeparam>
     public interface IStat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
-        /// Notifies listeners that the value of the stat has changed.
+        /// Notifies listeners that the value of this <see cref="IStat{TStatType}"/> has changed.
         /// </summary>
         event IStatEventHandler<TStatType> OnChange;
 
         /// <summary>
-        /// Gets the StatType of this stat.
+        /// Gets the <typeparamref name="TStatType"/> of this <see cref="IStat{TStatType}"/>.
         /// </summary>
         TStatType StatType { get; }
 
         /// <summary>
-        /// Gets or sets the value of this IStat as an integer.
+        /// Gets or sets the value of this <see cref="IStat{TStatType}"/> as an integer.
         /// </summary>
         int Value { get; set; }
 
         /// <summary>
-        /// Creates a deep copy of the IStat, resulting in a new IStat object of the same type as this IStat, and
-        /// containing the same IStatValueType with the same value, and same StatType.
+        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>, resulting in a new <see cref="IStat{TStatType}"/>
+        /// object of the same type as this <see cref="IStat{TStatType}"/>, and containing the same <see cref="IStatValueType"/>
+        /// with the same value, and same <typeparamref name="TStatType"/>.
         /// </summary>
-        /// <returns>The deep copy of the IStat.</returns>
+        /// <returns>The deep copy of the <see cref="IStat{TStatType}"/>.</returns>
         IStat<TStatType> DeepCopy();
 
         /// <summary>
-        /// Creates a deep copy of the IStat's IStatValueType, resulting in a new IStatValueType object of the same
-        /// type as this IStat's IStatValueType, and containing the same value.
+        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>, resulting in a new
+        /// <see cref="IStatValueType"/> object of the same type as this <see cref="IStat{TStatType}"/>'s
+        /// <see cref="IStatValueType"/>, and containing the same value.
         /// </summary>
-        /// <returns>The deep copy of the IStat's IStatValueType.</returns>
+        /// <returns>The deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>.</returns>
         IStatValueType DeepCopyValueType();
 
         /// <summary>
-        /// Reads the value for the IStat into the Value property using the specified BitStream. The BitStream
-        /// must not be null and must already be positioned at the start (first byte) of the value to be read.
+        /// Reads the value for the <see cref="IStat{TStatType}"/> into the <see cref="IStat{StatType}.Value"/> property using
+        /// the specified <see cref="BitStream"/>. The <see cref="BitStream"/> must not be null, be in
+        /// <see cref="BitStreamMode.Read"/> mode, and must already be positioned at the start of the value to be read.
         /// </summary>
-        /// <param name="bitStream">BitStream to acquire the value from.</param>
+        /// <param name="bitStream"><see cref="BitStream"/> to acquire the value from.</param>
         void Read(BitStream bitStream);
 
         /// <summary>
-        /// Reads the value for the IStat into the Value property using the specified IDataRecord. The IDataReader
-        /// must not be null and currently have a row being read.
+        /// Reads the value for the <see cref="IStat{TStatType}"/> into the Value property using the specified
+        /// <see cref="IDataRecord"/>. The <see cref="IDataRecord"/> must not be null and currently have a row being read.
         /// </summary>
-        /// <param name="dataReader">IDataRecord to acquire the value from.</param>
+        /// <param name="dataReader"><see cref="IDataRecord"/> to acquire the value from.</param>
         /// <param name="ordinal">Ordinal of the field to read the value from.</param>
         void Read(IDataRecord dataReader, int ordinal);
 
         /// <summary>
-        /// Reads the value for the IStat into the Value property using the specified IDataRecord. The IDataReader
-        /// must not be null and currently have a row being read.
+        /// Reads the value for the <see cref="IStat{TStatType}"/> into the Value property using the specified
+        /// <see cref="IDataReader"/>. The <see cref="IDataReader"/> must not be null and currently have a row being read.
         /// </summary>
-        /// <param name="dataReader">IDataRecord to acquire the value from.</param>
+        /// <param name="dataReader"><see cref="IDataReader"/> to acquire the value from.</param>
         /// <param name="name">Name of the field to read the value from.</param>
         void Read(IDataReader dataReader, string name);
 
         /// <summary>
-        /// Writes the Value property of the IStat directly into the specified BitStream. The BitStream must not be null,
-        /// be in Write mode, and be positioned at the location where the value is to be written.
+        /// Writes the <see cref="IStat{StatType}.Value"/> property of the <see cref="IStat{TStatType}"/> directly into the
+        /// specified <see cref="BitStream"/>. The <see cref="BitStream"/> must not be null, be in
+        /// <see cref="BitStreamMode.Write"/> mode, and be positioned at the location where the value is to be written.
         /// </summary>
-        /// <param name="bitStream">BitStream to write the value of the IStat to.</param>
+        /// <param name="bitStream"><see cref="BitStream"/> to write the value of the <see cref="IStat{TStatType}"/> to.</param>
         void Write(BitStream bitStream);
     }
 }

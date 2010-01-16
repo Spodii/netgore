@@ -5,7 +5,7 @@ using NetGore.IO.PropertySync;
 namespace DemoGame
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a BodyIndex.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a BodyIndex.
     /// </summary>
     [PropertySyncHandler(typeof(BodyIndex))]
     public sealed class PropertySyncBodyIndex : PropertySyncBase<BodyIndex>

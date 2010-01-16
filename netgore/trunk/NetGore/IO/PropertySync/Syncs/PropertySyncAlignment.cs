@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Alignment.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing an <see cref="Alignment"/>.
     /// </summary>
     [PropertySyncHandler(typeof(Alignment))]
     public sealed class PropertySyncAlignment : PropertySyncBase<Alignment>

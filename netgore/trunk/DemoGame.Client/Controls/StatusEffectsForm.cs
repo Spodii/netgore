@@ -141,9 +141,9 @@ namespace DemoGame.Client
             /// <summary>
             /// Initializes a new instance of the <see cref="StatusEffectCollectionItem"/> class.
             /// </summary>
-            /// <param name="statusEffectType">The StatusEffectType to use.</param>
-            /// <param name="power">The power of the StatusEffect.</param>
-            /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
+            /// <param name="statusEffectType">The <see cref="StatusEffectType"/> to use.</param>
+            /// <param name="power">The power of the status effect.</param>
+            /// <param name="disableTime">The game time at which this status effect will be disabled.</param>
             public StatusEffectCollectionItem(StatusEffectType statusEffectType, ushort power, int disableTime)
             {
                 _statusEffectType = statusEffectType;

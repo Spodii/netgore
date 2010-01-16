@@ -6,7 +6,7 @@ using NetGore.Stats;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Describes an instance of an active StatusEffectBase on a Character.
+    /// Describes an instance of an active <see cref="StatusEffectBase"/> on a Character.
     /// </summary>
     public class ActiveStatusEffect : IModStatContainer
     {
@@ -15,11 +15,11 @@ namespace DemoGame.Server
         ushort _power;
 
         /// <summary>
-        /// ActiveStatusEffect constructor.
+        /// Initializes a new instance of the <see cref="ActiveStatusEffect"/> class.
         /// </summary>
-        /// <param name="statusEffect">The StatusEffectBase to use.</param>
+        /// <param name="statusEffect">The <see cref="StatusEffectBase"/> to use.</param>
         /// <param name="power">The power of the StatusEffect.</param>
-        /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
+        /// <param name="disableTime">The game time at which this <see cref="ActiveStatusEffect"/> will be disabled.</param>
         public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power, int disableTime)
         {
             _statusEffect = statusEffect;
@@ -28,7 +28,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the game time at which this ActiveStatusEffect will be disabled.
+        /// Gets the game time at which this <see cref="ActiveStatusEffect"/> will be disabled.
         /// </summary>
         public int DisableTime
         {
@@ -45,7 +45,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the StatusEffectBase that this ActiveStatusEffect
+        /// Gets the <see cref="StatusEffectBase"/> that this <see cref="ActiveStatusEffect"/>.
         /// </summary>
         public StatusEffectBase StatusEffect
         {
@@ -80,22 +80,23 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the time remaining, in milliseconds, until this ActiveStatusEffect is disabled.
+        /// Gets the time remaining, in milliseconds, until this <see cref="ActiveStatusEffect"/> is disabled.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        /// <returns>The time remaining, in milliseconds, until this ActiveStatusEffect is disabled.</returns>
+        /// <returns>The time remaining, in milliseconds, until this <see cref="ActiveStatusEffect"/> is disabled.</returns>
         public int GetTimeRemaining(int gameTime)
         {
             return DisableTime - gameTime;
         }
 
         /// <summary>
-        /// Merges this ActiveStatusEffect with the values for another ActiveStatusEffect.
+        /// Merges this <see cref="ActiveStatusEffect"/> with the values for another <see cref="ActiveStatusEffect"/>.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
-        /// <param name="power">The power of the ActiveStatusEffect that is merging with this one.</param>
-        /// <param name="disableTime">The disable time of the ActiveStatusEffect that is merging with this one.</param>
-        /// <returns>True if the merge resulted in this ActiveStatusEffect changing; otherwise false.</returns>
+        /// <param name="power">The power of the <see cref="ActiveStatusEffect"/> that is merging with this one.</param>
+        /// <param name="disableTime">The disable time of the <see cref="ActiveStatusEffect"/> that is merging with
+        /// this one.</param>
+        /// <returns>True if the merge resulted in this <see cref="ActiveStatusEffect"/> changing; otherwise false.</returns>
         public bool MergeWith(int currentTime, ushort power, int disableTime)
         {
             int oldPower = _power;

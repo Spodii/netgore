@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a Long.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="long"/>.
     /// </summary>
     [PropertySyncHandler(typeof(long))]
     public sealed class PropertySyncLong : PropertySyncBase<long>
