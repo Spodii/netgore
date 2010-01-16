@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
+using NetGore.Collections;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -13,8 +14,7 @@ namespace DemoGame.Server.Queries
         const string _queryString = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
         readonly DbConnectionPool _connectionPool;
 
-        readonly Dictionary<string, InternalUpdateItemFieldQuery> _fieldQueries =
-            new Dictionary<string, InternalUpdateItemFieldQuery>(StringComparer.OrdinalIgnoreCase);
+        readonly ICache<string, InternalUpdateItemFieldQuery> _fieldQueryCache;
 
         bool _disposed;
 
@@ -29,21 +29,15 @@ namespace DemoGame.Server.Queries
 
             _connectionPool = connectionPool;
 
+            _fieldQueryCache = new HashCache<string, InternalUpdateItemFieldQuery>(x => new InternalUpdateItemFieldQuery(_connectionPool, x));
+
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
 
         public void Execute(ItemID itemID, string field, object value)
         {
-            // TODO: Generate all field queries at construction so we never have to worry about threading conflicts
-            InternalUpdateItemFieldQuery fieldQuery;
-            if (!_fieldQueries.TryGetValue(field, out fieldQuery))
-            {
-                var query = string.Format(_queryString, field.ToLower());
-                fieldQuery = new InternalUpdateItemFieldQuery(_connectionPool, query);
-                _fieldQueries.Add(field, fieldQuery);
-            }
-
             var values = new QueryArgs(itemID, value);
+            var fieldQuery = _fieldQueryCache[field];
             fieldQuery.Execute(values);
         }
 
@@ -59,7 +53,7 @@ namespace DemoGame.Server.Queries
 
             _disposed = true;
 
-            foreach (var query in _fieldQueries.Values)
+            foreach (var query in _fieldQueryCache.GetCachedValues())
             {
                 query.Dispose();
             }

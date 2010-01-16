@@ -96,6 +96,76 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Gets all the cached values in this collection. The returned collection must be immutable to avoid any
+        /// conflicts with if the cache changes.
+        /// </summary>
+        /// <returns>An immutable collection of all the cached values in this collection.</returns>
+        public IEnumerable<TValue> GetCachedValues()
+        {
+            TValue[] values;
+
+            _lock.EnterReadLock();
+            try
+            {
+                values = _cache.Values.ToArray();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+
+            return values;
+        }
+
+        /// <summary>
+        /// Gets if the given <paramref name="key"/> is loaded in the cache. If the <paramref name="key"/> is not
+        /// loaded, this method will not generate the value for the <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key to check if the value is in the cache.</param>
+        /// <returns>True if the value for the given <paramref name="key"/> is in the cache; otherwise false.</returns>
+        public bool ContainsKey(TKey key)
+        {
+            bool ret;
+
+            _lock.EnterReadLock();
+            try
+            {
+                ret = _cache.ContainsKey(key);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Ensures all of the <paramref name="keys"/> have been loaded into the cache.
+        /// </summary>
+        /// <param name="keys">All of the keys to load into the cache.</param>
+        public void PrepareKeys(IEnumerable<TKey> keys)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                foreach (var key in keys)
+                {
+                    if (!_cache.ContainsKey(key))
+                    {
+                        var value = _valueCreator(key);
+                        Debug.Assert(!_cache.ContainsKey(key));
+                        _cache.Add(key, value);
+                    }
+                }
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
         /// Clears all of the cached items.
         /// </summary>
         public void Clear()

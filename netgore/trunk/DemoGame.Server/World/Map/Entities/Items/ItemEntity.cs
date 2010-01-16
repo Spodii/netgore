@@ -500,6 +500,9 @@ namespace DemoGame.Server
             get { return (byte)Size.Y; }
         }
 
+        /// <summary>
+        /// Gets the value of the database column `hp`.
+        /// </summary>
         public SPValueType HP
         {
             get { return _hp; }
@@ -522,6 +525,9 @@ namespace DemoGame.Server
             get { return _id; }
         }
 
+        /// <summary>
+        /// Gets the value of the database column `equipped_body`.
+        /// </summary>
         public string EquippedBody
         {
             get { return _equippedBody; }
@@ -536,6 +542,9 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Gets the value of the database column `mp`.
+        /// </summary>
         public SPValueType MP
         {
             get { return _mp; }

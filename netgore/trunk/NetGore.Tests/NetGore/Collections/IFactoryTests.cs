@@ -139,6 +139,99 @@ namespace NetGore.Tests.NetGore.Collections
                 Assert.AreEqual("100", f[100]);
             }
         }
+        
+        [Test]
+        public void PrepareKeysTest()
+        {
+            var factories = CreateFactories<int, string>(x => x.ToString()).ToArray();
+
+            foreach (var f in factories)
+            {
+                Assert.IsFalse(f.ContainsKey(1));
+                Assert.IsFalse(f.ContainsKey(2));
+                Assert.IsFalse(f.ContainsKey(3));
+                Assert.IsFalse(f.ContainsKey(4));
+                Assert.IsFalse(f.ContainsKey(5));
+                Assert.IsFalse(f.ContainsKey(6));
+
+                Assert.AreEqual("1", f[1]);
+                Assert.IsTrue(f.ContainsKey(1));
+
+                f.PrepareKeys(Enumerable.Range(1, 6));
+
+                Assert.IsTrue(f.ContainsKey(1));
+                Assert.IsTrue(f.ContainsKey(2));
+                Assert.IsTrue(f.ContainsKey(3));
+                Assert.IsTrue(f.ContainsKey(4));
+                Assert.IsTrue(f.ContainsKey(5));
+                Assert.IsTrue(f.ContainsKey(6));
+
+                f.PrepareKeys(Enumerable.Range(1, 6));
+
+                Assert.IsTrue(f.ContainsKey(1));
+                Assert.IsTrue(f.ContainsKey(2));
+                Assert.IsTrue(f.ContainsKey(3));
+                Assert.IsTrue(f.ContainsKey(4));
+                Assert.IsTrue(f.ContainsKey(5));
+                Assert.IsTrue(f.ContainsKey(6));
+            }
+        }
+
+        [Test]
+        public void ContainsKeyTest()
+        {
+            var factories = CreateFactories<int, string>(x => x.ToString()).ToArray();
+
+            foreach (var f in factories)
+            {
+                Assert.IsFalse(f.ContainsKey(1));
+                Assert.IsFalse(f.ContainsKey(1));
+
+                Assert.AreEqual("1", f[1]);
+                Assert.IsTrue(f.ContainsKey(1));
+                Assert.IsFalse(f.ContainsKey(2));
+
+                Assert.AreEqual("2", f[2]);
+                Assert.IsTrue(f.ContainsKey(2));
+
+                Assert.IsFalse(f.ContainsKey(3));
+                Assert.IsFalse(f.ContainsKey(3));
+                Assert.IsFalse(f.ContainsKey(4));
+                Assert.IsFalse(f.ContainsKey(4));
+            }
+        }
+
+        [Test]
+        public void GetCachedValuesTest()
+        {
+            var factories = CreateFactories<int, string>(x => x.ToString()).ToArray();
+
+            foreach (var f in factories)
+            {
+                var a = f.GetCachedValues();
+                Assert.AreEqual(0, a.Count());
+
+                Assert.AreEqual("1", f[1]);
+
+                var b = f.GetCachedValues();
+                Assert.AreEqual(1, b.Count());
+                Assert.AreNotSame(a, b);
+
+                Assert.AreEqual("2", f[2]);
+                Assert.AreEqual("3", f[3]);
+                Assert.AreEqual("4", f[4]);
+                Assert.AreEqual("5", f[5]);
+
+                var c = f.GetCachedValues();
+                Assert.AreEqual(0, a.Count());
+                Assert.AreEqual(1, b.Count());
+                Assert.AreEqual(5, c.Count());
+
+                Assert.AreNotSame(a, b);
+                Assert.AreNotSame(a, c);
+                Assert.AreNotSame(b, c);
+            }
+        }
 
         [Test]
         public void ThreadSafeGetKeyTest()
