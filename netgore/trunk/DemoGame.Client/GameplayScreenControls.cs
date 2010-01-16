@@ -218,7 +218,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_PickUp(GameControl sender)
         {
-            ItemEntity pickupItem = Map.Spatial.Get<ItemEntity>(UserChar.GetPickupRegion());
+            ItemEntity pickupItem = Map.Spatial.Get<ItemEntity>(GameData.GetPickupRegion(UserChar));
             if (pickupItem == null)
                 return;
 

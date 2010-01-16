@@ -11,11 +11,6 @@ namespace DemoGame
     /// </summary>
     public abstract class CharacterEntity : DynamicEntity, IUpdateableEntity
     {
-        /// <summary>
-        /// The maximum distance, in pixels, a character can pick up an item.
-        /// </summary>
-        public const int MaxPickupDistance = 32;
-
         Direction _heading = Direction.East;
 #if !TOPDOWN
         CharacterState _state = CharacterState.Idle;
@@ -167,18 +162,6 @@ namespace DemoGame
         protected abstract IMap GetIMap();
 
         /// <summary>
-        /// Gets a <see cref="Rectangle"/> representing the region a <see cref="CharacterEntity"/> can pick up
-        /// <see cref="IPickupableEntity"/> entities from.
-        /// </summary>
-        /// <returns>A <see cref="Rectangle"/> representing the region a <see cref="CharacterEntity"/> can pick up
-        /// <see cref="IPickupableEntity"/> entities from.</returns>
-        public Rectangle GetPickupRegion()
-        {
-            return new Rectangle((int)Position.X - MaxPickupDistance, (int)Position.Y - MaxPickupDistance,
-                                 (int)Size.X + (MaxPickupDistance * 2), (int)Size.Y + (MaxPickupDistance * 2));
-        }
-
-        /// <summary>
         /// Handles updating this <see cref="Entity"/>.
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
@@ -197,18 +180,6 @@ namespace DemoGame
 
             // Perform post-collision detection updating
             UpdatePostCollision(deltaTime);
-        }
-
-        /// <summary>
-        /// Checks if the given <paramref name="toPickup"/> is close enough to the <see cref="CharacterEntity"/>
-        /// to be picked up.
-        /// </summary>
-        /// <param name="toPickup">The <see cref="Entity"/> to be picked up.</param>
-        /// <returns>True if the <paramref name="toPickup"/> is close enough to be picked up; otherwise false.</returns>
-        public bool IsInPickupRegion(Entity toPickup)
-        {
-            var dist = this.GetDistance(toPickup);
-            return (dist <= MaxPickupDistance);
         }
 
         /// <summary>
