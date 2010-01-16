@@ -10,7 +10,7 @@ namespace NetGore.Stats
     public static class IStatCollectionExtensions
     {
         /// <summary>
-        /// Gets the <typeparamref name="TStatType"/> and stat value as a <see cref="KeyValuePair{T,U}"/>.
+        /// Gets the <typeparamref name="TStatType"/> and stat value as a <see cref="KeyValuePair{TKey,TValue}"/>.
         /// </summary>
         /// <typeparam name="TStatType">The type of stat.</typeparam>
         /// <param name="stats">The <see cref="IStat{StatType}"/>s to create the <see cref="KeyValuePair{T,U}"/>

@@ -19,11 +19,15 @@ namespace NetGore.Collections
         TValue this[TKey key] { get; }
 
         /// <summary>
-        /// Gets all the cached values in this collection. The returned collection must be immutable to avoid any
-        /// conflicts with if the cache changes.
+        /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
+        /// should never be accessed from multiple threads.
         /// </summary>
-        /// <returns>An immutable collection of all the cached values in this collection.</returns>
-        IEnumerable<TValue> GetCachedValues();
+        bool IsThreadSafe { get; }
+
+        /// <summary>
+        /// Clears all of the cached items.
+        /// </summary>
+        void Clear();
 
         /// <summary>
         /// Gets if the given <paramref name="key"/> is loaded in the cache. If the <paramref name="key"/> is not
@@ -34,20 +38,16 @@ namespace NetGore.Collections
         bool ContainsKey(TKey key);
 
         /// <summary>
+        /// Gets all the cached values in this collection. The returned collection must be immutable to avoid any
+        /// conflicts with if the cache changes.
+        /// </summary>
+        /// <returns>An immutable collection of all the cached values in this collection.</returns>
+        IEnumerable<TValue> GetCachedValues();
+
+        /// <summary>
         /// Ensures all of the <paramref name="keys"/> have been loaded into the cache.
         /// </summary>
         /// <param name="keys">All of the keys to load into the cache.</param>
         void PrepareKeys(IEnumerable<TKey> keys);
-
-        /// <summary>
-        /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
-        /// should never be accessed from multiple threads.
-        /// </summary>
-        bool IsThreadSafe { get; }
-
-        /// <summary>
-        /// Clears all of the cached items.
-        /// </summary>
-        void Clear();
     }
 }

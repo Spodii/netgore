@@ -752,7 +752,7 @@ namespace DemoGame.Server
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type AccountID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
-        /// <param name="dict">The <see cref="IDictionary{TKey, TValue}"/>.</param>
+        /// <param name="dict">The <see cref="IDictionary{TKey,TValue}"/>.</param>
         /// <param name="key">The key for the value to get.</param>
         /// <returns>The value at the given <paramref name="key"/> parsed as a AccountID.</returns>
         public static AccountID AsAccountID<T>(this IDictionary<T, string> dict, T key)

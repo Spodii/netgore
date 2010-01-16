@@ -93,7 +93,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an <see cref="IStat{StatType}"/> from the <see cref="BitStream"/>.
+        /// Reads an <see cref="IStat{TStatType}"/> from the <see cref="BitStream"/>.
         /// </summary>
         /// <param name="bitStream"><see cref="BitStream"/> to read from.</param>
         /// <param name="statCollection"><see cref="IStatCollection{StatType}"/> that the stat value will be loaded

@@ -14,6 +14,14 @@ namespace DemoGame
     /// </summary>
     public abstract class EquippedBase<T> : IEnumerable<KeyValuePair<EquipmentSlot, T>> where T : ItemEntityBase
     {
+        /// <summary>
+        /// Handles an event from the <see cref="EquippedBase{T}"/>.
+        /// </summary>
+        /// <param name="equippedBase">The <see cref="EquippedBase{T}"/>.</param>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        public delegate void EventHandler(EquippedBase<T> equippedBase, T item, EquipmentSlot slot);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -26,14 +34,6 @@ namespace DemoGame
         /// corresponding to that slot.
         /// </summary>
         readonly T[] _equipped = new T[_highestSlotIndex + 1];
-  
-        /// <summary>
-        /// Handles an event from the <see cref="EquippedBase{T}"/>.
-        /// </summary>
-        /// <param name="equippedBase">The <see cref="EquippedBase{T}"/>.</param>
-        /// <param name="item">The item the event is related to.</param>
-        /// <param name="slot">The slot of the item the event is related to.</param>
-    public delegate void EventHandler(EquippedBase<T> equippedBase, T item, EquipmentSlot slot);
 
         /// <summary>
         /// Notifies listeners that an item has been equipped.
@@ -161,6 +161,24 @@ namespace DemoGame
             }
 
             throw new ArgumentException("Specified item could not be found in this EquippedBase.");
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an item has been equipped.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected virtual void HandleOnEquip(T item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an item has been removed.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected virtual void HandleOnRemove(T item, EquipmentSlot slot)
+        {
         }
 
         /// <summary>
@@ -318,24 +336,6 @@ namespace DemoGame
 
             // Slot setting was successful (since we always aborted early with false if it wasn't)
             return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when an item has been equipped.
-        /// </summary>
-        /// <param name="item">The item the event is related to.</param>
-        /// <param name="slot">The slot of the item the event is related to.</param>
-        protected virtual void HandleOnEquip(T item, EquipmentSlot slot)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when an item has been removed.
-        /// </summary>
-        /// <param name="item">The item the event is related to.</param>
-        /// <param name="slot">The slot of the item the event is related to.</param>
-        protected virtual void HandleOnRemove(T item, EquipmentSlot slot)
-        {
         }
 
         #region IEnumerable<KeyValuePair<EquipmentSlot,T>> Members

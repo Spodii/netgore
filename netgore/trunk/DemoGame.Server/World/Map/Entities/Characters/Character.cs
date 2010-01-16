@@ -77,7 +77,11 @@ namespace DemoGame.Server
         /// Gets or sets the map that the <see cref="IUpdateableMapReference"/> is on. This should only be set
         /// by the map that the object was added to.
         /// </summary>
-        IMap IUpdateableMapReference.Map { get { return Map; } set { _map = (Map)value; } }
+        IMap IUpdateableMapReference.Map
+        {
+            get { return Map; }
+            set { _map = (Map)value; }
+        }
 
         /// <summary>
         /// Makes the <see cref="Character"/> use an <see cref="Emoticon"/>.

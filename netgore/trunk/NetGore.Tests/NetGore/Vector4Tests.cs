@@ -48,18 +48,18 @@ namespace NetGore.Tests.NetGore
                                     {
                                         for (int w2 = -3; w2 < 3; w2++)
                                         {
-                                        Vector4 v1 = new Vector4(x1, y1, z1, w1);
-                                        Vector4 v2 = new Vector4(x2, y2, z2, w2);
+                                            Vector4 v1 = new Vector4(x1, y1, z1, w1);
+                                            Vector4 v2 = new Vector4(x2, y2, z2, w2);
 
-                                        bool b1 = (v1.X >= v2.X && v1.Y >= v2.Y && v1.Z >= v2.Z && v1.W >= v2.W);
-                                        Assert.AreEqual(b1, v1.IsGreaterOrEqual(v2));
+                                            bool b1 = (v1.X >= v2.X && v1.Y >= v2.Y && v1.Z >= v2.Z && v1.W >= v2.W);
+                                            Assert.AreEqual(b1, v1.IsGreaterOrEqual(v2));
 
-                                        bool b2 = (v2.X >= v1.X && v2.Y >= v1.Y && v2.Z >= v1.Z && v2.W >= v1.W);
-                                        Assert.AreEqual(b2, v2.IsGreaterOrEqual(v1));
+                                            bool b2 = (v2.X >= v1.X && v2.Y >= v1.Y && v2.Z >= v1.Z && v2.W >= v1.W);
+                                            Assert.AreEqual(b2, v2.IsGreaterOrEqual(v1));
+                                        }
                                     }
                                 }
                             }
-                        }
                         }
                     }
                 }
@@ -85,17 +85,17 @@ namespace NetGore.Tests.NetGore
                                     {
                                         for (int w2 = -3; w2 < 3; w2++)
                                         {
-                                        Vector4 v1 = new Vector4(x1, y1, z1, w1);
-                                        Vector4 v2 = new Vector4(x2, y2, z2, w2);
+                                            Vector4 v1 = new Vector4(x1, y1, z1, w1);
+                                            Vector4 v2 = new Vector4(x2, y2, z2, w2);
 
-                                        bool b1 = (v1.X > v2.X && v1.Y > v2.Y && v1.Z > v2.Z && v1.W > v2.W);
-                                        Assert.AreEqual(b1, v1.IsGreaterThan(v2));
+                                            bool b1 = (v1.X > v2.X && v1.Y > v2.Y && v1.Z > v2.Z && v1.W > v2.W);
+                                            Assert.AreEqual(b1, v1.IsGreaterThan(v2));
 
-                                        bool b2 = (v2.X > v1.X && v2.Y > v1.Y && v2.Z > v1.Z && v2.W > v1.W);
-                                        Assert.AreEqual(b2, v2.IsGreaterThan(v1));
+                                            bool b2 = (v2.X > v1.X && v2.Y > v1.Y && v2.Z > v1.Z && v2.W > v1.W);
+                                            Assert.AreEqual(b2, v2.IsGreaterThan(v1));
+                                        }
                                     }
                                 }
-                            }
                             }
                         }
                     }
@@ -122,17 +122,17 @@ namespace NetGore.Tests.NetGore
                                     {
                                         for (int w2 = -3; w2 < 3; w2++)
                                         {
-                                        Vector4 v1 = new Vector4(x1, y1, z1, w1);
-                                        Vector4 v2 = new Vector4(x2, y2, z2, w2);
+                                            Vector4 v1 = new Vector4(x1, y1, z1, w1);
+                                            Vector4 v2 = new Vector4(x2, y2, z2, w2);
 
-                                        bool b1 = (v1.X <= v2.X && v1.Y <= v2.Y && v1.Z <= v2.Z && v1.W <= v2.W);
-                                        Assert.AreEqual(b1, v1.IsLessOrEqual(v2));
+                                            bool b1 = (v1.X <= v2.X && v1.Y <= v2.Y && v1.Z <= v2.Z && v1.W <= v2.W);
+                                            Assert.AreEqual(b1, v1.IsLessOrEqual(v2));
 
-                                        bool b2 = (v2.X <= v1.X && v2.Y <= v1.Y && v2.Z <= v1.Z && v2.W <= v1.W);
-                                        Assert.AreEqual(b2, v2.IsLessOrEqual(v1));
+                                            bool b2 = (v2.X <= v1.X && v2.Y <= v1.Y && v2.Z <= v1.Z && v2.W <= v1.W);
+                                            Assert.AreEqual(b2, v2.IsLessOrEqual(v1));
+                                        }
                                     }
                                 }
-                            }
                             }
                         }
                     }
@@ -149,27 +149,27 @@ namespace NetGore.Tests.NetGore
                 {
                     for (int z1 = -1; z1 < 1; z1++)
                     {
-                    for (int w1 = -2; w1 < 2; w1++)
-                    {
-                        for (int x2 = -2; x2 < 2; x2++)
+                        for (int w1 = -2; w1 < 2; w1++)
                         {
-                            for (int y2 = -2; y2 < 2; y2++)
+                            for (int x2 = -2; x2 < 2; x2++)
                             {
-                                for (int z2 = -2; z2 < 2; z2++)
+                                for (int y2 = -2; y2 < 2; y2++)
                                 {
-                                    for (int w2 = -3; w2 < 3; w2++)
+                                    for (int z2 = -2; z2 < 2; z2++)
                                     {
-                                        Vector4 v1 = new Vector4(x1, y1, z1, w1);
-                                        Vector4 v2 = new Vector4(x2, y2, z2, w2);
+                                        for (int w2 = -3; w2 < 3; w2++)
+                                        {
+                                            Vector4 v1 = new Vector4(x1, y1, z1, w1);
+                                            Vector4 v2 = new Vector4(x2, y2, z2, w2);
 
-                                        bool b1 = (v1.X < v2.X && v1.Y < v2.Y && v1.Z < v2.Z && v1.W < v2.W);
-                                        Assert.AreEqual(b1, v1.IsLessThan(v2));
+                                            bool b1 = (v1.X < v2.X && v1.Y < v2.Y && v1.Z < v2.Z && v1.W < v2.W);
+                                            Assert.AreEqual(b1, v1.IsLessThan(v2));
 
-                                        bool b2 = (v2.X < v1.X && v2.Y < v1.Y && v2.Z < v1.Z && v2.W < v1.W);
-                                        Assert.AreEqual(b2, v2.IsLessThan(v1));
+                                            bool b2 = (v2.X < v1.X && v2.Y < v1.Y && v2.Z < v1.Z && v2.W < v1.W);
+                                            Assert.AreEqual(b2, v2.IsLessThan(v1));
+                                        }
                                     }
                                 }
-                            }
                             }
                         }
                     }

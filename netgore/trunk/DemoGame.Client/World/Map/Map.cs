@@ -175,9 +175,7 @@ namespace DemoGame.Client
                 {
                     // Check for duplicate location and collision type
                     if (a.Position == b.Position && a.Size == b.Size && a.GetType() == b.GetType())
-                    {
                         ret.Add(a);
-                    }
                 }
             }
 
@@ -199,9 +197,7 @@ namespace DemoGame.Client
                 foreach (var wall2 in Spatial.GetMany<WallEntityBase>(wall))
                 {
                     if (wall.Position == wall2.Position && wall.Size == wall2.Size && wall.GetType() == wall2.GetType())
-                    {
                         ret.Add(wall2);
-                    }
                 }
             }
 
