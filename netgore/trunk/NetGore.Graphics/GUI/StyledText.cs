@@ -224,6 +224,7 @@ namespace NetGore.Graphics.GUI
                 float length = font.MeasureString(sb).X;
                 if (length <= maxLineLength)
                     return sb.Length;
+
                 sb.Length--;
             }
 
@@ -632,8 +633,10 @@ namespace NetGore.Graphics.GUI
         /// <see cref="replacementString"/>.</returns>
         public StyledText ToSingleline(string replacementString)
         {
-            // TODO: Create unit test for this
-            string newText = _text.Replace("\r\n", replacementString);
+            if (string.IsNullOrEmpty(Text))
+                return new StyledText(string.Empty, Color);
+
+            string newText = Text.Replace("\r\n", replacementString);
             if (newText.Length > 0)
                 newText = newText.Replace("\n", replacementString);
             if (newText.Length > 0)
@@ -642,13 +645,47 @@ namespace NetGore.Graphics.GUI
             return new StyledText(newText, Color);
         }
 
+        /// <summary>
+        /// Gets the concatenated string for a collection of <see cref="StyledText"/>s.
+        /// </summary>
+        /// <param name="texts">The <see cref="StyledText"/>s.</param>
+        /// <returns>The concatenated string for the <paramref name="texts"/>.</returns>
         public static string ToString(IEnumerable<StyledText> texts)
         {
+            if (texts == null)
+                return string.Empty;
+
             StringBuilder sb = new StringBuilder();
             foreach (var text in texts)
             {
                 sb.Append(text);
             }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Gets the concatenated string for a collection of <see cref="StyledText"/>s.
+        /// </summary>
+        /// <param name="texts">The <see cref="StyledText"/>s.</param>
+        /// <param name="delimiter">The delimiter used between each of the <paramref name="texts"/>.</param>
+        /// <returns>The concatenated string for the <paramref name="texts"/>.</returns>
+        public static string ToString(IEnumerable<StyledText> texts, string delimiter)
+        {
+            if (texts == null)
+                return string.Empty;
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var text in texts)
+            {
+                sb.Append(text);
+                sb.Append(delimiter);
+            }
+
+            // Remove the last delimiter
+            if (sb.Length > 0)
+                sb.Length -= delimiter.Length;
+
             return sb.ToString();
         }
 
@@ -660,7 +697,7 @@ namespace NetGore.Graphics.GUI
         /// </returns>
         public override string ToString()
         {
-            return _text;
+            return Text;
         }
 
         /// <summary>
