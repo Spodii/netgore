@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NetGore;
 using NetGore.IO;
@@ -14,28 +15,45 @@ namespace NetGore.Stats
     public class FullStatCollection<TStatType> : IStatCollection<TStatType>
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
+        /// <summary>
+        /// Cache of the func to convert a <typeparamref name="TStatType"/> to int.
+        /// </summary>
+        static readonly Func<TStatType, int> _statTypeToInt;
+
+        /// <summary>
+        /// The size to make the <see cref="_stats"/> array for each instance.
+        /// </summary>
+        static readonly int _statsArraySize;
+
         readonly StatCollectionType _collectionType;
         readonly IStat<TStatType>[] _stats;
-        readonly EnumIOHelper<TStatType> _enumIOHelper;
+
+        /// <summary>
+        /// Initializes the <see cref="FullStatCollection&lt;TStatType&gt;"/> class.
+        /// </summary>
+        static FullStatCollection()
+        {
+            // Cache the TStatType -> int conversion func to speed up calls slightly
+            _statTypeToInt = EnumHelper<TStatType>.GetToIntFunc();
+            Debug.Assert(_statTypeToInt != null);
+
+            _statsArraySize = EnumHelper<TStatType>.MaxValue + 1;
+            Debug.Assert(_statsArraySize > 0);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FullStatCollection&lt;TStatType&gt;"/> class.
         /// </summary>
         /// <param name="collectionType">The type of StatTypes that this collection contains.</param>
-        /// <param name="enumIOHelper">The enum IO helper.</param>
-        public FullStatCollection(StatCollectionType collectionType, EnumIOHelper<TStatType> enumIOHelper)
+        public FullStatCollection(StatCollectionType collectionType)
         {
-            if (enumIOHelper == null)
-                throw new ArgumentNullException("enumIOHelper");
-
-            _enumIOHelper = enumIOHelper;
             _collectionType = collectionType;
-            _stats = new IStat<TStatType>[_enumIOHelper.MaxValue + 1];
+            _stats = new IStat<TStatType>[_statsArraySize];
 
-            foreach (var statType in EnumIOHelper<TStatType>.Values)
+            foreach (var statType in EnumHelper<TStatType>.Values)
             {
                 IStat<TStatType> istat = StatFactory<TStatType>.CreateStat(statType, collectionType);
-                _stats[enumIOHelper.ToInt(statType)] = istat;
+                _stats[_statTypeToInt(statType)] = istat;
             }
         }
 
@@ -120,8 +138,8 @@ namespace NetGore.Stats
         /// <returns>The value of the stat with the given <paramref name="statType"/>.</returns>
         public int this[TStatType statType]
         {
-            get { return _stats[_enumIOHelper.ToInt(statType)].Value; }
-            set { _stats[_enumIOHelper.ToInt(statType)].Value = value; }
+            get { return _stats[_statTypeToInt(statType)].Value; }
+            set { _stats[_statTypeToInt(statType)].Value = value; }
         }
 
         /// <summary>
@@ -150,7 +168,7 @@ namespace NetGore.Stats
         /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
         public IStat<TStatType> GetStat(TStatType statType)
         {
-            return _stats[_enumIOHelper.ToInt(statType)];
+            return _stats[_statTypeToInt(statType)];
         }
 
         /// <summary>

@@ -247,7 +247,6 @@ namespace NetGore.Tests.IO
                 TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B,
                 TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
             };
-            TestEnumHelper enumHelper = new TestEnumHelper();
 
             foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
@@ -260,20 +259,20 @@ namespace NetGore.Tests.IO
                     {
                         for (int i = 0; i < values.Length; i++)
                         {
-                            w.WriteEnumValue(enumHelper, GetValueKey(i), values[i]);
+                            w.WriteEnumValue(GetValueKey(i), values[i]);
                         }
                     }
 
                     IValueReader r = creator.GetReader();
                     {
-                        Assert.AreEqual(values[3], r.ReadEnumValue(enumHelper, GetValueKey(3)));
-                        Assert.AreEqual(values[5], r.ReadEnumValue(enumHelper, GetValueKey(5)));
-                        Assert.AreEqual(values[0], r.ReadEnumValue(enumHelper, GetValueKey(0)));
-                        Assert.AreEqual(values[1], r.ReadEnumValue(enumHelper, GetValueKey(1)));
-                        Assert.AreEqual(values[3], r.ReadEnumValue(enumHelper, GetValueKey(3)));
-                        Assert.AreEqual(values[5], r.ReadEnumValue(enumHelper, GetValueKey(5)));
-                        Assert.AreEqual(values[4], r.ReadEnumValue(enumHelper, GetValueKey(4)));
-                        Assert.AreEqual(values[4], r.ReadEnumValue(enumHelper, GetValueKey(4)));
+                        Assert.AreEqual(values[3], r.ReadEnumValue<TestEnum>(GetValueKey(3)));
+                        Assert.AreEqual(values[5], r.ReadEnumValue<TestEnum>(GetValueKey(5)));
+                        Assert.AreEqual(values[0], r.ReadEnumValue<TestEnum>(GetValueKey(0)));
+                        Assert.AreEqual(values[1], r.ReadEnumValue<TestEnum>(GetValueKey(1)));
+                        Assert.AreEqual(values[3], r.ReadEnumValue<TestEnum>(GetValueKey(3)));
+                        Assert.AreEqual(values[5], r.ReadEnumValue<TestEnum>(GetValueKey(5)));
+                        Assert.AreEqual(values[4], r.ReadEnumValue<TestEnum>(GetValueKey(4)));
+                        Assert.AreEqual(values[4], r.ReadEnumValue<TestEnum>(GetValueKey(4)));
                     }
                 }
             }
@@ -287,7 +286,6 @@ namespace NetGore.Tests.IO
                 TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B,
                 TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
             };
-            TestEnumHelper enumHelper = new TestEnumHelper();
 
             foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
@@ -297,7 +295,7 @@ namespace NetGore.Tests.IO
                     {
                         for (int i = 0; i < values.Length; i++)
                         {
-                            w.WriteEnumValue(enumHelper, GetValueKey(i), values[i]);
+                            w.WriteEnumValue(GetValueKey(i), values[i]);
                         }
                     }
 
@@ -305,7 +303,7 @@ namespace NetGore.Tests.IO
                     {
                         for (int i = 0; i < values.Length; i++)
                         {
-                            Assert.AreEqual(values[i], r.ReadEnumValue(enumHelper, GetValueKey(i)));
+                            Assert.AreEqual(values[i], r.ReadEnumValue<TestEnum>(GetValueKey(i)));
                         }
                     }
                 }
@@ -1438,29 +1436,6 @@ namespace NetGore.Tests.IO
             Effffuh,
             G,
             Ayche = 100
-        }
-
-        sealed class TestEnumHelper : EnumIOHelper<TestEnum>
-        {
-            /// <summary>
-            /// When overridden in the derived class, casts an int to type TestEnum.
-            /// </summary>
-            /// <param name="value">The int value.</param>
-            /// <returns>The <paramref name="value"/> casted to type TestEnum.</returns>
-            public override TestEnum FromInt(int value)
-            {
-                return (TestEnum)value;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, casts type TestEnum to an int.
-            /// </summary>
-            /// <param name="value">The value.</param>
-            /// <returns>The <paramref name="value"/> casted to an int.</returns>
-            public override int ToInt(TestEnum value)
-            {
-                return (int)value;
-            }
         }
 
         /// <summary>

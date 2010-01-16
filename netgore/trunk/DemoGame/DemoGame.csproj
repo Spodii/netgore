@@ -70,7 +70,6 @@
     <Compile Include="Account\AccountCharacterInfo.cs" />
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
     <Compile Include="Emoticons\Emoticon.cs" />
-    <Compile Include="Emoticons\EmoticonHelper.cs" />
     <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
     <Compile Include="EngineSettingsInitializer.cs" />
@@ -94,7 +93,6 @@
     <Compile Include="World\Map\Entities\TeleportEntityBase.cs" />
     <Compile Include="World\Map\Entities\WallEntity.cs" />
     <Compile Include="Items\EquipmentSlotExtensions.cs" />
-    <Compile Include="Items\EquipmentSlotHelper.cs" />
     <Compile Include="Items\EquippedEventHandler.cs" />
     <Compile Include="Items\EquipmentSlot.cs" />
     <Compile Include="Items\EquippedBase.cs" />
@@ -104,14 +102,10 @@
     <Compile Include="Items\IItemInfo.cs" />
     <Compile Include="Items\InventorySlotExtensions.cs" />
     <Compile Include="Items\ItemInfo.cs" />
-    <Compile Include="Items\ItemTypeHelper.cs" />
-    <Compile Include="IO\Packets\ClientPacketIDHelper.cs" />
-    <Compile Include="IO\Packets\ServerPacketIDHelper.cs" />
     <Compile Include="Shop\ShopItemIndex.cs" />
     <Compile Include="Shop\ShopItemIndexExtensions.cs" />
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />
-    <Compile Include="Skills\SkillTypeHelper.cs" />
     <Compile Include="SPValueType.cs" />
     <Compile Include="Items\InventoryBase.cs" />
     <Compile Include="Items\InventorySlot.cs" />
@@ -135,7 +129,6 @@
     <Compile Include="StatusEffect\StatusEffectBase.cs" />
     <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
     <Compile Include="StatusEffect\StatusEffectType.cs" />
-    <Compile Include="StatusEffect\StatusEffectTypeHelper.cs" />
     <Compile Include="World\WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>

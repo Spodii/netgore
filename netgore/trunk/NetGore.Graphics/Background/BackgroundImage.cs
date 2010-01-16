@@ -20,8 +20,6 @@ namespace NetGore.Graphics
         const string _valueKeyName = "Name";
         const string _valueKeyOffset = "Offset";
 
-        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
-
         readonly ICamera2DProvider _cameraProvider;
         readonly IMap _map;
         float _depth;
@@ -67,7 +65,7 @@ namespace NetGore.Graphics
             _map = map;
 
             Name = reader.ReadString(_valueKeyName);
-            Alignment = reader.ReadEnum(_alignmentHelper, _valueKeyAlignment);
+            Alignment = reader.ReadEnum<Alignment>(_valueKeyAlignment);
             Color = reader.ReadColor(_valueKeyColor);
             Depth = reader.ReadFloat(_valueKeyDepth);
             Offset = reader.ReadVector2(_valueKeyOffset);
@@ -304,7 +302,7 @@ namespace NetGore.Graphics
         public virtual void Write(IValueWriter writer)
         {
             writer.Write(_valueKeyName, Name);
-            writer.WriteEnum(_alignmentHelper, _valueKeyAlignment, Alignment);
+            writer.WriteEnum(_valueKeyAlignment, Alignment);
             writer.Write(_valueKeyColor, Color);
             writer.Write(_valueKeyDepth, Depth);
             writer.Write(_valueKeyOffset, Offset);

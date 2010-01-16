@@ -423,14 +423,13 @@ namespace NetGore.IO
         /// Writes an Enum of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value)
+        public void WriteEnumValue<T>(string name, T value)
             where T : struct, IComparable, IConvertible, IFormattable
         {
-            writer.WriteEnum(this, name, value);
+            EnumHelper<T>.WriteValue(this, name, value);
         }
 
         /// <summary>
@@ -438,14 +437,16 @@ namespace NetGore.IO
         /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value)
+        public void WriteEnum<T>(string name, T value)
             where T : struct, IComparable, IConvertible, IFormattable
         {
-            EnumIOHelper<T>.WriteEnum(this, writer, name, value);
+            if (UseEnumNames)
+                WriteEnumName(name, value);
+            else
+                WriteEnumValue(name, value);
         }
 
         /// <summary>
@@ -457,8 +458,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = EnumIOHelper<T>.ToName(value);
-            Write(name, str);
+            EnumHelper<T>.WriteName(this, name, value);
         }
 
         /// <summary>

@@ -42,9 +42,8 @@ namespace DemoGame.Client
             _lineSpacing = (int)Math.Max(fontLineSpacing, _iconSize.Y);
 
             // Create all the skills
-            var allSkillTypes = SkillTypeHelper.Values;
             Vector2 offset = Vector2.Zero;
-            foreach (SkillType skillType in allSkillTypes)
+            foreach (var skillType in EnumHelper<SkillType>.Values)
             {
                 CreateSkillEntry(offset, skillType);
                 offset += new Vector2(0, _lineSpacing);

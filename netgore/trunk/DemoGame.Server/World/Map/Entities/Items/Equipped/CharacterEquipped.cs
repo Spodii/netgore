@@ -225,7 +225,7 @@ namespace DemoGame.Server
 
         class EquippedPaperDoll
         {
-            static readonly int _maxSlotValue = EquipmentSlotHelper.Instance.MaxValue;
+            static readonly int _maxSlotValue = EnumHelper<EquipmentSlot>.MaxValue + 1;
 
             readonly string[] _bodies;
             readonly Character _character;

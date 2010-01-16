@@ -791,14 +791,14 @@ namespace NetGore.IO
         /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnum<T>(IEnumValueReader<T> reader) where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnum<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
+            // TODO: Unit tests
             if (UseEnumNames)
                 return ReadEnumName<T>();
             else
-                return ReadEnumValue(reader);
+                return ReadEnumValue<T>();
         }
 
         /// <summary>
@@ -808,20 +808,19 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumName<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
-            var str = ReadString();
-            var value = EnumIOHelper<T>.FromName(str);
-            return value;
+            // TODO: Unit tests
+            return EnumHelper<T>.ReadName(this);
         }
 
         /// <summary>
         /// Reads an Enum of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(IEnumValueReader<T> reader) where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnumValue<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
-            return reader.ReadEnum(this, null);
+            // TODO: Unit tests
+            return EnumHelper<T>.ReadValue(this);
         }
 
         /// <summary>
@@ -2730,14 +2729,14 @@ namespace NetGore.IO
         /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(IEnumValueWriter<T> writer, T value) where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnum<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
+            // TODO: Unit tests
             if (UseEnumNames)
                 WriteEnumName(value);
             else
-                WriteEnumValue(writer, value);
+                WriteEnumValue(value);
         }
 
         /// <summary>
@@ -2747,20 +2746,19 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            var str = EnumIOHelper<T>.ToName(value);
-            Write(str);
+            // TODO: Unit tests
+            EnumHelper<T>.WriteName(this, value);
         }
 
         /// <summary>
         /// Writes an Enum of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, T value)
-            where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnumValue<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            writer.WriteEnum(this, null, value);
+            // TODO: Unit tests
+            EnumHelper<T>.WriteValue(this, value);
         }
 
         void WriteSigned(int value, int numBits)
@@ -2921,9 +2919,8 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            var str = ReadString();
-            var value = EnumIOHelper<T>.FromName(str);
-            return value;
+            // TODO: Unit tests
+            return ReadEnumName<T>();
         }
 
         /// <summary>
@@ -2931,12 +2928,15 @@ namespace NetGore.IO
         /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
         /// <param name="name">Unused by the BitStream.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnum<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            return EnumIOHelper<T>.ReadEnum(this, reader, name);
+            // TODO: Unit tests
+            if (UseEnumNames)
+                return ReadEnumName<T>();
+            else
+                return ReadEnumValue<T>();
         }
 
         /// <summary>
@@ -3007,13 +3007,11 @@ namespace NetGore.IO
         /// Reads an Enum of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
         /// <param name="name">Unused by the BitStream.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(IEnumValueReader<T> reader, string name)
-            where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            return reader.ReadEnum(this, name);
+            return ReadEnumValue<T>();
         }
 
         /// <summary>
@@ -3216,13 +3214,11 @@ namespace NetGore.IO
         /// Writes an Enum of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unused by the BitStream.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value)
-            where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnumValue<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            writer.WriteEnum(this, name, value);
+            WriteEnumValue(value);
         }
 
         /// <summary>
@@ -3230,13 +3226,14 @@ namespace NetGore.IO
         /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unused by the BitStream.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value)
-            where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnum<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            EnumIOHelper<T>.WriteEnum(this, writer, name, value);
+            if (UseEnumNames)
+                WriteEnumName(value);
+            else
+                WriteEnumValue(value);
         }
 
         /// <summary>
@@ -3247,8 +3244,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            var str = EnumIOHelper<T>.ToName(value);
-            Write(str);
+            WriteEnumName(value);
         }
 
         /// <summary>

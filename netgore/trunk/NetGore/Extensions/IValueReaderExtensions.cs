@@ -79,7 +79,7 @@ namespace NetGore
 
         public static SpriteBlendMode ReadSpriteBlendMode(this IValueReader reader, string name)
         {
-            return reader.ReadEnum(SpriteBlendModeHelper.Instance, name);
+            return reader.ReadEnum < SpriteBlendMode>(name);
         }
 
         public static SpriteCategorization ReadSpriteCategorization(this IValueReader reader, string name)

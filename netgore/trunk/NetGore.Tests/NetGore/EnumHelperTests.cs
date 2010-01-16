@@ -10,29 +10,7 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class EnumHelperTests
     {
-        const int _initialBufferSize = 512;
-
         static readonly Random r = new Random();
-
-        [Test]
-        public void ByteIOTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
-            EVHByte i = EVHByte.Instance;
-            var testValues = new EVByte[] { EVByte.A, EVByte.D, EVByte.H, EVByte.C, EVByte.A, EVByte.B, EVByte.B };
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                i.WriteValue(bs, testValues[j]);
-            }
-
-            bs.Mode = BitStreamMode.Read;
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                Assert.AreEqual(testValues[j], i.ReadValue(bs));
-            }
-        }
 
         static string CreateRandomString()
         {
@@ -74,66 +52,6 @@ namespace NetGore.Tests.NetGore
             }
 
             return new string(ret);
-        }
-
-        [Test]
-        public void IntIOTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
-            EVHInt i = EVHInt.Instance;
-            var testValues = new EVInt[] { EVInt.A, EVInt.D, EVInt.H, EVInt.C, EVInt.A, EVInt.B, EVInt.B };
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                i.WriteValue(bs, testValues[j]);
-            }
-
-            bs.Mode = BitStreamMode.Read;
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                Assert.AreEqual(testValues[j], i.ReadValue(bs));
-            }
-        }
-
-        [Test]
-        public void SByteIOTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
-            EVHSByte i = EVHSByte.Instance;
-            var testValues = new EVSByte[] { EVSByte.A, EVSByte.D, EVSByte.H, EVSByte.C, EVSByte.A, EVSByte.B, EVSByte.B };
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                i.WriteValue(bs, testValues[j]);
-            }
-
-            bs.Mode = BitStreamMode.Read;
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                Assert.AreEqual(testValues[j], i.ReadValue(bs));
-            }
-        }
-
-        [Test]
-        public void ShortIOTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
-            EVHShort i = EVHShort.Instance;
-            var testValues = new EVShort[] { EVShort.A, EVShort.D, EVShort.H, EVShort.C, EVShort.A, EVShort.B, EVShort.B };
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                i.WriteValue(bs, testValues[j]);
-            }
-
-            bs.Mode = BitStreamMode.Read;
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                Assert.AreEqual(testValues[j], i.ReadValue(bs));
-            }
         }
 
         [Test]
@@ -217,26 +135,6 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        [Test]
-        public void UShortIOTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
-            EVHUShort i = EVHUShort.Instance;
-            var testValues = new EVUShort[] { EVUShort.A, EVUShort.D, EVUShort.H, EVUShort.C, EVUShort.A, EVUShort.B, EVUShort.B };
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                i.WriteValue(bs, testValues[j]);
-            }
-
-            bs.Mode = BitStreamMode.Read;
-
-            for (int j = 0; j < testValues.Length; j++)
-            {
-                Assert.AreEqual(testValues[j], i.ReadValue(bs));
-            }
-        }
-
         enum EVByte : byte
         {
             A,
@@ -247,151 +145,6 @@ namespace NetGore.Tests.NetGore
             F,
             G,
             H
-        }
-
-        sealed class EVHByte : EnumIOHelper<EVByte>
-        {
-            static readonly EVHByte _instance;
-
-            static EVHByte()
-            {
-                _instance = new EVHByte();
-            }
-
-            EVHByte()
-            {
-            }
-
-            public static EVHByte Instance
-            {
-                get { return _instance; }
-            }
-
-            public override EVByte FromInt(int value)
-            {
-                return (EVByte)value;
-            }
-
-            public override int ToInt(EVByte value)
-            {
-                return (int)value;
-            }
-        }
-
-        sealed class EVHInt : EnumIOHelper<EVInt>
-        {
-            static readonly EVHInt _instance;
-
-            static EVHInt()
-            {
-                _instance = new EVHInt();
-            }
-
-            EVHInt()
-            {
-            }
-
-            public static EVHInt Instance
-            {
-                get { return _instance; }
-            }
-
-            public override EVInt FromInt(int value)
-            {
-                return (EVInt)value;
-            }
-
-            public override int ToInt(EVInt value)
-            {
-                return (int)value;
-            }
-        }
-
-        sealed class EVHSByte : EnumIOHelper<EVSByte>
-        {
-            static readonly EVHSByte _instance;
-
-            static EVHSByte()
-            {
-                _instance = new EVHSByte();
-            }
-
-            EVHSByte()
-            {
-            }
-
-            public static EVHSByte Instance
-            {
-                get { return _instance; }
-            }
-
-            public override EVSByte FromInt(int value)
-            {
-                return (EVSByte)value;
-            }
-
-            public override int ToInt(EVSByte value)
-            {
-                return (int)value;
-            }
-        }
-
-        sealed class EVHShort : EnumIOHelper<EVShort>
-        {
-            static readonly EVHShort _instance;
-
-            static EVHShort()
-            {
-                _instance = new EVHShort();
-            }
-
-            EVHShort()
-            {
-            }
-
-            public static EVHShort Instance
-            {
-                get { return _instance; }
-            }
-
-            public override EVShort FromInt(int value)
-            {
-                return (EVShort)value;
-            }
-
-            public override int ToInt(EVShort value)
-            {
-                return (int)value;
-            }
-        }
-
-        sealed class EVHUShort : EnumIOHelper<EVUShort>
-        {
-            static readonly EVHUShort _instance;
-
-            static EVHUShort()
-            {
-                _instance = new EVHUShort();
-            }
-
-            EVHUShort()
-            {
-            }
-
-            public static EVHUShort Instance
-            {
-                get { return _instance; }
-            }
-
-            public override EVUShort FromInt(int value)
-            {
-                return (EVUShort)value;
-            }
-
-            public override int ToInt(EVUShort value)
-            {
-                return (int)value;
-            }
         }
 
         enum EVInt

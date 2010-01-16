@@ -12,8 +12,6 @@ namespace DemoGame
     [PropertySyncHandler(typeof(ItemType))]
     public sealed class PropertySyncItemType : PropertySyncBase<ItemType>
     {
-        static readonly ItemTypeHelper _itemTypeHelper = ItemTypeHelper.Instance;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertySyncItemType"/> class.
         /// </summary>
@@ -30,7 +28,7 @@ namespace DemoGame
         /// <returns>Value read from the IValueReader.</returns>
         protected override ItemType Read(string name, IValueReader reader)
         {
-            return reader.ReadEnum(_itemTypeHelper, name);
+            return reader.ReadEnum<ItemType>(name);
         }
 
         /// <summary>
@@ -41,7 +39,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, ItemType value)
         {
-            writer.WriteEnum(_itemTypeHelper, name, value);
+            writer.WriteEnum(name, value);
         }
     }
 }

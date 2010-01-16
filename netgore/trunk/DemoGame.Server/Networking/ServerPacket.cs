@@ -22,7 +22,7 @@ namespace DemoGame.Server
             ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
 
             PacketWriter pw = GetWriter(ServerPacketID.AddStatusEffect);
-            pw.WriteEnum(StatusEffectTypeHelper.Instance, statusEffectType);
+            pw.WriteEnum(statusEffectType);
             pw.Write(power);
             pw.Write(secsLeft);
             return pw;
@@ -86,7 +86,7 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.Emote);
             pw.Write(mapEntityIndex);
-            pw.WriteEnum(EmoticonHelper.Instance, emoticon);
+            pw.WriteEnum(emoticon);
             return pw;
         }
 
@@ -210,7 +210,7 @@ namespace DemoGame.Server
         public static PacketWriter RemoveStatusEffect(StatusEffectType statusEffectType)
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
-            pw.WriteEnum(StatusEffectTypeHelper.Instance, statusEffectType);
+            pw.WriteEnum(statusEffectType);
             return pw;
         }
 
@@ -235,7 +235,7 @@ namespace DemoGame.Server
         public static PacketWriter SendEquipmentItemInfo(EquipmentSlot slot, ItemEntity item)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendEquipmentItemInfo);
-            pw.WriteEnum(EquipmentSlotHelper.Instance, slot);
+            pw.WriteEnum(slot);
             // ReSharper disable RedundantCast
             pw.Write((IItemTable)item);
             // ReSharper restore RedundantCast
@@ -445,7 +445,7 @@ namespace DemoGame.Server
         public static PacketWriter StartCastingSkill(SkillType skillType, ushort castTime)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartCastingSkill);
-            pw.WriteEnum(SkillTypeHelper.Instance, skillType);
+            pw.WriteEnum(skillType);
             pw.Write(castTime);
             return pw;
         }
@@ -490,7 +490,7 @@ namespace DemoGame.Server
         public static PacketWriter UpdateEquipmentSlot(EquipmentSlot slot, GrhIndex? graphic)
         {
             PacketWriter pw = GetWriter(ServerPacketID.UpdateEquipmentSlot);
-            pw.WriteEnum(EquipmentSlotHelper.Instance, slot);
+            pw.WriteEnum(slot);
             pw.Write(graphic.HasValue);
 
             if (graphic.HasValue)
@@ -505,7 +505,7 @@ namespace DemoGame.Server
 
             pw.Write(ServerPacketID.UpdateStat);
             pw.Write(isBaseStat);
-            pw.WriteEnum(StatTypeHelper.Instance, stat.StatType);
+            pw.WriteEnum(stat.StatType);
             stat.Write(pw);
         }
 
@@ -551,7 +551,7 @@ namespace DemoGame.Server
             else
                 pw.Write(false);
 
-            pw.WriteEnum(SkillTypeHelper.Instance, skillType);
+            pw.WriteEnum(skillType);
 
             return pw;
         }

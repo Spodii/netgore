@@ -15,7 +15,7 @@ namespace NetGore
     {
         public static void Write(this IValueWriter writer, string name, SpriteBlendMode spriteBlendMode)
         {
-            writer.WriteEnum(SpriteBlendModeHelper.Instance, name, spriteBlendMode);
+            writer.WriteEnum(name, spriteBlendMode);
         }
 
         /// <summary>

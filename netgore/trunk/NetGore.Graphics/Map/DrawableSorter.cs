@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics;
 
 namespace DemoGame.Client
@@ -22,7 +23,7 @@ namespace DemoGame.Client
         /// </summary>
         static DrawableSorter()
         {
-            _requiredArraySize = MapRenderLayerHelper.Instance.MaxValue + 1;
+            _requiredArraySize = EnumHelper < MapRenderLayer>.MaxValue + 1;
         }
 
         /// <summary>
