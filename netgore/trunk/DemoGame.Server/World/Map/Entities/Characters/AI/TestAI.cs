@@ -1,4 +1,5 @@
 using System.Linq;
+using DemoGame.AI;
 using NetGore;
 using NetGore.AI;
 
@@ -42,11 +43,10 @@ namespace DemoGame.Server
                 _lastTargetUpdateTime = time;
 
                 //Check to see if AI is disabled.
-                if (!AI.AISettings.AIDisabled)
-                { _target = GetClosestHostile(); }
+                if (!AISettings.AIDisabled)
+                    _target = GetClosestHostile();
                 else
-                { _target = null; }
-
+                    _target = null;
             }
 
             // Check if we have a target or not

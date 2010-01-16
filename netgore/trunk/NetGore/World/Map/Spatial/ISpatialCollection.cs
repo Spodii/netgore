@@ -107,6 +107,72 @@ namespace NetGore
         bool Contains(Rectangle rect, Predicate<ISpatial> condition);
 
         /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
+        /// </summary>
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
+        /// <param name="condition">Condition the <see cref="ISpatial"/>s must meet.</param>
+        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
+        T Get<T>(Rectangle rect, Predicate<T> condition);
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
+        /// </summary>
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
+        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
+        ISpatial Get(Rectangle rect, Predicate<ISpatial> condition);
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        T Get<T>(Vector2 p, Predicate<T> condition);
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        T Get<T>(Vector2 p);
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        ISpatial Get(Vector2 p);
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
+        ISpatial Get(Vector2 p, Predicate<ISpatial> condition);
+
+        /// <summary>
+        /// Gets the first ISpatial found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the ISpatial</param>
+        /// <returns>First ISpatial found at the given point, or null if none found</returns>
+        ISpatial Get(Rectangle rect);
+
+        /// <summary>
+        /// Gets the first ISpatial found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the ISpatial</param>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <returns>First ISpatial found at the given point, or null if none found</returns>
+        T Get<T>(Rectangle rect);
+
+        /// <summary>
         /// Gets all spatials containing a given point.
         /// </summary>
         /// <param name="p">Point to find the spatials at.</param>
@@ -176,72 +242,6 @@ namespace NetGore
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>All <see cref="ISpatial"/>s found intersecting the given region.</returns>
         IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition);
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found in the given region.
-        /// </summary>
-        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/>s must meet.</param>
-        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
-        T Get<T>(Rectangle rect, Predicate<T> condition);
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found in the given region.
-        /// </summary>
-        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
-        /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
-        ISpatial Get(Rectangle rect, Predicate<ISpatial> condition);
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
-        /// will be ignored.</typeparam>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        T Get<T>(Vector2 p, Predicate<T> condition);
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
-        /// will be ignored.</typeparam>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        T Get<T>(Vector2 p);
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        ISpatial Get(Vector2 p);
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
-        ISpatial Get(Vector2 p, Predicate<ISpatial> condition);
-
-        /// <summary>
-        /// Gets the first ISpatial found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the ISpatial</param>
-        /// <returns>First ISpatial found at the given point, or null if none found</returns>
-        ISpatial Get(Rectangle rect);
-
-        /// <summary>
-        /// Gets the first ISpatial found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the ISpatial</param>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <returns>First ISpatial found at the given point, or null if none found</returns>
-        T Get<T>(Rectangle rect);
 
         /// <summary>
         /// Removes an <see cref="ISpatial"/> from the spatial collection.

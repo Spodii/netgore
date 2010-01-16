@@ -14,8 +14,8 @@ namespace NetGore.Collections
     public class ThreadSafeHashCache<TKey, TValue> : ICache<TKey, TValue> where TValue : class
     {
         readonly IDictionary<TKey, TValue> _cache;
-        readonly Func<TKey, TValue> _valueCreator;
         readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        readonly Func<TKey, TValue> _valueCreator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreadSafeHashCache&lt;TKey, TValue&gt;"/> class.
@@ -107,7 +107,10 @@ namespace NetGore.Collections
         /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
         /// should never be accessed from multiple threads.
         /// </summary>
-        public bool IsThreadSafe { get { return false; } }
+        public bool IsThreadSafe
+        {
+            get { return false; }
+        }
 
         #endregion
     }

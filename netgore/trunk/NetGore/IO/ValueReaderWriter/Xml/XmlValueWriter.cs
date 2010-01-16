@@ -426,8 +426,7 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(string name, T value)
-            where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnumValue<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
             EnumHelper<T>.WriteValue(this, name, value);
         }
@@ -440,8 +439,7 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(string name, T value)
-            where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnum<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
             if (UseEnumNames)
                 WriteEnumName(name, value);

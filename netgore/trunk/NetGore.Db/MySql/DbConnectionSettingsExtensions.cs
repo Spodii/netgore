@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using MySql.Data.MySqlClient;
 
 namespace NetGore.Db.MySql
@@ -17,7 +14,15 @@ namespace NetGore.Db.MySql
         /// <returns>The MySql connection string.</returns>
         public static string GetMySqlConnectionString(this DbConnectionSettings settings)
         {
-            MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder { Database = settings.Database, UserID = settings.User, Password = settings.Pass, Server = settings.Host, Port = settings.Port, IgnorePrepare = false };
+            MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
+            {
+                Database = settings.Database,
+                UserID = settings.User,
+                Password = settings.Pass,
+                Server = settings.Host,
+                Port = settings.Port,
+                IgnorePrepare = false
+            };
             return sb.ToString();
         }
     }

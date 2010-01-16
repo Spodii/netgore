@@ -17,6 +17,7 @@ namespace NetGore.Graphics
         const string _grhIndexKeyName = "GrhIndex";
         const string _isForegroundKeyName = "IsForeground";
         const string _layerDepthKeyName = "LayerDepth";
+        const string _mapGrhCategoryName = "MapGrh";
         const string _positionKeyName = "Position";
 
         readonly Grh _grh;
@@ -59,8 +60,6 @@ namespace NetGore.Graphics
 
             ReadState(reader);
         }
-
-        const string _mapGrhCategoryName = "MapGrh";
 
         /// <summary>
         /// Gets the <see cref="Grh"/> for the <see cref="MapGrh"/>.
@@ -165,11 +164,12 @@ namespace NetGore.Graphics
         public int LayerDepth
         {
             get { return _layerDepth; }
-            set {
+            set
+            {
                 if (value < short.MinValue || value > short.MaxValue)
                     throw new ArgumentOutOfRangeException("value", "value must be between short.MinValue and short.MaxValue.");
-                
-                _layerDepth = (short)value; 
+
+                _layerDepth = (short)value;
             }
         }
 
@@ -185,6 +185,38 @@ namespace NetGore.Graphics
         public void Draw(SpriteBatch sb)
         {
             _grh.Draw(sb, Position, Color.White);
+        }
+
+        #endregion
+
+        #region IPersistable Members
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            Position = reader.ReadVector2(_positionKeyName);
+            GrhIndex grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
+            _isForeground = reader.ReadBool(_isForegroundKeyName);
+            _layerDepth = reader.ReadShort(_layerDepthKeyName);
+
+            if (!grhIndex.IsInvalid)
+                _grh.SetGrh(grhIndex);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            writer.Write(_positionKeyName, Position);
+            writer.Write(_grhIndexKeyName, Grh.GrhData != null ? Grh.GrhData.GrhIndex : GrhIndex.Invalid);
+            writer.Write(_isForegroundKeyName, IsForeground);
+            writer.Write(_layerDepthKeyName, _layerDepth);
         }
 
         #endregion
@@ -257,33 +289,5 @@ namespace NetGore.Graphics
         }
 
         #endregion
-
-        /// <summary>
-        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
-        /// same order as they were written.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        public void ReadState(IValueReader reader)
-        {
-            Position = reader.ReadVector2(_positionKeyName);
-            GrhIndex grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
-            _isForeground = reader.ReadBool(_isForegroundKeyName);
-            _layerDepth = reader.ReadShort(_layerDepthKeyName);
-
-            if (!grhIndex.IsInvalid)
-                _grh.SetGrh(grhIndex);
-        }
-
-        /// <summary>
-        /// Writes the state of the object to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-        public void WriteState(IValueWriter writer)
-        {
-            writer.Write(_positionKeyName, Position);
-            writer.Write(_grhIndexKeyName, Grh.GrhData != null ? Grh.GrhData.GrhIndex : GrhIndex.Invalid);
-            writer.Write(_isForegroundKeyName, IsForeground);
-            writer.Write(_layerDepthKeyName, _layerDepth);
-        }
     }
 }

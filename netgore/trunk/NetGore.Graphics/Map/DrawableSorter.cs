@@ -23,7 +23,7 @@ namespace DemoGame.Client
         /// </summary>
         static DrawableSorter()
         {
-            _requiredArraySize = EnumHelper < MapRenderLayer>.MaxValue + 1;
+            _requiredArraySize = EnumHelper<MapRenderLayer>.MaxValue + 1;
         }
 
         /// <summary>

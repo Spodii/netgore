@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore.Graphics;
 
@@ -18,11 +13,6 @@ namespace NetGore.EditorTools
         readonly Grh _grh;
 
         /// <summary>
-        /// Gets the <see cref="Grh"/> that is being edited.
-        /// </summary>
-        public Grh Grh { get { return _grh; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GrhUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="grh">The GRH.</param>
@@ -34,11 +24,19 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the <see cref="Grh"/> that is being edited.
+        /// </summary>
+        public Grh Grh
+        {
+            get { return _grh; }
+        }
+
+        /// <summary>
         /// Handles the Load event of the GrhUITypeEditorForm control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void GrhUITypeEditorForm_Load(object sender, EventArgs e)
+        void GrhUITypeEditorForm_Load(object sender, EventArgs e)
         {
             gtv.InitializeCompact();
             gtv.CollapseAll();
@@ -51,7 +49,7 @@ namespace NetGore.EditorTools
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="NetGore.EditorTools.GrhTreeNodeMouseClickEventArgs"/> instance containing
         /// the event data.</param>
-        private void gtv_GrhMouseDoubleClick(object sender, GrhTreeNodeMouseClickEventArgs e)
+        void gtv_GrhMouseDoubleClick(object sender, GrhTreeNodeMouseClickEventArgs e)
         {
             if (e == null || e.GrhData == null)
                 return;

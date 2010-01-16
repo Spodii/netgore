@@ -12,6 +12,7 @@ namespace DemoGame.Client
     class LoginScreen : GameScreen
     {
         public const string ScreenName = "login";
+        Button _btnLogin;
 
         Label _cError;
         TextBox _cNameText;
@@ -20,7 +21,6 @@ namespace DemoGame.Client
         IGUIManager _gui;
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
-        Button _btnLogin;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginScreen"/> class.

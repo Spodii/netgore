@@ -1,14 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.EditorTools
 {
     public interface IUndoManager
     {
         /// <summary>
-        /// Adds an event to the list, clears any events that have previously been undone.
+        /// Gets the IUndoEvent that the cursor is currently on.
         /// </summary>
-        /// <param name="undoEvent">Event to be added to the list.</param>
-        void Push(IUndoEvent undoEvent);
+        IUndoEvent CurrentEvent { get; }
+
+        /// <summary>
+        /// Gets the index of the event that the cursor is on. 
+        /// </summary>
+        int CursorIndex { get; }
+
+        /// <summary>
+        /// Gets all events currently stored, including those that have been undone.
+        /// </summary>
+        IEnumerable<IUndoEvent> Events { get; }
 
         /// <summary>
         /// Pops the IUndoEvent that the cursor is currently on, but leaves it available for Redoing.
@@ -17,14 +27,10 @@ namespace NetGore.EditorTools
         IUndoEvent Pop();
 
         /// <summary>
-        /// Gets all events currently stored, including those that have been undone.
+        /// Adds an event to the list, clears any events that have previously been undone.
         /// </summary>
-        IEnumerable<IUndoEvent> Events { get; }
-
-        /// <summary>
-        /// Gets the index of the event that the cursor is on. 
-        /// </summary>
-        int CursorIndex { get; }
+        /// <param name="undoEvent">Event to be added to the list.</param>
+        void Push(IUndoEvent undoEvent);
 
         /// <summary>
         /// Attempts to get the IUndoEvent at the specified index.
@@ -33,21 +39,20 @@ namespace NetGore.EditorTools
         /// <returns>The IUndoEvent at the specified index if it exists, if not - null.</returns>
         IUndoEvent TryGetEvent(int index);
 
-        /// <summary>
-        /// Gets the IUndoEvent that the cursor is currently on.
-        /// </summary>
-        IUndoEvent CurrentEvent { get; }
-
-        /// <summary>
-        /// Attempts to undo the last event that was added to the list.
-        /// </summary>
-        /// <returns>True if successful, false if not.</returns>
-        bool TryUndo(); // Try to pop the last event, and if it exists, call Undo on it.
+        // Try to pop the last event, and if it exists, call Undo on it.
 
         /// <summary>
         /// Attempts to redo the last undone event.
         /// </summary>
         /// <returns>True if successful, false if not.</returns>
-        bool TryRedo(); // If there are any events you can call "Redo" on, call it. Otherwise, false.
+        bool TryRedo();
+
+        /// <summary>
+        /// Attempts to undo the last event that was added to the list.
+        /// </summary>
+        /// <returns>True if successful, false if not.</returns>
+        bool TryUndo();
+
+        // If there are any events you can call "Redo" on, call it. Otherwise, false.
     }
 }

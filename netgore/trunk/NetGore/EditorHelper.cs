@@ -14,16 +14,15 @@ namespace NetGore
             "NetGore.EditorTools.EmitterModifierCollectionEditor, NetGore.EditorTools";
 
         /// <summary>
+        /// The fully qualified name for the GrhEditor.
+        /// </summary>
+        public const string GrhEditorTypeName = "NetGore.EditorTools.GrhEditor, NetGore.EditorTools";
+
+        /// <summary>
         /// The fully qualified name for the ParticleModifierCollectionEditor.
         /// </summary>
         public const string ParticleModifierCollectionEditorTypeName =
             "NetGore.EditorTools.ParticleModifierCollectionEditor, NetGore.EditorTools";
-
-        /// <summary>
-        /// The fully qualified name for the GrhEditor.
-        /// </summary>
-        public const string GrhEditorTypeName =
-            "NetGore.EditorTools.GrhEditor, NetGore.EditorTools";
 
         /// <summary>
         /// The fully qualified type name for the UITypeEditor.

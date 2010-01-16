@@ -88,6 +88,17 @@ namespace NetGore.IO.PropertySync
         }
 
         /// <summary>
+        /// Compares two PropertyInfoDatas by using the PropertyInfo's Name.
+        /// </summary>
+        /// <param name="a">First PropertyInfoData.</param>
+        /// <param name="b">Second PropertyInfoData.</param>
+        /// <returns>Comparison of the two PropertyInfoDatas.</returns>
+        static int PropertyInfoAndAttributeComparer(SyncValueAttributeInfo a, SyncValueAttributeInfo b)
+        {
+            return a.Name.CompareTo(b.Name);
+        }
+
+        /// <summary>
         /// Contains the <see cref="SyncValueAttributeInfo"/>s for a given <see cref="Type"/>.
         /// </summary>
         class SyncValueAttributeInfoFactory : ThreadSafeHashCache<Type, SyncValueAttributeInfo[]>
@@ -173,17 +184,6 @@ namespace NetGore.IO.PropertySync
                 // Convert to an array and return
                 return tempPropInfos.ToArray();
             }
-        }
-
-        /// <summary>
-        /// Compares two PropertyInfoDatas by using the PropertyInfo's Name.
-        /// </summary>
-        /// <param name="a">First PropertyInfoData.</param>
-        /// <param name="b">Second PropertyInfoData.</param>
-        /// <returns>Comparison of the two PropertyInfoDatas.</returns>
-        static int PropertyInfoAndAttributeComparer(SyncValueAttributeInfo a, SyncValueAttributeInfo b)
-        {
-            return a.Name.CompareTo(b.Name);
         }
     }
 }

@@ -10,8 +10,9 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterInventoryItemsQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryString =
-            string.Format("SELECT {1}.slot AS \"character_inventory_slot\",{0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
-                          ItemTable.TableName, CharacterInventoryTable.TableName);
+            string.Format(
+                "SELECT {1}.slot AS \"character_inventory_slot\",{0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
+                ItemTable.TableName, CharacterInventoryTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterInventoryItemsQuery"/> class.

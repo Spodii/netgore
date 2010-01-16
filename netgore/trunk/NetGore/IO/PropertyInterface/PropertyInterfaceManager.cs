@@ -1,11 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Threading;
-using log4net;
 using NetGore.Collections;
 
 namespace NetGore.IO
@@ -22,15 +18,6 @@ namespace NetGore.IO
             _instance = new PropertyInterface<TObj, T>();
         }
 
-        public IPropertyInterface<TObj, T> GetByName(string propertyName)
-        {
-            var pi = typeof(TObj).GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-            if (pi == null)
-                throw new ArgumentException("propertyName");
-
-            return this[pi];
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyInterface&lt;TObj, T&gt;"/> class.
         /// </summary>
@@ -41,6 +28,17 @@ namespace NetGore.IO
         public static PropertyInterface<TObj, T> Instance
         {
             get { return _instance; }
+        }
+
+        public IPropertyInterface<TObj, T> GetByName(string propertyName)
+        {
+            var pi = typeof(TObj).GetProperty(propertyName,
+                                              BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
+                                              BindingFlags.Static);
+            if (pi == null)
+                throw new ArgumentException("propertyName");
+
+            return this[pi];
         }
 
         class ExpressionPropertyInterface : IPropertyInterface<TObj, T>

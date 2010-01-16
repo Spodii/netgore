@@ -123,6 +123,19 @@ namespace DemoGame.MapEditor
             Items.AddRange(asArray);
         }
 
+        #region IMapBoundControl Members
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
+        /// </summary>
+        IMap IMapBoundControl.IMap
+        {
+            get { return Map; }
+            set { Map = (MapBase)value; }
+        }
+
+        #endregion
+
         class NPCSpawnsListBoxItem
         {
             public readonly MapSpawnValues Value;
@@ -142,15 +155,6 @@ namespace DemoGame.MapEditor
             {
                 return v.Value;
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
-        /// </summary>
-        IMap IMapBoundControl.IMap
-        {
-            get { return Map; }
-            set { Map = (MapBase)value; }
         }
     }
 }

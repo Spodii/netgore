@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -56,11 +55,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the size of the screen.
         /// </summary>
-        public Vector2 ScreenSize
-        {
-            get;
-            set;
-        }
+        public Vector2 ScreenSize { get; set; }
 
         /// <summary>
         /// Gets the size of the <see cref="ScreenGrid"/>.
@@ -217,6 +212,8 @@ namespace NetGore.Graphics
             entity.Resize(newSize);
         }
 
+        #region IPersistable Members
+
         /// <summary>
         /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
         /// same order as they were written.
@@ -235,5 +232,7 @@ namespace NetGore.Graphics
         {
             PersistableHelper.Write(this, writer);
         }
+
+        #endregion
     }
 }

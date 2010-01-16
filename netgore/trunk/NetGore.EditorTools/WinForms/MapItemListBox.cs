@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {
@@ -111,7 +110,9 @@ namespace NetGore.EditorTools
 
                 // Remove the extra items
                 foreach (TItem item in toRemove)
+                {
                     Items.Remove(item);
+                }
 
                 // Add the new items
                 Items.AddRange(toAdd);
@@ -135,7 +136,7 @@ namespace NetGore.EditorTools
             UpdateItems();
         }
 
-        #region IMapItemListBox Members
+        #region IMapBoundControl Members
 
         /// <summary>
         /// Gets or sets the IMap containing the objects being handled.

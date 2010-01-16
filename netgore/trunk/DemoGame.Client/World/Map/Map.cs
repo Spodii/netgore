@@ -49,16 +49,6 @@ namespace DemoGame.Client
         List<Texture2D> _mapAtlases = new List<Texture2D>();
 
         /// <summary>
-        /// Notifies listeners immediately before a layer has started drawing.
-        /// </summary>
-        public event MapDrawEventHandler OnBeginDrawLayer;
-
-        /// <summary>
-        /// Notifies listeners immediately after a layer has finished drawing.
-        /// </summary>
-        public event MapDrawEventHandler OnEndDrawLayer;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
         /// <param name="mapIndex">Index of the map.</param>
@@ -168,44 +158,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the content of the map to the screen.
-        /// </summary>
-        /// <param name="sb">SpriteBatch object used for drawing.</param>
-        public void Draw(SpriteBatch sb)
-        {
-            // Find the drawable objects that are in view and pass the filter (if one is provided)
-            var viewArea = Camera.GetViewArea();
-            IEnumerable<IDrawable> drawableInView;
-            if (DrawFilter != null)
-                drawableInView = Spatial.GetMany<IDrawable>(viewArea, x => DrawFilter(x));
-            else
-                drawableInView = Spatial.GetMany<IDrawable>(viewArea);
-
-            // Concat the background images (to the start of the list) since they aren't in any spatials
-            var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(Camera));
-            drawableInView = bgInView.Concat(drawableInView);
-
-            // Sort all the items, then start drawing them layer-by-layer, item-by-item
-            foreach (var layer in _drawableSorter.GetSorted(drawableInView))
-            {
-                if (OnBeginDrawLayer != null)
-                    OnBeginDrawLayer(this, layer.Key, sb);
-
-                foreach (var drawable in layer.Value)
-                {
-                    drawable.Draw(sb);
-                }
-
-                if (OnEndDrawLayer != null)
-                    OnEndDrawLayer(this, layer.Key, sb);
-            }
-
-            // Draw the particle effects
-            _particleEffectRenderer.SpriteBatch = sb;
-            _particleEffectRenderer.Draw(Camera, ParticleEffects);
-        }
-
-        /// <summary>
         /// Finds all duplicate (same position, size and type) walls
         /// </summary>
         /// <param name="compareTo">Walls to compare against</param>
@@ -299,8 +251,7 @@ namespace DemoGame.Client
 
         void LoadBackgroundImages(IValueReader r)
         {
-            var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName,
-                                                                  x => new BackgroundLayer(this, this, x));
+            var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(this, this, x));
 
             // Add the loaded background images
             foreach (BackgroundImage bgImage in loadedBGImages)
@@ -436,26 +387,6 @@ namespace DemoGame.Client
             }
         }
 
-        #region ICamera2DProvider Members
-
-        /// <summary>
-        /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public ICamera2D Camera
-        {
-            get { return _camera; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _camera = value;
-            }
-        }
-
-        #endregion
-
         #region IDisposable Members
 
         /// <summary>
@@ -473,6 +404,74 @@ namespace DemoGame.Client
             }
 
             _mapAtlases.Clear();
+        }
+
+        #endregion
+
+        #region IDrawableMap Members
+
+        /// <summary>
+        /// Notifies listeners immediately before a layer has started drawing.
+        /// </summary>
+        public event MapDrawEventHandler OnBeginDrawLayer;
+
+        /// <summary>
+        /// Notifies listeners immediately after a layer has finished drawing.
+        /// </summary>
+        public event MapDrawEventHandler OnEndDrawLayer;
+
+        /// <summary>
+        /// Draws the content of the map to the screen.
+        /// </summary>
+        /// <param name="sb">SpriteBatch object used for drawing.</param>
+        public void Draw(SpriteBatch sb)
+        {
+            // Find the drawable objects that are in view and pass the filter (if one is provided)
+            var viewArea = Camera.GetViewArea();
+            IEnumerable<IDrawable> drawableInView;
+            if (DrawFilter != null)
+                drawableInView = Spatial.GetMany<IDrawable>(viewArea, x => DrawFilter(x));
+            else
+                drawableInView = Spatial.GetMany<IDrawable>(viewArea);
+
+            // Concat the background images (to the start of the list) since they aren't in any spatials
+            var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(Camera));
+            drawableInView = bgInView.Concat(drawableInView);
+
+            // Sort all the items, then start drawing them layer-by-layer, item-by-item
+            foreach (var layer in _drawableSorter.GetSorted(drawableInView))
+            {
+                if (OnBeginDrawLayer != null)
+                    OnBeginDrawLayer(this, layer.Key, sb);
+
+                foreach (var drawable in layer.Value)
+                {
+                    drawable.Draw(sb);
+                }
+
+                if (OnEndDrawLayer != null)
+                    OnEndDrawLayer(this, layer.Key, sb);
+            }
+
+            // Draw the particle effects
+            _particleEffectRenderer.SpriteBatch = sb;
+            _particleEffectRenderer.Draw(Camera, ParticleEffects);
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        public ICamera2D Camera
+        {
+            get { return _camera; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _camera = value;
+            }
         }
 
         #endregion

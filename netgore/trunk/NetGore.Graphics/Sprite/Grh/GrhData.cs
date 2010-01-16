@@ -54,7 +54,8 @@ namespace NetGore.Graphics
 
             if (grhIndex.IsInvalid)
             {
-                const string errmsg ="Failed to create GrhData with category `{0}`." +
+                const string errmsg =
+                    "Failed to create GrhData with category `{0}`." +
                     " No GrhData may be created with a GrhIndex equal to GrhIndex.Invalid";
                 string err = string.Format(errmsg, cat);
                 log.Error(err);

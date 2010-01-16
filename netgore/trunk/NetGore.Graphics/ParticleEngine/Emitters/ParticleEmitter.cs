@@ -21,6 +21,7 @@ namespace NetGore.Graphics.ParticleEngine
         const int _defaultBudget = 5000;
         const string _defaultName = "Unnamed";
         const string _emitterCategoryName = "Emitter";
+        const string _grhIndexKeyName = "Grh";
 
         /// <summary>
         /// The initial size of the particle array.
@@ -39,7 +40,6 @@ namespace NetGore.Graphics.ParticleEngine
         const string _releaseRotationKeyName = "ReleaseRotation";
         const string _releaseScaleKeyName = "ReleaseScale";
         const string _releaseSpeedKeyName = "ReleaseSpeed";
-        const string _grhIndexKeyName = "Grh";
 
         static readonly IEnumerable<Type> _emitterTypes =
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).OrderBy(x => x.Name).ToCompact();
@@ -48,6 +48,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// The array of <see cref="Particle"/>s.
         /// </summary>
         protected Particle[] particles;
+
+        readonly Grh _sprite = new Grh();
 
         int _budget;
         EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
@@ -63,7 +65,6 @@ namespace NetGore.Graphics.ParticleEngine
         int _nextReleaseTime;
         Vector2 _origin;
         ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
-        readonly Grh _sprite = new Grh();
 
         /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
@@ -436,7 +437,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             // Read the primary values
             Name = reader.ReadString(_nameKeyName);
-            BlendMode = reader.ReadEnum < SpriteBlendMode>(_blendModeKeyName);
+            BlendMode = reader.ReadEnum<SpriteBlendMode>(_blendModeKeyName);
             Budget = reader.ReadInt(_budgetKeyName);
             Life = reader.ReadVariableInt(_lifeKeyName);
             Origin = reader.ReadVector2(_originKeyName);

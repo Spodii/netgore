@@ -14,6 +14,9 @@ namespace NetGore.Graphics
     /// </summary>
     public class BackgroundLayer : BackgroundImage
     {
+        const string _horizontalLayoutKey = "HorizontalLayout";
+        const string _verticalLayoutKey = "VerticalLayout";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundLayer"/> class.
         /// </summary>
@@ -25,9 +28,6 @@ namespace NetGore.Graphics
             HorizontalLayout = BackgroundLayerLayout.Stretched;
             VerticalLayout = BackgroundLayerLayout.Stretched;
         }
-
-        const string _horizontalLayoutKey = "HorizontalLayout";
-        const string _verticalLayoutKey = "VerticalLayout";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundLayer"/> class.

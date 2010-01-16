@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Linq;
 
 namespace NetGore.EditorTools
 {
     public interface IUndoEvent : IDisposable
     {
         /// <summary>
-        /// How to undo this event.
+        /// Gets a value indicating whether or not Undo() has been called on this IUndoEvent.
         /// </summary>
-        void Undo();
+        bool IsUndone { get; }
 
         /// <summary>
         /// How to redo this event once it has been undone.
@@ -15,8 +16,8 @@ namespace NetGore.EditorTools
         void Redo();
 
         /// <summary>
-        /// Gets a value indicating whether or not Undo() has been called on this IUndoEvent.
+        /// How to undo this event.
         /// </summary>
-        bool IsUndone { get; }
+        void Undo();
     }
 }

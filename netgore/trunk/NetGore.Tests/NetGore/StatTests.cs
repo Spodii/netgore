@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.IO;
 using NetGore.Stats;
 using NUnit.Framework;
@@ -11,9 +8,15 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class StatTests
     {
-        enum TestStatType
+        [Test]
+        public void ChangeStatValueTest()
         {
-            A,B,C,D,E,F,G
+            var stat = CreateStat(TestStatType.C, 5);
+            Assert.AreEqual(5, stat.Value);
+            Assert.AreEqual(TestStatType.C, stat.StatType);
+
+            stat.Value = 199;
+            Assert.AreEqual(199, stat.Value);
         }
 
         static IStat<TestStatType> CreateStat(TestStatType statType, int value)
@@ -27,14 +30,86 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void ChangeStatValueTest()
+        public void CreateStatTest()
         {
             var stat = CreateStat(TestStatType.C, 5);
             Assert.AreEqual(5, stat.Value);
             Assert.AreEqual(TestStatType.C, stat.StatType);
 
+            stat = CreateStat(TestStatType.D, 1);
+            Assert.AreEqual(1, stat.Value);
+            Assert.AreEqual(TestStatType.D, stat.StatType);
+
+            stat = CreateStat(TestStatType.F, 62);
+            Assert.AreEqual(62, stat.Value);
+            Assert.AreEqual(TestStatType.F, stat.StatType);
+        }
+
+        [Test]
+        public void DeepCopyIsNewReferenceTest()
+        {
+            var stat = CreateStat(TestStatType.C, 5);
+            var copy = stat.DeepCopy();
+            Assert.AreEqual(stat.Value, copy.Value);
+            Assert.AreEqual(stat.StatType, copy.StatType);
+
+            stat.Value = 123;
+
+            Assert.AreEqual(123, stat.Value);
+            Assert.AreEqual(5, copy.Value);
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            var stat = CreateStat(TestStatType.C, 5);
+            var copy = stat.DeepCopy();
+            Assert.AreEqual(stat.Value, copy.Value);
+            Assert.AreEqual(stat.StatType, copy.StatType);
+        }
+
+        [Test]
+        public void DeepCopyValueTypeIsNewReferenceTest()
+        {
+            var stat = CreateStat(TestStatType.C, 5);
+            var copy = stat.DeepCopyValueType();
+            Assert.AreEqual(stat.Value, copy.GetValue());
+
+            stat.Value = 123;
+
+            Assert.AreEqual(123, stat.Value);
+            Assert.AreEqual(5, copy.GetValue());
+        }
+
+        [Test]
+        public void DeepCopyValueTypeTest()
+        {
+            var stat = CreateStat(TestStatType.C, 5);
+            var copy = stat.DeepCopyValueType();
+            Assert.AreEqual(stat.Value, copy.GetValue());
+        }
+
+        [Test]
+        public void OnChangeStatValueTest()
+        {
+            bool b = false;
+
+            var stat = CreateStat(TestStatType.C, 5);
+            stat.OnChange += delegate { b = true; };
+            Assert.IsFalse(b);
+
             stat.Value = 199;
+
             Assert.AreEqual(199, stat.Value);
+            Assert.IsTrue(b);
+
+            b = false;
+            Assert.IsFalse(b);
+            stat.Value = 199;
+            Assert.IsFalse(b);
+
+            stat.Value++;
+            Assert.IsTrue(b);
         }
 
         [Test]
@@ -77,87 +152,15 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(123, stat2.Value);
         }
 
-        [Test]
-        public void OnChangeStatValueTest()
+        enum TestStatType
         {
-            bool b = false;
-
-            var stat = CreateStat(TestStatType.C, 5);
-            stat.OnChange += delegate { b = true; };
-            Assert.IsFalse(b);
-
-            stat.Value = 199;
-
-            Assert.AreEqual(199, stat.Value);
-            Assert.IsTrue(b);
-
-            b = false;
-            Assert.IsFalse(b);
-            stat.Value = 199;
-            Assert.IsFalse(b);
-
-            stat.Value++;
-            Assert.IsTrue(b);
-        }
-
-        [Test]
-        public void DeepCopyValueTypeTest()
-        {
-            var stat = CreateStat(TestStatType.C, 5);
-            var copy = stat.DeepCopyValueType();
-            Assert.AreEqual(stat.Value, copy.GetValue());
-        }
-
-        [Test]
-        public void DeepCopyValueTypeIsNewReferenceTest()
-        {
-            var stat = CreateStat(TestStatType.C, 5);
-            var copy = stat.DeepCopyValueType();
-            Assert.AreEqual(stat.Value, copy.GetValue());
-
-            stat.Value = 123;
-
-            Assert.AreEqual(123, stat.Value);
-            Assert.AreEqual(5, copy.GetValue());
-        }
-
-        [Test]
-        public void DeepCopyTest()
-        {
-            var stat = CreateStat(TestStatType.C, 5);
-            var copy = stat.DeepCopy();
-            Assert.AreEqual(stat.Value, copy.Value);
-            Assert.AreEqual(stat.StatType, copy.StatType);
-        }
-
-        [Test]
-        public void DeepCopyIsNewReferenceTest()
-        {
-            var stat = CreateStat(TestStatType.C, 5);
-            var copy = stat.DeepCopy();
-            Assert.AreEqual(stat.Value, copy.Value);
-            Assert.AreEqual(stat.StatType, copy.StatType);
-
-            stat.Value = 123;
-
-            Assert.AreEqual(123, stat.Value);
-            Assert.AreEqual(5, copy.Value);
-        }
-
-        [Test]
-        public void CreateStatTest()
-        {
-            var stat = CreateStat(TestStatType.C, 5);
-            Assert.AreEqual(5, stat.Value);
-            Assert.AreEqual(TestStatType.C, stat.StatType);
-
-            stat = CreateStat(TestStatType.D, 1);
-            Assert.AreEqual(1, stat.Value);
-            Assert.AreEqual(TestStatType.D, stat.StatType);
-
-            stat = CreateStat(TestStatType.F, 62);
-            Assert.AreEqual(62, stat.Value);
-            Assert.AreEqual(TestStatType.F, stat.StatType);
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G
         }
     }
 }

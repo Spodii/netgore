@@ -100,11 +100,7 @@ namespace DemoGame.ParticleEffectEditor
         /// <returns>The initial <see cref="ParticleEmitter"/> to display.</returns>
         ParticleEmitter CreateInitialEmitter()
         {
-            var ret = new PointEmitter
-            {
-                Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f,
-                ReleaseRate = 35
-            };
+            var ret = new PointEmitter { Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f, ReleaseRate = 35 };
             ret.Sprite.SetGrh(GrhInfo.GetData(new SpriteCategorization(_defaultCategory, "ball")));
 
             var colorModifier = new ParticleColorModifier

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -10,11 +7,47 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class PersistableTests
     {
+        [Test]
+        public void ReadWriteFromHelperUsingPropertyTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, 512);
+            var a = new ClassB { A = "asdf", B = 512 };
+            var b = new ClassB();
+
+            a.WriteState(bs);
+
+            bs.Mode = BitStreamMode.Read;
+
+            b.ReadState(bs);
+
+            Assert.AreEqual(a.A, b.A);
+            Assert.AreEqual(a.B, b.B);
+        }
+
+        [Test]
+        public void ReadWriteFromInterfaceTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, 512);
+            var a = new ClassA { A = "asdf", B = 512 };
+            var b = new ClassA();
+
+            a.WriteState(bs);
+
+            bs.Mode = BitStreamMode.Read;
+
+            b.ReadState(bs);
+
+            Assert.AreEqual(a.A, b.A);
+            Assert.AreEqual(a.B, b.B);
+        }
+
         public class ClassA : IPersistable
         {
             public string A { get; set; }
 
             public int B { get; set; }
+
+            #region IPersistable Members
 
             /// <summary>
             /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
@@ -36,6 +69,8 @@ namespace NetGore.Tests.NetGore.IO
                 writer.Write("A", A);
                 writer.Write("B", B);
             }
+
+            #endregion
         }
 
         public class ClassB : IPersistable
@@ -45,6 +80,8 @@ namespace NetGore.Tests.NetGore.IO
 
             [SyncValue]
             public int B { get; set; }
+
+            #region IPersistable Members
 
             /// <summary>
             /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
@@ -64,40 +101,8 @@ namespace NetGore.Tests.NetGore.IO
             {
                 PersistableHelper.Write(this, writer);
             }
-        }
 
-        [Test]
-        public void ReadWriteFromInterfaceTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, 512);
-            var a = new ClassA { A = "asdf", B = 512 };
-            var b = new ClassA();
-
-            a.WriteState(bs);
-
-            bs.Mode = BitStreamMode.Read;
-
-            b.ReadState(bs);
-
-            Assert.AreEqual(a.A, b.A);
-            Assert.AreEqual(a.B, b.B);
-        }
-
-        [Test]
-        public void ReadWriteFromHelperUsingPropertyTest()
-        {
-            BitStream bs = new BitStream(BitStreamMode.Write, 512);
-            var a = new ClassB { A = "asdf", B = 512 };
-            var b = new ClassB();
-
-            a.WriteState(bs);
-
-            bs.Mode = BitStreamMode.Read;
-
-            b.ReadState(bs);
-
-            Assert.AreEqual(a.A, b.A);
-            Assert.AreEqual(a.B, b.B);
+            #endregion
         }
     }
 }

@@ -51,6 +51,15 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        /// <value></value>
+        public override int ToolbarPriority
+        {
+            get { return 5; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
         /// </summary>
         public override void Activate()
@@ -64,15 +73,6 @@ namespace DemoGame.MapEditor
         public override void Deactivate()
         {
             _selectedWalls.Clear();
-        }
-
-        /// <summary>
-        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
-        /// </summary>
-        /// <value></value>
-        public override int ToolbarPriority
-        {
-            get { return 5; }
         }
 
         /// <summary>

@@ -18,8 +18,7 @@ namespace NetGore.Collections
         /// Initializes a new instance of the <see cref="HashCache&lt;TKey, TValue&gt;"/> class.
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
-        public HashCache(Func<TKey, TValue> valueCreator)
-            : this(valueCreator, null)
+        public HashCache(Func<TKey, TValue> valueCreator) : this(valueCreator, null)
         {
         }
 
@@ -74,7 +73,10 @@ namespace NetGore.Collections
         /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
         /// should never be accessed from multiple threads.
         /// </summary>
-        public bool IsThreadSafe { get { return false; } }
+        public bool IsThreadSafe
+        {
+            get { return false; }
+        }
 
         #endregion
     }

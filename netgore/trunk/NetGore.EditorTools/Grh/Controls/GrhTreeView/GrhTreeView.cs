@@ -26,6 +26,7 @@ namespace NetGore.EditorTools
         readonly Timer _animTimer = new Timer();
 
         readonly ContextMenu _contextMenu = new ContextMenu();
+        bool _compactMode = true;
         ContentManager _contentManager;
         CreateWallEntityHandler _createWall;
         EditGrhForm _editGrhDataForm;
@@ -239,9 +240,7 @@ namespace NetGore.EditorTools
             if (disposing)
             {
                 if (!_compactMode)
-                {
                     GrhImageList.Save();
-                }
 
                 if (_animTimer != null)
                 {
@@ -250,14 +249,10 @@ namespace NetGore.EditorTools
                 }
 
                 if (_editGrhDataForm != null)
-                {
                     _editGrhDataForm.Dispose();
-                }
 
                 if (_contextMenu != null)
-                {
                     _contextMenu.Dispose();
-                }
 
                 Nodes.Clear();
 
@@ -411,7 +406,7 @@ namespace NetGore.EditorTools
             var casted = node as GrhTreeViewNode;
             if (casted != null)
                 return casted.GrhData;
-            
+
             return null;
         }
 
@@ -471,38 +466,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Initializes the <see cref="GrhTreeView"/>. Requires that the <see cref="GrhData"/>s are already
-        /// loaded and won't provide any additional features.
-        /// </summary>
-        public void InitializeCompact()
-        {
-            AllowDrop = false;
-            Nodes.Clear();
-
-            // Create the animate timer
-            _animTimer.Interval = 150;
-            _animTimer.Tick += UpdateAnimations;
-            _animTimer.Start();
-
-            // Set the sort method
-            TreeViewNodeSorter = this;
-
-            // Create the ImageList containing the Grhs as an image
-            ImageList = GrhImageList.ImageList;
-
-            // Iterate through all the GrhDatas
-            foreach (GrhData grhData in GrhInfo.GrhDatas)
-                AddGrhToTree(grhData);
-
-            GrhInfo.OnRemove += GrhInfo_OnRemove;
-
-            // Perform the initial sort
-            Sort();
-        }
-
-        bool _compactMode = true;
-
-        /// <summary>
         /// Initializes the <see cref="GrhTreeView"/> with all features.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/> used for loading content needed by the
@@ -546,6 +509,38 @@ namespace NetGore.EditorTools
             ContextMenu = _contextMenu;
 
             AllowDrop = true;
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="GrhTreeView"/>. Requires that the <see cref="GrhData"/>s are already
+        /// loaded and won't provide any additional features.
+        /// </summary>
+        public void InitializeCompact()
+        {
+            AllowDrop = false;
+            Nodes.Clear();
+
+            // Create the animate timer
+            _animTimer.Interval = 150;
+            _animTimer.Tick += UpdateAnimations;
+            _animTimer.Start();
+
+            // Set the sort method
+            TreeViewNodeSorter = this;
+
+            // Create the ImageList containing the Grhs as an image
+            ImageList = GrhImageList.ImageList;
+
+            // Iterate through all the GrhDatas
+            foreach (GrhData grhData in GrhInfo.GrhDatas)
+            {
+                AddGrhToTree(grhData);
+            }
+
+            GrhInfo.OnRemove += GrhInfo_OnRemove;
+
+            // Perform the initial sort
+            Sort();
         }
 
         /// <summary>

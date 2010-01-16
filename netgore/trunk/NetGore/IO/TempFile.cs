@@ -29,6 +29,14 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets the file path to the temporary file.
+        /// </summary>
+        public string FilePath
+        {
+            get { return _filePath; }
+        }
+
+        /// <summary>
         /// Moves the temporary file to the target file path, then disposes of the <see cref="TempFile"/>. Any directories
         /// needed will be created.
         /// </summary>
@@ -46,17 +54,9 @@ namespace NetGore.IO
 
             // Copy over the file
             File.Move(_filePath, targetFilePath);
-  
+
             // Dispose of the TempFile
             Dispose();
-        }
-
-        /// <summary>
-        /// Gets the file path to the temporary file.
-        /// </summary>
-        public string FilePath
-        {
-            get { return _filePath; }
         }
 
         #region IDisposable Members

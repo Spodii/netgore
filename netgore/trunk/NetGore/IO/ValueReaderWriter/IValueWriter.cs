@@ -157,8 +157,7 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        void WriteEnum<T>(string name, T value)
-            where T : struct, IComparable, IConvertible, IFormattable;
+        void WriteEnum<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable;
 
         /// <summary>
         /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
@@ -176,8 +175,7 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        void WriteEnumValue<T>(string name, T value)
-            where T : struct, IComparable, IConvertible, IFormattable;
+        void WriteEnumValue<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable;
 
         /// <summary>
         /// Writes multiple values of the same type to the IValueWriter all under the same node name.

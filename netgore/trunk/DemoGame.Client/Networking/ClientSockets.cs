@@ -12,31 +12,15 @@ namespace DemoGame.Client
     /// </summary>
     class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
-        static ClientSockets _instance;
-
         const int _updateLatencyInterval = 5000;
+        static ClientSockets _instance;
         readonly ClientPacketHandler _packetHandler;
         readonly int _udpPort;
 
         IIPSocket _conn = null;
+        bool _isConnecting = false;
         int _lastPingTime;
         LatencyTrackerClient _latencyTracker;
-
-        /// <summary>
-        /// Initializes the <see cref="ClientSockets"/> instance. This only needs to be called once.
-        /// </summary>
-        /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
-        /// <exception cref="ArgumentNullException"><see cref="gameplayScreen"/> is null.</exception>
-        public static void Initialize(GameplayScreen gameplayScreen)
-        {
-            if (gameplayScreen == null)
-                throw new ArgumentNullException("gameplayScreen");
-
-            if (Instance != null)
-                return;
-
-            _instance = new ClientSockets(gameplayScreen);
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
@@ -63,6 +47,20 @@ namespace DemoGame.Client
         public static ClientSockets Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// Gets if the socket is currently trying to connect, and is waiting for the connection to be made or rejected.
+        /// </summary>
+        public bool IsConnecting
+        {
+            get
+            {
+                if (_conn != null)
+                    return false;
+
+                return _isConnecting;
+            }
         }
 
         /// <summary>
@@ -124,18 +122,32 @@ namespace DemoGame.Client
                 Ping();
         }
 
-        bool _isConnecting = false;
-
         /// <summary>
-        /// Gets if the socket is currently trying to connect, and is waiting for the connection to be made or rejected.
+        /// Initializes the <see cref="ClientSockets"/> instance. This only needs to be called once.
         /// </summary>
-        public bool IsConnecting
+        /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
+        /// <exception cref="ArgumentNullException"><see cref="gameplayScreen"/> is null.</exception>
+        public static void Initialize(GameplayScreen gameplayScreen)
         {
-            get {
-                if (_conn != null)
-                    return false;
+            if (gameplayScreen == null)
+                throw new ArgumentNullException("gameplayScreen");
 
-                return _isConnecting; }
+            if (Instance != null)
+                return;
+
+            _instance = new ClientSockets(gameplayScreen);
+        }
+
+        void Ping()
+        {
+            if (_latencyTracker == null)
+            {
+                Debug.Fail("LatencyTrackerClient has not been set up yet!");
+                return;
+            }
+
+            _lastPingTime = GetTime();
+            _latencyTracker.Ping();
         }
 
         /// <summary>
@@ -156,18 +168,6 @@ namespace DemoGame.Client
             {
                 Send(pw);
             }
-        }
-
-        void Ping()
-        {
-            if (_latencyTracker == null)
-            {
-                Debug.Fail("LatencyTrackerClient has not been set up yet!");
-                return;
-            }
-
-            _lastPingTime = GetTime();
-            _latencyTracker.Ping();
         }
 
         #region IGetTime Members
