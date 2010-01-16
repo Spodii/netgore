@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using DemoGame.Emoticons;
 
 namespace DemoGame
 {
