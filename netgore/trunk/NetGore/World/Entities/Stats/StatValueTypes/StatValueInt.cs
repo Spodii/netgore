@@ -15,7 +15,7 @@ namespace NetGore
         readonly int _value;
 
         /// <summary>
-        /// StatValueInt constructor.
+        /// Initializes a new instance of the <see cref="StatValueInt"/> struct.
         /// </summary>
         /// <param name="value">The initial value.</param>
         public StatValueInt(int value)

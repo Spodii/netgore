@@ -16,7 +16,7 @@ namespace NetGore
         readonly byte _value;
 
         /// <summary>
-        /// StatValueByte constructor.
+        /// Initializes a new instance of the <see cref="StatValueByte"/> struct.
         /// </summary>
         /// <param name="value">The initial value.</param>
         public StatValueByte(byte value)
