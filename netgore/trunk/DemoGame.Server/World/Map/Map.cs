@@ -153,7 +153,7 @@ namespace DemoGame.Server
         void CharacterAdded(Character character)
         {
             // If the character was already on a map, so remove them from the old map
-            if (character.Map != null)
+            if (character.Map != null && character.Map != this)
             {
                 const string errmsg = "Character `{0}` [{1}] added to new map, but is already on a map!";
                 if (log.IsWarnEnabled)
@@ -161,9 +161,6 @@ namespace DemoGame.Server
                 Debug.Fail(string.Format(errmsg, character, character.MapEntityIndex));
                 character.Map.RemoveEntity(character);
             }
-
-            // Set the new map
-            character.Map = this;
 
             // Added character is a User
             User user = character as User;

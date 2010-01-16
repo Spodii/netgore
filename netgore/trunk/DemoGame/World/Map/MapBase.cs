@@ -11,8 +11,6 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 
-// FUTURE: Improve how characters handle when they hit the map's borders
-
 namespace DemoGame
 {
     /// <summary>
@@ -234,6 +232,10 @@ namespace DemoGame
             _entities.Add(entity);
             if (entity is IUpdateableEntity)
                 _updateableEntities.Add((IUpdateableEntity)entity);
+
+            // Check for the IUpdateableMapReference interface
+            if (entity is IUpdateableMapReference)
+                ((IUpdateableMapReference)entity).Map = this;
 
             // Also add the entity to the grid
             Spatial.Add(entity);

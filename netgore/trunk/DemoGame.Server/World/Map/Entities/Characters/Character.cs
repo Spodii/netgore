@@ -64,7 +64,7 @@ namespace DemoGame.Server
     /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
-    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable
+    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -72,6 +72,12 @@ namespace DemoGame.Server
         /// Amount of time the character must wait between attacks
         /// </summary>
         const int _attackTimeout = 500;
+
+        /// <summary>
+        /// Gets or sets the map that the <see cref="IUpdateableMapReference"/> is on. This should only be set
+        /// by the map that the object was added to.
+        /// </summary>
+        IMap IUpdateableMapReference.Map { get { return Map; } set { _map = (Map)value; } }
 
         /// <summary>
         /// Makes the <see cref="Character"/> use an <see cref="Emoticon"/>.
@@ -389,11 +395,6 @@ namespace DemoGame.Server
         public Map Map
         {
             get { return _map; }
-            internal set
-            {
-                // TODO: It would be best if I could find a way to make this setting private...
-                _map = value;
-            }
         }
 
         public CharacterStatsBase ModStats

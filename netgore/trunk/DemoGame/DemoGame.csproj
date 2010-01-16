@@ -111,6 +111,7 @@
     <Compile Include="Items\InventorySlot.cs" />
     <Compile Include="Items\ItemType.cs" />
     <Compile Include="Items\ItemTypeExtensions.cs" />
+    <Compile Include="World\Map\IUpdateableMapReference.cs" />
     <Compile Include="World\Map\MapBase.cs" />
     <Compile Include="IO\Packets\ClientPacketID.cs" />
     <Compile Include="IO\Packets\ServerPacketID.cs" />
