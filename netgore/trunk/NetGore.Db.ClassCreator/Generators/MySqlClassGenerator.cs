@@ -28,6 +28,9 @@ namespace NetGore.Db.ClassCreator
             SetDbConnection(_conn);
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             if (_disposed)
@@ -58,6 +61,14 @@ namespace NetGore.Db.ClassCreator
             return DbColumnKeyType.Foreign;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="DbColumnInfo"/>s for the given
+        /// <paramref name="table"/>.
+        /// </summary>
+        /// <param name="table">The name of the table to get the <see cref="DbColumnInfo"/>s for.</param>
+        /// <returns>
+        /// The <see cref="DbColumnInfo"/>s for the given <paramref name="table"/>.
+        /// </returns>
         protected override IEnumerable<DbColumnInfo> GetColumns(string table)
         {
             var ret = new List<DbColumnInfo>();
@@ -118,6 +129,10 @@ namespace NetGore.Db.ClassCreator
             return ret;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the tables in the database.
+        /// </summary>
+        /// <returns>The name of the tables in the database.</returns>
         protected override IEnumerable<string> GetTables()
         {
             var ret = new List<string>();

@@ -1,11 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DemoGame;
+using System.Text;
+using NetGore;
+using NetGore.Db.ClassCreator;
 using NetGore.Stats;
 
-namespace NetGore.Db.ClassCreator
+namespace DemoGame.DbClassCreator
 {
     class Program
     {
