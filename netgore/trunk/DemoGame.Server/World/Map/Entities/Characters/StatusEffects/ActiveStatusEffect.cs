@@ -51,7 +51,7 @@ namespace DemoGame.Server
             get { return _statusEffect; }
         }
 
-        public void AddBonusesTo(IStatCollection statCollection)
+        public void AddBonusesTo(IStatCollection<StatType> statCollection)
         {
             foreach (StatType statType in StatusEffect.ModifiedStats)
             {
@@ -188,7 +188,7 @@ namespace DemoGame.Server
                 return false;
         }
 
-        public void SubtractBonusesFrom(IStatCollection statCollection)
+        public void SubtractBonusesFrom(IStatCollection<StatType> statCollection)
         {
             foreach (StatType statType in StatusEffect.ModifiedStats)
             {

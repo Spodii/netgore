@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace DemoGame
@@ -6,5 +7,5 @@ namespace DemoGame
     /// Handles basic IStat events.
     /// </summary>
     /// <param name="stat">The IStat that the event took place on.</param>
-    public delegate void IStatEventHandler(IStat stat);
+    public delegate void IStatEventHandler<TStatType>(IStat<TStatType> stat) where TStatType : struct, IComparable, IConvertible, IFormattable;
 }

@@ -35,7 +35,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="ClientPacketID"/>.</returns>
-        protected override ClientPacketID FromInt(int value)
+        public override ClientPacketID FromInt(int value)
         {
             return (ClientPacketID)value;
         }
@@ -45,7 +45,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(ClientPacketID value)
+        public override int ToInt(ClientPacketID value)
         {
             return (int)value;
         }

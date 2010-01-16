@@ -35,7 +35,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="MapRenderLayer"/>.</returns>
-        protected override MapRenderLayer FromInt(int value)
+        public override MapRenderLayer FromInt(int value)
         {
             return (MapRenderLayer)value;
         }
@@ -45,7 +45,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(MapRenderLayer value)
+        public override int ToInt(MapRenderLayer value)
         {
             return (int)value;
         }

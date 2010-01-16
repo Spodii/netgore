@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,14 +7,15 @@ namespace DemoGame
     /// <summary>
     /// Interface for a collection of IStats that provides access to the IStat's value through the StatType.
     /// </summary>
-    public interface IStatCollection : IEnumerable<IStat>
+    public interface IStatCollection<TStatType> : IEnumerable<IStat<TStatType>> 
+        where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Gets or sets the value of the stat with the given <paramref name="statType"/>.
         /// </summary>
         /// <param name="statType">The StatType of the stat to get or set the value for.</param>
         /// <returns>The value of the stat with the given <paramref name="statType"/>.</returns>
-        int this[StatType statType] { get; set; }
+        int this[TStatType statType] { get; set; }
 
         /// <summary>
         /// Gets the StatCollectionType that this collection is for.
@@ -26,7 +28,7 @@ namespace DemoGame
         /// <param name="statType">The StatType to check if exists in the collection.</param>
         /// <returns>True if this collection contains the stat with the given <paramref name="statType"/>;
         /// otherwise false.</returns>
-        bool Contains(StatType statType);
+        bool Contains(TStatType statType);
 
         /// <summary>
         /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
@@ -39,7 +41,7 @@ namespace DemoGame
         /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
         /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
         /// in any other way.</param>
-        void CopyValuesFrom(IEnumerable<KeyValuePair<StatType, int>> values, bool checkContains);
+        void CopyValuesFrom(IEnumerable<KeyValuePair<TStatType, int>> values, bool checkContains);
 
         /// <summary>
         /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
@@ -52,22 +54,14 @@ namespace DemoGame
         /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
         /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
         /// in any other way.</param>
-        void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains);
+        void CopyValuesFrom(IEnumerable<IStat<TStatType>> values, bool checkContains);
 
         /// <summary>
         /// Gets the IStat for the stat of the given <paramref name="statType"/>.
         /// </summary>
         /// <param name="statType">The StatType of the stat to get.</param>
         /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
-        IStat GetStat(StatType statType);
-
-        /// <summary>
-        /// Gets an IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
-        /// value is the value of for the stat with the corresponding StatType.
-        /// </summary>
-        /// <returns>An IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
-        /// value is the value of for the stat with the corresponding StatType.</returns>
-        IEnumerable<KeyValuePair<StatType, int>> ToKeyValuePairs();
+        IStat<TStatType> GetStat(TStatType statType);
 
         /// <summary>
         /// Tries to get the IStat for the stat of the given <paramref name="statType"/>.
@@ -77,7 +71,7 @@ namespace DemoGame
         /// returns false, this value will be null.</param>
         /// <returns>True if the stat with the given <paramref name="statType"/> was found and
         /// successfully returned; otherwise false.</returns>
-        bool TryGetStat(StatType statType, out IStat stat);
+        bool TryGetStat(TStatType statType, out IStat<TStatType> stat);
 
         /// <summary>
         /// Tries to get the value of the stat of the given <paramref name="statType"/>.
@@ -87,6 +81,6 @@ namespace DemoGame
         /// returns false, this value will be 0.</param>
         /// <returns>True if the stat with the given <paramref name="statType"/> was found and
         /// successfully returned; otherwise false.</returns>
-        bool TryGetStatValue(StatType statType, out int value);
+        bool TryGetStatValue(TStatType statType, out int value);
     }
 }

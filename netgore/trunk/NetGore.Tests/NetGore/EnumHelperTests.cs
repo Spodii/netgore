@@ -267,12 +267,12 @@ namespace NetGore.Tests.NetGore
                 get { return _instance; }
             }
 
-            protected override EVByte FromInt(int value)
+            public override EVByte FromInt(int value)
             {
                 return (EVByte)value;
             }
 
-            protected override int ToInt(EVByte value)
+            public override int ToInt(EVByte value)
             {
                 return (int)value;
             }
@@ -296,12 +296,12 @@ namespace NetGore.Tests.NetGore
                 get { return _instance; }
             }
 
-            protected override EVInt FromInt(int value)
+            public override EVInt FromInt(int value)
             {
                 return (EVInt)value;
             }
 
-            protected override int ToInt(EVInt value)
+            public override int ToInt(EVInt value)
             {
                 return (int)value;
             }
@@ -325,12 +325,12 @@ namespace NetGore.Tests.NetGore
                 get { return _instance; }
             }
 
-            protected override EVSByte FromInt(int value)
+            public override EVSByte FromInt(int value)
             {
                 return (EVSByte)value;
             }
 
-            protected override int ToInt(EVSByte value)
+            public override int ToInt(EVSByte value)
             {
                 return (int)value;
             }
@@ -354,12 +354,12 @@ namespace NetGore.Tests.NetGore
                 get { return _instance; }
             }
 
-            protected override EVShort FromInt(int value)
+            public override EVShort FromInt(int value)
             {
                 return (EVShort)value;
             }
 
-            protected override int ToInt(EVShort value)
+            public override int ToInt(EVShort value)
             {
                 return (int)value;
             }
@@ -383,12 +383,12 @@ namespace NetGore.Tests.NetGore
                 get { return _instance; }
             }
 
-            protected override EVUShort FromInt(int value)
+            public override EVUShort FromInt(int value)
             {
                 return (EVUShort)value;
             }
 
-            protected override int ToInt(EVUShort value)
+            public override int ToInt(EVUShort value)
             {
                 return (int)value;
             }

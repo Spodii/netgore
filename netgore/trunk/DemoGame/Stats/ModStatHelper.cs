@@ -14,7 +14,7 @@ namespace DemoGame
         /// <param name="statType">The StatType to calculate the value for.</param>
         /// <param name="modders">The IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection baseStats, StatType statType, params IModStatContainer[] modders)
+        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, params IModStatContainer[] modders)
         {
             int value = baseStats[statType];
 
@@ -36,7 +36,7 @@ namespace DemoGame
         /// <param name="statType">The StatType to calculate the value for.</param>
         /// <param name="modder1">The first IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1)
+        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1)
         {
             int value = baseStats[statType];
 
@@ -53,7 +53,7 @@ namespace DemoGame
         /// <param name="modder1">The first IModStatContainers to use for calculating the modified Stat value.</param>
         /// <param name="modder2">The second IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1,
+        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1,
                                     IModStatContainer modder2)
         {
             int value = baseStats[statType];
@@ -73,7 +73,7 @@ namespace DemoGame
         /// <param name="modder2">The second IModStatContainers to use for calculating the modified Stat value.</param>
         /// <param name="modder3">The third IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1,
+        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1,
                                     IModStatContainer modder2, IModStatContainer modder3)
         {
             int value = baseStats[statType];
@@ -95,7 +95,7 @@ namespace DemoGame
         /// <param name="modder3">The third IModStatContainers to use for calculating the modified Stat value.</param>
         /// <param name="modder4">The fourth IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1,
+        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1,
                                     IModStatContainer modder2, IModStatContainer modder3, IModStatContainer modder4)
         {
             int value = baseStats[statType];
