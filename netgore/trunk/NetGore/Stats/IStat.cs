@@ -4,7 +4,7 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
     /// Interface for the primary holder object of stat information, containing the type of stat, events, and the

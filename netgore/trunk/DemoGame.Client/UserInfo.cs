@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using NetGore;
 using NetGore.Network;
+using NetGore.Stats;
 
 namespace DemoGame.Client
 {

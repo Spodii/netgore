@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.Stats;
 
 namespace DemoGame.Client
 {

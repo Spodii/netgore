@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
 using NetGore.NPCChat;
+using NetGore.Stats;
 
 namespace DemoGame.Server
 {

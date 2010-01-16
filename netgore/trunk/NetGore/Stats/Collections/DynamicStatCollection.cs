@@ -3,86 +3,87 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
-using NetGore.IO;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
-    /// A specialized collection that contains every StatType. This is the ideal IStatCollection to use when you want
-    /// the collection to always contain every StatType.
+    /// An IStatCollection implementation that can contain as few or as many StatTypes as needed. New StatTypes
+    /// can be added to the collection whenever needed.
     /// </summary>
-    public class FullStatCollection<TStatType> : IStatCollection<TStatType>
-        where TStatType : struct, IComparable, IConvertible, IFormattable
+    public class DynamicStatCollection<TStatType> : IStatCollection<TStatType>
+         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
-        readonly StatCollectionType _collectionType;
-        readonly IStat<TStatType>[] _stats;
-        readonly EnumIOHelper<TStatType> _enumIOHelper;
+        readonly StatCollectionType _statCollectionType;
+        readonly Dictionary<TStatType, IStat<TStatType>> _stats = 
+            new Dictionary<TStatType, IStat<TStatType>>(EnumComparer<TStatType>.Instance);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FullStatCollection"/> class.
+        /// StatCollectionBase constructor.
         /// </summary>
-        /// <param name="collectionType">The type of StatTypes that this collection contains.</param>
-        public FullStatCollection(StatCollectionType collectionType, EnumIOHelper<TStatType> enumIOHelper)
+        /// <param name="statCollectionType">The type of the collection.</param>
+        protected DynamicStatCollection(StatCollectionType statCollectionType)
         {
-            if (enumIOHelper == null)
-                throw new ArgumentNullException("enumIOHelper");
+            _statCollectionType = statCollectionType;
+        }
 
-            _enumIOHelper = enumIOHelper;
-            _collectionType = collectionType;
-            _stats = new IStat<TStatType>[_enumIOHelper.MaxValue + 1];
+        /// <summary>
+        /// Adds an IStat to the collection.
+        /// </summary>
+        /// <param name="stat">IStat to add to the collection.</param>
+        protected void Add(IStat<TStatType> stat)
+        {
+            _stats.Add(stat.StatType, stat);
+        }
 
-            foreach (var statType in EnumIOHelper<TStatType>.Values)
+        /// <summary>
+        /// Adds IStats to the collection.
+        /// </summary>
+        /// <param name="stats">IStats to add to the collection.</param>
+        protected void Add(IEnumerable<IStat<TStatType>> stats)
+        {
+            foreach (var stat in stats)
             {
-                IStat<TStatType> istat = StatFactory<TStatType>.CreateStat(statType, collectionType);
-                _stats[enumIOHelper.ToInt(statType)] = istat;
+                Add(stat);
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FullStatCollection"/> class.
+        /// Adds IStats to the collection.
         /// </summary>
-        /// <param name="source">The FullStatCollection to copy the values from.</param>
-        FullStatCollection(FullStatCollection<TStatType> source)
+        /// <param name="stats">IStats to add to the collection.</param>
+        protected void Add(params IStat<TStatType>[] stats)
         {
-            _collectionType = source._collectionType;
-
-            _stats = new IStat<TStatType>[source._stats.Length];
-            for (int i = 0; i < _stats.Length; i++)
+            foreach (var stat in stats)
             {
-                _stats[i] = source._stats[i].DeepCopy();
+                Add(stat);
             }
         }
 
         /// <summary>
-        /// Checks if the values of this FullStatCollection are equal to the values of another FullStatCollection.
+        /// Gets an IStat from this StatCollectionBase, or creates the IStat for the <paramref name="statType"/>
+        /// if the IStat did not already exist in the collection.
         /// </summary>
-        /// <param name="other">The FullStatCollection to compare against.</param>
-        /// <returns>True if the values of this FullStatCollection are equal to the values
-        /// of <paramref name="other"/>.</returns>
-        public bool AreValuesEqual(FullStatCollection<TStatType> other)
+        /// <param name="statType">Type of stat to get.</param>
+        /// <returns>The IStat in this StatCollectionBase for Stat type <param name="statType"</returns>
+        protected IStat<TStatType> GetStatOrCreate(TStatType statType)
         {
-            return _stats.All(x => x.Value == other[x.StatType]);
-        }
-
-        /// <summary>
-        /// Creates a deep copy of this FullStatCollection/
-        /// </summary>
-        /// <returns>A deep copy of this FullStatCollection/</returns>
-        public FullStatCollection<TStatType> DeepCopy()
-        {
-            return new FullStatCollection<TStatType>(this);
-        }
-
-        /// <summary>
-        /// Sets the value of all stats in this collection.
-        /// </summary>
-        /// <param name="value">Value to set the stats to.</param>
-        public void SetAll(int value)
-        {
-            foreach (var stat in _stats)
+            IStat<TStatType> stat;
+            if (!_stats.TryGetValue(statType, out stat))
             {
-                stat.Value = value;
+                stat = StatFactory<TStatType>.CreateStat(statType, StatCollectionType);
+                Add(stat);
             }
+
+            return stat;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an IStat is added to this StatCollectionBase. This will
+        /// be invoked once and only once for every IStat added to this StatCollectionBase.
+        /// </summary>
+        /// <param name="stat">The IStat that was added to this StatCollectionBase.</param>
+        protected virtual void HandleStatAdded(IStat<TStatType> stat)
+        {
         }
 
         #region IStatCollection Members
@@ -95,10 +96,7 @@ namespace DemoGame
         /// </returns>
         public IEnumerator<IStat<TStatType>> GetEnumerator()
         {
-            for (int i = 0; i < _stats.Length; i++)
-            {
-                yield return _stats[i];
-            }
+            return _stats.Values.GetEnumerator();
         }
 
         /// <summary>
@@ -119,16 +117,19 @@ namespace DemoGame
         /// <returns>The value of the stat with the given <paramref name="statType"/>.</returns>
         public int this[TStatType statType]
         {
-            get { return _stats[_enumIOHelper.ToInt(statType)].Value; }
-            set { _stats[_enumIOHelper.ToInt(statType)].Value = value; }
-        }
+            get
+            {
+                IStat<TStatType> stat;
+                if (!_stats.TryGetValue(statType, out stat))
+                    return 0;
 
-        /// <summary>
-        /// Gets the StatCollectionType that this collection is for.
-        /// </summary>
-        public StatCollectionType StatCollectionType
-        {
-            get { return _collectionType; }
+                return stat.Value;
+            }
+            set
+            {
+                IStat<TStatType> stat = GetStat(statType);
+                stat.Value = value;
+            }
         }
 
         /// <summary>
@@ -139,7 +140,7 @@ namespace DemoGame
         /// otherwise false.</returns>
         public bool Contains(TStatType statType)
         {
-            return true;
+            return _stats.ContainsKey(statType);
         }
 
         /// <summary>
@@ -147,9 +148,9 @@ namespace DemoGame
         /// </summary>
         /// <param name="statType">The StatType of the stat to get.</param>
         /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
-        public IStat<TStatType> GetStat(TStatType statType)
+        public virtual IStat<TStatType> GetStat(TStatType statType)
         {
-            return _stats[_enumIOHelper.ToInt(statType)];
+            return _stats[statType];
         }
 
         /// <summary>
@@ -162,8 +163,7 @@ namespace DemoGame
         /// successfully returned; otherwise false.</returns>
         public bool TryGetStat(TStatType statType, out IStat<TStatType> stat)
         {
-            stat = GetStat(statType);
-            return true;
+            return _stats.TryGetValue(statType, out stat);
         }
 
         /// <summary>
@@ -176,7 +176,14 @@ namespace DemoGame
         /// successfully returned; otherwise false.</returns>
         public bool TryGetStatValue(TStatType statType, out int value)
         {
-            value = this[statType];
+            IStat<TStatType> stat;
+            if (!TryGetStat(statType, out stat))
+            {
+                value = 0;
+                return false;
+            }
+
+            value = stat.Value;
             return true;
         }
 
@@ -216,6 +223,14 @@ namespace DemoGame
         public void CopyValuesFrom(IEnumerable<IStat<TStatType>> values, bool checkContains)
         {
             CopyValuesFrom(values.ToKeyValuePairs(), checkContains);
+        }
+
+        /// <summary>
+        /// Gets the StatCollectionType that this collection is for.
+        /// </summary>
+        public StatCollectionType StatCollectionType
+        {
+            get { return _statCollectionType; }
         }
 
         #endregion

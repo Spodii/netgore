@@ -79,7 +79,6 @@
     <Compile Include="Skills\SkillInfoManager.cs" />
     <Compile Include="Skills\StatusEffectInfoAttribute.cs" />
     <Compile Include="Skills\StatusEffectInfoManager.cs" />
-    <Compile Include="Stats\Collections\IStatCollectionExtensions.cs" />
     <Compile Include="World\Map\IMapEntityCollectionExtensions.cs" />
     <Compile Include="IO\BitStreamExtensions.cs" />
     <Compile Include="Body\BodyIndex.cs" />
@@ -126,18 +125,10 @@
     <Compile Include="IO\PropertySyncItemType.cs" />
     <Compile Include="IO\PropertySyncStatType.cs" />
     <Compile Include="Stats\Collections\CharacterStatsBase.cs" />
-    <Compile Include="Stats\Collections\FullStatCollection.cs" />
     <Compile Include="Stats\IModStatContainer.cs" />
-    <Compile Include="Stats\IStat.cs" />
-    <Compile Include="Stats\Collections\IStatCollection.cs" />
     <Compile Include="Stats\StatTypeHelper.cs" />
     <Compile Include="Stats\Collections\ItemStatsBase.cs" />
-    <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\ModStatHelper.cs" />
-    <Compile Include="Stats\IStatEventHandler.cs" />
-    <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
-    <Compile Include="Stats\StatFactory.cs" />
-    <Compile Include="Stats\Collections\StatCollectionType.cs" />
     <Compile Include="Stats\StatType.cs" />
     <Compile Include="Stats\StatTypeExtensions.cs" />
     <Compile Include="StatusEffect\DefaultStatusEffectMergeType.cs" />

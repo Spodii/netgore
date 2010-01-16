@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
 using NetGore.Db;
+using NetGore.Stats;
 
 namespace DemoGame.Server.Queries
 {

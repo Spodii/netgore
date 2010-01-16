@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NetGore;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
     /// Provides helper methods for creating and managing IStats and StatTypes.

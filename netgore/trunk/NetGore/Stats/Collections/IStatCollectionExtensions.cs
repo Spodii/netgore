@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NetGore;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     public static class IStatCollectionExtensions
     {

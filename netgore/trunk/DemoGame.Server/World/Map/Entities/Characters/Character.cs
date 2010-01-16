@@ -12,6 +12,7 @@ using NetGore.AI;
 using NetGore.Db;
 using NetGore.Network;
 using NetGore.NPCChat;
+using NetGore.Stats;
 
 namespace DemoGame.Server
 {

@@ -90,6 +90,15 @@
     <Compile Include="Skills\SkillBase.cs" />
     <Compile Include="Skills\SkillCooldownManager.cs" />
     <Compile Include="Skills\SkillManager.cs" />
+    <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
+    <Compile Include="Stats\Collections\FullStatCollection.cs" />
+    <Compile Include="Stats\Collections\IStatCollection.cs" />
+    <Compile Include="Stats\Collections\IStatCollectionExtensions.cs" />
+    <Compile Include="Stats\Collections\StatCollectionType.cs" />
+    <Compile Include="Stats\IStat.cs" />
+    <Compile Include="Stats\IStatEventHandler.cs" />
+    <Compile Include="Stats\Stat.cs" />
+    <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />
     <Compile Include="Collections\DArray\DArrayModifyEventArgs.cs" />
