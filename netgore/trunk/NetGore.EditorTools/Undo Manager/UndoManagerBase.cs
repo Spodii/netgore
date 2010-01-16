@@ -136,9 +136,7 @@ namespace NetGore.EditorTools
         {
             int indexModifier;
 
-            //This checks to see if there's an event stored in the index after the current,
-            //if there isn't it checks the current index to see if it's been undone (this should only happen when the index == 0).
-            //If neither of those are true, there's nothing in the list to redo so it returns false.
+            //Checks next and current indexes, if neither are undoable events - return false.
             if (TryGetEvent(_cursorIndex + 1) != null)
                 indexModifier = 1;
             else if (TryGetEvent(_cursorIndex).IsUndone)
