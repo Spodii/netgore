@@ -16,17 +16,17 @@ namespace DemoGame.Server
     // TODO: I REALLY need to make it so that copying values with an ItemEntity is as non-redundant and automated by the IItemTable as possible
 
     /// <summary>
-    /// Delegate for handling <see cref="ItemEntity"/> events.
-    /// </summary>
-    /// <param name="itemEntity"><see cref="ItemEntity"/> this event came from.</param>
-    public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
-
-    /// <summary>
     /// A single item instance on the server. Can be either a single item, or a stack of the exact same kind
     /// of item combined into one (<see cref="ItemEntity.Amount"/> greater than 1).
     /// </summary>
     public class ItemEntity : ItemEntityBase, IItemTable
     {
+        /// <summary>
+        /// Delegate for handling <see cref="ItemEntity"/> events.
+        /// </summary>
+        /// <param name="itemEntity"><see cref="ItemEntity"/> this event came from.</param>
+        public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly IDbController _dbController = DbControllerBase.GetInstance();
         readonly ItemStats _baseStats;
