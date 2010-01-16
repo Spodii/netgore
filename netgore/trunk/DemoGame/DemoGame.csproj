@@ -93,7 +93,6 @@
     <Compile Include="World\Map\Entities\TeleportEntityBase.cs" />
     <Compile Include="World\Map\Entities\WallEntity.cs" />
     <Compile Include="Items\EquipmentSlotExtensions.cs" />
-    <Compile Include="Items\EquippedEventHandler.cs" />
     <Compile Include="Items\EquipmentSlot.cs" />
     <Compile Include="Items\EquippedBase.cs" />
     <Compile Include="GameData.cs" />

@@ -544,7 +544,8 @@ namespace DemoGame.Client
         void RecvSetInventorySlot(IIPSocket conn, BitStream r)
         {
             InventorySlot slot = r.ReadInventorySlot();
-            GrhIndex graphic = r.ReadGrhIndex();
+            bool hasGraphic = r.ReadBool();
+            GrhIndex graphic = hasGraphic ? r.ReadGrhIndex() : GrhIndex.Invalid;
             byte amount = r.ReadByte();
 
             UserInfo.Inventory.Update(slot, graphic, amount, GetTime());

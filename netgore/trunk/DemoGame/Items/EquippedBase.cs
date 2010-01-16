@@ -26,16 +26,24 @@ namespace DemoGame
         /// corresponding to that slot.
         /// </summary>
         readonly T[] _equipped = new T[_highestSlotIndex + 1];
+  
+        /// <summary>
+        /// Handles an event from the <see cref="EquippedBase&lt;T&gt;"/>.
+        /// </summary>
+        /// <param name="equippedBase">The <see cref="EquippedBase&lt;T&gt;"/>.</param>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+    public delegate void EventHandler(EquippedBase<T> equippedBase, T item, EquipmentSlot slot);
 
         /// <summary>
         /// Notifies listeners that an item has been equipped.
         /// </summary>
-        public event EquippedEventHandler<T> OnEquip;
+        public event EventHandler OnEquip;
 
         /// <summary>
         /// Notifies listeners that an item has been unequipped.
         /// </summary>
-        public event EquippedEventHandler<T> OnRemove;
+        public event EventHandler OnRemove;
 
         /// <summary>
         /// Gets the item at the given <paramref name="slot"/>.
@@ -281,7 +289,8 @@ namespace DemoGame
                 // Set the item into the slot
                 _equipped[index] = item;
 
-                // Notify the listeners
+                HandleOnEquip(item, slot);
+
                 if (OnEquip != null)
                     OnEquip(this, item, slot);
             }
@@ -301,13 +310,32 @@ namespace DemoGame
                 // Remove the item
                 _equipped[index] = null;
 
-                // Notify the listeners
+                HandleOnRemove(oldItem, slot);
+
                 if (OnRemove != null)
                     OnRemove(this, oldItem, slot);
             }
 
             // Slot setting was successful (since we always aborted early with false if it wasn't)
             return true;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an item has been equipped.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected virtual void HandleOnEquip(T item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an item has been removed.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected virtual void HandleOnRemove(T item, EquipmentSlot slot)
+        {
         }
 
         #region IEnumerable<KeyValuePair<EquipmentSlot,T>> Members
