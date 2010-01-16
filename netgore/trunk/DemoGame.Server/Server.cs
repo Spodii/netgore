@@ -300,6 +300,7 @@ namespace DemoGame.Server
                 MaxAccountPasswordLength = (byte)GameData.AccountPassword.MaxLength,
                 MaxCharacterNameLength = (byte)GameData.CharacterName.MaxLength,
                 MaxCharactersPerAccount = GameData.MaxCharactersPerAccount,
+                MaxShopItems = GameData.MaxShopItems,
                 MaxStatusEffectPower = GameData.MaxStatusEffectPower,
                 MinAccountNameLength = (byte)GameData.AccountName.MinLength,
                 MinAccountPasswordLength = (byte)GameData.AccountPassword.MinLength,
