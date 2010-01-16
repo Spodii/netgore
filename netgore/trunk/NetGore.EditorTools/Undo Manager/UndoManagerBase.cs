@@ -9,12 +9,12 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Collection of IUndoEvents.
         /// </summary>
-        readonly List<IUndoEvent> _events = new List<IUndoEvent>();
+        private readonly List<IUndoEvent> _events = new List<IUndoEvent>();
 
         /// <summary>
         /// Current index that the cursor is on.
         /// </summary>
-        int _cursorIndex;
+        private int _cursorIndex;
 
         #region IUndoManager Members
 
@@ -29,7 +29,7 @@ namespace NetGore.EditorTools
             {
                 foreach (IUndoEvent eve in _events.GetRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1)))
                     eve.Dispose();
-                
+
                 _events.RemoveRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1));
             }
 
