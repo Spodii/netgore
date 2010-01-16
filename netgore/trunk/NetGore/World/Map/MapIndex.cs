@@ -4,9 +4,6 @@ using System.Data;
 using System.Linq;
 using NetGore.IO;
 
-// TODO: Replace string "ushort" with the name of the underlying value type.
-// TODO: Replace string "MapIndex" with the name of this value type.
-
 namespace NetGore
 {
     /// <summary>

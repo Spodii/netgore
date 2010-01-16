@@ -11,14 +11,14 @@ using NetGore.EditorTools.NPCChat;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
-// TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
-// TODO: Do not allow responses immediately under a branch to be altered in any ways
-// TODO: Ability to change the order of the actions
-// TODO: An indicator for when a dialog characterID or response has conditionals
-// TODO: An indicator for when a response has actions
-
 namespace DemoGame.NPCChatEditor
 {
+    // TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
+    // TODO: Do not allow responses immediately under a branch to be altered in any ways
+    // TODO: Ability to change the order of the actions
+    // TODO: An indicator for when a dialog characterID or response has conditionals
+    // TODO: An indicator for when a response has actions
+
     public partial class frmMain : Form
     {
         /// <summary>

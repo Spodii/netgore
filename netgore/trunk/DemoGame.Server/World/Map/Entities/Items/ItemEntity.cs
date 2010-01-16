@@ -11,10 +11,10 @@ using NetGore;
 using NetGore.Db;
 using NetGore.Stats;
 
-// TODO: I REALLY need to make it so that copying values with an ItemEntity is as non-redundant and automated by the IItemTable as possible
-
 namespace DemoGame.Server
 {
+    // TODO: I REALLY need to make it so that copying values with an ItemEntity is as non-redundant and automated by the IItemTable as possible
+
     /// <summary>
     /// Delegate for handling <see cref="ItemEntity"/> events.
     /// </summary>

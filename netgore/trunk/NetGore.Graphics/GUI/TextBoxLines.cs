@@ -6,10 +6,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-// TODO: When text is deleted on auto-broken (WasAutoBroken) lines, the next line doesn't go to the previous line even if enough room has been made in the previous line
-
 namespace NetGore.Graphics.GUI
 {
+    // TODO: When text is deleted on auto-broken (WasAutoBroken) lines, the next line doesn't go to the previous line even if enough room has been made in the previous line
+
     /// <summary>
     /// A collection of <see cref="TextBoxLine"/>s.
     /// </summary>

@@ -5,10 +5,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
-// TODO: Add support for BackgroundLayerLayout.Stretched
-
 namespace NetGore.Graphics
 {
+    // TODO: Add support for BackgroundLayerLayout.Stretched
+
     /// <summary>
     /// A single simple image that sits in the background of the map.
     /// </summary>
