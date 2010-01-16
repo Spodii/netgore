@@ -198,12 +198,16 @@ namespace DemoGame.MapEditor
             // GameScreen
             // 
             this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.GameScreen.Camera = null;
+            this.GameScreen.CursorPos = new Microsoft.Xna.Framework.Vector2(0F, 0F);
+            this.GameScreen.DrawHandler = null;
             this.GameScreen.Location = new System.Drawing.Point(0, 0);
             this.GameScreen.Name = "GameScreen";
             this.GameScreen.Padding = new System.Windows.Forms.Padding(5);
             this.GameScreen.Size = new System.Drawing.Size(800, 600);
             this.GameScreen.TabIndex = 8;
             this.GameScreen.Text = "Game Screen";
+            this.GameScreen.UpdateHandler = null;
             // 
             // splitContainer3
             // 
@@ -587,6 +591,7 @@ namespace DemoGame.MapEditor
             this.lstNPCSpawns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstNPCSpawns.FormattingEnabled = true;
             this.lstNPCSpawns.Location = new System.Drawing.Point(0, 0);
+            this.lstNPCSpawns.Map = null;
             this.lstNPCSpawns.Name = "lstNPCSpawns";
             this.lstNPCSpawns.PropertyGrid = null;
             this.lstNPCSpawns.Size = new System.Drawing.Size(358, 238);
@@ -650,6 +655,7 @@ namespace DemoGame.MapEditor
             this.lstPersistentNPCs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstPersistentNPCs.FormattingEnabled = true;
             this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
+            this.lstPersistentNPCs.Map = null;
             this.lstPersistentNPCs.Name = "lstPersistentNPCs";
             this.lstPersistentNPCs.Size = new System.Drawing.Size(358, 238);
             this.lstPersistentNPCs.TabIndex = 12;
@@ -990,7 +996,6 @@ namespace DemoGame.MapEditor
         }
 
         private System.Windows.Forms.Panel panToolBar;
-        private GameScreenControl GameScreen;
         private System.Windows.Forms.Button btnOptimize;
         private System.Windows.Forms.Button btnSaveAs;
         private System.Windows.Forms.Button btnSave;
@@ -1051,5 +1056,6 @@ namespace DemoGame.MapEditor
         private PersistentNPCListBox lstPersistentNPCs;
         private System.Windows.Forms.Button btnDeletePersistentNPC;
         private System.Windows.Forms.Button btnAddPersistentNPC;
+        public GameScreenControl GameScreen;
     }
 }

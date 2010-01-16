@@ -229,13 +229,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         public Vector2 CursorPos { get { return GameScreen.CursorPos; } set { GameScreen.CursorPos = value; } }
 
-        public GameScreenControl GameScreenControl
-        {
-            get { 
-                // TODO: asdfasdfasdf
-                return GameScreen; }
-        }
-
         /// <summary>
         /// Gets the grid used for the game screen
         /// </summary>
