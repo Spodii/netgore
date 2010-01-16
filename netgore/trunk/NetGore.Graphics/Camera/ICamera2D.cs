@@ -93,6 +93,13 @@ namespace NetGore.Graphics
         bool InView(Entity entity);
 
         /// <summary>
+        /// Checks if a specified <see cref="Rectangle"/> is in view of the camera.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to check.</param>
+        /// <returns>True if in the view area; otherwise false.</returns>
+        bool InView(Rectangle rect);
+
+        /// <summary>
         /// Checks if a specified object is in view of the camera.
         /// </summary>
         /// <param name="grh">The <see cref="Grh"/> to check.</param>

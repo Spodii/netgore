@@ -1,22 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
+using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
     /// <summary>
-    /// A collection for the <see cref="MapDrawExtensionBase"/>.
+    /// A collection for <see cref="IMapDrawingExtension"/>s.
     /// </summary>
-    public class MapDrawExtensionCollection : ICollection<MapDrawExtensionBase>
+    public class MapDrawingExtensionCollection : ICollection<IMapDrawingExtension>
     {
-        readonly List<MapDrawExtensionBase> _extensions = new List<MapDrawExtensionBase>();
+        readonly List<IMapDrawingExtension> _extensions = new List<IMapDrawingExtension>();
+        readonly MapDrawEventHandler _onBeginDraw;
+        readonly MapDrawEventHandler _onEndDraw;
 
-        Map _map;
+        IDrawableMap _map;
 
         /// <summary>
-        /// Gets or sets the current <see cref="Map"/>. Can be null.
+        /// Initializes a new instance of the <see cref="MapDrawingExtensionCollection"/> class.
         /// </summary>
-        public Map Map
+        public MapDrawingExtensionCollection()
+        {
+            _onBeginDraw = Map_OnBeginDrawLayer;
+            _onEndDraw = Map_OnEndDrawLayer;
+        }
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IDrawableMap"/>. Can be null.
+        /// </summary>
+        public virtual IDrawableMap Map
         {
             get { return _map; }
             set
@@ -24,11 +38,21 @@ namespace DemoGame.Client
                 if (_map == value)
                     return;
 
+                // Remove the event hooks from the old map
+                if (Map != null)
+                {
+                    Map.OnBeginDrawLayer -= _onBeginDraw;
+                    Map.OnEndDrawLayer -= _onEndDraw;
+                }
+
+                // Set the new map
                 _map = value;
 
-                foreach (var extension in _extensions)
+                // Set the event hooks on the new map
+                if (Map != null)
                 {
-                    extension.Map = _map;
+                    Map.OnBeginDrawLayer += _onBeginDraw;
+                    Map.OnEndDrawLayer += _onEndDraw;
                 }
             }
         }
@@ -37,7 +61,7 @@ namespace DemoGame.Client
         /// Adds items to this collection.
         /// </summary>
         /// <param name="extensions">The items to add.</param>
-        public void Add(IEnumerable<MapDrawExtensionBase> extensions)
+        public virtual void Add(IEnumerable<IMapDrawingExtension> extensions)
         {
             foreach (var item in extensions)
             {
@@ -45,13 +69,47 @@ namespace DemoGame.Client
             }
         }
 
-        #region ICollection<MapDrawExtensionBase> Members
+        /// <summary>
+        /// Handles the OnStartDrawLayer event from the current map.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="layer">The layer.</param>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        void Map_OnBeginDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        {
+            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
+            Debug.Assert(spriteBatch != null);
+
+            foreach (var extension in _extensions)
+            {
+                extension.DrawBeforeLayer(map, layer, spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Handles the OnEndDrawLayer event from the current map.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="layer">The layer.</param>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        void Map_OnEndDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        {
+            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
+            Debug.Assert(spriteBatch != null);
+
+            foreach (var extension in _extensions)
+            {
+                extension.DrawAfterLayer(map, layer, spriteBatch);
+            }
+        }
+
+        #region ICollection<IMapDrawingExtension> Members
 
         /// <summary>
         /// Adds an item to this collection.
         /// </summary>
         /// <param name="extension">The item to add.</param>
-        public void Add(MapDrawExtensionBase extension)
+        public void Add(IMapDrawingExtension extension)
         {
             if (_extensions.Contains(extension))
                 return;
@@ -62,7 +120,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Clears all items in the collection.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             _extensions.Clear();
         }
@@ -75,7 +133,7 @@ namespace DemoGame.Client
         /// false.
         /// </returns>
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
-        public bool Contains(MapDrawExtensionBase item)
+        public bool Contains(IMapDrawingExtension item)
         {
             return _extensions.Contains(item);
         }
@@ -94,9 +152,9 @@ namespace DemoGame.Client
         /// <paramref name="array"/>.-or-The number of elements in the source
         /// <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from
         /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type
-        /// <see cref="MapDrawExtensionBase"/> cannot be cast automatically to the type of the destination
+        /// <see cref="IMapDrawingExtension"/> cannot be cast automatically to the type of the destination
         /// <paramref name="array"/>.</exception>
-        void ICollection<MapDrawExtensionBase>.CopyTo(MapDrawExtensionBase[] array, int arrayIndex)
+        void ICollection<IMapDrawingExtension>.CopyTo(IMapDrawingExtension[] array, int arrayIndex)
         {
             _extensions.CopyTo(array, arrayIndex);
         }
@@ -106,7 +164,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="extension">The item to remove.</param>
         /// <returns>True if the item was successfully removed; otherwise false.</returns>
-        public bool Remove(MapDrawExtensionBase extension)
+        public virtual bool Remove(IMapDrawingExtension extension)
         {
             return _extensions.Remove(extension);
         }
@@ -128,7 +186,7 @@ namespace DemoGame.Client
         /// <returns>
         /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
         /// </returns>
-        bool ICollection<MapDrawExtensionBase>.IsReadOnly
+        bool ICollection<IMapDrawingExtension>.IsReadOnly
         {
             get { return false; }
         }
@@ -140,7 +198,7 @@ namespace DemoGame.Client
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<MapDrawExtensionBase> GetEnumerator()
+        public IEnumerator<IMapDrawingExtension> GetEnumerator()
         {
             return _extensions.GetEnumerator();
         }

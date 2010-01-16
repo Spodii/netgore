@@ -11,7 +11,7 @@ namespace DemoGame.MapEditor
     /// <summary>
     /// Draws the MapSpawnValues on a Map.
     /// </summary>
-    public class MapSpawnDrawer : MapDrawExtensionBase
+    public class MapSpawnDrawer : MapDrawingExtension
     {
         /// <summary>
         /// The color to draw the spawn rects.
@@ -24,13 +24,12 @@ namespace DemoGame.MapEditor
         public IEnumerable<MapSpawnValues> MapSpawns { get; set; }
 
         /// <summary>
-        /// When overridden in the derived class, handles additional drawing for a MapRenderLayer after the
-        /// Map actually renders the layer.
+        /// When overridden in the derived class, handles drawing to the map after the given <paramref name="layer"/> is drawn.
         /// </summary>
-        /// <param name="layer">The MapRenderLayer that was drawn.</param>
-        /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
-        /// <param name="camera">The camera that the Map used to draw.</param>
-        protected override void EndDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="map">The map the drawing is taking place on.</param>
+        /// <param name="layer">The layer that was just drawn.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
         {
             if (layer != MapRenderLayer.SpriteForeground)
                 return;
@@ -40,20 +39,10 @@ namespace DemoGame.MapEditor
 
             foreach (MapSpawnValues item in MapSpawns)
             {
-                Rectangle rect = item.SpawnArea.ToRectangle(Map);
-                XNARectangle.Draw(spriteBatch, rect, _drawColor);
+                Rectangle rect = item.SpawnArea.ToRectangle(map);
+                if (map.Camera.InView(rect))
+                    XNARectangle.Draw(spriteBatch, rect, _drawColor);
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles additional drawing for a MapRenderLayer before the
-        /// Map actually renders the layer.
-        /// </summary>
-        /// <param name="layer">The MapRenderLayer that is to be drawn.</param>
-        /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
-        /// <param name="camera">The camera that the Map used to draw.</param>
-        protected override void StartDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
-        {
         }
     }
 }

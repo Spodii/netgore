@@ -287,6 +287,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Checks if a specified <see cref="Rectangle"/> is in view of the camera.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to check.</param>
+        /// <returns>True if in the view area; otherwise false.</returns>
+        public bool InView(Rectangle rect)
+        {
+            return InView(new Vector2(rect.X, rect.Y), new Vector2(rect.Width, rect.Height));
+        }
+
+        /// <summary>
         /// Translates a world position to a screen position.
         /// </summary>
         /// <param name="worldPosition">The world position.</param>

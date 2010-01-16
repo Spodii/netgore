@@ -11,18 +11,9 @@ using NetGore.IO;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Handler for Map drawing events.
-    /// </summary>
-    /// <param name="map">Map that the drawing is taking place on.</param>
-    /// <param name="layer">The layer that the drawing event is related to.</param>
-    /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
-    /// <param name="camera">The camera that was used in the drawing.</param>
-    public delegate void MapDrawEventHandler(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera);
-
-    /// <summary>
     /// Map object for the client
     /// </summary>
-    public class Map : MapBase, IDisposable, ICamera2DProvider
+    public class Map : MapBase, IDisposable, IDrawableMap
     {
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
@@ -58,16 +49,14 @@ namespace DemoGame.Client
         List<Texture2D> _mapAtlases = new List<Texture2D>();
 
         /// <summary>
-        /// Notifies listeners when the Map has finished drawing a layer. This event is raised immediately after
-        /// drawing for the layer has finished.
+        /// Notifies listeners immediately before a layer has started drawing.
         /// </summary>
-        public event MapDrawEventHandler OnEndDrawLayer;
+        public event MapDrawEventHandler OnBeginDrawLayer;
 
         /// <summary>
-        /// Notifies listeners when the Map has started drawing a layer. This event is raised immediately before any
-        /// drawing for the layer is actually done.
+        /// Notifies listeners immediately after a layer has finished drawing.
         /// </summary>
-        public event MapDrawEventHandler OnStartDrawLayer;
+        public event MapDrawEventHandler OnEndDrawLayer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
@@ -182,11 +171,10 @@ namespace DemoGame.Client
         /// Draws the content of the map to the screen.
         /// </summary>
         /// <param name="sb">SpriteBatch object used for drawing.</param>
-        /// <param name="camera">Camera used to find the view area.</param>
-        public void Draw(SpriteBatch sb, ICamera2D camera)
+        public void Draw(SpriteBatch sb)
         {
             // Find the drawable objects that are in view and pass the filter (if one is provided)
-            var viewArea = camera.GetViewArea();
+            var viewArea = Camera.GetViewArea();
             IEnumerable<IDrawable> drawableInView;
             if (DrawFilter != null)
                 drawableInView = Spatial.GetMany<IDrawable>(viewArea, x => DrawFilter(x));
@@ -194,14 +182,14 @@ namespace DemoGame.Client
                 drawableInView = Spatial.GetMany<IDrawable>(viewArea);
 
             // Concat the background images (to the start of the list) since they aren't in any spatials
-            var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(camera));
+            var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(Camera));
             drawableInView = bgInView.Concat(drawableInView);
 
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
             foreach (var layer in _drawableSorter.GetSorted(drawableInView))
             {
-                if (OnStartDrawLayer != null)
-                    OnStartDrawLayer(this, layer.Key, sb, camera);
+                if (OnBeginDrawLayer != null)
+                    OnBeginDrawLayer(this, layer.Key, sb);
 
                 foreach (var drawable in layer.Value)
                 {
@@ -209,12 +197,12 @@ namespace DemoGame.Client
                 }
 
                 if (OnEndDrawLayer != null)
-                    OnEndDrawLayer(this, layer.Key, sb, camera);
+                    OnEndDrawLayer(this, layer.Key, sb);
             }
 
             // Draw the particle effects
             _particleEffectRenderer.SpriteBatch = sb;
-            _particleEffectRenderer.Draw(camera, ParticleEffects);
+            _particleEffectRenderer.Draw(Camera, ParticleEffects);
         }
 
         /// <summary>

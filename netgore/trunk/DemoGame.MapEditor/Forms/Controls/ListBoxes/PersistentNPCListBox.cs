@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -8,8 +6,6 @@ using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
-using NetGore.Graphics;
-using NetGore.IO;
 
 namespace DemoGame.MapEditor
 {
@@ -60,6 +56,8 @@ namespace DemoGame.MapEditor
             Items.AddRange(addedChars.OrderBy(x => x.CharacterID).ToArray());
         }
 
+        #region IMapBoundControl Members
+
         /// <summary>
         /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
         /// </summary>
@@ -68,5 +66,7 @@ namespace DemoGame.MapEditor
             get { return Map; }
             set { Map = (Map)value; }
         }
+
+        #endregion
     }
 }
