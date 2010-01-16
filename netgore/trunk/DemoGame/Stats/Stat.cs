@@ -6,7 +6,7 @@ using NetGore.IO;
 namespace DemoGame
 {
     /// <summary>
-    /// Describes a single IStat, containing the StatType and value of the IStat.
+    /// Describes a single <see cref="IStat"/>, containing the <see cref="StatType"/> and value current stat value.
     /// </summary>
     public class Stat : IStat
     {
@@ -21,7 +21,7 @@ namespace DemoGame
         IStatValueType _value;
 
         /// <summary>
-        /// Stat constructor.
+        /// Initializes a new instance of the <see cref="Stat"/> class.
         /// </summary>
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         public Stat(IStat istatToCopy)
@@ -31,7 +31,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Stat constructor.
+        /// Initializes a new instance of the <see cref="Stat"/> class.
         /// </summary>
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
@@ -42,7 +42,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Stat constructor.
+        /// Initializes a new instance of the <see cref="Stat"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
@@ -53,7 +53,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Stat constructor.
+        /// Initializes a new instance of the <see cref="Stat"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
