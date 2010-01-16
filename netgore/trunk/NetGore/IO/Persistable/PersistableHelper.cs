@@ -9,19 +9,6 @@ namespace NetGore.IO
     public sealed class PersistableHelper
     {
         /// <summary>
-        /// Writes all properties for the given <paramref name="obj"/> that have the <see cref="SyncValueAttribute"/>
-        /// attribute to the given <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="obj">The object to write the persistent values for.</param>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        public static void Write(object obj, IValueWriter writer)
-        {
-            var propertySyncs = PropertySyncHelper.GetPropertySyncs(obj.GetType());
-            foreach (var ps in propertySyncs)
-                ps.WriteValue(obj, writer);
-        }
-
-        /// <summary>
         /// Reads all properties for the given <paramref name="obj"/> that have the <see cref="SyncValueAttribute"/>
         /// attribute from the given <see cref="IValueWriter"/>.
         /// </summary>
@@ -31,7 +18,24 @@ namespace NetGore.IO
         {
             var propertySyncs = PropertySyncHelper.GetPropertySyncs(obj.GetType());
             foreach (var ps in propertySyncs)
+            {
                 ps.ReadValue(obj, reader);
+            }
+        }
+
+        /// <summary>
+        /// Writes all properties for the given <paramref name="obj"/> that have the <see cref="SyncValueAttribute"/>
+        /// attribute to the given <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="obj">The object to write the persistent values for.</param>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public static void Write(object obj, IValueWriter writer)
+        {
+            var propertySyncs = PropertySyncHelper.GetPropertySyncs(obj.GetType());
+            foreach (var ps in propertySyncs)
+            {
+                ps.WriteValue(obj, writer);
+            }
         }
     }
 }

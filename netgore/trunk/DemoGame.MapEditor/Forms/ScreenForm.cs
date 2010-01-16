@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
-using DemoGame.Server;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,9 +15,6 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
-using Character=DemoGame.Client.Character;
-using Map=DemoGame.Client.Map;
-using World=DemoGame.Client.World;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedParameter.Local
@@ -73,8 +69,9 @@ namespace DemoGame.MapEditor
         readonly ScreenGrid _grid;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
-        readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
+        readonly IMapBoundControl[] _mapBoundControls;
         readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
+        readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
 
         /// <summary>
         /// Information on the walls bound to MapGrhs.
@@ -160,8 +157,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         public event MapChangeEventHandler OnChangeMap;
 
-        readonly IMapBoundControl[] _mapBoundControls;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
@@ -185,14 +180,14 @@ namespace DemoGame.MapEditor
 
             // Create and set up the cursor manager
             _cursorManager = new EditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
-                                                                    x => Map != null && !treeGrhs.IsEditingGrhData);
+                                                                 x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
             CursorManager.OnChangeCurrentCursor += delegate
-            {
-                _transBoxes.Clear();
-                _selTransBox = null;
-            };
+                                                   {
+                                                       _transBoxes.Clear();
+                                                       _selTransBox = null;
+                                                   };
 
             // Create the world
             _world = new World(this, _camera);
@@ -219,15 +214,19 @@ namespace DemoGame.MapEditor
             get { return _cursorManager; }
         }
 
+        /// <summary>
+        /// Gets or sets the position of the cursor in the world.
+        /// </summary>
+        public Vector2 CursorPos
+        {
+            get { return GameScreen.CursorPos; }
+            set { GameScreen.CursorPos = value; }
+        }
+
         IDbController DbController
         {
             get { return _dbController; }
         }
-
-        /// <summary>
-        /// Gets or sets the position of the cursor in the world.
-        /// </summary>
-        public Vector2 CursorPos { get { return GameScreen.CursorPos; } set { GameScreen.CursorPos = value; } }
 
         /// <summary>
         /// Gets the grid used for the game screen
@@ -290,17 +289,17 @@ namespace DemoGame.MapEditor
             }
         }
 
+        public MapDrawFilterHelper MapDrawFilterHelper
+        {
+            get { return _mapDrawFilterHelper; }
+        }
+
         /// <summary>
         /// Gets the <see cref="MapDrawingExtensionCollection"/>.
         /// </summary>
         public MapDrawingExtensionCollection MapDrawingExtensions
         {
             get { return _mapDrawingExtensions; }
-        }
-
-        public MapDrawFilterHelper MapDrawFilterHelper
-        {
-            get { return _mapDrawFilterHelper; }
         }
 
         /// <summary>
@@ -658,7 +657,9 @@ namespace DemoGame.MapEditor
 
             // Automatically update all the controls that implement IMapBoundControl
             foreach (var c in _mapBoundControls)
+            {
                 c.IMap = newMap;
+            }
 
             // Handle the change on some controls manually
             txtMapName.Text = newMap.Name ?? string.Empty;
@@ -831,8 +832,7 @@ namespace DemoGame.MapEditor
                 _selectedObjectsManager.SetSelected(lstMapParticleEffects.SelectedItem);
         }
 
-
-        private void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
+        void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstPersistentNPCs.SelectedItem != null)
                 _selectedObjectsManager.SetSelected(lstPersistentNPCs.SelectedItem);

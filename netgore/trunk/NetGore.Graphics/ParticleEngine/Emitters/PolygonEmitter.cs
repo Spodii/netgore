@@ -135,7 +135,7 @@ namespace NetGore.Graphics.ParticleEngine
             Closed = reader.ReadBool(_closedKeyName);
             Scale = reader.ReadFloat(_scaleKeyName);
             Rotation = reader.ReadFloat(_rotationKeyName);
-            PolygonOrigin = reader.ReadEnum < PolygonOrigin>(_polygonOriginKeyName);
+            PolygonOrigin = reader.ReadEnum<PolygonOrigin>(_polygonOriginKeyName);
             Points.Read(_pointsNodeName, reader);
         }
 

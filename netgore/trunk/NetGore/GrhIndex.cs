@@ -23,14 +23,14 @@ namespace NetGore
         public const int MinValue = 1;
 
         /// <summary>
-        /// The underlying value. This contains the actual value of the struct instance.
-        /// </summary>
-        readonly ushort _value;
-
-        /// <summary>
         /// Represents a <see cref="GrhIndex"/> value that is to always be considered invalid.
         /// </summary>
         public static readonly GrhIndex Invalid = new GrhIndex();
+
+        /// <summary>
+        /// The underlying value. This contains the actual value of the struct instance.
+        /// </summary>
+        readonly ushort _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhIndex"/> struct.
@@ -47,7 +47,10 @@ namespace NetGore
         /// <summary>
         /// Gets if this <see cref="GrhIndex"/> is equal to the <see cref="GrhIndex.Invalid"/>.
         /// </summary>
-        public bool IsInvalid { get { return this == Invalid; } }
+        public bool IsInvalid
+        {
+            get { return this == Invalid; }
+        }
 
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.

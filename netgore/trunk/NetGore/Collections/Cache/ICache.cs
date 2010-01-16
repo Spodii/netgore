@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace NetGore.Collections
 {
@@ -21,14 +18,14 @@ namespace NetGore.Collections
         TValue this[TKey key] { get; }
 
         /// <summary>
-        /// Clears all of the cached items.
-        /// </summary>
-        void Clear();
-
-        /// <summary>
         /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
         /// should never be accessed from multiple threads.
         /// </summary>
         bool IsThreadSafe { get; }
+
+        /// <summary>
+        /// Clears all of the cached items.
+        /// </summary>
+        void Clear();
     }
 }

@@ -1,9 +1,10 @@
-﻿
+﻿using System.Linq;
+
 namespace DemoGame.AI
 {
     public static class AISettings
     {
-        private static bool _aiDisabled;
+        static bool _aiDisabled;
 
         ///<summary>
         /// Sets and gets whether the AI is on or not.
@@ -13,6 +14,5 @@ namespace DemoGame.AI
             get { return _aiDisabled; }
             set { _aiDisabled = value; }
         }
-
     }
 }

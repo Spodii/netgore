@@ -22,6 +22,7 @@ namespace NetGore.Graphics
 
         readonly ICamera2DProvider _cameraProvider;
         readonly IMap _map;
+        readonly Grh _sprite;
         float _depth;
         string _name;
 
@@ -169,9 +170,10 @@ namespace NetGore.Graphics
         [Description("The sprite to draw.")]
         [Browsable(true)]
         [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
-        public Grh Sprite { get { return _sprite; } }
-
-        readonly Grh _sprite;
+        public Grh Sprite
+        {
+            get { return _sprite; }
+        }
 
         /// <summary>
         /// Gets the size of the Sprite source image.
@@ -271,6 +273,35 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the <see cref="BackgroundImage.LayerDepth"/> value from the <see cref="IDrawable.LayerDepth"/>.
+        /// </summary>
+        /// <param name="imageDepth">The <see cref="BackgroundImage.LayerDepth"/> value.</param>
+        /// <returns>The <see cref="IDrawable.LayerDepth"/> value for the <paramref name="imageDepth"/>.</returns>
+        public static int ImageDepthToLayerDepth(float imageDepth)
+        {
+            return (int)(imageDepth * -100);
+        }
+
+        /// <summary>
+        /// Gets if the Sprite is set and valid.
+        /// </summary>
+        /// <returns>True if the Sprite is set; otherwise false.</returns>
+        bool IsSpriteSet()
+        {
+            return Sprite != null && Sprite.GrhData != null;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDrawable.LayerDepth"/> value from the <see cref="BackgroundImage.LayerDepth"/>.
+        /// </summary>
+        /// <param name="layerDepth">The <see cref="IDrawable.LayerDepth"/> value.</param>
+        /// <returns>The <see cref="BackgroundImage.LayerDepth"/> value for the <paramref name="layerDepth"/>.</returns>
+        public static float LayerDepthToImageDepth(int layerDepth)
+        {
+            return layerDepth * -0.01f;
+        }
+
+        /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </summary>
         /// <returns>
@@ -350,26 +381,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="IDrawable.LayerDepth"/> value from the <see cref="BackgroundImage.LayerDepth"/>.
-        /// </summary>
-        /// <param name="layerDepth">The <see cref="IDrawable.LayerDepth"/> value.</param>
-        /// <returns>The <see cref="BackgroundImage.LayerDepth"/> value for the <paramref name="layerDepth"/>.</returns>
-        public static float LayerDepthToImageDepth(int layerDepth)
-        {
-            return layerDepth * -0.01f;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="BackgroundImage.LayerDepth"/> value from the <see cref="IDrawable.LayerDepth"/>.
-        /// </summary>
-        /// <param name="imageDepth">The <see cref="BackgroundImage.LayerDepth"/> value.</param>
-        /// <returns>The <see cref="IDrawable.LayerDepth"/> value for the <paramref name="imageDepth"/>.</returns>
-        public static int ImageDepthToLayerDepth(float imageDepth)
-        {
-            return (int)(imageDepth * -100);
-        }
-
-        /// <summary>
         /// Makes the object draw itself.
         /// </summary>
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
@@ -380,15 +391,6 @@ namespace NetGore.Graphics
 
             Vector2 position = GetPosition(Map.Size, Camera);
             Sprite.Draw(sb, position, Color);
-        }
-
-        /// <summary>
-        /// Gets if the Sprite is set and valid.
-        /// </summary>
-        /// <returns>True if the Sprite is set; otherwise false.</returns>
-        bool IsSpriteSet()
-        {
-            return Sprite != null && Sprite.GrhData != null;
         }
 
         /// <summary>

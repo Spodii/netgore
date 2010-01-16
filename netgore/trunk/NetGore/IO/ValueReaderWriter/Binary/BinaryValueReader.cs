@@ -192,8 +192,7 @@ namespace NetGore.IO
         /// <typeparam name="T">The Type of Enum.</typeparam>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(string name)
-            where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
             return EnumHelper<T>.ReadValue(this, name);
         }

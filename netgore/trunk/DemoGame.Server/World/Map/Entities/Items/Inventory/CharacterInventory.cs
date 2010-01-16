@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Db;
@@ -191,8 +190,9 @@ namespace DemoGame.Server
                 // Make sure no item is already in the slot... just in case
                 if (this[values.Key] != null)
                 {
-                    const string errmsg = "Character `{0}` already had an item in slot `{1}` ({2})." + 
-                        " It is going to have to be disposed to make room for the newest loaded item `{3}`." + 
+                    const string errmsg =
+                        "Character `{0}` already had an item in slot `{1}` ({2})." +
+                        " It is going to have to be disposed to make room for the newest loaded item `{3}`." +
                         " If this ever happens, its likely a problem.";
 
                     var item = this[values.Key];

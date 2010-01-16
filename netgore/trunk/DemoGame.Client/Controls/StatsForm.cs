@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
-using NetGore.IO;
 
 namespace DemoGame.Client
 {

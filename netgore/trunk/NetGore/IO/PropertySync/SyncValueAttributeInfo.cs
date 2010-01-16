@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using NetGore.IO;
 
 namespace NetGore.IO.PropertySync
 {
@@ -55,10 +54,10 @@ namespace NetGore.IO.PropertySync
     /// Contains the information needed for creating an <see cref="IPropertySync"/>.
     /// </summary>
     /// <typeparam name="T">The type of the property's value.</typeparam>
-    internal class SyncValueAttributeInfo<T> : SyncValueAttributeInfo
+    class SyncValueAttributeInfo<T> : SyncValueAttributeInfo
     {
         readonly IPropertyInterface<object, T> _propertyInterface;
- 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SyncValueAttributeInfo&lt;T&gt;"/> class.
         /// </summary>

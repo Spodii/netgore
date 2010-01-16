@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore.Audio;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 

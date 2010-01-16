@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
@@ -20,16 +19,6 @@ namespace DemoGame.MapEditor
         public ICamera2D Camera { get; set; }
 
         /// <summary>
-        /// Gets or sets the method used to draw this control.
-        /// </summary>
-        public Action DrawHandler { get; set; }
-
-        /// <summary>
-        /// Gets or sets the method used to update this control.
-        /// </summary>
-        public Action UpdateHandler { get; set; }
-
-        /// <summary>
         /// Gets or sets the current position of the cursor in the world.
         /// </summary>
         public Vector2 CursorPos
@@ -39,26 +28,33 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
+        /// Gets or sets the method used to draw this control.
         /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseMove(System.Windows.Forms.MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
+        public Action DrawHandler { get; set; }
 
-            _mouseButton = e.Button;
-            _cursorPos = Camera.ToWorld(e.X, e.Y);
+        /// <summary>
+        /// Gets the <see cref="MouseButtons"/> current pressed.
+        /// </summary>
+        public MouseButtons MouseButton
+        {
+            get { return _mouseButton; }
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+        /// Gets or sets the method used to update this control.
         /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseUp(System.Windows.Forms.MouseEventArgs e)
-        {
-            base.OnMouseUp(e);
+        public Action UpdateHandler { get; set; }
 
-            _mouseButton = e.Button;
+        /// <summary>
+        /// Derived classes override this to draw themselves using the GraphicsDevice.
+        /// </summary>
+        protected override void Draw()
+        {
+            if (UpdateHandler != null)
+                UpdateHandler();
+
+            if (DrawHandler != null)
+                DrawHandler();
         }
 
         /// <summary>
@@ -76,29 +72,35 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the <see cref="MouseButtons"/> current pressed.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
         /// </summary>
-        public MouseButtons MouseButton { get { return _mouseButton; } }
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            _mouseButton = e.Button;
+            _cursorPos = Camera.ToWorld(e.X, e.Y);
+        }
 
         /// <summary>
-        /// Derived classes override this to draw themselves using the GraphicsDevice.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
         /// </summary>
-        protected override void Draw()
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseUp(MouseEventArgs e)
         {
-            if (UpdateHandler != null)
-                UpdateHandler();
+            base.OnMouseUp(e);
 
-            if (DrawHandler != null)
-                DrawHandler();
+            _mouseButton = e.Button;
         }
+
+        #region IMapBoundControl Members
 
         /// <summary>
         /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
         /// </summary>
-        IMap IMapBoundControl.IMap
-        {
-            get;
-            set;
-        }
+        IMap IMapBoundControl.IMap { get; set; }
+
+        #endregion
     }
 }

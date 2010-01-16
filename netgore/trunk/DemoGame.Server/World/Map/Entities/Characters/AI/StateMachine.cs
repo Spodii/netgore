@@ -1,14 +1,15 @@
 ﻿using System.Linq;
+using DemoGame.AI;
 using NetGore;
 using NetGore.AI;
-using System.Diagnostics;
 
 namespace DemoGame.Server
 {
     //AIID 2 - Simple state machine algorithms that will make decisions beased on predefined logic.
 
     #region "Topdown AI Algotihm"
-#if TOPDOWN         //Top down AI Algorithm
+
+#if TOPDOWN //Top down AI Algorithm
     [AI(_id)]
     class StateMachine : AIBase
     {
@@ -29,10 +30,12 @@ namespace DemoGame.Server
             //TODO: Implement.
     }
 #endif
+
     #endregion
 
     #region "Sidescroller AI Algorithm"
-#if !TOPDOWN        //The Sidescroller AI Algorithm.            I will possibly expand logic to deal with Equipment :)
+
+#if !TOPDOWN //The Sidescroller AI Algorithm.            I will possibly expand logic to deal with Equipment :)
     [AI(_id)]
     class StateMachine : AIBase
     {
@@ -46,11 +49,10 @@ namespace DemoGame.Server
 
         const int _id = 2;
         const int _targetUpdateRate = 2000;
-        int _lastTargetUpdateTime = int.MinValue;
-
-        Character _target;
         State _characterState = State.Patrol;
+        int _lastTargetUpdateTime = int.MinValue;
         float _lastX;
+        Character _target;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateMachine"/> class.
@@ -68,52 +70,10 @@ namespace DemoGame.Server
             get { return new AIID(_id); }
         }
 
-        /// <summary>
-        /// Handles the real updating of the AI.
-        /// </summary>
-        protected override void DoUpdate()
-        {
-            // Update the target
-            int time = GetTime();
-            if (_lastTargetUpdateTime + _targetUpdateRate < time)
-            {
-                _lastTargetUpdateTime = time;
-                _target = GetClosestHostile();
-                _lastX = Actor.Position.X;
-                EvaluateState();
-            }
-
-            UpdateState(_characterState);
-        }
-
-
-        public void UpdateState(State CurrentState)
-        {
-            if (DemoGame.AI.AISettings.AIDisabled)
-            { CurrentState = State.Idle; }
-            switch (CurrentState)
-            {
-                case State.Idle:
-                    if (Actor.IsMoving)
-                    { Actor.StopMoving(); }
-                    break;
-                case State.Attack:
-                    ChaseTarget();
-                    break;
-                case State.Evade:
-                    EvadeTarget();
-                    break;
-                case State.Patrol:
-                    Patrol();
-                    break;
-            }
-        }
-
         public void ChaseTarget()
         {
-
-           bool above = false;
-           bool below = false;
+            bool above = false;
+            bool below = false;
 
             if (_target.Position.Y < Actor.Position.Y)
             {
@@ -166,7 +126,7 @@ namespace DemoGame.Server
 
             if (Actor.Position.X == _lastX)
             {
-                if (_lastTargetUpdateTime + 5000 < GetTime())       //Only execut this after 5 seconds.
+                if (_lastTargetUpdateTime + 5000 < GetTime()) //Only execut this after 5 seconds.
                 {
                     if (Actor.IsMovingRight)
                     {
@@ -188,6 +148,24 @@ namespace DemoGame.Server
                 Actor.StopMoving();
                 Actor.Attack();
             }
+        }
+
+        /// <summary>
+        /// Handles the real updating of the AI.
+        /// </summary>
+        protected override void DoUpdate()
+        {
+            // Update the target
+            int time = GetTime();
+            if (_lastTargetUpdateTime + _targetUpdateRate < time)
+            {
+                _lastTargetUpdateTime = time;
+                _target = GetClosestHostile();
+                _lastX = Actor.Position.X;
+                EvaluateState();
+            }
+
+            UpdateState(_characterState);
         }
 
         public void EvadeTarget()
@@ -248,7 +226,7 @@ namespace DemoGame.Server
 
             if (Actor.Position.X == _lastX + 20)
             {
-                if (_lastTargetUpdateTime + 5000 < GetTime())       //Only execut this after 5 seconds.
+                if (_lastTargetUpdateTime + 5000 < GetTime()) //Only execut this after 5 seconds.
                 {
                     if (Actor.IsMovingRight)
                     {
@@ -272,6 +250,29 @@ namespace DemoGame.Server
             }
         }
 
+        public void EvaluateState()
+        {
+            if (_target != null)
+            {
+                if (Actor.HP < 20)
+                {
+                    _characterState = State.Evade;
+                    return;
+                }
+                else
+                {
+                    _characterState = State.Attack;
+
+                    return;
+                }
+            }
+            else
+            {
+                _characterState = State.Patrol;
+                return;
+            }
+        }
+
         public void Patrol()
         {
             //Move randomly.
@@ -289,7 +290,7 @@ namespace DemoGame.Server
 
                 if (Actor.Position.X == _lastX + 20)
                 {
-                    if (_lastTargetUpdateTime + 1000 < GetTime())       //Only execut this after 5 seconds.
+                    if (_lastTargetUpdateTime + 1000 < GetTime()) //Only execut this after 5 seconds.
                     {
                         if (Actor.IsMovingRight)
                         {
@@ -308,34 +309,29 @@ namespace DemoGame.Server
             }
         }
 
-        public void EvaluateState()
+        public void UpdateState(State CurrentState)
         {
-
-                if (_target != null)
-                {
-                    if (Actor.HP < 20)
-                    {
-                        _characterState = State.Evade;
-                        return;
-                    }
-                    else
-                    {
-                        _characterState = State.Attack;
-                        
-                        return;
-                    }
-                }
-                else
-                {
-                   
-                    _characterState = State.Patrol;
-                    return;
-                }
+            if (AISettings.AIDisabled)
+                CurrentState = State.Idle;
+            switch (CurrentState)
+            {
+                case State.Idle:
+                    if (Actor.IsMoving)
+                        Actor.StopMoving();
+                    break;
+                case State.Attack:
+                    ChaseTarget();
+                    break;
+                case State.Evade:
+                    EvadeTarget();
+                    break;
+                case State.Patrol:
+                    Patrol();
+                    break;
+            }
         }
-            
     }
-#endif 
+#endif
+
     #endregion
 }
-   
-

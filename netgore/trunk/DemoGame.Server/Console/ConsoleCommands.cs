@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DemoGame.AI;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
@@ -262,18 +263,17 @@ namespace DemoGame.Server
         [ConsoleCommand("ToggleAI")]
         public string ToggleAI()
         {
-            if (!DemoGame.AI.AISettings.AIDisabled)
+            if (!AISettings.AIDisabled)
             {
-                DemoGame.AI.AISettings.AIDisabled = true;
+                AISettings.AIDisabled = true;
                 return "AI has been disabled.";
             }
             else
             {
-                DemoGame.AI.AISettings.AIDisabled = false;
+                AISettings.AIDisabled = false;
                 return "AI has been enabled.";
             }
         }
-
 
         class ConsoleCommandParser : StringCommandParser<ConsoleCommandAttribute>
         {

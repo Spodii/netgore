@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore.IO
 {
-    internal class NonPublicWithNestedPublic
+    class NonPublicWithNestedPublic
     {
         public class PublicNested
         {
@@ -88,6 +88,16 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
+        public void NonPublicWithNestedPublicTest()
+        {
+            var o = new NonPublicWithNestedPublic.PublicNested();
+            var pi = CreatePI<int, NonPublicWithNestedPublic.PublicNested>("Int");
+            pi.Set(o, 50);
+            Assert.AreEqual(50, o.Int);
+            Assert.AreEqual(50, pi.Get(o));
+        }
+
+        [Test]
         public void ObjectTest()
         {
             DoTest<object>("Object", 55, (pi, o, v) => pi.Set(o, v));
@@ -100,16 +110,6 @@ namespace NetGore.Tests.NetGore.IO
             var pi = CreatePI<int, PrivateTestClassPrivateGetterSetter>("Int");
             pi.Set(o, 50);
             //Assert.AreEqual(50, o.Int);
-            Assert.AreEqual(50, pi.Get(o));
-        }
-
-        [Test]
-        public void NonPublicWithNestedPublicTest()
-        {
-            var o = new NonPublicWithNestedPublic.PublicNested();
-            var pi = CreatePI<int, NonPublicWithNestedPublic.PublicNested>("Int");
-            pi.Set(o, 50);
-            Assert.AreEqual(50, o.Int);
             Assert.AreEqual(50, pi.Get(o));
         }
 

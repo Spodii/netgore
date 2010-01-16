@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -11,17 +8,9 @@ namespace NetGore.Tests.NetGore.IO
     public class PathStringTests
     {
         [Test]
-        public void JoinATest()
+        public void BackRootTest()
         {
-            PathString s = new PathString(@"C:\One");
-            var s2 = s.Join(@"Two");
-            Assert.AreEqual(new PathString(@"C:\One\Two"), s2);
-        }
-
-        [Test]
-        public void EqualsTest()
-        {
-            Assert.AreEqual(new PathString(@"C:\One\Two"), new PathString(@"C:\One\Two"));
+            Assert.AreEqual(new PathString(@"C:\"), new PathString(@"C:\One").Back());
         }
 
         [Test]
@@ -31,16 +20,17 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
-        public void BackRootTest()
+        public void EqualsTest()
         {
-            Assert.AreEqual(new PathString(@"C:\"), new PathString(@"C:\One").Back());
+            Assert.AreEqual(new PathString(@"C:\One\Two"), new PathString(@"C:\One\Two"));
         }
 
         [Test]
-        public void ToStringEqualsStringTest()
+        public void JoinATest()
         {
-            Assert.AreEqual(@"C:\One\Two", new PathString(@"C:\One\Two").ToString());
-            Assert.AreEqual(@"C:\One\Two", new PathString(@"C:\One\Two\").ToString());
+            PathString s = new PathString(@"C:\One");
+            var s2 = s.Join(@"Two");
+            Assert.AreEqual(new PathString(@"C:\One\Two"), s2);
         }
 
         [Test]
@@ -97,6 +87,13 @@ namespace NetGore.Tests.NetGore.IO
             PathString s = new PathString(@"C:\One");
             var s2 = s.Join(@"\Two\");
             Assert.AreEqual(new PathString(@"C:\One\Two"), s2);
+        }
+
+        [Test]
+        public void ToStringEqualsStringTest()
+        {
+            Assert.AreEqual(@"C:\One\Two", new PathString(@"C:\One\Two").ToString());
+            Assert.AreEqual(@"C:\One\Two", new PathString(@"C:\One\Two\").ToString());
         }
     }
 }

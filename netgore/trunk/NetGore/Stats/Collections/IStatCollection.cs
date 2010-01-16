@@ -7,7 +7,7 @@ namespace NetGore.Stats
     /// <summary>
     /// Interface for a collection of IStats that provides access to the IStat's value through the StatType.
     /// </summary>
-    public interface IStatCollection<TStatType> : IEnumerable<IStat<TStatType>> 
+    public interface IStatCollection<TStatType> : IEnumerable<IStat<TStatType>>
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         // TODO: IStatCollection tests...

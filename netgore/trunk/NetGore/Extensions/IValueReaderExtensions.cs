@@ -48,6 +48,30 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Reads a Point.
+        /// </summary>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static Point ReadPoint(this IValueReader reader, string name)
+        {
+            if (reader.SupportsNameLookup)
+            {
+                string value = reader.ReadString(name);
+                var split = value.Split(',');
+                int x = Parser.Invariant.ParseInt(split[0]);
+                int y = Parser.Invariant.ParseInt(split[1]);
+                return new Point(x, y);
+            }
+            else
+            {
+                int x = reader.ReadInt(null);
+                int y = reader.ReadInt(null);
+                return new Point(x, y);
+            }
+        }
+
+        /// <summary>
         /// Reads a <see cref="Rectangle"/> from an IValueReader.
         /// </summary>
         /// <param name="reader">The IValueReader to read from.</param>
@@ -79,7 +103,7 @@ namespace NetGore
 
         public static SpriteBlendMode ReadSpriteBlendMode(this IValueReader reader, string name)
         {
-            return reader.ReadEnum < SpriteBlendMode>(name);
+            return reader.ReadEnum<SpriteBlendMode>(name);
         }
 
         public static SpriteCategorization ReadSpriteCategorization(this IValueReader reader, string name)
@@ -292,30 +316,6 @@ namespace NetGore
                 float x = reader.ReadFloat(null);
                 float y = reader.ReadFloat(null);
                 return new Vector2(x, y);
-            }
-        }
-
-        /// <summary>
-        /// Reads a Point.
-        /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public static Point ReadPoint(this IValueReader reader, string name)
-        {
-            if (reader.SupportsNameLookup)
-            {
-                string value = reader.ReadString(name);
-                var split = value.Split(',');
-                int x = Parser.Invariant.ParseInt(split[0]);
-                int y = Parser.Invariant.ParseInt(split[1]);
-                return new Point(x, y);
-            }
-            else
-            {
-                int x = reader.ReadInt(null);
-                int y = reader.ReadInt(null);
-                return new Point(x, y);
             }
         }
     }

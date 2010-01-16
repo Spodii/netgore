@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -41,13 +40,9 @@ namespace NetGore.Db.Schema
                         var c = column;
                         var c2 = t2.Columns.FirstOrDefault(x => x.Name == c.Name);
                         if (c2 == null)
-                        {
                             missingColumns.Add(c);
-                        }
                         else if (!c.EqualValues(c2))
-                        {
                             mismatchColumns.Add(c);
-                        }
                     }
 
                     // List of missing and mismatches
@@ -59,7 +54,7 @@ namespace NetGore.Db.Schema
                 }
             }
         }
-        
+
         /// <summary>
         /// Concatenates the <see cref="ColumnSchema"/>s into a comma-delimited string.
         /// </summary>
@@ -69,7 +64,7 @@ namespace NetGore.Db.Schema
         {
             if (columns.Count() == 0)
                 return string.Empty;
-            
+
             if (columns.Count() == 1)
                 return columns.First().Name;
 

@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore;
-using NetGore.IO;
 
 namespace NetGore.Stats
 {
@@ -16,14 +14,14 @@ namespace NetGore.Stats
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
-        /// Cache of the func to convert a <typeparamref name="TStatType"/> to int.
-        /// </summary>
-        static readonly Func<TStatType, int> _statTypeToInt;
-
-        /// <summary>
         /// The size to make the <see cref="_stats"/> array for each instance.
         /// </summary>
         static readonly int _statsArraySize;
+
+        /// <summary>
+        /// Cache of the func to convert a <typeparamref name="TStatType"/> to int.
+        /// </summary>
+        static readonly Func<TStatType, int> _statTypeToInt;
 
         readonly StatCollectionType _collectionType;
         readonly IStat<TStatType>[] _stats;
@@ -104,7 +102,7 @@ namespace NetGore.Stats
             }
         }
 
-        #region IStatCollection Members
+        #region IStatCollection<TStatType> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.

@@ -17,6 +17,7 @@ namespace NetGore.Graphics
     /// </summary>
     public static class GrhInfo
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _animatedGrhDatasNodeName = "Animated";
         const string _autoAnimatedGrhDatasNodeName = "AutomaticAnimated";
         const string _nonAnimatedGrhDatasNodeName = "Stationary";
@@ -254,12 +255,13 @@ namespace NetGore.Graphics
                 Debug.Fail(string.Format(errmsg, grhData, grhIndex));
                 return;
             }
-            
+
             // Make sure we are deleting the correct GrhData
             int i = (int)grhIndex;
             if (_grhDatas[i] != grhData)
             {
-                const string errmsg = "Attempted to delete GrhData `{0}`, but GrhIndex `{1}` is already in use by" +
+                const string errmsg =
+                    "Attempted to delete GrhData `{0}`, but GrhIndex `{1}` is already in use by" +
                     " a different GrhData `{2}`. Most likely, the GrhData we tried to delete is already deleted, and" +
                     " the GrhIndex has been recycled to a new GrhData. Stop trying to delete dead stuff, will ya!?";
                 if (log.IsErrorEnabled)
@@ -270,8 +272,6 @@ namespace NetGore.Graphics
 
             _grhDatas.RemoveAt((int)grhIndex);
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Finds all of the <see cref="GrhData"/>s that reference a texture that does not exist.
@@ -470,25 +470,26 @@ namespace NetGore.Graphics
 
             // Create a little delegate to add the GrhDatas by index to reduce code bloat without exposing this to other methods
             Action<IEnumerable<GrhData>> grhDataAdder = delegate(IEnumerable<GrhData> grhDatas)
-            {
-                foreach (var grhData in grhDatas)
-                {
-                    int index = (int)grhData.GrhIndex;
-                    Debug.Assert(!_grhDatas.CanGet(index) || _grhDatas[index] == null, "Index already occupied!");
+                                                        {
+                                                            foreach (var grhData in grhDatas)
+                                                            {
+                                                                int index = (int)grhData.GrhIndex;
+                                                                Debug.Assert(
+                                                                    !_grhDatas.CanGet(index) || _grhDatas[index] == null,
+                                                                    "Index already occupied!");
 
-                    if (!grhData.GrhIndex.IsInvalid)
-                    {
-                        _grhDatas[index] = grhData;
-                    }
-                    else
-                    {
-                        const string errmsg = "Tried to add GrhData `{0}` which has an invalid GrhIndex.";
-                        string err = string.Format(errmsg, grhData);
-                        log.Fatal(err);
-                        Debug.Fail(err);
-                    }
-                }
-            };
+                                                                if (!grhData.GrhIndex.IsInvalid)
+                                                                    _grhDatas[index] = grhData;
+                                                                else
+                                                                {
+                                                                    const string errmsg =
+                                                                        "Tried to add GrhData `{0}` which has an invalid GrhIndex.";
+                                                                    string err = string.Format(errmsg, grhData);
+                                                                    log.Fatal(err);
+                                                                    Debug.Fail(err);
+                                                                }
+                                                            }
+                                                        };
 
             try
             {
@@ -553,7 +554,8 @@ namespace NetGore.Graphics
             Dictionary<SpriteTitle, GrhData> titleDic;
             if (!_catDic.TryGetValue(gd.Categorization.Category, out titleDic))
             {
-                const string errmsg = "Tried to remove GrhData `{0}` from the categorization dictionary with the" +
+                const string errmsg =
+                    "Tried to remove GrhData `{0}` from the categorization dictionary with the" +
                     " categorization of `{1}`, but the whole category does not exist!" +
                     " This likely means some bad issue in the GrhInfo class...";
                 string err = string.Format(errmsg, gd, gd.Categorization);
@@ -564,7 +566,8 @@ namespace NetGore.Graphics
 
             if (!titleDic.Remove(gd.Categorization.Title))
             {
-                const string errmsg = "Tried to remove GrhData `{0}` from the categorization dictionary with the" +
+                const string errmsg =
+                    "Tried to remove GrhData `{0}` from the categorization dictionary with the" +
                     " categorization of `{1}`, but the GrhData did not exist in the title dictionary!" +
                     " This likely means some bad issue in the GrhInfo class...";
                 string err = string.Format(errmsg, gd, gd.Categorization);

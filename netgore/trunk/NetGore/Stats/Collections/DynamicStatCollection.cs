@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 
 namespace NetGore.Stats
 {
@@ -11,10 +10,11 @@ namespace NetGore.Stats
     /// can be added to the collection whenever needed.
     /// </summary>
     public class DynamicStatCollection<TStatType> : IStatCollection<TStatType>
-         where TStatType : struct, IComparable, IConvertible, IFormattable
+        where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         readonly StatCollectionType _statCollectionType;
-        readonly Dictionary<TStatType, IStat<TStatType>> _stats = 
+
+        readonly Dictionary<TStatType, IStat<TStatType>> _stats =
             new Dictionary<TStatType, IStat<TStatType>>(EnumComparer<TStatType>.Instance);
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace NetGore.Stats
         {
         }
 
-        #region IStatCollection Members
+        #region IStatCollection<TStatType> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.

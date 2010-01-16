@@ -19,7 +19,7 @@ namespace DemoGame
         /// <summary>
         /// Greatest index of all the EquipmentSlots.
         /// </summary>
-        static readonly int _highestSlotIndex = EnumHelper < EquipmentSlot>.MaxValue;
+        static readonly int _highestSlotIndex = EnumHelper<EquipmentSlot>.MaxValue;
 
         /// <summary>
         /// Array indexed by the numeric value of the EquipmentSlot, containing the item

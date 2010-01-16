@@ -123,7 +123,6 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseMove(MouseEventArgs e)
         {
-
             // Get the map and ensure a valid cursor position
             Map map = Container.Map;
             if (map == null || !map.IsInMapBoundaries(Container.CursorPos))

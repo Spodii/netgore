@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Reflection;
-using NetGore.IO;
 
 namespace NetGore.IO.PropertySync
 {

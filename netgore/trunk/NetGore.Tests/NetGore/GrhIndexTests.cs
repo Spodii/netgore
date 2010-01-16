@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
 namespace NetGore.Tests
@@ -19,18 +17,18 @@ namespace NetGore.Tests
         }
 
         [Test]
-        public void IsInvalidTest()
-        {
-            Assert.IsTrue(GrhIndex.Invalid.IsInvalid);
-            Assert.IsTrue(new GrhIndex().IsInvalid);
-        }
-
-        [Test]
         public void EqualsTest()
         {
             Assert.AreEqual(new GrhIndex(5), new GrhIndex(5));
             Assert.IsTrue(new GrhIndex(5) == new GrhIndex(5));
             Assert.IsTrue(new GrhIndex(5).Equals(new GrhIndex(5)));
+        }
+
+        [Test]
+        public void IsInvalidTest()
+        {
+            Assert.IsTrue(GrhIndex.Invalid.IsInvalid);
+            Assert.IsTrue(new GrhIndex().IsInvalid);
         }
 
         [Test]

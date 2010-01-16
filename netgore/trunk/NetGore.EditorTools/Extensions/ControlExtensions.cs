@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore.IO;
 
@@ -32,7 +31,9 @@ namespace NetGore.EditorTools
                 foreach (var child in root.Controls.OfType<Control>())
                 {
                     foreach (var child2 in GetControls(child, filter))
+                    {
                         yield return child2;
+                    }
                 }
             }
         }

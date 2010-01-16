@@ -13,27 +13,6 @@ namespace NetGore.Tests.NetGore
         static readonly Random r = new Random();
 
         [Test]
-        public void InvalidEnumTypeTest()
-        {
-#pragma warning disable 219
-            bool b;
-#pragma warning restore 219
-
-            Assert.Throws<TypeInitializationException>(() => b = EnumHelper<int>.Values != null);
-        }
-
-        enum BitsReqEnum1 { a };
-        enum BitsReqEnum2 { a, b };
-        enum BitsReqEnum3 { a, b, c };
-        enum BitsReqEnum4 { a, b, c, d };
-        enum BitsReqEnum5 { a, b, c, d, e};
-        enum BitsReqEnum6 { a, b, c, d, e, f };
-        enum BitsReqEnum7 { a, b, c, d, e, f, g };
-        enum BitsReqEnum8 { a, b, c, d, e, f, g, h };
-        enum BitsReqEnum9 { a, b, c, d, e, f, g, h,i };
-        enum BitsReqEnum10 { a, b, c, d, e, f, g, h,i,j };
-
-        [Test]
         public void BitsRequiredTest()
         {
             Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum1>.MaxValue), EnumHelper<BitsReqEnum1>.BitsRequired);
@@ -46,6 +25,172 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum8>.MaxValue), EnumHelper<BitsReqEnum8>.BitsRequired);
             Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum9>.MaxValue), EnumHelper<BitsReqEnum9>.BitsRequired);
             Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum10>.MaxValue), EnumHelper<BitsReqEnum10>.BitsRequired);
+        }
+
+        static string CreateRandomString()
+        {
+            int length = r.Next(2, 10);
+            var ret = new char[length];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                int j;
+                if (i == 0)
+                    j = r.Next(1, 3); // Don't let the first character be numeric
+                else
+                    j = r.Next(0, 3);
+
+                int min;
+                int max;
+
+                // ReSharper disable RedundantCast
+                switch (j)
+                {
+                    case 0:
+                        min = (int)'0';
+                        max = (int)'9';
+                        break;
+
+                    case 1:
+                        min = (int)'a';
+                        max = (int)'z';
+                        break;
+
+                    default:
+                        min = (int)'A';
+                        max = (int)'Z';
+                        break;
+                }
+                // ReSharper restore RedundantCast
+
+                ret[i] = (char)r.Next(min, max + 1);
+            }
+
+            return new string(ret);
+        }
+
+        [Test]
+        public void ExceptionWhenNotSupportsCastOperationsTest()
+        {
+#pragma warning disable 219
+            object o;
+#pragma warning restore 219
+
+            BitStream bs = new BitStream(BitStreamMode.Write, 128);
+
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.BitsRequired);
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.MaxValue);
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.MinValue);
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.GetToIntFunc());
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.GetFromIntFunc());
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.FromInt(1));
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ToInt(EVULong.A));
+            Assert.Throws<MethodAccessException>(() => EnumHelper<EVULong>.WriteValue(bs, EVULong.A));
+            Assert.Throws<MethodAccessException>(() => EnumHelper<EVULong>.WriteValue(bs, "test", EVULong.A));
+
+            bs.Mode = BitStreamMode.Read;
+
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ReadValue(bs));
+            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ReadValue(bs, "test"));
+        }
+
+        [Test]
+        public void FromIntTest()
+        {
+            foreach (var v in EnumHelper<EVByte>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVByte>.FromInt((int)v));
+            }
+
+            foreach (var v in EnumHelper<EVSByte>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVSByte>.FromInt((int)v));
+            }
+
+            foreach (var v in EnumHelper<EVShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVShort>.FromInt((int)v));
+            }
+
+            foreach (var v in EnumHelper<EVUShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVUShort>.FromInt((int)v));
+            }
+
+            foreach (var v in EnumHelper<EVInt>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVInt>.FromInt((int)v));
+            }
+        }
+
+        [Test]
+        public void InvalidEnumTypeTest()
+        {
+#pragma warning disable 219
+            bool b;
+#pragma warning restore 219
+
+            Assert.Throws<TypeInitializationException>(() => b = EnumHelper<int>.Values != null);
+        }
+
+        [Test]
+        public void IsDefinedInvalidValuesTest()
+        {
+            for (int i = 50; i < 80; i++)
+            {
+                Assert.IsFalse(EnumHelper<EVByte>.IsDefined((EVByte)i));
+                Assert.IsFalse(EnumHelper<EVSByte>.IsDefined((EVSByte)i));
+                Assert.IsFalse(EnumHelper<EVShort>.IsDefined((EVShort)i));
+                Assert.IsFalse(EnumHelper<EVUShort>.IsDefined((EVUShort)i));
+                Assert.IsFalse(EnumHelper<EVInt>.IsDefined((EVInt)i));
+                Assert.IsFalse(EnumHelper<EVUInt>.IsDefined((EVUInt)i));
+                Assert.IsFalse(EnumHelper<EVLong>.IsDefined((EVLong)i));
+                Assert.IsFalse(EnumHelper<EVULong>.IsDefined((EVULong)i));
+            }
+        }
+
+        [Test]
+        public void IsDefinedValidValuesTest()
+        {
+            foreach (var v in EnumHelper<EVByte>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVByte>.IsDefined(v));
+            }
+
+            foreach (var v in EnumHelper<EVSByte>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVSByte>.IsDefined(v));
+            }
+
+            foreach (var v in EnumHelper<EVShort>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVShort>.IsDefined(v));
+            }
+
+            foreach (var v in EnumHelper<EVUShort>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVUShort>.IsDefined(v));
+            }
+
+            foreach (var v in EnumHelper<EVInt>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVInt>.IsDefined(v));
+            }
+
+            foreach (var v in EnumHelper<EVLong>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVLong>.IsDefined(v));
+            }
+
+            foreach (var v in EnumHelper<EVULong>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVULong>.IsDefined(v));
+            }
+
+            foreach (var v in EnumHelper<EVUInt>.Values)
+            {
+                Assert.IsTrue(EnumHelper<EVUInt>.IsDefined(v));
+            }
         }
 
         [Test]
@@ -79,18 +224,144 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void IsDefinedInvalidValuesTest()
+        public void ParseValidValuesIgnoreCaseLowerTest()
         {
-            for (int i = 50; i < 80; i++)
+            foreach (var v in EnumHelper<EVByte>.Values)
             {
-                Assert.IsFalse(EnumHelper<EVByte>.IsDefined((EVByte)i));
-                Assert.IsFalse(EnumHelper<EVSByte>.IsDefined((EVSByte)i));
-                Assert.IsFalse(EnumHelper<EVShort>.IsDefined((EVShort)i));
-                Assert.IsFalse(EnumHelper<EVUShort>.IsDefined((EVUShort)i));
-                Assert.IsFalse(EnumHelper<EVInt>.IsDefined((EVInt)i));
-                Assert.IsFalse(EnumHelper<EVUInt>.IsDefined((EVUInt)i));
-                Assert.IsFalse(EnumHelper<EVLong>.IsDefined((EVLong)i));
-                Assert.IsFalse(EnumHelper<EVULong>.IsDefined((EVULong)i));
+                Assert.AreEqual(v, EnumHelper<EVByte>.Parse(v.ToString().ToLower(), true));
+            }
+
+            foreach (var v in EnumHelper<EVSByte>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVSByte>.Parse(v.ToString().ToLower(), true));
+            }
+
+            foreach (var v in EnumHelper<EVShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVShort>.Parse(v.ToString().ToLower(), true));
+            }
+
+            foreach (var v in EnumHelper<EVUShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVUShort>.Parse(v.ToString().ToLower(), true));
+            }
+
+            foreach (var v in EnumHelper<EVInt>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVInt>.Parse(v.ToString().ToLower(), true));
+            }
+
+            foreach (var v in EnumHelper<EVLong>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVLong>.Parse(v.ToString().ToLower(), true));
+            }
+
+            foreach (var v in EnumHelper<EVULong>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVULong>.Parse(v.ToString().ToLower(), true));
+            }
+
+            foreach (var v in EnumHelper<EVUInt>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVUInt>.Parse(v.ToString().ToLower(), true));
+            }
+        }
+
+        [Test]
+        public void ParseValidValuesIgnoreCaseUpperTest()
+        {
+            foreach (var v in EnumHelper<EVByte>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVByte>.Parse(v.ToString().ToUpper(), true));
+            }
+
+            foreach (var v in EnumHelper<EVSByte>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVSByte>.Parse(v.ToString().ToUpper(), true));
+            }
+
+            foreach (var v in EnumHelper<EVShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVShort>.Parse(v.ToString().ToUpper(), true));
+            }
+
+            foreach (var v in EnumHelper<EVUShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVUShort>.Parse(v.ToString().ToUpper(), true));
+            }
+
+            foreach (var v in EnumHelper<EVInt>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVInt>.Parse(v.ToString().ToUpper(), true));
+            }
+
+            foreach (var v in EnumHelper<EVLong>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVLong>.Parse(v.ToString().ToUpper(), true));
+            }
+
+            foreach (var v in EnumHelper<EVULong>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVULong>.Parse(v.ToString().ToUpper(), true));
+            }
+
+            foreach (var v in EnumHelper<EVUInt>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVUInt>.Parse(v.ToString().ToUpper(), true));
+            }
+        }
+
+        [Test]
+        public void ParseValidValuesInvalidCaseTest()
+        {
+            object o;
+
+            foreach (var v in EnumHelper<EVByte>.Values)
+            {
+                EVByte b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVByte>.Parse(b.ToString().ToLower()));
+            }
+
+            foreach (var v in EnumHelper<EVSByte>.Values)
+            {
+                var b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVSByte>.Parse(b.ToString().ToLower()));
+            }
+
+            foreach (var v in EnumHelper<EVShort>.Values)
+            {
+                var b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVShort>.Parse(b.ToString().ToLower()));
+            }
+
+            foreach (var v in EnumHelper<EVUShort>.Values)
+            {
+                var b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVUShort>.Parse(b.ToString().ToLower()));
+            }
+
+            foreach (var v in EnumHelper<EVInt>.Values)
+            {
+                var b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVInt>.Parse(b.ToString().ToLower()));
+            }
+
+            foreach (var v in EnumHelper<EVLong>.Values)
+            {
+                var b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVLong>.Parse(b.ToString().ToLower()));
+            }
+
+            foreach (var v in EnumHelper<EVULong>.Values)
+            {
+                var b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVULong>.Parse(b.ToString().ToLower()));
+            }
+
+            foreach (var v in EnumHelper<EVUInt>.Values)
+            {
+                var b = v;
+                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVUInt>.Parse(b.ToString().ToLower()));
             }
         }
 
@@ -139,62 +410,169 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void TryParseValidValuesTest()
+        public void SupportsCastOperationsTest()
+        {
+            Assert.IsTrue(EnumHelper<EVByte>.SupportsCastOperations);
+            Assert.IsTrue(EnumHelper<EVSByte>.SupportsCastOperations);
+            Assert.IsTrue(EnumHelper<EVShort>.SupportsCastOperations);
+            Assert.IsTrue(EnumHelper<EVUShort>.SupportsCastOperations);
+            Assert.IsTrue(EnumHelper<EVInt>.SupportsCastOperations);
+            Assert.IsFalse(EnumHelper<EVUInt>.SupportsCastOperations);
+            Assert.IsFalse(EnumHelper<EVLong>.SupportsCastOperations);
+            Assert.IsFalse(EnumHelper<EVULong>.SupportsCastOperations);
+        }
+
+        [Test]
+        public void ToIntTest()
         {
             foreach (var v in EnumHelper<EVByte>.Values)
             {
-                EVByte o;
-                Assert.IsTrue(EnumHelper<EVByte>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual((int)v, EnumHelper<EVByte>.ToInt(v));
             }
 
             foreach (var v in EnumHelper<EVSByte>.Values)
             {
-                EVSByte o;
-                Assert.IsTrue(EnumHelper<EVSByte>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual((int)v, EnumHelper<EVSByte>.ToInt(v));
             }
 
             foreach (var v in EnumHelper<EVShort>.Values)
             {
-                EVShort o;
-                Assert.IsTrue(EnumHelper<EVShort>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual((int)v, EnumHelper<EVShort>.ToInt(v));
             }
 
             foreach (var v in EnumHelper<EVUShort>.Values)
             {
-                EVUShort o;
-                Assert.IsTrue(EnumHelper<EVUShort>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual((int)v, EnumHelper<EVUShort>.ToInt(v));
             }
 
             foreach (var v in EnumHelper<EVInt>.Values)
             {
-                EVInt o;
-                Assert.IsTrue(EnumHelper<EVInt>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual((int)v, EnumHelper<EVInt>.ToInt(v));
+            }
+        }
+
+        [Test]
+        public void ToNameTest()
+        {
+            foreach (var v in EnumHelper<EVByte>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVByte>.Parse(EnumHelper<EVByte>.ToName(v)));
+            }
+
+            foreach (var v in EnumHelper<EVSByte>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVSByte>.Parse(EnumHelper<EVSByte>.ToName(v)));
+            }
+
+            foreach (var v in EnumHelper<EVShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVShort>.Parse(EnumHelper<EVShort>.ToName(v)));
+            }
+
+            foreach (var v in EnumHelper<EVUShort>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVUShort>.Parse(EnumHelper<EVUShort>.ToName(v)));
+            }
+
+            foreach (var v in EnumHelper<EVInt>.Values)
+            {
+                Assert.AreEqual(v, EnumHelper<EVInt>.Parse(EnumHelper<EVInt>.ToName(v)));
             }
 
             foreach (var v in EnumHelper<EVLong>.Values)
             {
-                EVLong o;
-                Assert.IsTrue(EnumHelper<EVLong>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual(v, EnumHelper<EVLong>.Parse(EnumHelper<EVLong>.ToName(v)));
             }
 
             foreach (var v in EnumHelper<EVULong>.Values)
             {
-                EVULong o;
-                Assert.IsTrue(EnumHelper<EVULong>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual(v, EnumHelper<EVULong>.Parse(EnumHelper<EVULong>.ToName(v)));
             }
 
             foreach (var v in EnumHelper<EVUInt>.Values)
             {
-                EVUInt o;
-                Assert.IsTrue(EnumHelper<EVUInt>.TryParse(v.ToString(), out o));
-                Assert.AreEqual(v, o);
+                Assert.AreEqual(v, EnumHelper<EVUInt>.Parse(EnumHelper<EVUInt>.ToName(v)));
+            }
+        }
+
+        [Test]
+        public void TryParseCaseInsensitiveTests()
+        {
+            var names = Enum.GetNames(typeof(TestEnum));
+
+            foreach (string name in names)
+            {
+                TestEnum outValue;
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name), outValue);
+                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
+            }
+
+            foreach (string name in names.Select(x => x.ToUpper()))
+            {
+                TestEnum outValue;
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, true), outValue);
+                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
+            }
+
+            foreach (string name in names.Select(x => x.ToLower()))
+            {
+                TestEnum outValue;
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, true), outValue);
+                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
+            }
+        }
+
+        [Test]
+        public void TryParseCaseSensitiveTests()
+        {
+            var names = Enum.GetNames(typeof(TestEnum));
+
+            foreach (string name in names)
+            {
+                TestEnum outValue;
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, false, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, false), outValue);
+                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, false), outValue);
+            }
+
+            foreach (string name in names)
+            {
+                string nameUpper = name.ToUpper();
+                if (name.Equals(nameUpper, StringComparison.CurrentCulture))
+                    continue;
+
+                TestEnum outValue;
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(nameUpper, false, out outValue));
+            }
+
+            foreach (string name in names)
+            {
+                string nameLower = name.ToLower();
+                if (name.Equals(nameLower, StringComparison.CurrentCulture))
+                    continue;
+
+                TestEnum outValue;
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(nameLower, false, out outValue));
+            }
+        }
+
+        [Test]
+        public void TryParseRandomStrings()
+        {
+            var names = Enum.GetNames(typeof(TestEnum));
+
+            for (int i = 0; i < 5000; i++)
+            {
+                string s = CreateRandomString();
+                if (names.Contains(s, StringComparer.OrdinalIgnoreCase))
+                    continue;
+
+                TestEnum outValue;
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(s, true, out outValue), "String: " + s);
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(s, false, out outValue), "String: " + s);
             }
         }
 
@@ -319,453 +697,159 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void ParseValidValuesIgnoreCaseUpperTest()
+        public void TryParseValidValuesTest()
         {
             foreach (var v in EnumHelper<EVByte>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVByte>.Parse(v.ToString().ToUpper(), true));
+                EVByte o;
+                Assert.IsTrue(EnumHelper<EVByte>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
 
             foreach (var v in EnumHelper<EVSByte>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVSByte>.Parse(v.ToString().ToUpper(), true));
+                EVSByte o;
+                Assert.IsTrue(EnumHelper<EVSByte>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
 
             foreach (var v in EnumHelper<EVShort>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVShort>.Parse(v.ToString().ToUpper(), true));
+                EVShort o;
+                Assert.IsTrue(EnumHelper<EVShort>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
 
             foreach (var v in EnumHelper<EVUShort>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVUShort>.Parse(v.ToString().ToUpper(), true));
+                EVUShort o;
+                Assert.IsTrue(EnumHelper<EVUShort>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
 
             foreach (var v in EnumHelper<EVInt>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVInt>.Parse(v.ToString().ToUpper(), true));
+                EVInt o;
+                Assert.IsTrue(EnumHelper<EVInt>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
 
             foreach (var v in EnumHelper<EVLong>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVLong>.Parse(v.ToString().ToUpper(), true));
+                EVLong o;
+                Assert.IsTrue(EnumHelper<EVLong>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
 
             foreach (var v in EnumHelper<EVULong>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVULong>.Parse(v.ToString().ToUpper(), true));
+                EVULong o;
+                Assert.IsTrue(EnumHelper<EVULong>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
 
             foreach (var v in EnumHelper<EVUInt>.Values)
             {
-                Assert.AreEqual(v, EnumHelper<EVUInt>.Parse(v.ToString().ToUpper(), true));
+                EVUInt o;
+                Assert.IsTrue(EnumHelper<EVUInt>.TryParse(v.ToString(), out o));
+                Assert.AreEqual(v, o);
             }
         }
 
-        [Test]
-        public void ToNameTest()
+        enum BitsReqEnum1
         {
-            foreach (var v in EnumHelper<EVByte>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVByte>.Parse(EnumHelper<EVByte>.ToName(v)));
-            }
+            a
+        } ;
 
-            foreach (var v in EnumHelper<EVSByte>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVSByte>.Parse(EnumHelper<EVSByte>.ToName(v)));
-            }
-
-            foreach (var v in EnumHelper<EVShort>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVShort>.Parse(EnumHelper<EVShort>.ToName(v)));
-            }
-
-            foreach (var v in EnumHelper<EVUShort>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVUShort>.Parse(EnumHelper<EVUShort>.ToName(v)));
-            }
-
-            foreach (var v in EnumHelper<EVInt>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVInt>.Parse(EnumHelper<EVInt>.ToName(v)));
-            }
-
-            foreach (var v in EnumHelper<EVLong>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVLong>.Parse(EnumHelper<EVLong>.ToName(v)));
-            }
-
-            foreach (var v in EnumHelper<EVULong>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVULong>.Parse(EnumHelper<EVULong>.ToName(v)));
-            }
-
-            foreach (var v in EnumHelper<EVUInt>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVUInt>.Parse(EnumHelper<EVUInt>.ToName(v)));
-            }
-        }
-
-        [Test]
-        public void ParseValidValuesInvalidCaseTest()
+        enum BitsReqEnum10
         {
-            object o;
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            h,
+            i,
+            j
+        } ;
 
-            foreach (var v in EnumHelper<EVByte>.Values)
-            {
-                EVByte b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVByte>.Parse(b.ToString().ToLower()));
-            }
-
-            foreach (var v in EnumHelper<EVSByte>.Values)
-            {
-                var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVSByte>.Parse(b.ToString().ToLower()));
-            }
-
-            foreach (var v in EnumHelper<EVShort>.Values)
-            {
-                var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVShort>.Parse(b.ToString().ToLower()));
-            }
-
-            foreach (var v in EnumHelper<EVUShort>.Values)
-            {
-                var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVUShort>.Parse(b.ToString().ToLower()));
-            }
-
-            foreach (var v in EnumHelper<EVInt>.Values)
-            {
-                var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVInt>.Parse(b.ToString().ToLower()));
-            }
-
-            foreach (var v in EnumHelper<EVLong>.Values)
-            {
-                var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVLong>.Parse(b.ToString().ToLower()));
-            }
-
-            foreach (var v in EnumHelper<EVULong>.Values)
-            {
-                var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVULong>.Parse(b.ToString().ToLower()));
-            }
-
-            foreach (var v in EnumHelper<EVUInt>.Values)
-            {
-                var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVUInt>.Parse(b.ToString().ToLower()));
-            }
-        }
-
-        [Test]
-        public void ParseValidValuesIgnoreCaseLowerTest()
+        enum BitsReqEnum2
         {
-            foreach (var v in EnumHelper<EVByte>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVByte>.Parse(v.ToString().ToLower(), true));
-            }
+            a,
+            b
+        } ;
 
-            foreach (var v in EnumHelper<EVSByte>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVSByte>.Parse(v.ToString().ToLower(), true));
-            }
-
-            foreach (var v in EnumHelper<EVShort>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVShort>.Parse(v.ToString().ToLower(), true));
-            }
-
-            foreach (var v in EnumHelper<EVUShort>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVUShort>.Parse(v.ToString().ToLower(), true));
-            }
-
-            foreach (var v in EnumHelper<EVInt>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVInt>.Parse(v.ToString().ToLower(), true));
-            }
-
-            foreach (var v in EnumHelper<EVLong>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVLong>.Parse(v.ToString().ToLower(), true));
-            }
-
-            foreach (var v in EnumHelper<EVULong>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVULong>.Parse(v.ToString().ToLower(), true));
-            }
-
-            foreach (var v in EnumHelper<EVUInt>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVUInt>.Parse(v.ToString().ToLower(), true));
-            }
-        }
-
-        [Test]
-        public void IsDefinedValidValuesTest()
+        enum BitsReqEnum3
         {
-            foreach (var v in EnumHelper<EVByte>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVByte>.IsDefined(v));
-            }
+            a,
+            b,
+            c
+        } ;
 
-            foreach (var v in EnumHelper<EVSByte>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVSByte>.IsDefined(v));
-            }
-
-            foreach (var v in EnumHelper<EVShort>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVShort>.IsDefined(v));
-            }
-
-            foreach (var v in EnumHelper<EVUShort>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVUShort>.IsDefined(v));
-            }
-
-            foreach (var v in EnumHelper<EVInt>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVInt>.IsDefined(v));
-            }
-
-            foreach (var v in EnumHelper<EVLong>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVLong>.IsDefined(v));
-            }
-
-            foreach (var v in EnumHelper<EVULong>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVULong>.IsDefined(v));
-            }
-
-            foreach (var v in EnumHelper<EVUInt>.Values)
-            {
-                Assert.IsTrue(EnumHelper<EVUInt>.IsDefined(v));
-            }
-        }
-
-        [Test]
-        public void ToIntTest()
+        enum BitsReqEnum4
         {
-            foreach (var v in EnumHelper<EVByte>.Values)
-            {
-                Assert.AreEqual((int)v, EnumHelper<EVByte>.ToInt(v));
-            }
+            a,
+            b,
+            c,
+            d
+        } ;
 
-            foreach (var v in EnumHelper<EVSByte>.Values)
-            {
-                Assert.AreEqual((int)v, EnumHelper<EVSByte>.ToInt(v));
-            }
-
-            foreach (var v in EnumHelper<EVShort>.Values)
-            {
-                Assert.AreEqual((int)v, EnumHelper<EVShort>.ToInt(v));
-            }
-
-            foreach (var v in EnumHelper<EVUShort>.Values)
-            {
-                Assert.AreEqual((int)v, EnumHelper<EVUShort>.ToInt(v));
-            }
-
-            foreach (var v in EnumHelper<EVInt>.Values)
-            {
-                Assert.AreEqual((int)v, EnumHelper<EVInt>.ToInt(v));
-            }
-        }
-
-        [Test]
-        public void FromIntTest()
+        enum BitsReqEnum5
         {
-            foreach (var v in EnumHelper<EVByte>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVByte>.FromInt((int)v));
-            }
+            a,
+            b,
+            c,
+            d,
+            e
+        } ;
 
-            foreach (var v in EnumHelper<EVSByte>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVSByte>.FromInt((int)v));
-            }
-
-            foreach (var v in EnumHelper<EVShort>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVShort>.FromInt((int)v));
-            }
-
-            foreach (var v in EnumHelper<EVUShort>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVUShort>.FromInt((int)v));
-            }
-
-            foreach (var v in EnumHelper<EVInt>.Values)
-            {
-                Assert.AreEqual(v, EnumHelper<EVInt>.FromInt((int)v));
-            }
-        }
-
-        [Test]
-        public void ExceptionWhenNotSupportsCastOperationsTest()
+        enum BitsReqEnum6
         {
-#pragma warning disable 219
-            object o;
-#pragma warning restore 219
+            a,
+            b,
+            c,
+            d,
+            e,
+            f
+        } ;
 
-            BitStream bs = new BitStream(BitStreamMode.Write, 128);
-
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.BitsRequired);
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.MaxValue);
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.MinValue);
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.GetToIntFunc());
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.GetFromIntFunc());
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.FromInt(1));
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ToInt(EVULong.A));
-            Assert.Throws<MethodAccessException>(() => EnumHelper<EVULong>.WriteValue(bs, EVULong.A));
-            Assert.Throws<MethodAccessException>(() => EnumHelper<EVULong>.WriteValue(bs, "test", EVULong.A));
-
-            bs.Mode = BitStreamMode.Read;
-
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ReadValue(bs));
-            Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ReadValue(bs, "test"));
-        }
-
-        [Test]
-        public void SupportsCastOperationsTest()
+        enum BitsReqEnum7
         {
-            Assert.IsTrue(EnumHelper<EVByte>.SupportsCastOperations);
-            Assert.IsTrue(EnumHelper<EVSByte>.SupportsCastOperations);
-            Assert.IsTrue(EnumHelper<EVShort>.SupportsCastOperations);
-            Assert.IsTrue(EnumHelper<EVUShort>.SupportsCastOperations);
-            Assert.IsTrue(EnumHelper<EVInt>.SupportsCastOperations);
-            Assert.IsFalse(EnumHelper<EVUInt>.SupportsCastOperations);
-            Assert.IsFalse(EnumHelper<EVLong>.SupportsCastOperations);
-            Assert.IsFalse(EnumHelper<EVULong>.SupportsCastOperations);
-        }
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g
+        } ;
 
-        static string CreateRandomString()
+        enum BitsReqEnum8
         {
-            int length = r.Next(2, 10);
-            var ret = new char[length];
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            h
+        } ;
 
-            for (int i = 0; i < ret.Length; i++)
-            {
-                int j;
-                if (i == 0)
-                    j = r.Next(1, 3); // Don't let the first character be numeric
-                else
-                    j = r.Next(0, 3);
-
-                int min;
-                int max;
-
-                // ReSharper disable RedundantCast
-                switch (j)
-                {
-                    case 0:
-                        min = (int)'0';
-                        max = (int)'9';
-                        break;
-
-                    case 1:
-                        min = (int)'a';
-                        max = (int)'z';
-                        break;
-
-                    default:
-                        min = (int)'A';
-                        max = (int)'Z';
-                        break;
-                }
-                // ReSharper restore RedundantCast
-
-                ret[i] = (char)r.Next(min, max + 1);
-            }
-
-            return new string(ret);
-        }
-
-        [Test]
-        public void TryParseCaseInsensitiveTests()
+        enum BitsReqEnum9
         {
-            var names = Enum.GetNames(typeof(TestEnum));
-
-            foreach (string name in names)
-            {
-                TestEnum outValue;
-                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
-                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name), outValue);
-                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
-            }
-
-            foreach (string name in names.Select(x => x.ToUpper()))
-            {
-                TestEnum outValue;
-                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
-                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, true), outValue);
-                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
-            }
-
-            foreach (string name in names.Select(x => x.ToLower()))
-            {
-                TestEnum outValue;
-                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
-                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, true), outValue);
-                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
-            }
-        }
-
-        [Test]
-        public void TryParseCaseSensitiveTests()
-        {
-            var names = Enum.GetNames(typeof(TestEnum));
-
-            foreach (string name in names)
-            {
-                TestEnum outValue;
-                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, false, out outValue));
-                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, false), outValue);
-                Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, false), outValue);
-            }
-
-            foreach (string name in names)
-            {
-                string nameUpper = name.ToUpper();
-                if (name.Equals(nameUpper, StringComparison.CurrentCulture))
-                    continue;
-
-                TestEnum outValue;
-                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(nameUpper, false, out outValue));
-            }
-
-            foreach (string name in names)
-            {
-                string nameLower = name.ToLower();
-                if (name.Equals(nameLower, StringComparison.CurrentCulture))
-                    continue;
-
-                TestEnum outValue;
-                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(nameLower, false, out outValue));
-            }
-        }
-
-        [Test]
-        public void TryParseRandomStrings()
-        {
-            var names = Enum.GetNames(typeof(TestEnum));
-
-            for (int i = 0; i < 5000; i++)
-            {
-                string s = CreateRandomString();
-                if (names.Contains(s, StringComparer.OrdinalIgnoreCase))
-                    continue;
-
-                TestEnum outValue;
-                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(s, true, out outValue), "String: " + s);
-                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(s, false, out outValue), "String: " + s);
-            }
-        }
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            h,
+            i
+        } ;
 
         enum EVByte : byte
         {
@@ -779,28 +863,6 @@ namespace NetGore.Tests.NetGore
             H
         }
 
-        enum EVULong : ulong
-        {
-            A, B, C, D, E, F, G, H
-        }
-
-        enum EVLong : long
-        {
-            A,B,C,D,E,F,G,H
-        }
-
-        enum EVUInt : uint
-        {
-            A = 0,
-            B = 1,
-            C,
-            D,
-            E,
-            F = 100,
-            G,
-            H
-        }
-
         enum EVInt
         {
             A = -100,
@@ -809,6 +871,18 @@ namespace NetGore.Tests.NetGore
             D,
             E,
             F = 100,
+            G,
+            H
+        }
+
+        enum EVLong : long
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
             G,
             H
         }
@@ -826,6 +900,30 @@ namespace NetGore.Tests.NetGore
         }
 
         enum EVShort : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        enum EVUInt : uint
+        {
+            A = 0,
+            B = 1,
+            C,
+            D,
+            E,
+            F = 100,
+            G,
+            H
+        }
+
+        enum EVULong : ulong
         {
             A,
             B,

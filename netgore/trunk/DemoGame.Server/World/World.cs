@@ -19,8 +19,8 @@ namespace DemoGame.Server
     /// </summary>
     public class World : WorldBase, IDisposable
     {
-        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
         readonly DArray<Map> _maps;

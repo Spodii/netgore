@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using NetGore.IO;
 
@@ -48,8 +45,7 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
-        public DbConnectionSettings()
-            : this(_settingsFileName)
+        public DbConnectionSettings() : this(_settingsFileName)
         {
         }
 
@@ -58,6 +54,14 @@ namespace NetGore.Db
         /// </summary>
         [SyncValue]
         public string Database { get; set; }
+
+        /// <summary>
+        /// Gets the default file path for the <see cref="DbConnectionSettings"/>.
+        /// </summary>
+        public static string DefaultFilePath
+        {
+            get { return ContentPaths.Build.Settings.Join(_settingsFileName); }
+        }
 
         /// <summary>
         /// Gets or sets the Sql connection host address.
@@ -84,17 +88,6 @@ namespace NetGore.Db
         public string User { get; set; }
 
         /// <summary>
-        /// Gets the default file path for the <see cref="DbConnectionSettings"/>.
-        /// </summary>
-        public static string DefaultFilePath
-        {
-            get
-            {
-                return ContentPaths.Build.Settings.Join(_settingsFileName);
-            }
-        }
-
-        /// <summary>
         /// Saves the <see cref="DbConnectionSettings"/> to file.
         /// </summary>
         public void Save()
@@ -104,6 +97,8 @@ namespace NetGore.Db
                 ((IPersistable)this).WriteState(writer);
             }
         }
+
+        #region IPersistable Members
 
         /// <summary>
         /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
@@ -123,5 +118,7 @@ namespace NetGore.Db
         {
             PersistableHelper.Write(this, writer);
         }
+
+        #endregion
     }
 }

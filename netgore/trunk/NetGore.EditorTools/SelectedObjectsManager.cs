@@ -171,7 +171,7 @@ namespace NetGore.EditorTools
             {
                 List<T> objs = new List<T>(SelectedListBox.SelectedItems.Count);
                 foreach (var item in 
-                SelectedListBox.SelectedItems)
+                    SelectedListBox.SelectedItems)
                 {
                     var o = item as T;
                     if (o != null)

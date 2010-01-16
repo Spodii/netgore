@@ -17,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectPersistentMapNPCsByRespawnMapQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectPersistentMapNPCsByRespawnMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectPersistentMapNPCsByRespawnMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(NpcCharacterTable.DbColumns, "id", "map_id");
         }

@@ -7,14 +7,16 @@ namespace NetGore.EditorTools
     public class UndoManagerBase : IUndoManager
     {
         /// <summary>
-        /// Current index that the cursor is on.
-        /// </summary>
-        private int _cursorIndex;
-
-        /// <summary>
         /// Collection of IUndoEvents.
         /// </summary>
-        private List<IUndoEvent> _events = new List<IUndoEvent>();
+        readonly List<IUndoEvent> _events = new List<IUndoEvent>();
+
+        /// <summary>
+        /// Current index that the cursor is on.
+        /// </summary>
+        int _cursorIndex;
+
+        #region IUndoManager Members
 
         /// <summary>
         /// Adds an IUndoEvent to the list, clears any events that have previously been undone.
@@ -32,7 +34,6 @@ namespace NetGore.EditorTools
             //Move the cursor to the end of the buffer.
             _cursorIndex = _events.Count() - 1;
         }
-
 
         /// <summary>
         /// Pops the IUndoEvent that the cursor is currently on, but leaves it available for Redoing.
@@ -145,6 +146,7 @@ namespace NetGore.EditorTools
             _cursorIndex += indexModifier;
             return true;
         }
-    }
 
+        #endregion
+    }
 }

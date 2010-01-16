@@ -5,9 +5,7 @@ using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using NetGore;
 using NetGore.Graphics.GUI;
-using NetGore.IO;
 using NetGore.NPCChat;
 
 namespace DemoGame.Client

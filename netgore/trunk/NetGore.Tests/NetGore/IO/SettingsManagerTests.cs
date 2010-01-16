@@ -459,6 +459,8 @@ namespace NetGore.Tests.IO
                 return (l.A == r.A) && (l.B == r.B) && (l.C == r.C);
             }
 
+            #region IPersistable Members
+
             /// <summary>
             /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
             /// same order as they were written.
@@ -477,6 +479,8 @@ namespace NetGore.Tests.IO
             {
                 PersistableHelper.Write(this, writer);
             }
+
+            #endregion
         }
     }
 }

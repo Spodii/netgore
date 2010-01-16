@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Stats
@@ -37,8 +36,7 @@ namespace NetGore.Stats
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
         /// will end up being equal to the Value of <paramref name="istatToCopy"/>.</param>
-        public Stat(IStat<TStatType> istatToCopy, int initialValue)
-            : this(istatToCopy)
+        public Stat(IStat<TStatType> istatToCopy, int initialValue) : this(istatToCopy)
         {
             Value = initialValue;
         }
@@ -77,7 +75,7 @@ namespace NetGore.Stats
             return _statType + ": " + Value;
         }
 
-        #region IStat Members
+        #region IStat<TStatType> Members
 
         /// <summary>
         /// Gets the StatType of this IStat.
@@ -180,16 +178,15 @@ namespace NetGore.Stats
     /// <summary>
     /// Describes a single IStat, containing the StatType and value of the IStat.
     /// </summary>
-    public class Stat<TStatType, TStatValueType> : Stat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
-        where TStatValueType : IStatValueType, new()
+    public class Stat<TStatType, TStatValueType> : Stat<TStatType>
+        where TStatType : struct, IComparable, IConvertible, IFormattable where TStatValueType : IStatValueType, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Stat&lt;TStatType, TStatValueType&gt;"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="initialValue">The initial value to assign to this Stat.</param>
-        public Stat(TStatType statType, int initialValue)
-            : base(statType, new TStatValueType(), initialValue)
+        public Stat(TStatType statType, int initialValue) : base(statType, new TStatValueType(), initialValue)
         {
         }
 
@@ -197,8 +194,7 @@ namespace NetGore.Stats
         /// Initializes a new instance of the <see cref="Stat&lt;TStatType, TStatValueType&gt;"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
-        public Stat(TStatType statType)
-            : base(statType, new TStatValueType())
+        public Stat(TStatType statType) : base(statType, new TStatValueType())
         {
         }
     }

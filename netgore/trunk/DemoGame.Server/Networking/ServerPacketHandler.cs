@@ -35,7 +35,7 @@ namespace DemoGame.Server
             _serverSockets.OnDisconnect += ServerSockets_OnDisconnect;
             _sayHandler = new SayHandler(server);
 
-            _ppManager = new MessageProcessorManager(this, EnumHelper < ClientPacketID>.BitsRequired);
+            _ppManager = new MessageProcessorManager(this, EnumHelper<ClientPacketID>.BitsRequired);
         }
 
         public IDbController DbController
@@ -145,7 +145,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.GetEquipmentItemInfo)]
         void RecvGetEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum < EquipmentSlot>();
+            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
 
             User user;
             if ((user = TryGetUser(conn)) != null)
@@ -319,7 +319,7 @@ namespace DemoGame.Server
             // Get the StatType
             try
             {
-                statType = r.ReadEnum < StatType>();
+                statType = r.ReadEnum<StatType>();
             }
             catch (InvalidCastException)
             {
@@ -464,7 +464,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.UnequipItem)]
         void RecvUnequipItem(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum < EquipmentSlot>();
+            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
 
             User user;
             if ((user = TryGetUser(conn)) != null)

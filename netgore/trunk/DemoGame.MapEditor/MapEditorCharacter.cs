@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using DemoGame.Server;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
@@ -16,8 +13,6 @@ namespace DemoGame.MapEditor
     public class MapEditorCharacter : Character
     {
         readonly CharacterID _characterID;
-
-        public CharacterID CharacterID { get { return _characterID; } }
 
         public MapEditorCharacter(CharacterID characterID, Map map)
         {
@@ -34,13 +29,9 @@ namespace DemoGame.MapEditor
             Initialize(map, SkeletonManager.Create(ContentPaths.Build));
         }
 
-        /// <summary>
-        /// Perform pre-collision velocity and position updating.
-        /// </summary>
-        /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
-        public override void UpdateVelocity(float deltaTime)
+        public CharacterID CharacterID
         {
-            SetVelocityRaw(Vector2.Zero);
+            get { return _characterID; }
         }
 
         /// <summary>
@@ -52,6 +43,15 @@ namespace DemoGame.MapEditor
         public override string ToString()
         {
             return string.Format("[{0}] {1}", CharacterID, Name);
+        }
+
+        /// <summary>
+        /// Perform pre-collision velocity and position updating.
+        /// </summary>
+        /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
+        public override void UpdateVelocity(float deltaTime)
+        {
+            SetVelocityRaw(Vector2.Zero);
         }
     }
 }

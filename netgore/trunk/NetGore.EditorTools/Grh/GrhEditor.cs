@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,38 +14,6 @@ namespace NetGore.EditorTools
     public class GrhEditor : UITypeEditor
     {
         /// <summary>
-        /// Indicates whether the specified context supports painting a representation of an object's value within th
-        /// specified context.
-        /// </summary>
-        /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that can be used to gain
-        /// additional context information.</param>
-        /// <returns>
-        /// true if <see cref="M:System.Drawing.Design.UITypeEditor.PaintValue(System.Object,System.Drawing.Graphics,System.Drawing.Rectangle)"/>
-        /// is implemented; otherwise, false.
-        /// </returns>
-        public override bool GetPaintValueSupported(System.ComponentModel.ITypeDescriptorContext context)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Paints a representation of the value of an object using the specified
-        /// <see cref="T:System.Drawing.Design.PaintValueEventArgs"/>.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Drawing.Design.PaintValueEventArgs"/> that indicates what to paint and
-        /// where to paint it.</param>
-        public override void PaintValue(PaintValueEventArgs e)
-        {
-            var image = GrhImageList.TryGetImage(e.Value as Grh);
-            if (image != null)
-            {
-                e.Graphics.DrawImage(image, e.Bounds);
-            }
-
-            base.PaintValue(e);
-        }
-
-        /// <summary>
         /// Edits the specified object's value using the editor style indicated by the
         /// <see cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> method.
         /// </summary>
@@ -57,7 +26,7 @@ namespace NetGore.EditorTools
         /// The new value of the object. If the value of the object has not changed, this should return the
         /// same object it was passed.
         /// </returns>
-        public override object EditValue(System.ComponentModel.ITypeDescriptorContext context, IServiceProvider provider, object value)
+        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             var grh = value as Grh;
@@ -76,7 +45,6 @@ namespace NetGore.EditorTools
             }
 
             return value;
-
         }
 
         /// <summary>
@@ -92,9 +60,39 @@ namespace NetGore.EditorTools
         /// then <see cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> will return
         /// <see cref="F:System.Drawing.Design.UITypeEditorEditStyle.None"/>.
         /// </returns>
-        public override UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;
+        }
+
+        /// <summary>
+        /// Indicates whether the specified context supports painting a representation of an object's value within th
+        /// specified context.
+        /// </summary>
+        /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that can be used to gain
+        /// additional context information.</param>
+        /// <returns>
+        /// true if <see cref="M:System.Drawing.Design.UITypeEditor.PaintValue(System.Object,System.Drawing.Graphics,System.Drawing.Rectangle)"/>
+        /// is implemented; otherwise, false.
+        /// </returns>
+        public override bool GetPaintValueSupported(ITypeDescriptorContext context)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Paints a representation of the value of an object using the specified
+        /// <see cref="T:System.Drawing.Design.PaintValueEventArgs"/>.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Drawing.Design.PaintValueEventArgs"/> that indicates what to paint and
+        /// where to paint it.</param>
+        public override void PaintValue(PaintValueEventArgs e)
+        {
+            var image = GrhImageList.TryGetImage(e.Value as Grh);
+            if (image != null)
+                e.Graphics.DrawImage(image, e.Bounds);
+
+            base.PaintValue(e);
         }
     }
 }

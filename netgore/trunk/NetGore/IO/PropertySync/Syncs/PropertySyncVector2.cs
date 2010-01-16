@@ -1,7 +1,5 @@
 using System.Linq;
-using System.Reflection;
 using Microsoft.Xna.Framework;
-using NetGore.IO;
 
 namespace NetGore.IO.PropertySync
 {

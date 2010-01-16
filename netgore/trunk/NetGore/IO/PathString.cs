@@ -10,6 +10,9 @@ namespace NetGore.IO
     /// </summary>
     public sealed class PathString : IEquatable<PathString>, IComparable<PathString>
     {
+        static readonly string _altDirSep = Path.AltDirectorySeparatorChar.ToString();
+        static readonly string _dirSep = Path.DirectorySeparatorChar.ToString();
+
         /// <summary>
         /// The <see cref="StringComparer"/> used to compare paths.
         /// </summary>
@@ -30,34 +33,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="a">A.</param>
-        /// <param name="b">B.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(PathString a, PathString b)
-        {
-            if (Equals(a, null))
-                return Equals(a, b);
-
-            return a.Equals(b);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="a">A.</param>
-        /// <param name="b">B.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(PathString a, PathString b)
-        {
-            return !(a == b);
-        }
-
-        static readonly string _dirSep = Path.DirectorySeparatorChar.ToString();
-        static readonly string _altDirSep = Path.AltDirectorySeparatorChar.ToString();
-
-        /// <summary>
         /// Gets the parent path for this path.
         /// </summary>
         /// <returns>The parent path for this path, or the same path if already at the highest level path.</returns>
@@ -69,6 +44,45 @@ namespace NetGore.IO
                 return this;
 
             return new PathString(parent.FullName);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>;
+        /// otherwise, false.
+        /// </returns>
+        /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (obj is PathString)
+                return Equals((PathString)obj);
+            else if (obj is string)
+                return _pathComparer.Equals(_path, (string)obj);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            if (_path == null)
+                return 0;
+
+            return _pathComparer.GetHashCode(_path);
         }
 
         /// <summary>
@@ -98,16 +112,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
+        /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(PathString other)
+        public override string ToString()
         {
-            return _pathComparer.Equals(_path, other._path);
+            return _path;
         }
+
+        #region IComparable<PathString> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -121,15 +136,47 @@ namespace NetGore.IO
             return _pathComparer.Compare(_path, Equals(other, null) ? null : other._path);
         }
 
+        #endregion
+
+        #region IEquatable<PathString> Members
+
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public override string ToString()
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(PathString other)
         {
-            return _path;
+            return _pathComparer.Equals(_path, other._path);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">B.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(PathString a, PathString b)
+        {
+            if (Equals(a, null))
+                return Equals(a, b);
+
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">B.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(PathString a, PathString b)
+        {
+            return !(a == b);
         }
 
         /// <summary>
@@ -150,49 +197,6 @@ namespace NetGore.IO
         public static implicit operator PathString(string value)
         {
             return new PathString(value);
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>;
-        /// otherwise, false.
-        /// </returns>
-        /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            if (ReferenceEquals(this, obj))
-                return true;
-
-            if (obj is PathString)
-            {
-                return Equals((PathString)obj);
-            }
-            else if (obj is string)
-            {
-                return _pathComparer.Equals(_path, (string)obj);
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override int GetHashCode()
-        {
-            if (_path == null)
-                return 0;
-
-            return _pathComparer.GetHashCode(_path);
         }
     }
 }
