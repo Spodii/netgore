@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="MapEditorCharacter.cs" />
     <Compile Include="MapEditorDynamicEntityFactory.cs" />
+    <Compile Include="MapPersistentNPCDrawer.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Forms\ScreenForm.cs">
       <SubType>Form</SubType>

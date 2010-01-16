@@ -73,7 +73,7 @@ namespace DemoGame.MapEditor
         readonly ScreenGrid _grid;
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
-        readonly MapDrawExtensionCollection _mapDrawExtensionCollection = new MapDrawExtensionCollection();
+        readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
         readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace DemoGame.MapEditor
             get { return _map; }
             private set
             {
-                if (_map == value)
+                if (Map == value)
                     return;
                 if (value == null)
                     throw new ArgumentNullException("value");
@@ -266,8 +266,8 @@ namespace DemoGame.MapEditor
 
                 // Set new map
                 _map = value;
-                _map.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
-                _map.OnSave += Map_OnSave;
+                Map.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
+                Map.OnSave += Map_OnSave;
 
                 // Remove all of the walls previously created from the MapGrhs
                 var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
@@ -283,19 +283,19 @@ namespace DemoGame.MapEditor
                 txtMapHeight.Text = Map.Height.ToString();
 
                 // Notify listeners
-                HandleChangeMap(oldMap, _map);
+                HandleChangeMap(oldMap, Map);
 
                 if (OnChangeMap != null)
-                    OnChangeMap(oldMap, _map);
+                    OnChangeMap(oldMap, Map);
             }
         }
 
         /// <summary>
-        /// Gets the <see cref="MapDrawExtensionCollection"/>.
+        /// Gets the <see cref="MapDrawingExtensionCollection"/>.
         /// </summary>
-        public MapDrawExtensionCollection MapDrawExtensionCollection
+        public MapDrawingExtensionCollection MapDrawingExtensions
         {
-            get { return _mapDrawExtensionCollection; }
+            get { return _mapDrawingExtensions; }
         }
 
         public MapDrawFilterHelper MapDrawFilterHelper
@@ -474,22 +474,22 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Creates an instance of a <see cref="MapDrawExtensionBase"/> that is toggled on and off from a <see cref="CheckBox"/>,
-        /// and adds it to the <see cref="MapDrawExtensionCollection"/>.
+        /// Creates an instance of a <see cref="MapDrawingExtension"/> that is toggled on and off from a <see cref="CheckBox"/>,
+        /// and adds it to the <see cref="MapDrawingExtensionCollection"/>.
         /// </summary>
         /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
         /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
         /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
-        T CreateMapDrawExtension<T>(CheckBox checkBox) where T : MapDrawExtensionBase, new()
+        T CreateMapDrawExtension<T>(CheckBox checkBox) where T : IMapDrawingExtension, new()
         {
             // Create the instance of the MapDrawExtensionBase
-            T instance = new T { Map = Map, Enabled = checkBox.Checked };
+            T instance = new T { Enabled = checkBox.Checked };
 
             // Handle when the CheckBox value changes
             checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
 
             // Add to the collection
-            _mapDrawExtensionCollection.Add(instance);
+            _mapDrawingExtensions.Add(instance);
 
             return instance;
         }
@@ -556,7 +556,7 @@ namespace DemoGame.MapEditor
             _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
             // Map
-            Map.Draw(_sb, _camera);
+            Map.Draw(_sb);
 
             // MapGrh bound walls
             if (chkDrawAutoWalls.Checked)
@@ -653,7 +653,8 @@ namespace DemoGame.MapEditor
             SelectedObjs.Clear();
 
             // Forward the change to some controls manually
-            _camera.Map = newMap;
+            Camera.Map = newMap;
+            MapDrawingExtensions.Map = newMap;
 
             // Automatically update all the controls that implement IMapBoundControl
             foreach (var c in _mapBoundControls)
@@ -784,11 +785,14 @@ namespace DemoGame.MapEditor
             }
             // ReSharper restore EmptyGeneralCatchClause
 
-            // Set up the MapExtensionBases
+            // Set up the MapDrawExtensionCollection
             CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);
             CreateMapDrawExtension<MapWallDrawer>(chkShowWalls);
+
             MapSpawnDrawer v = CreateMapDrawExtension<MapSpawnDrawer>(chkDrawSpawnAreas);
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
+
+            _mapDrawingExtensions.Add(new MapPersistentNPCDrawer(lstPersistentNPCs));
 
             // Populate the SettingsManager
             PopulateSettingsManager();
@@ -952,7 +956,7 @@ namespace DemoGame.MapEditor
             SettingsManager.Add(keyValuePairs);
 
             // Manually add the other things that implement IPersistable
-            SettingsManager.Add("Grid", _grid);
+            SettingsManager.Add("Grid", Grid);
         }
 
         void ScreenForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -119,7 +119,7 @@ namespace DemoGame.Client
         /// <param name="sb">SpriteBatch to draw to</param>
         public void Draw(SpriteBatch sb)
         {
-            _map.Draw(sb, Camera);
+            _map.Draw(sb);
         }
 
         /// <summary>
@@ -128,8 +128,7 @@ namespace DemoGame.Client
         /// <param name="map">The map.</param>
         /// <param name="layer">The layer.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        static void DrawEmoticonsHandler(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, ICamera2D camera)
+        static void DrawEmoticonsHandler(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
         {
             if (layer == MapRenderLayer.Chararacter)
                 _emoticonDisplayManager.Draw(spriteBatch);
