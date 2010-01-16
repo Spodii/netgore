@@ -31,7 +31,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Contains the sum of the stat modifiers for each ActiveStatusEffect for each StatType.
         /// </summary>
-        readonly FullStatCollection _modStats = new FullStatCollection(StatCollectionType.Modified);
+        readonly FullStatCollection<StatType> _modStats = new FullStatCollection<StatType>(StatCollectionType.Modified, StatTypeHelper.Instance);
 
         int _lastUpdateTime;
 
@@ -79,7 +79,7 @@ namespace DemoGame.Server
             // Randomly test to see if the values are correct
             if (_random.Next(0, 5) == 0)
             {
-                FullStatCollection oldValues = _modStats.DeepCopy();
+                var oldValues = _modStats.DeepCopy();
                 RecalculateStatBonuses();
                 Debug.Assert(_modStats.AreValuesEqual(oldValues), "Somehow, at some point, the ModStats became out of sync!");
             }

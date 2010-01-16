@@ -81,7 +81,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <typeparamref name="T"/>.</returns>
-        protected abstract T FromInt(int value);
+        public abstract T FromInt(int value);
 
         /// <summary>
         /// Gets the Enum of the given type from its name. 
@@ -167,7 +167,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected abstract int ToInt(T value);
+        public abstract int ToInt(T value);
 
         /// <summary>
         /// Gets the name of the <see cref="Enum"/>.

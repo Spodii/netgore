@@ -35,7 +35,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="Emoticon"/>.</returns>
-        protected override Emoticon FromInt(int value)
+        public override Emoticon FromInt(int value)
         {
             return (Emoticon)value;
         }
@@ -45,7 +45,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(Emoticon value)
+        public override int ToInt(Emoticon value)
         {
             return (int)value;
         }

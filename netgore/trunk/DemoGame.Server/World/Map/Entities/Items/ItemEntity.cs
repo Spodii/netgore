@@ -177,7 +177,7 @@ namespace DemoGame.Server
             get { return _dbController.GetQuery<UpdateItemFieldQuery>(); }
         }
 
-        void BaseStatChangeReceiver(IStat stat)
+        void BaseStatChangeReceiver(IStat<StatType> stat)
         {
             string field = stat.StatType.GetDatabaseField(StatCollectionType.Base);
             SynchronizeField(field, stat.Value);
@@ -361,7 +361,7 @@ namespace DemoGame.Server
             return true;
         }
 
-        void ReqStatChangeReceiver(IStat stat)
+        void ReqStatChangeReceiver(IStat<StatType> stat)
         {
             string field = stat.StatType.GetDatabaseField(StatCollectionType.Requirement);
             SynchronizeField(field, stat.Value);

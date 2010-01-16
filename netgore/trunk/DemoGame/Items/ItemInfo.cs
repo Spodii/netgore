@@ -9,13 +9,13 @@ namespace DemoGame
     /// </summary>
     public class ItemInfo : IItemInfo
     {
-        IStatCollection _baseStats;
+        IStatCollection<StatType> _baseStats;
         string _description;
         GrhIndex _grhIndex;
         SPValueType _hp;
         SPValueType _mp;
         string _name;
-        IStatCollection _reqStats;
+        IStatCollection<StatType> _reqStats;
         int _value;
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace DemoGame
         /// <param name="baseStats">The base stats.</param>
         /// <param name="reqStats">The req stats.</param>
         public static void Write(BitStream w, string name, string desc, int value, GrhIndex grhIndex, SPValueType hp,
-                                 SPValueType mp, IStatCollection baseStats, IStatCollection reqStats)
+                                 SPValueType mp, IStatCollection<StatType> baseStats, IStatCollection<StatType> reqStats)
         {
             w.Write(name);
             w.Write(desc);
@@ -101,7 +101,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="IStatCollection"/> containing the base stats.
         /// </summary>
-        public IStatCollection BaseStats
+        public IStatCollection<StatType> BaseStats
         {
             get { return _baseStats; }
         }
@@ -141,7 +141,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="IStatCollection"/> containing the required stats.
         /// </summary>
-        public IStatCollection ReqStats
+        public IStatCollection<StatType> ReqStats
         {
             get { return _reqStats; }
         }

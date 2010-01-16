@@ -1447,7 +1447,7 @@ namespace NetGore.Tests.IO
             /// </summary>
             /// <param name="value">The int value.</param>
             /// <returns>The <paramref name="value"/> casted to type TestEnum.</returns>
-            protected override TestEnum FromInt(int value)
+            public override TestEnum FromInt(int value)
             {
                 return (TestEnum)value;
             }
@@ -1457,7 +1457,7 @@ namespace NetGore.Tests.IO
             /// </summary>
             /// <param name="value">The value.</param>
             /// <returns>The <paramref name="value"/> casted to an int.</returns>
-            protected override int ToInt(TestEnum value)
+            public override int ToInt(TestEnum value)
             {
                 return (int)value;
             }

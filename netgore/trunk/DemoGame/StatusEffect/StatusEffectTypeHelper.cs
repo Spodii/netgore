@@ -35,7 +35,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <typeparamref name="T"/>.</returns>
-        protected override StatusEffectType FromInt(int value)
+        public override StatusEffectType FromInt(int value)
         {
             return (StatusEffectType)value;
         }
@@ -45,7 +45,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(StatusEffectType value)
+        public override int ToInt(StatusEffectType value)
         {
             return (int)value;
         }

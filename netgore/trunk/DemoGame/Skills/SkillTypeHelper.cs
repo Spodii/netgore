@@ -35,7 +35,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="SkillType"/>.</returns>
-        protected override SkillType FromInt(int value)
+        public override SkillType FromInt(int value)
         {
             return (SkillType)value;
         }
@@ -45,7 +45,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(SkillType value)
+        public override int ToInt(SkillType value)
         {
             return (int)value;
         }

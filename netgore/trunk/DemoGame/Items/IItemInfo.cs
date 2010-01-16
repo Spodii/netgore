@@ -11,7 +11,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="IStatCollection"/> containing the base stats.
         /// </summary>
-        IStatCollection BaseStats { get; }
+        IStatCollection<StatType> BaseStats { get; }
 
         /// <summary>
         /// Gets the description.
@@ -41,7 +41,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="IStatCollection"/> containing the required stats.
         /// </summary>
-        IStatCollection ReqStats { get; }
+        IStatCollection<StatType> ReqStats { get; }
 
         /// <summary>
         /// Gets the base value of the item.

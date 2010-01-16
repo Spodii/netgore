@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -9,17 +10,17 @@ namespace DemoGame
     /// Interface for the primary holder object of stat information, containing the type of stat, events, and the
     /// actual value of the stat.
     /// </summary>
-    public interface IStat
+    public interface IStat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Notifies listeners that the value of the stat has changed.
         /// </summary>
-        event IStatEventHandler OnChange;
+        event IStatEventHandler<TStatType> OnChange;
 
         /// <summary>
-        /// Gets the StatType of this IStat.
+        /// Gets the StatType of this stat.
         /// </summary>
-        StatType StatType { get; }
+        TStatType StatType { get; }
 
         /// <summary>
         /// Gets or sets the value of this IStat as an integer.
@@ -31,7 +32,7 @@ namespace DemoGame
         /// containing the same IStatValueType with the same value, and same StatType.
         /// </summary>
         /// <returns>The deep copy of the IStat.</returns>
-        IStat DeepCopy();
+        IStat<TStatType> DeepCopy();
 
         /// <summary>
         /// Creates a deep copy of the IStat's IStatValueType, resulting in a new IStatValueType object of the same

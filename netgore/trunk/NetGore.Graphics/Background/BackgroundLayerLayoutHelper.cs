@@ -35,7 +35,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="BackgroundLayerLayout"/>.</returns>
-        protected override BackgroundLayerLayout FromInt(int value)
+        public override BackgroundLayerLayout FromInt(int value)
         {
             return (BackgroundLayerLayout)value;
         }
@@ -45,7 +45,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(BackgroundLayerLayout value)
+        public override int ToInt(BackgroundLayerLayout value)
         {
             return (int)value;
         }

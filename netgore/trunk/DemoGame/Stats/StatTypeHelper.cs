@@ -44,7 +44,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="StatType"/>.</returns>
-        protected override StatType FromInt(int value)
+        public override StatType FromInt(int value)
         {
             return (StatType)value;
         }
@@ -54,7 +54,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(StatType value)
+        public override int ToInt(StatType value)
         {
             return (int)value;
         }

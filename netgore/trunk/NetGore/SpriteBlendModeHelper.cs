@@ -36,7 +36,7 @@ namespace NetGore
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="SpriteBlendModeHelper"/>.</returns>
-        protected override SpriteBlendMode FromInt(int value)
+        public override SpriteBlendMode FromInt(int value)
         {
             return (SpriteBlendMode)value;
         }
@@ -46,7 +46,7 @@ namespace NetGore
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(SpriteBlendMode value)
+        public override int ToInt(SpriteBlendMode value)
         {
             return (int)value;
         }

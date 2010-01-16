@@ -35,7 +35,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="EquipmentSlot"/>.</returns>
-        protected override EquipmentSlot FromInt(int value)
+        public override EquipmentSlot FromInt(int value)
         {
             return (EquipmentSlot)value;
         }
@@ -45,7 +45,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(EquipmentSlot value)
+        public override int ToInt(EquipmentSlot value)
         {
             return (int)value;
         }

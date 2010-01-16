@@ -85,7 +85,7 @@ namespace NetGore
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <see cref="Alignment"/>.</returns>
-        protected override Alignment FromInt(int value)
+        public override Alignment FromInt(int value)
         {
             return (Alignment)value;
         }
@@ -95,7 +95,7 @@ namespace NetGore
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(Alignment value)
+        public override int ToInt(Alignment value)
         {
             return (int)value;
         }

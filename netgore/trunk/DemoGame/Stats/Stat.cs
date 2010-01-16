@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -8,12 +9,12 @@ namespace DemoGame
     /// <summary>
     /// Describes a single <see cref="IStat"/>, containing the <see cref="StatType"/> and value current stat value.
     /// </summary>
-    public class Stat : IStat
+    public class Stat<TStatType> : IStat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// The type of Stat.
         /// </summary>
-        readonly StatType _statType;
+        readonly TStatType _statType;
 
         /// <summary>
         /// The Stat's value.
@@ -24,7 +25,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="Stat"/> class.
         /// </summary>
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
-        public Stat(IStat istatToCopy)
+        public Stat(IStat<TStatType> istatToCopy)
         {
             _statType = istatToCopy.StatType;
             _value = istatToCopy.DeepCopyValueType();
@@ -36,7 +37,8 @@ namespace DemoGame
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
         /// will end up being equal to the Value of <paramref name="istatToCopy"/>.</param>
-        public Stat(IStat istatToCopy, int initialValue) : this(istatToCopy)
+        public Stat(IStat<TStatType> istatToCopy, int initialValue)
+            : this(istatToCopy)
         {
             Value = initialValue;
         }
@@ -46,7 +48,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
-        public Stat(StatType statType, IStatValueType statValueType)
+        public Stat(TStatType statType, IStatValueType statValueType)
         {
             _statType = statType;
             _value = statValueType;
@@ -59,7 +61,7 @@ namespace DemoGame
         /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
         /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
         /// will end up being the current value of the <paramref name="statValueType"/>.</param>
-        public Stat(StatType statType, IStatValueType statValueType, int initialValue) : this(statType, statValueType)
+        public Stat(TStatType statType, IStatValueType statValueType, int initialValue) : this(statType, statValueType)
         {
             Value = initialValue;
         }
@@ -80,7 +82,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the StatType of this IStat.
         /// </summary>
-        public StatType StatType
+        public TStatType StatType
         {
             get { return _statType; }
         }
@@ -140,7 +142,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that the value of the stat has changed.
         /// </summary>
-        public event IStatEventHandler OnChange;
+        public event IStatEventHandler<TStatType> OnChange;
 
         /// <summary>
         /// Writes the Value property of the IStat directly into the specified BitStream. The BitStream must not be null,
@@ -167,9 +169,9 @@ namespace DemoGame
         /// containing the same IStatValueType with the same value, and same StatType.
         /// </summary>
         /// <returns>The deep copy of the IStat.</returns>
-        public virtual IStat DeepCopy()
+        public virtual IStat<TStatType> DeepCopy()
         {
-            return new Stat(StatType, _value, Value);
+            return new Stat<TStatType>(StatType, _value, Value);
         }
 
         #endregion
@@ -178,23 +180,25 @@ namespace DemoGame
     /// <summary>
     /// Describes a single IStat, containing the StatType and value of the IStat.
     /// </summary>
-    /// <typeparam name="T">The Type of IStatValueType.</typeparam>
-    public class Stat<T> : Stat where T : IStatValueType, new()
+    public class Stat<TStatType, TStatValueType> : Stat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
+        where TStatValueType : IStatValueType, new()
     {
         /// <summary>
-        /// Stat constructor.
+        /// Initializes a new instance of the <see cref="Stat&lt;TStatType, TStatValueType&gt;"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
         /// <param name="initialValue">The initial value to assign to this Stat.</param>
-        public Stat(StatType statType, int initialValue) : base(statType, new T(), initialValue)
+        public Stat(TStatType statType, int initialValue)
+            : base(statType, new TStatValueType(), initialValue)
         {
         }
 
         /// <summary>
-        /// Stat constructor.
+        /// Initializes a new instance of the <see cref="Stat&lt;TStatType, TStatValueType&gt;"/> class.
         /// </summary>
         /// <param name="statType">The StatType of this Stat.</param>
-        public Stat(StatType statType) : base(statType, new T())
+        public Stat(TStatType statType)
+            : base(statType, new TStatValueType())
         {
         }
     }
