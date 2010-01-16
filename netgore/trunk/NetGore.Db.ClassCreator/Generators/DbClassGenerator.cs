@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NetGore.Db.ClassCreator.Properties;
+using NetGore.IO;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -992,6 +993,12 @@ namespace NetGore.Db.ClassCreator
             yield return CreateCodeForColumnMetadata(classNamespace);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="DbColumnInfo"/>s for the given
+        /// <paramref name="table"/>.
+        /// </summary>
+        /// <param name="table">The name of the table to get the <see cref="DbColumnInfo"/>s for.</param>
+        /// <returns>The <see cref="DbColumnInfo"/>s for the given <paramref name="table"/>.</returns>
         protected abstract IEnumerable<DbColumnInfo> GetColumns(string table);
 
         protected virtual MethodParameter[] GetConstructorParameters(DbClassData cd)
@@ -1008,6 +1015,10 @@ namespace NetGore.Db.ClassCreator
             return parameters;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the tables in the database.
+        /// </summary>
+        /// <returns>The name of the tables in the database.</returns>
         protected abstract IEnumerable<string> GetTables();
 
         /// <summary>
@@ -1083,6 +1094,9 @@ namespace NetGore.Db.ClassCreator
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public abstract void Dispose();
 
         #endregion

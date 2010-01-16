@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.ParticleEffectEdit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.MapEditor", "DemoGame.MapEditor\DemoGame.MapEditor.csproj", "{E45C879C-61AC-45F0-8E25-453EE46EB086}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbClassCreator", "DemoGame.DbClassCreator\DemoGame.DbClassCreator.csproj", "{D57B29DA-0305-41AA-BBF9-75F370AE33AE}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -188,6 +190,16 @@ Global
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|x86.ActiveCfg = Release|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.Debug|x86.ActiveCfg = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.Debug|x86.Build.0 = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.DebugCS|x86.ActiveCfg = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.DebugCS|x86.Build.0 = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.DebugDbClassGen|x86.Build.0 = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.DebugTopDown|x86.ActiveCfg = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.DebugTopDown|x86.Build.0 = Debug|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.Release|x86.ActiveCfg = Release|x86
+		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
