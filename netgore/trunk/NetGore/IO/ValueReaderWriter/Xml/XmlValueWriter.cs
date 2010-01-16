@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Xml;
 using log4net;
 
-// NOTE: This class won't work if you forget to call Dispose. Would be nice to use a destructor to fix that.
-
 namespace NetGore.IO
 {
     /// <summary>
