@@ -1003,38 +1003,11 @@ namespace DemoGame
             // Remove any objects outside of the new dimensions
             if (Size.X > newSize.X || Size.Y > newSize.Y)
             {
-                for (var i = 0; i < _entities.Count; i++)
+                var outOfRangeEntities = Entities.Where(x => x.Max.X > newSize.X || x.Max.Y > newSize.Y).ToImmutable();
+                foreach (var entity in outOfRangeEntities)
                 {
-                    var entity = _entities[i];
-                    if (entity == null)
-                        continue;
-
-                    if (entity is WallEntityBase)
-                    {
-                        // Remove a wall if the min value passes the new dimensions, 
-                        if (entity.Position.X > newSize.X || entity.Max.Y > newSize.Y)
-                        {
-                            entity.Dispose();
-                            i--;
-                        }
-                        else
-                        {
-                            // Trim down a wall if the max passes the new dimensions, but the min does not
-                            var newEntitySize = entity.Size;
-
-                            if (entity.Max.X > newSize.X)
-                                newSize.X = entity.Max.X - newSize.X;
-                            if (entity.Max.Y > newSize.Y)
-                                newSize.Y = entity.Max.Y - newSize.Y;
-
-                            entity.Resize(newEntitySize);
-                        }
-                    }
-                    else
-                    {
-                        // Any entity who's max value is now out of bounds will be removed
-                        entity.Dispose();
-                    }
+                    entity.Dispose();
+                    RemoveEntity(entity);
                 }
             }
 

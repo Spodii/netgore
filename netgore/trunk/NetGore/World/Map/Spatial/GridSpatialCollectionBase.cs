@@ -791,7 +791,7 @@ namespace NetGore
             // Grab all the spatials in the grid
             IEnumerable<ISpatial> spatials;
             if (_gridSegments != null)
-                spatials = _gridSegments.SelectMany(x => x).Distinct();
+                spatials = _gridSegments.SelectMany(x => x).Distinct().ToImmutable();
             else
                 spatials = Enumerable.Empty<ISpatial>();
 
