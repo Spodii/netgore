@@ -105,12 +105,9 @@ namespace NetGore
             int maxX = startIndex.X + length.X;
             int maxY = startIndex.Y + length.Y;
 
-            maxX = Math.Min(maxX, GridSize.X - 1);
-            maxY = Math.Min(maxY, GridSize.Y - 1);
-
-            for (int x = startIndex.X; x <= maxX; x++)
+            for (int x = Math.Max(0, startIndex.X); x <= Math.Min(maxX, GridSize.X - 1); x++)
             {
-                for (int y = startIndex.Y; y <= maxY; y++)
+                for (int y = Math.Max(0, startIndex.Y); y <= Math.Min(maxY, GridSize.Y - 1); y++)
                 {
                     yield return GetSegment(new Point(x, y));
                 }

@@ -64,7 +64,8 @@ namespace NetGore.Graphics
         float Scale { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the camera's view area in pixels.
+        /// Gets or sets the size of the camera's view area in pixels, taking the <see cref="ICamera2D.Scale"/> value
+        /// into consideration.
         /// </summary>
         Vector2 Size { get; set; }
 
