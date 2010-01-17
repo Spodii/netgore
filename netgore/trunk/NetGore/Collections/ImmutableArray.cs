@@ -193,7 +193,7 @@ namespace NetGore.Collections
         /// <param name="item">Unused.</param>
         /// <returns>None.</returns>
         /// <exception cref="NotSupportedException">Method is accessed.</exception>
-        public bool Remove(T item)
+        bool ICollection<T>.Remove(T item)
         {
             throw new NotSupportedException();
         }
