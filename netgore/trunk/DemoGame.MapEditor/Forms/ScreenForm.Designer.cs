@@ -36,7 +36,10 @@ namespace DemoGame.MapEditor
             System.Windows.Forms.SplitContainer splitContainer1;
             System.Windows.Forms.SplitContainer splitContainer2;
             System.Windows.Forms.SplitContainer splitContainer3;
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.panToolBar = new System.Windows.Forms.Panel();
+            this.lblZoom = new System.Windows.Forms.Label();
+            this.txtZoom = new System.Windows.Forms.TextBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
             this.scTabsAndSelected = new System.Windows.Forms.SplitContainer();
             this.tcMenu = new System.Windows.Forms.TabControl();
@@ -107,6 +110,9 @@ namespace DemoGame.MapEditor
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             splitContainer3.Panel1.SuspendLayout();
             splitContainer3.Panel2.SuspendLayout();
             splitContainer3.SuspendLayout();
@@ -175,7 +181,7 @@ namespace DemoGame.MapEditor
             // 
             // splitContainer2.Panel1
             // 
-            splitContainer2.Panel1.Controls.Add(this.panToolBar);
+            splitContainer2.Panel1.Controls.Add(this.splitContainer4);
             splitContainer2.Panel1MinSize = 26;
             // 
             // splitContainer2.Panel2
@@ -185,6 +191,24 @@ namespace DemoGame.MapEditor
             splitContainer2.SplitterDistance = 26;
             splitContainer2.TabIndex = 0;
             // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.panToolBar);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.lblZoom);
+            this.splitContainer4.Panel2.Controls.Add(this.txtZoom);
+            this.splitContainer4.Size = new System.Drawing.Size(800, 26);
+            this.splitContainer4.SplitterDistance = 693;
+            this.splitContainer4.TabIndex = 0;
+            // 
             // panToolBar
             // 
             this.panToolBar.BackColor = System.Drawing.SystemColors.Window;
@@ -192,8 +216,26 @@ namespace DemoGame.MapEditor
             this.panToolBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panToolBar.Location = new System.Drawing.Point(0, 0);
             this.panToolBar.Name = "panToolBar";
-            this.panToolBar.Size = new System.Drawing.Size(800, 26);
-            this.panToolBar.TabIndex = 7;
+            this.panToolBar.Size = new System.Drawing.Size(693, 26);
+            this.panToolBar.TabIndex = 8;
+            // 
+            // lblZoom
+            // 
+            this.lblZoom.AutoSize = true;
+            this.lblZoom.Location = new System.Drawing.Point(3, 6);
+            this.lblZoom.Name = "lblZoom";
+            this.lblZoom.Size = new System.Drawing.Size(54, 13);
+            this.lblZoom.TabIndex = 9;
+            this.lblZoom.Text = "Zoom (%):";
+            // 
+            // txtZoom
+            // 
+            this.txtZoom.Location = new System.Drawing.Point(59, 4);
+            this.txtZoom.Name = "txtZoom";
+            this.txtZoom.Size = new System.Drawing.Size(41, 20);
+            this.txtZoom.TabIndex = 10;
+            this.txtZoom.Text = "100";
+            this.txtZoom.TextChanged += new System.EventHandler(this.txtZoom_TextChanged);
             // 
             // GameScreen
             // 
@@ -952,6 +994,10 @@ namespace DemoGame.MapEditor
             splitContainer2.Panel1.ResumeLayout(false);
             splitContainer2.Panel2.ResumeLayout(false);
             splitContainer2.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            this.splitContainer4.Panel2.PerformLayout();
+            this.splitContainer4.ResumeLayout(false);
             splitContainer3.Panel1.ResumeLayout(false);
             splitContainer3.Panel2.ResumeLayout(false);
             splitContainer3.ResumeLayout(false);
@@ -994,8 +1040,6 @@ namespace DemoGame.MapEditor
             this.ResumeLayout(false);
 
         }
-
-        private System.Windows.Forms.Panel panToolBar;
         private System.Windows.Forms.Button btnOptimize;
         private System.Windows.Forms.Button btnSaveAs;
         private System.Windows.Forms.Button btnSave;
@@ -1057,5 +1101,9 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnDeletePersistentNPC;
         private System.Windows.Forms.Button btnAddPersistentNPC;
         public GameScreenControl GameScreen;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.Panel panToolBar;
+        private System.Windows.Forms.Label lblZoom;
+        private System.Windows.Forms.TextBox txtZoom;
     }
 }
