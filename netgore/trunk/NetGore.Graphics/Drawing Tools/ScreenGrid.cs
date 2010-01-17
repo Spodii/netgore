@@ -58,7 +58,7 @@ namespace NetGore.Graphics
         public Vector2 ScreenSize { get; set; }
 
         /// <summary>
-        /// Gets the size of the <see cref="ScreenGrid"/>.
+        /// Gets or sets the size of the <see cref="ScreenGrid"/>.
         /// </summary>
         [SyncValue]
         public Vector2 Size
