@@ -56,19 +56,19 @@ namespace NetGore.Graphics
             // Force the camera to stay in the map
             if (KeepInMap && Map != null)
             {
+                // Check the max values
+                var max = Max;
+                if (max.X > Map.Width)
+                    _min.X = Map.Width - Size.X;
+
+                if (max.Y > Map.Height)
+                    _min.Y = Map.Height - Size.Y;
+
                 // Check the min values
                 if (_min.X < 0)
                     _min.X = 0;
                 if (_min.Y < 0)
                     _min.Y = 0;
-
-                // Check the max values
-                var max = Max;
-                if (max.X > Map.Width)
-                    _min.X = Map.Width - (Size.X / Scale);
-
-                if (max.Y > Map.Height)
-                    _min.Y = Map.Height - (Size.Y / Scale);
             }
 
             // Update the matrix
@@ -92,7 +92,13 @@ namespace NetGore.Graphics
         /// <returns>A <see cref="Rectangle"/> that describes the region of the world area visible by the camera.</returns>
         public Rectangle GetViewArea()
         {
-            return new Rectangle((int)Min.X, (int)Min.Y, (int)Size.X, (int)Size.Y);
+            var min = Min;
+            var max = Max;
+
+            Vector2 size;
+            Vector2.Subtract(ref max, ref min, out size);
+
+            return new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
         }
 
         /// <summary>
@@ -139,7 +145,7 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Max
         {
-            get { return Min + Size / Scale; }
+            get { return Min + Size; }
         }
 
         /// <summary>
@@ -202,11 +208,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the size of the camera's view area in pixels.
+        /// Gets or sets the size of the camera's view area in pixels, taking the <see cref="ICamera2D.Scale"/> value
+        /// into consideration.
         /// </summary>
         public Vector2 Size
         {
-            get { return _size; }
+            get { return _size / Scale; }
             set { _size = value; }
         }
 
