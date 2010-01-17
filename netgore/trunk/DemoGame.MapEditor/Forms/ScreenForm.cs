@@ -166,6 +166,7 @@ namespace DemoGame.MapEditor
             _switches = switches;
 
             InitializeComponent();
+            scTabsAndSelected.Panel2Collapsed = true;
 
             _camera = new Camera2D(GameScreenSize);
             _grid = new ScreenGrid(GameScreenSize);
@@ -770,8 +771,6 @@ namespace DemoGame.MapEditor
 
         void LoadEditor()
         {
-            scTabsAndSelected.Panel2Collapsed = true;
-
             // Read the database connection
             DbConnectionSettings settings = new DbConnectionSettings();
             _dbController = new ServerDbController(settings.GetMySqlConnectionString());
