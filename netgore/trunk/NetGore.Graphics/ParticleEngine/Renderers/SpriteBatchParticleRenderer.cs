@@ -9,7 +9,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A <see cref="IParticleRenderer"/> that draws with a <see cref="SpriteBatch"/>.
     /// </summary>
-    public sealed class SpriteBatchRenderer : ParticleRendererBase
+    public sealed class SpriteBatchParticleRenderer : ParticleRendererBase
     {
         const SpriteSortMode _spriteBatchSortMode = SpriteSortMode.Deferred;
         const SaveStateMode _spriteBatchStateMode = SaveStateMode.None;

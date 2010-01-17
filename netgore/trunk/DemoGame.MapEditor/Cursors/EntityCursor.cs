@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
@@ -59,9 +60,10 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        public override void DrawInterface()
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
+        public override void DrawInterface(SpriteBatch spriteBatch)
         {
-            Container.SpriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+            spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>

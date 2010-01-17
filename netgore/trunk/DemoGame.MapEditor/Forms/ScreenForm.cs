@@ -138,11 +138,6 @@ namespace DemoGame.MapEditor
         Vector2 _moveCamera;
 
         /// <summary>
-        /// Global SpriteBatch used by the editor
-        /// </summary>
-        SpriteBatch _sb;
-
-        /// <summary>
         /// Currently selected transformation box
         /// </summary>
         TransBox _selTransBox = null;
@@ -378,14 +373,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the SpriteBatch used for rendering.
-        /// </summary>
-        public SpriteBatch SpriteBatch
-        {
-            get { return _sb; }
-        }
-
-        /// <summary>
         /// Gets the SpriteFont used to draw text to the screen.
         /// </summary>
         public SpriteFont SpriteFont
@@ -568,7 +555,11 @@ namespace DemoGame.MapEditor
             return new WallEntity(reader);
         }
 
-        void DrawGame()
+        /// <summary>
+        /// Draws the game.
+        /// </summary>
+        /// <param name="sb">The sprite batch.</param>
+        void DrawGame(SpriteBatch sb)
         {
             // Clear the background
             GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -576,7 +567,7 @@ namespace DemoGame.MapEditor
             // Draw the GrhTreeView if needed
             if (treeGrhs.NeedsToDraw)
             {
-                treeGrhs.Draw(_sb);
+                treeGrhs.Draw(sb);
                 return;
             }
 
@@ -585,10 +576,10 @@ namespace DemoGame.MapEditor
                 return;
 
             // Begin the rendering
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
             // Map
-            Map.Draw(_sb);
+            Map.Draw(sb);
 
             // MapGrh bound walls
             if (chkDrawAutoWalls.Checked)
@@ -604,46 +595,46 @@ namespace DemoGame.MapEditor
 
                     foreach (WallEntityBase wall in boundWalls)
                     {
-                        EntityDrawer.Draw(_sb, wall, mg.Position);
+                        EntityDrawer.Draw(sb, wall, mg.Position);
                     }
                 }
             }
 
             // Border
-            _mapBorderDrawer.Draw(_sb, Map, _camera);
+            _mapBorderDrawer.Draw(sb, Map, _camera);
 
             // Selection area
-            CursorManager.DrawSelection();
+            CursorManager.DrawSelection(sb);
 
             // Grid
             if (chkDrawGrid.Checked)
-                Grid.Draw(_sb, Camera);
+                Grid.Draw(sb, Camera);
 
             // On-screen wall editor
             foreach (TransBox box in _transBoxes)
             {
-                box.Draw(_sb);
+                box.Draw(sb);
             }
 
             // Tool interface
-            CursorManager.DrawInterface();
+            CursorManager.DrawInterface(sb);
 
             // Focused selected object
-            _focusedSpatialDrawer.Draw(SelectedObjs.Focused as ISpatial, _sb);
+            _focusedSpatialDrawer.Draw(SelectedObjs.Focused as ISpatial, sb);
 
             // End map rendering
-            _sb.End();
+            sb.End();
 
             // Begin GUI rendering
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
 
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
             cursorPosText -= new Vector2(100, 30);
-            _sb.DrawStringShaded(SpriteFont, _cursorPos.ToString(), cursorPosText, Color.White, Color.Black);
+            sb.DrawStringShaded(SpriteFont, _cursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
             // End GUI rendering
-            _sb.End();
+            sb.End();
         }
 
         /// <summary>
@@ -787,7 +778,6 @@ namespace DemoGame.MapEditor
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
-            _sb = new SpriteBatch(GameScreen.GraphicsDevice);
 
             // Font
             _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));

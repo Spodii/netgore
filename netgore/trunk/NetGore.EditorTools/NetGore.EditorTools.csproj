@@ -82,8 +82,8 @@
     <Compile Include="Grh\GrhUITypeEditorForm.Designer.cs">
       <DependentUpon>GrhUITypeEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor Cursors\MapEditorCursorBase.cs" />
     <Compile Include="Editor Cursors\EditorCursor.cs" />
+    <Compile Include="Editor Cursors\EditorCursorManager.cs" />
     <Compile Include="Particles\EmitterModifierCollectionEditor.cs" />
     <Compile Include="Grh\GrhEditor.cs" />
     <Compile Include="Persistable Controls\PersistableCheckBox.cs">

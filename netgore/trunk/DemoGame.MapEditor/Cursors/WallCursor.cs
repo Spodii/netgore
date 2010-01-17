@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
@@ -79,7 +80,8 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the cursor's selection layer,
         /// which displays a selection box for when selecting multiple objects.
         /// </summary>
-        public override void DrawSelection()
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
+        public override void DrawSelection(SpriteBatch spriteBatch)
         {
             Vector2 cursorPos = Container.CursorPos;
 
@@ -96,7 +98,7 @@ namespace DemoGame.MapEditor
             Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
 
             Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
-            XNARectangle.Draw(Container.SpriteBatch, dest, drawColor);
+            XNARectangle.Draw(spriteBatch, dest, drawColor);
         }
 
         /// <summary>

@@ -17,10 +17,17 @@ namespace NetGore.EditorTools
     public abstract class GraphicsDeviceControl : Control
     {
         readonly ServiceContainer _services = new ServiceContainer();
+
+        SpriteBatch _spriteBatch;
         GraphicsDeviceService _gds;
 
         /// <summary>
-        /// Gets a GraphicsDevice this control can use
+        /// Gets the <see cref="SpriteBatch"/> used to draw to this <see cref="GraphicsDeviceControl"/>.
+        /// </summary>
+        public SpriteBatch SpriteBatch { get { return _spriteBatch; } }
+
+        /// <summary>
+        /// Gets a GraphicsDevice this control can use.
         /// </summary>
         public GraphicsDevice GraphicsDevice
         {
@@ -28,7 +35,7 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets an IServiceProvider container
+        /// Gets an IServiceProvider container.
         /// </summary>
         public ServiceContainer Services
         {
@@ -81,7 +88,8 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Derived classes override this to draw themselves using the GraphicsDevice.
         /// </summary>
-        protected abstract void Draw();
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        protected abstract void Draw(SpriteBatch spriteBatch);
 
         /// <summary>
         /// Ends drawing the control. This is called after derived classes
@@ -169,6 +177,9 @@ namespace NetGore.EditorTools
                 // Register the service, so components like ContentManager can find it
                 _services.AddService<IGraphicsDeviceService>(_gds);
 
+                // Create our SpriteBatch
+                _spriteBatch = new SpriteBatch(GraphicsDevice);
+
                 // Give derived classes a chance to initialize themselves
                 Initialize();
 
@@ -202,7 +213,7 @@ namespace NetGore.EditorTools
             if (string.IsNullOrEmpty(beginDrawError))
             {
                 // Draw the control using the GraphicsDevice
-                Draw();
+                Draw(SpriteBatch);
                 EndDraw();
             }
             else

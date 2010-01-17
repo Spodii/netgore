@@ -170,7 +170,7 @@
     <Compile Include="ParticleEngine\Particle.cs" />
     <Compile Include="ParticleEngine\Emitters\ParticleEmitter.cs" />
     <Compile Include="ParticleEngine\Renderers\ParticleRendererBase.cs" />
-    <Compile Include="ParticleEngine\Renderers\SpriteBatchRenderer.cs" />
+    <Compile Include="ParticleEngine\Renderers\SpriteBatchParticleRenderer.cs" />
     <Compile Include="Sprite\Grh\AnimatedGrhData.cs" />
     <Compile Include="Sprite\Grh\AutomaticAnimatedGrhData.cs" />
     <Compile Include="Sprite\Grh\AutomaticAnimationInfo.cs" />
