@@ -3,191 +3,259 @@
   <Header>
     <Name>INSERT VALUE</Name>
     <Music>main</Music>
-    <Width>960</Width>
-    <Height>640</Height>
+    <Width>1440</Width>
+    <Height>1440</Height>
   </Header>
   <Walls>
-    <Count>45</Count>
+    <Count>62</Count>
     <Item0>
-      <Position>0,608</Position>
+      <Position>32,1408</Position>
       <Size>32,32</Size>
     </Item0>
     <Item1>
-      <Position>32,608</Position>
+      <Position>0,1408</Position>
       <Size>32,32</Size>
     </Item1>
     <Item2>
-      <Position>64,608</Position>
+      <Position>32,1408</Position>
       <Size>32,32</Size>
     </Item2>
     <Item3>
-      <Position>96,608</Position>
+      <Position>64,1408</Position>
       <Size>32,32</Size>
     </Item3>
     <Item4>
-      <Position>128,608</Position>
+      <Position>96,1408</Position>
       <Size>32,32</Size>
     </Item4>
     <Item5>
-      <Position>160,608</Position>
+      <Position>128,1408</Position>
       <Size>32,32</Size>
     </Item5>
     <Item6>
-      <Position>192,608</Position>
+      <Position>160,1408</Position>
       <Size>32,32</Size>
     </Item6>
     <Item7>
-      <Position>224,608</Position>
+      <Position>192,1408</Position>
       <Size>32,32</Size>
     </Item7>
     <Item8>
-      <Position>256,608</Position>
+      <Position>224,1408</Position>
       <Size>32,32</Size>
     </Item8>
     <Item9>
-      <Position>288,608</Position>
+      <Position>256,1408</Position>
       <Size>32,32</Size>
     </Item9>
     <Item10>
-      <Position>320,608</Position>
+      <Position>288,1408</Position>
       <Size>32,32</Size>
     </Item10>
     <Item11>
-      <Position>352,608</Position>
+      <Position>320,1408</Position>
       <Size>32,32</Size>
     </Item11>
     <Item12>
-      <Position>384,608</Position>
+      <Position>352,1408</Position>
       <Size>32,32</Size>
     </Item12>
     <Item13>
-      <Position>416,608</Position>
+      <Position>384,1408</Position>
       <Size>32,32</Size>
     </Item13>
     <Item14>
-      <Position>448,608</Position>
+      <Position>416,1408</Position>
       <Size>32,32</Size>
     </Item14>
     <Item15>
-      <Position>480,608</Position>
+      <Position>448,1408</Position>
       <Size>32,32</Size>
     </Item15>
     <Item16>
-      <Position>512,608</Position>
+      <Position>480,1408</Position>
       <Size>32,32</Size>
     </Item16>
     <Item17>
-      <Position>544,608</Position>
+      <Position>512,1408</Position>
       <Size>32,32</Size>
     </Item17>
     <Item18>
-      <Position>576,608</Position>
+      <Position>544,1408</Position>
       <Size>32,32</Size>
     </Item18>
     <Item19>
-      <Position>640,608</Position>
+      <Position>576,1408</Position>
       <Size>32,32</Size>
     </Item19>
     <Item20>
-      <Position>672,608</Position>
+      <Position>608,1408</Position>
       <Size>32,32</Size>
     </Item20>
     <Item21>
-      <Position>704,608</Position>
+      <Position>640,1408</Position>
       <Size>32,32</Size>
     </Item21>
     <Item22>
-      <Position>736,608</Position>
+      <Position>672,1408</Position>
       <Size>32,32</Size>
     </Item22>
     <Item23>
-      <Position>608,608</Position>
+      <Position>704,1408</Position>
       <Size>32,32</Size>
     </Item23>
     <Item24>
-      <Position>928,608</Position>
+      <Position>736,1408</Position>
       <Size>32,32</Size>
     </Item24>
     <Item25>
-      <Position>896,608</Position>
+      <Position>768,1408</Position>
       <Size>32,32</Size>
     </Item25>
     <Item26>
-      <Position>864,608</Position>
+      <Position>800,1408</Position>
       <Size>32,32</Size>
     </Item26>
     <Item27>
-      <Position>832,608</Position>
+      <Position>832,1408</Position>
       <Size>32,32</Size>
     </Item27>
     <Item28>
-      <Position>800,608</Position>
+      <Position>864,1408</Position>
       <Size>32,32</Size>
     </Item28>
     <Item29>
-      <Position>768,608</Position>
+      <Position>896,1408</Position>
       <Size>32,32</Size>
     </Item29>
     <Item30>
-      <Position>480,480</Position>
+      <Position>928,1408</Position>
       <Size>32,32</Size>
     </Item30>
     <Item31>
-      <Position>512,480</Position>
+      <Position>960,1408</Position>
       <Size>32,32</Size>
     </Item31>
     <Item32>
-      <Position>544,480</Position>
+      <Position>992,1408</Position>
       <Size>32,32</Size>
     </Item32>
     <Item33>
-      <Position>576,480</Position>
+      <Position>1024,1408</Position>
       <Size>32,32</Size>
     </Item33>
     <Item34>
-      <Position>448,512</Position>
+      <Position>1056,1408</Position>
       <Size>32,32</Size>
     </Item34>
     <Item35>
-      <Position>416,544</Position>
+      <Position>1088,1408</Position>
       <Size>32,32</Size>
     </Item35>
     <Item36>
-      <Position>640,544</Position>
+      <Position>1120,1408</Position>
       <Size>32,32</Size>
     </Item36>
     <Item37>
-      <Position>704,576</Position>
+      <Position>1152,1408</Position>
       <Size>32,32</Size>
     </Item37>
     <Item38>
-      <Position>320,416</Position>
+      <Position>1184,1408</Position>
       <Size>32,32</Size>
     </Item38>
     <Item39>
-      <Position>352,416</Position>
+      <Position>1216,1408</Position>
       <Size>32,32</Size>
     </Item39>
     <Item40>
-      <Position>288,416</Position>
+      <Position>1248,1408</Position>
       <Size>32,32</Size>
     </Item40>
     <Item41>
-      <Position>256,416</Position>
+      <Position>1280,1408</Position>
       <Size>32,32</Size>
     </Item41>
     <Item42>
-      <Position>256,384</Position>
+      <Position>1312,1408</Position>
       <Size>32,32</Size>
     </Item42>
     <Item43>
-      <Position>256,352</Position>
+      <Position>1344,1408</Position>
       <Size>32,32</Size>
     </Item43>
     <Item44>
-      <Position>256,320</Position>
+      <Position>1376,1408</Position>
       <Size>32,32</Size>
     </Item44>
+    <Item45>
+      <Position>1408,1408</Position>
+      <Size>32,32</Size>
+    </Item45>
+    <Item46>
+      <Position>565,1359</Position>
+      <Size>89,60</Size>
+    </Item46>
+    <Item47>
+      <Position>363,1259</Position>
+      <Size>93,16</Size>
+    </Item47>
+    <Item48>
+      <Position>208,1177</Position>
+      <Size>93,16</Size>
+    </Item48>
+    <Item49>
+      <Position>56,1096</Position>
+      <Size>93,16</Size>
+    </Item49>
+    <Item50>
+      <Position>235,990</Position>
+      <Size>93,16</Size>
+    </Item50>
+    <Item51>
+      <Position>395,927</Position>
+      <Size>93,16</Size>
+    </Item51>
+    <Item52>
+      <Position>562,867</Position>
+      <Size>93,16</Size>
+    </Item52>
+    <Item53>
+      <Position>718,810</Position>
+      <Size>93,16</Size>
+    </Item53>
+    <Item54>
+      <Position>870,750</Position>
+      <Size>93,16</Size>
+    </Item54>
+    <Item55>
+      <Position>1018,684</Position>
+      <Size>93,16</Size>
+    </Item55>
+    <Item56>
+      <Position>1161,608</Position>
+      <Size>93,16</Size>
+    </Item56>
+    <Item57>
+      <Position>925,499</Position>
+      <Size>93,16</Size>
+    </Item57>
+    <Item58>
+      <Position>728,427</Position>
+      <Size>93,16</Size>
+    </Item58>
+    <Item59>
+      <Position>574,368</Position>
+      <Size>93,16</Size>
+    </Item59>
+    <Item60>
+      <Position>412,296</Position>
+      <Size>93,16</Size>
+    </Item60>
+    <Item61>
+      <Position>224,237</Position>
+      <Size>93,16</Size>
+    </Item61>
   </Walls>
   <DynamicEntities>
     <Count>1</Count>
@@ -197,300 +265,912 @@
       <Weight>1</Weight>
       <Destination>50,50</Destination>
       <DestinationMap>1</DestinationMap>
-      <Position>292,326</Position>
+      <Position>187,1352</Position>
       <Velocity>0,0</Velocity>
     </Item0>
   </DynamicEntities>
   <Misc>
     <MapGrhs>
       <UsedIndicies>
-        <Count>3</Count>
-        <Item0>2</Item0>
-        <Item1>5</Item1>
-        <Item2>125</Item2>
+        <Count>17</Count>
+        <Item0>114</Item0>
+        <Item1>115</Item1>
+        <Item2>117</Item2>
+        <Item3>118</Item3>
+        <Item4>119</Item4>
+        <Item5>120</Item5>
+        <Item6>121</Item6>
+        <Item7>122</Item7>
+        <Item8>123</Item8>
+        <Item9>124</Item9>
+        <Item10>125</Item10>
+        <Item11>145</Item11>
+        <Item12>146</Item12>
+        <Item13>147</Item13>
+        <Item14>148</Item14>
+        <Item15>149</Item15>
+        <Item16>150</Item16>
       </UsedIndicies>
       <MapGrhs>
-        <Count>46</Count>
+        <Count>144</Count>
         <Item0>
-          <Position>0,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>32,1440</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item0>
         <Item1>
-          <Position>32,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>0,1408</Position>
+          <GrhIndex>149</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item1>
         <Item2>
-          <Position>64,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>32,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item2>
         <Item3>
-          <Position>96,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>64,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item3>
         <Item4>
-          <Position>128,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>96,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item4>
         <Item5>
-          <Position>160,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>128,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item5>
         <Item6>
-          <Position>192,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>160,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item6>
         <Item7>
-          <Position>224,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>192,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item7>
         <Item8>
-          <Position>256,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>224,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item8>
         <Item9>
-          <Position>288,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>256,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item9>
         <Item10>
-          <Position>320,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>288,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item10>
         <Item11>
-          <Position>352,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>320,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item11>
         <Item12>
-          <Position>384,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>352,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item12>
         <Item13>
-          <Position>416,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>384,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item13>
         <Item14>
-          <Position>448,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>416,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item14>
         <Item15>
-          <Position>480,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>448,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item15>
         <Item16>
-          <Position>512,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>480,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item16>
         <Item17>
-          <Position>544,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>512,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item17>
         <Item18>
-          <Position>576,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>544,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item18>
         <Item19>
-          <Position>640,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>576,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item19>
         <Item20>
-          <Position>672,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>608,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item20>
         <Item21>
-          <Position>704,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>640,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item21>
         <Item22>
-          <Position>736,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>672,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item22>
         <Item23>
-          <Position>608,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>704,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item23>
         <Item24>
-          <Position>928,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>736,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item24>
         <Item25>
-          <Position>896,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>768,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item25>
         <Item26>
-          <Position>864,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>800,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item26>
         <Item27>
-          <Position>832,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>832,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item27>
         <Item28>
-          <Position>800,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>864,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item28>
         <Item29>
-          <Position>768,608</Position>
-          <GrhIndex>2</GrhIndex>
+          <Position>896,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item29>
         <Item30>
-          <Position>480,480</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>928,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item30>
         <Item31>
-          <Position>512,480</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>960,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item31>
         <Item32>
-          <Position>544,480</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>992,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item32>
         <Item33>
-          <Position>576,480</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1024,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item33>
         <Item34>
-          <Position>448,512</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1056,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item34>
         <Item35>
-          <Position>416,544</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1088,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item35>
         <Item36>
-          <Position>640,544</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1120,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item36>
         <Item37>
-          <Position>704,576</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1152,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item37>
         <Item38>
-          <Position>320,416</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1184,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item38>
         <Item39>
-          <Position>352,416</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1216,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item39>
         <Item40>
-          <Position>288,416</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1248,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item40>
         <Item41>
-          <Position>256,416</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1280,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item41>
         <Item42>
-          <Position>256,384</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1312,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item42>
         <Item43>
-          <Position>256,352</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1344,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item43>
         <Item44>
-          <Position>256,320</Position>
-          <GrhIndex>5</GrhIndex>
+          <Position>1376,1408</Position>
+          <GrhIndex>148</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item44>
         <Item45>
-          <Position>288,320</Position>
-          <GrhIndex>125</GrhIndex>
+          <Position>1408,1408</Position>
+          <GrhIndex>150</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
         </Item45>
+        <Item46>
+          <Position>149,1311</Position>
+          <GrhIndex>114</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>2</LayerDepth>
+        </Item46>
+        <Item47>
+          <Position>694,1330</Position>
+          <GrhIndex>124</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>2</LayerDepth>
+        </Item47>
+        <Item48>
+          <Position>982,1400</Position>
+          <GrhIndex>123</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>1</LayerDepth>
+        </Item48>
+        <Item49>
+          <Position>1307,1391</Position>
+          <GrhIndex>121</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>1</LayerDepth>
+        </Item49>
+        <Item50>
+          <Position>0,1400</Position>
+          <GrhIndex>146</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item50>
+        <Item51>
+          <Position>32,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item51>
+        <Item52>
+          <Position>64,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item52>
+        <Item53>
+          <Position>96,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item53>
+        <Item54>
+          <Position>128,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item54>
+        <Item55>
+          <Position>160,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item55>
+        <Item56>
+          <Position>192,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item56>
+        <Item57>
+          <Position>224,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item57>
+        <Item58>
+          <Position>256,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item58>
+        <Item59>
+          <Position>288,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item59>
+        <Item60>
+          <Position>320,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item60>
+        <Item61>
+          <Position>352,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item61>
+        <Item62>
+          <Position>384,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item62>
+        <Item63>
+          <Position>416,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item63>
+        <Item64>
+          <Position>448,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item64>
+        <Item65>
+          <Position>480,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item65>
+        <Item66>
+          <Position>512,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item66>
+        <Item67>
+          <Position>544,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item67>
+        <Item68>
+          <Position>576,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item68>
+        <Item69>
+          <Position>608,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item69>
+        <Item70>
+          <Position>640,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item70>
+        <Item71>
+          <Position>672,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item71>
+        <Item72>
+          <Position>704,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item72>
+        <Item73>
+          <Position>736,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item73>
+        <Item74>
+          <Position>768,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item74>
+        <Item75>
+          <Position>800,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item75>
+        <Item76>
+          <Position>832,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item76>
+        <Item77>
+          <Position>864,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item77>
+        <Item78>
+          <Position>896,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item78>
+        <Item79>
+          <Position>928,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item79>
+        <Item80>
+          <Position>960,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item80>
+        <Item81>
+          <Position>992,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item81>
+        <Item82>
+          <Position>1024,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item82>
+        <Item83>
+          <Position>1056,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item83>
+        <Item84>
+          <Position>1088,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item84>
+        <Item85>
+          <Position>1120,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item85>
+        <Item86>
+          <Position>1152,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item86>
+        <Item87>
+          <Position>1184,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item87>
+        <Item88>
+          <Position>1216,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item88>
+        <Item89>
+          <Position>1248,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item89>
+        <Item90>
+          <Position>1280,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item90>
+        <Item91>
+          <Position>1312,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item91>
+        <Item92>
+          <Position>1344,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item92>
+        <Item93>
+          <Position>1376,1400</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item93>
+        <Item94>
+          <Position>1408,1400</Position>
+          <GrhIndex>147</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item94>
+        <Item95>
+          <Position>559,1355</Position>
+          <GrhIndex>115</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item95>
+        <Item96>
+          <Position>619,1355</Position>
+          <GrhIndex>147</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item96>
+        <Item97>
+          <Position>564,1355</Position>
+          <GrhIndex>146</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item97>
+        <Item98>
+          <Position>592,1355</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item98>
+        <Item99>
+          <Position>363,1257</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item99>
+        <Item100>
+          <Position>208,1175</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item100>
+        <Item101>
+          <Position>56,1094</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item101>
+        <Item102>
+          <Position>235,988</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item102>
+        <Item103>
+          <Position>395,925</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item103>
+        <Item104>
+          <Position>562,865</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item104>
+        <Item105>
+          <Position>718,808</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item105>
+        <Item106>
+          <Position>870,748</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item106>
+        <Item107>
+          <Position>1018,682</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item107>
+        <Item108>
+          <Position>1161,606</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item108>
+        <Item109>
+          <Position>925,497</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item109>
+        <Item110>
+          <Position>728,425</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item110>
+        <Item111>
+          <Position>574,366</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item111>
+        <Item112>
+          <Position>412,294</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item112>
+        <Item113>
+          <Position>224,235</Position>
+          <GrhIndex>117</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item113>
+        <Item114>
+          <Position>222,227</Position>
+          <GrhIndex>146</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item114>
+        <Item115>
+          <Position>287,228</Position>
+          <GrhIndex>147</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item115>
+        <Item116>
+          <Position>245,227</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item116>
+        <Item117>
+          <Position>266,227</Position>
+          <GrhIndex>145</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item117>
+        <Item118>
+          <Position>228,146</Position>
+          <GrhIndex>124</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item118>
+        <Item119>
+          <Position>247,201</Position>
+          <GrhIndex>120</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item119>
+        <Item120>
+          <Position>284,201</Position>
+          <GrhIndex>120</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item120>
+        <Item121>
+          <Position>270,201</Position>
+          <GrhIndex>120</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item121>
+        <Item122>
+          <Position>293,205</Position>
+          <GrhIndex>118</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item122>
+        <Item123>
+          <Position>265,202</Position>
+          <GrhIndex>118</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item123>
+        <Item124>
+          <Position>243,194</Position>
+          <GrhIndex>118</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item124>
+        <Item125>
+          <Position>216,205</Position>
+          <GrhIndex>118</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item125>
+        <Item126>
+          <Position>229,207</Position>
+          <GrhIndex>118</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item126>
+        <Item127>
+          <Position>257,209</Position>
+          <GrhIndex>118</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item127>
+        <Item128>
+          <Position>240,214</Position>
+          <GrhIndex>120</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item128>
+        <Item129>
+          <Position>273,215</Position>
+          <GrhIndex>120</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item129>
+        <Item130>
+          <Position>302,205</Position>
+          <GrhIndex>120</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item130>
+        <Item131>
+          <Position>420,236</Position>
+          <GrhIndex>119</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item131>
+        <Item132>
+          <Position>781,370</Position>
+          <GrhIndex>119</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item132>
+        <Item133>
+          <Position>590,345</Position>
+          <GrhIndex>122</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item133>
+        <Item134>
+          <Position>993,474</Position>
+          <GrhIndex>122</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item134>
+        <Item135>
+          <Position>1182,594</Position>
+          <GrhIndex>123</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item135>
+        <Item136>
+          <Position>594,858</Position>
+          <GrhIndex>123</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item136>
+        <Item137>
+          <Position>79,1076</Position>
+          <GrhIndex>121</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item137>
+        <Item138>
+          <Position>1168,1321</Position>
+          <GrhIndex>124</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item138>
+        <Item139>
+          <Position>934,1318</Position>
+          <GrhIndex>124</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item139>
+        <Item140>
+          <Position>17,1317</Position>
+          <GrhIndex>124</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item140>
+        <Item141>
+          <Position>56,1320</Position>
+          <GrhIndex>124</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item141>
+        <Item142>
+          <Position>573,1337</Position>
+          <GrhIndex>121</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+        </Item142>
+        <Item143>
+          <Position>184,1345</Position>
+          <GrhIndex>125</GrhIndex>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>4</LayerDepth>
+        </Item143>
       </MapGrhs>
     </MapGrhs>
     <BackgroundImages>
-      <Count>0</Count>
+      <Count>1</Count>
+      <Item0>
+        <Name>Sky</Name>
+        <Alignment>TopLeft</Alignment>
+        <Color>255,255,255,255</Color>
+        <Depth>6</Depth>
+        <Offset>0,0</Offset>
+        <GrhIndex>137</GrhIndex>
+        <HorizontalLayout>Stretched</HorizontalLayout>
+        <VerticalLayout>Stretched</VerticalLayout>
+      </Item0>
     </BackgroundImages>
     <ParticleEffects>
       <Count>0</Count>
