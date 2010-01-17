@@ -101,7 +101,7 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, reapplies the <see cref="Volume"/> property value to all the
+        /// When overridden in the derived class, re-applies the <see cref="Volume"/> property value to all the
         /// audio tracks in this manager.
         /// </summary>
         protected internal abstract void ReapplyVolume();
