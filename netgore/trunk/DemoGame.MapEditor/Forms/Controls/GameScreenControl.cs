@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
@@ -30,7 +31,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets or sets the method used to draw this control.
         /// </summary>
-        public Action DrawHandler { get; set; }
+        public Action<SpriteBatch> DrawHandler { get; set; }
 
         /// <summary>
         /// Gets the <see cref="MouseButtons"/> current pressed.
@@ -48,13 +49,14 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Derived classes override this to draw themselves using the GraphicsDevice.
         /// </summary>
-        protected override void Draw()
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        protected override void Draw(SpriteBatch spriteBatch)
         {
             if (UpdateHandler != null)
                 UpdateHandler();
 
             if (DrawHandler != null)
-                DrawHandler();
+                DrawHandler(spriteBatch);
         }
 
         /// <summary>

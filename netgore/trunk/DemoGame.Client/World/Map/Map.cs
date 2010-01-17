@@ -19,7 +19,7 @@ namespace DemoGame.Client
         const string _mapGrhsNodeName = "MapGrhs";
         const string _particleEffectsNodeName = "ParticleEffects";
         const string _usedIndiciesNodeName = "UsedIndicies";
-        static readonly SpriteBatchRenderer _particleEffectRenderer = new SpriteBatchRenderer();
+        static readonly SpriteBatchParticleRenderer _particleEffectRenderer = new SpriteBatchParticleRenderer();
 
         /// <summary>
         /// List of BackgroundImages on this map.

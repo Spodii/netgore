@@ -44,7 +44,6 @@ namespace DemoGame.SkeletonEditor
         string _fileFrame = string.Empty;
         SkeletonBody _frameBody = null;
         bool _moveSelectedNode = false;
-        SpriteBatch _sb;
         SkeletonNode _selectedNode = null;
         Skeleton _skeleton;
         SkeletonAnimation _skeletonAnim;
@@ -498,34 +497,34 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
-        public void DrawGame()
+        public void DrawGame(SpriteBatch sb)
         {
             GameScreen.GraphicsDevice.Clear(Microsoft.Xna.Framework.Graphics.Color.CornflowerBlue);
 
             // Screen
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
             foreach (XNALine l in _centerLines)
             {
-                l.Draw(_sb);
+                l.Draw(sb);
             }
 
             if (radioEdit.Checked)
             {
                 // Edit skeleton
-                _skeletonDrawer.Draw(_skeleton, _camera, _sb, SelectedNode);
+                _skeletonDrawer.Draw(_skeleton, _camera, sb, SelectedNode);
                 if (_frameBody != null && chkDrawBody.Checked)
-                    _frameBody.Draw(_sb, Vector2.Zero);
+                    _frameBody.Draw(sb, Vector2.Zero);
             }
             else
             {
                 // Animate skeletons
                 if (chkDrawBody.Checked)
-                    _skeletonAnim.Draw(_sb);
+                    _skeletonAnim.Draw(sb);
                 if (chkDrawSkel.Checked)
-                    _skeletonDrawer.Draw(_skeletonAnim.Skeleton, _camera, _sb);
+                    _skeletonDrawer.Draw(_skeletonAnim.Skeleton, _camera, sb);
             }
-            _sb.End();
+            sb.End();
         }
 
         void GameScreen_MouseDown(object sender, MouseEventArgs e)
@@ -893,7 +892,6 @@ namespace DemoGame.SkeletonEditor
                 // Create the engine objects
                 _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
                 _content = new ContentManager(GameScreen.Services, "Content");
-                _sb = new SpriteBatch(GameScreen.GraphicsDevice);
                 GrhInfo.Load(ContentPaths.Dev, _content);
 
                 // Create the skeleton-related objects
@@ -902,8 +900,6 @@ namespace DemoGame.SkeletonEditor
                 SkeletonFrame frame = new SkeletonFrame(SkeletonLoader.StandingSkeletonName, frameSkeleton);
                 _skeletonAnim = new SkeletonAnimation(GetTime(), frame);
                 _skeletonDrawer = new SkeletonDrawer();
-
-                _sb = new SpriteBatch(GameScreen.GraphicsDevice);
 
                 LoadFrame(Skeleton.GetFilePath(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev));
                 LoadAnim(SkeletonSet.GetFilePath(SkeletonLoader.WalkingSkeletonSetName, ContentPaths.Dev));

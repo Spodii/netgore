@@ -25,7 +25,6 @@ namespace DemoGame.ParticleEffectEditor
         ParticleEmitter _emitter;
         string _lastEmitterName = string.Empty;
         IParticleRenderer _renderer;
-        SpriteBatch _spriteBatch;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -113,13 +112,19 @@ namespace DemoGame.ParticleEffectEditor
         /// <summary>
         /// Main entry point for all the screen drawing.
         /// </summary>
-        public void DrawGame()
+        /// <param name="spriteBatch">The sprite batch.</param>
+        public void DrawGame(SpriteBatch spriteBatch)
         {
+            if (_renderer == null)
+            {
+                _renderer = new SpriteBatchParticleRenderer { SpriteBatch = spriteBatch };
+            }
+
             // Clear the background
             GraphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, Matrix.Identity);
+            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, Matrix.Identity);
             _renderer.Draw(_camera, new ParticleEmitter[] { Emitter });
-            _spriteBatch.End();
+            spriteBatch.End();
         }
 
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
@@ -134,9 +139,6 @@ namespace DemoGame.ParticleEffectEditor
 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
             GrhInfo.Load(ContentPaths.Build, _content);
-
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _renderer = new SpriteBatchRenderer { SpriteBatch = _spriteBatch };
         }
 
         /// <summary>

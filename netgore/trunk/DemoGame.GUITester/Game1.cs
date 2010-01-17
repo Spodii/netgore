@@ -23,6 +23,9 @@ namespace DemoGame.GUITester
         ControlBorder _topBorder;
         Form topForm;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game1"/> class.
+        /// </summary>
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
