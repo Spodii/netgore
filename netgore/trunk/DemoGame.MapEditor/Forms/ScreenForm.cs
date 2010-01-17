@@ -196,6 +196,7 @@ namespace DemoGame.MapEditor
             GameScreen.Camera = _camera;
             GameScreen.UpdateHandler = UpdateGame;
             GameScreen.DrawHandler = DrawGame;
+            GameScreen.MouseWheel += (x, e) => CursorManager.MoveMouseWheel(e.Delta > 0 ? 1 : -1);
         }
 
         /// <summary>
