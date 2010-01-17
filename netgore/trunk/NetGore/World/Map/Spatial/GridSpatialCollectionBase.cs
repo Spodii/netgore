@@ -105,9 +105,9 @@ namespace NetGore
             int maxX = startIndex.X + length.X;
             int maxY = startIndex.Y + length.Y;
 
-            for (int x = Math.Max(0, startIndex.X); x <= Math.Min(maxX, GridSize.X - 1); x++)
+            for (int x = Math.Max(0, startIndex.X); x <= Math.Min(maxX, GridSize.X); x++)
             {
-                for (int y = Math.Max(0, startIndex.Y); y <= Math.Min(maxY, GridSize.Y - 1); y++)
+                for (int y = Math.Max(0, startIndex.Y); y <= Math.Min(maxY, GridSize.Y); y++)
                 {
                     yield return GetSegment(new Point(x, y));
                 }
@@ -160,7 +160,7 @@ namespace NetGore
         /// <returns>True if the grid segment index is valid; otherwise false.</returns>
         protected bool IsLegalGridSegment(Point gridIndex)
         {
-            return gridIndex.X >= 0 && gridIndex.Y >= 0 && gridIndex.X < GridSize.X && gridIndex.Y < GridSize.Y;
+            return gridIndex.X >= 0 && gridIndex.Y >= 0 && gridIndex.X <= GridSize.X && gridIndex.Y <= GridSize.Y;
         }
 
         /// <summary>
