@@ -206,7 +206,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the sprite's paper doll layers.
+        /// Sets the sprite's paper doll layers. This will set all of the layers at once. Layers that are not in the
+        /// <paramref name="layers"/> collection should be treated as they are not used and be removed, not be treated
+        /// as they are just not updating.
         /// </summary>
         /// <param name="layers">The name of the paper doll layers.</param>
         public void SetPaperDollLayers(IEnumerable<string> layers)
