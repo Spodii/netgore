@@ -183,7 +183,8 @@
     <Compile Include="Queries\Character\SelectAccountCharacterInfoQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterByIDQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterQuery.cs" />
-    <Compile Include="Queries\Character\SelectPersistentMapNPCsQuery.cs" />
+    <Compile Include="Queries\NPC\DeletePersistentNPCQuery.cs" />
+    <Compile Include="Queries\NPC\SelectPersistentMapNPCsQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />

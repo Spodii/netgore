@@ -659,7 +659,6 @@ namespace DemoGame.MapEditor
             this.lstPersistentNPCs.Name = "lstPersistentNPCs";
             this.lstPersistentNPCs.Size = new System.Drawing.Size(358, 238);
             this.lstPersistentNPCs.TabIndex = 12;
-            this.lstPersistentNPCs.SelectedIndexChanged += new System.EventHandler(this.lstPersistentNPCs_SelectedIndexChanged);
             // 
             // btnDeletePersistentNPC
             // 
@@ -670,6 +669,7 @@ namespace DemoGame.MapEditor
             this.btnDeletePersistentNPC.TabIndex = 12;
             this.btnDeletePersistentNPC.Text = "Delete";
             this.btnDeletePersistentNPC.UseVisualStyleBackColor = true;
+            this.btnDeletePersistentNPC.Click += new System.EventHandler(this.btnDeletePersistentNPC_Click);
             // 
             // btnAddPersistentNPC
             // 
