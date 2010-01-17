@@ -131,6 +131,10 @@
     <Compile Include="TestDb.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
+      <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
+      <Name>NetGore.Audio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj">
       <Project>{927E889E-AC38-4549-A717-A4FFCA22ADB6}</Project>
       <Name>NetGore.Db.ClassCreator</Name>
