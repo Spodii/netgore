@@ -158,6 +158,11 @@ namespace DemoGame.MapEditor
         public event MapChangeEventHandler OnChangeMap;
 
         /// <summary>
+        /// Gets the size of the game screen.
+        /// </summary>
+        public Vector2 GameScreenSize { get { return new Vector2(GameScreen.ClientSize.Width, GameScreen.ClientSize.Height); } }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
         /// <param name="switches">The command-line switches.</param>
@@ -167,8 +172,8 @@ namespace DemoGame.MapEditor
 
             InitializeComponent();
 
-            _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
-            _grid = new ScreenGrid(Camera.Size);
+            _camera = new Camera2D(GameScreenSize);
+            _grid = new ScreenGrid(GameScreenSize);
 
             // Set up the object manager
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
@@ -183,11 +188,7 @@ namespace DemoGame.MapEditor
                                                                  x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
-            CursorManager.OnChangeCurrentCursor += delegate
-                                                   {
-                                                       _transBoxes.Clear();
-                                                       _selTransBox = null;
-                                                   };
+            CursorManager.OnChangeCurrentCursor += CursorManager_OnChangeCurrentCursor;
 
             // Create the world
             _world = new World(this, _camera);
@@ -196,7 +197,39 @@ namespace DemoGame.MapEditor
             GameScreen.Camera = _camera;
             GameScreen.UpdateHandler = UpdateGame;
             GameScreen.DrawHandler = DrawGame;
-            GameScreen.MouseWheel += (x, e) => CursorManager.MoveMouseWheel(e.Delta > 0 ? 1 : -1);
+            GameScreen.MouseWheel += GameScreen_MouseWheel;
+            GameScreen.Resize += GameScreen_Resize;
+        }
+
+        /// <summary>
+        /// Handles the OnChangeCurrentCursor event of the CursorManager.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void CursorManager_OnChangeCurrentCursor(EditorCursorManager<ScreenForm> sender)
+        {
+            _transBoxes.Clear();
+            _selTransBox = null;
+        }
+
+        /// <summary>
+        /// Handles the Resize event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void GameScreen_Resize(object sender, EventArgs e)
+        {
+            _camera.Size = GameScreenSize;
+            _grid.Size = GameScreenSize;
+        }
+
+        /// <summary>
+        /// Handles the MouseWheel event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
+        {
+            CursorManager.MoveMouseWheel(e.Delta > 0 ? 1 : -1);
         }
 
         /// <summary>
@@ -544,7 +577,6 @@ namespace DemoGame.MapEditor
             if (treeGrhs.NeedsToDraw)
             {
                 treeGrhs.Draw(_sb);
-                GameScreen.GraphicsDevice.Present();
                 return;
             }
 
@@ -610,9 +642,8 @@ namespace DemoGame.MapEditor
             cursorPosText -= new Vector2(100, 30);
             _sb.DrawStringShaded(SpriteFont, _cursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
-            // End GUI rendering and present
+            // End GUI rendering
             _sb.End();
-            GameScreen.GraphicsDevice.Present();
         }
 
         /// <summary>

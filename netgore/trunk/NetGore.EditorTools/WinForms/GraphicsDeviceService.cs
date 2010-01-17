@@ -47,14 +47,14 @@ namespace NetGore.EditorTools
         /// </summary>
         GraphicsDeviceService(IntPtr windowHandle, int width, int height)
         {
-            pp = new PresentationParameters();
-
-            pp.BackBufferWidth = Math.Max(width, 1);
-            pp.BackBufferHeight = Math.Max(height, 1);
-            pp.BackBufferFormat = SurfaceFormat.Color;
-
-            pp.EnableAutoDepthStencil = true;
-            pp.AutoDepthStencilFormat = DepthFormat.Depth24;
+            pp = new PresentationParameters
+            {
+                BackBufferWidth = Math.Max(width, 1),
+                BackBufferHeight = Math.Max(height, 1),
+                BackBufferFormat = SurfaceFormat.Color,
+                EnableAutoDepthStencil = true,
+                AutoDepthStencilFormat = DepthFormat.Depth24
+            };
 
             graphicsDevice = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, DeviceType.Hardware, windowHandle, pp);
         }
@@ -71,6 +71,7 @@ namespace NetGore.EditorTools
                 // device, we must create the singleton instance.
                 singletonInstance = new GraphicsDeviceService(windowHandle, width, height);
             }
+
             return singletonInstance;
         }
 
@@ -80,20 +81,20 @@ namespace NetGore.EditorTools
         public void Release(bool disposing)
         {
             // Decrement the "how many controls sharing the device" reference count.
-            if (Interlocked.Decrement(ref referenceCount) == 0)
+            if (Interlocked.Decrement(ref referenceCount) != 0)
+                return;
+
+            // If this is the last control to finish using the
+            // device, we should dispose the singleton instance.
+            if (disposing)
             {
-                // If this is the last control to finish using the
-                // device, we should dispose the singleton instance.
-                if (disposing)
-                {
-                    if (DeviceDisposing != null)
-                        DeviceDisposing(this, EventArgs.Empty);
+                if (DeviceDisposing != null)
+                    DeviceDisposing(this, EventArgs.Empty);
 
-                    graphicsDevice.Dispose();
-                }
-
-                graphicsDevice = null;
+                graphicsDevice.Dispose();
             }
+
+            graphicsDevice = null;
         }
 
         /// <summary>
@@ -119,9 +120,24 @@ namespace NetGore.EditorTools
 
         #region IGraphicsDeviceService Members
 
+        /// <summary>
+        /// The event that occurs when a graphics device is created.
+        /// </summary>
         public event EventHandler DeviceCreated;
+
+        /// <summary>
+        /// The event that occurs when a graphics device is disposing.
+        /// </summary>
         public event EventHandler DeviceDisposing;
+
+        /// <summary>
+        /// The event that occurs when a graphics device is reset.
+        /// </summary>
         public event EventHandler DeviceReset;
+
+        /// <summary>
+        /// The event that occurs when a graphics device is in the process of resetting.
+        /// </summary>
         public event EventHandler DeviceResetting;
 
         /// <summary>
