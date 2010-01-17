@@ -832,12 +832,6 @@ namespace DemoGame.MapEditor
                 _selectedObjectsManager.SetSelected(lstMapParticleEffects.SelectedItem);
         }
 
-        void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstPersistentNPCs.SelectedItem != null)
-                _selectedObjectsManager.SetSelected(lstPersistentNPCs.SelectedItem);
-        }
-
         void lstSelected_Click(object sender, EventArgs e)
         {
             var current = lstSelected.SelectedItem as ISpatial;
@@ -1124,5 +1118,30 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        /// <summary>
+        /// Handles the Click event of the btnDeletePersistentNPC control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnDeletePersistentNPC_Click(object sender, EventArgs e)
+        {
+            var selectedChar = lstPersistentNPCs.SelectedItem as MapEditorCharacter;
+            if (selectedChar == null)
+                return;
+
+            string s = string.Format("Are you sure you wish to delete Character `{0}`? This cannot be undone.", selectedChar);
+            if (MessageBox.Show(s) == DialogResult.No)
+                return;
+
+            if (DbController.GetQuery<DeletePersistentNPCQuery>().Execute(selectedChar.CharacterID) == 0)
+            {
+                s = string.Format("Failed to delete Character `{0}` from the database.", selectedChar);
+                MessageBox.Show(s);
+                return;
+            }
+
+            lstPersistentNPCs.RemoveItemAndReselect(selectedChar);
+        }
     }
 }

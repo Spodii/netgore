@@ -68,7 +68,7 @@ namespace NetGore.Db
     public abstract class DbQueryNonReader<T> : DbQueryBase, IDbQueryNonReader<T>
     {
         /// <summary>
-        /// DbQueryNonReader constructor.
+        /// Initializes a new instance of the <see cref="DbQueryNonReader&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
