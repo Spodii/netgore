@@ -63,11 +63,12 @@ namespace NetGore.Graphics
                     _min.Y = 0;
 
                 // Check the max values
-                if (Max.X > Map.Width)
-                    _min.X = Map.Width - Size.X;
+                var max = Max;
+                if (max.X > Map.Width)
+                    _min.X = Map.Width - (Size.X / Scale);
 
-                if (Max.Y > Map.Height)
-                    _min.Y = Map.Height - Size.Y;
+                if (max.Y > Map.Height)
+                    _min.Y = Map.Height - (Size.Y / Scale);
             }
 
             // Update the matrix
@@ -138,7 +139,7 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Max
         {
-            get { return Min + Size; }
+            get { return Min + Size / Scale; }
         }
 
         /// <summary>
@@ -180,6 +181,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the camera scale percent where 1 equals 100%, or no scaling.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than or equal to
+        /// <see cref="float.Epsilon"/>.</exception>
         public float Scale
         {
             get { return _scale; }
@@ -188,6 +191,9 @@ namespace NetGore.Graphics
                 // Check that the value is different
                 if (_scale == value)
                     return;
+
+                if (value <= float.Epsilon)
+                    throw new ArgumentOutOfRangeException("value");
 
                 // Update the value and the matrix
                 _scale = value;

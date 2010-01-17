@@ -59,6 +59,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the camera scale percent where 1 equals 100%, or no scaling.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than or equal to
+        /// <see cref="float.Epsilon"/>.</exception>
         float Scale { get; set; }
 
         /// <summary>

@@ -1143,5 +1143,19 @@ namespace DemoGame.MapEditor
 
             lstPersistentNPCs.RemoveItemAndReselect(selectedChar);
         }
+
+        private void txtZoom_TextChanged(object sender, EventArgs e)
+        {
+            float value;
+            if (!float.TryParse(txtZoom.Text, out value))
+                return;
+
+            value *= 0.01f;
+
+            if (value <= float.Epsilon || value > 100000)
+                return;
+
+            Camera.Scale = value;
+        }
     }
 }
