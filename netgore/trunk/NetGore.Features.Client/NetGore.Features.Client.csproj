@@ -69,7 +69,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Shop\" />
+    <Folder Include="Shops\" />
+    <Folder Include="Skills\" />
+    <Folder Include="StatusEffects\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
