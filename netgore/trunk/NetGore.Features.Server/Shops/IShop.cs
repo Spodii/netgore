@@ -1,25 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Features.Shops
 {
     public interface IShop<TShopItem>
     {
-        /// <summary>
-        /// Gets an IEnumerable of the items in this <see cref="Shop"/>.
-        /// </summary>
-        IEnumerable<TShopItem> ShopItems { get; }
-
-        /// <summary>
-        /// Gets the item at the specified <paramref name="slot"/>.
-        /// </summary>
-        /// <param name="slot">The slot of the shop item.</param>
-        /// <returns>The shop item at the specified <paramref name="slot"/>, or null if
-        /// the slot was invalid or contains no item.</returns>
-        TShopItem GetShopItem(ShopItemIndex slot);
-
         /// <summary>
         /// Gets if this shop can buy items instead of just sell them.
         /// </summary>
@@ -34,6 +20,19 @@ namespace NetGore.Features.Shops
         /// Gets the name of the shop.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets an IEnumerable of the items in this <see cref="Shop"/>.
+        /// </summary>
+        IEnumerable<TShopItem> ShopItems { get; }
+
+        /// <summary>
+        /// Gets the item at the specified <paramref name="slot"/>.
+        /// </summary>
+        /// <param name="slot">The slot of the shop item.</param>
+        /// <returns>The shop item at the specified <paramref name="slot"/>, or null if
+        /// the slot was invalid or contains no item.</returns>
+        TShopItem GetShopItem(ShopItemIndex slot);
 
         /// <summary>
         /// Writes the information describing the shop items to an <see cref="IValueWriter"/>.

@@ -1,8 +1,8 @@
 using System.Linq;
 using NetGore;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Shops;
 using NetGore.Network;
-using ShopItemIndex=NetGore.Features.Shops.ShopItemIndex;
 
 namespace DemoGame.Client
 {

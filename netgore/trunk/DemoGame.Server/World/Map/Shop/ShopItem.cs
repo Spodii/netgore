@@ -1,6 +1,5 @@
 using System.Linq;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Features.Shops;
 
 namespace DemoGame.Server
@@ -24,6 +23,8 @@ namespace DemoGame.Server
             _itemTemplate = _itemTemplateManager[shopItemTable.ItemTemplateID];
         }
 
+        #region IShopItem<IItemTemplateTable> Members
+
         /// <summary>
         /// Gets the template for this shop item.
         /// </summary>
@@ -31,6 +32,8 @@ namespace DemoGame.Server
         {
             get { return _itemTemplate; }
         }
+
+        #endregion
 
         #region IShopItemTable Members
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.StatusEffects
 {
@@ -27,9 +25,20 @@ namespace NetGore.Features.StatusEffects
         }
 
         /// <summary>
+        /// Gets the <see cref="StatusEffectsSettings"/> instance.
+        /// </summary>
+        public static StatusEffectsSettings Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
         /// Gets the maximum power of a <see cref="IStatusEffect{StatType, StatusEffectType}"/>.
         /// </summary>
-        public ushort MaxStatusEffectPower { get { return _maxStatusEffectPower; } }
+        public ushort MaxStatusEffectPower
+        {
+            get { return _maxStatusEffectPower; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="StatusEffectsSettings"/>. This must only be called once and called as early as possible.
@@ -43,14 +52,6 @@ namespace NetGore.Features.StatusEffects
                 throw new MethodAccessException("This method must be called once and only once.");
 
             _instance = settings;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="StatusEffectsSettings"/> instance.
-        /// </summary>
-        public static StatusEffectsSettings Instance
-        {
-            get { return _instance; }
         }
     }
 }

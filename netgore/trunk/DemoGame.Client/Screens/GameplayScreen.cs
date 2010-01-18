@@ -295,9 +295,7 @@ namespace DemoGame.Client
             // Since we only update entities in view, and the draw position is included in that update, make sure
             // that the camera focuses on the user properly if they teleport out of view of the camera.
             if (!World.Camera.InView(World.UserChar))
-            {
                 World.Camera.CenterOn(World.UserChar);
-            }
 
             // Draw the world layer
             _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,

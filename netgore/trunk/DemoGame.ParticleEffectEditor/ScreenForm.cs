@@ -116,9 +116,7 @@ namespace DemoGame.ParticleEffectEditor
         public void DrawGame(SpriteBatch spriteBatch)
         {
             if (_renderer == null)
-            {
                 _renderer = new SpriteBatchParticleRenderer { SpriteBatch = spriteBatch };
-            }
 
             // Clear the background
             GraphicsDevice.Clear(Color.Black);

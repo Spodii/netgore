@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.Shops
 {
@@ -11,9 +9,8 @@ namespace NetGore.Features.Shops
     /// <typeparam name="TShopper">The type of shopper.</typeparam>
     /// <typeparam name="TShopOwner">The type of shop owner.</typeparam>
     /// <typeparam name="TShopItem">The type of shop item.</typeparam>
-    public abstract class CharacterShoppingState<TShopper, TShopOwner, TShopItem>
-        where TShopper : DynamicEntity
-        where TShopOwner : DynamicEntity
+    public abstract class CharacterShoppingState<TShopper, TShopOwner, TShopItem> where TShopper : DynamicEntity
+                                                                                  where TShopOwner : DynamicEntity
     {
         readonly TShopper _character;
 
@@ -103,8 +100,7 @@ namespace NetGore.Features.Shops
         /// <param name="amount">The amount of the inventory item to sell.</param>
         /// <param name="shop">The shop to sell to.</param>
         /// <returns>True if the sell was successful; otherwise false.</returns>
-        protected abstract bool HandleSellInventoryItem(TShopper character, InventorySlot slot, byte amount,
-            IShop<TShopItem> shop);
+        protected abstract bool HandleSellInventoryItem(TShopper character, InventorySlot slot, byte amount, IShop<TShopItem> shop);
 
         /// <summary>
         /// When overridden in the derived class, gets if the <paramref name="character"/> is close enough to the
@@ -261,5 +257,4 @@ namespace NetGore.Features.Shops
             }
         }
     }
-
 }

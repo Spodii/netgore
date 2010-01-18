@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,16 +9,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeletePersistentNPCQuery : DbQueryNonReader<CharacterID>
     {
-        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `id`=@id",
-            NpcCharacterTable.TableName);
+        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `id`=@id", NpcCharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeletePersistentNPCQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public DeletePersistentNPCQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public DeletePersistentNPCQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

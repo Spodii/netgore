@@ -153,11 +153,6 @@ namespace DemoGame.MapEditor
         public event MapChangeEventHandler OnChangeMap;
 
         /// <summary>
-        /// Gets the size of the game screen.
-        /// </summary>
-        public Vector2 GameScreenSize { get { return new Vector2(GameScreen.ClientSize.Width, GameScreen.ClientSize.Height); } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
         /// <param name="switches">The command-line switches.</param>
@@ -198,37 +193,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Handles the OnChangeCurrentCursor event of the CursorManager.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void CursorManager_OnChangeCurrentCursor(EditorCursorManager<ScreenForm> sender)
-        {
-            _transBoxes.Clear();
-            _selTransBox = null;
-        }
-
-        /// <summary>
-        /// Handles the Resize event of the GameScreen control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void GameScreen_Resize(object sender, EventArgs e)
-        {
-            _camera.Size = GameScreenSize;
-            _grid.Size = GameScreenSize;
-        }
-
-        /// <summary>
-        /// Handles the MouseWheel event of the GameScreen control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
-        {
-            CursorManager.MoveMouseWheel(e.Delta > 0 ? 1 : -1);
-        }
-
-        /// <summary>
         /// Gets the camera used for the game screen.
         /// </summary>
         public ICamera2D Camera
@@ -256,6 +220,14 @@ namespace DemoGame.MapEditor
         IDbController DbController
         {
             get { return _dbController; }
+        }
+
+        /// <summary>
+        /// Gets the size of the game screen.
+        /// </summary>
+        public Vector2 GameScreenSize
+        {
+            get { return new Vector2(GameScreen.ClientSize.Width, GameScreen.ClientSize.Height); }
         }
 
         /// <summary>
@@ -404,6 +376,31 @@ namespace DemoGame.MapEditor
             var selectedBgImage = lstBGItems.SelectedItem as BackgroundImage;
             if (selectedBgImage != null)
                 Map.RemoveBackgroundImage(selectedBgImage);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnDeletePersistentNPC control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnDeletePersistentNPC_Click(object sender, EventArgs e)
+        {
+            var selectedChar = lstPersistentNPCs.SelectedItem as MapEditorCharacter;
+            if (selectedChar == null)
+                return;
+
+            string s = string.Format("Are you sure you wish to delete Character `{0}`? This cannot be undone.", selectedChar);
+            if (MessageBox.Show(s) == DialogResult.No)
+                return;
+
+            if (DbController.GetQuery<DeletePersistentNPCQuery>().Execute(selectedChar.CharacterID) == 0)
+            {
+                s = string.Format("Failed to delete Character `{0}` from the database.", selectedChar);
+                MessageBox.Show(s);
+                return;
+            }
+
+            lstPersistentNPCs.RemoveItemAndReselect(selectedChar);
         }
 
         void btnDeleteSpawn_Click(object sender, EventArgs e)
@@ -557,6 +554,16 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Handles the OnChangeCurrentCursor event of the CursorManager.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void CursorManager_OnChangeCurrentCursor(EditorCursorManager<ScreenForm> sender)
+        {
+            _transBoxes.Clear();
+            _selTransBox = null;
+        }
+
+        /// <summary>
         /// Draws the game.
         /// </summary>
         /// <param name="sb">The sprite batch.</param>
@@ -664,6 +671,27 @@ namespace DemoGame.MapEditor
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Handles the MouseWheel event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
+        {
+            CursorManager.MoveMouseWheel(e.Delta > 0 ? 1 : -1);
+        }
+
+        /// <summary>
+        /// Handles the Resize event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void GameScreen_Resize(object sender, EventArgs e)
+        {
+            _camera.Size = GameScreenSize;
+            _grid.Size = GameScreenSize;
         }
 
         /// <summary>
@@ -1086,6 +1114,20 @@ namespace DemoGame.MapEditor
             Map.Music = txtMusic.Text;
         }
 
+        void txtZoom_TextChanged(object sender, EventArgs e)
+        {
+            float value;
+            if (!float.TryParse(txtZoom.Text, out value))
+                return;
+
+            value *= 0.01f;
+
+            if (value <= float.Epsilon || value > 100000)
+                return;
+
+            Camera.Scale = value;
+        }
+
         /// <summary>
         /// Updates the cursor based on the transformation box the cursor is over
         /// or the currently selected transformation box
@@ -1139,44 +1181,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        /// <summary>
-        /// Handles the Click event of the btnDeletePersistentNPC control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnDeletePersistentNPC_Click(object sender, EventArgs e)
-        {
-            var selectedChar = lstPersistentNPCs.SelectedItem as MapEditorCharacter;
-            if (selectedChar == null)
-                return;
-
-            string s = string.Format("Are you sure you wish to delete Character `{0}`? This cannot be undone.", selectedChar);
-            if (MessageBox.Show(s) == DialogResult.No)
-                return;
-
-            if (DbController.GetQuery<DeletePersistentNPCQuery>().Execute(selectedChar.CharacterID) == 0)
-            {
-                s = string.Format("Failed to delete Character `{0}` from the database.", selectedChar);
-                MessageBox.Show(s);
-                return;
-            }
-
-            lstPersistentNPCs.RemoveItemAndReselect(selectedChar);
-        }
-
-        private void txtZoom_TextChanged(object sender, EventArgs e)
-        {
-            float value;
-            if (!float.TryParse(txtZoom.Text, out value))
-                return;
-
-            value *= 0.01f;
-
-            if (value <= float.Epsilon || value > 100000)
-                return;
-
-            Camera.Scale = value;
-        }
     }
 }

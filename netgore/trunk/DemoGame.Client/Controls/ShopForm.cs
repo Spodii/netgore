@@ -4,7 +4,6 @@ using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -26,6 +25,8 @@ namespace DemoGame.Client
         /// The amount of space between each item.
         /// </summary>
         static readonly Vector2 _padding = new Vector2(2, 2);
+
+        static readonly ShopSettings _shopSettings = ShopSettings.Instance;
 
         ShopInfo<ItemInfo> _shopInfo;
         public event ShopFormPurchaseHandler OnPurchase;
@@ -50,8 +51,6 @@ namespace DemoGame.Client
         {
             get { return _shopInfo; }
         }
-
-        static readonly ShopSettings _shopSettings = ShopSettings.Instance;
 
         void CreateItemSlots()
         {

@@ -8,13 +8,13 @@ namespace NetGore.Features.Shops
     public interface IShopItem<TItemTemplate>
     {
         /// <summary>
-        /// Gets the <see cref="ShopID"/> for the shop that this <see cref="ShopItem"/> belongs to.
-        /// </summary>
-        ShopID ShopID { get; }
-
-        /// <summary>
         /// Gets the template for this shop item.
         /// </summary>
         TItemTemplate ItemTemplate { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ShopID"/> for the shop that this <see cref="ShopItem"/> belongs to.
+        /// </summary>
+        ShopID ShopID { get; }
     }
 }
