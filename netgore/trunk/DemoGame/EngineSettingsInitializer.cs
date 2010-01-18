@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Features.Shops;
+using NetGore.Features.StatusEffects;
 
 namespace DemoGame
 {
@@ -19,12 +20,13 @@ namespace DemoGame
             Initialize(new EngineSettingsInitializer());
 
             ShopSettings.Initialize(new ShopSettings(6 * 6));
+            StatusEffectsSettings.Initialize(new StatusEffectsSettings(500));
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineSettingsInitializer"/> class.
         /// </summary>
-        EngineSettingsInitializer() : base(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f), 500)
+        EngineSettingsInitializer() : base(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f))
         {
         }
 

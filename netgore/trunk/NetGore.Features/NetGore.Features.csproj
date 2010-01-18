@@ -58,6 +58,7 @@
     <Compile Include="StatusEffects\StatusEffect.cs" />
     <Compile Include="StatusEffects\StatusEffectManager.cs" />
     <Compile Include="StatusEffects\StatusEffectMergeType.cs" />
+    <Compile Include="StatusEffects\StatusEffectSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore\NetGore.csproj">

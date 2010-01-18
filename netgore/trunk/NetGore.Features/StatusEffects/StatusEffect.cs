@@ -18,7 +18,8 @@ namespace NetGore.Features.StatusEffects
         where TStatusEffectType : struct, IComparable, IConvertible, IFormattable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly ushort _maxStatusEffectPower = EngineSettings.Instance.MaxStatusEffectPower;
+        static readonly ushort _maxStatusEffectPower = StatusEffectsSettings.Instance.MaxStatusEffectPower;
+
         readonly StatusEffectMergeType _mergeType;
         readonly TStatType[] _modifiedStats;
         readonly TStatusEffectType _statusEffectType;
