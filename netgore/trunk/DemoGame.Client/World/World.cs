@@ -66,23 +66,23 @@ namespace DemoGame.Client
             get { return _map; }
             set
             {
-                if (_map == value)
+                if (Map == value)
                     return;
 
                 // Remove the map event hooks from the old map
-                if (_map != null)
-                    _map.OnEndDrawLayer -= _drawEmoticonHandler;
+                if (Map != null)
+                    Map.OnEndDrawLayer -= _drawEmoticonHandler;
 
                 // Set the map
                 _map = value;
-                _camera.Map = _map;
+                _camera.Map = Map;
 
                 // Add the map event hooks to the new map
-                if (_map != null)
-                    _map.OnEndDrawLayer += _drawEmoticonHandler;
+                if (Map != null)
+                    Map.OnEndDrawLayer += _drawEmoticonHandler;
 
                 if (OnChangeMap != null)
-                    OnChangeMap(this, _map);
+                    OnChangeMap(this, Map);
             }
         }
 
@@ -93,10 +93,10 @@ namespace DemoGame.Client
         {
             get
             {
-                if (_map == null || !IsUserCharIndexSet)
+                if (Map == null || !IsUserCharIndexSet)
                     return null;
 
-                return _map.GetDynamicEntity<Character>(UserCharIndex);
+                return Map.GetDynamicEntity<Character>(UserCharIndex);
             }
         }
 
@@ -172,8 +172,8 @@ namespace DemoGame.Client
         protected override void UpdateMaps(int deltaTime)
         {
             // Update the map
-            if (_map != null)
-                _map.Update(deltaTime);
+            if (Map != null)
+                Map.Update(deltaTime);
         }
     }
 }
