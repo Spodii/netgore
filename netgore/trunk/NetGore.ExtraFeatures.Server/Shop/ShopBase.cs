@@ -6,7 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.Features.Shop
 {
     public abstract class ShopBase<TShopItem> : IShop<TShopItem>
     {

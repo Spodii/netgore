@@ -3,6 +3,7 @@ using System.Linq;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
+using NetGore.Features.Shop;
 
 namespace DemoGame.Server
 {

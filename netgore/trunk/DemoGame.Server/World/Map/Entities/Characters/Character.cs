@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db;
+using NetGore.Features.Shop;
 using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;

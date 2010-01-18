@@ -1,6 +1,7 @@
 using System.Linq;
 using NetGore;
 using NetGore.Network;
+using ShopItemIndex=NetGore.Features.Shop.ShopItemIndex;
 
 namespace DemoGame.Client
 {

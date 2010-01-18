@@ -5,6 +5,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Features.Shop;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
