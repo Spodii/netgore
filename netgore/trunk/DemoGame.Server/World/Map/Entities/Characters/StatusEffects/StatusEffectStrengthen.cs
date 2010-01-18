@@ -1,10 +1,11 @@
 using System.Linq;
+using NetGore;
 
 namespace DemoGame.Server
 {
-    public class StatusEffectStrengthen : StatusEffectBase
+    public class StatusEffectStrengthen : StatusEffect<StatType, StatusEffectType>
     {
-        StatusEffectStrengthen() : base(StatusEffectType.Strengthen, DefaultStatusEffectMergeType.Buff)
+        StatusEffectStrengthen() : base(DemoGame.StatusEffectType.Strengthen, DefaultStatusEffectMergeType.Buff)
         {
         }
 

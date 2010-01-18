@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -22,9 +23,9 @@ namespace DemoGame.Server
         const int _minTimeForStatusEffectsOnDispose = 2000;
 
         static readonly DeleteCharacterStatusEffectQuery _deleteQuery;
-
         static readonly ActiveStatusEffectIDCreator _idCreator;
         static readonly ReplaceCharacterStatusEffectQuery _replaceQuery;
+        static readonly IEqualityComparer<StatusEffectType> _statusEffectTypeComparer = EnumComparer<StatusEffectType>.Instance;
 
         readonly List<ASEWithID> _statusEffects = new List<ASEWithID>();
 
@@ -42,7 +43,7 @@ namespace DemoGame.Server
 
         public override bool Contains(StatusEffectType statusEffectType)
         {
-            return _statusEffects.Any(x => x.Value.StatusEffect.StatusEffectType == statusEffectType);
+            return _statusEffects.Any(x => _statusEffectTypeComparer.Equals(x.Value.StatusEffect.StatusEffectType, statusEffectType));
         }
 
         static void DeleteFromDatabase(ActiveStatusEffectID id)
@@ -112,7 +113,7 @@ namespace DemoGame.Server
             // Load in the ActiveStatusEffects using the values read from the database
             foreach (ICharacterStatusEffectTable value in values)
             {
-                StatusEffectBase statusEffect = StatusEffectManager.GetStatusEffect(value.StatusEffect);
+                var statusEffect = StatusEffectManager.GetStatusEffect(value.StatusEffect);
                 if (statusEffect == null)
                 {
                     const string errmsg = "Failed to get the StatusEffectBase for StatusEffectType `{0}` on Character `{1}`.";
@@ -129,7 +130,7 @@ namespace DemoGame.Server
             }
         }
 
-        public override bool TryAdd(StatusEffectBase statusEffect, ushort power)
+        public override bool TryAdd(StatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
         {
             if (statusEffect == null)
                 throw new ArgumentNullException("statusEffect");

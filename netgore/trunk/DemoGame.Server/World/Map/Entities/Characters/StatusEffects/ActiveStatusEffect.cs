@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.Stats;
 
 namespace DemoGame.Server
@@ -10,7 +11,7 @@ namespace DemoGame.Server
     /// </summary>
     public class ActiveStatusEffect : IModStatContainer<StatType>
     {
-        readonly StatusEffectBase _statusEffect;
+        readonly StatusEffect<StatType, StatusEffectType> _statusEffect;
         int _disableTime;
         ushort _power;
 
@@ -20,7 +21,7 @@ namespace DemoGame.Server
         /// <param name="statusEffect">The <see cref="StatusEffectBase"/> to use.</param>
         /// <param name="power">The power of the StatusEffect.</param>
         /// <param name="disableTime">The game time at which this <see cref="ActiveStatusEffect"/> will be disabled.</param>
-        public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power, int disableTime)
+        public ActiveStatusEffect(StatusEffect<StatType, StatusEffectType> statusEffect, ushort power, int disableTime)
         {
             _statusEffect = statusEffect;
             _power = power;
@@ -47,7 +48,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the <see cref="StatusEffectBase"/> that this <see cref="ActiveStatusEffect"/>.
         /// </summary>
-        public StatusEffectBase StatusEffect
+        public StatusEffect<StatType, StatusEffectType> StatusEffect
         {
             get { return _statusEffect; }
         }
