@@ -499,7 +499,7 @@ namespace DemoGame.Client
             _equippedForm.UserEquipped = UserInfo.Equipped;
 
             // Check to hide the shopping form from the user going out of range of the shop owner
-            ShopInfo shopInfo = ShopForm.ShopInfo;
+            var shopInfo = ShopForm.ShopInfo;
             if (shopInfo != null && shopInfo.ShopOwner != null && !GameData.IsValidDistanceToShop(UserChar, shopInfo.ShopOwner))
                 ShopForm.HideShop();
 
