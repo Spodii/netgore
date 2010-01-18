@@ -27,7 +27,7 @@ namespace DemoGame.Client
         /// </summary>
         static readonly Vector2 _padding = new Vector2(2, 2);
 
-        ShopInfo _shopInfo;
+        ShopInfo<ItemInfo> _shopInfo;
         public event ShopFormPurchaseHandler OnPurchase;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace DemoGame.Client
             CreateItemSlots();
         }
 
-        public ShopInfo ShopInfo
+        public ShopInfo<ItemInfo> ShopInfo
         {
             get { return _shopInfo; }
         }
@@ -68,7 +68,7 @@ namespace DemoGame.Client
             }
         }
 
-        public void DisplayShop(ShopInfo shopInfo)
+        public void DisplayShop(ShopInfo<ItemInfo> shopInfo)
         {
             _shopInfo = shopInfo;
             IsVisible = true;
@@ -129,7 +129,7 @@ namespace DemoGame.Client
             {
                 get
                 {
-                    ShopInfo shopInfo = ShopInfo;
+                    var shopInfo = ShopInfo;
                     if (shopInfo == null)
                         return null;
 
@@ -137,7 +137,7 @@ namespace DemoGame.Client
                 }
             }
 
-            ShopInfo ShopInfo
+            ShopInfo<ItemInfo> ShopInfo
             {
                 get { return _shopForm.ShopInfo; }
             }

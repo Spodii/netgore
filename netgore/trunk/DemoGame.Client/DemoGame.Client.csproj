@@ -144,7 +144,6 @@
     <Compile Include="Controls\Toolbar.cs" />
     <Compile Include="Screens\NewAccountScreen.cs" />
     <Compile Include="Screens\GameScreenHelper.cs" />
-    <Compile Include="ShopInfo.cs" />
     <Compile Include="StatTypeExtensions.cs" />
     <Compile Include="UserEquipped.cs" />
     <Compile Include="UserInfo.cs" />

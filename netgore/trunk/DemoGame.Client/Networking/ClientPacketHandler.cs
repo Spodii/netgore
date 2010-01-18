@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Shops;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
@@ -644,7 +645,7 @@ namespace DemoGame.Client
             }
 
             DynamicEntity shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
-            ShopInfo shopInfo = new ShopInfo(shopOwner, name, canBuy, items);
+            var shopInfo = new ShopInfo<ItemInfo>(shopOwner, name, canBuy, items);
 
             GameplayScreen.ShopForm.DisplayShop(shopInfo);
         }

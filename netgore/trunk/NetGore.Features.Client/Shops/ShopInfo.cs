@@ -1,24 +1,23 @@
 using System.Linq;
 using NetGore;
-using NetGore.Features.Shops;
 
-namespace DemoGame.Client
+namespace NetGore.Features.Shops
 {
-    public class ShopInfo
+    public class ShopInfo<TItemInfo>
     {
         readonly bool _canBuy;
-        readonly ItemInfo[] _items;
+        readonly TItemInfo[] _items;
         readonly string _name;
         readonly DynamicEntity _shopOwner;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShopInfo"/> class.
+        /// Initializes a new instance of the <see cref="ShopInfo{TItemInfo}"/> class.
         /// </summary>
         /// <param name="shopOwner">The shop owner. Can be null.</param>
         /// <param name="name">The name.</param>
         /// <param name="canBuy">if set to <c>true</c> [can buy].</param>
         /// <param name="items">The items.</param>
-        public ShopInfo(DynamicEntity shopOwner, string name, bool canBuy, ItemInfo[] items)
+        public ShopInfo(DynamicEntity shopOwner, string name, bool canBuy, TItemInfo[] items)
         {
             _shopOwner = shopOwner;
             _items = items;
@@ -37,7 +36,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the items in the shop.
         /// </summary>
-        public ItemInfo[] Items
+        public TItemInfo[] Items
         {
             get { return _items; }
         }
@@ -59,18 +58,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the <see cref="ItemInfo"/> at the given <paramref name="slot"/>.
+        /// Gets the item info at the given <paramref name="slot"/>.
         /// </summary>
         /// <param name="slot">The slot of the item.</param>
-        /// <returns>The <see cref="ItemInfo"/> at the given <paramref name="slot"/>, or null if the
+        /// <returns>The item info at the given <paramref name="slot"/>, or null if the
         /// <see cref="slot"/> was invalid or not item was in the specified slot.</returns>
-        public ItemInfo GetItemInfo(ShopItemIndex slot)
+        public TItemInfo GetItemInfo(ShopItemIndex slot)
         {
             if (_items == null)
-                return null;
+                return default(TItemInfo);
 
             if (slot < 0 || slot >= _items.Length)
-                return null;
+                return default(TItemInfo);
 
             return _items[slot];
         }
