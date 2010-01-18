@@ -6,7 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.Collections;
 
-namespace NetGore
+namespace NetGore.Features.Skills
 {
     /// <summary>
     /// A manager for a collection of ISkills.

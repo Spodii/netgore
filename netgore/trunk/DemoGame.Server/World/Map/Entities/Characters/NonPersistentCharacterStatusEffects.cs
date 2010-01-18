@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore;
+using NetGore.Features.StatusEffects;
 
 namespace DemoGame.Server
 {

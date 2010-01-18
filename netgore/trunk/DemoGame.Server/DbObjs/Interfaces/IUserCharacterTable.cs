@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NetGore;
 using NetGore.AI;
-using NetGore.Features.Shop;
+using NetGore.Features.Shops;
 
 namespace DemoGame.Server.DbObjs
 {

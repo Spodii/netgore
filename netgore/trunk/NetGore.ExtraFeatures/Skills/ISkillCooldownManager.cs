@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Features.Skills
 {
     /// <summary>
     /// Interface for an object that keeps track of which skill groups for a single character are currently cooling

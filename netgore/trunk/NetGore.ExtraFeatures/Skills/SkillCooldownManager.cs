@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Features.Skills
 {
     /// <summary>
     /// A basic skill cooldown manager.

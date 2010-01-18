@@ -6,6 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Features.StatusEffects;
 
 namespace DemoGame.Server
 {

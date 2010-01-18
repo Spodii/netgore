@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore.Features.Shop
+namespace NetGore.Features.Shops
 {
     /// <summary>
     /// Represents the index of a ShopItem in a Shop.

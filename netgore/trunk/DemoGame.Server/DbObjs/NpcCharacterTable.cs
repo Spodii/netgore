@@ -4,7 +4,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.AI;
-using NetGore.Features.Shop;
+using NetGore.Features.Shops;
 
 namespace DemoGame.Server.DbObjs
 {

@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using NetGore.IO;
 
-namespace NetGore.Features.Shop
+namespace NetGore.Features.Shops
 {
     /// <summary>
     /// Represents the unique ID of a shop.

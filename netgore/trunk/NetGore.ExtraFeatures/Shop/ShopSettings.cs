@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Features.Shop
+namespace NetGore.Features.Shops
 {
     public class ShopSettings
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Features.StatusEffects
 {
     /// <summary>
     /// Interface for an object that describes an effect that can be placed on an entity.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Features.Skills
 {
     /// <summary>
     /// Interface for an object that describes a skill used by Characters.

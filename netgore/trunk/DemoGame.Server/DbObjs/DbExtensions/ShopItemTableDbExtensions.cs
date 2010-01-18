@@ -3,7 +3,7 @@ using System.Data;
 using System.Linq;
 using NetGore;
 using NetGore.Db;
-using NetGore.Features.Shop;
+using NetGore.Features.Shops;
 
 namespace DemoGame.Server.DbObjs
 {
