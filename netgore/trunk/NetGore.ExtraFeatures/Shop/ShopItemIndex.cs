@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore
 {
     /// <summary>
     /// Represents the index of a ShopItem in a Shop.
@@ -29,7 +29,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="DemoGame.ShopItemIndex"/> to <see cref="System.Byte"/>.
+        /// Performs an implicit conversion from <see cref="NetGore.ShopItemIndex"/> to <see cref="System.Byte"/>.
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns>The result of the conversion.</returns>
@@ -39,7 +39,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.Byte"/> to <see cref="DemoGame.ShopItemIndex"/>.
+        /// Performs an implicit conversion from <see cref="System.Byte"/> to <see cref="NetGore.ShopItemIndex"/>.
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns>The result of the conversion.</returns>

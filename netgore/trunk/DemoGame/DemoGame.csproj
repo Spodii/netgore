@@ -101,8 +101,6 @@
     <Compile Include="Items\IItemInfo.cs" />
     <Compile Include="Items\InventorySlotExtensions.cs" />
     <Compile Include="Items\ItemInfo.cs" />
-    <Compile Include="Shop\ShopItemIndex.cs" />
-    <Compile Include="Shop\ShopItemIndexExtensions.cs" />
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />
     <Compile Include="SPValueType.cs" />
@@ -128,6 +126,11 @@
     <Compile Include="World\WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.ExtraFeatures\NetGore.ExtraFeatures.csproj">
+      <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
+      <Name>NetGore.ExtraFeatures</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>

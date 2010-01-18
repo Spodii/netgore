@@ -67,11 +67,6 @@ namespace DemoGame
         public const int MaxServerSayNameLength = 60;
 
         /// <summary>
-        /// The maximum number of items allowed in a shop
-        /// </summary>
-        public const byte MaxShopItems = 6 * 6;
-
-        /// <summary>
         /// The rules for the account email addresses.
         /// </summary>
         public static readonly StringRules AccountEmail = new StringRules(3, 30,

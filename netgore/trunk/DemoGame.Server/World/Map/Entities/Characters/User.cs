@@ -110,9 +110,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
+        /// Always returns null.
         /// </summary>
-        public override Shop Shop
+        public override IShop<ShopItem> Shop
         {
             get { return null; }
         }
@@ -617,7 +617,7 @@ namespace DemoGame.Server
             return true;
         }
 
-        public bool TrySellInventoryItem(InventorySlot slot, byte amount, Shop shop)
+        public bool TrySellInventoryItem(InventorySlot slot, byte amount, IShop<ShopItem> shop)
         {
             if (amount <= 0 || !slot.IsLegalValue() || shop == null || !shop.CanBuy)
                 return false;
@@ -763,7 +763,7 @@ namespace DemoGame.Server
 
             Map _shopMap;
             DynamicEntity _shopOwner;
-            Shop _shoppingAt;
+            IShop<ShopItem> _shoppingAt;
 
             public UserShoppingState(User user)
             {
@@ -778,7 +778,7 @@ namespace DemoGame.Server
                 get { return _shopOwner; }
             }
 
-            public Shop ShoppingAt
+            public IShop<ShopItem> ShoppingAt
             {
                 get { return _shoppingAt; }
             }
@@ -793,7 +793,7 @@ namespace DemoGame.Server
                 return GameData.IsValidDistanceToShop(User, shopKeeper);
             }
 
-            void SendStartShopping(Shop shop)
+            void SendStartShopping(IShop<ShopItem> shop)
             {
                 using (var pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
                 {
@@ -855,7 +855,7 @@ namespace DemoGame.Server
                 return TryStartShopping(shopkeeper.Shop, shopkeeper, shopkeeper.Map);
             }
 
-            public bool TryStartShopping(Shop shop, DynamicEntity shopkeeper, Map entityMap)
+            public bool TryStartShopping(IShop<ShopItem> shop, DynamicEntity shopkeeper, Map entityMap)
             {
                 ThreadAsserts.IsMainThread();
 

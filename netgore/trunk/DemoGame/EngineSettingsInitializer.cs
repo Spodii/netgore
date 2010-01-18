@@ -5,19 +5,19 @@ using NetGore;
 namespace DemoGame
 {
     /// <summary>
-    /// Provides a clean way to initialize the <see cref="EngineSettings"/>.
+    /// Provides a clean way to initialize the <see cref="EngineSettings"/>, along with any of the other game
+    /// settings that need to be initialized.
     /// </summary>
     public class EngineSettingsInitializer : EngineSettings
     {
-        static readonly EngineSettingsInitializer _instance;
-
         /// <summary>
         /// Initializes the <see cref="EngineSettingsInitializer"/> class.
         /// </summary>
         static EngineSettingsInitializer()
         {
-            _instance = new EngineSettingsInitializer();
-            Initialize(_instance);
+            Initialize(new EngineSettingsInitializer());
+
+            ShopSettings.Initialize(new ShopSettings(6 * 6));
         }
 
         /// <summary>
