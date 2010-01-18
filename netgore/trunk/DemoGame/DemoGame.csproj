@@ -119,10 +119,8 @@
     <Compile Include="IO\PropertySyncItemType.cs" />
     <Compile Include="IO\PropertySyncStatType.cs" />
     <Compile Include="Stats\Collections\CharacterStatsBase.cs" />
-    <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\StatTypeHelper.cs" />
     <Compile Include="Stats\Collections\ItemStatsBase.cs" />
-    <Compile Include="Stats\ModStatHelper.cs" />
     <Compile Include="Stats\StatType.cs" />
     <Compile Include="Stats\StatTypeExtensions.cs" />
     <Compile Include="StatusEffect\DefaultStatusEffectMergeType.cs" />

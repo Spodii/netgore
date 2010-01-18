@@ -8,7 +8,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Describes an instance of an active <see cref="StatusEffectBase"/> on a Character.
     /// </summary>
-    public class ActiveStatusEffect : IModStatContainer
+    public class ActiveStatusEffect : IModStatContainer<StatType>
     {
         readonly StatusEffectBase _statusEffect;
         int _disableTime;
