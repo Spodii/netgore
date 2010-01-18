@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{431BC2DD-0DDD-47FC-827C-9182A361B4E8}</ProjectGuid>
+    <ProjectGuid>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetGore.ExtraFeatures.Server</RootNamespace>
-    <AssemblyName>NetGore.ExtraFeatures.Server</AssemblyName>
+    <RootNamespace>NetGore.Features.Client</RootNamespace>
+    <AssemblyName>NetGore.Features.Client</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,19 +45,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shop\IShop.cs" />
-    <Compile Include="Shop\IShopItem.cs" />
-    <Compile Include="Shop\ShopBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
-      <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
-      <Name>NetGore.Db</Name>
+    <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
+      <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
+      <Name>NetGore.Audio</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.ExtraFeatures\NetGore.ExtraFeatures.csproj">
+    <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
       <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
-      <Name>NetGore.ExtraFeatures</Name>
+      <Name>NetGore.Features</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
+      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
+      <Name>NetGore.Graphics</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
@@ -65,6 +67,9 @@
       <Name>NetGore</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Shop\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

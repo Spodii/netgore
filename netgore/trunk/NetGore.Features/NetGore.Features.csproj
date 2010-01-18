@@ -8,8 +8,8 @@
     <ProjectGuid>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetGore.ExtraFeatures</RootNamespace>
-    <AssemblyName>NetGore.ExtraFeatures</AssemblyName>
+    <RootNamespace>NetGore.Features</RootNamespace>
+    <AssemblyName>NetGore.Features</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
