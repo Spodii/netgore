@@ -101,8 +101,10 @@
     <Compile Include="Stats\Collections\IStatCollection.cs" />
     <Compile Include="Stats\Collections\IStatCollectionExtensions.cs" />
     <Compile Include="Stats\Collections\StatCollectionType.cs" />
+    <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\IStatEventHandler.cs" />
+    <Compile Include="Stats\ModStatHelper.cs" />
     <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Strings\CharType.cs" />

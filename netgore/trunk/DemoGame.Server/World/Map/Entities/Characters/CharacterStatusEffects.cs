@@ -16,7 +16,7 @@ namespace DemoGame.Server
     public delegate void CharacterStatusEffectsAddRemoveHandler(
         CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect);
 
-    public abstract class CharacterStatusEffects : IEnumerable<ActiveStatusEffect>, IGetTime, IModStatContainer, IDisposable
+    public abstract class CharacterStatusEffects : IEnumerable<ActiveStatusEffect>, IGetTime, IModStatContainer<StatType>, IDisposable
     {
         /// <summary>
         /// How frequently, in milliseconds, the ActiveStatusEffect are checked for being expired.

@@ -1,19 +1,21 @@
+using System;
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore.Stats
 {
     /// <summary>
-    /// Interface for an object that can contribute the modified Stat values.
+    /// Interface for an object that can contribute the modified stat values.
     /// </summary>
-    public interface IModStatContainer
+    /// <typeparam name="TStatType">The type of stat.</typeparam>
+    public interface IModStatContainer<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Gets the modifier value for the given <paramref name="statType"/>, where a positive value adds to the
         /// mod stat value, a negative value subtracts from the mod stat value, and a value of 0 does not modify
         /// the mod stat value.
         /// </summary>
-        /// <param name="statType">The <see cref="StatType"/> to get the modifier value for.</param>
+        /// <param name="statType">The <typeparamref name="TStatType"/> to get the modifier value for.</param>
         /// <returns>The modifier value for the given <paramref name="statType"/>.</returns>
-        int GetStatModBonus(StatType statType);
+        int GetStatModBonus(TStatType statType);
     }
 }

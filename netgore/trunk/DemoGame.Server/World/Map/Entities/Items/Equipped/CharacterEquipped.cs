@@ -7,10 +7,11 @@ using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
+using NetGore.Stats;
 
 namespace DemoGame.Server
 {
-    public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer
+    public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer<StatType>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Character _character;

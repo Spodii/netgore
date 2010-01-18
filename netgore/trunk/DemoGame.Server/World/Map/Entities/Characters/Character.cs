@@ -1320,7 +1320,7 @@ namespace DemoGame.Server
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
             foreach (var modStat in ModStats)
             {
-                modStat.Value = ModStatHelper.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
+                modStat.Value = ModStatHelper<StatType>.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
             }
         }
 
