@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db;
+using NetGore.Features.Emoticons;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
 using NetGore.Network;

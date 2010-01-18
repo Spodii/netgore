@@ -8,7 +8,7 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
 
-namespace DemoGame.Client
+namespace NetGore.Features.Emoticons
 {
     /// <summary>
     /// Handles displaying <see cref="Emoticon"/>s.

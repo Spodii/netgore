@@ -5,6 +5,7 @@ using DemoGame.Server.DbObjs;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Audio;
+using NetGore.Features.Emoticons;
 using NetGore.Features.Shops;
 using NetGore.Network;
 using NetGore.Stats;

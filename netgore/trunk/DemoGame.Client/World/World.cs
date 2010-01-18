@@ -5,6 +5,7 @@ using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Features.Emoticons;
 using NetGore.Graphics;
 
 namespace DemoGame.Client

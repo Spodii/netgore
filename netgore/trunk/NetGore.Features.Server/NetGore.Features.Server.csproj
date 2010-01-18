@@ -67,6 +67,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Emoticons\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>

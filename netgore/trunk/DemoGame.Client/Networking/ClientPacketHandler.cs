@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
+using NetGore.Features.Emoticons;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;

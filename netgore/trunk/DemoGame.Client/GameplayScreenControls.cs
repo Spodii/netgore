@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NetGore;
+using NetGore.Features.Emoticons;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 

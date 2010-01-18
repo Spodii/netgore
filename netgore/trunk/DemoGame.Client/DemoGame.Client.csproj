@@ -115,7 +115,6 @@
     <Compile Include="Controls\StatusEffectsForm.cs" />
     <Compile Include="Controls\ToolbarItemType.cs" />
     <Compile Include="DynamicEntityFactory.cs" />
-    <Compile Include="EmoticonDisplayManager.cs" />
     <Compile Include="GameplayScreenControls.cs" />
     <Compile Include="Interface\DamageText.cs" />
     <Compile Include="Interface\DamageTextPool.cs" />
