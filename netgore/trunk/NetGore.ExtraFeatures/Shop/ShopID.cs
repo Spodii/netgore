@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace NetGore
 {
     /// <summary>
     /// Represents the unique ID of a shop.

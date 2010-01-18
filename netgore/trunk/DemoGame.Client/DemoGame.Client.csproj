@@ -182,6 +182,14 @@
       <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
       <Name>NetGore.Audio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.ExtraFeatures.Client\NetGore.ExtraFeatures.Client.csproj">
+      <Project>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</Project>
+      <Name>NetGore.ExtraFeatures.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.ExtraFeatures\NetGore.ExtraFeatures.csproj">
+      <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
+      <Name>NetGore.ExtraFeatures</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>

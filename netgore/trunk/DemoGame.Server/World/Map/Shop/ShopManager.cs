@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -8,7 +9,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Manages the <see cref="Shop"/> instances.
     /// </summary>
-    public class ShopManager : DbTableDataManager<ShopID, Shop>
+    public class ShopManager : DbTableDataManager<ShopID, IShop<ShopItem>>
     {
         static readonly ShopManager _instance;
 
@@ -88,7 +89,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="id">The ID of the item to load.</param>
         /// <returns>The item loaded from the database.</returns>
-        protected override Shop LoadItem(ShopID id)
+        protected override IShop<ShopItem> LoadItem(ShopID id)
         {
             var shopItemTables = _selectShopItemsQuery.Execute(id);
             var shopTable = _selectShopQuery.Execute(id);

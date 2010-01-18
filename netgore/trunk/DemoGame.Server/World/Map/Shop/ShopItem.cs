@@ -1,12 +1,13 @@
 using System.Linq;
 using DemoGame.Server.DbObjs;
+using NetGore;
 
 namespace DemoGame.Server
 {
     /// <summary>
     /// Describes an item that a <see cref="Shop"/> has available for sale.
     /// </summary>
-    public class ShopItem : IShopItemTable
+    public class ShopItem : IShopItemTable, IShopItem<IItemTemplateTable>
     {
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
         readonly IItemTemplateTable _itemTemplate;

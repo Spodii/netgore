@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using NetGore;
 using NetGore.AI;
 using NetGore.Db;
 

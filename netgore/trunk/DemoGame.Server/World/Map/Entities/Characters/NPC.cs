@@ -32,7 +32,7 @@ namespace DemoGame.Server
         /// </summary>
         int _respawnTime = 0;
 
-        Shop _shop;
+        IShop<ShopItem> _shop;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPC"/> class.
@@ -139,9 +139,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s shop.
         /// </summary>
-        public override Shop Shop
+        public override IShop<ShopItem> Shop
         {
             get { return _shop; }
         }

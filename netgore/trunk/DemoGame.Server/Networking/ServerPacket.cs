@@ -466,7 +466,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter StartShopping(MapEntityIndex shopOwnerIndex, Shop shop)
+        public static PacketWriter StartShopping(MapEntityIndex shopOwnerIndex, IShop<ShopItem> shop)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartShopping);
             pw.Write(shopOwnerIndex);

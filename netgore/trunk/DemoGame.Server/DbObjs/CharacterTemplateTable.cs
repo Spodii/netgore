@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
+using NetGore;
 using NetGore.AI;
 
 namespace DemoGame.Server.DbObjs

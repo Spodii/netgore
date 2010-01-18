@@ -324,9 +324,7 @@
     <Compile Include="World\Map\NPCSpawner.cs" />
     <Compile Include="World\Map\Entities\TeleportEntity.cs" />
     <Compile Include="World\Map\Shop\Shop.cs" />
-    <Compile Include="World\Map\Shop\ShopID.cs" />
     <Compile Include="World\Map\Shop\ShopItem.cs" />
-    <Compile Include="World\Map\Shop\ShopItemComparer.cs" />
     <Compile Include="World\Map\Shop\ShopManager.cs" />
     <Compile Include="World\World.cs" />
   </ItemGroup>
@@ -334,6 +332,14 @@
     <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
       <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
       <Name>NetGore.Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.ExtraFeatures.Server\NetGore.ExtraFeatures.Server.csproj">
+      <Project>{431BC2DD-0DDD-47FC-827C-9182A361B4E8}</Project>
+      <Name>NetGore.ExtraFeatures.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.ExtraFeatures\NetGore.ExtraFeatures.csproj">
+      <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
+      <Name>NetGore.ExtraFeatures</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>

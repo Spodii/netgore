@@ -4,6 +4,7 @@ using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
@@ -49,12 +50,14 @@ namespace DemoGame.Client
             get { return _shopInfo; }
         }
 
+        static readonly ShopSettings _shopSettings = ShopSettings.Instance;
+
         void CreateItemSlots()
         {
             Vector2 offset = _padding;
             Vector2 offsetMultiplier = _itemSize + _padding;
 
-            for (int i = 0; i < GameData.MaxShopItems; i++)
+            for (int i = 0; i < _shopSettings.MaxShopItems; i++)
             {
                 int x = i % _columns;
                 int y = i / _columns;

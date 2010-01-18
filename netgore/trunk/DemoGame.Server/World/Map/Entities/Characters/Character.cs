@@ -426,9 +426,9 @@ namespace DemoGame.Server
         public Vector2 RespawnPosition { get; set; }
 
         /// <summary>
-        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Shop"/>.
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s shop.
         /// </summary>
-        public abstract Shop Shop { get; }
+        public abstract IShop<ShopItem> Shop { get; }
 
         /// <summary>
         /// Gets the <see cref="ShopManager"/> instance to be used by the <see cref="Character"/>s.
@@ -1774,7 +1774,7 @@ namespace DemoGame.Server
         {
             get
             {
-                Shop v = Shop;
+                var v = Shop;
                 if (v == null)
                     return null;
                 return v.ID;
