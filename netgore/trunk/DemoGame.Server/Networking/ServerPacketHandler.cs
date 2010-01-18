@@ -6,6 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore;
 using NetGore.Db;
+using NetGore.Features.Shop;
 using NetGore.IO;
 using NetGore.Network;
 

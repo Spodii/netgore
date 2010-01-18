@@ -11,6 +11,7 @@ using log4net;
 using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
+using NetGore.Features.Shop;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.Scripting;

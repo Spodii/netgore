@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Features.Shop;
 
 namespace DemoGame
 {

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
+using NetGore.Features.Shop;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;

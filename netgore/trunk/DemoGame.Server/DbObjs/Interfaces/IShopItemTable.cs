@@ -1,5 +1,6 @@
 using System.Linq;
 using NetGore;
+using NetGore.Features.Shop;
 
 namespace DemoGame.Server.DbObjs
 {
