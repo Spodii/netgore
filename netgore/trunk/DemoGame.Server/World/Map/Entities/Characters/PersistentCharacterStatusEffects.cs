@@ -102,6 +102,8 @@ namespace DemoGame.Server
             Debug.Fail("Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }
 
+        static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
+
         public void Load()
         {
             Debug.Assert(_statusEffects.Count == 0, "Why is Load() being called while there are active effects here already?");
@@ -113,7 +115,7 @@ namespace DemoGame.Server
             // Load in the ActiveStatusEffects using the values read from the database
             foreach (ICharacterStatusEffectTable value in values)
             {
-                var statusEffect = StatusEffectManager.GetStatusEffect(value.StatusEffect);
+                var statusEffect = _statusEffectManager.Get(value.StatusEffect);
                 if (statusEffect == null)
                 {
                     const string errmsg = "Failed to get the StatusEffectBase for StatusEffectType `{0}` on Character `{1}`.";
@@ -130,7 +132,7 @@ namespace DemoGame.Server
             }
         }
 
-        public override bool TryAdd(StatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
+        public override bool TryAdd(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
         {
             if (statusEffect == null)
                 throw new ArgumentNullException("statusEffect");

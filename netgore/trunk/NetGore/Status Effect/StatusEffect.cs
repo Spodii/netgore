@@ -133,7 +133,7 @@ namespace NetGore
         /// <paramref name="statType"/> and <paramref name="power"/> pair. That is, the same two input values must
         /// always result in the exact same output value.
         /// </summary>
-        /// <param name="statType">The <typeparamref name="TStatType"/> to get the modifier bonus of.</param>
+        /// <param name="statType">The stat type to get the modifier bonus of.</param>
         /// <param name="power">The power of the StatusEffect.</param>
         /// <returns>The modifier bonus from this StatusEffect on the given <paramref name="statType"/> with
         /// the given <paramref name="power"/>, or null if the <paramref name="statType"/> is not altered
