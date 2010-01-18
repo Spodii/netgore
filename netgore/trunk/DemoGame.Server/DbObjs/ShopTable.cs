@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
-using NetGore;
 using NetGore.Features.Shops;
 
 namespace DemoGame.Server.DbObjs

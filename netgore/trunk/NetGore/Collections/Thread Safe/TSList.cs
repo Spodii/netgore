@@ -48,7 +48,7 @@ namespace NetGore.Collections
         {
             get { return _list.Capacity; }
         }
-        
+
         /// <summary>
         /// Adds the elements of the specified collection to the end of the <see cref="TSList{T}"/>.
         /// </summary>
@@ -109,7 +109,7 @@ namespace NetGore.Collections
         {
             int ret;
 
-            _lock.EnterReadLock(); 
+            _lock.EnterReadLock();
             try
             {
                 ret = _list.BinarySearch(item, comparer);

@@ -18,13 +18,8 @@ namespace NetGore.EditorTools
     {
         readonly ServiceContainer _services = new ServiceContainer();
 
-        SpriteBatch _spriteBatch;
         GraphicsDeviceService _gds;
-
-        /// <summary>
-        /// Gets the <see cref="SpriteBatch"/> used to draw to this <see cref="GraphicsDeviceControl"/>.
-        /// </summary>
-        public SpriteBatch SpriteBatch { get { return _spriteBatch; } }
+        SpriteBatch _spriteBatch;
 
         /// <summary>
         /// Gets a GraphicsDevice this control can use.
@@ -40,6 +35,14 @@ namespace NetGore.EditorTools
         public ServiceContainer Services
         {
             get { return _services; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SpriteBatch"/> used to draw to this <see cref="GraphicsDeviceControl"/>.
+        /// </summary>
+        public SpriteBatch SpriteBatch
+        {
+            get { return _spriteBatch; }
         }
 
         /// <summary>
@@ -66,7 +69,7 @@ namespace NetGore.EditorTools
             // viewport to only use the top left portion of the full backbuffer.
             GraphicsDevice.Viewport = new Viewport
             { X = 0, Y = 0, Width = ClientSize.Width, Height = ClientSize.Height, MinDepth = 0, MaxDepth = 1 };
-    
+
             return null;
         }
 

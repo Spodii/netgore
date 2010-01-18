@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.Features.StatusEffects;
 using NetGore.Stats;
-using NetGore.Features.StatusEffects;
 
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Describes an instance of an active <see cref="IStatusEffect{TStatType, TSkillType}"/> on a Character.
+    /// Describes an instance of an active <see cref="IStatusEffect{TStatType,TStatusEffectType}"/> on a Character.
     /// </summary>
     public class ActiveStatusEffect : IModStatContainer<StatType>
     {
@@ -201,7 +199,7 @@ namespace DemoGame.Server
             }
         }
 
-        #region IModStatContainer Members
+        #region IModStatContainer<StatType> Members
 
         public int GetStatModBonus(StatType statType)
         {

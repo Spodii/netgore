@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.Shops
 {
@@ -27,9 +25,20 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
+        /// Gets the <see cref="ShopSettings"/> instance.
+        /// </summary>
+        public static ShopSettings Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
         /// Gets the max number of items in a single shop.
         /// </summary>
-        public byte MaxShopItems { get { return _maxShopItems; } }
+        public byte MaxShopItems
+        {
+            get { return _maxShopItems; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="ShopSettings"/>. This must only be called once and called as early as possible.
@@ -43,14 +52,6 @@ namespace NetGore.Features.Shops
                 throw new MethodAccessException("This method must be called once and only once.");
 
             _instance = settings;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ShopSettings"/> instance.
-        /// </summary>
-        public static ShopSettings Instance
-        {
-            get { return _instance; }
         }
     }
 }

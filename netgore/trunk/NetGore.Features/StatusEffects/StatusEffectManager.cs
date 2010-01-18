@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using NetGore.Collections;
 
@@ -18,8 +17,7 @@ namespace NetGore.Features.StatusEffects
     /// <typeparam name="TStatusEffectType">The type of status effect.</typeparam>
     public class StatusEffectManager<TStatType, TStatusEffectType>
         where TStatType : struct, IComparable, IConvertible, IFormattable
-        where TStatusEffectType : struct, IComparable, IConvertible,
-                                                                     IFormattable
+        where TStatusEffectType : struct, IComparable, IConvertible, IFormattable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -28,24 +26,23 @@ namespace NetGore.Features.StatusEffects
         /// for the given <typeparamref name="TStatusEffectType"/>.
         /// </summary>
         readonly Dictionary<TStatusEffectType, IStatusEffect<TStatType, TStatusEffectType>> _statusEffects =
-            new Dictionary<TStatusEffectType, IStatusEffect<TStatType, TStatusEffectType>>(EnumComparer<TStatusEffectType>.Instance);
+            new Dictionary<TStatusEffectType, IStatusEffect<TStatType, TStatusEffectType>>(
+                EnumComparer<TStatusEffectType>.Instance);
 
         /// <summary>
-        /// Creates the default type filter.
+        /// Initializes a new instance of the <see cref="StatusEffectManager&lt;TStatType, TStatusEffectType&gt;"/> class.
         /// </summary>
-        /// <returns>The default type filter.</returns>
-        static Func<Type, bool> GetDefaultFilter()
+        public StatusEffectManager() : this(GetDefaultFilter())
         {
-            var typeFilterCreator = new TypeFilterCreator
-            {
-                IsClass = true,
-                IsAbstract = false,
-                ConstructorParameters = Type.EmptyTypes,
-                RequireConstructor = true,
-                Interfaces = new Type[] { typeof(IStatusEffect<TStatType, TStatusEffectType>) }
-            };
+        }
 
-            return typeFilterCreator.GetFilter();
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatusEffectManager&lt;TStatType, TStatusEffectType&gt;"/> class.
+        /// </summary>
+        /// <param name="filter">The filter used to get the <see cref="Type"/>s to try to instantiate.</param>
+        public StatusEffectManager(Func<Type, bool> filter)
+        {
+            new TypeFactory(filter, HandleLoadType, false);
         }
 
         /// <summary>
@@ -66,10 +63,21 @@ namespace NetGore.Features.StatusEffects
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StatusEffectManager&lt;TStatType, TStatusEffectType&gt;"/> class.
+        /// Creates the default type filter.
         /// </summary>
-        public StatusEffectManager() : this(GetDefaultFilter())
+        /// <returns>The default type filter.</returns>
+        static Func<Type, bool> GetDefaultFilter()
         {
+            var typeFilterCreator = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                ConstructorParameters = Type.EmptyTypes,
+                RequireConstructor = true,
+                Interfaces = new Type[] { typeof(IStatusEffect<TStatType, TStatusEffectType>) }
+            };
+
+            return typeFilterCreator.GetFilter();
         }
 
         /// <summary>
@@ -98,16 +106,7 @@ namespace NetGore.Features.StatusEffects
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created status effect object `{0}` for StatusEffectType `{1}`.", instance,
-                    instance.StatusEffectType);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StatusEffectManager&lt;TStatType, TStatusEffectType&gt;"/> class.
-        /// </summary>
-        /// <param name="filter">The filter used to get the <see cref="Type"/>s to try to instantiate.</param>
-        public StatusEffectManager(Func<Type, bool> filter)
-        {
-            new TypeFactory(filter, HandleLoadType, false);
+                               instance.StatusEffectType);
         }
     }
 }

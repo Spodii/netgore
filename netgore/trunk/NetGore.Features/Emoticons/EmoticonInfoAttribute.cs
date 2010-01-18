@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NetGore;
 
 namespace NetGore.Features.Emoticons
 {

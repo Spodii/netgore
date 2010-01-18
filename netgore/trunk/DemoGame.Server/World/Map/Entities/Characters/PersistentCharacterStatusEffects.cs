@@ -26,6 +26,7 @@ namespace DemoGame.Server
         static readonly DeleteCharacterStatusEffectQuery _deleteQuery;
         static readonly ActiveStatusEffectIDCreator _idCreator;
         static readonly ReplaceCharacterStatusEffectQuery _replaceQuery;
+        static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
         static readonly IEqualityComparer<StatusEffectType> _statusEffectTypeComparer = EnumComparer<StatusEffectType>.Instance;
 
         readonly List<ASEWithID> _statusEffects = new List<ASEWithID>();
@@ -44,7 +45,8 @@ namespace DemoGame.Server
 
         public override bool Contains(StatusEffectType statusEffectType)
         {
-            return _statusEffects.Any(x => _statusEffectTypeComparer.Equals(x.Value.StatusEffect.StatusEffectType, statusEffectType));
+            return
+                _statusEffects.Any(x => _statusEffectTypeComparer.Equals(x.Value.StatusEffect.StatusEffectType, statusEffectType));
         }
 
         static void DeleteFromDatabase(ActiveStatusEffectID id)
@@ -102,8 +104,6 @@ namespace DemoGame.Server
 
             Debug.Fail("Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }
-
-        static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
 
         public void Load()
         {

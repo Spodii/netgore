@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Linq;
-using NetGore;
 using NetGore.Db;
 using NetGore.Features.Shops;
 

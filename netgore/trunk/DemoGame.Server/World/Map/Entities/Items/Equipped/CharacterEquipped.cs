@@ -214,7 +214,7 @@ namespace DemoGame.Server
 
         #endregion
 
-        #region IModStatContainer Members
+        #region IModStatContainer<StatType> Members
 
         /// <summary>
         /// Gets the modifier value for the given <paramref name="statType"/>, where a positive value adds to the

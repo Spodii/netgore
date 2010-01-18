@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Features.Shops;
 using NetGore.IO;
 
