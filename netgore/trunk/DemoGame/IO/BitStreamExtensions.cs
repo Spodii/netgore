@@ -5,7 +5,7 @@ using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.Features.Shop;
+using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Stats;
 

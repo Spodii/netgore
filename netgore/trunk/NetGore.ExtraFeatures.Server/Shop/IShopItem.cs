@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore.Features.Shop
+namespace NetGore.Features.Shops
 {
     /// <summary>
     /// Interface for an object that describes an item that a <see cref="Shop"/> has available.

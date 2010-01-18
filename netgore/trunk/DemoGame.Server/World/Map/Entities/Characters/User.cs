@@ -7,7 +7,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
-using NetGore.Features.Shop;
+using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;

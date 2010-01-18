@@ -1,7 +1,7 @@
 using System.Linq;
 using NetGore.IO;
 
-namespace NetGore.Features.Shop
+namespace NetGore.Features.Shops
 {
     /// <summary>
     /// Extension methods for the <see cref="ShopItemIndex"/>.

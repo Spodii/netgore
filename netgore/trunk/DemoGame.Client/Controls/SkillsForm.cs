@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Features.Skills;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 

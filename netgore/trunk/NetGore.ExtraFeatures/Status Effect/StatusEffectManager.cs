@@ -7,7 +7,7 @@ using System.Text;
 using log4net;
 using NetGore.Collections;
 
-namespace NetGore
+namespace NetGore.Features.StatusEffects
 {
     /// <summary>
     /// Manages all of the individual <see cref="IStatusEffect{TStatType, TStatusEffectType}"/>s for the corresponding

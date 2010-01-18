@@ -8,6 +8,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
+using NetGore.Features.StatusEffects;
 
 namespace DemoGame.Server
 {

@@ -1,11 +1,12 @@
 using System.Linq;
 using NetGore;
+using NetGore.Features.StatusEffects;
 
 namespace DemoGame
 {
     /// <summary>
     /// Contains the default <see cref="StatusEffectMergeType"/> used for different kinds of
-    /// <see cref="StatusEffectBase"/>s.
+    /// <see cref="IStatusEffect{TStatType, TSkillType}"/>s.
     /// </summary>
     public static class DefaultStatusEffectMergeType
     {

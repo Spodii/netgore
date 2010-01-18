@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace NetGore
+namespace NetGore.Features.StatusEffects
 {
     /// <summary>
     /// The base class for describing a single status effect that can be placed on a Character. This provides a

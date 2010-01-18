@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore;
+using NetGore.Features.StatusEffects;
 using NetGore.Stats;
 
 namespace DemoGame.Server

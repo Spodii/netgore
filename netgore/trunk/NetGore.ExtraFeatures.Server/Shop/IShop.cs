@@ -3,7 +3,7 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace NetGore.Features.Shop
+namespace NetGore.Features.Shops
 {
     public interface IShop<TShopItem>
     {

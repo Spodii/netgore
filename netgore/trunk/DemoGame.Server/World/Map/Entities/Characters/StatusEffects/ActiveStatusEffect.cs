@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
+using NetGore.Features.StatusEffects;
 using NetGore.Stats;
+using NetGore.Features.StatusEffects;
 
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Describes an instance of an active <see cref="StatusEffectBase"/> on a Character.
+    /// Describes an instance of an active <see cref="IStatusEffect{TStatType, TSkillType}"/> on a Character.
     /// </summary>
     public class ActiveStatusEffect : IModStatContainer<StatType>
     {
@@ -18,7 +20,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveStatusEffect"/> class.
         /// </summary>
-        /// <param name="statusEffect">The <see cref="StatusEffectBase"/> to use.</param>
+        /// <param name="statusEffect">The <see cref="IStatusEffect{TStatType, TSkillType}"/> to use.</param>
         /// <param name="power">The power of the StatusEffect.</param>
         /// <param name="disableTime">The game time at which this <see cref="ActiveStatusEffect"/> will be disabled.</param>
         public ActiveStatusEffect(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power, int disableTime)
@@ -46,7 +48,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the <see cref="StatusEffectBase"/> that this <see cref="ActiveStatusEffect"/>.
+        /// Gets the <see cref="IStatusEffect{TStatType, TSkillType}"/> that this <see cref="ActiveStatusEffect"/>.
         /// </summary>
         public IStatusEffect<StatType, StatusEffectType> StatusEffect
         {

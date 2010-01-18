@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Features.Skills
 {
     /// <summary>
     /// Base class for a general implementation of the ISkill.
