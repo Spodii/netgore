@@ -37,7 +37,7 @@ namespace DemoGame.Server
             Debug.Assert(wasRemoved, "Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }
 
-        public override bool TryAdd(StatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
+        public override bool TryAdd(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
         {
             if (statusEffect == null)
                 throw new ArgumentNullException("statusEffect");
