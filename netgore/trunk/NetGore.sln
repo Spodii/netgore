@@ -38,11 +38,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.MapEditor", "DemoG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbClassCreator", "DemoGame.DbClassCreator\DemoGame.DbClassCreator.csproj", "{D57B29DA-0305-41AA-BBF9-75F370AE33AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.ExtraFeatures", "NetGore.ExtraFeatures\NetGore.ExtraFeatures.csproj", "{21CBF812-F3DE-4CCD-BE43-4D28EC611272}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features", "NetGore.Features\NetGore.Features.csproj", "{21CBF812-F3DE-4CCD-BE43-4D28EC611272}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.ExtraFeatures.Client", "NetGore.ExtraFeatures.Client\NetGore.ExtraFeatures.Client.csproj", "{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Client", "NetGore.Features.Client\NetGore.Features.Client.csproj", "{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.ExtraFeatures.Server", "NetGore.ExtraFeatures.Server\NetGore.ExtraFeatures.Server.csproj", "{431BC2DD-0DDD-47FC-827C-9182A361B4E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Server", "NetGore.Features.Server\NetGore.Features.Server.csproj", "{431BC2DD-0DDD-47FC-827C-9182A361B4E8}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
