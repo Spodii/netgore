@@ -16,7 +16,7 @@ namespace NetGore.Tests
         [SetUp]
         public void SetUpEngineSettings()
         {
-            EngineSettings.Initialize(new EngineSettings(new Vector2(0f, 0.0009f), new Vector2(1f, 1f)));
+            EngineSettings.Initialize(new EngineSettings(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f), 500));
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DemoGame
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineSettingsInitializer"/> class.
         /// </summary>
-        EngineSettingsInitializer() : base(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f))
+        EngineSettingsInitializer() : base(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f), 500)
         {
         }
 

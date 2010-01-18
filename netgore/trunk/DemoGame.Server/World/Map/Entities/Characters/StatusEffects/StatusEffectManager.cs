@@ -21,24 +21,31 @@ namespace DemoGame.Server
         /// <summary>
         /// Dictionary that allows for lookup of a <see cref="StatusEffectBase"/> for the given <see cref="StatusEffectType"/>.
         /// </summary>
-        static readonly Dictionary<StatusEffectType, StatusEffectBase> _statusEffects =
-            new Dictionary<StatusEffectType, StatusEffectBase>(EnumComparer<StatusEffectType>.Instance);
+        static readonly Dictionary<StatusEffectType, StatusEffect<StatType, StatusEffectType>> _statusEffects =
+            new Dictionary<StatusEffectType, StatusEffect<StatType, StatusEffectType>>(EnumComparer<StatusEffectType>.Instance);
 
         /// <summary>
         /// Initializes the <see cref="StatusEffectManager"/> class.
         /// </summary>
         static StatusEffectManager()
         {
-            // Get the Types for the classes that inherit StatusEffectBase
-            var types = TypeHelper.FindTypesThatInherit(typeof(StatusEffectBase), Type.EmptyTypes, false);
+            var typeFilterCreator = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                ConstructorParameters = Type.EmptyTypes,
+                RequireConstructor = true,
+                Subclass = typeof(StatusEffect<StatType, StatusEffectType>)
+            };
+            var filter = typeFilterCreator.GetFilter();
 
-            // Filter out the invalid derived Types
-            types = types.Where(x => x.IsClass && !x.IsAbstract);
+            // Get the Types for the classes that inherit StatusEffectBase
+            var types = TypeHelper.AllTypes().Where(filter);
 
             // Create an instance of each of the valid derived classes
             foreach (Type type in types)
             {
-                StatusEffectBase instance = (StatusEffectBase)TypeFactory.GetTypeInstance(type);
+                var instance = (StatusEffect<StatType, StatusEffectType>)TypeFactory.GetTypeInstance(type);
 
                 if (_statusEffects.ContainsKey(instance.StatusEffectType))
                 {
@@ -64,9 +71,9 @@ namespace DemoGame.Server
         /// <returns>The <see cref="StatusEffectBase"/> for the given <paramref name="statusEffectType"/>,
         /// or null if the <paramref name="statusEffectType"/> is invalid or contains no
         /// <see cref="StatusEffectBase"/>.</returns>
-        public static StatusEffectBase GetStatusEffect(StatusEffectType statusEffectType)
+        public static StatusEffect<StatType, StatusEffectType> GetStatusEffect(StatusEffectType statusEffectType)
         {
-            StatusEffectBase value;
+            StatusEffect<StatType, StatusEffectType> value;
             if (!_statusEffects.TryGetValue(statusEffectType, out value))
             {
                 const string errmsg = "Failed to get the StatusEffectBase for StatusEffectType `{0}`.";

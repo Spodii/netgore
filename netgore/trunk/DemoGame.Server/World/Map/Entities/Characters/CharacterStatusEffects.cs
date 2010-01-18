@@ -133,11 +133,11 @@ namespace DemoGame.Server
             }
         }
 
-        public abstract bool TryAdd(StatusEffectBase statusEffect, ushort power);
+        public abstract bool TryAdd(StatusEffect<StatType, StatusEffectType> statusEffect, ushort power);
 
         public bool TryAdd(StatusEffectType statusEffectType, ushort power)
         {
-            StatusEffectBase statusEffect = StatusEffectManager.GetStatusEffect(statusEffectType);
+            var statusEffect = StatusEffectManager.GetStatusEffect(statusEffectType);
             return TryAdd(statusEffect, power);
         }
 

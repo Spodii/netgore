@@ -124,8 +124,6 @@
     <Compile Include="Stats\StatType.cs" />
     <Compile Include="Stats\StatTypeExtensions.cs" />
     <Compile Include="StatusEffect\DefaultStatusEffectMergeType.cs" />
-    <Compile Include="StatusEffect\StatusEffectBase.cs" />
-    <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
     <Compile Include="StatusEffect\StatusEffectType.cs" />
     <Compile Include="World\WorldBase.cs" />
   </ItemGroup>

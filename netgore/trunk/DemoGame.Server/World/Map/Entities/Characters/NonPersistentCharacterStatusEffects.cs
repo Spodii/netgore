@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame.Server
 {
@@ -36,7 +37,7 @@ namespace DemoGame.Server
             Debug.Assert(wasRemoved, "Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }
 
-        public override bool TryAdd(StatusEffectBase statusEffect, ushort power)
+        public override bool TryAdd(StatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
         {
             if (statusEffect == null)
                 throw new ArgumentNullException("statusEffect");
@@ -63,7 +64,7 @@ namespace DemoGame.Server
 
         public override bool TryGetStatusEffect(StatusEffectType statusEffectType, out ActiveStatusEffect statusEffect)
         {
-            foreach (ActiveStatusEffect activeStatusEffect in this)
+            foreach (var activeStatusEffect in this)
             {
                 if (activeStatusEffect.StatusEffect.StatusEffectType == statusEffectType)
                 {

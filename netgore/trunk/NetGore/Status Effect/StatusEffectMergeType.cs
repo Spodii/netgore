@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore
 {
     /// <summary>
     /// Describes how a StatusEffect handles when the Character the StatusEffect is being added to

@@ -72,11 +72,6 @@ namespace DemoGame
         public const byte MaxShopItems = 6 * 6;
 
         /// <summary>
-        /// The maximum power of a StatusEffect.
-        /// </summary>
-        public const ushort MaxStatusEffectPower = 500;
-
-        /// <summary>
         /// The rules for the account email addresses.
         /// </summary>
         public static readonly StringRules AccountEmail = new StringRules(3, 30,

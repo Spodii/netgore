@@ -107,6 +107,9 @@
     <Compile Include="Stats\ModStatHelper.cs" />
     <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\StatFactory.cs" />
+    <Compile Include="Status Effect\IStatusEffect.cs" />
+    <Compile Include="Status Effect\StatusEffect.cs" />
+    <Compile Include="Status Effect\StatusEffectMergeType.cs" />
     <Compile Include="Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />
     <Compile Include="Collections\DArray\DArrayModifyEventArgs.cs" />
