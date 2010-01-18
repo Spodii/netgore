@@ -45,19 +45,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shop\ShopID.cs" />
-    <Compile Include="Shop\ShopItemIndex.cs" />
-    <Compile Include="Shop\ShopItemIndexExtensions.cs" />
-    <Compile Include="Shop\ShopSettings.cs" />
+    <Compile Include="Shops\ShopID.cs" />
+    <Compile Include="Shops\ShopItemIndex.cs" />
+    <Compile Include="Shops\ShopItemIndexExtensions.cs" />
+    <Compile Include="Shops\ShopSettings.cs" />
     <Compile Include="Skills\ISkill.cs" />
     <Compile Include="Skills\ISkillCooldownManager.cs" />
     <Compile Include="Skills\SkillBase.cs" />
     <Compile Include="Skills\SkillCooldownManager.cs" />
     <Compile Include="Skills\SkillManager.cs" />
-    <Compile Include="Status Effect\IStatusEffect.cs" />
-    <Compile Include="Status Effect\StatusEffect.cs" />
-    <Compile Include="Status Effect\StatusEffectManager.cs" />
-    <Compile Include="Status Effect\StatusEffectMergeType.cs" />
+    <Compile Include="StatusEffects\IStatusEffect.cs" />
+    <Compile Include="StatusEffects\StatusEffect.cs" />
+    <Compile Include="StatusEffects\StatusEffectManager.cs" />
+    <Compile Include="StatusEffects\StatusEffectMergeType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
