@@ -69,9 +69,6 @@
   <ItemGroup>
     <Compile Include="Account\AccountCharacterInfo.cs" />
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
-    <Compile Include="Emoticons\Emoticon.cs" />
-    <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
-    <Compile Include="Emoticons\EmoticonInfoManager.cs" />
     <Compile Include="EngineSettingsInitializer.cs" />
     <Compile Include="Body\BodyInfoManager.cs" />
     <Compile Include="Skills\SkillInfoAttribute.cs" />
@@ -136,6 +133,9 @@
       <Name>NetGore</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Emoticons\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

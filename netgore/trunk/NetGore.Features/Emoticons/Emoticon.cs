@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DemoGame
+namespace NetGore.Features.Emoticons
 {
     /// <summary>
     /// The different emoticons that can be used.

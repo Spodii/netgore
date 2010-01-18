@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NetGore;
 
-namespace DemoGame
+namespace NetGore.Features.Emoticons
 {
     /// <summary>
     /// Contains the <see cref="EmoticonInfoAttribute"/> for the appropriate <see cref="Emoticon"/>.

@@ -1,5 +1,6 @@
 using System.Linq;
 using NetGore;
+using NetGore.Features.Emoticons;
 using NetGore.Network;
 using ShopItemIndex=NetGore.Features.Shops.ShopItemIndex;
 
