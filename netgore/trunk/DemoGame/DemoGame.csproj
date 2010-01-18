@@ -102,7 +102,6 @@
     <Compile Include="Skills\SkillTypeExtensions.cs" />
     <Compile Include="SPValueType.cs" />
     <Compile Include="Items\InventoryBase.cs" />
-    <Compile Include="Items\InventorySlot.cs" />
     <Compile Include="Items\ItemType.cs" />
     <Compile Include="Items\ItemTypeExtensions.cs" />
     <Compile Include="World\Map\IUpdateableMapReference.cs" />
