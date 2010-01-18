@@ -758,151 +758,124 @@ namespace DemoGame.Server
                 GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
         }
 
-        public class UserShoppingState
+        public class UserShoppingState : CharacterShoppingState<User, Character, ShopItem>
         {
-            readonly User _user;
-
-            Map _shopMap;
-            DynamicEntity _shopOwner;
-            IShop<ShopItem> _shoppingAt;
-
-            public UserShoppingState(User user)
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserShoppingState"/> class.
+            /// </summary>
+            /// <param name="character">The character doing the shopping.</param>
+            public UserShoppingState(User character) : base(character)
             {
-                if (user == null)
-                    throw new ArgumentNullException("user");
-
-                _user = user;
-            }
-
-            public DynamicEntity ShopOwner
-            {
-                get { return _shopOwner; }
-            }
-
-            public IShop<ShopItem> ShoppingAt
-            {
-                get { return _shoppingAt; }
-            }
-
-            public User User
-            {
-                get { return _user; }
-            }
-
-            bool IsValidDistance(Entity shopKeeper)
-            {
-                return GameData.IsValidDistanceToShop(User, shopKeeper);
-            }
-
-            void SendStartShopping(IShop<ShopItem> shop)
-            {
-                using (var pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
-                {
-                    User.Send(pw);
-                }
-            }
-
-            void SendStopShopping()
-            {
-                using (var pw = ServerPacket.StopShopping())
-                {
-                    User.Send(pw);
-                }
-            }
-
-            public bool TryPurchase(ShopItemIndex slot, byte amount)
-            {
-                ThreadAsserts.IsMainThread();
-
-                if (!slot.IsLegalValue())
-                    return false;
-
-                // Get the shop
-                ValidateShop();
-                if (_shoppingAt == null)
-                    return false;
-
-                // Get and validate the item
-                var shopItem = _shoppingAt.GetShopItem(slot);
-                if (shopItem == null)
-                    return false;
-
-                // Try to buy the item
-                return User.TryBuyItem(shopItem.ItemTemplate, amount);
-            }
-
-            public bool TrySellInventory(InventorySlot slot, byte amount)
-            {
-                ThreadAsserts.IsMainThread();
-
-                ValidateShop();
-                if (_shoppingAt == null)
-                    return false;
-
-                // Make sure the shop buys stuff
-                if (!_shoppingAt.CanBuy)
-                    return false;
-
-                return User.TrySellInventoryItem(slot, amount, _shoppingAt);
-            }
-
-            public bool TryStartShopping(Character shopkeeper)
-            {
-                ThreadAsserts.IsMainThread();
-
-                if (shopkeeper == null)
-                    return false;
-
-                return TryStartShopping(shopkeeper.Shop, shopkeeper, shopkeeper.Map);
-            }
-
-            public bool TryStartShopping(IShop<ShopItem> shop, DynamicEntity shopkeeper, Map entityMap)
-            {
-                ThreadAsserts.IsMainThread();
-
-                if (shop == null || shopkeeper == null || entityMap == null)
-                    return false;
-
-                if (User.Map != entityMap)
-                    return false;
-
-                if (!IsValidDistance(shopkeeper))
-                    return false;
-
-                // If the User was already shopping somewhere else, stop that shopping
-                if (_shoppingAt != null)
-                    SendStopShopping();
-
-                // Start the shopping
-                _shoppingAt = shop;
-                _shopOwner = shopkeeper;
-                _shopMap = entityMap;
-
-                SendStartShopping(shop);
-
-                return true;
             }
 
             /// <summary>
-            /// Performs validation checks on the shop to ensure it is valid. If the shop is invalid,
-            /// <see cref="_shoppingAt"/> and other values will be set to null.
+            /// When overridden in the derived class, gets the <see cref="IMap"/> for a shopper.
             /// </summary>
-            void ValidateShop()
+            /// <param name="character">The character to get the <see cref="IMap"/> for.</param>
+            /// <returns>
+            /// The <see cref="IMap"/> for the <paramref name="character"/>.
+            /// </returns>
+            protected override IMap GetCharacterMap(User character)
             {
-                ThreadAsserts.IsMainThread();
+                return character.Map;
+            }
 
-                // Check for a valid shop
-                if (_shoppingAt == null || _shopOwner == null || _shopMap == null)
-                    return;
+            /// <summary>
+            /// When overridden in the derived class, gets the <see cref="IMap"/> for a shop owner.
+            /// </summary>
+            /// <param name="character">The character to get the <see cref="IMap"/> for.</param>
+            /// <returns>
+            /// The <see cref="IMap"/> for the <paramref name="character"/>.
+            /// </returns>
+            protected override IMap GetCharacterMap(Character character)
+            {
+                return character.Map;
+            }
 
-                // Check for a valid distance
-                if (!IsValidDistance(_shopOwner))
+            /// <summary>
+            /// When overridden in the derived class, gets the <see cref="IShop{TShopItem}"/> for a
+            /// shop owner.
+            /// </summary>
+            /// <param name="shopkeeper">The shop owner to get the <see cref="IShop{TShopItem}"/> for.</param>
+            /// <returns>
+            /// The <paramref name="shopkeeper"/>'s <see cref="IShop{TShopItem}"/>.
+            /// </returns>
+            protected override IShop<ShopItem> GetCharacterShop(Character shopkeeper)
+            {
+                return shopkeeper.Shop;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, makes the <paramref name="character"/> try to purchase
+            /// <paramref name="amount"/> of the <paramref name="shopItem"/> from the shop.
+            /// </summary>
+            /// <param name="character">The character doing the buying.</param>
+            /// <param name="shopItem">The item to purchase.</param>
+            /// <param name="amount">The amount of the <paramref name="shopItem"/> to purchase.</param>
+            /// <returns>
+            /// True if the purchase was successful; otherwise false.
+            /// </returns>
+            protected override bool HandleBuyShopItem(User character, ShopItem shopItem, byte amount)
+            {
+                return character.TryBuyItem(shopItem.ItemTemplate, amount);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, makes the <paramref name="character"/> try to sell
+            /// <paramref name="amount"/> of their inventory at the given <paramref name="slot"/> to
+            /// the <paramref name="shop"/>.
+            /// </summary>
+            /// <param name="character">The character doing the selling.</param>
+            /// <param name="slot">The inventory slot to sell from.</param>
+            /// <param name="amount">The amount of the inventory item to sell.</param>
+            /// <param name="shop">The shop to sell to.</param>
+            /// <returns>
+            /// True if the sell was successful; otherwise false.
+            /// </returns>
+            protected override bool HandleSellInventoryItem(User character, InventorySlot slot, byte amount, IShop<ShopItem> shop)
+            {
+                return character.TrySellInventoryItem(slot, amount, ShoppingAt);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if the <paramref name="character"/> is close enough to the
+            /// <paramref name="shopKeeper"/> to buy and sell to and from their shop.
+            /// </summary>
+            /// <param name="character">The character doing the shopping.</param>
+            /// <param name="shopKeeper">The owner of the shop.</param>
+            /// <returns>
+            /// True if the <paramref name="character"/> is close enough to the <see cref="shopKeeper"/>
+            /// to buy and sell from their shop; otherwise false.
+            /// </returns>
+            protected override bool IsValidDistance(User character, Character shopKeeper)
+            {
+                return GameData.IsValidDistanceToShop(character, shopKeeper);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, notifies the <paramref name="character"/> that they have
+            /// started shopping at the given <paramref name="shop"/>.
+            /// </summary>
+            /// <param name="character">The character doing the shopping.</param>
+            /// <param name="shop">The shop that the <paramref name="character"/> is shopping at..</param>
+            protected override void SendStartShopping(User character, IShop<ShopItem> shop)
+            {
+                using (var pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
                 {
-                    // Stop shopping
-                    SendStopShopping();
-                    _shoppingAt = null;
-                    _shopOwner = null;
-                    _shopMap = null;
+                    character.Send(pw);
+                }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, notifies the <paramref name="character"/> that they have
+            /// stopped shopping.
+            /// </summary>
+            /// <param name="character">The character that stopped shopping.</param>
+            protected override void SendStopShopping(User character)
+            {
+                using (var pw = ServerPacket.StopShopping())
+                {
+                    character.Send(pw);
                 }
             }
         }

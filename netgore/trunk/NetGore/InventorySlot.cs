@@ -5,7 +5,7 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame
+namespace NetGore
 {
     /// <summary>
     /// Represents the index of a slot in the Inventory.

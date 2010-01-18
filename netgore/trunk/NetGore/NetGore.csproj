@@ -80,6 +80,7 @@
     <Compile Include="Enum\EnumFieldAttributeManager.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Extensions\Vector4Extensions.cs" />
+    <Compile Include="InventorySlot.cs" />
     <Compile Include="IO\PropertyInterface\IPropertyInterface.cs" />
     <Compile Include="IO\PropertyInterface\PropertyInterfaceManager.cs" />
     <Compile Include="IO\PropertySync\IPropertySync.cs" />
