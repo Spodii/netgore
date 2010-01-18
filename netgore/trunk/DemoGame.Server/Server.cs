@@ -12,6 +12,7 @@ using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.Features.Shops;
+using NetGore.Features.StatusEffects;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.Scripting;
@@ -303,7 +304,7 @@ namespace DemoGame.Server
                 MaxCharactersPerAccount = GameData.MaxCharactersPerAccount,
                 MaxInventorySize = GameData.MaxInventorySize,
                 MaxShopItems = ShopSettings.Instance.MaxShopItems,
-                MaxStatusEffectPower = EngineSettings.Instance.MaxStatusEffectPower,
+                MaxStatusEffectPower = StatusEffectsSettings.Instance.MaxStatusEffectPower,
                 MinAccountNameLength = (byte)GameData.AccountName.MinLength,
                 MinAccountPasswordLength = (byte)GameData.AccountPassword.MinLength,
                 MinCharacterNameLength = (byte)GameData.CharacterName.MinLength,

@@ -147,6 +147,18 @@
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
       <Name>NetGore.EditorTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Client\NetGore.Features.Client.csproj">
+      <Project>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</Project>
+      <Name>NetGore.Features.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Server\NetGore.Features.Server.csproj">
+      <Project>{431BC2DD-0DDD-47FC-827C-9182A361B4E8}</Project>
+      <Name>NetGore.Features.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
+      <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
+      <Name>NetGore.Features</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>

@@ -16,7 +16,6 @@ namespace NetGore
         readonly Vector2 _gravity;
 #endif
 
-        readonly ushort _maxStatusEffectPower;
         readonly Vector2 _maxVelocity;
 
         /// <summary>
@@ -24,25 +23,13 @@ namespace NetGore
         /// </summary>
         /// <param name="gravity">The world gravity. Only valid if not using a top-down perspective.</param>
         /// <param name="maxVelocity">The max velocity for an <see cref="Entity"/>.</param>
-        public EngineSettings(Vector2 gravity, Vector2 maxVelocity, ushort maxStatusEffectPower)
+        public EngineSettings(Vector2 gravity, Vector2 maxVelocity)
         {
 #if !TOPDOWN
             _gravity = gravity;
 #endif
 
-            _maxStatusEffectPower = maxStatusEffectPower;
             _maxVelocity = maxVelocity.Abs();
-        }
-
-        /// <summary>
-        /// Gets the maximum power of a <see cref="StatusEffect"/>.
-        /// </summary>
-        public ushort MaxStatusEffectPower
-        {
-            get
-            {
-                return _maxStatusEffectPower;
-            }
         }
 
         /// <summary>
