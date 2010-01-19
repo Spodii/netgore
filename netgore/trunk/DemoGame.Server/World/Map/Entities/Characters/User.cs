@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
