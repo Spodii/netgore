@@ -66,10 +66,10 @@ namespace DemoGame.Server
         const int _id = 2;
         const int _UpdateRate = 2000;
         State _characterState = State.Patrol;
+        bool _isAttackingTarget;
         int _lastUpdateTime = int.MinValue;
         float _lastX;
         Character _target;
-        bool _isAttackingTarget;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateMachine"/> class.
@@ -78,7 +78,7 @@ namespace DemoGame.Server
         public StateMachine(Character actor) : base(actor)
         {
             //Adds an event handler so we know when the actor has been attacked.
-            Actor.OnAttackedByCharacter += new CharacterAttackCharacterEventHandler(Actor_OnAttackedByCharacter);
+            Actor.OnAttackedByCharacter += Actor_OnAttackedByCharacter;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DemoGame.Server
             _target = attacker;
 
             //Set up event handler for when the _target dies.
-            _target.OnKilled += new CharacterEventHandler(_target_OnKilled);
+            _target.OnKilled += _target_OnKilled;
 
             //Adds some logic where if the Actors HP is below an amount the Actor tries to run away.
             if (Actor.HP <= 10)
@@ -125,88 +125,6 @@ namespace DemoGame.Server
             //Sets the Actor to attack the _target.
             _isAttackingTarget = true;
             _characterState = State.Attack;
-
-        }
-
-        /// <summary>
-        /// Handles the real updating of the AI.
-        /// </summary>
-        protected override void DoUpdate()
-        {
-            //Updates a few variables that don't need to be updated every frame
-            //and calls the EvaluateState method
-            int time = GetTime();
-            if (_lastUpdateTime + _UpdateRate < time)
-            {
-                _lastUpdateTime = time;
-                _lastX = Actor.Position.X;
-                EvaluateState();
-            }
-
-            //Updates the Actor depending on its current state.
-            UpdateState(_characterState);
-        }
-        
-        /// <summary>
-        /// Uses a criteria to change the current state of the Actor. 
-        /// This is where the main logic for this class is held in terms of how the AI responds.
-        /// </summary>
-        void EvaluateState()
-        {
-            
-            if (_target != null)
-            {
-                //This is so that the Character has the opportunity to evade this Actor
-                if (_target.GetDistance(Actor) > 50)
-                { _isAttackingTarget = false; }
-
-                if (_isAttackingTarget)
-                {
-                    //We have a hostile target so lets Attack them.
-                    _characterState = State.Attack;
-                }
-                else
-                {
-                    //There is no hostile target therefore just Patrol.
-                    _isAttackingTarget = false;
-                    _characterState = State.Patrol;
-
-                }
-            }
-            else
-            {
-                //Just patrol if there is no _target.
-                _isAttackingTarget = false;
-                _characterState = State.Patrol;
-            }
-        }
-       
-        /// <summary>
-        /// Updates the Actor depending on its current state. Should only be called from DoUpdate().
-        /// </summary>
-        /// <param name="CurrentState">The CurrentState of the actor.</param>
-        void UpdateState(State CurrentState)
-        {
-            //If the AI has been disabled just set to Idle and ignore anything else.
-            if (AISettings.AIDisabled)
-            { CurrentState = State.Idle; }
-
-            switch (CurrentState)
-            {
-                case State.Idle:
-                    if (Actor.IsMoving)
-                        Actor.StopMoving();
-                    break;
-                case State.Attack:
-                    ChaseTarget();
-                    break;
-                case State.Evade:
-                    EvadeTarget();
-                    break;
-                case State.Patrol:
-                    Patrol();
-                    break;
-            }
         }
 
         /// <summary>
@@ -254,7 +172,7 @@ namespace DemoGame.Server
 
             int YDifference = Convert.ToInt32((_target.Position.Y - Actor.Position.Y));
 
-            if ((YDifference <=5) & (YDifference >= -5))
+            if ((YDifference <= 5) & (YDifference >= -5))
             {
                 //target is level
                 if (_target.Position.X >= Actor.Position.X)
@@ -295,7 +213,26 @@ namespace DemoGame.Server
                 Actor.Attack();
             }
         }
-        
+
+        /// <summary>
+        /// Handles the real updating of the AI.
+        /// </summary>
+        protected override void DoUpdate()
+        {
+            //Updates a few variables that don't need to be updated every frame
+            //and calls the EvaluateState method
+            int time = GetTime();
+            if (_lastUpdateTime + _UpdateRate < time)
+            {
+                _lastUpdateTime = time;
+                _lastX = Actor.Position.X;
+                EvaluateState();
+            }
+
+            //Updates the Actor depending on its current state.
+            UpdateState(_characterState);
+        }
+
         public void EvadeTarget()
         {
             //Opposite of chase logic.
@@ -377,6 +314,38 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Uses a criteria to change the current state of the Actor. 
+        /// This is where the main logic for this class is held in terms of how the AI responds.
+        /// </summary>
+        void EvaluateState()
+        {
+            if (_target != null)
+            {
+                //This is so that the Character has the opportunity to evade this Actor
+                if (_target.GetDistance(Actor) > 50)
+                    _isAttackingTarget = false;
+
+                if (_isAttackingTarget)
+                {
+                    //We have a hostile target so lets Attack them.
+                    _characterState = State.Attack;
+                }
+                else
+                {
+                    //There is no hostile target therefore just Patrol.
+                    _isAttackingTarget = false;
+                    _characterState = State.Patrol;
+                }
+            }
+            else
+            {
+                //Just patrol if there is no _target.
+                _isAttackingTarget = false;
+                _characterState = State.Patrol;
+            }
+        }
+
         public void Patrol()
         {
             //Move randomly.
@@ -385,19 +354,44 @@ namespace DemoGame.Server
                 if (Actor.IsMoving)
                     Actor.StopMoving();
                 else
-                {            
+                {
                     if ((Rand(0, 55) == 0))
-                    { Actor.Jump(); }
-                    
+                        Actor.Jump();
+
                     if (Rand(0, 2) == 0)
-                    { Actor.MoveLeft(); }
+                        Actor.MoveLeft();
                     else
-                    { Actor.MoveRight(); }
+                        Actor.MoveRight();
                 }
             }
+        }
 
-            
-            
+        /// <summary>
+        /// Updates the Actor depending on its current state. Should only be called from DoUpdate().
+        /// </summary>
+        /// <param name="CurrentState">The CurrentState of the actor.</param>
+        void UpdateState(State CurrentState)
+        {
+            //If the AI has been disabled just set to Idle and ignore anything else.
+            if (AISettings.AIDisabled)
+                CurrentState = State.Idle;
+
+            switch (CurrentState)
+            {
+                case State.Idle:
+                    if (Actor.IsMoving)
+                        Actor.StopMoving();
+                    break;
+                case State.Attack:
+                    ChaseTarget();
+                    break;
+                case State.Evade:
+                    EvadeTarget();
+                    break;
+                case State.Patrol:
+                    Patrol();
+                    break;
+            }
         }
     }
 #endif

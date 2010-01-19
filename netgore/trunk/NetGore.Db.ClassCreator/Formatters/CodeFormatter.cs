@@ -166,11 +166,6 @@ namespace NetGore.Db.ClassCreator
 
         public abstract string GetAttribute(string attributeType, params string[] args);
 
-        public virtual string GetCallObjMethod(string objectToCallOn, string methodName, params string[] arguments)
-        {
-            return objectToCallOn + "." + GetCallMethod(methodName, arguments);
-        }
-
         public virtual string GetCallMethod(string methodName, params string[] arguments)
         {
             var sb = new StringBuilder();
@@ -186,6 +181,11 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(EndOfLine);
 
             return sb.ToString();
+        }
+
+        public virtual string GetCallObjMethod(string objectToCallOn, string methodName, params string[] arguments)
+        {
+            return objectToCallOn + "." + GetCallMethod(methodName, arguments);
         }
 
         public string GetCast(Type castType)

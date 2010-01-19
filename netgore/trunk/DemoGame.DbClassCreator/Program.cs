@@ -72,8 +72,10 @@ namespace DemoGame.DbClassCreator
                 var baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
                 var reqStatTables = new string[] { "item", "item_template" };
 
-                generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), typeof(short), baseStatTables, baseStatColumns);
-                generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), typeof(short), reqStatTables, reqStatColumns);
+                generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), typeof(short), baseStatTables,
+                                              baseStatColumns);
+                generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), typeof(short), reqStatTables,
+                                              reqStatColumns);
 
                 // Custom external types
                 generator.AddCustomType(typeof(AccountID), "account", "id");
@@ -174,8 +176,8 @@ namespace DemoGame.DbClassCreator
             var isInterfaceOrClass = (gtc.CodeType == GeneratedCodeType.Interface || gtc.CodeType == GeneratedCodeType.Class);
             var isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
 
-            if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata
-                || gtc.CodeType == GeneratedCodeType.ColumnCollectionClass)
+            if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata ||
+                gtc.CodeType == GeneratedCodeType.ColumnCollectionClass)
             {
                 saveDir = _outputGameDir;
 

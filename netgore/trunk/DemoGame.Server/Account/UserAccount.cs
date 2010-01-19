@@ -305,11 +305,13 @@ namespace DemoGame.Server
         /// <param name="characterID">The character ID.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        static bool TryAddCharacter(IDbController dbController, string accountName, string characterName,
-                                           CharacterID characterID, out string errorMsg)
+        static bool TryAddCharacter(IDbController dbController, string accountName, string characterName, CharacterID characterID,
+                                    out string errorMsg)
         {
             // Try to execute the query
-            if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountName, characterID, characterName, out errorMsg))
+            if (
+                !dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountName, characterID, characterName,
+                                                                              out errorMsg))
                 return false;
 
             errorMsg = string.Empty;

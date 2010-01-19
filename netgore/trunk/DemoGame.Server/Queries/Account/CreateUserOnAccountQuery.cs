@@ -55,13 +55,9 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(queryArgs))
             {
                 if (!r.Read())
-                {
                     errorMsg = "Unknown error executing stored function - query contained no results.";
-                }
                 else
-                {
                     errorMsg = r.GetString(0) ?? string.Empty;
-                }
             }
 
             // Make sure the error message is trimmed

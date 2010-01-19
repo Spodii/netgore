@@ -52,8 +52,11 @@ namespace NetGore.Tests.Db.ClassCreator
 
                 codeItems = generator.Generate(GeneratedNamespace, GeneratedNamespace);
                 codeItems = codeItems.Where(x => x.CodeType != GeneratedCodeType.ClassDbExtensions);
-                codeItems = codeItems.Where(x => x.Table == tableName || x.CodeType == GeneratedCodeType.ColumnMetadata
-                    || x.CodeType == GeneratedCodeType.ColumnCollectionClass);
+                codeItems =
+                    codeItems.Where(
+                        x =>
+                        x.Table == tableName || x.CodeType == GeneratedCodeType.ColumnMetadata ||
+                        x.CodeType == GeneratedCodeType.ColumnCollectionClass);
             }
 
             // Get the temp files and write the code to them

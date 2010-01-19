@@ -57,16 +57,22 @@ namespace NetGore.Db.ClassCreator
         public IEnumerable<ColumnCollectionItem> Columns { get; private set; }
 
         /// <summary>
-        /// Gets or sets the type of the key.
-        /// </summary>
-        /// <value>The type of the key.</value>
-        public Type KeyType { get; private set; }
-
-        /// <summary>
         /// Gets or sets the external type.
         /// </summary>
         /// <value>The type of the value.</value>
         public Type ExternalType { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the internal type.
+        /// </summary>
+        /// <value>The type of the value.</value>
+        public Type InternalType { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the type of the key.
+        /// </summary>
+        /// <value>The type of the key.</value>
+        public Type KeyType { get; private set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -79,11 +85,5 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <value>The tables.</value>
         public IEnumerable<string> Tables { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the internal type.
-        /// </summary>
-        /// <value>The type of the value.</value>
-        public Type InternalType { get; private set; }
     }
 }

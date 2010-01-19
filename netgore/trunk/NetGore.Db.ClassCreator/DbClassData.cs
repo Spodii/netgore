@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NetGore.Db.ClassCreator.Properties;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -289,18 +288,6 @@ namespace NetGore.Db.ClassCreator
         /// Gets the name of the method used by the DataReader to read the given Type.
         /// </summary>
         /// <param name="type">Type to read.</param>
-        /// <returns>
-        /// The name of the method used by the DataReader to read the given Type.
-        /// </returns>
-        public string GetDataReaderReadMethodName(Type type)
-        {
-            return GetDataReaderReadMethodName(type, _dataReaderReadMethods);
-        }
-
-        /// <summary>
-        /// Gets the name of the method used by the DataReader to read the given Type.
-        /// </summary>
-        /// <param name="type">Type to read.</param>
         /// <param name="dataReaderReadMethods">The data reader read methods.</param>
         /// <returns>
         /// The name of the method used by the DataReader to read the given Type.
@@ -315,6 +302,18 @@ namespace NetGore.Db.ClassCreator
                 return callMethod;
 
             return "Get" + type.Name;
+        }
+
+        /// <summary>
+        /// Gets the name of the method used by the DataReader to read the given Type.
+        /// </summary>
+        /// <param name="type">Type to read.</param>
+        /// <returns>
+        /// The name of the method used by the DataReader to read the given Type.
+        /// </returns>
+        public string GetDataReaderReadMethodName(Type type)
+        {
+            return GetDataReaderReadMethodName(type, _dataReaderReadMethods);
         }
 
         /// <summary>
