@@ -82,18 +82,19 @@ namespace DemoGame.Server
             return string.Format("There are {0} characters in account ID {1}.", result, accountID);
         }
 
+        [ConsoleCommand("CreateAccountUser")]
+        public string CreateAccountUser(string accountName, string userName)
+        {
+            string errorMsg;
+            if (!UserAccount.TryAddCharacter(DbController, accountName, userName, out errorMsg))
+                return string.Format("Failed to create character `{0}` on account `{1}`: {2}", userName, accountName, errorMsg);
+
+            return "Character successfully added to account.";
+        }
+
         [ConsoleCommand("CreateAccount")]
         public string CreateAccount(string accountName, string accountPassword, string email)
         {
-            if (!GameData.AccountName.IsValid(accountName))
-                return "Invalid account name.";
-
-            if (!GameData.AccountPassword.IsValid(accountPassword))
-                return "Invalid account password.";
-
-            if (!GameData.AccountEmail.IsValid(email))
-                return "Invalid email address.";
-
             AccountID accountID;
             string errorMessage;
             bool success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID,

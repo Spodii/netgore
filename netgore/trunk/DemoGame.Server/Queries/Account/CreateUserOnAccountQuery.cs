@@ -8,7 +8,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CreateUserOnAccountQuery : DbQueryReader<CreateUserOnAccountQuery.QueryArgs>
     {
-        const string _queryStr = "SELECT CreateUserOnAccount(@accountID, @characterName, @characterID)";
+        const string _queryStr = "SELECT CreateUserOnAccount(@accountName, @characterName, @characterID)";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateUserOnAccountQuery"/> class.
@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@accountID", "@characterName", "@characterID");
+            return CreateParameters("@accountName", "@characterName", "@characterID");
         }
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@accountID"] = (int)item.AccountID;
+            p["@accountName"] = item.AccountName;
             p["@characterName"] = item.CharacterName;
             p["@characterID"] = (int)item.CharacterID;
         }
 
-        public bool TryExecute(AccountID accountID, CharacterID characterID, string characterName, out string errorMsg)
+        public bool TryExecute(string accountName, CharacterID characterID, string characterName, out string errorMsg)
         {
             if (!GameData.CharacterName.IsValid(characterName))
             {
@@ -49,7 +49,7 @@ namespace DemoGame.Server.Queries
                 return false;
             }
 
-            var queryArgs = new QueryArgs(accountID, characterID, characterName);
+            var queryArgs = new QueryArgs(accountName, characterID, characterName);
             using (var r = ExecuteReader(queryArgs))
             {
                 if (!r.Read())
@@ -87,7 +87,7 @@ namespace DemoGame.Server.Queries
             /// <summary>
             /// The account ID.
             /// </summary>
-            public readonly AccountID AccountID;
+            public readonly string AccountName;
 
             /// <summary>
             /// The character ID.
@@ -102,12 +102,12 @@ namespace DemoGame.Server.Queries
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
             /// </summary>
-            /// <param name="accountID">The account ID.</param>
+            /// <param name="accountName">The account name.</param>
             /// <param name="characterID">The character ID.</param>
             /// <param name="characterName">Name of the character.</param>
-            public QueryArgs(AccountID accountID, CharacterID characterID, string characterName)
+            public QueryArgs(string accountName, CharacterID characterID, string characterName)
             {
-                AccountID = accountID;
+                AccountName = accountName;
                 CharacterID = characterID;
                 CharacterName = characterName;
             }

@@ -12,13 +12,19 @@ namespace DemoGame.Server.Queries
         static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `name`=@name", AccountTable.TableName);
 
         /// <summary>
-        /// DbQueryReader constructor.
+        /// Initializes a new instance of the <see cref="SelectAccountIDFromNameQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
         public SelectAccountIDFromNameQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <param name="accountName">The account name to get the ID for.</param>
+        /// <returns>The ID of the account with the given <paramref name="accountName"/>, or null if no such
+        /// account exists.</returns>
         public AccountID? Execute(string accountName)
         {
             AccountID? ret;
