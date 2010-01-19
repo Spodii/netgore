@@ -5,39 +5,72 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
-    /// Represents the integral value of an Alliance's index.
+    /// Defines a value used to determine the chance that an ItemTemplate will be created.
     /// </summary>
     [Serializable]
-    public struct AllianceID : IComparable<AllianceID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct ItemChance : IComparable<ItemChance>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
-        /// <summary>
-        /// Represents the largest possible value of AllianceID. This field is constant.
-        /// </summary>
-        public const int MaxValue = byte.MaxValue;
+        #region Non-Templated Code
+
+        static readonly Random _random = new Random();
 
         /// <summary>
-        /// Represents the smallest possible value of AllianceID. This field is constant.
+        /// Initializes a new instance of the <see cref="ItemChance"/> struct.
         /// </summary>
-        public const int MinValue = byte.MinValue;
+        /// <param name="percent">The chance, in percentage, to assign to this ItemChance, where 0.0f is 0% and 1.0f
+        /// is a 100% chance. Must be between 0.0f and 1.0f.</param>
+        public ItemChance(float percent)
+        {
+            if (percent < 0.0f || percent > 1.0f)
+                throw new ArgumentOutOfRangeException("percent");
+
+            _value = (ushort)Math.Round(percent * MaxValue);
+
+            // Ensure there were no rounding errors
+            if (_value > MaxValue)
+                _value = MaxValue;
+        }
+
+        /// <summary>
+        /// Performs a test against the ItemChance.
+        /// </summary>
+        /// <returns>True if the test passed; otherwise false.</returns>
+        public bool Test()
+        {
+            var randValue = _random.Next(MinValue + 1, MaxValue + 1);
+            return randValue <= _value;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Represents the largest possible value of ItemChance. This field is constant.
+        /// </summary>
+        public const int MaxValue = ushort.MaxValue;
+
+        /// <summary>
+        /// Represents the smallest possible value of ItemChance. This field is constant.
+        /// </summary>
+        public const int MinValue = ushort.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly byte _value;
+        readonly ushort _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AllianceID"/> struct.
+        /// Initializes a new instance of the <see cref="ItemChance"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new AllianceID.</param>
-        public AllianceID(int value)
+        /// <param name="value">Value to assign to the new ItemChance.</param>
+        public ItemChance(int value)
         {
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = (byte)value;
+            _value = (ushort)value;
         }
 
         /// <summary>
@@ -47,7 +80,7 @@ namespace DemoGame.Server
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(AllianceID other)
+        public bool Equals(ItemChance other)
         {
             return other._value == _value;
         }
@@ -63,9 +96,9 @@ namespace DemoGame.Server
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(AllianceID))
+            if (obj.GetType() != typeof(ItemChance))
                 return false;
-            return Equals((AllianceID)obj);
+            return Equals((ItemChance)obj);
         }
 
         /// <summary>
@@ -80,62 +113,62 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the raw internal value of this AllianceID.
+        /// Gets the raw internal value of this ItemChance.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public byte GetRawValue()
+        public ushort GetRawValue()
         {
             return _value;
         }
 
         /// <summary>
-        /// Reads an AllianceID from an IValueReader.
+        /// Reads an ItemChance from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The AllianceID read from the IValueReader.</returns>
-        public static AllianceID Read(IValueReader reader, string name)
+        /// <returns>The ItemChance read from the IValueReader.</returns>
+        public static ItemChance Read(IValueReader reader, string name)
         {
-            byte value = reader.ReadByte(name);
-            return new AllianceID(value);
+            ushort value = reader.ReadUShort(name);
+            return new ItemChance(value);
         }
 
         /// <summary>
-        /// Reads an AllianceID from an IDataReader.
+        /// Reads an ItemChance from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID Read(IDataReader reader, int i)
+        /// <returns>The ItemChance read from the IDataReader.</returns>
+        public static ItemChance Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is byte)
-                return new AllianceID((byte)value);
+            if (value is ushort)
+                return new ItemChance((ushort)value);
 
-            byte convertedValue = Convert.ToByte(value);
-            return new AllianceID(convertedValue);
+            ushort convertedValue = Convert.ToUInt16(value);
+            return new ItemChance(convertedValue);
         }
 
         /// <summary>
-        /// Reads an AllianceID from an IDataReader.
+        /// Reads an ItemChance from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID Read(IDataReader reader, string name)
+        /// <returns>The ItemChance read from the IDataReader.</returns>
+        public static ItemChance Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an AllianceID from an IValueReader.
+        /// Reads an ItemChance from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The AllianceID read from the BitStream.</returns>
-        public static AllianceID Read(BitStream bitStream)
+        /// <returns>The ItemChance read from the BitStream.</returns>
+        public static ItemChance Read(BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
-            return new AllianceID(value);
+            ushort value = bitStream.ReadUShort();
+            return new ItemChance(value);
         }
 
         /// <summary>
@@ -149,10 +182,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the AllianceID to an IValueWriter.
+        /// Writes the ItemChance to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the AllianceID that will be used to distinguish it
+        /// <param name="name">Unique name of the ItemChance that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -160,38 +193,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the AllianceID to an IValueWriter.
+        /// Writes the ItemChance to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
         {
             bitStream.Write(_value);
         }
-
-        #region IComparable<AllianceID> Members
-
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
-        /// The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        public int CompareTo(AllianceID other)
-        {
-            return _value.CompareTo(other._value);
-        }
-
-        #endregion
 
         #region IComparable<int> Members
 
@@ -213,6 +221,31 @@ namespace DemoGame.Server
         public int CompareTo(int other)
         {
             return _value.CompareTo(other);
+        }
+
+        #endregion
+
+        #region IComparable<ItemChance> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        public int CompareTo(ItemChance other)
+        {
+            return _value.CompareTo(other._value);
         }
 
         #endregion
@@ -483,21 +516,21 @@ namespace DemoGame.Server
         /// <summary>
         /// Implements operator ++.
         /// </summary>
-        /// <param name="l">The AllianceID to increment.</param>
-        /// <returns>The incremented AllianceID.</returns>
-        public static AllianceID operator ++(AllianceID l)
+        /// <param name="l">The ItemChance to increment.</param>
+        /// <returns>The incremented ItemChance.</returns>
+        public static ItemChance operator ++(ItemChance l)
         {
-            return new AllianceID(l._value + 1);
+            return new ItemChance(l._value + 1);
         }
 
         /// <summary>
         /// Implements operator --.
         /// </summary>
-        /// <param name="l">The AllianceID to decrement.</param>
-        /// <returns>The decremented AllianceID.</returns>
-        public static AllianceID operator --(AllianceID l)
+        /// <param name="l">The ItemChance to decrement.</param>
+        /// <returns>The decremented ItemChance.</returns>
+        public static ItemChance operator --(ItemChance l)
         {
-            return new AllianceID(l._value - 1);
+            return new ItemChance(l._value - 1);
         }
 
         /// <summary>
@@ -506,9 +539,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static AllianceID operator +(AllianceID left, AllianceID right)
+        public static ItemChance operator +(ItemChance left, ItemChance right)
         {
-            return new AllianceID(left._value + right._value);
+            return new ItemChance(left._value + right._value);
         }
 
         /// <summary>
@@ -517,9 +550,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static AllianceID operator -(AllianceID left, AllianceID right)
+        public static ItemChance operator -(ItemChance left, ItemChance right)
         {
-            return new AllianceID(left._value - right._value);
+            return new ItemChance(left._value - right._value);
         }
 
         /// <summary>
@@ -528,7 +561,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(AllianceID left, int right)
+        public static bool operator ==(ItemChance left, int right)
         {
             return left._value == right;
         }
@@ -539,7 +572,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(AllianceID left, int right)
+        public static bool operator !=(ItemChance left, int right)
         {
             return left._value != right;
         }
@@ -550,7 +583,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, AllianceID right)
+        public static bool operator ==(int left, ItemChance right)
         {
             return left == right._value;
         }
@@ -561,29 +594,29 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, AllianceID right)
+        public static bool operator !=(int left, ItemChance right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a AllianceID to an Int32.
+        /// Casts a ItemChance to an Int32.
         /// </summary>
-        /// <param name="AllianceID">AllianceID to cast.</param>
+        /// <param name="ItemChance">ItemChance to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(AllianceID AllianceID)
+        public static explicit operator int(ItemChance ItemChance)
         {
-            return AllianceID._value;
+            return ItemChance._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a AllianceID.
+        /// Casts an Int32 to a ItemChance.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The AllianceID.</returns>
-        public static explicit operator AllianceID(int value)
+        /// <returns>The ItemChance.</returns>
+        public static explicit operator ItemChance(int value)
         {
-            return new AllianceID(value);
+            return new ItemChance(value);
         }
 
         /// <summary>
@@ -592,7 +625,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, AllianceID right)
+        public static bool operator >(int left, ItemChance right)
         {
             return left > right._value;
         }
@@ -603,7 +636,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, AllianceID right)
+        public static bool operator <(int left, ItemChance right)
         {
             return left < right._value;
         }
@@ -614,7 +647,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(AllianceID left, AllianceID right)
+        public static bool operator >(ItemChance left, ItemChance right)
         {
             return left._value > right._value;
         }
@@ -625,7 +658,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(AllianceID left, AllianceID right)
+        public static bool operator <(ItemChance left, ItemChance right)
         {
             return left._value < right._value;
         }
@@ -636,7 +669,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(AllianceID left, int right)
+        public static bool operator >(ItemChance left, int right)
         {
             return left._value > right;
         }
@@ -647,7 +680,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(AllianceID left, int right)
+        public static bool operator <(ItemChance left, int right)
         {
             return left._value < right;
         }
@@ -658,7 +691,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, AllianceID right)
+        public static bool operator >=(int left, ItemChance right)
         {
             return left >= right._value;
         }
@@ -669,7 +702,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, AllianceID right)
+        public static bool operator <=(int left, ItemChance right)
         {
             return left <= right._value;
         }
@@ -680,7 +713,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(AllianceID left, int right)
+        public static bool operator >=(ItemChance left, int right)
         {
             return left._value >= right;
         }
@@ -691,7 +724,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(AllianceID left, int right)
+        public static bool operator <=(ItemChance left, int right)
         {
             return left._value <= right;
         }
@@ -702,7 +735,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(AllianceID left, AllianceID right)
+        public static bool operator >=(ItemChance left, ItemChance right)
         {
             return left._value >= right._value;
         }
@@ -713,7 +746,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(AllianceID left, AllianceID right)
+        public static bool operator <=(ItemChance left, ItemChance right)
         {
             return left._value <= right._value;
         }
@@ -724,7 +757,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(AllianceID left, AllianceID right)
+        public static bool operator !=(ItemChance left, ItemChance right)
         {
             return left._value != right._value;
         }
@@ -735,33 +768,33 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(AllianceID left, AllianceID right)
+        public static bool operator ==(ItemChance left, ItemChance right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the AllianceID.
-    /// All of the operations are implemented in the AllianceID struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the ItemChance.
+    /// All of the operations are implemented in the ItemChance struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class AllianceIDReadWriteExtensions
+    public static class ItemChanceReadWriteExtensions
     {
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type AllianceID.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemChance.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a AllianceID.</returns>
-        public static AllianceID AsAllianceID<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a ItemChance.</returns>
+        public static ItemChance AsItemChance<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseAllianceID(dict[key]);
+            return Parser.Invariant.ParseItemChance(dict[key]);
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type AllianceID.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemChance.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -770,13 +803,13 @@ namespace DemoGame.Server
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static AllianceID AsAllianceID<T>(this IDictionary<T, string> dict, T key, AllianceID defaultValue)
+        public static ItemChance AsItemChance<T>(this IDictionary<T, string> dict, T key, ItemChance defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            AllianceID parsed;
+            ItemChance parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
@@ -784,92 +817,92 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reads the AllianceID from an IDataReader.
+        /// Reads the ItemChance from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the AllianceID from.</param>
+        /// <param name="dataReader">IDataReader to read the ItemChance from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID GetAllianceID(this IDataReader dataReader, int i)
+        /// <returns>The ItemChance read from the IDataReader.</returns>
+        public static ItemChance GetItemChance(this IDataReader dataReader, int i)
         {
-            return AllianceID.Read(dataReader, i);
+            return ItemChance.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the AllianceID from an IDataReader.
+        /// Reads the ItemChance from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the AllianceID from.</param>
+        /// <param name="dataReader">IDataReader to read the ItemChance from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID GetAllianceID(this IDataReader dataReader, string name)
+        /// <returns>The ItemChance read from the IDataReader.</returns>
+        public static ItemChance GetItemChance(this IDataReader dataReader, string name)
         {
-            return AllianceID.Read(dataReader, name);
+            return ItemChance.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Parses the AllianceID from a string.
+        /// Parses the ItemChance from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The AllianceID parsed from the string.</returns>
-        public static AllianceID ParseAllianceID(this Parser parser, string value)
+        /// <returns>The ItemChance parsed from the string.</returns>
+        public static ItemChance ParseItemChance(this Parser parser, string value)
         {
-            return new AllianceID(parser.ParseByte(value));
+            return new ItemChance(parser.ParseUShort(value));
         }
 
         /// <summary>
-        /// Reads the AllianceID from a BitStream.
+        /// Reads the ItemChance from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the AllianceID from.</param>
-        /// <returns>The AllianceID read from the BitStream.</returns>
-        public static AllianceID ReadAllianceID(this BitStream bitStream)
+        /// <param name="bitStream">BitStream to read the ItemChance from.</param>
+        /// <returns>The ItemChance read from the BitStream.</returns>
+        public static ItemChance ReadItemChance(this BitStream bitStream)
         {
-            return AllianceID.Read(bitStream);
+            return ItemChance.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the AllianceID from an IValueReader.
+        /// Reads the ItemChance from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the AllianceID from.</param>
+        /// <param name="valueReader">IValueReader to read the ItemChance from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The AllianceID read from the IValueReader.</returns>
-        public static AllianceID ReadAllianceID(this IValueReader valueReader, string name)
+        /// <returns>The ItemChance read from the IValueReader.</returns>
+        public static ItemChance ReadItemChance(this IValueReader valueReader, string name)
         {
-            return AllianceID.Read(valueReader, name);
+            return ItemChance.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Tries to parse the AllianceID from a string.
+        /// Tries to parse the ItemChance from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed AllianceID.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed ItemChance.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out AllianceID outValue)
+        public static bool TryParse(this Parser parser, string value, out ItemChance outValue)
         {
-            byte tmp;
+            ushort tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new AllianceID(tmp);
+            outValue = new ItemChance(tmp);
             return ret;
         }
 
         /// <summary>
-        /// Writes a AllianceID to a BitStream.
+        /// Writes a ItemChance to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">AllianceID to write.</param>
-        public static void Write(this BitStream bitStream, AllianceID value)
+        /// <param name="value">ItemChance to write.</param>
+        public static void Write(this BitStream bitStream, ItemChance value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a AllianceID to a IValueWriter.
+        /// Writes a ItemChance to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the AllianceID that will be used to distinguish it
+        /// <param name="name">Unique name of the ItemChance that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">AllianceID to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, AllianceID value)
+        /// <param name="value">ItemChance to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, ItemChance value)
         {
             value.Write(valueWriter, name);
         }

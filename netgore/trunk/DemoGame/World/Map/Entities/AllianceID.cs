@@ -5,39 +5,39 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
-    /// Represents a unique ID for a persistent Character instance.
+    /// Represents the integral value of an Alliance's index.
     /// </summary>
     [Serializable]
-    public struct CharacterID : IComparable<CharacterID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct AllianceID : IComparable<AllianceID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// Represents the largest possible value of CharacterID. This field is constant.
+        /// Represents the largest possible value of AllianceID. This field is constant.
         /// </summary>
-        public const int MaxValue = int.MaxValue;
+        public const int MaxValue = byte.MaxValue;
 
         /// <summary>
-        /// Represents the smallest possible value of CharacterID. This field is constant.
+        /// Represents the smallest possible value of AllianceID. This field is constant.
         /// </summary>
-        public const int MinValue = int.MinValue;
+        public const int MinValue = byte.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly int _value;
+        readonly byte _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CharacterID"/> struct.
+        /// Initializes a new instance of the <see cref="AllianceID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new CharacterID.</param>
-        public CharacterID(int value)
+        /// <param name="value">Value to assign to the new AllianceID.</param>
+        public AllianceID(int value)
         {
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = value;
+            _value = (byte)value;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace DemoGame.Server
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(CharacterID other)
+        public bool Equals(AllianceID other)
         {
             return other._value == _value;
         }
@@ -63,9 +63,9 @@ namespace DemoGame.Server
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(CharacterID))
+            if (obj.GetType() != typeof(AllianceID))
                 return false;
-            return Equals((CharacterID)obj);
+            return Equals((AllianceID)obj);
         }
 
         /// <summary>
@@ -80,62 +80,62 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the raw internal value of this CharacterID.
+        /// Gets the raw internal value of this AllianceID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public int GetRawValue()
+        public byte GetRawValue()
         {
             return _value;
         }
 
         /// <summary>
-        /// Reads an CharacterID from an IValueReader.
+        /// Reads an AllianceID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The CharacterID read from the IValueReader.</returns>
-        public static CharacterID Read(IValueReader reader, string name)
+        /// <returns>The AllianceID read from the IValueReader.</returns>
+        public static AllianceID Read(IValueReader reader, string name)
         {
-            int value = reader.ReadInt(name);
-            return new CharacterID(value);
+            byte value = reader.ReadByte(name);
+            return new AllianceID(value);
         }
 
         /// <summary>
-        /// Reads an CharacterID from an IDataReader.
+        /// Reads an AllianceID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID Read(IDataReader reader, int i)
+        /// <returns>The AllianceID read from the IDataReader.</returns>
+        public static AllianceID Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is int)
-                return new CharacterID((int)value);
+            if (value is byte)
+                return new AllianceID((byte)value);
 
-            int convertedValue = Convert.ToInt32(value);
-            return new CharacterID(convertedValue);
+            byte convertedValue = Convert.ToByte(value);
+            return new AllianceID(convertedValue);
         }
 
         /// <summary>
-        /// Reads an CharacterID from an IDataReader.
+        /// Reads an AllianceID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID Read(IDataReader reader, string name)
+        /// <returns>The AllianceID read from the IDataReader.</returns>
+        public static AllianceID Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an CharacterID from an IValueReader.
+        /// Reads an AllianceID from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The CharacterID read from the BitStream.</returns>
-        public static CharacterID Read(BitStream bitStream)
+        /// <returns>The AllianceID read from the BitStream.</returns>
+        public static AllianceID Read(BitStream bitStream)
         {
-            int value = bitStream.ReadInt();
-            return new CharacterID(value);
+            byte value = bitStream.ReadByte();
+            return new AllianceID(value);
         }
 
         /// <summary>
@@ -149,10 +149,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the CharacterID to an IValueWriter.
+        /// Writes the AllianceID to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the CharacterID that will be used to distinguish it
+        /// <param name="name">Unique name of the AllianceID that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -160,7 +160,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the CharacterID to an IValueWriter.
+        /// Writes the AllianceID to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -168,7 +168,7 @@ namespace DemoGame.Server
             bitStream.Write(_value);
         }
 
-        #region IComparable<CharacterID> Members
+        #region IComparable<AllianceID> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -186,7 +186,7 @@ namespace DemoGame.Server
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        public int CompareTo(CharacterID other)
+        public int CompareTo(AllianceID other)
         {
             return _value.CompareTo(other._value);
         }
@@ -483,21 +483,21 @@ namespace DemoGame.Server
         /// <summary>
         /// Implements operator ++.
         /// </summary>
-        /// <param name="l">The CharacterID to increment.</param>
-        /// <returns>The incremented CharacterID.</returns>
-        public static CharacterID operator ++(CharacterID l)
+        /// <param name="l">The AllianceID to increment.</param>
+        /// <returns>The incremented AllianceID.</returns>
+        public static AllianceID operator ++(AllianceID l)
         {
-            return new CharacterID(l._value + 1);
+            return new AllianceID(l._value + 1);
         }
 
         /// <summary>
         /// Implements operator --.
         /// </summary>
-        /// <param name="l">The CharacterID to decrement.</param>
-        /// <returns>The decremented CharacterID.</returns>
-        public static CharacterID operator --(CharacterID l)
+        /// <param name="l">The AllianceID to decrement.</param>
+        /// <returns>The decremented AllianceID.</returns>
+        public static AllianceID operator --(AllianceID l)
         {
-            return new CharacterID(l._value - 1);
+            return new AllianceID(l._value - 1);
         }
 
         /// <summary>
@@ -506,9 +506,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static CharacterID operator +(CharacterID left, CharacterID right)
+        public static AllianceID operator +(AllianceID left, AllianceID right)
         {
-            return new CharacterID(left._value + right._value);
+            return new AllianceID(left._value + right._value);
         }
 
         /// <summary>
@@ -517,9 +517,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static CharacterID operator -(CharacterID left, CharacterID right)
+        public static AllianceID operator -(AllianceID left, AllianceID right)
         {
-            return new CharacterID(left._value - right._value);
+            return new AllianceID(left._value - right._value);
         }
 
         /// <summary>
@@ -528,7 +528,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(CharacterID left, int right)
+        public static bool operator ==(AllianceID left, int right)
         {
             return left._value == right;
         }
@@ -539,7 +539,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(CharacterID left, int right)
+        public static bool operator !=(AllianceID left, int right)
         {
             return left._value != right;
         }
@@ -550,7 +550,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, CharacterID right)
+        public static bool operator ==(int left, AllianceID right)
         {
             return left == right._value;
         }
@@ -561,29 +561,29 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, CharacterID right)
+        public static bool operator !=(int left, AllianceID right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a CharacterID to an Int32.
+        /// Casts a AllianceID to an Int32.
         /// </summary>
-        /// <param name="CharacterID">CharacterID to cast.</param>
+        /// <param name="AllianceID">AllianceID to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(CharacterID CharacterID)
+        public static explicit operator int(AllianceID AllianceID)
         {
-            return CharacterID._value;
+            return AllianceID._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a CharacterID.
+        /// Casts an Int32 to a AllianceID.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The CharacterID.</returns>
-        public static explicit operator CharacterID(int value)
+        /// <returns>The AllianceID.</returns>
+        public static explicit operator AllianceID(int value)
         {
-            return new CharacterID(value);
+            return new AllianceID(value);
         }
 
         /// <summary>
@@ -592,7 +592,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, CharacterID right)
+        public static bool operator >(int left, AllianceID right)
         {
             return left > right._value;
         }
@@ -603,7 +603,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, CharacterID right)
+        public static bool operator <(int left, AllianceID right)
         {
             return left < right._value;
         }
@@ -614,7 +614,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(CharacterID left, CharacterID right)
+        public static bool operator >(AllianceID left, AllianceID right)
         {
             return left._value > right._value;
         }
@@ -625,7 +625,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(CharacterID left, CharacterID right)
+        public static bool operator <(AllianceID left, AllianceID right)
         {
             return left._value < right._value;
         }
@@ -636,7 +636,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(CharacterID left, int right)
+        public static bool operator >(AllianceID left, int right)
         {
             return left._value > right;
         }
@@ -647,7 +647,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(CharacterID left, int right)
+        public static bool operator <(AllianceID left, int right)
         {
             return left._value < right;
         }
@@ -658,7 +658,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, CharacterID right)
+        public static bool operator >=(int left, AllianceID right)
         {
             return left >= right._value;
         }
@@ -669,7 +669,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, CharacterID right)
+        public static bool operator <=(int left, AllianceID right)
         {
             return left <= right._value;
         }
@@ -680,7 +680,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(CharacterID left, int right)
+        public static bool operator >=(AllianceID left, int right)
         {
             return left._value >= right;
         }
@@ -691,7 +691,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(CharacterID left, int right)
+        public static bool operator <=(AllianceID left, int right)
         {
             return left._value <= right;
         }
@@ -702,7 +702,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(CharacterID left, CharacterID right)
+        public static bool operator >=(AllianceID left, AllianceID right)
         {
             return left._value >= right._value;
         }
@@ -713,7 +713,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(CharacterID left, CharacterID right)
+        public static bool operator <=(AllianceID left, AllianceID right)
         {
             return left._value <= right._value;
         }
@@ -724,7 +724,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(CharacterID left, CharacterID right)
+        public static bool operator !=(AllianceID left, AllianceID right)
         {
             return left._value != right._value;
         }
@@ -735,33 +735,33 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(CharacterID left, CharacterID right)
+        public static bool operator ==(AllianceID left, AllianceID right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the CharacterID.
-    /// All of the operations are implemented in the CharacterID struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the AllianceID.
+    /// All of the operations are implemented in the AllianceID struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class CharacterIDReadWriteExtensions
+    public static class AllianceIDReadWriteExtensions
     {
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type CharacterID.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type AllianceID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a CharacterID.</returns>
-        public static CharacterID AsCharacterID<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a AllianceID.</returns>
+        public static AllianceID AsAllianceID<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseCharacterID(dict[key]);
+            return Parser.Invariant.ParseAllianceID(dict[key]);
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type CharacterID.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type AllianceID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -770,13 +770,13 @@ namespace DemoGame.Server
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static CharacterID AsCharacterID<T>(this IDictionary<T, string> dict, T key, CharacterID defaultValue)
+        public static AllianceID AsAllianceID<T>(this IDictionary<T, string> dict, T key, AllianceID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            CharacterID parsed;
+            AllianceID parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
@@ -784,92 +784,92 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reads the CharacterID from an IDataReader.
+        /// Reads the AllianceID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CharacterID from.</param>
+        /// <param name="dataReader">IDataReader to read the AllianceID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID GetCharacterID(this IDataReader dataReader, int i)
+        /// <returns>The AllianceID read from the IDataReader.</returns>
+        public static AllianceID GetAllianceID(this IDataReader dataReader, int i)
         {
-            return CharacterID.Read(dataReader, i);
+            return AllianceID.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the CharacterID from an IDataReader.
+        /// Reads the AllianceID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CharacterID from.</param>
+        /// <param name="dataReader">IDataReader to read the AllianceID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID GetCharacterID(this IDataReader dataReader, string name)
+        /// <returns>The AllianceID read from the IDataReader.</returns>
+        public static AllianceID GetAllianceID(this IDataReader dataReader, string name)
         {
-            return CharacterID.Read(dataReader, name);
+            return AllianceID.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Parses the CharacterID from a string.
+        /// Parses the AllianceID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The CharacterID parsed from the string.</returns>
-        public static CharacterID ParseCharacterID(this Parser parser, string value)
+        /// <returns>The AllianceID parsed from the string.</returns>
+        public static AllianceID ParseAllianceID(this Parser parser, string value)
         {
-            return new CharacterID(parser.ParseInt(value));
+            return new AllianceID(parser.ParseByte(value));
         }
 
         /// <summary>
-        /// Reads the CharacterID from a BitStream.
+        /// Reads the AllianceID from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the CharacterID from.</param>
-        /// <returns>The CharacterID read from the BitStream.</returns>
-        public static CharacterID ReadCharacterID(this BitStream bitStream)
+        /// <param name="bitStream">BitStream to read the AllianceID from.</param>
+        /// <returns>The AllianceID read from the BitStream.</returns>
+        public static AllianceID ReadAllianceID(this BitStream bitStream)
         {
-            return CharacterID.Read(bitStream);
+            return AllianceID.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the CharacterID from an IValueReader.
+        /// Reads the AllianceID from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the CharacterID from.</param>
+        /// <param name="valueReader">IValueReader to read the AllianceID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CharacterID read from the IValueReader.</returns>
-        public static CharacterID ReadCharacterID(this IValueReader valueReader, string name)
+        /// <returns>The AllianceID read from the IValueReader.</returns>
+        public static AllianceID ReadAllianceID(this IValueReader valueReader, string name)
         {
-            return CharacterID.Read(valueReader, name);
+            return AllianceID.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Tries to parse the CharacterID from a string.
+        /// Tries to parse the AllianceID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed CharacterID.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed AllianceID.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out CharacterID outValue)
+        public static bool TryParse(this Parser parser, string value, out AllianceID outValue)
         {
-            int tmp;
+            byte tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new CharacterID(tmp);
+            outValue = new AllianceID(tmp);
             return ret;
         }
 
         /// <summary>
-        /// Writes a CharacterID to a BitStream.
+        /// Writes a AllianceID to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">CharacterID to write.</param>
-        public static void Write(this BitStream bitStream, CharacterID value)
+        /// <param name="value">AllianceID to write.</param>
+        public static void Write(this BitStream bitStream, AllianceID value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a CharacterID to a IValueWriter.
+        /// Writes a AllianceID to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the CharacterID that will be used to distinguish it
+        /// <param name="name">Unique name of the AllianceID that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">CharacterID to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, CharacterID value)
+        /// <param name="value">AllianceID to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, AllianceID value)
         {
             value.Write(valueWriter, name);
         }

@@ -5,7 +5,7 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
     /// Represents a unique ID for a User's account.

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     public struct ActiveStatusEffectID
     {

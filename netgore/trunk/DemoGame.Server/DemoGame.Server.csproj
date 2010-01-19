@@ -89,7 +89,6 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\AccountID.cs" />
     <Compile Include="Account\AccountIDCreator.cs" />
     <Compile Include="DbObjs\AccountIpsTable.cs" />
     <Compile Include="DbObjs\AccountTable.cs" />
@@ -218,19 +217,16 @@
     <Compile Include="Queries\Shop\SelectShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\SelectShopItemsQuery.cs" />
     <Compile Include="Queries\User\UserExistsQuery.cs" />
-    <Compile Include="World\Map\Entities\ActiveStatusEffectID.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AISettings.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\StateMachine.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\TestAI.cs" />
     <Compile Include="World\Map\Entities\Characters\Alliance\Alliance.cs" />
-    <Compile Include="World\Map\Entities\Characters\Alliance\AllianceID.cs" />
     <Compile Include="World\Map\Entities\Characters\Alliance\AllianceManager.cs" />
     <Compile Include="World\Map\Entities\Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="World\Map\Entities\Characters\CharacterID.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterIDCreator.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStatusEffects.cs" />
@@ -238,8 +234,8 @@
     <Compile Include="World\Map\Entities\Characters\CharacterStats.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplate.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateEquipmentItem.cs" />
-    <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateID.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateIDConverter.cs" />
+    <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateIDExtensions.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateInventoryItem.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateManager.cs" />
     <Compile Include="World\Map\Entities\Characters\NonPersistentCharacterStatusEffects.cs" />
@@ -258,12 +254,9 @@
     <Compile Include="World\Map\Entities\Items\Inventory\CharacterInventory.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeInfo.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeTracker.cs" />
-    <Compile Include="World\Map\Entities\Items\ItemChance.cs" />
-    <Compile Include="World\Map\Entities\Items\ItemID.cs" />
     <Compile Include="World\Map\Entities\Items\ItemIDCreator.cs" />
     <Compile Include="World\Map\Entities\Items\ItemStats.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateComparer.cs" />
-    <Compile Include="World\Map\Entities\Items\ItemTemplateID.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateManager.cs" />
     <Compile Include="World\Map\Entities\Items\ItemValueTracker.cs" />
     <Compile Include="World\Map\Entities\Items\Equipped\NPCEquipped.cs" />
@@ -319,7 +312,6 @@
     <Compile Include="World\Map\Entities\Characters\User.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnRect.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnValues.cs" />
-    <Compile Include="World\Map\MapSpawn\MapSpawnValuesID.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="World\Map\NPCSpawner.cs" />
     <Compile Include="World\Map\Entities\TeleportEntity.cs" />

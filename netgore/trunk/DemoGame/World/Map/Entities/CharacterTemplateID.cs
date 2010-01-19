@@ -5,21 +5,22 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
-    /// Represents the unique ID of a MapSpawnValues.
+    /// Represents a unique ID for a Character template.
     /// </summary>
     [Serializable]
-    public struct MapSpawnValuesID : IComparable<MapSpawnValuesID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct CharacterTemplateID : IComparable<CharacterTemplateID>, IConvertible, IFormattable, IComparable<int>,
+                                        IEquatable<int>
     {
         /// <summary>
-        /// Represents the largest possible value of MapSpawnValuesID. This field is constant.
+        /// Represents the largest possible value of CharacterTemplateID. This field is constant.
         /// </summary>
         public const int MaxValue = int.MaxValue;
 
         /// <summary>
-        /// Represents the smallest possible value of MapSpawnValuesID. This field is constant.
+        /// Represents the smallest possible value of CharacterTemplateID. This field is constant.
         /// </summary>
         public const int MinValue = int.MinValue;
 
@@ -29,10 +30,10 @@ namespace DemoGame.Server
         readonly int _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapSpawnValuesID"/> struct.
+        /// Initializes a new instance of the <see cref="CharacterTemplateID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new MapSpawnValuesID.</param>
-        public MapSpawnValuesID(int value)
+        /// <param name="value">Value to assign to the new CharacterTemplateID.</param>
+        public CharacterTemplateID(int value)
         {
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
@@ -47,7 +48,7 @@ namespace DemoGame.Server
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(MapSpawnValuesID other)
+        public bool Equals(CharacterTemplateID other)
         {
             return other._value == _value;
         }
@@ -63,9 +64,9 @@ namespace DemoGame.Server
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(MapSpawnValuesID))
+            if (obj.GetType() != typeof(CharacterTemplateID))
                 return false;
-            return Equals((MapSpawnValuesID)obj);
+            return Equals((CharacterTemplateID)obj);
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the raw internal value of this MapSpawnValuesID.
+        /// Gets the raw internal value of this CharacterTemplateID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
         public int GetRawValue()
@@ -89,53 +90,53 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reads an MapSpawnValuesID from an IValueReader.
+        /// Reads an CharacterTemplateID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The MapSpawnValuesID read from the IValueReader.</returns>
-        public static MapSpawnValuesID Read(IValueReader reader, string name)
+        /// <returns>The CharacterTemplateID read from the IValueReader.</returns>
+        public static CharacterTemplateID Read(IValueReader reader, string name)
         {
             int value = reader.ReadInt(name);
-            return new MapSpawnValuesID(value);
+            return new CharacterTemplateID(value);
         }
 
         /// <summary>
-        /// Reads an MapSpawnValuesID from an IDataReader.
+        /// Reads an CharacterTemplateID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
-        public static MapSpawnValuesID Read(IDataReader reader, int i)
+        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
+        public static CharacterTemplateID Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
             if (value is int)
-                return new MapSpawnValuesID((int)value);
+                return new CharacterTemplateID((int)value);
 
             int convertedValue = Convert.ToInt32(value);
-            return new MapSpawnValuesID(convertedValue);
+            return new CharacterTemplateID(convertedValue);
         }
 
         /// <summary>
-        /// Reads an MapSpawnValuesID from an IDataReader.
+        /// Reads an CharacterTemplateID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
-        public static MapSpawnValuesID Read(IDataReader reader, string name)
+        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
+        public static CharacterTemplateID Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an MapSpawnValuesID from an IValueReader.
+        /// Reads an CharacterTemplateID from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The MapSpawnValuesID read from the BitStream.</returns>
-        public static MapSpawnValuesID Read(BitStream bitStream)
+        /// <returns>The CharacterTemplateID read from the BitStream.</returns>
+        public static CharacterTemplateID Read(BitStream bitStream)
         {
             int value = bitStream.ReadInt();
-            return new MapSpawnValuesID(value);
+            return new CharacterTemplateID(value);
         }
 
         /// <summary>
@@ -149,10 +150,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the MapSpawnValuesID to an IValueWriter.
+        /// Writes the CharacterTemplateID to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the MapSpawnValuesID that will be used to distinguish it
+        /// <param name="name">Unique name of the CharacterTemplateID that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -160,13 +161,38 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the MapSpawnValuesID to an IValueWriter.
+        /// Writes the CharacterTemplateID to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
         {
             bitStream.Write(_value);
         }
+
+        #region IComparable<CharacterTemplateID> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        public int CompareTo(CharacterTemplateID other)
+        {
+            return _value.CompareTo(other._value);
+        }
+
+        #endregion
 
         #region IComparable<int> Members
 
@@ -188,31 +214,6 @@ namespace DemoGame.Server
         public int CompareTo(int other)
         {
             return _value.CompareTo(other);
-        }
-
-        #endregion
-
-        #region IComparable<MapSpawnValuesID> Members
-
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
-        /// The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        public int CompareTo(MapSpawnValuesID other)
-        {
-            return _value.CompareTo(other._value);
         }
 
         #endregion
@@ -483,21 +484,21 @@ namespace DemoGame.Server
         /// <summary>
         /// Implements operator ++.
         /// </summary>
-        /// <param name="l">The MapSpawnValuesID to increment.</param>
-        /// <returns>The incremented MapSpawnValuesID.</returns>
-        public static MapSpawnValuesID operator ++(MapSpawnValuesID l)
+        /// <param name="l">The CharacterTemplateID to increment.</param>
+        /// <returns>The incremented CharacterTemplateID.</returns>
+        public static CharacterTemplateID operator ++(CharacterTemplateID l)
         {
-            return new MapSpawnValuesID(l._value + 1);
+            return new CharacterTemplateID(l._value + 1);
         }
 
         /// <summary>
         /// Implements operator --.
         /// </summary>
-        /// <param name="l">The MapSpawnValuesID to decrement.</param>
-        /// <returns>The decremented MapSpawnValuesID.</returns>
-        public static MapSpawnValuesID operator --(MapSpawnValuesID l)
+        /// <param name="l">The CharacterTemplateID to decrement.</param>
+        /// <returns>The decremented CharacterTemplateID.</returns>
+        public static CharacterTemplateID operator --(CharacterTemplateID l)
         {
-            return new MapSpawnValuesID(l._value - 1);
+            return new CharacterTemplateID(l._value - 1);
         }
 
         /// <summary>
@@ -506,9 +507,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static MapSpawnValuesID operator +(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static CharacterTemplateID operator +(CharacterTemplateID left, CharacterTemplateID right)
         {
-            return new MapSpawnValuesID(left._value + right._value);
+            return new CharacterTemplateID(left._value + right._value);
         }
 
         /// <summary>
@@ -517,9 +518,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static MapSpawnValuesID operator -(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static CharacterTemplateID operator -(CharacterTemplateID left, CharacterTemplateID right)
         {
-            return new MapSpawnValuesID(left._value - right._value);
+            return new CharacterTemplateID(left._value - right._value);
         }
 
         /// <summary>
@@ -528,7 +529,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapSpawnValuesID left, int right)
+        public static bool operator ==(CharacterTemplateID left, int right)
         {
             return left._value == right;
         }
@@ -539,7 +540,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapSpawnValuesID left, int right)
+        public static bool operator !=(CharacterTemplateID left, int right)
         {
             return left._value != right;
         }
@@ -550,7 +551,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, MapSpawnValuesID right)
+        public static bool operator ==(int left, CharacterTemplateID right)
         {
             return left == right._value;
         }
@@ -561,29 +562,29 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, MapSpawnValuesID right)
+        public static bool operator !=(int left, CharacterTemplateID right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a MapSpawnValuesID to an Int32.
+        /// Casts a CharacterTemplateID to an Int32.
         /// </summary>
-        /// <param name="MapSpawnValuesID">MapSpawnValuesID to cast.</param>
+        /// <param name="CharacterTemplateID">CharacterTemplateID to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(MapSpawnValuesID MapSpawnValuesID)
+        public static explicit operator int(CharacterTemplateID CharacterTemplateID)
         {
-            return MapSpawnValuesID._value;
+            return CharacterTemplateID._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a MapSpawnValuesID.
+        /// Casts an Int32 to a CharacterTemplateID.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The MapSpawnValuesID.</returns>
-        public static explicit operator MapSpawnValuesID(int value)
+        /// <returns>The CharacterTemplateID.</returns>
+        public static explicit operator CharacterTemplateID(int value)
         {
-            return new MapSpawnValuesID(value);
+            return new CharacterTemplateID(value);
         }
 
         /// <summary>
@@ -592,7 +593,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, MapSpawnValuesID right)
+        public static bool operator >(int left, CharacterTemplateID right)
         {
             return left > right._value;
         }
@@ -603,7 +604,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, MapSpawnValuesID right)
+        public static bool operator <(int left, CharacterTemplateID right)
         {
             return left < right._value;
         }
@@ -614,7 +615,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static bool operator >(CharacterTemplateID left, CharacterTemplateID right)
         {
             return left._value > right._value;
         }
@@ -625,7 +626,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static bool operator <(CharacterTemplateID left, CharacterTemplateID right)
         {
             return left._value < right._value;
         }
@@ -636,7 +637,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(MapSpawnValuesID left, int right)
+        public static bool operator >(CharacterTemplateID left, int right)
         {
             return left._value > right;
         }
@@ -647,7 +648,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(MapSpawnValuesID left, int right)
+        public static bool operator <(CharacterTemplateID left, int right)
         {
             return left._value < right;
         }
@@ -658,7 +659,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, MapSpawnValuesID right)
+        public static bool operator >=(int left, CharacterTemplateID right)
         {
             return left >= right._value;
         }
@@ -669,7 +670,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, MapSpawnValuesID right)
+        public static bool operator <=(int left, CharacterTemplateID right)
         {
             return left <= right._value;
         }
@@ -680,7 +681,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(MapSpawnValuesID left, int right)
+        public static bool operator >=(CharacterTemplateID left, int right)
         {
             return left._value >= right;
         }
@@ -691,7 +692,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(MapSpawnValuesID left, int right)
+        public static bool operator <=(CharacterTemplateID left, int right)
         {
             return left._value <= right;
         }
@@ -702,7 +703,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static bool operator >=(CharacterTemplateID left, CharacterTemplateID right)
         {
             return left._value >= right._value;
         }
@@ -713,7 +714,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static bool operator <=(CharacterTemplateID left, CharacterTemplateID right)
         {
             return left._value <= right._value;
         }
@@ -724,7 +725,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static bool operator !=(CharacterTemplateID left, CharacterTemplateID right)
         {
             return left._value != right._value;
         }
@@ -735,33 +736,33 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapSpawnValuesID left, MapSpawnValuesID right)
+        public static bool operator ==(CharacterTemplateID left, CharacterTemplateID right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the MapSpawnValuesID.
-    /// All of the operations are implemented in the MapSpawnValuesID struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the CharacterTemplateID.
+    /// All of the operations are implemented in the CharacterTemplateID struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class MapSpawnValuesIDReadWriteExtensions
+    public static class CharacterTemplateIDReadWriteExtensions
     {
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapSpawnValuesID.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type CharacterTemplateID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a MapSpawnValuesID.</returns>
-        public static MapSpawnValuesID AsMapSpawnValuesID<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a CharacterTemplateID.</returns>
+        public static CharacterTemplateID AsCharacterTemplateID<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseMapSpawnValuesID(dict[key]);
+            return Parser.Invariant.ParseCharacterTemplateID(dict[key]);
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapSpawnValuesID.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type CharacterTemplateID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -770,14 +771,14 @@ namespace DemoGame.Server
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static MapSpawnValuesID AsMapSpawnValuesID<T>(this IDictionary<T, string> dict, T key,
-                                                             MapSpawnValuesID defaultValue)
+        public static CharacterTemplateID AsCharacterTemplateID<T>(this IDictionary<T, string> dict, T key,
+                                                                   CharacterTemplateID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            MapSpawnValuesID parsed;
+            CharacterTemplateID parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
@@ -785,92 +786,92 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reads the MapSpawnValuesID from an IDataReader.
+        /// Reads the CharacterTemplateID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapSpawnValuesID from.</param>
+        /// <param name="dataReader">IDataReader to read the CharacterTemplateID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
-        public static MapSpawnValuesID GetMapSpawnValuesID(this IDataReader dataReader, int i)
+        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
+        public static CharacterTemplateID GetCharacterTemplateID(this IDataReader dataReader, int i)
         {
-            return MapSpawnValuesID.Read(dataReader, i);
+            return CharacterTemplateID.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the MapSpawnValuesID from an IDataReader.
+        /// Reads the CharacterTemplateID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapSpawnValuesID from.</param>
+        /// <param name="dataReader">IDataReader to read the CharacterTemplateID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
-        public static MapSpawnValuesID GetMapSpawnValuesID(this IDataReader dataReader, string name)
+        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
+        public static CharacterTemplateID GetCharacterTemplateID(this IDataReader dataReader, string name)
         {
-            return MapSpawnValuesID.Read(dataReader, name);
+            return CharacterTemplateID.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Parses the MapSpawnValuesID from a string.
+        /// Parses the CharacterTemplateID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The MapSpawnValuesID parsed from the string.</returns>
-        public static MapSpawnValuesID ParseMapSpawnValuesID(this Parser parser, string value)
+        /// <returns>The CharacterTemplateID parsed from the string.</returns>
+        public static CharacterTemplateID ParseCharacterTemplateID(this Parser parser, string value)
         {
-            return new MapSpawnValuesID(parser.ParseInt(value));
+            return new CharacterTemplateID(parser.ParseInt(value));
         }
 
         /// <summary>
-        /// Reads the MapSpawnValuesID from a BitStream.
+        /// Reads the CharacterTemplateID from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the MapSpawnValuesID from.</param>
-        /// <returns>The MapSpawnValuesID read from the BitStream.</returns>
-        public static MapSpawnValuesID ReadMapSpawnValuesID(this BitStream bitStream)
+        /// <param name="bitStream">BitStream to read the CharacterTemplateID from.</param>
+        /// <returns>The CharacterTemplateID read from the BitStream.</returns>
+        public static CharacterTemplateID ReadCharacterTemplateID(this BitStream bitStream)
         {
-            return MapSpawnValuesID.Read(bitStream);
+            return CharacterTemplateID.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the MapSpawnValuesID from an IValueReader.
+        /// Reads the CharacterTemplateID from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the MapSpawnValuesID from.</param>
+        /// <param name="valueReader">IValueReader to read the CharacterTemplateID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The MapSpawnValuesID read from the IValueReader.</returns>
-        public static MapSpawnValuesID ReadMapSpawnValuesID(this IValueReader valueReader, string name)
+        /// <returns>The CharacterTemplateID read from the IValueReader.</returns>
+        public static CharacterTemplateID ReadCharacterTemplateID(this IValueReader valueReader, string name)
         {
-            return MapSpawnValuesID.Read(valueReader, name);
+            return CharacterTemplateID.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Tries to parse the MapSpawnValuesID from a string.
+        /// Tries to parse the CharacterTemplateID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed MapSpawnValuesID.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed CharacterTemplateID.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out MapSpawnValuesID outValue)
+        public static bool TryParse(this Parser parser, string value, out CharacterTemplateID outValue)
         {
             int tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new MapSpawnValuesID(tmp);
+            outValue = new CharacterTemplateID(tmp);
             return ret;
         }
 
         /// <summary>
-        /// Writes a MapSpawnValuesID to a BitStream.
+        /// Writes a CharacterTemplateID to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">MapSpawnValuesID to write.</param>
-        public static void Write(this BitStream bitStream, MapSpawnValuesID value)
+        /// <param name="value">CharacterTemplateID to write.</param>
+        public static void Write(this BitStream bitStream, CharacterTemplateID value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a MapSpawnValuesID to a IValueWriter.
+        /// Writes a CharacterTemplateID to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the MapSpawnValuesID that will be used to distinguish it
+        /// <param name="name">Unique name of the CharacterTemplateID that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">MapSpawnValuesID to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, MapSpawnValuesID value)
+        /// <param name="value">CharacterTemplateID to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, CharacterTemplateID value)
         {
             value.Write(valueWriter, name);
         }
