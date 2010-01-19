@@ -1,261 +1,261 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using DemoGame.DbObjs;
 using NetGore;
 using NetGore.IO;
-using System.Collections.Generic;
-using System.Collections;
-using NetGore.Db;
-using DemoGame.DbObjs;
+
 namespace DemoGame.Server.DbObjs
 {
-/// <summary>
-/// Provides a strongly-typed structure for the database table `alliance`.
-/// </summary>
-public class AllianceTable : IAllianceTable, NetGore.IO.IPersistable
-{
-/// <summary>
-/// Array of the database column names.
-/// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"id", "name" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"id" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are not primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"name" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
-}
-}
-/// <summary>
-/// The name of the database table that this class represents.
-/// </summary>
-public const System.String TableName = "alliance";
-/// <summary>
-/// The number of columns in the database table that this class represents.
-/// </summary>
-public const System.Int32 ColumnCount = 2;
-/// <summary>
-/// The field that maps onto the database column `id`.
-/// </summary>
-System.Byte _iD;
-/// <summary>
-/// The field that maps onto the database column `name`.
-/// </summary>
-System.String _name;
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `id`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public DemoGame.Server.AllianceID ID
-{
-get
-{
-return (DemoGame.Server.AllianceID)_iD;
-}
-set
-{
-this._iD = (System.Byte)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `name`.
-/// The underlying database type is `varchar(255)`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public System.String Name
-{
-get
-{
-return (System.String)_name;
-}
-set
-{
-this._name = (System.String)value;
-}
-}
+    /// <summary>
+    /// Provides a strongly-typed structure for the database table `alliance`.
+    /// </summary>
+    public class AllianceTable : IAllianceTable, IPersistable
+    {
+        /// <summary>
+        /// The number of columns in the database table that this class represents.
+        /// </summary>
+        public const Int32 ColumnCount = 2;
 
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-public IAllianceTable DeepCopy()
-{
-return new AllianceTable(this);
-}
-/// <summary>
-/// AllianceTable constructor.
-/// </summary>
-public AllianceTable()
-{
-}
-/// <summary>
-/// AllianceTable constructor.
-/// </summary>
-/// <param name="iD">The initial value for the corresponding property.</param>
-/// <param name="name">The initial value for the corresponding property.</param>
-public AllianceTable(DemoGame.Server.AllianceID @iD, System.String @name)
-{
-this.ID = (DemoGame.Server.AllianceID)@iD;
-this.Name = (System.String)@name;
-}
-/// <summary>
-/// AllianceTable constructor.
-/// </summary>
-/// <param name="source">IAllianceTable to copy the initial values from.</param>
-public AllianceTable(IAllianceTable source)
-{
-CopyValuesFrom(source);
-}
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-/// this method will not create them if they are missing.
-/// </summary>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public void CopyValues(System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-CopyValues(this, dic);
-}
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-/// this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(IAllianceTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-dic["@id"] = (DemoGame.Server.AllianceID)source.ID;
-dic["@name"] = (System.String)source.Name;
-}
+        /// <summary>
+        /// The name of the database table that this class represents.
+        /// </summary>
+        public const String TableName = "alliance";
 
-/// <summary>
-/// Copies the values from the given <paramref name="source"/> into this AllianceTable.
-/// </summary>
-/// <param name="source">The IAllianceTable to copy the values from.</param>
-public void CopyValuesFrom(IAllianceTable source)
-{
-this.ID = (DemoGame.Server.AllianceID)source.ID;
-this.Name = (System.String)source.Name;
-}
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[] { "id", "name" };
 
-/// <summary>
-/// Gets the value of a column by the database column's name.
-/// </summary>
-/// <param name="columnName">The database name of the column to get the value for.</param>
-/// <returns>
-/// The value of the column with the name <paramref name="columnName"/>.
-/// </returns>
-public System.Object GetValue(System.String columnName)
-{
-switch (columnName)
-{
-case "id":
-return ID;
+        /// <summary>
+        /// Array of the database column names for columns that are primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsKeys = new string[] { "id" };
 
-case "name":
-return Name;
+        /// <summary>
+        /// Array of the database column names for columns that are not primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsNonKey = new string[] { "name" };
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// The field that maps onto the database column `id`.
+        /// </summary>
+        Byte _iD;
 
-/// <summary>
-/// Sets the <paramref name="value"/> of a column by the database column's name.
-/// </summary>
-/// <param name="columnName">The database name of the column to get the <paramref name="value"/> for.</param>
-/// <param name="value">Value to assign to the column.</param>
-public void SetValue(System.String columnName, System.Object value)
-{
-switch (columnName)
-{
-case "id":
-this.ID = (DemoGame.Server.AllianceID)value;
-break;
+        /// <summary>
+        /// The field that maps onto the database column `name`.
+        /// </summary>
+        String _name;
 
-case "name":
-this.Name = (System.String)value;
-break;
+        /// <summary>
+        /// AllianceTable constructor.
+        /// </summary>
+        public AllianceTable()
+        {
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// AllianceTable constructor.
+        /// </summary>
+        /// <param name="iD">The initial value for the corresponding property.</param>
+        /// <param name="name">The initial value for the corresponding property.</param>
+        public AllianceTable(AllianceID @iD, String @name)
+        {
+            ID = @iD;
+            Name = @name;
+        }
 
-/// <summary>
-/// Gets the data for the database column that this table represents.
-/// </summary>
-/// <param name="columnName">The database name of the column to get the data for.</param>
-/// <returns>
-/// The data for the database column with the name <paramref name="columnName"/>.
-/// </returns>
-public static ColumnMetadata GetColumnData(System.String columnName)
-{
-switch (columnName)
-{
-case "id":
-return new ColumnMetadata("id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+        /// <summary>
+        /// AllianceTable constructor.
+        /// </summary>
+        /// <param name="source">IAllianceTable to copy the initial values from.</param>
+        public AllianceTable(IAllianceTable source)
+        {
+            CopyValuesFrom(source);
+        }
 
-case "name":
-return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
 
-/// <summary>
-/// Reads the state of the object from an <see cref="IValueReader"/>.
-/// </summary>
-/// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-public void ReadState(NetGore.IO.IValueReader reader)
-{
-NetGore.IO.PersistableHelper.Read(this, reader);
-}
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
+        }
 
-/// <summary>
-/// Writes the state of the object to an <see cref="IValueWriter"/>.
-/// </summary>
-/// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-public void WriteState(NetGore.IO.IValueWriter writer)
-{
-NetGore.IO.PersistableHelper.Write(this, writer);
-}
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public static void CopyValues(IAllianceTable source, IDictionary<String, Object> dic)
+        {
+            dic["@id"] = source.ID;
+            dic["@name"] = source.Name;
+        }
 
-}
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public void CopyValues(IDictionary<String, Object> dic)
+        {
+            CopyValues(this, dic);
+        }
 
+        /// <summary>
+        /// Copies the values from the given <paramref name="source"/> into this AllianceTable.
+        /// </summary>
+        /// <param name="source">The IAllianceTable to copy the values from.</param>
+        public void CopyValuesFrom(IAllianceTable source)
+        {
+            ID = source.ID;
+            Name = source.Name;
+        }
+
+        /// <summary>
+        /// Gets the data for the database column that this table represents.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the data for.</param>
+        /// <returns>
+        /// The data for the database column with the name <paramref name="columnName"/>.
+        /// </returns>
+        public static ColumnMetadata GetColumnData(String columnName)
+        {
+            switch (columnName)
+            {
+                case "id":
+                    return new ColumnMetadata("id", "", "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
+
+                case "name":
+                    return new ColumnMetadata("name", "", "varchar(255)", null, typeof(String), false, false, false);
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of a column by the database column's name.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the value for.</param>
+        /// <returns>
+        /// The value of the column with the name <paramref name="columnName"/>.
+        /// </returns>
+        public Object GetValue(String columnName)
+        {
+            switch (columnName)
+            {
+                case "id":
+                    return ID;
+
+                case "name":
+                    return Name;
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        /// <summary>
+        /// Sets the <paramref name="value"/> of a column by the database column's name.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the <paramref name="value"/> for.</param>
+        /// <param name="value">Value to assign to the column.</param>
+        public void SetValue(String columnName, Object value)
+        {
+            switch (columnName)
+            {
+                case "id":
+                    ID = (AllianceID)value;
+                    break;
+
+                case "name":
+                    Name = (String)value;
+                    break;
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        #region IAllianceTable Members
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `id`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        [SyncValue]
+        public AllianceID ID
+        {
+            get { return (AllianceID)_iD; }
+            set { _iD = (Byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `name`.
+        /// The underlying database type is `varchar(255)`.
+        /// </summary>
+        [SyncValue]
+        public String Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        public IAllianceTable DeepCopy()
+        {
+            return new AllianceTable(this);
+        }
+
+        #endregion
+
+        #region IPersistable Members
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            PersistableHelper.Read(this, reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
+        }
+
+        #endregion
+    }
 }

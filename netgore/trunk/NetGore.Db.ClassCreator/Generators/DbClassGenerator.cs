@@ -28,16 +28,6 @@ namespace NetGore.Db.ClassCreator
         public const string CopyValuesMethodName = "CopyValues";
 
         /// <summary>
-        /// Name of the ReadState method in the generated code.
-        /// </summary>
-        public const string ReadStateMethodName = "ReadState";
-
-        /// <summary>
-        /// Name of the WriteState method in the generated code.
-        /// </summary>
-        public const string WriteStateMethodName = "WriteState";
-
-        /// <summary>
         /// Name of the dataReader when used in arguments in the generated code.
         /// </summary>
         public const string DataReaderName = "dataReader";
@@ -58,14 +48,26 @@ namespace NetGore.Db.ClassCreator
         public const string DbColumnsNonKeysField = "_dbColumnsNonKey";
 
         /// <summary>
+        /// Name of the ReadState method in the generated code.
+        /// </summary>
+        public const string ReadStateMethodName = "ReadState";
+
+        /// <summary>
         /// Name of the TryCopyValues method in the generated code.
         /// </summary>
         public const string TryCopyValuesMethodName = "TryCopyValues";
 
         /// <summary>
+        /// Name of the WriteState method in the generated code.
+        /// </summary>
+        public const string WriteStateMethodName = "WriteState";
+
+        /// <summary>
         /// Name given to all extension method's first parameter.
         /// </summary>
         const string _extensionParamName = "source";
+
+        static readonly IDictionary<Type, string> _valueReaderReadMethods;
 
         readonly List<ColumnCollection> _columnCollections = new List<ColumnCollection>();
         readonly List<CustomTypeMapping> _customTypes = new List<CustomTypeMapping>();
@@ -84,6 +86,26 @@ namespace NetGore.Db.ClassCreator
 
         DbConnection _dbConnction;
         bool _isDbContentLoaded = false;
+
+        /// <summary>
+        /// Initializes the <see cref="DbClassGenerator"/> class.
+        /// </summary>
+        static DbClassGenerator()
+        {
+            _valueReaderReadMethods = new Dictionary<Type, string>();
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(byte), "ReadByte"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(sbyte), "ReadSByte"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(int), "ReadInt"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(uint), "ReadUInt"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(float), "ReadFloat"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(short), "ReadShort"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ushort), "ReadUShort"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(long), "ReadLong"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ulong), "ReadULong"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(double), "ReadDouble"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(bool), "ReadBool"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(string), "ReadString"));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbClassGenerator"/> class.
@@ -127,8 +149,8 @@ namespace NetGore.Db.ClassCreator
         /// <param name="internalType">Type of the value and the internal storage type.</param>
         /// <param name="tables">The tables.</param>
         /// <param name="columns">The columns.</param>
-        public void AddColumnCollection(string name, Type keyType, Type externalType, Type internalType, IEnumerable<string> tables,
-                                        IEnumerable<ColumnCollectionItem> columns)
+        public void AddColumnCollection(string name, Type keyType, Type externalType, Type internalType,
+                                        IEnumerable<string> tables, IEnumerable<ColumnCollectionItem> columns)
         {
             if (!(keyType.IsEnum))
                 throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
@@ -219,75 +241,6 @@ namespace NetGore.Db.ClassCreator
                                        GeneratedCodeType.ClassDbExtensions);
         }
 
-        class ColumnCollectionDistinctKeyComparer : IEqualityComparer<ColumnCollection>
-        {
-            /// <summary>
-            /// Determines whether the specified objects are equal.
-            /// </summary>
-            /// <returns>
-            /// true if the specified objects are equal; otherwise, false.
-            /// </returns>
-            /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
-            public bool Equals(ColumnCollection x, ColumnCollection y)
-            {
-                return x.KeyType == y.KeyType;
-            }
-
-            /// <summary>
-            /// Returns a hash code for the specified object.
-            /// </summary>
-            /// <returns>
-            /// A hash code for the specified object.
-            /// </returns>
-            /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
-            public int GetHashCode(ColumnCollection obj)
-            {
-                return obj.KeyType.GetHashCode();
-            }
-        }
-
-        protected virtual IEnumerable<GeneratedTableCode> CreateCodeForConstDictionaries(string interfaceNamespace)
-        {
-            // ConstEnumDictionary class
-            foreach (var cc in _columnCollections.Distinct(new ColumnCollectionDistinctKeyComparer()))
-            {
-                var code = WrapCodeFile(GetConstEnumDictonaryCode(cc), interfaceNamespace, false);
-                yield return new GeneratedTableCode(string.Empty, GetConstEnumDictonaryName(cc),
-                    code, GeneratedCodeType.ColumnCollectionClass);
-            }
-        }
-
-        static readonly IDictionary<Type, string> _valueReaderReadMethods;
-
-        /// <summary>
-        /// Initializes the <see cref="DbClassGenerator"/> class.
-        /// </summary>
-        static DbClassGenerator()
-        {
-            _valueReaderReadMethods = new Dictionary<Type, string>();
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(byte), "ReadByte"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(sbyte), "ReadSByte"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(int), "ReadInt"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(uint), "ReadUInt"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(float), "ReadFloat"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(short), "ReadShort"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ushort), "ReadUShort"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(long), "ReadLong"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ulong), "ReadULong"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(double), "ReadDouble"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(bool), "ReadBool"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(string), "ReadString"));
-        }
-
-        protected string GetValueReaderReadMethodName(Type type)
-        {
-            string ret;
-            if (_valueReaderReadMethods.TryGetValue(type, out ret))
-                return ret;
-
-            return DbClassData.GetDataReaderReadMethodName(type, _dataReaderReadMethods);
-        }
-
         /// <summary>
         /// Creates the code for the class.
         /// </summary>
@@ -298,7 +251,8 @@ namespace NetGore.Db.ClassCreator
             var sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ClassSummary, cd.TableName)));
-            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false, new string[] { cd.InterfaceName, cd.Formatter.GetTypeString(typeof(IPersistable)) }));
+            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false,
+                                             new string[] { cd.InterfaceName, cd.Formatter.GetTypeString(typeof(IPersistable)) }));
             sb.AppendLine(Formatter.OpenBrace);
             {
                 // Other Fields/Properties
@@ -447,6 +401,18 @@ namespace NetGore.Db.ClassCreator
                                           GeneratedCodeType.ColumnMetadata);
         }
 
+        protected virtual IEnumerable<GeneratedTableCode> CreateCodeForConstDictionaries(string interfaceNamespace)
+        {
+            // ConstEnumDictionary class
+            foreach (var cc in _columnCollections.Distinct(new ColumnCollectionDistinctKeyComparer()))
+            {
+                var code = WrapCodeFile(GetConstEnumDictonaryCode(cc), interfaceNamespace, false);
+                yield return
+                    new GeneratedTableCode(string.Empty, GetConstEnumDictonaryName(cc), code,
+                                           GeneratedCodeType.ColumnCollectionClass);
+            }
+        }
+
         protected virtual string CreateCodeForExtensions(DbClassData cd)
         {
             var sb = new StringBuilder(8192);
@@ -517,7 +483,8 @@ namespace NetGore.Db.ClassCreator
                             Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionValueProperty, coll.Name)));
                         sb.AppendLine(Formatter.GetInterfaceProperty(coll.CollectionPropertyName,
                                                                      Formatter.GetIEnumerableKeyValuePair(coll.KeyType,
-                                                                                                          coll.ExternalType), false));
+                                                                                                          coll.ExternalType),
+                                                                     false));
                     }
                 }
             }
@@ -624,10 +591,10 @@ namespace NetGore.Db.ClassCreator
                                                                                            Comments.CreateFields.
                                                                                                PublicMethodGetKeyParameter)));
                     sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public,
-                                                            new MethodParameter[] { keyParameter }, coll.ExternalType, false, false));
+                                                            new MethodParameter[] { keyParameter }, coll.ExternalType, false,
+                                                            false));
                     sb.AppendLine(
-                        Formatter.GetMethodBody("return " + Formatter.GetCast(coll.ExternalType) + field +
-                                                Formatter.EndOfLine));
+                        Formatter.GetMethodBody("return " + Formatter.GetCast(coll.ExternalType) + field + Formatter.EndOfLine));
 
                     // Setter
                     sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.PublicMethodGet, coll.Name), null,
@@ -645,8 +612,7 @@ namespace NetGore.Db.ClassCreator
                                                             },
                                                             typeof(void), false, false));
 
-                    sb.AppendLine(
-                        Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, coll.InternalType)));
+                    sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, coll.InternalType)));
                 }
             }
 
@@ -846,6 +812,40 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        protected virtual string CreateMethodReadState(DbClassData cd)
+        {
+            const string parameterName = "reader";
+
+            var sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.ReadState.Summary, null,
+                                                  new KeyValuePair<string, string>(parameterName,
+                                                                                   Comments.ReadState.ParameterWriter)));
+            sb.AppendLine(Formatter.GetMethodHeader(ReadStateMethodName, MemberVisibilityLevel.Public,
+                                                    new MethodParameter[]
+                                                    { new MethodParameter(parameterName, typeof(IValueReader), cd.Formatter) },
+                                                    typeof(void), false, false));
+
+            // Body
+            var bodySB = new StringBuilder(2048);
+            var methodCall = Formatter.GetCallObjMethod(Formatter.GetTypeString(typeof(PersistableHelper)), "Read", "this",
+                                                        parameterName);
+
+            foreach (var cc in cd.ColumnCollections)
+            {
+                var key = "\"" + cc.CollectionPropertyName + "\"";
+                var readNodeCall = Formatter.GetCallObjMethod(parameterName, "ReadNode", key);
+                bodySB.Append(Formatter.GetCallObjMethod(cd.GetPrivateName(cc), "ReadState", readNodeCall));
+            }
+
+            bodySB.AppendLine();
+            bodySB.Append(bodySB);
+            sb.AppendLine(Formatter.GetMethodBody(methodCall));
+
+            return sb.ToString();
+        }
+
         protected virtual string CreateMethodReadValues(DbClassData cd)
         {
             var sb = new StringBuilder(2048);
@@ -869,7 +869,9 @@ namespace NetGore.Db.ClassCreator
             bodySB.AppendLine();
             foreach (var column in cd.Columns)
             {
-                bodySB.AppendLine(Formatter.GetSetValue("i", Formatter.GetCallObjMethod( DataReaderName, "GetOrdinal", "\"" + column.Name + "\""), false, false));
+                bodySB.AppendLine(Formatter.GetSetValue("i",
+                                                        Formatter.GetCallObjMethod(DataReaderName, "GetOrdinal",
+                                                                                   "\"" + column.Name + "\""), false, false));
 
                 var right = cd.GetDataReaderAccessor(column, "i");
                 bodySB.AppendLine(cd.GetColumnValueMutator(column, right, _extensionParamName));
@@ -877,67 +879,6 @@ namespace NetGore.Db.ClassCreator
             }
 
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
-
-            return sb.ToString();
-        }
-
-        protected virtual string CreateMethodWriteState(DbClassData cd)
-        {
-            const string parameterName = "writer";
-
-            var sb = new StringBuilder(2048);
-
-            // Header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.WriteState.Summary, null,
-                new KeyValuePair<string, string>(parameterName, Comments.WriteState.ParameterWriter)));
-            sb.AppendLine(Formatter.GetMethodHeader(WriteStateMethodName, MemberVisibilityLevel.Public, new MethodParameter[] { new MethodParameter(parameterName,
-                typeof(IValueWriter), cd.Formatter) }, typeof(void), false, false));
-
-            // Body
-            var bodySB = new StringBuilder(2048);
-            var methodCall = Formatter.GetCallObjMethod(Formatter.GetTypeString(typeof(PersistableHelper)), "Write", "this", parameterName);
-
-            foreach (var cc in cd.ColumnCollections)
-            {
-                var key = "\"" + cc.CollectionPropertyName + "\"";
-                bodySB.Append(Formatter.GetCallObjMethod(parameterName, "WriteStartNode", key));
-                bodySB.Append(Formatter.GetCallObjMethod(cd.GetPrivateName(cc), "Write", parameterName));
-                bodySB.Append(Formatter.GetCallObjMethod(parameterName, "WriteEndNode", key));
-                bodySB.AppendLine();
-            }
-
-            bodySB.Append(bodySB);
-            sb.AppendLine(Formatter.GetMethodBody(methodCall));
-
-            return sb.ToString();
-        }
-
-        protected virtual string CreateMethodReadState(DbClassData cd)
-        {
-            const string parameterName = "reader";
-
-            var sb = new StringBuilder(2048);
-
-            // Header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.ReadState.Summary, null,
-                new KeyValuePair<string, string>(parameterName, Comments.ReadState.ParameterWriter)));
-            sb.AppendLine(Formatter.GetMethodHeader(ReadStateMethodName, MemberVisibilityLevel.Public, new MethodParameter[] { new MethodParameter(parameterName,
-                typeof(IValueReader), cd.Formatter) }, typeof(void), false, false));
-
-            // Body
-            var bodySB = new StringBuilder(2048);
-            var methodCall = Formatter.GetCallObjMethod(Formatter.GetTypeString(typeof(PersistableHelper)), "Read", "this", parameterName);
-
-            foreach (var cc in cd.ColumnCollections)
-            {
-                var key = "\"" + cc.CollectionPropertyName + "\"";
-                var readNodeCall = Formatter.GetCallObjMethod(parameterName, "ReadNode", key);
-                bodySB.Append(Formatter.GetCallObjMethod(cd.GetPrivateName(cc), "ReadState", readNodeCall));
-            }
-            
-            bodySB.AppendLine();
-            bodySB.Append(bodySB);
-            sb.AppendLine(Formatter.GetMethodBody(methodCall));
 
             return sb.ToString();
         }
@@ -1074,6 +1015,41 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        protected virtual string CreateMethodWriteState(DbClassData cd)
+        {
+            const string parameterName = "writer";
+
+            var sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.WriteState.Summary, null,
+                                                  new KeyValuePair<string, string>(parameterName,
+                                                                                   Comments.WriteState.ParameterWriter)));
+            sb.AppendLine(Formatter.GetMethodHeader(WriteStateMethodName, MemberVisibilityLevel.Public,
+                                                    new MethodParameter[]
+                                                    { new MethodParameter(parameterName, typeof(IValueWriter), cd.Formatter) },
+                                                    typeof(void), false, false));
+
+            // Body
+            var bodySB = new StringBuilder(2048);
+            var methodCall = Formatter.GetCallObjMethod(Formatter.GetTypeString(typeof(PersistableHelper)), "Write", "this",
+                                                        parameterName);
+
+            foreach (var cc in cd.ColumnCollections)
+            {
+                var key = "\"" + cc.CollectionPropertyName + "\"";
+                bodySB.Append(Formatter.GetCallObjMethod(parameterName, "WriteStartNode", key));
+                bodySB.Append(Formatter.GetCallObjMethod(cd.GetPrivateName(cc), "Write", parameterName));
+                bodySB.Append(Formatter.GetCallObjMethod(parameterName, "WriteEndNode", key));
+                bodySB.AppendLine();
+            }
+
+            bodySB.Append(bodySB);
+            sb.AppendLine(Formatter.GetMethodBody(methodCall));
+
+            return sb.ToString();
+        }
+
         protected virtual string FullConstructorMemberBody(DbClassData cd)
         {
             var sb = new StringBuilder(1024);
@@ -1135,10 +1111,20 @@ namespace NetGore.Db.ClassCreator
             }
 
             foreach (var c in CreateCodeForConstDictionaries(interfaceNamespace))
+            {
                 yield return c;
+            }
 
             yield return CreateCodeForColumnMetadata(classNamespace);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="DbColumnInfo"/>s for the given
+        /// <paramref name="table"/>.
+        /// </summary>
+        /// <param name="table">The name of the table to get the <see cref="DbColumnInfo"/>s for.</param>
+        /// <returns>The <see cref="DbColumnInfo"/>s for the given <paramref name="table"/>.</returns>
+        protected abstract IEnumerable<DbColumnInfo> GetColumns(string table);
 
         protected string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
         {
@@ -1156,14 +1142,6 @@ namespace NetGore.Db.ClassCreator
         {
             return columnCollection.KeyType.Name + "ConstDictionary";
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="DbColumnInfo"/>s for the given
-        /// <paramref name="table"/>.
-        /// </summary>
-        /// <param name="table">The name of the table to get the <see cref="DbColumnInfo"/>s for.</param>
-        /// <returns>The <see cref="DbColumnInfo"/>s for the given <paramref name="table"/>.</returns>
-        protected abstract IEnumerable<DbColumnInfo> GetColumns(string table);
 
         protected virtual MethodParameter[] GetConstructorParameters(DbClassData cd)
         {
@@ -1184,6 +1162,15 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <returns>The name of the tables in the database.</returns>
         protected abstract IEnumerable<string> GetTables();
+
+        protected string GetValueReaderReadMethodName(Type type)
+        {
+            string ret;
+            if (_valueReaderReadMethods.TryGetValue(type, out ret))
+                return ret;
+
+            return DbClassData.GetDataReaderReadMethodName(type, _dataReaderReadMethods);
+        }
 
         /// <summary>
         /// Loads the content (table and column data) from the database and populates _dbTables. This only happens once
@@ -1264,5 +1251,36 @@ namespace NetGore.Db.ClassCreator
         public abstract void Dispose();
 
         #endregion
+
+        class ColumnCollectionDistinctKeyComparer : IEqualityComparer<ColumnCollection>
+        {
+            #region IEqualityComparer<ColumnCollection> Members
+
+            /// <summary>
+            /// Determines whether the specified objects are equal.
+            /// </summary>
+            /// <returns>
+            /// true if the specified objects are equal; otherwise, false.
+            /// </returns>
+            /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
+            public bool Equals(ColumnCollection x, ColumnCollection y)
+            {
+                return x.KeyType == y.KeyType;
+            }
+
+            /// <summary>
+            /// Returns a hash code for the specified object.
+            /// </summary>
+            /// <returns>
+            /// A hash code for the specified object.
+            /// </returns>
+            /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
+            public int GetHashCode(ColumnCollection obj)
+            {
+                return obj.KeyType.GetHashCode();
+            }
+
+            #endregion
+        }
     }
 }

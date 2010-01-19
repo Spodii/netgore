@@ -26,7 +26,7 @@ namespace NetGore.Db.ClassCreator
         /// Code for the extension methods for a table class.
         /// </summary>
         ClassDbExtensions,
-        
+
         /// <summary>
         /// Code for the collection used for column collections. This is generated once for each distinct column collection
         /// key type.
