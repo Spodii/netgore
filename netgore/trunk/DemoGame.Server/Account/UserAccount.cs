@@ -278,28 +278,6 @@ namespace DemoGame.Server
         /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
         /// </summary>
         /// <param name="dbController">The <see cref="IDbController"/>.</param>
-        /// <param name="accountID">The account ID.</param>
-        /// <param name="characterName">Name of the character.</param>
-        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
-        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(IDbController dbController, AccountID accountID, string characterName,
-                                           out string errorMsg)
-        {
-            CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
-
-            CharacterID characterID = idCreator.GetNext();
-            bool success = TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
-
-            if (!success)
-                idCreator.FreeID(characterID);
-
-            return success;
-        }
-
-        /// <summary>
-        /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
-        /// </summary>
-        /// <param name="dbController">The <see cref="IDbController"/>.</param>
         /// <param name="accountName">Name of the account.</param>
         /// <param name="characterName">Name of the character.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
@@ -308,8 +286,8 @@ namespace DemoGame.Server
                                            out string errorMsg)
         {
             CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
-
             CharacterID characterID = idCreator.GetNext();
+
             bool success = TryAddCharacter(dbController, accountName, characterName, characterID, out errorMsg);
 
             if (!success)
@@ -322,70 +300,20 @@ namespace DemoGame.Server
         /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
         /// </summary>
         /// <param name="dbController">The <see cref="IDbController"/>.</param>
-        /// <param name="accountID">The account ID.</param>
+        /// <param name="accountName">The account name.</param>
         /// <param name="characterName">Name of the character.</param>
         /// <param name="characterID">The character ID.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(IDbController dbController, AccountID accountID, string characterName,
+        static bool TryAddCharacter(IDbController dbController, string accountName, string characterName,
                                            CharacterID characterID, out string errorMsg)
         {
-            if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountID, characterID, characterName, out errorMsg))
+            // Try to execute the query
+            if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountName, characterID, characterName, out errorMsg))
                 return false;
 
             errorMsg = string.Empty;
             return true;
-        }
-
-        /// <summary>
-        /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
-        /// </summary>
-        /// <param name="dbController">The <see cref="IDbController"/>.</param>
-        /// <param name="accountName">Name of the account.</param>
-        /// <param name="characterName">Name of the character.</param>
-        /// <param name="characterID">The character ID.</param>
-        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
-        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(IDbController dbController, string accountName, string characterName,
-                                           CharacterID characterID, out string errorMsg)
-        {
-            if (!IsValidName(accountName))
-            {
-                errorMsg = "Invalid account name.";
-                return false;
-            }
-
-            AccountID accountID;
-            if (!TryGetAccountID(dbController, accountName, out accountID))
-            {
-                errorMsg = "Account with the given name does not exist.";
-                return false;
-            }
-
-            return TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
-        }
-
-        /// <summary>
-        /// Tries to add a <see cref="Character"/> to this <see cref="UserAccount"/>.
-        /// </summary>
-        /// <param name="characterName">Name of the character.</param>
-        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
-        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public bool TryAddCharacter(string characterName, out string errorMsg)
-        {
-            return TryAddCharacter(_dbController, ID, characterName, out errorMsg);
-        }
-
-        /// <summary>
-        /// Tries to add a <see cref="Character"/> to this <see cref="UserAccount"/>.
-        /// </summary>
-        /// <param name="characterName">Name of the character.</param>
-        /// <param name="characterID">The character ID.</param>
-        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
-        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public bool TryAddCharacter(string characterName, CharacterID characterID, out string errorMsg)
-        {
-            return TryAddCharacter(_dbController, ID, characterName, characterID, out errorMsg);
         }
 
         /// <summary>
