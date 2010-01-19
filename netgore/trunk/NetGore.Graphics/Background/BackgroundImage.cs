@@ -403,6 +403,10 @@ namespace NetGore.Graphics
             if (!IsSpriteSet())
                 return false;
 
+            // FUTURE: Implement properly
+            return true;
+
+            /*
             Vector2 position = GetPosition(Map.Size, Camera);
             if (position.X > camera.Max.X || position.Y > camera.Max.Y)
                 return false;
@@ -412,6 +416,7 @@ namespace NetGore.Graphics
                 return false;
 
             return true;
+            */
         }
 
         #endregion
