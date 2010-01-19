@@ -213,7 +213,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,1,NULL,'Spodi',1,NULL,NULL,NULL,663.6,158,1,500,200,1,1800,2436,99,2964,468,50,50,50,50,7,12,0,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,506,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,NULL,'Talking Guy',2,NULL,0,NULL,800,530,2,800,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(5,NULL,NULL,'Shopkeeper',2,0,NULL,NULL,600,530,2,600,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(6,NULL,NULL,'Vending Machine',2,1,NULL,NULL,500,530,2,500,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1);
+INSERT INTO `character` VALUES (1,1,NULL,'Spodi',1,NULL,NULL,NULL,663.6,158,1,500,200,1,1800,2436,99,2964,468,50,50,50,50,7,12,0,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,2,800,250,2,800,250,1,1800,3012,12,810,527,30,5,30,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,2,506,250,2,500,250,1,1800,3012,12,810,527,30,5,30,5,5,5,0,5,5,5),(4,NULL,NULL,'Talking Guy',2,NULL,0,NULL,800,530,2,800,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(5,NULL,NULL,'Shopkeeper',2,0,NULL,NULL,600,530,2,600,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(6,NULL,NULL,'Vending Machine',2,1,NULL,NULL,500,530,2,500,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,7 +345,7 @@ CREATE TABLE `character_template` (
 
 LOCK TABLES `character_template` WRITE;
 /*!40000 ALTER TABLE `character_template` DISABLE KEYS */;
-INSERT INTO `character_template` VALUES (0,0,'User Template',NULL,NULL,1,1800,5,1,0,0,0,0,50,50,1,2,0,1,1,1),(1,1,'A Test NPC',1,NULL,2,1800,2,0,0,0,5,5,5,5,0,0,0,1,1,1);
+INSERT INTO `character_template` VALUES (0,0,'User Template',NULL,NULL,1,1800,5,1,0,0,0,0,50,50,1,2,0,1,1,1),(1,1,'A Test NPC',2,NULL,2,1800,2,0,0,0,5,5,30,5,0,0,0,1,1,1);
 /*!40000 ALTER TABLE `character_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -786,45 +786,7 @@ SET character_set_client = @saved_cs_client;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `CreateUserOnAccount`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
-BEGIN
-		
-		DECLARE character_count INT DEFAULT 0;
-		DECLARE max_character_count INT DEFAULT 3;
-		DECLARE is_id_free INT DEFAULT 0;
-		DECLARE is_name_free INT DEFAULT 0;
-		DECLARE errorMsg VARCHAR(100) DEFAULT "";
-		DECLARE accountID INT DEFAULT NULL;
-
-		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
-
-		IF ISNULL(accountID) THEN
-			SET errorMsg = "Account with the specified name does not exist.";
-		ELSE
-			SELECT COUNT(*) INTO character_count FROM `character` WHERE `account_id` = accountID;
-			SELECT `max_characters_per_account` INTO max_character_count FROM `game_constant`;
-
-			IF character_count > max_character_count THEN
-				SET errorMsg = "No free character slots available in the account.";
-			ELSE
-				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
-				
-				IF is_id_free > 0 THEN
-					SET errorMsg = "The specified CharacterID is not available for use.";
-				ELSE
-					SELECT COUNT(*) INTO is_name_free FROM `user_character` WHERE `name` = characterName;
-						
-					IF is_name_free > 0 THEN
-						SET errorMsg = "The specified character name is not available for use.";
-					ELSE
-						INSERT INTO `character` SET `id` = characterID, `name`	= characterName, `account_id`= 	accountID;
-					END IF;
-				END IF;
-			END IF;
-		END IF;
-				
-		RETURN errorMsg;
-  
-END */;;
+BEGIN 		 		DECLARE character_count INT DEFAULT 0; 		DECLARE max_character_count INT DEFAULT 3; 		DECLARE is_id_free INT DEFAULT 0; 		DECLARE is_name_free INT DEFAULT 0; 		DECLARE errorMsg VARCHAR(100) DEFAULT ""; 		DECLARE accountID INT DEFAULT NULL;  		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;  		IF ISNULL(accountID) THEN 			SET errorMsg = "Account with the specified name does not exist."; 		ELSE 			SELECT COUNT(*) INTO character_count FROM `character` WHERE `account_id` = accountID; 			SELECT `max_characters_per_account` INTO max_character_count FROM `game_constant`;  			IF character_count > max_character_count THEN 				SET errorMsg = "No free character slots available in the account."; 			ELSE 				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID; 				 				IF is_id_free > 0 THEN 					SET errorMsg = "The specified CharacterID is not available for use."; 				ELSE 					SELECT COUNT(*) INTO is_name_free FROM `user_character` WHERE `name` = characterName; 						 					IF is_name_free > 0 THEN 						SET errorMsg = "The specified character name is not available for use."; 					ELSE 						INSERT INTO `character` SET `id` = characterID, `name`	= characterName, `account_id`= 	accountID; 					END IF; 				END IF; 			END IF; 		END IF; 				 		RETURN errorMsg;    END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -841,11 +803,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_Views`()
-BEGIN
-	
-	CALL Rebuild_View_NPC_Character();
-    
-END */;;
+BEGIN 	 	CALL Rebuild_View_NPC_Character();      END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
