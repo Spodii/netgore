@@ -11,7 +11,6 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public class DbClassData
     {
-        static readonly IDictionary<Type, string> _valueReaderReadMethods;
         public readonly string ClassName;
         public readonly IEnumerable<ColumnCollection> ColumnCollections;
         public readonly IEnumerable<DbColumnInfo> Columns;
@@ -27,26 +26,6 @@ namespace NetGore.Db.ClassCreator
         readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
-
-        /// <summary>
-        /// Initializes the <see cref="DbClassData"/> class.
-        /// </summary>
-        static DbClassData()
-        {
-            _valueReaderReadMethods = new Dictionary<Type, string>();
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(byte), "ReadByte"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(sbyte), "ReadSByte"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(int), "ReadInt"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(uint), "ReadUInt"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(float), "ReadFloat"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(short), "ReadShort"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ushort), "ReadUShort"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(long), "ReadLong"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ulong), "ReadULong"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(double), "ReadDouble"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(bool), "ReadBool"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(string), "ReadString"));
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbClassData"/> class.
@@ -178,11 +157,6 @@ namespace NetGore.Db.ClassCreator
             return null;
         }
 
-        public static string GetCollectionTypeString(ColumnCollection columnCollection)
-        {
-            return GetConstEnumDictonaryName(columnCollection);
-        }
-
         /// <summary>
         /// Gets the code to use for the accessor for a DbColumnInfo.
         /// </summary>
@@ -268,22 +242,6 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public string GetConstEnumDictonaryCode(DbClassData cd, ColumnCollection columnCollection)
-        {
-            var sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
-            sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
-            sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
-            sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
-            sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
-            sb.Replace("[VALUEREADERREADMETHOD]", cd.GetValueReaderReadMethodName(columnCollection.ValueType));
-            return sb.ToString();
-        }
-
-        public static string GetConstEnumDictonaryName(ColumnCollection columnCollection)
-        {
-            return columnCollection.Name.Substring(0, 1).ToUpper() + columnCollection.Name.Substring(1) + "ConstDictionary";
-        }
-
         /// <summary>
         /// Gets the code string used for accessing a database DbColumnInfo's value from a DataReader.
         /// </summary>
@@ -331,14 +289,29 @@ namespace NetGore.Db.ClassCreator
         /// Gets the name of the method used by the DataReader to read the given Type.
         /// </summary>
         /// <param name="type">Type to read.</param>
-        /// <returns>The name of the method used by the DataReader to read the given Type.</returns>
+        /// <returns>
+        /// The name of the method used by the DataReader to read the given Type.
+        /// </returns>
         public string GetDataReaderReadMethodName(Type type)
+        {
+            return GetDataReaderReadMethodName(type, _dataReaderReadMethods);
+        }
+
+        /// <summary>
+        /// Gets the name of the method used by the DataReader to read the given Type.
+        /// </summary>
+        /// <param name="type">Type to read.</param>
+        /// <param name="dataReaderReadMethods">The data reader read methods.</param>
+        /// <returns>
+        /// The name of the method used by the DataReader to read the given Type.
+        /// </returns>
+        public static string GetDataReaderReadMethodName(Type type, IDictionary<Type, string> dataReaderReadMethods)
         {
             if (type.IsNullable())
                 type = type.GetNullableUnderlyingType();
 
             string callMethod;
-            if (_dataReaderReadMethods.TryGetValue(type, out callMethod))
+            if (dataReaderReadMethods.TryGetValue(type, out callMethod))
                 return callMethod;
 
             return "Get" + type.Name;
@@ -414,15 +387,6 @@ namespace NetGore.Db.ClassCreator
             }
 
             return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
-        }
-
-        public string GetValueReaderReadMethodName(Type type)
-        {
-            string ret;
-            if (_valueReaderReadMethods.TryGetValue(type, out ret))
-                return ret;
-
-            return GetDataReaderReadMethodName(type);
         }
     }
 }

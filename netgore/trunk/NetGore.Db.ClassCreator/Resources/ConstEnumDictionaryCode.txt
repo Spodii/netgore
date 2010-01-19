@@ -3,7 +3,7 @@
 /// table that this class represents. Majority of the code for this class was automatically generated and
 /// only other automatically generated code should be using this class.
 /// </summary>
-private class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>>, IPersistable
+public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>>, IPersistable
 {
     /// <summary>
     /// Name of the node that contains all the values.

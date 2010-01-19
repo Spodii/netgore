@@ -174,9 +174,14 @@ namespace DemoGame.DbClassCreator
             var isInterfaceOrClass = (gtc.CodeType == GeneratedCodeType.Interface || gtc.CodeType == GeneratedCodeType.Class);
             var isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
 
-            if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata)
+            if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata
+                || gtc.CodeType == GeneratedCodeType.ColumnCollectionClass)
             {
                 saveDir = _outputGameDir;
+
+                if (gtc.CodeType == GeneratedCodeType.ColumnCollectionClass)
+                    saveDir += "ColumnCollections" + Path.DirectorySeparatorChar;
+
                 code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.DbObjs");
                 code = code.Replace("using NetGore.Db;", string.Empty);
             }
