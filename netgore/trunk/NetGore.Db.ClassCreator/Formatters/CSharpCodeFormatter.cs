@@ -49,7 +49,7 @@ namespace NetGore.Db.ClassCreator
             sb.Append(attributeType);
             sb.Append(OpenParameterString);
 
-            if (args != null)
+            if (args != null && args.Length > 0)
             {
                 for (var i = 0; i < args.Length - 1; i++)
                 {

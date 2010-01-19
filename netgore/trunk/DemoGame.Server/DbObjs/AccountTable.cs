@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
+using NetGore;
+using NetGore.IO;
 
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
     /// Provides a strongly-typed structure for the database table `account`.
     /// </summary>
-    public class AccountTable : IAccountTable
+    public class AccountTable : IAccountTable, IPersistable
     {
         /// <summary>
         /// The number of columns in the database table that this class represents.
@@ -45,7 +47,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `current_ip`.
         /// </summary>
-        uint? _currentIp;
+        Nullable<UInt32> _currentIp;
 
         /// <summary>
         /// The field that maps onto the database column `email`.
@@ -95,17 +97,17 @@ namespace DemoGame.Server.DbObjs
         /// <param name="password">The initial value for the corresponding property.</param>
         /// <param name="timeCreated">The initial value for the corresponding property.</param>
         /// <param name="timeLastLogin">The initial value for the corresponding property.</param>
-        public AccountTable(UInt32 @creatorIp, uint? @currentIp, String @email, AccountID @iD, String @name, String @password,
-                            DateTime @timeCreated, DateTime @timeLastLogin)
+        public AccountTable(UInt32 @creatorIp, Nullable<UInt32> @currentIp, String @email, AccountID @iD, String @name,
+                            String @password, DateTime @timeCreated, DateTime @timeLastLogin)
         {
-            CreatorIp = @creatorIp;
-            CurrentIp = @currentIp;
-            Email = @email;
-            ID = @iD;
-            Name = @name;
-            Password = @password;
-            TimeCreated = @timeCreated;
-            TimeLastLogin = @timeLastLogin;
+            CreatorIp = (UInt32)@creatorIp;
+            CurrentIp = (Nullable<UInt32>)@currentIp;
+            Email = (String)@email;
+            ID = (AccountID)@iD;
+            Name = (String)@name;
+            Password = (String)@password;
+            TimeCreated = (DateTime)@timeCreated;
+            TimeLastLogin = (DateTime)@timeLastLogin;
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public static IEnumerable<String> DbColumns
         {
-            get { return _dbColumns; }
+            get { return (IEnumerable<String>)_dbColumns; }
         }
 
         /// <summary>
@@ -130,7 +132,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public static IEnumerable<String> DbKeyColumns
         {
-            get { return _dbColumnsKeys; }
+            get { return (IEnumerable<String>)_dbColumnsKeys; }
         }
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public static IEnumerable<String> DbNonKeyColumns
         {
-            get { return _dbColumnsNonKey; }
+            get { return (IEnumerable<String>)_dbColumnsNonKey; }
         }
 
         /// <summary>
@@ -150,14 +152,14 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IAccountTable source, IDictionary<String, Object> dic)
         {
-            dic["@creator_ip"] = source.CreatorIp;
-            dic["@current_ip"] = source.CurrentIp;
-            dic["@email"] = source.Email;
-            dic["@id"] = source.ID;
-            dic["@name"] = source.Name;
-            dic["@password"] = source.Password;
-            dic["@time_created"] = source.TimeCreated;
-            dic["@time_last_login"] = source.TimeLastLogin;
+            dic["@creator_ip"] = (UInt32)source.CreatorIp;
+            dic["@current_ip"] = (Nullable<UInt32>)source.CurrentIp;
+            dic["@email"] = (String)source.Email;
+            dic["@id"] = (AccountID)source.ID;
+            dic["@name"] = (String)source.Name;
+            dic["@password"] = (String)source.Password;
+            dic["@time_created"] = (DateTime)source.TimeCreated;
+            dic["@time_last_login"] = (DateTime)source.TimeLastLogin;
         }
 
         /// <summary>
@@ -177,14 +179,14 @@ namespace DemoGame.Server.DbObjs
         /// <param name="source">The IAccountTable to copy the values from.</param>
         public void CopyValuesFrom(IAccountTable source)
         {
-            CreatorIp = source.CreatorIp;
-            CurrentIp = source.CurrentIp;
-            Email = source.Email;
-            ID = source.ID;
-            Name = source.Name;
-            Password = source.Password;
-            TimeCreated = source.TimeCreated;
-            TimeLastLogin = source.TimeLastLogin;
+            CreatorIp = (UInt32)source.CreatorIp;
+            CurrentIp = (Nullable<UInt32>)source.CurrentIp;
+            Email = (String)source.Email;
+            ID = (AccountID)source.ID;
+            Name = (String)source.Name;
+            Password = (String)source.Password;
+            TimeCreated = (DateTime)source.TimeCreated;
+            TimeLastLogin = (DateTime)source.TimeLastLogin;
         }
 
         /// <summary>
@@ -205,7 +207,7 @@ namespace DemoGame.Server.DbObjs
                 case "current_ip":
                     return new ColumnMetadata("current_ip",
                                               "IP address currently logged in to the account, or null if nobody is logged in.",
-                                              "int(10) unsigned", null, typeof(uint?), true, false, false);
+                                              "int(10) unsigned", null, typeof(Nullable<UInt32>), true, false, false);
 
                 case "email":
                     return new ColumnMetadata("email", "The email address.", "varchar(60)", null, typeof(String), false, false,
@@ -288,7 +290,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "current_ip":
-                    CurrentIp = (uint?)value;
+                    CurrentIp = (Nullable<UInt32>)value;
                     break;
 
                 case "email":
@@ -327,10 +329,11 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `int(10) unsigned`. The database column contains the comment: 
         /// "The IP address that created the account.".
         /// </summary>
+        [SyncValue()]
         public UInt32 CreatorIp
         {
-            get { return _creatorIp; }
-            set { _creatorIp = value; }
+            get { return (UInt32)_creatorIp; }
+            set { _creatorIp = (UInt32)value; }
         }
 
         /// <summary>
@@ -338,10 +341,11 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `int(10) unsigned`. The database column contains the comment: 
         /// "IP address currently logged in to the account, or null if nobody is logged in.".
         /// </summary>
-        public uint? CurrentIp
+        [SyncValue()]
+        public Nullable<UInt32> CurrentIp
         {
-            get { return _currentIp; }
-            set { _currentIp = value; }
+            get { return (Nullable<UInt32>)_currentIp; }
+            set { _currentIp = (Nullable<UInt32>)value; }
         }
 
         /// <summary>
@@ -349,10 +353,11 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `varchar(60)`. The database column contains the comment: 
         /// "The email address.".
         /// </summary>
+        [SyncValue()]
         public String Email
         {
-            get { return _email; }
-            set { _email = value; }
+            get { return (String)_email; }
+            set { _email = (String)value; }
         }
 
         /// <summary>
@@ -360,6 +365,7 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `int(11)`. The database column contains the comment: 
         /// "The account ID.".
         /// </summary>
+        [SyncValue()]
         public AccountID ID
         {
             get { return (AccountID)_iD; }
@@ -371,10 +377,11 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `varchar(30)`. The database column contains the comment: 
         /// "The account name.".
         /// </summary>
+        [SyncValue()]
         public String Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get { return (String)_name; }
+            set { _name = (String)value; }
         }
 
         /// <summary>
@@ -382,10 +389,11 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `varchar(40)`. The database column contains the comment: 
         /// "The account password.".
         /// </summary>
+        [SyncValue()]
         public String Password
         {
-            get { return _password; }
-            set { _password = value; }
+            get { return (String)_password; }
+            set { _password = (String)value; }
         }
 
         /// <summary>
@@ -393,10 +401,11 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `datetime`. The database column contains the comment: 
         /// "The DateTime of when the account was created.".
         /// </summary>
+        [SyncValue()]
         public DateTime TimeCreated
         {
-            get { return _timeCreated; }
-            set { _timeCreated = value; }
+            get { return (DateTime)_timeCreated; }
+            set { _timeCreated = (DateTime)value; }
         }
 
         /// <summary>
@@ -404,10 +413,11 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `datetime`. The database column contains the comment: 
         /// "The DateTime that the account was last logged in to.".
         /// </summary>
+        [SyncValue()]
         public DateTime TimeLastLogin
         {
-            get { return _timeLastLogin; }
-            set { _timeLastLogin = value; }
+            get { return (DateTime)_timeLastLogin; }
+            set { _timeLastLogin = (DateTime)value; }
         }
 
         /// <summary>
@@ -420,6 +430,28 @@ namespace DemoGame.Server.DbObjs
         public IAccountTable DeepCopy()
         {
             return new AccountTable(this);
+        }
+
+        #endregion
+
+        #region IPersistable Members
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            PersistableHelper.Read(this, reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
         }
 
         #endregion

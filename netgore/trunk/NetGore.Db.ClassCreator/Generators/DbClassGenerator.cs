@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NetGore.Db.ClassCreator.Properties;
+using NetGore.IO;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -25,6 +26,16 @@ namespace NetGore.Db.ClassCreator
         /// Name of the CopyValues method in the generated code.
         /// </summary>
         public const string CopyValuesMethodName = "CopyValues";
+
+        /// <summary>
+        /// Name of the ReadState method in the generated code.
+        /// </summary>
+        public const string ReadStateMethodName = "ReadState";
+
+        /// <summary>
+        /// Name of the WriteState method in the generated code.
+        /// </summary>
+        public const string WriteStateMethodName = "WriteState";
 
         /// <summary>
         /// Name of the dataReader when used in arguments in the generated code.
@@ -81,6 +92,11 @@ namespace NetGore.Db.ClassCreator
         {
             Formatter = new CSharpCodeFormatter();
             SetDataReaderReadMethod(typeof(float), "GetFloat");
+
+            AddUsing("NetGore");
+            AddUsing("NetGore.IO");
+            AddUsing("System.Collections.Generic");
+            AddUsing("System.Collections");
         }
 
         /// <summary>
@@ -211,7 +227,7 @@ namespace NetGore.Db.ClassCreator
             var sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ClassSummary, cd.TableName)));
-            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false, new string[] { cd.InterfaceName }));
+            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false, new string[] { cd.InterfaceName, cd.Formatter.GetTypeString(typeof(IPersistable)) }));
             sb.AppendLine(Formatter.OpenBrace);
             {
                 // Other Fields/Properties
@@ -334,11 +350,13 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodGetValue(cd));
                 sb.AppendLine(CreateMethodSetValue(cd));
                 sb.AppendLine(CreateMethodGetColumnData(cd));
+                sb.AppendLine(CreateMethodReadState(cd));
+                sb.AppendLine(CreateMethodWriteState(cd));
 
                 // ConstEnumDictionary class
                 foreach (var coll in cd.ColumnCollections)
                 {
-                    sb.AppendLine(cd.GetConstEnumDictonaryCode(coll));
+                    sb.AppendLine(cd.GetConstEnumDictonaryCode(cd, coll));
                 }
             }
             sb.AppendLine(Formatter.CloseBrace);
@@ -519,6 +537,7 @@ namespace NetGore.Db.ClassCreator
 
                     sb.AppendLine(Formatter.GetXmlComment(comment));
 
+                    sb.AppendLine(Formatter.GetAttribute(typeof(SyncValueAttribute)));
                     sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), cd.GetExternalType(column),
                                                         cd.GetInternalType(column), MemberVisibilityLevel.Public,
                                                         MemberVisibilityLevel.Public, cd.GetPrivateName(column), false, false));
@@ -785,7 +804,7 @@ namespace NetGore.Db.ClassCreator
             bodySB.AppendLine();
             foreach (var column in cd.Columns)
             {
-                bodySB.AppendLine(Formatter.GetSetValue("i", DataReaderName + ".GetOrdinal(\"" + column.Name + "\")", false, false));
+                bodySB.AppendLine(Formatter.GetSetValue("i", Formatter.GetCallObjMethod( DataReaderName, "GetOrdinal", "\"" + column.Name + "\""), false, false));
 
                 var right = cd.GetDataReaderAccessor(column, "i");
                 bodySB.AppendLine(cd.GetColumnValueMutator(column, right, _extensionParamName));
@@ -793,6 +812,67 @@ namespace NetGore.Db.ClassCreator
             }
 
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodWriteState(DbClassData cd)
+        {
+            const string parameterName = "writer";
+
+            var sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.WriteState.Summary, null,
+                new KeyValuePair<string, string>(parameterName, Comments.WriteState.ParameterWriter)));
+            sb.AppendLine(Formatter.GetMethodHeader(WriteStateMethodName, MemberVisibilityLevel.Public, new MethodParameter[] { new MethodParameter(parameterName,
+                typeof(IValueWriter), cd.Formatter) }, typeof(void), false, false));
+
+            // Body
+            var bodySB = new StringBuilder(2048);
+            var methodCall = Formatter.GetCallObjMethod(Formatter.GetTypeString(typeof(PersistableHelper)), "Write", "this", parameterName);
+
+            foreach (var cc in cd.ColumnCollections)
+            {
+                var key = "\"" + cc.CollectionPropertyName + "\"";
+                bodySB.Append(Formatter.GetCallObjMethod(parameterName, "WriteStartNode", key));
+                bodySB.Append(Formatter.GetCallObjMethod(cd.GetPrivateName(cc), "Write", parameterName));
+                bodySB.Append(Formatter.GetCallObjMethod(parameterName, "WriteEndNode", key));
+                bodySB.AppendLine();
+            }
+
+            bodySB.Append(bodySB);
+            sb.AppendLine(Formatter.GetMethodBody(methodCall));
+
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodReadState(DbClassData cd)
+        {
+            const string parameterName = "reader";
+
+            var sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.ReadState.Summary, null,
+                new KeyValuePair<string, string>(parameterName, Comments.ReadState.ParameterWriter)));
+            sb.AppendLine(Formatter.GetMethodHeader(ReadStateMethodName, MemberVisibilityLevel.Public, new MethodParameter[] { new MethodParameter(parameterName,
+                typeof(IValueReader), cd.Formatter) }, typeof(void), false, false));
+
+            // Body
+            var bodySB = new StringBuilder(2048);
+            var methodCall = Formatter.GetCallObjMethod(Formatter.GetTypeString(typeof(PersistableHelper)), "Read", "this", parameterName);
+
+            foreach (var cc in cd.ColumnCollections)
+            {
+                var key = "\"" + cc.CollectionPropertyName + "\"";
+                var readNodeCall = Formatter.GetCallObjMethod(parameterName, "ReadNode", key);
+                bodySB.Append(Formatter.GetCallObjMethod(cd.GetPrivateName(cc), "ReadState", readNodeCall));
+            }
+            
+            bodySB.AppendLine();
+            bodySB.Append(bodySB);
+            sb.AppendLine(Formatter.GetMethodBody(methodCall));
 
             return sb.ToString();
         }

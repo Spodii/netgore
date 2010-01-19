@@ -38,6 +38,18 @@ namespace NetGore.Db.ClassCreator
                 " this method will not create them if they are missing.";
         }
 
+        public static class WriteState
+        {
+            public const string Summary = "Writes the state of the object to an <see cref=\"IValueWriter\"/>.";
+            public const string ParameterWriter = "The <see cref=\"IValueWriter\"/> to write the values to.";
+        }
+
+        public static class ReadState
+        {
+            public const string Summary = "Reads the state of the object from an <see cref=\"IValueReader\"/>.";
+            public const string ParameterWriter = "The <see cref=\"IValueReader\"/> to read the values from.";
+        }
+
         /// <summary>
         /// Comments used in CreateMethodCopyValuesFrom().
         /// </summary>

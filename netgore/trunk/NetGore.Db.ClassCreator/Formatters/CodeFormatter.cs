@@ -166,6 +166,11 @@ namespace NetGore.Db.ClassCreator
 
         public abstract string GetAttribute(string attributeType, params string[] args);
 
+        public virtual string GetCallObjMethod(string objectToCallOn, string methodName, params string[] arguments)
+        {
+            return objectToCallOn + "." + GetCallMethod(methodName, arguments);
+        }
+
         public virtual string GetCallMethod(string methodName, params string[] arguments)
         {
             var sb = new StringBuilder();
@@ -539,7 +544,8 @@ namespace NetGore.Db.ClassCreator
             if (rightIsClassMember)
                 sb.Append(ClassMemberQualifier);
             sb.Append(rightSide);
-            sb.Append(EndOfLine);
+            if (!rightSide.Trim().EndsWith(EndOfLine))
+                sb.Append(EndOfLine);
 
             return sb.ToString();
         }
