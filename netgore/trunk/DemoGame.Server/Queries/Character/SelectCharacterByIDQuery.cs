@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
