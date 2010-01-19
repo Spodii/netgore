@@ -8,7 +8,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CreateUserOnAccountQuery : DbQueryReader<CreateUserOnAccountQuery.QueryArgs>
     {
-        const string _queryStr = "SELECT CreateUserOnAccount(@accountName, @characterName, @characterID)";
+        const string _queryStr = "SELECT CreateUserOnAccount(@accountName, @userName, @characterID)";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateUserOnAccountQuery"/> class.
@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@accountName", "@characterName", "@characterID");
+            return CreateParameters("@accountName", "@userName", "@characterID");
         }
 
         /// <summary>
@@ -37,46 +37,38 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
             p["@accountName"] = item.AccountName;
-            p["@characterName"] = item.CharacterName;
+            p["@userName"] = item.UserName;
             p["@characterID"] = (int)item.CharacterID;
         }
 
-        public bool TryExecute(string accountName, CharacterID characterID, string characterName, out string errorMsg)
+        public bool TryExecute(string accountName, CharacterID characterID, string userName, out string errorMsg)
         {
-            if (!GameData.CharacterName.IsValid(characterName))
+            // Ensure the character name is valid
+            if (!GameData.CharacterName.IsValid(userName))
             {
                 errorMsg = "Invalid character name.";
                 return false;
             }
 
-            var queryArgs = new QueryArgs(accountName, characterID, characterName);
+            // Execute the query
+            var queryArgs = new QueryArgs(accountName, characterID, userName);
             using (var r = ExecuteReader(queryArgs))
             {
                 if (!r.Read())
                 {
-                    errorMsg = "Unknown error.";
-                    return false;
+                    errorMsg = "Unknown error executing stored function - query contained no results.";
                 }
-
-                errorMsg = r.GetString(0);
+                else
+                {
+                    errorMsg = r.GetString(0) ?? string.Empty;
+                }
             }
 
-            // Make sure the error message is trimmed, and empty if there was no error
-            if (errorMsg == null || errorMsg.Length <= 1)
-            {
-                errorMsg = string.Empty;
-                return true;
-            }
-
+            // Make sure the error message is trimmed
             errorMsg = errorMsg.Trim();
-            if (errorMsg.Length <= 1)
-            {
-                errorMsg = string.Empty;
-                return true;
-            }
 
-            // The error string wasn't empty, so must be an actual error message, meaning it wasn't successful
-            return false;
+            // If there is an empty error message, it was successful
+            return errorMsg.Length == 0;
         }
 
         /// <summary>
@@ -97,19 +89,19 @@ namespace DemoGame.Server.Queries
             /// <summary>
             /// The character name.
             /// </summary>
-            public readonly string CharacterName;
+            public readonly string UserName;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
             /// </summary>
             /// <param name="accountName">The account name.</param>
             /// <param name="characterID">The character ID.</param>
-            /// <param name="characterName">Name of the character.</param>
-            public QueryArgs(string accountName, CharacterID characterID, string characterName)
+            /// <param name="userName">Name of the user character.</param>
+            public QueryArgs(string accountName, CharacterID characterID, string userName)
             {
                 AccountName = accountName;
                 CharacterID = characterID;
-                CharacterName = characterName;
+                UserName = userName;
             }
         }
     }
