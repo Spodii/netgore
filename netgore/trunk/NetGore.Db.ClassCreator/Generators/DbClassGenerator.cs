@@ -217,6 +217,75 @@ namespace NetGore.Db.ClassCreator
                                        GeneratedCodeType.ClassDbExtensions);
         }
 
+        class ColumnCollectionDistinctKeyComparer : IEqualityComparer<ColumnCollection>
+        {
+            /// <summary>
+            /// Determines whether the specified objects are equal.
+            /// </summary>
+            /// <returns>
+            /// true if the specified objects are equal; otherwise, false.
+            /// </returns>
+            /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
+            public bool Equals(ColumnCollection x, ColumnCollection y)
+            {
+                return x.KeyType == y.KeyType;
+            }
+
+            /// <summary>
+            /// Returns a hash code for the specified object.
+            /// </summary>
+            /// <returns>
+            /// A hash code for the specified object.
+            /// </returns>
+            /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
+            public int GetHashCode(ColumnCollection obj)
+            {
+                return obj.KeyType.GetHashCode();
+            }
+        }
+
+        protected virtual IEnumerable<GeneratedTableCode> CreateCodeForConstDictionaries(string interfaceNamespace)
+        {
+            // ConstEnumDictionary class
+            foreach (var cc in _columnCollections.Distinct(new ColumnCollectionDistinctKeyComparer()))
+            {
+                var code = WrapCodeFile(GetConstEnumDictonaryCode(cc), interfaceNamespace, false);
+                yield return new GeneratedTableCode(string.Empty, GetConstEnumDictonaryName(cc),
+                    code, GeneratedCodeType.ColumnCollectionClass);
+            }
+        }
+
+        static readonly IDictionary<Type, string> _valueReaderReadMethods;
+
+        /// <summary>
+        /// Initializes the <see cref="DbClassGenerator"/> class.
+        /// </summary>
+        static DbClassGenerator()
+        {
+            _valueReaderReadMethods = new Dictionary<Type, string>();
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(byte), "ReadByte"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(sbyte), "ReadSByte"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(int), "ReadInt"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(uint), "ReadUInt"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(float), "ReadFloat"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(short), "ReadShort"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ushort), "ReadUShort"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(long), "ReadLong"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ulong), "ReadULong"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(double), "ReadDouble"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(bool), "ReadBool"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(string), "ReadString"));
+        }
+
+        protected string GetValueReaderReadMethodName(Type type)
+        {
+            string ret;
+            if (_valueReaderReadMethods.TryGetValue(type, out ret))
+                return ret;
+
+            return DbClassData.GetDataReaderReadMethodName(type, _dataReaderReadMethods);
+        }
+
         /// <summary>
         /// Creates the code for the class.
         /// </summary>
@@ -352,12 +421,6 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodGetColumnData(cd));
                 sb.AppendLine(CreateMethodReadState(cd));
                 sb.AppendLine(CreateMethodWriteState(cd));
-
-                // ConstEnumDictionary class
-                foreach (var coll in cd.ColumnCollections)
-                {
-                    sb.AppendLine(cd.GetConstEnumDictonaryCode(cd, coll));
-                }
             }
             sb.AppendLine(Formatter.CloseBrace);
 
@@ -508,7 +571,7 @@ namespace NetGore.Db.ClassCreator
                     // Has a collection - only add the code if the collection hasn't been added yet
                     addedCollections.Add(coll);
                     sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.CollectionField, coll.Name)));
-                    var collType = DbClassData.GetCollectionTypeString(coll);
+                    var collType = GetConstEnumDictonaryName(coll);
                     sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private,
                                                      "new " + collType + Formatter.OpenParameterString +
                                                      Formatter.CloseParameterString, true, false));
@@ -1069,7 +1132,26 @@ namespace NetGore.Db.ClassCreator
                 }
             }
 
+            foreach (var c in CreateCodeForConstDictionaries(interfaceNamespace))
+                yield return c;
+
             yield return CreateCodeForColumnMetadata(classNamespace);
+        }
+
+        protected string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
+        {
+            var sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
+            sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
+            sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
+            sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
+            sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
+            sb.Replace("[VALUEREADERREADMETHOD]", GetValueReaderReadMethodName(columnCollection.ValueType));
+            return sb.ToString();
+        }
+
+        protected static string GetConstEnumDictonaryName(ColumnCollection columnCollection)
+        {
+            return columnCollection.KeyType.Name + "ConstDictionary";
         }
 
         /// <summary>

@@ -69,6 +69,10 @@
   <ItemGroup>
     <Compile Include="Account\AccountCharacterInfo.cs" />
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
+    <Compile Include="DbObjs\ColumnCollections\StatTypeConstDictionary.cs" />
+    <Compile Include="DbObjs\ColumnMetadata.cs" />
+    <Compile Include="DbObjs\IMapTable.cs" />
+    <Compile Include="DbObjs\MapTable.cs" />
     <Compile Include="EngineSettingsInitializer.cs" />
     <Compile Include="Body\BodyInfoManager.cs" />
     <Compile Include="Skills\SkillInfoAttribute.cs" />
@@ -79,9 +83,6 @@
     <Compile Include="IO\BitStreamExtensions.cs" />
     <Compile Include="Body\BodyIndex.cs" />
     <Compile Include="Body\BodyInfo.cs" />
-    <Compile Include="DbObjs\ColumnMetadata.cs" />
-    <Compile Include="DbObjs\IMapTable.cs" />
-    <Compile Include="DbObjs\MapTable.cs" />
     <Compile Include="World\Map\Entities\CharacterEntity.cs" />
     <Compile Include="World\Map\Entities\CharacterState.cs" />
     <Compile Include="World\Map\Entities\DamageTrapEntityBase.cs" />

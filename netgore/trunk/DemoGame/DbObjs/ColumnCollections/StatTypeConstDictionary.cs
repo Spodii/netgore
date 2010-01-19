@@ -1,9 +1,19 @@
+using System;
+using System.Linq;
+using NetGore;
+using NetGore.IO;
+using System.Collections.Generic;
+using System.Collections;
+
+using DemoGame.DbObjs;
+namespace DemoGame.DbObjs
+{
 /// <summary>
-/// A Dictionary-like lookup table for the Enum values of the type collection `[COLUMNCOLLECTIONNAME]` for the
+/// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
 /// table that this class represents. Majority of the code for this class was automatically generated and
 /// only other automatically generated code should be using this class.
 /// </summary>
-public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>>, IPersistable
+public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<DemoGame.StatType, System.Int32>>, IPersistable
 {
     /// <summary>
     /// Name of the node that contains all the values.
@@ -31,7 +41,7 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// Array that takes in the <see cref="_values"/> array index and spits out the enum value that the
     /// index is for. This is to allow for a reverse-lookup on the <see cref="_enumToValueIndex"/>.
     /// </summary>
-    static readonly [KEYTYPE][] _valueIndexToKey;
+    static readonly DemoGame.StatType[] _valueIndexToKey;
 
     /// <summary>
     /// The total number of unique defined enum values. Each instanced <see cref="_values"/> array
@@ -43,16 +53,16 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// Array containing the actual values. The index of this array is found through the value returned
     /// from the _lookupTable.
     /// </summary>
-    readonly [VALUETYPE][] _values;
+    readonly System.Int32[] _values;
 
     /// <summary>
-    /// Initializes the <see cref="[CLASSNAME]"/> class.
+    /// Initializes the <see cref="StatTypeConstDictionary"/> class.
     /// </summary>
-    static [CLASSNAME]()
+    static StatTypeConstDictionary()
     {
-        _valueIndexToKey = EnumHelper<[KEYTYPE]>.Values.ToArray();
+        _valueIndexToKey = EnumHelper<DemoGame.StatType>.Values.ToArray();
         _numEnumValues = _valueIndexToKey.Length;
-        _enumToValueIndex = new int[EnumHelper<[KEYTYPE]>.MaxValue + 1];
+        _enumToValueIndex = new int[EnumHelper<DemoGame.StatType>.MaxValue + 1];
 
         for (int i = 0; i < _valueIndexToKey.Length; i++)
         {
@@ -62,9 +72,9 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     }
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="[CLASSNAME]"/> class.
+    /// Initializes a new instance of the <see cref="StatTypeConstDictionary"/> class.
     /// </summary>
-    public [CLASSNAME]()
+    public StatTypeConstDictionary()
     {
         _values = new int[_numEnumValues];
     }
@@ -74,13 +84,13 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     /// <param name="key">The key for the value to get or set.</param>
     /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
-    public [VALUETYPE] this[[KEYTYPE] key]
+    public System.Int32 this[DemoGame.StatType key]
     {
         get { return _values[_enumToValueIndex[(int)key]]; }
         set { _values[_enumToValueIndex[(int)key]] = value; }
     }
 
-    #region IEnumerable<KeyValuePair<[KEYTYPE],[VALUETYPE]>> Members
+    #region IEnumerable<KeyValuePair<DemoGame.StatType,System.Int32>> Members
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
@@ -88,11 +98,11 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// <returns>
     /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
     /// </returns>
-    public IEnumerator<KeyValuePair<[KEYTYPE], [VALUETYPE]>> GetEnumerator()
+    public IEnumerator<KeyValuePair<DemoGame.StatType, System.Int32>> GetEnumerator()
     {
         for (int i = 0; i < _values.Length; i++)
         {
-            yield return new KeyValuePair<[KEYTYPE], [VALUETYPE]>(_valueIndexToKey[i], _values[i]);
+            yield return new KeyValuePair<DemoGame.StatType, System.Int32>(_valueIndexToKey[i], _values[i]);
         }
     }
 
@@ -118,10 +128,10 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     {
         // Zero all the existing values
         for (int i = 0; i < _values.Length; i++)
-            _values[i] = default([VALUETYPE]);
+            _values[i] = default(System.Int32);
 
         // Read and set the values
-        var values = reader.ReadManyNodes<KeyValuePair<[KEYTYPE], [VALUETYPE]>>(_valuesNodeName, ReadValueHandler);
+        var values = reader.ReadManyNodes<KeyValuePair<DemoGame.StatType, System.Int32>>(_valuesNodeName, ReadValueHandler);
         foreach (var value in values)
         {
             this[value.Key] = value.Value;
@@ -134,7 +144,7 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
     public void WriteState(IValueWriter writer)
     {
-        writer.WriteManyNodes(_valuesNodeName, this.Where(x => x.Value != default([VALUETYPE])), WriteValueHandler);
+        writer.WriteManyNodes(_valuesNodeName, this.Where(x => x.Value != default(System.Int32)), WriteValueHandler);
     }
 
     /// <summary>
@@ -142,11 +152,11 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
     /// <returns>The read <see cref="KeyValuePair{Key, Value}"/>.</returns>
-    static KeyValuePair<[KEYTYPE], [VALUETYPE]> ReadValueHandler(IValueReader reader)
+    static KeyValuePair<DemoGame.StatType, System.Int32> ReadValueHandler(IValueReader reader)
     {
-        var key = reader.ReadEnum<[KEYTYPE]>(_keyKeyName);
-        var value = reader.[VALUEREADERREADMETHOD](_valueKeyName);
-        return new KeyValuePair<[KEYTYPE], [VALUETYPE]>(key, value);
+        var key = reader.ReadEnum<DemoGame.StatType>(_keyKeyName);
+        var value = reader.ReadInt(_valueKeyName);
+        return new KeyValuePair<DemoGame.StatType, System.Int32>(key, value);
     }
 
     /// <summary>
@@ -154,9 +164,10 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
     /// <param name="value">The <see cref="KeyValuePair{Key, Value}"/> to write.</param>
-    static void WriteValueHandler(IValueWriter writer, KeyValuePair<[KEYTYPE], [VALUETYPE]> value)
+    static void WriteValueHandler(IValueWriter writer, KeyValuePair<DemoGame.StatType, System.Int32> value)
     {
         writer.WriteEnum(_keyKeyName, value.Key);
         writer.Write(_valueKeyName, value.Value);
     }
+}
 }
