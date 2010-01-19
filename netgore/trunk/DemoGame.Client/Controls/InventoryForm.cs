@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame.DbObjs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -191,7 +192,7 @@ namespace DemoGame.Client
             {
                 InventoryItemPB src = (InventoryItemPB)sender;
                 InventorySlot slot = src.Slot;
-                ItemInfo itemInfo;
+                IItemTable itemInfo;
 
                 if (!src._invForm._infoRequester.TryGetInfo(slot, out itemInfo))
                 {

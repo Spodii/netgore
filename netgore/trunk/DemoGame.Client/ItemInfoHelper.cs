@@ -1,22 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame.DbObjs;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Helper methods for the <see cref="ItemInfo"/>.
+    /// Helper methods for the <see cref="IItemTable"/>.
     /// </summary>
     public static class ItemInfoHelper
     {
         static readonly string _lineBreak = Environment.NewLine;
-
-        static void CreateValueLine(ICollection<StyledText> dest, object key, string value, Color keyColor)
-        {
-            CreateValueLine(dest, key.ToString(), value, keyColor);
-        }
 
         static void CreateValueLine(ICollection<StyledText> dest, object key, object value, Color keyColor)
         {
@@ -41,7 +37,7 @@ namespace DemoGame.Client
             }
         }
 
-        public static StyledText[] GetStyledText(ItemInfo itemInfo)
+        public static StyledText[] GetStyledText(IItemTable itemInfo)
         {
             Color nameColor = Color.LightSeaGreen;
             Color generalColor = Color.LightBlue;
@@ -64,17 +60,15 @@ namespace DemoGame.Client
                 CreateValueLine(ret, "MP", itemInfo.MP, bonusColor);
 
             // Stat bonuses
-            foreach (var stat in itemInfo.BaseStats)
+            foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
             {
-                if (stat.Value != 0)
-                    CreateValueLine(ret, stat.StatType, stat.Value, bonusColor);
+                CreateValueLine(ret, stat.Key, stat.Value, bonusColor);
             }
 
             // Stat requirements
-            foreach (var stat in itemInfo.ReqStats)
+            foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
             {
-                if (stat.Value != 0)
-                    CreateValueLine(ret, stat.StatType, stat.Value, reqColor);
+                CreateValueLine(ret, stat.Key, stat.Value, reqColor);
             }
 
             return ret.ToArray();

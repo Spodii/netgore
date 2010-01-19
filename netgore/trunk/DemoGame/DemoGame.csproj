@@ -93,6 +93,12 @@
     <Compile Include="DbObjs\Interfaces\IShopItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopTable.cs" />
     <Compile Include="DbObjs\Interfaces\IUserCharacterTable.cs" />
+    <Compile Include="DbObjs\ItemTable.cs" />
+    <Compile Include="IO\PropertySyncCharacterID.cs" />
+    <Compile Include="IO\PropertySyncCharacterTemplateID.cs" />
+    <Compile Include="IO\PropertySyncItemID.cs" />
+    <Compile Include="IO\PropertySyncItemTemplateID.cs" />
+    <Compile Include="IO\PropertySyncSPValueType.cs" />
     <Compile Include="StatusEffect\ActiveStatusEffectID.cs" />
     <Compile Include="World\Map\Entities\AllianceID.cs" />
     <Compile Include="World\Map\Entities\CharacterID.cs" />
@@ -127,9 +133,7 @@
     <Compile Include="GameData.cs" />
     <Compile Include="Messages\GameMessage.cs" />
     <Compile Include="Messages\GameMessages.cs" />
-    <Compile Include="Items\IItemInfo.cs" />
     <Compile Include="Items\InventorySlotExtensions.cs" />
-    <Compile Include="Items\ItemInfo.cs" />
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />
     <Compile Include="SPValueType.cs" />

@@ -45,7 +45,9 @@ namespace DemoGame.Server
         /// <param name="shopItem">The shop item to write.</param>
         protected override void WriteShopItem(IValueWriter writer, string name, ShopItem shopItem)
         {
-            writer.Write(name, shopItem.ItemTemplate);
+            writer.WriteStartNode(name);
+            new ItemTemplateTable(shopItem.ItemTemplate).WriteState(writer);
+            writer.WriteEndNode(name);
         }
 
         #region IShopTable Members

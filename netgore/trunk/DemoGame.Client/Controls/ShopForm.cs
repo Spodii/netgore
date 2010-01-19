@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,7 +29,7 @@ namespace DemoGame.Client
 
         static readonly ShopSettings _shopSettings = ShopSettings.Instance;
 
-        ShopInfo<ItemInfo> _shopInfo;
+        ShopInfo<IItemTable> _shopInfo;
         public event ShopFormPurchaseHandler OnPurchase;
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace DemoGame.Client
             CreateItemSlots();
         }
 
-        public ShopInfo<ItemInfo> ShopInfo
+        public ShopInfo<IItemTable> ShopInfo
         {
             get { return _shopInfo; }
         }
@@ -67,7 +68,7 @@ namespace DemoGame.Client
             }
         }
 
-        public void DisplayShop(ShopInfo<ItemInfo> shopInfo)
+        public void DisplayShop(ShopInfo<IItemTable> shopInfo)
         {
             _shopInfo = shopInfo;
             IsVisible = true;
@@ -124,7 +125,7 @@ namespace DemoGame.Client
                 get { return _index; }
             }
 
-            public ItemInfo ItemInfo
+            public IItemTable ItemInfo
             {
                 get
                 {
@@ -136,7 +137,7 @@ namespace DemoGame.Client
                 }
             }
 
-            ShopInfo<ItemInfo> ShopInfo
+            ShopInfo<IItemTable> ShopInfo
             {
                 get { return _shopForm.ShopInfo; }
             }
@@ -148,7 +149,7 @@ namespace DemoGame.Client
             protected override void DrawControl(SpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
-                ItemInfo itemInfo = ItemInfo;
+                var itemInfo = ItemInfo;
 
                 if (itemInfo == null)
                 {
@@ -156,17 +157,17 @@ namespace DemoGame.Client
                     return;
                 }
 
-                if (_grh == null || _grh.GrhData.GrhIndex != itemInfo.GrhIndex)
+                if (_grh == null || _grh.GrhData.GrhIndex != itemInfo.Graphic)
                 {
                     try
                     {
-                        _grh = new Grh(itemInfo.GrhIndex, AnimType.Loop, 0);
+                        _grh = new Grh(itemInfo.Graphic, AnimType.Loop, 0);
                     }
                     catch (Exception ex)
                     {
                         _grh = null;
                         if (log.IsErrorEnabled)
-                            log.ErrorFormat("Failed to load shop Grh with index `{0}`: `{1}`", itemInfo.GrhIndex, ex);
+                            log.ErrorFormat("Failed to load shop Grh with index `{0}`: `{1}`", itemInfo.Graphic, ex);
                     }
                 }
 
@@ -193,7 +194,7 @@ namespace DemoGame.Client
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
             {
                 ShopItemPB src = (ShopItemPB)sender;
-                ItemInfo itemInfo = src.ItemInfo;
+                var itemInfo = src.ItemInfo;
                 return ItemInfoHelper.GetStyledText(itemInfo);
             }
         }

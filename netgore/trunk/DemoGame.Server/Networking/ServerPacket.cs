@@ -239,9 +239,7 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendEquipmentItemInfo);
             pw.WriteEnum(slot);
-            // ReSharper disable RedundantCast
-            pw.Write((IItemTable)item);
-            // ReSharper restore RedundantCast
+            new ItemTable(item).WriteState(pw);
             return pw;
         }
 
@@ -249,9 +247,7 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendInventoryItemInfo);
             pw.Write(slot);
-            // ReSharper disable RedundantCast
-            pw.Write((IItemTable)item);
-            // ReSharper restore RedundantCast
+            new ItemTable(item).WriteState(pw);
             return pw;
         }
 
