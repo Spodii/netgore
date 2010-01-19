@@ -362,7 +362,7 @@ this._statPoints = (System.Int32)value;
 /// </returns>
 public System.Int32 GetStat(DemoGame.StatType key)
 {
-return (System.Int16)_stat[(DemoGame.StatType)key];
+return (System.Int32)_stat[(DemoGame.StatType)key];
 }
 /// <summary>
 /// Gets the <paramref name="value"/> of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.

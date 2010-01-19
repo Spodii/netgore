@@ -76,7 +76,7 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     /// </summary>
     public StatTypeConstDictionary()
     {
-        _values = new int[_numEnumValues];
+        _values = new System.Int32[_numEnumValues];
     }
     
     /// <summary>
@@ -86,8 +86,8 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
     public System.Int32 this[DemoGame.StatType key]
     {
-        get { return _values[_enumToValueIndex[(int)key]]; }
-        set { _values[_enumToValueIndex[(int)key]] = value; }
+        get { return (System.Int32)_values[_enumToValueIndex[(int)key]]; }
+        set { _values[_enumToValueIndex[(int)key]] = (System.Int16)value; }
     }
 
     #region IEnumerable<KeyValuePair<DemoGame.StatType,System.Int32>> Members
@@ -102,7 +102,7 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     {
         for (int i = 0; i < _values.Length; i++)
         {
-            yield return new KeyValuePair<DemoGame.StatType, System.Int32>(_valueIndexToKey[i], _values[i]);
+            yield return new KeyValuePair<DemoGame.StatType, System.Int32>(_valueIndexToKey[i], (System.Int16)_values[i]);
         }
     }
 
@@ -128,7 +128,7 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     {
         // Zero all the existing values
         for (int i = 0; i < _values.Length; i++)
-            _values[i] = default(System.Int32);
+            _values[i] = default(System.Int16);
 
         // Read and set the values
         var values = reader.ReadManyNodes<KeyValuePair<DemoGame.StatType, System.Int32>>(_valuesNodeName, ReadValueHandler);
@@ -155,7 +155,7 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     static KeyValuePair<DemoGame.StatType, System.Int32> ReadValueHandler(IValueReader reader)
     {
         var key = reader.ReadEnum<DemoGame.StatType>(_keyKeyName);
-        var value = reader.ReadInt(_valueKeyName);
+        var value = (System.Int32)reader.ReadShort(_valueKeyName);
         return new KeyValuePair<DemoGame.StatType, System.Int32>(key, value);
     }
 
@@ -167,7 +167,7 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     static void WriteValueHandler(IValueWriter writer, KeyValuePair<DemoGame.StatType, System.Int32> value)
     {
         writer.WriteEnum(_keyKeyName, value.Key);
-        writer.Write(_valueKeyName, value.Value);
+        writer.Write(_valueKeyName, (System.Int16)value.Value);
     }
 }
 }

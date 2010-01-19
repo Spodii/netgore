@@ -69,64 +69,36 @@ namespace NetGore.Tests.Db.ClassCreator
         {
             TestDb.Execute(Resources.testdb_b);
 
-            _dbTypes = ClassCreatorHelper.GetTableTypes(Resources.testdb_b_name, delegate(MySqlClassGenerator x)
-                                                                                 {
-                                                                                     x.Formatter.AddAlias("a", "TestAlias1");
-                                                                                     x.Formatter.AddAlias("AbCdEfGhIj");
-                                                                                     x.AddColumnCollection("TestColl",
-                                                                                                           typeof(TestCollEnum),
-                                                                                                           typeof(int),
-                                                                                                           Resources.testdb_b_name,
-                                                                                                           new ColumnCollectionItem
-                                                                                                               []
-                                                                                                           {
-                                                                                                               ColumnCollectionItem
-                                                                                                                   .FromEnum(
-                                                                                                                   x.Formatter,
-                                                                                                                   "asdfA",
-                                                                                                                   TestCollEnum.A)
-                                                                                                               ,
-                                                                                                               ColumnCollectionItem
-                                                                                                                   .FromEnum(
-                                                                                                                   x.Formatter,
-                                                                                                                   "asdfB",
-                                                                                                                   TestCollEnum.B)
-                                                                                                               ,
-                                                                                                               ColumnCollectionItem
-                                                                                                                   .FromEnum(
-                                                                                                                   x.Formatter,
-                                                                                                                   "asdfC",
-                                                                                                                   TestCollEnum.C)
-                                                                                                           });
+            Action<MySqlClassGenerator> a = delegate(MySqlClassGenerator x)
+                                            {
+                                                x.Formatter.AddAlias("a", "TestAlias1");
+                                                x.Formatter.AddAlias("AbCdEfGhIj");
+                                                x.AddColumnCollection("TestColl", typeof(TestCollEnum), typeof(int), typeof(int),
+                                                                      Resources.testdb_b_name,
+                                                                      new ColumnCollectionItem[]
+                                                                      {
+                                                                          ColumnCollectionItem.FromEnum(x.Formatter, "asdfA",
+                                                                                                        TestCollEnum.A),
+                                                                          ColumnCollectionItem.FromEnum(x.Formatter, "asdfB",
+                                                                                                        TestCollEnum.B),
+                                                                          ColumnCollectionItem.FromEnum(x.Formatter, "asdfC",
+                                                                                                        TestCollEnum.C)
+                                                                      });
 
-                                                                                     x.AddColumnCollection("TestCollTwo",
-                                                                                                           typeof(
-                                                                                                               TestCollNestedEnum),
-                                                                                                           typeof(int),
-                                                                                                           Resources.testdb_b_name,
-                                                                                                           new ColumnCollectionItem
-                                                                                                               []
-                                                                                                           {
-                                                                                                               ColumnCollectionItem
-                                                                                                                   .FromEnum(
-                                                                                                                   x.Formatter,
-                                                                                                                   "bbbbA",
-                                                                                                                   TestCollNestedEnum
-                                                                                                                       .A),
-                                                                                                               ColumnCollectionItem
-                                                                                                                   .FromEnum(
-                                                                                                                   x.Formatter,
-                                                                                                                   "bbbbB",
-                                                                                                                   TestCollNestedEnum
-                                                                                                                       .B),
-                                                                                                               ColumnCollectionItem
-                                                                                                                   .FromEnum(
-                                                                                                                   x.Formatter,
-                                                                                                                   "bbbbC",
-                                                                                                                   TestCollNestedEnum
-                                                                                                                       .C)
-                                                                                                           });
-                                                                                 });
+                                                x.AddColumnCollection("TestCollTwo", typeof(TestCollNestedEnum), typeof(int),
+                                                                      typeof(int), Resources.testdb_b_name,
+                                                                      new ColumnCollectionItem[]
+                                                                      {
+                                                                          ColumnCollectionItem.FromEnum(x.Formatter, "bbbbA",
+                                                                                                        TestCollNestedEnum.A),
+                                                                          ColumnCollectionItem.FromEnum(x.Formatter, "bbbbB",
+                                                                                                        TestCollNestedEnum.B),
+                                                                          ColumnCollectionItem.FromEnum(x.Formatter, "bbbbC",
+                                                                                                        TestCollNestedEnum.C)
+                                                                      });
+                                            };
+
+            _dbTypes = ClassCreatorHelper.GetTableTypes(Resources.testdb_b_name, a);
             _dbProperties = ClassCreatorHelper.GetTableTypeProperties(_dbTypes);
 
             _conn = TestDb.Open();

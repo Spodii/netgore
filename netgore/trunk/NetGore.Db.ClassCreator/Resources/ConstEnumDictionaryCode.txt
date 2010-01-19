@@ -3,7 +3,7 @@
 /// table that this class represents. Majority of the code for this class was automatically generated and
 /// only other automatically generated code should be using this class.
 /// </summary>
-public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>>, IPersistable
+public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<[KEYTYPE], [EXVALUETYPE]>>, IPersistable
 {
     /// <summary>
     /// Name of the node that contains all the values.
@@ -43,7 +43,7 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// Array containing the actual values. The index of this array is found through the value returned
     /// from the _lookupTable.
     /// </summary>
-    readonly [VALUETYPE][] _values;
+    readonly [EXVALUETYPE][] _values;
 
     /// <summary>
     /// Initializes the <see cref="[CLASSNAME]"/> class.
@@ -66,7 +66,7 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     public [CLASSNAME]()
     {
-        _values = new int[_numEnumValues];
+        _values = new [EXVALUETYPE][_numEnumValues];
     }
     
     /// <summary>
@@ -74,13 +74,13 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     /// <param name="key">The key for the value to get or set.</param>
     /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
-    public [VALUETYPE] this[[KEYTYPE] key]
+    public [EXVALUETYPE] this[[KEYTYPE] key]
     {
-        get { return _values[_enumToValueIndex[(int)key]]; }
-        set { _values[_enumToValueIndex[(int)key]] = value; }
+        get { return ([EXVALUETYPE])_values[_enumToValueIndex[(int)key]]; }
+        set { _values[_enumToValueIndex[(int)key]] = ([INVALUETYPE])value; }
     }
 
-    #region IEnumerable<KeyValuePair<[KEYTYPE],[VALUETYPE]>> Members
+    #region IEnumerable<KeyValuePair<[KEYTYPE],[EXVALUETYPE]>> Members
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
@@ -88,11 +88,11 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// <returns>
     /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
     /// </returns>
-    public IEnumerator<KeyValuePair<[KEYTYPE], [VALUETYPE]>> GetEnumerator()
+    public IEnumerator<KeyValuePair<[KEYTYPE], [EXVALUETYPE]>> GetEnumerator()
     {
         for (int i = 0; i < _values.Length; i++)
         {
-            yield return new KeyValuePair<[KEYTYPE], [VALUETYPE]>(_valueIndexToKey[i], _values[i]);
+            yield return new KeyValuePair<[KEYTYPE], [EXVALUETYPE]>(_valueIndexToKey[i], ([INVALUETYPE])_values[i]);
         }
     }
 
@@ -118,10 +118,10 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     {
         // Zero all the existing values
         for (int i = 0; i < _values.Length; i++)
-            _values[i] = default([VALUETYPE]);
+            _values[i] = default([INVALUETYPE]);
 
         // Read and set the values
-        var values = reader.ReadManyNodes<KeyValuePair<[KEYTYPE], [VALUETYPE]>>(_valuesNodeName, ReadValueHandler);
+        var values = reader.ReadManyNodes<KeyValuePair<[KEYTYPE], [EXVALUETYPE]>>(_valuesNodeName, ReadValueHandler);
         foreach (var value in values)
         {
             this[value.Key] = value.Value;
@@ -134,7 +134,7 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
     public void WriteState(IValueWriter writer)
     {
-        writer.WriteManyNodes(_valuesNodeName, this.Where(x => x.Value != default([VALUETYPE])), WriteValueHandler);
+        writer.WriteManyNodes(_valuesNodeName, this.Where(x => x.Value != default([EXVALUETYPE])), WriteValueHandler);
     }
 
     /// <summary>
@@ -142,11 +142,11 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
     /// <returns>The read <see cref="KeyValuePair{Key, Value}"/>.</returns>
-    static KeyValuePair<[KEYTYPE], [VALUETYPE]> ReadValueHandler(IValueReader reader)
+    static KeyValuePair<[KEYTYPE], [EXVALUETYPE]> ReadValueHandler(IValueReader reader)
     {
         var key = reader.ReadEnum<[KEYTYPE]>(_keyKeyName);
-        var value = reader.[VALUEREADERREADMETHOD](_valueKeyName);
-        return new KeyValuePair<[KEYTYPE], [VALUETYPE]>(key, value);
+        var value = ([EXVALUETYPE])reader.[VALUEREADERREADMETHOD](_valueKeyName);
+        return new KeyValuePair<[KEYTYPE], [EXVALUETYPE]>(key, value);
     }
 
     /// <summary>
@@ -154,9 +154,9 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
     /// <param name="value">The <see cref="KeyValuePair{Key, Value}"/> to write.</param>
-    static void WriteValueHandler(IValueWriter writer, KeyValuePair<[KEYTYPE], [VALUETYPE]> value)
+    static void WriteValueHandler(IValueWriter writer, KeyValuePair<[KEYTYPE], [EXVALUETYPE]> value)
     {
         writer.WriteEnum(_keyKeyName, value.Key);
-        writer.Write(_valueKeyName, value.Value);
+        writer.Write(_valueKeyName, ([INVALUETYPE])value.Value);
     }
 }
