@@ -67,14 +67,23 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\AccountID.cs" />
     <Compile Include="Account\AccountCharacterInfo.cs" />
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
+    <Compile Include="StatusEffect\ActiveStatusEffectID.cs" />
+    <Compile Include="World\Map\Entities\AllianceID.cs" />
+    <Compile Include="World\Map\Entities\CharacterID.cs" />
+    <Compile Include="World\Map\Entities\CharacterTemplateID.cs" />
     <Compile Include="DbObjs\ColumnCollections\StatTypeConstDictionary.cs" />
     <Compile Include="DbObjs\ColumnMetadata.cs" />
     <Compile Include="DbObjs\IMapTable.cs" />
     <Compile Include="DbObjs\MapTable.cs" />
     <Compile Include="EngineSettingsInitializer.cs" />
     <Compile Include="Body\BodyInfoManager.cs" />
+    <Compile Include="Items\ItemChance.cs" />
+    <Compile Include="Items\ItemID.cs" />
+    <Compile Include="Items\ItemTemplateID.cs" />
+    <Compile Include="World\Map\MapSpawnValuesID.cs" />
     <Compile Include="Skills\SkillInfoAttribute.cs" />
     <Compile Include="Skills\SkillInfoManager.cs" />
     <Compile Include="StatusEffect\StatusEffectInfoAttribute.cs" />

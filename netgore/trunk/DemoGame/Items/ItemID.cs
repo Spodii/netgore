@@ -5,72 +5,39 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
-    /// Defines a value used to determine the chance that an ItemTemplate will be created.
+    /// Represents a unique ID for an Item instance.
     /// </summary>
     [Serializable]
-    public struct ItemChance : IComparable<ItemChance>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct ItemID : IComparable<ItemID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
-        #region Non-Templated Code
-
-        static readonly Random _random = new Random();
+        /// <summary>
+        /// Represents the largest possible value of ItemID. This field is constant.
+        /// </summary>
+        public const int MaxValue = int.MaxValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemChance"/> struct.
+        /// Represents the smallest possible value of ItemID. This field is constant.
         /// </summary>
-        /// <param name="percent">The chance, in percentage, to assign to this ItemChance, where 0.0f is 0% and 1.0f
-        /// is a 100% chance. Must be between 0.0f and 1.0f.</param>
-        public ItemChance(float percent)
-        {
-            if (percent < 0.0f || percent > 1.0f)
-                throw new ArgumentOutOfRangeException("percent");
-
-            _value = (ushort)Math.Round(percent * MaxValue);
-
-            // Ensure there were no rounding errors
-            if (_value > MaxValue)
-                _value = MaxValue;
-        }
-
-        /// <summary>
-        /// Performs a test against the ItemChance.
-        /// </summary>
-        /// <returns>True if the test passed; otherwise false.</returns>
-        public bool Test()
-        {
-            var randValue = _random.Next(MinValue + 1, MaxValue + 1);
-            return randValue <= _value;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Represents the largest possible value of ItemChance. This field is constant.
-        /// </summary>
-        public const int MaxValue = ushort.MaxValue;
-
-        /// <summary>
-        /// Represents the smallest possible value of ItemChance. This field is constant.
-        /// </summary>
-        public const int MinValue = ushort.MinValue;
+        public const int MinValue = int.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly ushort _value;
+        readonly int _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemChance"/> struct.
+        /// Initializes a new instance of the <see cref="ItemID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new ItemChance.</param>
-        public ItemChance(int value)
+        /// <param name="value">Value to assign to the new ItemID.</param>
+        public ItemID(int value)
         {
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = (ushort)value;
+            _value = value;
         }
 
         /// <summary>
@@ -80,7 +47,7 @@ namespace DemoGame.Server
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(ItemChance other)
+        public bool Equals(ItemID other)
         {
             return other._value == _value;
         }
@@ -96,9 +63,9 @@ namespace DemoGame.Server
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(ItemChance))
+            if (obj.GetType() != typeof(ItemID))
                 return false;
-            return Equals((ItemChance)obj);
+            return Equals((ItemID)obj);
         }
 
         /// <summary>
@@ -113,62 +80,62 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the raw internal value of this ItemChance.
+        /// Gets the raw internal value of this ItemID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public ushort GetRawValue()
+        public int GetRawValue()
         {
             return _value;
         }
 
         /// <summary>
-        /// Reads an ItemChance from an IValueReader.
+        /// Reads an ItemID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The ItemChance read from the IValueReader.</returns>
-        public static ItemChance Read(IValueReader reader, string name)
+        /// <returns>The ItemID read from the IValueReader.</returns>
+        public static ItemID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
-            return new ItemChance(value);
+            int value = reader.ReadInt(name);
+            return new ItemID(value);
         }
 
         /// <summary>
-        /// Reads an ItemChance from an IDataReader.
+        /// Reads an ItemID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance Read(IDataReader reader, int i)
+        /// <returns>The ItemID read from the IDataReader.</returns>
+        public static ItemID Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is ushort)
-                return new ItemChance((ushort)value);
+            if (value is int)
+                return new ItemID((int)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
-            return new ItemChance(convertedValue);
+            int convertedValue = Convert.ToInt32(value);
+            return new ItemID(convertedValue);
         }
 
         /// <summary>
-        /// Reads an ItemChance from an IDataReader.
+        /// Reads an ItemID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance Read(IDataReader reader, string name)
+        /// <returns>The ItemID read from the IDataReader.</returns>
+        public static ItemID Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an ItemChance from an IValueReader.
+        /// Reads an ItemID from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The ItemChance read from the BitStream.</returns>
-        public static ItemChance Read(BitStream bitStream)
+        /// <returns>The ItemID read from the BitStream.</returns>
+        public static ItemID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
-            return new ItemChance(value);
+            int value = bitStream.ReadInt();
+            return new ItemID(value);
         }
 
         /// <summary>
@@ -182,10 +149,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the ItemChance to an IValueWriter.
+        /// Writes the ItemID to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the ItemChance that will be used to distinguish it
+        /// <param name="name">Unique name of the ItemID that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -193,7 +160,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the ItemChance to an IValueWriter.
+        /// Writes the ItemID to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -225,7 +192,7 @@ namespace DemoGame.Server
 
         #endregion
 
-        #region IComparable<ItemChance> Members
+        #region IComparable<ItemID> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -243,7 +210,7 @@ namespace DemoGame.Server
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        public int CompareTo(ItemChance other)
+        public int CompareTo(ItemID other)
         {
             return _value.CompareTo(other._value);
         }
@@ -516,21 +483,21 @@ namespace DemoGame.Server
         /// <summary>
         /// Implements operator ++.
         /// </summary>
-        /// <param name="l">The ItemChance to increment.</param>
-        /// <returns>The incremented ItemChance.</returns>
-        public static ItemChance operator ++(ItemChance l)
+        /// <param name="l">The ItemID to increment.</param>
+        /// <returns>The incremented ItemID.</returns>
+        public static ItemID operator ++(ItemID l)
         {
-            return new ItemChance(l._value + 1);
+            return new ItemID(l._value + 1);
         }
 
         /// <summary>
         /// Implements operator --.
         /// </summary>
-        /// <param name="l">The ItemChance to decrement.</param>
-        /// <returns>The decremented ItemChance.</returns>
-        public static ItemChance operator --(ItemChance l)
+        /// <param name="l">The ItemID to decrement.</param>
+        /// <returns>The decremented ItemID.</returns>
+        public static ItemID operator --(ItemID l)
         {
-            return new ItemChance(l._value - 1);
+            return new ItemID(l._value - 1);
         }
 
         /// <summary>
@@ -539,9 +506,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static ItemChance operator +(ItemChance left, ItemChance right)
+        public static ItemID operator +(ItemID left, ItemID right)
         {
-            return new ItemChance(left._value + right._value);
+            return new ItemID(left._value + right._value);
         }
 
         /// <summary>
@@ -550,9 +517,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static ItemChance operator -(ItemChance left, ItemChance right)
+        public static ItemID operator -(ItemID left, ItemID right)
         {
-            return new ItemChance(left._value - right._value);
+            return new ItemID(left._value - right._value);
         }
 
         /// <summary>
@@ -561,7 +528,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(ItemChance left, int right)
+        public static bool operator ==(ItemID left, int right)
         {
             return left._value == right;
         }
@@ -572,7 +539,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(ItemChance left, int right)
+        public static bool operator !=(ItemID left, int right)
         {
             return left._value != right;
         }
@@ -583,7 +550,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, ItemChance right)
+        public static bool operator ==(int left, ItemID right)
         {
             return left == right._value;
         }
@@ -594,29 +561,29 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, ItemChance right)
+        public static bool operator !=(int left, ItemID right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a ItemChance to an Int32.
+        /// Casts a ItemID to an Int32.
         /// </summary>
-        /// <param name="ItemChance">ItemChance to cast.</param>
+        /// <param name="ItemID">ItemID to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(ItemChance ItemChance)
+        public static explicit operator int(ItemID ItemID)
         {
-            return ItemChance._value;
+            return ItemID._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a ItemChance.
+        /// Casts an Int32 to a ItemID.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The ItemChance.</returns>
-        public static explicit operator ItemChance(int value)
+        /// <returns>The ItemID.</returns>
+        public static explicit operator ItemID(int value)
         {
-            return new ItemChance(value);
+            return new ItemID(value);
         }
 
         /// <summary>
@@ -625,7 +592,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, ItemChance right)
+        public static bool operator >(int left, ItemID right)
         {
             return left > right._value;
         }
@@ -636,7 +603,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, ItemChance right)
+        public static bool operator <(int left, ItemID right)
         {
             return left < right._value;
         }
@@ -647,7 +614,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(ItemChance left, ItemChance right)
+        public static bool operator >(ItemID left, ItemID right)
         {
             return left._value > right._value;
         }
@@ -658,7 +625,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(ItemChance left, ItemChance right)
+        public static bool operator <(ItemID left, ItemID right)
         {
             return left._value < right._value;
         }
@@ -669,7 +636,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(ItemChance left, int right)
+        public static bool operator >(ItemID left, int right)
         {
             return left._value > right;
         }
@@ -680,7 +647,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(ItemChance left, int right)
+        public static bool operator <(ItemID left, int right)
         {
             return left._value < right;
         }
@@ -691,7 +658,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, ItemChance right)
+        public static bool operator >=(int left, ItemID right)
         {
             return left >= right._value;
         }
@@ -702,7 +669,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, ItemChance right)
+        public static bool operator <=(int left, ItemID right)
         {
             return left <= right._value;
         }
@@ -713,7 +680,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(ItemChance left, int right)
+        public static bool operator >=(ItemID left, int right)
         {
             return left._value >= right;
         }
@@ -724,7 +691,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(ItemChance left, int right)
+        public static bool operator <=(ItemID left, int right)
         {
             return left._value <= right;
         }
@@ -735,7 +702,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(ItemChance left, ItemChance right)
+        public static bool operator >=(ItemID left, ItemID right)
         {
             return left._value >= right._value;
         }
@@ -746,7 +713,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(ItemChance left, ItemChance right)
+        public static bool operator <=(ItemID left, ItemID right)
         {
             return left._value <= right._value;
         }
@@ -757,7 +724,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(ItemChance left, ItemChance right)
+        public static bool operator !=(ItemID left, ItemID right)
         {
             return left._value != right._value;
         }
@@ -768,33 +735,33 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(ItemChance left, ItemChance right)
+        public static bool operator ==(ItemID left, ItemID right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the ItemChance.
-    /// All of the operations are implemented in the ItemChance struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the ItemID.
+    /// All of the operations are implemented in the ItemID struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class ItemChanceReadWriteExtensions
+    public static class ItemIDReadWriteExtensions
     {
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemChance.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a ItemChance.</returns>
-        public static ItemChance AsItemChance<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a ItemID.</returns>
+        public static ItemID AsItemID<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseItemChance(dict[key]);
+            return Parser.Invariant.ParseItemID(dict[key]);
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemChance.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -803,13 +770,13 @@ namespace DemoGame.Server
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static ItemChance AsItemChance<T>(this IDictionary<T, string> dict, T key, ItemChance defaultValue)
+        public static ItemID AsItemID<T>(this IDictionary<T, string> dict, T key, ItemID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            ItemChance parsed;
+            ItemID parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
@@ -817,92 +784,92 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reads the ItemChance from an IDataReader.
+        /// Reads the ItemID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemChance from.</param>
+        /// <param name="dataReader">IDataReader to read the ItemID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance GetItemChance(this IDataReader dataReader, int i)
+        /// <returns>The ItemID read from the IDataReader.</returns>
+        public static ItemID GetItemID(this IDataReader dataReader, int i)
         {
-            return ItemChance.Read(dataReader, i);
+            return ItemID.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the ItemChance from an IDataReader.
+        /// Reads the ItemID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemChance from.</param>
+        /// <param name="dataReader">IDataReader to read the ItemID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance GetItemChance(this IDataReader dataReader, string name)
+        /// <returns>The ItemID read from the IDataReader.</returns>
+        public static ItemID GetItemID(this IDataReader dataReader, string name)
         {
-            return ItemChance.Read(dataReader, name);
+            return ItemID.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Parses the ItemChance from a string.
+        /// Parses the ItemID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The ItemChance parsed from the string.</returns>
-        public static ItemChance ParseItemChance(this Parser parser, string value)
+        /// <returns>The ItemID parsed from the string.</returns>
+        public static ItemID ParseItemID(this Parser parser, string value)
         {
-            return new ItemChance(parser.ParseUShort(value));
+            return new ItemID(parser.ParseInt(value));
         }
 
         /// <summary>
-        /// Reads the ItemChance from a BitStream.
+        /// Reads the ItemID from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the ItemChance from.</param>
-        /// <returns>The ItemChance read from the BitStream.</returns>
-        public static ItemChance ReadItemChance(this BitStream bitStream)
+        /// <param name="bitStream">BitStream to read the ItemID from.</param>
+        /// <returns>The ItemID read from the BitStream.</returns>
+        public static ItemID ReadItemID(this BitStream bitStream)
         {
-            return ItemChance.Read(bitStream);
+            return ItemID.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the ItemChance from an IValueReader.
+        /// Reads the ItemID from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the ItemChance from.</param>
+        /// <param name="valueReader">IValueReader to read the ItemID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The ItemChance read from the IValueReader.</returns>
-        public static ItemChance ReadItemChance(this IValueReader valueReader, string name)
+        /// <returns>The ItemID read from the IValueReader.</returns>
+        public static ItemID ReadItemID(this IValueReader valueReader, string name)
         {
-            return ItemChance.Read(valueReader, name);
+            return ItemID.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Tries to parse the ItemChance from a string.
+        /// Tries to parse the ItemID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed ItemChance.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed ItemID.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out ItemChance outValue)
+        public static bool TryParse(this Parser parser, string value, out ItemID outValue)
         {
-            ushort tmp;
+            int tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new ItemChance(tmp);
+            outValue = new ItemID(tmp);
             return ret;
         }
 
         /// <summary>
-        /// Writes a ItemChance to a BitStream.
+        /// Writes a ItemID to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">ItemChance to write.</param>
-        public static void Write(this BitStream bitStream, ItemChance value)
+        /// <param name="value">ItemID to write.</param>
+        public static void Write(this BitStream bitStream, ItemID value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a ItemChance to a IValueWriter.
+        /// Writes a ItemID to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the ItemChance that will be used to distinguish it
+        /// <param name="name">Unique name of the ItemID that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">ItemChance to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, ItemChance value)
+        /// <param name="value">ItemID to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, ItemID value)
         {
             value.Write(valueWriter, name);
         }

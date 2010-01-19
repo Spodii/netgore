@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DemoGame.Server;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
@@ -177,11 +176,13 @@ namespace DemoGame.DbClassCreator
             var isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
 
             if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata ||
-                gtc.CodeType == GeneratedCodeType.ColumnCollectionClass)
+                gtc.CodeType == GeneratedCodeType.ColumnCollectionClass || gtc.CodeType == GeneratedCodeType.Interface)
             {
                 saveDir = _outputGameDir;
 
-                if (gtc.CodeType == GeneratedCodeType.ColumnCollectionClass)
+                if (gtc.CodeType == GeneratedCodeType.Interface)
+                    saveDir += "Interfaces" + Path.DirectorySeparatorChar;
+                else if (gtc.CodeType == GeneratedCodeType.ColumnCollectionClass)
                     saveDir += "ColumnCollections" + Path.DirectorySeparatorChar;
 
                 code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.DbObjs");
@@ -190,9 +191,7 @@ namespace DemoGame.DbClassCreator
             else
             {
                 saveDir = _outputServerDir;
-                if (gtc.CodeType == GeneratedCodeType.Interface)
-                    saveDir += "Interfaces" + Path.DirectorySeparatorChar;
-                else if (gtc.CodeType == GeneratedCodeType.ClassDbExtensions)
+                if (gtc.CodeType == GeneratedCodeType.ClassDbExtensions)
                     saveDir += "DbExtensions" + Path.DirectorySeparatorChar;
                 code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.Server.DbObjs");
             }

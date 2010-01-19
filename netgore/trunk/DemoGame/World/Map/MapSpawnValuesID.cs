@@ -5,21 +5,21 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
-    /// Represents a unique ID for an Item instance.
+    /// Represents the unique ID of a MapSpawnValues.
     /// </summary>
     [Serializable]
-    public struct ItemID : IComparable<ItemID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct MapSpawnValuesID : IComparable<MapSpawnValuesID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// Represents the largest possible value of ItemID. This field is constant.
+        /// Represents the largest possible value of MapSpawnValuesID. This field is constant.
         /// </summary>
         public const int MaxValue = int.MaxValue;
 
         /// <summary>
-        /// Represents the smallest possible value of ItemID. This field is constant.
+        /// Represents the smallest possible value of MapSpawnValuesID. This field is constant.
         /// </summary>
         public const int MinValue = int.MinValue;
 
@@ -29,10 +29,10 @@ namespace DemoGame.Server
         readonly int _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemID"/> struct.
+        /// Initializes a new instance of the <see cref="MapSpawnValuesID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new ItemID.</param>
-        public ItemID(int value)
+        /// <param name="value">Value to assign to the new MapSpawnValuesID.</param>
+        public MapSpawnValuesID(int value)
         {
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
@@ -47,7 +47,7 @@ namespace DemoGame.Server
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(ItemID other)
+        public bool Equals(MapSpawnValuesID other)
         {
             return other._value == _value;
         }
@@ -63,9 +63,9 @@ namespace DemoGame.Server
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(ItemID))
+            if (obj.GetType() != typeof(MapSpawnValuesID))
                 return false;
-            return Equals((ItemID)obj);
+            return Equals((MapSpawnValuesID)obj);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the raw internal value of this ItemID.
+        /// Gets the raw internal value of this MapSpawnValuesID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
         public int GetRawValue()
@@ -89,53 +89,53 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reads an ItemID from an IValueReader.
+        /// Reads an MapSpawnValuesID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The ItemID read from the IValueReader.</returns>
-        public static ItemID Read(IValueReader reader, string name)
+        /// <returns>The MapSpawnValuesID read from the IValueReader.</returns>
+        public static MapSpawnValuesID Read(IValueReader reader, string name)
         {
             int value = reader.ReadInt(name);
-            return new ItemID(value);
+            return new MapSpawnValuesID(value);
         }
 
         /// <summary>
-        /// Reads an ItemID from an IDataReader.
+        /// Reads an MapSpawnValuesID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID Read(IDataReader reader, int i)
+        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
+        public static MapSpawnValuesID Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
             if (value is int)
-                return new ItemID((int)value);
+                return new MapSpawnValuesID((int)value);
 
             int convertedValue = Convert.ToInt32(value);
-            return new ItemID(convertedValue);
+            return new MapSpawnValuesID(convertedValue);
         }
 
         /// <summary>
-        /// Reads an ItemID from an IDataReader.
+        /// Reads an MapSpawnValuesID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID Read(IDataReader reader, string name)
+        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
+        public static MapSpawnValuesID Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an ItemID from an IValueReader.
+        /// Reads an MapSpawnValuesID from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The ItemID read from the BitStream.</returns>
-        public static ItemID Read(BitStream bitStream)
+        /// <returns>The MapSpawnValuesID read from the BitStream.</returns>
+        public static MapSpawnValuesID Read(BitStream bitStream)
         {
             int value = bitStream.ReadInt();
-            return new ItemID(value);
+            return new MapSpawnValuesID(value);
         }
 
         /// <summary>
@@ -149,10 +149,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the ItemID to an IValueWriter.
+        /// Writes the MapSpawnValuesID to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the ItemID that will be used to distinguish it
+        /// <param name="name">Unique name of the MapSpawnValuesID that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -160,7 +160,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Writes the ItemID to an IValueWriter.
+        /// Writes the MapSpawnValuesID to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -192,7 +192,7 @@ namespace DemoGame.Server
 
         #endregion
 
-        #region IComparable<ItemID> Members
+        #region IComparable<MapSpawnValuesID> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -210,7 +210,7 @@ namespace DemoGame.Server
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        public int CompareTo(ItemID other)
+        public int CompareTo(MapSpawnValuesID other)
         {
             return _value.CompareTo(other._value);
         }
@@ -483,21 +483,21 @@ namespace DemoGame.Server
         /// <summary>
         /// Implements operator ++.
         /// </summary>
-        /// <param name="l">The ItemID to increment.</param>
-        /// <returns>The incremented ItemID.</returns>
-        public static ItemID operator ++(ItemID l)
+        /// <param name="l">The MapSpawnValuesID to increment.</param>
+        /// <returns>The incremented MapSpawnValuesID.</returns>
+        public static MapSpawnValuesID operator ++(MapSpawnValuesID l)
         {
-            return new ItemID(l._value + 1);
+            return new MapSpawnValuesID(l._value + 1);
         }
 
         /// <summary>
         /// Implements operator --.
         /// </summary>
-        /// <param name="l">The ItemID to decrement.</param>
-        /// <returns>The decremented ItemID.</returns>
-        public static ItemID operator --(ItemID l)
+        /// <param name="l">The MapSpawnValuesID to decrement.</param>
+        /// <returns>The decremented MapSpawnValuesID.</returns>
+        public static MapSpawnValuesID operator --(MapSpawnValuesID l)
         {
-            return new ItemID(l._value - 1);
+            return new MapSpawnValuesID(l._value - 1);
         }
 
         /// <summary>
@@ -506,9 +506,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static ItemID operator +(ItemID left, ItemID right)
+        public static MapSpawnValuesID operator +(MapSpawnValuesID left, MapSpawnValuesID right)
         {
-            return new ItemID(left._value + right._value);
+            return new MapSpawnValuesID(left._value + right._value);
         }
 
         /// <summary>
@@ -517,9 +517,9 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static ItemID operator -(ItemID left, ItemID right)
+        public static MapSpawnValuesID operator -(MapSpawnValuesID left, MapSpawnValuesID right)
         {
-            return new ItemID(left._value - right._value);
+            return new MapSpawnValuesID(left._value - right._value);
         }
 
         /// <summary>
@@ -528,7 +528,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(ItemID left, int right)
+        public static bool operator ==(MapSpawnValuesID left, int right)
         {
             return left._value == right;
         }
@@ -539,7 +539,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(ItemID left, int right)
+        public static bool operator !=(MapSpawnValuesID left, int right)
         {
             return left._value != right;
         }
@@ -550,7 +550,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, ItemID right)
+        public static bool operator ==(int left, MapSpawnValuesID right)
         {
             return left == right._value;
         }
@@ -561,29 +561,29 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, ItemID right)
+        public static bool operator !=(int left, MapSpawnValuesID right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a ItemID to an Int32.
+        /// Casts a MapSpawnValuesID to an Int32.
         /// </summary>
-        /// <param name="ItemID">ItemID to cast.</param>
+        /// <param name="MapSpawnValuesID">MapSpawnValuesID to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(ItemID ItemID)
+        public static explicit operator int(MapSpawnValuesID MapSpawnValuesID)
         {
-            return ItemID._value;
+            return MapSpawnValuesID._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a ItemID.
+        /// Casts an Int32 to a MapSpawnValuesID.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The ItemID.</returns>
-        public static explicit operator ItemID(int value)
+        /// <returns>The MapSpawnValuesID.</returns>
+        public static explicit operator MapSpawnValuesID(int value)
         {
-            return new ItemID(value);
+            return new MapSpawnValuesID(value);
         }
 
         /// <summary>
@@ -592,7 +592,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, ItemID right)
+        public static bool operator >(int left, MapSpawnValuesID right)
         {
             return left > right._value;
         }
@@ -603,7 +603,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, ItemID right)
+        public static bool operator <(int left, MapSpawnValuesID right)
         {
             return left < right._value;
         }
@@ -614,7 +614,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(ItemID left, ItemID right)
+        public static bool operator >(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value > right._value;
         }
@@ -625,7 +625,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(ItemID left, ItemID right)
+        public static bool operator <(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value < right._value;
         }
@@ -636,7 +636,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(ItemID left, int right)
+        public static bool operator >(MapSpawnValuesID left, int right)
         {
             return left._value > right;
         }
@@ -647,7 +647,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(ItemID left, int right)
+        public static bool operator <(MapSpawnValuesID left, int right)
         {
             return left._value < right;
         }
@@ -658,7 +658,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, ItemID right)
+        public static bool operator >=(int left, MapSpawnValuesID right)
         {
             return left >= right._value;
         }
@@ -669,7 +669,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, ItemID right)
+        public static bool operator <=(int left, MapSpawnValuesID right)
         {
             return left <= right._value;
         }
@@ -680,7 +680,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(ItemID left, int right)
+        public static bool operator >=(MapSpawnValuesID left, int right)
         {
             return left._value >= right;
         }
@@ -691,7 +691,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(ItemID left, int right)
+        public static bool operator <=(MapSpawnValuesID left, int right)
         {
             return left._value <= right;
         }
@@ -702,7 +702,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(ItemID left, ItemID right)
+        public static bool operator >=(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value >= right._value;
         }
@@ -713,7 +713,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(ItemID left, ItemID right)
+        public static bool operator <=(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value <= right._value;
         }
@@ -724,7 +724,7 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(ItemID left, ItemID right)
+        public static bool operator !=(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value != right._value;
         }
@@ -735,33 +735,33 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(ItemID left, ItemID right)
+        public static bool operator ==(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the ItemID.
-    /// All of the operations are implemented in the ItemID struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the MapSpawnValuesID.
+    /// All of the operations are implemented in the MapSpawnValuesID struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class ItemIDReadWriteExtensions
+    public static class MapSpawnValuesIDReadWriteExtensions
     {
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemID.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapSpawnValuesID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a ItemID.</returns>
-        public static ItemID AsItemID<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a MapSpawnValuesID.</returns>
+        public static MapSpawnValuesID AsMapSpawnValuesID<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseItemID(dict[key]);
+            return Parser.Invariant.ParseMapSpawnValuesID(dict[key]);
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemID.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapSpawnValuesID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -770,13 +770,14 @@ namespace DemoGame.Server
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static ItemID AsItemID<T>(this IDictionary<T, string> dict, T key, ItemID defaultValue)
+        public static MapSpawnValuesID AsMapSpawnValuesID<T>(this IDictionary<T, string> dict, T key,
+                                                             MapSpawnValuesID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            ItemID parsed;
+            MapSpawnValuesID parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
@@ -784,92 +785,92 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reads the ItemID from an IDataReader.
+        /// Reads the MapSpawnValuesID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemID from.</param>
+        /// <param name="dataReader">IDataReader to read the MapSpawnValuesID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID GetItemID(this IDataReader dataReader, int i)
+        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
+        public static MapSpawnValuesID GetMapSpawnValuesID(this IDataReader dataReader, int i)
         {
-            return ItemID.Read(dataReader, i);
+            return MapSpawnValuesID.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the ItemID from an IDataReader.
+        /// Reads the MapSpawnValuesID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemID from.</param>
+        /// <param name="dataReader">IDataReader to read the MapSpawnValuesID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID GetItemID(this IDataReader dataReader, string name)
+        /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
+        public static MapSpawnValuesID GetMapSpawnValuesID(this IDataReader dataReader, string name)
         {
-            return ItemID.Read(dataReader, name);
+            return MapSpawnValuesID.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Parses the ItemID from a string.
+        /// Parses the MapSpawnValuesID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The ItemID parsed from the string.</returns>
-        public static ItemID ParseItemID(this Parser parser, string value)
+        /// <returns>The MapSpawnValuesID parsed from the string.</returns>
+        public static MapSpawnValuesID ParseMapSpawnValuesID(this Parser parser, string value)
         {
-            return new ItemID(parser.ParseInt(value));
+            return new MapSpawnValuesID(parser.ParseInt(value));
         }
 
         /// <summary>
-        /// Reads the ItemID from a BitStream.
+        /// Reads the MapSpawnValuesID from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the ItemID from.</param>
-        /// <returns>The ItemID read from the BitStream.</returns>
-        public static ItemID ReadItemID(this BitStream bitStream)
+        /// <param name="bitStream">BitStream to read the MapSpawnValuesID from.</param>
+        /// <returns>The MapSpawnValuesID read from the BitStream.</returns>
+        public static MapSpawnValuesID ReadMapSpawnValuesID(this BitStream bitStream)
         {
-            return ItemID.Read(bitStream);
+            return MapSpawnValuesID.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the ItemID from an IValueReader.
+        /// Reads the MapSpawnValuesID from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the ItemID from.</param>
+        /// <param name="valueReader">IValueReader to read the MapSpawnValuesID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The ItemID read from the IValueReader.</returns>
-        public static ItemID ReadItemID(this IValueReader valueReader, string name)
+        /// <returns>The MapSpawnValuesID read from the IValueReader.</returns>
+        public static MapSpawnValuesID ReadMapSpawnValuesID(this IValueReader valueReader, string name)
         {
-            return ItemID.Read(valueReader, name);
+            return MapSpawnValuesID.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Tries to parse the ItemID from a string.
+        /// Tries to parse the MapSpawnValuesID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed ItemID.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed MapSpawnValuesID.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out ItemID outValue)
+        public static bool TryParse(this Parser parser, string value, out MapSpawnValuesID outValue)
         {
             int tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new ItemID(tmp);
+            outValue = new MapSpawnValuesID(tmp);
             return ret;
         }
 
         /// <summary>
-        /// Writes a ItemID to a BitStream.
+        /// Writes a MapSpawnValuesID to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">ItemID to write.</param>
-        public static void Write(this BitStream bitStream, ItemID value)
+        /// <param name="value">MapSpawnValuesID to write.</param>
+        public static void Write(this BitStream bitStream, MapSpawnValuesID value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a ItemID to a IValueWriter.
+        /// Writes a MapSpawnValuesID to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the ItemID that will be used to distinguish it
+        /// <param name="name">Unique name of the MapSpawnValuesID that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">ItemID to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, ItemID value)
+        /// <param name="value">MapSpawnValuesID to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, MapSpawnValuesID value)
         {
             value.Write(valueWriter, name);
         }
