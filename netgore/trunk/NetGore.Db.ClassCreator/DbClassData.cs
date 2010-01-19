@@ -233,7 +233,7 @@ namespace NetGore.Db.ClassCreator
                 sb.Append(Formatter.GetCast(coll.KeyType));
                 sb.Append(item.Key);
                 sb.Append(Formatter.ParameterSpacer);
-                sb.Append(Formatter.GetCast(coll.ValueType));
+                sb.Append(Formatter.GetCast(coll.ExternalType));
                 sb.Append(valueName);
                 sb.Append(Formatter.CloseParameterString);
                 sb.Append(Formatter.EndOfLine);
@@ -367,7 +367,7 @@ namespace NetGore.Db.ClassCreator
 
         public string GetPrivateName(ColumnCollection columnCollection)
         {
-            return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Private, columnCollection.ValueType);
+            return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Private, columnCollection.ExternalType);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace NetGore.Db.ClassCreator
             {
             }
 
-            return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
+            return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ExternalType);
         }
     }
 }

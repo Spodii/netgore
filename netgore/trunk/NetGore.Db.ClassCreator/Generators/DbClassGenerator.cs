@@ -123,16 +123,17 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="keyType">Type of the key.</param>
-        /// <param name="valueType">Type of the value.</param>
+        /// <param name="externalType">The exposed type.</param>
+        /// <param name="internalType">Type of the value and the internal storage type.</param>
         /// <param name="tables">The tables.</param>
         /// <param name="columns">The columns.</param>
-        public void AddColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
+        public void AddColumnCollection(string name, Type keyType, Type externalType, Type internalType, IEnumerable<string> tables,
                                         IEnumerable<ColumnCollectionItem> columns)
         {
             if (!(keyType.IsEnum))
                 throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
 
-            var columnCollection = new ColumnCollection(name, keyType, valueType, tables, columns);
+            var columnCollection = new ColumnCollection(name, keyType, externalType, internalType, tables, columns);
             _columnCollections.Add(columnCollection);
         }
 
@@ -141,16 +142,17 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="keyType">Type of the key.</param>
-        /// <param name="valueType">Type of the value.</param>
+        /// <param name="externalType">The exposed type.</param>
+        /// <param name="internalType">Type of the value and the internal storage type.</param>
         /// <param name="table">The table.</param>
         /// <param name="columns">The columns.</param>
-        public void AddColumnCollection(string name, Type keyType, Type valueType, string table,
+        public void AddColumnCollection(string name, Type keyType, Type externalType, Type internalType, string table,
                                         IEnumerable<ColumnCollectionItem> columns)
         {
             if (!(keyType.IsEnum))
                 throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
 
-            var columnCollection = new ColumnCollection(name, keyType, valueType, new string[] { table }, columns);
+            var columnCollection = new ColumnCollection(name, keyType, externalType, internalType, new string[] { table }, columns);
             _columnCollections.Add(columnCollection);
         }
 
@@ -369,7 +371,7 @@ namespace NetGore.Db.ClassCreator
                         // Collection
                         sb.AppendLine(
                             Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionValueProperty, coll.Name)));
-                        var ikvpType = Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType);
+                        var ikvpType = Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ExternalType);
                         sb.AppendLine(Formatter.GetProperty(coll.CollectionPropertyName, ikvpType, ikvpType,
                                                             MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false,
                                                             false));
@@ -508,14 +510,14 @@ namespace NetGore.Db.ClassCreator
                                                     new KeyValuePair<string, string>("key",
                                                                                      Comments.CreateCode.
                                                                                          InterfaceCollectionParamKey)));
-                        sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType, keyParameter));
+                        sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ExternalType, keyParameter));
 
                         // Collection
                         sb.AppendLine(
                             Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionValueProperty, coll.Name)));
                         sb.AppendLine(Formatter.GetInterfaceProperty(coll.CollectionPropertyName,
                                                                      Formatter.GetIEnumerableKeyValuePair(coll.KeyType,
-                                                                                                          coll.ValueType), false));
+                                                                                                          coll.ExternalType), false));
                     }
                 }
             }
@@ -622,9 +624,9 @@ namespace NetGore.Db.ClassCreator
                                                                                            Comments.CreateFields.
                                                                                                PublicMethodGetKeyParameter)));
                     sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public,
-                                                            new MethodParameter[] { keyParameter }, coll.ValueType, false, false));
+                                                            new MethodParameter[] { keyParameter }, coll.ExternalType, false, false));
                     sb.AppendLine(
-                        Formatter.GetMethodBody("return " + Formatter.GetCast(cd.GetExternalType(column)) + field +
+                        Formatter.GetMethodBody("return " + Formatter.GetCast(coll.ExternalType) + field +
                                                 Formatter.EndOfLine));
 
                     // Setter
@@ -639,12 +641,12 @@ namespace NetGore.Db.ClassCreator
                                                             new MethodParameter[]
                                                             {
                                                                 keyParameter,
-                                                                new MethodParameter("value", coll.ValueType, Formatter)
+                                                                new MethodParameter("value", coll.ExternalType, Formatter)
                                                             },
                                                             typeof(void), false, false));
 
                     sb.AppendLine(
-                        Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, cd.GetInternalType(column))));
+                        Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, coll.InternalType)));
                 }
             }
 
@@ -1142,10 +1144,11 @@ namespace NetGore.Db.ClassCreator
         {
             var sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
             sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
-            sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
+            sb.Replace("[INVALUETYPE]", Formatter.GetTypeString(columnCollection.InternalType));
+            sb.Replace("[EXVALUETYPE]", Formatter.GetTypeString(columnCollection.ExternalType));
             sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
             sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
-            sb.Replace("[VALUEREADERREADMETHOD]", GetValueReaderReadMethodName(columnCollection.ValueType));
+            sb.Replace("[VALUEREADERREADMETHOD]", GetValueReaderReadMethodName(columnCollection.InternalType));
             return sb.ToString();
         }
 

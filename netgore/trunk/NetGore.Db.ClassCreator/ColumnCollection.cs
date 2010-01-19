@@ -13,15 +13,17 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="keyType">Type of the key.</param>
-        /// <param name="valueType">Type of the value.</param>
+        /// <param name="externalType">The exposed type.</param>
+        /// <param name="internalType">Type of the value and the internal storage type.</param>
         /// <param name="tables">The tables.</param>
         /// <param name="columns">The columns.</param>
-        public ColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
+        public ColumnCollection(string name, Type keyType, Type externalType, Type internalType, IEnumerable<string> tables,
                                 IEnumerable<ColumnCollectionItem> columns)
         {
             Name = name;
             KeyType = keyType;
-            ValueType = valueType;
+            InternalType = internalType;
+            ExternalType = externalType;
             Tables = tables;
             Columns = columns;
         }
@@ -61,6 +63,12 @@ namespace NetGore.Db.ClassCreator
         public Type KeyType { get; private set; }
 
         /// <summary>
+        /// Gets or sets the external type.
+        /// </summary>
+        /// <value>The type of the value.</value>
+        public Type ExternalType { get; private set; }
+
+        /// <summary>
         /// Gets or sets the name.
         /// </summary>
         /// <value>The name.</value>
@@ -73,9 +81,9 @@ namespace NetGore.Db.ClassCreator
         public IEnumerable<string> Tables { get; private set; }
 
         /// <summary>
-        /// Gets or sets the type of the value.
+        /// Gets or sets the internal type.
         /// </summary>
         /// <value>The type of the value.</value>
-        public Type ValueType { get; private set; }
+        public Type InternalType { get; private set; }
     }
 }

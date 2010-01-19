@@ -324,7 +324,7 @@ this._name = (System.String)value;
 /// </returns>
 public System.Int32 GetStat(DemoGame.StatType key)
 {
-return (System.Int16)_stat[(DemoGame.StatType)key];
+return (System.Int32)_stat[(DemoGame.StatType)key];
 }
 /// <summary>
 /// Gets the <paramref name="value"/> of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
@@ -344,7 +344,7 @@ this._stat[(DemoGame.StatType)key] = (System.Int16)value;
 /// </returns>
 public System.Int32 GetReqStat(DemoGame.StatType key)
 {
-return (System.Int16)_reqStat[(DemoGame.StatType)key];
+return (System.Int32)_reqStat[(DemoGame.StatType)key];
 }
 /// <summary>
 /// Gets the <paramref name="value"/> of a database column for the corresponding <paramref name="key"/> for the column collection `ReqStat`.
