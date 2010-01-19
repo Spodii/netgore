@@ -5,16 +5,16 @@ using NetGore.IO.PropertySync;
 namespace DemoGame
 {
     /// <summary>
-    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing an ItemType.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing an ItemTemplateID.
     /// </summary>
-    [PropertySyncHandler(typeof(ItemType))]
-    public sealed class PropertySyncItemType : PropertySyncBase<ItemType>
+    [PropertySyncHandler(typeof(ItemTemplateID))]
+    public sealed class PropertySyncItemTemplateID : PropertySyncBase<ItemTemplateID>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncItemType"/> class.
+        /// Initializes a new instance of the <see cref="PropertySyncItemTemplateID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncItemType(SyncValueAttributeInfo syncValueAttributeInfo)
+        public PropertySyncItemTemplateID(SyncValueAttributeInfo syncValueAttributeInfo)
             : base(syncValueAttributeInfo)
         {
         }
@@ -25,9 +25,9 @@ namespace DemoGame
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override ItemType Read(string name, IValueReader reader)
+        protected override ItemTemplateID Read(string name, IValueReader reader)
         {
-            return reader.ReadEnum<ItemType>(name);
+            return reader.ReadItemTemplateID(name);
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace DemoGame
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, ItemType value)
+        protected override void Write(string name, IValueWriter writer, ItemTemplateID value)
         {
-            writer.WriteEnum(name, value);
+            writer.Write(name, value);
         }
     }
 }

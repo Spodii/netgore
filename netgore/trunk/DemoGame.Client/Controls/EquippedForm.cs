@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame.DbObjs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
@@ -131,7 +132,7 @@ namespace DemoGame.Client
             {
                 EquippedItemPB src = (EquippedItemPB)sender;
                 EquipmentSlot slot = src.Slot;
-                ItemInfo itemInfo;
+                IItemTable itemInfo;
 
                 if (!src._equippedForm._infoRequester.TryGetInfo(slot, out itemInfo))
                 {

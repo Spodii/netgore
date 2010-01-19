@@ -2414,6 +2414,12 @@ namespace NetGore.IO
         /// <param name="maxLength">Maximum number of characters the string may contain</param>
         public void Write(string value, uint maxLength)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                WriteUnsigned(0, GetStringLengthBits(maxLength));
+                return;
+            }
+
             if (value.Length > maxLength)
                 throw new ArgumentOutOfRangeException("value", "String length exceeds maximum length.");
 

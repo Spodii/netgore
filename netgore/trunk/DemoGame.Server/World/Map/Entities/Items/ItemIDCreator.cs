@@ -1,4 +1,5 @@
 using System.Linq;
+using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 

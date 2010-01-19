@@ -4,9 +4,9 @@ using NetGore;
 using NetGore.IO;
 using System.Collections.Generic;
 using System.Collections;
-using NetGore.Db;
 using DemoGame.DbObjs;
-namespace DemoGame.Server.DbObjs
+
+namespace DemoGame.DbObjs
 {
 /// <summary>
 /// Provides a strongly-typed structure for the database table `item`.

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Client.NPCChat;
+using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -638,14 +639,16 @@ namespace DemoGame.Client
             string name = r.ReadString();
             byte itemCount = r.ReadByte();
 
-            var items = new ItemInfo[itemCount];
+            var items = new IItemTable[itemCount];
             for (int i = 0; i < itemCount; i++)
             {
-                items[i] = new ItemInfo(r);
+                var value = new ItemTable();
+                value.ReadState(r);
+                items[i] = value;
             }
 
             DynamicEntity shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
-            var shopInfo = new ShopInfo<ItemInfo>(shopOwner, name, canBuy, items);
+            var shopInfo = new ShopInfo<IItemTable>(shopOwner, name, canBuy, items);
 
             GameplayScreen.ShopForm.DisplayShop(shopInfo);
         }
