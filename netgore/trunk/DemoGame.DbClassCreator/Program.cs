@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using DemoGame.Server;
 using NetGore;
+using NetGore.AI;
 using NetGore.Db.ClassCreator;
+using NetGore.Features.Shops;
 using NetGore.Stats;
 
 namespace DemoGame.DbClassCreator
@@ -55,6 +57,8 @@ namespace DemoGame.DbClassCreator
             if (Console.ReadKey().Key != ConsoleKey.Y)
                 return;
 
+            Console.WriteLine();
+
             using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
                 var baseStatColumns = GetStatColumnCollectionItems(generator.Formatter, StatCollectionType.Base);
@@ -72,71 +76,51 @@ namespace DemoGame.DbClassCreator
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);
 
                 // Custom external types
-                string accountID = typeof(AccountID).FullName;
-                const string aiID = "NetGore.AI.AIID";
-                const string allianceID = "DemoGame.Server.AllianceID";
-                const string characterID = "DemoGame.Server.CharacterID";
-                const string characterTemplateID = "DemoGame.Server.CharacterTemplateID";
-                const string itemID = "DemoGame.Server.ItemID";
-                const string itemTemplateID = "DemoGame.Server.ItemTemplateID";
-                const string mapID = "NetGore.MapIndex";
-                const string mapSpawnID = "DemoGame.Server.MapSpawnValuesID";
-                const string bodyID = "DemoGame.BodyIndex";
-                const string equipmentSlot = "DemoGame.EquipmentSlot";
-                const string itemChance = "DemoGame.Server.ItemChance";
-                const string grhIndex = "NetGore.GrhIndex";
-                const string spValueType = "DemoGame.SPValueType";
-                const string itemType = "DemoGame.ItemType";
-                const string inventorySlot = "DemoGame.InventorySlot";
-                const string statusEffectType = "DemoGame.StatusEffectType";
-                const string activeStatusEffectID = "DemoGame.Server.ActiveStatusEffectID";
-                const string shopID = "DemoGame.Server.ShopID";
+                generator.AddCustomType(typeof(AccountID), "account", "id");
 
-                generator.AddCustomType(accountID, "account", "id");
+                generator.AddCustomType(typeof(AllianceID), "alliance", "id");
 
-                generator.AddCustomType(allianceID, "alliance", "id");
+                generator.AddCustomType(typeof(CharacterID), "character", "id");
+                generator.AddCustomType(typeof(CharacterTemplateID), "character", "template_id");
 
-                generator.AddCustomType(characterID, "character", "id");
-                generator.AddCustomType(characterTemplateID, "character", "template_id");
+                generator.AddCustomType(typeof(EquipmentSlot), "character_equipped", "slot");
 
-                generator.AddCustomType(equipmentSlot, "character_equipped", "slot");
+                generator.AddCustomType(typeof(InventorySlot), "character_inventory", "slot");
 
-                generator.AddCustomType(inventorySlot, "character_inventory", "slot");
+                generator.AddCustomType(typeof(ActiveStatusEffectID), "character_status_effect", "id");
+                generator.AddCustomType(typeof(StatusEffectType), "character_status_effect", "status_effect_id");
 
-                generator.AddCustomType(activeStatusEffectID, "character_status_effect", "id");
-                generator.AddCustomType(statusEffectType, "character_status_effect", "status_effect_id");
+                generator.AddCustomType(typeof(CharacterTemplateID), "character_template", "id");
 
-                generator.AddCustomType(characterTemplateID, "character_template", "id");
+                generator.AddCustomType(typeof(ItemChance), "character_template_equipped", "chance");
 
-                generator.AddCustomType(itemChance, "character_template_equipped", "chance");
+                generator.AddCustomType(typeof(ItemChance), "character_template_inventory", "chance");
 
-                generator.AddCustomType(itemChance, "character_template_inventory", "chance");
+                generator.AddCustomType(typeof(ItemID), "item", "id");
+                generator.AddCustomType(typeof(GrhIndex), "item", "graphic");
+                generator.AddCustomType(typeof(ItemType), "item", "type");
 
-                generator.AddCustomType(itemID, "item", "id");
-                generator.AddCustomType(grhIndex, "item", "graphic");
-                generator.AddCustomType(itemType, "item", "type");
+                generator.AddCustomType(typeof(ItemTemplateID), "item_template", "id");
+                generator.AddCustomType(typeof(GrhIndex), "item_template", "graphic");
 
-                generator.AddCustomType(itemTemplateID, "item_template", "id");
-                generator.AddCustomType(grhIndex, "item_template", "graphic");
+                generator.AddCustomType(typeof(MapIndex), "map", "id");
 
-                generator.AddCustomType(mapID, "map", "id");
+                generator.AddCustomType(typeof(MapSpawnValuesID), "map_spawn", "id");
 
-                generator.AddCustomType(mapSpawnID, "map_spawn", "id");
-
-                generator.AddCustomType(shopID, "shop", "id");
+                generator.AddCustomType(typeof(ShopID), "shop", "id");
 
                 // Mass-added custom types
-                generator.AddCustomType(allianceID, "*", "alliance_id", "attackable_id", "hostile_id");
-                generator.AddCustomType(characterID, "*", "character_id");
-                generator.AddCustomType(accountID, "*", "account_id");
-                generator.AddCustomType(mapID, "*", "map_id", "respawn_map");
-                generator.AddCustomType(itemID, "*", "item_id");
-                generator.AddCustomType(characterTemplateID, "*", "character_template_id");
-                generator.AddCustomType(itemTemplateID, "*", "item_template_id");
-                generator.AddCustomType(bodyID, "*", "body_id");
-                generator.AddCustomType(spValueType, "*", "hp", "mp");
-                generator.AddCustomType(shopID, "*", "shop_id");
-                generator.AddCustomType(aiID, "*", "ai_id");
+                generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
+                generator.AddCustomType(typeof(CharacterID), "*", "character_id");
+                generator.AddCustomType(typeof(AccountID), "*", "account_id");
+                generator.AddCustomType(typeof(MapIndex), "*", "map_id", "respawn_map");
+                generator.AddCustomType(typeof(ItemID), "*", "item_id");
+                generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id");
+                generator.AddCustomType(typeof(ItemTemplateID), "*", "item_template_id");
+                generator.AddCustomType(typeof(BodyIndex), "*", "body_id");
+                generator.AddCustomType(typeof(SPValueType), "*", "hp", "mp");
+                generator.AddCustomType(typeof(ShopID), "*", "shop_id");
+                generator.AddCustomType(typeof(AIID), "*", "ai_id");
 
                 // Renaming
                 var formatter = generator.Formatter;

@@ -11,6 +11,7 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public class DbClassData
     {
+        static readonly IDictionary<Type, string> _valueReaderReadMethods;
         public readonly string ClassName;
         public readonly IEnumerable<ColumnCollection> ColumnCollections;
         public readonly IEnumerable<DbColumnInfo> Columns;
@@ -18,6 +19,7 @@ namespace NetGore.Db.ClassCreator
         public readonly CodeFormatter Formatter;
         public readonly string InterfaceName;
         public readonly string TableName;
+
         readonly IEnumerable<CustomTypeMapping> _customTypes;
         readonly Dictionary<Type, string> _dataReaderReadMethods;
         readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
@@ -25,6 +27,26 @@ namespace NetGore.Db.ClassCreator
         readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
+
+        /// <summary>
+        /// Initializes the <see cref="DbClassData"/> class.
+        /// </summary>
+        static DbClassData()
+        {
+            _valueReaderReadMethods = new Dictionary<Type, string>();
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(byte), "ReadByte"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(sbyte), "ReadSByte"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(int), "ReadInt"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(uint), "ReadUInt"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(float), "ReadFloat"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(short), "ReadShort"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ushort), "ReadUShort"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(long), "ReadLong"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ulong), "ReadULong"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(double), "ReadDouble"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(bool), "ReadBool"));
+            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(string), "ReadString"));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbClassData"/> class.
@@ -42,7 +64,7 @@ namespace NetGore.Db.ClassCreator
             const string tableNameWildcard = "*";
 
             TableName = tableName;
-            Columns = columns;
+            Columns = columns.OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase);
             Formatter = formatter;
             _dataReaderReadMethods = dataReaderReadMethods;
 
@@ -64,7 +86,7 @@ namespace NetGore.Db.ClassCreator
                     x =>
                     x.Columns.Count() > 0 &&
                     (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
-                    ToCompact();
+                    OrderBy(x => x.CollectionPropertyName).ToCompact();
 
             // Populate the external types dictionary
             foreach (var column in columns)
@@ -246,14 +268,14 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
+        public string GetConstEnumDictonaryCode(DbClassData cd, ColumnCollection columnCollection)
         {
             var sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
             sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
             sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
             sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
             sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
-            sb.Replace("[STORAGETYPE]", Formatter.GetTypeString(typeof(int)));
+            sb.Replace("[VALUEREADERREADMETHOD]", cd.GetValueReaderReadMethodName(columnCollection.ValueType));
             return sb.ToString();
         }
 
@@ -392,6 +414,15 @@ namespace NetGore.Db.ClassCreator
             }
 
             return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
+        }
+
+        public string GetValueReaderReadMethodName(Type type)
+        {
+            string ret;
+            if (_valueReaderReadMethods.TryGetValue(type, out ret))
+                return ret;
+
+            return GetDataReaderReadMethodName(type);
         }
     }
 }
