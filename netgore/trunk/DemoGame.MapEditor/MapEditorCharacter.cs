@@ -1,12 +1,10 @@
 ﻿using System.Linq;
-using DemoGame.Server;
+using DemoGame.Client;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
 using NetGore.Db;
 using NetGore.Graphics;
 using NetGore.IO;
-using Character=DemoGame.Client.Character;
-using Map=DemoGame.Client.Map;
 
 namespace DemoGame.MapEditor
 {
