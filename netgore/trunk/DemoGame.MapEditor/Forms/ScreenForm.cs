@@ -1024,6 +1024,9 @@ namespace DemoGame.MapEditor
                 Dispose();
                 throw;
             }
+
+            _camera.Size = GameScreenSize;
+            _grid.Size = GameScreenSize;
         }
 
         void SelectedObjectsManager_OnChangeFocused(SelectedObjectsManager<object> sender, object newFocused)
@@ -1114,20 +1117,6 @@ namespace DemoGame.MapEditor
             Map.Music = txtMusic.Text;
         }
 
-        void txtZoom_TextChanged(object sender, EventArgs e)
-        {
-            float value;
-            if (!float.TryParse(txtZoom.Text, out value))
-                return;
-
-            value *= 0.01f;
-
-            if (value <= float.Epsilon || value > 100000)
-                return;
-
-            Camera.Scale = value;
-        }
-
         /// <summary>
         /// Updates the cursor based on the transformation box the cursor is over
         /// or the currently selected transformation box
@@ -1181,5 +1170,17 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        private void numZoom_ValueChanged(object sender, EventArgs e)
+        {
+            float value = Convert.ToSingle(numZoom.Value);
+
+            value *= 0.01f;
+
+            if (value <= float.Epsilon || value > 100000)
+                return;
+
+            Camera.Scale = value;
+        }
     }
 }
