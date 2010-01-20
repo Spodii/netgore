@@ -81,6 +81,13 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter CreateNewAccountCharacter(string name)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.CreateNewAccountCharacter);
+            pw.Write(name);
+            return pw;
+        }
+
         public static PacketWriter CreateNewAccount(string name, string password, string email)
         {
             PacketWriter pw = GetWriter(ClientPacketID.CreateNewAccount);

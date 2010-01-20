@@ -8,6 +8,10 @@ namespace DemoGame.Client
         AccountCharacterInfo[] _charInfos;
         bool _isLoaded;
 
+        public delegate void AccountCharactersLoadedHandler();
+
+        public event AccountCharactersLoadedHandler OnAccountCharactersLoaded;
+
         public AccountCharacterInfo this[byte index]
         {
             get { return _charInfos[index]; }
@@ -34,6 +38,9 @@ namespace DemoGame.Client
 
             _charInfos = charInfos;
             _isLoaded = true;
+
+            if (OnAccountCharactersLoaded != null)
+                OnAccountCharactersLoaded();
         }
 
         public bool TryGetInfo(byte index, out AccountCharacterInfo charInfo)

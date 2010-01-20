@@ -22,8 +22,6 @@ namespace DemoGame.Client
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 
-        bool _waitingForCharInfos = true;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterSelectionScreen"/> class.
         /// </summary>
@@ -40,6 +38,8 @@ namespace DemoGame.Client
         {
             _sockets = ClientSockets.Instance;
 
+            _sockets.PacketHandler.AccountCharacterInfos.OnAccountCharactersLoaded += HandleCharInfosUpdated;
+
             base.Activate();
         }
 
@@ -50,11 +50,15 @@ namespace DemoGame.Client
 
             AccountCharacterInfo charInfo;
             if (!_sockets.PacketHandler.AccountCharacterInfos.TryGetInfo(index, out charInfo))
-                return;
-
-            using (PacketWriter pw = ClientPacket.SelectAccountCharacter(index))
             {
-                _sockets.Send(pw);
+                ScreenManager.SetScreen(CreateCharacterScreen.ScreenName);
+            }
+            else
+            {
+                using (PacketWriter pw = ClientPacket.SelectAccountCharacter(index))
+                {
+                    _sockets.Send(pw);
+                }
             }
         }
 
@@ -103,12 +107,9 @@ namespace DemoGame.Client
         {
             for (int i = 0; i < _characterButtons.Length; i++)
             {
-                Button c = _characterButtons[i];
                 AccountCharacterInfo charInfo;
-                if (_sockets.PacketHandler.AccountCharacterInfos.TryGetInfo((byte)i, out charInfo))
-                    c.Text = charInfo.Name;
-                else
-                    c.Text = _unusedCharacterSlotText;
+                _sockets.PacketHandler.AccountCharacterInfos.TryGetInfo((byte)i, out charInfo);
+                _characterButtons[i].Text = charInfo != null ? charInfo.Name : _unusedCharacterSlotText;
             }
         }
 
@@ -159,15 +160,6 @@ namespace DemoGame.Client
         public override void Update(GameTime gameTime)
         {
             int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
-
-            if (_waitingForCharInfos && _sockets != null)
-            {
-                if (_sockets.PacketHandler.AccountCharacterInfos.IsLoaded)
-                {
-                    HandleCharInfosUpdated();
-                    _waitingForCharInfos = false;
-                }
-            }
 
             _gui.Update(currentTime);
         }
