@@ -123,6 +123,8 @@
     <Compile Include="GUI\MoveCursorDirection.cs" />
     <Compile Include="GUI\Screen Manager\GameScreen.cs" />
     <Compile Include="GUI\Screen Manager\IGameScreen.cs" />
+    <Compile Include="GUI\Screen Manager\IScreenManager.cs" />
+    <Compile Include="GUI\Screen Manager\IScreenManagerEventHandler.cs" />
     <Compile Include="GUI\Screen Manager\ScreenManager.cs" />
     <Compile Include="GUI\Skin\SkinManager.cs" />
     <Compile Include="GUI\Skin\ISkinManager.cs" />

@@ -25,8 +25,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterSelectionScreen"/> class.
         /// </summary>
-        /// <param name="screenManager">The <see cref="ScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public CharacterSelectionScreen(ScreenManager screenManager) : base(screenManager, ScreenName)
+        /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
+        public CharacterSelectionScreen(IScreenManager screenManager)
+            : base(screenManager, ScreenName)
         {
             PlayMusic = false;
         }
@@ -134,7 +135,7 @@ namespace DemoGame.Client
             for (int i = 0; i < GameData.MaxCharactersPerAccount; i++)
             {
                 Vector2 size = new Vector2(250, 35);
-                Vector2 pos = new Vector2((ScreenManager.ScreenWidth / 2f) - (size.X / 2), 10 + (i * (size.Y + 10)));
+                Vector2 pos = new Vector2((ScreenManager.ScreenSize.X / 2f) - (size.X / 2), 10 + (i * (size.Y + 10)));
                 Button characterButton = new Button(cScreen, pos, size) { Text = _unusedCharacterSlotText, Tag = (byte)i };
                 characterButton.OnClick += ClickButton_CharacterSelection;
                 _characterButtons[i] = characterButton;

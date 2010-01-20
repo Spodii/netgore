@@ -12,7 +12,7 @@ namespace NetGore.Graphics.GUI
     public abstract class GameScreen : IGameScreen
     {
         readonly string _name;
-        readonly ScreenManager _screenManager;
+        readonly IScreenManager _screenManager;
 
         bool _playMusic = true;
         IMusic _screenMusic;
@@ -20,12 +20,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="GameScreen"/> class.
         /// </summary>
-        /// <param name="screenManager">The <see cref="ScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         /// <param name="name">Unique name of the screen that can be used to identify and
         /// call it from other screens</param>
         /// <exception cref="ArgumentNullException"><paramref name="screenManager"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
-        protected GameScreen(ScreenManager screenManager, string name)
+        protected GameScreen(IScreenManager screenManager, string name)
         {
             if (screenManager == null)
                 throw new ArgumentNullException("screenManager");
@@ -156,9 +156,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="ScreenManager"/> that manages this <see cref="IGameScreen"/>.
+        /// Gets the <see cref="IScreenManager"/> that manages this <see cref="IGameScreen"/>.
         /// </summary>
-        public ScreenManager ScreenManager
+        public IScreenManager ScreenManager
         {
             get { return _screenManager; }
         }
