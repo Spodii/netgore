@@ -17,8 +17,6 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class ScreenManager : DrawableGameComponent, IScreenManager
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         readonly ContentManager _content;
         readonly FrameCounter _fps = new FrameCounter();
         readonly ContentManager _mapContent;
@@ -67,12 +65,10 @@ namespace NetGore.Graphics.GUI
         /// false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            // Call Dispose on screens that implement it
+            // Dispose all the screens
             foreach (var screen in _screens.Values)
             {
-                IDisposable disposable = screen as IDisposable;
-                if (disposable != null)
-                    disposable.Dispose();
+                screen.Dispose();
             }
 
             base.Dispose(disposing);
@@ -92,7 +88,7 @@ namespace NetGore.Graphics.GUI
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _activeScreen.Draw(gameTime);
+            _activeScreen.Draw(SpriteBatch, gameTime.ToTotalMS());
         }
 
         /// <summary>
@@ -136,7 +132,7 @@ namespace NetGore.Graphics.GUI
                 OnUpdate(this);
 
             if (_activeScreen != null)
-                _activeScreen.Update(gameTime);
+                _activeScreen.Update(gameTime.ToTotalMS());
         }
 
         #region IScreenManager Members

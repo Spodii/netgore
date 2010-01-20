@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 
@@ -12,22 +10,19 @@ namespace DemoGame.Client
     class NewAccountScreen : GameScreen
     {
         public const string ScreenName = "new account";
-        TextBox _cEmailText;
 
+        TextBox _cEmailText;
         TextBox _cNameText;
         TextBox _cPasswordText;
         Button _createAccountButton;
         Label _errorLabel;
-        IGUIManager _gui;
-        SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NewAccountScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public NewAccountScreen(IScreenManager screenManager)
-            : base(screenManager, ScreenName)
+        public NewAccountScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             PlayMusic = false;
         }
@@ -104,32 +99,13 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
-        /// there is often no need to clear the screen. This will only be called while the screen is the
-        /// active screen.
-        /// </summary>
-        /// <param name="gameTime">Current GameTime</param>
-        public override void Draw(GameTime gameTime)
-        {
-            Debug.Assert(_sb != null, "_sb is null.");
-            if (_sb == null)
-                return;
-
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
-            _gui.Draw(_sb);
-            _sb.End();
-        }
-
-        /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
         /// use this instead of the constructor. This is invoked only once.
         /// </summary>
         public override void Initialize()
         {
-            _gui = ScreenManager.CreateGUIManager("Font/Menu");
-
-            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
+            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             _errorLabel = new Label(cScreen, new Vector2(410, 80)) { IsVisible = false };
 
@@ -152,18 +128,6 @@ namespace DemoGame.Client
             menuButtons["Back"].OnClick += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             _createAccountButton = menuButtons["Create Account"];
-        }
-
-        /// <summary>
-        /// Handles the loading of game content. Any content that is loaded should be placed in here.
-        /// This will be invoked once (right after Initialize()), along with an additional time for
-        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
-        /// </summary>
-        public override void LoadContent()
-        {
-            _sb = ScreenManager.SpriteBatch;
-
-            base.LoadContent();
         }
 
         void PacketHandler_OnCreateAccount(IIPSocket conn, bool successful, string errorMessage)
@@ -210,17 +174,6 @@ namespace DemoGame.Client
         void sockets_OnFailedConnect(IIPSocket conn)
         {
             ShowError("Failed to connect to the server.");
-        }
-
-        /// <summary>
-        /// Handles updating of the screen. This will only be called while the screen is the active screen.
-        /// </summary>
-        /// <param name="gameTime">Current GameTime</param>
-        public override void Update(GameTime gameTime)
-        {
-            int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
-
-            _gui.Update(currentTime);
         }
     }
 }

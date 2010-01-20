@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore.Audio;
 
 namespace NetGore.Graphics.GUI
@@ -11,6 +12,7 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public abstract class GameScreen : IGameScreen
     {
+        readonly IGUIManager _guiManager;
         readonly string _name;
         readonly IScreenManager _screenManager;
 
@@ -34,7 +36,8 @@ namespace NetGore.Graphics.GUI
 
             _screenManager = screenManager;
             _name = name;
-
+            _guiManager = ScreenManager.CreateGUIManager(ScreenManager.MenuFont);
+ 
             screenManager.Add(this);
         }
 
@@ -81,11 +84,17 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
-        /// there is often no need to clear the screen. This will only be called while the screen is the 
+        /// there is often no need to clear the screen. This will only be called while the screen is the
         /// active screen.
         /// </summary>
-        /// <param name="gameTime">Current GameTime.</param>
-        public abstract void Draw(GameTime gameTime);
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="gameTime">The current game time.</param>
+        public virtual void Draw(SpriteBatch spriteBatch, int gameTime)
+        {
+            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            GUIManager.Draw(spriteBatch);
+            spriteBatch.End();
+        }
 
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
@@ -94,6 +103,14 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public virtual void Initialize()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
+        /// </summary>
+        public IGUIManager GUIManager
+        {
+            get { return _guiManager; }
         }
 
         /// <summary>
@@ -117,7 +134,10 @@ namespace NetGore.Graphics.GUI
         /// Updates the screen if it is currently the active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        public abstract void Update(GameTime gameTime);
+        public virtual void Update(int gameTime)
+        {
+            GUIManager.Update(gameTime);
+        }
 
         /// <summary>
         /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="IGameScreen"/>.
@@ -189,6 +209,13 @@ namespace NetGore.Graphics.GUI
         public SoundManager SoundManager
         {
             get { return ScreenManager.SoundManager; }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public virtual void Dispose()
+        {
         }
 
         #endregion
