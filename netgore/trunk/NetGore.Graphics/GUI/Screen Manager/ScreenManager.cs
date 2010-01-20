@@ -10,8 +10,6 @@ using NetGore.Audio;
 
 namespace NetGore.Graphics.GUI
 {
-    public delegate void ScreenManagerEventHandler(ScreenManager screenManager);
-
     /// <summary>
     /// Manages a collection of screens, allowing for selecting which screen(s) is/are
     /// active and updating and drawing them as needed. Also allows for interaction
@@ -19,6 +17,12 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class ScreenManager : DrawableGameComponent
     {
+        /// <summary>
+        /// Delegate for handling an event from the <see cref="ScreenManager"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="ScreenManager"/> the event came from.</param>
+        public delegate void ScreenManagerEventHandler(ScreenManager screenManager);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly ContentManager _content;
