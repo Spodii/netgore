@@ -194,7 +194,7 @@ namespace DemoGame.GUITester
 
         protected override void Update(GameTime gameTime)
         {
-            int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
+            int currentTime = gameTime.ToTotalMS();
             _gui.Update(currentTime);
             base.Update(gameTime);
         }

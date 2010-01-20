@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 
@@ -12,14 +9,10 @@ namespace DemoGame.Client
 {
     class CreateCharacterScreen : GameScreen
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public const string ScreenName = "character creation";
+
         Button _btnCreateCharacter;
         Label _cError;
-        IGUIManager _gui;
-
-        SpriteBatch _sb = null;
         ClientSockets _sockets = null;
         TextBox _txtName;
 
@@ -27,8 +20,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="CreateCharacterScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public CreateCharacterScreen(IScreenManager screenManager)
-            : base(screenManager, ScreenName)
+        public CreateCharacterScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             PlayMusic = false;
         }
@@ -74,31 +66,13 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
-        /// there is often no need to clear the screen. This will only be called while the screen is the 
-        /// active screen.
+        /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
+        /// completely and successfully added to the ScreenManager. It is highly recommended that you
+        /// use this instead of the constructor. This is invoked only once.
         /// </summary>
-        /// <param name="gameTime">Current GameTime.</param>
-        public override void Draw(GameTime gameTime)
-        {
-            if (_sb == null)
-            {
-                Debug.Fail("_sb is null.");
-                return;
-            }
-
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
-            _gui.Draw(_sb);
-            _sb.End();
-        }
-
         public override void Initialize()
         {
-            _gui = ScreenManager.CreateGUIManager("Font/Menu");
-
-            base.Initialize();
-
-            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
+            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Create character", "Back");
@@ -109,13 +83,10 @@ namespace DemoGame.Client
             _cError = new Label(cScreen, new Vector2(60, 500)) { ForeColor = Color.Red };
 
             new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
-            _txtName = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "", IsEnabled = true };
-        }
+            _txtName = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
+            { IsMultiLine = false, Text = "", IsEnabled = true };
 
-        public override void LoadContent()
-        {
-            _sb = ScreenManager.SpriteBatch;
-            base.LoadContent();
+            base.Initialize();
         }
 
         void PacketHandler_OnCreateAccountCharacter(IIPSocket sender, bool successful, string errorMessage)
@@ -143,17 +114,6 @@ namespace DemoGame.Client
 
             _cError.Text = string.Format("Error: {0}", message);
             _cError.IsVisible = true;
-        }
-
-        /// <summary>
-        /// Handles updating of the screen. This will only be called while the screen is the active screen.
-        /// </summary>
-        /// <param name="gameTime">The current game time.</param>
-        public override void Update(GameTime gameTime)
-        {
-            int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
-
-            _gui.Update(currentTime);
         }
     }
 }

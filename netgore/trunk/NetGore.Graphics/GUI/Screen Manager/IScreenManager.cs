@@ -12,7 +12,7 @@ namespace NetGore.Graphics.GUI
     /// active and updating and drawing them as needed. Also allows for interaction
     /// between the screens and common objects and properties for screens.
     /// </summary>
-    public interface IScreenManager
+    public interface IScreenManager : IDisposable
     {
         /// <summary>
         /// Notifies listeners when the <see cref="IScreenManager"/> updates.

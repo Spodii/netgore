@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore.Audio;
 
 namespace NetGore.Graphics.GUI
@@ -7,7 +9,7 @@ namespace NetGore.Graphics.GUI
     /// <summary>
     /// Interface for a game screen for the <see cref="ScreenManager"/>.
     /// </summary>
-    public interface IGameScreen
+    public interface IGameScreen : IDisposable
     {
         /// <summary>
         /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="IGameScreen"/>.
@@ -47,7 +49,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the screen if it is currently the active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        void Update(GameTime gameTime);
+        void Update(int gameTime);
 
         /// <summary>
         /// Handles the loading of game content. Any content that is loaded should be placed in here.
@@ -62,16 +64,15 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         void UnloadContent();
 
-
         /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
-        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
+        /// active screen. Objects in here often will want to be destroyed on <see cref="IGameScreen.Deactivate"/>().
         /// </summary>
         void Activate();
 
         /// <summary>
         /// Handles screen deactivation, which occurs every time the screen changes from being
-        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
+        /// the current active screen. Good place to clean up any objects created in <see cref="IGameScreen.Activate"/>().
         /// </summary>
         void Deactivate();
 
@@ -80,8 +81,9 @@ namespace NetGore.Graphics.GUI
         /// there is often no need to clear the screen. This will only be called while the screen is the 
         /// active screen.
         /// </summary>
-        /// <param name="gameTime">Current GameTime.</param>
-        void Draw(GameTime gameTime);
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="gameTime">The current game time.</param>
+        void Draw(SpriteBatch spriteBatch, int gameTime);
 
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
@@ -89,5 +91,10 @@ namespace NetGore.Graphics.GUI
         /// use this instead of the constructor. This is invoked only once.
         /// </summary>
         void Initialize();
+
+        /// <summary>
+        /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
+        /// </summary>
+        IGUIManager GUIManager { get; }
     }
 }

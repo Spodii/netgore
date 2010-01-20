@@ -22,7 +22,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Screen for the actual game
     /// </summary>
-    class GameplayScreen : GameScreen, IDisposable, IGetTime
+    class GameplayScreen : GameScreen, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "game";
@@ -40,10 +40,8 @@ namespace DemoGame.Client
         ChatForm _chatForm;
         int _currentTime = 0;
         SpriteFont _damageFont;
-        bool _disposed;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
-        IGUIManager _gui;
         SpriteFont _guiFont;
         GUISettings _guiSettings;
         InfoBox _infoBox;
@@ -54,7 +52,6 @@ namespace DemoGame.Client
         SkillCastProgressBar _skillCastProgressBar;
         SkillsForm _skillsForm;
         ClientSockets _socket;
-        SpriteBatch _spriteBatch;
         StatsForm _statsForm;
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
@@ -64,8 +61,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public GameplayScreen(IScreenManager screenManager)
-            : base(screenManager, ScreenName)
+        public GameplayScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             _gameControls = new GameplayScreenControls(this);
         }
@@ -257,40 +253,41 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            if (_guiSettings != null)
+                _guiSettings.Dispose();
+
+            if (Socket != null)
+            {
+                try
+                {
+                    Socket.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    // Ignore errors in disconnecting
+                    Debug.Fail("Disconnect failed: " + ex);
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat("Failed to disconnect client socket ({0}). Exception: {1}", Socket, ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
-        /// there is often no need to clear the screen. This will only be called while the screen is the 
+        /// there is often no need to clear the screen. This will only be called while the screen is the
         /// active screen.
         /// </summary>
-        /// <param name="gameTime">Current GameTime</param>
-        public override void Draw(GameTime gameTime)
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="gameTime">The current game time.</param>
+        public override void Draw(SpriteBatch spriteBatch, int gameTime)
         {
-            ThreadAsserts.IsMainThread();
-
-            // Don't draw if we don't know who our character is
             if (UserChar == null)
                 return;
 
-            DrawWorld();
-            DrawHUD();
-        }
-
-        /// <summary>
-        /// Draws the HUD, which is displayed above the world and not modified by the camera position.
-        /// </summary>
-        void DrawHUD()
-        {
-            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
-            _infoBox.Draw(_spriteBatch);
-            _gui.Draw(_spriteBatch);
-            _spriteBatch.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
-            _spriteBatch.End();
-        }
-
-        /// <summary>
-        /// Draws the game world, which is modified by the camera position.
-        /// </summary>
-        void DrawWorld()
-        {
             // Update the camera
             World.Camera.Min = World.UserChar.GetCameraPos();
 
@@ -300,12 +297,19 @@ namespace DemoGame.Client
                 World.Camera.CenterOn(World.UserChar);
 
             // Draw the world layer
-            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,
-                                         World.Camera.Matrix);
-            World.Draw(_spriteBatch);
-            _chatBubbleManager.Draw(_spriteBatch);
-            _damageTextPool.Draw(_spriteBatch, _damageFont);
-            _spriteBatch.End();
+            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,
+                                        World.Camera.Matrix);
+            World.Draw(spriteBatch);
+            _chatBubbleManager.Draw(spriteBatch);
+            _damageTextPool.Draw(spriteBatch, _damageFont);
+            spriteBatch.End();
+
+            // Draw the HUD layer
+            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            _infoBox.Draw(spriteBatch);
+            GUIManager.Draw(spriteBatch);
+            spriteBatch.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
 
         void EquippedForm_OnRequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
@@ -342,7 +346,7 @@ namespace DemoGame.Client
             // Other inits
             InitializeGUI();
 
-            _chatBubbleManager = new ChatBubbleManager(_gui.SkinManager, _guiFont);
+            _chatBubbleManager = new ChatBubbleManager(GUIManager.SkinManager, _guiFont);
         }
 
         /// <summary>
@@ -351,10 +355,10 @@ namespace DemoGame.Client
         void InitializeGUI()
         {
             _guiFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
-            _gui = ScreenManager.CreateGUIManager(_guiFont);
+            GUIManager.Font = _guiFont;
             Character.NameFont = _guiFont;
 
-            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
+            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
@@ -405,7 +409,6 @@ namespace DemoGame.Client
         /// </summary>
         public override void LoadContent()
         {
-            _spriteBatch = ScreenManager.SpriteBatch;
             _damageFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
         }
 
@@ -481,15 +484,15 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles updating of the screen. This will only be called while the screen is the active screen.
+        /// Updates the screen if it is currently the active screen.
         /// </summary>
-        /// <param name="gameTime">Current GameTime</param>
-        public override void Update(GameTime gameTime)
+        /// <param name="gameTime">The current game time.</param>
+        public override void Update(int gameTime)
         {
             ThreadAsserts.IsMainThread();
 
             // Get the current time
-            _currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
+            _currentTime = gameTime;
 
             if (UserChar == null)
                 return;
@@ -505,17 +508,18 @@ namespace DemoGame.Client
 
             // Update some other goodies
             World.Update();
-            _gui.Update(_currentTime);
             _damageTextPool.Update(_currentTime);
             _guiSettings.Update(_currentTime);
             _chatBubbleManager.Update(_currentTime);
             _emoticonDisplayManager.Update(_currentTime);
 
             if (UserChar != null)
-                _gameControls.Update(_gui, _currentTime);
+                _gameControls.Update(GUIManager, _currentTime);
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
+
+            base.Update(gameTime);
         }
 
         void World_OnChangeMap(World world, Map map)
@@ -542,39 +546,6 @@ namespace DemoGame.Client
                 ScreenMusic = musicTrack;
             }
         }
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-
-            if (_guiSettings != null)
-                _guiSettings.Dispose();
-
-            if (Socket != null)
-            {
-                try
-                {
-                    Socket.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    // Ignore errors in disconnecting
-                    Debug.Fail("Disconnect failed: " + ex);
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat("Failed to disconnect client socket ({0}). Exception: {1}", Socket, ex);
-                }
-            }
-        }
-
-        #endregion
 
         #region IGetTime Members
 
