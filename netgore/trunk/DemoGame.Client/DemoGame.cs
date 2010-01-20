@@ -42,14 +42,14 @@ namespace DemoGame.Client
 
             // Read the GrhInfo
             LoadGrhInfo();
-
+            
             // Create the screens
-            _screenManager.Add(new GameplayScreen());
-            _screenManager.Add(new MainMenuScreen());
-            _screenManager.Add(new LoginScreen());
-            _screenManager.Add(new CharacterSelectionScreen());
-            _screenManager.Add(new CreateCharacterScreen());
-            _screenManager.Add(new NewAccountScreen());
+            new GameplayScreen(_screenManager);
+            new MainMenuScreen(_screenManager);
+            new LoginScreen(_screenManager);
+            new CharacterSelectionScreen(_screenManager);
+            new CreateCharacterScreen(_screenManager);
+            new NewAccountScreen(_screenManager);
             _screenManager.SetScreen(MainMenuScreen.ScreenName);
 
             // NOTE: Temporary volume reduction
