@@ -69,6 +69,7 @@
     <Compile Include="NetGore\IO\PathStringTests.cs" />
     <Compile Include="NetGore\IO\PersistableTests.cs" />
     <Compile Include="NetGore\IO\PropertyInterfaceTests.cs" />
+    <Compile Include="NetGore\KeysExtensionsTests.cs" />
     <Compile Include="NetGore\StatTests.cs" />
     <Compile Include="NetGore\TypeHelperTests.cs" />
     <Compile Include="NetGore\Vector3Tests.cs" />

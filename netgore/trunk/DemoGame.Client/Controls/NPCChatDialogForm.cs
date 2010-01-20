@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics.GUI;
 using NetGore.NPCChat;
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -43,7 +44,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public NPCChatDialogForm(Vector2 position, Control parent) : base(parent, position, new Vector2(600, 500))
+        public NPCChatDialogForm(Vector2 position, Control parent) : base(parent, position, new Vector2(400, 300))
         {
             IsVisible = false;
 
@@ -55,12 +56,12 @@ namespace DemoGame.Client
 
             float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
             Vector2 textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
-            _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize)
-            { IsEnabled = false, CanFocus = false, IsMultiLine = true };
+            _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize) { IsEnabled = false, CanFocus = false, IsMultiLine = true };
+            _dialogTextControl.ClientSize -= _dialogTextControl.Border.Size;
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
-                ResponseText r = new ResponseText(this, new Vector2(0, responseStartY + (spacing * i))) { IsVisible = true };
+                ResponseText r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true };
                 r.OnClick += ResponseText_OnClick;
                 _responseTextControls[i] = r;
             }
@@ -94,6 +95,22 @@ namespace DemoGame.Client
             {
                 if (OnRequestEndDialog != null)
                     OnRequestEndDialog(this);
+            }
+            else
+            {
+                var asNumeric = e.Keys.Select(x => x.GetNumericKeyAsValue()).FirstOrDefault(x => x.HasValue);
+                if (asNumeric.HasValue)
+                {
+                    var value = asNumeric.Value - 1;
+                    if (value < 0)
+                        value = 10;
+
+                    if (value < _responses.Length)
+                    {
+                        if (OnSelectResponse != null)
+                            OnSelectResponse(this, _responses[value]);
+                    }
+                }
             }
         }
 
@@ -171,6 +188,7 @@ namespace DemoGame.Client
             }
 
             _dialog = dialog;
+            SetFocus();
         }
 
         class ResponseText : Label
@@ -196,7 +214,7 @@ namespace DemoGame.Client
                 }
 
                 _response = response;
-                Text = index + ": " + Response.Text;
+                Text = (index + 1) + ": " + Response.Text;
             }
 
             public void UnsetResponse()

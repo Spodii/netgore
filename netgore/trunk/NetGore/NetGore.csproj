@@ -78,6 +78,7 @@
     <Compile Include="DirectionHelper.cs" />
     <Compile Include="EngineSettings.cs" />
     <Compile Include="Enum\EnumFieldAttributeManager.cs" />
+    <Compile Include="Extensions\KeysExtensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Extensions\Vector4Extensions.cs" />
     <Compile Include="InventorySlot.cs" />
