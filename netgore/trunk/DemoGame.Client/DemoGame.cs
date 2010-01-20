@@ -151,7 +151,7 @@ namespace DemoGame.Client
             _screenManager.MapContent.Unload();
         }
 
-        void screenManager_OnUpdate(ScreenManager screenManager)
+        void screenManager_OnUpdate(IScreenManager screenManager)
         {
             // Update the sockets
             _sockets.Heartbeat();

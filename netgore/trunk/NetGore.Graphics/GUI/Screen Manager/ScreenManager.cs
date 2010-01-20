@@ -15,14 +15,8 @@ namespace NetGore.Graphics.GUI
     /// active and updating and drawing them as needed. Also allows for interaction
     /// between the screens and common objects and properties for screens.
     /// </summary>
-    public class ScreenManager : DrawableGameComponent
+    public class ScreenManager : DrawableGameComponent, IScreenManager
     {
-        /// <summary>
-        /// Delegate for handling an event from the <see cref="ScreenManager"/>.
-        /// </summary>
-        /// <param name="screenManager">The <see cref="ScreenManager"/> the event came from.</param>
-        public delegate void ScreenManagerEventHandler(ScreenManager screenManager);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly ContentManager _content;
@@ -36,11 +30,6 @@ namespace NetGore.Graphics.GUI
         IGameScreen _activeScreen;
         SpriteFont _menuFont;
         SpriteBatch _sb;
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="ScreenManager"/> updates.
-        /// </summary>
-        public event ScreenManagerEventHandler OnUpdate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenManager"/> class.
@@ -71,15 +60,108 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Releases the unmanaged resources used by the DrawableGameComponent and optionally
+        /// releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            // Call Dispose on screens that implement it
+            foreach (var screen in _screens.Values)
+            {
+                IDisposable disposable = screen as IDisposable;
+                if (disposable != null)
+                    disposable.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Called when the DrawableGameComponent needs to be drawn. Override this method with
+        /// component-specific drawing code.
+        /// </summary>
+        /// <param name="gameTime">Time passed since the last call to Draw.</param>
+        public override void Draw(GameTime gameTime)
+        {
+            _fps.Update(gameTime.ElapsedRealTime);
+
+            if (_activeScreen == null)
+                return;
+
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            _activeScreen.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Called when graphics resources need to be loaded. Override this method to load any
+        /// component-specific graphics resources.
+        /// </summary>
+        protected override void LoadContent()
+        {
+            // Read the global content used between screens
+            _sb = new SpriteBatch(GraphicsDevice);
+            _menuFont = _content.Load<SpriteFont>("Font/Menu");
+
+            // Tell the other screens to load their content, too
+            foreach (var screen in _screens.Values)
+            {
+                screen.LoadContent();
+            }
+        }
+
+        /// <summary>
+        /// Called when graphics resources need to be unloaded. Override this method to unload any component-specific
+        /// graphics resources.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            _content.Unload();
+
+            foreach (var screen in _screens.Values)
+            {
+                screen.UnloadContent();
+            }
+        }
+
+        /// <summary>
+        /// Called when the GameComponent needs to be updated. Override this method with component-specific update code.
+        /// </summary>
+        /// <param name="gameTime">Time elapsed since the last call to Update.</param>
+        public override void Update(GameTime gameTime)
+        {
+            if (OnUpdate != null)
+                OnUpdate(this);
+
+            if (_activeScreen != null)
+                _activeScreen.Update(gameTime);
+        }
+
+        #region IScreenManager Members
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IScreenManager"/> updates.
+        /// </summary>
+        public event IScreenManagerEventHandler OnUpdate;
+
+        /// <summary>
         /// Gets or sets the currently active <see cref="IGameScreen"/>.
         /// </summary>
+        /// <value></value>
+        /// <exception cref="ArgumentException"><paramref name="value"/> does not belong to this
+        /// <see cref="IScreenManager"/>.</exception>
         public IGameScreen ActiveScreen
         {
             get { return _activeScreen; }
             set
             {
-                if (_activeScreen == value)
-                    return;
+                if (value != null && value.ScreenManager != this)
+                {
+                    const string errmsg = "Game screen `{0}` does not belogn to this IScreenManager.";
+                    throw new ArgumentException(string.Format(errmsg, value), "value");
+                }
 
                 var lastScreen = _activeScreen;
                 _activeScreen = value;
@@ -93,7 +175,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the global <see cref="ContentManager"/>.
+        /// Gets the global <see cref="ContentManager"/> shared between all screens.
         /// </summary>
         public ContentManager Content
         {
@@ -133,27 +215,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the height of the screen in pixels.
-        /// </summary>
-        public int ScreenHeight
-        {
-            get { return GraphicsDevice.Viewport.Height; }
-        }
-
-        /// <summary>
         /// Gets the size of the screen in pixels.
         /// </summary>
         public Vector2 ScreenSize
         {
-            get { return new Vector2(ScreenWidth, ScreenHeight); }
-        }
-
-        /// <summary>
-        /// Gets the width of the screen in pixels.
-        /// </summary>
-        public int ScreenWidth
-        {
-            get { return GraphicsDevice.Viewport.Width; }
+            get { return new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height); }
         }
 
         /// <summary>
@@ -173,7 +239,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the generic <see cref="SpriteBatch"/> to use.
+        /// Gets a general-purpose <see cref="SpriteBatch"/> to use for drawing the screens.
         /// </summary>
         public SpriteBatch SpriteBatch
         {
@@ -181,13 +247,13 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Adds a <see cref="GameScreen"/> to this manager.
+        /// Adds a <see cref="IGameScreen"/> to this manager.
         /// </summary>
-        /// <param name="screen">The <see cref="GameScreen"/> to add.</param>
+        /// <param name="screen">The <see cref="IGameScreen"/> to add.</param>
         /// <exception cref="ArgumentNullException"><paramref name="screen"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="screen"/>'s ScreenManager is not equal to this
-        /// ScreenManager.</exception>
-        public void Add(GameScreen screen)
+        /// <exception cref="ArgumentException"><paramref name="screen"/>'s <see cref="IScreenManager"/> is not
+        /// equal to this <see cref="IScreenManager"/>.</exception>
+        public void Add(IGameScreen screen)
         {
             if (screen == null)
                 throw new ArgumentNullException("screen");
@@ -201,10 +267,12 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Creates an <see cref="IGUIManager"/>.
+        /// Creates an <see cref="IGUIManager"/> to be used by the screens managed by this <see cref="IScreenManager"/>.
         /// </summary>
         /// <param name="fontAssetName">The name of the font asset that will be used as the default GUI font.</param>
-        /// <returns>A new <see cref="IGUIManager"/> instance.</returns>
+        /// <returns>
+        /// A new <see cref="IGUIManager"/> instance.
+        /// </returns>
         public IGUIManager CreateGUIManager(string fontAssetName)
         {
             var font = Content.Load<SpriteFont>(fontAssetName);
@@ -212,49 +280,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Creates a <see cref="GUIManager"/>.
+        /// Creates an <see cref="IGUIManager"/> to be used by the screens managed by this <see cref="IScreenManager"/>.
         /// </summary>
         /// <param name="font">The font that will be used as the default GUI font.</param>
-        /// <returns>A new <see cref="GUIManager"/> instance.</returns>
-        public virtual GUIManager CreateGUIManager(SpriteFont font)
+        /// <returns>
+        /// A new <see cref="GUIManager"/> instance.
+        /// </returns>
+        public virtual IGUIManager CreateGUIManager(SpriteFont font)
         {
             return new GUIManager(font, SkinManager);
-        }
-
-        /// <summary>
-        /// Releases the unmanaged resources used by the DrawableGameComponent and optionally
-        /// releases the managed resources.
-        /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            // Call Dispose on screens that implement it
-            foreach (GameScreen screen in _screens.Values)
-            {
-                IDisposable disposable = screen as IDisposable;
-                if (disposable != null)
-                    disposable.Dispose();
-            }
-
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Called when the DrawableGameComponent needs to be drawn. Override this method with
-        /// component-specific drawing code.
-        /// </summary>
-        /// <param name="gameTime">Time passed since the last call to Draw.</param>
-        public override void Draw(GameTime gameTime)
-        {
-            _fps.Update(gameTime.ElapsedRealTime);
-
-            if (_activeScreen == null)
-                return;
-
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            _activeScreen.Draw(gameTime);
         }
 
         /// <summary>
@@ -273,20 +307,20 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Called when graphics resources need to be loaded. Override this method to load any
-        /// component-specific graphics resources.
+        /// Gets the <see cref="IGameScreen"/> of the specified type.
         /// </summary>
-        protected override void LoadContent()
+        /// <typeparam name="T">The type of <see cref="IGameScreen"/>.</typeparam>
+        /// <returns>
+        /// The <see cref="IGameScreen"/> of the given type..
+        /// </returns>
+        /// <exception cref="ArgumentException">No screen with the given type was found.</exception>
+        public T GetScreen<T>()
         {
-            // Read the global content used between screens
-            _sb = new SpriteBatch(GraphicsDevice);
-            _menuFont = _content.Load<SpriteFont>("Font/Menu");
+            var ret = _screens.Values.OfType<T>().FirstOrDefault();
+            if (Equals(ret, default(T)))
+                throw new ArgumentException(string.Format("No screen of type `{0}` was found.", typeof(T)));
 
-            // Tell the other screens to load their content, too
-            foreach (GameScreen screen in _screens.Values)
-            {
-                screen.LoadContent();
-            }
+            return ret;
         }
 
         /// <summary>
@@ -299,31 +333,6 @@ namespace NetGore.Graphics.GUI
             ActiveScreen = GetScreen(name);
         }
 
-        /// <summary>
-        /// Called when graphics resources need to be unloaded. Override this method to unload any component-specific
-        /// graphics resources.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            _content.Unload();
-
-            foreach (GameScreen screen in _screens.Values)
-            {
-                screen.UnloadContent();
-            }
-        }
-
-        /// <summary>
-        /// Called when the GameComponent needs to be updated. Override this method with component-specific update code.
-        /// </summary>
-        /// <param name="gameTime">Time elapsed since the last call to Update.</param>
-        public override void Update(GameTime gameTime)
-        {
-            if (OnUpdate != null)
-                OnUpdate(this);
-
-            if (_activeScreen != null)
-                _activeScreen.Update(gameTime);
-        }
+        #endregion
     }
 }

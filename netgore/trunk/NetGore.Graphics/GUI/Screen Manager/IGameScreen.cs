@@ -27,9 +27,9 @@ namespace NetGore.Graphics.GUI
         bool PlayMusic { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="ScreenManager"/> that manages this <see cref="IGameScreen"/>.
+        /// Gets the <see cref="IScreenManager"/> that manages this <see cref="IGameScreen"/>.
         /// </summary>
-        ScreenManager ScreenManager { get; }
+        IScreenManager ScreenManager { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="IMusic"/> to play while this screen is active. Only valid if
