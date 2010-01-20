@@ -29,11 +29,11 @@ namespace NetGore.Graphics.GUI
         readonly FrameCounter _fps = new FrameCounter();
         readonly ContentManager _mapContent;
         readonly MusicManager _musicManager;
-        readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, IGameScreen> _screens = new Dictionary<string, IGameScreen>(StringComparer.OrdinalIgnoreCase);
         readonly ISkinManager _skinManager;
         readonly SoundManager _soundManager;
 
-        GameScreen _activeScreen;
+        IGameScreen _activeScreen;
         SpriteFont _menuFont;
         SpriteBatch _sb;
 
@@ -71,9 +71,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the currently active <see cref="GameScreen"/>.
+        /// Gets or sets the currently active <see cref="IGameScreen"/>.
         /// </summary>
-        public GameScreen ActiveScreen
+        public IGameScreen ActiveScreen
         {
             get { return _activeScreen; }
             set
@@ -81,7 +81,7 @@ namespace NetGore.Graphics.GUI
                 if (_activeScreen == value)
                     return;
 
-                GameScreen lastScreen = _activeScreen;
+                var lastScreen = _activeScreen;
                 _activeScreen = value;
 
                 if (_activeScreen != null)
@@ -184,12 +184,16 @@ namespace NetGore.Graphics.GUI
         /// Adds a <see cref="GameScreen"/> to this manager.
         /// </summary>
         /// <param name="screen">The <see cref="GameScreen"/> to add.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="screen"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="screen"/>'s ScreenManager is not equal to this
+        /// ScreenManager.</exception>
         public void Add(GameScreen screen)
         {
             if (screen == null)
                 throw new ArgumentNullException("screen");
+            if (screen.ScreenManager != this)
+                throw new ArgumentException("The screen's ScreenManager must be set to this ScreenManager.", "screen");
 
-            screen.ScreenManager = this;
             _screens.Add(screen.Name, screen);
 
             screen.Initialize();
@@ -254,16 +258,16 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="GameScreen"/> with the specified <paramref name="name"/>.
+        /// Gets the <see cref="IGameScreen"/> with the specified <paramref name="name"/>.
         /// </summary>
-        /// <param name="name">The name of the <see cref="GameScreen"/> to get.</param>
-        /// <returns>The <see cref="GameScreen"/> with the given <paramref name="name"/>, or null if the
-        /// <paramref name="name"/> was invalid or there is no screen was found.</returns>
-        public GameScreen GetScreen(string name)
+        /// <param name="name">The name of the <see cref="IGameScreen"/> to get.</param>
+        /// <returns>The <see cref="IGameScreen"/> with the given <paramref name="name"/>.</returns>
+        /// <exception cref="ArgumentException">No screen with the given <paramref name="name"/> was found.</exception>
+        public IGameScreen GetScreen(string name)
         {
-            GameScreen ret;
+            IGameScreen ret;
             if (!_screens.TryGetValue(name, out ret))
-                return null;
+                throw new ArgumentException(string.Format("No screen with the given name `{0}` was found.", name), "name");
 
             return ret;
         }
@@ -292,17 +296,7 @@ namespace NetGore.Graphics.GUI
         /// <exception cref="ArgumentException">No screen with the given <paramref name="name"/> was found.</exception>
         public void SetScreen(string name)
         {
-            GameScreen gs = GetScreen(name);
-            if (gs == null)
-            {
-                const string errmsg = "Unknown screen with name `{0}`.";
-                string err = string.Format(errmsg, name);
-                if (log.IsFatalEnabled)
-                    log.Fatal(err);
-                throw new ArgumentException(err);
-            }
-
-            ActiveScreen = gs;
+            ActiveScreen = GetScreen(name);
         }
 
         /// <summary>

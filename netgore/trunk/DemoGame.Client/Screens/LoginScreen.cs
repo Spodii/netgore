@@ -25,7 +25,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginScreen"/> class.
         /// </summary>
-        public LoginScreen() : base(ScreenName)
+        /// <param name="screenManager">The <see cref="ScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
+        public LoginScreen(ScreenManager screenManager) : base(screenManager, ScreenName)
         {
             PlayMusic = false;
         }

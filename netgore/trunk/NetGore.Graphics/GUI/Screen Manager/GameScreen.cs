@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore.Audio;
@@ -8,92 +9,58 @@ namespace NetGore.Graphics.GUI
     /// Base of a game screen for the <see cref="ScreenManager"/>. Each screen should ideally be independent of
     /// one another.
     /// </summary>
-    public abstract class GameScreen
+    public abstract class GameScreen : IGameScreen
     {
         readonly string _name;
+        readonly ScreenManager _screenManager;
 
         bool _playMusic = true;
-
         IMusic _screenMusic;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameScreen"/> class.
         /// </summary>
+        /// <param name="screenManager">The <see cref="ScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         /// <param name="name">Unique name of the screen that can be used to identify and
         /// call it from other screens</param>
-        protected GameScreen(string name)
+        /// <exception cref="ArgumentNullException"><paramref name="screenManager"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
+        protected GameScreen(ScreenManager screenManager, string name)
         {
+            if (screenManager == null)
+                throw new ArgumentNullException("screenManager");
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
+            _screenManager = screenManager;
             _name = name;
+
+            screenManager.Add(this);
         }
 
         /// <summary>
-        /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="GameScreen"/>.
+        /// Updates the currently playing music based off the values defined by <see cref="GameScreen.PlayMusic"/>
+        /// and <see cref="GameScreen.ScreenMusic"/>.
         /// </summary>
-        public MusicManager MusicManager
+        void UpdateMusic()
         {
-            get { return ScreenManager.MusicManager; }
-        }
+            // Make sure we have the screen enabled
+            if (ScreenManager == null || ScreenManager.ActiveScreen != this)
+                return;
 
-        /// <summary>
-        /// Gets the unique name of this screen.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets or sets if music is to be played during this screen. If true, the <see cref="IMusic"/> specified
-        /// in <see cref="ScreenMusic"/> will be played. If false, any music will be turned off while this screen
-        /// is active.
-        /// </summary>
-        public bool PlayMusic
-        {
-            get { return _playMusic; }
-            set
+            // Turn off music
+            if (!PlayMusic)
             {
-                // Value changed?
-                if (_playMusic == value)
-                    return;
-
-                // Update value and update music
-                _playMusic = value;
-                UpdateMusic();
+                MusicManager.Stop();
+                return;
             }
+
+            // Change track
+            if (ScreenMusic != null)
+                ScreenMusic.Play();
         }
 
-        /// <summary>
-        /// Gets the <see cref="ScreenManager"/> that manages this <see cref="GameScreen"/>.
-        /// </summary>
-        public ScreenManager ScreenManager { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="IMusic"/> to play while this screen is active. Only valid if
-        /// <see cref="PlayMusic"/> is set. If null, the track will not be changed, preserving the music
-        /// currently playing.
-        /// </summary>
-        public IMusic ScreenMusic
-        {
-            get { return _screenMusic; }
-            set
-            {
-                // Value changed?
-                if (_screenMusic == value)
-                    return;
-
-                // Update value and update music
-                _screenMusic = value;
-                UpdateMusic();
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="SoundManager"/> to use for the sound to play on this <see cref="GameScreen"/>.
-        /// </summary>
-        public SoundManager SoundManager
-        {
-            get { return ScreenManager.SoundManager; }
-        }
+        #region IGameScreen Members
 
         /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
@@ -147,31 +114,83 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles updating of the screen. This will only be called while the screen is the active screen.
+        /// Updates the screen if it is currently the active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
         public abstract void Update(GameTime gameTime);
 
         /// <summary>
-        /// Updates the currently playing music based off the values defined by <see cref="GameScreen.PlayMusic"/>
-        /// and <see cref="GameScreen.ScreenMusic"/>.
+        /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="IGameScreen"/>.
         /// </summary>
-        void UpdateMusic()
+        public MusicManager MusicManager
         {
-            // Make sure we have the screen enabled
-            if (ScreenManager == null || ScreenManager.ActiveScreen != this)
-                return;
-
-            // Turn off music
-            if (!PlayMusic)
-            {
-                MusicManager.Stop();
-                return;
-            }
-
-            // Change track
-            if (ScreenMusic != null)
-                ScreenMusic.Play();
+            get { return ScreenManager.MusicManager; }
         }
+
+        /// <summary>
+        /// Gets the unique name of this screen.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets or sets if music is to be played during this screen. If true, the <see cref="IMusic"/> specified
+        /// in <see cref="IGameScreen.ScreenMusic"/> will be played. If false, any music will be turned off while this
+        /// screen is active.
+        /// </summary>
+        public bool PlayMusic
+        {
+            get { return _playMusic; }
+            set
+            {
+                // Value changed?
+                if (_playMusic == value)
+                    return;
+
+                // Update value and update music
+                _playMusic = value;
+                UpdateMusic();
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ScreenManager"/> that manages this <see cref="IGameScreen"/>.
+        /// </summary>
+        public ScreenManager ScreenManager
+        {
+            get { return _screenManager; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IMusic"/> to play while this screen is active. Only valid if
+        /// <see cref="IGameScreen.PlayMusic"/> is set. If null, the track will not be changed, preserving the music
+        /// currently playing.
+        /// </summary>
+        public IMusic ScreenMusic
+        {
+            get { return _screenMusic; }
+            set
+            {
+                // Value changed?
+                if (_screenMusic == value)
+                    return;
+
+                // Update value and update music
+                _screenMusic = value;
+                UpdateMusic();
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SoundManager"/> to use for the sound to play on this <see cref="GameScreen"/>.
+        /// </summary>
+        public SoundManager SoundManager
+        {
+            get { return ScreenManager.SoundManager; }
+        }
+
+        #endregion
     }
 }

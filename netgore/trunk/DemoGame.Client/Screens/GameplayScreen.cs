@@ -63,7 +63,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
         /// </summary>
-        public GameplayScreen() : base(ScreenName)
+        /// <param name="screenManager">The <see cref="ScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
+        public GameplayScreen(ScreenManager screenManager) : base(screenManager, ScreenName)
         {
             _gameControls = new GameplayScreenControls(this);
         }
