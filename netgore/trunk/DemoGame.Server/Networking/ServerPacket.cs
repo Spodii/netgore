@@ -70,6 +70,15 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter CreateAccountCharacter(bool successful, string failureMessage)
+        {
+            var pw = GetWriter(ServerPacketID.CreateAccountCharacter);
+            pw.Write(successful);
+            if (!successful)
+                pw.Write(failureMessage);
+            return pw;
+        }
+
         public static void CreateDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)
         {
             pw.Write(ServerPacketID.CreateDynamicEntity);

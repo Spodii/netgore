@@ -48,6 +48,7 @@ namespace DemoGame.Client
             _screenManager.Add(new MainMenuScreen());
             _screenManager.Add(new LoginScreen());
             _screenManager.Add(new CharacterSelectionScreen());
+            _screenManager.Add(new CreateCharacterScreen());
             _screenManager.Add(new NewAccountScreen());
             _screenManager.SetScreen(MainMenuScreen.ScreenName);
 

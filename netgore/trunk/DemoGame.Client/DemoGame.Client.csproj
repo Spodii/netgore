@@ -135,6 +135,7 @@
     <Compile Include="Controls\ChatForm.cs" />
     <Compile Include="Controls\EquippedForm.cs" />
     <Compile Include="Screens\CharacterSelectionScreen.cs" />
+    <Compile Include="Screens\CreateCharacterScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Controls\InventoryForm.cs" />
     <Compile Include="Screens\LoginScreen.cs" />

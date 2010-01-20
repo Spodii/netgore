@@ -149,7 +149,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Loads the <see cref="CharacterID"/>s for the Characters in this account.
         /// </summary>
-        void LoadCharacterIDs()
+        public void LoadCharacterIDs()
         {
             var ids = _dbController.GetQuery<SelectAccountCharacterIDsQuery>().Execute(ID);
             _characterIDs.Clear();
@@ -292,7 +292,7 @@ namespace DemoGame.Server
 
             if (!success)
                 idCreator.FreeID(characterID);
-
+            
             return success;
         }
 

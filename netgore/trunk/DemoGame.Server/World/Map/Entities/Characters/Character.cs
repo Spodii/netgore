@@ -1483,8 +1483,7 @@ namespace DemoGame.Server
                     return closestLegalPosition;
                 else
                 {
-                    // TODO: Could not find a valid position for the Character
-                    Debug.Fail("What to do, what to do...");
+                    // TODO: Could not find a valid position for the Character. Need to do SOMETHING here...
                 }
             }
 

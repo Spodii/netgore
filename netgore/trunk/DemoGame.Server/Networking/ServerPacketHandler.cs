@@ -185,6 +185,36 @@ namespace DemoGame.Server
             Server.LoginAccount(conn, name, password);
         }
 
+        [MessageHandler((byte)ClientPacketID.CreateNewAccountCharacter)]
+        void RecvCreateNewAccountCharacter(IIPSocket conn, BitStream r)
+        {
+            ThreadAsserts.IsMainThread();
+
+            string name = r.ReadString();
+
+            // Check for a valid account
+            var account = TryGetAccount(conn);
+            if (account == null)
+            {
+                const string errmsg = "Connection `{0}` tried to create a new account character but no account is associated with this connection.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, conn);
+                return;
+            }
+
+            // Ensure the connection isn't logged in
+            if (account.User != null)
+            {
+                const string errmsg = "User `{0}` tried to create a new account character while already logged in.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, account.User);
+                return;
+            }
+
+            // Create the new account character
+            Server.CreateAccountCharacter(conn, name);
+        }
+
         [MessageHandler((byte)ClientPacketID.CreateNewAccount)]
         void RecvCreateNewAccount(IIPSocket conn, BitStream r)
         {
@@ -204,6 +234,7 @@ namespace DemoGame.Server
                 return;
             }
 
+            // Create the new account
             Server.CreateAccount(conn, name, password, email);
         }
 
@@ -568,6 +599,21 @@ namespace DemoGame.Server
             {
                 _disconnectedSockets.Enqueue(conn);
             }
+        }
+
+        static UserAccount TryGetAccount(IIPSocket conn)
+        {
+            // Check for a valid conn
+            if (conn == null)
+            {
+                const string errmsg = "conn is null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return null;
+            }
+
+            return conn.Tag as UserAccount;
         }
 
         static bool TryGetMap(Character user, out Map map)

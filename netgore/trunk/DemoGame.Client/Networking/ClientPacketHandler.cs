@@ -45,9 +45,14 @@ namespace DemoGame.Client
         readonly ISocketSender _socketSender;
 
         /// <summary>
-        /// Notifies listeners when a successful account creation request has been made.
+        /// Notifies listeners when a message has been received about creating an account.
         /// </summary>
         public event SocketCreateAccountEventHandler OnCreateAccount;
+
+        /// <summary>
+        /// Notifies listeners when a message has been received about creating an account character.
+        /// </summary>
+        public event SocketCreateAccountEventHandler OnCreateAccountCharacter;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -234,6 +239,16 @@ namespace DemoGame.Client
 
             if (OnCreateAccount != null)
                 OnCreateAccount(conn, successful, errorMessage);
+        }
+
+        [MessageHandler((byte)ServerPacketID.CreateAccountCharacter)]
+        void RecvCreateAccountCharacter(IIPSocket conn, BitStream r)
+        {
+            bool successful = r.ReadBool();
+            string errorMessage = successful ? string.Empty : r.ReadString();
+
+            if (OnCreateAccountCharacter != null)
+                OnCreateAccountCharacter(conn, successful, errorMessage);
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]

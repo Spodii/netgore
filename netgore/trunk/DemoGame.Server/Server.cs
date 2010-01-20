@@ -169,6 +169,34 @@ namespace DemoGame.Server
         /// Handles the request to create a new account.
         /// </summary>
         /// <param name="conn">Connection that the request was made on.</param>
+        /// <param name="name">The name of the character to create.</param>
+        public void CreateAccountCharacter(IIPSocket conn, string name)
+        {
+            ThreadAsserts.IsMainThread();
+
+            var account = conn.Tag as UserAccount;
+            if (account == null)
+                return;
+
+            string errorMessage;
+            bool success = UserAccount.TryAddCharacter(DbController, account.Name, name, out errorMessage);
+
+            using (var pw = ServerPacket.CreateAccountCharacter(success, errorMessage))
+            {
+                conn.Send(pw);
+            }
+
+            if (success)
+            {
+                account.LoadCharacterIDs();
+                account.SendAccountCharacterInfos();
+            }
+        }
+
+        /// <summary>
+        /// Handles the request to create a new account.
+        /// </summary>
+        /// <param name="conn">Connection that the request was made on.</param>
         /// <param name="name">Name of the account.</param>
         /// <param name="password">Entered password for this account.</param>
         /// <param name="email">The email address.</param>
