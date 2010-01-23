@@ -23,13 +23,19 @@ namespace DemoGame.Server
             Idle
         }
 
+        Character _target;
         const int _id = 2;
-        const bool AIIDLE = true;
-        const int _targetUpdateRate = 1000;
-        //int _lastTargetUpdateTime = int.MinValue;   Commented to hide warning of assigned but never used.
+        const int _UpdateRate = 2000;
+        State _characterState = State.Patrol;
+        bool _isAttackingTarget;
+        int _lastUpdateTime = int.MinValue;
+        float _lastX;
+
             
         public StateMachine(Character actor) : base(actor)
         {
+            //Adds an event handler so we know when the actor has been attacked.
+            Actor.OnAttackedByCharacter += new CharacterAttackCharacterEventHandler(Actor_OnAttackedByCharacter);
         }
 
         /// <summary>
@@ -40,10 +46,294 @@ namespace DemoGame.Server
             get { return new AIID(_id); }
         }
 
+        void Actor_OnAttackedByCharacter(Character attacker, Character attacked, int damage)
+        {
+            //Set the _target as the attacker.
+            _target = attacker;
+
+            //Set up event handler for when the target dies.
+            _target.OnKilled += new CharacterEventHandler(_target_OnKilled);
+
+            if (Actor.HP <= 10)
+            {
+                _isAttackingTarget = false;
+                _characterState = State.Evade;
+                return;
+            }
+
+            //Sets the Actor to attack the _target.
+            _isAttackingTarget = true;
+            _characterState = State.Attack;
+        }
+
+
+        void _target_OnKilled(Character character)
+        {
+            //Stop attacking target. Job done.
+            _isAttackingTarget = false;
+        }
+
+
+        /// <summary>
+        /// Chases the target by checking where abouts the _target is in relation to the Actor.
+        /// </summary>
+        public void ChaseTarget()
+        {
+
+            //Checks whether the _target is above the Actor.
+            if (_target.Position.Y < Actor.Position.Y)
+            {
+                //_target above
+                //Move upwards
+                Actor.MoveUp();
+
+                //Move right because _target is to the right.
+                if (_target.Position.X > Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                }
+
+                //Move left becuase target is to the left.
+                if (_target.Position.X < Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                }
+            }
+
+            if (_target.Position.Y > Actor.Position.Y)
+            {
+                //_target below
+                //Move downwards
+
+                Actor.MoveDown();
+
+                if (_target.Position.X >= Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                }
+
+                if (_target.Position.X <= Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                }
+            }
+
+
+            if (_target.Position.Y == Actor.Position.Y)
+            {
+                //target is level
+                if (_target.Position.X >= Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                }
+
+                if (_target.Position.X <= Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                }
+            }
+
+            if (Actor.Position.X == _lastX)
+            {
+                if (_lastUpdateTime + 5000 < GetTime()) //Only execute this after 5 seconds.
+                {
+                    if (Actor.IsMovingRight)
+                    {
+                        Actor.MoveLeft();
+                    }
+                    if (Actor.IsMovingLeft)
+                    {
+                        Actor.MoveRight();
+                    }
+                }
+            }
+
+            if (IsInMeleeRange(_target))
+            {
+                Actor.StopMoving();
+                Actor.Attack();
+            }
+            
+            
+        
+        }
+
+        void EvadeTarget()
+        {
+            //Checks whether the _target is above the Actor.
+            if (_target.Position.Y > Actor.Position.Y)
+            {
+                //_target below
+                //Move upwards
+                Actor.MoveUp();
+
+                //Move lright because _target is to the left.
+                if (_target.Position.X < Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                }
+
+                //Move left becuase target is to the right.
+                if (_target.Position.X > Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                }
+            }
+
+            if (_target.Position.Y < Actor.Position.Y)
+            {
+                //_target above
+                //Move downwards
+
+                Actor.MoveDown();
+
+                if (_target.Position.X <= Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                }
+
+                if (_target.Position.X >= Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                }
+            }
+
+
+            if (_target.Position.Y == Actor.Position.Y)
+            {
+                //target is level
+                if (_target.Position.X <= Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                }
+
+                if (_target.Position.X >= Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                }
+            }
+
+            if (Actor.Position.X == _lastX)
+            {
+                if (_lastUpdateTime + 5000 < GetTime()) //Only execute this after 5 seconds.
+                {
+                    if (Actor.IsMovingRight)
+                    {
+                        Actor.MoveLeft();
+                    }
+                    if (Actor.IsMovingLeft)
+                    {
+                        Actor.MoveRight();
+                    }
+                }
+            }
+
+            if (IsInMeleeRange(_target))
+            {
+                Actor.StopMoving();
+                Actor.Attack();
+            }
+        }
+
+        /// <summary>
+        /// Uses a criteria to change the current state of the Actor. 
+        /// This is where the main logic for this class is held in terms of how the AI responds.
+        /// </summary>
+        void EvaluateState()
+        {
+            if (_target != null)
+            {
+                //This is so that the Character has the opportunity to evade this Actor
+                if (_target.GetDistance(Actor) > 50)
+                    _isAttackingTarget = false;
+
+                if (_isAttackingTarget)
+                {
+                    //We have a hostile target so lets Attack them.
+                    _characterState = State.Attack;
+                }
+                else
+                {
+                    //There is no hostile target therefore just Patrol.
+                    _isAttackingTarget = false;
+                    _characterState = State.Patrol;
+                }
+            }
+            else
+            {
+                //Just patrol if there is no _target.
+                _isAttackingTarget = false;
+                _characterState = State.Patrol;
+            }
+        }
+
+        public void Patrol()
+        {
+            //Move randomly.
+            if (Rand(0, 40) == 0)
+            {
+                if (Actor.IsMoving)
+                    Actor.StopMoving();
+                else
+                {
+                    if ((Rand(0, 2) == 0))
+                        Actor.MoveUp();
+                    else
+                        Actor.MoveDown();
+
+                    if (Rand(0, 2) == 0)
+                        Actor.MoveLeft();
+                    else
+                        Actor.MoveRight();
+                }
+            }
+        }
+
+
         protected override void DoUpdate()
         {
+            //Updates a few variables that don't need to be updated every frame
+            //and calls the EvaluateState method
+            int time = GetTime();
+            if (_lastUpdateTime + _UpdateRate < time)
+            {
+                _lastUpdateTime = time;
+                _lastX = Actor.Position.X;
+                EvaluateState();
+            }
+
+            //Updates the Actor depending on its current state.
+            UpdateState(_characterState);
         }
-            //TODO: Implement.
+
+        /// <summary>
+        /// Updates the Actor depending on its current state. Should only be called from DoUpdate().
+        /// </summary>
+        /// <param name="CurrentState">The CurrentState of the actor.</param>
+        void UpdateState(State CurrentState)
+        {
+            //If the AI has been disabled just set to Idle and ignore anything else.
+            if (AISettings.AIDisabled)
+                CurrentState = State.Idle;
+
+            switch (CurrentState)
+            {
+                case State.Idle:
+                    if (Actor.IsMoving)
+                        Actor.StopMoving();
+                    break;
+                case State.Attack:
+                    ChaseTarget();
+                    break;
+                case State.Evade:
+                    EvadeTarget();
+                    break;
+                case State.Patrol:
+                    Patrol();
+                    break;
+            }
+        }
+
     }
 #endif
 
@@ -198,7 +488,7 @@ namespace DemoGame.Server
                         Actor.Jump();
                         Actor.MoveLeft();
                     }
-                    if (Actor.IsMovingRight)
+                    if (Actor.IsMovingLeft)
                     {
                         Actor.SetHeading(Direction.East);
                         Actor.Jump();
