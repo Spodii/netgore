@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace CodeReleasePreparer
 {
@@ -36,9 +37,9 @@ namespace CodeReleasePreparer
 
         static void DoReplace(string filePath, RegexCollection regexes)
         {
-            var txt = File.ReadAllText(filePath);
+            var txt = File.ReadAllText(filePath, Encoding.UTF8);
             txt = regexes.ReplaceMatches(txt, string.Empty);
-            File.WriteAllText(filePath, txt);
+            File.WriteAllText(filePath, txt, Encoding.UTF8);
         }
     }
 }

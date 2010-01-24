@@ -16,6 +16,12 @@ namespace CodeReleasePreparer
         /// </summary>
         const bool _buildSchemaOnly = false;
 
+        static readonly string[] _deleteFilePatterns = new string[]
+        { @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
+
+        static readonly string[] _deleteFolderPatterns = new string[]
+        { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$" };
+
         static readonly string _mysqldumpPath = MySqlHelper.FindMySqlFile("mysqldump.exe");
         static readonly string _mysqlPath = MySqlHelper.FindMySqlFile("mysql.exe");
         static RegexCollection _fileRegexes;
@@ -56,9 +62,6 @@ namespace CodeReleasePreparer
 
         static void Main()
         {
-            string[] _deleteFilePatterns = new string[] { @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
-            string[] _deleteFolderPatterns = new string[] { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$" };
-
             _fileRegexes = new RegexCollection(_deleteFilePatterns);
             _folderRegexes = new RegexCollection(_deleteFolderPatterns);
 
@@ -279,11 +282,17 @@ namespace CodeReleasePreparer
 
         static bool WillDeleteFile(string fileName)
         {
+            if (fileName.ToLower().Contains(string.Format("installationvalidator{0}bin", Path.DirectorySeparatorChar)))
+                return false;
+
             return _fileRegexes.Matches(fileName);
         }
 
         static bool WillDeleteFolder(string folderName)
         {
+            if (folderName.ToLower().Contains(string.Format("installationvalidator{0}bin", Path.DirectorySeparatorChar)))
+                return false;
+
             return _folderRegexes.Matches(folderName);
         }
     }
