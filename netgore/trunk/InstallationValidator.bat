@@ -1,2 +1,1 @@
-@echo OFF
-InstallationValidator\bin\InstallationValidator.exe
+START InstallationValidator\bin\InstallationValidator.exe

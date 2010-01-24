@@ -10,7 +10,7 @@ namespace InstallationValidator
         /// Signature string for the MySql.Data assembly.
         /// </summary>
         public const string MySqlDataAssembly =
-            "MySql.Data, Version=6.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL";
+            "MySql.Data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL";
 
         /// <summary>
         /// Signature string for the Xna assembly.
