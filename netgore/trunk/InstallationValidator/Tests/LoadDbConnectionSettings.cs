@@ -4,31 +4,41 @@ using NetGore.Db;
 
 namespace InstallationValidator.Tests
 {
-    public class LoadDbConnectionSettings : ITestable
+    public sealed class LoadDbConnectionSettings : TestableBase
     {
-        #region ITestable Members
+        const string _testName = "Load database settings";
+        const string _description = "Attempts to load the database connection settings file. The file may exist, but it may be formatted in an invalid way or be missing data, resulting in the engine not being able to read it. It is vital that the engine can load the database connection settings correctly, otherwise it won't be able to know how to connect to the database.";
+        const string _failMessage = "Failed to load the database connection settings file from path:\n {0}";
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoadDbConnectionSettings"/> class.
+        /// </summary>
+        public LoadDbConnectionSettings()
+            : base(_testName, _description)
+        {
+        }
 
         /// <summary>
-        /// Runs a test.
+        /// When overridden in the derived class, runs the test.
         /// </summary>
-        public void Test()
+        /// <param name="errorMessage">When the method returns false, contains an error message as to why
+        /// the test failed. Otherwise, contains an empty string.</param>
+        /// <returns>
+        /// True if the test passed; false if the test failed.
+        /// </returns>
+        protected override bool RunTest(ref string errorMessage)
         {
-            const string testName = "Load database connection settings";
-            string failInfo = "Failed to load the database connection settings file at " + MySqlHelper.DbSettingsFile;
-
             try
             {
                 MySqlHelper.ConnectionSettings = new DbConnectionSettings(MySqlHelper.DbSettingsFile);
             }
             catch (Exception ex)
             {
-                Tester.Test(testName, false, failInfo + ex);
-                return;
+                errorMessage = AppendErrorDetails(string.Format(_failMessage, MySqlHelper.DbSettingsFile), ex.ToString());
+                return false;
             }
 
-            Tester.Test(testName, true, failInfo);
+            return true;
         }
-
-        #endregion
     }
 }

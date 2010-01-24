@@ -7,9 +7,21 @@ using NetGore.Db.Schema;
 
 namespace InstallationValidator.Tests
 {
-    public class LoadSchemaFile : ITestable
+    public sealed class LoadSchemaFile : TestableBase
     {
+        const string _testName = "Load database schema file";
+        const string _description = "Attempts to load the database schema file that describes the schema of the database for this release. If this file cannot be loaded, the engine will function fine, but the Installation Validator will not be able to check if your database schema is up-to-date.";
+        const string _failMessage = "Failed to load the database schema file from: {0}";
+
         static SchemaReader _schema;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoadSchemaFile"/> class.
+        /// </summary>
+        public LoadSchemaFile()
+            : base(_testName, _description)
+        {
+        }
 
         /// <summary>
         /// Gets the most recently loaded <see cref="SchemaReader"/> from this test. If null, the test likely failed
@@ -21,19 +33,21 @@ namespace InstallationValidator.Tests
         }
 
         /// <summary>
-        /// Runs a test.
+        /// When overridden in the derived class, runs the test.
         /// </summary>
-        public void Test()
+        /// <param name="errorMessage">When the method returns false, contains an error message as to why
+        /// the test failed. Otherwise, contains an empty string.</param>
+        /// <returns>
+        /// True if the test passed; false if the test failed.
+        /// </returns>
+        protected override bool RunTest(ref string errorMessage)
         {
-            const string testName = "Load database schema file";
-
             string schemaFile = MySqlHelper.DbSchemaFile;
 
             if (!File.Exists(schemaFile))
             {
-                const string failmsg = "The database schema file could not be found at `{0}`, so this program will not be able to check your database schema to see if it is up-to-date.";
-                Tester.Test(testName, false, string.Format(failmsg, schemaFile));
-                return;
+                errorMessage = "The database schema file could not be found at `{0}`, so this program will not be able to check your database schema to see if it is up-to-date.";
+                return false;
             }
 
             try
@@ -43,12 +57,11 @@ namespace InstallationValidator.Tests
             }
             catch (Exception ex)
             {
-                const string failmsg = "Failed to load database schema file at `{0}`. Details:\n";
-                Tester.Test(testName, false, failmsg + ex);
-                return;
+                errorMessage = AppendErrorDetails(string.Format(_failMessage, schemaFile), ex.ToString());
+                return false;
             }
 
-            Tester.Test(testName, true, null);
+            return true;
         }
     }
 }
