@@ -1,3 +1,4 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Client", "DemoGame.Client\DemoGame.Client.csproj", "{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}"
