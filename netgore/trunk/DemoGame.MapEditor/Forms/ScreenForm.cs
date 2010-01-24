@@ -845,6 +845,8 @@ namespace DemoGame.MapEditor
             _mapDrawingExtensions.Add(new MapPersistentNPCDrawer(lstPersistentNPCs));
 
             // Populate the SettingsManager
+            Show();
+            Refresh();
             PopulateSettingsManager();
 
             SelectedObjs.Clear();
