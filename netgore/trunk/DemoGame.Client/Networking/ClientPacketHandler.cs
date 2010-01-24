@@ -654,16 +654,16 @@ namespace DemoGame.Client
             string name = r.ReadString();
             byte itemCount = r.ReadByte();
 
-            var items = new IItemTable[itemCount];
+            var items = new IItemTemplateTable[itemCount];
             for (int i = 0; i < itemCount; i++)
             {
-                var value = new ItemTable();
+                var value = new ItemTemplateTable();
                 value.ReadState(r);
                 items[i] = value;
             }
 
             DynamicEntity shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
-            var shopInfo = new ShopInfo<IItemTable>(shopOwner, name, canBuy, items);
+            var shopInfo = new ShopInfo<IItemTemplateTable>(shopOwner, name, canBuy, items);
 
             GameplayScreen.ShopForm.DisplayShop(shopInfo);
         }

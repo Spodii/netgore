@@ -37,6 +37,42 @@ namespace DemoGame.Client
             }
         }
 
+        public static StyledText[] GetStyledText(IItemTemplateTable itemInfo)
+        {
+            Color nameColor = Color.LightSeaGreen;
+            Color generalColor = Color.LightBlue;
+            Color bonusColor = Color.LightGreen;
+            Color reqColor = Color.MediumVioletRed;
+
+            if (itemInfo == null)
+                return StyledText.EmptyArray;
+
+            // Create and add name and description
+            var ret = new List<StyledText> { new StyledText(itemInfo.Name, nameColor), new StyledText(_lineBreak + itemInfo.Description) };
+
+            // Value, HP, MP
+            CreateValueLine(ret, "Value", itemInfo.Value, generalColor);
+
+            if (itemInfo.HP != 0)
+                CreateValueLine(ret, "HP", itemInfo.HP, bonusColor);
+            if (itemInfo.MP != 0)
+                CreateValueLine(ret, "MP", itemInfo.MP, bonusColor);
+
+            // Stat bonuses
+            foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
+            {
+                CreateValueLine(ret, stat.Key, stat.Value, bonusColor);
+            }
+
+            // Stat requirements
+            foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
+            {
+                CreateValueLine(ret, stat.Key, stat.Value, reqColor);
+            }
+
+            return ret.ToArray();
+        }
+
         public static StyledText[] GetStyledText(IItemTable itemInfo)
         {
             Color nameColor = Color.LightSeaGreen;

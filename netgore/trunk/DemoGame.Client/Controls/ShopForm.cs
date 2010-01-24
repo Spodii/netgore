@@ -29,7 +29,7 @@ namespace DemoGame.Client
 
         static readonly ShopSettings _shopSettings = ShopSettings.Instance;
 
-        ShopInfo<IItemTable> _shopInfo;
+        ShopInfo<IItemTemplateTable> _shopInfo;
         public event ShopFormPurchaseHandler OnPurchase;
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DemoGame.Client
             CreateItemSlots();
         }
 
-        public ShopInfo<IItemTable> ShopInfo
+        public ShopInfo<IItemTemplateTable> ShopInfo
         {
             get { return _shopInfo; }
         }
@@ -68,7 +68,7 @@ namespace DemoGame.Client
             }
         }
 
-        public void DisplayShop(ShopInfo<IItemTable> shopInfo)
+        public void DisplayShop(ShopInfo<IItemTemplateTable> shopInfo)
         {
             _shopInfo = shopInfo;
             IsVisible = true;
@@ -125,7 +125,7 @@ namespace DemoGame.Client
                 get { return _index; }
             }
 
-            public IItemTable ItemInfo
+            public IItemTemplateTable ItemInfo
             {
                 get
                 {
@@ -137,7 +137,7 @@ namespace DemoGame.Client
                 }
             }
 
-            ShopInfo<IItemTable> ShopInfo
+            ShopInfo<IItemTemplateTable> ShopInfo
             {
                 get { return _shopForm.ShopInfo; }
             }
