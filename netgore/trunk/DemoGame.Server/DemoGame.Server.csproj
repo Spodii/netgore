@@ -126,7 +126,6 @@
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\UserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\GameConstantTable.cs" />
-    <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />
     <Compile Include="DbObjs\NpcCharacterTable.cs" />
     <Compile Include="DbObjs\ServerSettingTable.cs" />

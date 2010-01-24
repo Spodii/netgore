@@ -94,6 +94,7 @@
     <Compile Include="DbObjs\Interfaces\IShopTable.cs" />
     <Compile Include="DbObjs\Interfaces\IUserCharacterTable.cs" />
     <Compile Include="DbObjs\ItemTable.cs" />
+    <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="IO\PropertySyncCharacterID.cs" />
     <Compile Include="IO\PropertySyncCharacterTemplateID.cs" />
     <Compile Include="IO\PropertySyncItemID.cs" />

@@ -5,7 +5,7 @@ using DemoGame.DbObjs;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Server.DbObjs
+namespace DemoGame.DbObjs
 {
     /// <summary>
     /// Provides a strongly-typed structure for the database table `item_template`.
