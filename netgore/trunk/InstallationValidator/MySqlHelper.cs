@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 using NetGore;
 using NetGore.Db;
 
@@ -33,31 +35,26 @@ namespace InstallationValidator
         /// </summary>
         public static void AskToImportDatabase(bool dbExists)
         {
-            string s;
+            StringBuilder sb = new StringBuilder();
+            
             if (!dbExists)
-                s = "Database `{0}` does not exist. Do you wish to create it (Y/N)?";
+                sb.AppendFormat("Database `{0}` does not exist. Do you wish to create it (Y/N)?", ConnectionSettings.Database);
             else
-                s = "Database `{0}` is not populated. Do you wish to populate it (Y/N)?";
+                sb.AppendFormat("Database `{0}` is not populated. Do you wish to populate it (Y/N)?", ConnectionSettings.Database);
 
-            Tester.Write(string.Format("\n" + s + "\n", ConnectionSettings.Database), ConsoleColor.Green);
-            Tester.Write("Additional information:\n", ConsoleColor.Yellow);
-            Tester.Write("1. You MUST create the database and import the data at some point.\n", ConsoleColor.White);
-            Tester.Write("2. You can always re-run this program and create the database later.\n", ConsoleColor.White);
-            Tester.Write("3. Expert users might want to create the database manually.\n", ConsoleColor.White);
-            Tester.Write("4. Since the database is empty, no data will be lost, so 'Y' is recommended.\n", ConsoleColor.White);
+            sb.AppendLine();
+            sb.AppendLine();
 
-            // Ask if they want to import the database
-            while (true)
-            {
-                var key = Console.ReadKey();
-                if (key.Key == ConsoleKey.N)
-                    break;
-                if (key.Key == ConsoleKey.Y)
-                {
-                    ImportDatabaseContents();
-                    break;
-                }
-            }
+            sb.AppendLine("Additional information:");
+            sb.AppendLine("1. You MUST create the database and import the data at some point.");
+            sb.AppendLine("2. You can always re-run this program and create the database later.");
+            sb.AppendLine("3. Expert users might want to create the database manually.");
+            sb.AppendLine("4. Since the database is empty, no data will be lost, so 'Y' is recommended.");
+
+            if (MessageBox.Show(sb.ToString(), "Import database?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            ImportDatabaseContents();
         }
 
         public static string FindMySqlFile(string fileName)
@@ -112,15 +109,15 @@ namespace InstallationValidator
         static void ImportDatabaseContents()
         {
             string dbFile = Path.GetFullPath(DbSqlFile);
-            bool fileExists = File.Exists(dbFile);
 
-            Tester.Test("db.sql file exists", fileExists,
-                        "Failed to find the db.sql file. Make sure you didn't move/delete it, or run this program from a different directory than the default.");
-
-            if (!fileExists)
-                return;
-
-            const string testName = "Create database and import data";
+            const string title ="Failed to find db.sql";
+            const string msg = "Failed to find the db.sql file. Make sure you didn't move/delete it, or run this program from a different directory than the default.";
+            
+            while (!File.Exists(dbFile))
+            {
+                if (MessageBox.Show(msg, title, MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
+                    return;
+            }
 
             string[] commands = new string[]
             {
@@ -129,7 +126,8 @@ namespace InstallationValidator
                 "SOURCE " + dbFile, "exit"
             };
 
-            TestMySqlCommand(testName, null, commands);
+            string errmsg;
+            TestMySqlCommand(null, commands, out errmsg);
         }
 
         /// <summary>
@@ -171,42 +169,18 @@ namespace InstallationValidator
         /// Provides a wrapper for a test that does a test on the MySql.exe process. This will call Test()
         /// and perform internal checks for known errors. All expected errors should be defined in here.
         /// </summary>
-        /// <param name="testName">The name of the test.</param>
         /// <param name="command">The primary command (command line command). Leave null or empty to use
         /// the default connection string.</param>
         /// <param name="cmds">The additional commands to execute.</param>
         /// <returns>True if the test was successful; false if the test failed.</returns>
-        public static bool TestMySqlCommand(string testName, string command, string[] cmds)
+        public static bool TestMySqlCommand(string command, string[] cmds, out string retStr)
         {
-            return TestMySqlCommand(testName, command, cmds, true);
-        }
-
-        /// <summary>
-        /// Provides a wrapper for a test that does a test on the MySql.exe process. This will call Test()
-        /// and perform internal checks for known errors. All expected errors should be defined in here.
-        /// </summary>
-        /// <param name="testName">The name of the test.</param>
-        /// <param name="command">The primary command (command line command). Leave null or empty to use
-        /// the default connection string.</param>
-        /// <param name="cmds">The additional commands to execute.</param>
-        /// <param name="print">If true, the results will be printed through <see cref="Tester.Test"/>. If false, the
-        /// results will not be displayed. Set this to false if you want to run a test without having the
-        /// results be displayed.</param>
-        /// <returns>True if the test was successful; false if the test failed.</returns>
-        public static bool TestMySqlCommand(string testName, string command, string[] cmds, bool print)
-        {
-            if (testName == null)
-                testName = "<Unnamed Test>";
-
             // Check for a valid application path
             if (string.IsNullOrEmpty(MySqlPath) || !File.Exists(MySqlPath))
             {
-                string errmsg = "Unknown or invalid path to mysql.exe. Cannot run command.";
+                retStr = "Unknown or invalid path to mysql.exe. Cannot run command.";
                 if (!string.IsNullOrEmpty(MySqlPath))
-                    errmsg += " Supplied path: " + MySqlPath;
-
-                if (print)
-                    Tester.Test(testName, false, errmsg);
+                    retStr += "\nSupplied path: " + MySqlPath;
                 return false;
             }
 
@@ -231,23 +205,23 @@ namespace InstallationValidator
             {
                 // Display any exceptions found from trying to run the process
                 // Generally this means that the process itself crashed or completely failed to run
-                const string failInfo = "Failed to launch mysql.exe. Internal error: {0}";
-
-                if (print)
-                    Tester.Test(testName, false, string.Format(failInfo, ex));
+                retStr = string.Format("Failed to launch mysql.exe. Internal error: {0}", ex);
                 return false;
             }
 
             // Check for a variety of failure messages from the mysql.exe process
-            if (error != null)
+            if (error == null)
+                error = string.Empty;
+            else
+                error = error.Trim();
+
+            if (error.Length > 0)
             {
                 string errorLower = error.ToLower();
                 if (errorLower.Contains("access denied"))
                 {
                     const string failInfo = "Access denied. Ensure the connection string contains valid account info: `{0}`";
-                    string err = GetMySqlCommandErrorStr(output, error, failInfo, command);
-                    if (print)
-                        Tester.Test(testName, false, err);
+                    retStr = GetMySqlCommandErrorStr(output, error, failInfo, command);
                     return false;
                 }
                 else if (errorLower.Contains("error 2005"))
@@ -255,9 +229,7 @@ namespace InstallationValidator
                     const string failInfo =
                         "Unknown service host `{0}`. Make sure the host used in the connection string is correct" +
                         " and that the MySql server service has been started: `{0}`";
-                    string err = GetMySqlCommandErrorStr(output, error, failInfo, command);
-                    if (print)
-                        Tester.Test(testName, false, err);
+                    retStr = GetMySqlCommandErrorStr(output, error, failInfo, command);
                     return false;
                 }
                 else if (errorLower.Contains("error 1146"))
@@ -265,9 +237,7 @@ namespace InstallationValidator
                     const string failInfo =
                         "The target database is not populated. Make sure you import the db.sql file." +
                         " See http://netgore.com/wiki/setup-guide.html for more information.";
-                    string err = GetMySqlCommandErrorStr(output, error, failInfo);
-                    if (print)
-                        Tester.Test(testName, false, err);
+                    retStr = GetMySqlCommandErrorStr(output, error, failInfo);
                     return false;
                 }
                 else if (errorLower.Contains("error 1049"))
@@ -277,9 +247,7 @@ namespace InstallationValidator
                         " and import the db.sql file. If you use a database name other than" +
                         " `demogame`, make sure you updated the database settings file located at `{0}`." +
                         " See http://netgore.com/wiki/setup-guide.html for more information.";
-                    string err = GetMySqlCommandErrorStr(output, error, failInfo, DbSettingsFile);
-                    if (print)
-                        Tester.Test(testName, false, err);
+                    retStr = GetMySqlCommandErrorStr(output, error, failInfo, DbSettingsFile);
                     return false;
                 }
                 else if (errorLower.Contains("failed to open file"))
@@ -287,17 +255,17 @@ namespace InstallationValidator
                     const string failInfo =
                         "Failed to open the db.sql file. Please make sure it is in the default location." +
                         " If you continue to get this message, you may have to manually import the database's contents";
-                    string err = GetMySqlCommandErrorStr(output, error, failInfo, DbSettingsFile);
-                    if (print)
-                        Tester.Test(testName, false, err);
+                    retStr = GetMySqlCommandErrorStr(output, error, failInfo, DbSettingsFile);
+                    return false;
+                }
+                else
+                {
+                    retStr = error;
                     return false;
                 }
             }
 
-            // Successful
-            if (print)
-                Tester.Test(testName, true, null);
-
+            retStr = string.Empty;
             return true;
         }
 
@@ -305,26 +273,40 @@ namespace InstallationValidator
         {
             if (string.IsNullOrEmpty(MySqlPath) || !File.Exists(MySqlPath))
             {
-                Console.WriteLine("Failed to automatically find the path to mysql.exe.");
-                Console.WriteLine(
-                    "Please enter the path to mysql.exe, which should be located in your MySQL installation directory under the sub-directory \\bin\\.");
-                Console.WriteLine(@"Example: C:\Program Files\MySQL\MySQL Server 5.1\bin\mysql.exe");
-                Console.WriteLine(@"Type in the path of MySQL.exe:");
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendLine("Failed to automatically find the path to mysql.exe.");
+                sb.AppendLine(
+                    "After clicking \"OK\", please locate mysql.exe, which should be located in your MySQL installation directory under the sub-directory \\bin\\.");
+                sb.AppendLine(@"Example: C:\Program Files\MySQL\MySQL Server 5.1\bin\mysql.exe");
+
+                MessageBox.Show(sb.ToString(), "Failed to find mysql.exe", MessageBoxButtons.OK);
+
                 while (true)
                 {
-                    Console.WriteLine();
+                    using (var fs = new OpenFileDialog())
+                    {
+                        fs.Multiselect = false;
+                        fs.Filter = "mysql.exe|*.exe";
+                        fs.CheckFileExists = true;
+                        fs.CheckPathExists = true;
+                        fs.AutoUpgradeEnabled = true;
+                        fs.AddExtension = true;
+                        fs.ValidateNames = true;
+                        if (fs.ShowDialog() != DialogResult.OK)
+                            return false;
 
-                    MySqlPath = (Console.ReadLine() ?? string.Empty).Trim();
+                        MySqlPath = fs.FileName;
+                    }
+
                     if (MySqlPath != null)
                     {
                         if (MySqlPath.Length > 2 && File.Exists(MySqlPath))
                             break;
-
-                        if (MySqlPath.Equals("exit", StringComparison.OrdinalIgnoreCase))
-                            return false;
                     }
 
-                    Console.WriteLine("Invalid file path. Please enter the path to mysql.exe ('exit' to abort).");
+                    if (MessageBox.Show("The selected file was invalid. Please select mysql.exe.", "Select mysql.exe", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        return false;
                 }
             }
 

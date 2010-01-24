@@ -1,28 +1,46 @@
 namespace InstallationValidator.Tests
 {
-    public class DatabaseExists : ITestable
+    public sealed class DatabaseExists : TestableBase
     {
-        static bool TestInternal(bool print)
+        const string _testName = "Game database exists";
+        const string _description = "Checks if the database for the game exists. This will only check that the actual database exists, not if it contains the needed data.";
+        const string _failMessage = "The database does not exist. You have either used a different name by default and did not update the database settings file, or you have not imported the database.";
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseExists"/> class.
+        /// </summary>
+        public DatabaseExists()
+            : base(_testName, _description)
         {
-            const string testName = "Database exists";
-
-            string[] commands = new string[] { "use " + MySqlHelper.ConnectionSettings.Database, "exit" };
-            return MySqlHelper.TestMySqlCommand(testName, null, commands, print);
         }
-
-        #region ITestable Members
 
         /// <summary>
-        /// Runs a test.
+        /// When overridden in the derived class, runs the test.
         /// </summary>
-        public void Test()
+        /// <param name="errorMessage">When the method returns false, contains an error message as to why
+        /// the test failed. Otherwise, contains an empty string.</param>
+        /// <returns>
+        /// True if the test passed; false if the test failed.
+        /// </returns>
+        protected override bool RunTest(ref string errorMessage)
         {
-            if (!TestInternal(false))
+            string errmsg;
+
+            if (!TestInternal(out errmsg))
                 MySqlHelper.AskToImportDatabase(false);
 
-            TestInternal(true);
+            var success = TestInternal(out errmsg);
+
+            if (!success)
+                errorMessage = AppendErrorDetails(_failMessage, errmsg);
+
+            return success;
         }
 
-        #endregion
+        static bool TestInternal(out string errmsg)
+        {
+            string[] commands = new string[] { "use " + MySqlHelper.ConnectionSettings.Database, "exit" };
+            return MySqlHelper.TestMySqlCommand(null, commands, out errmsg);
+        }
     }
 }
