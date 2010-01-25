@@ -6,7 +6,7 @@ using NetGore.AI;
 
 namespace DemoGame.Server
 {
-    //AIID 2 - Simple state machine algorithms that will make decisions beased on predefined logic.  Sidescroller ONLY at the moment.
+    //AIID 2 - Simple state machine algorithms that will make decisions beased on predefined logic.
 
     #region Topdown AI Algorithm
 
@@ -25,7 +25,7 @@ namespace DemoGame.Server
 
         Character _target;
         const int _id = 2;
-        const int _UpdateRate = 2000;
+        const int _UpdateRate = 3000;
         State _characterState = State.Patrol;
         bool _isAttackingTarget;
         int _lastUpdateTime = int.MinValue;
@@ -376,7 +376,7 @@ namespace DemoGame.Server
         }
 
         const int _id = 2;
-        const int _UpdateRate = 2000;
+        const int _UpdateRate = 3000;
         State _characterState = State.Patrol;
         bool _hasTarget;
         int _lastUpdateTime = int.MinValue;
@@ -420,8 +420,24 @@ namespace DemoGame.Server
         /// <param name="damage">Amount of damage caused during attack.</param>
         void Actor_OnAttackedByCharacter(Character attacker, Character attacked, int damage)
         {
-            //Set the _target as the attacker.
-            _target = attacker;
+            //We already had a target!
+            if (_target != null && _target != attacker)
+            {
+                //find hostile with lowest health.
+                if (attacker.HP >= _target.HP)
+                {
+                    //Don't change target so don't do anything.
+                }
+                else
+                {
+                    //Change to hostile with lower health value.
+                    _target = attacker;
+                }
+            }
+            else
+            {
+                _target = attacker;
+            }
 
             //Set up event handler for when the _target dies.
             _target.OnKilled += _target_OnKilled;
@@ -484,7 +500,7 @@ namespace DemoGame.Server
 
             int YDifference = Convert.ToInt32((_target.Position.Y - Actor.Position.Y));
 
-            if ((YDifference <= 5) & (YDifference >= -5))
+            if ((YDifference <= 5) && (YDifference >= -5))
             {
                 //target is level
                 if (_target.Position.X >= Actor.Position.X)
@@ -500,9 +516,9 @@ namespace DemoGame.Server
                 }
             }
 
-            if (Actor.Position.X == _lastX)
+            if (_lastUpdateTime + 5000 < GetTime())
             {
-                if (_lastUpdateTime + 5000 < GetTime()) //Only execut this after 5 seconds.
+                 if (Actor.Position.X == _lastX)    //Only execut this after 5 seconds.
                 {
                     if (Actor.IsMovingRight)
                     {
@@ -584,7 +600,7 @@ namespace DemoGame.Server
 
             int YDifference = Convert.ToInt32((_target.Position.Y - Actor.Position.Y));
 
-            if ((YDifference <= 5) & (YDifference >= -5))
+            if ((YDifference <= 5) && (YDifference >= -5))
             {
                 //target is level
                 if (_target.Position.X < Actor.Position.X)
@@ -654,14 +670,12 @@ namespace DemoGame.Server
 
                     //We have a hostile target so lets Attack them.
                     _characterState = State.Attack;
-   
-
-
                 }
                 else
                 {
                     //There is no hostile target therefore just Patrol.
                     _hasTarget = false;
+                    _target = null;
                     _characterState = State.Patrol;
                 }
             }
@@ -670,6 +684,9 @@ namespace DemoGame.Server
                 //Just patrol if there is no _target.
                 _hasTarget = false;
                 _characterState = State.Patrol;
+                
+                //clear _target
+                _target = null;
             }
         }
 
