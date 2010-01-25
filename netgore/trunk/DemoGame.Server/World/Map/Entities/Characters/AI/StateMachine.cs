@@ -86,17 +86,20 @@ namespace DemoGame.Server
                 //_target above
                 //Move upwards
                 Actor.MoveUp();
+                Actor.SetHeading(Direction.North);
 
                 //Move right because _target is to the right.
                 if (_target.Position.X > Actor.Position.X)
                 {
                     Actor.MoveRight();
+                    Actor.SetHeading(Direction.NorthEast);
                 }
 
                 //Move left becuase target is to the left.
                 if (_target.Position.X < Actor.Position.X)
                 {
                     Actor.MoveLeft();
+                    Actor.SetHeading(Direction.NorthWest);
                 }
             }
 
@@ -106,15 +109,18 @@ namespace DemoGame.Server
                 //Move downwards
 
                 Actor.MoveDown();
+                Actor.SetHeading(Direction.South);
 
                 if (_target.Position.X >= Actor.Position.X)
                 {
                     Actor.MoveRight();
+                    Actor.SetHeading(Direction.SouthEast);
                 }
 
                 if (_target.Position.X <= Actor.Position.X)
                 {
                     Actor.MoveLeft();
+                    Actor.SetHeading(Direction.SouthWest);
                 }
             }
 
@@ -125,11 +131,13 @@ namespace DemoGame.Server
                 if (_target.Position.X >= Actor.Position.X)
                 {
                     Actor.MoveRight();
+                    Actor.SetHeading(Direction.East);
                 }
 
                 if (_target.Position.X <= Actor.Position.X)
                 {
                     Actor.MoveLeft();
+                    Actor.SetHeading(Direction.West);
                 }
             }
 
@@ -276,15 +284,29 @@ namespace DemoGame.Server
                     Actor.StopMoving();
                 else
                 {
-                    if ((Rand(0, 2) == 0))
+                    if (Rand(0, 2) == 0)
+                    {
                         Actor.MoveUp();
-                    else
+                        return;
+                    }
+                    
+                    if (Rand(0,2) == 0)
+                    {
                         Actor.MoveDown();
+                        return;
+                    }
 
                     if (Rand(0, 2) == 0)
+                    {
                         Actor.MoveLeft();
-                    else
+                        return;
+                    }
+
+                    if (Rand(0, 2) == 0)
+                    {
                         Actor.MoveRight();
+                        return;
+                    }
                 }
             }
         }
@@ -356,7 +378,7 @@ namespace DemoGame.Server
         const int _id = 2;
         const int _UpdateRate = 2000;
         State _characterState = State.Patrol;
-        bool _isAttackingTarget;
+        bool _hasTarget;
         int _lastUpdateTime = int.MinValue;
         float _lastX;
         Character _target;
@@ -386,7 +408,7 @@ namespace DemoGame.Server
         void _target_OnKilled(Character character)
         {
             //Stop attacking target. Job done.
-            _isAttackingTarget = false;
+            _hasTarget = false;
         }
 
         /// <summary>
@@ -407,13 +429,13 @@ namespace DemoGame.Server
             //Adds some logic where if the Actors HP is below an amount the Actor tries to run away.
             if (Actor.HP <= 10)
             {
-                _isAttackingTarget = false;
+                _hasTarget = false;
                 _characterState = State.Evade;
                 return;
             }
 
             //Sets the Actor to attack the _target.
-            _isAttackingTarget = true;
+            _hasTarget = true;
             _characterState = State.Attack;
         }
 
@@ -611,27 +633,42 @@ namespace DemoGame.Server
         void EvaluateState()
         {
             if (_target != null)
-            {
-                //This is so that the Character has the opportunity to evade this Actor
-                if (_target.GetDistance(Actor) > 50)
-                    _isAttackingTarget = false;
+            {                    
+                if (Actor.HP <= 10)
+                {   
+                    //Actor is low on health perhaps it should run away.
+                    _characterState = State.Evade;
 
-                if (_isAttackingTarget)
+                    //Skip any other processing so that the state stays as Evade.
+                    return;
+                }  
+               
+                //This is so that the _target has the opportunity to evade this Actor
+                if (_target.GetDistance(Actor) > 60)
                 {
+                    _hasTarget = false;
+                }
+
+                if (_hasTarget)
+                {
+
                     //We have a hostile target so lets Attack them.
                     _characterState = State.Attack;
+   
+
+
                 }
                 else
                 {
                     //There is no hostile target therefore just Patrol.
-                    _isAttackingTarget = false;
+                    _hasTarget = false;
                     _characterState = State.Patrol;
                 }
             }
             else
             {
                 //Just patrol if there is no _target.
-                _isAttackingTarget = false;
+                _hasTarget = false;
                 _characterState = State.Patrol;
             }
         }
