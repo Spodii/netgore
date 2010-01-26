@@ -10,6 +10,11 @@ namespace NetGore.Features.Guilds
     public interface IGuild : IDisposable
     {
         /// <summary>
+        /// Notifies listeners when a member has been demoted.
+        /// </summary>
+        event GuildInvokeEventWithTargetHandler OnDemoteMember;
+
+        /// <summary>
         /// Notifies listeners when the guild has been destroyed.
         /// </summary>
         event GuildEventHandler OnDestroy;
@@ -18,25 +23,6 @@ namespace NetGore.Features.Guilds
         /// Notifies listeners when a member has been invited into the guild.
         /// </summary>
         event GuildInvokeEventWithTargetHandler OnInviteMember;
-        
-        /// <summary>
-        /// Makes the <paramref name="invoker"/> try to view the list of online guild members.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <returns>True if the <paramref name="invoker"/> successfully viewed the online member list; otherwise false.</returns>
-        bool TryViewOnlineMembers(IGuildMember invoker);
-        
-        /// <summary>
-        /// Makes the <paramref name="invoker"/> try to view the list of guild members.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <returns>True if the <paramref name="invoker"/> successfully viewed the member list; otherwise false.</returns>
-        bool TryViewMembers(IGuildMember invoker);
-        
-        /// <summary>
-        /// Destroys the guild completely and removes all members from it.
-        /// </summary>
-        void DestroyGuild();
 
         /// <summary>
         /// Notifies listeners when a member has been kicked from the guild.
@@ -86,6 +72,11 @@ namespace NetGore.Features.Guilds
         void AddOnlineMember(IGuildMember member);
 
         /// <summary>
+        /// Destroys the guild completely and removes all members from it.
+        /// </summary>
+        void DestroyGuild();
+
+        /// <summary>
         /// Removes the reference of an online guild member from this guild. This does not make the user join or leave the
         /// guild in any way, just allows the guild to keep track of the members that are online.
         /// </summary>
@@ -110,6 +101,15 @@ namespace NetGore.Features.Guilds
         /// <param name="newTag">The new tag of the guild.</param>
         /// <returns>True if the tag was successfully changed; otherwise false.</returns>
         bool TryChangeTag(string newTag);
+
+        /// <summary>
+        /// Makes the <paramref name="invoker"/> try to demote the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="invoker">The guild member is who demoting the <paramref name="target"/>.</param>
+        /// <param name="target">The guild member being demoted.</param>
+        /// <returns>True if the <paramref name="invoker"/> successfully demoted the <paramref name="target"/>;
+        /// otherwise false.</returns>
+        bool TryDemoteMember(IGuildMember invoker, IGuildMember target);
 
         /// <summary>
         /// Makes the <paramref name="invoker"/> try to invite the <paramref name="target"/> to the guild.
@@ -151,5 +151,19 @@ namespace NetGore.Features.Guilds
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the log; otherwise false.</returns>
         bool TryViewEventLog(IGuildMember invoker);
+
+        /// <summary>
+        /// Makes the <paramref name="invoker"/> try to view the list of guild members.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <returns>True if the <paramref name="invoker"/> successfully viewed the member list; otherwise false.</returns>
+        bool TryViewMembers(IGuildMember invoker);
+
+        /// <summary>
+        /// Makes the <paramref name="invoker"/> try to view the list of online guild members.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <returns>True if the <paramref name="invoker"/> successfully viewed the online member list; otherwise false.</returns>
+        bool TryViewOnlineMembers(IGuildMember invoker);
     }
 }
