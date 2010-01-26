@@ -170,6 +170,16 @@ namespace NetGore.Features.Guilds
         protected abstract int GetNumberOfFounders();
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is demoted.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected virtual void HandleDemoteMember(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles destroying the guild. This needs to remove all members
         /// in the guild from the guild, and remove the guild itself from the database.
         /// </summary>
@@ -222,6 +232,40 @@ namespace NetGore.Features.Guilds
         /// <param tag="newTag">The new tag for the guild.</param>
         /// <returns>True if the tag was successfully changed; otherwise false.</returns>
         protected abstract bool InternalTryChangeTag(string newTag);
+
+        /// <summary>
+        /// Does the actual handling of demoting a guild member.
+        /// </summary>
+        /// <param name="invoker">The guild member is who demoting the <paramref name="target"/>.</param>
+        /// <param name="target">The guild member being demoted.</param>
+        /// <returns>True if the <paramref name="invoker"/> successfully demoted the <paramref name="target"/>;
+        /// otherwise false.</returns>
+        protected virtual bool InternalTryDemoteMember(IGuildMember invoker, IGuildMember target)
+        {
+            // Demote
+            --target.GuildRank;
+
+            if (target.GuildRank < 0 || target.GuildRank > _guildSettings.HighestRank)
+            {
+                const string errmsg =
+                    "Somehow, when `{0}` demoted `{1}`, their rank ended up at the invalid value of `{2}`." +
+                    " Rank being reset to 0.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, invoker, target, target.GuildRank);
+                Debug.Fail(string.Format(errmsg, invoker, target, target.GuildRank));
+                target.GuildRank = 0;
+            }
+
+            // Log the event
+            GuildManager.LogEvent(invoker, GuildEvents.Demote, target);
+
+            if (OnDemoteMember != null)
+                OnDemoteMember(invoker, target);
+
+            HandleDemoteMember(invoker, target);
+
+            return true;
+        }
 
         /// <summary>
         /// Does the actual handling of inviting a member into the guild.
@@ -401,6 +445,11 @@ namespace NetGore.Features.Guilds
         public event GuildInvokeEventWithTargetHandler OnPromoteMember;
 
         /// <summary>
+        /// Notifies listeners when a member has been demoted.
+        /// </summary>
+        public event GuildInvokeEventWithTargetHandler OnDemoteMember;
+
+        /// <summary>
         /// Makes the <paramref name="invoker"/> try to invite the <paramref name="target"/> to the guild.
         /// </summary>
         /// <param name="invoker">The guild member is who inviting the <paramref name="target"/>.</param>
@@ -476,6 +525,37 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Makes the <paramref name="invoker"/> try to demote the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="invoker">The guild member is who demoting the <paramref name="target"/>.</param>
+        /// <param name="target">The guild member being demoted.</param>
+        /// <returns>True if the <paramref name="invoker"/> successfully demoted the <paramref name="target"/>;
+        /// otherwise false.</returns>
+        public bool TryDemoteMember(IGuildMember invoker, IGuildMember target)
+        {
+            // Ensure the parameters are valid
+            if (!EnsureValidEventSourceSameGuild(invoker, target))
+                return false;
+
+            // Ensure the invoker has the needed permissions
+            if (!EnsureValidRank(invoker, _guildSettings.MinRankPromote))
+                return false;
+
+            // Only allow promotions to be done on a member that is a lower or equal rank than the one demoting
+            if (invoker.GuildRank < target.GuildRank)
+            {
+                const string errmsg =
+                    "Guild member `{0}` tried to demote member `{1}`, but their rank [{2}] is" +
+                    " is not greater than or equal to the rank of the one they are trying to demote [{3}].";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, invoker, target, invoker.GuildRank, target.GuildRank);
+                return false;
+            }
+
+            return InternalTryDemoteMember(invoker, target);
+        }
+
+        /// <summary>
         /// Makes the <paramref name="invoker"/> try to promote the <paramref name="target"/>.
         /// </summary>
         /// <param name="invoker">The guild member is who promoting the <paramref name="target"/>.</param>
@@ -502,6 +582,9 @@ namespace NetGore.Features.Guilds
                     log.InfoFormat(errmsg, invoker, target, invoker.GuildRank, target.GuildRank);
                 return false;
             }
+
+            if (target.GuildRank == 0)
+                return false;
 
             return InternalTryPromoteMember(invoker, target);
         }
