@@ -47,6 +47,10 @@
     <Compile Include="Emoticons\Emoticon.cs" />
     <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
+    <Compile Include="Guilds\GuildEvents.cs" />
+    <Compile Include="Guilds\GuildID.cs" />
+    <Compile Include="Guilds\GuildRank.cs" />
+    <Compile Include="Guilds\GuildSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shops\ShopID.cs" />
     <Compile Include="Shops\ShopItemIndex.cs" />

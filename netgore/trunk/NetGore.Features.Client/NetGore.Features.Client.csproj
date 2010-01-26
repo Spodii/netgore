@@ -71,6 +71,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Guilds\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>
