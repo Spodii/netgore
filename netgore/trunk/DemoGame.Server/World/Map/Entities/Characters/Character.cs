@@ -1158,19 +1158,18 @@ namespace DemoGame.Server
         public abstract void RemoveAI();
 
         /// <summary>
-        /// Saves the Character's information. If IsPersistent is false, this will do nothing, but will not
-        /// raise any Exceptions.
+        /// Saves the persistent Character's information. If IsPersistent is false, this will do nothing.
         /// </summary>
         public void Save()
         {
             if (!IsPersistent)
                 return;
 
-            // Do not save if the user is already saved
+            // Do not save if the character is already saved
             if (_saved)
                 return;
 
-            // Set the user as saved
+            // Set the character as saved
             _saved = true;
 
             // Execute the user save query
