@@ -54,14 +54,14 @@ get;
 /// <summary>
 /// Gets the value of the database column `event_id`.
 /// </summary>
-System.Byte EventId
+System.Byte EventID
 {
 get;
 }
 /// <summary>
 /// Gets the value of the database column `guild_id`.
 /// </summary>
-System.UInt16 GuildId
+NetGore.Features.Guilds.GuildID GuildID
 {
 get;
 }
@@ -75,7 +75,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `target_character_id`.
 /// </summary>
-System.Nullable<System.Int32> TargetCharacterId
+System.Nullable<DemoGame.CharacterID> TargetCharacterID
 {
 get;
 }

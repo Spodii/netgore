@@ -21,7 +21,7 @@ namespace DemoGame.Server.Guilds
         readonly SelectGuildByTagQuery _selectGuildByTagQuery;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GuildManagerBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="GuildManagerBase{T}"/> class.
         /// </summary>
         public GuildManager(IDbController dbController) : base(dbController.GetQuery<GuildIDCreator>())
         {
@@ -112,7 +112,7 @@ namespace DemoGame.Server.Guilds
         {
             // We want to insert the guild into the database first since if that query fails, we know that
             // we can't create the guild with the given values for whatever reason
-            var values = new GuildTable((ushort)id, name, tag); // TODO: !! Don't want this ushort cast
+            var values = new GuildTable(id, name, tag);
             var rowsAffected = _insertGuildQuery.Execute(values);
 
             if (rowsAffected <= 0)

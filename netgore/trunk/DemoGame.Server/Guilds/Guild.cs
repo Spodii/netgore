@@ -43,7 +43,7 @@ namespace DemoGame.Server.Guilds
         /// <param name="guildManager">The guild manager.</param>
         /// <param name="guildInfo">The guild info.</param>
         public Guild(IGuildManager guildManager, IGuildTable guildInfo)
-            : base(guildManager, new GuildID(guildInfo.ID), guildInfo.Name, guildInfo.Tag)
+            : base(guildManager, guildInfo.ID, guildInfo.Name, guildInfo.Tag)
         {
         }
 
@@ -113,7 +113,7 @@ namespace DemoGame.Server.Guilds
             foreach (var e in events)
             {
                 // TODO: Need to implement a GOOD output of events
-                using (var pw = ServerPacket.Chat(e.ID + ": " + (GuildEvents)e.EventId))
+                using (var pw = ServerPacket.Chat(e.ID + ": " + (GuildEvents)e.EventID))
                 {
                     user.Send(pw);
                 }
@@ -209,13 +209,9 @@ namespace DemoGame.Server.Guilds
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        ushort IGuildTable.ID
+        GuildID IGuildTable.ID
         {
-            get
-            {
-                // TODO: !! Don't want this cast
-                return (ushort)ID;
-            }
+            get { return ID; }
         }
 
         #endregion

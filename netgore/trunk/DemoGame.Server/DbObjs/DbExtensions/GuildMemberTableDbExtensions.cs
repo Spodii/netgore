@@ -24,7 +24,7 @@ public static  class GuildMemberTableDbExtensions
 public static void CopyValues(this IGuildMemberTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@character_id"] = (System.Int32)source.CharacterID;
-paramValues["@guild_id"] = (System.UInt16)source.GuildId;
+paramValues["@guild_id"] = (System.UInt16)source.GuildID;
 paramValues["@joined"] = (System.DateTime)source.Joined;
 paramValues["@rank"] = (System.Byte)source.Rank;
 }
@@ -46,7 +46,7 @@ source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetI
 
 i = dataReader.GetOrdinal("guild_id");
 
-source.GuildId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("joined");
 
@@ -54,7 +54,7 @@ source.Joined = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 
 i = dataReader.GetOrdinal("rank");
 
-source.Rank = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Rank = (NetGore.Features.Guilds.GuildRank)(NetGore.Features.Guilds.GuildRank)dataReader.GetByte(i);
 }
 
 /// <summary>
@@ -79,7 +79,7 @@ break;
 
 
 case "guild_id":
-source.GuildId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
 break;
 
 
@@ -89,7 +89,7 @@ break;
 
 
 case "rank":
-source.Rank = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Rank = (NetGore.Features.Guilds.GuildRank)(NetGore.Features.Guilds.GuildRank)dataReader.GetByte(i);
 break;
 
 
@@ -120,7 +120,7 @@ break;
 
 
 case "@guild_id":
-paramValues[i] = (System.UInt16)source.GuildId;
+paramValues[i] = (System.UInt16)source.GuildID;
 break;
 
 

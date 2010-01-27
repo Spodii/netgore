@@ -41,7 +41,7 @@ System.Int32 i;
 
 i = dataReader.GetOrdinal("id");
 
-source.ID = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("name");
 
@@ -69,7 +69,7 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 switch (dataReader.GetName(i))
 {
 case "id":
-source.ID = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
 break;
 
 

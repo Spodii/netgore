@@ -30,7 +30,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 /// <summary>
 /// Array of the database column names for columns that are primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] { };
+ static  readonly System.String[] _dbColumnsKeys = new string[] {"character_id" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"character_id", "guild_id", "joined", "rank" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"guild_id", "joined", "rank" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -70,7 +70,7 @@ System.Int32 _characterID;
 /// <summary>
 /// The field that maps onto the database column `guild_id`.
 /// </summary>
-System.UInt16 _guildId;
+System.UInt16 _guildID;
 /// <summary>
 /// The field that maps onto the database column `joined`.
 /// </summary>
@@ -102,15 +102,15 @@ this._characterID = (System.Int32)value;
 /// "The guild the member is a part of.".
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.UInt16 GuildId
+public NetGore.Features.Guilds.GuildID GuildID
 {
 get
 {
-return (System.UInt16)_guildId;
+return (NetGore.Features.Guilds.GuildID)_guildID;
 }
 set
 {
-this._guildId = (System.UInt16)value;
+this._guildID = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -136,11 +136,11 @@ this._joined = (System.DateTime)value;
 /// "The member's ranking in the guild.".
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.Byte Rank
+public NetGore.Features.Guilds.GuildRank Rank
 {
 get
 {
-return (System.Byte)_rank;
+return (NetGore.Features.Guilds.GuildRank)_rank;
 }
 set
 {
@@ -169,15 +169,15 @@ public GuildMemberTable()
 /// GuildMemberTable constructor.
 /// </summary>
 /// <param name="characterID">The initial value for the corresponding property.</param>
-/// <param name="guildId">The initial value for the corresponding property.</param>
+/// <param name="guildID">The initial value for the corresponding property.</param>
 /// <param name="joined">The initial value for the corresponding property.</param>
 /// <param name="rank">The initial value for the corresponding property.</param>
-public GuildMemberTable(DemoGame.CharacterID @characterID, System.UInt16 @guildId, System.DateTime @joined, System.Byte @rank)
+public GuildMemberTable(DemoGame.CharacterID @characterID, NetGore.Features.Guilds.GuildID @guildID, System.DateTime @joined, NetGore.Features.Guilds.GuildRank @rank)
 {
 this.CharacterID = (DemoGame.CharacterID)@characterID;
-this.GuildId = (System.UInt16)@guildId;
+this.GuildID = (NetGore.Features.Guilds.GuildID)@guildID;
 this.Joined = (System.DateTime)@joined;
-this.Rank = (System.Byte)@rank;
+this.Rank = (NetGore.Features.Guilds.GuildRank)@rank;
 }
 /// <summary>
 /// GuildMemberTable constructor.
@@ -207,9 +207,9 @@ CopyValues(this, dic);
 public static void CopyValues(IGuildMemberTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@character_id"] = (DemoGame.CharacterID)source.CharacterID;
-dic["@guild_id"] = (System.UInt16)source.GuildId;
+dic["@guild_id"] = (NetGore.Features.Guilds.GuildID)source.GuildID;
 dic["@joined"] = (System.DateTime)source.Joined;
-dic["@rank"] = (System.Byte)source.Rank;
+dic["@rank"] = (NetGore.Features.Guilds.GuildRank)source.Rank;
 }
 
 /// <summary>
@@ -219,9 +219,9 @@ dic["@rank"] = (System.Byte)source.Rank;
 public void CopyValuesFrom(IGuildMemberTable source)
 {
 this.CharacterID = (DemoGame.CharacterID)source.CharacterID;
-this.GuildId = (System.UInt16)source.GuildId;
+this.GuildID = (NetGore.Features.Guilds.GuildID)source.GuildID;
 this.Joined = (System.DateTime)source.Joined;
-this.Rank = (System.Byte)source.Rank;
+this.Rank = (NetGore.Features.Guilds.GuildRank)source.Rank;
 }
 
 /// <summary>
@@ -239,7 +239,7 @@ case "character_id":
 return CharacterID;
 
 case "guild_id":
-return GuildId;
+return GuildID;
 
 case "joined":
 return Joined;
@@ -266,7 +266,7 @@ this.CharacterID = (DemoGame.CharacterID)value;
 break;
 
 case "guild_id":
-this.GuildId = (System.UInt16)value;
+this.GuildID = (NetGore.Features.Guilds.GuildID)value;
 break;
 
 case "joined":
@@ -274,7 +274,7 @@ this.Joined = (System.DateTime)value;
 break;
 
 case "rank":
-this.Rank = (System.Byte)value;
+this.Rank = (NetGore.Features.Guilds.GuildRank)value;
 break;
 
 default:
@@ -294,7 +294,7 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 switch (columnName)
 {
 case "character_id":
-return new ColumnMetadata("character_id", "The character that is a member of the guild.", "int(11)", null, typeof(System.Int32), false, false, true);
+return new ColumnMetadata("character_id", "The character that is a member of the guild.", "int(11)", null, typeof(System.Int32), false, true, false);
 
 case "guild_id":
 return new ColumnMetadata("guild_id", "The guild the member is a part of.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);

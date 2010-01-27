@@ -28,10 +28,10 @@ paramValues["@arg1"] = (System.String)source.Arg1;
 paramValues["@arg2"] = (System.String)source.Arg2;
 paramValues["@character_id"] = (System.Int32)source.CharacterID;
 paramValues["@created"] = (System.DateTime)source.Created;
-paramValues["@event_id"] = (System.Byte)source.EventId;
-paramValues["@guild_id"] = (System.UInt16)source.GuildId;
+paramValues["@event_id"] = (System.Byte)source.EventID;
+paramValues["@guild_id"] = (System.UInt16)source.GuildID;
 paramValues["@id"] = (System.Int32)source.ID;
-paramValues["@target_character_id"] = (System.Nullable<System.Int32>)source.TargetCharacterId;
+paramValues["@target_character_id"] = (System.Nullable<System.Int32>)source.TargetCharacterID;
 }
 
 /// <summary>
@@ -67,11 +67,11 @@ source.Created = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 
 i = dataReader.GetOrdinal("event_id");
 
-source.EventId = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.EventID = (System.Byte)(System.Byte)dataReader.GetByte(i);
 
 i = dataReader.GetOrdinal("guild_id");
 
-source.GuildId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("id");
 
@@ -79,7 +79,7 @@ source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
 
 i = dataReader.GetOrdinal("target_character_id");
 
-source.TargetCharacterId = (System.Nullable<System.Int32>)(System.Nullable<System.Int32>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
+source.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)(System.Nullable<DemoGame.CharacterID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
 }
 
 /// <summary>
@@ -124,12 +124,12 @@ break;
 
 
 case "event_id":
-source.EventId = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.EventID = (System.Byte)(System.Byte)dataReader.GetByte(i);
 break;
 
 
 case "guild_id":
-source.GuildId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
 break;
 
 
@@ -139,7 +139,7 @@ break;
 
 
 case "target_character_id":
-source.TargetCharacterId = (System.Nullable<System.Int32>)(System.Nullable<System.Int32>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
+source.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)(System.Nullable<DemoGame.CharacterID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
 break;
 
 
@@ -190,12 +190,12 @@ break;
 
 
 case "@event_id":
-paramValues[i] = (System.Byte)source.EventId;
+paramValues[i] = (System.Byte)source.EventID;
 break;
 
 
 case "@guild_id":
-paramValues[i] = (System.UInt16)source.GuildId;
+paramValues[i] = (System.UInt16)source.GuildID;
 break;
 
 
@@ -205,7 +205,7 @@ break;
 
 
 case "@target_character_id":
-paramValues[i] = (System.Nullable<System.Int32>)source.TargetCharacterId;
+paramValues[i] = (System.Nullable<System.Int32>)source.TargetCharacterID;
 break;
 
 

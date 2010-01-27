@@ -19,7 +19,7 @@ IGuildTable DeepCopy();
 /// <summary>
 /// Gets the value of the database column `id`.
 /// </summary>
-System.UInt16 ID
+NetGore.Features.Guilds.GuildID ID
 {
 get;
 }
