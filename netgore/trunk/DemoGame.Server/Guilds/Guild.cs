@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
@@ -123,6 +124,40 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's name has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldName">The old name.</param>
+        /// <param name="newName">The new name.</param>
+        protected override void HandleChangeName(IGuildMember invoker, string oldName, string newName)
+        {
+            string invokerName = invoker.AsCharacter().Name;
+
+            foreach (var user in OnlineMembers.OfType<User>())
+            {
+                user.Send(GameMessage.GuildRenamed, oldName, newName, invokerName);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's tag has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldTag">The old tag.</param>
+        /// <param name="newTag">The new tag.</param>
+        protected override void HandleChangeTag(IGuildMember invoker, string oldTag, string newTag)
+        {
+            string invokerName = invoker.AsCharacter().Name;
+
+            foreach (var user in OnlineMembers.OfType<User>())
+            {
+                user.Send(GameMessage.GuildRenamed, oldTag, newTag, invokerName);
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, displays the members of the guild to the <paramref name="invoker"/>.
         /// </summary>
         /// <param name="invoker">The guild member that invoked the event.</param>
@@ -152,7 +187,7 @@ namespace DemoGame.Server.Guilds
                 return false;
 
             var members =
-                OnlineMembers.OrderBy(x => x.GuildRank).Select(
+                OnlineMembers.OrderBy(x => (int)x.GuildRank).Select(
                     x => new KeyValuePair<string, GuildRank>(x.AsCharacter().Name, x.GuildRank));
             SendGuildMemberList(user, "Online guild members:", members);
 
@@ -175,20 +210,19 @@ namespace DemoGame.Server.Guilds
         /// <param name="members">The guild members and their ranks to include in the list.</param>
         static void SendGuildMemberList(User user, string header, IEnumerable<KeyValuePair<string, GuildRank>> members)
         {
-            // Send the header
-            using (var pw = ServerPacket.Chat(header))
-            {
-                user.Send(pw);
-            }
+            // Build the string
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(header);
 
-            // Send the list of members
             foreach (var member in members)
             {
-                string s = string.Format("{0}: {1}", member.Value, member.Key);
-                using (var pw = ServerPacket.Chat(s))
-                {
-                    user.Send(pw);
-                }
+                sb.AppendLine(string.Format("{0}: {1}", member.Value, member.Key));
+            }
+
+            // Send
+            using (var pw = ServerPacket.Chat(sb.ToString()))
+            {
+                user.Send(pw);
             }
         }
 

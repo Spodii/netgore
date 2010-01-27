@@ -14,7 +14,7 @@ namespace NetGore.Features.Guilds
     /// <typeparam name="T">The type of <see cref="IGuild"/>.</typeparam>
     public abstract class GuildManagerBase<T> : IGuildManager<T> where T : class, IGuild
     {
-        static readonly GuildSettings _guildSettings;
+        static readonly GuildSettings _guildSettings = GuildSettings.Instance;
 
         /// <summary>
         /// Object used to lock on the guild creation.
@@ -120,6 +120,20 @@ namespace NetGore.Features.Guilds
                 ret = null;
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets the guild with the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The name of the guild to get.</param>
+        /// <returns>The guild with the specified <paramref name="name"/>, or null if the guild does not exist in this
+        /// guild manager.</returns>
+        public T GetGuild(string name)
+        {
+            if (!_guildSettings.IsValidName(name))
+                return null;
+
+            return _guilds.Values.FirstOrDefault(x => StringComparer.OrdinalIgnoreCase.Equals(name, x.Name));
         }
 
         /// <summary>

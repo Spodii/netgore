@@ -1,13 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using NetGore.Collections;
 
 namespace NetGore.Features.Guilds
 {
     /// <summary>
     /// A container that assists in managing the guild state for guild members.
     /// </summary>
+    /// <typeparam name="T">The type of guild member.</typeparam>
     public class GuildMemberInfo<T> where T : class, IGuildMember
     {
+        static readonly IObjectPool<GuildInviteStatus> _guildInvitePool =
+            new ObjectPool<GuildInviteStatus>(x => new GuildInviteStatus(), null, x => x.Reset(), false);
+
+        static readonly int _inviteResponseTime = GuildSettings.Instance.InviteResponseTime;
+
+        readonly List<GuildInviteStatus> _invites = new List<GuildInviteStatus>();
         readonly T _owner;
 
         IGuild _guild;
@@ -88,6 +97,18 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Gets all of the current live invites the <see cref="GuildMemberInfo{T}.Owner"/> has. Make sure to call
+        /// <see cref="GuildInviteStatus.DeepCopy"/> if you want to hold onto a reference.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <returns>All of the current live invites the <see cref="GuildMemberInfo{T}.Owner"/> has</returns>
+        public IEnumerable<GuildInviteStatus> GetInvites(int currentTime)
+        {
+            UpdateInvites(currentTime);
+            return _invites;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when the owner is demoted.
         /// </summary>
         /// <param name="rank">The new rank.</param>
@@ -117,6 +138,87 @@ namespace NetGore.Features.Guilds
         /// <param name="rank">The new rank.</param>
         protected virtual void HandlePromotion(GuildRank rank)
         {
+        }
+
+        /// <summary>
+        /// Accepts the invite to a <see cref="IGuild"/>. This method will also make sure that this member
+        /// has an outstanding invite to the guild.
+        /// </summary>
+        /// <param name="guild">The guild to join.</param>
+        /// <param name="currentTime">The current time.</param>
+        /// <returns>
+        /// True if this member successfully joined the <paramref name="guild"/>; otherwise false.
+        /// </returns>
+        public bool AcceptInvite(IGuild guild, int currentTime)
+        {
+            if (Owner.Guild != null)
+                return false;
+
+            if (guild == null)
+                return false;
+
+            // Update the invites
+            UpdateInvites(currentTime);
+
+            // Make sure there is an invite to this guild
+            if (!_invites.Any(x => x.Guild == guild))
+                return false;
+
+            // Join the guild
+            Owner.Guild = guild;
+
+            // Remove all outstanding invites
+            foreach (var current in _invites)
+            {
+                _guildInvitePool.Free(current);
+            }
+
+            _invites.Clear();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Handles when the guild member receives an invite to a guild.
+        /// </summary>
+        /// <param name="guild">The guild they were invited to.</param>
+        /// <param name="currentTime">The current time.</param>
+        public void ReceiveInvite(IGuild guild, int currentTime)
+        {
+            UpdateInvites(currentTime);
+
+            // If an invite for this guild already exists, update the invite time on that invite instead
+            for (int i = 0; i < _invites.Count; i++)
+            {
+                if (_invites[i].Guild == guild)
+                {
+                    _invites[i].InviteTime = currentTime;
+                    return;
+                }
+            }
+
+            // Add the invite
+            var item = _guildInvitePool.Acquire();
+            item.Initialize(guild, currentTime);
+            _invites.Add(item);
+        }
+
+        /// <summary>
+        /// Updates the invites, removing expired ones.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        void UpdateInvites(int currentTime)
+        {
+            for (int i = 0; i < _invites.Count; i++)
+            {
+                var current = _invites[i];
+                if (current.InviteTime + _inviteResponseTime < currentTime)
+                {
+                    _guildInvitePool.Free(current);
+                    _invites.RemoveAt(i);
+                    --i;
+                }
+            }
         }
     }
 }

@@ -25,6 +25,16 @@ namespace NetGore.Features.Guilds
         event GuildMemberEventHandler OnRemoveOnlineUser;
 
         /// <summary>
+        /// Notifies listeners when the guild's name has been changed.
+        /// </summary>
+        event GuildRenameEventHandler OnChangeName;
+
+        /// <summary>
+        /// Notifies listeners when the guild's tag has been changed.
+        /// </summary>
+        event GuildRenameEventHandler OnChangeTag;
+
+        /// <summary>
         /// Notifies listeners when the guild has been destroyed.
         /// </summary>
         event GuildEventHandler OnDestroy;
@@ -101,16 +111,18 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Tries to change the name of the guild.
         /// </summary>
+        /// <param name="invoker">The guild member trying to change the guild's name.</param>
         /// <param name="newName">The new name of the guild.</param>
         /// <returns>True if the name was successfully changed; otherwise false.</returns>
-        bool TryChangeName(string newName);
+        bool TryChangeName(IGuildMember invoker, string newName);
 
         /// <summary>
         /// Tries to change the tag of the guild.
         /// </summary>
+        /// <param name="invoker">The guild member trying to change the guild's name.</param>
         /// <param name="newTag">The new tag of the guild.</param>
         /// <returns>True if the tag was successfully changed; otherwise false.</returns>
-        bool TryChangeTag(string newTag);
+        bool TryChangeTag(IGuildMember invoker, string newTag);
 
         /// <summary>
         /// Makes the <paramref name="invoker"/> try to demote the <paramref name="target"/>.

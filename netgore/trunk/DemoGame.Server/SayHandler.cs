@@ -268,7 +268,7 @@ namespace DemoGame.Server
             [SayCommand("GuildKick")]
             public void GuildKick()
             {
-                if (!RequireUserInGuild())
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankKick))
                     return;
 
                 // TODO: ...
@@ -277,7 +277,7 @@ namespace DemoGame.Server
             [SayCommand("Promote")]
             public void Promote()
             {
-                if (!RequireUserInGuild())
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankPromote))
                     return;
 
                 // TODO: ...
@@ -286,31 +286,106 @@ namespace DemoGame.Server
             [SayCommand("Demote")]
             public void Demote()
             {
-                if (!RequireUserInGuild())
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankDemote))
                     return;
 
                 // TODO: ...
             }
 
             [SayCommand("RenameGuild")]
-            public void RenameGuild()
+            public void RenameGuild(string newName)
             {
-                if (!RequireUserInGuild())
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankRename))
                     return;
 
-                // TODO: ...
+                if (!_guildSettings.IsValidName(newName))
+                {
+                    User.Send(GameMessage.GuildRenameFailedInvalidValue, newName);
+                    return;
+                }
+
+                if (!GuildManager.IsNameAvailable(newName))
+                {
+                    User.Send(GameMessage.GuildRenameFailedNameNotAvailable, newName);
+                    return;
+                }
+
+                if (!User.Guild.TryChangeName(User, newName))
+                {
+                    User.Send(GameMessage.GuildRenameFailedUnknownReason, newName);
+                }
+            }
+
+            [SayCommand("RetagGuild")]
+            public void RetagGuild(string newTag)
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankRename))
+                    return;
+
+                if (!_guildSettings.IsValidTag(newTag))
+                {
+                    User.Send(GameMessage.GuildRetagFailedInvalidValue, newTag);
+                    return;
+                }
+
+                if (!GuildManager.IsTagAvailable(newTag))
+                {
+                    User.Send(GameMessage.GuildRetagFailedNameNotAvailable, newTag);
+                    return;
+                }
+
+                if (!User.Guild.TryChangeTag(User, newTag))
+                {
+                    User.Send(GameMessage.GuildRetagFailedUnknownReason, newTag);
+                }
+            }
+
+            bool CheckGuildPermissions(GuildRank requiredRank)
+            {
+                if (((IGuildMember)User).GuildRank < requiredRank)
+                {
+                    User.Send(GameMessage.GuildInsufficientPermissions, _guildSettings.GetRankName(requiredRank));
+                    return false;
+                }
+
+                return true;
             }
 
             [SayCommand("GuildInvite")]
-            public void GuildInvite()
+            public void GuildInvite(string toInvite)
             {
-                // TODO: ...
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankInvite))
+                    return;
+
+                User invitee = World.FindUser(toInvite);
+                if (invitee == null)
+                {
+                    User.Send(GameMessage.GuildInviteFailedInvalidUser, toInvite);
+                    return;
+                }
+
+                if (invitee.Guild != null)
+                {
+                    User.Send(GameMessage.GuildInviteFailedAlreadyInGuild, invitee.Name);
+                    return;
+                }
+
+                bool success = User.Guild.TryInviteMember(User, invitee);
+
+                if (!success)
+                {
+                    User.Send(GameMessage.GuildInviteFailedUnknownReason, invitee.Name);
+                }
+                else
+                {
+                    User.Send(GameMessage.GuildInviteSuccess, invitee.Name);
+                }
             }
 
             [SayCommand("GuildLog")]
             public void GuildLog()
             {
-                if (!RequireUserInGuild())
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankViewLog))
                     return;
 
                 // TODO: ...
@@ -325,11 +400,24 @@ namespace DemoGame.Server
                 // TODO: ...
             }
 
+            [SayCommand("JoinGuild")]
+            public void JoinGuild(string guildName)
+            {
+                if (!RequireUserNotInGuild())
+                    return;
+
+                if (!User.TryJoinGuild(guildName))
+                {
+                    User.Send(GameMessage.GuildJoinFailedInvalidOrNoInvite, guildName);
+                }
+            }
+
             [SayCommand("GuildHelp")]
             public void GuildHelp()
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("Guild commands:");
+                sb.AppendLine("/JoinGuild [name]");
                 sb.AppendLine("/CreateGuild [name] [symbol]");
                 sb.AppendLine("/LeaveGuild");
                 sb.AppendLine("/GuildMembers");
@@ -338,6 +426,7 @@ namespace DemoGame.Server
                 sb.AppendLine("/Promote [user]");
                 sb.AppendLine("/Demote [user]");
                 sb.AppendLine("/RenameGuild [name]");
+                sb.AppendLine("/RetagGuild [tag]");
                 sb.AppendLine("/GuildInvite [user]");
                 sb.AppendLine("/GuildLog");
                 sb.AppendLine("/GSay [message]");

@@ -19,6 +19,11 @@ namespace NetGore.Features.Guilds
             return _value.Equals(obj);
         }
 
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
+
         public static implicit operator byte(GuildRank value)
         {
             return value._value;
