@@ -115,6 +115,9 @@
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateInventoryTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\GameConstantTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\GuildEventTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\GuildMemberTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\GuildTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ItemTemplateTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapSpawnTableDbExtensions.cs" />
@@ -126,6 +129,9 @@
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\UserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\GameConstantTable.cs" />
+    <Compile Include="DbObjs\GuildEventTable.cs" />
+    <Compile Include="DbObjs\GuildMemberTable.cs" />
+    <Compile Include="DbObjs\GuildTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />
     <Compile Include="DbObjs\NpcCharacterTable.cs" />
     <Compile Include="DbObjs\ServerSettingTable.cs" />
@@ -134,6 +140,10 @@
     <Compile Include="DbObjs\ShopTable.cs" />
     <Compile Include="DbObjs\UserCharacterTable.cs" />
     <Compile Include="DynamicEntityFactory.cs" />
+    <Compile Include="Guilds\Guild.cs" />
+    <Compile Include="Guilds\GuildIDCreator.cs" />
+    <Compile Include="Guilds\GuildManager.cs" />
+    <Compile Include="Guilds\IGuildMemberExtensions.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
     <Compile Include="Queries\Account\CountRecentlyCreatedAccounts.cs" />
@@ -158,6 +168,22 @@
     <Compile Include="Queries\Character\SelectAccountCharacterInfoQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterByIDQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterQuery.cs" />
+    <Compile Include="Queries\Guild\CountGuildFoundersQuery.cs" />
+    <Compile Include="Queries\Guild\DeleteGuildMemberQuery.cs" />
+    <Compile Include="Queries\Guild\DeleteGuildQuery.cs" />
+    <Compile Include="Queries\Guild\InsertGuildEventQuery.cs" />
+    <Compile Include="Queries\Guild\InsertGuildQuery.cs" />
+    <Compile Include="Queries\Guild\ReplaceGuildMemberQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildByIDQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildByNameQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildByTagQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildEventsQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildMemberQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildMembersListQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildsQuery.cs" />
+    <Compile Include="Queries\Guild\UpdateGuildNameQuery.cs" />
+    <Compile Include="Queries\Guild\UpdateGuildQuery.cs" />
+    <Compile Include="Queries\Guild\UpdateGuildTagQuery.cs" />
     <Compile Include="Queries\NPC\DeletePersistentNPCQuery.cs" />
     <Compile Include="Queries\NPC\SelectPersistentMapNPCsQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
@@ -220,6 +246,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="World\Map\Entities\Characters\UserChatDialogState.cs" />
+    <Compile Include="World\Map\Entities\Characters\UserShoppingState.cs" />
     <Compile Include="World\Map\Entities\Characters\UserSPSynchronizer.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateEquipmentItemExtensions.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateInventoryItemExtensions.cs" />

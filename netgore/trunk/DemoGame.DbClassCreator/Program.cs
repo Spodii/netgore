@@ -17,7 +17,7 @@ namespace DemoGame.DbClassCreator
         /// <summary>
         /// Contains the of the tables that will be exposed to the whole project instead of just the server.
         /// </summary>
-        static readonly ICollection<string> _globalTables = new string[] { "map", "item" };
+        static readonly ICollection<string> _globalTables = new string[] { "map", "item", "item_template" };
 
         /// <summary>
         /// Output directory for the generated code that is referenced by the whole project.

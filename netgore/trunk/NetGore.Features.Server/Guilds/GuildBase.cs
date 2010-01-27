@@ -42,21 +42,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GuildBase"/> class.
-        /// </summary>
-        /// <param name="guildManager">The <see cref="IGuildManager"/> managing this guild.</param>
-        /// <param name="id">The unique ID of the guild to load.</param>
-        protected GuildBase(IGuildManager guildManager, GuildID id)
-        {
-            _guildManager = guildManager;
-            _id = id;
-
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            LoadGuild(id, out _name, out _tag);
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
-
-        /// <summary>
         /// Makes sure that the guild event invoker and target are valid.
         /// </summary>
         /// <param name="invoker">The guild member invoking the event.</param>
@@ -392,14 +377,6 @@ namespace NetGore.Features.Guilds
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the online member list; otherwise false.</returns>
         protected abstract bool InternalTryViewOnlineMembers(IGuildMember invoker);
-
-        /// <summary>
-        /// When overridden in the derived class, loads the information for a guild using the given <paramref name="id"/>.
-        /// </summary>
-        /// <param name="id">The ID of the guild to load.</param>
-        /// <param name="name">The name of the loaded guild.</param>
-        /// <param name="tag">The tag of the loaded guild.</param>
-        protected abstract void LoadGuild(GuildID id, out string name, out string tag);
 
         #region IGuild Members
 

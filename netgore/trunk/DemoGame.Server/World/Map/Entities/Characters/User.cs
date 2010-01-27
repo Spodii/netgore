@@ -3,10 +3,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
+using DemoGame.Server.Guilds;
+using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
+using NetGore.Db;
+using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Network;
@@ -18,25 +22,35 @@ namespace DemoGame.Server
     /// <summary>
     /// A user-controlled character.
     /// </summary>
-    public class User : Character
+    public class User : Character, IGuildMember
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
+        static readonly ReplaceGuildMemberQuery _replaceGuildMemberQuery;
+        static readonly SelectGuildMemberQuery _selectGuildMemberQuery;
+
         readonly UserChatDialogState _chatState;
-
-        /// <summary>
-        /// The socket used to communicate with the User.
-        /// </summary>
         readonly IIPSocket _conn;
-
+        readonly GuildMemberInfo _guildMemberInfo;
         readonly UserShoppingState _shoppingState;
-
         readonly SocketSendQueue _unreliableBuffer;
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
 
         /// <summary>
-        /// User constructor.
+        /// Initializes the <see cref="User"/> class.
+        /// </summary>
+        static User()
+        {
+            var dbController = DbControllerBase.GetInstance();
+            _deleteGuildMemberQuery = dbController.GetQuery<DeleteGuildMemberQuery>();
+            _replaceGuildMemberQuery = dbController.GetQuery<ReplaceGuildMemberQuery>();
+            _selectGuildMemberQuery = dbController.GetQuery<SelectGuildMemberQuery>(); 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="User"/> class.
         /// </summary>
         /// <param name="conn">Connection to the user's client.</param>
         /// <param name="world">World the user belongs to.</param>
@@ -47,6 +61,7 @@ namespace DemoGame.Server
             _conn = conn;
 
             // Create some objects
+            _guildMemberInfo = new GuildMemberInfo(this);
             _shoppingState = new UserShoppingState(this);
             _chatState = new UserChatDialogState(this);
             _userStatsBase = (UserStats)BaseStats;
@@ -70,6 +85,16 @@ namespace DemoGame.Server
 
             // Activate the user
             IsAlive = true;
+
+            // Load the guild information
+            var guildInfo = _selectGuildMemberQuery.Execute(ID);
+            if (guildInfo != null)
+            {
+                Debug.Assert(guildInfo.CharacterID == ID);
+                var asGuildMember = (IGuildMember)this;
+                asGuildMember.Guild = World.GuildManager.GetGuild(new GuildID(guildInfo.GuildId)); // TODO: !! Do not want this cast
+                asGuildMember.GuildRank = guildInfo.Rank;
+            }
 
             // Send the initial information
             User_OnChangeLevel(this, Level, Level);
@@ -265,6 +290,16 @@ namespace DemoGame.Server
             var account = World.GetUserAccount(Conn);
             if (account != null)
                 account.CloseUser();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional steps to be taken when saving.
+        /// </summary>
+        protected override void HandleSave()
+        {
+            base.HandleSave();
+
+            ((IGuildMember)this).SaveGuildInformation();
         }
 
         /// <summary>
@@ -758,126 +793,65 @@ namespace DemoGame.Server
                 GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
         }
 
-        public class UserShoppingState : CharacterShoppingState<User, Character, ShopItem>
+        #region IGuildMember Members
+
+        /// <summary>
+        /// Gets or sets the guild member's current guild. Will be null if they are not part of any guilds.
+        /// This value should only be set by the <see cref="IGuildManager"/>. When the value is changed,
+        /// <see cref="IGuild.RemoveOnlineMember"/> should be called for the old value (if not null) and
+        /// <see cref="IGuild.AddOnlineMember"/> should be called for the new value (if not null).
+        /// </summary>
+        IGuild IGuildMember.Guild
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="UserShoppingState"/> class.
-            /// </summary>
-            /// <param name="character">The character doing the shopping.</param>
-            public UserShoppingState(User character) : base(character)
-            {
-            }
+            get { return _guildMemberInfo.Guild; }
+            set { _guildMemberInfo.Guild = value; }
+        }
 
-            /// <summary>
-            /// When overridden in the derived class, gets the <see cref="IMap"/> for a shopper.
-            /// </summary>
-            /// <param name="character">The character to get the <see cref="IMap"/> for.</param>
-            /// <returns>
-            /// The <see cref="IMap"/> for the <paramref name="character"/>.
-            /// </returns>
-            protected override IMap GetCharacterMap(User character)
-            {
-                return character.Map;
-            }
+        /// <summary>
+        /// Gets or sets the guild member's ranking in the guild. Only valid if in a guild.
+        /// This value should only be set by the <see cref="IGuildManager"/>.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is greater than the maximum
+        /// rank value.</exception>
+        GuildRank IGuildMember.GuildRank
+        {
+            get { return _guildMemberInfo.GuildRank; }
+            set { _guildMemberInfo.GuildRank = value; }
+        }
 
-            /// <summary>
-            /// When overridden in the derived class, gets the <see cref="IMap"/> for a shop owner.
-            /// </summary>
-            /// <param name="character">The character to get the <see cref="IMap"/> for.</param>
-            /// <returns>
-            /// The <see cref="IMap"/> for the <paramref name="character"/>.
-            /// </returns>
-            protected override IMap GetCharacterMap(Character character)
+        /// <summary>
+        /// Saves the guild member's information.
+        /// </summary>
+        void IGuildMember.SaveGuildInformation()
+        {
+            var guild = ((IGuildMember)this).Guild;
+            if (guild == null)
+                _deleteGuildMemberQuery.Execute(ID);
+            else
             {
-                return character.Map;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the <see cref="IShop{TShopItem}"/> for a
-            /// shop owner.
-            /// </summary>
-            /// <param name="shopkeeper">The shop owner to get the <see cref="IShop{TShopItem}"/> for.</param>
-            /// <returns>
-            /// The <paramref name="shopkeeper"/>'s <see cref="IShop{TShopItem}"/>.
-            /// </returns>
-            protected override IShop<ShopItem> GetCharacterShop(Character shopkeeper)
-            {
-                return shopkeeper.Shop;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, makes the <paramref name="character"/> try to purchase
-            /// <paramref name="amount"/> of the <paramref name="shopItem"/> from the shop.
-            /// </summary>
-            /// <param name="character">The character doing the buying.</param>
-            /// <param name="shopItem">The item to purchase.</param>
-            /// <param name="amount">The amount of the <paramref name="shopItem"/> to purchase.</param>
-            /// <returns>
-            /// True if the purchase was successful; otherwise false.
-            /// </returns>
-            protected override bool HandleBuyShopItem(User character, ShopItem shopItem, byte amount)
-            {
-                return character.TryBuyItem(shopItem.ItemTemplate, amount);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, makes the <paramref name="character"/> try to sell
-            /// <paramref name="amount"/> of their inventory at the given <paramref name="slot"/> to
-            /// the <paramref name="shop"/>.
-            /// </summary>
-            /// <param name="character">The character doing the selling.</param>
-            /// <param name="slot">The inventory slot to sell from.</param>
-            /// <param name="amount">The amount of the inventory item to sell.</param>
-            /// <param name="shop">The shop to sell to.</param>
-            /// <returns>
-            /// True if the sell was successful; otherwise false.
-            /// </returns>
-            protected override bool HandleSellInventoryItem(User character, InventorySlot slot, byte amount, IShop<ShopItem> shop)
-            {
-                return character.TrySellInventoryItem(slot, amount, ShoppingAt);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if the <paramref name="character"/> is close enough to the
-            /// <paramref name="shopKeeper"/> to buy and sell to and from their shop.
-            /// </summary>
-            /// <param name="character">The character doing the shopping.</param>
-            /// <param name="shopKeeper">The owner of the shop.</param>
-            /// <returns>
-            /// True if the <paramref name="character"/> is close enough to the <see cref="shopKeeper"/>
-            /// to buy and sell from their shop; otherwise false.
-            /// </returns>
-            protected override bool IsValidDistance(User character, Character shopKeeper)
-            {
-                return GameData.IsValidDistanceToShop(character, shopKeeper);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, notifies the <paramref name="character"/> that they have
-            /// started shopping at the given <paramref name="shop"/>.
-            /// </summary>
-            /// <param name="character">The character doing the shopping.</param>
-            /// <param name="shop">The shop that the <paramref name="character"/> is shopping at..</param>
-            protected override void SendStartShopping(User character, IShop<ShopItem> shop)
-            {
-                using (var pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
-                {
-                    character.Send(pw);
-                }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, notifies the <paramref name="character"/> that they have
-            /// stopped shopping.
-            /// </summary>
-            /// <param name="character">The character that stopped shopping.</param>
-            protected override void SendStopShopping(User character)
-            {
-                using (var pw = ServerPacket.StopShopping())
-                {
-                    character.Send(pw);
-                }
+                var values = new ReplaceGuildMemberQuery.QueryArgs(ID, guild.ID, ((IGuildMember)this).GuildRank);
+                _replaceGuildMemberQuery.Execute(values);
             }
         }
+
+        /// <summary>
+        /// Notifies the guild member that they have been invited to join a guild.
+        /// </summary>
+        /// <param name="inviter">The guild member that invited them into the guild.</param>
+        /// <param name="guild">The guild they are being invited to join.</param>
+        void IGuildMember.SendGuildInvite(IGuildMember inviter, IGuild guild)
+        {
+            using (
+                var pw =
+                    ServerPacket.Chat(string.Format("{0} invited you to join guild {1}.", inviter.AsCharacter().Name, guild.Name))
+                )
+            {
+                Send(pw);
+            }
+
+            // TODO: Not done implementing...
+        }
+
+        #endregion
     }
 }

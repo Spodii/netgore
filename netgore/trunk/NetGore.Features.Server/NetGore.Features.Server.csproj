@@ -49,6 +49,7 @@
     <Compile Include="Guilds\GuildInvokeEventHandler.cs" />
     <Compile Include="Guilds\GuildInvokeEventWithTargetHandler.cs" />
     <Compile Include="Guilds\GuildManagerBase.cs" />
+    <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\IGuild.cs" />
     <Compile Include="Guilds\IGuildManager.cs" />
     <Compile Include="Guilds\IGuildManagerExtensions.cs" />

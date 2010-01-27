@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
+using DemoGame.Server.Guilds;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -30,10 +31,12 @@ namespace DemoGame.Server
 
         bool _disposed;
 
+        public GuildManager GuildManager { get { return Server.GuildManager; } }
+
         /// <summary>
-        /// World constructor
+        /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
-        /// <param name="parent">Server this world is part of</param>
+        /// <param name="parent">Server this world is part of.</param>
         public World(Server parent)
         {
             if (parent == null)
