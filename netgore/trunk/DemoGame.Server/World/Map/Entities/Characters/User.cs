@@ -92,7 +92,7 @@ namespace DemoGame.Server
             {
                 Debug.Assert(guildInfo.CharacterID == ID);
                 var asGuildMember = (IGuildMember)this;
-                asGuildMember.Guild = World.GuildManager.GetGuild(new GuildID(guildInfo.GuildId)); // TODO: !! Do not want this cast
+                asGuildMember.Guild = World.GuildManager.GetGuild(guildInfo.GuildID);
                 asGuildMember.GuildRank = guildInfo.Rank;
             }
 

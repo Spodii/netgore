@@ -86,11 +86,11 @@ System.DateTime _created;
 /// <summary>
 /// The field that maps onto the database column `event_id`.
 /// </summary>
-System.Byte _eventId;
+System.Byte _eventID;
 /// <summary>
 /// The field that maps onto the database column `guild_id`.
 /// </summary>
-System.UInt16 _guildId;
+System.UInt16 _guildID;
 /// <summary>
 /// The field that maps onto the database column `id`.
 /// </summary>
@@ -98,7 +98,7 @@ System.Int32 _iD;
 /// <summary>
 /// The field that maps onto the database column `target_character_id`.
 /// </summary>
-System.Nullable<System.Int32> _targetCharacterId;
+System.Nullable<System.Int32> _targetCharacterID;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `arg0`.
 /// The underlying database type is `varchar(0)`. The database column contains the comment: 
@@ -190,15 +190,15 @@ this._created = (System.DateTime)value;
 /// "The ID of the event that took place.".
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.Byte EventId
+public System.Byte EventID
 {
 get
 {
-return (System.Byte)_eventId;
+return (System.Byte)_eventID;
 }
 set
 {
-this._eventId = (System.Byte)value;
+this._eventID = (System.Byte)value;
 }
 }
 /// <summary>
@@ -207,15 +207,15 @@ this._eventId = (System.Byte)value;
 /// "The guild the event took place on.".
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.UInt16 GuildId
+public NetGore.Features.Guilds.GuildID GuildID
 {
 get
 {
-return (System.UInt16)_guildId;
+return (NetGore.Features.Guilds.GuildID)_guildID;
 }
 set
 {
-this._guildId = (System.UInt16)value;
+this._guildID = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -241,15 +241,15 @@ this._iD = (System.Int32)value;
 /// "The optional character that the event involves.".
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.Nullable<System.Int32> TargetCharacterId
+public System.Nullable<DemoGame.CharacterID> TargetCharacterID
 {
 get
 {
-return (System.Nullable<System.Int32>)_targetCharacterId;
+return (System.Nullable<DemoGame.CharacterID>)_targetCharacterID;
 }
 set
 {
-this._targetCharacterId = (System.Nullable<System.Int32>)value;
+this._targetCharacterID = (System.Nullable<System.Int32>)value;
 }
 }
 
@@ -278,21 +278,21 @@ public GuildEventTable()
 /// <param name="arg2">The initial value for the corresponding property.</param>
 /// <param name="characterID">The initial value for the corresponding property.</param>
 /// <param name="created">The initial value for the corresponding property.</param>
-/// <param name="eventId">The initial value for the corresponding property.</param>
-/// <param name="guildId">The initial value for the corresponding property.</param>
+/// <param name="eventID">The initial value for the corresponding property.</param>
+/// <param name="guildID">The initial value for the corresponding property.</param>
 /// <param name="iD">The initial value for the corresponding property.</param>
-/// <param name="targetCharacterId">The initial value for the corresponding property.</param>
-public GuildEventTable(System.String @arg0, System.String @arg1, System.String @arg2, DemoGame.CharacterID @characterID, System.DateTime @created, System.Byte @eventId, System.UInt16 @guildId, System.Int32 @iD, System.Nullable<System.Int32> @targetCharacterId)
+/// <param name="targetCharacterID">The initial value for the corresponding property.</param>
+public GuildEventTable(System.String @arg0, System.String @arg1, System.String @arg2, DemoGame.CharacterID @characterID, System.DateTime @created, System.Byte @eventID, NetGore.Features.Guilds.GuildID @guildID, System.Int32 @iD, System.Nullable<DemoGame.CharacterID> @targetCharacterID)
 {
 this.Arg0 = (System.String)@arg0;
 this.Arg1 = (System.String)@arg1;
 this.Arg2 = (System.String)@arg2;
 this.CharacterID = (DemoGame.CharacterID)@characterID;
 this.Created = (System.DateTime)@created;
-this.EventId = (System.Byte)@eventId;
-this.GuildId = (System.UInt16)@guildId;
+this.EventID = (System.Byte)@eventID;
+this.GuildID = (NetGore.Features.Guilds.GuildID)@guildID;
 this.ID = (System.Int32)@iD;
-this.TargetCharacterId = (System.Nullable<System.Int32>)@targetCharacterId;
+this.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)@targetCharacterID;
 }
 /// <summary>
 /// GuildEventTable constructor.
@@ -326,10 +326,10 @@ dic["@arg1"] = (System.String)source.Arg1;
 dic["@arg2"] = (System.String)source.Arg2;
 dic["@character_id"] = (DemoGame.CharacterID)source.CharacterID;
 dic["@created"] = (System.DateTime)source.Created;
-dic["@event_id"] = (System.Byte)source.EventId;
-dic["@guild_id"] = (System.UInt16)source.GuildId;
+dic["@event_id"] = (System.Byte)source.EventID;
+dic["@guild_id"] = (NetGore.Features.Guilds.GuildID)source.GuildID;
 dic["@id"] = (System.Int32)source.ID;
-dic["@target_character_id"] = (System.Nullable<System.Int32>)source.TargetCharacterId;
+dic["@target_character_id"] = (System.Nullable<DemoGame.CharacterID>)source.TargetCharacterID;
 }
 
 /// <summary>
@@ -343,10 +343,10 @@ this.Arg1 = (System.String)source.Arg1;
 this.Arg2 = (System.String)source.Arg2;
 this.CharacterID = (DemoGame.CharacterID)source.CharacterID;
 this.Created = (System.DateTime)source.Created;
-this.EventId = (System.Byte)source.EventId;
-this.GuildId = (System.UInt16)source.GuildId;
+this.EventID = (System.Byte)source.EventID;
+this.GuildID = (NetGore.Features.Guilds.GuildID)source.GuildID;
 this.ID = (System.Int32)source.ID;
-this.TargetCharacterId = (System.Nullable<System.Int32>)source.TargetCharacterId;
+this.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)source.TargetCharacterID;
 }
 
 /// <summary>
@@ -376,16 +376,16 @@ case "created":
 return Created;
 
 case "event_id":
-return EventId;
+return EventID;
 
 case "guild_id":
-return GuildId;
+return GuildID;
 
 case "id":
 return ID;
 
 case "target_character_id":
-return TargetCharacterId;
+return TargetCharacterID;
 
 default:
 throw new ArgumentException("Field not found.","columnName");
@@ -422,11 +422,11 @@ this.Created = (System.DateTime)value;
 break;
 
 case "event_id":
-this.EventId = (System.Byte)value;
+this.EventID = (System.Byte)value;
 break;
 
 case "guild_id":
-this.GuildId = (System.UInt16)value;
+this.GuildID = (NetGore.Features.Guilds.GuildID)value;
 break;
 
 case "id":
@@ -434,7 +434,7 @@ this.ID = (System.Int32)value;
 break;
 
 case "target_character_id":
-this.TargetCharacterId = (System.Nullable<System.Int32>)value;
+this.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)value;
 break;
 
 default:

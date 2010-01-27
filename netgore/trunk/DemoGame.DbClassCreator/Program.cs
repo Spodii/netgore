@@ -5,6 +5,7 @@ using System.Linq;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
+using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Stats;
 
@@ -110,9 +111,14 @@ namespace DemoGame.DbClassCreator
 
                 generator.AddCustomType(typeof(ShopID), "shop", "id");
 
+                generator.AddCustomType(typeof(GuildID), "guild", "id");
+
+                generator.AddCustomType(typeof(GuildRank), "guild_member", "rank");
+
                 // Mass-added custom types
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
                 generator.AddCustomType(typeof(CharacterID), "*", "character_id");
+                generator.AddCustomType(typeof(CharacterID), "*", "target_character_id");
                 generator.AddCustomType(typeof(AccountID), "*", "account_id");
                 generator.AddCustomType(typeof(MapIndex), "*", "map_id", "respawn_map");
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");
@@ -122,6 +128,7 @@ namespace DemoGame.DbClassCreator
                 generator.AddCustomType(typeof(SPValueType), "*", "hp", "mp");
                 generator.AddCustomType(typeof(ShopID), "*", "shop_id");
                 generator.AddCustomType(typeof(AIID), "*", "ai_id");
+                generator.AddCustomType(typeof(GuildID), "*", "guild_id");
 
                 // Renaming
                 var formatter = generator.Formatter;
@@ -143,6 +150,9 @@ namespace DemoGame.DbClassCreator
                 formatter.AddAlias("give_cash", "GiveCash");
                 formatter.AddAlias("status_effect_id", "StatusEffect");
                 formatter.AddAlias("ai_id", "AIID");
+                formatter.AddAlias("guild_id", "GuildID");
+                formatter.AddAlias("event_id", "EventID");
+                formatter.AddAlias("target_character_id", "TargetCharacterID");
 
                 formatter.AddAlias("Name");
                 formatter.AddAlias("ID");

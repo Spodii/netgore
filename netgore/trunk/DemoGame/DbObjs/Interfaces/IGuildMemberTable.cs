@@ -26,7 +26,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `guild_id`.
 /// </summary>
-System.UInt16 GuildId
+NetGore.Features.Guilds.GuildID GuildID
 {
 get;
 }
@@ -40,7 +40,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `rank`.
 /// </summary>
-System.Byte Rank
+NetGore.Features.Guilds.GuildRank Rank
 {
 get;
 }

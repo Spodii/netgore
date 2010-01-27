@@ -80,11 +80,11 @@ System.String _tag;
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.UInt16 ID
+public NetGore.Features.Guilds.GuildID ID
 {
 get
 {
-return (System.UInt16)_iD;
+return (NetGore.Features.Guilds.GuildID)_iD;
 }
 set
 {
@@ -93,7 +93,7 @@ this._iD = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `name`.
-/// The underlying database type is `varchar(0)`.
+/// The underlying database type is `varchar(50)`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
 public System.String Name
@@ -109,7 +109,7 @@ this._name = (System.String)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `tag`.
-/// The underlying database type is `varchar(0)`.
+/// The underlying database type is `varchar(5)`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
 public System.String Tag
@@ -147,9 +147,9 @@ public GuildTable()
 /// <param name="iD">The initial value for the corresponding property.</param>
 /// <param name="name">The initial value for the corresponding property.</param>
 /// <param name="tag">The initial value for the corresponding property.</param>
-public GuildTable(System.UInt16 @iD, System.String @name, System.String @tag)
+public GuildTable(NetGore.Features.Guilds.GuildID @iD, System.String @name, System.String @tag)
 {
-this.ID = (System.UInt16)@iD;
+this.ID = (NetGore.Features.Guilds.GuildID)@iD;
 this.Name = (System.String)@name;
 this.Tag = (System.String)@tag;
 }
@@ -180,7 +180,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IGuildTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@id"] = (System.UInt16)source.ID;
+dic["@id"] = (NetGore.Features.Guilds.GuildID)source.ID;
 dic["@name"] = (System.String)source.Name;
 dic["@tag"] = (System.String)source.Tag;
 }
@@ -191,7 +191,7 @@ dic["@tag"] = (System.String)source.Tag;
 /// <param name="source">The IGuildTable to copy the values from.</param>
 public void CopyValuesFrom(IGuildTable source)
 {
-this.ID = (System.UInt16)source.ID;
+this.ID = (NetGore.Features.Guilds.GuildID)source.ID;
 this.Name = (System.String)source.Name;
 this.Tag = (System.String)source.Tag;
 }
@@ -231,7 +231,7 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "id":
-this.ID = (System.UInt16)value;
+this.ID = (NetGore.Features.Guilds.GuildID)value;
 break;
 
 case "name":
@@ -262,10 +262,10 @@ case "id":
 return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 
 case "name":
-return new ColumnMetadata("name", "", "varchar(0)", null, typeof(System.String), false, false, false);
+return new ColumnMetadata("name", "", "varchar(50)", null, typeof(System.String), false, false, false);
 
 case "tag":
-return new ColumnMetadata("tag", "", "varchar(0)", null, typeof(System.String), false, false, false);
+return new ColumnMetadata("tag", "", "varchar(5)", null, typeof(System.String), false, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");
