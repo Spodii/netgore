@@ -792,6 +792,17 @@ namespace DemoGame.Server
                 GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
         }
 
+        /// <summary>
+        /// Tries to join a guild.
+        /// </summary>
+        /// <param name="guildName">The name of the guild.</param>
+        /// <returns>True if successfully joined the guild; otherwise false.</returns>
+        public bool TryJoinGuild(string guildName)
+        {
+            var guild = World.GuildManager.GetGuild(guildName);
+            return _guildMemberInfo.AcceptInvite(guild, GetTime());
+        }
+
         #region IGuildMember Members
 
         /// <summary>
@@ -803,7 +814,7 @@ namespace DemoGame.Server
         public IGuild Guild
         {
             get { return _guildMemberInfo.Guild; }
-            set { _guildMemberInfo.Guild = value; }
+            set {  _guildMemberInfo.Guild = value; }
         }
 
         /// <summary>
@@ -839,9 +850,8 @@ namespace DemoGame.Server
         /// <param name="guild">The guild they are being invited to join.</param>
         void IGuildMember.SendGuildInvite(IGuildMember inviter, IGuild guild)
         {
+            _guildMemberInfo.ReceiveInvite(guild, GetTime());
             Send(GameMessage.GuildInvited, inviter.AsCharacter().Name, guild.Name);
-
-            // TODO: Not done implementing...
         }
 
         #endregion

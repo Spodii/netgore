@@ -29,8 +29,25 @@ GuildCreationFailedNameNotAvailable: Could not create guild - the name "{0}" is 
 GuildCreationFailedTagInvalid: Could not create guild - the tag "{0}" is invalid.
 GuildCreationFailedTagNotAvailable: Could not create guild - the tag "{0}" is not available.
 
+GuildInvited: {0} has invited you to join guild {1}.
+GuildInviteSuccess: You have successfully invited user {0} to join your guild.
+GuildInviteFailedInvalidUser: Failed to invite user {0} to join the guild - the user is either offline or does not exist.
+GuildInviteFailedAlreadyInGuild: Failed to invite user {0} to join the guild - the user is already in a guild.
+GuildInviteFailedUnknownReason: Failed to invite user {0} to join the guild.
+
+GuildRenamed: The guild's name has been changed from {0} to {1} by {2}.
+GuildRenameFailedInvalidValue: Failed to rename the guild to {0} since the name is invalid.
+GuildRenameFailedNameNotAvailable: Failed to rename the guild to {0} since the name is already being used by another guild.
+GuildRenameFailedUnknownReason: Failed to rename the guild to {0}.
+
+GuildRetagged: The guild's tag has been changed from {0} to {1} by {2}.
+GuildRetagFailedInvalidValue: Failed to change the guild's tag to {0} since the tag is invalid.
+GuildRetagFailedNameNotAvailable: Failed to change the guild's tag to {0} since the tag is already being used by another guild.
+GuildRetagFailedUnknownReason: Failed to change the guild's tag to {0}.
+
+GuildInsufficientPermissions: Your rank in the guild is not high enough to perform this action. You must be a {0} or higher rank.
 GuildJoin: You have joined guild "{0}".
+GuildJoinFailedInvalidOrNoInvite: Unable to join guild {0} - the guild either does not exist or you do not have an invite to this guild.
 GuildLeave: You have left guild "{0}".
 GuildPromotion: You have been promoted in your guild to rank {0}!
 GuildDemotion: You have been demoted in your guild to rank {0}.
-GuildInvited: {0} has invited you to join guild their guild, {1}.

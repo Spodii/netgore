@@ -27,7 +27,7 @@ namespace DemoGame
             var nameRules = new StringRules(3, 50, CharType.All);
             var tagRules = new StringRules(1, 4, CharType.All);
             var maxRank = (GuildRank)(rankNames.Length - 1);
-            GuildSettings.Initialize(new GuildSettings(maxRank, rankNames, nameRules, tagRules, 3, 2, 1, 1, 2, 2));
+            GuildSettings.Initialize(new GuildSettings(1000 * 60, maxRank, rankNames, nameRules, tagRules, 3, 2, 1, 1, 2, 2));
         }
 
         /// <summary>

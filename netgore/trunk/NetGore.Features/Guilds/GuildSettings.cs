@@ -20,11 +20,18 @@ namespace NetGore.Features.Guilds
         readonly StringRules _nameRules;
         readonly string[] _rankNames;
         readonly StringRules _tagRules;
+        readonly int _inviteResponseTime;
+
+        /// <summary>
+        /// Gets the amount of time in milliseconds that a user has to accept a guild invite after receiving it. After this
+        /// amount of time, the invite will expire and they will have to be invited again.
+        /// </summary>
+        public int InviteResponseTime { get { return _inviteResponseTime; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildSettings"/> class.
         /// </summary>
-        public GuildSettings(GuildRank highestRank, string[] rankNames, StringRules nameRules, StringRules tagRules,
+        public GuildSettings(int inviteResponseTime, GuildRank highestRank, string[] rankNames, StringRules nameRules, StringRules tagRules,
                              GuildRank minRankRename, GuildRank minRankViewLog, GuildRank minRankKick, GuildRank minRankInvite,
                              GuildRank minRankPromote, GuildRank minRankDemote)
         {
@@ -38,6 +45,8 @@ namespace NetGore.Features.Guilds
                 throw new ArgumentNullException("nameRules");
             if (tagRules == null)
                 throw new ArgumentNullException("tagRules");
+            if (inviteResponseTime <= 0)
+                throw new ArgumentOutOfRangeException("inviteResponseTime");
 
             if (minRankRename > highestRank)
                 throw new ArgumentOutOfRangeException("minRankRename");
@@ -51,6 +60,8 @@ namespace NetGore.Features.Guilds
                 throw new ArgumentOutOfRangeException("minRankPromote");
             if (minRankDemote > highestRank)
                 throw new ArgumentOutOfRangeException("minRankDemote");
+
+            _inviteResponseTime = inviteResponseTime;
 
             _highestRank = highestRank;
             _rankNames = rankNames;

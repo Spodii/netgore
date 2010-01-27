@@ -111,10 +111,27 @@ namespace DemoGame
         GuildCreationFailedTagInvalid,
         GuildCreationFailedTagNotAvailable,
 
+        GuildInvited,
+        GuildInviteSuccess,
+        GuildInviteFailedInvalidUser,
+        GuildInviteFailedAlreadyInGuild,
+        GuildInviteFailedUnknownReason,
+
+        GuildRenamed,
+        GuildRenameFailedInvalidValue,
+        GuildRenameFailedNameNotAvailable,
+        GuildRenameFailedUnknownReason,
+
+        GuildRetagged,
+        GuildRetagFailedInvalidValue,
+        GuildRetagFailedNameNotAvailable,
+        GuildRetagFailedUnknownReason,
+
+        GuildInsufficientPermissions,
         GuildJoin,
+        GuildJoinFailedInvalidOrNoInvite,
         GuildLeave,
         GuildPromotion,
         GuildDemotion,
-        GuildInvited,
     }
 }

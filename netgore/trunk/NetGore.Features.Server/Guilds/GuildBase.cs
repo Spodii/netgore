@@ -179,6 +179,28 @@ namespace NetGore.Features.Guilds
         protected abstract void HandleDestroyGuild();
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's name has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldName">The old name.</param>
+        /// <param name="newName">The new name.</param>
+        protected virtual void HandleChangeName(IGuildMember invoker, string oldName, string newName)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's tag has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldTag">The old tag.</param>
+        /// <param name="newTag">The new tag.</param>
+        protected virtual void HandleChangeTag(IGuildMember invoker, string oldTag, string newTag)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling after a guild member is invited.
         /// Use this instead of the corresponding event when possible.
         /// </summary>
@@ -405,6 +427,16 @@ namespace NetGore.Features.Guilds
         /// Notifies listeners when a member of this guild has gone offline.
         /// </summary>
         public event GuildMemberEventHandler OnRemoveOnlineUser;
+
+        /// <summary>
+        /// Notifies listeners when the guild's name has been changed.
+        /// </summary>
+        public event GuildRenameEventHandler OnChangeName;
+
+        /// <summary>
+        /// Notifies listeners when the guild's tag has been changed.
+        /// </summary>
+        public event GuildRenameEventHandler OnChangeTag;
 
         /// <summary>
         /// Destroys the guild completely and removes all members from it.
@@ -745,12 +777,21 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Tries to change the name of the guild.
         /// </summary>
+        /// <param name="invoker">The guild member trying to change the guild's name.</param>
         /// <param name="newName">The new name of the guild.</param>
         /// <returns>True if the name was successfully changed; otherwise false.</returns>
-        public bool TryChangeName(string newName)
+        public bool TryChangeName(IGuildMember invoker, string newName)
         {
+            if (!EnsureValidEventSource(invoker))
+                return false;
+
+            if (!EnsureValidRank(invoker, _guildSettings.MinRankRename))
+                return false;
+
             if (_name == newName || !GuildManager.IsNameAvailable(newName))
                 return false;
+
+            string oldValue = Name;
 
             bool success = InternalTryChangeName(newName);
 
@@ -758,6 +799,11 @@ namespace NetGore.Features.Guilds
             {
                 _name = newName;
                 Save();
+
+                HandleChangeName(invoker, oldValue, Name);
+
+                if (OnChangeName != null)
+                    OnChangeName(this, invoker, oldValue, Name);
             }
 
             return success;
@@ -766,12 +812,21 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Tries to change the tag of the guild.
         /// </summary>
+        /// <param name="invoker">The guild member trying to change the guild's tag.</param>
         /// <param name="newTag">The new tag of the guild.</param>
         /// <returns>True if the tag was successfully changed; otherwise false.</returns>
-        public bool TryChangeTag(string newTag)
+        public bool TryChangeTag(IGuildMember invoker, string newTag)
         {
+            if (!EnsureValidEventSource(invoker))
+                return false;
+
+            if (!EnsureValidRank(invoker, _guildSettings.MinRankRename))
+                return false;
+
             if (_tag == newTag || !GuildManager.IsTagAvailable(newTag))
                 return false;
+
+            string oldValue = Tag;
 
             bool success = InternalTryChangeTag(newTag);
 
@@ -779,6 +834,11 @@ namespace NetGore.Features.Guilds
             {
                 _tag = newTag;
                 Save();
+
+                HandleChangeName(invoker, oldValue, Name);
+
+                if (OnChangeName != null)
+                    OnChangeName(this, invoker, oldValue, Name);
             }
 
             return success;

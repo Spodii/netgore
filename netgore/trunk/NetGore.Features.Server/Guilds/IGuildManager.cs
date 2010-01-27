@@ -27,6 +27,14 @@ namespace NetGore.Features.Guilds
         /// <returns>The guild with the specified <paramref name="id"/>, or null if the guild does not exist in this
         /// guild manager.</returns>
         T GetGuild(GuildID id);
+
+        /// <summary>
+        /// Gets the guild with the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The name of the guild to get.</param>
+        /// <returns>The guild with the specified <paramref name="name"/>, or null if the guild does not exist in this
+        /// guild manager.</returns>
+        T GetGuild(string name);
     }
 
     /// <summary>
