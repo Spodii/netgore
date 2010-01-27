@@ -46,7 +46,7 @@ namespace DemoGame.Server
             var dbController = DbControllerBase.GetInstance();
             _deleteGuildMemberQuery = dbController.GetQuery<DeleteGuildMemberQuery>();
             _replaceGuildMemberQuery = dbController.GetQuery<ReplaceGuildMemberQuery>();
-            _selectGuildMemberQuery = dbController.GetQuery<SelectGuildMemberQuery>(); 
+            _selectGuildMemberQuery = dbController.GetQuery<SelectGuildMemberQuery>();
         }
 
         /// <summary>
@@ -91,9 +91,8 @@ namespace DemoGame.Server
             if (guildInfo != null)
             {
                 Debug.Assert(guildInfo.CharacterID == ID);
-                var asGuildMember = (IGuildMember)this;
-                asGuildMember.Guild = World.GuildManager.GetGuild(guildInfo.GuildID);
-                asGuildMember.GuildRank = guildInfo.Rank;
+                _guildMemberInfo.Guild = World.GuildManager.GetGuild(guildInfo.GuildID);
+                _guildMemberInfo.GuildRank = guildInfo.Rank;
             }
 
             // Send the initial information
@@ -801,7 +800,7 @@ namespace DemoGame.Server
         /// <see cref="IGuild.RemoveOnlineMember"/> should be called for the old value (if not null) and
         /// <see cref="IGuild.AddOnlineMember"/> should be called for the new value (if not null).
         /// </summary>
-        IGuild IGuildMember.Guild
+        public IGuild Guild
         {
             get { return _guildMemberInfo.Guild; }
             set { _guildMemberInfo.Guild = value; }
@@ -824,12 +823,11 @@ namespace DemoGame.Server
         /// </summary>
         void IGuildMember.SaveGuildInformation()
         {
-            var guild = ((IGuildMember)this).Guild;
-            if (guild == null)
+            if (Guild == null)
                 _deleteGuildMemberQuery.Execute(ID);
             else
             {
-                var values = new ReplaceGuildMemberQuery.QueryArgs(ID, guild.ID, ((IGuildMember)this).GuildRank);
+                var values = new ReplaceGuildMemberQuery.QueryArgs(ID, Guild.ID, ((IGuildMember)this).GuildRank);
                 _replaceGuildMemberQuery.Execute(values);
             }
         }
@@ -841,13 +839,7 @@ namespace DemoGame.Server
         /// <param name="guild">The guild they are being invited to join.</param>
         void IGuildMember.SendGuildInvite(IGuildMember inviter, IGuild guild)
         {
-            using (
-                var pw =
-                    ServerPacket.Chat(string.Format("{0} invited you to join guild {1}.", inviter.AsCharacter().Name, guild.Name))
-                )
-            {
-                Send(pw);
-            }
+            Send(GameMessage.GuildInvited, inviter.AsCharacter().Name, guild.Name);
 
             // TODO: Not done implementing...
         }
