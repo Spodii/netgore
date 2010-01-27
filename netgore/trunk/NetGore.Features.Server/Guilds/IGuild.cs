@@ -15,6 +15,16 @@ namespace NetGore.Features.Guilds
         event GuildInvokeEventWithTargetHandler OnDemoteMember;
 
         /// <summary>
+        /// Notifies listeners when a member of this guild has come online.
+        /// </summary>
+        event GuildMemberEventHandler OnAddOnlineUser;
+
+        /// <summary>
+        /// Notifies listeners when a member of this guild has gone offline.
+        /// </summary>
+        event GuildMemberEventHandler OnRemoveOnlineUser;
+
+        /// <summary>
         /// Notifies listeners when the guild has been destroyed.
         /// </summary>
         event GuildEventHandler OnDestroy;

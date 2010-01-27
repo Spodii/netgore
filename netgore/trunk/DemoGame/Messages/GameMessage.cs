@@ -14,6 +14,16 @@ namespace DemoGame
         InvalidCommand,
 
         /// <summary>
+        /// Cannot execute command because the user is in a guild.
+        /// </summary>
+        InvalidCommandMustBeInGuild,
+        
+        /// <summary>
+        /// Cannot execute command because the user is not in a guild.
+        /// </summary>
+        InvalidCommandMustNotBeInGuild,
+
+        /// <summary>
         /// Message received when a User shouts.
         /// </summary>
         CommandShout,
@@ -93,5 +103,18 @@ namespace DemoGame
         /// Sell more than one item to a shop.
         /// </summary>
         ShopSellItemPlural,
+
+        GuildCreationSuccessful,
+        GuildCreationFailedUnknownReason,
+        GuildCreationFailedNameInvalid,
+        GuildCreationFailedNameNotAvailable,
+        GuildCreationFailedTagInvalid,
+        GuildCreationFailedTagNotAvailable,
+
+        GuildJoin,
+        GuildLeave,
+        GuildPromotion,
+        GuildDemotion,
+        GuildInvited,
     }
 }

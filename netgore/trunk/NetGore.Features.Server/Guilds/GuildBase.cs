@@ -155,6 +155,14 @@ namespace NetGore.Features.Guilds
         protected abstract int GetNumberOfFounders();
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has come online.
+        /// </summary>
+        protected virtual void HandleAddOnlineUser(IGuildMember guildMember)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling after a guild member is demoted.
         /// Use this instead of the corresponding event when possible.
         /// </summary>
@@ -197,6 +205,14 @@ namespace NetGore.Features.Guilds
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <param name="target">The optional guild member the event involves.</param>
         protected virtual void HandlePromoteMember(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has gone offline.
+        /// </summary>
+        protected virtual void HandleRemoveOnlineUser(IGuildMember guildMember)
         {
         }
 
@@ -379,6 +395,16 @@ namespace NetGore.Features.Guilds
         protected abstract bool InternalTryViewOnlineMembers(IGuildMember invoker);
 
         #region IGuild Members
+
+        /// <summary>
+        /// Notifies listeners when a member of this guild has come online.
+        /// </summary>
+        public event GuildMemberEventHandler OnAddOnlineUser;
+
+        /// <summary>
+        /// Notifies listeners when a member of this guild has gone offline.
+        /// </summary>
+        public event GuildMemberEventHandler OnRemoveOnlineUser;
 
         /// <summary>
         /// Destroys the guild completely and removes all members from it.
@@ -638,6 +664,11 @@ namespace NetGore.Features.Guilds
             }
 
             _onlineMembers.Add(member);
+
+            if (OnAddOnlineUser != null)
+                OnAddOnlineUser(this, member);
+
+            HandleAddOnlineUser(member);
         }
 
         /// <summary>
@@ -662,7 +693,13 @@ namespace NetGore.Features.Guilds
                     "Member `{0}` was not in the online list for guild `{1}`." +
                     " Not really a problem that can't be easily fixed, but should be avoided since it is needless overhead.";
                 Debug.Fail(string.Format(errmsg, member, this));
+                return;
             }
+
+            if (OnRemoveOnlineUser != null)
+                OnRemoveOnlineUser(this, member);
+
+            HandleRemoveOnlineUser(member);
         }
 
         /// <summary>

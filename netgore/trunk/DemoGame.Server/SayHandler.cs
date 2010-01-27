@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
+using System.Text;
+using DemoGame.Server.Guilds;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Features.Guilds;
 using NetGore.Network;
 
 // ReSharper disable SuggestBaseTypeForParameter
@@ -147,6 +150,202 @@ namespace DemoGame.Server
                 // This is just a temporary test command...
                 DamageTrapEntity trap = new DamageTrapEntity(User.Position, new Vector2(64, 64));
                 User.Map.AddEntity(trap);
+            }
+
+            /// <summary>
+            /// Requires the user to not be in a guild.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireUserNotInGuild()
+            {
+                if (User.Guild != null)
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustNotBeInGuild))
+                    {
+                        User.Send(pw);
+                    }
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// Requires the user to be in a guild.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireUserInGuild()
+            {
+                if (User.Guild == null)
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustBeInGuild))
+                    {
+                        User.Send(pw);
+                    }
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            static readonly GuildSettings _guildSettings = GuildSettings.Instance;
+
+            [SayCommand("CreateGuild")]
+            public void CreateGuild(string name, string tag)
+            {
+                if (!RequireUserNotInGuild())
+                    return;
+
+                // Valid name
+                if (!_guildSettings.IsValidName(name))
+                {
+                    User.Send(GameMessage.GuildCreationFailedNameInvalid, name);
+                    return;
+                }
+
+                if (!GuildManager.IsNameAvailable(name))
+                {
+                    User.Send(GameMessage.GuildCreationFailedNameNotAvailable, name);
+                    return;
+                }
+
+                // Valid tag
+                if (!_guildSettings.IsValidTag(tag))
+                {
+                    User.Send(GameMessage.GuildCreationFailedTagInvalid, tag);
+                    return;
+                }
+
+                if (!GuildManager.IsTagAvailable(tag))
+                {
+                    User.Send(GameMessage.GuildCreationFailedTagNotAvailable, tag);
+                    return;
+                }
+
+                // Create
+                var guild = GuildManager.TryCreateGuild(User, name, tag);
+                if (guild == null)
+                {
+                    User.Send(GameMessage.GuildCreationFailedUnknownReason, name, tag);
+                }
+                else
+                {
+                    User.Send(GameMessage.GuildCreationSuccessful, name, tag);
+                }
+            }
+
+            public GuildManager GuildManager { get { return Server.GuildManager; } }
+
+            [SayCommand("LeaveGuild")]
+            public void LeaveGuild()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                User.Guild = null;
+            }
+
+            [SayCommand("GuildMembers")]
+            public void GuildMembers()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                User.Guild.TryViewMembers(User);
+            }
+
+            [SayCommand("GuildOnline")]
+            public void GuildOnline()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                User.Guild.TryViewOnlineMembers(User);
+            }
+
+            [SayCommand("GuildKick")]
+            public void GuildKick()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                // TODO: ...
+            }
+
+            [SayCommand("Promote")]
+            public void Promote()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                // TODO: ...
+            }
+
+            [SayCommand("Demote")]
+            public void Demote()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                // TODO: ...
+            }
+
+            [SayCommand("RenameGuild")]
+            public void RenameGuild()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                // TODO: ...
+            }
+
+            [SayCommand("GuildInvite")]
+            public void GuildInvite()
+            {
+                // TODO: ...
+            }
+
+            [SayCommand("GuildLog")]
+            public void GuildLog()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                // TODO: ...
+            }
+
+            [SayCommand("GSay")]
+            public void GSay()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                // TODO: ...
+            }
+
+            [SayCommand("GuildHelp")]
+            public void GuildHelp()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Guild commands:");
+                sb.AppendLine("/CreateGuild [name] [symbol]");
+                sb.AppendLine("/LeaveGuild");
+                sb.AppendLine("/GuildMembers");
+                sb.AppendLine("/GuildOnline");
+                sb.AppendLine("/GuildKick [user]");
+                sb.AppendLine("/Promote [user]");
+                sb.AppendLine("/Demote [user]");
+                sb.AppendLine("/RenameGuild [name]");
+                sb.AppendLine("/GuildInvite [user]");
+                sb.AppendLine("/GuildLog");
+                sb.AppendLine("/GSay [message]");
+
+                using (var pw = ServerPacket.Chat(sb.ToString()))
+                {
+                    User.Send(pw);
+                }
             }
 
             [SayCommand("Shout")]

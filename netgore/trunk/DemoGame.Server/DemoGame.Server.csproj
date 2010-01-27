@@ -143,6 +143,7 @@
     <Compile Include="Guilds\Guild.cs" />
     <Compile Include="Guilds\GuildIDCreator.cs" />
     <Compile Include="Guilds\GuildManager.cs" />
+    <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\IGuildMemberExtensions.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
