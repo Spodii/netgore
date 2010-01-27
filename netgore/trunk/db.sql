@@ -42,7 +42,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@vbgore.com','2009-09-07 15:43:16','2010-01-24 13:50:43',16777343,NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@vbgore.com','2009-09-07 15:43:16','2010-01-26 21:34:27',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,6 +69,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (1,16777343,'2010-01-24 15:08:41'),(1,16777343,'2010-01-24 15:36:10'),(1,16777343,'2010-01-24 15:36:18'),(1,16777343,'2010-01-24 15:36:35'),(1,16777343,'2010-01-24 15:36:56'),(1,16777343,'2010-01-24 15:38:05'),(1,16777343,'2010-01-24 15:41:14'),(1,16777343,'2010-01-24 15:42:08'),(1,16777343,'2010-01-24 15:42:51'),(1,16777343,'2010-01-24 15:49:14'),(1,16777343,'2010-01-24 15:50:59'),(1,16777343,'2010-01-24 15:51:57'),(1,16777343,'2010-01-24 15:54:50'),(1,16777343,'2010-01-24 15:56:23'),(1,16777343,'2010-01-24 16:00:20'),(1,16777343,'2010-01-26 20:44:25'),(1,16777343,'2010-01-26 21:22:42'),(1,16777343,'2010-01-26 21:23:37'),(1,16777343,'2010-01-26 21:25:00'),(1,16777343,'2010-01-26 21:33:59'),(1,16777343,'2010-01-26 21:34:27');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,7 +213,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,1,NULL,'Spodi',2,NULL,NULL,NULL,736.999,732,1,500,200,1,1800,2641,106,3169,503,50,50,50,50,7,12,0,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,746,223,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,729.199,216.28,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,NULL,'Talking Guy',2,NULL,0,NULL,800,732,2,800,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(5,NULL,NULL,'Shopkeeper',2,0,NULL,NULL,600,789,2,600,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(6,NULL,NULL,'Vending Machine',2,1,NULL,NULL,500,1330,2,500,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1);
+INSERT INTO `character` VALUES (1,1,NULL,'Spodi',1,NULL,NULL,NULL,500,261.56,1,500,200,1,1800,2736,114,3414,543,50,50,50,50,7,12,0,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,506,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,NULL,'Talking Guy',2,NULL,0,NULL,800,530,2,800,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(5,NULL,NULL,'Shopkeeper',2,0,NULL,NULL,600,530,2,600,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(6,NULL,NULL,'Vending Machine',2,1,NULL,NULL,500,530,2,500,530,1,1800,0,1,0,0,50,50,50,50,1,1,0,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +241,7 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
-INSERT INTO `character_equipped` VALUES (2,132,2),(1,622,1),(1,623,0),(3,686,2);
+INSERT INTO `character_equipped` VALUES (3,3,2);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -447,6 +448,96 @@ INSERT INTO `game_constant` VALUES (10,3,30,3,30,3,15,36,36,500,1024,768,44446,4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `guild`
+--
+
+DROP TABLE IF EXISTS `guild`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `guild` (
+  `id` smallint(5) unsigned NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `tag` varchar(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `guild`
+--
+
+LOCK TABLES `guild` WRITE;
+/*!40000 ALTER TABLE `guild` DISABLE KEYS */;
+INSERT INTO `guild` VALUES (0,'TestGuild','tg');
+/*!40000 ALTER TABLE `guild` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `guild_event`
+--
+
+DROP TABLE IF EXISTS `guild_event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `guild_event` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The ID of the event.',
+  `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The guild the event took place on.',
+  `character_id` int(11) NOT NULL COMMENT 'The character that invoked the event.',
+  `target_character_id` int(11) DEFAULT NULL COMMENT 'The optional character that the event involves.',
+  `event_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that took place.',
+  `created` datetime NOT NULL COMMENT 'When the event was created.',
+  `arg0` varchar(0) DEFAULT NULL COMMENT 'The first optional event argument.',
+  `arg1` varchar(0) DEFAULT NULL COMMENT 'The second optional event argument.',
+  `arg2` varchar(0) DEFAULT NULL COMMENT 'The third optional event argument.',
+  PRIMARY KEY (`id`),
+  KEY `guild_id` (`guild_id`),
+  KEY `character_id` (`character_id`),
+  KEY `target_character_id` (`target_character_id`),
+  CONSTRAINT `guild_event_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `guild_event_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `guild_event_ibfk_3` FOREIGN KEY (`target_character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `guild_event`
+--
+
+LOCK TABLES `guild_event` WRITE;
+/*!40000 ALTER TABLE `guild_event` DISABLE KEYS */;
+/*!40000 ALTER TABLE `guild_event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `guild_member`
+--
+
+DROP TABLE IF EXISTS `guild_member`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `guild_member` (
+  `character_id` int(11) NOT NULL COMMENT 'The character that is a member of the guild.',
+  `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The guild the member is a part of.',
+  `rank` tinyint(3) unsigned NOT NULL COMMENT 'The member''s ranking in the guild.',
+  `joined` datetime NOT NULL COMMENT 'When the member joined the guild.',
+  PRIMARY KEY (`character_id`),
+  KEY `guild_id` (`guild_id`),
+  CONSTRAINT `guild_member_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `guild_member_ibfk_2` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `guild_member`
+--
+
+LOCK TABLES `guild_member` WRITE;
+/*!40000 ALTER TABLE `guild_member` DISABLE KEYS */;
+INSERT INTO `guild_member` VALUES (1,0,3,'2010-01-26 21:34:14');
+/*!40000 ALTER TABLE `guild_member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `item`
 --
 
@@ -487,7 +578,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (132,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(622,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(623,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(686,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL);
+INSERT INTO `item` VALUES (0,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(1,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(2,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(3,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(4,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(5,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(6,3,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(7,1,9,16,'Healing Potion','A healing potion',4,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(8,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(9,1,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(10,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(11,1,9,16,'Healing Potion','A healing potion',2,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(12,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(13,1,9,16,'Healing Potion','A healing potion',1,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(14,1,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(15,1,9,16,'Healing Potion','A healing potion',1,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(16,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(17,1,9,16,'Healing Potion','A healing potion',1,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(18,1,9,16,'Healing Potion','A healing potion',1,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(19,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(20,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(21,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(22,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(23,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(24,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(25,1,9,16,'Healing Potion','A healing potion',1,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(26,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(27,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(28,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(29,2,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(30,1,9,16,'Healing Potion','A healing potion',1,94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(31,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(32,4,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body');
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -674,7 +765,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-01-24 13:50:54');
+INSERT INTO `server_time` VALUES ('2010-01-26 21:34:29');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -919,4 +1010,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-01-24 14:05:29
+-- Dump completed on 2010-01-26 21:36:30
