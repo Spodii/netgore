@@ -83,6 +83,9 @@
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateInventoryTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IGameConstantTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IGuildEventTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IGuildMemberTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IGuildTable.cs" />
     <Compile Include="DbObjs\Interfaces\IItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IItemTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />

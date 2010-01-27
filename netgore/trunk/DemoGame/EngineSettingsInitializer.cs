@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Features.StatusEffects;
 
@@ -21,6 +22,12 @@ namespace DemoGame
 
             ShopSettings.Initialize(new ShopSettings(6 * 6));
             StatusEffectsSettings.Initialize(new StatusEffectsSettings(500));
+
+            var rankNames = new string[] { "Recruit", "Member", "VIP", "Founder" };
+            var nameRules = new StringRules(3, 50, CharType.All);
+            var tagRules = new StringRules(1, 4, CharType.All);
+            var maxRank = (GuildRank)(rankNames.Length - 1);
+            GuildSettings.Initialize(new GuildSettings(maxRank, rankNames, nameRules, tagRules, 3, 2, 1, 1, 2, 2));
         }
 
         /// <summary>

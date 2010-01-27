@@ -1175,8 +1175,17 @@ namespace DemoGame.Server
             // Execute the user save query
             DbController.GetQuery<UpdateCharacterQuery>().Execute(this);
 
+            HandleSave();
+
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saved Character `{0}`.", this);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional steps to be taken when saving.
+        /// </summary>
+        protected virtual void HandleSave()
+        {
         }
 
         /// <summary>
