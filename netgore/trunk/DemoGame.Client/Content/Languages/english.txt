@@ -33,3 +33,4 @@ GuildJoin: You have joined guild "{0}".
 GuildLeave: You have left guild "{0}".
 GuildPromotion: You have been promoted in your guild to rank {0}!
 GuildDemotion: You have been demoted in your guild to rank {0}.
+GuildInvited: {0} has invited you to join guild their guild, {1}.
