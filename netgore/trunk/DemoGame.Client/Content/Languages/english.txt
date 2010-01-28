@@ -51,9 +51,15 @@ GuildKickFailedNotInGuild: Failed to kick {0} since they are not in your guild.
 GuildKickFailedTooHighRank: Failed to kick {0} since their rank is greater than yours.
 GuildKickFailedUnknownReason: Failed to kick {0} out of the guild.
 
+GuildPromotion: You have been promoted in your guild to rank {0}!
+GuildPromote: You promoted user {0}.
+GuildPromoteFailed: Failed to promote user {0}.
+
+GuildDemotion: You have been demoted in your guild to rank {0}.
+GuildDemote: You demoted user {0}.
+GuildDemoteFailed: Failed to promote user {0}.
+
 GuildInsufficientPermissions: Your rank in the guild is not high enough to perform this action. You must be a {0} or higher rank.
 GuildJoin: You have joined guild "{0}".
 GuildJoinFailedInvalidOrNoInvite: Unable to join guild {0} - the guild either does not exist or you do not have an invite to this guild.
 GuildLeave: You have left guild "{0}".
-GuildPromotion: You have been promoted in your guild to rank {0}!
-GuildDemotion: You have been demoted in your guild to rank {0}.

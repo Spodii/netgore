@@ -216,7 +216,17 @@ namespace DemoGame.Server
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankDemote))
                     return;
 
-                // TODO: ...
+                bool success = false;
+                World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryDemoteMember(User, x));
+
+                if (success)
+                {
+                    User.Send(GameMessage.GuildDemote, userName);
+                }
+                else
+                {
+                    User.Send(GameMessage.GuildDemoteFailed, userName);
+                }
             }
 
             [SayCommand("GSay")]
@@ -315,20 +325,7 @@ namespace DemoGame.Server
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankKick))
                     return;
 
-                // We build a little return code system internally so we know what kind of message to send to the user
-                // without having to do the actual sending from inside the delegate
-                int retCode = 0;
-
-                World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryKickMember(User, x));
-
-                if (success)
-                {
-                    User.Send(GameMessage.GuildKick, userName);
-                }
-                else
-                {
-                    User.Send(GameMessage.GuildKickFailedUnknownReason, userName);
-                }
+                World.GuildMemberPerformer.Perform(userName, x => GuildMemberPerformer_GuildKick(x, userName));
             }
 
             [SayCommand("GuildLog")]
@@ -337,7 +334,7 @@ namespace DemoGame.Server
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankViewLog))
                     return;
 
-                // TODO: ...
+                User.Guild.TryViewEventLog(User);
             }
 
             [SayCommand("GuildMembers")]
@@ -383,7 +380,17 @@ namespace DemoGame.Server
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankPromote))
                     return;
 
+                bool success = false;
+                World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryPromoteMember(User, x));
 
+                if (success)
+                {
+                    User.Send(GameMessage.GuildPromote, userName);
+                }
+                else
+                {
+                    User.Send(GameMessage.GuildPromoteFailed, userName);
+                }
             }
 
             [SayCommand("RenameGuild")]
