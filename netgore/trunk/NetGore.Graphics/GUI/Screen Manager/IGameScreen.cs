@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Audio;
 
@@ -11,6 +10,11 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public interface IGameScreen : IDisposable
     {
+        /// <summary>
+        /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
+        /// </summary>
+        IGUIManager GUIManager { get; }
+
         /// <summary>
         /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="IGameScreen"/>.
         /// </summary>
@@ -46,25 +50,6 @@ namespace NetGore.Graphics.GUI
         SoundManager SoundManager { get; }
 
         /// <summary>
-        /// Updates the screen if it is currently the active screen.
-        /// </summary>
-        /// <param name="gameTime">The current game time.</param>
-        void Update(int gameTime);
-
-        /// <summary>
-        /// Handles the loading of game content. Any content that is loaded should be placed in here.
-        /// This will be invoked once (right after Initialize()), along with an additional time for
-        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
-        /// </summary>
-        void LoadContent();
-
-        /// <summary>
-        /// Handles the unloading of game content. This is raised whenever XNA notifies the ScreenManager
-        /// that the content is to be unloaded.
-        /// </summary>
-        void UnloadContent();
-
-        /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
         /// active screen. Objects in here often will want to be destroyed on <see cref="IGameScreen.Deactivate"/>().
         /// </summary>
@@ -93,8 +78,22 @@ namespace NetGore.Graphics.GUI
         void Initialize();
 
         /// <summary>
-        /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
+        /// Handles the loading of game content. Any content that is loaded should be placed in here.
+        /// This will be invoked once (right after Initialize()), along with an additional time for
+        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
         /// </summary>
-        IGUIManager GUIManager { get; }
+        void LoadContent();
+
+        /// <summary>
+        /// Handles the unloading of game content. This is raised whenever XNA notifies the ScreenManager
+        /// that the content is to be unloaded.
+        /// </summary>
+        void UnloadContent();
+
+        /// <summary>
+        /// Updates the screen if it is currently the active screen.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
+        void Update(int gameTime);
     }
 }

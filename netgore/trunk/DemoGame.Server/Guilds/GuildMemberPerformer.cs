@@ -8,8 +8,8 @@ namespace DemoGame.Server.Guilds
 {
     public class GuildMemberPerformer : GuildMemberPerformerBase
     {
-        readonly World _world;
         readonly SelectGuildMemberByNameQuery _selectGuildMemberQuery;
+        readonly World _world;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildMemberPerformerBase"/> class.

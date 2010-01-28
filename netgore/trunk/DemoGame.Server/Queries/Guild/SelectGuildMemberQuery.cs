@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -13,14 +11,13 @@ namespace DemoGame.Server.Queries
     public class SelectGuildMemberQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@character_id",
-            GuildMemberTable.TableName);
+                                                         GuildMemberTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildMemberQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildMemberQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectGuildMemberQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "character_id");
         }

@@ -11,15 +11,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectGuildByIDQuery : DbQueryReader<GuildID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id",
-                                                         GuildTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", GuildTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildByIDQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildByIDQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectGuildByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(GuildTable.DbColumns, "id");
         }

@@ -45,8 +45,8 @@ namespace NetGore.Graphics
             // This basically just says that the only non-digits that may be before the end of the string are either nothing,
             // or a single path separator and some characters. This allows us to also match when the path of a frame
             // is passed.
-            string regexStr = string.Format(@"[{1}]{0}(?<Title>[^{1}]+?){0}frames{0}(?<Speed>\d+)([{1}][^{1}{0}]*)?$", DirectoryNameDelimiter,
-                @"\\/");
+            string regexStr = string.Format(@"[{1}]{0}(?<Title>[^{1}]+?){0}frames{0}(?<Speed>\d+)([{1}][^{1}{0}]*)?$",
+                                            DirectoryNameDelimiter, @"\\/");
             _aaFolderRegex = new Regex(regexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
         }
 

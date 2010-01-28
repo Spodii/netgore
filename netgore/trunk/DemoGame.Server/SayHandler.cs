@@ -220,13 +220,9 @@ namespace DemoGame.Server
                 World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryDemoteMember(User, x));
 
                 if (success)
-                {
                     User.Send(GameMessage.GuildDemote, userName);
-                }
                 else
-                {
                     User.Send(GameMessage.GuildDemoteFailed, userName);
-                }
             }
 
             [SayCommand("GSay")]
@@ -290,6 +286,24 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildInviteSuccess, invitee.Name);
             }
 
+            [SayCommand("GuildKick")]
+            public void GuildKick(string userName)
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankKick))
+                    return;
+
+                World.GuildMemberPerformer.Perform(userName, x => GuildMemberPerformer_GuildKick(x, userName));
+            }
+
+            [SayCommand("GuildLog")]
+            public void GuildLog()
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankViewLog))
+                    return;
+
+                User.Guild.TryViewEventLog(User);
+            }
+
             void GuildMemberPerformer_GuildKick(IGuildMember target, string userName)
             {
                 if (target == null)
@@ -317,24 +331,6 @@ namespace DemoGame.Server
                 }
 
                 User.Send(GameMessage.GuildKick, target.Name);
-            }
-
-            [SayCommand("GuildKick")]
-            public void GuildKick(string userName)
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankKick))
-                    return;
-
-                World.GuildMemberPerformer.Perform(userName, x => GuildMemberPerformer_GuildKick(x, userName));
-            }
-
-            [SayCommand("GuildLog")]
-            public void GuildLog()
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankViewLog))
-                    return;
-
-                User.Guild.TryViewEventLog(User);
             }
 
             [SayCommand("GuildMembers")]
@@ -384,13 +380,9 @@ namespace DemoGame.Server
                 World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryPromoteMember(User, x));
 
                 if (success)
-                {
                     User.Send(GameMessage.GuildPromote, userName);
-                }
                 else
-                {
                     User.Send(GameMessage.GuildPromoteFailed, userName);
-                }
             }
 
             [SayCommand("RenameGuild")]

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Features.Guilds;
@@ -12,16 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteGuildQuery : DbQueryNonReader<GuildID>
     {
-        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `id`=@id",
-            GuildTable.TableName);
+        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `id`=@id", GuildTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryNonReader&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public DeleteGuildQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public DeleteGuildQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(GuildTable.DbKeyColumns, "id");
         }

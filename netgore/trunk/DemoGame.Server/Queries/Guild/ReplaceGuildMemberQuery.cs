@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
-using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Features.Guilds;
@@ -13,17 +10,17 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceGuildMemberQuery : DbQueryNonReader<ReplaceGuildMemberQuery.QueryArgs>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` (`character_id`,`guild_id`,`rank`,`joined`) VALUES (@charID, @guildID, @rank, NOW())" 
-            + " ON DUPLICATE KEY UPDATE `guild_id`=@guildID, `rank`=@rank;",
-            GuildMemberTable.TableName);
+        static readonly string _queryStr =
+            string.Format(
+                "INSERT INTO `{0}` (`character_id`,`guild_id`,`rank`,`joined`) VALUES (@charID, @guildID, @rank, NOW())" +
+                " ON DUPLICATE KEY UPDATE `guild_id`=@guildID, `rank`=@rank;", GuildMemberTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceGuildMemberQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceGuildMemberQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public ReplaceGuildMemberQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "character_id", "guild_id", "rank", "joined");
         }

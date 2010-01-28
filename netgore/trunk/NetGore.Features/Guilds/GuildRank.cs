@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace NetGore.Features.Guilds
 {
@@ -19,6 +16,16 @@ namespace NetGore.Features.Guilds
             return _value.Equals(obj);
         }
 
+        public bool Equals(GuildRank other)
+        {
+            return other._value == _value;
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
         public override string ToString()
         {
             return _value.ToString();
@@ -32,16 +39,6 @@ namespace NetGore.Features.Guilds
         public static implicit operator GuildRank(byte value)
         {
             return new GuildRank(value);
-        }
-
-        public bool Equals(GuildRank other)
-        {
-            return other._value == _value;
-        }
-
-        public override int GetHashCode()
-        {
-            return _value.GetHashCode();
         }
     }
 }

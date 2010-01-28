@@ -19,7 +19,8 @@ namespace NetGore.Features.Guilds
         /// <param name="arg0">The optional first argument string.</param>
         /// <param name="arg1">The optional second argument string.</param>
         /// <exception cref="ArgumentNullException"><paramref name="eventCreator"/> is null.</exception>
-        public static void LogEvent(this IGuildManager guildManager, IGuildMember eventCreator, GuildEvents guildEvent, IGuildMember eventTarget, string arg0, string arg1)
+        public static void LogEvent(this IGuildManager guildManager, IGuildMember eventCreator, GuildEvents guildEvent,
+                                    IGuildMember eventTarget, string arg0, string arg1)
         {
             guildManager.LogEvent(eventCreator, guildEvent, eventTarget, arg0, arg1, null);
         }
@@ -34,7 +35,8 @@ namespace NetGore.Features.Guilds
         /// may or may not actually be in the guild at this point.</param>
         /// <param name="arg0">The optional first argument string.</param>
         /// <exception cref="ArgumentNullException"><paramref name="eventCreator"/> is null.</exception>
-        public static void LogEvent(this IGuildManager guildManager, IGuildMember eventCreator, GuildEvents guildEvent, IGuildMember eventTarget, string arg0)
+        public static void LogEvent(this IGuildManager guildManager, IGuildMember eventCreator, GuildEvents guildEvent,
+                                    IGuildMember eventTarget, string arg0)
         {
             guildManager.LogEvent(eventCreator, guildEvent, eventTarget, arg0, null, null);
         }
@@ -48,7 +50,8 @@ namespace NetGore.Features.Guilds
         /// <param name="eventTarget">Optionally contains the other guild member that the event involves. This member
         /// may or may not actually be in the guild at this point.</param>
         /// <exception cref="ArgumentNullException"><paramref name="eventCreator"/> is null.</exception>
-        public static void LogEvent(this IGuildManager guildManager, IGuildMember eventCreator, GuildEvents guildEvent, IGuildMember eventTarget)
+        public static void LogEvent(this IGuildManager guildManager, IGuildMember eventCreator, GuildEvents guildEvent,
+                                    IGuildMember eventTarget)
         {
             guildManager.LogEvent(eventCreator, guildEvent, eventTarget, null, null, null);
         }

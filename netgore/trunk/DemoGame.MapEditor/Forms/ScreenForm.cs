@@ -898,6 +898,18 @@ namespace DemoGame.MapEditor
             DbController.GetQuery<UpdateMapQuery>().Execute(map);
         }
 
+        void numZoom_ValueChanged(object sender, EventArgs e)
+        {
+            float value = Convert.ToSingle(numZoom.Value);
+
+            value *= 0.01f;
+
+            if (value <= float.Epsilon || value > 100000)
+                return;
+
+            Camera.Scale = value;
+        }
+
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
         /// </summary>
@@ -1172,17 +1184,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        private void numZoom_ValueChanged(object sender, EventArgs e)
-        {
-            float value = Convert.ToSingle(numZoom.Value);
-
-            value *= 0.01f;
-
-            if (value <= float.Epsilon || value > 100000)
-                return;
-
-            Camera.Scale = value;
-        }
     }
 }

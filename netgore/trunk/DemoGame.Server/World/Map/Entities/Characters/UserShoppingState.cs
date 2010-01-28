@@ -10,8 +10,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="UserShoppingState"/> class.
         /// </summary>
         /// <param name="character">The character doing the shopping.</param>
-        public UserShoppingState(User character)
-            : base(character)
+        public UserShoppingState(User character) : base(character)
         {
         }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.Guilds
@@ -29,15 +26,6 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner is promoted.
-        /// </summary>
-        /// <param name="rank">The new rank.</param>
-        protected override void HandlePromotion(GuildRank rank)
-        {
-            Owner.Send(GameMessage.GuildPromotion, _guildSettings.GetRankName(rank));
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles when the owner joins a guild.
         /// </summary>
         /// <param name="guild">The guild that was joined.</param>
@@ -53,6 +41,15 @@ namespace DemoGame.Server.Guilds
         protected override void HandleLeaveGuild(IGuild guild)
         {
             Owner.Send(GameMessage.GuildLeave, guild.Name);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the owner is promoted.
+        /// </summary>
+        /// <param name="rank">The new rank.</param>
+        protected override void HandlePromotion(GuildRank rank)
+        {
+            Owner.Send(GameMessage.GuildPromotion, _guildSettings.GetRankName(rank));
         }
     }
 }

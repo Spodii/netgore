@@ -17,7 +17,7 @@ namespace DemoGame
         /// Cannot execute command because the user is in a guild.
         /// </summary>
         InvalidCommandMustBeInGuild,
-        
+
         /// <summary>
         /// Cannot execute command because the user is not in a guild.
         /// </summary>

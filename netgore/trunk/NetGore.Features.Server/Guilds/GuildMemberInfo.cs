@@ -97,6 +97,44 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Accepts the invite to a <see cref="IGuild"/>. This method will also make sure that this member
+        /// has an outstanding invite to the guild.
+        /// </summary>
+        /// <param name="guild">The guild to join.</param>
+        /// <param name="currentTime">The current time.</param>
+        /// <returns>
+        /// True if this member successfully joined the <paramref name="guild"/>; otherwise false.
+        /// </returns>
+        public bool AcceptInvite(IGuild guild, int currentTime)
+        {
+            if (Owner.Guild != null)
+                return false;
+
+            if (guild == null)
+                return false;
+
+            // Update the invites
+            UpdateInvites(currentTime);
+
+            // Make sure there is an invite to this guild
+            if (!_invites.Any(x => x.Guild == guild))
+                return false;
+
+            // Join the guild
+            Owner.Guild = guild;
+
+            // Remove all outstanding invites
+            foreach (var current in _invites)
+            {
+                _guildInvitePool.Free(current);
+            }
+
+            _invites.Clear();
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets all of the current live invites the <see cref="GuildMemberInfo{T}.Owner"/> has. Make sure to call
         /// <see cref="GuildInviteStatus.DeepCopy"/> if you want to hold onto a reference.
         /// </summary>
@@ -138,44 +176,6 @@ namespace NetGore.Features.Guilds
         /// <param name="rank">The new rank.</param>
         protected virtual void HandlePromotion(GuildRank rank)
         {
-        }
-
-        /// <summary>
-        /// Accepts the invite to a <see cref="IGuild"/>. This method will also make sure that this member
-        /// has an outstanding invite to the guild.
-        /// </summary>
-        /// <param name="guild">The guild to join.</param>
-        /// <param name="currentTime">The current time.</param>
-        /// <returns>
-        /// True if this member successfully joined the <paramref name="guild"/>; otherwise false.
-        /// </returns>
-        public bool AcceptInvite(IGuild guild, int currentTime)
-        {
-            if (Owner.Guild != null)
-                return false;
-
-            if (guild == null)
-                return false;
-
-            // Update the invites
-            UpdateInvites(currentTime);
-
-            // Make sure there is an invite to this guild
-            if (!_invites.Any(x => x.Guild == guild))
-                return false;
-
-            // Join the guild
-            Owner.Guild = guild;
-
-            // Remove all outstanding invites
-            foreach (var current in _invites)
-            {
-                _guildInvitePool.Free(current);
-            }
-
-            _invites.Clear();
-
-            return true;
         }
 
         /// <summary>

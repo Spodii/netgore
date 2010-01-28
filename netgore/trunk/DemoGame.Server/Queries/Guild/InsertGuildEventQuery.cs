@@ -77,11 +77,6 @@ namespace DemoGame.Server.Queries
             public readonly CharacterID CharacterID;
 
             /// <summary>
-            /// The target character ID.
-            /// </summary>
-            public readonly CharacterID? TargetID;
-
-            /// <summary>
             /// The event ID.
             /// </summary>
             public readonly byte EventID;
@@ -90,6 +85,11 @@ namespace DemoGame.Server.Queries
             /// The guild ID.
             /// </summary>
             public readonly GuildID GuildID;
+
+            /// <summary>
+            /// The target character ID.
+            /// </summary>
+            public readonly CharacterID? TargetID;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
@@ -101,7 +101,8 @@ namespace DemoGame.Server.Queries
             /// <param name="arg0">The arg0.</param>
             /// <param name="arg1">The arg1.</param>
             /// <param name="arg2">The arg2.</param>
-            public QueryArgs(GuildID guildID, CharacterID charID, CharacterID? targetID, byte eventID, string arg0, string arg1, string arg2)
+            public QueryArgs(GuildID guildID, CharacterID charID, CharacterID? targetID, byte eventID, string arg0, string arg1,
+                             string arg2)
             {
                 GuildID = guildID;
                 CharacterID = charID;

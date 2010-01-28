@@ -25,18 +25,6 @@ namespace NetGore.Features.Guilds
         readonly IDCreatorBase<GuildID> _idCreator;
 
         /// <summary>
-        /// Loads all the guild information into the guild manager. This should only be called once, preferably in
-        /// the object's constructor.
-        /// </summary>
-        protected void Initialize()
-        {
-            var guilds = LoadGuilds();
-
-            foreach (var guild in guilds)
-                _guilds.Add(guild.ID, guild);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GuildManagerBase&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="idCreator">The id creator for finding free guild IDs.</param>
@@ -46,6 +34,20 @@ namespace NetGore.Features.Guilds
                 throw new ArgumentNullException("idCreator");
 
             _idCreator = idCreator;
+        }
+
+        /// <summary>
+        /// Loads all the guild information into the guild manager. This should only be called once, preferably in
+        /// the object's constructor.
+        /// </summary>
+        protected void Initialize()
+        {
+            var guilds = LoadGuilds();
+
+            foreach (var guild in guilds)
+            {
+                _guilds.Add(guild.ID, guild);
+            }
         }
 
         /// <summary>

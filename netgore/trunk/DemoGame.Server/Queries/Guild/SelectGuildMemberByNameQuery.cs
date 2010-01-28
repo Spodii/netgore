@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
-using DemoGame.Server.Queries;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -11,15 +10,16 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectGuildMemberByNameQuery : DbQueryReader<string>
     {
-        static readonly string _queryStr = string.Format("SELECT t1.* FROM `{0}` AS t1 INNER JOIN `{1}` AS t2 ON t1.character_id = t2.id WHERE t2.name = @name;",
-                                                         GuildMemberTable.TableName, CharacterTable.TableName);
+        static readonly string _queryStr =
+            string.Format(
+                "SELECT t1.* FROM `{0}` AS t1 INNER JOIN `{1}` AS t2 ON t1.character_id = t2.id WHERE t2.name = @name;",
+                GuildMemberTable.TableName, CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildMemberByNameQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildMemberByNameQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectGuildMemberByNameQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "character_id");
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "name");

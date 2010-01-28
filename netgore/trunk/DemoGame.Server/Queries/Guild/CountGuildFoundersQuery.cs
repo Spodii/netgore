@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Features.Guilds;
@@ -13,14 +11,13 @@ namespace DemoGame.Server.Queries
     public class CountGuildFoundersQuery : DbQueryReader<GuildID>
     {
         static readonly string _queryStr = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `guild_id` = @guildID",
-            GuildMemberTable.TableName);
+                                                         GuildMemberTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountGuildFoundersQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public CountGuildFoundersQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public CountGuildFoundersQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

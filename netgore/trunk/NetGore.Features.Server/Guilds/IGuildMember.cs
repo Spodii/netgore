@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.Guilds
 {
@@ -10,17 +8,6 @@ namespace NetGore.Features.Guilds
     /// </summary>
     public interface IGuildMember
     {
-        /// <summary>
-        /// Gets the unique name of the guild member.
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
-        /// <see cref="IGuildMember"/> instance.
-        /// </summary>
-        int ID { get; }
-
         /// <summary>
         /// Gets or sets the guild member's current guild. Will be null if they are not part of any guilds.
         /// This value should only be set by the <see cref="IGuildManager"/>. When the value is changed,
@@ -36,6 +23,17 @@ namespace NetGore.Features.Guilds
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is greater than the maximum
         /// rank value.</exception>
         GuildRank GuildRank { get; set; }
+
+        /// <summary>
+        /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
+        /// <see cref="IGuildMember"/> instance.
+        /// </summary>
+        int ID { get; }
+
+        /// <summary>
+        /// Gets the unique name of the guild member.
+        /// </summary>
+        string Name { get; }
 
         /// <summary>
         /// Saves the guild member's information.

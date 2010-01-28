@@ -435,9 +435,7 @@ namespace DemoGame.Server
                 }
             }
             else
-            {
                 _target = attacker;
-            }
 
             //Set up event handler for when the _target dies.
             _target.OnKilled += _target_OnKilled;
@@ -518,7 +516,7 @@ namespace DemoGame.Server
 
             if (_lastUpdateTime + 5000 < GetTime())
             {
-                 if (Actor.Position.X == _lastX)    //Only execut this after 5 seconds.
+                if (Actor.Position.X == _lastX) //Only execut this after 5 seconds.
                 {
                     if (Actor.IsMovingRight)
                     {
@@ -649,25 +647,22 @@ namespace DemoGame.Server
         void EvaluateState()
         {
             if (_target != null)
-            {                    
+            {
                 if (Actor.HP <= 10)
-                {   
+                {
                     //Actor is low on health perhaps it should run away.
                     _characterState = State.Evade;
 
                     //Skip any other processing so that the state stays as Evade.
                     return;
-                }  
-               
+                }
+
                 //This is so that the _target has the opportunity to evade this Actor
                 if (_target.GetDistance(Actor) > 60)
-                {
                     _hasTarget = false;
-                }
 
                 if (_hasTarget)
                 {
-
                     //We have a hostile target so lets Attack them.
                     _characterState = State.Attack;
                 }
@@ -684,7 +679,7 @@ namespace DemoGame.Server
                 //Just patrol if there is no _target.
                 _hasTarget = false;
                 _characterState = State.Patrol;
-                
+
                 //clear _target
                 _target = null;
             }

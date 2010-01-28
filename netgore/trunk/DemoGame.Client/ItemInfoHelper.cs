@@ -48,7 +48,8 @@ namespace DemoGame.Client
                 return StyledText.EmptyArray;
 
             // Create and add name and description
-            var ret = new List<StyledText> { new StyledText(itemInfo.Name, nameColor), new StyledText(_lineBreak + itemInfo.Description) };
+            var ret = new List<StyledText>
+            { new StyledText(itemInfo.Name, nameColor), new StyledText(_lineBreak + itemInfo.Description) };
 
             // Value, HP, MP
             CreateValueLine(ret, "Value", itemInfo.Value, generalColor);

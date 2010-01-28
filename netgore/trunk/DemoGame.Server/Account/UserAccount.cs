@@ -292,7 +292,7 @@ namespace DemoGame.Server
 
             if (!success)
                 idCreator.FreeID(characterID);
-            
+
             return success;
         }
 
