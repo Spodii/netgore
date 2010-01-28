@@ -41,7 +41,7 @@ namespace NetGore.Graphics
         static AutomaticAnimatedGrhData()
         {
             // Build the folder-matching Regex
-            string regexStr = string.Format("{0}(?<Title>.+){0}frames{0}(?<Speed>\\d+)", DirectoryNameDelimiter);
+            string regexStr = string.Format(@"[\\/]{0}(?<Title>[^[\\/]+?){0}frames{0}(?<Speed>\d+)", DirectoryNameDelimiter);
             _aaFolderRegex = new Regex(regexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
         }
 
