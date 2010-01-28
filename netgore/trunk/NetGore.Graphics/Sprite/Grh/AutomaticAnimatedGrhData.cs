@@ -40,8 +40,13 @@ namespace NetGore.Graphics
         /// </summary>
         static AutomaticAnimatedGrhData()
         {
-            // Build the folder-matching Regex
-            string regexStr = string.Format(@"[\\/]{0}(?<Title>[^[\\/]+?){0}frames{0}(?<Speed>\d+)", DirectoryNameDelimiter);
+            // Build the folder-matching Regex. The second parameter ({1}) is the set of possible directory separators.
+            // The only real confusing bit is: ([{1}][^{1}]*)?$
+            // This basically just says that the only non-digits that may be before the end of the string are either nothing,
+            // or a single path separator and some characters. This allows us to also match when the path of a frame
+            // is passed.
+            string regexStr = string.Format(@"[{1}]{0}(?<Title>[^{1}]+?){0}frames{0}(?<Speed>\d+)([{1}][^{1}{0}]*)?$", DirectoryNameDelimiter,
+                @"\\/");
             _aaFolderRegex = new Regex(regexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
         }
 
