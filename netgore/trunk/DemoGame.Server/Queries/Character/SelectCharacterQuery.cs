@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(characterName))
             {
                 if (!r.Read())
-                    throw new ArgumentException(string.Format("Could not find character `{0}`.", characterName), characterName);
+                    return null;
 
                 ret = new CharacterTable();
                 ret.ReadValues(r);

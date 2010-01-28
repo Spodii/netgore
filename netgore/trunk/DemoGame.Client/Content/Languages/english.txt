@@ -45,6 +45,9 @@ GuildRetagFailedInvalidValue: Failed to change the guild's tag to {0} since the 
 GuildRetagFailedNameNotAvailable: Failed to change the guild's tag to {0} since the tag is already being used by another guild.
 GuildRetagFailedUnknownReason: Failed to change the guild's tag to {0}.
 
+GuildKick: You have kicked {0} out of the guild.
+GuildKickFailedUnknownReason: Failed to kick {0} out of the guild. The user either does not exist, is not part of the guild, or too high of a rank to kick.
+
 GuildInsufficientPermissions: Your rank in the guild is not high enough to perform this action. You must be a {0} or higher rank.
 GuildJoin: You have joined guild "{0}".
 GuildJoinFailedInvalidOrNoInvite: Unable to join guild {0} - the guild either does not exist or you do not have an invite to this guild.

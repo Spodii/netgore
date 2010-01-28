@@ -69,21 +69,10 @@ namespace DemoGame.Server.Guilds
         protected override void InternalLogEvent(IGuildMember eventCreator, GuildEvents guildEvent, IGuildMember eventTarget,
                                                  string arg0, string arg1, string arg2)
         {
-            var creator = eventCreator.AsCharacter();
-            if (creator == null)
-            {
-                const string errmsg = "Failed to create log event since the event creator is invalid.";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
             var guildID = eventCreator.Guild.ID;
-            var charID = creator.ID;
+            var charID = (CharacterID)eventCreator.ID;
             var eventID = (byte)guildEvent;
-            var target = eventTarget == null ? null : eventTarget.AsCharacter();
-            var targetID = (target == null ? null : (CharacterID?)target.ID);
+            var targetID = (eventTarget == null ? null : (CharacterID?)eventTarget.ID);
 
             var args = new InsertGuildEventQuery.QueryArgs(guildID, charID, targetID, eventID, arg0, arg1, arg2);
             _insertGuildEventQuery.Execute(args);
