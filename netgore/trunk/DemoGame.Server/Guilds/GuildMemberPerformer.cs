@@ -24,34 +24,6 @@ namespace DemoGame.Server.Guilds
             _selectGuildMemberQuery = _world.DbController.GetQuery<SelectGuildMemberByNameQuery>();
         }
 
-
-        /// <summary>
-        /// Enum of the different possible results for the functions called using the
-        /// <see cref="GuildMemberPerformer"/>. Not all of the listed results are possible for all functions.
-        /// </summary>
-        public enum ActionResult
-        {
-            /// <summary>
-            /// Failed, and we do not know why.
-            /// </summary>
-            FailedUnknownReason,
-
-            /// <summary>
-            /// The target simply does not exist (invalid name).
-            /// </summary>
-            FailedTargetDoesNotExist,
-
-            /// <summary>
-            /// The target was not in the same guild as the invoker.
-            /// </summary>
-            FailedTargetNotInSameGuild,
-
-            /// <summary>
-            /// The target's rank is greater than the invoker's rank.
-            /// </summary>
-            FailedTargetRankIsGrater,
-        }
-
         /// <summary>
         /// Creates an <see cref="Action{T}"/> needed for the <see cref="GuildMemberPerformer"/> to save the guild
         /// state of a <see cref="IGuildMember"/>.

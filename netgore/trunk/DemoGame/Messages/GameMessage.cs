@@ -133,11 +133,17 @@ namespace DemoGame
         GuildKickFailedTooHighRank,
         GuildKickFailedUnknownReason,
 
+        GuildPromotion,
+        GuildPromote,
+        GuildPromoteFailed,
+
+        GuildDemotion,
+        GuildDemote,
+        GuildDemoteFailed,
+
         GuildInsufficientPermissions,
         GuildJoin,
         GuildJoinFailedInvalidOrNoInvite,
         GuildLeave,
-        GuildPromotion,
-        GuildDemotion,
     }
 }
