@@ -17,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public UpdateGuildNameQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public UpdateGuildNameQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(GuildTable.DbKeyColumns, "id");
         }

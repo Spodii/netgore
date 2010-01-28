@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -20,8 +19,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectGuildMembersListQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildMembersListQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectGuildMembersListQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name");

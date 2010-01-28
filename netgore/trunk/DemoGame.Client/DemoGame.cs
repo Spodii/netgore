@@ -42,7 +42,7 @@ namespace DemoGame.Client
 
             // Read the GrhInfo
             LoadGrhInfo();
-            
+
             // Create the screens
             new GameplayScreen(_screenManager);
             new MainMenuScreen(_screenManager);

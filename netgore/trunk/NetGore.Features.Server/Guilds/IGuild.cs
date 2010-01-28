@@ -10,19 +10,9 @@ namespace NetGore.Features.Guilds
     public interface IGuild : IDisposable
     {
         /// <summary>
-        /// Notifies listeners when a member has been demoted.
-        /// </summary>
-        event GuildInvokeEventWithTargetHandler OnDemoteMember;
-
-        /// <summary>
         /// Notifies listeners when a member of this guild has come online.
         /// </summary>
         event GuildMemberEventHandler OnAddOnlineUser;
-
-        /// <summary>
-        /// Notifies listeners when a member of this guild has gone offline.
-        /// </summary>
-        event GuildMemberEventHandler OnRemoveOnlineUser;
 
         /// <summary>
         /// Notifies listeners when the guild's name has been changed.
@@ -33,6 +23,11 @@ namespace NetGore.Features.Guilds
         /// Notifies listeners when the guild's tag has been changed.
         /// </summary>
         event GuildRenameEventHandler OnChangeTag;
+
+        /// <summary>
+        /// Notifies listeners when a member has been demoted.
+        /// </summary>
+        event GuildInvokeEventWithTargetHandler OnDemoteMember;
 
         /// <summary>
         /// Notifies listeners when the guild has been destroyed.
@@ -53,6 +48,11 @@ namespace NetGore.Features.Guilds
         /// Notifies listeners when a member has been promoted.
         /// </summary>
         event GuildInvokeEventWithTargetHandler OnPromoteMember;
+
+        /// <summary>
+        /// Notifies listeners when a member of this guild has gone offline.
+        /// </summary>
+        event GuildMemberEventHandler OnRemoveOnlineUser;
 
         /// <summary>
         /// Gets the <see cref="IGuildManager"/> managing this guild.

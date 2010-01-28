@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -13,15 +11,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectGuildEventsQuery : DbQueryReader<GuildID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `guild_id` = @guildID ORDER BY `id` DESC LIMIT 50",
-            GuildEventTable.TableName);
+        static readonly string _queryStr =
+            string.Format("SELECT * FROM `{0}` WHERE `guild_id` = @guildID ORDER BY `id` DESC LIMIT 50", GuildEventTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildEventsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildEventsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectGuildEventsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(GuildEventTable.DbColumns, "guild_id");
         }

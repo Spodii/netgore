@@ -196,7 +196,8 @@ namespace DemoGame.Server
             var account = TryGetAccount(conn);
             if (account == null)
             {
-                const string errmsg = "Connection `{0}` tried to create a new account character but no account is associated with this connection.";
+                const string errmsg =
+                    "Connection `{0}` tried to create a new account character but no account is associated with this connection.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, conn);
                 return;

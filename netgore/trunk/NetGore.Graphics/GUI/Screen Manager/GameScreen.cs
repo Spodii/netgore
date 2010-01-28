@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Audio;
 
@@ -37,7 +36,7 @@ namespace NetGore.Graphics.GUI
             _screenManager = screenManager;
             _name = name;
             _guiManager = ScreenManager.CreateGUIManager(ScreenManager.MenuFont);
- 
+
             screenManager.Add(this);
         }
 

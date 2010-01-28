@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
-using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class InsertGuildQuery : DbQueryNonReader<IGuildTable>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}",
-            GuildTable.TableName, FormatParametersIntoValuesString(GuildTable.DbColumns));
+        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}", GuildTable.TableName,
+                                                         FormatParametersIntoValuesString(GuildTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertGuildQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public InsertGuildQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertGuildQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

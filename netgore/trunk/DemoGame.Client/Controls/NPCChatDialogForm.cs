@@ -5,9 +5,9 @@ using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.NPCChat;
-using NetGore;
 
 namespace DemoGame.Client
 {
@@ -56,7 +56,8 @@ namespace DemoGame.Client
 
             float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
             Vector2 textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
-            _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize) { IsEnabled = false, CanFocus = false, IsMultiLine = true };
+            _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize)
+            { IsEnabled = false, CanFocus = false, IsMultiLine = true };
             _dialogTextControl.ClientSize -= _dialogTextControl.Border.Size;
 
             for (byte i = 0; i < _numDisplayedResponses; i++)

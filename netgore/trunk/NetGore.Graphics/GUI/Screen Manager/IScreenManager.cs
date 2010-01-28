@@ -37,6 +37,16 @@ namespace NetGore.Graphics.GUI
         int FPS { get; }
 
         /// <summary>
+        /// Gets the <see cref="Game"/>.
+        /// </summary>
+        Game Game { get; }
+
+        /// <summary>
+        /// Gets the <see cref="GraphicsDevice"/>.
+        /// </summary>
+        GraphicsDevice GraphicsDevice { get; }
+
+        /// <summary>
         /// Gets the <see cref="ContentManager"/> intended for loading content for the current map only.
         /// </summary>
         ContentManager MapContent { get; }
@@ -118,15 +128,5 @@ namespace NetGore.Graphics.GUI
         /// <param name="name">The name of the <see cref="IGameScreen"/>.</param>
         /// <exception cref="ArgumentException">No screen with the given <paramref name="name"/> was found.</exception>
         void SetScreen(string name);
-
-        /// <summary>
-        /// Gets the <see cref="GraphicsDevice"/>.
-        /// </summary>
-        GraphicsDevice GraphicsDevice { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Game"/>.
-        /// </summary>
-        Game Game { get; }
     }
 }

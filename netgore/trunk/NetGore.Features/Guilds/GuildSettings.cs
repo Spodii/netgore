@@ -11,6 +11,7 @@ namespace NetGore.Features.Guilds
         static GuildSettings _instance;
 
         readonly byte _highestRank;
+        readonly int _inviteResponseTime;
         readonly GuildRank _minRankDemote;
         readonly GuildRank _minRankInvite;
         readonly GuildRank _minRankKick;
@@ -20,20 +21,13 @@ namespace NetGore.Features.Guilds
         readonly StringRules _nameRules;
         readonly string[] _rankNames;
         readonly StringRules _tagRules;
-        readonly int _inviteResponseTime;
-
-        /// <summary>
-        /// Gets the amount of time in milliseconds that a user has to accept a guild invite after receiving it. After this
-        /// amount of time, the invite will expire and they will have to be invited again.
-        /// </summary>
-        public int InviteResponseTime { get { return _inviteResponseTime; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildSettings"/> class.
         /// </summary>
-        public GuildSettings(int inviteResponseTime, GuildRank highestRank, string[] rankNames, StringRules nameRules, StringRules tagRules,
-                             GuildRank minRankRename, GuildRank minRankViewLog, GuildRank minRankKick, GuildRank minRankInvite,
-                             GuildRank minRankPromote, GuildRank minRankDemote)
+        public GuildSettings(int inviteResponseTime, GuildRank highestRank, string[] rankNames, StringRules nameRules,
+                             StringRules tagRules, GuildRank minRankRename, GuildRank minRankViewLog, GuildRank minRankKick,
+                             GuildRank minRankInvite, GuildRank minRankPromote, GuildRank minRankDemote)
         {
             if (rankNames == null)
                 throw new ArgumentNullException("rankNames");
@@ -90,6 +84,15 @@ namespace NetGore.Features.Guilds
         public static GuildSettings Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// Gets the amount of time in milliseconds that a user has to accept a guild invite after receiving it. After this
+        /// amount of time, the invite will expire and they will have to be invited again.
+        /// </summary>
+        public int InviteResponseTime
+        {
+            get { return _inviteResponseTime; }
         }
 
         /// <summary>

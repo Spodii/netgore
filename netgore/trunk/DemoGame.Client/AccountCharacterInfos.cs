@@ -5,10 +5,10 @@ namespace DemoGame.Client
 {
     class AccountCharacterInfos
     {
+        public delegate void AccountCharactersLoadedHandler();
+
         AccountCharacterInfo[] _charInfos;
         bool _isLoaded;
-
-        public delegate void AccountCharactersLoadedHandler();
 
         public event AccountCharactersLoadedHandler OnAccountCharactersLoaded;
 

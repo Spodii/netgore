@@ -163,22 +163,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a guild member is demoted.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="target">The optional guild member the event involves.</param>
-        protected virtual void HandleDemoteMember(IGuildMember invoker, IGuildMember target)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles destroying the guild. This needs to remove all members
-        /// in the guild from the guild, and remove the guild itself from the database.
-        /// </summary>
-        protected abstract void HandleDestroyGuild();
-
-        /// <summary>
         /// When overridden in the derived class, allows for additional handling after the guild's name has changed.
         /// Use this instead of the corresponding event when possible.
         /// </summary>
@@ -199,6 +183,22 @@ namespace NetGore.Features.Guilds
         protected virtual void HandleChangeTag(IGuildMember invoker, string oldTag, string newTag)
         {
         }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is demoted.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected virtual void HandleDemoteMember(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles destroying the guild. This needs to remove all members
+        /// in the guild from the guild, and remove the guild itself from the database.
+        /// </summary>
+        protected abstract void HandleDestroyGuild();
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling after a guild member is invited.

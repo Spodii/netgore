@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using NetGore;
+using System.Data;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Features.Guilds
@@ -758,7 +756,7 @@ namespace NetGore.Features.Guilds
         /// <see cref="GuildID"/>.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
-        /// <param name="dict">The <see cref="IDictionary{TKey, TValue}"/>.</param>
+        /// <param name="dict">The <see cref="IDictionary{TKey,TValue}"/>.</param>
         /// <param name="key">The key for the value to get.</param>
         /// <returns>The value at the given <paramref name="key"/> parsed as a <see cref="GuildID"/>.</returns>
         public static GuildID AsGuildID<T>(this IDictionary<T, string> dict, T key)
@@ -791,42 +789,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Parses the <see cref="GuildID"/> from a string.
-        /// </summary>
-        /// <param name="parser">The <see cref="Parser"/> to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The <see cref="GuildID"/> parsed from the string.</returns>
-        public static GuildID ParseGuildID(this Parser parser, string value)
-        {
-            return new GuildID(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the <see cref="GuildID"/> from a string.
-        /// </summary>
-        /// <param name="parser">The <see cref="Parser"/> to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed <see cref="GuildID"/>.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out GuildID outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new GuildID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the <see cref="GuildID"/> from a <see cref="BitStream"/>.
-        /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="GuildID"/> from.</param>
-        /// <returns>The <see cref="GuildID"/> read from the <see cref="BitStream"/>.</returns>
-        public static GuildID ReadGuildID(this BitStream bitStream)
-        {
-            return GuildID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the <see cref="GuildID"/> from an <see cref="IDataReader"/>.
         /// </summary>
         /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="GuildID"/> from.</param>
@@ -849,6 +811,27 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Parses the <see cref="GuildID"/> from a string.
+        /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The <see cref="GuildID"/> parsed from the string.</returns>
+        public static GuildID ParseGuildID(this Parser parser, string value)
+        {
+            return new GuildID(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildID"/> from a <see cref="BitStream"/>.
+        /// </summary>
+        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="GuildID"/> from.</param>
+        /// <returns>The <see cref="GuildID"/> read from the <see cref="BitStream"/>.</returns>
+        public static GuildID ReadGuildID(this BitStream bitStream)
+        {
+            return GuildID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the <see cref="GuildID"/> from an IValueReader.
         /// </summary>
         /// <param name="valueReader"><see cref="IValueReader"/> to read the <see cref="GuildID"/> from.</param>
@@ -857,6 +840,21 @@ namespace NetGore.Features.Guilds
         public static GuildID ReadGuildID(this IValueReader valueReader, string name)
         {
             return GuildID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the <see cref="GuildID"/> from a string.
+        /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed <see cref="GuildID"/>.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out GuildID outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new GuildID(tmp);
+            return ret;
         }
 
         /// <summary>

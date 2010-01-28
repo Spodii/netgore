@@ -24,17 +24,13 @@ namespace DemoGame.Server
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
+        readonly GuildMemberPerformer _guildMemberPerformer;
         readonly DArray<Map> _maps;
         readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
         readonly Server _server;
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
-        readonly GuildMemberPerformer _guildMemberPerformer;
 
         bool _disposed;
-
-        public GuildMemberPerformer GuildMemberPerformer { get { return _guildMemberPerformer; } }
-
-        public GuildManager GuildManager { get { return Server.GuildManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
@@ -101,6 +97,16 @@ namespace DemoGame.Server
         public Stack<IDisposable> DisposeStack
         {
             get { return _disposeStack; }
+        }
+
+        public GuildManager GuildManager
+        {
+            get { return Server.GuildManager; }
+        }
+
+        public GuildMemberPerformer GuildMemberPerformer
+        {
+            get { return _guildMemberPerformer; }
         }
 
         /// <summary>
