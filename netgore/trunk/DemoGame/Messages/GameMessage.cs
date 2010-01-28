@@ -128,6 +128,9 @@ namespace DemoGame
         GuildRetagFailedUnknownReason,
 
         GuildKick,
+        GuildKickFailedInvalidUser,
+        GuildKickFailedNotInGuild,
+        GuildKickFailedTooHighRank,
         GuildKickFailedUnknownReason,
 
         GuildInsufficientPermissions,

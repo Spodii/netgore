@@ -280,13 +280,45 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildInviteSuccess, invitee.Name);
             }
 
+            void GuildMemberPerformer_GuildKick(IGuildMember target, string userName)
+            {
+                if (target == null)
+                {
+                    User.Send(GameMessage.GuildKickFailedInvalidUser, userName);
+                    return;
+                }
+
+                if (target.Guild != User.Guild)
+                {
+                    User.Send(GameMessage.GuildKickFailedNotInGuild, target.Name);
+                    return;
+                }
+
+                if (target.GuildRank > ((IGuildMember)User).GuildRank)
+                {
+                    User.Send(GameMessage.GuildKickFailedTooHighRank, target.Name);
+                    return;
+                }
+
+                if (!User.Guild.TryKickMember(User, target))
+                {
+                    User.Send(GameMessage.GuildKickFailedUnknownReason, target.Name);
+                    return;
+                }
+
+                User.Send(GameMessage.GuildKick, target.Name);
+            }
+
             [SayCommand("GuildKick")]
             public void GuildKick(string userName)
             {
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankKick))
                     return;
 
-                bool success = false;
+                // We build a little return code system internally so we know what kind of message to send to the user
+                // without having to do the actual sending from inside the delegate
+                int retCode = 0;
+
                 World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryKickMember(User, x));
 
                 if (success)
