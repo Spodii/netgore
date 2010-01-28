@@ -144,7 +144,7 @@
     <Compile Include="Guilds\GuildIDCreator.cs" />
     <Compile Include="Guilds\GuildManager.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
-    <Compile Include="Guilds\IGuildMemberExtensions.cs" />
+    <Compile Include="Guilds\GuildMemberPerformer.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
     <Compile Include="Queries\Account\CountRecentlyCreatedAccounts.cs" />
@@ -179,6 +179,7 @@
     <Compile Include="Queries\Guild\SelectGuildByNameQuery.cs" />
     <Compile Include="Queries\Guild\SelectGuildByTagQuery.cs" />
     <Compile Include="Queries\Guild\SelectGuildEventsQuery.cs" />
+    <Compile Include="Queries\Guild\SelectGuildMemberByNameQuery.cs" />
     <Compile Include="Queries\Guild\SelectGuildMemberQuery.cs" />
     <Compile Include="Queries\Guild\SelectGuildMembersListQuery.cs" />
     <Compile Include="Queries\Guild\SelectGuildsQuery.cs" />
@@ -231,6 +232,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="World\Map\Entities\Characters\CharacterIDCreator.cs" />
+    <Compile Include="World\Map\Entities\Characters\IClientCommunicator.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStatusEffects.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterSPSynchronizer.cs" />

@@ -61,10 +61,12 @@ namespace DemoGame.Server
         /// </summary>
         public class SayCommands : ISayCommands<User>
         {
+            static readonly GuildSettings _guildSettings = GuildSettings.Instance;
+
             readonly Server _server;
 
             /// <summary>
-            /// SayCommands constructor.
+            /// Initializes a new instance of the <see cref="SayCommands"/> class.
             /// </summary>
             /// <param name="server">The Server that the commands will come from.</param>
             public SayCommands(Server server)
@@ -73,6 +75,11 @@ namespace DemoGame.Server
                     throw new ArgumentNullException("server");
 
                 _server = server;
+            }
+
+            public GuildManager GuildManager
+            {
+                get { return Server.GuildManager; }
             }
 
             /// <summary>
@@ -89,6 +96,17 @@ namespace DemoGame.Server
             public World World
             {
                 get { return Server.World; }
+            }
+
+            bool CheckGuildPermissions(GuildRank requiredRank)
+            {
+                if (((IGuildMember)User).GuildRank < requiredRank)
+                {
+                    User.Send(GameMessage.GuildInsufficientPermissions, _guildSettings.GetRankName(requiredRank));
+                    return false;
+                }
+
+                return true;
             }
 
             [SayCommand("Tell")]
@@ -144,54 +162,6 @@ namespace DemoGame.Server
                 }
             }
 
-            [SayCommand("CreateTestDamageTrap")]
-            public void CreateTestDamageTrap()
-            {
-                // This is just a temporary test command...
-                DamageTrapEntity trap = new DamageTrapEntity(User.Position, new Vector2(64, 64));
-                User.Map.AddEntity(trap);
-            }
-
-            /// <summary>
-            /// Requires the user to not be in a guild.
-            /// </summary>
-            /// <returns>If false, the command should be aborted.</returns>
-            bool RequireUserNotInGuild()
-            {
-                if (User.Guild != null)
-                {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustNotBeInGuild))
-                    {
-                        User.Send(pw);
-                    }
-
-                    return false;
-                }
-
-                return true;
-            }
-
-            /// <summary>
-            /// Requires the user to be in a guild.
-            /// </summary>
-            /// <returns>If false, the command should be aborted.</returns>
-            bool RequireUserInGuild()
-            {
-                if (User.Guild == null)
-                {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustBeInGuild))
-                    {
-                        User.Send(pw);
-                    }
-
-                    return false;
-                }
-
-                return true;
-            }
-
-            static readonly GuildSettings _guildSettings = GuildSettings.Instance;
-
             [SayCommand("CreateGuild")]
             public void CreateGuild(string name, string tag)
             {
@@ -227,165 +197,23 @@ namespace DemoGame.Server
                 // Create
                 var guild = GuildManager.TryCreateGuild(User, name, tag);
                 if (guild == null)
-                {
                     User.Send(GameMessage.GuildCreationFailedUnknownReason, name, tag);
-                }
                 else
-                {
                     User.Send(GameMessage.GuildCreationSuccessful, name, tag);
-                }
             }
 
-            public GuildManager GuildManager { get { return Server.GuildManager; } }
-
-            [SayCommand("LeaveGuild")]
-            public void LeaveGuild()
+            [SayCommand("CreateTestDamageTrap")]
+            public void CreateTestDamageTrap()
             {
-                if (!RequireUserInGuild())
-                    return;
-
-                User.Guild = null;
-            }
-
-            [SayCommand("GuildMembers")]
-            public void GuildMembers()
-            {
-                if (!RequireUserInGuild())
-                    return;
-
-                User.Guild.TryViewMembers(User);
-            }
-
-            [SayCommand("GuildOnline")]
-            public void GuildOnline()
-            {
-                if (!RequireUserInGuild())
-                    return;
-
-                User.Guild.TryViewOnlineMembers(User);
-            }
-
-            [SayCommand("GuildKick")]
-            public void GuildKick()
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankKick))
-                    return;
-
-                // TODO: ...
-            }
-
-            [SayCommand("Promote")]
-            public void Promote()
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankPromote))
-                    return;
-
-                // TODO: ...
+                // NOTE: This is just a temporary test command...
+                DamageTrapEntity trap = new DamageTrapEntity(User.Position, new Vector2(64, 64));
+                User.Map.AddEntity(trap);
             }
 
             [SayCommand("Demote")]
-            public void Demote()
+            public void Demote(string userName)
             {
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankDemote))
-                    return;
-
-                // TODO: ...
-            }
-
-            [SayCommand("RenameGuild")]
-            public void RenameGuild(string newName)
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankRename))
-                    return;
-
-                if (!_guildSettings.IsValidName(newName))
-                {
-                    User.Send(GameMessage.GuildRenameFailedInvalidValue, newName);
-                    return;
-                }
-
-                if (!GuildManager.IsNameAvailable(newName))
-                {
-                    User.Send(GameMessage.GuildRenameFailedNameNotAvailable, newName);
-                    return;
-                }
-
-                if (!User.Guild.TryChangeName(User, newName))
-                {
-                    User.Send(GameMessage.GuildRenameFailedUnknownReason, newName);
-                }
-            }
-
-            [SayCommand("RetagGuild")]
-            public void RetagGuild(string newTag)
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankRename))
-                    return;
-
-                if (!_guildSettings.IsValidTag(newTag))
-                {
-                    User.Send(GameMessage.GuildRetagFailedInvalidValue, newTag);
-                    return;
-                }
-
-                if (!GuildManager.IsTagAvailable(newTag))
-                {
-                    User.Send(GameMessage.GuildRetagFailedNameNotAvailable, newTag);
-                    return;
-                }
-
-                if (!User.Guild.TryChangeTag(User, newTag))
-                {
-                    User.Send(GameMessage.GuildRetagFailedUnknownReason, newTag);
-                }
-            }
-
-            bool CheckGuildPermissions(GuildRank requiredRank)
-            {
-                if (((IGuildMember)User).GuildRank < requiredRank)
-                {
-                    User.Send(GameMessage.GuildInsufficientPermissions, _guildSettings.GetRankName(requiredRank));
-                    return false;
-                }
-
-                return true;
-            }
-
-            [SayCommand("GuildInvite")]
-            public void GuildInvite(string toInvite)
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankInvite))
-                    return;
-
-                User invitee = World.FindUser(toInvite);
-                if (invitee == null)
-                {
-                    User.Send(GameMessage.GuildInviteFailedInvalidUser, toInvite);
-                    return;
-                }
-
-                if (invitee.Guild != null)
-                {
-                    User.Send(GameMessage.GuildInviteFailedAlreadyInGuild, invitee.Name);
-                    return;
-                }
-
-                bool success = User.Guild.TryInviteMember(User, invitee);
-
-                if (!success)
-                {
-                    User.Send(GameMessage.GuildInviteFailedUnknownReason, invitee.Name);
-                }
-                else
-                {
-                    User.Send(GameMessage.GuildInviteSuccess, invitee.Name);
-                }
-            }
-
-            [SayCommand("GuildLog")]
-            public void GuildLog()
-            {
-                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankViewLog))
                     return;
 
                 // TODO: ...
@@ -398,18 +226,6 @@ namespace DemoGame.Server
                     return;
 
                 // TODO: ...
-            }
-
-            [SayCommand("JoinGuild")]
-            public void JoinGuild(string guildName)
-            {
-                if (!RequireUserNotInGuild())
-                    return;
-
-                if (!User.TryJoinGuild(guildName))
-                {
-                    User.Send(GameMessage.GuildJoinFailedInvalidOrNoInvite, guildName);
-                }
             }
 
             [SayCommand("GuildHelp")]
@@ -435,6 +251,189 @@ namespace DemoGame.Server
                 {
                     User.Send(pw);
                 }
+            }
+
+            [SayCommand("GuildInvite")]
+            public void GuildInvite(string toInvite)
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankInvite))
+                    return;
+
+                User invitee = World.FindUser(toInvite);
+                if (invitee == null)
+                {
+                    User.Send(GameMessage.GuildInviteFailedInvalidUser, toInvite);
+                    return;
+                }
+
+                if (invitee.Guild != null)
+                {
+                    User.Send(GameMessage.GuildInviteFailedAlreadyInGuild, invitee.Name);
+                    return;
+                }
+
+                bool success = User.Guild.TryInviteMember(User, invitee);
+
+                if (!success)
+                    User.Send(GameMessage.GuildInviteFailedUnknownReason, invitee.Name);
+                else
+                    User.Send(GameMessage.GuildInviteSuccess, invitee.Name);
+            }
+
+            [SayCommand("GuildKick")]
+            public void GuildKick(string userName)
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankKick))
+                    return;
+
+                bool success = false;
+                World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryKickMember(User, x));
+
+                if (success)
+                {
+                    User.Send(GameMessage.GuildKick, userName);
+                }
+                else
+                {
+                    User.Send(GameMessage.GuildKickFailedUnknownReason, userName);
+                }
+            }
+
+            [SayCommand("GuildLog")]
+            public void GuildLog()
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankViewLog))
+                    return;
+
+                // TODO: ...
+            }
+
+            [SayCommand("GuildMembers")]
+            public void GuildMembers()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                User.Guild.TryViewMembers(User);
+            }
+
+            [SayCommand("GuildOnline")]
+            public void GuildOnline()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                User.Guild.TryViewOnlineMembers(User);
+            }
+
+            [SayCommand("JoinGuild")]
+            public void JoinGuild(string guildName)
+            {
+                if (!RequireUserNotInGuild())
+                    return;
+
+                if (!User.TryJoinGuild(guildName))
+                    User.Send(GameMessage.GuildJoinFailedInvalidOrNoInvite, guildName);
+            }
+
+            [SayCommand("LeaveGuild")]
+            public void LeaveGuild()
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                User.Guild = null;
+            }
+
+            [SayCommand("Promote")]
+            public void Promote(string userName)
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankPromote))
+                    return;
+
+
+            }
+
+            [SayCommand("RenameGuild")]
+            public void RenameGuild(string newName)
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankRename))
+                    return;
+
+                if (!_guildSettings.IsValidName(newName))
+                {
+                    User.Send(GameMessage.GuildRenameFailedInvalidValue, newName);
+                    return;
+                }
+
+                if (!GuildManager.IsNameAvailable(newName))
+                {
+                    User.Send(GameMessage.GuildRenameFailedNameNotAvailable, newName);
+                    return;
+                }
+
+                if (!User.Guild.TryChangeName(User, newName))
+                    User.Send(GameMessage.GuildRenameFailedUnknownReason, newName);
+            }
+
+            /// <summary>
+            /// Requires the user to be in a guild.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireUserInGuild()
+            {
+                if (User.Guild == null)
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustBeInGuild))
+                    {
+                        User.Send(pw);
+                    }
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// Requires the user to not be in a guild.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireUserNotInGuild()
+            {
+                if (User.Guild != null)
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustNotBeInGuild))
+                    {
+                        User.Send(pw);
+                    }
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            [SayCommand("RetagGuild")]
+            public void RetagGuild(string newTag)
+            {
+                if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankRename))
+                    return;
+
+                if (!_guildSettings.IsValidTag(newTag))
+                {
+                    User.Send(GameMessage.GuildRetagFailedInvalidValue, newTag);
+                    return;
+                }
+
+                if (!GuildManager.IsTagAvailable(newTag))
+                {
+                    User.Send(GameMessage.GuildRetagFailedNameNotAvailable, newTag);
+                    return;
+                }
+
+                if (!User.Guild.TryChangeTag(User, newTag))
+                    User.Send(GameMessage.GuildRetagFailedUnknownReason, newTag);
             }
 
             [SayCommand("Shout")]

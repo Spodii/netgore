@@ -13,8 +13,6 @@ namespace DemoGame.Server.Guilds
 {
     public class Guild : GuildBase, IGuildTable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static readonly CountGuildFoundersQuery _countGuildFoundersQuery;
         static readonly DeleteGuildQuery _deleteGuildQuery;
         static readonly SelectGuildEventsQuery _selectGuildEventsQuery;
@@ -105,7 +103,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the log; otherwise false.</returns>
         protected override bool InternalTryViewEventLog(IGuildMember invoker)
         {
-            var user = invoker.AsUser();
+            var user = invoker as IClientCommunicator;
             if (user == null)
                 return false;
 
@@ -132,11 +130,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="newName">The new name.</param>
         protected override void HandleChangeName(IGuildMember invoker, string oldName, string newName)
         {
-            string invokerName = invoker.AsCharacter().Name;
-
             foreach (var user in OnlineMembers.OfType<User>())
             {
-                user.Send(GameMessage.GuildRenamed, oldName, newName, invokerName);
+                user.Send(GameMessage.GuildRenamed, oldName, newName, invoker.Name);
             }
         }
 
@@ -149,11 +145,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="newTag">The new tag.</param>
         protected override void HandleChangeTag(IGuildMember invoker, string oldTag, string newTag)
         {
-            string invokerName = invoker.AsCharacter().Name;
-
             foreach (var user in OnlineMembers.OfType<User>())
             {
-                user.Send(GameMessage.GuildRenamed, oldTag, newTag, invokerName);
+                user.Send(GameMessage.GuildRenamed, oldTag, newTag, invoker.Name);
             }
         }
 
@@ -164,7 +158,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the member list; otherwise false.</returns>
         protected override bool InternalTryViewMembers(IGuildMember invoker)
         {
-            var user = invoker.AsUser();
+            var user = invoker as IClientCommunicator;
             if (user == null)
                 return false;
 
@@ -182,13 +176,13 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the online member list; otherwise false.</returns>
         protected override bool InternalTryViewOnlineMembers(IGuildMember invoker)
         {
-            var user = invoker.AsUser();
+            var user = invoker as IClientCommunicator;
             if (user == null)
                 return false;
 
             var members =
                 OnlineMembers.OrderBy(x => (int)x.GuildRank).Select(
-                    x => new KeyValuePair<string, GuildRank>(x.AsCharacter().Name, x.GuildRank));
+                    x => new KeyValuePair<string, GuildRank>(x.Name, x.GuildRank));
             SendGuildMemberList(user, "Online guild members:", members);
 
             return true;
@@ -208,7 +202,7 @@ namespace DemoGame.Server.Guilds
         /// <param name="user">The user to send the information to.</param>
         /// <param name="header">The heading to give the list.</param>
         /// <param name="members">The guild members and their ranks to include in the list.</param>
-        static void SendGuildMemberList(User user, string header, IEnumerable<KeyValuePair<string, GuildRank>> members)
+        static void SendGuildMemberList(IClientCommunicator user, string header, IEnumerable<KeyValuePair<string, GuildRank>> members)
         {
             // Build the string
             StringBuilder sb = new StringBuilder();

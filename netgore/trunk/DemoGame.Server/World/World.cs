@@ -28,8 +28,11 @@ namespace DemoGame.Server
         readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
         readonly Server _server;
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
+        readonly GuildMemberPerformer _guildMemberPerformer;
 
         bool _disposed;
+
+        public GuildMemberPerformer GuildMemberPerformer { get { return _guildMemberPerformer; } }
 
         public GuildManager GuildManager { get { return Server.GuildManager; } }
 
@@ -44,6 +47,9 @@ namespace DemoGame.Server
 
             // Store the parent
             _server = parent;
+
+            // Create some objects
+            _guildMemberPerformer = new GuildMemberPerformer(this);
 
             // Load the maps
             var mapFiles = Map.GetMapFiles(ContentPaths.Build);

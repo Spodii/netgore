@@ -11,6 +11,17 @@ namespace NetGore.Features.Guilds
     public interface IGuildMember
     {
         /// <summary>
+        /// Gets the unique name of the guild member.
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
+        /// <see cref="IGuildMember"/> instance.
+        /// </summary>
+        int ID { get; }
+
+        /// <summary>
         /// Gets or sets the guild member's current guild. Will be null if they are not part of any guilds.
         /// This value should only be set by the <see cref="IGuildManager"/>. When the value is changed,
         /// <see cref="IGuild.RemoveOnlineMember"/> should be called for the old value (if not null) and

@@ -22,7 +22,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A user-controlled character.
     /// </summary>
-    public class User : Character, IGuildMember
+    public class User : Character, IGuildMember, IClientCommunicator
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
@@ -373,69 +373,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sends data to the User. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send to the User.</param>
-        public void Send(BitStream data)
-        {
-            Send(data, true);
-        }
-
-        /// <summary>
-        /// Sends data to the User. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send to the User.</param>
-        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
-        public void Send(BitStream data, bool reliable)
-        {
-            if (IsDisposed)
-            {
-                const string errmsg = "Tried to send data to disposed User `{0}` [reliable = `{1}`]";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this, reliable);
-                return;
-            }
-
-            if (_conn == null || !_conn.IsConnected)
-            {
-                const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-                DelayedDispose();
-
-                return;
-            }
-
-            _conn.Send(data, reliable);
-        }
-
-        /// <summary>
-        /// Sends data to the User.
-        /// </summary>
-        /// <param name="message">GameMessage to send to the User.</param>
-        public void Send(GameMessage message)
-        {
-            using (var pw = ServerPacket.SendMessage(message))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// Sends data to the User.
-        /// </summary>
-        /// <param name="message">GameMessage to send to the User.</param>
-        /// <param name="parameters">Message parameters.</param>
-        public void Send(GameMessage message, params object[] parameters)
-        {
-            using (var pw = ServerPacket.SendMessage(message, parameters))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
         /// Sends the item information for an item in a given equipment slot to the client.
         /// </summary>
         /// <param name="slot">Equipment slot of the ItemEntity to send the info for.</param>
@@ -652,6 +589,17 @@ namespace DemoGame.Server
             return true;
         }
 
+        /// <summary>
+        /// Tries to join a guild.
+        /// </summary>
+        /// <param name="guildName">The name of the guild.</param>
+        /// <returns>True if successfully joined the guild; otherwise false.</returns>
+        public bool TryJoinGuild(string guildName)
+        {
+            var guild = World.GuildManager.GetGuild(guildName);
+            return _guildMemberInfo.AcceptInvite(guild, GetTime());
+        }
+
         public bool TrySellInventoryItem(InventorySlot slot, byte amount, IShop<ShopItem> shop)
         {
             if (amount <= 0 || !slot.IsLegalValue() || shop == null || !shop.CanBuy)
@@ -792,18 +740,83 @@ namespace DemoGame.Server
                 GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
         }
 
+        #region IClientCommunicator Members
+
         /// <summary>
-        /// Tries to join a guild.
+        /// Sends data to the User. This method is thread-safe.
         /// </summary>
-        /// <param name="guildName">The name of the guild.</param>
-        /// <returns>True if successfully joined the guild; otherwise false.</returns>
-        public bool TryJoinGuild(string guildName)
+        /// <param name="data">BitStream containing the data to send to the User.</param>
+        public void Send(BitStream data)
         {
-            var guild = World.GuildManager.GetGuild(guildName);
-            return _guildMemberInfo.AcceptInvite(guild, GetTime());
+            Send(data, true);
         }
 
+        /// <summary>
+        /// Sends data to the User. This method is thread-safe.
+        /// </summary>
+        /// <param name="data">BitStream containing the data to send to the User.</param>
+        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
+        public void Send(BitStream data, bool reliable)
+        {
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to send data to disposed User `{0}` [reliable = `{1}`]";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this, reliable);
+                return;
+            }
+
+            if (_conn == null || !_conn.IsConnected)
+            {
+                const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                DelayedDispose();
+
+                return;
+            }
+
+            _conn.Send(data, reliable);
+        }
+
+        /// <summary>
+        /// Sends data to the User.
+        /// </summary>
+        /// <param name="message">GameMessage to send to the User.</param>
+        public void Send(GameMessage message)
+        {
+            using (var pw = ServerPacket.SendMessage(message))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// Sends data to the User.
+        /// </summary>
+        /// <param name="message">GameMessage to send to the User.</param>
+        /// <param name="parameters">Message parameters.</param>
+        public void Send(GameMessage message, params object[] parameters)
+        {
+            using (var pw = ServerPacket.SendMessage(message, parameters))
+            {
+                Send(pw);
+            }
+        }
+
+        #endregion
+
         #region IGuildMember Members
+
+        /// <summary>
+        /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
+        /// <see cref="IGuildMember"/> instance.
+        /// </summary>
+        int IGuildMember.ID
+        {
+            get { return (int)ID; }
+        }
 
         /// <summary>
         /// Gets or sets the guild member's current guild. Will be null if they are not part of any guilds.
@@ -814,7 +827,7 @@ namespace DemoGame.Server
         public IGuild Guild
         {
             get { return _guildMemberInfo.Guild; }
-            set {  _guildMemberInfo.Guild = value; }
+            set { _guildMemberInfo.Guild = value; }
         }
 
         /// <summary>
@@ -851,7 +864,7 @@ namespace DemoGame.Server
         void IGuildMember.SendGuildInvite(IGuildMember inviter, IGuild guild)
         {
             _guildMemberInfo.ReceiveInvite(guild, GetTime());
-            Send(GameMessage.GuildInvited, inviter.AsCharacter().Name, guild.Name);
+            Send(GameMessage.GuildInvited, inviter.Name, guild.Name);
         }
 
         #endregion

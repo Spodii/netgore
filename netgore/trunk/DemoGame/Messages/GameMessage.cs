@@ -127,6 +127,9 @@ namespace DemoGame
         GuildRetagFailedNameNotAvailable,
         GuildRetagFailedUnknownReason,
 
+        GuildKick,
+        GuildKickFailedUnknownReason,
+
         GuildInsufficientPermissions,
         GuildJoin,
         GuildJoinFailedInvalidOrNoInvite,
