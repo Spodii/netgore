@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -158,6 +159,7 @@ namespace NetGore.Features.Guilds
         /// When overridden in the derived class, allows for additional handling of when a member of this
         /// guild has come online.
         /// </summary>
+        /// <param name="guildMember">The guild member that came online.</param>
         protected virtual void HandleAddOnlineUser(IGuildMember guildMember)
         {
         }
@@ -191,6 +193,14 @@ namespace NetGore.Features.Guilds
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <param name="target">The optional guild member the event involves.</param>
         protected virtual void HandleDemoteMember(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a new guild member is added.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        protected virtual void HandleAddMember(IGuildMember newMember)
         {
         }
 
@@ -234,6 +244,7 @@ namespace NetGore.Features.Guilds
         /// When overridden in the derived class, allows for additional handling of when a member of this
         /// guild has gone offline.
         /// </summary>
+        /// <param name="guildMember">The guild member that went offline.</param>
         protected virtual void HandleRemoveOnlineUser(IGuildMember guildMember)
         {
         }
@@ -470,6 +481,11 @@ namespace NetGore.Features.Guilds
         public event GuildInvokeEventWithTargetHandler OnInviteMember;
 
         /// <summary>
+        /// Notifies listeners when a new member has joined the guild.
+        /// </summary>
+        public event GuildMemberEventHandler OnAddMember;
+
+        /// <summary>
         /// Notifies listeners when a member has been kicked from the guild.
         /// </summary>
         public event GuildInvokeEventWithTargetHandler OnKickMember;
@@ -671,6 +687,22 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Adds the reference of an online guild member to this guild that is new to the guild.
+        /// This does not make the user join or leave the guild in any way, just allows the guild to keep track of the
+        /// members that are online.
+        /// </summary>
+        /// <param name="newMember">The online guild member to add.</param>
+        public void AddNewOnlineMember(IGuildMember newMember)
+        {
+            if (OnAddMember != null)
+                OnAddMember(this, newMember);
+
+            HandleAddMember(newMember);
+
+            AddOnlineMember(newMember);
+        }
+
+        /// <summary>
         /// Adds the reference of an online guild member to this guild. This does not make the user join or leave the
         /// guild in any way, just allows the guild to keep track of the members that are online.
         /// </summary>
@@ -808,6 +840,12 @@ namespace NetGore.Features.Guilds
 
             return success;
         }
+
+        /// <summary>
+        /// Gets the name and rank for all the members in the guild.
+        /// </summary>
+        /// <returns>The name and rank for all the members in the guild.</returns>
+        public abstract IEnumerable<GuildMemberNameRank> GetMembers();
 
         /// <summary>
         /// Tries to change the tag of the guild.

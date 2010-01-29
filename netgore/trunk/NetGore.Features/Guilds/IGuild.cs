@@ -40,6 +40,11 @@ namespace NetGore.Features.Guilds
         event GuildInvokeEventWithTargetHandler OnInviteMember;
 
         /// <summary>
+        /// Notifies listeners when a new member has joined the guild.
+        /// </summary>
+        event GuildMemberEventHandler OnAddMember;
+
+        /// <summary>
         /// Notifies listeners when a member has been kicked from the guild.
         /// </summary>
         event GuildInvokeEventWithTargetHandler OnKickMember;
@@ -92,6 +97,14 @@ namespace NetGore.Features.Guilds
         void AddOnlineMember(IGuildMember member);
 
         /// <summary>
+        /// Adds the reference of an online guild member to this guild that is new to the guild.
+        /// This does not make the user join or leave the guild in any way, just allows the guild to keep track of the
+        /// members that are online.
+        /// </summary>
+        /// <param name="newMember">The online guild member to add.</param>
+        void AddNewOnlineMember(IGuildMember newMember);
+
+        /// <summary>
         /// Destroys the guild completely and removes all members from it.
         /// </summary>
         void DestroyGuild();
@@ -115,6 +128,12 @@ namespace NetGore.Features.Guilds
         /// <param name="newName">The new name of the guild.</param>
         /// <returns>True if the name was successfully changed; otherwise false.</returns>
         bool TryChangeName(IGuildMember invoker, string newName);
+
+        /// <summary>
+        /// Gets the name and rank for all the members in the guild.
+        /// </summary>
+        /// <returns>The name and rank for all the members in the guild.</returns>
+        IEnumerable<GuildMemberNameRank> GetMembers();
 
         /// <summary>
         /// Tries to change the tag of the guild.
