@@ -9,13 +9,19 @@ using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client
 {
-    delegate void InventoryDropItemHandler(InventoryForm inventoryForm, InventorySlot slot);
-
-    delegate void InventoryUseItemHandler(InventoryForm inventoryForm, InventorySlot slot);
-
     class InventoryForm : Form
     {
-        const int _columns = 6; // Number of items on each row
+        /// <summary>
+        /// Delegate for handling events related to items in the inventory.
+        /// </summary>
+        /// <param name="inventoryForm">The <see cref="InventoryForm"/> the event came from.</param>
+        /// <param name="slot">The inventory item slot the event is related to.</param>
+        public delegate void InventoryItemHandler(InventoryForm inventoryForm, InventorySlot slot);
+
+        /// <summary>
+        /// The number of items in each inventory row.
+        /// </summary>
+        const int _columns = 6;
 
         /// <summary>
         /// The size of each item box.
@@ -34,12 +40,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when an item was requested to be dropped.
         /// </summary>
-        public event InventoryDropItemHandler OnRequestDropItem;
+        public event InventoryItemHandler OnRequestDropItem;
 
         /// <summary>
         /// Notifies listeners when an item was requested to be used.
         /// </summary>
-        public event InventoryUseItemHandler OnRequestUseItem;
+        public event InventoryItemHandler OnRequestUseItem;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
