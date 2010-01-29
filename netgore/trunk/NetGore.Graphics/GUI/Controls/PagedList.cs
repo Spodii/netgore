@@ -17,20 +17,31 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const string _controlSkinName = "PagedList";
 
+        /// <summary>
+        /// The string to append to a toolbar sprite to get the MouseOver sprite.
+        /// </summary>
         const string _mouseOverSpriteSuffix = "_MouseOver";
+
+        /// <summary>
+        /// The sub-category containing the toolbar sprites.
+        /// </summary>
         const string _toolbarCategory = "Toolbar";
+
+        /// <summary>
+        /// The amount of padding to add around the toolbar items.
+        /// </summary>
         const int _toolbarPadding = 2;
 
         readonly SpriteControl _btnFirst;
         readonly SpriteControl _btnLast;
         readonly SpriteControl _btnNext;
         readonly SpriteControl _btnPrev;
+
         int _currentPage = 1;
         Action<SpriteBatch, Vector2, T> _itemDrawer;
         int _itemHeight = 12;
         IList<T> _items;
         StyledText _pageText = new StyledText("1/1");
-        ISkinManager _skinManager;
         int _toolbarHeight = 8;
 
         /// <summary>
@@ -246,7 +257,6 @@ namespace NetGore.Graphics.GUI
         /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
         public override void LoadSkin(ISkinManager skinManager)
         {
-            _skinManager = skinManager;
             base.LoadSkin(skinManager);
 
             UpdateButtonPositions();
