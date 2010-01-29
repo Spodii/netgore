@@ -94,6 +94,7 @@
     <Compile Include="Drawing Tools\FocusedSpatialDrawer.cs" />
     <Compile Include="Extensions\GameTimeExtensions.cs" />
     <Compile Include="GUI\Control Bases\Control.cs" />
+    <Compile Include="GUI\Controls\PagedList.cs" />
     <Compile Include="GUI\EventArgs\ControlEventHandler.cs" />
     <Compile Include="GUI\Control Bases\SpriteControl.cs" />
     <Compile Include="GUI\Control Bases\TextControl.cs" />
