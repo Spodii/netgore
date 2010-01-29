@@ -24,6 +24,7 @@ namespace DemoGame
         CreateDynamicEntity,
         Emote,
         EndChatDialog,
+        GuildInfo,
         LoginSuccessful,
         LoginUnsuccessful,
         NotifyExpCash,

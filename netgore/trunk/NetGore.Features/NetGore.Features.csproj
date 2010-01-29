@@ -49,6 +49,9 @@
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
     <Compile Include="Guilds\GuildEvents.cs" />
     <Compile Include="Guilds\GuildID.cs" />
+    <Compile Include="Guilds\GuildMemberNameRank.cs" />
+    <Compile Include="Guilds\IValueReaderWriterExtensions.cs" />
+    <Compile Include="Guilds\UserGuildInformation.cs" />
     <Compile Include="Guilds\GuildRank.cs" />
     <Compile Include="Guilds\GuildSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
