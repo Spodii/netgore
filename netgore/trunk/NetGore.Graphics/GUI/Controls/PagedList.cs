@@ -17,17 +17,21 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const string _controlSkinName = "PagedList";
 
+        const string _mouseOverSpriteSuffix = "_MouseOver";
         const string _toolbarCategory = "Toolbar";
-        int _toolbarHeight = 8;
+        const int _toolbarPadding = 2;
 
-        SpriteControl _btnFirst;
-        SpriteControl _btnLast;
-        SpriteControl _btnNext;
-        SpriteControl _btnPrev;
+        readonly SpriteControl _btnFirst;
+        readonly SpriteControl _btnLast;
+        readonly SpriteControl _btnNext;
+        readonly SpriteControl _btnPrev;
         int _currentPage = 1;
         Action<SpriteBatch, Vector2, T> _itemDrawer;
         int _itemHeight = 12;
+        IList<T> _items;
+        StyledText _pageText = new StyledText("1/1");
         ISkinManager _skinManager;
+        int _toolbarHeight = 8;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
@@ -47,7 +51,13 @@ namespace NetGore.Graphics.GUI
 
             _itemDrawer = GetDefaultItemDrawer();
 
-            CreateButtons();
+            // Create the buttons
+            _btnFirst = new PagedListButton(this, "First", () => CurrentPage = 1);
+            _btnPrev = new PagedListButton(this, "Previous", () => CurrentPage--);
+            _btnNext = new PagedListButton(this, "Next", () => CurrentPage++);
+            _btnLast = new PagedListButton(this, "Last", () => CurrentPage = NumPages);
+
+            UpdateButtonPositions();
         }
 
         /// <summary>
@@ -68,7 +78,13 @@ namespace NetGore.Graphics.GUI
 
             _itemDrawer = GetDefaultItemDrawer();
 
-            CreateButtons();
+            // Create the buttons
+            _btnFirst = new PagedListButton(this, "First", () => CurrentPage = 1);
+            _btnPrev = new PagedListButton(this, "Previous", () => CurrentPage--);
+            _btnNext = new PagedListButton(this, "Next", () => CurrentPage++);
+            _btnLast = new PagedListButton(this, "Last", () => CurrentPage = NumPages);
+
+            UpdateButtonPositions();
         }
 
         /// <summary>
@@ -108,8 +124,6 @@ namespace NetGore.Graphics.GUI
                     _itemHeight = value;
             }
         }
-
-        IList<T> _items;
 
         /// <summary>
         /// Gets or sets the items to display.
@@ -168,61 +182,6 @@ namespace NetGore.Graphics.GUI
                 _itemHeight = Font.LineSpacing;
         }
 
-        static Vector2 GetSpriteSize(SpriteControl spriteControl)
-        {
-            if (spriteControl == null)
-                return Vector2.Zero;
-
-            if (spriteControl.Sprite == null)
-                return Vector2.Zero;
-
-            var src = spriteControl.Sprite.Source;
-            return new Vector2(src.Width, src.Height);
-        }
-
-        const int _toolbarPadding = 2;
-
-        void UpdateButtonPositions()
-        {
-            CreateButtons();
-
-            var cs = ClientSize;
-
-            var firstSize = GetSpriteSize(_btnFirst);
-            _btnFirst.Position = new Vector2(_toolbarPadding, cs.Y - _toolbarPadding - firstSize.Y);
-            _btnPrev.Position = _btnFirst.Position + new Vector2(_toolbarPadding + firstSize.X, 0);
-
-            var lastSize = GetSpriteSize(_btnLast);
-            _btnLast.Position = cs - new Vector2(_toolbarPadding) - lastSize;
-            _btnNext.Position = _btnLast.Position - new Vector2(_toolbarPadding + lastSize.X, 0);
-        }
-
-        /// <summary>
-        /// Ensures the buttons are created.
-        /// </summary>
-        void CreateButtons()
-        {
-            if (_btnFirst != null)
-                return;
-
-            Vector2 defaultPos = new Vector2(0);
-            Vector2 defaultSize = new Vector2(8);
-
-            _btnFirst = new PictureBox(this, defaultPos, defaultSize);
-            _btnFirst.OnClick += (x, y) => CurrentPage = 1;
-
-            _btnPrev = new PictureBox(this, defaultPos, defaultSize);
-            _btnPrev.OnClick += (x, y) => CurrentPage--;
-
-            _btnNext = new PictureBox(this, defaultPos, defaultSize);
-            _btnNext.OnClick += (x, y) => CurrentPage++;
-
-            _btnLast = new PictureBox(this, defaultPos, defaultSize);
-            _btnLast.OnClick += (x, y) => CurrentPage = NumPages;
-
-            UpdateButtonSprites(_skinManager);
-        }
-
         /// <summary>
         /// Draws the <see cref="Control"/>.
         /// </summary>
@@ -243,8 +202,6 @@ namespace NetGore.Graphics.GUI
             var pagePos = new Vector2((cs.X / 2) - (_pageText.GetWidth(Font) / 2), cs.Y - _toolbarHeight + (_toolbarPadding * 2));
             _pageText.Draw(spriteBatch, Font, sp + pagePos, ForeColor);
         }
-
-        StyledText _pageText = new StyledText("1/1");
 
         void DrawItems(SpriteBatch spriteBatch)
         {
@@ -270,6 +227,18 @@ namespace NetGore.Graphics.GUI
             return (sb, p, v) => sb.DrawString(Font, v.ToString(), p, ForeColor);
         }
 
+        static Vector2 GetSpriteSize(SpriteControl spriteControl)
+        {
+            if (spriteControl == null)
+                return Vector2.Zero;
+
+            if (spriteControl.Sprite == null)
+                return Vector2.Zero;
+
+            var src = spriteControl.Sprite.Source;
+            return new Vector2(src.Width, src.Height);
+        }
+
         /// <summary>
         /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
         /// from the given <paramref name="skinManager"/>.
@@ -279,30 +248,6 @@ namespace NetGore.Graphics.GUI
         {
             _skinManager = skinManager;
             base.LoadSkin(skinManager);
-
-            UpdateButtonSprites(skinManager);
-        }
-
-        void UpdateButtonSprites(ISkinManager skinManager)
-        {
-            CreateButtons();
-
-            _btnFirst.Sprite = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory, "First");
-            _btnPrev.Sprite = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory, "Previous");
-            _btnNext.Sprite = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory, "Next");
-            _btnLast.Sprite = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory, "Last");
-
-            _toolbarHeight = 6;
-            if (_btnFirst.Size.Y > _toolbarHeight)
-                _toolbarHeight = (int)_btnFirst.Size.Y;
-            if (_btnPrev.Size.Y > _toolbarHeight)
-                _toolbarHeight = (int)_btnPrev.Size.Y;
-            if (_btnNext.Size.Y > _toolbarHeight)
-                _toolbarHeight = (int)_btnNext.Size.Y;
-            if (_btnLast.Size.Y > _toolbarHeight)
-                _toolbarHeight = (int)_btnLast.Size.Y;
-
-            _toolbarHeight += _toolbarPadding * 3;
 
             UpdateButtonPositions();
         }
@@ -317,6 +262,143 @@ namespace NetGore.Graphics.GUI
             base.Resize();
 
             UpdateButtonPositions();
+        }
+
+        void UpdateButtonPositions()
+        {
+            _toolbarHeight = 6;
+            if (_btnFirst == null)
+                return;
+
+            // Update the toolbar size
+            if (_btnFirst.Size.Y > _toolbarHeight)
+                _toolbarHeight = (int)_btnFirst.Size.Y;
+            if (_btnPrev.Size.Y > _toolbarHeight)
+                _toolbarHeight = (int)_btnPrev.Size.Y;
+            if (_btnNext.Size.Y > _toolbarHeight)
+                _toolbarHeight = (int)_btnNext.Size.Y;
+            if (_btnLast.Size.Y > _toolbarHeight)
+                _toolbarHeight = (int)_btnLast.Size.Y;
+
+            _toolbarHeight += _toolbarPadding * 3;
+
+            // Update the positions
+            var cs = ClientSize;
+
+            var firstSize = GetSpriteSize(_btnFirst);
+            _btnFirst.Position = new Vector2(_toolbarPadding, cs.Y - _toolbarPadding - firstSize.Y);
+            _btnPrev.Position = _btnFirst.Position + new Vector2(_toolbarPadding + firstSize.X, 0);
+
+            var lastSize = GetSpriteSize(_btnLast);
+            _btnLast.Position = cs - new Vector2(_toolbarPadding) - lastSize;
+            _btnNext.Position = _btnLast.Position - new Vector2(_toolbarPadding + lastSize.X, 0);
+        }
+
+        /// <summary>
+        /// A button that is on the <see cref="PagedList{T}"/>'s toolbar.
+        /// </summary>
+        class PagedListButton : PictureBox
+        {
+            readonly Action _clickAction;
+            readonly string _spriteName;
+            ISkinManager _skinManager;
+
+            ISprite _sprite;
+            ISprite _spriteMouseOver;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Control"/> class.
+            /// </summary>
+            /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
+            /// <param name="spriteName">Name of the toolbar sprite.</param>
+            /// <param name="clickAction">The action to perform when clicked.</param>
+            /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
+            /// <exception cref="NullReferenceException"><paramref name="spriteName"/> is null.</exception>
+            /// <exception cref="NullReferenceException"><paramref name="clickAction"/> is null.</exception>
+            public PagedListButton(Control parent, string spriteName, Action clickAction)
+                : base(parent, Vector2.Zero, new Vector2(8))
+            {
+                if (clickAction == null)
+                    throw new ArgumentNullException("clickAction");
+                if (string.IsNullOrEmpty(spriteName))
+                    throw new ArgumentNullException("spriteName");
+
+                _spriteName = spriteName;
+                _clickAction = clickAction;
+
+                UpdateSprites(_skinManager);
+            }
+
+            /// <summary>
+            /// Handles when this <see cref="Control"/> was clicked.
+            /// This is called immediately before <see cref="Control.OnClick"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void Click(MouseClickEventArgs e)
+            {
+                base.Click(e);
+
+                _clickAction();
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+            /// from the given <paramref name="skinManager"/>.
+            /// </summary>
+            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+            public override void LoadSkin(ISkinManager skinManager)
+            {
+                _skinManager = skinManager;
+                base.LoadSkin(skinManager);
+                UpdateSprites(skinManager);
+            }
+
+            /// <summary>
+            /// Handles when the mouse has entered the area of the <see cref="Control"/>.
+            /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.OnMouseEnter"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void MouseEnter(MouseEventArgs e)
+            {
+                base.MouseEnter(e);
+
+                Sprite = _spriteMouseOver;
+            }
+
+            /// <summary>
+            /// Handles when the mouse has left the area of the <see cref="Control"/>.
+            /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.OnMouseLeave"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void MouseLeave(MouseEventArgs e)
+            {
+                base.MouseLeave(e);
+
+                Sprite = _sprite;
+            }
+
+            /// <summary>
+            /// Updates the sprites to use for the button.
+            /// </summary>
+            /// <param name="skinManager">The skin manager.</param>
+            void UpdateSprites(ISkinManager skinManager)
+            {
+                // Make sure the sprite name has been set
+                if (_spriteName == null || skinManager == null)
+                    return;
+
+                _sprite = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory, _spriteName);
+                _spriteMouseOver = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory,
+                                                                _spriteName + _mouseOverSpriteSuffix);
+
+                if (IsMouseEntered)
+                    Sprite = _spriteMouseOver;
+                else
+                    Sprite = _sprite;
+            }
         }
     }
 }
