@@ -22,6 +22,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="rank">The new rank.</param>
         protected override void HandleDemotion(GuildRank rank)
         {
+            if (!Owner.IsLoaded)
+                return;
+
             Owner.Send(GameMessage.GuildDemotion, _guildSettings.GetRankName(rank));
         }
 
@@ -31,6 +34,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="guild">The guild that was joined.</param>
         protected override void HandleJoinGuild(IGuild guild)
         {
+            if (!Owner.IsLoaded)
+                return;
+
             Owner.Send(GameMessage.GuildJoin, guild.Name);
         }
 
@@ -40,6 +46,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="guild">The guild that was left.</param>
         protected override void HandleLeaveGuild(IGuild guild)
         {
+            if (!Owner.IsLoaded)
+                return;
+
             Owner.Send(GameMessage.GuildLeave, guild.Name);
         }
 
@@ -49,6 +58,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="rank">The new rank.</param>
         protected override void HandlePromotion(GuildRank rank)
         {
+            if (!Owner.IsLoaded)
+                return;
+
             Owner.Send(GameMessage.GuildPromotion, _guildSettings.GetRankName(rank));
         }
     }

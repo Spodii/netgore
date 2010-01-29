@@ -377,11 +377,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets if the Character has been loaded. If this is false, it is assumed
-        /// that changes to stats are because the Character is being loaded, and not that their stats have
-        /// changed, and thus will be handled differently.
+        /// Gets if the Character has been loaded. If this is false, the Character has either not been loaded or is
+        /// currently in the proccess of loading.
         /// </summary>
-        protected bool IsLoaded
+        public bool IsLoaded
         {
             get { return _isLoaded; }
         }
@@ -1207,7 +1206,7 @@ namespace DemoGame.Server
         /// </summary>
         protected void SetAsLoaded()
         {
-            Debug.Assert(!_isLoaded, "SetAsLoaded() has already been called on this Character.");
+            Debug.Assert(!IsLoaded, "SetAsLoaded() has already been called on this Character.");
             _isLoaded = true;
 
             _nextLevelExp = GameData.LevelCost(_level);

@@ -86,15 +86,6 @@ namespace DemoGame.Server
             // Activate the user
             IsAlive = true;
 
-            // Load the guild information
-            var guildInfo = _selectGuildMemberQuery.Execute(ID);
-            if (guildInfo != null)
-            {
-                Debug.Assert(guildInfo.CharacterID == ID);
-                _guildMemberInfo.Guild = World.GuildManager.GetGuild(guildInfo.GuildID);
-                _guildMemberInfo.GuildRank = guildInfo.Rank;
-            }
-
             // Send the initial information
             User_OnChangeLevel(this, Level, Level);
             User_OnChangeCash(this, Cash, Cash);
@@ -268,6 +259,15 @@ namespace DemoGame.Server
         protected override void HandleAdditionalLoading(ICharacterTable v)
         {
             base.HandleAdditionalLoading(v);
+
+            // Load the guild information
+            var guildInfo = _selectGuildMemberQuery.Execute(ID);
+            if (guildInfo != null)
+            {
+                Debug.Assert(guildInfo.CharacterID == ID);
+                _guildMemberInfo.Guild = World.GuildManager.GetGuild(guildInfo.GuildID);
+                _guildMemberInfo.GuildRank = guildInfo.Rank;
+            }
 
             World.AddUser(this);
         }
