@@ -6,6 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.GUI
 {
+    /// <summary>
+    /// A control that displays a paginated list of items.
+    /// </summary>
+    /// <typeparam name="T">The type of items being displayed.</typeparam>
     public class PagedList<T> : TextControl
     {
         /// <summary>
@@ -67,20 +71,20 @@ namespace NetGore.Graphics.GUI
             CreateButtons();
         }
 
+        /// <summary>
+        /// Gets or sets the current page. If the value is set to greater than the total number of pages, the last page
+        /// will be used instead. If the value is less than 1, the first page will be used instead.
+        /// </summary>
         public int CurrentPage
         {
             get { return _currentPage; }
             set
             {
-                if (value < 1)
-                    throw new ArgumentOutOfRangeException("value");
+                _currentPage = Math.Max(1, Math.Min(value, NumPages));
 
-                var newValue = Math.Min(value, NumPages);
-                if (_currentPage == newValue)
-                    return;
-
-                _currentPage = newValue;
-                _pageText = new StyledText(_currentPage + "/" + NumPages);
+                string s = _currentPage + "/" + NumPages;
+                if (!StringComparer.OrdinalIgnoreCase.Equals(_pageText.Text, s))
+                    _pageText = new StyledText(s);
             }
         }
 
@@ -105,11 +109,27 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        IList<T> _items;
+
         /// <summary>
         /// Gets or sets the items to display.
         /// </summary>
-        public IList<T> Items { get; set; }
+        public IList<T> Items
+        {
+            get { return _items; }
+            set
+            {
+                if (_items == value)
+                    return;
 
+                _items = value;
+                CurrentPage = CurrentPage;
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of items that can be displayed per page.
+        /// </summary>
         public int ItemsPerPage
         {
             get
@@ -120,6 +140,9 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Gets the total number of pages.
+        /// </summary>
         public int NumPages
         {
             get
@@ -128,7 +151,7 @@ namespace NetGore.Graphics.GUI
                 if (items == null)
                     return 1;
 
-                return items.Count() / ItemsPerPage;
+                return (int)Math.Ceiling((float)items.Count() / ItemsPerPage);
             }
         }
 
@@ -174,6 +197,9 @@ namespace NetGore.Graphics.GUI
             _btnNext.Position = _btnLast.Position - new Vector2(_toolbarPadding + lastSize.X, 0);
         }
 
+        /// <summary>
+        /// Ensures the buttons are created.
+        /// </summary>
         void CreateButtons()
         {
             if (_btnFirst != null)
@@ -183,9 +209,16 @@ namespace NetGore.Graphics.GUI
             Vector2 defaultSize = new Vector2(8);
 
             _btnFirst = new PictureBox(this, defaultPos, defaultSize);
+            _btnFirst.OnClick += (x, y) => CurrentPage = 1;
+
             _btnPrev = new PictureBox(this, defaultPos, defaultSize);
+            _btnPrev.OnClick += (x, y) => CurrentPage--;
+
             _btnNext = new PictureBox(this, defaultPos, defaultSize);
+            _btnNext.OnClick += (x, y) => CurrentPage++;
+
             _btnLast = new PictureBox(this, defaultPos, defaultSize);
+            _btnLast.OnClick += (x, y) => CurrentPage = NumPages;
 
             UpdateButtonSprites(_skinManager);
         }
