@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore.Features.Guilds;
 using NetGore.IO;
 using NUnit.Framework;
 

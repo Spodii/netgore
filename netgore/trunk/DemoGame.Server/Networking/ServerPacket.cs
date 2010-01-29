@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -127,6 +128,13 @@ namespace DemoGame.Server
             PacketWriter pw = _writerPool.Acquire();
             pw.Write(id);
             return pw;
+        }
+
+        public static PacketWriter GuildInfo(Action<PacketWriter> populate)
+        {
+            var ret = GetWriter(ServerPacketID.GuildInfo);
+            populate(ret);
+            return ret;
         }
 
         /// <summary>

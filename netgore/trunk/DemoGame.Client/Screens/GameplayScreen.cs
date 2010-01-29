@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
 using NetGore.Graphics;
@@ -26,7 +27,6 @@ namespace DemoGame.Client
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "game";
-
         const string _latencyString = "Latency: {0} ms";
         static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
@@ -34,8 +34,9 @@ namespace DemoGame.Client
         readonly GameplayScreenControls _gameControls;
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
-        ChatBubbleManager _chatBubbleManager;
+        readonly UserGuildInformation _guildInfo = new UserGuildInformation();
 
+        ChatBubbleManager _chatBubbleManager;
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
         int _currentTime = 0;
@@ -157,6 +158,11 @@ namespace DemoGame.Client
         public UserInfo UserInfo
         {
             get { return _userInfo; }
+        }
+
+        public UserGuildInformation GuildInfo
+        {
+            get { return _guildInfo; }
         }
 
         /// <summary>

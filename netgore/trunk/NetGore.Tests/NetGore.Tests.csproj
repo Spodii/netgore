@@ -66,6 +66,7 @@
     <Compile Include="Graphics\AutomaticAnimatedGrhDataTests.cs" />
     <Compile Include="NetGore\ClassTypeTreeTests.cs" />
     <Compile Include="NetGore\Collections\IFactoryTests.cs" />
+    <Compile Include="NetGore\Features\Guilds\GuildMemberNameRankTests.cs" />
     <Compile Include="NetGore\GrhIndexTests.cs" />
     <Compile Include="NetGore\IO\PathStringTests.cs" />
     <Compile Include="NetGore\IO\PersistableTests.cs" />

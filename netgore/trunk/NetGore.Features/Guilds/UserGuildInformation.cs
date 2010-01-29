@@ -12,16 +12,16 @@ namespace NetGore.Features.Guilds
     /// <summary>
     /// Contains the guild information for the client, and methods the server can use to send the data to the client.
     /// </summary>
-    public abstract class UserGuildInformationBase
+    public class UserGuildInformation
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<KeyValuePair<GuildMemberNameRank, bool>> _members = new List<KeyValuePair<GuildMemberNameRank, bool>>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserGuildInformationBase"/> class.
+        /// Initializes a new instance of the <see cref="UserGuildInformation"/> class.
         /// </summary>
-        protected UserGuildInformationBase()
+        public UserGuildInformation()
         {
             Name = string.Empty;
             Tag = string.Empty;
