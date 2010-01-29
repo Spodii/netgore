@@ -45,12 +45,58 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
+        /// Gets the name and rank for all the members in the guild.
+        /// </summary>
+        /// <returns>The name and rank for all the members in the guild.</returns>
+        public override IEnumerable<GuildMemberNameRank> GetMembers()
+        {
+            return _selectGuildMembersListQuery.Execute(ID).Cast<GuildMemberNameRank>();
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the number of founders (highest rank) in the guild.
         /// </summary>
         /// <returns>The number of founders (highest rank) in the guild.</returns>
         protected override int GetNumberOfFounders()
         {
             return _countGuildFoundersQuery.Execute(ID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a new guild member is added.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="newMember"></param>
+        protected override void HandleAddMember(IGuildMember newMember)
+        {
+            base.HandleAddMember(newMember);
+
+            var v = new GuildMemberNameRank(newMember.Name, newMember.GuildRank);
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddMember(x, v)))
+            {
+                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
+                {
+                    member.Send(pw);
+                }
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has come online.
+        /// </summary>
+        /// <param name="guildMember">The guild member that came online.</param>
+        protected override void HandleAddOnlineUser(IGuildMember guildMember)
+        {
+            base.HandleAddOnlineUser(guildMember);
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddOnlineMember(x, guildMember.Name)))
+            {
+                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
+                {
+                    member.Send(pw);
+                }
+            }
         }
 
         /// <summary>
@@ -97,6 +143,43 @@ namespace DemoGame.Server.Guilds
 
             // Delete the guild from the database, which will also remove all members not logged in from the guild
             _deleteGuildQuery.Execute(ID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is kicked.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected override void HandleKickMember(IGuildMember invoker, IGuildMember target)
+        {
+            base.HandleKickMember(invoker, target);
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveMember(x, target.Name)))
+            {
+                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
+                {
+                    member.Send(pw);
+                }
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has gone offline.
+        /// </summary>
+        /// <param name="guildMember">The guild member that went offline.</param>
+        protected override void HandleRemoveOnlineUser(IGuildMember guildMember)
+        {
+            base.HandleRemoveOnlineUser(guildMember);
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveOnlineMember(x, guildMember.Name)))
+            {
+                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
+                {
+                    member.Send(pw);
+                }
+            }
         }
 
         /// <summary>
@@ -161,8 +244,7 @@ namespace DemoGame.Server.Guilds
                 return false;
 
             // Get the list of members and their ranks
-            var members = _selectGuildMembersListQuery.Execute(ID);
-            SendGuildMemberList(user, "All guild members:", members);
+            SendGuildMemberList(user, "All guild members:", GetMembers());
 
             return true;
         }
@@ -178,8 +260,7 @@ namespace DemoGame.Server.Guilds
             if (user == null)
                 return false;
 
-            var members =
-                OnlineMembers.OrderBy(x => (int)x.GuildRank).Select(x => new KeyValuePair<string, GuildRank>(x.Name, x.GuildRank));
+            var members = OnlineMembers.OrderBy(x => (int)x.GuildRank).Select(x => new GuildMemberNameRank(x.Name, x.GuildRank));
             SendGuildMemberList(user, "Online guild members:", members);
 
             return true;
@@ -199,8 +280,7 @@ namespace DemoGame.Server.Guilds
         /// <param name="user">The user to send the information to.</param>
         /// <param name="header">The heading to give the list.</param>
         /// <param name="members">The guild members and their ranks to include in the list.</param>
-        static void SendGuildMemberList(IClientCommunicator user, string header,
-                                        IEnumerable<KeyValuePair<string, GuildRank>> members)
+        static void SendGuildMemberList(IClientCommunicator user, string header, IEnumerable<GuildMemberNameRank> members)
         {
             // Build the string
             StringBuilder sb = new StringBuilder();
@@ -208,7 +288,7 @@ namespace DemoGame.Server.Guilds
 
             foreach (var member in members)
             {
-                sb.AppendLine(string.Format("{0}: {1}", member.Value, member.Key));
+                sb.AppendLine(string.Format("{0}: {1}", member.Name, member.Rank));
             }
 
             // Send

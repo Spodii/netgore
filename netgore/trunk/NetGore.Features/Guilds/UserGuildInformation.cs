@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.IO;
-using NetGore.Network;
 
 namespace NetGore.Features.Guilds
 {
@@ -16,7 +15,8 @@ namespace NetGore.Features.Guilds
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly List<KeyValuePair<GuildMemberNameRank, bool>> _members = new List<KeyValuePair<GuildMemberNameRank, bool>>();
+        readonly List<GuildMemberNameRank> _members = new List<GuildMemberNameRank>();
+        readonly List<string> _onlineMembers = new List<string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserGuildInformation"/> class.
@@ -28,10 +28,30 @@ namespace NetGore.Features.Guilds
             InGuild = false;
         }
 
+        bool _inGuild = false;
+
         /// <summary>
         /// Gets if the client is in a guild at all.
         /// </summary>
-        public bool InGuild { get; private set; }
+        public bool InGuild
+        {
+            get { return _inGuild; }
+            set
+            {
+                if (_inGuild == value)
+                    return;
+
+                _inGuild = value;
+
+                if (!_inGuild)
+                {
+                    Name = string.Empty;
+                    Tag = string.Empty;
+                    _members.Clear();
+                    _onlineMembers.Clear();
+                }
+            }
+        }
 
         /// <summary>
         /// Gets all of the guild members. If the user is not in a guild, this will be empty.
@@ -43,7 +63,7 @@ namespace NetGore.Features.Guilds
                 if (!InGuild)
                     return Enumerable.Empty<GuildMemberNameRank>();
 
-                return _members.Select(x => x.Key);
+                return _members;
             }
         }
 
@@ -59,10 +79,14 @@ namespace NetGore.Features.Guilds
         {
             get
             {
-                if (!InGuild)
-                    return Enumerable.Empty<GuildMemberNameRank>();
-
-                return _members.Where(x => x.Value).Select(x => x.Key);
+                if (InGuild)
+                {
+                    for (int i = 0; i < _members.Count; i++)
+                    {
+                        if (_onlineMembers.Contains(_members[i].Name))
+                            yield return _members[i];
+                    }
+                }
             }
         }
 
@@ -70,22 +94,6 @@ namespace NetGore.Features.Guilds
         /// Gets the guild's tag, or an empty string if not in a guild.
         /// </summary>
         public string Tag { get; private set; }
-
-        /// <summary>
-        /// Finds the list index for a member with the given name.
-        /// </summary>
-        /// <param name="memberName">The member's name.</param>
-        /// <returns>The index of the member with the given <paramref name="memberName"/>, or -1 if invalid.</returns>
-        int FindMemberIndexByName(string memberName)
-        {
-            for (int i = 0; i < _members.Count; i++)
-            {
-                if (StringComparer.OrdinalIgnoreCase.Equals(_members[i].Key.Name, memberName))
-                    return i;
-            }
-
-            return -1;
-        }
 
         /// <summary>
         /// Reads the data from the server related to the user guild information. This should only be used by the client.
@@ -96,8 +104,8 @@ namespace NetGore.Features.Guilds
             var id = bitStream.ReadEnum<GuildInfoMessages>();
             switch (id)
             {
-                case GuildInfoMessages.SetMembers:
-                    ReadSetMembers(bitStream);
+                case GuildInfoMessages.SetGuild:
+                    ReadSetGuild(bitStream);
                     return;
 
                 case GuildInfoMessages.AddMember:
@@ -108,20 +116,12 @@ namespace NetGore.Features.Guilds
                     ReadRemoveMember(bitStream);
                     return;
 
-                case GuildInfoMessages.SetOnlineMembers:
-                    ReadSetOnlineMembers(bitStream);
-                    return;
-
                 case GuildInfoMessages.AddOnlineMember:
                     ReadAddOnlineMember(bitStream);
                     return;
 
                 case GuildInfoMessages.RemoveOnlineMember:
                     ReadRemoveOnlineMember(bitStream);
-                    return;
-
-                case GuildInfoMessages.SetNameTag:
-                    ReadSetNameTag(bitStream);
                     return;
 
                 default:
@@ -136,20 +136,19 @@ namespace NetGore.Features.Guilds
         void ReadAddMember(IValueReader r)
         {
             var member = r.ReadGuildMemberNameRank(null);
-            _members.Add(new KeyValuePair<GuildMemberNameRank, bool>(member, false));
+            _members.Add(member);
         }
 
-        void ReadAddOnlineMember(BitStream pw)
+        void ReadAddOnlineMember(BitStream r)
         {
-            string name = pw.ReadString();
-            var index = FindMemberIndexByName(name);
-            SetOnlineValue(index, true);
+            string name = r.ReadString();
+            SetOnlineValue(name, true);
         }
 
         void ReadRemoveMember(BitStream r)
         {
             var memberName = r.ReadString();
-            int removeCount = _members.RemoveAll(x => x.Key.Name == memberName);
+            int removeCount = _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, memberName));
 
             Debug.Assert(removeCount != 0, "Nobody with the name " + memberName + " existed in the collection.");
             Debug.Assert(removeCount < 2, "How the hell did we remove more than one item?");
@@ -158,133 +157,107 @@ namespace NetGore.Features.Guilds
         void ReadRemoveOnlineMember(BitStream pw)
         {
             string name = pw.ReadString();
-            var index = FindMemberIndexByName(name);
-            SetOnlineValue(index, false);
+            SetOnlineValue(name, false);
         }
 
-        void ReadSetMembers(BitStream r)
+        void ReadSetGuild(BitStream r)
         {
             _members.Clear();
+            _onlineMembers.Clear();
 
-            ushort length = r.ReadUShort();
+            InGuild = r.ReadBool();
 
-            for (int i = 0; i < length; i++)
-            {
-                var member = r.ReadGuildMemberNameRank(null);
-                _members.Add(new KeyValuePair<GuildMemberNameRank, bool>(member, false));
-            }
-        }
-
-        void ReadSetNameTag(BitStream r)
-        {
-            var inGuild = r.ReadBool();
-            if (!inGuild)
-            {
-                _members.Clear();
-                InGuild = false;
+            if (!InGuild)
                 return;
-            }
 
-            InGuild = true;
             Name = r.ReadString();
             Tag = r.ReadString();
-        }
 
-        void ReadSetOnlineMembers(BitStream r)
-        {
-            for (int i = 0; i < _members.Count; i++)
+            ushort numMembers = r.ReadUShort();
+            for (int i = 0; i < numMembers; i++)
             {
-                SetOnlineValue(i, false);
+                var v = r.ReadGuildMemberNameRank(null);
+                _members.Add(v);
             }
 
-            Debug.Assert(_members.All(x => !x.Value), "One or more members failed to get to not online...");
-
-            ushort length = r.ReadUShort();
-
-            for (int i = 0; i < length; i++)
+            ushort onlineMembers = r.ReadUShort();
+            for (int i = 0; i < onlineMembers; i++)
             {
-                var memberName = r.ReadString();
-                var index = FindMemberIndexByName(memberName);
-                Debug.Assert(index < 0 || _members[index].Value, "Member was already set as online... huh...");
-                SetOnlineValue(index, true);
+                string name = r.ReadString();
+                SetOnlineValue(name, true);
             }
         }
 
         /// <summary>
         /// Sets the online value for the member at the given index.
         /// </summary>
-        /// <param name="i">The member's list index.</param>
+        /// <param name="name">The member's name.</param>
         /// <param name="online">True to set them as online; false to set them as offline.</param>
-        void SetOnlineValue(int i, bool online)
+        void SetOnlineValue(string name, bool online)
         {
-            if (i < 0)
+            if (online)
             {
-                Debug.Fail("Invalid index...");
-                return;
+                _onlineMembers.Remove(name);
             }
-
-            var v = _members[i];
-            if (v.Value != online)
-                _members[i] = new KeyValuePair<GuildMemberNameRank, bool>(v.Key, online);
+            else
+            {
+                if (!_onlineMembers.Contains(name, StringComparer.OrdinalIgnoreCase))
+                    _onlineMembers.Add(name);
+            }
         }
 
-        public static void WriteAddMember(PacketWriter pw, GuildMemberNameRank member)
+        public static void WriteAddMember(BitStream pw, GuildMemberNameRank member)
         {
             pw.WriteEnum(GuildInfoMessages.AddMember);
             pw.Write(null, member);
         }
 
-        public static void WriteAddOnlineMember(PacketWriter pw, string memberName)
+        public static void WriteAddOnlineMember(BitStream pw, string memberName)
         {
             pw.WriteEnum(GuildInfoMessages.AddOnlineMember);
             pw.Write(memberName);
         }
 
-        public static void WriteOnlineMembers(PacketWriter pw, IEnumerable<string> memberNames)
+        public static void WriteGuildInfo(BitStream pw, IGuild guild)
         {
-            var a = memberNames.ToArray();
-            pw.WriteEnum(GuildInfoMessages.SetOnlineMembers);
-            pw.Write((ushort)a.Length);
-            for (int i = 0; i < a.Length; i++)
+            pw.WriteEnum(GuildInfoMessages.SetGuild);
+
+            if (guild == null)
             {
-                pw.Write(a[i]);
+                pw.Write(false);
+                return;
+            }
+
+            var members = guild.GetMembers().ToArray();
+            var onlineMembers = guild.OnlineMembers.ToArray();
+
+            pw.Write(true);
+            pw.Write(guild.Name);
+            pw.Write(guild.Tag);
+
+            pw.Write((ushort)members.Length);
+            for (int i = 0; i < members.Length; i++)
+            {
+                pw.Write(null, members[i]);
+            }
+
+            pw.Write((ushort)onlineMembers.Length);
+            for (int i = 0; i < onlineMembers.Length; i++)
+            {
+                pw.Write(onlineMembers[i].Name);
             }
         }
 
-        public static void WriteRemoveMember(PacketWriter pw, string memberName)
+        public static void WriteRemoveMember(BitStream pw, string memberName)
         {
             pw.WriteEnum(GuildInfoMessages.RemoveMember);
             pw.Write(memberName);
         }
 
-        public static void WriteRemoveOnlineMember(PacketWriter pw, string memberName)
+        public static void WriteRemoveOnlineMember(BitStream pw, string memberName)
         {
             pw.WriteEnum(GuildInfoMessages.RemoveOnlineMember);
             pw.Write(memberName);
-        }
-
-        public static void WriteSetMembers(PacketWriter pw, IEnumerable<GuildMemberNameRank> members)
-        {
-            var a = members.ToArray();
-
-            pw.WriteEnum(GuildInfoMessages.SetMembers);
-            pw.Write((ushort)a.Length);
-            for (int i = 0; i < a.Length; i++)
-            {
-                pw.Write(null, a[i]);
-            }
-        }
-
-        public static void WriteSetNameTag(PacketWriter pw, bool inGuild, string name, string tag)
-        {
-            pw.WriteEnum(GuildInfoMessages.SetNameTag);
-            pw.Write(inGuild);
-
-            if (inGuild)
-            {
-                pw.Write(name);
-                pw.Write(tag);
-            }
         }
 
         /// <summary>
@@ -292,11 +265,6 @@ namespace NetGore.Features.Guilds
         /// </summary>
         enum GuildInfoMessages
         {
-            /// <summary>
-            /// Sets all of the members in the guild.
-            /// </summary>
-            SetMembers,
-
             /// <summary>
             /// Adds a single member.
             /// </summary>
@@ -306,11 +274,6 @@ namespace NetGore.Features.Guilds
             /// Removes a single member.
             /// </summary>
             RemoveMember,
-
-            /// <summary>
-            /// Sets all of the online members.
-            /// </summary>
-            SetOnlineMembers,
 
             /// <summary>
             /// Adds a single online member
@@ -323,9 +286,9 @@ namespace NetGore.Features.Guilds
             RemoveOnlineMember,
 
             /// <summary>
-            /// Sets the name and tag of the guild, along with if the guild even exists.
+            /// Sets all the initial guild information.
             /// </summary>
-            SetNameTag
+            SetGuild
         }
     }
 }

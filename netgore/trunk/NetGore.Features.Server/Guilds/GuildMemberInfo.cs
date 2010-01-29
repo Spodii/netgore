@@ -9,7 +9,7 @@ namespace NetGore.Features.Guilds
     /// A container that assists in managing the guild state for guild members.
     /// </summary>
     /// <typeparam name="T">The type of guild member.</typeparam>
-    public class GuildMemberInfo<T> where T : class, IGuildMember
+    public abstract class GuildMemberInfo<T> where T : class, IGuildMember
     {
         static readonly IObjectPool<GuildInviteStatus> _guildInvitePool =
             new ObjectPool<GuildInviteStatus>(x => new GuildInviteStatus(), null, x => x.Reset(), false);
@@ -36,6 +36,13 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Gets if the <see cref="GuildMemberInfo{T}.Owner"/> is only having their guild values set because they are
+        /// loading, not because they are joining/leaving a guild.
+        /// </summary>
+        /// <returns>True if they <see cref="GuildMemberInfo{T}.Owner"/> is loading; otherwise false.</returns>
+        protected abstract bool IsLoading();
+
+        /// <summary>
         /// Gets or sets the guild. The <see cref="GuildMemberInfo{T}.Owner"/> should implement their
         /// <see cref="IGuildMember.Guild"/> properly by using this property only.
         /// </summary>
@@ -57,8 +64,12 @@ namespace NetGore.Features.Guilds
 
                 if (_guild != null)
                 {
-                    _guild.AddOnlineMember(Owner);
                     HandleJoinGuild(_guild);
+
+                    if (IsLoading())
+                        _guild.AddOnlineMember(Owner);
+                    else
+                        _guild.AddNewOnlineMember(Owner);
                 }
 
                 Owner.SaveGuildInformation();

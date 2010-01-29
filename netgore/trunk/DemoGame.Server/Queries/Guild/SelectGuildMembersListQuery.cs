@@ -26,9 +26,9 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "rank", "character_id", "guild_id");
         }
 
-        public IEnumerable<KeyValuePair<string, GuildRank>> Execute(GuildID guildID)
+        public IEnumerable<GuildMemberNameRank> Execute(GuildID guildID)
         {
-            List<KeyValuePair<string, GuildRank>> ret = new List<KeyValuePair<string, GuildRank>>();
+            List<GuildMemberNameRank> ret = new List<GuildMemberNameRank>();
 
             using (var r = ExecuteReader(guildID))
             {
@@ -36,7 +36,7 @@ namespace DemoGame.Server.Queries
                 {
                     var name = r.GetString("name");
                     var rank = r.GetByte("rank");
-                    var value = new KeyValuePair<string, GuildRank>(name, rank);
+                    var value = new GuildMemberNameRank(name, rank);
                     ret.Add(value);
                 }
             }

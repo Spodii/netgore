@@ -17,6 +17,16 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
+        /// Gets if the <see cref="GuildMemberInfo{T}.Owner"/> is only having their guild values set because they are
+        /// loading, not because they are joining/leaving a guild.
+        /// </summary>
+        /// <returns>True if they <see cref="GuildMemberInfo{T}.Owner"/> is loading; otherwise false.</returns>
+        protected override bool IsLoading()
+        {
+            return !Owner.IsLoaded;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when the owner is demoted.
         /// </summary>
         /// <param name="rank">The new rank.</param>
@@ -34,6 +44,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="guild">The guild that was joined.</param>
         protected override void HandleJoinGuild(IGuild guild)
         {
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteGuildInfo(x, guild)))
+                Owner.Send(pw);
+
             if (!Owner.IsLoaded)
                 return;
 
@@ -46,6 +59,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="guild">The guild that was left.</param>
         protected override void HandleLeaveGuild(IGuild guild)
         {
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteGuildInfo(x, guild)))
+                Owner.Send(pw);
+
             if (!Owner.IsLoaded)
                 return;
 
