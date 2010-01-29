@@ -1067,7 +1067,13 @@ namespace NetGore.Graphics.GUI
         /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
         public virtual void LoadSkin(ISkinManager skinManager)
         {
-            Border = skinManager.GetBorder(GetType().Name);
+            var type = GetType();
+            string name = type.Name;
+
+            if (type.IsGenericType)
+                name = name.Substring(0, name.IndexOf('`'));
+
+            Border = skinManager.GetBorder(name);
         }
 
         /// <summary>

@@ -138,6 +138,13 @@ namespace DemoGame.GUITester
                 else if (c.GetType() == typeof(Label))
                     c.Tooltip += Tooltip_Label;
             }
+
+            // Paged list
+            var items = new List<string>();
+            for (int i = 0; i < 100; i++)
+                items.Add(i.ToString());
+
+            var pl = new PagedList<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items };
         }
 
         void OnDrag(Control sender)
