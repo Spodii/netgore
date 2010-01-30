@@ -13,10 +13,51 @@ namespace NetGore.Features.Guilds
     /// </summary>
     public class UserGuildInformation
     {
+        /// <summary>
+        /// Delegate for handling events from the <see cref="UserGuildInformation"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="UserGuildInformation"/> the event came from.</param>
+        /// <param name="member">The guild member the event is related to.</param>
+        public delegate void UserGuildInformationEventHandler<T>(UserGuildInformation sender, T member);
+
+        /// <summary>
+        /// Delegate for handling events from the <see cref="UserGuildInformation"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="UserGuildInformation"/> the event came from.</param>
+        public delegate void UserGuildInformationEventHandler(UserGuildInformation sender);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<GuildMemberNameRank> _members = new List<GuildMemberNameRank>();
         readonly List<string> _onlineMembers = new List<string>();
+
+        bool _inGuild = false;
+
+        /// <summary>
+        /// Notifies listeners when a guild member has been added.
+        /// </summary>
+        public event UserGuildInformationEventHandler<GuildMemberNameRank> OnAddMember;
+
+        /// <summary>
+        /// Notifies listeners when an offline guild member has come online.
+        /// </summary>
+        public event UserGuildInformationEventHandler<string> OnAddOnlineMember;
+
+        /// <summary>
+        /// Notifies listeners when the guild has changed. This can be either the user leaving a guild, joining a new
+        /// guild, or having the initial guild being set.
+        /// </summary>
+        public event UserGuildInformationEventHandler OnChangeGuild;
+
+        /// <summary>
+        /// Notifies listeners when a guild member has been removed.
+        /// </summary>
+        public event UserGuildInformationEventHandler<string> OnRemoveMember;
+
+        /// <summary>
+        /// Notifies listeners when an online guild member has gone offline.
+        /// </summary>
+        public event UserGuildInformationEventHandler<string> OnRemoveOnlineMember;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserGuildInformation"/> class.
@@ -27,8 +68,6 @@ namespace NetGore.Features.Guilds
             Tag = string.Empty;
             InGuild = false;
         }
-
-        bool _inGuild = false;
 
         /// <summary>
         /// Gets if the client is in a guild at all.
@@ -137,27 +176,40 @@ namespace NetGore.Features.Guilds
         {
             var member = r.ReadGuildMemberNameRank(null);
             _members.Add(member);
+            _members.Sort();
+
+            if (OnAddMember != null)
+                OnAddMember(this, member);
         }
 
         void ReadAddOnlineMember(BitStream r)
         {
             string name = r.ReadString();
             SetOnlineValue(name, true);
+
+            if (OnAddOnlineMember != null)
+                OnAddOnlineMember(this, name);
         }
 
         void ReadRemoveMember(BitStream r)
         {
-            var memberName = r.ReadString();
-            int removeCount = _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, memberName));
+            var name = r.ReadString();
+            int removeCount = _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, name));
 
-            Debug.Assert(removeCount != 0, "Nobody with the name " + memberName + " existed in the collection.");
+            Debug.Assert(removeCount != 0, "Nobody with the name " + name + " existed in the collection.");
             Debug.Assert(removeCount < 2, "How the hell did we remove more than one item?");
+
+            if (OnRemoveMember != null)
+                OnRemoveMember(this, name);
         }
 
         void ReadRemoveOnlineMember(BitStream pw)
         {
             string name = pw.ReadString();
             SetOnlineValue(name, false);
+
+            if (OnRemoveOnlineMember != null)
+                OnRemoveOnlineMember(this, name);
         }
 
         void ReadSetGuild(BitStream r)
@@ -167,25 +219,30 @@ namespace NetGore.Features.Guilds
 
             InGuild = r.ReadBool();
 
-            if (!InGuild)
-                return;
-
-            Name = r.ReadString();
-            Tag = r.ReadString();
-
-            ushort numMembers = r.ReadUShort();
-            for (int i = 0; i < numMembers; i++)
+            if (InGuild)
             {
-                var v = r.ReadGuildMemberNameRank(null);
-                _members.Add(v);
+                Name = r.ReadString();
+                Tag = r.ReadString();
+
+                ushort numMembers = r.ReadUShort();
+                for (int i = 0; i < numMembers; i++)
+                {
+                    var v = r.ReadGuildMemberNameRank(null);
+                    _members.Add(v);
+                }
+
+                ushort onlineMembers = r.ReadUShort();
+                for (int i = 0; i < onlineMembers; i++)
+                {
+                    string name = r.ReadString();
+                    SetOnlineValue(name, true);
+                }
+
+                _members.Sort();
             }
 
-            ushort onlineMembers = r.ReadUShort();
-            for (int i = 0; i < onlineMembers; i++)
-            {
-                string name = r.ReadString();
-                SetOnlineValue(name, true);
-            }
+            if (OnChangeGuild != null)
+                OnChangeGuild(this);
         }
 
         /// <summary>
@@ -196,9 +253,7 @@ namespace NetGore.Features.Guilds
         void SetOnlineValue(string name, bool online)
         {
             if (online)
-            {
                 _onlineMembers.Remove(name);
-            }
             else
             {
                 if (!_onlineMembers.Contains(name, StringComparer.OrdinalIgnoreCase))
