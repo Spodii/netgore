@@ -45,6 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Emoticons\EmoticonDisplayManager.cs" />
+    <Compile Include="Guilds\GuildForm.cs" />
+    <Compile Include="Guilds\GuildInfoFormBase.cs" />
+    <Compile Include="Guilds\GuildMemberListControl.cs" />
+    <Compile Include="Guilds\GuildMembersForm.cs" />
+    <Compile Include="Guilds\GuildMembersFormBase.cs" />
+    <Compile Include="Guilds\GuildOnlineMembersForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shops\ShopInfo.cs" />
   </ItemGroup>
@@ -71,7 +77,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Guilds\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>
