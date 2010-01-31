@@ -126,8 +126,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="gameTime">Time elapsed since the last call to Update.</param>
         public override void Update(GameTime gameTime)
         {
-            if (OnUpdate != null)
-                OnUpdate(this);
+            if (Updated != null)
+                Updated(this);
 
             if (_activeScreen != null)
                 _activeScreen.Update(gameTime.ToTotalMS());
@@ -138,7 +138,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="IScreenManager"/> updates.
         /// </summary>
-        public event IScreenManagerEventHandler OnUpdate;
+        public event IScreenManagerEventHandler Updated;
 
         /// <summary>
         /// Gets or sets the currently active <see cref="IGameScreen"/>.

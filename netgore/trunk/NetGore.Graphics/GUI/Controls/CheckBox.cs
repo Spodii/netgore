@@ -20,13 +20,13 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const float _textXAdjust = 2f;
 
-        static readonly object _eventChangeTickedOverSprite = new object();
-        static readonly object _eventChangeTickedPressedSprite = new object();
-        static readonly object _eventChangeTickedSprite = new object();
-        static readonly object _eventChangeUntickedOverSprite = new object();
-        static readonly object _eventChangeUntickedPressedSprite = new object();
-        static readonly object _eventChangeUntickedSprite = new object();
-        static readonly object _eventChangeValue = new object();
+        static readonly object _eventTickedOverSpriteChanged = new object();
+        static readonly object _eventTickedPressedSpriteChanged = new object();
+        static readonly object _eventTickedSpriteChanged = new object();
+        static readonly object _eventUntickedOverSpriteChanged = new object();
+        static readonly object _eventUntickedPressedSpriteChanged = new object();
+        static readonly object _eventUntickedSpriteChanged = new object();
+        static readonly object _eventValueChanged = new object();
 
         CheckBoxState _state = CheckBoxState.None;
 
@@ -41,64 +41,64 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedOverSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler OnChangeTickedOverSprite
+        public event ControlEventHandler TickedOverSpriteChanged
         {
-            add { Events.AddHandler(_eventChangeTickedOverSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeTickedOverSprite, value); }
+            add { Events.AddHandler(_eventTickedOverSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventTickedOverSpriteChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedPressedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler OnChangeTickedPressedSprite
+        public event ControlEventHandler TickedPressedSpriteChanged
         {
-            add { Events.AddHandler(_eventChangeTickedPressedSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeTickedPressedSprite, value); }
+            add { Events.AddHandler(_eventTickedPressedSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventTickedPressedSpriteChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler OnChangeTickedSprite
+        public event ControlEventHandler TickedSpriteChanged
         {
-            add { Events.AddHandler(_eventChangeTickedSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeTickedSprite, value); }
+            add { Events.AddHandler(_eventTickedSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventTickedSpriteChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.UntickedOverSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler OnChangeUntickedOverSprite
+        public event ControlEventHandler UntickedOverSpriteChanged
         {
-            add { Events.AddHandler(_eventChangeUntickedOverSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeUntickedOverSprite, value); }
+            add { Events.AddHandler(_eventUntickedOverSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventUntickedOverSpriteChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.UntickedPressedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler OnChangeUntickedPressedSprite
+        public event ControlEventHandler UntickedPressedSpriteChanged
         {
-            add { Events.AddHandler(_eventChangeUntickedPressedSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeUntickedPressedSprite, value); }
+            add { Events.AddHandler(_eventUntickedPressedSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventUntickedPressedSpriteChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.UntickedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler OnChangeUntickedSprite
+        public event ControlEventHandler UntickedSpriteChanged
         {
-            add { Events.AddHandler(_eventChangeUntickedSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeUntickedSprite, value); }
+            add { Events.AddHandler(_eventUntickedSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventUntickedSpriteChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.Value"/> changes.
         /// </summary>
-        public event ControlEventHandler OnChangeValue
+        public event ControlEventHandler ValueChanged
         {
-            add { Events.AddHandler(_eventChangeValue, value); }
-            remove { Events.RemoveHandler(_eventChangeValue, value); }
+            add { Events.AddHandler(_eventValueChanged, value); }
+            remove { Events.RemoveHandler(_eventValueChanged, value); }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _tickedOver = value;
-                InvokeChangeTickedOverSprite();
+                InvokeTickedOverSpriteChanged();
             }
         }
 
@@ -151,7 +151,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _ticked = value;
-                InvokeChangeTickedPressedSprite();
+                InvokeTickedPressedSpriteChanged();
             }
         }
 
@@ -167,7 +167,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _ticked = value;
-                InvokeChangeTickedSprite();
+                InvokeTickedSpriteChanged();
             }
         }
 
@@ -183,7 +183,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _untickedOver = value;
-                InvokeChangeUntickedOverSprite();
+                InvokeUntickedOverSpriteChanged();
             }
         }
 
@@ -199,7 +199,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _untickedPressed = value;
-                InvokeChangeUntickedPressedSprite();
+                InvokeUntickedPressedSpriteChanged();
             }
         }
 
@@ -215,7 +215,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _unticked = value;
-                InvokeChangeUntickedSprite();
+                InvokeUntickedSpriteChanged();
             }
         }
 
@@ -232,100 +232,100 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _value = value;
-                InvokeChangeValue();
+                InvokeValueChanged();
             }
         }
 
         /// <summary>
         /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
         /// </summary>
-        protected override void ChangeFont()
+        protected override void OnFontChanged()
         {
-            base.ChangeFont();
+            base.OnFontChanged();
 
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="TextControl.Text"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
+        /// This is called immediately before <see cref="TextControl.TextChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
         /// </summary>
-        protected override void ChangeText()
+        protected override void OnTextChanged()
         {
-            base.ChangeText();
+            base.OnTextChanged();
 
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="CheckBox.TickedOverSprite"/> changes.
-        /// This is called immediately before <see cref="CheckBox.OnChangeTickedOverSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeTickedOverSprite"/> when possible.
+        /// This is called immediately before <see cref="CheckBox.TickedOverSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.TickedOverSpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeTickedOverSprite()
+        protected virtual void OnTickedOverSpriteChanged()
         {
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="CheckBox.TickedPressedSprite"/> changes.
-        /// This is called immediately before <see cref="CheckBox.OnChangeTickedPressedSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeTickedPressedSprite"/> when possible.
+        /// This is called immediately before <see cref="CheckBox.TickedPressedSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.TickedPressedSpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeTickedPressedSprite()
+        protected virtual void OnTickedPressedSpriteChanged()
         {
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="CheckBox.TickedSprite"/> changes.
-        /// This is called immediately before <see cref="CheckBox.OnChangeTickedSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeTickedSprite"/> when possible.
+        /// This is called immediately before <see cref="CheckBox.TickedSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.TickedSpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeTickedSprite()
+        protected virtual void OnTickedSpriteChanged()
         {
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="CheckBox.UntickedOverSprite"/> changes.
-        /// This is called immediately before <see cref="CheckBox.OnChangeUntickedOverSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeUntickedOverSprite"/> when possible.
+        /// This is called immediately before <see cref="CheckBox.UntickedOverSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.UntickedOverSpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeUntickedOverSprite()
+        protected virtual void OnUntickedOverSpriteChanged()
         {
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="CheckBox.UntickedPressedSprite"/> changes.
-        /// This is called immediately before <see cref="CheckBox.OnChangeUntickedPressedSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeUntickedPressedSprite"/> when possible.
+        /// This is called immediately before <see cref="CheckBox.UntickedPressedSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.UntickedPressedSpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeUntickedPressedSprite()
+        protected virtual void OnUntickedPressedSpriteChanged()
         {
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="CheckBox.UntickedSprite"/> changes.
-        /// This is called immediately before <see cref="CheckBox.OnChangeUntickedSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeUntickedSprite"/> when possible.
+        /// This is called immediately before <see cref="CheckBox.UntickedSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.UntickedSpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeUntickedSprite()
+        protected virtual void OnUntickedSpriteChanged()
         {
             HandleAutoResize();
         }
 
         /// <summary>
         /// Handles when the <see cref="CheckBox.Value"/> changes.
-        /// This is called immediately before <see cref="CheckBox.OnChangeValue"/>.
-        /// Override this method instead of using an event hook on <see cref="CheckBox.OnChangeValue"/> when possible.
+        /// This is called immediately before <see cref="CheckBox.ValueChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="CheckBox.ValueChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeValue()
+        protected virtual void OnValueChanged()
         {
         }
 
@@ -405,10 +405,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeTickedOverSprite()
+        void InvokeTickedOverSpriteChanged()
         {
-            ChangeTickedOverSprite();
-            var handler = Events[_eventChangeTickedOverSprite] as ControlEventHandler;
+            OnTickedOverSpriteChanged();
+            var handler = Events[_eventTickedOverSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -417,10 +417,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeTickedPressedSprite()
+        void InvokeTickedPressedSpriteChanged()
         {
-            ChangeTickedPressedSprite();
-            var handler = Events[_eventChangeTickedPressedSprite] as ControlEventHandler;
+            OnTickedPressedSpriteChanged();
+            var handler = Events[_eventTickedPressedSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -429,10 +429,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeTickedSprite()
+        void InvokeTickedSpriteChanged()
         {
-            ChangeTickedSprite();
-            var handler = Events[_eventChangeTickedSprite] as ControlEventHandler;
+            OnTickedSpriteChanged();
+            var handler = Events[_eventTickedSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -441,10 +441,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeUntickedOverSprite()
+        void InvokeUntickedOverSpriteChanged()
         {
-            ChangeUntickedOverSprite();
-            var handler = Events[_eventChangeUntickedOverSprite] as ControlEventHandler;
+            OnUntickedOverSpriteChanged();
+            var handler = Events[_eventUntickedOverSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -453,10 +453,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeUntickedPressedSprite()
+        void InvokeUntickedPressedSpriteChanged()
         {
-            ChangeUntickedPressedSprite();
-            var handler = Events[_eventChangeUntickedPressedSprite] as ControlEventHandler;
+            OnUntickedPressedSpriteChanged();
+            var handler = Events[_eventUntickedPressedSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -465,10 +465,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeUntickedSprite()
+        void InvokeUntickedSpriteChanged()
         {
-            ChangeUntickedSprite();
-            var handler = Events[_eventChangeUntickedSprite] as ControlEventHandler;
+            OnUntickedSpriteChanged();
+            var handler = Events[_eventUntickedSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -477,10 +477,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeValue()
+        void InvokeValueChanged()
         {
-            ChangeValue();
-            var handler = Events[_eventChangeValue] as ControlEventHandler;
+            OnValueChanged();
+            var handler = Events[_eventValueChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }

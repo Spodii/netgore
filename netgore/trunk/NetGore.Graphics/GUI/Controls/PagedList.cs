@@ -185,9 +185,9 @@ namespace NetGore.Graphics.GUI
         /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
         /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
         /// </summary>
-        protected override void ChangeFont()
+        protected override void OnFontChanged()
         {
-            base.ChangeFont();
+            base.OnFontChanged();
 
             if (Font != null)
                 _itemHeight = Font.LineSpacing;

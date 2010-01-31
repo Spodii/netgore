@@ -11,8 +11,8 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public abstract class TextControl : Control
     {
-        static readonly object _eventChangeFont = new object();
-        static readonly object _eventChangeText = new object();
+        static readonly object _eventFontChanged = new object();
+        static readonly object _eventTextChanged = new object();
         SpriteFont _font = null;
         Color _foreColor = Color.Black;
         string _text = string.Empty;
@@ -20,19 +20,19 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeFont
+        public event ControlEventHandler FontChanged
         {
-            add { Events.AddHandler(_eventChangeFont, value); }
-            remove { Events.RemoveHandler(_eventChangeFont, value); }
+            add { Events.AddHandler(_eventFontChanged, value); }
+            remove { Events.RemoveHandler(_eventFontChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeText
+        public event ControlEventHandler TextChanged
         {
-            add { Events.AddHandler(_eventChangeText, value); }
-            remove { Events.RemoveHandler(_eventChangeText, value); }
+            add { Events.AddHandler(_eventTextChanged, value); }
+            remove { Events.RemoveHandler(_eventTextChanged, value); }
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace NetGore.Graphics.GUI
 
                 _font = value;
 
-                InvokeChangeFont();
+                InvokeFontChanged();
             }
         }
 
@@ -99,25 +99,25 @@ namespace NetGore.Graphics.GUI
 
                 _text = value;
 
-                InvokeChangeText();
+                InvokeTextChanged();
             }
         }
 
         /// <summary>
         /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeFont()
+        protected virtual void OnFontChanged()
         {
         }
 
         /// <summary>
         /// Handles when the <see cref="TextControl.Text"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
+        /// This is called immediately before <see cref="TextControl.TextChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeText()
+        protected virtual void OnTextChanged()
         {
         }
 
@@ -433,10 +433,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeFont()
+        void InvokeFontChanged()
         {
-            ChangeFont();
-            var handler = Events[_eventChangeFont] as ControlEventHandler;
+            OnFontChanged();
+            var handler = Events[_eventFontChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -445,10 +445,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeText()
+        void InvokeTextChanged()
         {
-            ChangeText();
-            var handler = Events[_eventChangeText] as ControlEventHandler;
+            OnTextChanged();
+            var handler = Events[_eventTextChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }

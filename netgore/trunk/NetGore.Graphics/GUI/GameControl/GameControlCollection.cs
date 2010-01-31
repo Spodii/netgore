@@ -25,7 +25,7 @@ namespace NetGore.Graphics.GUI
                                         GameControlEventHandler invokeHandler)
         {
             GameControl c = new GameControl(keys) { Delay = delay, AdditionalRequirements = additionalRequirements };
-            c.OnInvoke += invokeHandler;
+            c.Invoked += invokeHandler;
 
             Add(c);
             return c;

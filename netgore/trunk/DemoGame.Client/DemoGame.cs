@@ -61,7 +61,7 @@ namespace DemoGame.Client
                                          });
 
             _sockets = ClientSockets.Instance;
-            _screenManager.OnUpdate += screenManager_OnUpdate;
+            _screenManager.Updated += screenManager_OnUpdate;
         }
 
         /// <summary>

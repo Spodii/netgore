@@ -142,13 +142,12 @@ namespace NetGore.Graphics.GUI
                 Debug.Fail("pressed is null.");
                 return null;
             }
-            if (lastPressed == null)
-            {
-                Debug.Fail("lastPressed is null.");
-                return null;
-            }
+            
             if (pressed.Count == 0)
                 return null;
+
+            if (lastPressed == null)
+                return new List<Keys>(pressed);
 
             var ret = new List<Keys>(pressed.Count);
 
@@ -174,13 +173,8 @@ namespace NetGore.Graphics.GUI
                 Debug.Fail("pressed is null.");
                 return null;
             }
-            if (lastPressed == null)
-            {
-                Debug.Fail("lastPressed is null.");
-                return null;
-            }
 
-            if (lastPressed.Count == 0)
+            if (lastPressed == null || lastPressed.Count == 0)
                 return null;
 
             var ret = new List<Keys>(lastPressed.Count);
@@ -218,8 +212,8 @@ namespace NetGore.Graphics.GUI
                 _controls.Remove(newFocusedRoot);
                 _controls.Add(newFocusedRoot);
 
-                if (OnChangeFocusedRoot != null)
-                    OnChangeFocusedRoot(this);
+                if (FocusedRootChanged != null)
+                    FocusedRootChanged(this);
             }
         }
 
@@ -251,12 +245,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the focused <see cref="Control"/> has changed.
         /// </summary>
-        public event GUIEventHandler OnChangeFocusedControl;
+        public event GUIEventHandler FocusedControlChanged;
 
         /// <summary>
         /// Notifies listeners when the focused root <see cref="Control"/> has changed.
         /// </summary>
-        public event GUIEventHandler OnChangeFocusedRoot;
+        public event GUIEventHandler FocusedRootChanged;
 
         /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
@@ -307,8 +301,8 @@ namespace NetGore.Graphics.GUI
                 if (oldFocusedControl != null)
                     oldFocusedControl.HandleLostFocus();
 
-                if (OnChangeFocusedControl != null)
-                    OnChangeFocusedControl(this);
+                if (FocusedControlChanged != null)
+                    FocusedControlChanged(this);
             }
         }
 

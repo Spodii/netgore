@@ -27,7 +27,7 @@ namespace DemoGame.Client
         public ChatBubbleManager(ISkinManager skinManager, SpriteFont font) : base(skinManager.GetBorder(_controlSkinName), font)
         {
             _skinManager = skinManager;
-            _skinManager.OnChangeSkin += skinManager_OnChangeSkin;
+            _skinManager.SkinChanged += skinManager_OnChangeSkin;
         }
 
         /// <summary>
