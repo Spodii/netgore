@@ -28,7 +28,14 @@ namespace NetGore.Features.Guilds
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// List of all the members in the guild.
+        /// </summary>
         readonly List<GuildMemberNameRank> _members = new List<GuildMemberNameRank>();
+
+        /// <summary>
+        /// List of the names of all the online members.
+        /// </summary>
         readonly List<string> _onlineMembers = new List<string>();
 
         bool _inGuild = false;
@@ -36,33 +43,33 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when a guild member has been added.
         /// </summary>
-        public event UserGuildInformationEventHandler<GuildMemberNameRank> OnAddMember;
+        public event UserGuildInformationEventHandler<GuildMemberNameRank> MemberAdded;
 
         /// <summary>
         /// Notifies listeners when a guild member's rank has been updated.
         /// </summary>
-        public event UserGuildInformationEventHandler<GuildMemberNameRank> OnUpdateRank;
+        public event UserGuildInformationEventHandler<GuildMemberNameRank> MemberRankUpdated;
 
         /// <summary>
         /// Notifies listeners when an offline guild member has come online.
         /// </summary>
-        public event UserGuildInformationEventHandler<string> OnAddOnlineMember;
+        public event UserGuildInformationEventHandler<string> OnlineMemberAdded;
 
         /// <summary>
         /// Notifies listeners when the guild has changed. This can be either the user leaving a guild, joining a new
         /// guild, or having the initial guild being set.
         /// </summary>
-        public event UserGuildInformationEventHandler OnChangeGuild;
+        public event UserGuildInformationEventHandler GuildChanged;
 
         /// <summary>
         /// Notifies listeners when a guild member has been removed.
         /// </summary>
-        public event UserGuildInformationEventHandler<string> OnRemoveMember;
+        public event UserGuildInformationEventHandler<string> MemberRemoved;
 
         /// <summary>
         /// Notifies listeners when an online guild member has gone offline.
         /// </summary>
-        public event UserGuildInformationEventHandler<string> OnRemoveOnlineMember;
+        public event UserGuildInformationEventHandler<string> OnlineMemberRemoved;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserGuildInformation"/> class.
@@ -185,12 +192,30 @@ namespace NetGore.Features.Guilds
             }
         }
 
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.UpdateNameTag"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
         void ReadUpdateNameTag(BitStream r)
         {
             Name = r.ReadString();
             Tag = r.ReadString();
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="member">The member the event is related to.</param>
+        protected virtual void OnMemberRankUpdated(GuildMemberNameRank member)
+        {
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.UpdateRank"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
         void ReadUpdateRank(IValueReader r)
         {
             var member = r.ReadGuildMemberNameRank(null);
@@ -198,29 +223,77 @@ namespace NetGore.Features.Guilds
             _members.Add(member);
             _members.Sort();
 
-            if (OnUpdateRank != null)
-                OnUpdateRank(this, member);
+            OnMemberRankUpdated(member);
+
+            if (MemberRankUpdated != null)
+                MemberRankUpdated(this, member);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="member">The member the event is related to.</param>
+        protected virtual void OnMemberAdded(GuildMemberNameRank member)
+        {
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.AddMember"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
         void ReadAddMember(IValueReader r)
         {
             var member = r.ReadGuildMemberNameRank(null);
             _members.Add(member);
             _members.Sort();
 
-            if (OnAddMember != null)
-                OnAddMember(this, member);
+            OnMemberAdded(member);
+
+            if (MemberAdded != null)
+                MemberAdded(this, member);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="name">The member the event is related to.</param>
+        protected virtual void OnOnlineMemberAdded(string name)
+        {
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.AddOnlineMember"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
         void ReadAddOnlineMember(BitStream r)
         {
             string name = r.ReadString();
             SetOnlineValue(name, true);
 
-            if (OnAddOnlineMember != null)
-                OnAddOnlineMember(this, name);
+            OnOnlineMemberAdded(name);
+
+            if (OnlineMemberAdded != null)
+                OnlineMemberAdded(this, name);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="name">The member the event is related to.</param>
+        protected virtual void OnMemberRemoved(string name)
+        {
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.RemoveMember"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
         void ReadRemoveMember(BitStream r)
         {
             var name = r.ReadString();
@@ -229,19 +302,50 @@ namespace NetGore.Features.Guilds
             Debug.Assert(removeCount != 0, "Nobody with the name " + name + " existed in the collection.");
             Debug.Assert(removeCount < 2, "How the hell did we remove more than one item?");
 
-            if (OnRemoveMember != null)
-                OnRemoveMember(this, name);
+            OnMemberRemoved(name);
+
+            if (MemberRemoved != null)
+                MemberRemoved(this, name);
         }
 
-        void ReadRemoveOnlineMember(BitStream pw)
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="name">The member the event is related to.</param>
+        protected virtual void OnOnlineMemberRemoved(string name)
         {
-            string name = pw.ReadString();
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.RemoveOnlineMember"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
+        void ReadRemoveOnlineMember(BitStream r)
+        {
+            string name = r.ReadString();
             SetOnlineValue(name, false);
 
-            if (OnRemoveOnlineMember != null)
-                OnRemoveOnlineMember(this, name);
+            OnOnlineMemberRemoved(name);
+
+            if (OnlineMemberRemoved != null)
+                OnlineMemberRemoved(this, name);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnGuildChanged()
+        {
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.SetGuild"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
         void ReadSetGuild(BitStream r)
         {
             _members.Clear();
@@ -271,8 +375,10 @@ namespace NetGore.Features.Guilds
                 _members.Sort();
             }
 
-            if (OnChangeGuild != null)
-                OnChangeGuild(this);
+            OnGuildChanged();
+
+            if (GuildChanged != null)
+                GuildChanged(this);
         }
 
         /// <summary>
@@ -295,18 +401,39 @@ namespace NetGore.Features.Guilds
             }
         }
 
+        /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's guild information for when
+        /// a member is added to the guild.
+        /// The message is then read and handled by the receiver using <see cref="UserGuildInformation.Read"/>.
+        /// </summary>
+        /// <param name="pw">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="member">The guild member that was added.</param>
         public static void WriteAddMember(BitStream pw, GuildMemberNameRank member)
         {
             pw.WriteEnum(GuildInfoMessages.AddMember);
             pw.Write(null, member);
         }
 
+        /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's guild information for when
+        /// a guild member comes online.
+        /// The message is then read and handled by the receiver using <see cref="UserGuildInformation.Read"/>.
+        /// </summary>
+        /// <param name="pw">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="memberName">The name of the guild member that came online.</param>
         public static void WriteAddOnlineMember(BitStream pw, string memberName)
         {
             pw.WriteEnum(GuildInfoMessages.AddOnlineMember);
             pw.Write(memberName);
         }
 
+        /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's guild information for when
+        /// the guild changes or the user is receiving their first update on the guild state and all values have to be sent.
+        /// The message is then read and handled by the receiver using <see cref="UserGuildInformation.Read"/>.
+        /// </summary>
+        /// <param name="pw">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="guild">The guild to send the state values for.</param>
         public static void WriteGuildInfo(BitStream pw, IGuild guild)
         {
             pw.WriteEnum(GuildInfoMessages.SetGuild);
@@ -337,24 +464,53 @@ namespace NetGore.Features.Guilds
             }
         }
 
+        /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's guild information for when
+        /// a member is removed from the guild.
+        /// The message is then read and handled by the receiver using <see cref="UserGuildInformation.Read"/>.
+        /// </summary>
+        /// <param name="pw">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="memberName">The name of the guild member to remove.</param>
         public static void WriteRemoveMember(BitStream pw, string memberName)
         {
             pw.WriteEnum(GuildInfoMessages.RemoveMember);
             pw.Write(memberName);
         }
 
+        /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's guild information for when
+        /// a member goes offline.
+        /// The message is then read and handled by the receiver using <see cref="UserGuildInformation.Read"/>.
+        /// </summary>
+        /// <param name="pw">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="memberName">The name of the guild member that went offline.</param>
         public static void WriteRemoveOnlineMember(BitStream pw, string memberName)
         {
             pw.WriteEnum(GuildInfoMessages.RemoveOnlineMember);
             pw.Write(memberName);
         }
 
+        /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's guild information for when
+        /// a member's rank changes.
+        /// The message is then read and handled by the receiver using <see cref="UserGuildInformation.Read"/>.
+        /// </summary>
+        /// <param name="pw">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="member">The guild member who's rank changed.</param>
         public static void WriteUpdateMemberRank(BitStream pw, GuildMemberNameRank member)
         {
             pw.WriteEnum(GuildInfoMessages.UpdateRank);
             pw.Write(null, member);
         }
 
+        /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's guild information for when
+        /// a the guild's name or tag changes and needs to be updated.
+        /// The message is then read and handled by the receiver using <see cref="UserGuildInformation.Read"/>.
+        /// </summary>
+        /// <param name="pw">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="name">The new guild name.</param>
+        /// <param name="tag">The new guild tag.</param>
         public static void WriteUpdateNameTag(BitStream pw, string name, string tag)
         {
             pw.WriteEnum(GuildInfoMessages.UpdateNameTag);
