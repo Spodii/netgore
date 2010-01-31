@@ -252,10 +252,14 @@ namespace NetGore.Features.Guilds
         /// <param name="online">True to set them as online; false to set them as offline.</param>
         void SetOnlineValue(string name, bool online)
         {
-            if (online)
+            if (!online)
+            {
+                // Remove online status
                 _onlineMembers.Remove(name);
+            }
             else
             {
+                // Add online status
                 if (!_onlineMembers.Contains(name, StringComparer.OrdinalIgnoreCase))
                     _onlineMembers.Add(name);
             }

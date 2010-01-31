@@ -12,6 +12,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const string _controlSkinName = "Label";
 
+        bool _autoresize;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Label"/> class.
         /// </summary>
@@ -36,7 +38,31 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets if the <see cref="Label"/> will automatically resize when the text or font changes.
         /// </summary>
         [SyncValue]
-        public bool AutoResize { get; set; }
+        public bool AutoResize
+        {
+            get { return _autoresize; }
+            set
+            {
+                if (_autoresize == value)
+                    return;
+
+                _autoresize = value;
+
+                ResizeToFitText();
+            }
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
+        /// </summary>
+        protected override void ChangeBorder()
+        {
+            base.ChangeBorder();
+
+            ResizeToFitText();
+        }
 
         /// <summary>
         /// Handles when the <see cref="TextControl.Font"/> has changed.
@@ -88,7 +114,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         void ResizeToFitText()
         {
-            Size = Border.Size + Font.MeasureString(Text);
+            if (AutoResize)
+                Size = Border.Size + Font.MeasureString(string.IsNullOrEmpty(Text) ? "W" : Text);
         }
 
         /// <summary>

@@ -38,9 +38,9 @@ namespace NetGore.Graphics.GUI
         readonly SpriteControl _btnPrev;
 
         int _currentPage = 1;
-        Action<SpriteBatch, Vector2, T> _itemDrawer;
+        Action<SpriteBatch, Vector2, int> _itemDrawer;
         int _itemHeight = 12;
-        IList<T> _items;
+        IEnumerable<T> _items;
         StyledText _pageText = new StyledText("1/1");
         int _toolbarHeight = 8;
 
@@ -58,9 +58,9 @@ namespace NetGore.Graphics.GUI
                 ItemHeight = Font.LineSpacing;
             else
                 ItemHeight = 12;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _itemDrawer = GetDefaultItemDrawer();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Create the buttons
             _btnFirst = new PagedListButton(this, "First", () => CurrentPage = 1);
@@ -85,9 +85,9 @@ namespace NetGore.Graphics.GUI
                 ItemHeight = Font.LineSpacing;
             else
                 ItemHeight = 12;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _itemDrawer = GetDefaultItemDrawer();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Create the buttons
             _btnFirst = new PagedListButton(this, "First", () => CurrentPage = 1);
@@ -118,7 +118,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets how to draw items in the list.
         /// </summary>
-        public Action<SpriteBatch, Vector2, T> ItemDrawer
+        public Action<SpriteBatch, Vector2, int> ItemDrawer
         {
             get { return _itemDrawer; }
             set { _itemDrawer = value ?? GetDefaultItemDrawer(); }
@@ -139,7 +139,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the items to display.
         /// </summary>
-        public IList<T> Items
+        public IEnumerable<T> Items
         {
             get { return _items; }
             set
@@ -216,15 +216,18 @@ namespace NetGore.Graphics.GUI
 
         void DrawItems(SpriteBatch spriteBatch)
         {
+            if (Items == null)
+                return;
+
             var pos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
             int ipp = ItemsPerPage;
             int offset = (CurrentPage - 1) * ipp;
             int ih = ItemHeight;
+            int count = Items.Count();
 
-            for (int i = offset; i < offset + ipp && i < Items.Count; i++)
+            for (int i = offset; i < offset + ipp && i < count; i++)
             {
-                var item = Items[i];
-                ItemDrawer(spriteBatch, pos, item);
+                ItemDrawer(spriteBatch, pos, i);
                 pos += new Vector2(0, ih);
             }
         }
@@ -233,9 +236,9 @@ namespace NetGore.Graphics.GUI
         /// Gets the default item drawer.
         /// </summary>
         /// <returns>The default item drawer.</returns>
-        Action<SpriteBatch, Vector2, T> GetDefaultItemDrawer()
+        protected virtual Action<SpriteBatch, Vector2, int> GetDefaultItemDrawer()
         {
-            return (sb, p, v) => sb.DrawString(Font, v.ToString(), p, ForeColor);
+            return (sb, p, v) => sb.DrawString(Font, Items.ElementAtOrDefault(v).ToString(), p, ForeColor);
         }
 
         static Vector2 GetSpriteSize(SpriteControl spriteControl)

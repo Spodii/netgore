@@ -393,6 +393,8 @@ namespace DemoGame.Client
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
+            new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = GuildInfo };
+
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 
             _skillCastProgressBar = new SkillCastProgressBar(cScreen);

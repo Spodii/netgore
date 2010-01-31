@@ -64,6 +64,7 @@ namespace NetGore.Graphics.GUI
             base.SetDefaultValues();
 
             CanDrag = true;
+            CanFocus = true;
             ForeColor = Color.White;
         }
     }
