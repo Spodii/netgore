@@ -95,7 +95,7 @@ namespace NetGore.Tests.NetGore
             bool b = false;
 
             var stat = CreateStat(TestStatType.C, 5);
-            stat.OnChange += delegate { b = true; };
+            stat.Changed += delegate { b = true; };
             Assert.IsFalse(b);
 
             stat.Value = 199;

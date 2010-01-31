@@ -36,14 +36,14 @@ namespace DemoGame
         readonly T[] _equipped = new T[_highestSlotIndex + 1];
 
         /// <summary>
-        /// Notifies listeners that an item has been equipped.
+        /// Notifies listeners when an item has been equipped.
         /// </summary>
-        public event EventHandler OnEquip;
+        public event EventHandler Equipped;
 
         /// <summary>
-        /// Notifies listeners that an item has been unequipped.
+        /// Notifies listeners when an item has been unequipped.
         /// </summary>
-        public event EventHandler OnRemove;
+        public event EventHandler Unequipped;
 
         /// <summary>
         /// Gets the item at the given <paramref name="slot"/>.
@@ -164,24 +164,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when an item has been equipped.
-        /// </summary>
-        /// <param name="item">The item the event is related to.</param>
-        /// <param name="slot">The slot of the item the event is related to.</param>
-        protected virtual void HandleOnEquip(T item, EquipmentSlot slot)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when an item has been removed.
-        /// </summary>
-        /// <param name="item">The item the event is related to.</param>
-        /// <param name="slot">The slot of the item the event is related to.</param>
-        protected virtual void HandleOnRemove(T item, EquipmentSlot slot)
-        {
-        }
-
-        /// <summary>
         /// Handles when an ItemEntity being handled by this EquippedBase is disposed while still equipped.
         /// </summary>
         /// <param name="entity">Item that was disposed.</param>
@@ -209,6 +191,24 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles when an item has been equipped.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected virtual void OnEquipped(T item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an item has been removed.
+        /// </summary>
+        /// <param name="item">The item the event is related to.</param>
+        /// <param name="slot">The slot of the item the event is related to.</param>
+        protected virtual void OnUnequipped(T item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
         /// Removes all items from the EquippedBase.
         /// </summary>
         /// <param name="dispose">If true, then all of the items in the EquippedBase will be disposed of. If false,
@@ -218,12 +218,13 @@ namespace DemoGame
             for (int i = 0; i < _equipped.Length; i++)
             {
                 T item = this[i];
-                if (item != null)
-                {
-                    RemoveAt((EquipmentSlot)i);
-                    if (dispose)
-                        item.Dispose();
-                }
+                if (item == null)
+                    continue;
+
+                RemoveAt((EquipmentSlot)i);
+
+                if (dispose)
+                    item.Dispose();
             }
         }
 
@@ -307,10 +308,10 @@ namespace DemoGame
                 // Set the item into the slot
                 _equipped[index] = item;
 
-                HandleOnEquip(item, slot);
+                OnEquipped(item, slot);
 
-                if (OnEquip != null)
-                    OnEquip(this, item, slot);
+                if (Equipped != null)
+                    Equipped(this, item, slot);
             }
             else
             {
@@ -328,10 +329,10 @@ namespace DemoGame
                 // Remove the item
                 _equipped[index] = null;
 
-                HandleOnRemove(oldItem, slot);
+                OnUnequipped(oldItem, slot);
 
-                if (OnRemove != null)
-                    OnRemove(this, oldItem, slot);
+                if (Unequipped != null)
+                    Unequipped(this, oldItem, slot);
             }
 
             // Slot setting was successful (since we always aborted early with false if it wasn't)

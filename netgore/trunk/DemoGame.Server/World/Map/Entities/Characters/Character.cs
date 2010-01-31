@@ -282,8 +282,8 @@ namespace DemoGame.Server
             _equipped = CreateEquipped();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            ModStats.GetStat(StatType.MaxHP).OnChange += ModStats_MaxHP_OnChange;
-            ModStats.GetStat(StatType.MaxMP).OnChange += ModStats_MaxMP_OnChange;
+            ModStats.GetStat(StatType.MaxHP).Changed += ModStats_MaxHP_OnChange;
+            ModStats.GetStat(StatType.MaxMP).Changed += ModStats_MaxMP_OnChange;
         }
 
         /// <summary>

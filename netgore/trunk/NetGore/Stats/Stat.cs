@@ -106,8 +106,8 @@ namespace NetGore.Stats
                 // Set the new value, and invoke the OnChange event
                 _value = _value.SetValue(value);
 
-                if (OnChange != null)
-                    OnChange(this);
+                if (Changed != null)
+                    Changed(this);
             }
         }
 
@@ -145,11 +145,6 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Notifies listeners that the value of this <see cref="IStat{TStatType}"/> has changed.
-        /// </summary>
-        public event IStatEventHandler<TStatType> OnChange;
-
-        /// <summary>
         /// Writes the <see cref="IStat{StatType}.Value"/> property of the <see cref="IStat{TStatType}"/> directly into the
         /// specified <see cref="BitStream"/>. The <see cref="BitStream"/> must not be null, be in
         /// <see cref="BitStreamMode.Write"/> mode, and be positioned at the location where the value is to be written.
@@ -185,6 +180,11 @@ namespace NetGore.Stats
         {
             return new Stat<TStatType>(StatType, _value, Value);
         }
+
+        /// <summary>
+        /// Notifies listeners that the value of this <see cref="IStat{TStatType}"/> has changed.
+        /// </summary>
+        public event IStatEventHandler<TStatType> Changed;
 
         #endregion
     }

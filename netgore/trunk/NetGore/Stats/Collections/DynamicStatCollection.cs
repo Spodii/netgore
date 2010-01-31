@@ -20,6 +20,11 @@ namespace NetGore.Stats
             new Dictionary<TStatType, IStat<TStatType>>(EnumComparer<TStatType>.Instance);
 
         /// <summary>
+        /// Notifies listeners when a stat has been added to this collection.
+        /// </summary>
+        public DynamicStatCollectionStatEventHandler<TStatType> StatAdded;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DynamicStatCollection{TStatType}"/> class.
         /// </summary>
         /// <param name="statCollectionType">The type of the collection.</param>
@@ -35,6 +40,11 @@ namespace NetGore.Stats
         protected void Add(IStat<TStatType> stat)
         {
             _stats.Add(stat.StatType, stat);
+
+            OnStatAdded(stat);
+
+            if (StatAdded != null)
+                StatAdded(this, stat);
         }
 
         /// <summary>
@@ -88,7 +98,7 @@ namespace NetGore.Stats
         /// </summary>
         /// <param name="stat">The <see cref="IStat{StatType}"/> that was added to this
         /// <see cref="DynamicStatCollection{StatType}"/>.</param>
-        protected virtual void HandleStatAdded(IStat<TStatType> stat)
+        protected virtual void OnStatAdded(IStat<TStatType> stat)
         {
         }
 
