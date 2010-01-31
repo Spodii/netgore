@@ -20,21 +20,21 @@ namespace NetGore.EditorTools.NPCChat
         string _title;
 
         /// <summary>
-        /// Notifies listeners when the EditorNPCChatDialog has changed.
+        /// Notifies listeners when the <see cref="EditorNPCChatDialog"/> has changed.
         /// </summary>
-        public event EditorNPCChatDialogEventHandler OnChange;
+        public event EditorNPCChatDialogEventHandler Changed;
 
         /// <summary>
-        /// EditorNPCChatDialog constructor.
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialog"/> class.
         /// </summary>
         public EditorNPCChatDialog()
         {
         }
 
         /// <summary>
-        /// EditorNPCChatDialog constructor.
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialog"/> class.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public EditorNPCChatDialog(IValueReader reader) : base(reader)
         {
         }
@@ -90,8 +90,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _items[item.Index] = item;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <paramref name="chatDialogItemIndex"/>.</returns>
         public EditorNPCChatDialogItem GetDialogItemCasted(ushort chatDialogItemIndex)
         {
-            if (chatDialogItemIndex == EditorNPCChatResponse.EndConversationPage)
+            if (chatDialogItemIndex == NPCChatResponseBase.EndConversationPage)
                 return null;
 
             if (chatDialogItemIndex < 0 || chatDialogItemIndex >= _items.Length)
@@ -205,7 +205,7 @@ namespace NetGore.EditorTools.NPCChat
             // Remove references to the dialog
             foreach (var r in sourceResponses)
             {
-                r.SetPage(EditorNPCChatResponse.EndConversationPage);
+                r.SetPage(NPCChatResponseBase.EndConversationPage);
             }
 
             return true;

@@ -16,12 +16,12 @@ namespace NetGore.EditorTools.NPCChat
         EditorNPCChatConditionalCollectionItem _selectedConditionalItem;
 
         /// <summary>
-        /// Notifies listeners when the SelectedConditionalItem has changed.
+        /// Notifies listeners when the <see cref="NPCChatConditionalsListBox.SelectedConditionalItem"/> has changed.
         /// </summary>
-        public event SelectedConditionalItemChangeHandler OnChangeConditionalItem;
+        public event SelectedConditionalItemChangeHandler ConditionalItemChanged;
 
         /// <summary>
-        /// Gets or sets the current EditorNPCChatConditionalCollection being used.
+        /// Gets or sets the current <see cref="EditorNPCChatConditionalCollection"/> being used.
         /// </summary>
         [Browsable(false)]
         public EditorNPCChatConditionalCollection ConditionalCollection
@@ -33,7 +33,7 @@ namespace NetGore.EditorTools.NPCChat
                     return;
 
                 if (_conditionalCollection != null)
-                    _conditionalCollection.OnChange -= ConditionalCollection_OnChange;
+                    _conditionalCollection.Changed -= ConditionalCollection_OnChange;
 
                 _conditionalCollection = value;
 
@@ -42,7 +42,7 @@ namespace NetGore.EditorTools.NPCChat
                 if (_conditionalCollection != null)
                 {
                     Items.AddRange(_conditionalCollection.ToArray());
-                    _conditionalCollection.OnChange += ConditionalCollection_OnChange;
+                    _conditionalCollection.Changed += ConditionalCollection_OnChange;
 
                     if (EvaluationTypeComboBox != null)
                         EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
@@ -143,8 +143,8 @@ namespace NetGore.EditorTools.NPCChat
             if (item != SelectedConditionalItem)
             {
                 _selectedConditionalItem = item;
-                if (OnChangeConditionalItem != null)
-                    OnChangeConditionalItem(this, item);
+                if (ConditionalItemChanged != null)
+                    ConditionalItemChanged(this, item);
             }
         }
 

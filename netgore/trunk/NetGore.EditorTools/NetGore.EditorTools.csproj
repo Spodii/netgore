@@ -98,6 +98,7 @@
     <Compile Include="Persistable Controls\PersistableTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SelectedObjectManagerEventHandler.cs" />
     <Compile Include="SelectedObjectsManager.cs" />
     <Compile Include="Undo Manager\IUndoEvent.cs" />
     <Compile Include="Undo Manager\IUndoManager.cs" />

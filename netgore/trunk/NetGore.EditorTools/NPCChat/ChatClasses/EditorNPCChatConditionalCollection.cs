@@ -8,17 +8,18 @@ namespace NetGore.EditorTools.NPCChat
     public class EditorNPCChatConditionalCollection : NPCChatConditionalCollectionBase
     {
         readonly List<EditorNPCChatConditionalCollectionItem> _items = new List<EditorNPCChatConditionalCollectionItem>();
+
         NPCChatConditionalEvaluationType _evaluationType;
 
         /// <summary>
-        /// Notifies listeners when this EditorNPCChatConditionalCollection changes.
+        /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollection"/> has changed.
         /// </summary>
-        public event EditorNPCChatConditionalCollectionChangeHandler OnChange;
+        public event EditorNPCChatConditionalCollectionChangeHandler Changed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollection"/> class.
         /// </summary>
-        /// <param name="source">The source NPCChatConditionalCollectionBase to copy the values from. If null,
+        /// <param name="source">The source <see cref="NPCChatConditionalCollectionBase"/> to copy the values from. If null,
         /// no values are copied.</param>
         public EditorNPCChatConditionalCollection(NPCChatConditionalCollectionBase source)
         {
@@ -121,8 +122,8 @@ namespace NetGore.EditorTools.NPCChat
         {
             _evaluationType = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -137,8 +138,8 @@ namespace NetGore.EditorTools.NPCChat
             _items.Clear();
             _items.AddRange(items.Cast<EditorNPCChatConditionalCollectionItem>());
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -173,8 +174,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _items.Add(item);
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
 
             return true;
         }
@@ -191,8 +192,8 @@ namespace NetGore.EditorTools.NPCChat
 
             var success = _items.Remove(item);
 
-            if (success && OnChange != null)
-                OnChange(this);
+            if (success && Changed != null)
+                Changed(this);
 
             return success;
         }

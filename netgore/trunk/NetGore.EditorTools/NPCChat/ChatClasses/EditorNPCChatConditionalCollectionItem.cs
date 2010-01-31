@@ -12,15 +12,19 @@ namespace NetGore.EditorTools.NPCChat
     public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
         readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
+
         NPCChatConditionalBase _conditional;
         bool _not;
 
-        public event EditorNPCChatConditionalCollectionItemHandler OnChange;
+        /// <summary>
+        /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollectionItem"/> has changed.
+        /// </summary>
+        public event EditorNPCChatConditionalCollectionItemHandler Changed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
         /// </summary>
-        /// <param name="source">The source NPCChatConditionalCollectionBase to copy the values from. If null,
+        /// <param name="source">The source <see cref="NPCChatConditionalCollectionBase"/> to copy the values from. If null,
         /// no values are copied.</param>
         public EditorNPCChatConditionalCollectionItem(NPCChatConditionalCollectionItemBase source)
         {
@@ -156,8 +160,8 @@ namespace NetGore.EditorTools.NPCChat
             _parameters.Clear();
             _parameters.AddRange(newParameters);
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -168,8 +172,8 @@ namespace NetGore.EditorTools.NPCChat
         {
             _not = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -186,8 +190,8 @@ namespace NetGore.EditorTools.NPCChat
             _parameters.Clear();
             _parameters.AddRange(parameters);
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -236,8 +240,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _parameters[index] = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
 
             return true;
         }

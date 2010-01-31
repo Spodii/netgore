@@ -239,9 +239,9 @@ namespace NetGore.EditorTools.NPCChat
             }
 
             if (node.ChatItemType == NPCChatDialogViewNodeItemType.Response)
-                node.ChatItemAsResponse.OnChange += EditorNPCChatResponse_OnChange;
+                node.ChatItemAsResponse.Changed += EditorNPCChatResponse_OnChange;
             else
-                node.ChatItemAsDialogItem.OnChange += EditorNPCChatDialogItem_OnChange;
+                node.ChatItemAsDialogItem.Changed += EditorNPCChatDialogItem_OnChange;
 
             l.Add(node);
         }

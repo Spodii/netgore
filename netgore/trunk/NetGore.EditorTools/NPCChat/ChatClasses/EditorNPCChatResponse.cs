@@ -20,9 +20,9 @@ namespace NetGore.EditorTools.NPCChat
         byte _value;
 
         /// <summary>
-        /// Notifies listeners when the EditorNPCChatResponse has changed.
+        /// Notifies listeners when the <see cref="EditorNPCChatResponse"/> has changed.
         /// </summary>
-        public event EditorNPCChatResponseEventHandler OnChange;
+        public event EditorNPCChatResponseEventHandler Changed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
@@ -128,8 +128,8 @@ namespace NetGore.EditorTools.NPCChat
         {
             _conditionals = new EditorNPCChatConditionalCollection();
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -156,8 +156,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _conditionals = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -171,8 +171,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _page = page;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -208,8 +208,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _text = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -223,8 +223,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _value = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
     }
 }

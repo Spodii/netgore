@@ -10,10 +10,6 @@ namespace NetGore.EditorTools
     /// </summary>
     public class SelectedObjectsManager<T> where T : class
     {
-        public delegate void ChangeFocusedHandler(SelectedObjectsManager<T> sender, T newFocused);
-
-        public delegate void SelectedObjectManagerEventHandler(SelectedObjectsManager<T> sender);
-
         readonly PropertyGrid _propertyGrid;
         readonly EventHandler _selectedIndexChangedHandler;
         readonly ListBox _selectedListBox;
@@ -24,12 +20,12 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Notifies listeners when the focused object has changed.
         /// </summary>
-        public event ChangeFocusedHandler OnChangeFocused;
+        public event SelectedObjectManagerEventHandler<T, T> FocusedChanged;
 
         /// <summary>
         /// Notifies listeners when the selected objects have changed.
         /// </summary>
-        public event SelectedObjectManagerEventHandler OnChangeSelected;
+        public event SelectedObjectManagerEventHandler<T> SelectedChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedObjectsManager{T}"/> class.
@@ -65,8 +61,8 @@ namespace NetGore.EditorTools
                 _focused = value;
 
                 ChangeFocused();
-                if (OnChangeFocused != null)
-                    OnChangeFocused(this, _focused);
+                if (FocusedChanged != null)
+                    FocusedChanged(this, _focused);
             }
         }
 
@@ -271,8 +267,8 @@ namespace NetGore.EditorTools
         {
             // Notify that the collection has changed
             ChangeSelected();
-            if (OnChangeSelected != null)
-                OnChangeSelected(this);
+            if (SelectedChanged != null)
+                SelectedChanged(this);
 
             // Ensure the focused object is valid
             if (Focused == null || !_selectedObjs.Contains(Focused))
