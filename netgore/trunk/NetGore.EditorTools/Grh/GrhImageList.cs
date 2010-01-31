@@ -54,8 +54,8 @@ namespace NetGore.EditorTools
             var existingGrhDatas = GrhInfo.GrhDatas.ToImmutable();
 
             // Listen for new GrhDatas being added/removed
-            GrhInfo.OnAdd += GrhInfo_OnAdd;
-            GrhInfo.OnRemove += GrhInfo_OnRemove;
+            GrhInfo.Added += GrhInfo_OnAdd;
+            GrhInfo.Removed += GrhInfo_OnRemove;
 
             // Add the existing GrhDatas
             foreach (var gd in existingGrhDatas)

@@ -44,18 +44,18 @@ namespace NetGore.Graphics
         /// Notifies listeners when a <see cref="GrhData"/> has been added. This includes
         /// <see cref="GrhData"/>s added from loading.
         /// </summary>
-        public static event GrhDataEventHandler OnAdd;
+        public static event GrhDataEventHandler Added;
 
         /// <summary>
         /// Notifies listeners when a new <see cref="GrhData"/> has been added. This does not include
         /// <see cref="GrhData"/>s added from loading.
         /// </summary>
-        public static event GrhDataEventHandler OnAddNew;
+        public static event GrhDataEventHandler AddedNew;
 
         /// <summary>
         /// Notifies listeners when a <see cref="GrhData"/> has been removed.
         /// </summary>
-        public static event GrhDataEventHandler OnRemove;
+        public static event GrhDataEventHandler Removed;
 
         /// <summary>
         /// Initializes the <see cref="GrhInfo"/> class.
@@ -113,13 +113,14 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles when a <see cref="GrhData"/> is added to the <see cref="GrhData"/>s DArray.
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">Event args.</param>
-        static void AddHandler(object sender, DArrayModifyEventArgs<GrhData> e)
+        /// <param name="sender">The sender.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="index">The index.</param>
+        static void AddHandler(DArray<GrhData> sender, GrhData item, int index)
         {
-            Debug.Assert(e.Index != GrhIndex.Invalid);
+            Debug.Assert(index != GrhIndex.Invalid);
 
-            GrhData gd = e.Item;
+            GrhData gd = item;
             if (gd == null)
             {
                 Debug.Fail("gd is null.");
@@ -127,15 +128,15 @@ namespace NetGore.Graphics
             }
 
             // Set the categorization event so we can keep up with any changes to the categorization.
-            gd.OnChangeCategorization += ChangeCategorizationHandler;
+            gd.CategorizationChanged += ChangeCategorizationHandler;
 
             AddToDictionary(gd);
 
-            if (OnAdd != null)
-                OnAdd(gd);
+            if (Added != null)
+                Added(gd);
 
-            if (!_isLoading && OnAddNew != null)
-                OnAddNew(gd);
+            if (!_isLoading && AddedNew != null)
+                AddedNew(gd);
         }
 
         /// <summary>
@@ -501,8 +502,8 @@ namespace NetGore.Graphics
                 else
                     _grhDatas.Clear();
                 _catDic.Clear();
-                _grhDatas.OnAdd += AddHandler;
-                _grhDatas.OnRemove += RemoveHandler;
+                _grhDatas.ItemAdded += AddHandler;
+                _grhDatas.ItemRemoved += RemoveHandler;
 
                 // Read and add the GrhDatas in order by their type
                 XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
@@ -579,16 +580,17 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles when a GrhData is removed from the DArray
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Event args</param>
-        static void RemoveHandler(object sender, DArrayModifyEventArgs<GrhData> e)
+        /// <param name="sender">The sender.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="index">The index.</param>
+        static void RemoveHandler(object sender, GrhData item, int index)
         {
-            Debug.Assert(e.Index != GrhIndex.Invalid);
+            Debug.Assert(index != GrhIndex.Invalid);
 
-            RemoveFromDictionary(e.Item);
+            RemoveFromDictionary(item);
 
-            if (OnRemove != null)
-                OnRemove(e.Item);
+            if (Removed != null)
+                Removed(item);
         }
 
         /// <summary>

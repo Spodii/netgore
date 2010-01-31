@@ -80,8 +80,8 @@ namespace NetGore.EditorTools
         static void PrepareCategories()
         {
             // Force update categorization when any GrhInfos are added or removed
-            GrhInfo.OnAdd += delegate { UpdateCategories(); };
-            GrhInfo.OnRemove += delegate { UpdateCategories(); };
+            GrhInfo.Added += delegate { UpdateCategories(); };
+            GrhInfo.Removed += delegate { UpdateCategories(); };
 
             // Auto-update every 30 seconds so any unexpected synchronization problems self-resolve eventually
             // without any noticeable hits to performance

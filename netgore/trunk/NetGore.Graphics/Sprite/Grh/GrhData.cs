@@ -25,7 +25,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
         /// </summary>
-        public event GrhDataChangeCategorizationHandler OnChangeCategorization;
+        public event GrhDataChangeCategorizationHandler CategorizationChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhData"/> class.
@@ -193,8 +193,8 @@ namespace NetGore.Graphics
             var oldCategorization = _categorization;
             _categorization = categorization;
 
-            if (OnChangeCategorization != null)
-                OnChangeCategorization(this, oldCategorization);
+            if (CategorizationChanged != null)
+                CategorizationChanged(this, oldCategorization);
         }
 
         /// <summary>

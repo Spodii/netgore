@@ -24,6 +24,7 @@ namespace NetGore.Graphics
         const string _textureSourceValueKey = "Source";
 
         readonly ContentManager _cm;
+
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
         bool _isUsingAtlas = false;
@@ -34,7 +35,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s texture has changed.
         /// </summary>
-        public event GrhDataChangeTextureHandler OnChangeTexture;
+        public event GrhDataChangeTextureHandler TextureChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StationaryGrhData"/> class.
@@ -259,8 +260,8 @@ namespace NetGore.Graphics
 
             ValidateTexture();
 
-            if (oldTextureName != null && OnChangeTexture != null)
-                OnChangeTexture(this, oldTextureName);
+            if (oldTextureName != null && TextureChanged != null)
+                TextureChanged(this, oldTextureName);
         }
 
         /// <summary>

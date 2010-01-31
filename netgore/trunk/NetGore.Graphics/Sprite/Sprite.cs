@@ -17,12 +17,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the sprite's source has changed.
         /// </summary>
-        public event EventHandler OnChangeSource;
+        public event EventHandler SourceChanged;
 
         /// <summary>
         /// Notifies listeners when the texture has changed.
         /// </summary>
-        public event EventHandler OnChangeTexture;
+        public event EventHandler TextureChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sprite"/> class.
@@ -143,8 +143,8 @@ namespace NetGore.Graphics
                 if (_source != value)
                 {
                     _source = value;
-                    if (OnChangeSource != null)
-                        OnChangeSource(this, null);
+                    if (SourceChanged != null)
+                        SourceChanged(this, null);
                 }
             }
         }
@@ -160,8 +160,8 @@ namespace NetGore.Graphics
                 if (_texture != value)
                 {
                     _texture = value;
-                    if (OnChangeTexture != null)
-                        OnChangeTexture(this, null);
+                    if (TextureChanged != null)
+                        TextureChanged(this, null);
                 }
             }
         }
