@@ -72,9 +72,9 @@ namespace NetGore.Graphics
         float _speed = 1.0f;
 
         /// <summary>
-        /// Event raised when the skeleton animation rolls back over to the first frame
+        /// Notifies listeners when the skeleton animation has rolled back over to the first frame.
         /// </summary>
-        public event EventHandler OnLoop;
+        public event EventHandler Looped;
 
         /// <summary>
         /// Skeleton animation constructor
@@ -212,7 +212,7 @@ namespace NetGore.Graphics
 
             // If not looping, detach once the animation finishes
             if (!loop)
-                modifier.OnLoop += modifier_OnLoop;
+                modifier.Looped += modifier_OnLoop;
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace NetGore.Graphics
             }
 
             // Remove all the events from the modifier SkeletonAnimation
-            src.OnLoop = null;
+            src.Looped = null;
 
             // If it has a parent (which it should), remove the references
             src.Detach();
@@ -502,8 +502,8 @@ namespace NetGore.Graphics
                     else
                     {
                         // If we have reached the first frame, raise the OnLoop event
-                        if ((int)newFrame == 0 && OnLoop != null)
-                            OnLoop(this, null);
+                        if ((int)newFrame == 0 && Looped != null)
+                            Looped(this, null);
 
                         // Store the new frame references
                         _currFrame = _skelSet.KeyFrames[(int)newFrame];

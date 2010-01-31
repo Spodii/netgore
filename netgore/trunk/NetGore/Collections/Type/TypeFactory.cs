@@ -32,7 +32,7 @@ namespace NetGore.Collections
         /// <summary>
         /// Notifies listeners when a <see cref="Type"/> has been loaded into this <see cref="TypeFactory"/>.
         /// </summary>
-        public event TypeFactoryLoadedHandler OnLoadType;
+        public event TypeFactoryLoadedHandler TypeLoaded;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeFactory"/> class.
@@ -66,7 +66,7 @@ namespace NetGore.Collections
             _useGAC = useGAC;
 
             if (loadTypeHandler != null)
-                OnLoadType += loadTypeHandler;
+                TypeLoaded += loadTypeHandler;
 
             // Listen for when new assemblies are loaded
             AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
@@ -227,9 +227,23 @@ namespace NetGore.Collections
                 _nameToType.Add(typeName, type);
                 _typeToName.Add(type, typeName);
 
-                if (OnLoadType != null)
-                    OnLoadType(this, type, typeName);
+                // Notify listeners
+                OnTypeLoaded(type, typeName);
+
+                if (TypeLoaded != null)
+                    TypeLoaded(this, type, typeName);
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="typeName">Name of the type.</param>
+        protected virtual void OnTypeLoaded(Type type, string typeName)
+        {
         }
 
         #region IEnumerable<Type> Members

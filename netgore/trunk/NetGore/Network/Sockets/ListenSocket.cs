@@ -32,9 +32,19 @@ namespace NetGore.Network
         bool _disposed;
 
         /// <summary>
-        /// Notifies when a connection has been accepted
+        /// Notifies listeners when a connection has been accepted.
         /// </summary>
-        public event ListenSocketAcceptHandler OnAccept;
+        public event ListenSocketAcceptHandler ConnectionAccepted;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">The <see cref="TCPSocket"/> for the connection that was accepted.</param>
+        protected virtual void OnConnectionAccepted(TCPSocket conn)
+        {
+        }
 
         /// <summary>
         /// ListenSocket constructor
@@ -145,11 +155,15 @@ namespace NetGore.Network
             // Set up the new TCPSocket and send it to the accept event
             TCPSocket conn = new TCPSocket();
             conn.SetSocket(sock);
-            if (OnAccept != null)
-                OnAccept(conn);
 
             // Start accepting again on the ListenSocket
             BeginAccept();
+
+            // Notify listeners of the connection
+            OnConnectionAccepted(conn);
+
+            if (ConnectionAccepted != null)
+                ConnectionAccepted(this, conn);
         }
 
         #region IDisposable Members

@@ -256,7 +256,7 @@ namespace NetGore.EditorTools
 
                 Nodes.Clear();
 
-                GrhInfo.OnRemove -= GrhInfo_OnRemove;
+                GrhInfo.Removed -= GrhInfo_OnRemove;
             }
 
             base.Dispose(disposing);
@@ -537,7 +537,7 @@ namespace NetGore.EditorTools
                 AddGrhToTree(grhData);
             }
 
-            GrhInfo.OnRemove += GrhInfo_OnRemove;
+            GrhInfo.Removed += GrhInfo_OnRemove;
 
             // Perform the initial sort
             Sort();

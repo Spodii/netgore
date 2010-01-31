@@ -106,7 +106,6 @@
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />
-    <Compile Include="Collections\DArray\DArrayModifyEventArgs.cs" />
     <Compile Include="Collections\DArray\DArrayModifyEventHandler.cs" />
     <Compile Include="Collections\ImmutableArray.cs" />
     <Compile Include="Collections\Mean Stack\MeanFinderHandler.cs" />

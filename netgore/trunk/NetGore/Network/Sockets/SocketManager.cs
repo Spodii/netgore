@@ -261,7 +261,7 @@ namespace NetGore.Network
 
             // Create the new ListenSocket
             _listenSocket = new ListenSocket(port);
-            _listenSocket.OnAccept += SocketAcceptHandler;
+            _listenSocket.ConnectionAccepted += SocketAcceptHandler;
 
             // Check if the ListenSocket was created successfully
             if (!_listenSocket.IsAlive)
@@ -320,8 +320,9 @@ namespace NetGore.Network
         /// <summary>
         /// Handles accepted connections from the listener socket
         /// </summary>
+        /// <param name="sender">The <see cref="ListenSocket"/> that accepted the connection.</param>
         /// <param name="conn">TCPSocket that the new connection is on</param>
-        void SocketAcceptHandler(TCPSocket conn)
+        void SocketAcceptHandler(ListenSocket sender, TCPSocket conn)
         {
             IPSocket ipSocket;
 

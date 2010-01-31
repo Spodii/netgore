@@ -38,12 +38,12 @@ namespace NetGore.Collections
         /// <summary>
         /// Notifies listeners when an item has been added to the DArray.
         /// </summary>
-        public event DArrayModifyEventHandler<T> OnAdd;
+        public event DArrayModifyEventHandler<T> ItemAdded;
 
         /// <summary>
         /// Notifies listeners when an item has been removed from the DArray.
         /// </summary>
-        public event DArrayModifyEventHandler<T> OnRemove;
+        public event DArrayModifyEventHandler<T> ItemRemoved;
 
         /// <summary>
         /// DArray constructor
@@ -239,22 +239,17 @@ namespace NetGore.Collections
         /// <param name="index">The zero-based index of the item to remove.</param>
         void RemoveAtTracked(int index)
         {
-            if (OnRemove != null)
-            {
-                // Remove with event handling
-                T item = _buffer[index];
-                _buffer[index] = default(T);
-                _isIndexUsed[index] = false;
-                _freeIndices.Push(index);
-                OnRemove(this, new DArrayModifyEventArgs<T>(item, index));
-            }
-            else
-            {
-                // Remove without event handling
-                _buffer[index] = default(T);
-                _isIndexUsed[index] = false;
-                _freeIndices.Push(index);
-            }
+            T item = _buffer[index];
+
+            _buffer[index] = default(T);
+            _isIndexUsed[index] = false;
+            _freeIndices.Push(index);
+
+            // Notify listeners
+            OnItemRemoved(item, index);
+
+            if (ItemRemoved != null)
+                ItemRemoved(this, item, index);
         }
 
         /// <summary>
@@ -263,21 +258,16 @@ namespace NetGore.Collections
         /// <param name="index">The zero-based index of the item to remove.</param>
         void RemoveAtUntracked(int index)
         {
-            // When not tracking, just remove it
-            if (OnRemove != null)
-            {
-                // Remove with event handling
-                T item = _buffer[index];
-                _buffer[index] = default(T);
-                _isIndexUsed[index] = false;
-                OnRemove(this, new DArrayModifyEventArgs<T>(item, index));
-            }
-            else
-            {
-                // Remove without event handling
-                _buffer[index] = default(T);
-                _isIndexUsed[index] = false;
-            }
+            T item = _buffer[index];
+
+            _buffer[index] = default(T);
+            _isIndexUsed[index] = false;
+
+            // Notify listeners
+            OnItemRemoved(item, index);
+
+            if (ItemRemoved != null)
+                ItemRemoved(this, item, index);
         }
 
         void ResizeBuffer(int size)
@@ -367,9 +357,33 @@ namespace NetGore.Collections
                 _version++;
 
                 // Notify any listeners an item has been added
-                if (OnAdd != null)
-                    OnAdd(this, new DArrayModifyEventArgs<T>(_buffer[index], index));
+                OnItemAdded(value, index);
+
+                if (ItemAdded != null)
+                    ItemAdded(this, value, index);
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was added.</param>
+        /// <param name="index">The index the item that was added.</param>
+        protected virtual void OnItemAdded(T item, int index)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was removed.</param>
+        /// <param name="index">The index the item that was removed.</param>
+        protected virtual void OnItemRemoved(T item, int index)
+        {
         }
 
         /// <summary>

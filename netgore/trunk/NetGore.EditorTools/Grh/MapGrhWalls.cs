@@ -32,8 +32,8 @@ namespace NetGore.EditorTools
             Load(contentPath, createWall);
 
             // Listen for the addition and removal of walls
-            GrhInfo.OnAddNew += DeleteGrhDataWalls;
-            GrhInfo.OnRemove += DeleteGrhDataWalls;
+            GrhInfo.AddedNew += DeleteGrhDataWalls;
+            GrhInfo.Removed += DeleteGrhDataWalls;
         }
 
         /// <summary>
