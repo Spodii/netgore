@@ -33,12 +33,58 @@ namespace DemoGame.Client
                 throw new MethodAccessException("ClientSockets instance was already created. Use that instead.");
 
             _packetHandler = new ClientPacketHandler(this, gameplayScreen, DynamicEntityFactory.Instance);
-            OnConnect += SocketManager_OnConnect;
-            OnDisconnect += delegate { _isConnecting = false; };
-            OnFailedConnect += delegate { _isConnecting = false; };
 
             // Bind the UDP port
             _udpPort = BindUDP();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        protected override void OnConnectFailed()
+        {
+            base.OnConnectFailed();
+
+            _isConnecting = false;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected override void OnDisconnected(IPSocket conn)
+        {
+            base.OnDisconnected(conn);
+
+            _isConnecting = false;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected override void OnConnected(IPSocket conn)
+        {
+            base.OnConnected(conn);
+
+            _conn = conn;
+            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
+            Ping();
+
+            _isConnecting = false;
+
+            // Make sure the very first thing we send is the Client's UDP port so the server knows what
+            // port to use when sending the data
+            using (PacketWriter pw = ClientPacket.SetUDPPort(_udpPort))
+            {
+                Send(pw);
+            }
         }
 
         /// <summary>
@@ -148,26 +194,6 @@ namespace DemoGame.Client
 
             _lastPingTime = GetTime();
             _latencyTracker.Ping();
-        }
-
-        /// <summary>
-        /// Sets the active connection when the connection is made so it can be used.
-        /// </summary>
-        /// <param name="conn">Incoming connection.</param>
-        void SocketManager_OnConnect(IIPSocket conn)
-        {
-            _conn = conn;
-            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
-            Ping();
-
-            _isConnecting = false;
-
-            // Make sure the very first thing we send is the Client's UDP port so the server knows what
-            // port to use when sending the data
-            using (PacketWriter pw = ClientPacket.SetUDPPort(_udpPort))
-            {
-                Send(pw);
-            }
         }
 
         #region IGetTime Members

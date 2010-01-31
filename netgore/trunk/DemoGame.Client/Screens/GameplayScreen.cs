@@ -342,7 +342,7 @@ namespace DemoGame.Client
             _world.MapChanged += World_OnChangeMap;
 
             // Create the socket
-            Socket.OnDisconnect += OnDisconnect;
+            Socket.Disconnected += OnDisconnect;
 
             // Create some misc goodies that require a reference to the Socket
             _userInfo = new UserInfo(Socket);
@@ -421,7 +421,7 @@ namespace DemoGame.Client
             _damageFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
         }
 
-        void OnDisconnect(IIPSocket conn)
+        void OnDisconnect(SocketManager sender, IIPSocket conn)
         {
             // We ony return want to the login screen if we were at this screen when the socket was disconnected
             if (ScreenManager.ActiveScreen != this)

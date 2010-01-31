@@ -43,24 +43,64 @@ namespace NetGore.Network
         int _maxDupeIP = 3;
 
         /// <summary>
-        /// Notifies the listener when a connection with Connect() was successfully made with a host.
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
         /// </summary>
-        public event SocketEventHandler OnConnect;
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected virtual void OnConnected(IPSocket conn)
+        {
+        }
 
         /// <summary>
-        /// Notifies the listener when a connection has been made on the listen socket with the client.
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
         /// </summary>
-        public event SocketEventHandler OnConnection;
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected virtual void OnConnectedFrom(IPSocket conn)
+        {
+        }
 
         /// <summary>
-        /// Notifies the listener when a connection has been terminated.
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
         /// </summary>
-        public event SocketEventHandler OnDisconnect;
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected virtual void OnDisconnected(IPSocket conn)
+        {
+        }
 
         /// <summary>
-        /// Notifies the listener when a connection with Connect() failed to be made to a host.
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
         /// </summary>
-        public event SocketEventHandler OnFailedConnect;
+        protected virtual void OnConnectFailed()
+        {
+        }
+
+        /// <summary>
+        /// Notifies listeners when a connection with <see cref="SocketManager.Connect"/> was successfully made with a host.
+        /// </summary>
+        public event SocketManagerSocketEventHandler Connected;
+
+        /// <summary>
+        /// Notifies listeners when a connection has been made on the listen socket. That is, someone else has connected
+        /// with us.
+        /// </summary>
+        public event SocketManagerSocketEventHandler ConnectedFrom;
+
+        /// <summary>
+        /// Notifies listeners when a connection has been terminated.
+        /// </summary>
+        public event SocketManagerSocketEventHandler Disconnected;
+
+        /// <summary>
+        /// Notifies listeners when a connection with Connect() failed to be made to a host.
+        /// </summary>
+        public event SocketManagerEventHandler ConnectFailed;
 
         /// <summary>
         /// Gets an IEnumerable of all open and established connections.
@@ -123,29 +163,38 @@ namespace NetGore.Network
                     conn.Initialize();
                     conn.OnDispose += SocketDisposeHandler;
                     ipSocket = new IPSocket(conn, _udpSocket);
+
                     lock (_connectionsLock)
                     {
                         _connections.Add(ipSocket);
                     }
 
-                    // Raise the on connection event
-                    if (OnConnect != null)
-                        OnConnect(ipSocket);
+                    // Notify listeners
+                    OnConnected(ipSocket);
+
+                    if (Connected != null)
+                        Connected(this, ipSocket);
                 }
                 else
                 {
                     if (log.IsInfoEnabled)
                         log.Info("Unable to connect to host");
-                    if (OnFailedConnect != null)
-                        OnFailedConnect(ipSocket);
+
+                    OnConnectFailed();
+
+                    if (ConnectFailed != null)
+                        ConnectFailed(this);
                 }
             }
             catch (SocketException ex)
             {
                 if (log.IsWarnEnabled)
                     log.Warn("Unable to connect to host: {0}", ex);
-                if (OnFailedConnect != null)
-                    OnFailedConnect(ipSocket);
+
+                OnConnectFailed();
+
+                if (ConnectFailed != null)
+                    ConnectFailed(this);
             }
 
             return ipSocket;
@@ -347,9 +396,11 @@ namespace NetGore.Network
                 _connections.Add(ipSocket);
             }
 
-            // Notify that a connection has been accepted
-            if (OnConnection != null)
-                OnConnection(ipSocket);
+            // Notify listeners
+            OnConnectedFrom(ipSocket);
+
+            if (ConnectedFrom != null)
+                ConnectedFrom(this, ipSocket);
         }
 
         /// <summary>
@@ -374,8 +425,10 @@ namespace NetGore.Network
             // If it was removed, call the OnDisconnect, else produce an error message
             if (wasRemoved)
             {
-                if (OnDisconnect != null)
-                    OnDisconnect(ipSocket);
+                OnDisconnected(ipSocket);
+
+                if (Disconnected != null)
+                    Disconnected(this, ipSocket);
             }
             else
             {

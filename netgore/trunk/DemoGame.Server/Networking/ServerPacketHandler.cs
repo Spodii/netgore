@@ -34,7 +34,8 @@ namespace DemoGame.Server
 
             _server = server;
             _serverSockets = serverSockets;
-            _serverSockets.OnDisconnect += ServerSockets_OnDisconnect;
+            _serverSockets.Disconnected += ServerSockets_Disconnected;
+
             _sayHandler = new SayHandler(server);
 
             _ppManager = new MessageProcessorManager(this, EnumHelper<ClientPacketID>.BitsRequired);
@@ -593,8 +594,9 @@ namespace DemoGame.Server
         /// <summary>
         /// A connection has been lost with a client.
         /// </summary>
+        /// <param name="sender">The sender.</param>
         /// <param name="conn">Connection the user was using.</param>
-        void ServerSockets_OnDisconnect(IIPSocket conn)
+        void ServerSockets_Disconnected(SocketManager sender, IIPSocket conn)
         {
             lock (_disconnectedSockets)
             {

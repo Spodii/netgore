@@ -24,15 +24,6 @@ using NetGore.NPCChat;
 
 namespace DemoGame.Client
 {
-    /// <summary>
-    /// Handles when a CreateAccount message is received.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="successful">If the account was successfully created.</param>
-    /// <param name="errorMessage">If <paramref name="successful"/> is false, contains the error message from
-    /// the server.</param>
-    delegate void SocketCreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
-
     class ClientPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -46,24 +37,33 @@ namespace DemoGame.Client
         readonly ISocketSender _socketSender;
 
         /// <summary>
+        /// Handles when a CreateAccount message is received.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="successful">If the account was successfully created.</param>
+        /// <param name="errorMessage">If <paramref name="successful"/> is false, contains the error message from
+        /// the server.</param>
+        public delegate void CreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
+
+        /// <summary>
         /// Notifies listeners when a message has been received about creating an account.
         /// </summary>
-        public event SocketCreateAccountEventHandler ReceivedCreateAccount;
+        public event CreateAccountEventHandler ReceivedCreateAccount;
 
         /// <summary>
         /// Notifies listeners when a message has been received about creating an account character.
         /// </summary>
-        public event SocketCreateAccountEventHandler ReceivedCreateAccountCharacter;
+        public event CreateAccountEventHandler ReceivedCreateAccountCharacter;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
         /// </summary>
-        public event SocketEventHandler ReceivedLoginSuccessful;
+        public event ClientPacketHandlerEventHandler ReceivedLoginSuccessful;
 
         /// <summary>
         /// Notifies listeners when an unsuccessful login request has been made.
         /// </summary>
-        public event SocketEventHandler<string> ReceivedLoginUnsuccessful;
+        public event ClientPacketHandlerEventHandler<string> ReceivedLoginUnsuccessful;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
@@ -305,7 +305,7 @@ namespace DemoGame.Client
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
             if (ReceivedLoginSuccessful != null)
-                ReceivedLoginSuccessful(conn);
+                ReceivedLoginSuccessful(this, conn);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]
@@ -314,7 +314,7 @@ namespace DemoGame.Client
             string message = r.ReadGameMessage(_gameMessages);
 
             if (ReceivedLoginUnsuccessful != null)
-                ReceivedLoginUnsuccessful(conn, message);
+                ReceivedLoginUnsuccessful(this, conn, message);
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]

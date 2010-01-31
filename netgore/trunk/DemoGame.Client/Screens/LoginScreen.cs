@@ -48,10 +48,10 @@ namespace DemoGame.Client
                     throw new Exception("Failed to reference the ClientSockets.");
             }
 
-            _sockets.OnConnect += sockets_OnConnect;
-            _sockets.OnFailedConnect += sockets_OnFailedConnect;
-            _sockets.PacketHandler.ReceivedLoginUnsuccessful += sockets_OnLoginUnsuccessful;
-            _sockets.PacketHandler.ReceivedLoginSuccessful += sockets_OnLoginSuccessful;
+            _sockets.Connected += sockets_Connected;
+            _sockets.ConnectFailed += sockets_ConnectFailed;
+            _sockets.PacketHandler.ReceivedLoginUnsuccessful += sockets_ReceivedLoginUnsuccessful;
+            _sockets.PacketHandler.ReceivedLoginSuccessful += sockets_ReceivedLoginSuccessful;
 
             base.Activate();
         }
@@ -62,10 +62,10 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
-            _sockets.OnConnect -= sockets_OnConnect;
-            _sockets.OnFailedConnect -= sockets_OnFailedConnect;
-            _sockets.PacketHandler.ReceivedLoginSuccessful -= sockets_OnLoginSuccessful;
-            _sockets.PacketHandler.ReceivedLoginUnsuccessful -= sockets_OnLoginUnsuccessful;
+            _sockets.Connected -= sockets_Connected;
+            _sockets.ConnectFailed -= sockets_ConnectFailed;
+            _sockets.PacketHandler.ReceivedLoginSuccessful -= sockets_ReceivedLoginSuccessful;
+            _sockets.PacketHandler.ReceivedLoginUnsuccessful -= sockets_ReceivedLoginUnsuccessful;
 
             _cError.Text = string.Empty;
         }
@@ -111,7 +111,7 @@ namespace DemoGame.Client
             _cError.Text = string.Format("Error: {0}", message);
         }
 
-        void sockets_OnConnect(IIPSocket conn)
+        void sockets_Connected(SocketManager sender, IIPSocket conn)
         {
             using (PacketWriter pw = ClientPacket.Login(_cNameText.Text, _cPasswordText.Text))
             {
@@ -119,17 +119,17 @@ namespace DemoGame.Client
             }
         }
 
-        void sockets_OnFailedConnect(IIPSocket conn)
+        void sockets_ConnectFailed(SocketManager sender)
         {
             SetError("Failed to connect to server.");
         }
 
-        void sockets_OnLoginSuccessful(IIPSocket conn)
+        void sockets_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
         {
             ScreenManager.SetScreen(CharacterSelectionScreen.ScreenName);
         }
 
-        void sockets_OnLoginUnsuccessful(IIPSocket conn, string message)
+        void sockets_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string message)
         {
             SetError(message);
         }
