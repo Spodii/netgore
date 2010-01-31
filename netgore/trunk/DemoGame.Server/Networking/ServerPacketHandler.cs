@@ -19,12 +19,18 @@ namespace DemoGame.Server
     class ServerPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly Queue<IIPSocket> _disconnectedSockets = new Queue<IIPSocket>();
         readonly MessageProcessorManager _ppManager;
         readonly SayHandler _sayHandler;
         readonly Server _server;
         readonly ServerSockets _serverSockets;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerPacketHandler"/> class.
+        /// </summary>
+        /// <param name="serverSockets">The server sockets.</param>
+        /// <param name="server">The server.</param>
         public ServerPacketHandler(ServerSockets serverSockets, Server server)
         {
             if (serverSockets == null)
