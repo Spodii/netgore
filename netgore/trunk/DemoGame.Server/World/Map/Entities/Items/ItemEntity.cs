@@ -299,10 +299,10 @@ namespace DemoGame.Server
             switch (statCollectionType)
             {
                 case StatCollectionType.Base:
-                    ret.OnStatChange += BaseStatChangeReceiver;
+                    ret.StatChanged += BaseStatChangeReceiver;
                     break;
                 case StatCollectionType.Requirement:
-                    ret.OnStatChange += ReqStatChangeReceiver;
+                    ret.StatChanged += ReqStatChangeReceiver;
                     break;
                 case StatCollectionType.Modified:
                     throw new ArgumentException("ItemEntity does not use StatCollectionType.Modified.", "statCollectionType");

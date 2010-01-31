@@ -15,7 +15,7 @@ namespace NetGore.Stats
         /// <summary>
         /// Notifies listeners that the value of this <see cref="IStat{TStatType}"/> has changed.
         /// </summary>
-        event IStatEventHandler<TStatType> OnChange;
+        event IStatEventHandler<TStatType> Changed;
 
         /// <summary>
         /// Gets the <typeparamref name="TStatType"/> of this <see cref="IStat{TStatType}"/>.

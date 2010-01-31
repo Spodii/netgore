@@ -2,17 +2,20 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore.Stats;
 
-// FUTURE: Could optimize the OnStatChange by only hooking to the Stat.OnChange when OnStatChange has listeners
-
 namespace DemoGame
 {
     public class ItemStatsBase : DynamicStatCollection<StatType>
     {
         /// <summary>
-        /// Notifies the listener that any of the stats have raised their OnChange event
+        /// Notifies listeners when any of the stats have raised their <see cref="IStat{StatType}.Changed"/> event.
         /// </summary>
-        public event IStatEventHandler<StatType> OnStatChange;
+        public event IStatEventHandler<StatType> StatChanged;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemStatsBase"/> class.
+        /// </summary>
+        /// <param name="src">The stat types and corresponding values of the stats to add to the collection.</param>
+        /// <param name="statCollectionType">Type of the stat collection.</param>
         public ItemStatsBase(IEnumerable<KeyValuePair<StatType, int>> src, StatCollectionType statCollectionType)
             : this(statCollectionType)
         {
@@ -23,19 +26,37 @@ namespace DemoGame
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemStatsBase"/> class.
+        /// </summary>
+        /// <param name="statCollectionType">The type of the collection.</param>
         public ItemStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
         {
         }
 
+        /// <summary>
+        /// Gets the <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
+        /// </summary>
+        /// <param name="statType">The stat type of the stat to get.</param>
+        /// <returns>
+        /// The <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
+        /// </returns>
         public override IStat<StatType> GetStat(StatType statType)
         {
             return GetStatOrCreate(statType);
         }
 
-        protected override void HandleStatAdded(IStat<StatType> stat)
+        /// <summary>
+        /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> is added to this
+        /// <see cref="DynamicStatCollection{StatType}"/>. This will be invoked once and only once for every
+        /// <see cref="IStat{StatType}"/> added to this <see cref="DynamicStatCollection{StatType}"/>.
+        /// </summary>
+        /// <param name="stat">The <see cref="IStat{StatType}"/> that was added to this
+        /// <see cref="DynamicStatCollection{StatType}"/>.</param>
+        protected override void OnStatAdded(IStat<StatType> stat)
         {
             // Attach a listener to every stat to listen for changes
-            stat.OnChange += HandleStatChanged;
+            stat.Changed += HandleStatChanged;
         }
 
         /// <summary>
@@ -44,8 +65,8 @@ namespace DemoGame
         /// <param name="stat">Stat that changed</param>
         void HandleStatChanged(IStat<StatType> stat)
         {
-            if (OnStatChange != null)
-                OnStatChange(stat);
+            if (StatChanged != null)
+                StatChanged(stat);
         }
 
         /// <summary>

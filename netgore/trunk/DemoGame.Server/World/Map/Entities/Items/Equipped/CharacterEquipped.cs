@@ -23,7 +23,7 @@ namespace DemoGame.Server
         bool _disposed = false;
 
         /// <summary>
-        /// When true, the <see cref="HandleOnEquip"/> and <see cref="HandleOnRemove"/> methods will be ignored.
+        /// When true, the <see cref="OnEquipped"/> and <see cref="OnUnequipped"/> methods will be ignored.
         /// </summary>
         bool _ignoreEquippedBaseEvents = false;
 
@@ -85,7 +85,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="item">The item the event is related to.</param>
         /// <param name="slot">The slot of the item the event is related to.</param>
-        protected override void HandleOnEquip(ItemEntity item, EquipmentSlot slot)
+        protected override void OnEquipped(ItemEntity item, EquipmentSlot slot)
         {
             if (_ignoreEquippedBaseEvents)
                 return;
@@ -108,7 +108,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="item">The item the event is related to.</param>
         /// <param name="slot">The slot of the item the event is related to.</param>
-        protected override void HandleOnRemove(ItemEntity item, EquipmentSlot slot)
+        protected override void OnUnequipped(ItemEntity item, EquipmentSlot slot)
         {
             if (_ignoreEquippedBaseEvents)
                 return;
