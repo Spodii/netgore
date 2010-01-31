@@ -28,7 +28,7 @@ namespace NetGore.EditorTools.NPCChat
 
                 if (_conCollectionItem != null)
                 {
-                    _conCollectionItem.OnChange += ConditionalCollectionItem_OnChange;
+                    _conCollectionItem.Changed += ConditionalCollectionItem_OnChange;
                     RebuildItemList();
                 }
             }

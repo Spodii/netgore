@@ -101,7 +101,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that the Map has been saved.
         /// </summary>
-        public event MapBaseEventHandler OnSave;
+        public event MapBaseEventHandler Saved;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -241,7 +241,7 @@ namespace DemoGame
             Spatial.Add(entity);
 
             // Add the event hooks
-            entity.Disposed += Entity_OnDispose;
+            entity.Disposed += Entity_Disposed;
 
             // Allow for additional processing
             EntityAdded(entity);
@@ -338,7 +338,7 @@ namespace DemoGame
         /// Handles when an Entity is disposed while still on the map.
         /// </summary>
         /// <param name="entity"></param>
-        void Entity_OnDispose(Entity entity)
+        void Entity_Disposed(Entity entity)
         {
             RemoveEntity(entity);
         }
@@ -820,7 +820,7 @@ namespace DemoGame
                 throw new ArgumentNullException("entity");
 
             // Remove the listeners
-            entity.Disposed -= Entity_OnDispose;
+            entity.Disposed -= Entity_Disposed;
 
             // Remove the entity from the entity list
             if (!_entities.Remove(entity))
@@ -915,8 +915,8 @@ namespace DemoGame
             var path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
             Save(path, dynamicEntityFactory);
 
-            if (OnSave != null)
-                OnSave(this);
+            if (Saved != null)
+                Saved(this);
         }
 
         /// <summary>

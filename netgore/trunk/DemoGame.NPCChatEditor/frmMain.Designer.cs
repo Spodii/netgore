@@ -461,7 +461,7 @@ namespace DemoGame.NPCChatEditor
             this.cmbSelectedDialog.Name = "cmbSelectedDialog";
             this.cmbSelectedDialog.Size = new System.Drawing.Size(455, 21);
             this.cmbSelectedDialog.TabIndex = 9;
-            this.cmbSelectedDialog.OnChangeDialog += new NetGore.EditorTools.NPCChat.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_OnChangeDialog);
+            this.cmbSelectedDialog.SelectedDialogChanged += new NetGore.EditorTools.NPCChat.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_OnChangeDialog);
             // 
             // npcChatDialogView
             // 

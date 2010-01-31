@@ -37,7 +37,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Notifies listeners when the currently active cursor changes.
         /// </summary>
-        public event EditorCursorManagerEventHandler OnChangeCurrentCursor;
+        public event EditorCursorManagerEventHandler CurrentCursorChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorCursorManager{TScreen}"/> class.
@@ -106,7 +106,7 @@ namespace NetGore.EditorTools
                 _selectedAltCursor = value;
 
                 if (_useAlternateCursor)
-                    HandleCurrentCursorChanged();
+                    OnCurrentCursorChanged();
 
                 ApplyCursorControlColoring();
             }
@@ -126,7 +126,7 @@ namespace NetGore.EditorTools
                 _selectedCursor = value;
 
                 if (!_useAlternateCursor)
-                    HandleCurrentCursorChanged();
+                    OnCurrentCursorChanged();
 
                 ApplyCursorControlColoring();
             }
@@ -154,7 +154,7 @@ namespace NetGore.EditorTools
 
                 _useAlternateCursor = value;
 
-                HandleCurrentCursorChanged();
+                OnCurrentCursorChanged();
             }
         }
 
@@ -259,25 +259,6 @@ namespace NetGore.EditorTools
                 return SelectedCursor;
         }
 
-        /// <summary>
-        /// Handles what happens when the current cursor changes.
-        /// </summary>
-        void HandleCurrentCursorChanged()
-        {
-            var cursor = GetCurrentCursor();
-
-            if (_lastCurrentCursor != null)
-                _lastCurrentCursor.Deactivate();
-
-            _lastCurrentCursor = cursor;
-
-            if (cursor != null)
-                cursor.Activate();
-
-            if (OnChangeCurrentCursor != null)
-                OnChangeCurrentCursor(this);
-        }
-
         void LoadTypeInstances()
         {
             // Get the type filter and set up the factory
@@ -351,6 +332,25 @@ namespace NetGore.EditorTools
 
             if (cursor != null)
                 cursor.MoveMouseWheel(amount);
+        }
+
+        /// <summary>
+        /// Handles what happens when the current cursor changes.
+        /// </summary>
+        protected virtual void OnCurrentCursorChanged()
+        {
+            var cursor = GetCurrentCursor();
+
+            if (_lastCurrentCursor != null)
+                _lastCurrentCursor.Deactivate();
+
+            _lastCurrentCursor = cursor;
+
+            if (cursor != null)
+                cursor.Activate();
+
+            if (CurrentCursorChanged != null)
+                CurrentCursorChanged(this);
         }
 
         /// <summary>

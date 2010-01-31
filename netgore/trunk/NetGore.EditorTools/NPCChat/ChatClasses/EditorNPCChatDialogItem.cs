@@ -17,6 +17,7 @@ namespace NetGore.EditorTools.NPCChat
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
+
         NPCChatConditionalCollectionBase _conditionals;
         ushort _index;
         bool _isBranch;
@@ -26,7 +27,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Notifies listeners when any of the object's property values have changed.
         /// </summary>
-        public event EditorNPCChatDialogItemEventHandler OnChange;
+        public event EditorNPCChatDialogItemEventHandler Changed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
@@ -228,8 +229,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _conditionals = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -269,8 +270,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _text = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>
@@ -284,8 +285,8 @@ namespace NetGore.EditorTools.NPCChat
 
             _title = value;
 
-            if (OnChange != null)
-                OnChange(this);
+            if (Changed != null)
+                Changed(this);
         }
 
         /// <summary>

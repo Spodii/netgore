@@ -168,8 +168,8 @@ namespace DemoGame.MapEditor
 
             // Set up the object manager
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
-            _selectedObjectsManager.OnChangeSelected += SelectedObjectsManager_OnChangeSelected;
-            _selectedObjectsManager.OnChangeFocused += SelectedObjectsManager_OnChangeFocused;
+            _selectedObjectsManager.SelectedChanged += SelectedObjectsManager_OnChangeSelected;
+            _selectedObjectsManager.FocusedChanged += SelectedObjectsManager_OnChangeFocused;
 
             // Get the IMapBoundControls
             _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
@@ -179,7 +179,7 @@ namespace DemoGame.MapEditor
                                                                  x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
-            CursorManager.OnChangeCurrentCursor += CursorManager_OnChangeCurrentCursor;
+            CursorManager.CurrentCursorChanged += CursorManager_OnChangeCurrentCursor;
 
             // Create the world
             _world = new World(this, _camera);
@@ -263,12 +263,12 @@ namespace DemoGame.MapEditor
 
                 // Remove old map
                 if (oldMap != null)
-                    oldMap.OnSave -= Map_OnSave;
+                    oldMap.Saved -= Map_OnSave;
 
                 // Set new map
                 _map = value;
                 Map.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
-                Map.OnSave += Map_OnSave;
+                Map.Saved += Map_OnSave;
 
                 // Remove all of the walls previously created from the MapGrhs
                 var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
