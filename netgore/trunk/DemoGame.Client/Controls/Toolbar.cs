@@ -79,7 +79,7 @@ namespace DemoGame.Client
 
                 ToolbarItem item = new ToolbarItem(this, (ToolbarItemType)index, pos, sprite);
                 items[index] = item;
-                item.Clicked += ToolbarItem_OnClick;
+                item.Clicked += ToolbarItem_Clicked;
             }
 
             return items;
@@ -154,7 +154,7 @@ namespace DemoGame.Client
             Text = "Menu";
         }
 
-        void ToolbarItem_OnClick(object sender, MouseClickEventArgs e)
+        void ToolbarItem_Clicked(object sender, MouseClickEventArgs e)
         {
             if (ItemClicked == null)
                 return;

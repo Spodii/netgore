@@ -5,8 +5,17 @@ using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Guilds
 {
+    /// <summary>
+    /// Base class for a form that uses the <see cref="UserGuildInformation"/>.
+    /// </summary>
     public abstract class GuildInfoFormBase : Form
     {
+        /// <summary>
+        /// Delegate for handling when the <see cref="UserGuildInformation"/> changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="GuildInfoFormBase"/> that the event came from.</param>
+        /// <param name="newValue">The old <see cref="UserGuildInformation"/> value.</param>
+        /// <param name="oldValue">The new <see cref="UserGuildInformation"/> value.</param>
         public delegate void ChangeGuildInfoEventHandler(
             GuildInfoFormBase sender, UserGuildInformation newValue, UserGuildInformation oldValue);
 
@@ -15,7 +24,7 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when the <see cref="GuildInfoFormBase.GuildInfo"/> value has changed.
         /// </summary>
-        public event ChangeGuildInfoEventHandler OnChangeGuildInfo;
+        public event ChangeGuildInfoEventHandler GuildInfoChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildInfoFormBase"/> class.
@@ -57,8 +66,8 @@ namespace NetGore.Features.Guilds
 
                 HandleChangeGuild(_guildInfo, old);
 
-                if (OnChangeGuildInfo != null)
-                    OnChangeGuildInfo(this, _guildInfo, old);
+                if (GuildInfoChanged != null)
+                    GuildInfoChanged(this, _guildInfo, old);
             }
         }
 

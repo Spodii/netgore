@@ -168,8 +168,8 @@ namespace DemoGame.MapEditor
 
             // Set up the object manager
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
-            _selectedObjectsManager.SelectedChanged += SelectedObjectsManager_OnChangeSelected;
-            _selectedObjectsManager.FocusedChanged += SelectedObjectsManager_OnChangeFocused;
+            _selectedObjectsManager.SelectedChanged += SelectedObjectsManager_SelectedChanged;
+            _selectedObjectsManager.FocusedChanged += SelectedObjectsManager_FocusedChanged;
 
             // Get the IMapBoundControls
             _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
@@ -179,7 +179,7 @@ namespace DemoGame.MapEditor
                                                                  x => Map != null && !treeGrhs.IsEditingGrhData);
             CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
             CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
-            CursorManager.CurrentCursorChanged += CursorManager_OnChangeCurrentCursor;
+            CursorManager.CurrentCursorChanged += CursorManager_CurrentCursorChanged;
 
             // Create the world
             _world = new World(this, _camera);
@@ -263,12 +263,12 @@ namespace DemoGame.MapEditor
 
                 // Remove old map
                 if (oldMap != null)
-                    oldMap.Saved -= Map_OnSave;
+                    oldMap.Saved -= Map_Saved;
 
                 // Set new map
                 _map = value;
                 Map.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
-                Map.Saved += Map_OnSave;
+                Map.Saved += Map_Saved;
 
                 // Remove all of the walls previously created from the MapGrhs
                 var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
@@ -557,7 +557,7 @@ namespace DemoGame.MapEditor
         /// Handles the OnChangeCurrentCursor event of the CursorManager.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        void CursorManager_OnChangeCurrentCursor(EditorCursorManager<ScreenForm> sender)
+        void CursorManager_CurrentCursorChanged(EditorCursorManager<ScreenForm> sender)
         {
             _transBoxes.Clear();
             _selTransBox = null;
@@ -893,7 +893,7 @@ namespace DemoGame.MapEditor
                 _focusedSpatialDrawer.ResetIndicator();
         }
 
-        void Map_OnSave(MapBase map)
+        void Map_Saved(MapBase map)
         {
             DbController.GetQuery<UpdateMapQuery>().Execute(map);
         }
@@ -1043,13 +1043,13 @@ namespace DemoGame.MapEditor
             _grid.Size = GameScreenSize;
         }
 
-        void SelectedObjectsManager_OnChangeFocused(SelectedObjectsManager<object> sender, object newFocused)
+        void SelectedObjectsManager_FocusedChanged(SelectedObjectsManager<object> sender, object newFocused)
         {
             scTabsAndSelected.Panel2Collapsed = (_selectedObjectsManager.SelectedObjects.Count() == 0 &&
                                                  _selectedObjectsManager.Focused == null);
         }
 
-        void SelectedObjectsManager_OnChangeSelected(SelectedObjectsManager<object> sender)
+        void SelectedObjectsManager_SelectedChanged(SelectedObjectsManager<object> sender)
         {
             scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2;
         }

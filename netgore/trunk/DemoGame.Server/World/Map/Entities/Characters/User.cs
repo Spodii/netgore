@@ -75,11 +75,12 @@ namespace DemoGame.Server
             Alliance = AllianceManager["user"];
 
             // Attach to some events
-            KilledCharacter += User_OnKillCharacter;
-            StatPointsChanged += User_OnChangeStatPoints;
-            ExpChanged += User_OnChangeExp;
-            CashChanged += User_OnChangeCash;
-            LevelChanged += User_OnChangeLevel;
+            // TODO: Can get rid of all these event hooks by adding the On[EventName] virtual methods to Character
+            KilledCharacter += User_KilledCharacter;
+            StatPointsChanged += User_StatPointsChanged;
+            ExpChanged += User_ExpChanged;
+            CashChanged += User_CashChanged;
+            LevelChanged += User_LevelChanged;
 
             _userInventory = (UserInventory)Inventory;
 
@@ -87,10 +88,10 @@ namespace DemoGame.Server
             IsAlive = true;
 
             // Send the initial information
-            User_OnChangeLevel(this, Level, Level);
-            User_OnChangeCash(this, Cash, Cash);
-            User_OnChangeExp(this, Exp, Exp);
-            User_OnChangeStatPoints(this, StatPoints, StatPoints);
+            User_LevelChanged(this, Level, Level);
+            User_CashChanged(this, Cash, Cash);
+            User_ExpChanged(this, Exp, Exp);
+            User_StatPointsChanged(this, StatPoints, StatPoints);
         }
 
         /// <summary>
@@ -696,7 +697,7 @@ namespace DemoGame.Server
                 Inventory.DecreaseItemAmount(slot);
         }
 
-        void User_OnChangeCash(Character character, int oldCash, int cash)
+        void User_CashChanged(Character character, int oldCash, int cash)
         {
             using (var pw = ServerPacket.SetCash(cash))
             {
@@ -704,7 +705,7 @@ namespace DemoGame.Server
             }
         }
 
-        void User_OnChangeExp(Character character, int oldExp, int exp)
+        void User_ExpChanged(Character character, int oldExp, int exp)
         {
             using (var pw = ServerPacket.SetExp(exp))
             {
@@ -712,7 +713,7 @@ namespace DemoGame.Server
             }
         }
 
-        void User_OnChangeLevel(Character character, byte oldLevel, byte level)
+        void User_LevelChanged(Character character, byte oldLevel, byte level)
         {
             using (var pw = ServerPacket.SetLevel(level))
             {
@@ -720,7 +721,7 @@ namespace DemoGame.Server
             }
         }
 
-        void User_OnChangeStatPoints(Character character, int oldValue, int newValue)
+        void User_StatPointsChanged(Character character, int oldValue, int newValue)
         {
             using (var pw = ServerPacket.SetStatPoints(newValue))
             {
@@ -728,7 +729,7 @@ namespace DemoGame.Server
             }
         }
 
-        void User_OnKillCharacter(Character killed, Character killer)
+        void User_KilledCharacter(Character killed, Character killer)
         {
             Debug.Assert(killer == this);
             Debug.Assert(killed != null);

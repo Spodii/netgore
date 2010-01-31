@@ -37,7 +37,7 @@ namespace DemoGame.Client
             _btnCreateCharacter.IsEnabled = true;
             _cError.IsVisible = false;
 
-            _sockets.PacketHandler.ReceivedCreateAccountCharacter += PacketHandler_OnCreateAccountCharacter;
+            _sockets.PacketHandler.ReceivedCreateAccountCharacter += PacketHandler_ReceivedCreateAccountCharacter;
 
             base.Activate();
         }
@@ -89,7 +89,7 @@ namespace DemoGame.Client
             base.Initialize();
         }
 
-        void PacketHandler_OnCreateAccountCharacter(IIPSocket sender, bool successful, string errorMessage)
+        void PacketHandler_ReceivedCreateAccountCharacter(IIPSocket sender, bool successful, string errorMessage)
         {
             _btnCreateCharacter.IsEnabled = true;
 

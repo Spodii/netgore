@@ -33,7 +33,7 @@ namespace DemoGame.Client
             // Create the input and output TextBoxes
             _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32))
             { IsMultiLine = false, IsEnabled = true, Font = Font, MaxInputTextLength = GameData.MaxClientSayLength };
-            _input.KeyDown += Input_OnKeyDown;
+            _input.KeyDown += Input_KeyDown;
 
             _output = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = true, IsEnabled = false, Font = Font };
 
@@ -101,7 +101,7 @@ namespace DemoGame.Client
             RepositionTextBoxes();
         }
 
-        void Input_OnKeyDown(object sender, KeyboardEventArgs e)
+        void Input_KeyDown(object sender, KeyboardEventArgs e)
         {
             const int bufferScrollRate = 3;
 

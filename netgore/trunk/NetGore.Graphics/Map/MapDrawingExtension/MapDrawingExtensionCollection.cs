@@ -13,8 +13,8 @@ namespace DemoGame.Client
     public class MapDrawingExtensionCollection : ICollection<IMapDrawingExtension>
     {
         readonly List<IMapDrawingExtension> _extensions = new List<IMapDrawingExtension>();
-        readonly MapDrawEventHandler _onBeginDraw;
-        readonly MapDrawEventHandler _onEndDraw;
+        readonly MapDrawEventHandler _handleBeginDraw;
+        readonly MapDrawEventHandler _handleEndDraw;
 
         IDrawableMap _map;
 
@@ -23,8 +23,8 @@ namespace DemoGame.Client
         /// </summary>
         public MapDrawingExtensionCollection()
         {
-            _onBeginDraw = Map_OnBeginDrawLayer;
-            _onEndDraw = Map_OnEndDrawLayer;
+            _handleBeginDraw = Map_BeginDrawLayer;
+            _handleEndDraw = Map_EndDrawLayer;
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace DemoGame.Client
                 // Remove the event hooks from the old map
                 if (Map != null)
                 {
-                    Map.BeginDrawLayer -= _onBeginDraw;
-                    Map.EndDrawLayer -= _onEndDraw;
+                    Map.BeginDrawLayer -= _handleBeginDraw;
+                    Map.EndDrawLayer -= _handleEndDraw;
                 }
 
                 // Set the new map
@@ -51,8 +51,8 @@ namespace DemoGame.Client
                 // Set the event hooks on the new map
                 if (Map != null)
                 {
-                    Map.BeginDrawLayer += _onBeginDraw;
-                    Map.EndDrawLayer += _onEndDraw;
+                    Map.BeginDrawLayer += _handleBeginDraw;
+                    Map.EndDrawLayer += _handleEndDraw;
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace DemoGame.Client
         /// <param name="map">The map.</param>
         /// <param name="layer">The layer.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
-        void Map_OnBeginDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        void Map_BeginDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
         {
             Debug.Assert(Map == map, "How did we get an event from the wrong map?");
             Debug.Assert(spriteBatch != null);
@@ -92,7 +92,7 @@ namespace DemoGame.Client
         /// <param name="map">The map.</param>
         /// <param name="layer">The layer.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
-        void Map_OnEndDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        void Map_EndDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
         {
             Debug.Assert(Map == map, "How did we get an event from the wrong map?");
             Debug.Assert(spriteBatch != null);

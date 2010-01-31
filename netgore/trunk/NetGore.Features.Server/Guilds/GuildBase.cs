@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -156,98 +155,10 @@ namespace NetGore.Features.Guilds
         protected abstract int GetNumberOfFounders();
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling of when a member of this
-        /// guild has come online.
-        /// </summary>
-        /// <param name="guildMember">The guild member that came online.</param>
-        protected virtual void HandleAddOnlineUser(IGuildMember guildMember)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after the guild's name has changed.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="oldName">The old name.</param>
-        /// <param name="newName">The new name.</param>
-        protected virtual void HandleChangeName(IGuildMember invoker, string oldName, string newName)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after the guild's tag has changed.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="oldTag">The old tag.</param>
-        /// <param name="newTag">The new tag.</param>
-        protected virtual void HandleChangeTag(IGuildMember invoker, string oldTag, string newTag)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a guild member is demoted.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="target">The optional guild member the event involves.</param>
-        protected virtual void HandleDemoteMember(IGuildMember invoker, IGuildMember target)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a new guild member is added.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        protected virtual void HandleAddMember(IGuildMember newMember)
-        {
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles destroying the guild. This needs to remove all members
         /// in the guild from the guild, and remove the guild itself from the database.
         /// </summary>
-        protected abstract void HandleDestroyGuild();
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a guild member is invited.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="target">The optional guild member the event involves.</param>
-        protected virtual void HandleInviteMember(IGuildMember invoker, IGuildMember target)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a guild member is kicked.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="target">The optional guild member the event involves.</param>
-        protected virtual void HandleKickMember(IGuildMember invoker, IGuildMember target)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a guild member is promoted.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="target">The optional guild member the event involves.</param>
-        protected virtual void HandlePromoteMember(IGuildMember invoker, IGuildMember target)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of when a member of this
-        /// guild has gone offline.
-        /// </summary>
-        /// <param name="guildMember">The guild member that went offline.</param>
-        protected virtual void HandleRemoveOnlineUser(IGuildMember guildMember)
-        {
-        }
+        protected abstract void HandleDestroyed();
 
         /// <summary>
         /// When overridden in the derived class, attempts to set the name of this guild to the given
@@ -293,10 +204,10 @@ namespace NetGore.Features.Guilds
             // Log the event
             GuildManager.LogEvent(invoker, GuildEvents.Demote, target);
 
-            if (OnDemoteMember != null)
-                OnDemoteMember(invoker, target);
+            if (MemberDemoted != null)
+                MemberDemoted(invoker, target);
 
-            HandleDemoteMember(invoker, target);
+            OnMemberDemoted(invoker, target);
 
             return true;
         }
@@ -316,10 +227,10 @@ namespace NetGore.Features.Guilds
             // Log the event
             GuildManager.LogEvent(invoker, GuildEvents.Invite, target);
 
-            if (OnInviteMember != null)
-                OnInviteMember(invoker, target);
+            if (MemberInvited != null)
+                MemberInvited(invoker, target);
 
-            HandleInviteMember(invoker, target);
+            OnMemberInvited(invoker, target);
 
             return true;
         }
@@ -339,10 +250,10 @@ namespace NetGore.Features.Guilds
             // Log the event
             GuildManager.LogEvent(invoker, GuildEvents.Kick, target);
 
-            if (OnKickMember != null)
-                OnKickMember(invoker, target);
+            if (MemberKicked != null)
+                MemberKicked(invoker, target);
 
-            HandleKickMember(invoker, target);
+            OnMemberKicked(invoker, target);
 
             return true;
         }
@@ -397,10 +308,10 @@ namespace NetGore.Features.Guilds
             // Log the event
             GuildManager.LogEvent(invoker, GuildEvents.Promote, target);
 
-            if (OnPromoteMember != null)
-                OnPromoteMember(invoker, target);
+            if (MemberPromoted != null)
+                MemberPromoted(invoker, target);
 
-            HandlePromoteMember(invoker, target);
+            OnMemberPromoted(invoker, target);
 
             return true;
         }
@@ -427,39 +338,127 @@ namespace NetGore.Features.Guilds
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the online member list; otherwise false.</returns>
         protected abstract bool InternalTryViewOnlineMembers(IGuildMember invoker);
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a new guild member is added.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnMemberAdded(IGuildMember newMember)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is demoted.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected virtual void OnMemberDemoted(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is invited.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected virtual void OnMemberInvited(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is kicked.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected virtual void OnMemberKicked(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is promoted.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected virtual void OnMemberPromoted(IGuildMember invoker, IGuildMember target)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's name has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldName">The old name.</param>
+        /// <param name="newName">The new name.</param>
+        protected virtual void OnNameChanged(IGuildMember invoker, string oldName, string newName)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has come online.
+        /// </summary>
+        /// <param name="guildMember">The guild member that came online.</param>
+        protected virtual void OnOnlineUserAdded(IGuildMember guildMember)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has gone offline.
+        /// </summary>
+        /// <param name="guildMember">The guild member that went offline.</param>
+        protected virtual void OnOnlineUserRemoved(IGuildMember guildMember)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's tag has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldTag">The old tag.</param>
+        /// <param name="newTag">The new tag.</param>
+        protected virtual void OnTagChanged(IGuildMember invoker, string oldTag, string newTag)
+        {
+        }
+
         #region IGuild Members
 
         /// <summary>
         /// Notifies listeners when a member of this guild has come online.
         /// </summary>
-        public event GuildMemberEventHandler OnAddOnlineUser;
+        public event GuildMemberEventHandler OnlineUserAdded;
 
         /// <summary>
         /// Notifies listeners when a member of this guild has gone offline.
         /// </summary>
-        public event GuildMemberEventHandler OnRemoveOnlineUser;
+        public event GuildMemberEventHandler OnlineUserRemoved;
 
         /// <summary>
         /// Notifies listeners when the guild's name has been changed.
         /// </summary>
-        public event GuildRenameEventHandler OnChangeName;
+        public event GuildRenameEventHandler NameChanged;
 
         /// <summary>
         /// Notifies listeners when the guild's tag has been changed.
         /// </summary>
-        public event GuildRenameEventHandler OnChangeTag;
+        public event GuildRenameEventHandler TagChanged;
 
         /// <summary>
         /// Destroys the guild completely and removes all members from it.
         /// </summary>
         public virtual void DestroyGuild()
         {
-            HandleDestroyGuild();
+            HandleDestroyed();
 
             _isDestroyed = true;
 
-            if (OnDestroy != null)
-                OnDestroy(this);
+            if (Destroyed != null)
+                Destroyed(this);
         }
 
         /// <summary>
@@ -473,32 +472,32 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when the guild has been destroyed.
         /// </summary>
-        public event GuildEventHandler OnDestroy;
+        public event GuildEventHandler Destroyed;
 
         /// <summary>
         /// Notifies listeners when a member has been invited into the guild.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler OnInviteMember;
+        public event GuildInvokeEventWithTargetHandler MemberInvited;
 
         /// <summary>
         /// Notifies listeners when a new member has joined the guild.
         /// </summary>
-        public event GuildMemberEventHandler OnAddMember;
+        public event GuildMemberEventHandler MemberAdded;
 
         /// <summary>
         /// Notifies listeners when a member has been kicked from the guild.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler OnKickMember;
+        public event GuildInvokeEventWithTargetHandler MemberKicked;
 
         /// <summary>
         /// Notifies listeners when a member has been promoted.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler OnPromoteMember;
+        public event GuildInvokeEventWithTargetHandler MemberPromoted;
 
         /// <summary>
         /// Notifies listeners when a member has been demoted.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler OnDemoteMember;
+        public event GuildInvokeEventWithTargetHandler MemberDemoted;
 
         /// <summary>
         /// Makes the <paramref name="invoker"/> try to invite the <paramref name="target"/> to the guild.
@@ -694,10 +693,10 @@ namespace NetGore.Features.Guilds
         /// <param name="newMember">The online guild member to add.</param>
         public void AddNewOnlineMember(IGuildMember newMember)
         {
-            if (OnAddMember != null)
-                OnAddMember(this, newMember);
+            if (MemberAdded != null)
+                MemberAdded(this, newMember);
 
-            HandleAddMember(newMember);
+            OnMemberAdded(newMember);
 
             AddOnlineMember(newMember);
         }
@@ -729,10 +728,10 @@ namespace NetGore.Features.Guilds
 
             _onlineMembers.Add(member);
 
-            if (OnAddOnlineUser != null)
-                OnAddOnlineUser(this, member);
+            if (OnlineUserAdded != null)
+                OnlineUserAdded(this, member);
 
-            HandleAddOnlineUser(member);
+            OnOnlineUserAdded(member);
         }
 
         /// <summary>
@@ -760,10 +759,10 @@ namespace NetGore.Features.Guilds
                 return;
             }
 
-            if (OnRemoveOnlineUser != null)
-                OnRemoveOnlineUser(this, member);
+            if (OnlineUserRemoved != null)
+                OnlineUserRemoved(this, member);
 
-            HandleRemoveOnlineUser(member);
+            OnOnlineUserRemoved(member);
         }
 
         /// <summary>
@@ -832,10 +831,10 @@ namespace NetGore.Features.Guilds
                 _name = newName;
                 Save();
 
-                HandleChangeName(invoker, oldValue, Name);
+                OnNameChanged(invoker, oldValue, Name);
 
-                if (OnChangeName != null)
-                    OnChangeName(this, invoker, oldValue, Name);
+                if (NameChanged != null)
+                    NameChanged(this, invoker, oldValue, Name);
             }
 
             return success;
@@ -873,10 +872,10 @@ namespace NetGore.Features.Guilds
                 _tag = newTag;
                 Save();
 
-                HandleChangeName(invoker, oldValue, Name);
+                OnNameChanged(invoker, oldValue, Name);
 
-                if (OnChangeName != null)
-                    OnChangeName(this, invoker, oldValue, Name);
+                if (NameChanged != null)
+                    NameChanged(this, invoker, oldValue, Name);
             }
 
             return success;

@@ -33,7 +33,7 @@ namespace NetGore.EditorTools.NPCChat
                     return;
 
                 if (_conditionalCollection != null)
-                    _conditionalCollection.Changed -= ConditionalCollection_OnChange;
+                    _conditionalCollection.Changed -= ConditionalCollection_Changed;
 
                 _conditionalCollection = value;
 
@@ -42,7 +42,7 @@ namespace NetGore.EditorTools.NPCChat
                 if (_conditionalCollection != null)
                 {
                     Items.AddRange(_conditionalCollection.ToArray());
-                    _conditionalCollection.Changed += ConditionalCollection_OnChange;
+                    _conditionalCollection.Changed += ConditionalCollection_Changed;
 
                     if (EvaluationTypeComboBox != null)
                         EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
@@ -86,7 +86,7 @@ namespace NetGore.EditorTools.NPCChat
             get { return _selectedConditionalItem; }
         }
 
-        void ConditionalCollection_OnChange(EditorNPCChatConditionalCollection source)
+        void ConditionalCollection_Changed(EditorNPCChatConditionalCollection source)
         {
             RebuildItemList();
         }

@@ -212,7 +212,7 @@ namespace NetGore.Graphics
 
             // If not looping, detach once the animation finishes
             if (!loop)
-                modifier.Looped += modifier_OnLoop;
+                modifier.Looped += modifier_Looped;
         }
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Removes a SkeletonAnimation after a single loop by hooking to the OnLoop event
         /// </summary>
-        static void modifier_OnLoop(object sender, EventArgs e)
+        static void modifier_Looped(object sender, EventArgs e)
         {
             SkeletonAnimation src = sender as SkeletonAnimation;
             if (src == null)

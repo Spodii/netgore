@@ -40,12 +40,12 @@ namespace NetGore.Features.Guilds
             CreateControls();
         }
 
-        void btnMembers_OnClick(object sender, MouseClickEventArgs e)
+        void btnMembers_Clicked(object sender, MouseClickEventArgs e)
         {
             _frmMembers.IsVisible = !_frmMembers.IsVisible;
         }
 
-        void btnOnline_OnClick(object sender, MouseClickEventArgs e)
+        void btnOnline_Clicked(object sender, MouseClickEventArgs e)
         {
             _frmOnline.IsVisible = !_frmOnline.IsVisible;
         }
@@ -72,8 +72,8 @@ namespace NetGore.Features.Guilds
             _btnMembers = new Button(this, Vector2.Zero, buttonSize) { Text = "Members" };
             _btnOnline = new Button(this, Vector2.Zero, buttonSize) { Text = "Online" };
 
-            _btnMembers.Clicked += btnMembers_OnClick;
-            _btnOnline.Clicked += btnOnline_OnClick;
+            _btnMembers.Clicked += btnMembers_Clicked;
+            _btnOnline.Clicked += btnOnline_Clicked;
 
             var formSize = new Vector2(200, 200);
             _frmOnline = new GuildOnlineMembersForm(Parent, new Vector2(200, 200), formSize)

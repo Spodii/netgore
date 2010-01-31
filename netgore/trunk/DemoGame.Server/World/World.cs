@@ -150,7 +150,7 @@ namespace DemoGame.Server
                 throw new ArgumentException("User contains a null or invalid name.", "user");
 
             // TODO: If the user is already logged in, this will throw an exception. Will have to determine how to handle this scenario.
-            user.Disposed += User_OnDispose;
+            user.Disposed += User_Disposed;
             _users.Add(user.Name, user);
         }
 
@@ -390,7 +390,7 @@ namespace DemoGame.Server
         /// Handles when a User is Disposed.
         /// </summary>
         /// <param name="entity">User that was Disposed.</param>
-        void User_OnDispose(Entity entity)
+        void User_Disposed(Entity entity)
         {
             // Remove the User from the list of Users
             _users.Remove(((User)entity).Name);

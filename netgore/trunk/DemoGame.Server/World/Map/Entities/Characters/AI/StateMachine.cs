@@ -390,7 +390,7 @@ namespace DemoGame.Server
         public StateMachine(Character actor) : base(actor)
         {
             //Adds an event handler so we know when the actor has been attacked.
-            Actor.AttackedByCharacter += Actor_OnAttackedByCharacter;
+            Actor.AttackedByCharacter += Actor_AttackedByCharacter;
         }
 
         /// <summary>
@@ -405,7 +405,7 @@ namespace DemoGame.Server
         /// Called when the target is killed.  It resets whether the Actor should be trying to attack the _target.
         /// </summary>
         /// <param name="character">The character that is killed</param>
-        void _target_OnKilled(Character character)
+        void _target_Killed(Character character)
         {
             //Stop attacking target. Job done.
             _hasTarget = false;
@@ -418,7 +418,7 @@ namespace DemoGame.Server
         /// <param name="attacker">The character that attacked the Actor</param>
         /// <param name="attacked">This field would be equal to Actor in this class.</param>
         /// <param name="damage">Amount of damage caused during attack.</param>
-        void Actor_OnAttackedByCharacter(Character attacker, Character attacked, int damage)
+        void Actor_AttackedByCharacter(Character attacker, Character attacked, int damage)
         {
             //We already had a target!
             if (_target != null && _target != attacker)
@@ -438,7 +438,7 @@ namespace DemoGame.Server
                 _target = attacker;
 
             //Set up event handler for when the _target dies.
-            _target.Killed += _target_OnKilled;
+            _target.Killed += _target_Killed;
 
             //Adds some logic where if the Actors HP is below an amount the Actor tries to run away.
             if (Actor.HP <= 10)
