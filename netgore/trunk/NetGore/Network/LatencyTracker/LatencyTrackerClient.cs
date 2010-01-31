@@ -40,7 +40,7 @@ namespace NetGore.Network
         /// </summary>
         readonly byte[] _sendBuffer = new byte[LatencyTrackerHelper.SignatureSize];
 
-        readonly UDPSocket _socket;
+        readonly IUDPSocket _socket;
 
         /// <summary>
         /// The calculated average latency.

@@ -10,15 +10,25 @@ namespace NetGore.Network
     public interface ITCPSocket : ISocketSender, IDisposable
     {
         /// <summary>
-        /// Notifies the listeners when the <see cref="ITCPSocket"/> has been disposed.
+        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
         /// </summary>
-        event TCPSocketEventHandler OnDispose;
+        event TCPSocketEventHandler Disposed;
 
         /// <summary>
-        /// Notifies the listeners when the socket has successfully sent data, and how much data was sent.
-        /// Due to internal buffering, OnSend may not be raised for every send.
+        /// Notifies listeners when the socket has successfully sent data, and how much data was sent.
+        /// Due to internal buffering, this event will likely not be raised for every single individual send call made.
         /// </summary>
-        event TCPSocketEventHandler<int> OnSend;
+        event TCPSocketEventHandler<int> DataSent;
+
+        /// <summary>
+        /// Gets the maximum size of the data that can be sent in a single send.
+        /// </summary>
+        int MaxSendSize { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
+        /// </summary>
+        int TimeCreated { get; }
 
         /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted

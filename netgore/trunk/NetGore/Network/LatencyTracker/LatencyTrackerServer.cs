@@ -14,7 +14,7 @@ namespace NetGore.Network
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly ushort _port;
-        readonly UDPSocket _socket;
+        readonly IUDPSocket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LatencyTrackerServer"/> class.

@@ -121,7 +121,7 @@ namespace NetGore.Network
         Socket _socket;
 
         /// <summary>
-        /// Gets the Environment.TickCount of when the TCPSocket was created.
+        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
         /// </summary>
         public int TimeCreated
         {
@@ -232,8 +232,8 @@ namespace NetGore.Network
             if (log.IsDebugEnabled)
                 log.DebugFormat("Beginning send of `{0}` bytes to `{1}`", msgLength, Address);
 
-            if (OnSend != null)
-                OnSend(this, msgLength);
+            if (DataSent != null)
+                DataSent(this, msgLength);
         }
 
         /// <summary>
@@ -517,15 +517,23 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Notifies the listeners when the TCPSocket has been disposed.
+        /// Gets the maximum size of the data that can be sent in a single send.
         /// </summary>
-        public event TCPSocketEventHandler OnDispose;
+        int ITCPSocket.MaxSendSize
+        {
+            get { return MaxSendSize; }
+        }
 
         /// <summary>
-        /// Notifies the listeners when the socket has successfully sent data, and how much data was sent.
-        /// Because the TCPSocket attempts to combine queued sends, OnSend may not be raised for every send.
+        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
         /// </summary>
-        public event TCPSocketEventHandler<int> OnSend;
+        public event TCPSocketEventHandler Disposed;
+
+        /// <summary>
+        /// Notifies listeners when the socket has successfully sent data, and how much data was sent.
+        /// Due to internal buffering, this event will likely not be raised for every single individual send call made.
+        /// </summary>
+        public event TCPSocketEventHandler<int> DataSent;
 
         /// <summary>
         /// Gets the queue of complete received data
@@ -638,8 +646,8 @@ namespace NetGore.Network
 
             _isInitialized = false;
 
-            if (OnDispose != null)
-                OnDispose(this);
+            if (Disposed != null)
+                Disposed(this);
         }
 
         #endregion

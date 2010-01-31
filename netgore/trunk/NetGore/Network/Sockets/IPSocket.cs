@@ -20,13 +20,19 @@ namespace NetGore.Network
         /// </summary>
         const int _unsetRemoteUDPPortValue = 0;
 
-        readonly TCPSocket _tcpSocket;
-        readonly UDPSocket _udpSocket;
+        readonly ITCPSocket _tcpSocket;
+        readonly IUDPSocket _udpSocket;
+
         bool _disposed = false;
         int _remoteUDPPort = _unsetRemoteUDPPortValue;
         EndPoint _udpEndPoint;
 
-        public IPSocket(TCPSocket tcpSocket, UDPSocket udpSocket)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPSocket"/> class.
+        /// </summary>
+        /// <param name="tcpSocket">The TCP socket.</param>
+        /// <param name="udpSocket">The UDP socket.</param>
+        public IPSocket(ITCPSocket tcpSocket, IUDPSocket udpSocket)
         {
             if (tcpSocket == null)
                 throw new ArgumentNullException("tcpSocket");
@@ -40,17 +46,17 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the TCPSocket used in this IPSocket.
+        /// Gets the <see cref="ITCPSocket"/> used in this <see cref="IPSocket"/>.
         /// </summary>
-        internal TCPSocket TCPSocket
+        internal ITCPSocket TCPSocket
         {
             get { return _tcpSocket; }
         }
 
         /// <summary>
-        /// Gets the UDPSocket used in this IPSocket.
+        /// Gets the <see cref="IUDPSocket"/> used in this <see cref="IPSocket"/>.
         /// </summary>
-        internal UDPSocket UDPSocket
+        internal IUDPSocket UDPSocket
         {
             get { return _udpSocket; }
         }
@@ -227,7 +233,7 @@ namespace NetGore.Network
         /// </summary>
         public int MaxUnreliableMessageSize
         {
-            get { return UDPSocket.MaxPacketSize; }
+            get { return UDPSocket.MaxSendSize; }
         }
 
         /// <summary>

@@ -93,6 +93,7 @@
     <Compile Include="IO\PropertySync\SyncValueAttributeInfo.cs" />
     <Compile Include="IO\Persistable\IPersistable.cs" />
     <Compile Include="IO\Persistable\PersistableHelper.cs" />
+    <Compile Include="Network\Sockets\IUDPSocket.cs" />
     <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
     <Compile Include="Stats\Collections\FullStatCollection.cs" />
     <Compile Include="Stats\Collections\IStatCollection.cs" />
