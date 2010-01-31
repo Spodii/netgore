@@ -389,12 +389,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners immediately before a layer has started drawing.
         /// </summary>
-        public event MapDrawEventHandler OnBeginDrawLayer;
+        public event MapDrawEventHandler BeginDrawLayer;
 
         /// <summary>
         /// Notifies listeners immediately after a layer has finished drawing.
         /// </summary>
-        public event MapDrawEventHandler OnEndDrawLayer;
+        public event MapDrawEventHandler EndDrawLayer;
 
         /// <summary>
         /// Draws the content of the map to the screen.
@@ -417,16 +417,16 @@ namespace DemoGame.Client
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
             foreach (var layer in _drawableSorter.GetSorted(drawableInView))
             {
-                if (OnBeginDrawLayer != null)
-                    OnBeginDrawLayer(this, layer.Key, sb);
+                if (BeginDrawLayer != null)
+                    BeginDrawLayer(this, layer.Key, sb);
 
                 foreach (var drawable in layer.Value)
                 {
                     drawable.Draw(sb);
                 }
 
-                if (OnEndDrawLayer != null)
-                    OnEndDrawLayer(this, layer.Key, sb);
+                if (EndDrawLayer != null)
+                    EndDrawLayer(this, layer.Key, sb);
             }
 
             // Draw the particle effects

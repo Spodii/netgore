@@ -307,8 +307,7 @@
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="World\Map\MapEntityIndex.cs" />
     <Compile Include="World\Map\MapIndex.cs" />
-    <Compile Include="World\Map\Spatial\SpatialMoveEventHandler.cs" />
-    <Compile Include="World\Map\Spatial\SpatialResizeEventHandler.cs" />
+    <Compile Include="World\Map\Spatial\SpatialMovedEventHandler.cs" />
     <Compile Include="World\Map\Spatial\StaticGridSpatialCollection.cs" />
   </ItemGroup>
   <ItemGroup>

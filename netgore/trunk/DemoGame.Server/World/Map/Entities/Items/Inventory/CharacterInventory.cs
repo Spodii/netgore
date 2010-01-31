@@ -134,7 +134,7 @@ namespace DemoGame.Server
                     DbController.GetQuery<DeleteCharacterInventoryItemQuery>().Execute(Character.ID, slot);
 
                 // Stop listening for changes
-                oldItem.OnChangeGraphicOrAmount -= ItemGraphicOrAmountChangeHandler;
+                oldItem.GraphicOrAmountChanged -= ItemGraphicOrAmountChangeHandler;
             }
             else
             {
@@ -145,7 +145,7 @@ namespace DemoGame.Server
                     DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
 
                 // Listen to the item for changes
-                newItem.OnChangeGraphicOrAmount += ItemGraphicOrAmountChangeHandler;
+                newItem.GraphicOrAmountChanged += ItemGraphicOrAmountChangeHandler;
             }
 
             // Prepare the slot for updating

@@ -50,8 +50,8 @@ namespace DemoGame.Client
 
             _sockets.OnConnect += sockets_OnConnect;
             _sockets.OnFailedConnect += sockets_OnFailedConnect;
-            _sockets.PacketHandler.OnLoginUnsuccessful += sockets_OnLoginUnsuccessful;
-            _sockets.PacketHandler.OnLoginSuccessful += sockets_OnLoginSuccessful;
+            _sockets.PacketHandler.ReceivedLoginUnsuccessful += sockets_OnLoginUnsuccessful;
+            _sockets.PacketHandler.ReceivedLoginSuccessful += sockets_OnLoginSuccessful;
 
             base.Activate();
         }
@@ -64,8 +64,8 @@ namespace DemoGame.Client
         {
             _sockets.OnConnect -= sockets_OnConnect;
             _sockets.OnFailedConnect -= sockets_OnFailedConnect;
-            _sockets.PacketHandler.OnLoginSuccessful -= sockets_OnLoginSuccessful;
-            _sockets.PacketHandler.OnLoginUnsuccessful -= sockets_OnLoginUnsuccessful;
+            _sockets.PacketHandler.ReceivedLoginSuccessful -= sockets_OnLoginSuccessful;
+            _sockets.PacketHandler.ReceivedLoginUnsuccessful -= sockets_OnLoginUnsuccessful;
 
             _cError.Text = string.Empty;
         }
@@ -92,8 +92,8 @@ namespace DemoGame.Client
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "Back");
             _btnLogin = menuButtons["Login"];
-            _btnLogin.OnClick += delegate { _sockets.Connect(); };
-            menuButtons["Back"].OnClick += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
+            _btnLogin.Clicked += delegate { _sockets.Connect(); };
+            menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             cScreen.SetFocus();
         }

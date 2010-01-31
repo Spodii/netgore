@@ -19,7 +19,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners that a message is trying to be sent from the ChatForm's input box.
         /// </summary>
-        public event ChatFormSayHandler OnSay;
+        public event ChatFormSayHandler Say;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChatForm"/> class.
@@ -33,7 +33,7 @@ namespace DemoGame.Client
             // Create the input and output TextBoxes
             _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32))
             { IsMultiLine = false, IsEnabled = true, Font = Font, MaxInputTextLength = GameData.MaxClientSayLength };
-            _input.OnKeyDown += Input_OnKeyDown;
+            _input.KeyDown += Input_OnKeyDown;
 
             _output = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = true, IsEnabled = false, Font = Font };
 
@@ -73,12 +73,12 @@ namespace DemoGame.Client
 
         /// <summary>
         /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
         /// </summary>
-        protected override void ChangeBorder()
+        protected override void OnBorderChanged()
         {
-            base.ChangeBorder();
+            base.OnBorderChanged();
 
             RepositionTextBoxes();
         }
@@ -110,11 +110,11 @@ namespace DemoGame.Client
                 switch (key)
                 {
                     case Keys.Enter:
-                        if (OnSay != null && !string.IsNullOrEmpty(_input.Text))
+                        if (Say != null && !string.IsNullOrEmpty(_input.Text))
                         {
                             string text = _input.Text;
                             _input.Text = string.Empty;
-                            OnSay(this, text);
+                            Say(this, text);
                         }
                         break;
 
@@ -152,12 +152,12 @@ namespace DemoGame.Client
 
         /// <summary>
         /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.OnResize"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
         /// </summary>
-        protected override void Resize()
+        protected override void OnResized()
         {
-            base.Resize();
+            base.OnResized();
 
             RepositionTextBoxes();
         }

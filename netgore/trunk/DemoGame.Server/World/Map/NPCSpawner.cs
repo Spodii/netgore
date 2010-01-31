@@ -147,7 +147,7 @@ namespace DemoGame.Server
             {
                 Vector2 pos = RandomSpawnPosition();
                 NPC npc = new NPC(_map.World, _characterTemplate, _map, pos);
-                npc.OnKilled += NPC_OnKilled;
+                npc.Killed += NPC_OnKilled;
             }
         }
     }

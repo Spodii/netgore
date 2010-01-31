@@ -41,8 +41,8 @@ namespace DemoGame.Client
                 // Remove the event hooks from the old map
                 if (Map != null)
                 {
-                    Map.OnBeginDrawLayer -= _onBeginDraw;
-                    Map.OnEndDrawLayer -= _onEndDraw;
+                    Map.BeginDrawLayer -= _onBeginDraw;
+                    Map.EndDrawLayer -= _onEndDraw;
                 }
 
                 // Set the new map
@@ -51,8 +51,8 @@ namespace DemoGame.Client
                 // Set the event hooks on the new map
                 if (Map != null)
                 {
-                    Map.OnBeginDrawLayer += _onBeginDraw;
-                    Map.OnEndDrawLayer += _onEndDraw;
+                    Map.BeginDrawLayer += _onBeginDraw;
+                    Map.EndDrawLayer += _onEndDraw;
                 }
             }
         }

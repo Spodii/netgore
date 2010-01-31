@@ -506,11 +506,11 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Handles when the <see cref="Control"/> has lost focus.
         /// This is called immediately before <see cref="Control.OnLostFocus"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnLostFocus"/> when possible.
+        /// Override this method instead of using an event hook on <see cref="Control.LostFocus"/> when possible.
         /// </summary>
-        protected override void LostFocus()
+        protected override void OnLostFocus()
         {
-            base.LostFocus();
+            base.OnLostFocus();
 
             _state = CheckBoxState.None;
         }
@@ -518,12 +518,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Handles when a mouse button has been pressed down on this <see cref="Control"/>.
         /// This is called immediately before <see cref="Control.OnMouseDown"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseDown"/> when possible.
+        /// Override this method instead of using an event hook on <see cref="Control.MouseDown"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void MouseDown(MouseClickEventArgs e)
+        protected override void OnMouseDown(MouseClickEventArgs e)
         {
-            base.MouseDown(e);
+            base.OnMouseDown(e);
 
             if (e.Button == MouseButtons.Left)
             {
@@ -535,12 +535,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Handles when the mouse has entered the area of the <see cref="Control"/>.
         /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseEnter"/> when possible.
+        /// Override this method instead of using an event hook on <see cref="Control.MouseEnter"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void MouseEnter(MouseEventArgs e)
+        protected override void OnMouseEnter(MouseEventArgs e)
         {
-            base.MouseEnter(e);
+            base.OnMouseEnter(e);
 
             _state = CheckBoxState.Over;
         }
@@ -548,25 +548,25 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Handles when the mouse has left the area of the <see cref="Control"/>.
         /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseLeave"/> when possible.
+        /// Override this method instead of using an event hook on <see cref="Control.MouseLeave"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void MouseLeave(MouseEventArgs e)
+        protected override void OnMouseLeave(MouseEventArgs e)
         {
-            base.MouseLeave(e);
+            base.OnMouseLeave(e);
 
             _state = CheckBoxState.None;
         }
 
         /// <summary>
         /// Handles when the mouse has moved over the <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.OnMouseMove"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseMove"/> when possible.
+        /// This is called immediately before <see cref="Control.MouseMoved"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.MouseMoved"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void MouseMove(MouseEventArgs e)
+        protected override void OnMouseMoved(MouseEventArgs e)
         {
-            base.MouseMove(e);
+            base.OnMouseMoved(e);
 
             _state = CheckBoxState.Over;
         }
@@ -574,12 +574,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Handles when a mouse button has been raised on the <see cref="Control"/>.
         /// This is called immediately before <see cref="Control.OnMouseUp"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnMouseUp"/> when possible.
+        /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void MouseUp(MouseClickEventArgs e)
+        protected override void OnMouseUp(MouseClickEventArgs e)
         {
-            base.MouseUp(e);
+            base.OnMouseUp(e);
 
             _state = CheckBoxState.Over;
         }

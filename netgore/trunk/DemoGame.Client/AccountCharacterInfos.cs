@@ -5,12 +5,22 @@ namespace DemoGame.Client
 {
     class AccountCharacterInfos
     {
-        public delegate void AccountCharactersLoadedHandler();
+        public delegate void AccountCharactersLoadedHandler(AccountCharacterInfos sender);
 
         AccountCharacterInfo[] _charInfos;
         bool _isLoaded;
 
-        public event AccountCharactersLoadedHandler OnAccountCharactersLoaded;
+        /// <summary>
+        /// Notifies listeners when the account characters are loaded.
+        /// </summary>
+        public event AccountCharactersLoadedHandler AccountCharactersLoaded;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the event with the corresponding name.
+        /// </summary>
+        protected virtual void OnAccountCharactersLoaded()
+        {
+        }
 
         public AccountCharacterInfo this[byte index]
         {
@@ -39,8 +49,8 @@ namespace DemoGame.Client
             _charInfos = charInfos;
             _isLoaded = true;
 
-            if (OnAccountCharactersLoaded != null)
-                OnAccountCharactersLoaded();
+            if (AccountCharactersLoaded != null)
+                AccountCharactersLoaded(this);
         }
 
         public bool TryGetInfo(byte index, out AccountCharacterInfo charInfo)

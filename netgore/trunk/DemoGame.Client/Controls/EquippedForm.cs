@@ -16,7 +16,10 @@ namespace DemoGame.Client
         readonly ItemInfoRequesterBase<EquipmentSlot> _infoRequester;
         UserEquipped _userEquipped;
 
-        public event RequestUnequipHandler OnRequestUnequip;
+        /// <summary>
+        /// Notifies listeners when a request has been made to unequip an item.
+        /// </summary>
+        public event RequestUnequipHandler RequestUnequip;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EquippedForm"/> class.
@@ -70,8 +73,8 @@ namespace DemoGame.Client
             switch (e.Button)
             {
                 case MouseButtons.Right:
-                    if (OnRequestUnequip != null)
-                        OnRequestUnequip(this, slot);
+                    if (RequestUnequip != null)
+                        RequestUnequip(this, slot);
                     break;
             }
         }
@@ -99,7 +102,7 @@ namespace DemoGame.Client
                 _slot = slot;
                 Tooltip = _tooltipHandler;
 
-                OnMouseUp += _equippedForm.EquippedItemPB_OnMouseUp;
+                MouseUp += _equippedForm.EquippedItemPB_OnMouseUp;
             }
 
             public EquipmentSlot Slot

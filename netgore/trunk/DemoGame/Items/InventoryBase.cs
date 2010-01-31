@@ -71,9 +71,9 @@ namespace DemoGame
 
                 // Attach (if item added) or remove (if item removed) hook to the Dispose event
                 if (oldItem != null)
-                    oldItem.OnDispose -= ItemDisposeHandler;
+                    oldItem.Disposed -= ItemDisposeHandler;
                 else
-                    value.OnDispose += ItemDisposeHandler;
+                    value.Disposed += ItemDisposeHandler;
 
                 // Change the ItemEntity reference
                 _buffer[(int)slot] = value;

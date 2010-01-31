@@ -7,6 +7,6 @@ namespace NetGore
     /// Handles when an <see cref="ISpatial"/> has moved.
     /// </summary>
     /// <param name="sender">The <see cref="ISpatial"/> that moved.</param>
-    /// <param name="oldPosition">The position of the <see cref="ISpatial"/> before it moved.</param>
-    public delegate void SpatialMoveEventHandler(ISpatial sender, Vector2 oldPosition);
+    /// <param name="e">The event argument.</param>
+    public delegate void SpatialEventHandler<T>(ISpatial sender, T e);
 }

@@ -32,12 +32,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when this NPCChatDialogForm wants to end the chat dialog.
         /// </summary>
-        public event ChatDialogRequestEndDialogHandler OnRequestEndDialog;
+        public event ChatDialogRequestEndDialogHandler RequestEndDialog;
 
         /// <summary>
         /// Notifies listeners when a dialog response was chosen.
         /// </summary>
-        public event ChatDialogSelectResponseHandler OnSelectResponse;
+        public event ChatDialogSelectResponseHandler SelectResponse;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogForm"/> class.
@@ -63,7 +63,7 @@ namespace DemoGame.Client
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
                 ResponseText r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true };
-                r.OnClick += ResponseText_OnClick;
+                r.Clicked += ResponseText_OnClick;
                 _responseTextControls[i] = r;
             }
         }
@@ -84,18 +84,18 @@ namespace DemoGame.Client
 
         /// <summary>
         /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.OnKeyPress"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnKeyPress"/> when possible.
+        /// This is called immediately before <see cref="Control.KeyPressed"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.KeyPressed"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void KeyPress(KeyboardEventArgs e)
+        protected override void OnKeyPressed(KeyboardEventArgs e)
         {
-            base.KeyPress(e);
+            base.OnKeyPressed(e);
 
             if (e.Keys.Contains(Keys.Escape))
             {
-                if (OnRequestEndDialog != null)
-                    OnRequestEndDialog(this);
+                if (RequestEndDialog != null)
+                    RequestEndDialog(this);
             }
             else
             {
@@ -108,8 +108,8 @@ namespace DemoGame.Client
 
                     if (value < _responses.Length)
                     {
-                        if (OnSelectResponse != null)
-                            OnSelectResponse(this, _responses[value]);
+                        if (SelectResponse != null)
+                            SelectResponse(this, _responses[value]);
                     }
                 }
             }
@@ -121,8 +121,8 @@ namespace DemoGame.Client
             NPCChatResponseBase response = src.Response;
             if (response != null)
             {
-                if (OnSelectResponse != null)
-                    OnSelectResponse(this, response);
+                if (SelectResponse != null)
+                    SelectResponse(this, response);
             }
         }
 

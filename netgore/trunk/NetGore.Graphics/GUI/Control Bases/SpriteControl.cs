@@ -10,27 +10,27 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public abstract class SpriteControl : Control
     {
-        static readonly object _eventChangeSprite = new object();
-        static readonly object _eventChangeStretchSprite = new object();
+        static readonly object _eventSpriteChanged = new object();
+        static readonly object _eventStretchSpriteChanged = new object();
         ISprite _sprite;
         bool _stretch = true;
 
         /// <summary>
         /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeSprite
+        public event ControlEventHandler SpriteChanged
         {
-            add { Events.AddHandler(_eventChangeSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeSprite, value); }
+            add { Events.AddHandler(_eventSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventSpriteChanged, value); }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
         /// </summary>
-        public event ControlEventHandler OnChangeStretchSprite
+        public event ControlEventHandler StretchSpriteChanged
         {
-            add { Events.AddHandler(_eventChangeStretchSprite, value); }
-            remove { Events.RemoveHandler(_eventChangeStretchSprite, value); }
+            add { Events.AddHandler(_eventStretchSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventStretchSpriteChanged, value); }
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace NetGore.Graphics.GUI
 
                 _sprite = value;
 
-                InvokeChangeSprite();
+                InvokeSpriteChanged();
             }
         }
 
@@ -87,25 +87,25 @@ namespace NetGore.Graphics.GUI
 
                 _stretch = value;
 
-                InvokeChangeStretchSprite();
+                InvokeStretchSpriteChanged();
             }
         }
 
         /// <summary>
         /// Handles when the <see cref="SpriteControl.Sprite"/> has changed.
-        /// This is called immediately before <see cref="SpriteControl.OnChangeSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeSprite"/> when possible.
+        /// This is called immediately before <see cref="SpriteControl.SpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.SpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeSprite()
+        protected virtual void OnSpriteChanged()
         {
         }
 
         /// <summary>
         /// Handles when the <see cref="SpriteControl.StretchSprite"/> value has changed.
-        /// This is called immediately before <see cref="SpriteControl.OnChangeStretchSprite"/>.
-        /// Override this method instead of using an event hook on <see cref="SpriteControl.OnChangeStretchSprite"/> when possible.
+        /// This is called immediately before <see cref="SpriteControl.StretchSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.StretchSpriteChanged"/> when possible.
         /// </summary>
-        protected virtual void ChangeStretchSprite()
+        protected virtual void OnStretchSpriteChanged()
         {
         }
 
@@ -143,10 +143,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeSprite()
+        void InvokeSpriteChanged()
         {
-            ChangeSprite();
-            var handler = Events[_eventChangeSprite] as ControlEventHandler;
+            OnSpriteChanged();
+            var handler = Events[_eventSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -155,10 +155,10 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeChangeStretchSprite()
+        void InvokeStretchSpriteChanged()
         {
-            ChangeStretchSprite();
-            var handler = Events[_eventChangeStretchSprite] as ControlEventHandler;
+            OnStretchSpriteChanged();
+            var handler = Events[_eventStretchSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }

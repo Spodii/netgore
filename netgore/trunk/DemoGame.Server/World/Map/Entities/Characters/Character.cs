@@ -193,63 +193,63 @@ namespace DemoGame.Server
 
         /// <summary>
         /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
-        /// anything for this event to be raised. This will be raised before <see cref="OnAttackCharacter"/>.
+        /// anything for this event to be raised. This will be raised before <see cref="AttackedCharacter"/>.
         /// </summary>
-        public event CharacterEventHandler OnAttack;
+        public event CharacterEventHandler Attacked;
 
         /// <summary>
         /// Notifies listeners when this Character has successfully attacked another Character.
         /// </summary>
-        public event CharacterAttackCharacterEventHandler OnAttackCharacter;
+        public event CharacterAttackCharacterEventHandler AttackedCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character has been attacked by another Character.
         /// </summary>
-        public event CharacterAttackCharacterEventHandler OnAttackedByCharacter;
+        public event CharacterAttackCharacterEventHandler AttackedByCharacter;
 
-        public event CharacterCashEventHandler OnChangeCash;
-        public event CharacterExpEventHandler OnChangeExp;
-        public event CharacterChangeSPEventHandler OnChangeHP;
-        public event CharacterLevelEventHandler OnChangeLevel;
-        public event CharacterChangeSPEventHandler OnChangeMP;
-        public event CharacterStatPointsEventHandler OnChangeStatPoints;
+        public event CharacterCashEventHandler CashChanged;
+        public event CharacterExpEventHandler ExpChanged;
+        public event CharacterChangeSPEventHandler HPChanged;
+        public event CharacterLevelEventHandler LevelChanged;
+        public event CharacterChangeSPEventHandler MPChanged;
+        public event CharacterStatPointsEventHandler StatPointsChanged;
 
         /// <summary>
         /// Notifies listeners when the Character's TemplateID has changed.
         /// </summary>
-        public event CharacterEventHandler OnChangeTemplateID;
+        public event CharacterEventHandler TemplateIDChanged;
 
         /// <summary>
         /// Notifies listeners when this Character has dropped an item.
         /// </summary>
-        public event CharacterItemEventHandler OnDropItem;
+        public event CharacterItemEventHandler DroppedItem;
 
         /// <summary>
         /// Notifies listeners when this Character has received an item.
         /// </summary>
-        public event CharacterItemEventHandler OnGetItem;
+        public event CharacterItemEventHandler GotItem;
 
         // TODO: Implement OnGetItem. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
 
         /// <summary>
         /// Notifies listeners when this Character has killed another Character.
         /// </summary>
-        public event CharacterKillEventHandler OnKillCharacter;
+        public event CharacterKillEventHandler KilledCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
         /// </summary>
-        public event CharacterEventHandler OnKilled;
+        public event CharacterEventHandler Killed;
 
         /// <summary>
         /// Notifies listeners when this Character has been killed by another Character.
         /// </summary>
-        public event CharacterKillEventHandler OnKilledByCharacter;
+        public event CharacterKillEventHandler KilledByCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character uses an item.
         /// </summary>
-        public event CharacterItemEventHandler OnUseItem;
+        public event CharacterItemEventHandler UsedItem;
 
         readonly CharacterSkillCaster _skillCaster;
 
@@ -271,8 +271,8 @@ namespace DemoGame.Server
             else
                 _statusEffects = new NonPersistentCharacterStatusEffects(this);
 
-            _statusEffects.OnAdd += StatusEffects_HandleOnAdd;
-            _statusEffects.OnRemove += StatusEffects_HandleOnRemove;
+            _statusEffects.Added += StatusEffects_HandleOnAdd;
+            _statusEffects.Removed += StatusEffects_HandleOnRemove;
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _baseStats = CreateStats(StatCollectionType.Base);
@@ -481,8 +481,8 @@ namespace DemoGame.Server
             // Update the last attack time to now
             _lastAttackTime = currTime;
 
-            if (OnAttack != null)
-                OnAttack(this);
+            if (Attacked != null)
+                Attacked(this);
 
             // Inform the map that the user has performed an attack
             using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
@@ -532,11 +532,11 @@ namespace DemoGame.Server
             target.Damage(this, damage);
 
             // Raise attack events
-            if (OnAttackCharacter != null)
-                OnAttackCharacter(this, target, damage);
+            if (AttackedCharacter != null)
+                AttackedCharacter(this, target, damage);
 
-            if (target.OnAttackedByCharacter != null)
-                target.OnAttackedByCharacter(this, target, damage);
+            if (target.AttackedByCharacter != null)
+                target.AttackedByCharacter(this, target, damage);
         }
 
         /// <summary>
@@ -630,11 +630,11 @@ namespace DemoGame.Server
                     Character sourceCharacter = source as Character;
                     if (sourceCharacter != null)
                     {
-                        if (sourceCharacter.OnKillCharacter != null)
-                            sourceCharacter.OnKillCharacter(this, sourceCharacter);
+                        if (sourceCharacter.KilledCharacter != null)
+                            sourceCharacter.KilledCharacter(this, sourceCharacter);
 
-                        if (OnKilledByCharacter != null)
-                            OnKilledByCharacter(this, sourceCharacter);
+                        if (KilledByCharacter != null)
+                            KilledByCharacter(this, sourceCharacter);
                     }
                 }
             }
@@ -665,8 +665,8 @@ namespace DemoGame.Server
             // Add the item to the map
             Map.AddEntity(item);
 
-            if (OnDropItem != null)
-                OnDropItem(this, item);
+            if (DroppedItem != null)
+                DroppedItem(this, item);
         }
 
         /// <summary>
@@ -683,8 +683,8 @@ namespace DemoGame.Server
             // Create the item on the map
             ItemEntity droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
 
-            if (OnDropItem != null)
-                OnDropItem(this, droppedItem);
+            if (DroppedItem != null)
+                DroppedItem(this, droppedItem);
         }
 
         /// <summary>
@@ -925,8 +925,8 @@ namespace DemoGame.Server
         /// </summary>
         public virtual void Kill()
         {
-            if (OnKilled != null)
-                OnKilled(this);
+            if (Killed != null)
+                Killed(this);
         }
 
         /// <summary>
@@ -1421,8 +1421,8 @@ namespace DemoGame.Server
                     break;
             }
 
-            if (wasUsed && OnUseItem != null)
-                OnUseItem(this, item);
+            if (wasUsed && UsedItem != null)
+                UsedItem(this, item);
 
             return wasUsed;
         }
@@ -1578,8 +1578,8 @@ namespace DemoGame.Server
                 int oldValue = _cash;
                 _cash = value;
 
-                if (OnChangeCash != null)
-                    OnChangeCash(this, oldValue, _cash);
+                if (CashChanged != null)
+                    CashChanged(this, oldValue, _cash);
             }
         }
 
@@ -1611,8 +1611,8 @@ namespace DemoGame.Server
                 int oldValue = _exp;
                 _exp = value;
 
-                if (OnChangeExp != null)
-                    OnChangeExp(this, oldValue, _exp);
+                if (ExpChanged != null)
+                    ExpChanged(this, oldValue, _exp);
 
                 // Check if this change in experience has made the Character level
                 while (_exp >= _nextLevelExp)
@@ -1645,8 +1645,8 @@ namespace DemoGame.Server
                 // Apply new value
                 _hp = newValue;
 
-                if (OnChangeHP != null)
-                    OnChangeHP(this, oldValue, _hp);
+                if (HPChanged != null)
+                    HPChanged(this, oldValue, _hp);
 
                 if (_hp <= 0)
                     Kill();
@@ -1670,8 +1670,8 @@ namespace DemoGame.Server
                 _level = value;
                 _nextLevelExp = GameData.LevelCost(_level);
 
-                if (OnChangeLevel != null)
-                    OnChangeLevel(this, oldValue, _level);
+                if (LevelChanged != null)
+                    LevelChanged(this, oldValue, _level);
             }
         }
 
@@ -1722,8 +1722,8 @@ namespace DemoGame.Server
                 // Apply new value
                 _mp = newValue;
 
-                if (OnChangeMP != null)
-                    OnChangeMP(this, oldValue, _mp);
+                if (MPChanged != null)
+                    MPChanged(this, oldValue, _mp);
             }
         }
 
@@ -1805,8 +1805,8 @@ namespace DemoGame.Server
                 int oldValue = _statPoints;
                 _statPoints = value;
 
-                if (OnChangeStatPoints != null)
-                    OnChangeStatPoints(this, oldValue, _statPoints);
+                if (StatPointsChanged != null)
+                    StatPointsChanged(this, oldValue, _statPoints);
             }
         }
 
@@ -1841,8 +1841,8 @@ namespace DemoGame.Server
 
                 _templateID = value;
 
-                if (OnChangeTemplateID != null)
-                    OnChangeTemplateID(this);
+                if (TemplateIDChanged != null)
+                    TemplateIDChanged(this);
             }
         }
 

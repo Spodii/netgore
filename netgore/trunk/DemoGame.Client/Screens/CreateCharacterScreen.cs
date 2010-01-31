@@ -37,7 +37,7 @@ namespace DemoGame.Client
             _btnCreateCharacter.IsEnabled = true;
             _cError.IsVisible = false;
 
-            _sockets.PacketHandler.OnCreateAccountCharacter += PacketHandler_OnCreateAccountCharacter;
+            _sockets.PacketHandler.ReceivedCreateAccountCharacter += PacketHandler_OnCreateAccountCharacter;
 
             base.Activate();
         }
@@ -77,8 +77,8 @@ namespace DemoGame.Client
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Create character", "Back");
             _btnCreateCharacter = menuButtons["Create character"];
-            _btnCreateCharacter.OnClick += ClickButton_CreateCharacter;
-            menuButtons["Back"].OnClick += ClickButton_Back;
+            _btnCreateCharacter.Clicked += ClickButton_CreateCharacter;
+            menuButtons["Back"].Clicked += ClickButton_Back;
 
             _cError = new Label(cScreen, new Vector2(60, 500)) { ForeColor = Color.Red };
 

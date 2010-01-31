@@ -18,9 +18,9 @@ namespace DemoGame.Client
         readonly int _lineSpacing;
 
         /// <summary>
-        /// Notifies listeners when a skill button is clicked.
+        /// Notifies listeners when a a request has been made to use a skill.
         /// </summary>
-        public event UseSkillHandler OnUseSkill;
+        public event UseSkillHandler RequestUseSkill;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillsForm"/> class.
@@ -59,10 +59,10 @@ namespace DemoGame.Client
             var skillInfo = SkillInfoManager.Instance.GetAttribute(skillType);
 
             PictureBox pb = new SkillPictureBox(this, skillInfo, position);
-            pb.OnClick += SkillPicture_OnClick;
+            pb.Clicked += SkillPicture_OnClick;
 
             SkillLabel skillLabel = new SkillLabel(this, skillInfo, position + new Vector2(_iconSize.X + 4, 0));
-            skillLabel.OnClick += SkillLabel_OnClick;
+            skillLabel.Clicked += SkillLabel_OnClick;
         }
 
         /// <summary>
@@ -78,19 +78,19 @@ namespace DemoGame.Client
 
         void SkillLabel_OnClick(object sender, MouseClickEventArgs e)
         {
-            if (OnUseSkill != null)
+            if (RequestUseSkill != null)
             {
                 SkillLabel source = (SkillLabel)sender;
-                OnUseSkill(source.SkillInfo.Value);
+                RequestUseSkill(source.SkillInfo.Value);
             }
         }
 
         void SkillPicture_OnClick(object sender, MouseClickEventArgs e)
         {
-            if (OnUseSkill != null)
+            if (RequestUseSkill != null)
             {
                 SkillPictureBox source = (SkillPictureBox)sender;
-                OnUseSkill(source.SkillInfo.Value);
+                RequestUseSkill(source.SkillInfo.Value);
             }
         }
 

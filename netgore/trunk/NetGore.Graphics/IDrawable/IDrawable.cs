@@ -11,7 +11,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
         /// </summary>
-        event MapRenderLayerChange OnChangeRenderLayer;
+        event MapRenderLayerChange ChangedRenderLayer;
 
         /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher

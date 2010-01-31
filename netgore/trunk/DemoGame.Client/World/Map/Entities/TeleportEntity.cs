@@ -41,7 +41,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Unused by the <see cref="TeleportEntity"/>.
         /// </summary>
-        event MapRenderLayerChange IDrawable.OnChangeRenderLayer
+        event MapRenderLayerChange IDrawable.ChangedRenderLayer
         {
             add { }
             remove { }

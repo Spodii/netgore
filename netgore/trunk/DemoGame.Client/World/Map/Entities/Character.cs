@@ -290,7 +290,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Unused by the Character.
         /// </summary>
-        public event MapRenderLayerChange OnChangeRenderLayer
+        public event MapRenderLayerChange ChangedRenderLayer
         {
             add { }
             remove { }

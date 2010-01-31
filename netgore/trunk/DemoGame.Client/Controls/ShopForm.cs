@@ -30,7 +30,11 @@ namespace DemoGame.Client
         static readonly ShopSettings _shopSettings = ShopSettings.Instance;
 
         ShopInfo<IItemTemplateTable> _shopInfo;
-        public event ShopFormPurchaseHandler OnPurchase;
+
+        /// <summary>
+        /// Notifies listeners when a request has been made to purchase an item from the shop. 
+        /// </summary>
+        public event ShopFormPurchaseHandler RequestPurchase;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopForm"/> class.
@@ -96,8 +100,8 @@ namespace DemoGame.Client
             ShopItemPB src = (ShopItemPB)sender;
             if (src.ItemInfo != null)
             {
-                if (OnPurchase != null)
-                    OnPurchase(this, src.Index);
+                if (RequestPurchase != null)
+                    RequestPurchase(this, src.Index);
             }
         }
 
@@ -117,7 +121,7 @@ namespace DemoGame.Client
                 _shopForm = parent;
                 _index = index;
                 Tooltip = _tooltipHandler;
-                OnMouseUp += _shopForm.ShopItemPB_OnMouseUp;
+                MouseUp += _shopForm.ShopItemPB_OnMouseUp;
             }
 
             public ShopItemIndex Index

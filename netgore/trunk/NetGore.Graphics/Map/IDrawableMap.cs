@@ -13,12 +13,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners immediately before a layer has started drawing.
         /// </summary>
-        event MapDrawEventHandler OnBeginDrawLayer;
+        event MapDrawEventHandler BeginDrawLayer;
 
         /// <summary>
         /// Notifies listeners immediately after a layer has finished drawing.
         /// </summary>
-        event MapDrawEventHandler OnEndDrawLayer;
+        event MapDrawEventHandler EndDrawLayer;
 
         /// <summary>
         /// Draws the map.

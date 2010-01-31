@@ -17,8 +17,8 @@ namespace NetGore
         /// </summary>
         readonly int _gridSegmentSize;
 
-        readonly SpatialMoveEventHandler _spatialMoveHandler;
-        readonly SpatialResizeEventHandler _spatialResizeHandler;
+        readonly SpatialEventHandler<Vector2> _spatialMoveHandler;
+        readonly SpatialEventHandler<Vector2> _spatialResizeHandler;
         IGridSpatialCollectionSegment[] _gridSegments;
         Point _gridSize;
 
@@ -32,8 +32,8 @@ namespace NetGore
             if (gridSegmentSize < 4)
                 throw new ArgumentOutOfRangeException("gridSegmentSize");
 
-            _spatialMoveHandler = Spatial_OnMove;
-            _spatialResizeHandler = Spatial_OnResize;
+            _spatialMoveHandler = Spatial_Moved;
+            _spatialResizeHandler = Spatial_Resized;
 
             _gridSegmentSize = gridSegmentSize;
         }
@@ -168,7 +168,7 @@ namespace NetGore
         /// </summary>
         /// <param name="sender">The <see cref="ISpatial"/> that moved.</param>
         /// <param name="oldPosition">The old position.</param>
-        void Spatial_OnMove(ISpatial sender, Vector2 oldPosition)
+        void Spatial_Moved(ISpatial sender, Vector2 oldPosition)
         {
             // Get the grid index for the last and current positions to see if the segments have changed
             var minSegment = WorldPositionToGridSegment(sender.Position);
@@ -197,7 +197,7 @@ namespace NetGore
         /// </summary>
         /// <param name="sender">The <see cref="ISpatial"/> that resized.</param>
         /// <param name="oldSize">The old size.</param>
-        void Spatial_OnResize(ISpatial sender, Vector2 oldSize)
+        void Spatial_Resized(ISpatial sender, Vector2 oldSize)
         {
             // Get the grid index for the last and current max positions to see if the segments have changed
             var maxSegment = WorldPositionToGridSegment(sender.Position + sender.Size);
@@ -292,8 +292,8 @@ namespace NetGore
             }
 
             // Hook a listener for movement and resizing
-            spatial.OnMove += _spatialMoveHandler;
-            spatial.OnResize += _spatialResizeHandler;
+            spatial.Moved += _spatialMoveHandler;
+            spatial.Resized += _spatialResizeHandler;
         }
 
         /// <summary>
@@ -763,8 +763,8 @@ namespace NetGore
         /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
         public void Remove(ISpatial spatial)
         {
-            spatial.OnMove -= _spatialMoveHandler;
-            spatial.OnResize -= _spatialResizeHandler;
+            spatial.Moved -= _spatialMoveHandler;
+            spatial.Resized -= _spatialResizeHandler;
 
             // Remove the spatial from the segments
             // Just remove from ALL segments, just to be on the safe side

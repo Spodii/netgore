@@ -25,7 +25,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a Stat is requested to be raised.
         /// </summary>
-        public event RaiseStatHandler OnRaiseStat;
+        public event RaiseStatHandler RequestRaiseStat;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatsForm"/> class.
@@ -85,7 +85,7 @@ namespace DemoGame.Client
             if (StatTypeHelper.RaisableStats.Contains(statType))
             {
                 RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, statType);
-                statPB.OnClick += StatPB_OnClick;
+                statPB.Clicked += StatPB_OnClick;
             }
         }
 
@@ -115,10 +115,10 @@ namespace DemoGame.Client
             if (!statPB.CanRaiseStat)
                 return;
 
-            if (OnRaiseStat == null)
+            if (RequestRaiseStat == null)
                 return;
 
-            OnRaiseStat(this, statPB.StatType);
+            RequestRaiseStat(this, statPB.StatType);
         }
 
         protected override void UpdateControl(int currentTime)

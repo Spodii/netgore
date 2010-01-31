@@ -150,7 +150,7 @@ namespace DemoGame.Server
                 throw new ArgumentException("User contains a null or invalid name.", "user");
 
             // TODO: If the user is already logged in, this will throw an exception. Will have to determine how to handle this scenario.
-            user.OnDispose += User_OnDispose;
+            user.Disposed += User_OnDispose;
             _users.Add(user.Name, user);
         }
 

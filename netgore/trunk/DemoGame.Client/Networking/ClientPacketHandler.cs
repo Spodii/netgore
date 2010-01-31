@@ -48,22 +48,22 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a message has been received about creating an account.
         /// </summary>
-        public event SocketCreateAccountEventHandler OnCreateAccount;
+        public event SocketCreateAccountEventHandler ReceivedCreateAccount;
 
         /// <summary>
         /// Notifies listeners when a message has been received about creating an account character.
         /// </summary>
-        public event SocketCreateAccountEventHandler OnCreateAccountCharacter;
+        public event SocketCreateAccountEventHandler ReceivedCreateAccountCharacter;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
         /// </summary>
-        public event SocketEventHandler OnLoginSuccessful;
+        public event SocketEventHandler ReceivedLoginSuccessful;
 
         /// <summary>
         /// Notifies listeners when an unsuccessful login request has been made.
         /// </summary>
-        public event SocketEventHandler<string> OnLoginUnsuccessful;
+        public event SocketEventHandler<string> ReceivedLoginUnsuccessful;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
@@ -243,8 +243,8 @@ namespace DemoGame.Client
             bool successful = r.ReadBool();
             string errorMessage = successful ? string.Empty : r.ReadString();
 
-            if (OnCreateAccount != null)
-                OnCreateAccount(conn, successful, errorMessage);
+            if (ReceivedCreateAccount != null)
+                ReceivedCreateAccount(conn, successful, errorMessage);
         }
 
         [MessageHandler((byte)ServerPacketID.CreateAccountCharacter)]
@@ -253,8 +253,8 @@ namespace DemoGame.Client
             bool successful = r.ReadBool();
             string errorMessage = successful ? string.Empty : r.ReadString();
 
-            if (OnCreateAccountCharacter != null)
-                OnCreateAccountCharacter(conn, successful, errorMessage);
+            if (ReceivedCreateAccountCharacter != null)
+                ReceivedCreateAccountCharacter(conn, successful, errorMessage);
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
@@ -304,8 +304,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
-            if (OnLoginSuccessful != null)
-                OnLoginSuccessful(conn);
+            if (ReceivedLoginSuccessful != null)
+                ReceivedLoginSuccessful(conn);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]
@@ -313,8 +313,8 @@ namespace DemoGame.Client
         {
             string message = r.ReadGameMessage(_gameMessages);
 
-            if (OnLoginUnsuccessful != null)
-                OnLoginUnsuccessful(conn, message);
+            if (ReceivedLoginUnsuccessful != null)
+                ReceivedLoginUnsuccessful(conn, message);
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]

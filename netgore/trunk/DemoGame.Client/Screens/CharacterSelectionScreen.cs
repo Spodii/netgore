@@ -36,7 +36,7 @@ namespace DemoGame.Client
             if (_sockets == null)
                 _sockets = ClientSockets.Instance;
 
-            _sockets.PacketHandler.AccountCharacterInfos.OnAccountCharactersLoaded += HandleCharInfosUpdated;
+            _sockets.PacketHandler.AccountCharacterInfos.AccountCharactersLoaded += HandleCharInfosUpdated;
 
             base.Activate();
         }
@@ -80,7 +80,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleCharInfosUpdated()
+        void HandleCharInfosUpdated(AccountCharacterInfos sender)
         {
             for (int i = 0; i < _characterButtons.Length; i++)
             {
@@ -101,7 +101,7 @@ namespace DemoGame.Client
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Log out");
-            menuButtons["Log out"].OnClick += ClickButton_LogOut;
+            menuButtons["Log out"].Clicked += ClickButton_LogOut;
 
             // Create the character controls
             _characterButtons = new Button[GameData.MaxCharactersPerAccount];
@@ -110,7 +110,7 @@ namespace DemoGame.Client
                 Vector2 size = new Vector2(250, 35);
                 Vector2 pos = new Vector2((ScreenManager.ScreenSize.X / 2f) - (size.X / 2), 10 + (i * (size.Y + 10)));
                 Button characterButton = new Button(cScreen, pos, size) { Text = _unusedCharacterSlotText, Tag = (byte)i };
-                characterButton.OnClick += ClickButton_CharacterSelection;
+                characterButton.Clicked += ClickButton_CharacterSelection;
                 _characterButtons[i] = characterButton;
             }
 

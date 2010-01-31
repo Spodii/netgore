@@ -165,6 +165,7 @@
     <Compile Include="World\Map\MapEntityBoxDrawer.cs" />
     <Compile Include="World\Map\MapWallDrawer.cs" />
     <Compile Include="World\World.cs" />
+    <Compile Include="World\WorldEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <NestedContentProject Include="Content\Content.contentproj">
