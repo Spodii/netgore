@@ -10,10 +10,6 @@ using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
-    public delegate void WorldEventHandler(World world);
-
-    public delegate void WorldEventHandler<T>(World world, T item);
-
     public class World : WorldBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -33,7 +29,11 @@ namespace DemoGame.Client
         Map _map;
 
         MapEntityIndex _usercharIndex;
-        public event WorldEventHandler<Map> OnChangeMap;
+
+        /// <summary>
+        /// Notifies listeners when the map has changed.
+        /// </summary>
+        public event WorldEventHandler<Map> MapChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
@@ -72,7 +72,7 @@ namespace DemoGame.Client
 
                 // Remove the map event hooks from the old map
                 if (Map != null)
-                    Map.OnEndDrawLayer -= _drawEmoticonHandler;
+                    Map.EndDrawLayer -= _drawEmoticonHandler;
 
                 // Set the map
                 _map = value;
@@ -80,10 +80,10 @@ namespace DemoGame.Client
 
                 // Add the map event hooks to the new map
                 if (Map != null)
-                    Map.OnEndDrawLayer += _drawEmoticonHandler;
+                    Map.EndDrawLayer += _drawEmoticonHandler;
 
-                if (OnChangeMap != null)
-                    OnChangeMap(this, Map);
+                if (MapChanged != null)
+                    MapChanged(this, Map);
             }
         }
 

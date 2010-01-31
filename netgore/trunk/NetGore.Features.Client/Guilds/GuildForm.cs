@@ -52,12 +52,12 @@ namespace NetGore.Features.Guilds
 
         /// <summary>
         /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
         /// </summary>
-        protected override void ChangeBorder()
+        protected override void OnBorderChanged()
         {
-            base.ChangeBorder();
+            base.OnBorderChanged();
 
             RelocateControls();
         }
@@ -72,8 +72,8 @@ namespace NetGore.Features.Guilds
             _btnMembers = new Button(this, Vector2.Zero, buttonSize) { Text = "Members" };
             _btnOnline = new Button(this, Vector2.Zero, buttonSize) { Text = "Online" };
 
-            _btnMembers.OnClick += btnMembers_OnClick;
-            _btnOnline.OnClick += btnOnline_OnClick;
+            _btnMembers.Clicked += btnMembers_OnClick;
+            _btnOnline.Clicked += btnOnline_OnClick;
 
             var formSize = new Vector2(200, 200);
             _frmOnline = new GuildOnlineMembersForm(Parent, new Vector2(200, 200), formSize)
@@ -158,12 +158,12 @@ namespace NetGore.Features.Guilds
 
         /// <summary>
         /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.OnResize"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
         /// </summary>
-        protected override void Resize()
+        protected override void OnResized()
         {
-            base.Resize();
+            base.OnResized();
 
             RelocateControls();
         }

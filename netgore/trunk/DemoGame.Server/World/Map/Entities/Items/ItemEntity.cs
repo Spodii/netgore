@@ -45,7 +45,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.
         /// </summary>
-        public event ItemEntityEventHandler OnChangeGraphicOrAmount;
+        public event ItemEntityEventHandler GraphicOrAmountChanged;
 
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up.
@@ -93,7 +93,7 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(iv.Stats, StatCollectionType.Base);
             _reqStats = NewItemStats(iv.ReqStats, StatCollectionType.Requirement);
 
-            OnResize += ItemEntity_OnResize;
+            Resized += ItemEntity_Resized;
         }
 
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
@@ -118,7 +118,7 @@ namespace DemoGame.Server
             IItemTable itemValues = DeepCopyValues();
             ReplaceItem.Execute(itemValues);
 
-            OnResize += ItemEntity_OnResize;
+            Resized += ItemEntity_Resized;
         }
 
         ItemEntity(ItemEntity s)
@@ -151,8 +151,8 @@ namespace DemoGame.Server
 
                 _graphicIndex = value;
 
-                if (OnChangeGraphicOrAmount != null)
-                    OnChangeGraphicOrAmount(this);
+                if (GraphicOrAmountChanged != null)
+                    GraphicOrAmountChanged(this);
 
                 SynchronizeField("graphic", _graphicIndex);
             }
@@ -271,7 +271,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="entity">ItemEntity that was resized.</param>
         /// <param name="oldSize">Old ItemEntity size.</param>
-        void ItemEntity_OnResize(ISpatial entity, Vector2 oldSize)
+        void ItemEntity_Resized(ISpatial entity, Vector2 oldSize)
         {
             Debug.Assert(entity == this, "Why did we receive an ItemEntity_OnResize for another Entity?");
 
@@ -460,8 +460,8 @@ namespace DemoGame.Server
 
                 _amount = value;
 
-                if (OnChangeGraphicOrAmount != null)
-                    OnChangeGraphicOrAmount(this);
+                if (GraphicOrAmountChanged != null)
+                    GraphicOrAmountChanged(this);
 
                 SynchronizeField("amount", _amount);
             }

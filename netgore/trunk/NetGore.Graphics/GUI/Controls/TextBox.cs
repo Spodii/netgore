@@ -329,9 +329,9 @@ namespace NetGore.Graphics.GUI
         /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void Click(MouseClickEventArgs e)
+        protected override void OnClick(MouseClickEventArgs e)
         {
-            base.Click(e);
+            base.OnClick(e);
 
             if (!IsEnabled || !IsVisible)
                 return;
@@ -477,13 +477,13 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.OnKeyDown"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnKeyDown"/> when possible.
+        /// This is called immediately before <see cref="Control.KeyDown"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.KeyDown"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void KeyDown(KeyboardEventArgs e)
+        protected override void OnKeyDown(KeyboardEventArgs e)
         {
-            base.KeyDown(e);
+            base.OnKeyDown(e);
 
             if (!IsEnabled || !IsVisible)
                 return;
@@ -513,9 +513,9 @@ namespace NetGore.Graphics.GUI
         /// This is called immediately before <see cref="Control.OnResize"/>.
         /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
         /// </summary>
-        protected override void Resize()
+        protected override void OnResized()
         {
-            base.Resize();
+            base.OnResized();
 
             if (IsMultiLine)
             {

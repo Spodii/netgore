@@ -390,7 +390,7 @@ namespace DemoGame.Server
         public StateMachine(Character actor) : base(actor)
         {
             //Adds an event handler so we know when the actor has been attacked.
-            Actor.OnAttackedByCharacter += Actor_OnAttackedByCharacter;
+            Actor.AttackedByCharacter += Actor_OnAttackedByCharacter;
         }
 
         /// <summary>
@@ -438,7 +438,7 @@ namespace DemoGame.Server
                 _target = attacker;
 
             //Set up event handler for when the _target dies.
-            _target.OnKilled += _target_OnKilled;
+            _target.Killed += _target_OnKilled;
 
             //Adds some logic where if the Actors HP is below an amount the Actor tries to run away.
             if (Actor.HP <= 10)

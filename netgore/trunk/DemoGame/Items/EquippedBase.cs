@@ -302,7 +302,7 @@ namespace DemoGame
                 }
 
                 // Attach the listener for the OnDispose event
-                item.OnDispose += ItemDisposeHandler;
+                item.Disposed += ItemDisposeHandler;
 
                 // Set the item into the slot
                 _equipped[index] = item;
@@ -323,7 +323,7 @@ namespace DemoGame
                 T oldItem = _equipped[index];
 
                 // Remove the listener for the OnDispose event
-                oldItem.OnDispose -= ItemDisposeHandler;
+                oldItem.Disposed -= ItemDisposeHandler;
 
                 // Remove the item
                 _equipped[index] = null;

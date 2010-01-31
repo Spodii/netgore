@@ -38,19 +38,19 @@ namespace NetGore
         /// is guarenteed to only be raised once.
         /// </summary>
         [Browsable(false)]
-        public event EntityEventHandler OnDispose;
+        public event EntityEventHandler Disposed;
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
         [Browsable(false)]
-        public event SpatialMoveEventHandler OnMove;
+        public event SpatialEventHandler<Vector2> Moved;
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
         [Browsable(false)]
-        public event SpatialResizeEventHandler OnResize;
+        public event SpatialEventHandler<Vector2> Resized;
 
         /// <summary>
         /// Initializes the <see cref="Entity"/> class.
@@ -297,8 +297,8 @@ namespace NetGore
             _position += adjustment;
 
             // Notify of movement
-            if (OnMove != null)
-                OnMove(this, oldPos);
+            if (Moved != null)
+                Moved(this, oldPos);
         }
 
         /// <summary>
@@ -314,8 +314,8 @@ namespace NetGore
 
             _size = newSize;
 
-            if (OnResize != null)
-                OnResize(this, oldSize);
+            if (Resized != null)
+                Resized(this, oldSize);
         }
 
         /// <summary>
@@ -384,8 +384,8 @@ namespace NetGore
             Vector2 oldPos = Position;
             _position = newPosition;
 
-            if (OnMove != null)
-                OnMove(this, oldPos);
+            if (Moved != null)
+                Moved(this, oldPos);
         }
 
         /// <summary>
@@ -444,8 +444,8 @@ namespace NetGore
             _isDisposed = true;
 
             // Notify listeners that the Entity is being disposed
-            if (OnDispose != null)
-                OnDispose(this);
+            if (Disposed != null)
+                Disposed(this);
 
             // Handle the disposing
             HandleDispose();

@@ -40,12 +40,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when an item was requested to be dropped.
         /// </summary>
-        public event InventoryItemHandler OnRequestDropItem;
+        public event InventoryItemHandler RequestDropItem;
 
         /// <summary>
         /// Notifies listeners when an item was requested to be used.
         /// </summary>
-        public event InventoryItemHandler OnRequestUseItem;
+        public event InventoryItemHandler RequestUseItem;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
@@ -98,14 +98,14 @@ namespace DemoGame.Client
                 if (GUIManager.KeysPressed.Contains(Keys.LeftShift) || GUIManager.KeysPressed.Contains(Keys.RightShift))
                 {
                     // Drop
-                    if (OnRequestDropItem != null)
-                        OnRequestDropItem(this, itemPB.Slot);
+                    if (RequestDropItem != null)
+                        RequestDropItem(this, itemPB.Slot);
                 }
                 else
                 {
                     // Use
-                    if (OnRequestUseItem != null)
-                        OnRequestUseItem(this, itemPB.Slot);
+                    if (RequestUseItem != null)
+                        RequestUseItem(this, itemPB.Slot);
                 }
             }
         }
@@ -136,7 +136,7 @@ namespace DemoGame.Client
                 _invForm = parent;
                 _slot = slot;
                 Tooltip = _tooltipHandler;
-                OnMouseUp += _invForm.InventoryItemPB_OnMouseUp;
+                MouseUp += _invForm.InventoryItemPB_OnMouseUp;
             }
 
             public InventorySlot Slot

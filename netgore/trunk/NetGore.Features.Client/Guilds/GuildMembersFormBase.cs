@@ -69,9 +69,9 @@ namespace NetGore.Features.Guilds
         /// This is called immediately before <see cref="Control.OnResize"/>.
         /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
         /// </summary>
-        protected override void Resize()
+        protected override void OnResized()
         {
-            base.Resize();
+            base.OnResized();
 
             if (_lstMembers != null)
                 _lstMembers.Size = ClientSize;

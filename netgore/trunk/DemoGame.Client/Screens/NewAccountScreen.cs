@@ -48,7 +48,7 @@ namespace DemoGame.Client
             _sockets.OnConnect += sockets_OnConnect;
             _sockets.OnDisconnect += _sockets_OnDisconnect;
             _sockets.OnFailedConnect += sockets_OnFailedConnect;
-            _sockets.PacketHandler.OnCreateAccount += PacketHandler_OnCreateAccount;
+            _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_OnCreateAccount;
 
             _createAccountButton.IsEnabled = true;
             _errorLabel.IsVisible = false;
@@ -124,8 +124,8 @@ namespace DemoGame.Client
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Create Account", "Back");
-            menuButtons["Create Account"].OnClick += ClickButton_CreateAccount;
-            menuButtons["Back"].OnClick += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
+            menuButtons["Create Account"].Clicked += ClickButton_CreateAccount;
+            menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             _createAccountButton = menuButtons["Create Account"];
         }

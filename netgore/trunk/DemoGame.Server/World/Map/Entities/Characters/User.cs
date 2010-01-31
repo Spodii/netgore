@@ -75,11 +75,11 @@ namespace DemoGame.Server
             Alliance = AllianceManager["user"];
 
             // Attach to some events
-            OnKillCharacter += User_OnKillCharacter;
-            OnChangeStatPoints += User_OnChangeStatPoints;
-            OnChangeExp += User_OnChangeExp;
-            OnChangeCash += User_OnChangeCash;
-            OnChangeLevel += User_OnChangeLevel;
+            KilledCharacter += User_OnKillCharacter;
+            StatPointsChanged += User_OnChangeStatPoints;
+            ExpChanged += User_OnChangeExp;
+            CashChanged += User_OnChangeCash;
+            LevelChanged += User_OnChangeLevel;
 
             _userInventory = (UserInventory)Inventory;
 

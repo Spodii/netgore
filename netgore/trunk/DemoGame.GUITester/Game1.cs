@@ -65,7 +65,7 @@ namespace DemoGame.GUITester
             _gui = new GUIManager(_font, skinManager);
 
             topForm = new Form(_gui, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
-            topForm.OnMouseMove += topForm_OnMouseMove;
+            topForm.MouseMoved += topForm_OnMouseMove;
 
             TextBox tb = new TextBox(topForm, new Vector2(10, 10), new Vector2(150, 300));
 
@@ -78,7 +78,7 @@ namespace DemoGame.GUITester
                 _textBox.Append(new StyledText(i + " ", c));
             }
 
-            _textBox.OnKeyUp += delegate(object sender, KeyboardEventArgs e)
+            _textBox.KeyUp += delegate(object sender, KeyboardEventArgs e)
                                 {
                                     if (e.Keys.Contains(Keys.F1))
                                         Debug.Fail(_textBox.Text);
@@ -108,7 +108,7 @@ namespace DemoGame.GUITester
             Form form = new Form(topForm, new Vector2(50, 50), new Vector2(200, 200)) { Text = "My form" };
 
             Button b = new Button(form, new Vector2(20, 20), new Vector2(80, 30)) { Text = "Press me" };
-            b.OnClick += b_OnMouseDown;
+            b.Clicked += b_OnMouseDown;
 
             new CheckBox(form, new Vector2(20, 200)) { Text = "Checkbox" };
 
@@ -117,18 +117,18 @@ namespace DemoGame.GUITester
             Form f4 = new Form(f3, Vector2.Zero, new Vector2(100, 100)) { Text = "form 4" };
 
             Label testLabelF4 = new Label(f4, Vector2.Zero) { Text = "Click me" };
-            testLabelF4.OnClick += testLabelF4_OnClick;
+            testLabelF4.Clicked += testLabelF4_OnClick;
 
-            topForm.OnBeginDrag += OnDrag;
-            topForm.OnEndDrag += OnDrag;
-            form.OnBeginDrag += OnDrag;
-            form.OnEndDrag += OnDrag;
-            f2.OnBeginDrag += OnDrag;
-            f2.OnEndDrag += OnDrag;
-            f3.OnBeginDrag += OnDrag;
-            f3.OnEndDrag += OnDrag;
-            f4.OnBeginDrag += OnDrag;
-            f4.OnEndDrag += OnDrag;
+            topForm.BeginDrag += OnDrag;
+            topForm.EndDrag += OnDrag;
+            form.BeginDrag += OnDrag;
+            form.EndDrag += OnDrag;
+            f2.BeginDrag += OnDrag;
+            f2.EndDrag += OnDrag;
+            f3.BeginDrag += OnDrag;
+            f3.EndDrag += OnDrag;
+            f4.BeginDrag += OnDrag;
+            f4.EndDrag += OnDrag;
 
             // Set up the tooltips
             foreach (Control c in _gui.GetAllControls())

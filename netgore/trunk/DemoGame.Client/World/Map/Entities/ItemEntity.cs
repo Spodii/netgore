@@ -215,7 +215,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies when the ItemEntity's render layer changes (which is never for ItemEntity)
         /// </summary>
-        public event MapRenderLayerChange OnChangeRenderLayer
+        public event MapRenderLayerChange ChangedRenderLayer
         {
             add { }
             remove { }

@@ -93,8 +93,8 @@ namespace NetGore.Graphics
                 MapRenderLayer oldLayer = MapRenderLayer;
                 _isForeground = value;
 
-                if (OnChangeRenderLayer != null)
-                    OnChangeRenderLayer(this, oldLayer);
+                if (ChangedRenderLayer != null)
+                    ChangedRenderLayer(this, oldLayer);
             }
         }
 
@@ -176,7 +176,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
         /// </summary>
-        public event MapRenderLayerChange OnChangeRenderLayer;
+        public event MapRenderLayerChange ChangedRenderLayer;
 
         /// <summary>
         /// Makes the object draw itself.
@@ -251,8 +251,8 @@ namespace NetGore.Graphics
                 var oldPosition = Position;
                 _position = value;
 
-                if (OnMove != null)
-                    OnMove(this, oldPosition);
+                if (Moved != null)
+                    Moved(this, oldPosition);
             }
         }
 
@@ -277,12 +277,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
-        public event SpatialMoveEventHandler OnMove;
+        public event SpatialEventHandler<Vector2> Moved;
 
         /// <summary>
         /// Unused by the <see cref="MapGrh"/>.
         /// </summary>
-        event SpatialResizeEventHandler ISpatial.OnResize
+        event SpatialEventHandler<Vector2> ISpatial.Resized
         {
             add { }
             remove { }

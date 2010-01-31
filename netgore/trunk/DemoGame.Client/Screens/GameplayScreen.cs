@@ -339,7 +339,7 @@ namespace DemoGame.Client
             _socket = ClientSockets.Instance;
 
             _world = new World(this, new Camera2D(GameData.ScreenSize));
-            _world.OnChangeMap += World_OnChangeMap;
+            _world.MapChanged += World_OnChangeMap;
 
             // Create the socket
             Socket.OnDisconnect += OnDisconnect;
@@ -367,29 +367,29 @@ namespace DemoGame.Client
 
             Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
             _statsForm = new StatsForm(UserInfo, cScreen);
-            _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
+            _statsForm.RequestRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(InventoryInfoRequester, new Vector2(250, 0), cScreen);
-            _inventoryForm.OnRequestDropItem += _inventoryForm_OnRequestDropItem;
-            _inventoryForm.OnRequestUseItem += _inventoryForm_OnRequestUseItem;
+            _inventoryForm.RequestDropItem += _inventoryForm_OnRequestDropItem;
+            _inventoryForm.RequestUseItem += _inventoryForm_OnRequestUseItem;
 
             _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
-            _shopForm.OnPurchase += ShopForm_OnPurchase;
+            _shopForm.RequestPurchase += ShopForm_OnPurchase;
 
             _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), cScreen);
-            _skillsForm.OnUseSkill += SkillsForm_OnUseSkill;
+            _skillsForm.RequestUseSkill += SkillsForm_OnUseSkill;
 
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);
 
             _equippedForm = new EquippedForm(EquipmentInfoRequester, new Vector2(500, 0), cScreen);
-            _equippedForm.OnRequestUnequip += EquippedForm_OnRequestUnequip;
+            _equippedForm.RequestUnequip += EquippedForm_OnRequestUnequip;
 
             _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
-            _chatForm.OnSay += ChatForm_OnSay;
+            _chatForm.Say += ChatForm_OnSay;
 
             _chatDialogForm = new NPCChatDialogForm(new Vector2(50, 50), cScreen);
-            _chatDialogForm.OnSelectResponse += ChatDialogForm_OnSelectResponse;
-            _chatDialogForm.OnRequestEndDialog += ChatDialogForm_OnRequestEndDialog;
+            _chatDialogForm.SelectResponse += ChatDialogForm_OnSelectResponse;
+            _chatDialogForm.RequestEndDialog += ChatDialogForm_OnRequestEndDialog;
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
@@ -400,7 +400,7 @@ namespace DemoGame.Client
             _skillCastProgressBar = new SkillCastProgressBar(cScreen);
 
             Toolbar toolbar = new Toolbar(cScreen, new Vector2(200, 200));
-            toolbar.OnClickItem += Toolbar_OnClickItem;
+            toolbar.ItemClicked += Toolbar_OnClickItem;
 
             // Apply the settings
             _guiSettings = new GUISettings("Default"); // FUTURE: Allow changing of the profile

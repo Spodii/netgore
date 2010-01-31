@@ -11,12 +11,12 @@ namespace NetGore
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
-        event SpatialMoveEventHandler OnMove;
+        event SpatialEventHandler<Vector2> Moved;
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
-        event SpatialResizeEventHandler OnResize;
+        event SpatialEventHandler<Vector2> Resized;
 
         /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.

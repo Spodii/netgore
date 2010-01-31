@@ -267,12 +267,12 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.OnResize"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
         /// </summary>
-        protected override void Resize()
+        protected override void OnResized()
         {
-            base.Resize();
+            base.OnResized();
 
             UpdateButtonPositions();
         }
@@ -348,9 +348,9 @@ namespace NetGore.Graphics.GUI
             /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
             /// </summary>
             /// <param name="e">The event args.</param>
-            protected override void Click(MouseClickEventArgs e)
+            protected override void OnClick(MouseClickEventArgs e)
             {
-                base.Click(e);
+                base.OnClick(e);
 
                 _clickAction();
             }
@@ -370,12 +370,12 @@ namespace NetGore.Graphics.GUI
             /// <summary>
             /// Handles when the mouse has entered the area of the <see cref="Control"/>.
             /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
-            /// Override this method instead of using an event hook on <see cref="Control.OnMouseEnter"/> when possible.
+            /// Override this method instead of using an event hook on <see cref="Control.MouseEnter"/> when possible.
             /// </summary>
             /// <param name="e">The event args.</param>
-            protected override void MouseEnter(MouseEventArgs e)
+            protected override void OnMouseEnter(MouseEventArgs e)
             {
-                base.MouseEnter(e);
+                base.OnMouseEnter(e);
 
                 Sprite = _spriteMouseOver;
             }
@@ -383,12 +383,12 @@ namespace NetGore.Graphics.GUI
             /// <summary>
             /// Handles when the mouse has left the area of the <see cref="Control"/>.
             /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
-            /// Override this method instead of using an event hook on <see cref="Control.OnMouseLeave"/> when possible.
+            /// Override this method instead of using an event hook on <see cref="Control.MouseLeave"/> when possible.
             /// </summary>
             /// <param name="e">The event args.</param>
-            protected override void MouseLeave(MouseEventArgs e)
+            protected override void OnMouseLeave(MouseEventArgs e)
             {
-                base.MouseLeave(e);
+                base.OnMouseLeave(e);
 
                 Sprite = _sprite;
             }

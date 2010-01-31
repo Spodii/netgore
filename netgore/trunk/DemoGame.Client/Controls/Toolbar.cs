@@ -31,7 +31,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when an individual tool item on the Toolbar has been clicked.
         /// </summary>
-        public event ToolbarEventHandler OnClickItem;
+        public event ToolbarEventHandler ItemClicked;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Toolbar"/> class.
@@ -48,12 +48,12 @@ namespace DemoGame.Client
 
         /// <summary>
         /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.OnChangeBorder"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnChangeBorder"/> when possible.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
         /// </summary>
-        protected override void ChangeBorder()
+        protected override void OnBorderChanged()
         {
-            base.ChangeBorder();
+            base.OnBorderChanged();
 
             UpdateSize();
         }
@@ -79,7 +79,7 @@ namespace DemoGame.Client
 
                 ToolbarItem item = new ToolbarItem(this, (ToolbarItemType)index, pos, sprite);
                 items[index] = item;
-                item.OnClick += ToolbarItem_OnClick;
+                item.Clicked += ToolbarItem_OnClick;
             }
 
             return items;
@@ -156,11 +156,11 @@ namespace DemoGame.Client
 
         void ToolbarItem_OnClick(object sender, MouseClickEventArgs e)
         {
-            if (OnClickItem == null)
+            if (ItemClicked == null)
                 return;
 
             ToolbarItem item = (ToolbarItem)sender;
-            OnClickItem(this, item.ToolbarItemType, item);
+            ItemClicked(this, item.ToolbarItemType, item);
         }
 
         /// <summary>

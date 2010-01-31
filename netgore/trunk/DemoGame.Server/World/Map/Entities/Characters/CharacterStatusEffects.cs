@@ -38,9 +38,9 @@ namespace DemoGame.Server
 
         int _lastUpdateTime;
 
-        public event CharacterStatusEffectsAddRemoveHandler OnAdd;
+        public event CharacterStatusEffectsAddRemoveHandler Added;
 
-        public event CharacterStatusEffectsAddRemoveHandler OnRemove;
+        public event CharacterStatusEffectsAddRemoveHandler Removed;
 
         public Character Character
         {
@@ -67,16 +67,16 @@ namespace DemoGame.Server
         {
             statusEffect.AddBonusesTo(_modStats);
 
-            if (OnAdd != null)
-                OnAdd(this, statusEffect);
+            if (Added != null)
+                Added(this, statusEffect);
         }
 
         protected virtual void NotifyRemoved(ActiveStatusEffect statusEffect)
         {
             statusEffect.SubtractBonusesFrom(_modStats);
 
-            if (OnRemove != null)
-                OnRemove(this, statusEffect);
+            if (Removed != null)
+                Removed(this, statusEffect);
 
 #if DEBUG
             // Randomly test to see if the values are correct

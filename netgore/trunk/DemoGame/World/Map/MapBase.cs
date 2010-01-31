@@ -241,7 +241,7 @@ namespace DemoGame
             Spatial.Add(entity);
 
             // Add the event hooks
-            entity.OnDispose += Entity_OnDispose;
+            entity.Disposed += Entity_OnDispose;
 
             // Allow for additional processing
             EntityAdded(entity);
@@ -820,7 +820,7 @@ namespace DemoGame
                 throw new ArgumentNullException("entity");
 
             // Remove the listeners
-            entity.OnDispose -= Entity_OnDispose;
+            entity.Disposed -= Entity_OnDispose;
 
             // Remove the entity from the entity list
             if (!_entities.Remove(entity))
