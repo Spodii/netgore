@@ -28,7 +28,7 @@ namespace NetGore.Network
         /// <summary>
         /// The UDPSocket used by all connections.
         /// </summary>
-        readonly UDPSocket _udpSocket = new UDPSocket();
+        readonly IUDPSocket _udpSocket = new UDPSocket();
 
         bool _disposed;
 
@@ -161,7 +161,7 @@ namespace NetGore.Network
                 {
                     // Create the connection and add it to the connections list
                     conn.Initialize();
-                    conn.OnDispose += SocketDisposeHandler;
+                    conn.Disposed += SocketDisposeHandler;
                     ipSocket = new IPSocket(conn, _udpSocket);
 
                     lock (_connectionsLock)
@@ -391,7 +391,7 @@ namespace NetGore.Network
 
                 // Initialize the connection and add it to the connections list
                 conn.Initialize();
-                conn.OnDispose += SocketDisposeHandler;
+                conn.Disposed += SocketDisposeHandler;
                 ipSocket = new IPSocket(conn, _udpSocket);
                 _connections.Add(ipSocket);
             }

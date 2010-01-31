@@ -13,7 +13,7 @@ namespace NetGore.Network
     /// A single, basic, thread-safe socket that uses UDP. Each <see cref="UDPSocket"/> will both send and listen
     /// on the same port it is created on.
     /// </summary>
-    public class UDPSocket : IDisposable
+    public class UDPSocket : IUDPSocket
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -71,68 +71,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Binds the <see cref="UDPSocket"/> to a random available port.
-        /// </summary>
-        /// <returns>Port that the <see cref="UDPSocket"/> bound to.</returns>
-        public int Bind()
-        {
-            return Bind(0);
-        }
-
-        /// <summary>
-        /// Binds the <see cref="UDPSocket"/> to the <paramref name="port"/>.
-        /// </summary>
-        /// <param name="port">Port to bind to.</param>
-        /// <returns>Port that the <see cref="UDPSocket"/> bound to.</returns>
-        public int Bind(int port)
-        {
-            // NOTE: This will probably crash if Bind has already been called
-
-            // Close down the old connection
-            if (_socket.IsBound)
-                _socket.Disconnect(true);
-
-            // Bind
-            _bindEndPoint = new IPEndPoint(IPAddress.Any, port);
-            _socket.Bind(_bindEndPoint);
-
-            // Get the port
-            EndPoint endPoint = _socket.LocalEndPoint;
-            if (endPoint == null)
-            {
-                const string errmsg = "Failed to bind the UDPSocket!";
-                if (log.IsFatalEnabled)
-                    log.Fatal(errmsg);
-                Debug.Fail(errmsg);
-                throw new Exception(errmsg);
-            }
-            _port = ((IPEndPoint)endPoint).Port;
-
-            // Begin receiving
-            BeginReceiveFrom();
-
-            return _port;
-        }
-
-        /// <summary>
-        /// Gets the queued data received by this UDPSocket.
-        /// </summary>
-        /// <returns>The queued data received by this UDPSocket, or null if empty.</returns>
-        public AddressedPacket[] GetRecvData()
-        {
-            lock (_receiveQueue)
-            {
-                int length = _receiveQueue.Count;
-                if (length == 0)
-                    return null;
-
-                var packets = _receiveQueue.ToArray();
-                _receiveQueue.Clear();
-                return packets;
-            }
-        }
-
-        /// <summary>
         /// Callback for ReceiveFrom.
         /// </summary>
         /// <param name="result">Async result.</param>
@@ -173,12 +111,90 @@ namespace NetGore.Network
             }
         }
 
+        #region IUDPSocket Members
+
+        /// <summary>
+        /// Binds the <see cref="IUDPSocket"/> to a random available port.
+        /// </summary>
+        /// <returns>
+        /// Port that the <see cref="IUDPSocket"/> binded to.
+        /// </returns>
+        public int Bind()
+        {
+            return Bind(0);
+        }
+
+        /// <summary>
+        /// Binds the <see cref="IUDPSocket"/> to the <paramref name="port"/>.
+        /// </summary>
+        /// <param name="port">Port to bind to.</param>
+        /// <returns>
+        /// Port that the <see cref="IUDPSocket"/> binded to.
+        /// </returns>
+        public int Bind(int port)
+        {
+            // NOTE: This will probably crash if Bind has already been called
+
+            // Close down the old connection
+            if (_socket.IsBound)
+                _socket.Disconnect(true);
+
+            // Bind
+            _bindEndPoint = new IPEndPoint(IPAddress.Any, port);
+            _socket.Bind(_bindEndPoint);
+
+            // Get the port
+            EndPoint endPoint = _socket.LocalEndPoint;
+            if (endPoint == null)
+            {
+                const string errmsg = "Failed to bind the UDPSocket!";
+                if (log.IsFatalEnabled)
+                    log.Fatal(errmsg);
+                Debug.Fail(errmsg);
+                throw new Exception(errmsg);
+            }
+            _port = ((IPEndPoint)endPoint).Port;
+
+            // Begin receiving
+            BeginReceiveFrom();
+
+            return _port;
+        }
+
+        /// <summary>
+        /// Gets the maximum size of the data that can be sent in a single send.
+        /// </summary>
+        int IUDPSocket.MaxSendSize
+        {
+            get { return MaxPacketSize; }
+        }
+
+        /// <summary>
+        /// Gets the queued data received by this <see cref="IUDPSocket"/>.
+        /// </summary>
+        /// <returns>
+        /// The queued data received by this <see cref="IUDPSocket"/>, or null if empty.
+        /// </returns>
+        public AddressedPacket[] GetRecvData()
+        {
+            lock (_receiveQueue)
+            {
+                int length = _receiveQueue.Count;
+                if (length == 0)
+                    return null;
+
+                var packets = _receiveQueue.ToArray();
+                _receiveQueue.Clear();
+                return packets;
+            }
+        }
+
         /// <summary>
         /// Sends data to the specified <paramref name="endPoint"/>.
         /// </summary>
         /// <param name="data">Data to send.</param>
         /// <param name="length">Length of the data to send in bytes.</param>
-        /// <param name="endPoint">EndPoint to send the data to.</param>
+        /// <param name="endPoint">The <see cref="EndPoint"/> to send the data to.</param>
         public void Send(byte[] data, int length, EndPoint endPoint)
         {
             if (endPoint == null)
@@ -198,13 +214,11 @@ namespace NetGore.Network
         /// Sends data to the specified <paramref name="endPoint"/>.
         /// </summary>
         /// <param name="data">Data to send.</param>
-        /// <param name="endPoint">EndPoint to send the data to.</param>
+        /// <param name="endPoint">The <see cref="EndPoint"/> to send the data to.</param>
         public void Send(byte[] data, EndPoint endPoint)
         {
             Send(data, data.Length, endPoint);
         }
-
-        #region IDisposable Members
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

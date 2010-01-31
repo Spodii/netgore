@@ -16,7 +16,7 @@ namespace NetGore.Network
         /// <summary>
         /// Asynchronously sends data to the socket.
         /// </summary>
-        /// <param name="sourceStream">BitStream containing the data to send.</param>
+        /// <param name="sourceStream">The <see cref="BitStream"/> containing the data to send.</param>
         void Send(BitStream sourceStream);
 
         /// <summary>
