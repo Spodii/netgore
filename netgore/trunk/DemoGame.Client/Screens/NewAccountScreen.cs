@@ -27,7 +27,7 @@ namespace DemoGame.Client
             PlayMusic = false;
         }
 
-        void _sockets_OnDisconnect(IIPSocket conn)
+        void sockets_Disconnected(SocketManager sender, IIPSocket conn)
         {
             _createAccountButton.IsEnabled = true;
         }
@@ -45,10 +45,10 @@ namespace DemoGame.Client
                     throw new Exception("Failed to reference the ClientSockets.");
             }
 
-            _sockets.OnConnect += sockets_OnConnect;
-            _sockets.OnDisconnect += _sockets_OnDisconnect;
-            _sockets.OnFailedConnect += sockets_OnFailedConnect;
-            _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_OnCreateAccount;
+            _sockets.Connected += sockets_Connected;
+            _sockets.Disconnected += sockets_Disconnected;
+            _sockets.ConnectFailed += sockets_ConnectFailed;
+            _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
 
             _createAccountButton.IsEnabled = true;
             _errorLabel.IsVisible = false;
@@ -130,7 +130,7 @@ namespace DemoGame.Client
             _createAccountButton = menuButtons["Create Account"];
         }
 
-        void PacketHandler_OnCreateAccount(IIPSocket conn, bool successful, string errorMessage)
+        void PacketHandler_ReceivedCreateAccount(IIPSocket conn, bool successful, string errorMessage)
         {
             if (!successful)
             {
@@ -161,7 +161,7 @@ namespace DemoGame.Client
             _errorLabel.ForeColor = Color.Green;
         }
 
-        void sockets_OnConnect(IIPSocket conn)
+        void sockets_Connected(SocketManager sender, IIPSocket conn)
         {
             ShowMessage("Connected to server. Sending new account request...");
 
@@ -171,7 +171,7 @@ namespace DemoGame.Client
             }
         }
 
-        void sockets_OnFailedConnect(IIPSocket conn)
+        void sockets_ConnectFailed(SocketManager sender)
         {
             ShowError("Failed to connect to the server.");
         }
