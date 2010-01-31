@@ -39,6 +39,11 @@ namespace NetGore.Features.Guilds
         public event UserGuildInformationEventHandler<GuildMemberNameRank> OnAddMember;
 
         /// <summary>
+        /// Notifies listeners when a guild member's rank has been updated.
+        /// </summary>
+        public event UserGuildInformationEventHandler<GuildMemberNameRank> OnUpdateRank;
+
+        /// <summary>
         /// Notifies listeners when an offline guild member has come online.
         /// </summary>
         public event UserGuildInformationEventHandler<string> OnAddOnlineMember;
@@ -163,6 +168,14 @@ namespace NetGore.Features.Guilds
                     ReadRemoveOnlineMember(bitStream);
                     return;
 
+                case GuildInfoMessages.UpdateRank:
+                    ReadUpdateRank(bitStream);
+                    return;
+
+                case GuildInfoMessages.UpdateNameTag:
+                    ReadUpdateNameTag(bitStream);
+                    return;
+
                 default:
                     const string errmsg = "Unknown GuildInfoMessages value `{0}`. Could not parse!";
                     string err = string.Format(errmsg, id);
@@ -170,6 +183,23 @@ namespace NetGore.Features.Guilds
                     Debug.Fail(err);
                     return;
             }
+        }
+
+        void ReadUpdateNameTag(BitStream r)
+        {
+            Name = r.ReadString();
+            Tag = r.ReadString();
+        }
+
+        void ReadUpdateRank(IValueReader r)
+        {
+            var member = r.ReadGuildMemberNameRank(null);
+            _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, member.Name));
+            _members.Add(member);
+            _members.Sort();
+
+            if (OnUpdateRank != null)
+                OnUpdateRank(this, member);
         }
 
         void ReadAddMember(IValueReader r)
@@ -319,6 +349,19 @@ namespace NetGore.Features.Guilds
             pw.Write(memberName);
         }
 
+        public static void WriteUpdateMemberRank(BitStream pw, GuildMemberNameRank member)
+        {
+            pw.WriteEnum(GuildInfoMessages.UpdateRank);
+            pw.Write(null, member);
+        }
+
+        public static void WriteUpdateNameTag(BitStream pw, string name, string tag)
+        {
+            pw.WriteEnum(GuildInfoMessages.UpdateNameTag);
+            pw.Write(name);
+            pw.Write(tag);
+        }
+
         /// <summary>
         /// Enum of the different packet messages for this class.
         /// </summary>
@@ -347,7 +390,17 @@ namespace NetGore.Features.Guilds
             /// <summary>
             /// Sets all the initial guild information.
             /// </summary>
-            SetGuild
+            SetGuild,
+
+            /// <summary>
+            /// Updates the rank of a single member.
+            /// </summary>
+            UpdateRank,
+
+            /// <summary>
+            /// Updates the guild's name and tag.
+            /// </summary>
+            UpdateNameTag,
         }
     }
 }
