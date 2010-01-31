@@ -15,12 +15,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the focused <see cref="Control"/> has changed.
         /// </summary>
-        event GUIEventHandler OnChangeFocusedControl;
+        event GUIEventHandler FocusedControlChanged;
 
         /// <summary>
         /// Notifies listeners when the focused root <see cref="Control"/> has changed.
         /// </summary>
-        event GUIEventHandler OnChangeFocusedRoot;
+        event GUIEventHandler FocusedRootChanged;
 
         /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This

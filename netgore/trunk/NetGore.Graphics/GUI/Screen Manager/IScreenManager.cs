@@ -17,7 +17,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="IScreenManager"/> updates.
         /// </summary>
-        event IScreenManagerEventHandler OnUpdate;
+        event IScreenManagerEventHandler Updated;
 
         /// <summary>
         /// Gets or sets the currently active <see cref="IGameScreen"/>.

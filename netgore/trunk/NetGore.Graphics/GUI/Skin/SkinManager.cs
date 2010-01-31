@@ -49,9 +49,10 @@ namespace NetGore.Graphics.GUI
         protected bool IsCurrentSkinDefault { get; private set; }
 
         /// <summary>
-        /// Handles when the skin has changed and applies the new skin to all the <see cref="Control"/>s.
+        /// Handles when the skin has changed and applies the new skin to all the <see cref="Control"/>s. This
+        /// method is invoked immediately before the <see cref="ISkinManager.SkinChanged"/> event.
         /// </summary>
-        protected virtual void ChangeSkin()
+        protected virtual void OnSkinChanged()
         {
             foreach (var guiManager in GUIManagers)
             {
@@ -182,11 +183,11 @@ namespace NetGore.Graphics.GUI
                     IsCurrentSkinDefault = false;
 
                 // Apply the new skin to existing Controls
-                ChangeSkin();
+                OnSkinChanged();
 
                 // Only raise the change event if the skin actually changed, not the skin was just set from nothing
-                if (oldSkin != null && OnChangeSkin != null)
-                    OnChangeSkin(_currentSkin, oldSkin);
+                if (oldSkin != null && SkinChanged != null)
+                    SkinChanged(_currentSkin, oldSkin);
             }
         }
 
@@ -326,7 +327,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the active skin has changed.
         /// </summary>
-        public event SkinChangeEventHandler OnChangeSkin;
+        public event SkinChangeEventHandler SkinChanged;
 
         #endregion
     }

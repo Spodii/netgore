@@ -67,9 +67,9 @@ namespace NetGore.Graphics.GUI
         /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
         /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
         /// </summary>
-        protected override void ChangeFont()
+        protected override void OnFontChanged()
         {
-            base.ChangeFont();
+            base.OnFontChanged();
 
             UpdateTextSize();
         }
@@ -79,9 +79,9 @@ namespace NetGore.Graphics.GUI
         /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
         /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
         /// </summary>
-        protected override void ChangeText()
+        protected override void OnTextChanged()
         {
-            base.ChangeText();
+            base.OnTextChanged();
 
             UpdateTextSize();
         }
