@@ -150,7 +150,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Notifies listeners when the map has changed.
         /// </summary>
-        public event MapChangeEventHandler OnChangeMap;
+        public event MapChangeEventHandler MapChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -284,10 +284,10 @@ namespace DemoGame.MapEditor
                 txtMapHeight.Text = Map.Height.ToString();
 
                 // Notify listeners
-                HandleChangeMap(oldMap, Map);
+                OnMapChanged(oldMap, Map);
 
-                if (OnChangeMap != null)
-                    OnChangeMap(oldMap, Map);
+                if (MapChanged != null)
+                    MapChanged(oldMap, Map);
             }
         }
 
@@ -454,7 +454,7 @@ namespace DemoGame.MapEditor
                                 "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            MapIndex index = Map.GetNextFreeIndex(ContentPaths.Dev);
+            MapIndex index = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
             var newMap = new Map(index, Camera, _world, GameScreen.GraphicsDevice);
             DbController.GetQuery<InsertMapQuery>().Execute(newMap);
@@ -523,7 +523,7 @@ namespace DemoGame.MapEditor
             }
 
             MapIndex index;
-            if (!Map.TryGetIndexFromPath(filePath, out index))
+            if (!MapBase.TryGetIndexFromPath(filePath, out index))
             {
                 MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
                 return null;
@@ -695,10 +695,10 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.OnChangeMap"/>
+        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.MapChanged"/>
         /// event when possible.
         /// </summary>
-        void HandleChangeMap(Map oldMap, Map newMap)
+        protected virtual void OnMapChanged(Map oldMap, Map newMap)
         {
             // Clear the selected item
             SelectedObjs.Clear();
