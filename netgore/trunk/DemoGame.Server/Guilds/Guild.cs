@@ -6,6 +6,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Features.Guilds;
+using NetGore.Network;
 
 namespace DemoGame.Server.Guilds
 {
@@ -74,10 +75,7 @@ namespace DemoGame.Server.Guilds
             var v = new GuildMemberNameRank(newMember.Name, newMember.GuildRank);
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddMember(x, v)))
             {
-                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
-                {
-                    member.Send(pw);
-                }
+                Send(pw);
             }
         }
 
@@ -92,10 +90,7 @@ namespace DemoGame.Server.Guilds
 
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddOnlineMember(x, guildMember.Name)))
             {
-                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
-                {
-                    member.Send(pw);
-                }
+                Send(pw);
             }
         }
 
@@ -108,9 +103,14 @@ namespace DemoGame.Server.Guilds
         /// <param name="newName">The new name.</param>
         protected override void HandleChangeName(IGuildMember invoker, string oldName, string newName)
         {
-            foreach (var user in OnlineMembers.OfType<User>())
+            using (var pw = ServerPacket.SendMessage(GameMessage.GuildRenamed, oldName, newName, invoker.Name))
             {
-                user.Send(GameMessage.GuildRenamed, oldName, newName, invoker.Name);
+                Send(pw);
+            }
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateNameTag(x, Name, Tag)))
+            {
+                Send(pw);
             }
         }
 
@@ -123,9 +123,14 @@ namespace DemoGame.Server.Guilds
         /// <param name="newTag">The new tag.</param>
         protected override void HandleChangeTag(IGuildMember invoker, string oldTag, string newTag)
         {
-            foreach (var user in OnlineMembers.OfType<User>())
+            using (var pw = ServerPacket.SendMessage(GameMessage.GuildRetagged, oldTag, newTag, invoker.Name))
             {
-                user.Send(GameMessage.GuildRenamed, oldTag, newTag, invoker.Name);
+                Send(pw);
+            }
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateNameTag(x, Name, Tag)))
+            {
+                Send(pw);
             }
         }
 
@@ -157,10 +162,24 @@ namespace DemoGame.Server.Guilds
 
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveMember(x, target.Name)))
             {
-                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
-                {
-                    member.Send(pw);
-                }
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is promoted.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected override void HandlePromoteMember(IGuildMember invoker, IGuildMember target)
+        {
+            base.HandlePromoteMember(invoker, target);
+
+            var v = new GuildMemberNameRank(target.Name, target.GuildRank);
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateMemberRank(x, v)))
+            {
+                Send(pw);
             }
         }
 
@@ -175,10 +194,7 @@ namespace DemoGame.Server.Guilds
 
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveOnlineMember(x, guildMember.Name)))
             {
-                foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
-                {
-                    member.Send(pw);
-                }
+                Send(pw);
             }
         }
 
@@ -272,6 +288,18 @@ namespace DemoGame.Server.Guilds
         public override void Save()
         {
             _updateGuildQuery.Execute(this);
+        }
+
+        /// <summary>
+        /// Sends a message to all guild members.
+        /// </summary>
+        /// <param name="pw">The <see cref="PacketWriter"/> containing the data to send.</param>
+        public void Send(PacketWriter pw)
+        {
+            foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
+            {
+                member.Send(pw);
+            }
         }
 
         /// <summary>
