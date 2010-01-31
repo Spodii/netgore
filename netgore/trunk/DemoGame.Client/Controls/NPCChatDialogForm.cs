@@ -63,7 +63,7 @@ namespace DemoGame.Client
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
                 ResponseText r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true };
-                r.Clicked += ResponseText_OnClick;
+                r.Clicked += ResponseText_Clicked;
                 _responseTextControls[i] = r;
             }
         }
@@ -115,7 +115,7 @@ namespace DemoGame.Client
             }
         }
 
-        void ResponseText_OnClick(object sender, MouseClickEventArgs e)
+        void ResponseText_Clicked(object sender, MouseClickEventArgs e)
         {
             ResponseText src = (ResponseText)sender;
             NPCChatResponseBase response = src.Response;

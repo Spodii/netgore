@@ -34,7 +34,7 @@ namespace DemoGame.GUITester
             IsFixedTimeStep = false;
         }
 
-        void b_OnMouseDown(object sender, MouseClickEventArgs e)
+        void b_Clicked(object sender, MouseClickEventArgs e)
         {
             Window.Title = rnd.NextDouble().ToString();
 
@@ -65,7 +65,7 @@ namespace DemoGame.GUITester
             _gui = new GUIManager(_font, skinManager);
 
             topForm = new Form(_gui, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
-            topForm.MouseMoved += topForm_OnMouseMove;
+            topForm.MouseMoved += topForm_MouseMoved;
 
             TextBox tb = new TextBox(topForm, new Vector2(10, 10), new Vector2(150, 300));
 
@@ -108,7 +108,7 @@ namespace DemoGame.GUITester
             Form form = new Form(topForm, new Vector2(50, 50), new Vector2(200, 200)) { Text = "My form" };
 
             Button b = new Button(form, new Vector2(20, 20), new Vector2(80, 30)) { Text = "Press me" };
-            b.Clicked += b_OnMouseDown;
+            b.Clicked += b_Clicked;
 
             new CheckBox(form, new Vector2(20, 200)) { Text = "Checkbox" };
 
@@ -117,18 +117,18 @@ namespace DemoGame.GUITester
             Form f4 = new Form(f3, Vector2.Zero, new Vector2(100, 100)) { Text = "form 4" };
 
             Label testLabelF4 = new Label(f4, Vector2.Zero) { Text = "Click me" };
-            testLabelF4.Clicked += testLabelF4_OnClick;
+            testLabelF4.Clicked += testLabelF4_Clicked;
 
-            topForm.BeginDrag += OnDrag;
-            topForm.EndDrag += OnDrag;
-            form.BeginDrag += OnDrag;
-            form.EndDrag += OnDrag;
-            f2.BeginDrag += OnDrag;
-            f2.EndDrag += OnDrag;
-            f3.BeginDrag += OnDrag;
-            f3.EndDrag += OnDrag;
-            f4.BeginDrag += OnDrag;
-            f4.EndDrag += OnDrag;
+            topForm.BeginDrag += DragControl;
+            topForm.EndDrag += DragControl;
+            form.BeginDrag += DragControl;
+            form.EndDrag += DragControl;
+            f2.BeginDrag += DragControl;
+            f2.EndDrag += DragControl;
+            f3.BeginDrag += DragControl;
+            f3.EndDrag += DragControl;
+            f4.BeginDrag += DragControl;
+            f4.EndDrag += DragControl;
 
             // Set up the tooltips
             foreach (Control c in _gui.GetAllControls())
@@ -147,14 +147,14 @@ namespace DemoGame.GUITester
             var pl = new PagedList<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items };
         }
 
-        void OnDrag(Control sender)
+        void DragControl(Control sender)
         {
             TextControl s = (TextControl)sender;
             s.Text = s.Position.ToString();
             Window.Title = "Screen Position: " + s.ScreenPosition;
         }
 
-        static void testLabelF4_OnClick(object sender, MouseClickEventArgs e)
+        static void testLabelF4_Clicked(object sender, MouseClickEventArgs e)
         {
             Label source = (Label)sender;
             if (source.Text == "I was clicked!")
@@ -186,7 +186,7 @@ namespace DemoGame.GUITester
             return new StyledText[] { new StyledText("Text for a "), new StyledText("label", c) };
         }
 
-        void topForm_OnMouseMove(object sender, MouseEventArgs e)
+        void topForm_MouseMoved(object sender, MouseEventArgs e)
         {
             Control c = _gui.GetControlAtPoint(e.Location + topForm.Position);
 

@@ -173,7 +173,7 @@ namespace DemoGame.Client
             get { return _world; }
         }
 
-        void _inventoryForm_OnRequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
+        void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
         {
             if (inventoryForm.Inventory != UserInfo.Inventory)
                 return;
@@ -192,7 +192,7 @@ namespace DemoGame.Client
                 UserInfo.Inventory.Drop(slot);
         }
 
-        void _inventoryForm_OnRequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
+        void InventoryForm_RequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
         {
             if (inventoryForm.Inventory != UserInfo.Inventory)
                 return;
@@ -228,7 +228,7 @@ namespace DemoGame.Client
             _chatForm.AppendToOutput(text);
         }
 
-        void ChatDialogForm_OnRequestEndDialog(NPCChatDialogForm sender)
+        void ChatDialogForm_RequestEndDialog(NPCChatDialogForm sender)
         {
             using (PacketWriter pw = ClientPacket.EndNPCChatDialog())
             {
@@ -236,7 +236,7 @@ namespace DemoGame.Client
             }
         }
 
-        void ChatDialogForm_OnSelectResponse(NPCChatDialogForm sender, NPCChatResponseBase response)
+        void ChatDialogForm_SelectResponse(NPCChatDialogForm sender, NPCChatResponseBase response)
         {
             using (PacketWriter pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
             {
@@ -244,7 +244,7 @@ namespace DemoGame.Client
             }
         }
 
-        void ChatForm_OnSay(ChatForm sender, string text)
+        void ChatForm_Say(ChatForm sender, string text)
         {
             if (string.IsNullOrEmpty(text))
                 return;
@@ -318,7 +318,7 @@ namespace DemoGame.Client
             spriteBatch.End();
         }
 
-        void EquippedForm_OnRequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
+        void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
         {
             // Send unequip request
             using (PacketWriter pw = ClientPacket.UnequipItem(slot))
@@ -339,7 +339,7 @@ namespace DemoGame.Client
             _socket = ClientSockets.Instance;
 
             _world = new World(this, new Camera2D(GameData.ScreenSize));
-            _world.MapChanged += World_OnChangeMap;
+            _world.MapChanged += World_MapChanged;
 
             // Create the socket
             Socket.Disconnected += OnDisconnect;
@@ -367,29 +367,29 @@ namespace DemoGame.Client
 
             Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
             _statsForm = new StatsForm(UserInfo, cScreen);
-            _statsForm.RequestRaiseStat += StatsForm_OnRaiseStat;
+            _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
             _inventoryForm = new InventoryForm(InventoryInfoRequester, new Vector2(250, 0), cScreen);
-            _inventoryForm.RequestDropItem += _inventoryForm_OnRequestDropItem;
-            _inventoryForm.RequestUseItem += _inventoryForm_OnRequestUseItem;
+            _inventoryForm.RequestDropItem += InventoryForm_RequestDropItem;
+            _inventoryForm.RequestUseItem += InventoryForm_RequestUseItem;
 
             _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
-            _shopForm.RequestPurchase += ShopForm_OnPurchase;
+            _shopForm.RequestPurchase += ShopForm_RequestPurchase;
 
             _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), cScreen);
-            _skillsForm.RequestUseSkill += SkillsForm_OnUseSkill;
+            _skillsForm.RequestUseSkill += SkillsForm_RequestUseSkill;
 
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);
 
             _equippedForm = new EquippedForm(EquipmentInfoRequester, new Vector2(500, 0), cScreen);
-            _equippedForm.RequestUnequip += EquippedForm_OnRequestUnequip;
+            _equippedForm.RequestUnequip += EquippedForm_RequestUnequip;
 
             _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
-            _chatForm.Say += ChatForm_OnSay;
+            _chatForm.Say += ChatForm_Say;
 
             _chatDialogForm = new NPCChatDialogForm(new Vector2(50, 50), cScreen);
-            _chatDialogForm.SelectResponse += ChatDialogForm_OnSelectResponse;
-            _chatDialogForm.RequestEndDialog += ChatDialogForm_OnRequestEndDialog;
+            _chatDialogForm.SelectResponse += ChatDialogForm_SelectResponse;
+            _chatDialogForm.RequestEndDialog += ChatDialogForm_RequestEndDialog;
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
@@ -400,7 +400,7 @@ namespace DemoGame.Client
             _skillCastProgressBar = new SkillCastProgressBar(cScreen);
 
             Toolbar toolbar = new Toolbar(cScreen, new Vector2(200, 200));
-            toolbar.ItemClicked += Toolbar_OnClickItem;
+            toolbar.ItemClicked += Toolbar_ItemClicked;
 
             // Apply the settings
             _guiSettings = new GUISettings("Default"); // FUTURE: Allow changing of the profile
@@ -435,7 +435,7 @@ namespace DemoGame.Client
             }
         }
 
-        void ShopForm_OnPurchase(ShopForm shopForm, ShopItemIndex slot)
+        void ShopForm_RequestPurchase(ShopForm shopForm, ShopItemIndex slot)
         {
             using (PacketWriter pw = ClientPacket.BuyFromShop(slot, 1))
             {
@@ -443,7 +443,7 @@ namespace DemoGame.Client
             }
         }
 
-        void SkillsForm_OnUseSkill(SkillType skillType)
+        void SkillsForm_RequestUseSkill(SkillType skillType)
         {
             using (PacketWriter pw = ClientPacket.UseSkill(skillType))
             {
@@ -456,7 +456,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="statsForm">StatsForm that the event came from.</param>
         /// <param name="statType">StatType requested to be raised.</param>
-        void StatsForm_OnRaiseStat(StatsForm statsForm, StatType statType)
+        void StatsForm_RequestRaiseStat(StatsForm statsForm, StatType statType)
         {
             using (PacketWriter pw = ClientPacket.RaiseStat(statType))
             {
@@ -470,7 +470,7 @@ namespace DemoGame.Client
         /// <param name="toolbar">Toolbar that was clicked.</param>
         /// <param name="itemType">ToolbarItemType of the toolbar item clicked.</param>
         /// <param name="control">Control that was clicked.</param>
-        void Toolbar_OnClickItem(Toolbar toolbar, ToolbarItemType itemType, Control control)
+        void Toolbar_ItemClicked(Toolbar toolbar, ToolbarItemType itemType, Control control)
         {
             switch (itemType)
             {
@@ -531,7 +531,7 @@ namespace DemoGame.Client
             base.Update(gameTime);
         }
 
-        void World_OnChangeMap(World world, Map map)
+        void World_MapChanged(World world, Map map)
         {
             // Stop all sounds
             SoundManager.Stop();

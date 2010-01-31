@@ -115,7 +115,7 @@ namespace DemoGame.Server
         /// Handles when a NPC handled by this NPCSpawner is killed.
         /// </summary>
         /// <param name="character">The NPC that was killed.</param>
-        void NPC_OnKilled(Character character)
+        void NPC_Killed(Character character)
         {
             Debug.Assert(character is NPC, "How is this not a NPC?!");
             Debug.Assert(!character.IsDisposed, "Uhm, why did somebody dispose my precious little map-spawned NPC? :(");
@@ -147,7 +147,7 @@ namespace DemoGame.Server
             {
                 Vector2 pos = RandomSpawnPosition();
                 NPC npc = new NPC(_map.World, _characterTemplate, _map, pos);
-                npc.Killed += NPC_OnKilled;
+                npc.Killed += NPC_Killed;
             }
         }
     }

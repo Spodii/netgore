@@ -68,9 +68,9 @@ namespace DemoGame.Server.Guilds
         /// Use this instead of the corresponding event when possible.
         /// </summary>
         /// <param name="newMember"></param>
-        protected override void HandleAddMember(IGuildMember newMember)
+        protected override void OnMemberAdded(IGuildMember newMember)
         {
-            base.HandleAddMember(newMember);
+            base.OnMemberAdded(newMember);
 
             var v = new GuildMemberNameRank(newMember.Name, newMember.GuildRank);
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddMember(x, v)))
@@ -84,9 +84,9 @@ namespace DemoGame.Server.Guilds
         /// guild has come online.
         /// </summary>
         /// <param name="guildMember">The guild member that came online.</param>
-        protected override void HandleAddOnlineUser(IGuildMember guildMember)
+        protected override void OnOnlineUserAdded(IGuildMember guildMember)
         {
-            base.HandleAddOnlineUser(guildMember);
+            base.OnOnlineUserAdded(guildMember);
 
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddOnlineMember(x, guildMember.Name)))
             {
@@ -101,7 +101,7 @@ namespace DemoGame.Server.Guilds
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <param name="oldName">The old name.</param>
         /// <param name="newName">The new name.</param>
-        protected override void HandleChangeName(IGuildMember invoker, string oldName, string newName)
+        protected override void OnNameChanged(IGuildMember invoker, string oldName, string newName)
         {
             using (var pw = ServerPacket.SendMessage(GameMessage.GuildRenamed, oldName, newName, invoker.Name))
             {
@@ -121,7 +121,7 @@ namespace DemoGame.Server.Guilds
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <param name="oldTag">The old tag.</param>
         /// <param name="newTag">The new tag.</param>
-        protected override void HandleChangeTag(IGuildMember invoker, string oldTag, string newTag)
+        protected override void OnTagChanged(IGuildMember invoker, string oldTag, string newTag)
         {
             using (var pw = ServerPacket.SendMessage(GameMessage.GuildRetagged, oldTag, newTag, invoker.Name))
             {
@@ -138,7 +138,7 @@ namespace DemoGame.Server.Guilds
         /// When overridden in the derived class, handles destroying the guild. This needs to remove all members
         /// in the guild from the guild, and remove the guild itself from the database.
         /// </summary>
-        protected override void HandleDestroyGuild()
+        protected override void HandleDestroyed()
         {
             // Remove all online members in the guild from the guild
             foreach (var member in OnlineMembers)
@@ -156,9 +156,9 @@ namespace DemoGame.Server.Guilds
         /// </summary>
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <param name="target">The optional guild member the event involves.</param>
-        protected override void HandleKickMember(IGuildMember invoker, IGuildMember target)
+        protected override void OnMemberKicked(IGuildMember invoker, IGuildMember target)
         {
-            base.HandleKickMember(invoker, target);
+            base.OnMemberKicked(invoker, target);
 
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveMember(x, target.Name)))
             {
@@ -172,9 +172,9 @@ namespace DemoGame.Server.Guilds
         /// </summary>
         /// <param name="invoker">The guild member that invoked the event.</param>
         /// <param name="target">The optional guild member the event involves.</param>
-        protected override void HandlePromoteMember(IGuildMember invoker, IGuildMember target)
+        protected override void OnMemberPromoted(IGuildMember invoker, IGuildMember target)
         {
-            base.HandlePromoteMember(invoker, target);
+            base.OnMemberPromoted(invoker, target);
 
             var v = new GuildMemberNameRank(target.Name, target.GuildRank);
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateMemberRank(x, v)))
@@ -188,9 +188,9 @@ namespace DemoGame.Server.Guilds
         /// guild has gone offline.
         /// </summary>
         /// <param name="guildMember">The guild member that went offline.</param>
-        protected override void HandleRemoveOnlineUser(IGuildMember guildMember)
+        protected override void OnOnlineUserRemoved(IGuildMember guildMember)
         {
-            base.HandleRemoveOnlineUser(guildMember);
+            base.OnOnlineUserRemoved(guildMember);
 
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveOnlineMember(x, guildMember.Name)))
             {

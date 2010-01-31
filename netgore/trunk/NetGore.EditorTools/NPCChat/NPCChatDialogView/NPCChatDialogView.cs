@@ -92,7 +92,7 @@ namespace NetGore.EditorTools.NPCChat
         /// Handles when a EditorNPCChatDialogItem changes.
         /// </summary>
         /// <param name="response">The EditorNPCChatDialogItem that changed.</param>
-        void EditorNPCChatDialogItem_OnChange(EditorNPCChatDialogItem response)
+        void EditorNPCChatDialogItem_Changed(EditorNPCChatDialogItem response)
         {
             List<NPCChatDialogViewNode> l;
             if (!_objToTreeNode.TryGetValue(response, out l))
@@ -108,7 +108,7 @@ namespace NetGore.EditorTools.NPCChat
         /// Handles when a EditorNPCChatResponse changes.
         /// </summary>
         /// <param name="response">The EditorNPCChatResponse that changed.</param>
-        void EditorNPCChatResponse_OnChange(EditorNPCChatResponse response)
+        void EditorNPCChatResponse_Changed(EditorNPCChatResponse response)
         {
             List<NPCChatDialogViewNode> l;
             if (!_objToTreeNode.TryGetValue(response, out l))
@@ -239,9 +239,9 @@ namespace NetGore.EditorTools.NPCChat
             }
 
             if (node.ChatItemType == NPCChatDialogViewNodeItemType.Response)
-                node.ChatItemAsResponse.Changed += EditorNPCChatResponse_OnChange;
+                node.ChatItemAsResponse.Changed += EditorNPCChatResponse_Changed;
             else
-                node.ChatItemAsDialogItem.Changed += EditorNPCChatDialogItem_OnChange;
+                node.ChatItemAsDialogItem.Changed += EditorNPCChatDialogItem_Changed;
 
             l.Add(node);
         }

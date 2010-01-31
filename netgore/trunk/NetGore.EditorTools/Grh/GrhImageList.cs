@@ -54,13 +54,13 @@ namespace NetGore.EditorTools
             var existingGrhDatas = GrhInfo.GrhDatas.ToImmutable();
 
             // Listen for new GrhDatas being added/removed
-            GrhInfo.Added += GrhInfo_OnAdd;
-            GrhInfo.Removed += GrhInfo_OnRemove;
+            GrhInfo.Added += GrhInfo_Added;
+            GrhInfo.Removed += GrhInfo_Removed;
 
             // Add the existing GrhDatas
             foreach (var gd in existingGrhDatas)
             {
-                GrhInfo_OnAdd(gd);
+                GrhInfo_Added(gd);
             }
         }
 
@@ -202,7 +202,7 @@ namespace NetGore.EditorTools
         /// Handles when a GrhData is added to the global GrhData list.
         /// </summary>
         /// <param name="grhData">GrhData that was added.</param>
-        static void GrhInfo_OnAdd(GrhData grhData)
+        static void GrhInfo_Added(GrhData grhData)
         {
             if (grhData is StationaryGrhData)
             {
@@ -223,7 +223,7 @@ namespace NetGore.EditorTools
         /// Handles when a GrhData is removed from the global GrhData list.
         /// </summary>
         /// <param name="grhData">GrhData that was removed.</param>
-        static void GrhInfo_OnRemove(GrhData grhData)
+        static void GrhInfo_Removed(GrhData grhData)
         {
             if (grhData is StationaryGrhData)
             {

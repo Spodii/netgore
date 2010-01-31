@@ -85,7 +85,7 @@ namespace DemoGame.Client
             if (StatTypeHelper.RaisableStats.Contains(statType))
             {
                 RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, statType);
-                statPB.Clicked += StatPB_OnClick;
+                statPB.Clicked += StatPB_Clicked;
             }
         }
 
@@ -107,7 +107,7 @@ namespace DemoGame.Client
             Text = "Stats";
         }
 
-        void StatPB_OnClick(object sender, MouseClickEventArgs e)
+        void StatPB_Clicked(object sender, MouseClickEventArgs e)
         {
             RaiseStatPB statPB = (RaiseStatPB)sender;
 

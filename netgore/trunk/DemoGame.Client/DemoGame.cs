@@ -61,7 +61,7 @@ namespace DemoGame.Client
                                          });
 
             _sockets = ClientSockets.Instance;
-            _screenManager.Updated += screenManager_OnUpdate;
+            _screenManager.Updated += screenManager_Updated;
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace DemoGame.Client
             _screenManager.MapContent.Unload();
         }
 
-        void screenManager_OnUpdate(IScreenManager screenManager)
+        void screenManager_Updated(IScreenManager screenManager)
         {
             // Update the sockets
             _sockets.Heartbeat();

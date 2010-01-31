@@ -59,10 +59,10 @@ namespace DemoGame.Client
             var skillInfo = SkillInfoManager.Instance.GetAttribute(skillType);
 
             PictureBox pb = new SkillPictureBox(this, skillInfo, position);
-            pb.Clicked += SkillPicture_OnClick;
+            pb.Clicked += SkillPicture_Clicked;
 
             SkillLabel skillLabel = new SkillLabel(this, skillInfo, position + new Vector2(_iconSize.X + 4, 0));
-            skillLabel.Clicked += SkillLabel_OnClick;
+            skillLabel.Clicked += SkillLabel_Clicked;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace DemoGame.Client
             Text = "Skills";
         }
 
-        void SkillLabel_OnClick(object sender, MouseClickEventArgs e)
+        void SkillLabel_Clicked(object sender, MouseClickEventArgs e)
         {
             if (RequestUseSkill != null)
             {
@@ -85,7 +85,7 @@ namespace DemoGame.Client
             }
         }
 
-        void SkillPicture_OnClick(object sender, MouseClickEventArgs e)
+        void SkillPicture_Clicked(object sender, MouseClickEventArgs e)
         {
             if (RequestUseSkill != null)
             {
