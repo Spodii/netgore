@@ -20,10 +20,14 @@ namespace NetGore.Graphics.GUI
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly object _eventBeginDrag = new object();
         static readonly object _eventBorderChanged = new object();
+        static readonly object _eventCanDragChanged = new object();
+        static readonly object _eventCanFocusChanged = new object();
         static readonly object _eventClicked = new object();
         static readonly object _eventDisposed = new object();
+        static readonly object _eventEnabledChanged = new object();
         static readonly object _eventEndDrag = new object();
         static readonly object _eventFocused = new object();
+        static readonly object _eventIsBoundToParentAreaChanged = new object();
         static readonly object _eventKeyDown = new object();
         static readonly object _eventKeyPressed = new object();
         static readonly object _eventKeyUp = new object();
@@ -33,7 +37,12 @@ namespace NetGore.Graphics.GUI
         static readonly object _eventMouseLeave = new object();
         static readonly object _eventMouseMoved = new object();
         static readonly object _eventMouseUp = new object();
+        static readonly object _eventMoved = new object();
         static readonly object _eventResized = new object();
+        static readonly object _eventResizeToChildrenChanged = new object();
+        static readonly object _eventResizeToChildrenPaddingChanged = new object();
+        static readonly object _eventTooltipChanged = new object();
+        static readonly object _eventVisibleChanged = new object();
 
         readonly List<Control> _controls = new List<Control>(1);
         readonly EventHandlerList _eventHandlerList = new EventHandlerList();
@@ -56,6 +65,7 @@ namespace NetGore.Graphics.GUI
         byte _resizeToChildrenPadding = 4;
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
+        TooltipHandler _toolTip;
 
         /// <summary>
         /// States if a OnClick event will be raised with the OnMouseUp event.
@@ -148,6 +158,24 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Notifies listeners when the <see cref="Control.CanDrag"/> value of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler CanDragChanged
+        {
+            add { Events.AddHandler(_eventCanDragChanged, value); }
+            remove { Events.RemoveHandler(_eventCanDragChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.CanFocus"/> value of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler CanFocusChanged
+        {
+            add { Events.AddHandler(_eventCanFocusChanged, value); }
+            remove { Events.RemoveHandler(_eventCanFocusChanged, value); }
+        }
+
+        /// <summary>
         /// Notifies listeners when this <see cref="Control"/> was clicked.
         /// </summary>
         public event MouseClickEventHandler Clicked
@@ -166,6 +194,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Notifies listeners when the <see cref="Control.IsEnabled"/> value of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler EnabledChanged
+        {
+            add { Events.AddHandler(_eventEnabledChanged, value); }
+            remove { Events.RemoveHandler(_eventEnabledChanged, value); }
+        }
+
+        /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has ended being dragged.
         /// </summary>
         public event ControlEventHandler EndDrag
@@ -181,6 +218,16 @@ namespace NetGore.Graphics.GUI
         {
             add { Events.AddHandler(_eventFocused, value); }
             remove { Events.RemoveHandler(_eventFocused, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.IsBoundToParentArea"/> value of this
+        /// <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler IsBoundToParentAreaChanged
+        {
+            add { Events.AddHandler(_eventIsBoundToParentAreaChanged, value); }
+            remove { Events.RemoveHandler(_eventIsBoundToParentAreaChanged, value); }
         }
 
         /// <summary>
@@ -265,12 +312,57 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Notifies listeners when this <see cref="Control"/> has moved.
+        /// </summary>
+        public event ControlEventHandler Moved
+        {
+            add { Events.AddHandler(_eventMoved, value); }
+            remove { Events.RemoveHandler(_eventMoved, value); }
+        }
+
+        /// <summary>
         /// Notifies listeners when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// </summary>
         public event ControlEventHandler Resized
         {
             add { Events.AddHandler(_eventResized, value); }
             remove { Events.RemoveHandler(_eventResized, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.ResizeToChildren"/> of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler ResizeToChildrenChanged
+        {
+            add { Events.AddHandler(_eventResizeToChildrenChanged, value); }
+            remove { Events.RemoveHandler(_eventResizeToChildrenChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.ResizeToChildrenPadding"/> of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler ResizeToChildrenPaddingChanged
+        {
+            add { Events.AddHandler(_eventResizeToChildrenPaddingChanged, value); }
+            remove { Events.RemoveHandler(_eventResizeToChildrenPaddingChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.Tooltip"/> of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler TooltipChanged
+        {
+            add { Events.AddHandler(_eventTooltipChanged, value); }
+            remove { Events.RemoveHandler(_eventTooltipChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.IsVisible"/> of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler VisibleChanged
+        {
+            add { Events.AddHandler(_eventVisibleChanged, value); }
+            remove { Events.RemoveHandler(_eventVisibleChanged, value); }
         }
 
         /// <summary>
@@ -317,7 +409,15 @@ namespace NetGore.Graphics.GUI
         public bool CanDrag
         {
             get { return _canDrag; }
-            set { _canDrag = value; }
+            set
+            {
+                if (CanDrag == value)
+                    return;
+
+                _canDrag = value;
+
+                InvokeCanDragChanged();
+            }
         }
 
         /// <summary>
@@ -327,7 +427,15 @@ namespace NetGore.Graphics.GUI
         public bool CanFocus
         {
             get { return _canFocus; }
-            set { _canFocus = value; }
+            set
+            {
+                if (CanFocus == value)
+                    return;
+
+                _canFocus = value;
+
+                InvokeCanFocusChanged();
+            }
         }
 
         /// <summary>
@@ -383,9 +491,6 @@ namespace NetGore.Graphics.GUI
         {
             get
             {
-                if (!_isBoundToParentArea)
-                    return false;
-
                 if (Parent == null)
                     return false;
 
@@ -394,7 +499,15 @@ namespace NetGore.Graphics.GUI
 
                 return _isBoundToParentArea;
             }
-            set { _isBoundToParentArea = value; }
+            set
+            {
+                if (_isBoundToParentArea == value)
+                    return;
+
+                _isBoundToParentArea = value;
+
+                InvokeIsBoundToParentAreaChanged();
+            }
         }
 
         /// <summary>
@@ -404,7 +517,15 @@ namespace NetGore.Graphics.GUI
         public bool IsEnabled
         {
             get { return _isEnabled; }
-            set { _isEnabled = value; }
+            set
+            {
+                if (_isEnabled == value)
+                    return;
+
+                _isEnabled = value;
+
+                InvokeEnabledChanged();
+            }
         }
 
         /// <summary>
@@ -436,6 +557,9 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _isVisible = value;
+
+                InvokeVisibleChanged();
+
                 SetAsTopMost();
             }
         }
@@ -462,6 +586,9 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _position = value;
+
+                InvokeMoved();
+
                 KeepInParent();
             }
         }
@@ -479,6 +606,8 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _resizeToChildren = value;
+
+                InvokeResizeToChildrenChanged();
 
                 if (ResizeToChildren)
                     UpdateResizeToChildren();
@@ -500,10 +629,15 @@ namespace NetGore.Graphics.GUI
                 if (value < 0 || value > byte.MaxValue)
                     throw new ArgumentOutOfRangeException("value");
 
+                if (ResizeToChildrenPadding == value)
+                    return;
+
                 unchecked
                 {
                     _resizeToChildrenPadding = (byte)value;
                 }
+
+                InvokeResizeToChildrenPaddingChanged();
             }
         }
 
@@ -553,7 +687,19 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets the <see cref="TooltipHandler"/> for this <see cref="Control"/>. If null, this
         /// <see cref="Control"/> will not display a <see cref="Tooltip"/>.
         /// </summary>
-        public TooltipHandler Tooltip { get; set; }
+        public TooltipHandler Tooltip
+        {
+            get { return _toolTip; }
+            set
+            {
+                if (_toolTip == value)
+                    return;
+
+                _toolTip = value;
+
+                InvokeTooltipChanged();
+            }
+        }
 
         /// <summary>
         /// Adds a control to the queue to set a child control as the top-most control.
@@ -884,6 +1030,30 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
+        void InvokeCanDragChanged()
+        {
+            OnCanDragChanged();
+            var handler = Events[_eventCanDragChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeCanFocusChanged()
+        {
+            OnCanFocusChanged();
+            var handler = Events[_eventCanFocusChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
         /// <param name="e">The event args.</param>
         void InvokeClicked(MouseClickEventArgs e)
         {
@@ -891,6 +1061,18 @@ namespace NetGore.Graphics.GUI
             var handler = Events[_eventClicked] as MouseClickEventHandler;
             if (handler != null)
                 handler(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeEnabledChanged()
+        {
+            OnEnabledChanged();
+            var handler = Events[_eventEnabledChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
         }
 
         /// <summary>
@@ -913,6 +1095,18 @@ namespace NetGore.Graphics.GUI
         {
             OnFocused();
             var handler = Events[_eventFocused] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeIsBoundToParentAreaChanged()
+        {
+            OnIsBoundToParentAreaChanged();
+            var handler = Events[_eventIsBoundToParentAreaChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -1037,10 +1231,70 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
+        void InvokeMoved()
+        {
+            OnMoved();
+            var handler = Events[_eventMoved] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
         void InvokeResized()
         {
             OnResized();
             var handler = Events[_eventResized] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeResizeToChildrenChanged()
+        {
+            OnResizeToChildrenChanged();
+            var handler = Events[_eventResizeToChildrenChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeResizeToChildrenPaddingChanged()
+        {
+            OnResizeToChildrenPaddingChanged();
+            var handler = Events[_eventResizeToChildrenPaddingChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeTooltipChanged()
+        {
+            OnTooltipChanged();
+            var handler = Events[_eventTooltipChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeVisibleChanged()
+        {
+            OnVisibleChanged();
+            var handler = Events[_eventVisibleChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
         }
@@ -1109,12 +1363,39 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when the <see cref="Control.CanDrag"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.CanDragChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.CanDragChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnCanDragChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.CanFocus"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.CanFocusChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.CanFocusChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnCanFocusChanged()
+        {
+        }
+
+        /// <summary>
         /// Handles when this <see cref="Control"/> was clicked.
         /// This is called immediately before <see cref="Control.OnClick"/>.
         /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnClick(MouseClickEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.OnEnabledChanged"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.EnabledChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.EnabledChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnEnabledChanged()
         {
         }
 
@@ -1133,6 +1414,16 @@ namespace NetGore.Graphics.GUI
         /// Override this method instead of using an event hook on <see cref="Control.Focused"/> when possible.
         /// </summary>
         protected virtual void OnFocused()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.IsBoundToParentArea"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.IsBoundToParentAreaChanged"/>.
+        /// Override this method instead of using an event hook on
+        /// <see cref="Control.IsBoundToParentAreaChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnIsBoundToParentAreaChanged()
         {
         }
 
@@ -1226,11 +1517,59 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when this <see cref="Control"/> has moved.
+        /// This is called immediately before <see cref="Control.Moved"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Moved"/> when possible.
+        /// </summary>
+        protected virtual void OnMoved()
+        {
+        }
+
+        /// <summary>
         /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// This is called immediately before <see cref="Control.Resized"/>.
         /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
         /// </summary>
         protected virtual void OnResized()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.ResizeToChildren"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.ResizeToChildrenChanged"/>.
+        /// Override this method instead of using an event hook on
+        /// <see cref="Control.ResizeToChildrenChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnResizeToChildrenChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.ResizeToChildrenPadding"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.ResizeToChildrenPaddingChanged"/>.
+        /// Override this method instead of using an event hook on
+        /// <see cref="Control.ResizeToChildrenPaddingChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnResizeToChildrenPaddingChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Tooltip"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.Tooltip"/>.
+        /// Override this method instead of using an event hook on
+        /// <see cref="Control.TooltipChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnTooltipChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.IsVisible"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.VisibleChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.VisibleChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnVisibleChanged()
         {
         }
 
