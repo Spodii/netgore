@@ -68,6 +68,15 @@ namespace NetGore.Features.Skills
         #region ISkill<TSkillType,TStatType,TCharacter> Members
 
         /// <summary>
+        /// Gets the amount of time in milliseconds that must elapse between the time the skill starts to be used and
+        /// when the skill is actually used. A value of 0 means the skill will be used immediately.
+        /// </summary>
+        public ushort CastingTime
+        {
+            get { return _castingTime; }
+        }
+
+        /// <summary>
         /// Gets a byte that represents which group of skills this skill is part of when setting the skill usage
         /// cooldown.
         /// </summary>
@@ -83,15 +92,6 @@ namespace NetGore.Features.Skills
         public ushort CooldownTime
         {
             get { return _cooldownTime; }
-        }
-
-        /// <summary>
-        /// Gets the amount of time in milliseconds that must elapse between the time the skill starts to be used and
-        /// when the skill is actually used. A value of 0 means the skill will be used immediately.
-        /// </summary>
-        public ushort CastingTime
-        {
-            get { return _castingTime; }
         }
 
         /// <summary>
@@ -127,16 +127,6 @@ namespace NetGore.Features.Skills
         }
 
         /// <summary>
-        /// Uses this Skill without a target.
-        /// </summary>
-        /// <param name="user">User to make use this Skill.</param>
-        /// <returns>True if the Skill was successfully used; otherwise false.</returns>
-        public bool Use(TCharacter user)
-        {
-            return Use(user, null);
-        }
-
-        /// <summary>
         /// Checks if the given Character can use this Skill.
         /// </summary>
         /// <param name="user">The Character to check if can use this Skill.</param>
@@ -167,6 +157,16 @@ namespace NetGore.Features.Skills
         /// <param name="character">The Character using the skill. Will not be null.</param>
         /// <returns>True if the <paramref name="character"/> has the required stats to use this skill; otherwise false.</returns>
         public abstract bool HasRequiredStats(TCharacter character);
+
+        /// <summary>
+        /// Uses this Skill without a target.
+        /// </summary>
+        /// <param name="user">User to make use this Skill.</param>
+        /// <returns>True if the Skill was successfully used; otherwise false.</returns>
+        public bool Use(TCharacter user)
+        {
+            return Use(user, null);
+        }
 
         /// <summary>
         /// Uses this Skill.

@@ -13,13 +13,6 @@ namespace NetGore.Tests.Collections
     [TestFixture]
     public class DArrayTests
     {
-        [Test]
-        public void AddTest()
-        {
-            AddTestSub(true);
-            AddTestSub(false);
-        }
-
         static void AddTestSub(bool trackFree)
         {
             object o1 = new object();
@@ -31,13 +24,6 @@ namespace NetGore.Tests.Collections
             Assert.AreEqual(2, d.Length, "TrackFree = " + trackFree);
         }
 
-        [Test]
-        public void AddValueTypeTest()
-        {
-            AddValueTypeTestSub(true);
-            AddValueTypeTestSub(false);
-        }
-
         static void AddValueTypeTestSub(bool trackFree)
         {
             const int o1 = new int();
@@ -47,13 +33,6 @@ namespace NetGore.Tests.Collections
             Assert.IsTrue(d.Contains(o1), "TrackFree = " + trackFree);
             Assert.IsTrue(d.Contains(o2), "TrackFree = " + trackFree);
             Assert.AreEqual(2, d.Length, "TrackFree = " + trackFree);
-        }
-
-        [Test]
-        public void CanGetAndIndexRangeTest()
-        {
-            CanGetAndIndexRangeTestSub(true);
-            CanGetAndIndexRangeTestSub(false);
         }
 
         static void CanGetAndIndexRangeTestSub(bool trackFree)
@@ -84,13 +63,6 @@ namespace NetGore.Tests.Collections
             }
         }
 
-        [Test]
-        public void ClearTest()
-        {
-            ClearTestSub(true);
-            ClearTestSub(false);
-        }
-
         static void ClearTestSub(bool trackFree)
         {
             const int size = 50;
@@ -117,13 +89,6 @@ namespace NetGore.Tests.Collections
             }
         }
 
-        [Test]
-        public void ContainsTest()
-        {
-            ContainsTestSub(true);
-            ContainsTestSub(false);
-        }
-
         static void ContainsTestSub(bool trackFree)
         {
             const int size = 10;
@@ -138,13 +103,6 @@ namespace NetGore.Tests.Collections
             {
                 Assert.IsTrue(d.Contains(d[i]));
             }
-        }
-
-        [Test]
-        public void CountTest()
-        {
-            CountTestSub(true);
-            CountTestSub(false);
         }
 
         static void CountTestSub(bool trackFree)
@@ -183,13 +141,6 @@ namespace NetGore.Tests.Collections
             }
         }
 
-        [Test]
-        public void EnumerateTest()
-        {
-            EnumerateTestSub(true);
-            EnumerateTestSub(false);
-        }
-
         static void EnumerateTestSub(bool trackFree)
         {
             const int size = 100;
@@ -225,13 +176,6 @@ namespace NetGore.Tests.Collections
                             "items should have been removed from objs[].");
         }
 
-        [Test]
-        public void EnumerateValueTypeTest()
-        {
-            EnumerateValueTypeTestSub(true);
-            EnumerateValueTypeTestSub(false);
-        }
-
         static void EnumerateValueTypeTestSub(bool trackFree)
         {
             const int size = 100;
@@ -261,13 +205,6 @@ namespace NetGore.Tests.Collections
             int remainingObjs = objs.Where(obj => obj != -1).Count();
             Assert.AreEqual(0, remainingObjs,
                             "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
-        }
-
-        [Test]
-        public void EnumerateVersionTest()
-        {
-            EnumerateVersionTestSub(true);
-            EnumerateVersionTestSub(false);
         }
 
         static void EnumerateVersionTestSub(bool trackFree)
@@ -311,13 +248,6 @@ namespace NetGore.Tests.Collections
             }
         }
 
-        [Test]
-        public void GetSetTest()
-        {
-            GetSetTestSub(true);
-            GetSetTestSub(false);
-        }
-
         static void GetSetTestSub(bool trackFree)
         {
             const int size = 1000;
@@ -341,13 +271,6 @@ namespace NetGore.Tests.Collections
             }
         }
 
-        [Test]
-        public void IndexOfTest()
-        {
-            IndexOfTestSub(true);
-            IndexOfTestSub(false);
-        }
-
         static void IndexOfTestSub(bool trackFree)
         {
             const int size = 50;
@@ -362,13 +285,6 @@ namespace NetGore.Tests.Collections
             {
                 Assert.AreEqual(i, d.IndexOf(d[i]));
             }
-        }
-
-        [Test]
-        public void IndexOfValueTypeTest()
-        {
-            IndexOfValueTypeTestSub(true);
-            IndexOfValueTypeTestSub(false);
         }
 
         static void IndexOfValueTypeTestSub(bool trackFree)
@@ -387,13 +303,6 @@ namespace NetGore.Tests.Collections
             }
         }
 
-        [Test]
-        public void LengthTest()
-        {
-            LengthTestSub(true);
-            LengthTestSub(false);
-        }
-
         static void LengthTestSub(bool trackFree)
         {
             var d = new DArray<object>(trackFree);
@@ -402,13 +311,6 @@ namespace NetGore.Tests.Collections
                 Assert.AreEqual(i, d.Length, "TrackFree = " + trackFree);
                 d[i] = new object();
             }
-        }
-
-        [Test]
-        public void RemoveInsertTest()
-        {
-            RemoveInsertTestSub(true);
-            RemoveInsertTestSub(false);
         }
 
         static void RemoveInsertTestSub(bool trackFree)
@@ -441,13 +343,6 @@ namespace NetGore.Tests.Collections
             }
         }
 
-        [Test]
-        public void RemoveTest()
-        {
-            RemoveTestSub(true);
-            RemoveTestSub(false);
-        }
-
         static void RemoveTestSub(bool trackFree)
         {
             var d = new DArray<object>(trackFree);
@@ -460,13 +355,6 @@ namespace NetGore.Tests.Collections
             object o = d[5];
             Assert.IsTrue(d.Remove(o));
             Assert.IsFalse(d.Contains(o));
-        }
-
-        [Test]
-        public void TrimTest()
-        {
-            TrimTestSub(true);
-            TrimTestSub(false);
         }
 
         static void TrimTestSub(bool trackFree)
@@ -520,5 +408,121 @@ namespace NetGore.Tests.Collections
                 Assert.AreEqual(before + 1, d.Length, "TrackFree = " + trackFree);
             }
         }
+
+        #region Unit tests
+
+        [Test]
+        public void AddTest()
+        {
+            AddTestSub(true);
+            AddTestSub(false);
+        }
+
+        [Test]
+        public void AddValueTypeTest()
+        {
+            AddValueTypeTestSub(true);
+            AddValueTypeTestSub(false);
+        }
+
+        [Test]
+        public void CanGetAndIndexRangeTest()
+        {
+            CanGetAndIndexRangeTestSub(true);
+            CanGetAndIndexRangeTestSub(false);
+        }
+
+        [Test]
+        public void ClearTest()
+        {
+            ClearTestSub(true);
+            ClearTestSub(false);
+        }
+
+        [Test]
+        public void ContainsTest()
+        {
+            ContainsTestSub(true);
+            ContainsTestSub(false);
+        }
+
+        [Test]
+        public void CountTest()
+        {
+            CountTestSub(true);
+            CountTestSub(false);
+        }
+
+        [Test]
+        public void EnumerateTest()
+        {
+            EnumerateTestSub(true);
+            EnumerateTestSub(false);
+        }
+
+        [Test]
+        public void EnumerateValueTypeTest()
+        {
+            EnumerateValueTypeTestSub(true);
+            EnumerateValueTypeTestSub(false);
+        }
+
+        [Test]
+        public void EnumerateVersionTest()
+        {
+            EnumerateVersionTestSub(true);
+            EnumerateVersionTestSub(false);
+        }
+
+        [Test]
+        public void GetSetTest()
+        {
+            GetSetTestSub(true);
+            GetSetTestSub(false);
+        }
+
+        [Test]
+        public void IndexOfTest()
+        {
+            IndexOfTestSub(true);
+            IndexOfTestSub(false);
+        }
+
+        [Test]
+        public void IndexOfValueTypeTest()
+        {
+            IndexOfValueTypeTestSub(true);
+            IndexOfValueTypeTestSub(false);
+        }
+
+        [Test]
+        public void LengthTest()
+        {
+            LengthTestSub(true);
+            LengthTestSub(false);
+        }
+
+        [Test]
+        public void RemoveInsertTest()
+        {
+            RemoveInsertTestSub(true);
+            RemoveInsertTestSub(false);
+        }
+
+        [Test]
+        public void RemoveTest()
+        {
+            RemoveTestSub(true);
+            RemoveTestSub(false);
+        }
+
+        [Test]
+        public void TrimTest()
+        {
+            TrimTestSub(true);
+            TrimTestSub(false);
+        }
+
+        #endregion
     }
 }

@@ -15,6 +15,33 @@ namespace NetGore.Tests.NetGore
 
         readonly Type[] _types = new Type[] { typeof(TestA), typeof(TestB), typeof(TestC), typeof(TestD) };
 
+        static bool HasAllInstanceMethods(IEnumerable<MethodInfo> methodInfos)
+        {
+            return _instanceMethodNames.All(n => methodInfos.Any(m => m.Name == n));
+        }
+
+        static bool HasAllStaticMethods(IEnumerable<MethodInfo> methodInfos)
+        {
+            return _staticMethodNames.All(n => methodInfos.Any(m => m.Name == n));
+        }
+
+        static bool HasAnyInstanceMethods(IEnumerable<MethodInfo> methodInfos)
+        {
+            return _instanceMethodNames.Any(n => methodInfos.Any(m => m.Name == n));
+        }
+
+        static bool HasAnyStaticMethods(IEnumerable<MethodInfo> methodInfos)
+        {
+            return _staticMethodNames.Any(n => methodInfos.Any(m => m.Name == n));
+        }
+
+        static bool HasNonAttributeMethods(IEnumerable<MethodInfo> methodInfos)
+        {
+            return _invalidMethodNames.Any(n => methodInfos.Any(m => m.Name == n));
+        }
+
+        #region Unit tests
+
         [Test]
         public void FindInstanceMethodsWithAttribute2Test()
         {
@@ -96,30 +123,7 @@ namespace NetGore.Tests.NetGore
             Assert.IsTrue(HasNonAttributeMethods(methods));
         }
 
-        static bool HasAllInstanceMethods(IEnumerable<MethodInfo> methodInfos)
-        {
-            return _instanceMethodNames.All(n => methodInfos.Any(m => m.Name == n));
-        }
-
-        static bool HasAllStaticMethods(IEnumerable<MethodInfo> methodInfos)
-        {
-            return _staticMethodNames.All(n => methodInfos.Any(m => m.Name == n));
-        }
-
-        static bool HasAnyInstanceMethods(IEnumerable<MethodInfo> methodInfos)
-        {
-            return _instanceMethodNames.Any(n => methodInfos.Any(m => m.Name == n));
-        }
-
-        static bool HasAnyStaticMethods(IEnumerable<MethodInfo> methodInfos)
-        {
-            return _staticMethodNames.Any(n => methodInfos.Any(m => m.Name == n));
-        }
-
-        static bool HasNonAttributeMethods(IEnumerable<MethodInfo> methodInfos)
-        {
-            return _invalidMethodNames.Any(n => methodInfos.Any(m => m.Name == n));
-        }
+        #endregion
 
         sealed class Att : Attribute
         {

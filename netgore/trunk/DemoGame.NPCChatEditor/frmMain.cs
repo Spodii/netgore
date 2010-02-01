@@ -115,7 +115,7 @@ namespace DemoGame.NPCChatEditor
                 return;
 
             // Make sure there isn't already a dialog characterID
-            if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
+            if (EditingObjAsResponse.Page != NPCChatResponseBase.EndConversationPage)
             {
                 MessageBox.Show("This response already has a dialog characterID.");
                 return;
@@ -149,7 +149,7 @@ namespace DemoGame.NPCChatEditor
                 return;
 
             // Make sure there isn't already a dialog characterID
-            if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
+            if (EditingObjAsResponse.Page != NPCChatResponseBase.EndConversationPage)
             {
                 MessageBox.Show("This response already has a dialog characterID.");
                 return;
@@ -294,7 +294,7 @@ namespace DemoGame.NPCChatEditor
             if (parent == null)
                 return;
 
-            parent.SetPage(EditorNPCChatResponse.EndConversationPage);
+            parent.SetPage(NPCChatResponseBase.EndConversationPage);
 
             // TODO: Properly update the view
             button1_Click(null, null);

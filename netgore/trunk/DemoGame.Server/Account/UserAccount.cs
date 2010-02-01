@@ -107,7 +107,7 @@ namespace DemoGame.Server
         {
             MD5 md5 = new MD5CryptoServiceProvider();
 
-            byte[] originalBytes = ASCIIEncoding.Default.GetBytes(originalPassword);
+            byte[] originalBytes = Encoding.Default.GetBytes(originalPassword);
             byte[] encodedBytes = md5.ComputeHash(originalBytes);
 
             string ret = BitConverter.ToString(encodedBytes);

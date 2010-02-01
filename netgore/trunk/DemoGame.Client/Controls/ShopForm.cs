@@ -32,11 +32,6 @@ namespace DemoGame.Client
         ShopInfo<IItemTemplateTable> _shopInfo;
 
         /// <summary>
-        /// Notifies listeners when a request has been made to purchase an item from the shop. 
-        /// </summary>
-        public event ShopFormPurchaseHandler RequestPurchase;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ShopForm"/> class.
         /// </summary>
         /// <param name="position">The position.</param>
@@ -51,6 +46,11 @@ namespace DemoGame.Client
 
             CreateItemSlots();
         }
+
+        /// <summary>
+        /// Notifies listeners when a request has been made to purchase an item from the shop. 
+        /// </summary>
+        public event ShopFormPurchaseHandler RequestPurchase;
 
         public ShopInfo<IItemTemplateTable> ShopInfo
         {

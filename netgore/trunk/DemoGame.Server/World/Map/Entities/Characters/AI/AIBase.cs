@@ -134,6 +134,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the ID of this AI.
+        /// </summary>
+        public abstract AIID ID { get; }
+
+        /// <summary>
         /// When overridden in the derived class, updates the AI. This is called at most once per frame, and only
         /// called whe the <see cref="Actor"/> is alive and active.
         /// </summary>
@@ -144,11 +149,6 @@ namespace DemoGame.Server
 
             DoUpdate();
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the ID of this AI.
-        /// </summary>
-        public abstract AIID ID { get; }
 
         #endregion
 

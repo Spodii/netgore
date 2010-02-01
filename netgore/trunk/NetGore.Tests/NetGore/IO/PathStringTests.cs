@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class PathStringTests
     {
+        #region Unit tests
+
         [Test]
         public void BackRootTest()
         {
@@ -95,5 +97,7 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual(@"C:\One\Two", new PathString(@"C:\One\Two").ToString());
             Assert.AreEqual(@"C:\One\Two", new PathString(@"C:\One\Two\").ToString());
         }
+
+        #endregion
     }
 }

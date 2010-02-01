@@ -10,6 +10,41 @@ namespace NetGore.Tests.NetGore
     {
         static readonly Vector2 SpatialSize = new Vector2(1024, 512);
 
+        static IEnumerable<Entity> CreateEntities(int amount, Vector2 minPos, Vector2 maxPos)
+        {
+            Entity[] ret = new Entity[amount];
+            for (int i = 0; i < amount; i++)
+            {
+                ret[i] = new TestEntity { Position = RandomHelperXna.NextVector2(minPos, maxPos) };
+            }
+
+            return ret;
+        }
+
+        static IEnumerable<SpatialAggregate> GetSpatials(out Entity someEntity)
+        {
+            var aEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
+            var bEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
+            var cEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
+            someEntity = aEntities.First();
+
+            var a = new LinearSpatialCollection();
+            a.SetAreaSize(SpatialSize);
+            a.Add(aEntities);
+
+            var b = new DynamicGridSpatialCollection();
+            b.SetAreaSize(SpatialSize);
+            b.Add(bEntities);
+
+            var c = new DynamicGridSpatialCollection();
+            c.SetAreaSize(SpatialSize);
+            c.Add(cEntities);
+
+            return new SpatialAggregate[] { new SpatialAggregate(new ISpatialCollection[] { a, b, c }) };
+        }
+
+        #region Unit tests
+
         [Test]
         public void ContainsAllTest()
         {
@@ -34,17 +69,6 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        static IEnumerable<Entity> CreateEntities(int amount, Vector2 minPos, Vector2 maxPos)
-        {
-            Entity[] ret = new Entity[amount];
-            for (int i = 0; i < amount; i++)
-            {
-                ret[i] = new TestEntity { Position = RandomHelperXna.NextVector2(minPos, maxPos) };
-            }
-
-            return ret;
-        }
-
         [Test]
         public void DistinctTest()
         {
@@ -57,27 +81,7 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        static IEnumerable<SpatialAggregate> GetSpatials(out Entity someEntity)
-        {
-            var aEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
-            var bEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
-            var cEntities = CreateEntities(64, new Vector2(32), SpatialSize - new Vector2(32));
-            someEntity = aEntities.First();
-
-            var a = new LinearSpatialCollection();
-            a.SetAreaSize(SpatialSize);
-            a.Add(aEntities);
-
-            var b = new DynamicGridSpatialCollection();
-            b.SetAreaSize(SpatialSize);
-            b.Add(bEntities);
-
-            var c = new DynamicGridSpatialCollection();
-            c.SetAreaSize(SpatialSize);
-            c.Add(cEntities);
-
-            return new SpatialAggregate[] { new SpatialAggregate(new ISpatialCollection[] { a, b, c }) };
-        }
+        #endregion
 
         class TestEntity : Entity
         {

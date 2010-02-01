@@ -15,13 +15,6 @@ namespace DemoGame.Client
         /// </summary>
         public event AccountCharactersLoadedHandler AccountCharactersLoaded;
 
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the event with the corresponding name.
-        /// </summary>
-        protected virtual void OnAccountCharactersLoaded()
-        {
-        }
-
         public AccountCharacterInfo this[byte index]
         {
             get { return _charInfos[index]; }
@@ -35,6 +28,13 @@ namespace DemoGame.Client
         public bool IsLoaded
         {
             get { return _isLoaded; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the event with the corresponding name.
+        /// </summary>
+        protected virtual void OnAccountCharactersLoaded()
+        {
         }
 
         public void SetInfos(AccountCharacterInfo[] charInfos)

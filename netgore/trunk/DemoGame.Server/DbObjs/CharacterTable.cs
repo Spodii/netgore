@@ -723,15 +723,6 @@ namespace DemoGame.Server.DbObjs
         #region ICharacterTable Members
 
         /// <summary>
-        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
-        /// key is the collection's key and the value is the value for that corresponding key.
-        /// </summary>
-        public IEnumerable<KeyValuePair<StatType, Int32>> Stats
-        {
-            get { return _stat; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `account_id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
@@ -941,15 +932,12 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
+        /// key is the collection's key and the value is the value for that corresponding key.
         /// </summary>
-        /// <param name="key">The key of the column to get.</param>
-        /// <returns>
-        /// The value of the database column for the corresponding <paramref name="key"/>.
-        /// </returns>
-        public Int32 GetStat(StatType key)
+        public IEnumerable<KeyValuePair<StatType, Int32>> Stats
         {
-            return _stat[key];
+            get { return _stat; }
         }
 
         /// <summary>
@@ -984,6 +972,18 @@ namespace DemoGame.Server.DbObjs
         public ICharacterTable DeepCopy()
         {
             return new CharacterTable(this);
+        }
+
+        /// <summary>
+        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+        /// </summary>
+        /// <param name="key">The key of the column to get.</param>
+        /// <returns>
+        /// The value of the database column for the corresponding <paramref name="key"/>.
+        /// </returns>
+        public Int32 GetStat(StatType key)
+        {
+            return _stat[key];
         }
 
         #endregion

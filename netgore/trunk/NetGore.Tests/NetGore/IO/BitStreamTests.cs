@@ -14,6 +14,10 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class BitStreamTests
     {
+        delegate T BitStreamReadHandler<T>();
+
+        delegate void BitStreamWriteHandler<T>(T value);
+
         const long rangeIterations = 10000000;
 
         static readonly IEnumerable<MethodInfo> _bitStreamReaderHandlerMethods =
@@ -70,6 +74,114 @@ namespace NetGore.Tests.IO
                 }
             }
         }
+
+        static int GetBitsAmountForBitTest(int iterator, int numBits)
+        {
+            return 1 + (iterator % (numBits - 1));
+        }
+
+        static long GetFieldValue<T>(string fieldName)
+        {
+            FieldInfo fieldInfo = typeof(T).GetField(fieldName);
+            object value = fieldInfo.GetValue(null);
+            return Convert.ToInt64(value);
+        }
+
+        static BitStreamReadHandler<T> GetReadHandler<T>(BitStream bitStream)
+        {
+            MethodInfo methodInfo = null;
+            foreach (MethodInfo mi in _bitStreamReaderHandlerMethods)
+            {
+                if (mi.ReturnType != typeof(T))
+                    continue;
+
+                methodInfo = mi;
+                break;
+            }
+
+            if (methodInfo == null)
+                throw new Exception();
+
+            return (BitStreamReadHandler<T>)Delegate.CreateDelegate(typeof(BitStreamReadHandler<T>), bitStream, methodInfo);
+        }
+
+        static int GetSignedPartialBitValue(int value, int bits, int maxBits)
+        {
+            if (bits == 1)
+                return (value != 0) ? 1 : 0;
+
+            bool signed = value < 0;
+
+            // Pseudo-write
+            // We have to abort early here to avoid exceptions
+            if (value == int.MinValue)
+                return int.MinValue & ((1 << (bits - 1)) - 1);
+
+            value = Math.Abs(value);
+            value &= (1 << (bits - 1)) - 1;
+
+            // Pseudo-read
+            if (signed)
+            {
+                if (value == 0)
+                    return 1 << (maxBits - 1);
+
+                value = -value;
+            }
+
+            return value;
+        }
+
+        static uint GetUnsignedPartialBitValue(uint value, int bits)
+        {
+            int bitMask = (1 << bits) - 1;
+            return (uint)((int)value & bitMask);
+        }
+
+        static BitStreamWriteHandler<T> GetWriteHandler<T>(BitStream bitStream)
+        {
+            MethodInfo methodInfo = typeof(BitStream).GetMethod("Write", new Type[] { typeof(T) });
+            return (BitStreamWriteHandler<T>)Delegate.CreateDelegate(typeof(BitStreamWriteHandler<T>), bitStream, methodInfo);
+        }
+
+        static IEnumerable<long> Range(long min, long max, long maxIterations)
+        {
+            if (max - min <= maxIterations)
+            {
+                for (long x = min; x < max; x++)
+                {
+                    yield return x;
+                }
+            }
+            else
+            {
+                long diff = max - min;
+                int stepMin = (int)(diff / maxIterations) - 10;
+                int stepMax = (int)(diff / maxIterations) + 10;
+                int step;
+                Random rnd = new Random();
+
+                for (long x = min; x < max; x += (long)step)
+                {
+                    yield return x;
+                    step = rnd.Next(stepMin, stepMax);
+                }
+
+                yield return min;
+                yield return max;
+                yield return 0;
+                yield return 1;
+            }
+        }
+
+        static IEnumerable<long> TRange<T>()
+        {
+            long minValue = GetFieldValue<T>("MinValue");
+            long maxValue = GetFieldValue<T>("MaxValue");
+            return Range(minValue, maxValue, rangeIterations);
+        }
+
+        #region Unit tests
 
         [Test]
         public void BitIO()
@@ -279,11 +391,6 @@ namespace NetGore.Tests.IO
             }
         }
 
-        static int GetBitsAmountForBitTest(int iterator, int numBits)
-        {
-            return 1 + (iterator % (numBits - 1));
-        }
-
         [Test]
         public void GetBufferTest()
         {
@@ -298,70 +405,6 @@ namespace NetGore.Tests.IO
             Assert.AreEqual(20, buff[0]);
             Assert.AreEqual(8, buff[1]);
             Assert.AreEqual(128, buff[2] & (1 << 7));
-        }
-
-        static long GetFieldValue<T>(string fieldName)
-        {
-            FieldInfo fieldInfo = typeof(T).GetField(fieldName);
-            object value = fieldInfo.GetValue(null);
-            return Convert.ToInt64(value);
-        }
-
-        static BitStreamReadHandler<T> GetReadHandler<T>(BitStream bitStream)
-        {
-            MethodInfo methodInfo = null;
-            foreach (MethodInfo mi in _bitStreamReaderHandlerMethods)
-            {
-                if (mi.ReturnType != typeof(T))
-                    continue;
-
-                methodInfo = mi;
-                break;
-            }
-
-            if (methodInfo == null)
-                throw new Exception();
-
-            return (BitStreamReadHandler<T>)Delegate.CreateDelegate(typeof(BitStreamReadHandler<T>), bitStream, methodInfo);
-        }
-
-        static int GetSignedPartialBitValue(int value, int bits, int maxBits)
-        {
-            if (bits == 1)
-                return (value != 0) ? 1 : 0;
-
-            bool signed = value < 0;
-
-            // Pseudo-write
-            // We have to abort early here to avoid exceptions
-            if (value == int.MinValue)
-                return int.MinValue & ((1 << (bits - 1)) - 1);
-
-            value = Math.Abs(value);
-            value &= (1 << (bits - 1)) - 1;
-
-            // Pseudo-read
-            if (signed)
-            {
-                if (value == 0)
-                    return 1 << (maxBits - 1);
-
-                value = -value;
-            }
-
-            return value;
-        }
-
-        static uint GetUnsignedPartialBitValue(uint value, int bits)
-        {
-            int bitMask = (1 << bits) - 1;
-            return (uint)((int)value & bitMask);
-        }
-
-        static BitStreamWriteHandler<T> GetWriteHandler<T>(BitStream bitStream)
-        {
-            MethodInfo methodInfo = typeof(BitStream).GetMethod("Write", new Type[] { typeof(T) });
-            return (BitStreamWriteHandler<T>)Delegate.CreateDelegate(typeof(BitStreamWriteHandler<T>), bitStream, methodInfo);
         }
 
         [Test]
@@ -783,36 +826,6 @@ namespace NetGore.Tests.IO
             }
         }
 
-        static IEnumerable<long> Range(long min, long max, long maxIterations)
-        {
-            if (max - min <= maxIterations)
-            {
-                for (long x = min; x < max; x++)
-                {
-                    yield return x;
-                }
-            }
-            else
-            {
-                long diff = max - min;
-                int stepMin = (int)(diff / maxIterations) - 10;
-                int stepMax = (int)(diff / maxIterations) + 10;
-                int step;
-                Random rnd = new Random();
-
-                for (long x = min; x < max; x += (long)step)
-                {
-                    yield return x;
-                    step = rnd.Next(stepMin, stepMax);
-                }
-
-                yield return min;
-                yield return max;
-                yield return 0;
-                yield return 1;
-            }
-        }
-
         [Test]
         public void ReadBoolWhenInWriteModeTest()
         {
@@ -1218,13 +1231,6 @@ namespace NetGore.Tests.IO
             Assert.AreEqual(128, buff[2] & (1 << 7));
         }
 
-        static IEnumerable<long> TRange<T>()
-        {
-            long minValue = GetFieldValue<T>("MinValue");
-            long maxValue = GetFieldValue<T>("MaxValue");
-            return Range(minValue, maxValue, rangeIterations);
-        }
-
         [Test]
         public void UIntBitIO()
         {
@@ -1436,8 +1442,6 @@ namespace NetGore.Tests.IO
             }
         }
 
-        delegate T BitStreamReadHandler<T>();
-
-        delegate void BitStreamWriteHandler<T>(T value);
+        #endregion
     }
 }

@@ -7,11 +7,6 @@ namespace DemoGame
     public class ItemStatsBase : DynamicStatCollection<StatType>
     {
         /// <summary>
-        /// Notifies listeners when any of the stats have raised their <see cref="IStat{StatType}.Changed"/> event.
-        /// </summary>
-        public event IStatEventHandler<StatType> StatChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ItemStatsBase"/> class.
         /// </summary>
         /// <param name="src">The stat types and corresponding values of the stats to add to the collection.</param>
@@ -35,6 +30,11 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Notifies listeners when any of the stats have raised their <see cref="IStat{StatType}.Changed"/> event.
+        /// </summary>
+        public event IStatEventHandler<StatType> StatChanged;
+
+        /// <summary>
         /// Gets the <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
         /// </summary>
         /// <param name="statType">The stat type of the stat to get.</param>
@@ -44,19 +44,6 @@ namespace DemoGame
         public override IStat<StatType> GetStat(StatType statType)
         {
             return GetStatOrCreate(statType);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> is added to this
-        /// <see cref="DynamicStatCollection{StatType}"/>. This will be invoked once and only once for every
-        /// <see cref="IStat{StatType}"/> added to this <see cref="DynamicStatCollection{StatType}"/>.
-        /// </summary>
-        /// <param name="stat">The <see cref="IStat{StatType}"/> that was added to this
-        /// <see cref="DynamicStatCollection{StatType}"/>.</param>
-        protected override void OnStatAdded(IStat<StatType> stat)
-        {
-            // Attach a listener to every stat to listen for changes
-            stat.Changed += HandleStatChanged;
         }
 
         /// <summary>
@@ -78,6 +65,19 @@ namespace DemoGame
         public bool HasEqualValues(ItemStatsBase other)
         {
             return this.All(x => x.Value == other[x.StatType]);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> is added to this
+        /// <see cref="DynamicStatCollection{StatType}"/>. This will be invoked once and only once for every
+        /// <see cref="IStat{StatType}"/> added to this <see cref="DynamicStatCollection{StatType}"/>.
+        /// </summary>
+        /// <param name="stat">The <see cref="IStat{StatType}"/> that was added to this
+        /// <see cref="DynamicStatCollection{StatType}"/>.</param>
+        protected override void OnStatAdded(IStat<StatType> stat)
+        {
+            // Attach a listener to every stat to listen for changes
+            stat.Changed += HandleStatChanged;
         }
     }
 }

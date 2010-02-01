@@ -385,6 +385,21 @@ namespace NetGore.Db
         #region IDbQueryHandler Members
 
         /// <summary>
+        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this IDbQueryHandler
+        /// will use this CommandText.
+        /// </summary>
+        public string CommandText
+        {
+            get
+            {
+                if (_disposed)
+                    throw new MethodAccessException(_disposedErrorMessage);
+
+                return _commandText;
+            }
+        }
+
+        /// <summary>
         /// Gets the DbConnectionPool used by this DbQueryBase.
         /// </summary>
         public DbConnectionPool ConnectionPool
@@ -409,21 +424,6 @@ namespace NetGore.Db
                     throw new MethodAccessException(_disposedErrorMessage);
 
                 return _parameters;
-            }
-        }
-
-        /// <summary>
-        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this IDbQueryHandler
-        /// will use this CommandText.
-        /// </summary>
-        public string CommandText
-        {
-            get
-            {
-                if (_disposed)
-                    throw new MethodAccessException(_disposedErrorMessage);
-
-                return _commandText;
             }
         }
 

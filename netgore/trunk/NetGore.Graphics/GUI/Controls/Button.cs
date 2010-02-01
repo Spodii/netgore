@@ -63,30 +63,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
-        /// </summary>
-        protected override void OnFontChanged()
-        {
-            base.OnFontChanged();
-
-            UpdateTextSize();
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="TextControl.Text"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
-        /// </summary>
-        protected override void OnTextChanged()
-        {
-            base.OnTextChanged();
-
-            UpdateTextSize();
-        }
-
-        /// <summary>
         /// Draw the Button
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw to</param>
@@ -114,6 +90,18 @@ namespace NetGore.Graphics.GUI
             Border = skinManager.GetBorder(_controlSkinName);
             BorderOver = skinManager.GetBorder(_controlSkinName, "MouseOver");
             BorderPressed = skinManager.GetBorder(_controlSkinName, "Pressed");
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// </summary>
+        protected override void OnFontChanged()
+        {
+            base.OnFontChanged();
+
+            UpdateTextSize();
         }
 
         /// <summary>
@@ -181,6 +169,18 @@ namespace NetGore.Graphics.GUI
 
             if (e.Button == MouseButtons.Left)
                 _currentBorder = _borderOver;
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Text"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeText"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeText"/> when possible.
+        /// </summary>
+        protected override void OnTextChanged()
+        {
+            base.OnTextChanged();
+
+            UpdateTextSize();
         }
 
         /// <summary>

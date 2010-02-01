@@ -47,25 +47,25 @@ namespace NetGore.Graphics.GUI
         #region ICollection<GameControl> Members
 
         /// <summary>
-        /// Returns an enumerator that iterates through the collection.
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </returns>
-        public IEnumerator<GameControl> GetEnumerator()
+        public int Count
         {
-            return _gameControls.GetEnumerator();
+            get { return _gameControls.Count; }
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a collection.
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
         /// </summary>
         /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        bool ICollection<GameControl>.IsReadOnly
         {
-            return GetEnumerator();
+            get { return false; }
         }
 
         /// <summary>
@@ -128,6 +128,28 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<GameControl> GetEnumerator()
+        {
+            return _gameControls.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <returns>
@@ -139,28 +161,6 @@ namespace NetGore.Graphics.GUI
         public bool Remove(GameControl item)
         {
             return _gameControls.Remove(item);
-        }
-
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <returns>
-        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </returns>
-        public int Count
-        {
-            get { return _gameControls.Count; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
-        /// </summary>
-        /// <returns>
-        /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
-        /// </returns>
-        bool ICollection<GameControl>.IsReadOnly
-        {
-            get { return false; }
         }
 
         #endregion

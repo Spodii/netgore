@@ -10,6 +10,22 @@ namespace NetGore.Tests.NetGore.Collections
     [TestFixture]
     public class IFactoryTests
     {
+        static IEnumerable<ICache<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator)
+            where TValue : class
+        {
+            return CreateFactories(valueCreator, null);
+        }
+
+        static IEnumerable<ICache<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator,
+                                                                               IEqualityComparer<TKey> equalityComparer)
+            where TValue : class
+        {
+            yield return new HashCache<TKey, TValue>(valueCreator, equalityComparer);
+            yield return new ThreadSafeHashCache<TKey, TValue>(valueCreator, equalityComparer);
+        }
+
+        #region Unit tests
+
         [Test]
         public void CacheIsBeingUsedTest()
         {
@@ -130,20 +146,6 @@ namespace NetGore.Tests.NetGore.Collections
                 Assert.IsFalse(f.ContainsKey(4));
                 Assert.IsFalse(f.ContainsKey(4));
             }
-        }
-
-        static IEnumerable<ICache<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator)
-            where TValue : class
-        {
-            return CreateFactories(valueCreator, null);
-        }
-
-        static IEnumerable<ICache<TKey, TValue>> CreateFactories<TKey, TValue>(Func<TKey, TValue> valueCreator,
-                                                                               IEqualityComparer<TKey> equalityComparer)
-            where TValue : class
-        {
-            yield return new HashCache<TKey, TValue>(valueCreator, equalityComparer);
-            yield return new ThreadSafeHashCache<TKey, TValue>(valueCreator, equalityComparer);
         }
 
         [Test]
@@ -300,5 +302,7 @@ namespace NetGore.Tests.NetGore.Collections
             }
             // ReSharper restore AccessToModifiedClosure
         }
+
+        #endregion
     }
 }

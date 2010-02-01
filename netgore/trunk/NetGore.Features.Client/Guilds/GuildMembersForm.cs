@@ -25,27 +25,26 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Guild Members";
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GuildMembersForm"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        public GuildMembersForm(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
+        public GuildMembersForm(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
+            : base(guiManager, position, clientSize)
         {
             _updateHandlerA = (x, y) => UpdateCache();
             _updateHandlerB = (x, y) => UpdateCache();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the items to display in the list.
+        /// </summary>
+        /// <returns>The items to display in the list.</returns>
+        protected override IEnumerable<GuildMemberNameRank> GetListItems(UserGuildInformation guildInfo)
+        {
+            return guildInfo.Members;
         }
 
         /// <summary>
@@ -71,12 +70,14 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the items to display in the list.
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
         /// </summary>
-        /// <returns>The items to display in the list.</returns>
-        protected override IEnumerable<GuildMemberNameRank> GetListItems(UserGuildInformation guildInfo)
+        protected override void SetDefaultValues()
         {
-            return guildInfo.Members;
+            base.SetDefaultValues();
+
+            Text = "Guild Members";
         }
     }
 }

@@ -30,11 +30,6 @@ namespace NetGore.Collections
         readonly bool _useGAC;
 
         /// <summary>
-        /// Notifies listeners when a <see cref="Type"/> has been loaded into this <see cref="TypeFactory"/>.
-        /// </summary>
-        public event TypeFactoryLoadedHandler TypeLoaded;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this <see cref="TypeFactory"/>.</param>
@@ -77,6 +72,11 @@ namespace NetGore.Collections
                 LoadAssemblyTypes(assembly);
             }
         }
+
+        /// <summary>
+        /// Notifies listeners when a <see cref="Type"/> has been loaded into this <see cref="TypeFactory"/>.
+        /// </summary>
+        public event TypeFactoryLoadedHandler TypeLoaded;
 
         /// <summary>
         /// Gets a Type from its name.

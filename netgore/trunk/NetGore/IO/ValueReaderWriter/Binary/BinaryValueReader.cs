@@ -76,6 +76,44 @@ namespace NetGore.IO
         #region IValueReader Members
 
         /// <summary>
+        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        public bool SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        public bool SupportsNodes
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        public bool UseEnumNames
+        {
+            get { return _useEnumNames; }
+        }
+
+        /// <summary>
+        /// Reads a boolean.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
+        /// <returns>Value read from the reader.</returns>
+        public bool ReadBool(string name)
+        {
+            return _reader.ReadBool();
+        }
+
+        /// <summary>
         /// Reads a 8-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
@@ -83,6 +121,53 @@ namespace NetGore.IO
         public byte ReadByte(string name)
         {
             return _reader.ReadByte();
+        }
+
+        /// <summary>
+        /// Reads a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public double ReadDouble(string name)
+        {
+            return _reader.ReadDouble();
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
+        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnum<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            if (UseEnumNames)
+                return ReadEnumName<T>(name);
+            else
+                return ReadEnumValue<T>(name);
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return EnumHelper<T>.ReadName(this, name);
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return EnumHelper<T>.ReadValue(this, name);
         }
 
         /// <summary>
@@ -96,13 +181,34 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a 64-bit floating-point number.
+        /// Reads a 32-bit signed integer.
         /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
         /// <returns>Value read from the reader.</returns>
-        public double ReadDouble(string name)
+        public int ReadInt(string name)
         {
-            return _reader.ReadDouble();
+            return _reader.ReadInt();
+        }
+
+        /// <summary>
+        /// Reads a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public int ReadInt(string name, int bits)
+        {
+            return _reader.ReadInt(bits);
+        }
+
+        /// <summary>
+        /// Reads a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
+        /// <returns>Value read from the reader.</returns>
+        public long ReadLong(string name)
+        {
+            return _reader.ReadLong();
         }
 
         /// <summary>
@@ -149,130 +255,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
-        /// underlying integer value will be used. If false, the underlying integer value will be used. This
-        /// only to Enum I/O that does not explicitly state which method to use.
+        /// Reads a single child node, while enforcing the idea that there should only be one node
+        /// in the key. If there is more than one node for the given <paramref name="key"/>, an
+        /// ArgumentException will be thrown.
         /// </summary>
-        public bool UseEnumNames
+        /// <param name="key">Unused by the <see cref="BinaryValueReader"/>.</param>
+        /// <returns>An IValueReader to read the child node.</returns>
+        /// <exception cref="ArgumentException">Zero or more than one values found for the given
+        /// <paramref name="key"/>.</exception>
+        public IValueReader ReadNode(string key)
         {
-            get { return _useEnumNames; }
-        }
-
-        /// <summary>
-        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
-        /// be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        public bool SupportsNameLookup
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
-        /// will result in a NotSupportedException being thrown.
-        /// </summary>
-        public bool SupportsNodes
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// Reads a 32-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
-        /// <returns>Value read from the reader.</returns>
-        public int ReadInt(string name)
-        {
-            return _reader.ReadInt();
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            return EnumHelper<T>.ReadValue(this, name);
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            return EnumHelper<T>.ReadName(this, name);
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
-        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnum<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            if (UseEnumNames)
-                return ReadEnumName<T>(name);
-            else
-                return ReadEnumValue<T>(name);
-        }
-
-        /// <summary>
-        /// Reads a 64-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
-        /// <returns>Value read from the reader.</returns>
-        public long ReadLong(string name)
-        {
-            return _reader.ReadLong();
-        }
-
-        /// <summary>
-        /// Reads a 64-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
-        /// <returns>Value read from the reader.</returns>
-        public ulong ReadULong(string name)
-        {
-            return _reader.ReadULong();
-        }
-
-        /// <summary>
-        /// Reads a signed integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
-        /// <param name="bits">Number of bits to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public int ReadInt(string name, int bits)
-        {
-            return _reader.ReadInt(bits);
-        }
-
-        /// <summary>
-        /// Reads a 8-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
-        /// <returns>Value read from the reader.</returns>
-        public sbyte ReadSByte(string name)
-        {
-            return _reader.ReadSByte();
-        }
-
-        /// <summary>
-        /// Reads an unsigned integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
-        /// <param name="bits">Number of bits to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public uint ReadUInt(string name, int bits)
-        {
-            return _reader.ReadUInt(bits);
+            return ReadNode();
         }
 
         /// <summary>
@@ -301,27 +294,13 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a single child node, while enforcing the idea that there should only be one node
-        /// in the key. If there is more than one node for the given <paramref name="key"/>, an
-        /// ArgumentException will be thrown.
-        /// </summary>
-        /// <param name="key">Unused by the <see cref="BinaryValueReader"/>.</param>
-        /// <returns>An IValueReader to read the child node.</returns>
-        /// <exception cref="ArgumentException">Zero or more than one values found for the given
-        /// <paramref name="key"/>.</exception>
-        public IValueReader ReadNode(string key)
-        {
-            return ReadNode();
-        }
-
-        /// <summary>
-        /// Reads a boolean.
+        /// Reads a 8-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
         /// <returns>Value read from the reader.</returns>
-        public bool ReadBool(string name)
+        public sbyte ReadSByte(string name)
         {
-            return _reader.ReadBool();
+            return _reader.ReadSByte();
         }
 
         /// <summary>
@@ -345,6 +324,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public uint ReadUInt(string name, int bits)
+        {
+            return _reader.ReadUInt(bits);
+        }
+
+        /// <summary>
         /// Reads a 32-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
@@ -352,6 +342,16 @@ namespace NetGore.IO
         public uint ReadUInt(string name)
         {
             return _reader.ReadUInt();
+        }
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueReader"/>.</param>
+        /// <returns>Value read from the reader.</returns>
+        public ulong ReadULong(string name)
+        {
+            return _reader.ReadULong();
         }
 
         /// <summary>

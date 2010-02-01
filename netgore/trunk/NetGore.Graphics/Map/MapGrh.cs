@@ -122,32 +122,9 @@ namespace NetGore.Graphics
         #region IDrawable Members
 
         /// <summary>
-        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
         /// </summary>
-        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
-        /// <returns>
-        /// True if the object is in view of the camera, else False.
-        /// </returns>
-        public bool InView(ICamera2D camera)
-        {
-            return camera.InView(_grh, Position);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
-        /// </summary>
-        [Browsable(false)]
-        public MapRenderLayer MapRenderLayer
-        {
-            get
-            {
-                // MapGrhs can be either foreground or background
-                if (IsForeground)
-                    return MapRenderLayer.SpriteForeground;
-                else
-                    return MapRenderLayer.SpriteBackground;
-            }
-        }
+        public event MapRenderLayerChange ChangedRenderLayer;
 
         /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
@@ -174,9 +151,20 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
+        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
-        public event MapRenderLayerChange ChangedRenderLayer;
+        [Browsable(false)]
+        public MapRenderLayer MapRenderLayer
+        {
+            get
+            {
+                // MapGrhs can be either foreground or background
+                if (IsForeground)
+                    return MapRenderLayer.SpriteForeground;
+                else
+                    return MapRenderLayer.SpriteBackground;
+            }
+        }
 
         /// <summary>
         /// Makes the object draw itself.
@@ -185,6 +173,18 @@ namespace NetGore.Graphics
         public void Draw(SpriteBatch sb)
         {
             _grh.Draw(sb, Position, Color.White);
+        }
+
+        /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>
+        /// True if the object is in view of the camera, else False.
+        /// </returns>
+        public bool InView(ICamera2D camera)
+        {
+            return camera.InView(_grh, Position);
         }
 
         #endregion
@@ -224,13 +224,26 @@ namespace NetGore.Graphics
         #region ISpatial Members
 
         /// <summary>
-        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
+        /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
-        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
-        /// occupies.</returns>
-        public Rectangle ToRectangle()
+        public event SpatialEventHandler<Vector2> Moved;
+
+        /// <summary>
+        /// Unused by the <see cref="MapGrh"/>.
+        /// </summary>
+        event SpatialEventHandler<Vector2> ISpatial.Resized
         {
-            return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+            add { }
+            remove { }
+        }
+
+        /// <summary>
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        [Browsable(false)]
+        public Vector2 Max
+        {
+            get { return Position + Size; }
         }
 
         /// <summary>
@@ -266,26 +279,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
         /// </summary>
-        [Browsable(false)]
-        public Vector2 Max
+        /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
+        /// occupies.</returns>
+        public Rectangle ToRectangle()
         {
-            get { return Position + Size; }
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="ISpatial"/> has moved.
-        /// </summary>
-        public event SpatialEventHandler<Vector2> Moved;
-
-        /// <summary>
-        /// Unused by the <see cref="MapGrh"/>.
-        /// </summary>
-        event SpatialEventHandler<Vector2> ISpatial.Resized
-        {
-            add { }
-            remove { }
+            return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
         }
 
         #endregion

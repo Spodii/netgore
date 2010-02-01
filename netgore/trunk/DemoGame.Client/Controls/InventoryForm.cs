@@ -38,16 +38,6 @@ namespace DemoGame.Client
         Inventory _inventory;
 
         /// <summary>
-        /// Notifies listeners when an item was requested to be dropped.
-        /// </summary>
-        public event InventoryItemHandler RequestDropItem;
-
-        /// <summary>
-        /// Notifies listeners when an item was requested to be used.
-        /// </summary>
-        public event InventoryItemHandler RequestUseItem;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
         /// <param name="infoRequester">The item info tooltip.</param>
@@ -67,6 +57,16 @@ namespace DemoGame.Client
 
             CreateItemSlots();
         }
+
+        /// <summary>
+        /// Notifies listeners when an item was requested to be dropped.
+        /// </summary>
+        public event InventoryItemHandler RequestDropItem;
+
+        /// <summary>
+        /// Notifies listeners when an item was requested to be used.
+        /// </summary>
+        public event InventoryItemHandler RequestUseItem;
 
         public Inventory Inventory
         {

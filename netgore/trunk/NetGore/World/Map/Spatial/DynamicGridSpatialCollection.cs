@@ -47,6 +47,23 @@ namespace NetGore
             #region IGridSpatialCollectionSegment Members
 
             /// <summary>
+            /// Adds the <see cref="ISpatial"/> to the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+            public void Add(ISpatial spatial)
+            {
+                _spatials.Add(spatial);
+            }
+
+            /// <summary>
+            /// Clears all <see cref="ISpatial"/>s from the segment.
+            /// </summary>
+            public void Clear()
+            {
+                _spatials.Clear();
+            }
+
+            /// <summary>
             /// Returns an enumerator that iterates through the collection.
             /// </summary>
             /// <returns>
@@ -71,29 +88,12 @@ namespace NetGore
             }
 
             /// <summary>
-            /// Adds the <see cref="ISpatial"/> to the segment.
-            /// </summary>
-            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
-            public void Add(ISpatial spatial)
-            {
-                _spatials.Add(spatial);
-            }
-
-            /// <summary>
             /// Remove the <see cref="ISpatial"/> from the segment.
             /// </summary>
             /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
             public void Remove(ISpatial spatial)
             {
                 _spatials.Remove(spatial);
-            }
-
-            /// <summary>
-            /// Clears all <see cref="ISpatial"/>s from the segment.
-            /// </summary>
-            public void Clear()
-            {
-                _spatials.Clear();
             }
 
             #endregion

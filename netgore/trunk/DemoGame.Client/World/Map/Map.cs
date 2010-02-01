@@ -397,6 +397,22 @@ namespace DemoGame.Client
         public event MapDrawEventHandler EndDrawLayer;
 
         /// <summary>
+        /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        public ICamera2D Camera
+        {
+            get { return _camera; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _camera = value;
+            }
+        }
+
+        /// <summary>
         /// Draws the content of the map to the screen.
         /// </summary>
         /// <param name="sb">SpriteBatch object used for drawing.</param>
@@ -432,22 +448,6 @@ namespace DemoGame.Client
             // Draw the particle effects
             _particleEffectRenderer.SpriteBatch = sb;
             _particleEffectRenderer.Draw(Camera, ParticleEffects);
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public ICamera2D Camera
-        {
-            get { return _camera; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _camera = value;
-            }
         }
 
         #endregion

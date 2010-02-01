@@ -18,24 +18,6 @@ namespace NetGore.Graphics.GUI
         string _text = string.Empty;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
-        /// </summary>
-        public event ControlEventHandler FontChanged
-        {
-            add { Events.AddHandler(_eventFontChanged, value); }
-            remove { Events.RemoveHandler(_eventFontChanged, value); }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
-        /// </summary>
-        public event ControlEventHandler TextChanged
-        {
-            add { Events.AddHandler(_eventTextChanged, value); }
-            remove { Events.RemoveHandler(_eventTextChanged, value); }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TextControl"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
@@ -56,6 +38,24 @@ namespace NetGore.Graphics.GUI
         protected TextControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
             : base(guiManager, position, clientSize)
         {
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
+        /// </summary>
+        public event ControlEventHandler FontChanged
+        {
+            add { Events.AddHandler(_eventFontChanged, value); }
+            remove { Events.RemoveHandler(_eventFontChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
+        /// </summary>
+        public event ControlEventHandler TextChanged
+        {
+            add { Events.AddHandler(_eventTextChanged, value); }
+            remove { Events.RemoveHandler(_eventTextChanged, value); }
         }
 
         /// <summary>
@@ -101,24 +101,6 @@ namespace NetGore.Graphics.GUI
 
                 InvokeTextChanged();
             }
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
-        /// </summary>
-        protected virtual void OnFontChanged()
-        {
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="TextControl.Text"/> has changed.
-        /// This is called immediately before <see cref="TextControl.TextChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
-        /// </summary>
-        protected virtual void OnTextChanged()
-        {
         }
 
         /// <summary>
@@ -529,6 +511,24 @@ namespace NetGore.Graphics.GUI
                 default:
                     return false;
             }
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnFontChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Text"/> has changed.
+        /// This is called immediately before <see cref="TextControl.TextChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnTextChanged()
+        {
         }
 
         /// <summary>

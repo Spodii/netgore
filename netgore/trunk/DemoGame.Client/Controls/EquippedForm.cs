@@ -17,11 +17,6 @@ namespace DemoGame.Client
         UserEquipped _userEquipped;
 
         /// <summary>
-        /// Notifies listeners when a request has been made to unequip an item.
-        /// </summary>
-        public event RequestUnequipHandler RequestUnequip;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EquippedForm"/> class.
         /// </summary>
         /// <param name="infoRequester">The info requester.</param>
@@ -37,6 +32,11 @@ namespace DemoGame.Client
 
             CreateItemSlots();
         }
+
+        /// <summary>
+        /// Notifies listeners when a request has been made to unequip an item.
+        /// </summary>
+        public event RequestUnequipHandler RequestUnequip;
 
         public UserEquipped UserEquipped
         {

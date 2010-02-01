@@ -58,6 +58,8 @@ namespace NetGore.Tests.NetGore
             return Implode(a, b, c);
         }
 
+        #region Unit tests
+
         [Test]
         public void TestSimpleTooFewParameters()
         {
@@ -77,6 +79,8 @@ namespace NetGore.Tests.NetGore
             _parser.TestParse(this, "StaticSimpleA", "abcd", "efgh");
             _parser.TestParse(this, "StaticSimpleB", 10.0, "woot", 1005);
         }
+
+        #endregion
 
         class TestCommandAttribute : StringCommandBaseAttribute
         {

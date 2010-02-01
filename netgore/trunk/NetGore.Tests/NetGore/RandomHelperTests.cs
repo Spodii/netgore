@@ -6,6 +6,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class RandomHelperTests
     {
+        #region Unit tests
+
         [Test]
         public void Choose1Test()
         {
@@ -156,5 +158,7 @@ namespace NetGore.Tests.NetGore
                 Assert.LessOrEqual(value, 500);
             }
         }
+
+        #endregion
     }
 }

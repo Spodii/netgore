@@ -27,6 +27,18 @@ namespace NetGore
         #region IStatValueType Members
 
         /// <summary>
+        /// Creates a deep copy of the <see cref="IStatValueType"/>. The returned <see cref="IStatValueType"/> is of the
+        /// same type of the object that this method was called on, and contains the same value.
+        /// </summary>
+        /// <returns>
+        /// The deep copy of this <see cref="IStatValueType"/>.
+        /// </returns>
+        public IStatValueType DeepCopy()
+        {
+            return new StatValueSByte(_value);
+        }
+
+        /// <summary>
         /// Gets the value of this <see cref="IStatValueType"/> as an integer.
         /// </summary>
         /// <returns>
@@ -35,26 +47,6 @@ namespace NetGore
         public int GetValue()
         {
             return _value;
-        }
-
-        /// <summary>
-        /// Sets the value of this <see cref="IStatValueType"/>.
-        /// </summary>
-        /// <param name="value">The integer value to set this <see cref="IStatValueType"/>.</param>
-        /// <returns></returns>
-        public IStatValueType SetValue(int value)
-        {
-            Debug.Assert(value >= sbyte.MinValue && value <= sbyte.MaxValue);
-            return new StatValueSByte((sbyte)value);
-        }
-
-        /// <summary>
-        /// Writes this <see cref="IStatValueType"/>'s value to the given <paramref name="bitStream"/>.
-        /// </summary>
-        /// <param name="bitStream">The <paramref name="bitStream"/> to write this <see cref="IStatValueType"/> to.</param>
-        public void Write(BitStream bitStream)
-        {
-            bitStream.Write(_value);
         }
 
         /// <summary>
@@ -82,15 +74,23 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Creates a deep copy of the <see cref="IStatValueType"/>. The returned <see cref="IStatValueType"/> is of the
-        /// same type of the object that this method was called on, and contains the same value.
+        /// Sets the value of this <see cref="IStatValueType"/>.
         /// </summary>
-        /// <returns>
-        /// The deep copy of this <see cref="IStatValueType"/>.
-        /// </returns>
-        public IStatValueType DeepCopy()
+        /// <param name="value">The integer value to set this <see cref="IStatValueType"/>.</param>
+        /// <returns></returns>
+        public IStatValueType SetValue(int value)
         {
-            return new StatValueSByte(_value);
+            Debug.Assert(value >= sbyte.MinValue && value <= sbyte.MaxValue);
+            return new StatValueSByte((sbyte)value);
+        }
+
+        /// <summary>
+        /// Writes this <see cref="IStatValueType"/>'s value to the given <paramref name="bitStream"/>.
+        /// </summary>
+        /// <param name="bitStream">The <paramref name="bitStream"/> to write this <see cref="IStatValueType"/> to.</param>
+        public void Write(BitStream bitStream)
+        {
+            bitStream.Write(_value);
         }
 
         #endregion

@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class Vector2Tests
     {
+        #region Unit tests
+
         [Test]
         public void AbsTest()
         {
@@ -134,5 +136,7 @@ namespace NetGore.Tests.NetGore
                 }
             }
         }
+
+        #endregion
     }
 }

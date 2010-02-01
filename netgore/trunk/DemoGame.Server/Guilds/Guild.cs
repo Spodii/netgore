@@ -64,77 +64,6 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a new guild member is added.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="newMember"></param>
-        protected override void OnMemberAdded(IGuildMember newMember)
-        {
-            base.OnMemberAdded(newMember);
-
-            var v = new GuildMemberNameRank(newMember.Name, newMember.GuildRank);
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddMember(x, v)))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of when a member of this
-        /// guild has come online.
-        /// </summary>
-        /// <param name="guildMember">The guild member that came online.</param>
-        protected override void OnOnlineUserAdded(IGuildMember guildMember)
-        {
-            base.OnOnlineUserAdded(guildMember);
-
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddOnlineMember(x, guildMember.Name)))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after the guild's name has changed.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="oldName">The old name.</param>
-        /// <param name="newName">The new name.</param>
-        protected override void OnNameChanged(IGuildMember invoker, string oldName, string newName)
-        {
-            using (var pw = ServerPacket.SendMessage(GameMessage.GuildRenamed, oldName, newName, invoker.Name))
-            {
-                Send(pw);
-            }
-
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateNameTag(x, Name, Tag)))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after the guild's tag has changed.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="oldTag">The old tag.</param>
-        /// <param name="newTag">The new tag.</param>
-        protected override void OnTagChanged(IGuildMember invoker, string oldTag, string newTag)
-        {
-            using (var pw = ServerPacket.SendMessage(GameMessage.GuildRetagged, oldTag, newTag, invoker.Name))
-            {
-                Send(pw);
-            }
-
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateNameTag(x, Name, Tag)))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles destroying the guild. This needs to remove all members
         /// in the guild from the guild, and remove the guild itself from the database.
         /// </summary>
@@ -148,54 +77,6 @@ namespace DemoGame.Server.Guilds
 
             // Delete the guild from the database, which will also remove all members not logged in from the guild
             _deleteGuildQuery.Execute(ID);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a guild member is kicked.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="target">The optional guild member the event involves.</param>
-        protected override void OnMemberKicked(IGuildMember invoker, IGuildMember target)
-        {
-            base.OnMemberKicked(invoker, target);
-
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveMember(x, target.Name)))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling after a guild member is promoted.
-        /// Use this instead of the corresponding event when possible.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <param name="target">The optional guild member the event involves.</param>
-        protected override void OnMemberPromoted(IGuildMember invoker, IGuildMember target)
-        {
-            base.OnMemberPromoted(invoker, target);
-
-            var v = new GuildMemberNameRank(target.Name, target.GuildRank);
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateMemberRank(x, v)))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of when a member of this
-        /// guild has gone offline.
-        /// </summary>
-        /// <param name="guildMember">The guild member that went offline.</param>
-        protected override void OnOnlineUserRemoved(IGuildMember guildMember)
-        {
-            base.OnOnlineUserRemoved(guildMember);
-
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveOnlineMember(x, guildMember.Name)))
-            {
-                Send(pw);
-            }
         }
 
         /// <summary>
@@ -283,6 +164,125 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a new guild member is added.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="newMember"></param>
+        protected override void OnMemberAdded(IGuildMember newMember)
+        {
+            base.OnMemberAdded(newMember);
+
+            var v = new GuildMemberNameRank(newMember.Name, newMember.GuildRank);
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddMember(x, v)))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is kicked.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected override void OnMemberKicked(IGuildMember invoker, IGuildMember target)
+        {
+            base.OnMemberKicked(invoker, target);
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveMember(x, target.Name)))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after a guild member is promoted.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="target">The optional guild member the event involves.</param>
+        protected override void OnMemberPromoted(IGuildMember invoker, IGuildMember target)
+        {
+            base.OnMemberPromoted(invoker, target);
+
+            var v = new GuildMemberNameRank(target.Name, target.GuildRank);
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateMemberRank(x, v)))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's name has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldName">The old name.</param>
+        /// <param name="newName">The new name.</param>
+        protected override void OnNameChanged(IGuildMember invoker, string oldName, string newName)
+        {
+            using (var pw = ServerPacket.SendMessage(GameMessage.GuildRenamed, oldName, newName, invoker.Name))
+            {
+                Send(pw);
+            }
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateNameTag(x, Name, Tag)))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has come online.
+        /// </summary>
+        /// <param name="guildMember">The guild member that came online.</param>
+        protected override void OnOnlineUserAdded(IGuildMember guildMember)
+        {
+            base.OnOnlineUserAdded(guildMember);
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteAddOnlineMember(x, guildMember.Name)))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a member of this
+        /// guild has gone offline.
+        /// </summary>
+        /// <param name="guildMember">The guild member that went offline.</param>
+        protected override void OnOnlineUserRemoved(IGuildMember guildMember)
+        {
+            base.OnOnlineUserRemoved(guildMember);
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteRemoveOnlineMember(x, guildMember.Name)))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling after the guild's tag has changed.
+        /// Use this instead of the corresponding event when possible.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <param name="oldTag">The old tag.</param>
+        /// <param name="newTag">The new tag.</param>
+        protected override void OnTagChanged(IGuildMember invoker, string oldTag, string newTag)
+        {
+            using (var pw = ServerPacket.SendMessage(GameMessage.GuildRetagged, oldTag, newTag, invoker.Name))
+            {
+                Send(pw);
+            }
+
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteUpdateNameTag(x, Name, Tag)))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, saves all of the guild's information to the database.
         /// </summary>
         public override void Save()
@@ -329,6 +329,14 @@ namespace DemoGame.Server.Guilds
         #region IGuildTable Members
 
         /// <summary>
+        /// Gets the value of the database column `id`.
+        /// </summary>
+        GuildID IGuildTable.ID
+        {
+            get { return ID; }
+        }
+
+        /// <summary>
         /// Creates a deep copy of this table. All the values will be the same
         /// but they will be contained in a different object instance.
         /// </summary>
@@ -338,14 +346,6 @@ namespace DemoGame.Server.Guilds
         IGuildTable IGuildTable.DeepCopy()
         {
             return new GuildTable(this);
-        }
-
-        /// <summary>
-        /// Gets the value of the database column `id`.
-        /// </summary>
-        GuildID IGuildTable.ID
-        {
-            get { return ID; }
         }
 
         #endregion

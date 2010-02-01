@@ -65,77 +65,11 @@ namespace NetGore.Graphics.GUI
         #region IGameScreen Members
 
         /// <summary>
-        /// Handles screen activation, which occurs every time the screen becomes the current
-        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
-        /// </summary>
-        public virtual void Activate()
-        {
-            UpdateMusic();
-        }
-
-        /// <summary>
-        /// Handles screen deactivation, which occurs every time the screen changes from being
-        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
-        /// </summary>
-        public virtual void Deactivate()
-        {
-        }
-
-        /// <summary>
-        /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
-        /// there is often no need to clear the screen. This will only be called while the screen is the
-        /// active screen.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
-        /// <param name="gameTime">The current game time.</param>
-        public virtual void Draw(SpriteBatch spriteBatch, int gameTime)
-        {
-            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
-            GUIManager.Draw(spriteBatch);
-            spriteBatch.End();
-        }
-
-        /// <summary>
-        /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
-        /// completely and successfully added to the ScreenManager. It is highly recommended that you
-        /// use this instead of the constructor. This is invoked only once.
-        /// </summary>
-        public virtual void Initialize()
-        {
-        }
-
-        /// <summary>
         /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
         /// </summary>
         public IGUIManager GUIManager
         {
             get { return _guiManager; }
-        }
-
-        /// <summary>
-        /// Handles the loading of game content. Any content that is loaded should be placed in here.
-        /// This will be invoked once (right after Initialize()), along with an additional time for
-        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
-        /// </summary>
-        public virtual void LoadContent()
-        {
-        }
-
-        /// <summary>
-        /// Handles the unloading of game content. This is raised whenever XNA notifies the ScreenManager
-        /// that the content is to be unloaded.
-        /// </summary>
-        public virtual void UnloadContent()
-        {
-        }
-
-        /// <summary>
-        /// Updates the screen if it is currently the active screen.
-        /// </summary>
-        /// <param name="gameTime">The current game time.</param>
-        public virtual void Update(int gameTime)
-        {
-            GUIManager.Update(gameTime);
         }
 
         /// <summary>
@@ -211,10 +145,76 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles screen activation, which occurs every time the screen becomes the current
+        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
+        /// </summary>
+        public virtual void Activate()
+        {
+            UpdateMusic();
+        }
+
+        /// <summary>
+        /// Handles screen deactivation, which occurs every time the screen changes from being
+        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
+        /// </summary>
+        public virtual void Deactivate()
+        {
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public virtual void Dispose()
         {
+        }
+
+        /// <summary>
+        /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
+        /// there is often no need to clear the screen. This will only be called while the screen is the
+        /// active screen.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="gameTime">The current game time.</param>
+        public virtual void Draw(SpriteBatch spriteBatch, int gameTime)
+        {
+            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            GUIManager.Draw(spriteBatch);
+            spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
+        /// completely and successfully added to the ScreenManager. It is highly recommended that you
+        /// use this instead of the constructor. This is invoked only once.
+        /// </summary>
+        public virtual void Initialize()
+        {
+        }
+
+        /// <summary>
+        /// Handles the loading of game content. Any content that is loaded should be placed in here.
+        /// This will be invoked once (right after Initialize()), along with an additional time for
+        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
+        /// </summary>
+        public virtual void LoadContent()
+        {
+        }
+
+        /// <summary>
+        /// Handles the unloading of game content. This is raised whenever XNA notifies the ScreenManager
+        /// that the content is to be unloaded.
+        /// </summary>
+        public virtual void UnloadContent()
+        {
+        }
+
+        /// <summary>
+        /// Updates the screen if it is currently the active screen.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
+        public virtual void Update(int gameTime)
+        {
+            GUIManager.Update(gameTime);
         }
 
         #endregion

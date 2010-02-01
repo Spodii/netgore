@@ -36,16 +36,6 @@ namespace NetGore.Collections
         int _version = 0;
 
         /// <summary>
-        /// Notifies listeners when an item has been added to the DArray.
-        /// </summary>
-        public event DArrayModifyEventHandler<T> ItemAdded;
-
-        /// <summary>
-        /// Notifies listeners when an item has been removed from the DArray.
-        /// </summary>
-        public event DArrayModifyEventHandler<T> ItemRemoved;
-
-        /// <summary>
         /// DArray constructor
         /// </summary>
         public DArray() : this(_defaultSize)
@@ -98,6 +88,16 @@ namespace NetGore.Collections
                 Add(item);
             }
         }
+
+        /// <summary>
+        /// Notifies listeners when an item has been added to the DArray.
+        /// </summary>
+        public event DArrayModifyEventHandler<T> ItemAdded;
+
+        /// <summary>
+        /// Notifies listeners when an item has been removed from the DArray.
+        /// </summary>
+        public event DArrayModifyEventHandler<T> ItemRemoved;
 
         /// <summary>
         /// Gets the length of the DArray.
@@ -215,6 +215,28 @@ namespace NetGore.Collections
 
             // If we have no free indices, we simply just make a new index
             return _highestIndex + 1;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was added.</param>
+        /// <param name="index">The index the item that was added.</param>
+        protected virtual void OnItemAdded(T item, int index)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was removed.</param>
+        /// <param name="index">The index the item that was removed.</param>
+        protected virtual void OnItemRemoved(T item, int index)
+        {
         }
 
         /// <summary>
@@ -365,76 +387,31 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
+        /// Gets the number of elements contained in the DArray. Unlike Length, this counts the
+        /// number of actual items in the DArray, not just the size of the DArray. Therefore, Count
+        /// will always be less than or equal to Length.
         /// </summary>
-        /// <param name="item">The item that was added.</param>
-        /// <param name="index">The index the item that was added.</param>
-        protected virtual void OnItemAdded(T item, int index)
+        public int Count
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="item">The item that was removed.</param>
-        /// <param name="index">The index the item that was removed.</param>
-        protected virtual void OnItemRemoved(T item, int index)
-        {
-        }
-
-        /// <summary>
-        /// Finds the index of an item in the internal array (very slow!)
-        /// </summary>
-        /// <param name="item">Item to find</param>
-        /// <returns>Index of the item if found, or -1 if not found</returns>
-        public int IndexOf(T item)
-        {
-            var comparer = EqualityComparer<T>.Default;
-
-            // Iterate through the whole list
-            for (int i = 0; i <= _highestIndex; i++)
+            get
             {
-                // Check for the requested item, returning the index if it matches
-                if (comparer.Equals(_buffer[i], item))
-                    return i;
+                // FUTURE: Can greatly improve the performance of this by doing the count when adding/removing
+                int count = 0;
+                for (int i = 0; i <= _highestIndex; i++)
+                {
+                    if (_isIndexUsed[i])
+                        count++;
+                }
+                return count;
             }
-
-            // Item not found, return -1
-            return -1;
         }
 
         /// <summary>
-        /// Inserts an item to the DArray at the specified index.
+        /// Gets a value indicating whether the DArray is read-only.
         /// </summary>
-        /// <param name="index">The zero-based index at which item should be inserted.</param>
-        /// <param name="item">The object to insert into the DArray.</param>
-        public void Insert(int index, T item)
+        bool ICollection<T>.IsReadOnly
         {
-            this[index] = item;
-        }
-
-        /// <summary>
-        /// Removes the DArray item at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index of the item to remove.</param>
-        public void RemoveAt(int index)
-        {
-            // Check if there is anything to remove
-            if (!_isIndexUsed[index])
-                return;
-
-            // Call the sub-handler
-            if (_trackFree)
-                RemoveAtTracked(index);
-            else
-                RemoveAtUntracked(index);
-
-            // Items changed, so change the version
-            _version++;
+            get { return false; }
         }
 
         /// <summary>
@@ -507,6 +484,55 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>A IEnumerator that can be used to iterate through the collection.</returns>
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>A IEnumerator that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        /// <summary>
+        /// Finds the index of an item in the internal array (very slow!)
+        /// </summary>
+        /// <param name="item">Item to find</param>
+        /// <returns>Index of the item if found, or -1 if not found</returns>
+        public int IndexOf(T item)
+        {
+            var comparer = EqualityComparer<T>.Default;
+
+            // Iterate through the whole list
+            for (int i = 0; i <= _highestIndex; i++)
+            {
+                // Check for the requested item, returning the index if it matches
+                if (comparer.Equals(_buffer[i], item))
+                    return i;
+            }
+
+            // Item not found, return -1
+            return -1;
+        }
+
+        /// <summary>
+        /// Inserts an item to the DArray at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index at which item should be inserted.</param>
+        /// <param name="item">The object to insert into the DArray.</param>
+        public void Insert(int index, T item)
+        {
+            this[index] = item;
+        }
+
+        /// <summary>
         /// Removes the first occurrence of a specific object from the DArray.
         /// </summary>
         /// <param name="item">Item to remove.</param>
@@ -525,49 +551,23 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Gets the number of elements contained in the DArray. Unlike Length, this counts the
-        /// number of actual items in the DArray, not just the size of the DArray. Therefore, Count
-        /// will always be less than or equal to Length.
+        /// Removes the DArray item at the specified index.
         /// </summary>
-        public int Count
+        /// <param name="index">The zero-based index of the item to remove.</param>
+        public void RemoveAt(int index)
         {
-            get
-            {
-                // FUTURE: Can greatly improve the performance of this by doing the count when adding/removing
-                int count = 0;
-                for (int i = 0; i <= _highestIndex; i++)
-                {
-                    if (_isIndexUsed[i])
-                        count++;
-                }
-                return count;
-            }
-        }
+            // Check if there is anything to remove
+            if (!_isIndexUsed[index])
+                return;
 
-        /// <summary>
-        /// Gets a value indicating whether the DArray is read-only.
-        /// </summary>
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return false; }
-        }
+            // Call the sub-handler
+            if (_trackFree)
+                RemoveAtTracked(index);
+            else
+                RemoveAtUntracked(index);
 
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>A IEnumerator that can be used to iterate through the collection.</returns>
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>A IEnumerator that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new Enumerator(this);
+            // Items changed, so change the version
+            _version++;
         }
 
         #endregion
@@ -609,6 +609,13 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            public void Dispose()
+            {
+            }
+
+            /// <summary>
             /// Advances the enumerator to the next element of the collection.
             /// </summary>
             /// <returns>True if the enumerator was successfully advanced to the next element; 
@@ -636,13 +643,6 @@ namespace NetGore.Collections
                     return MoveNext();
 
                 return true;
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public void Dispose()
-            {
             }
 
             /// <summary>

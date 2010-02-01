@@ -46,6 +46,42 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Adds a sprite body modifier that alters some, but not all, of the body. <see cref="ICharacterSprite"/>s
+        /// that do not support dynamic sprites treat this the same as <see cref="ICharacterSprite.SetBody"/>.
+        /// </summary>
+        /// <param name="bodyModifierName">The name of the sprite body modifier.</param>
+        public void AddBodyModifier(string bodyModifierName)
+        {
+            SkeletonSet set = _skelManager.GetSet(bodyModifierName);
+            set = SkeletonAnimation.CreateSmoothedSet(set, _skelAnim.Skeleton);
+            SkeletonAnimation mod = new SkeletonAnimation(GetTime(), set);
+            _skelAnim.AddModifier(mod);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ICharacterSprite"/>.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="position">The position to draw the sprite.</param>
+        /// <param name="heading">The character's heading.</param>
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Direction heading)
+        {
+            SpriteEffects se = (heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
+            Vector2 p = position + new Vector2(_bodySize.X / 2f, _bodySize.Y);
+            _skelAnim.Draw(spriteBatch, p, se);
+        }
+
+        /// <summary>
+        /// Sets the sprite's body.
+        /// </summary>
+        /// <param name="bodyName">The name of the sprite body.</param>
+        public void SetBody(string bodyName)
+        {
+            SkeletonBodyInfo bodyInfo = _skelManager.GetBodyInfo(bodyName);
+            _skelAnim.SkeletonBody = new SkeletonBody(bodyInfo, _skelAnim.Skeleton);
+        }
+
+        /// <summary>
         /// Sets the sprite's paper doll layers. This will set all of the layers at once. Layers that are not in the
         /// <paramref name="layers"/> collection should be treated as they are not used and be removed, not be treated
         /// as they are just not updating.
@@ -88,29 +124,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the sprite's body.
-        /// </summary>
-        /// <param name="bodyName">The name of the sprite body.</param>
-        public void SetBody(string bodyName)
-        {
-            SkeletonBodyInfo bodyInfo = _skelManager.GetBodyInfo(bodyName);
-            _skelAnim.SkeletonBody = new SkeletonBody(bodyInfo, _skelAnim.Skeleton);
-        }
-
-        /// <summary>
-        /// Adds a sprite body modifier that alters some, but not all, of the body. <see cref="ICharacterSprite"/>s
-        /// that do not support dynamic sprites treat this the same as <see cref="ICharacterSprite.SetBody"/>.
-        /// </summary>
-        /// <param name="bodyModifierName">The name of the sprite body modifier.</param>
-        public void AddBodyModifier(string bodyModifierName)
-        {
-            SkeletonSet set = _skelManager.GetSet(bodyModifierName);
-            set = SkeletonAnimation.CreateSmoothedSet(set, _skelAnim.Skeleton);
-            SkeletonAnimation mod = new SkeletonAnimation(GetTime(), set);
-            _skelAnim.AddModifier(mod);
-        }
-
-        /// <summary>
         /// Updates the <see cref="ICharacterSprite"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
@@ -123,19 +136,6 @@ namespace NetGore.Graphics
                 _skelAnim.Speed = Math.Abs(Character.Velocity.X) / _speedModifier;
             else
                 _skelAnim.Speed = 1.0f;
-        }
-
-        /// <summary>
-        /// Draws the <see cref="ICharacterSprite"/>.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
-        /// <param name="position">The position to draw the sprite.</param>
-        /// <param name="heading">The character's heading.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Direction heading)
-        {
-            SpriteEffects se = (heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
-            Vector2 p = position + new Vector2(_bodySize.X / 2f, _bodySize.Y);
-            _skelAnim.Draw(spriteBatch, p, se);
         }
 
         #endregion

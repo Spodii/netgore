@@ -922,17 +922,6 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `statpoints`.
-        /// The underlying database type is `int(11)` with the default value of `0`.
-        /// </summary>
-        [SyncValue]
-        public Int32 StatPoints
-        {
-            get { return _statPoints; }
-            set { _statPoints = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `stat_agi`.
         /// The underlying database type is `smallint(6)` with the default value of `1`.
         /// </summary>
@@ -1007,6 +996,17 @@ namespace DemoGame.Server.DbObjs
         {
             get { return _statMinhit; }
             set { _statMinhit = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `statpoints`.
+        /// The underlying database type is `int(11)` with the default value of `0`.
+        /// </summary>
+        [SyncValue]
+        public Int32 StatPoints
+        {
+            get { return _statPoints; }
+            set { _statPoints = value; }
         }
 
         /// <summary>

@@ -17,11 +17,6 @@ namespace DemoGame.Client
         int _bufferOffset = 0;
 
         /// <summary>
-        /// Notifies listeners that a message is trying to be sent from the ChatForm's input box.
-        /// </summary>
-        public event ChatFormSayHandler Say;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ChatForm"/> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
@@ -42,6 +37,11 @@ namespace DemoGame.Client
             // Force the initial repositioning
             RepositionTextBoxes();
         }
+
+        /// <summary>
+        /// Notifies listeners that a message is trying to be sent from the ChatForm's input box.
+        /// </summary>
+        public event ChatFormSayHandler Say;
 
         /// <summary>
         /// Appends a set of styled text to the output TextBox.
@@ -69,6 +69,34 @@ namespace DemoGame.Client
         public void AppendToOutput(List<StyledText> text)
         {
             _output.AppendLine(text);
+        }
+
+        void Input_KeyDown(object sender, KeyboardEventArgs e)
+        {
+            const int bufferScrollRate = 3;
+
+            foreach (Keys key in e.Keys)
+            {
+                switch (key)
+                {
+                    case Keys.Enter:
+                        if (Say != null && !string.IsNullOrEmpty(_input.Text))
+                        {
+                            string text = _input.Text;
+                            _input.Text = string.Empty;
+                            Say(this, text);
+                        }
+                        break;
+
+                    case Keys.PageUp:
+                        _bufferOffset += bufferScrollRate;
+                        break;
+
+                    case Keys.PageDown:
+                        _bufferOffset -= bufferScrollRate;
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -101,32 +129,16 @@ namespace DemoGame.Client
             RepositionTextBoxes();
         }
 
-        void Input_KeyDown(object sender, KeyboardEventArgs e)
+        /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
+        /// </summary>
+        protected override void OnResized()
         {
-            const int bufferScrollRate = 3;
+            base.OnResized();
 
-            foreach (Keys key in e.Keys)
-            {
-                switch (key)
-                {
-                    case Keys.Enter:
-                        if (Say != null && !string.IsNullOrEmpty(_input.Text))
-                        {
-                            string text = _input.Text;
-                            _input.Text = string.Empty;
-                            Say(this, text);
-                        }
-                        break;
-
-                    case Keys.PageUp:
-                        _bufferOffset += bufferScrollRate;
-                        break;
-
-                    case Keys.PageDown:
-                        _bufferOffset -= bufferScrollRate;
-                        break;
-                }
-            }
+            RepositionTextBoxes();
         }
 
         /// <summary>
@@ -148,18 +160,6 @@ namespace DemoGame.Client
 
             _output.Size = outputSize;
             _output.Position = outputPos;
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.Resized"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
-        /// </summary>
-        protected override void OnResized()
-        {
-            base.OnResized();
-
-            RepositionTextBoxes();
         }
 
         /// <summary>

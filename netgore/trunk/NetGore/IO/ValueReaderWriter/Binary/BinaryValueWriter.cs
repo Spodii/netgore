@@ -102,6 +102,66 @@ namespace NetGore.IO
         #region IValueWriter Members
 
         /// <summary>
+        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        public bool SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        public bool SupportsNodes
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        public bool UseEnumNames
+        {
+            get { return _useEnumNames; }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to dispose of already-disposed object `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
+            _isDisposed = true;
+
+            GC.SuppressFinalize(this);
+
+            // Flush out the writer to the file
+            if (_filePath != null)
+            {
+                var bytes = _writer.GetBufferCopy();
+
+                // Write to a temp file first
+                var tempFile = new TempFile();
+                File.WriteAllBytes(tempFile.FilePath, bytes);
+
+                // Move to the actual destination
+                tempFile.MoveTo(_filePath);
+            }
+        }
+
+        /// <summary>
         /// Writes an unsigned integer of up to 32 bits.
         /// </summary>
         /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
@@ -110,46 +170,6 @@ namespace NetGore.IO
         public void Write(string name, uint value, int bits)
         {
             _writer.Write(value, bits);
-        }
-
-        /// <summary>
-        /// Writes an Enum of type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            EnumHelper<T>.WriteValue(this, name, value);
-        }
-
-        /// <summary>
-        /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
-        /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            if (UseEnumNames)
-                WriteEnumName(name, value);
-            else
-                WriteEnumValue(name, value);
-        }
-
-        /// <summary>
-        /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            EnumHelper<T>.WriteName(this, name, value);
         }
 
         /// <summary>
@@ -234,47 +254,54 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
-        /// underlying integer value will be used. If false, the underlying integer value will be used. This
-        /// only to Enum I/O that does not explicitly state which method to use.
-        /// </summary>
-        public bool UseEnumNames
-        {
-            get { return _useEnumNames; }
-        }
-
-        /// <summary>
-        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
-        /// be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        public bool SupportsNameLookup
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
-        /// will result in a NotSupportedException being thrown.
-        /// </summary>
-        public bool SupportsNodes
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// Writes the start of a child node in this <see cref="IValueWriter"/>.
+        /// Writes a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
-        public void WriteStartNode(string name)
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, int value)
         {
-            const uint reservedValue = 0;
+            _writer.Write(value);
+        }
 
-            if (_nodeOffsetStack == null)
-                _nodeOffsetStack = new Stack<int>(4);
+        /// <summary>
+        /// Writes a 64-bit usigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, ulong value)
+        {
+            _writer.Write(value);
+        }
 
-            int bitOffset = _writer.PositionBits;
-            Write(null, reservedValue);
-            _nodeOffsetStack.Push(bitOffset);
+        /// <summary>
+        /// Writes a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, long value)
+        {
+            _writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
+        /// <param name="value">Value to write.</param>
+        /// <param name="bits">Number of bits to write.</param>
+        public void Write(string name, int value, int bits)
+        {
+            _writer.Write(value, bits);
+        }
+
+        /// <summary>
+        /// Writes a 32-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, float value)
+        {
+            _writer.Write(value);
         }
 
         /// <summary>
@@ -305,6 +332,46 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
+        /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnum<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            if (UseEnumNames)
+                WriteEnumName(name, value);
+            else
+                WriteEnumValue(name, value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            EnumHelper<T>.WriteName(this, name, value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnumValue<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            EnumHelper<T>.WriteValue(this, name, value);
+        }
+
+        /// <summary>
         /// Writes multiple values of the same type to the IValueWriter all under the same node name.
         /// Ordering is not guarenteed.
         /// </summary>
@@ -329,6 +396,37 @@ namespace NetGore.IO
                     foreach (T value in values)
                     {
                         writeHandler(null, value);
+                    }
+                }
+            }
+            WriteEndNode(nodeName);
+        }
+
+        /// <summary>
+        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
+        /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the <see cref="BinaryValueWriter"/>.</param>
+        /// <param name="values">Array of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty array.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        public void WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
+        {
+            int count;
+            if (values != null)
+                count = values.Length;
+            else
+                count = 0;
+
+            WriteStartNode(nodeName);
+            {
+                Write(null, count);
+                if (values != null && count > 0)
+                {
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        writeHandler(null, values[i]);
                     }
                 }
             }
@@ -402,117 +500,19 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
-        /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Unused by the <see cref="BinaryValueWriter"/>.</param>
-        /// <param name="values">Array of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty array.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        public void WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
-        {
-            int count;
-            if (values != null)
-                count = values.Length;
-            else
-                count = 0;
-
-            WriteStartNode(nodeName);
-            {
-                Write(null, count);
-                if (values != null && count > 0)
-                {
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        writeHandler(null, values[i]);
-                    }
-                }
-            }
-            WriteEndNode(nodeName);
-        }
-
-        /// <summary>
-        /// Writes a 32-bit signed integer.
+        /// Writes the start of a child node in this <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
-        /// <param name="value">Value to write.</param>
-        public void Write(string name, int value)
+        public void WriteStartNode(string name)
         {
-            _writer.Write(value);
-        }
+            const uint reservedValue = 0;
 
-        /// <summary>
-        /// Writes a 64-bit usigned integer.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
-        /// <param name="value">Value to write.</param>
-        public void Write(string name, ulong value)
-        {
-            _writer.Write(value);
-        }
+            if (_nodeOffsetStack == null)
+                _nodeOffsetStack = new Stack<int>(4);
 
-        /// <summary>
-        /// Writes a 64-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
-        /// <param name="value">Value to write.</param>
-        public void Write(string name, long value)
-        {
-            _writer.Write(value);
-        }
-
-        /// <summary>
-        /// Writes a signed integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
-        /// <param name="value">Value to write.</param>
-        /// <param name="bits">Number of bits to write.</param>
-        public void Write(string name, int value, int bits)
-        {
-            _writer.Write(value, bits);
-        }
-
-        /// <summary>
-        /// Writes a 32-bit floating-point number.
-        /// </summary>
-        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
-        /// <param name="value">Value to write.</param>
-        public void Write(string name, float value)
-        {
-            _writer.Write(value);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            if (IsDisposed)
-            {
-                const string errmsg = "Tried to dispose of already-disposed object `{0}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-                return;
-            }
-
-            _isDisposed = true;
-
-            GC.SuppressFinalize(this);
-
-            // Flush out the writer to the file
-            if (_filePath != null)
-            {
-                var bytes = _writer.GetBufferCopy();
-
-                // Write to a temp file first
-                var tempFile = new TempFile();
-                File.WriteAllBytes(tempFile.FilePath, bytes);
-
-                // Move to the actual destination
-                tempFile.MoveTo(_filePath);
-            }
+            int bitOffset = _writer.PositionBits;
+            Write(null, reservedValue);
+            _nodeOffsetStack.Push(bitOffset);
         }
 
         #endregion

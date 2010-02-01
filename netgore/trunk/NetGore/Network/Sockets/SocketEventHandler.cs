@@ -9,7 +9,6 @@ namespace NetGore.Network
     /// <param name="conn">Connection on which the event occured.</param>
     public delegate void SocketManagerSocketEventHandler(SocketManager socketManager, IIPSocket conn);
 
-
     /// <summary>
     /// Delegate for a method that handles a generic socket event.
     /// </summary>

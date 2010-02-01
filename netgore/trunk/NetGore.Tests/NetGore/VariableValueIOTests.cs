@@ -22,6 +22,51 @@ namespace NetGore.Tests.NetGore
             return "V" + Parser.Invariant.ToString(i);
         }
 
+        static void ReadTest<T>(IVariableValue<T> value, Action<IValueWriter, string, IVariableValue<T>> write,
+                                Func<IValueReader, string, IVariableValue<T>> read)
+        {
+            ReadWriteTest(value, write, read, true);
+        }
+
+        static void ReadWriteTest<T>(IVariableValue<T> value, Action<IValueWriter, string, IVariableValue<T>> write,
+                                     Func<IValueReader, string, IVariableValue<T>> read, bool testRead)
+        {
+            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    using (var w = creator.GetWriter())
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            write(w, GetValueKey(i), value);
+                        }
+                    }
+
+                    if (testRead)
+                    {
+                        var r = creator.GetReader();
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                var readValue = read(r, GetValueKey(i));
+                                Assert.AreEqual(value.Min, readValue.Min);
+                                Assert.AreEqual(value.Max, readValue.Max);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        static void WriteTest<T>(IVariableValue<T> value, Action<IValueWriter, string, IVariableValue<T>> write,
+                                 Func<IValueReader, string, IVariableValue<T>> read)
+        {
+            ReadWriteTest(value, write, read, false);
+        }
+
+        #region Unit tests
+
         [Test]
         public void RandomVariableByteTest()
         {
@@ -147,12 +192,6 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        static void ReadTest<T>(IVariableValue<T> value, Action<IValueWriter, string, IVariableValue<T>> write,
-                                Func<IValueReader, string, IVariableValue<T>> read)
-        {
-            ReadWriteTest(value, write, read, true);
-        }
-
         [Test]
         public void ReadVariableByteTest()
         {
@@ -193,43 +232,6 @@ namespace NetGore.Tests.NetGore
         public void ReadVariableUShortTest()
         {
             ReadTest(new VariableUShort(50, 23), (x, y, z) => x.Write(y, (VariableUShort)z), (x, y) => x.ReadVariableUShort(y));
-        }
-
-        static void ReadWriteTest<T>(IVariableValue<T> value, Action<IValueWriter, string, IVariableValue<T>> write,
-                                     Func<IValueReader, string, IVariableValue<T>> read, bool testRead)
-        {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
-            {
-                using (ReaderWriterCreatorBase creator = createCreator())
-                {
-                    using (var w = creator.GetWriter())
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            write(w, GetValueKey(i), value);
-                        }
-                    }
-
-                    if (testRead)
-                    {
-                        var r = creator.GetReader();
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                var readValue = read(r, GetValueKey(i));
-                                Assert.AreEqual(value.Min, readValue.Min);
-                                Assert.AreEqual(value.Max, readValue.Max);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        static void WriteTest<T>(IVariableValue<T> value, Action<IValueWriter, string, IVariableValue<T>> write,
-                                 Func<IValueReader, string, IVariableValue<T>> read)
-        {
-            ReadWriteTest(value, write, read, false);
         }
 
         [Test]
@@ -273,5 +275,7 @@ namespace NetGore.Tests.NetGore
         {
             WriteTest(new VariableUShort(50, 23), (x, y, z) => x.Write(y, (VariableUShort)z), (x, y) => x.ReadVariableUShort(y));
         }
+
+        #endregion
     }
 }

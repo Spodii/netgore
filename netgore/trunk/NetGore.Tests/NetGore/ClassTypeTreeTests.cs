@@ -19,6 +19,8 @@ namespace NetGore.Tests.NetGore
                 });
         }
 
+        #region Unit tests
+
         [Test]
         public void BuildTreeTest()
         {
@@ -234,6 +236,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(root, a1b2.Root);
             Assert.AreEqual(root, root.Root);
         }
+
+        #endregion
 
         class A1
         {

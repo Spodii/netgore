@@ -53,6 +53,27 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Draws the <see cref="Control"/>.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(SpriteBatch spriteBatch)
+        {
+            base.DrawControl(spriteBatch);
+
+            DrawText(spriteBatch, new Vector2(Border.LeftWidth, Border.TopHeight));
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+        }
+
+        /// <summary>
         /// Handles when the <see cref="Control.Border"/> has changed.
         /// This is called immediately before <see cref="Control.BorderChanged"/>.
         /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
@@ -86,27 +107,6 @@ namespace NetGore.Graphics.GUI
             base.OnTextChanged();
 
             ResizeToFitText();
-        }
-
-        /// <summary>
-        /// Draws the <see cref="Control"/>.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
-        {
-            base.DrawControl(spriteBatch);
-
-            DrawText(spriteBatch, new Vector2(Border.LeftWidth, Border.TopHeight));
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-        /// from the given <paramref name="skinManager"/>.
-        /// </summary>
-        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-        public override void LoadSkin(ISkinManager skinManager)
-        {
-            Border = skinManager.GetBorder(_controlSkinName);
         }
 
         /// <summary>

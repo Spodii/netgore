@@ -9,6 +9,8 @@ namespace DemoGame.Server
 {
     class Program
     {
+        delegate bool ConsoleCtrlHandler(CtrlTypes ctrlType);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static ConsoleCtrlHandler _handler;
         static Server _server;
@@ -58,8 +60,6 @@ namespace DemoGame.Server
 
         [DllImport("Kernel32")]
         static extern bool SetConsoleCtrlHandler(ConsoleCtrlHandler handler, bool add);
-
-        delegate bool ConsoleCtrlHandler(CtrlTypes ctrlType);
 
         enum CtrlTypes
         {

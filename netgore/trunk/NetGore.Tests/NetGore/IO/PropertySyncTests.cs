@@ -14,6 +14,31 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class PropertySyncTests
     {
+        static void TestSync(string propertyName, object value)
+        {
+            // Get the property
+            PropertyInfo property = typeof(TestClass).GetProperty(propertyName);
+
+            // Set the value and ensure it was set correctly
+            TestClass cSrc = new TestClass();
+            property.SetValue(cSrc, value, null);
+            Assert.AreEqual(value, property.GetValue(cSrc, null));
+
+            // Serialize
+            BitStream bs = new BitStream(BitStreamMode.Write, 64);
+            cSrc.Serialize(bs);
+
+            // Deserialize
+            TestClass cDest = new TestClass();
+            bs.Mode = BitStreamMode.Read;
+            cDest.Deserialize(bs);
+
+            // Check
+            Assert.AreEqual(value, property.GetValue(cDest, null));
+        }
+
+        #region Unit tests
+
         [Test]
         public void BoolTest()
         {
@@ -74,29 +99,6 @@ namespace NetGore.Tests.NetGore.IO
             TestSync("mShort", (short)23);
         }
 
-        static void TestSync(string propertyName, object value)
-        {
-            // Get the property
-            PropertyInfo property = typeof(TestClass).GetProperty(propertyName);
-
-            // Set the value and ensure it was set correctly
-            TestClass cSrc = new TestClass();
-            property.SetValue(cSrc, value, null);
-            Assert.AreEqual(value, property.GetValue(cSrc, null));
-
-            // Serialize
-            BitStream bs = new BitStream(BitStreamMode.Write, 64);
-            cSrc.Serialize(bs);
-
-            // Deserialize
-            TestClass cDest = new TestClass();
-            bs.Mode = BitStreamMode.Read;
-            cDest.Deserialize(bs);
-
-            // Check
-            Assert.AreEqual(value, property.GetValue(cDest, null));
-        }
-
         [Test]
         public void UIntTest()
         {
@@ -120,6 +122,8 @@ namespace NetGore.Tests.NetGore.IO
         {
             TestSync("mVector2", new Vector2(23, 32));
         }
+
+        #endregion
 
         /// <summary>
         /// Test class containing all the values to test the syncing on

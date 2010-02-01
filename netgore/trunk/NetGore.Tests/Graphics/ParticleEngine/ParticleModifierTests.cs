@@ -11,6 +11,8 @@ namespace NetGore.Tests.Graphics.ParticleEngine
     [TestFixture]
     public class ParticleModifierTests
     {
+        #region Unit tests
+
         [Test]
         public void ConstructorTest()
         {
@@ -20,6 +22,8 @@ namespace NetGore.Tests.Graphics.ParticleEngine
 
             Assert.Throws<ArgumentException>(() => new TestModifier(false, false));
         }
+
+        #endregion
 
         class TestModifier : ParticleModifier
         {

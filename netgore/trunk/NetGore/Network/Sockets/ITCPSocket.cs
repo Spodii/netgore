@@ -10,25 +10,15 @@ namespace NetGore.Network
     public interface ITCPSocket : ISocketSender, IDisposable
     {
         /// <summary>
-        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
-        /// </summary>
-        event TCPSocketEventHandler Disposed;
-
-        /// <summary>
         /// Notifies listeners when the socket has successfully sent data, and how much data was sent.
         /// Due to internal buffering, this event will likely not be raised for every single individual send call made.
         /// </summary>
         event TCPSocketEventHandler<int> DataSent;
 
         /// <summary>
-        /// Gets the maximum size of the data that can be sent in a single send.
+        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
         /// </summary>
-        int MaxSendSize { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
-        /// </summary>
-        int TimeCreated { get; }
+        event TCPSocketEventHandler Disposed;
 
         /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
@@ -42,6 +32,11 @@ namespace NetGore.Network
         uint IP { get; }
 
         /// <summary>
+        /// Gets the maximum size of the data that can be sent in a single send.
+        /// </summary>
+        int MaxSendSize { get; }
+
+        /// <summary>
         /// Gets the port as a 16-bit unsigned integer.
         /// </summary>
         ushort Port { get; }
@@ -51,6 +46,11 @@ namespace NetGore.Network
         /// is not used in any way by the <see cref="ITCPSocket"/> itself.
         /// </summary>
         object Tag { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
+        /// </summary>
+        int TimeCreated { get; }
 
         /// <summary>
         /// Gets the queue of complete received data.

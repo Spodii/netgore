@@ -40,27 +40,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
-        /// The return value has the following meanings: Value Meaning Less than zero This object is less than
-        /// the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>.
-        /// Greater than zero This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public int CompareTo(GuildMemberNameRank other)
-        {
-            if (other.Rank == Rank)
-                return StringComparer.OrdinalIgnoreCase.Compare(Name, other.Name);
-
-            if (other.Rank < Rank)
-                return -1;
-
-            return 1;
-        }
-
-        /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
@@ -88,6 +67,31 @@ namespace NetGore.Features.Guilds
                 return ((_name != null ? _name.GetHashCode() : 0) * 397) ^ _rank.GetHashCode();
             }
         }
+
+        #region IComparable<GuildMemberNameRank> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// The return value has the following meanings: Value Meaning Less than zero This object is less than
+        /// the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>.
+        /// Greater than zero This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public int CompareTo(GuildMemberNameRank other)
+        {
+            if (other.Rank == Rank)
+                return StringComparer.OrdinalIgnoreCase.Compare(Name, other.Name);
+
+            if (other.Rank < Rank)
+                return -1;
+
+            return 1;
+        }
+
+        #endregion
 
         #region IEquatable<GuildMemberNameRank> Members
 

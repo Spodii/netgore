@@ -20,11 +20,6 @@ namespace NetGore.EditorTools.NPCChat
         byte _value;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="EditorNPCChatResponse"/> has changed.
-        /// </summary>
-        public event EditorNPCChatResponseEventHandler Changed;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
         /// </summary>
         /// <param name="text">The text.</param>
@@ -50,6 +45,11 @@ namespace NetGore.EditorTools.NPCChat
             _page = page;
             _text = text;
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="EditorNPCChatResponse"/> has changed.
+        /// </summary>
+        public event EditorNPCChatResponseEventHandler Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are

@@ -39,55 +39,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        protected override void OnConnectFailed()
-        {
-            base.OnConnectFailed();
-
-            _isConnecting = false;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnDisconnected(IPSocket conn)
-        {
-            base.OnDisconnected(conn);
-
-            _isConnecting = false;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnConnected(IPSocket conn)
-        {
-            base.OnConnected(conn);
-
-            _conn = conn;
-            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
-            Ping();
-
-            _isConnecting = false;
-
-            // Make sure the very first thing we send is the Client's UDP port so the server knows what
-            // port to use when sending the data
-            using (PacketWriter pw = ClientPacket.SetUDPPort(_udpPort))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
         /// Gets the last <see cref="ClientSockets"/> instance. Will be null if it has not been created yet.
         /// </summary>
         public static ClientSockets Instance
@@ -182,6 +133,55 @@ namespace DemoGame.Client
                 return;
 
             _instance = new ClientSockets(gameplayScreen);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected override void OnConnected(IPSocket conn)
+        {
+            base.OnConnected(conn);
+
+            _conn = conn;
+            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
+            Ping();
+
+            _isConnecting = false;
+
+            // Make sure the very first thing we send is the Client's UDP port so the server knows what
+            // port to use when sending the data
+            using (PacketWriter pw = ClientPacket.SetUDPPort(_udpPort))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        protected override void OnConnectFailed()
+        {
+            base.OnConnectFailed();
+
+            _isConnecting = false;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected override void OnDisconnected(IPSocket conn)
+        {
+            base.OnDisconnected(conn);
+
+            _isConnecting = false;
         }
 
         void Ping()

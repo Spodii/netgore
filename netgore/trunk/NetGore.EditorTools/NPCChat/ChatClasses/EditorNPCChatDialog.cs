@@ -20,11 +20,6 @@ namespace NetGore.EditorTools.NPCChat
         string _title;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="EditorNPCChatDialog"/> has changed.
-        /// </summary>
-        public event EditorNPCChatDialogEventHandler Changed;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatDialog"/> class.
         /// </summary>
         public EditorNPCChatDialog()
@@ -38,6 +33,11 @@ namespace NetGore.EditorTools.NPCChat
         public EditorNPCChatDialog(IValueReader reader) : base(reader)
         {
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="EditorNPCChatDialog"/> has changed.
+        /// </summary>
+        public event EditorNPCChatDialogEventHandler Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to

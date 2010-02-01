@@ -12,11 +12,6 @@ namespace NetGore.EditorTools.NPCChat
         NPCChatConditionalEvaluationType _evaluationType;
 
         /// <summary>
-        /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollection"/> has changed.
-        /// </summary>
-        public event EditorNPCChatConditionalCollectionChangeHandler Changed;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollection"/> class.
         /// </summary>
         /// <param name="source">The source <see cref="NPCChatConditionalCollectionBase"/> to copy the values from. If null,
@@ -55,6 +50,11 @@ namespace NetGore.EditorTools.NPCChat
         {
             Read(reader);
         }
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollection"/> has changed.
+        /// </summary>
+        public event EditorNPCChatConditionalCollectionChangeHandler Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType

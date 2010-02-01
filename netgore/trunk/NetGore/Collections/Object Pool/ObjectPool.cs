@@ -298,6 +298,14 @@ namespace NetGore.Collections
         #region IObjectPool<T> Members
 
         /// <summary>
+        /// Gets the number of live objects in the pool.
+        /// </summary>
+        public int LiveObjects
+        {
+            get { return _liveObjects; }
+        }
+
+        /// <summary>
         /// Returns a free object instance from the pool.
         /// </summary>
         /// <returns>A free object instance from the pool.</returns>
@@ -324,11 +332,20 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Gets the number of live objects in the pool.
+        /// Frees all live objects in the pool.
         /// </summary>
-        public int LiveObjects
+        public void Clear()
         {
-            get { return _liveObjects; }
+            // Use thread synchronization if needed
+            if (_threadSync != null)
+            {
+                lock (_threadSync)
+                {
+                    InternalClear();
+                }
+            }
+            else
+                InternalClear();
         }
 
         /// <summary>
@@ -412,23 +429,6 @@ namespace NetGore.Collections
             }
             else
                 InternalPerform(action);
-        }
-
-        /// <summary>
-        /// Frees all live objects in the pool.
-        /// </summary>
-        public void Clear()
-        {
-            // Use thread synchronization if needed
-            if (_threadSync != null)
-            {
-                lock (_threadSync)
-                {
-                    InternalClear();
-                }
-            }
-            else
-                InternalClear();
         }
 
         #endregion

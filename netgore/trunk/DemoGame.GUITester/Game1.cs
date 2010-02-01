@@ -44,6 +44,13 @@ namespace DemoGame.GUITester
                 topForm.Border = ControlBorder.Empty;
         }
 
+        void DragControl(Control sender)
+        {
+            TextControl s = (TextControl)sender;
+            s.Text = s.Position.ToString();
+            Window.Title = "Screen Position: " + s.ScreenPosition;
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -79,16 +86,16 @@ namespace DemoGame.GUITester
             }
 
             _textBox.KeyUp += delegate(object sender, KeyboardEventArgs e)
-                                {
-                                    if (e.Keys.Contains(Keys.F1))
-                                        Debug.Fail(_textBox.Text);
-                                    else if (e.Keys.Contains(Keys.F2))
-                                        _textBox.Size += new Vector2(25, 0);
-                                    else if (e.Keys.Contains(Keys.F3))
-                                        _textBox.Size += new Vector2(-25, 0);
-                                    else if (e.Keys.Contains(Keys.F4))
-                                        _textBox.IsMultiLine = !_textBox.IsMultiLine;
-                                };
+                              {
+                                  if (e.Keys.Contains(Keys.F1))
+                                      Debug.Fail(_textBox.Text);
+                                  else if (e.Keys.Contains(Keys.F2))
+                                      _textBox.Size += new Vector2(25, 0);
+                                  else if (e.Keys.Contains(Keys.F3))
+                                      _textBox.Size += new Vector2(-25, 0);
+                                  else if (e.Keys.Contains(Keys.F4))
+                                      _textBox.IsMultiLine = !_textBox.IsMultiLine;
+                              };
 
             var styledTexts = new List<StyledText>
             {
@@ -142,16 +149,11 @@ namespace DemoGame.GUITester
             // Paged list
             var items = new List<string>();
             for (int i = 0; i < 100; i++)
+            {
                 items.Add(i.ToString());
+            }
 
             var pl = new PagedList<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items };
-        }
-
-        void DragControl(Control sender)
-        {
-            TextControl s = (TextControl)sender;
-            s.Text = s.Position.ToString();
-            Window.Title = "Screen Position: " + s.ScreenPosition;
         }
 
         static void testLabelF4_Clicked(object sender, MouseClickEventArgs e)

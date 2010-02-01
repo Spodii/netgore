@@ -18,16 +18,6 @@ namespace NetGore.EditorTools
         T _focused;
 
         /// <summary>
-        /// Notifies listeners when the focused object has changed.
-        /// </summary>
-        public event SelectedObjectManagerEventHandler<T, T> FocusedChanged;
-
-        /// <summary>
-        /// Notifies listeners when the selected objects have changed.
-        /// </summary>
-        public event SelectedObjectManagerEventHandler<T> SelectedChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SelectedObjectsManager{T}"/> class.
         /// </summary>
         /// <param name="propertyGrid">The <see cref="PropertyGrid"/> used to display the properties of the
@@ -46,6 +36,16 @@ namespace NetGore.EditorTools
             _selectedIndexChangedHandler = SelectedListBox_SelectedIndexChanged;
             _selectedListBox.SelectedIndexChanged += _selectedIndexChangedHandler;
         }
+
+        /// <summary>
+        /// Notifies listeners when the focused object has changed.
+        /// </summary>
+        public event SelectedObjectManagerEventHandler<T, T> FocusedChanged;
+
+        /// <summary>
+        /// Notifies listeners when the selected objects have changed.
+        /// </summary>
+        public event SelectedObjectManagerEventHandler<T> SelectedChanged;
 
         /// <summary>
         /// Gets the object that has the focus. This will only be null if no objects are in the selection.

@@ -14,6 +14,8 @@ namespace NetGore.Tests.Db.MySql
             return new MyNonReader(DbManagerTestSettings.CreateConnectionPool());
         }
 
+        #region Unit tests
+
         [Test]
         public void SelectTest()
         {
@@ -29,6 +31,8 @@ namespace NetGore.Tests.Db.MySql
                 }
             }
         }
+
+        #endregion
 
         class MyNonReader : DbQueryNonReader<QueryTestValues>
         {

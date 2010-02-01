@@ -50,18 +50,6 @@ namespace NetGore.Features.Guilds
             _frmOnline.IsVisible = !_frmOnline.IsVisible;
         }
 
-        /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.BorderChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
-        /// </summary>
-        protected override void OnBorderChanged()
-        {
-            base.OnBorderChanged();
-
-            RelocateControls();
-        }
-
         void CreateControls()
         {
             Vector2 buttonSize = new Vector2(100, 20);
@@ -142,18 +130,16 @@ namespace NetGore.Features.Guilds
             RelocateControls();
         }
 
-        void RelocateControls()
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
+        /// </summary>
+        protected override void OnBorderChanged()
         {
-            if (_lblName == null)
-            {
-                CreateControls();
-                return;
-            }
+            base.OnBorderChanged();
 
-            _lblName.Position = Vector2.Zero;
-            _btnJoinLeave.Position = GetPositionBelow(_lblName);
-            _btnMembers.Position = GetPositionBelow(_btnJoinLeave);
-            _btnOnline.Position = GetPositionBelow(_btnMembers);
+            RelocateControls();
         }
 
         /// <summary>
@@ -166,6 +152,20 @@ namespace NetGore.Features.Guilds
             base.OnResized();
 
             RelocateControls();
+        }
+
+        void RelocateControls()
+        {
+            if (_lblName == null)
+            {
+                CreateControls();
+                return;
+            }
+
+            _lblName.Position = Vector2.Zero;
+            _btnJoinLeave.Position = GetPositionBelow(_lblName);
+            _btnMembers.Position = GetPositionBelow(_btnJoinLeave);
+            _btnOnline.Position = GetPositionBelow(_btnMembers);
         }
 
         /// <summary>

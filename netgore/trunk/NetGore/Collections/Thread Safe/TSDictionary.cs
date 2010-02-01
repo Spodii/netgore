@@ -123,37 +123,113 @@ namespace NetGore.Collections
         #region IDictionary<TKey,TValue> Members
 
         /// <summary>
-        /// Returns an enumerator that iterates through the collection.
+        /// Gets or sets the <see cref="TValue"/> with the specified key.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        public TValue this[TKey key]
         {
-            IEnumerable<KeyValuePair<TKey, TValue>> ret;
-
-            _lock.EnterReadLock();
-            try
+            get
             {
-                ret = this.ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+                TValue ret;
 
-            return ret.GetEnumerator();
+                _lock.EnterReadLock();
+                try
+                {
+                    ret = _dict[key];
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
+                }
+
+                return ret;
+            }
+            set
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    _dict[key] = value;
+                }
+                finally
+                {
+                    _lock.ExitWriteLock();
+                }
+            }
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a collection.
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <value></value>
+        /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
+        public int Count
         {
-            return GetEnumerator();
+            get { return _dict.Count; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only;
+        /// otherwise, false.</returns>
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets an <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the
+        /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+        /// </summary>
+        /// <value></value>
+        /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the object that
+        /// implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</returns>
+        ICollection<TKey> IDictionary<TKey, TValue>.Keys
+        {
+            get
+            {
+                ICollection<TKey> ret;
+
+                _lock.EnterReadLock();
+                try
+                {
+                    ret = new TSList<TKey>(_dict.Keys);
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// Gets an <see cref="T:System.Collections.Generic.ICollection`1"/> containing the values in the
+        /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+        /// </summary>
+        /// <value></value>
+        /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the values in the
+        /// object that implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</returns>
+        public ICollection<TValue> Values
+        {
+            get
+            {
+                ICollection<TValue> ret;
+
+                _lock.EnterReadLock();
+                try
+                {
+                    ret = new TSList<TValue>(_dict.Values);
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
@@ -168,6 +244,30 @@ namespace NetGore.Collections
             try
             {
                 _dict.Add(item.Key, item.Value);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+        /// </summary>
+        /// <param name="key">The object to use as the key of the element to add.</param>
+        /// <param name="value">The object to use as the value of the element to add.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// 	<paramref name="key"/> is null.</exception>
+        /// <exception cref="T:System.ArgumentException">An element with the same key already exists in the
+        /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.</exception>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2"/>
+        /// is read-only.</exception>
+        public void Add(TKey key, TValue value)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                _dict.Add(key, value);
             }
             finally
             {
@@ -219,6 +319,33 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the
+        /// specified key.
+        /// </summary>
+        /// <param name="key">The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2"/>.</param>
+        /// <returns>
+        /// true if the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the key;
+        /// otherwise, false.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+        public bool ContainsKey(TKey key)
+        {
+            bool ret;
+
+            _lock.EnterReadLock();
+            try
+            {
+                ret = _dict.ContainsKey(key);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an
         /// <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
         /// </summary>
@@ -251,6 +378,40 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
+            IEnumerable<KeyValuePair<TKey, TValue>> ret;
+
+            _lock.EnterReadLock();
+            try
+            {
+                ret = this.ToArray();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+
+            return ret.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
@@ -276,78 +437,6 @@ namespace NetGore.Collections
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <value></value>
-        /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
-        public int Count
-        {
-            get { return _dict.Count; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
-        /// </summary>
-        /// <value></value>
-        /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only;
-        /// otherwise, false.</returns>
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the
-        /// specified key.
-        /// </summary>
-        /// <param name="key">The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2"/>.</param>
-        /// <returns>
-        /// true if the <see cref="T:System.Collections.Generic.IDictionary`2"/> contains an element with the key;
-        /// otherwise, false.
-        /// </returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool ContainsKey(TKey key)
-        {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
-            {
-                ret = _dict.ContainsKey(key);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2"/>.
-        /// </summary>
-        /// <param name="key">The object to use as the key of the element to add.</param>
-        /// <param name="value">The object to use as the value of the element to add.</param>
-        /// <exception cref="T:System.ArgumentNullException">
-        /// 	<paramref name="key"/> is null.</exception>
-        /// <exception cref="T:System.ArgumentException">An element with the same key already exists in the
-        /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.</exception>
-        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2"/>
-        /// is read-only.</exception>
-        public void Add(TKey key, TValue value)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                _dict.Add(key, value);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
         }
 
         /// <summary>
@@ -407,95 +496,6 @@ namespace NetGore.Collections
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="TValue"/> with the specified key.
-        /// </summary>
-        public TValue this[TKey key]
-        {
-            get
-            {
-                TValue ret;
-
-                _lock.EnterReadLock();
-                try
-                {
-                    ret = _dict[key];
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
-            }
-            set
-            {
-                _lock.EnterWriteLock();
-                try
-                {
-                    _dict[key] = value;
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets an <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the
-        /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.
-        /// </summary>
-        /// <value></value>
-        /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the object that
-        /// implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</returns>
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys
-        {
-            get
-            {
-                ICollection<TKey> ret;
-
-                _lock.EnterReadLock();
-                try
-                {
-                    ret = new TSList<TKey>(_dict.Keys);
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
-            }
-        }
-
-        /// <summary>
-        /// Gets an <see cref="T:System.Collections.Generic.ICollection`1"/> containing the values in the
-        /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.
-        /// </summary>
-        /// <value></value>
-        /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the values in the
-        /// object that implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</returns>
-        public ICollection<TValue> Values
-        {
-            get
-            {
-                ICollection<TValue> ret;
-
-                _lock.EnterReadLock();
-                try
-                {
-                    ret = new TSList<TValue>(_dict.Values);
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
-            }
         }
 
         #endregion

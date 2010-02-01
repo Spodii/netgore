@@ -12,21 +12,6 @@ namespace NetGore.Tests.NetGore
     {
         static readonly Random r = new Random();
 
-        [Test]
-        public void BitsRequiredTest()
-        {
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum1>.MaxValue), EnumHelper<BitsReqEnum1>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum2>.MaxValue), EnumHelper<BitsReqEnum2>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum3>.MaxValue), EnumHelper<BitsReqEnum3>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum4>.MaxValue), EnumHelper<BitsReqEnum4>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum5>.MaxValue), EnumHelper<BitsReqEnum5>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum6>.MaxValue), EnumHelper<BitsReqEnum6>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum7>.MaxValue), EnumHelper<BitsReqEnum7>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum8>.MaxValue), EnumHelper<BitsReqEnum8>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum9>.MaxValue), EnumHelper<BitsReqEnum9>.BitsRequired);
-            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum10>.MaxValue), EnumHelper<BitsReqEnum10>.BitsRequired);
-        }
-
         static string CreateRandomString()
         {
             int length = r.Next(2, 10);
@@ -67,6 +52,23 @@ namespace NetGore.Tests.NetGore
             }
 
             return new string(ret);
+        }
+
+        #region Unit tests
+
+        [Test]
+        public void BitsRequiredTest()
+        {
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum1>.MaxValue), EnumHelper<BitsReqEnum1>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum2>.MaxValue), EnumHelper<BitsReqEnum2>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum3>.MaxValue), EnumHelper<BitsReqEnum3>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum4>.MaxValue), EnumHelper<BitsReqEnum4>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum5>.MaxValue), EnumHelper<BitsReqEnum5>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum6>.MaxValue), EnumHelper<BitsReqEnum6>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum7>.MaxValue), EnumHelper<BitsReqEnum7>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum8>.MaxValue), EnumHelper<BitsReqEnum8>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum9>.MaxValue), EnumHelper<BitsReqEnum9>.BitsRequired);
+            Assert.AreEqual(BitOps.RequiredBits((uint)EnumHelper<BitsReqEnum10>.MaxValue), EnumHelper<BitsReqEnum10>.BitsRequired);
         }
 
         [Test]
@@ -755,6 +757,8 @@ namespace NetGore.Tests.NetGore
                 Assert.AreEqual(v, o);
             }
         }
+
+        #endregion
 
         enum BitsReqEnum1
         {

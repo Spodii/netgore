@@ -7,6 +7,8 @@ namespace NetGore.Tests
     [TestFixture]
     public class GrhIndexTests
     {
+        #region Unit tests
+
         [Test]
         public void CreateTest()
         {
@@ -38,5 +40,7 @@ namespace NetGore.Tests
             Assert.IsTrue(new GrhIndex(5) != new GrhIndex(6));
             Assert.IsFalse(new GrhIndex(5).Equals(new GrhIndex(6)));
         }
+
+        #endregion
     }
 }

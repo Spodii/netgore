@@ -9,6 +9,8 @@ namespace NetGore.Tests.NetGore
         readonly string[] _defaultTestArgs = new string[]
         { "my main value", "-a", "50", "-b", "20", "asdf", "--c", "asdfa", "-d" };
 
+        #region Unit tests
+
         [Test]
         public void EnumDefinedKeysExtraPrefixesTest()
         {
@@ -76,6 +78,8 @@ namespace NetGore.Tests.NetGore
             var values = CommandLineSwitchHelper.GetCommands(_defaultTestArgs).ToDictionary(x => x.Key, x => x.Value);
             Assert.IsEmpty(values["d"]);
         }
+
+        #endregion
 
         enum TestEnum
         {

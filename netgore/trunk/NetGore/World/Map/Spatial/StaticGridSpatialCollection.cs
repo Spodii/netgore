@@ -59,6 +59,28 @@ namespace NetGore
             #region IGridSpatialCollectionSegment Members
 
             /// <summary>
+            /// Adds the <see cref="ISpatial"/> to the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+            public void Add(ISpatial spatial)
+            {
+                if (_spatials == null)
+                    _spatials = new ISpatial[1];
+                else
+                    Array.Resize(ref _spatials, _spatials.Length + 1);
+
+                _spatials[_spatials.Length - 1] = spatial;
+            }
+
+            /// <summary>
+            /// Clears all <see cref="ISpatial"/>s from the segment.
+            /// </summary>
+            public void Clear()
+            {
+                _spatials = null;
+            }
+
+            /// <summary>
             /// Returns an enumerator that iterates through the collection.
             /// </summary>
             /// <returns>
@@ -89,20 +111,6 @@ namespace NetGore
             }
 
             /// <summary>
-            /// Adds the <see cref="ISpatial"/> to the segment.
-            /// </summary>
-            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
-            public void Add(ISpatial spatial)
-            {
-                if (_spatials == null)
-                    _spatials = new ISpatial[1];
-                else
-                    Array.Resize(ref _spatials, _spatials.Length + 1);
-
-                _spatials[_spatials.Length - 1] = spatial;
-            }
-
-            /// <summary>
             /// Remove the <see cref="ISpatial"/> from the segment.
             /// </summary>
             /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
@@ -121,14 +129,6 @@ namespace NetGore
                 }
                 else
                     _spatials = _spatials.Where(x => x != spatial).ToArray();
-            }
-
-            /// <summary>
-            /// Clears all <see cref="ISpatial"/>s from the segment.
-            /// </summary>
-            public void Clear()
-            {
-                _spatials = null;
             }
 
             #endregion

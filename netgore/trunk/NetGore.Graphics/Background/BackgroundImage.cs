@@ -362,15 +362,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
-        /// </summary>
-        [Browsable(false)]
-        public MapRenderLayer MapRenderLayer
-        {
-            get { return MapRenderLayer.Background; }
-        }
-
-        /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
         /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
         /// </summary>
@@ -378,6 +369,15 @@ namespace NetGore.Graphics
         public int LayerDepth
         {
             get { return ImageDepthToLayerDepth(Depth); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
+        /// </summary>
+        [Browsable(false)]
+        public MapRenderLayer MapRenderLayer
+        {
+            get { return MapRenderLayer.Background; }
         }
 
         /// <summary>

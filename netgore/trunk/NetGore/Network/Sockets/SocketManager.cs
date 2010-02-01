@@ -43,45 +43,6 @@ namespace NetGore.Network
         int _maxDupeIP = 3;
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected virtual void OnConnected(IPSocket conn)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected virtual void OnConnectedFrom(IPSocket conn)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected virtual void OnDisconnected(IPSocket conn)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        protected virtual void OnConnectFailed()
-        {
-        }
-
-        /// <summary>
         /// Notifies listeners when a connection with <see cref="SocketManager.Connect"/> was successfully made with a host.
         /// </summary>
         public event SocketManagerSocketEventHandler Connected;
@@ -93,14 +54,14 @@ namespace NetGore.Network
         public event SocketManagerSocketEventHandler ConnectedFrom;
 
         /// <summary>
-        /// Notifies listeners when a connection has been terminated.
-        /// </summary>
-        public event SocketManagerSocketEventHandler Disconnected;
-
-        /// <summary>
         /// Notifies listeners when a connection with Connect() failed to be made to a host.
         /// </summary>
         public event SocketManagerEventHandler ConnectFailed;
+
+        /// <summary>
+        /// Notifies listeners when a connection has been terminated.
+        /// </summary>
+        public event SocketManagerSocketEventHandler Disconnected;
 
         /// <summary>
         /// Gets an IEnumerable of all open and established connections.
@@ -323,6 +284,45 @@ namespace NetGore.Network
 
             if (log.IsInfoEnabled)
                 log.Info("Listen socket accepting connections");
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected virtual void OnConnected(IPSocket conn)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected virtual void OnConnectedFrom(IPSocket conn)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnConnectFailed()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected virtual void OnDisconnected(IPSocket conn)
+        {
         }
 
         /// <summary>

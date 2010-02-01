@@ -12,6 +12,56 @@ namespace NetGore.Tests.IO
     {
         static readonly Random r = new Random();
 
+        static string CreateRandomString()
+        {
+            int length = r.Next(2, 10);
+            var ret = new char[length];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                int j;
+                if (i == 0)
+                    j = r.Next(1, 3); // Don't let the first character be numeric
+                else
+                    j = r.Next(0, 3);
+
+                int min;
+                int max;
+
+                // ReSharper disable RedundantCast
+                switch (j)
+                {
+                    case 0:
+                        min = (int)'0';
+                        max = (int)'9';
+                        break;
+
+                    case 1:
+                        min = (int)'a';
+                        max = (int)'z';
+                        break;
+
+                    default:
+                        min = (int)'A';
+                        max = (int)'Z';
+                        break;
+                }
+                // ReSharper restore RedundantCast
+
+                ret[i] = (char)r.Next(min, max + 1);
+            }
+
+            return new string(ret);
+        }
+
+        static InterfaceTester GetRandomInterfaceTester()
+        {
+            return new InterfaceTester
+            { A = CreateRandomString(), B = r.Next(int.MinValue, int.MaxValue), C = (r.Next(-1000, 1000)) };
+        }
+
+        #region Unit tests
+
         [Test]
         public void AddNewItemTest()
         {
@@ -132,48 +182,6 @@ namespace NetGore.Tests.IO
             Assert.IsTrue(t3.HaveSameValues(retT3));
         }
 
-        static string CreateRandomString()
-        {
-            int length = r.Next(2, 10);
-            var ret = new char[length];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                int j;
-                if (i == 0)
-                    j = r.Next(1, 3); // Don't let the first character be numeric
-                else
-                    j = r.Next(0, 3);
-
-                int min;
-                int max;
-
-                // ReSharper disable RedundantCast
-                switch (j)
-                {
-                    case 0:
-                        min = (int)'0';
-                        max = (int)'9';
-                        break;
-
-                    case 1:
-                        min = (int)'a';
-                        max = (int)'z';
-                        break;
-
-                    default:
-                        min = (int)'A';
-                        max = (int)'Z';
-                        break;
-                }
-                // ReSharper restore RedundantCast
-
-                ret[i] = (char)r.Next(min, max + 1);
-            }
-
-            return new string(ret);
-        }
-
         [Test]
         public void DuplicateKeyTest()
         {
@@ -195,12 +203,6 @@ namespace NetGore.Tests.IO
                 if (File.Exists(filePath))
                     File.Delete(filePath);
             }
-        }
-
-        static InterfaceTester GetRandomInterfaceTester()
-        {
-            return new InterfaceTester
-            { A = CreateRandomString(), B = r.Next(int.MinValue, int.MaxValue), C = (r.Next(-1000, 1000)) };
         }
 
         [Test]
@@ -437,6 +439,8 @@ namespace NetGore.Tests.IO
                     File.Delete(filePath);
             }
         }
+
+        #endregion
 
         class InterfaceTester : IPersistable
         {

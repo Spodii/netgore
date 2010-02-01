@@ -108,31 +108,6 @@ namespace NetGore.Stats
         #region IStatCollection<TStatType> Members
 
         /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<IStat<TStatType>> GetEnumerator()
-        {
-            for (int i = 0; i < _stats.Length; i++)
-            {
-                yield return _stats[i];
-            }
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <summary>
         /// Gets or sets the <see cref="System.Int32"/> with the specified stat type.
         /// </summary>
         /// <value></value>
@@ -162,6 +137,71 @@ namespace NetGore.Stats
         public bool Contains(TStatType statType)
         {
             return true;
+        }
+
+        /// <summary>
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given
+        /// <typeparamref name="TStatType"/> into this <see cref="IStatCollection{TStatType}"/>.
+        /// </summary>
+        /// <param name="values">IEnumerable of stat types and stat values to copy into this
+        /// <see cref="IStatCollection{TStatType}"/>.</param>
+        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
+        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value.
+        /// Any stat type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be
+        /// skipped. If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
+        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
+        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
+        public void CopyValuesFrom(IEnumerable<KeyValuePair<TStatType, int>> values, bool checkContains)
+        {
+            foreach (var value in values)
+            {
+                if (checkContains && !Contains(value.Key))
+                    continue;
+
+                this[value.Key] = value.Value;
+            }
+        }
+
+        /// <summary>
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given stat type
+        /// into this <see cref="IStatCollection{TStatType}"/>.
+        /// </summary>
+        /// <param name="values">IEnumerable of <typeparamref name="TStatType"/>s and stat values to copy into this
+        /// <see cref="IStatCollection{TStatType}"/>.</param>
+        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
+        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value. Any stat
+        /// type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be skipped.
+        /// If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
+        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
+        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
+        public void CopyValuesFrom(IEnumerable<IStat<TStatType>> values, bool checkContains)
+        {
+            CopyValuesFrom(values.ToKeyValuePairs(), checkContains);
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<IStat<TStatType>> GetEnumerator()
+        {
+            for (int i = 0; i < _stats.Length; i++)
+            {
+                yield return _stats[i];
+            }
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -206,46 +246,6 @@ namespace NetGore.Stats
         {
             value = this[statType];
             return true;
-        }
-
-        /// <summary>
-        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given
-        /// <typeparamref name="TStatType"/> into this <see cref="IStatCollection{TStatType}"/>.
-        /// </summary>
-        /// <param name="values">IEnumerable of stat types and stat values to copy into this
-        /// <see cref="IStatCollection{TStatType}"/>.</param>
-        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
-        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value.
-        /// Any stat type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be
-        /// skipped. If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
-        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
-        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
-        public void CopyValuesFrom(IEnumerable<KeyValuePair<TStatType, int>> values, bool checkContains)
-        {
-            foreach (var value in values)
-            {
-                if (checkContains && !Contains(value.Key))
-                    continue;
-
-                this[value.Key] = value.Value;
-            }
-        }
-
-        /// <summary>
-        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given stat type
-        /// into this <see cref="IStatCollection{TStatType}"/>.
-        /// </summary>
-        /// <param name="values">IEnumerable of <typeparamref name="TStatType"/>s and stat values to copy into this
-        /// <see cref="IStatCollection{TStatType}"/>.</param>
-        /// <param name="checkContains">If true, each stat type in <paramref name="values"/> will first be checked
-        /// if it is in this <see cref="IStatCollection{TStatType}"/> before trying to copy over the value. Any stat
-        /// type in <paramref name="values"/> but not in this <see cref="IStatCollection{TStatType}"/> will be skipped.
-        /// If false, no checking will be done. Any stat type in <paramref name="values"/> but not in this
-        /// <see cref="IStatCollection{TStatType}"/> will behave the same as if the value of a stat type not in this
-        /// <see cref="IStatCollection{TStatType}"/> was attempted to be assigned in any other way.</param>
-        public void CopyValuesFrom(IEnumerable<IStat<TStatType>> values, bool checkContains)
-        {
-            CopyValuesFrom(values.ToKeyValuePairs(), checkContains);
         }
 
         #endregion

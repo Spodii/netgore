@@ -429,6 +429,41 @@ namespace NetGore.Features.Guilds
         #region IGuild Members
 
         /// <summary>
+        /// Notifies listeners when the guild has been destroyed.
+        /// </summary>
+        public event GuildEventHandler Destroyed;
+
+        /// <summary>
+        /// Notifies listeners when a new member has joined the guild.
+        /// </summary>
+        public event GuildMemberEventHandler MemberAdded;
+
+        /// <summary>
+        /// Notifies listeners when a member has been demoted.
+        /// </summary>
+        public event GuildInvokeEventWithTargetHandler MemberDemoted;
+
+        /// <summary>
+        /// Notifies listeners when a member has been invited into the guild.
+        /// </summary>
+        public event GuildInvokeEventWithTargetHandler MemberInvited;
+
+        /// <summary>
+        /// Notifies listeners when a member has been kicked from the guild.
+        /// </summary>
+        public event GuildInvokeEventWithTargetHandler MemberKicked;
+
+        /// <summary>
+        /// Notifies listeners when a member has been promoted.
+        /// </summary>
+        public event GuildInvokeEventWithTargetHandler MemberPromoted;
+
+        /// <summary>
+        /// Notifies listeners when the guild's name has been changed.
+        /// </summary>
+        public event GuildRenameEventHandler NameChanged;
+
+        /// <summary>
         /// Notifies listeners when a member of this guild has come online.
         /// </summary>
         public event GuildMemberEventHandler OnlineUserAdded;
@@ -439,14 +474,106 @@ namespace NetGore.Features.Guilds
         public event GuildMemberEventHandler OnlineUserRemoved;
 
         /// <summary>
-        /// Notifies listeners when the guild's name has been changed.
-        /// </summary>
-        public event GuildRenameEventHandler NameChanged;
-
-        /// <summary>
         /// Notifies listeners when the guild's tag has been changed.
         /// </summary>
         public event GuildRenameEventHandler TagChanged;
+
+        /// <summary>
+        /// Gets the <see cref="IGuildManager"/> managing this guild.
+        /// </summary>
+        public IGuildManager GuildManager
+        {
+            get { return _guildManager; }
+        }
+
+        /// <summary>
+        /// Gets the unique ID of the guild.
+        /// </summary>
+        public GuildID ID
+        {
+            get { return _id; }
+        }
+
+        /// <summary>
+        /// Gets if this guild has been destroyed. If this is true, nobody should be in this guild.
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get { return _isDestroyed; }
+        }
+
+        /// <summary>
+        /// Gets the unique name of the guild.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets the online guild members in this guild.
+        /// </summary>
+        public IEnumerable<IGuildMember> OnlineMembers
+        {
+            get { return _onlineMembers.ToImmutable(); }
+        }
+
+        /// <summary>
+        /// Gets the guild's unique tag.
+        /// </summary>
+        public string Tag
+        {
+            get { return _tag; }
+        }
+
+        /// <summary>
+        /// Adds the reference of an online guild member to this guild that is new to the guild.
+        /// This does not make the user join or leave the guild in any way, just allows the guild to keep track of the
+        /// members that are online.
+        /// </summary>
+        /// <param name="newMember">The online guild member to add.</param>
+        public void AddNewOnlineMember(IGuildMember newMember)
+        {
+            if (MemberAdded != null)
+                MemberAdded(this, newMember);
+
+            OnMemberAdded(newMember);
+
+            AddOnlineMember(newMember);
+        }
+
+        /// <summary>
+        /// Adds the reference of an online guild member to this guild. This does not make the user join or leave the
+        /// guild in any way, just allows the guild to keep track of the members that are online.
+        /// </summary>
+        /// <param name="member">The online guild member to add.</param>
+        public void AddOnlineMember(IGuildMember member)
+        {
+            if (member.Guild != this)
+            {
+                const string errmsg = "The guild member `{0}` does not belong to this guild [{1}]!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, member, this);
+                Debug.Fail(string.Format(errmsg, member, this));
+                return;
+            }
+
+            if (_onlineMembers.Contains(member))
+            {
+                const string errmsg =
+                    "Member `{0}` is already in the online list for guild `{1}`." +
+                    " Not really a problem that can't be easily fixed, but should be avoided since it is needless overhead.";
+                Debug.Fail(string.Format(errmsg, member, this));
+                return;
+            }
+
+            _onlineMembers.Add(member);
+
+            if (OnlineUserAdded != null)
+                OnlineUserAdded(this, member);
+
+            OnOnlineUserAdded(member);
+        }
 
         /// <summary>
         /// Destroys the guild completely and removes all members from it.
@@ -462,42 +589,155 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Gets the online guild members in this guild.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public IEnumerable<IGuildMember> OnlineMembers
+        public virtual void Dispose()
         {
-            get { return _onlineMembers.ToImmutable(); }
+            Save();
         }
 
         /// <summary>
-        /// Notifies listeners when the guild has been destroyed.
+        /// Gets the name and rank for all the members in the guild.
         /// </summary>
-        public event GuildEventHandler Destroyed;
+        /// <returns>The name and rank for all the members in the guild.</returns>
+        public abstract IEnumerable<GuildMemberNameRank> GetMembers();
 
         /// <summary>
-        /// Notifies listeners when a member has been invited into the guild.
+        /// Removes the reference of an online guild member from this guild. This does not make the user join or leave the
+        /// guild in any way, just allows the guild to keep track of the members that are online.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberInvited;
+        /// <param name="member">The online guild member to remove.</param>
+        public void RemoveOnlineMember(IGuildMember member)
+        {
+            if (member.Guild != this)
+            {
+                const string errmsg = "The guild member `{0}` does not belong to this guild [{1}]!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, member, this);
+                Debug.Fail(string.Format(errmsg, member, this));
+                return;
+            }
+
+            if (!_onlineMembers.Remove(member))
+            {
+                const string errmsg =
+                    "Member `{0}` was not in the online list for guild `{1}`." +
+                    " Not really a problem that can't be easily fixed, but should be avoided since it is needless overhead.";
+                Debug.Fail(string.Format(errmsg, member, this));
+                return;
+            }
+
+            if (OnlineUserRemoved != null)
+                OnlineUserRemoved(this, member);
+
+            OnOnlineUserRemoved(member);
+        }
 
         /// <summary>
-        /// Notifies listeners when a new member has joined the guild.
+        /// When overridden in the derived class, saves all of the guild's information to the database.
         /// </summary>
-        public event GuildMemberEventHandler MemberAdded;
+        public abstract void Save();
 
         /// <summary>
-        /// Notifies listeners when a member has been kicked from the guild.
+        /// Tries to change the name of the guild.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberKicked;
+        /// <param name="invoker">The guild member trying to change the guild's name.</param>
+        /// <param name="newName">The new name of the guild.</param>
+        /// <returns>True if the name was successfully changed; otherwise false.</returns>
+        public bool TryChangeName(IGuildMember invoker, string newName)
+        {
+            if (!EnsureValidEventSource(invoker))
+                return false;
+
+            if (!EnsureValidRank(invoker, _guildSettings.MinRankRename))
+                return false;
+
+            if (_name == newName || !GuildManager.IsNameAvailable(newName))
+                return false;
+
+            string oldValue = Name;
+
+            bool success = InternalTryChangeName(newName);
+
+            if (success)
+            {
+                _name = newName;
+                Save();
+
+                OnNameChanged(invoker, oldValue, Name);
+
+                if (NameChanged != null)
+                    NameChanged(this, invoker, oldValue, Name);
+            }
+
+            return success;
+        }
 
         /// <summary>
-        /// Notifies listeners when a member has been promoted.
+        /// Tries to change the tag of the guild.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberPromoted;
+        /// <param name="invoker">The guild member trying to change the guild's tag.</param>
+        /// <param name="newTag">The new tag of the guild.</param>
+        /// <returns>True if the tag was successfully changed; otherwise false.</returns>
+        public bool TryChangeTag(IGuildMember invoker, string newTag)
+        {
+            if (!EnsureValidEventSource(invoker))
+                return false;
+
+            if (!EnsureValidRank(invoker, _guildSettings.MinRankRename))
+                return false;
+
+            if (_tag == newTag || !GuildManager.IsTagAvailable(newTag))
+                return false;
+
+            string oldValue = Tag;
+
+            bool success = InternalTryChangeTag(newTag);
+
+            if (success)
+            {
+                _tag = newTag;
+                Save();
+
+                OnNameChanged(invoker, oldValue, Name);
+
+                if (NameChanged != null)
+                    NameChanged(this, invoker, oldValue, Name);
+            }
+
+            return success;
+        }
 
         /// <summary>
-        /// Notifies listeners when a member has been demoted.
+        /// Makes the <paramref name="invoker"/> try to demote the <paramref name="target"/>.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberDemoted;
+        /// <param name="invoker">The guild member is who demoting the <paramref name="target"/>.</param>
+        /// <param name="target">The guild member being demoted.</param>
+        /// <returns>True if the <paramref name="invoker"/> successfully demoted the <paramref name="target"/>;
+        /// otherwise false.</returns>
+        public bool TryDemoteMember(IGuildMember invoker, IGuildMember target)
+        {
+            // Ensure the parameters are valid
+            if (!EnsureValidEventSourceSameGuild(invoker, target))
+                return false;
+
+            // Ensure the invoker has the needed permissions
+            if (!EnsureValidRank(invoker, _guildSettings.MinRankPromote))
+                return false;
+
+            // Only allow promotions to be done on a member that is a lower or equal rank than the one demoting
+            if (invoker.GuildRank < target.GuildRank)
+            {
+                const string errmsg =
+                    "Guild member `{0}` tried to demote member `{1}`, but their rank [{2}] is" +
+                    " is not greater than or equal to the rank of the one they are trying to demote [{3}].";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, invoker, target, invoker.GuildRank, target.GuildRank);
+                return false;
+            }
+
+            return InternalTryDemoteMember(invoker, target);
+        }
 
         /// <summary>
         /// Makes the <paramref name="invoker"/> try to invite the <paramref name="target"/> to the guild.
@@ -575,37 +815,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Makes the <paramref name="invoker"/> try to demote the <paramref name="target"/>.
-        /// </summary>
-        /// <param name="invoker">The guild member is who demoting the <paramref name="target"/>.</param>
-        /// <param name="target">The guild member being demoted.</param>
-        /// <returns>True if the <paramref name="invoker"/> successfully demoted the <paramref name="target"/>;
-        /// otherwise false.</returns>
-        public bool TryDemoteMember(IGuildMember invoker, IGuildMember target)
-        {
-            // Ensure the parameters are valid
-            if (!EnsureValidEventSourceSameGuild(invoker, target))
-                return false;
-
-            // Ensure the invoker has the needed permissions
-            if (!EnsureValidRank(invoker, _guildSettings.MinRankPromote))
-                return false;
-
-            // Only allow promotions to be done on a member that is a lower or equal rank than the one demoting
-            if (invoker.GuildRank < target.GuildRank)
-            {
-                const string errmsg =
-                    "Guild member `{0}` tried to demote member `{1}`, but their rank [{2}] is" +
-                    " is not greater than or equal to the rank of the one they are trying to demote [{3}].";
-                if (log.IsInfoEnabled)
-                    log.InfoFormat(errmsg, invoker, target, invoker.GuildRank, target.GuildRank);
-                return false;
-            }
-
-            return InternalTryDemoteMember(invoker, target);
-        }
-
-        /// <summary>
         /// Makes the <paramref name="invoker"/> try to promote the <paramref name="target"/>.
         /// </summary>
         /// <param name="invoker">The guild member is who promoting the <paramref name="target"/>.</param>
@@ -640,6 +849,24 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Makes the <paramref name="invoker"/> try to view the event log for the guild.
+        /// </summary>
+        /// <param name="invoker">The guild member that invoked the event.</param>
+        /// <returns>True if the <paramref name="invoker"/> successfully viewed the log; otherwise false.</returns>
+        public bool TryViewEventLog(IGuildMember invoker)
+        {
+            // Ensure the parameters are valid
+            if (!EnsureValidEventSource(invoker))
+                return false;
+
+            // Ensure the user has the needed permission level for the action
+            if (!EnsureValidRank(invoker, _guildSettings.MinRankViewLog))
+                return false;
+
+            return InternalTryViewEventLog(invoker);
+        }
+
+        /// <summary>
         /// Makes the <paramref name="invoker"/> try to view the list of guild members.
         /// </summary>
         /// <param name="invoker">The guild member that invoked the event.</param>
@@ -665,233 +892,6 @@ namespace NetGore.Features.Guilds
                 return false;
 
             return InternalTryViewOnlineMembers(invoker);
-        }
-
-        /// <summary>
-        /// Makes the <paramref name="invoker"/> try to view the event log for the guild.
-        /// </summary>
-        /// <param name="invoker">The guild member that invoked the event.</param>
-        /// <returns>True if the <paramref name="invoker"/> successfully viewed the log; otherwise false.</returns>
-        public bool TryViewEventLog(IGuildMember invoker)
-        {
-            // Ensure the parameters are valid
-            if (!EnsureValidEventSource(invoker))
-                return false;
-
-            // Ensure the user has the needed permission level for the action
-            if (!EnsureValidRank(invoker, _guildSettings.MinRankViewLog))
-                return false;
-
-            return InternalTryViewEventLog(invoker);
-        }
-
-        /// <summary>
-        /// Adds the reference of an online guild member to this guild that is new to the guild.
-        /// This does not make the user join or leave the guild in any way, just allows the guild to keep track of the
-        /// members that are online.
-        /// </summary>
-        /// <param name="newMember">The online guild member to add.</param>
-        public void AddNewOnlineMember(IGuildMember newMember)
-        {
-            if (MemberAdded != null)
-                MemberAdded(this, newMember);
-
-            OnMemberAdded(newMember);
-
-            AddOnlineMember(newMember);
-        }
-
-        /// <summary>
-        /// Adds the reference of an online guild member to this guild. This does not make the user join or leave the
-        /// guild in any way, just allows the guild to keep track of the members that are online.
-        /// </summary>
-        /// <param name="member">The online guild member to add.</param>
-        public void AddOnlineMember(IGuildMember member)
-        {
-            if (member.Guild != this)
-            {
-                const string errmsg = "The guild member `{0}` does not belong to this guild [{1}]!";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, member, this);
-                Debug.Fail(string.Format(errmsg, member, this));
-                return;
-            }
-
-            if (_onlineMembers.Contains(member))
-            {
-                const string errmsg =
-                    "Member `{0}` is already in the online list for guild `{1}`." +
-                    " Not really a problem that can't be easily fixed, but should be avoided since it is needless overhead.";
-                Debug.Fail(string.Format(errmsg, member, this));
-                return;
-            }
-
-            _onlineMembers.Add(member);
-
-            if (OnlineUserAdded != null)
-                OnlineUserAdded(this, member);
-
-            OnOnlineUserAdded(member);
-        }
-
-        /// <summary>
-        /// Removes the reference of an online guild member from this guild. This does not make the user join or leave the
-        /// guild in any way, just allows the guild to keep track of the members that are online.
-        /// </summary>
-        /// <param name="member">The online guild member to remove.</param>
-        public void RemoveOnlineMember(IGuildMember member)
-        {
-            if (member.Guild != this)
-            {
-                const string errmsg = "The guild member `{0}` does not belong to this guild [{1}]!";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, member, this);
-                Debug.Fail(string.Format(errmsg, member, this));
-                return;
-            }
-
-            if (!_onlineMembers.Remove(member))
-            {
-                const string errmsg =
-                    "Member `{0}` was not in the online list for guild `{1}`." +
-                    " Not really a problem that can't be easily fixed, but should be avoided since it is needless overhead.";
-                Debug.Fail(string.Format(errmsg, member, this));
-                return;
-            }
-
-            if (OnlineUserRemoved != null)
-                OnlineUserRemoved(this, member);
-
-            OnOnlineUserRemoved(member);
-        }
-
-        /// <summary>
-        /// Gets if this guild has been destroyed. If this is true, nobody should be in this guild.
-        /// </summary>
-        public bool IsDestroyed
-        {
-            get { return _isDestroyed; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IGuildManager"/> managing this guild.
-        /// </summary>
-        public IGuildManager GuildManager
-        {
-            get { return _guildManager; }
-        }
-
-        /// <summary>
-        /// Gets the unique ID of the guild.
-        /// </summary>
-        public GuildID ID
-        {
-            get { return _id; }
-        }
-
-        /// <summary>
-        /// Gets the unique name of the guild.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets the guild's unique tag.
-        /// </summary>
-        public string Tag
-        {
-            get { return _tag; }
-        }
-
-        /// <summary>
-        /// Tries to change the name of the guild.
-        /// </summary>
-        /// <param name="invoker">The guild member trying to change the guild's name.</param>
-        /// <param name="newName">The new name of the guild.</param>
-        /// <returns>True if the name was successfully changed; otherwise false.</returns>
-        public bool TryChangeName(IGuildMember invoker, string newName)
-        {
-            if (!EnsureValidEventSource(invoker))
-                return false;
-
-            if (!EnsureValidRank(invoker, _guildSettings.MinRankRename))
-                return false;
-
-            if (_name == newName || !GuildManager.IsNameAvailable(newName))
-                return false;
-
-            string oldValue = Name;
-
-            bool success = InternalTryChangeName(newName);
-
-            if (success)
-            {
-                _name = newName;
-                Save();
-
-                OnNameChanged(invoker, oldValue, Name);
-
-                if (NameChanged != null)
-                    NameChanged(this, invoker, oldValue, Name);
-            }
-
-            return success;
-        }
-
-        /// <summary>
-        /// Gets the name and rank for all the members in the guild.
-        /// </summary>
-        /// <returns>The name and rank for all the members in the guild.</returns>
-        public abstract IEnumerable<GuildMemberNameRank> GetMembers();
-
-        /// <summary>
-        /// Tries to change the tag of the guild.
-        /// </summary>
-        /// <param name="invoker">The guild member trying to change the guild's tag.</param>
-        /// <param name="newTag">The new tag of the guild.</param>
-        /// <returns>True if the tag was successfully changed; otherwise false.</returns>
-        public bool TryChangeTag(IGuildMember invoker, string newTag)
-        {
-            if (!EnsureValidEventSource(invoker))
-                return false;
-
-            if (!EnsureValidRank(invoker, _guildSettings.MinRankRename))
-                return false;
-
-            if (_tag == newTag || !GuildManager.IsTagAvailable(newTag))
-                return false;
-
-            string oldValue = Tag;
-
-            bool success = InternalTryChangeTag(newTag);
-
-            if (success)
-            {
-                _tag = newTag;
-                Save();
-
-                OnNameChanged(invoker, oldValue, Name);
-
-                if (NameChanged != null)
-                    NameChanged(this, invoker, oldValue, Name);
-            }
-
-            return success;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, saves all of the guild's information to the database.
-        /// </summary>
-        public abstract void Save();
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            Save();
         }
 
         #endregion

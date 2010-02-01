@@ -31,11 +31,6 @@ namespace DemoGame.Client
         MapEntityIndex _usercharIndex;
 
         /// <summary>
-        /// Notifies listeners when the map has changed.
-        /// </summary>
-        public event WorldEventHandler<Map> MapChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
         /// <param name="getTime">Interface to get the current time.</param>
@@ -45,6 +40,11 @@ namespace DemoGame.Client
             _getTime = getTime;
             _camera = camera;
         }
+
+        /// <summary>
+        /// Notifies listeners when the map has changed.
+        /// </summary>
+        public event WorldEventHandler<Map> MapChanged;
 
         /// <summary>
         /// Gets the camera used for the active view.

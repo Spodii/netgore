@@ -6,6 +6,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class ClampTests
     {
+        #region Unit tests
+
         [Test]
         public void ClampByteTest()
         {
@@ -265,5 +267,7 @@ namespace NetGore.Tests.NetGore
                 }
             }
         }
+
+        #endregion
     }
 }

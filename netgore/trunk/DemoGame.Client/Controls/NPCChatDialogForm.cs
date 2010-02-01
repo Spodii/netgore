@@ -30,16 +30,6 @@ namespace DemoGame.Client
         NPCChatResponseBase[] _responses;
 
         /// <summary>
-        /// Notifies listeners when this NPCChatDialogForm wants to end the chat dialog.
-        /// </summary>
-        public event ChatDialogRequestEndDialogHandler RequestEndDialog;
-
-        /// <summary>
-        /// Notifies listeners when a dialog response was chosen.
-        /// </summary>
-        public event ChatDialogSelectResponseHandler SelectResponse;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogForm"/> class.
         /// </summary>
         /// <param name="position">The position.</param>
@@ -67,6 +57,16 @@ namespace DemoGame.Client
                 _responseTextControls[i] = r;
             }
         }
+
+        /// <summary>
+        /// Notifies listeners when this NPCChatDialogForm wants to end the chat dialog.
+        /// </summary>
+        public event ChatDialogRequestEndDialogHandler RequestEndDialog;
+
+        /// <summary>
+        /// Notifies listeners when a dialog response was chosen.
+        /// </summary>
+        public event ChatDialogSelectResponseHandler SelectResponse;
 
         /// <summary>
         /// Gets if a dialog is currently open.

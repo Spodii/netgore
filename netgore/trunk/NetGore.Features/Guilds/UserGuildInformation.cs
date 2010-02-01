@@ -41,6 +41,22 @@ namespace NetGore.Features.Guilds
         bool _inGuild = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="UserGuildInformation"/> class.
+        /// </summary>
+        public UserGuildInformation()
+        {
+            Name = string.Empty;
+            Tag = string.Empty;
+            InGuild = false;
+        }
+
+        /// <summary>
+        /// Notifies listeners when the guild has changed. This can be either the user leaving a guild, joining a new
+        /// guild, or having the initial guild being set.
+        /// </summary>
+        public event UserGuildInformationEventHandler GuildChanged;
+
+        /// <summary>
         /// Notifies listeners when a guild member has been added.
         /// </summary>
         public event UserGuildInformationEventHandler<GuildMemberNameRank> MemberAdded;
@@ -51,35 +67,19 @@ namespace NetGore.Features.Guilds
         public event UserGuildInformationEventHandler<GuildMemberNameRank> MemberRankUpdated;
 
         /// <summary>
-        /// Notifies listeners when an offline guild member has come online.
-        /// </summary>
-        public event UserGuildInformationEventHandler<string> OnlineMemberAdded;
-
-        /// <summary>
-        /// Notifies listeners when the guild has changed. This can be either the user leaving a guild, joining a new
-        /// guild, or having the initial guild being set.
-        /// </summary>
-        public event UserGuildInformationEventHandler GuildChanged;
-
-        /// <summary>
         /// Notifies listeners when a guild member has been removed.
         /// </summary>
         public event UserGuildInformationEventHandler<string> MemberRemoved;
 
         /// <summary>
+        /// Notifies listeners when an offline guild member has come online.
+        /// </summary>
+        public event UserGuildInformationEventHandler<string> OnlineMemberAdded;
+
+        /// <summary>
         /// Notifies listeners when an online guild member has gone offline.
         /// </summary>
         public event UserGuildInformationEventHandler<string> OnlineMemberRemoved;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserGuildInformation"/> class.
-        /// </summary>
-        public UserGuildInformation()
-        {
-            Name = string.Empty;
-            Tag = string.Empty;
-            InGuild = false;
-        }
 
         /// <summary>
         /// Gets if the client is in a guild at all.
@@ -147,6 +147,65 @@ namespace NetGore.Features.Guilds
         public string Tag { get; private set; }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnGuildChanged()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="member">The member the event is related to.</param>
+        protected virtual void OnMemberAdded(GuildMemberNameRank member)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="member">The member the event is related to.</param>
+        protected virtual void OnMemberRankUpdated(GuildMemberNameRank member)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="name">The member the event is related to.</param>
+        protected virtual void OnMemberRemoved(string name)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="name">The member the event is related to.</param>
+        protected virtual void OnOnlineMemberAdded(string name)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="name">The member the event is related to.</param>
+        protected virtual void OnOnlineMemberRemoved(string name)
+        {
+        }
+
+        /// <summary>
         /// Reads the data from the server related to the user guild information. This should only be used by the client.
         /// </summary>
         /// <param name="bitStream">The <see cref="BitStream"/> containing the data.</param>
@@ -193,53 +252,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Reads the <see cref="GuildInfoMessages.UpdateNameTag"/> message.
-        /// </summary>
-        /// <param name="r">The stream to read the message from.</param>
-        void ReadUpdateNameTag(BitStream r)
-        {
-            Name = r.ReadString();
-            Tag = r.ReadString();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="member">The member the event is related to.</param>
-        protected virtual void OnMemberRankUpdated(GuildMemberNameRank member)
-        {
-        }
-
-        /// <summary>
-        /// Reads the <see cref="GuildInfoMessages.UpdateRank"/> message.
-        /// </summary>
-        /// <param name="r">The stream to read the message from.</param>
-        void ReadUpdateRank(IValueReader r)
-        {
-            var member = r.ReadGuildMemberNameRank(null);
-            _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, member.Name));
-            _members.Add(member);
-            _members.Sort();
-
-            OnMemberRankUpdated(member);
-
-            if (MemberRankUpdated != null)
-                MemberRankUpdated(this, member);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="member">The member the event is related to.</param>
-        protected virtual void OnMemberAdded(GuildMemberNameRank member)
-        {
-        }
-
-        /// <summary>
         /// Reads the <see cref="GuildInfoMessages.AddMember"/> message.
         /// </summary>
         /// <param name="r">The stream to read the message from.</param>
@@ -256,16 +268,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="name">The member the event is related to.</param>
-        protected virtual void OnOnlineMemberAdded(string name)
-        {
-        }
-
-        /// <summary>
         /// Reads the <see cref="GuildInfoMessages.AddOnlineMember"/> message.
         /// </summary>
         /// <param name="r">The stream to read the message from.</param>
@@ -278,16 +280,6 @@ namespace NetGore.Features.Guilds
 
             if (OnlineMemberAdded != null)
                 OnlineMemberAdded(this, name);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="name">The member the event is related to.</param>
-        protected virtual void OnMemberRemoved(string name)
-        {
         }
 
         /// <summary>
@@ -309,16 +301,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="name">The member the event is related to.</param>
-        protected virtual void OnOnlineMemberRemoved(string name)
-        {
-        }
-
-        /// <summary>
         /// Reads the <see cref="GuildInfoMessages.RemoveOnlineMember"/> message.
         /// </summary>
         /// <param name="r">The stream to read the message from.</param>
@@ -331,15 +313,6 @@ namespace NetGore.Features.Guilds
 
             if (OnlineMemberRemoved != null)
                 OnlineMemberRemoved(this, name);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        protected virtual void OnGuildChanged()
-        {
         }
 
         /// <summary>
@@ -379,6 +352,33 @@ namespace NetGore.Features.Guilds
 
             if (GuildChanged != null)
                 GuildChanged(this);
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.UpdateNameTag"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
+        void ReadUpdateNameTag(BitStream r)
+        {
+            Name = r.ReadString();
+            Tag = r.ReadString();
+        }
+
+        /// <summary>
+        /// Reads the <see cref="GuildInfoMessages.UpdateRank"/> message.
+        /// </summary>
+        /// <param name="r">The stream to read the message from.</param>
+        void ReadUpdateRank(IValueReader r)
+        {
+            var member = r.ReadGuildMemberNameRank(null);
+            _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, member.Name));
+            _members.Add(member);
+            _members.Sort();
+
+            OnMemberRankUpdated(member);
+
+            if (MemberRankUpdated != null)
+                MemberRankUpdated(this, member);
         }
 
         /// <summary>

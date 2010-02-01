@@ -1823,7 +1823,7 @@ namespace NetGore.IO
 
         static string StringFromByteArray(byte[] value)
         {
-            return ASCIIEncoding.ASCII.GetString(value);
+            return Encoding.ASCII.GetString(value);
         }
 
         /// <summary>
@@ -1833,7 +1833,7 @@ namespace NetGore.IO
         /// <returns>The byte array for the given string <paramref name="s"/>.</returns>
         static byte[] StringToByteArray(string s)
         {
-            return ASCIIEncoding.ASCII.GetBytes(s);
+            return Encoding.ASCII.GetBytes(s);
         }
 
         /// <summary>
@@ -2912,14 +2912,61 @@ namespace NetGore.IO
         #region IValueReader Members
 
         /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
+        /// Gets if this <see cref="IValueReader"/> supports using the name field to look up values. If false,
+        /// values will have to be read back in the same order they were written and the name field will be ignored.
         /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
+        bool IValueReader.SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IValueReader"/> supports reading nodes. If false, any attempt to use nodes
+        /// in this IValueWriter will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool IValueReader.SupportsNodes
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        public bool UseEnumNames
+        {
+            get { return _useEnumNames; }
+        }
+
+        /// <summary>
+        /// Reads a boolean.
+        /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        bool IValueReader.ReadBool(string name)
         {
-            return ReadEnumName<T>();
+            return ReadBool();
+        }
+
+        /// <summary>
+        /// Reads a 8-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        byte IValueReader.ReadByte(string name)
+        {
+            return ReadByte();
+        }
+
+        /// <summary>
+        /// Reads a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        double IValueReader.ReadDouble(string name)
+        {
+            return ReadDouble();
         }
 
         /// <summary>
@@ -2938,13 +2985,25 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a 8-bit unsigned integer.
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
         /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
         /// <param name="name">Unused by the BitStream.</param>
         /// <returns>Value read from the reader.</returns>
-        byte IValueReader.ReadByte(string name)
+        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            return ReadByte();
+            return ReadEnumName<T>();
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return ReadEnumValue<T>();
         }
 
         /// <summary>
@@ -2958,13 +3017,34 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a 64-bit floating-point number.
+        /// Reads a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
         /// <returns>Value read from the reader.</returns>
-        double IValueReader.ReadDouble(string name)
+        int IValueReader.ReadInt(string name)
         {
-            return ReadDouble();
+            return ReadInt();
+        }
+
+        /// <summary>
+        /// Reads a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        int IValueReader.ReadInt(string name, int bits)
+        {
+            return ReadInt(bits);
+        }
+
+        /// <summary>
+        /// Reads a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        long IValueReader.ReadLong(string name)
+        {
+            return ReadLong();
         }
 
         /// <summary>
@@ -2992,56 +3072,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a 32-bit signed integer.
+        /// Unsupported by the BitStream.
         /// </summary>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <returns>Value read from the reader.</returns>
-        int IValueReader.ReadInt(string name)
+        /// <param name="key">Unused by the BitStream.</param>
+        /// <returns>An IValueReader to read the child node.</returns>
+        /// <exception cref="ArgumentException">Zero or more than one values found for the given
+        /// <paramref name="key"/>.</exception>
+        IValueReader IValueReader.ReadNode(string key)
         {
-            return ReadInt();
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            return ReadEnumValue<T>();
-        }
-
-        /// <summary>
-        /// Reads a signed integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <param name="bits">Number of bits to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        int IValueReader.ReadInt(string name, int bits)
-        {
-            return ReadInt(bits);
-        }
-
-        /// <summary>
-        /// Reads a 8-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <returns>Value read from the reader.</returns>
-        sbyte IValueReader.ReadSByte(string name)
-        {
-            return ReadSByte();
-        }
-
-        /// <summary>
-        /// Reads an unsigned integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <param name="bits">Number of bits to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        uint IValueReader.ReadUInt(string name, int bits)
-        {
-            return ReadUInt(bits);
+            throw CreateNodesNotSupportedException();
         }
 
         /// <summary>
@@ -3058,34 +3097,13 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Unsupported by the BitStream.
-        /// </summary>
-        /// <param name="key">Unused by the BitStream.</param>
-        /// <returns>An IValueReader to read the child node.</returns>
-        /// <exception cref="ArgumentException">Zero or more than one values found for the given
-        /// <paramref name="key"/>.</exception>
-        IValueReader IValueReader.ReadNode(string key)
-        {
-            throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="IValueReader"/> supports reading nodes. If false, any attempt to use nodes
-        /// in this IValueWriter will result in a NotSupportedException being thrown.
-        /// </summary>
-        bool IValueReader.SupportsNodes
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Reads a boolean.
+        /// Reads a 8-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
         /// <returns>Value read from the reader.</returns>
-        bool IValueReader.ReadBool(string name)
+        sbyte IValueReader.ReadSByte(string name)
         {
-            return ReadBool();
+            return ReadSByte();
         }
 
         /// <summary>
@@ -3109,6 +3127,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        uint IValueReader.ReadUInt(string name, int bits)
+        {
+            return ReadUInt(bits);
+        }
+
+        /// <summary>
         /// Reads a 32-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
@@ -3129,16 +3158,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a 64-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <returns>Value read from the reader.</returns>
-        long IValueReader.ReadLong(string name)
-        {
-            return ReadLong();
-        }
-
-        /// <summary>
         /// Reads a 16-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
@@ -3148,43 +3167,24 @@ namespace NetGore.IO
             return ReadUShort();
         }
 
-        /// <summary>
-        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
-        /// underlying integer value will be used. If false, the underlying integer value will be used. This
-        /// only to Enum I/O that does not explicitly state which method to use.
-        /// </summary>
-        public bool UseEnumNames
-        {
-            get { return _useEnumNames; }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="IValueReader"/> supports using the name field to look up values. If false,
-        /// values will have to be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        bool IValueReader.SupportsNameLookup
-        {
-            get { return false; }
-        }
-
         #endregion
 
         #region IValueWriter Members
-
-        /// <summary>
-        /// Gets if this <see cref="IValueWriter"/> supports reading nodes. If false, any attempt to use nodes
-        /// in this IValueWriter will result in a NotSupportedException being thrown.
-        /// </summary>
-        bool IValueWriter.SupportsNodes
-        {
-            get { return false; }
-        }
 
         /// <summary>
         /// Gets if this <see cref="IValueWriter"/> supports using the name field to look up values. If false,
         /// values will have to be read back in the same order they were written and the name field will be ignored.
         /// </summary>
         bool IValueWriter.SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IValueWriter"/> supports reading nodes. If false, any attempt to use nodes
+        /// in this IValueWriter will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool IValueWriter.SupportsNodes
         {
             get { return false; }
         }
@@ -3206,43 +3206,6 @@ namespace NetGore.IO
         void IValueWriter.Write(string name, uint value, int bits)
         {
             Write(value, bits);
-        }
-
-        /// <summary>
-        /// Writes an Enum of type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            WriteEnumValue(value);
-        }
-
-        /// <summary>
-        /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
-        /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            if (UseEnumNames)
-                WriteEnumName(value);
-            else
-                WriteEnumValue(value);
-        }
-
-        /// <summary>
-        /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <param name="value">Value to write.</param>
-        public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            WriteEnumName(value);
         }
 
         /// <summary>
@@ -3336,76 +3299,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Unsupported by the BitStream.
-        /// </summary>
-        /// <param name="name">Unused by the BitStream.</param>
-        void IValueWriter.WriteStartNode(string name)
-        {
-            throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
-        /// Unsupported by the BitStream.
-        /// </summary>
-        /// <param name="name">Unused by the BitStream.</param>
-        void IValueWriter.WriteEndNode(string name)
-        {
-            throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
-        /// Unsupported by the BitStream.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Unused by the BitStream.</param>
-        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty IEnumerable.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        void IValueWriter.WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
-        {
-            throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
-        /// Unsupported by the BitStream.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Unused by the BitStream.</param>
-        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty IEnumerable.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        void IValueWriter.WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
-        {
-            throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
-        /// Unsupported by the BitStream.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Unused by the BitStream.</param>
-        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty IEnumerable.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        void IValueWriter.WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
-        {
-            throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
-        /// Unsupported by the BitStream.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Unused by the BitStream.</param>
-        /// <param name="values">Array of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty array.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        void IValueWriter.WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
-        {
-            throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
         /// Writes a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
@@ -3444,6 +3337,113 @@ namespace NetGore.IO
         void IValueWriter.Write(string name, double value)
         {
             Write(value);
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        void IValueWriter.WriteEndNode(string name)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
+        /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnum<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            if (UseEnumNames)
+                WriteEnumName(value);
+            else
+                WriteEnumValue(value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            WriteEnumName(value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnumValue<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            WriteEnumValue(value);
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">Array of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty array.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        void IValueWriter.WriteStartNode(string name)
+        {
+            throw CreateNodesNotSupportedException();
         }
 
         #endregion

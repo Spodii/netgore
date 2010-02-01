@@ -616,24 +616,6 @@ namespace DemoGame.DbObjs
         #region IItemTable Members
 
         /// <summary>
-        /// Gets an IEnumerable of KeyValuePairs containing the values in the `ReqStat` collection. The
-        /// key is the collection's key and the value is the value for that corresponding key.
-        /// </summary>
-        public IEnumerable<KeyValuePair<StatType, Int32>> ReqStats
-        {
-            get { return _reqStat; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
-        /// key is the collection's key and the value is the value for that corresponding key.
-        /// </summary>
-        public IEnumerable<KeyValuePair<StatType, Int32>> Stats
-        {
-            get { return _stat; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `amount`.
         /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
         /// </summary>
@@ -733,27 +715,21 @@ namespace DemoGame.DbObjs
         }
 
         /// <summary>
-        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+        /// Gets an IEnumerable of KeyValuePairs containing the values in the `ReqStat` collection. The
+        /// key is the collection's key and the value is the value for that corresponding key.
         /// </summary>
-        /// <param name="key">The key of the column to get.</param>
-        /// <returns>
-        /// The value of the database column for the corresponding <paramref name="key"/>.
-        /// </returns>
-        public Int32 GetStat(StatType key)
+        public IEnumerable<KeyValuePair<StatType, Int32>> ReqStats
         {
-            return _stat[key];
+            get { return _reqStat; }
         }
 
         /// <summary>
-        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `ReqStat`.
+        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
+        /// key is the collection's key and the value is the value for that corresponding key.
         /// </summary>
-        /// <param name="key">The key of the column to get.</param>
-        /// <returns>
-        /// The value of the database column for the corresponding <paramref name="key"/>.
-        /// </returns>
-        public Int32 GetReqStat(StatType key)
+        public IEnumerable<KeyValuePair<StatType, Int32>> Stats
         {
-            return _reqStat[key];
+            get { return _stat; }
         }
 
         /// <summary>
@@ -799,6 +775,30 @@ namespace DemoGame.DbObjs
         public IItemTable DeepCopy()
         {
             return new ItemTable(this);
+        }
+
+        /// <summary>
+        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `ReqStat`.
+        /// </summary>
+        /// <param name="key">The key of the column to get.</param>
+        /// <returns>
+        /// The value of the database column for the corresponding <paramref name="key"/>.
+        /// </returns>
+        public Int32 GetReqStat(StatType key)
+        {
+            return _reqStat[key];
+        }
+
+        /// <summary>
+        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+        /// </summary>
+        /// <param name="key">The key of the column to get.</param>
+        /// <returns>
+        /// The value of the database column for the corresponding <paramref name="key"/>.
+        /// </returns>
+        public Int32 GetStat(StatType key)
+        {
+            return _stat[key];
         }
 
         #endregion

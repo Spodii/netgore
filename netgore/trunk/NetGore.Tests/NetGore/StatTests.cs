@@ -8,6 +8,18 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class StatTests
     {
+        static IStat<TestStatType> CreateStat(TestStatType statType, int value)
+        {
+            return CreateStat<StatValueShort>(statType, value);
+        }
+
+        static IStat<TestStatType> CreateStat<T>(TestStatType statType, int value) where T : IStatValueType, new()
+        {
+            return new Stat<TestStatType, T>(statType, value);
+        }
+
+        #region Unit tests
+
         [Test]
         public void ChangeStatValueTest()
         {
@@ -17,16 +29,6 @@ namespace NetGore.Tests.NetGore
 
             stat.Value = 199;
             Assert.AreEqual(199, stat.Value);
-        }
-
-        static IStat<TestStatType> CreateStat(TestStatType statType, int value)
-        {
-            return CreateStat<StatValueShort>(statType, value);
-        }
-
-        static IStat<TestStatType> CreateStat<T>(TestStatType statType, int value) where T : IStatValueType, new()
-        {
-            return new Stat<TestStatType, T>(statType, value);
         }
 
         [Test]
@@ -151,6 +153,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(123, stat.Value);
             Assert.AreEqual(123, stat2.Value);
         }
+
+        #endregion
 
         enum TestStatType
         {

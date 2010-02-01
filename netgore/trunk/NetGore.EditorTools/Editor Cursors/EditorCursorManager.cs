@@ -35,11 +35,6 @@ namespace NetGore.EditorTools
         bool _useAlternateCursor;
 
         /// <summary>
-        /// Notifies listeners when the currently active cursor changes.
-        /// </summary>
-        public event EditorCursorManagerEventHandler CurrentCursorChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditorCursorManager{TScreen}"/> class.
         /// </summary>
         /// <param name="container">The container the cursors are in. Recommended that you use the Form
@@ -75,6 +70,11 @@ namespace NetGore.EditorTools
             _gameScreen.MouseMove += _gameScreen_MouseMove;
             _gameScreen.MouseUp += _gameScreen_MouseUp;
         }
+
+        /// <summary>
+        /// Notifies listeners when the currently active cursor changes.
+        /// </summary>
+        public event EditorCursorManagerEventHandler CurrentCursorChanged;
 
         /// <summary>
         /// Gets the container used by the cursors in this manager.

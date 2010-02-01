@@ -375,21 +375,6 @@ namespace NetGore.Graphics
         #region ISprite Members
 
         /// <summary>
-        /// Updates the Grh if it is animated.
-        /// </summary>
-        /// <param name="currentTime">Current total real time in total milliseconds.</param>
-        public virtual void Update(int currentTime)
-        {
-            // We only need to update the frame if we are animating, have a valid GrhData, and if we have more
-            // than one frame in the GrhData
-            if (_anim != AnimType.None && GrhData != null && GrhData.FramesCount > 1)
-                UpdateFrameIndex(currentTime);
-
-            // Set the last updated time to now
-            _lastUpdated = currentTime;
-        }
-
-        /// <summary>
         /// Gets the source rectangle for the current frame.
         /// </summary>
         public Rectangle Source
@@ -445,6 +430,21 @@ namespace NetGore.Graphics
                 return;
 
             sb.Draw(Texture, dest, Source, color);
+        }
+
+        /// <summary>
+        /// Updates the Grh if it is animated.
+        /// </summary>
+        /// <param name="currentTime">Current total real time in total milliseconds.</param>
+        public virtual void Update(int currentTime)
+        {
+            // We only need to update the frame if we are animating, have a valid GrhData, and if we have more
+            // than one frame in the GrhData
+            if (_anim != AnimType.None && GrhData != null && GrhData.FramesCount > 1)
+                UpdateFrameIndex(currentTime);
+
+            // Set the last updated time to now
+            _lastUpdated = currentTime;
         }
 
         #endregion

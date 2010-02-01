@@ -30,40 +30,6 @@ namespace NetGore.Tests.Db.ClassCreator
         IEnumerable<PropertyInfo> _dbProperties;
         IEnumerable<Type> _dbTypes;
 
-        [Test]
-        public void BulkRenameTest()
-        {
-            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "AbCdEfGhIj"));
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "abcdEFGhij"));
-        }
-
-        [Test]
-        public void CollectionTest()
-        {
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "asdfA"));
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "asdfB"));
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "asdfC"));
-
-            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "TestColls"));
-        }
-
-        [Test]
-        public void CollectionWithNestedKeyTest()
-        {
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "bbbbA"));
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "bbbbB"));
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "bbbbC"));
-
-            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "TestCollTwos"));
-        }
-
-        [Test]
-        public void RenameTest()
-        {
-            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "TestAlias1"));
-            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "a"));
-        }
-
         [TestFixtureSetUp]
         public void Setup()
         {
@@ -109,5 +75,43 @@ namespace NetGore.Tests.Db.ClassCreator
         {
             TestDb.Close(_conn);
         }
+
+        #region Unit tests
+
+        [Test]
+        public void BulkRenameTest()
+        {
+            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "AbCdEfGhIj"));
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "abcdEFGhij"));
+        }
+
+        [Test]
+        public void CollectionTest()
+        {
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "asdfA"));
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "asdfB"));
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "asdfC"));
+
+            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "TestColls"));
+        }
+
+        [Test]
+        public void CollectionWithNestedKeyTest()
+        {
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "bbbbA"));
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "bbbbB"));
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "bbbbC"));
+
+            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "TestCollTwos"));
+        }
+
+        [Test]
+        public void RenameTest()
+        {
+            Assert.IsNotNull(_dbProperties.FirstOrDefault(x => x.Name == "TestAlias1"));
+            Assert.IsNull(_dbProperties.FirstOrDefault(x => x.Name == "a"));
+        }
+
+        #endregion
     }
 }

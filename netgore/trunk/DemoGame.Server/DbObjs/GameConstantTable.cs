@@ -519,17 +519,6 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `max_characters_per_account`.
-        /// The underlying database type is `tinyint(3) unsigned`.
-        /// </summary>
-        [SyncValue]
-        public Byte MaxCharactersPerAccount
-        {
-            get { return _maxCharactersPerAccount; }
-            set { _maxCharactersPerAccount = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `max_character_name_length`.
         /// The underlying database type is `tinyint(3) unsigned`.
         /// </summary>
@@ -538,6 +527,17 @@ namespace DemoGame.Server.DbObjs
         {
             get { return _maxCharacterNameLength; }
             set { _maxCharacterNameLength = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `max_characters_per_account`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        [SyncValue]
+        public Byte MaxCharactersPerAccount
+        {
+            get { return _maxCharactersPerAccount; }
+            set { _maxCharactersPerAccount = value; }
         }
 
         /// <summary>

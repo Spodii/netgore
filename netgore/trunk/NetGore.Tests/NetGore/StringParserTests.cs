@@ -9,6 +9,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class StringParserTests
     {
+        #region Unit tests
+
         [Test]
         public void ParseBoolTest()
         {
@@ -216,5 +218,7 @@ namespace NetGore.Tests.NetGore
             StringParser.TryParse(Parser.Invariant.ToString(min), type, out outMax);
             Assert.AreEqual((ushort)min, (ushort)outMax);
         }
+
+        #endregion
     }
 }

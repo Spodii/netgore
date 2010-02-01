@@ -92,9 +92,7 @@ namespace NetGore.Features.Guilds
                 _listItemsCache.AddRange(GetListItems(GuildInfo));
             }
             else
-            {
                 _cacheStateInGuild = false;
-            }
         }
 
         /// <summary>

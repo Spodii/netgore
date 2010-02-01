@@ -22,11 +22,6 @@ namespace NetGore.Features.Guilds
         UserGuildInformation _guildInfo;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="GuildInfoFormBase.GuildInfo"/> value has changed.
-        /// </summary>
-        public event ChangeGuildInfoEventHandler GuildInfoChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GuildInfoFormBase"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
@@ -48,6 +43,11 @@ namespace NetGore.Features.Guilds
             : base(guiManager, position, clientSize)
         {
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="GuildInfoFormBase.GuildInfo"/> value has changed.
+        /// </summary>
+        public event ChangeGuildInfoEventHandler GuildInfoChanged;
 
         /// <summary>
         /// Gets or sets the guild information source.

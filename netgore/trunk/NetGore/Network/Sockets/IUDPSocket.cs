@@ -10,6 +10,11 @@ namespace NetGore.Network
     public interface IUDPSocket : IDisposable
     {
         /// <summary>
+        /// Gets the maximum size of the data that can be sent in a single send.
+        /// </summary>
+        int MaxSendSize { get; }
+
+        /// <summary>
         /// Binds the <see cref="IUDPSocket"/> to a random available port.
         /// </summary>
         /// <returns>Port that the <see cref="IUDPSocket"/> binded to.</returns>
@@ -21,11 +26,6 @@ namespace NetGore.Network
         /// <param name="port">Port to bind to.</param>
         /// <returns>Port that the <see cref="IUDPSocket"/> binded to.</returns>
         int Bind(int port);
-
-        /// <summary>
-        /// Gets the maximum size of the data that can be sent in a single send.
-        /// </summary>
-        int MaxSendSize { get; }
 
         /// <summary>
         /// Gets the queued data received by this <see cref="IUDPSocket"/>.

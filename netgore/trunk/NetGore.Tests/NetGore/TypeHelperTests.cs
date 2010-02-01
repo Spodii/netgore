@@ -13,6 +13,8 @@ namespace NetGore.Tests.NetGore
             return type.GetNestedType(typeName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
         }
 
+        #region Unit tests
+
         [Test]
         public void IsClassTypeTreePublicTest()
         {
@@ -38,6 +40,8 @@ namespace NetGore.Tests.NetGore
 
             Assert.IsTrue(TypeHelper.IsClassTypeTreePublic(typeof(TypeHelperTests)));
         }
+
+        #endregion
 
         public class A
         {

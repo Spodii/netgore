@@ -23,11 +23,6 @@ namespace NetGore.Graphics
         SpriteCategorization _categorization;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
-        /// </summary>
-        public event GrhDataChangeCategorizationHandler CategorizationChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GrhData"/> class.
         /// </summary>
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
@@ -65,6 +60,11 @@ namespace NetGore.Graphics
             _categorization = cat;
             _grhIndex = grhIndex;
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
+        /// </summary>
+        public event GrhDataChangeCategorizationHandler CategorizationChanged;
 
         /// <summary>
         /// Gets the <see cref="SpriteCategorization"/> for this <see cref="GrhData"/>.

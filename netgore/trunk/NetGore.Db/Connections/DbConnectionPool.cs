@@ -90,6 +90,14 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Frees all live objects in the pool.
+        /// </summary>
+        public void Clear()
+        {
+            _pool.Clear();
+        }
+
+        /// <summary>
         /// Frees the object so the pool can reuse it. After freeing an object, it should not be used
         /// in any way, and be treated like it has been disposed. No exceptions will be thrown for trying to free
         /// an object that does not belong to this pool.
@@ -134,14 +142,6 @@ namespace NetGore.Db
         public void Perform(Action<PooledDbConnection> action)
         {
             _pool.Perform(action);
-        }
-
-        /// <summary>
-        /// Frees all live objects in the pool.
-        /// </summary>
-        public void Clear()
-        {
-            _pool.Clear();
         }
 
         #endregion

@@ -19,27 +19,27 @@ namespace NetGore.EditorTools
         #region IUndoManager Members
 
         /// <summary>
-        /// Adds an IUndoEvent to the list, clears any events that have previously been undone.
+        /// Gets the IUndoEvent that the cursor is currently on.
         /// </summary>
-        /// <param name="undoEvent">Event to be added to the list.</param>
-        public void Push(IUndoEvent undoEvent)
+        public IUndoEvent CurrentEvent
         {
-            //If there are any undone events (events after the cursor index in the list), remove them.
-            if (_cursorIndex < _events.Count() - 1)
-            {
-                foreach (IUndoEvent eve in _events.GetRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1)))
-                {
-                    eve.Dispose();
-                }
+            get { return TryGetEvent(_cursorIndex); }
+        }
 
-                _events.RemoveRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1));
-            }
+        /// <summary>
+        /// Gets the index of the event that the cursor is on. 
+        /// </summary>
+        public int CursorIndex
+        {
+            get { return _cursorIndex; }
+        }
 
-            //Add the IUndoEvent to the list.
-            _events.Add(undoEvent);
-
-            //Move the cursor to the end of the buffer.
-            _cursorIndex = _events.Count() - 1;
+        /// <summary>
+        /// Gets all events currently stored.
+        /// </summary>
+        public IEnumerable<IUndoEvent> Events
+        {
+            get { return _events; }
         }
 
         /// <summary>
@@ -66,19 +66,27 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets all events currently stored.
+        /// Adds an IUndoEvent to the list, clears any events that have previously been undone.
         /// </summary>
-        public IEnumerable<IUndoEvent> Events
+        /// <param name="undoEvent">Event to be added to the list.</param>
+        public void Push(IUndoEvent undoEvent)
         {
-            get { return _events; }
-        }
+            //If there are any undone events (events after the cursor index in the list), remove them.
+            if (_cursorIndex < _events.Count() - 1)
+            {
+                foreach (IUndoEvent eve in _events.GetRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1)))
+                {
+                    eve.Dispose();
+                }
 
-        /// <summary>
-        /// Gets the index of the event that the cursor is on. 
-        /// </summary>
-        public int CursorIndex
-        {
-            get { return _cursorIndex; }
+                _events.RemoveRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1));
+            }
+
+            //Add the IUndoEvent to the list.
+            _events.Add(undoEvent);
+
+            //Move the cursor to the end of the buffer.
+            _cursorIndex = _events.Count() - 1;
         }
 
         /// <summary>
@@ -99,11 +107,25 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the IUndoEvent that the cursor is currently on.
+        /// Attempts to redo the last undone event.
         /// </summary>
-        public IUndoEvent CurrentEvent
+        /// <returns>True if successful, false if not.</returns>
+        public bool TryRedo()
         {
-            get { return TryGetEvent(_cursorIndex); }
+            int indexModifier;
+
+            //Checks next and current indexes, if neither are undoable events - return false.
+            if (TryGetEvent(_cursorIndex + 1) != null)
+                indexModifier = 1;
+            else if (TryGetEvent(_cursorIndex).IsUndone)
+                indexModifier = 0;
+            else
+                return false;
+
+            //Redo either the event at the current index or the one after (determined by the above conditional)
+            _events[_cursorIndex + indexModifier].Redo();
+            _cursorIndex += indexModifier;
+            return true;
         }
 
         /// <summary>
@@ -128,28 +150,6 @@ namespace NetGore.EditorTools
                 //The IUndoEvent doesn't exist.
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Attempts to redo the last undone event.
-        /// </summary>
-        /// <returns>True if successful, false if not.</returns>
-        public bool TryRedo()
-        {
-            int indexModifier;
-
-            //Checks next and current indexes, if neither are undoable events - return false.
-            if (TryGetEvent(_cursorIndex + 1) != null)
-                indexModifier = 1;
-            else if (TryGetEvent(_cursorIndex).IsUndone)
-                indexModifier = 0;
-            else
-                return false;
-
-            //Redo either the event at the current index or the one after (determined by the above conditional)
-            _events[_cursorIndex + indexModifier].Redo();
-            _cursorIndex += indexModifier;
-            return true;
         }
 
         #endregion

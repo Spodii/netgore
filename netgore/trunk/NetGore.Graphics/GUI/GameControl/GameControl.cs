@@ -15,21 +15,6 @@ namespace NetGore.Graphics.GUI
         int _lastInvokeTime;
 
         /// <summary>
-        /// Notifies listeners that this <see cref="GameControl"/>'s key state requirements match the current key
-        /// state and that it is ready to be handled.
-        /// </summary>
-        public event GameControlEventHandler Invoked;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        protected virtual void OnInvoked()
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GameControl"/> class.
         /// </summary>
         /// <param name="keys">The GameControlKeys.</param>
@@ -37,6 +22,12 @@ namespace NetGore.Graphics.GUI
         {
             GameControlKeys = keys;
         }
+
+        /// <summary>
+        /// Notifies listeners that this <see cref="GameControl"/>'s key state requirements match the current key
+        /// state and that it is ready to be handled.
+        /// </summary>
+        public event GameControlEventHandler Invoked;
 
         /// <summary>
         /// Gets or sets a Func containing any additional requirements for this <see cref="GameControl"/> to be invoked.
@@ -86,6 +77,15 @@ namespace NetGore.Graphics.GUI
         {
             get { return _isEnabled; }
             set { _isEnabled = value; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnInvoked()
+        {
         }
 
         /// <summary>

@@ -8,6 +8,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class StackTests
     {
+        #region Unit tests
+
         [Test]
         public void SortAscTest()
         {
@@ -105,5 +107,7 @@ namespace NetGore.Tests.NetGore
                 last = popped;
             }
         }
+
+        #endregion
     }
 }

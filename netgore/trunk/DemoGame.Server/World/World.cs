@@ -48,12 +48,12 @@ namespace DemoGame.Server
             _guildMemberPerformer = new GuildMemberPerformer(this);
 
             // Load the maps
-            var mapFiles = Map.GetMapFiles(ContentPaths.Build);
+            var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
             _maps = new DArray<Map>(mapFiles.Count() + 10, false);
             foreach (string mapFile in mapFiles)
             {
                 MapIndex mapIndex;
-                if (!Map.TryGetIndexFromPath(mapFile, out mapIndex))
+                if (!MapBase.TryGetIndexFromPath(mapFile, out mapIndex))
                     throw new Exception(string.Format("Failed to get the index of map file `{0}`.", mapFile));
 
                 Map m = new Map(mapIndex, this);

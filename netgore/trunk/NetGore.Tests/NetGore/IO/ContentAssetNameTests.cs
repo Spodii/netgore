@@ -8,6 +8,8 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class ContentAssetNameTests
     {
+        #region Unit tests
+
         [Test]
         public void FromAbsoluteFilePathAlternateSeparatorDeepTest()
         {
@@ -145,5 +147,7 @@ namespace NetGore.Tests.NetGore.IO
             const string s = @"asdf\";
             Assert.AreEqual("asdf", ContentAssetName.Sanitize(s));
         }
+
+        #endregion
     }
 }

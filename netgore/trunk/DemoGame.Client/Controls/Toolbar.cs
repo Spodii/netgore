@@ -29,11 +29,6 @@ namespace DemoGame.Client
         readonly ToolbarItem[] _items;
 
         /// <summary>
-        /// Notifies listeners when an individual tool item on the Toolbar has been clicked.
-        /// </summary>
-        public event ToolbarEventHandler ItemClicked;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Toolbar"/> class.
         /// </summary>
         /// <param name="parent">The parent.</param>
@@ -47,16 +42,9 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.BorderChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
+        /// Notifies listeners when an individual tool item on the Toolbar has been clicked.
         /// </summary>
-        protected override void OnBorderChanged()
-        {
-            base.OnBorderChanged();
-
-            UpdateSize();
-        }
+        public event ToolbarEventHandler ItemClicked;
 
         /// <summary>
         /// Creates all of the ToolbarItems.
@@ -141,6 +129,18 @@ namespace DemoGame.Client
 
                 UpdateSize();
             }
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
+        /// </summary>
+        protected override void OnBorderChanged()
+        {
+            base.OnBorderChanged();
+
+            UpdateSize();
         }
 
         /// <summary>

@@ -58,20 +58,11 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Updates the volume of the audio to match the volume specified by the <see cref="IAudio.AudioManager"/>.
+        /// Gets the music track index.
         /// </summary>
-        void IAudio.UpdateVolume()
+        public MusicID Index
         {
-            MediaPlayer.Volume = _audioManager.Volume;
-        }
-
-        /// <summary>
-        /// Gets the unique index of the <see cref="IAudio"/>.
-        /// </summary>
-        /// <returns>The unique index.</returns>
-        int IAudio.GetIndex()
-        {
-            return (int)Index;
+            get { return _index; }
         }
 
         /// <summary>
@@ -83,77 +74,11 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets the music track index.
-        /// </summary>
-        public MusicID Index
-        {
-            get { return _index; }
-        }
-
-        /// <summary>
         /// Gets the name of the <see cref="IAudio"/>.
         /// </summary>
         public string Name
         {
             get { return _name; }
-        }
-
-        /// <summary>
-        /// Plays the audio track. If <see cref="IsSingleInstance"/> is true, this will play the track if it is not
-        /// already playing. Otherwise, this will spawn a new instance of the sound.
-        /// </summary>
-        public void Play()
-        {
-            // HACK: This is really fucking lame. MediaPlayer gives us MP3 support, but it requires us to have Windows
-            // Media Player installed, and it is slow as hell on the first playback (thus the thread call). So it is either
-            // use wavs (and whore up the memory usage), use MP3s and deal with this crap, or switch music libraries...
-            ThreadPool.QueueUserWorkItem(delegate
-                                         {
-                                             ((IAudio)this).UpdateVolume();
-
-                                             try
-                                             {
-                                                 MediaPlayer.Play(_instance);
-                                             }
-                                             catch (InvalidOperationException ex)
-                                             {
-                                                 const string errmsg = "Failed to play music. Exception: {0}";
-                                                 if (log.IsErrorEnabled)
-                                                     log.ErrorFormat(errmsg, ex);
-                                             }
-                                         });
-        }
-
-        /// <summary>
-        /// Updates the audio.
-        /// </summary>
-        void IAudio.Update()
-        {
-        }
-
-        /// <summary>
-        /// Stops the audio track. If <see cref="IsSingleInstance"/> is true, this will stop the track. Otherwise,
-        /// every instance of the track will be stopped.
-        /// </summary>
-        public void Stop()
-        {
-            MediaPlayer.Stop();
-        }
-
-        /// <summary>
-        /// Pauses the music track if it is playing.
-        /// </summary>
-        public void Pause()
-        {
-            MediaPlayer.Pause();
-        }
-
-        /// <summary>
-        /// Resumes the music track if it was paused.
-        /// </summary>
-        public void Resume()
-        {
-            MediaPlayer.Resume();
         }
 
         /// <summary>
@@ -183,6 +108,81 @@ namespace NetGore.Audio
                         return SoundState.Stopped;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the unique index of the <see cref="IAudio"/>.
+        /// </summary>
+        /// <returns>The unique index.</returns>
+        int IAudio.GetIndex()
+        {
+            return (int)Index;
+        }
+
+        /// <summary>
+        /// Pauses the music track if it is playing.
+        /// </summary>
+        public void Pause()
+        {
+            MediaPlayer.Pause();
+        }
+
+        /// <summary>
+        /// Plays the audio track. If <see cref="IsSingleInstance"/> is true, this will play the track if it is not
+        /// already playing. Otherwise, this will spawn a new instance of the sound.
+        /// </summary>
+        public void Play()
+        {
+            // HACK: This is really fucking lame. MediaPlayer gives us MP3 support, but it requires us to have Windows
+            // Media Player installed, and it is slow as hell on the first playback (thus the thread call). So it is either
+            // use wavs (and whore up the memory usage), use MP3s and deal with this crap, or switch music libraries...
+            ThreadPool.QueueUserWorkItem(delegate
+                                         {
+                                             ((IAudio)this).UpdateVolume();
+
+                                             try
+                                             {
+                                                 MediaPlayer.Play(_instance);
+                                             }
+                                             catch (InvalidOperationException ex)
+                                             {
+                                                 const string errmsg = "Failed to play music. Exception: {0}";
+                                                 if (log.IsErrorEnabled)
+                                                     log.ErrorFormat(errmsg, ex);
+                                             }
+                                         });
+        }
+
+        /// <summary>
+        /// Resumes the music track if it was paused.
+        /// </summary>
+        public void Resume()
+        {
+            MediaPlayer.Resume();
+        }
+
+        /// <summary>
+        /// Stops the audio track. If <see cref="IsSingleInstance"/> is true, this will stop the track. Otherwise,
+        /// every instance of the track will be stopped.
+        /// </summary>
+        public void Stop()
+        {
+            MediaPlayer.Stop();
+        }
+
+        /// <summary>
+        /// Updates the audio.
+        /// </summary>
+        void IAudio.Update()
+        {
+        }
+
+        /// <summary>
+        /// Updates the volume of the audio to match the volume specified by the <see cref="IAudio.AudioManager"/>.
+        /// </summary>
+        void IAudio.UpdateVolume()
+        {
+            MediaPlayer.Volume = _audioManager.Volume;
         }
 
         #endregion

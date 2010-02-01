@@ -22,6 +22,8 @@ namespace NetGore.Tests.Collections
         /// </summary>
         const int _iterations = 70;
 
+        #region Unit tests
+
         [Test]
         public void ByteMeanTest()
         {
@@ -223,5 +225,7 @@ namespace NetGore.Tests.Collections
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
+
+        #endregion
     }
 }

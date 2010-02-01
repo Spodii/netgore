@@ -17,6 +17,8 @@ namespace NetGore.Tests.NetGore
         const string _sUpperLower = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string _sWhitespace = "    ";
 
+        #region Unit tests
+
         [Test]
         public void AllTest()
         {
@@ -174,5 +176,7 @@ namespace NetGore.Tests.NetGore
             Assert.IsFalse(r.IsValid(_sSentence));
             Assert.IsTrue(r.IsValid(_sWhitespace));
         }
+
+        #endregion
     }
 }

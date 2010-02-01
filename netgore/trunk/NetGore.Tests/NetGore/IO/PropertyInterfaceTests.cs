@@ -21,12 +21,6 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class PropertyInterfaceTests
     {
-        [Test]
-        public void ByteTest()
-        {
-            DoTest<byte>("Byte", 55, (pi, o, v) => pi.Set(o, v));
-        }
-
         static IPropertyInterface<U, T> CreatePI<T, U>(string name)
         {
             return PropertyInterface<U, T>.Instance.GetByName(name);
@@ -45,6 +39,14 @@ namespace NetGore.Tests.NetGore.IO
             setValue(pi, o, value);
 
             Assert.AreEqual(value, pi.Get(o));
+        }
+
+        #region Unit tests
+
+        [Test]
+        public void ByteTest()
+        {
+            DoTest<byte>("Byte", 55, (pi, o, v) => pi.Set(o, v));
         }
 
         [Test]
@@ -188,6 +190,8 @@ namespace NetGore.Tests.NetGore.IO
         {
             DoTest<ushort>("UShort", 55, (pi, o, v) => pi.Set(o, v));
         }
+
+        #endregion
 
         internal class InternalTestClass
         {

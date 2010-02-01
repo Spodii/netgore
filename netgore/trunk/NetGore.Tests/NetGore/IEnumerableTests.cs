@@ -10,6 +10,8 @@ namespace NetGore.Tests.NetGore
     {
         static readonly Random rnd = new Random();
 
+        #region Unit tests
+
         [Test]
         public void ImplodeSplitWithCharTest()
         {
@@ -116,5 +118,7 @@ namespace NetGore.Tests.NetGore
 
             Assert.AreEqual(22, i[2]);
         }
+
+        #endregion
     }
 }

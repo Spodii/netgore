@@ -126,6 +126,22 @@ namespace NetGore.Graphics.ParticleEngine
         #region IList Members
 
         /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> at the specified index.
+        /// </summary>
+        object IList.this[int index]
+        {
+            get { return base[index]; }
+            set
+            {
+                Vector2 v = (Vector2)value;
+
+                base[index] = v;
+
+                RecalculateTranslation();
+            }
+        }
+
+        /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.IList"/>.
         /// </summary>
         /// <param name="value">The <see cref="T:System.Object"/> to add to the <see cref="T:System.Collections.IList"/>.</param>
@@ -192,22 +208,6 @@ namespace NetGore.Graphics.ParticleEngine
             RemoveAt(index);
 
             RecalculateTranslation();
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> at the specified index.
-        /// </summary>
-        object IList.this[int index]
-        {
-            get { return base[index]; }
-            set
-            {
-                Vector2 v = (Vector2)value;
-
-                base[index] = v;
-
-                RecalculateTranslation();
-            }
         }
 
         #endregion

@@ -48,6 +48,19 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            InternalDispose();
+        }
+
+        /// <summary>
         /// Renders the <see cref="ParticleEmitter"/>s.
         /// </summary>
         /// <param name="camera">The <see cref="ICamera2D"/> describing the world view.</param>
@@ -65,19 +78,6 @@ namespace NetGore.Graphics.ParticleEngine
             var alphaEmitters = validEmitters.Where(x => x.BlendMode == SpriteBlendMode.AlphaBlend);
 
             InternalRenderEmitter(camera, additiveEmitters, alphaEmitters);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_isDisposed)
-                return;
-
-            _isDisposed = true;
-
-            InternalDispose();
         }
 
         #endregion
