@@ -40,6 +40,7 @@ namespace NetGore.Graphics.GUI
         readonly IGUIManager _gui;
         readonly Control _parent;
         readonly Control _root;
+
         ControlBorder _border;
         bool _canDrag = true;
         bool _canFocus = true;
@@ -51,6 +52,8 @@ namespace NetGore.Graphics.GUI
         bool _isMouseEntered = false;
         bool _isVisible = true;
         Vector2 _position;
+        bool _resizeToChildren;
+        byte _resizeToChildrenPadding = 4;
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
 
@@ -329,6 +332,7 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Gets the size of the client area (internal area, not including the borders) of the Control.
+        /// Can only be set if <see cref="Control.ResizeToChildren"/> is not set.
         /// </summary>
         [SyncValue]
         public Vector2 ClientSize
@@ -372,12 +376,24 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Gets or sets if the <see cref="Control"/> is bound to the area of its parent. Only valid if the
-        /// <see cref="Control"/> has a parent.
+        /// <see cref="Control"/> has a parent and if the parent does not have <see cref="Control.ResizeToChildren"/> set.
         /// </summary>
         [SyncValue]
         public bool IsBoundToParentArea
         {
-            get { return _isBoundToParentArea; }
+            get
+            {
+                if (!_isBoundToParentArea)
+                    return false;
+
+                if (Parent == null)
+                    return false;
+
+                if (Parent.ResizeToChildren)
+                    return false;
+
+                return _isBoundToParentArea;
+            }
             set { _isBoundToParentArea = value; }
         }
 
@@ -451,6 +467,47 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets if this <see cref="Control"/>'s size will automatically be set to the size needed to fit
+        /// all the child <see cref="Control"/>s.
+        /// </summary>
+        public bool ResizeToChildren
+        {
+            get { return _resizeToChildren; }
+            set
+            {
+                if (_resizeToChildren == value)
+                    return;
+
+                _resizeToChildren = value;
+
+                if (ResizeToChildren)
+                    UpdateResizeToChildren();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of pixels to pad to the <see cref="Control.ClientSize"/> when resizing when
+        /// <see cref="Control.ResizeToChildren"/> is set. Only applicable when <see cref="Control.ResizeToChildren"/>
+        /// is set.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than zero.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is greater than 255.</exception>
+        public int ResizeToChildrenPadding
+        {
+            get { return _resizeToChildrenPadding; }
+            set
+            {
+                if (value < 0 || value > byte.MaxValue)
+                    throw new ArgumentOutOfRangeException("value");
+
+                unchecked
+                {
+                    _resizeToChildrenPadding = (byte)value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the root Control that this Control comes from. If this is the root Control, the value will be a reference
         /// to the Control itself.
         /// </summary>
@@ -479,21 +536,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the absolute size of the Control. The Size includes the Border, while the ClientSize
         /// includes only the area inside of the Control's borders.
+        /// Can only be set if <see cref="Control.ResizeToChildren"/> is not set.
         /// </summary>
         public Vector2 Size
         {
             get { return _size; }
-            set
-            {
-                if (_size == value)
-                    return;
-
-                _size = value;
-
-                InvokeResized();
-
-                KeepInParent();
-            }
+            set { InternalSetSize(value, true); }
         }
 
         /// <summary>
@@ -631,6 +679,27 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Finds the client size that this <see cref="Control"/> needs to be to be able to fit all of the child
+        /// <see cref="Control"/>s.
+        /// </summary>
+        /// <returns>The client size that this <see cref="Control"/> needs to be to be able to fit all of the child
+        /// <see cref="Control"/>s.</returns>
+        Vector2 FindRequiredClientSizeToFitChildren()
+        {
+            float x = 1;
+            float y = 1;
+
+            foreach (var c in Controls)
+            {
+                var max = c.Position + c.Size;
+                x = Math.Max(max.X, x);
+                y = Math.Max(max.Y, y);
+            }
+
+            return new Vector2(x, y);
+        }
+
+        /// <summary>
         /// Gets all of the child <see cref="Control"/>s from this <see cref="Control"/>.
         /// </summary>
         /// <returns>All of the child <see cref="Control"/>s from this <see cref="Control"/>. Does not include
@@ -764,6 +833,27 @@ namespace NetGore.Graphics.GUI
                 _isDragging = false;
                 InvokeEndDrag();
             }
+        }
+
+        /// <summary>
+        /// Sets the <see cref="Control.Size"/>.
+        /// </summary>
+        /// <param name="value">The new size.</param>
+        /// <param name="checkResizeToChildren">If true, the size will not be allowed to be set if
+        /// <see cref="Control.ResizeToChildren"/> is also true.</param>
+        void InternalSetSize(Vector2 value, bool checkResizeToChildren)
+        {
+            if (checkResizeToChildren && ResizeToChildren)
+                return;
+
+            if (_size == value)
+                return;
+
+            _size = value;
+
+            InvokeResized();
+
+            KeepInParent();
         }
 
         /// <summary>
@@ -1350,6 +1440,10 @@ namespace NetGore.Graphics.GUI
 
             // Set the top-most controls if needed
             ProcessTopMostQueue();
+
+            // Auto-resize if needed
+            if (ResizeToChildren)
+                UpdateResizeToChildren();
         }
 
         /// <summary>
@@ -1478,6 +1572,15 @@ namespace NetGore.Graphics.GUI
                     InvokeMouseLeave(new MouseEventArgs(currCursorPos - sp));
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Control.ClientSize"/> for when <see cref="Control.ResizeToChildren"/> is set.
+        /// </summary>
+        void UpdateResizeToChildren()
+        {
+            var newSize = FindRequiredClientSizeToFitChildren() + Border.Size + new Vector2(ResizeToChildrenPadding);
+            InternalSetSize(newSize, false);
         }
 
         #region IDisposable Members
