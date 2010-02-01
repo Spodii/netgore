@@ -176,7 +176,7 @@ namespace NetGore.Graphics.GUI
                 if (items == null)
                     return 1;
 
-                return (int)Math.Ceiling((float)items.Count() / ItemsPerPage);
+                return Math.Max(1, (int)Math.Ceiling((float)items.Count() / ItemsPerPage));
             }
         }
 

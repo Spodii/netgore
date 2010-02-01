@@ -11,6 +11,7 @@ namespace DemoGame.Client
         Inventory,
         Equipped,
         Stats,
-        Skills
+        Skills,
+        Guild
     }
 }

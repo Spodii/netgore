@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -33,11 +34,13 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="pos">The pos.</param>
-        public Toolbar(Control parent, Vector2 pos) : base(parent, pos, new Vector2(800, 800))
+        public Toolbar(Control parent, Vector2 pos) : base(parent, pos, Vector2.One)
         {
+            ResizeToChildren = true;
+            ResizeToChildrenPadding = _padding;
+
             _items = CreateToolbarItems();
 
-            UpdateSize();
             Position = pos;
         }
 
@@ -53,7 +56,7 @@ namespace DemoGame.Client
         ToolbarItem[] CreateToolbarItems()
         {
             // Get the values
-            var values = EnumHelper<ToolbarItemType>.Values.Cast<int>();
+            var values = EnumHelper<ToolbarItemType>.Values.Select(x => EnumHelper<ToolbarItemType>.ToInt(x));
 
             // Find the largest value, and create the array
             int max = values.Max();
@@ -71,18 +74,6 @@ namespace DemoGame.Client
             }
 
             return items;
-        }
-
-        /// <summary>
-        /// Finds the ClientSize needed for the Toolbar.
-        /// </summary>
-        /// <returns>ClientSize needed for the Toolbar</returns>
-        Vector2 FindNeededClientSize()
-        {
-            var allItems = _items.Where(x => x != null);
-            float maxWidth = allItems.Max(x => x.Position.X + x.Size.X);
-            float maxHeight = allItems.Max(x => x.Position.Y + x.Size.Y);
-            return new Vector2(maxWidth, maxHeight) + new Vector2(_padding);
         }
 
         /// <summary>
@@ -117,30 +108,16 @@ namespace DemoGame.Client
             base.LoadSkin(skinManager);
 
             // Re-load the toolbar icons
-            if (_items != null)
+            if (_items == null)
+                return;
+
+            for (int i = 0; i < _items.Length; i++)
             {
-                for (int i = 0; i < _items.Length; i++)
-                {
-                    if (_items[i] == null)
-                        continue;
+                if (_items[i] == null)
+                    continue;
 
-                    _items[i].Sprite = GetItemSprite(i);
-                }
-
-                UpdateSize();
+                _items[i].Sprite = GetItemSprite(i);
             }
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.BorderChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
-        /// </summary>
-        protected override void OnBorderChanged()
-        {
-            base.OnBorderChanged();
-
-            UpdateSize();
         }
 
         /// <summary>
@@ -161,15 +138,6 @@ namespace DemoGame.Client
 
             ToolbarItem item = (ToolbarItem)sender;
             ItemClicked(this, item.ToolbarItemType, item);
-        }
-
-        /// <summary>
-        /// Updates the size to ensure the Toolbar has the needed ClientSize.
-        /// </summary>
-        void UpdateSize()
-        {
-            if (_items != null)
-                ClientSize = FindNeededClientSize();
         }
 
         class ToolbarItem : PictureBox

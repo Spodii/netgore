@@ -45,6 +45,7 @@ namespace DemoGame.Client
         EquippedForm _equippedForm;
         SpriteFont _guiFont;
         GUISettings _guiSettings;
+        GuildForm _guildForm;
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
@@ -366,7 +367,7 @@ namespace DemoGame.Client
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
-            new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = GuildInfo };
+            _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = GuildInfo };
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 
@@ -488,6 +489,10 @@ namespace DemoGame.Client
 
                 case ToolbarItemType.Skills:
                     _skillsForm.IsVisible = !_skillsForm.IsVisible;
+                    break;
+
+                case ToolbarItemType.Guild:
+                    _guildForm.IsVisible = !_guildForm.IsVisible;
                     break;
             }
         }
