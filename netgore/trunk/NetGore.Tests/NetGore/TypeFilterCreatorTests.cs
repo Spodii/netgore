@@ -12,6 +12,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class TypeFilterCreatorTests
     {
+        #region Unit tests
+
         [Test]
         public void AttributeFailTest()
         {
@@ -217,6 +219,8 @@ namespace NetGore.Tests.NetGore
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
             Assert.IsTrue(f2.GetFilter()(typeof(A)));
         }
+
+        #endregion
 
         [AttribA]
         [AttribB]

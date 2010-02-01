@@ -96,30 +96,6 @@ namespace NetGore.Network
         #region IIPSocket Members
 
         /// <summary>
-        /// Gets the time that this IIPSocket was created.
-        /// </summary>
-        public int TimeCreated
-        {
-            get { return _tcpSocket.TimeCreated; }
-        }
-
-        /// <summary>
-        /// Gets the port as a 16-bit unsigned integer.
-        /// </summary>
-        public ushort Port
-        {
-            get { return _tcpSocket.Port; }
-        }
-
-        /// <summary>
-        /// Gets if this IIPSocket is currently connected.
-        /// </summary>
-        public bool IsConnected
-        {
-            get { return _tcpSocket.IsConnected; }
-        }
-
-        /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
         /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
         /// </summary>
@@ -137,10 +113,64 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Gets if this IIPSocket is currently connected.
+        /// </summary>
+        public bool IsConnected
+        {
+            get { return _tcpSocket.IsConnected; }
+        }
+
+        /// <summary>
+        /// Gets the maximum size of a message to the reliable channel.
+        /// </summary>
+        public int MaxReliableMessageSize
+        {
+            get { return TCPSocket.MaxSendSize; }
+        }
+
+        /// <summary>
+        /// Gets the maximum size of a message to the unreliable channel.
+        /// </summary>
+        public int MaxUnreliableMessageSize
+        {
+            get { return UDPSocket.MaxSendSize; }
+        }
+
+        /// <summary>
+        /// Gets the port as a 16-bit unsigned integer.
+        /// </summary>
+        public ushort Port
+        {
+            get { return _tcpSocket.Port; }
+        }
+
+        /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
         /// is not used in any way by the IIPSocket itself.
         /// </summary>
         public object Tag { get; set; }
+
+        /// <summary>
+        /// Gets the time that this IIPSocket was created.
+        /// </summary>
+        public int TimeCreated
+        {
+            get { return _tcpSocket.TimeCreated; }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            if (_tcpSocket != null)
+                _tcpSocket.Dispose();
+        }
 
         /// <summary>
         /// Gets the queue of received data.
@@ -220,31 +250,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Sets the port used to communicate with the remote connection over an unreliable stream.
-        /// </summary>
-        /// <param name="port">Port for the unreliable stream.</param>
-        public void SetRemoteUnreliablePort(int port)
-        {
-            _remoteUDPPort = port;
-        }
-
-        /// <summary>
-        /// Gets the maximum size of a message to the unreliable channel.
-        /// </summary>
-        public int MaxUnreliableMessageSize
-        {
-            get { return UDPSocket.MaxSendSize; }
-        }
-
-        /// <summary>
-        /// Gets the maximum size of a message to the reliable channel.
-        /// </summary>
-        public int MaxReliableMessageSize
-        {
-            get { return TCPSocket.MaxSendSize; }
-        }
-
-        /// <summary>
         /// Sends data over a stream.
         /// </summary>
         /// <param name="data">Data to send.</param>
@@ -289,17 +294,12 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Sets the port used to communicate with the remote connection over an unreliable stream.
         /// </summary>
-        public void Dispose()
+        /// <param name="port">Port for the unreliable stream.</param>
+        public void SetRemoteUnreliablePort(int port)
         {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-
-            if (_tcpSocket != null)
-                _tcpSocket.Dispose();
+            _remoteUDPPort = port;
         }
 
         #endregion

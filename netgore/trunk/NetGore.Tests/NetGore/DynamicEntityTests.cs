@@ -16,6 +16,8 @@ namespace NetGore.Tests.NetGore
     {
         static readonly IDynamicEntityFactory _dynamicEntityFactoryBase = new DynamicEntityFactory();
 
+        #region Unit tests
+
         [Test]
         public void TestSkipNonSyncNetworkValues()
         {
@@ -546,6 +548,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(src.Q, dest.Q);
             Assert.AreEqual(src.R, dest.R);
         }
+
+        #endregion
 
         class DE : DynamicEntity
         {

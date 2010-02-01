@@ -7,6 +7,8 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class BitOpsTests
     {
+        #region Unit tests
+
         [Test]
         public void BitsRequiredTest()
         {
@@ -271,5 +273,7 @@ namespace NetGore.Tests.IO
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
         }
+
+        #endregion
     }
 }

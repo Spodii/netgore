@@ -9,6 +9,13 @@ namespace NetGore.Tests.Collections
     [TestFixture]
     public class ObjectPoolTests
     {
+        static ObjectPool<MyTestObj> CreateTestPool()
+        {
+            return new ObjectPool<MyTestObj>(x => new MyTestObj(), null, null, false);
+        }
+
+        #region Unit tests
+
         [Test]
         public void ClearTest()
         {
@@ -22,11 +29,6 @@ namespace NetGore.Tests.Collections
 
             pool.Clear();
             Assert.AreEqual(0, pool.LiveObjects);
-        }
-
-        static ObjectPool<MyTestObj> CreateTestPool()
-        {
-            return new ObjectPool<MyTestObj>(x => new MyTestObj(), null, null, false);
         }
 
         [Test]
@@ -136,6 +138,8 @@ namespace NetGore.Tests.Collections
             pool.Free(obj);
             Assert.AreEqual(0, pool.LiveObjects);
         }
+
+        #endregion
 
         public class MyTestObj : IPoolable
         {

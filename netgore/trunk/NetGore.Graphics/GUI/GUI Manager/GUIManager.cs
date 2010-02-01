@@ -142,7 +142,7 @@ namespace NetGore.Graphics.GUI
                 Debug.Fail("pressed is null.");
                 return null;
             }
-            
+
             if (pressed.Count == 0)
                 return null;
 
@@ -358,21 +358,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="MouseState"/> that was used immediately before the current
-        /// <see cref="IGUIManager.MouseState"/>.
-        /// </summary>
-        public MouseState LastMouseState
-        {
-            get { return _lastMouseState; }
-        }
-
-        /// <summary>
         /// Gets the IEnumerable of <see cref="Keys"/> that was used immediately before the current
         /// <see cref="IGUIManager.KeysPressed"/>.
         /// </summary>
         public IEnumerable<Keys> LastKeysPressed
         {
             get { return _lastPressedKeys; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MouseState"/> that was used immediately before the current
+        /// <see cref="IGUIManager.MouseState"/>.
+        /// </summary>
+        public MouseState LastMouseState
+        {
+            get { return _lastMouseState; }
         }
 
         /// <summary>
@@ -462,22 +462,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Remove a <see cref="Control"/> from this <see cref="IGUIManager"/> from the root level. This should only be called
-        /// by the <see cref="Control"/>'s constructor.
-        /// </summary>
-        /// <param name="control">The <see cref="Control"/> to remove.</param>
-        /// <returns>True if the <paramref name="control"/> was successfully removed; false if the <paramref name="control"/>
-        /// could not be removed or was not in this <see cref="IGUIManager"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
-        bool IGUIManager.Remove(Control control)
-        {
-            if (control == null)
-                throw new ArgumentNullException("control");
-
-            return _controls.Remove(control);
-        }
-
-        /// <summary>
         /// Draws all of the <see cref="Control"/>s in this <see cref="IGUIManager"/>.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing the <see cref="Control"/>s.</param>
@@ -533,6 +517,22 @@ namespace NetGore.Graphics.GUI
 
             // No control at all was under the cursor
             return null;
+        }
+
+        /// <summary>
+        /// Remove a <see cref="Control"/> from this <see cref="IGUIManager"/> from the root level. This should only be called
+        /// by the <see cref="Control"/>'s constructor.
+        /// </summary>
+        /// <param name="control">The <see cref="Control"/> to remove.</param>
+        /// <returns>True if the <paramref name="control"/> was successfully removed; false if the <paramref name="control"/>
+        /// could not be removed or was not in this <see cref="IGUIManager"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
+        bool IGUIManager.Remove(Control control)
+        {
+            if (control == null)
+                throw new ArgumentNullException("control");
+
+            return _controls.Remove(control);
         }
 
         /// <summary>

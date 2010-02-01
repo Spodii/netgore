@@ -324,27 +324,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when this <see cref="Control"/> was clicked.
-        /// This is called immediately before <see cref="Control.OnClick"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected override void OnClick(MouseClickEventArgs e)
-        {
-            base.OnClick(e);
-
-            if (!IsEnabled || !IsVisible)
-                return;
-
-            int lineIndex;
-            int lineCharIndex;
-            GetCharacterAtPoint(e.Location, out lineIndex, out lineCharIndex);
-
-            _lines.MoveTo(lineIndex);
-            CursorLinePosition = lineCharIndex;
-        }
-
-        /// <summary>
         /// Draws the Control.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
@@ -476,6 +455,37 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            Border = skinManager.GetBorder(_controlSkinName);
+        }
+
+        /// <summary>
+        /// Handles when this <see cref="Control"/> was clicked.
+        /// This is called immediately before <see cref="Control.OnClick"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnClick(MouseClickEventArgs e)
+        {
+            base.OnClick(e);
+
+            if (!IsEnabled || !IsVisible)
+                return;
+
+            int lineIndex;
+            int lineCharIndex;
+            GetCharacterAtPoint(e.Location, out lineIndex, out lineCharIndex);
+
+            _lines.MoveTo(lineIndex);
+            CursorLinePosition = lineCharIndex;
+        }
+
+        /// <summary>
         /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
         /// This is called immediately before <see cref="Control.KeyDown"/>.
         /// Override this method instead of using an event hook on <see cref="Control.KeyDown"/> when possible.
@@ -494,21 +504,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-        /// from the given <paramref name="skinManager"/>.
-        /// </summary>
-        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-        public override void LoadSkin(ISkinManager skinManager)
-        {
-            Border = skinManager.GetBorder(_controlSkinName);
-        }
-
-        void ResetCursorBlink()
-        {
-            _cursorBlinkTimer = _currentTime;
-        }
-
-        /// <summary>
         /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// This is called immediately before <see cref="Control.OnResize"/>.
         /// Override this method instead of using an event hook on <see cref="Control.OnResize"/> when possible.
@@ -524,6 +519,11 @@ namespace NetGore.Graphics.GUI
             }
             else
                 _numCharsToDraw.Invalidate();
+        }
+
+        void ResetCursorBlink()
+        {
+            _cursorBlinkTimer = _currentTime;
         }
 
         /// <summary>
@@ -568,32 +568,18 @@ namespace NetGore.Graphics.GUI
         #region IEditableText Members
 
         /// <summary>
-        /// Inserts the specified character to the <see cref="Control"/>'s text at the current position
-        /// of the text cursor.
+        /// Breaks the line at the current position of the text cursor.
         /// </summary>
-        /// <param name="c">The character to insert.</param>
-        void IEditableText.InsertChar(string c)
+        public void BreakLine()
         {
-            // HACK: This stuff with lineOldLen and oldLine is a cheap way to make the cursor move to the end of the text
-            // removed from one line and appended to the next when the line breaks
-            int lineOldLen = _lines.CurrentLine.LineText.Length;
-            int oldLine = _lines.CurrentLineIndex;
-
-            if (MaxInputTextLength > 0 && lineOldLen >= MaxInputTextLength)
+            if (!IsMultiLine)
                 return;
 
-            _lines.CurrentLine.Insert(c, CursorLinePosition);
-            ((IEditableText)this).MoveCursor(MoveCursorDirection.Right);
+            _lines.BreakLine(CursorLinePosition);
 
-            if (IsMultiLine && oldLine < _lines.CurrentLineIndex && oldLine < _lines.Count)
-            {
-                for (int i = 0; i < lineOldLen - _lines[oldLine].LineText.Length + 1; i++)
-                {
-                    ((IEditableText)this).MoveCursor(MoveCursorDirection.Right);
-                }
-            }
-
-            _numCharsToDraw.Invalidate();
+            // Move the cursor to the first character of the next line
+            if (_lines.MoveNext(false))
+                CursorLinePosition = 0;
 
             ResetCursorBlink();
         }
@@ -625,6 +611,37 @@ namespace NetGore.Graphics.GUI
                 // Delete the character behind the cursor
                 _lines.CurrentLine.Remove(charToDelete);
                 CursorLinePosition--;
+            }
+
+            _numCharsToDraw.Invalidate();
+
+            ResetCursorBlink();
+        }
+
+        /// <summary>
+        /// Inserts the specified character to the <see cref="Control"/>'s text at the current position
+        /// of the text cursor.
+        /// </summary>
+        /// <param name="c">The character to insert.</param>
+        void IEditableText.InsertChar(string c)
+        {
+            // HACK: This stuff with lineOldLen and oldLine is a cheap way to make the cursor move to the end of the text
+            // removed from one line and appended to the next when the line breaks
+            int lineOldLen = _lines.CurrentLine.LineText.Length;
+            int oldLine = _lines.CurrentLineIndex;
+
+            if (MaxInputTextLength > 0 && lineOldLen >= MaxInputTextLength)
+                return;
+
+            _lines.CurrentLine.Insert(c, CursorLinePosition);
+            ((IEditableText)this).MoveCursor(MoveCursorDirection.Right);
+
+            if (IsMultiLine && oldLine < _lines.CurrentLineIndex && oldLine < _lines.Count)
+            {
+                for (int i = 0; i < lineOldLen - _lines[oldLine].LineText.Length + 1; i++)
+                {
+                    ((IEditableText)this).MoveCursor(MoveCursorDirection.Right);
+                }
             }
 
             _numCharsToDraw.Invalidate();
@@ -697,23 +714,6 @@ namespace NetGore.Graphics.GUI
                 default:
                     throw new ArgumentOutOfRangeException("direction");
             }
-        }
-
-        /// <summary>
-        /// Breaks the line at the current position of the text cursor.
-        /// </summary>
-        public void BreakLine()
-        {
-            if (!IsMultiLine)
-                return;
-
-            _lines.BreakLine(CursorLinePosition);
-
-            // Move the cursor to the first character of the next line
-            if (_lines.MoveNext(false))
-                CursorLinePosition = 0;
-
-            ResetCursorBlink();
         }
 
         #endregion

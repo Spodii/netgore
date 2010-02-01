@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class KeysExtensionsTests
     {
+        #region Unit tests
+
         [Test]
         public void D0Test()
         {
@@ -222,5 +224,7 @@ namespace NetGore.Tests.NetGore
         {
             Assert.AreEqual(null, Keys.A.GetFunctionKeyAsValue());
         }
+
+        #endregion
     }
 }

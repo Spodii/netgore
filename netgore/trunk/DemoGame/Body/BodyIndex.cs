@@ -244,32 +244,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent Unicode character using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// A Unicode character equivalent to the value of this instance.
-        /// </returns>
-        char IConvertible.ToChar(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToChar(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 8-bit signed integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 8-bit signed integer equivalent to the value of this instance.
-        /// </returns>
-        sbyte IConvertible.ToSByte(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToSByte(provider);
-        }
-
-        /// <summary>
         /// Converts the value of this instance to an equivalent 8-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
@@ -283,107 +257,29 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent 16-bit signed integer using the specified culture-specific formatting information.
+        /// Converts the value of this instance to an equivalent Unicode character using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
         /// culture-specific formatting information.</param>
         /// <returns>
-        /// An 16-bit signed integer equivalent to the value of this instance.
+        /// A Unicode character equivalent to the value of this instance.
         /// </returns>
-        short IConvertible.ToInt16(IFormatProvider provider)
+        char IConvertible.ToChar(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt16(provider);
+            return ((IConvertible)_value).ToChar(provider);
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent 16-bit unsigned integer using the specified culture-specific formatting information.
+        /// Converts the value of this instance to an equivalent <see cref="T:System.DateTime"/> using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
         /// culture-specific formatting information.</param>
         /// <returns>
-        /// An 16-bit unsigned integer equivalent to the value of this instance.
+        /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
         /// </returns>
-        ushort IConvertible.ToUInt16(IFormatProvider provider)
+        DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt16(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 32-bit signed integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 32-bit signed integer equivalent to the value of this instance.
-        /// </returns>
-        int IConvertible.ToInt32(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToInt32(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 32-bit unsigned integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 32-bit unsigned integer equivalent to the value of this instance.
-        /// </returns>
-        uint IConvertible.ToUInt32(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToUInt32(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 64-bit signed integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 64-bit signed integer equivalent to the value of this instance.
-        /// </returns>
-        long IConvertible.ToInt64(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToInt64(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 64-bit unsigned integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 64-bit unsigned integer equivalent to the value of this instance.
-        /// </returns>
-        ulong IConvertible.ToUInt64(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToUInt64(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent single-precision floating-point number using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information. </param>
-        /// <returns>
-        /// A single-precision floating-point number equivalent to the value of this instance.
-        /// </returns>
-        float IConvertible.ToSingle(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToSingle(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent double-precision floating-point number using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// A double-precision floating-point number equivalent to the value of this instance.
-        /// </returns>
-        double IConvertible.ToDouble(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToDouble(provider);
+            return ((IConvertible)_value).ToDateTime(provider);
         }
 
         /// <summary>
@@ -400,16 +296,81 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent <see cref="T:System.DateTime"/> using the specified culture-specific formatting information.
+        /// Converts the value of this instance to an equivalent double-precision floating-point number using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
         /// culture-specific formatting information.</param>
         /// <returns>
-        /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
+        /// A double-precision floating-point number equivalent to the value of this instance.
         /// </returns>
-        DateTime IConvertible.ToDateTime(IFormatProvider provider)
+        double IConvertible.ToDouble(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDateTime(provider);
+            return ((IConvertible)_value).ToDouble(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 16-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 16-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        short IConvertible.ToInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt16(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 32-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 32-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        int IConvertible.ToInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt32(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 64-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 64-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        long IConvertible.ToInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt64(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 8-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 8-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        sbyte IConvertible.ToSByte(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToSByte(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent single-precision floating-point number using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information. </param>
+        /// <returns>
+        /// A single-precision floating-point number equivalent to the value of this instance.
+        /// </returns>
+        float IConvertible.ToSingle(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToSingle(provider);
         }
 
         /// <summary>
@@ -437,6 +398,45 @@ namespace DemoGame
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
             return ((IConvertible)_value).ToType(conversionType, provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 16-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 16-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        ushort IConvertible.ToUInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt16(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 32-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 32-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        uint IConvertible.ToUInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt32(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 64-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 64-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        ulong IConvertible.ToUInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt64(provider);
         }
 
         #endregion

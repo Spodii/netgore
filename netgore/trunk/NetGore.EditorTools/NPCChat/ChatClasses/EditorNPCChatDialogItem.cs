@@ -25,11 +25,6 @@ namespace NetGore.EditorTools.NPCChat
         string _title;
 
         /// <summary>
-        /// Notifies listeners when any of the object's property values have changed.
-        /// </summary>
-        public event EditorNPCChatDialogItemEventHandler Changed;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -67,6 +62,11 @@ namespace NetGore.EditorTools.NPCChat
 
             _index = index;
         }
+
+        /// <summary>
+        /// Notifies listeners when any of the object's property values have changed.
+        /// </summary>
+        public event EditorNPCChatDialogItemEventHandler Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the

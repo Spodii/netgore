@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class RandomHelperXnaTests
     {
+        #region Unit tests
+
         [Test]
         public void RandomVector2Test()
         {
@@ -71,5 +73,7 @@ namespace NetGore.Tests.NetGore
                 Assert.LessOrEqual(value.Y, 200.0f);
             }
         }
+
+        #endregion
     }
 }

@@ -136,7 +136,7 @@ namespace NetGore.Graphics
             var frames = new StationaryGrhData[files.Length];
             for (int i = 0; i < frames.Length; i++)
             {
-                var contentAssetName = TextureAssetName.FromAbsoluteFilePath(files[i], ContentPaths.Build.Grhs).Value;
+                var contentAssetName = ContentAssetName.FromAbsoluteFilePath(files[i], ContentPaths.Build.Grhs).Value;
                 var textureAssetName = new TextureAssetName(contentAssetName);
                 var frameGrhData = new StationaryGrhData(this, textureAssetName);
                 frames[i] = frameGrhData;

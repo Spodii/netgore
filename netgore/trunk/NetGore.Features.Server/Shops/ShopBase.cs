@@ -60,16 +60,27 @@ namespace NetGore.Features.Shops
         #region IShop<TShopItem> Members
 
         /// <summary>
-        /// Writes the information describing the shop items to an <see cref="IValueWriter"/>.
+        /// Gets if this shop can buy items instead of just sell them.
         /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-        public void WriteShopItems(IValueWriter writer)
+        public bool CanBuy
         {
-            writer.Write("Items", (byte)_shopItems.Length);
-            for (var i = 0; i < _shopItems.Length; i++)
-            {
-                WriteShopItem(writer, "Item" + i, _shopItems[i]);
-            }
+            get { return _canBuy; }
+        }
+
+        /// <summary>
+        /// Gets the ID of the shop.
+        /// </summary>
+        public ShopID ID
+        {
+            get { return _id; }
+        }
+
+        /// <summary>
+        /// Gets the name of the shop.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
         }
 
         /// <summary>
@@ -95,27 +106,16 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Gets if this shop can buy items instead of just sell them.
+        /// Writes the information describing the shop items to an <see cref="IValueWriter"/>.
         /// </summary>
-        public bool CanBuy
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteShopItems(IValueWriter writer)
         {
-            get { return _canBuy; }
-        }
-
-        /// <summary>
-        /// Gets the ID of the shop.
-        /// </summary>
-        public ShopID ID
-        {
-            get { return _id; }
-        }
-
-        /// <summary>
-        /// Gets the name of the shop.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
+            writer.Write("Items", (byte)_shopItems.Length);
+            for (var i = 0; i < _shopItems.Length; i++)
+            {
+                WriteShopItem(writer, "Item" + i, _shopItems[i]);
+            }
         }
 
         #endregion

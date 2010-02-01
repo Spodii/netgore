@@ -42,7 +42,7 @@ namespace NetGore.EditorTools
         /// </returns>
         public override string GetSanitizedText(string text)
         {
-            return TextureAssetName.Sanitize(text);
+            return ContentAssetName.Sanitize(text);
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e)

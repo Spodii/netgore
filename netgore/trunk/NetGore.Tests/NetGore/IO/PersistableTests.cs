@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class PersistableTests
     {
+        #region Unit tests
+
         [Test]
         public void ReadWriteFromHelperUsingPropertyTest()
         {
@@ -40,6 +42,8 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual(a.A, b.A);
             Assert.AreEqual(a.B, b.B);
         }
+
+        #endregion
 
         public class ClassA : IPersistable
         {

@@ -81,6 +81,42 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Loads the Character's equipped items. The Character that this CharacterEquipped belongs to
+        /// must be persistent since there is nothing for a non-persistent Character to load.
+        /// </summary>
+        public void Load()
+        {
+            if (!_isPersistent)
+            {
+                const string errmsg = "Don't call Load() when the Character's state is not persistent!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            var items = DbController.GetQuery<SelectCharacterEquippedItemsQuery>().Execute(Character.ID);
+
+            // Remove the listeners since we don't want to update the database when loading
+            _ignoreEquippedBaseEvents = true;
+
+            // Load all the items
+            foreach (var item in items)
+            {
+                ItemEntity itemEntity = new ItemEntity(item.Value);
+                if (TrySetSlot(item.Key, itemEntity))
+                {
+                    SendSlotUpdate(item.Key, itemEntity.GraphicIndex);
+                    _paperDoll.NotifyAdded(item.Key, itemEntity);
+                }
+                else
+                    Debug.Fail("Uhm, the Character couldn't load their equipped item. What should we do...?");
+            }
+
+            _ignoreEquippedBaseEvents = false;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when an item has been equipped.
         /// </summary>
         /// <param name="item">The item the event is related to.</param>
@@ -143,42 +179,6 @@ namespace DemoGame.Server
             // Make sure we dispose of items where the amount hit 0
             if (item.Amount == 0)
                 item.Dispose();
-        }
-
-        /// <summary>
-        /// Loads the Character's equipped items. The Character that this CharacterEquipped belongs to
-        /// must be persistent since there is nothing for a non-persistent Character to load.
-        /// </summary>
-        public void Load()
-        {
-            if (!_isPersistent)
-            {
-                const string errmsg = "Don't call Load() when the Character's state is not persistent!";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
-            var items = DbController.GetQuery<SelectCharacterEquippedItemsQuery>().Execute(Character.ID);
-
-            // Remove the listeners since we don't want to update the database when loading
-            _ignoreEquippedBaseEvents = true;
-
-            // Load all the items
-            foreach (var item in items)
-            {
-                ItemEntity itemEntity = new ItemEntity(item.Value);
-                if (TrySetSlot(item.Key, itemEntity))
-                {
-                    SendSlotUpdate(item.Key, itemEntity.GraphicIndex);
-                    _paperDoll.NotifyAdded(item.Key, itemEntity);
-                }
-                else
-                    Debug.Fail("Uhm, the Character couldn't load their equipped item. What should we do...?");
-            }
-
-            _ignoreEquippedBaseEvents = false;
         }
 
         protected virtual void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)

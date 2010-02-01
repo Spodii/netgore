@@ -32,9 +32,9 @@ namespace DemoGame.Client
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
+        readonly UserGuildInformation _guildInfo = new UserGuildInformation();
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
-        readonly UserGuildInformation _guildInfo = new UserGuildInformation();
 
         ChatBubbleManager _chatBubbleManager;
         NPCChatDialogForm _chatDialogForm;
@@ -91,6 +91,11 @@ namespace DemoGame.Client
         public EquipmentInfoRequester EquipmentInfoRequester
         {
             get { return _equipmentInfoRequester; }
+        }
+
+        public UserGuildInformation GuildInfo
+        {
+            get { return _guildInfo; }
         }
 
         /// <summary>
@@ -160,44 +165,12 @@ namespace DemoGame.Client
             get { return _userInfo; }
         }
 
-        public UserGuildInformation GuildInfo
-        {
-            get { return _guildInfo; }
-        }
-
         /// <summary>
         /// Gets the root world of the game
         /// </summary>
         public World World
         {
             get { return _world; }
-        }
-
-        void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
-        {
-            if (inventoryForm.Inventory != UserInfo.Inventory)
-                return;
-
-            if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
-            {
-                if (ShopForm.ShopInfo.CanBuy)
-                {
-                    using (PacketWriter pw = ClientPacket.SellInventoryToShop(slot, 1))
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
-            else
-                UserInfo.Inventory.Drop(slot);
-        }
-
-        void InventoryForm_RequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
-        {
-            if (inventoryForm.Inventory != UserInfo.Inventory)
-                return;
-
-            UserInfo.Inventory.Use(slot);
         }
 
         /// <summary>
@@ -409,6 +382,33 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+        }
+
+        void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
+        {
+            if (inventoryForm.Inventory != UserInfo.Inventory)
+                return;
+
+            if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
+            {
+                if (ShopForm.ShopInfo.CanBuy)
+                {
+                    using (PacketWriter pw = ClientPacket.SellInventoryToShop(slot, 1))
+                    {
+                        Socket.Send(pw);
+                    }
+                }
+            }
+            else
+                UserInfo.Inventory.Drop(slot);
+        }
+
+        void InventoryForm_RequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
+        {
+            if (inventoryForm.Inventory != UserInfo.Inventory)
+                return;
+
+            UserInfo.Inventory.Use(slot);
         }
 
         /// <summary>

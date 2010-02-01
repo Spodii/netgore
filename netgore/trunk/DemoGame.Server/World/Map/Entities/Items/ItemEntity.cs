@@ -42,16 +42,6 @@ namespace DemoGame.Server
         ItemType _type;
         int _value;
 
-        /// <summary>
-        /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.
-        /// </summary>
-        public event ItemEntityEventHandler GraphicOrAmountChanged;
-
-        /// <summary>
-        /// Notifies listeners that this <see cref="Entity"/> was picked up.
-        /// </summary>
-        public override event EntityEventHandler<CharacterEntity> OnPickup;
-
         public ItemEntity(IItemTemplateTable t, byte amount) : this(t, Vector2.Zero, amount)
         {
         }
@@ -127,6 +117,16 @@ namespace DemoGame.Server
                 s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
+
+        /// <summary>
+        /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.
+        /// </summary>
+        public event ItemEntityEventHandler GraphicOrAmountChanged;
+
+        /// <summary>
+        /// Notifies listeners that this <see cref="Entity"/> was picked up.
+        /// </summary>
+        public override event EntityEventHandler<CharacterEntity> OnPickup;
 
         public ItemStats BaseStats
         {
@@ -485,6 +485,23 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the value of the database column `equipped_body`.
+        /// </summary>
+        public string EquippedBody
+        {
+            get { return _equippedBody; }
+            set
+            {
+                if (_equippedBody == value)
+                    return;
+
+                _equippedBody = value;
+
+                SynchronizeField("equipped_body", _equippedBody);
+            }
+        }
+
+        /// <summary>
         /// Gets the value of the database column `graphic`.
         /// </summary>
         GrhIndex IItemTable.Graphic
@@ -523,23 +540,6 @@ namespace DemoGame.Server
         public ItemID ID
         {
             get { return _id; }
-        }
-
-        /// <summary>
-        /// Gets the value of the database column `equipped_body`.
-        /// </summary>
-        public string EquippedBody
-        {
-            get { return _equippedBody; }
-            set
-            {
-                if (_equippedBody == value)
-                    return;
-
-                _equippedBody = value;
-
-                SynchronizeField("equipped_body", _equippedBody);
-            }
         }
 
         /// <summary>

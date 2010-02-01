@@ -181,19 +181,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
-        /// </summary>
-        protected override void OnFontChanged()
-        {
-            base.OnFontChanged();
-
-            if (Font != null)
-                _itemHeight = Font.LineSpacing;
-        }
-
-        /// <summary>
         /// Draws the <see cref="Control"/>.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
@@ -263,6 +250,19 @@ namespace NetGore.Graphics.GUI
             base.LoadSkin(skinManager);
 
             UpdateButtonPositions();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// </summary>
+        protected override void OnFontChanged()
+        {
+            base.OnFontChanged();
+
+            if (Font != null)
+                _itemHeight = Font.LineSpacing;
         }
 
         /// <summary>
@@ -343,6 +343,18 @@ namespace NetGore.Graphics.GUI
             }
 
             /// <summary>
+            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+            /// from the given <paramref name="skinManager"/>.
+            /// </summary>
+            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+            public override void LoadSkin(ISkinManager skinManager)
+            {
+                _skinManager = skinManager;
+                base.LoadSkin(skinManager);
+                UpdateSprites(skinManager);
+            }
+
+            /// <summary>
             /// Handles when this <see cref="Control"/> was clicked.
             /// This is called immediately before <see cref="Control.OnClick"/>.
             /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
@@ -353,18 +365,6 @@ namespace NetGore.Graphics.GUI
                 base.OnClick(e);
 
                 _clickAction();
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-            /// from the given <paramref name="skinManager"/>.
-            /// </summary>
-            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-            public override void LoadSkin(ISkinManager skinManager)
-            {
-                _skinManager = skinManager;
-                base.LoadSkin(skinManager);
-                UpdateSprites(skinManager);
             }
 
             /// <summary>

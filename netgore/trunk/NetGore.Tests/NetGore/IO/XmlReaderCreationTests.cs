@@ -10,28 +10,6 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class XmlReaderCreationTests
     {
-        [Test(Description = "Make sure we can create an XmlValueReader at the start of the node to read.")]
-        public void CreateXmlReaderAtNodeTest()
-        {
-            // Create the reader at the Values node
-            XmlReader xmlReader = GetTestXmlValueReaderReader();
-            MoveXmlReaderToNode(xmlReader, "Values");
-
-            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
-            TestXmlValueReader(r);
-        }
-
-        [Test(Description = "Make sure we can create an XmlValueReader INSIDE the node being read.")]
-        public void CreateXmlReaderInsideNodeTest()
-        {
-            // Create the reader at the MyInt node (first value node)
-            XmlReader xmlReader = GetTestXmlValueReaderReader();
-            MoveXmlReaderToNode(xmlReader, "MyInt");
-
-            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
-            TestXmlValueReader(r);
-        }
-
         static XmlReader GetTestXmlValueReaderReader()
         {
             StringBuilder sb = new StringBuilder();
@@ -59,7 +37,7 @@ namespace NetGore.Tests.IO
             }
             sb.AppendLine("</TestValues>");
 
-            var bytes = ASCIIEncoding.UTF8.GetBytes(sb.ToString());
+            var bytes = Encoding.UTF8.GetBytes(sb.ToString());
             MemoryStream ms = new MemoryStream(bytes, false);
 
             return XmlReader.Create(ms);
@@ -78,5 +56,31 @@ namespace NetGore.Tests.IO
             Assert.AreEqual(25.55f, reader.ReadFloat("MyFloat"));
             Assert.AreEqual("Hello!", reader.ReadString("MyString"));
         }
+
+        #region Unit tests
+
+        [Test(Description = "Make sure we can create an XmlValueReader at the start of the node to read.")]
+        public void CreateXmlReaderAtNodeTest()
+        {
+            // Create the reader at the Values node
+            XmlReader xmlReader = GetTestXmlValueReaderReader();
+            MoveXmlReaderToNode(xmlReader, "Values");
+
+            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
+            TestXmlValueReader(r);
+        }
+
+        [Test(Description = "Make sure we can create an XmlValueReader INSIDE the node being read.")]
+        public void CreateXmlReaderInsideNodeTest()
+        {
+            // Create the reader at the MyInt node (first value node)
+            XmlReader xmlReader = GetTestXmlValueReaderReader();
+            MoveXmlReaderToNode(xmlReader, "MyInt");
+
+            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
+            TestXmlValueReader(r);
+        }
+
+        #endregion
     }
 }

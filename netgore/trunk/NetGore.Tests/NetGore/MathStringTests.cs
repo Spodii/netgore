@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class MathStringTests
     {
+        #region Unit tests
+
         [Test]
         public void Add3Test()
         {
@@ -250,5 +252,7 @@ namespace NetGore.Tests.NetGore
                 }
             }
         }
+
+        #endregion
     }
 }

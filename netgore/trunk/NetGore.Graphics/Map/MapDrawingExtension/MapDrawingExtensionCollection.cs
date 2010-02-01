@@ -106,6 +106,28 @@ namespace DemoGame.Client
         #region ICollection<IMapDrawingExtension> Members
 
         /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <returns>
+        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </returns>
+        public int Count
+        {
+            get { return _extensions.Count; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        /// <returns>
+        /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
+        /// </returns>
+        bool ICollection<IMapDrawingExtension>.IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Adds an item to this collection.
         /// </summary>
         /// <param name="extension">The item to add.</param>
@@ -160,38 +182,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Removes the specified item from the collection.
-        /// </summary>
-        /// <param name="extension">The item to remove.</param>
-        /// <returns>True if the item was successfully removed; otherwise false.</returns>
-        public virtual bool Remove(IMapDrawingExtension extension)
-        {
-            return _extensions.Remove(extension);
-        }
-
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <returns>
-        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </returns>
-        public int Count
-        {
-            get { return _extensions.Count; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
-        /// </summary>
-        /// <returns>
-        /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
-        /// </returns>
-        bool ICollection<IMapDrawingExtension>.IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
@@ -213,6 +203,16 @@ namespace DemoGame.Client
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Removes the specified item from the collection.
+        /// </summary>
+        /// <param name="extension">The item to remove.</param>
+        /// <returns>True if the item was successfully removed; otherwise false.</returns>
+        public virtual bool Remove(IMapDrawingExtension extension)
+        {
+            return _extensions.Remove(extension);
         }
 
         #endregion

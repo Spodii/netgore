@@ -96,25 +96,20 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Gets all the cached values in this collection. The returned collection must be immutable to avoid any
-        /// conflicts with if the cache changes.
+        /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
+        /// should never be accessed from multiple threads.
         /// </summary>
-        /// <returns>An immutable collection of all the cached values in this collection.</returns>
-        public IEnumerable<TValue> GetCachedValues()
+        public bool IsThreadSafe
         {
-            TValue[] values;
+            get { return false; }
+        }
 
-            _lock.EnterReadLock();
-            try
-            {
-                values = _cache.Values.ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return values;
+        /// <summary>
+        /// Clears all of the cached items.
+        /// </summary>
+        public void Clear()
+        {
+            _cache.Clear();
         }
 
         /// <summary>
@@ -141,6 +136,28 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Gets all the cached values in this collection. The returned collection must be immutable to avoid any
+        /// conflicts with if the cache changes.
+        /// </summary>
+        /// <returns>An immutable collection of all the cached values in this collection.</returns>
+        public IEnumerable<TValue> GetCachedValues()
+        {
+            TValue[] values;
+
+            _lock.EnterReadLock();
+            try
+            {
+                values = _cache.Values.ToArray();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+
+            return values;
+        }
+
+        /// <summary>
         /// Ensures all of the <paramref name="keys"/> have been loaded into the cache.
         /// </summary>
         /// <param name="keys">All of the keys to load into the cache.</param>
@@ -163,23 +180,6 @@ namespace NetGore.Collections
             {
                 _lock.ExitWriteLock();
             }
-        }
-
-        /// <summary>
-        /// Clears all of the cached items.
-        /// </summary>
-        public void Clear()
-        {
-            _cache.Clear();
-        }
-
-        /// <summary>
-        /// Gets if this cache is safe to use from multiple threads at once. If this value is false, this HashCache
-        /// should never be accessed from multiple threads.
-        /// </summary>
-        public bool IsThreadSafe
-        {
-            get { return false; }
         }
 
         #endregion

@@ -45,20 +45,6 @@ namespace DemoGame.Client
         public bool Enabled { get; set; }
 
         /// <summary>
-        /// Handles drawing to the map before the given <paramref name="layer"/> is drawn.
-        /// </summary>
-        /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="layer">The layer that is going to be drawn.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void DrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
-        {
-            if (!Enabled)
-                return;
-
-            HandleDrawBeforeLayer(map, layer, spriteBatch);
-        }
-
-        /// <summary>
         /// Handles drawing to the map after the given <paramref name="layer"/> is drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
@@ -70,6 +56,20 @@ namespace DemoGame.Client
                 return;
 
             HandleDrawAfterLayer(map, layer, spriteBatch);
+        }
+
+        /// <summary>
+        /// Handles drawing to the map before the given <paramref name="layer"/> is drawn.
+        /// </summary>
+        /// <param name="map">The map the drawing is taking place on.</param>
+        /// <param name="layer">The layer that is going to be drawn.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+        public void DrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        {
+            if (!Enabled)
+                return;
+
+            HandleDrawBeforeLayer(map, layer, spriteBatch);
         }
 
         #endregion

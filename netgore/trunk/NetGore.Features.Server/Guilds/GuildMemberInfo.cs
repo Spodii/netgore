@@ -36,13 +36,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Gets if the <see cref="GuildMemberInfo{T}.Owner"/> is only having their guild values set because they are
-        /// loading, not because they are joining/leaving a guild.
-        /// </summary>
-        /// <returns>True if they <see cref="GuildMemberInfo{T}.Owner"/> is loading; otherwise false.</returns>
-        protected abstract bool IsLoading();
-
-        /// <summary>
         /// Gets or sets the guild. The <see cref="GuildMemberInfo{T}.Owner"/> should implement their
         /// <see cref="IGuildMember.Guild"/> properly by using this property only.
         /// </summary>
@@ -188,6 +181,13 @@ namespace NetGore.Features.Guilds
         protected virtual void HandlePromotion(GuildRank rank)
         {
         }
+
+        /// <summary>
+        /// Gets if the <see cref="GuildMemberInfo{T}.Owner"/> is only having their guild values set because they are
+        /// loading, not because they are joining/leaving a guild.
+        /// </summary>
+        /// <returns>True if they <see cref="GuildMemberInfo{T}.Owner"/> is loading; otherwise false.</returns>
+        protected abstract bool IsLoading();
 
         /// <summary>
         /// Handles when the guild member receives an invite to a guild.

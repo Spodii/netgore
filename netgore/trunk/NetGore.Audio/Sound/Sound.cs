@@ -76,29 +76,20 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Updates the volume of the audio to match the volume specified by the <see cref="IAudio.AudioManager"/>.
+        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
         /// </summary>
-        public void UpdateVolume()
+        public AudioManagerBase AudioManager
         {
-            var v = AudioManager.Volume;
-
-            lock (_instances)
-            {
-                for (int i = 0; i < _instances.Count; i++)
-                {
-                    if (_instances[i].State != SoundState.Playing)
-                        _instances[i].Volume = v;
-                }
-            }
+            get { return _audioManager; }
         }
 
         /// <summary>
-        /// Gets the unique index of the <see cref="IAudio"/>.
+        /// Gets the sound track index.
         /// </summary>
-        /// <returns>The unique index.</returns>
-        int IAudio.GetIndex()
+        /// <value></value>
+        public SoundID Index
         {
-            return (int)Index;
+            get { return _index; }
         }
 
         /// <summary>
@@ -110,12 +101,26 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets the sound track index.
+        /// Gets or sets the object that is listening to the sounds. If null, 3D sounds will not be able
+        /// to be updated.
         /// </summary>
-        /// <value></value>
-        public SoundID Index
+        public IAudioEmitter Listener { get; set; }
+
+        /// <summary>
+        /// Gets the name of the <see cref="IAudio"/>.
+        /// </summary>
+        public string Name
         {
-            get { return _index; }
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets the unique index of the <see cref="IAudio"/>.
+        /// </summary>
+        /// <returns>The unique index.</returns>
+        int IAudio.GetIndex()
+        {
+            return (int)Index;
         }
 
         /// <summary>
@@ -142,28 +147,6 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets or sets the object that is listening to the sounds. If null, 3D sounds will not be able
-        /// to be updated.
-        /// </summary>
-        public IAudioEmitter Listener { get; set; }
-
-        /// <summary>
-        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
-        /// </summary>
-        public AudioManagerBase AudioManager
-        {
-            get { return _audioManager; }
-        }
-
-        /// <summary>
-        /// Gets the name of the <see cref="IAudio"/>.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
         /// Plays the audio track. If <see cref="IsSingleInstance"/> is true, this will play the track if it is not
         /// already playing. Otherwise, this will spawn a new instance of the sound.
         /// </summary>
@@ -171,6 +154,21 @@ namespace NetGore.Audio
         {
             var instance = GetFreeInstance();
             instance.Play();
+        }
+
+        /// <summary>
+        /// Stops the audio track. If <see cref="IsSingleInstance"/> is true, this will stop the track. Otherwise,
+        /// every instance of the track will be stopped.
+        /// </summary>
+        public void Stop()
+        {
+            lock (_instances)
+            {
+                foreach (var item in _instances)
+                {
+                    item.Stop();
+                }
+            }
         }
 
         /// <summary>
@@ -206,16 +204,18 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Stops the audio track. If <see cref="IsSingleInstance"/> is true, this will stop the track. Otherwise,
-        /// every instance of the track will be stopped.
+        /// Updates the volume of the audio to match the volume specified by the <see cref="IAudio.AudioManager"/>.
         /// </summary>
-        public void Stop()
+        public void UpdateVolume()
         {
+            var v = AudioManager.Volume;
+
             lock (_instances)
             {
-                foreach (var item in _instances)
+                for (int i = 0; i < _instances.Count; i++)
                 {
-                    item.Stop();
+                    if (_instances[i].State != SoundState.Playing)
+                        _instances[i].Volume = v;
                 }
             }
         }

@@ -16,24 +16,6 @@ namespace NetGore.Graphics.GUI
         bool _stretch = true;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
-        /// </summary>
-        public event ControlEventHandler SpriteChanged
-        {
-            add { Events.AddHandler(_eventSpriteChanged, value); }
-            remove { Events.RemoveHandler(_eventSpriteChanged, value); }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
-        /// </summary>
-        public event ControlEventHandler StretchSpriteChanged
-        {
-            add { Events.AddHandler(_eventStretchSpriteChanged, value); }
-            remove { Events.RemoveHandler(_eventStretchSpriteChanged, value); }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
@@ -54,6 +36,24 @@ namespace NetGore.Graphics.GUI
         protected SpriteControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
             : base(guiManager, position, clientSize)
         {
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
+        /// </summary>
+        public event ControlEventHandler SpriteChanged
+        {
+            add { Events.AddHandler(_eventSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventSpriteChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
+        /// </summary>
+        public event ControlEventHandler StretchSpriteChanged
+        {
+            add { Events.AddHandler(_eventStretchSpriteChanged, value); }
+            remove { Events.RemoveHandler(_eventStretchSpriteChanged, value); }
         }
 
         /// <summary>
@@ -89,24 +89,6 @@ namespace NetGore.Graphics.GUI
 
                 InvokeStretchSpriteChanged();
             }
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="SpriteControl.Sprite"/> has changed.
-        /// This is called immediately before <see cref="SpriteControl.SpriteChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="SpriteControl.SpriteChanged"/> when possible.
-        /// </summary>
-        protected virtual void OnSpriteChanged()
-        {
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="SpriteControl.StretchSprite"/> value has changed.
-        /// This is called immediately before <see cref="SpriteControl.StretchSpriteChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="SpriteControl.StretchSpriteChanged"/> when possible.
-        /// </summary>
-        protected virtual void OnStretchSpriteChanged()
-        {
         }
 
         /// <summary>
@@ -161,6 +143,24 @@ namespace NetGore.Graphics.GUI
             var handler = Events[_eventStretchSpriteChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="SpriteControl.Sprite"/> has changed.
+        /// This is called immediately before <see cref="SpriteControl.SpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.SpriteChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnSpriteChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="SpriteControl.StretchSprite"/> value has changed.
+        /// This is called immediately before <see cref="SpriteControl.StretchSpriteChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="SpriteControl.StretchSpriteChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnStretchSpriteChanged()
+        {
         }
 
         /// <summary>

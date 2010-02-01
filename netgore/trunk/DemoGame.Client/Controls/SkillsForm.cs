@@ -18,11 +18,6 @@ namespace DemoGame.Client
         readonly int _lineSpacing;
 
         /// <summary>
-        /// Notifies listeners when a a request has been made to use a skill.
-        /// </summary>
-        public event UseSkillHandler RequestUseSkill;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SkillsForm"/> class.
         /// </summary>
         /// <param name="cooldownManager">The skill cooldown manager.</param>
@@ -48,6 +43,11 @@ namespace DemoGame.Client
                 offset += new Vector2(0, _lineSpacing);
             }
         }
+
+        /// <summary>
+        /// Notifies listeners when a a request has been made to use a skill.
+        /// </summary>
+        public event UseSkillHandler RequestUseSkill;
 
         public ISkillCooldownManager CooldownManager
         {

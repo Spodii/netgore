@@ -10,6 +10,8 @@ namespace NetGore.Tests.Db.MySql
     [TestFixture]
     public class MySqlDbManagerTests
     {
+        #region Unit tests
+
         [Test]
         public void CleanupCommandsTest()
         {
@@ -208,5 +210,7 @@ namespace NetGore.Tests.Db.MySql
                 }
             }
         }
+
+        #endregion
     }
 }

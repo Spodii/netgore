@@ -27,11 +27,6 @@ namespace DemoGame.Client
             PlayMusic = false;
         }
 
-        void sockets_Disconnected(SocketManager sender, IIPSocket conn)
-        {
-            _createAccountButton.IsEnabled = true;
-        }
-
         /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
         /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
@@ -174,6 +169,11 @@ namespace DemoGame.Client
         void sockets_ConnectFailed(SocketManager sender)
         {
             ShowError("Failed to connect to the server.");
+        }
+
+        void sockets_Disconnected(SocketManager sender, IIPSocket conn)
+        {
+            _createAccountButton.IsEnabled = true;
         }
     }
 }

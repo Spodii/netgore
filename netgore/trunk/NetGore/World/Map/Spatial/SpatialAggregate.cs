@@ -35,18 +35,6 @@ namespace NetGore
         #region ISpatialCollection Members
 
         /// <summary>
-        /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
-        /// </summary>
-        /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
-        public void SetAreaSize(Vector2 size)
-        {
-            foreach (var spatial in _spatialCollections)
-            {
-                spatial.SetAreaSize(size);
-            }
-        }
-
-        /// <summary>
         /// Adds multiple <see cref="ISpatial"/>s to the <see cref="ISpatialCollection"/>.
         /// </summary>
         /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
@@ -193,118 +181,6 @@ namespace NetGore
         public bool Contains(Rectangle rect, Predicate<ISpatial> condition)
         {
             return _spatialCollections.Any(x => x.Contains(rect, condition));
-        }
-
-        /// <summary>
-        /// Gets all spatials containing a given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatials at.</param>
-        /// <returns>All of the spatials at the given point.</returns>
-        public IEnumerable<ISpatial> GetMany(Vector2 p)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany(p));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<ISpatial> GetMany(Rectangle rect)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany(rect));
-        }
-
-        /// <summary>
-        /// Gets all spatials at the given point.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <param name="p">The point to find the spatials at.</param>
-        /// <returns>
-        /// All spatials containing the given point that are of the given type.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Vector2 p)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany<T>(p));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Rectangle rect)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany<T>(rect));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s of the given type.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>()
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany<T>());
-        }
-
-        /// <summary>
-        /// Gets all spatials containing a given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatials at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>All of the spatials at the given point.</returns>
-        public IEnumerable<ISpatial> GetMany(Vector2 p, Predicate<ISpatial> condition)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany(p, condition));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Rectangle rect, Predicate<T> condition)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany(rect, condition));
-        }
-
-        /// <summary>
-        /// Gets all spatials at the given point.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <param name="p">The point to find the spatials at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>
-        /// All spatials containing the given point that are of the given type.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany(p, condition));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
-        {
-            return _spatialCollections.SelectMany(x => x.GetMany(rect, condition));
         }
 
         /// <summary>
@@ -470,12 +346,136 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets all spatials containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatials at.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetMany(Vector2 p)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany(p));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<ISpatial> GetMany(Rectangle rect)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany(rect));
+        }
+
+        /// <summary>
+        /// Gets all spatials at the given point.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
+        /// <param name="p">The point to find the spatials at.</param>
+        /// <returns>
+        /// All spatials containing the given point that are of the given type.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Vector2 p)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany<T>(p));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Rectangle rect)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany<T>(rect));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s of the given type.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>()
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany<T>());
+        }
+
+        /// <summary>
+        /// Gets all spatials containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatials at.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetMany(Vector2 p, Predicate<ISpatial> condition)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany(p, condition));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Rectangle rect, Predicate<T> condition)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany(rect, condition));
+        }
+
+        /// <summary>
+        /// Gets all spatials at the given point.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
+        /// <param name="p">The point to find the spatials at.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>
+        /// All spatials containing the given point that are of the given type.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany(p, condition));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
+        {
+            return _spatialCollections.SelectMany(x => x.GetMany(rect, condition));
+        }
+
+        /// <summary>
         /// Removes an <see cref="ISpatial"/> from the spatial collection.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
         public void Remove(ISpatial spatial)
         {
             throw GetNotSupportedException();
+        }
+
+        /// <summary>
+        /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
+        /// </summary>
+        /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
+        public void SetAreaSize(Vector2 size)
+        {
+            foreach (var spatial in _spatialCollections)
+            {
+                spatial.SetAreaSize(size);
+            }
         }
 
         #endregion

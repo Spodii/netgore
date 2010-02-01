@@ -30,6 +30,8 @@ namespace NetGore.Tests.Collections
             }
         }
 
+        #region Unit tests
+
         [Test]
         public void ThreadSafeAddTest()
         {
@@ -186,5 +188,7 @@ namespace NetGore.Tests.Collections
                 l.AddRange(Enumerable.Range(1, _testRange / 2));
             }
         }
+
+        #endregion
     }
 }

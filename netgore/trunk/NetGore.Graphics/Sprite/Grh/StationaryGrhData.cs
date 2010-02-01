@@ -33,11 +33,6 @@ namespace NetGore.Graphics
         TextureAssetName _textureName;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="GrhData"/>'s texture has changed.
-        /// </summary>
-        public event GrhDataChangeTextureHandler TextureChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="StationaryGrhData"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/>.</param>
@@ -86,6 +81,11 @@ namespace NetGore.Graphics
             _sourceRect = textureSource;
             AutomaticSize = automaticSize;
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="GrhData"/>'s texture has changed.
+        /// </summary>
+        public event GrhDataChangeTextureHandler TextureChanged;
 
         /// <summary>
         /// Gets or sets if this GrhData automatically finds the Size by using the whole source texture.
@@ -398,6 +398,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Removes the atlas from the object and forces it to draw normally.
+        /// </summary>
+        public void RemoveAtlas()
+        {
+            if (!_isUsingAtlas)
+                return;
+
+            _isUsingAtlas = false;
+            _texture = null;
+        }
+
+        /// <summary>
         /// Sets the atlas information.
         /// </summary>
         /// <param name="texture">Texture atlas.</param>
@@ -411,18 +423,6 @@ namespace NetGore.Graphics
             _atlasSourceRect = atlasSourceRect;
             _texture = texture;
             _isUsingAtlas = true;
-        }
-
-        /// <summary>
-        /// Removes the atlas from the object and forces it to draw normally.
-        /// </summary>
-        public void RemoveAtlas()
-        {
-            if (!_isUsingAtlas)
-                return;
-
-            _isUsingAtlas = false;
-            _texture = null;
         }
 
         #endregion

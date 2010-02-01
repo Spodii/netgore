@@ -713,6 +713,18 @@ namespace DemoGame.Server
             }
         }
 
+        void User_KilledCharacter(Character killed, Character killer)
+        {
+            Debug.Assert(killer == this);
+            Debug.Assert(killed != null);
+
+            var killedNPC = killed as NPC;
+
+            // Handle killing a NPC
+            if (killedNPC != null)
+                GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
+        }
+
         void User_LevelChanged(Character character, byte oldLevel, byte level)
         {
             using (var pw = ServerPacket.SetLevel(level))
@@ -727,18 +739,6 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
-        }
-
-        void User_KilledCharacter(Character killed, Character killer)
-        {
-            Debug.Assert(killer == this);
-            Debug.Assert(killed != null);
-
-            var killedNPC = killed as NPC;
-
-            // Handle killing a NPC
-            if (killedNPC != null)
-                GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
         }
 
         #region IClientCommunicator Members
@@ -811,15 +811,6 @@ namespace DemoGame.Server
         #region IGuildMember Members
 
         /// <summary>
-        /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
-        /// <see cref="IGuildMember"/> instance.
-        /// </summary>
-        int IGuildMember.ID
-        {
-            get { return (int)ID; }
-        }
-
-        /// <summary>
         /// Gets or sets the guild member's current guild. Will be null if they are not part of any guilds.
         /// This value should only be set by the <see cref="IGuildManager"/>. When the value is changed,
         /// <see cref="IGuild.RemoveOnlineMember"/> should be called for the old value (if not null) and
@@ -841,6 +832,15 @@ namespace DemoGame.Server
         {
             get { return _guildMemberInfo.GuildRank; }
             set { _guildMemberInfo.GuildRank = value; }
+        }
+
+        /// <summary>
+        /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
+        /// <see cref="IGuildMember"/> instance.
+        /// </summary>
+        int IGuildMember.ID
+        {
+            get { return (int)ID; }
         }
 
         /// <summary>

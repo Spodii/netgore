@@ -41,6 +41,17 @@ namespace NetGore.Graphics
         static bool _isLoading;
 
         /// <summary>
+        /// Initializes the <see cref="GrhInfo"/> class.
+        /// </summary>
+        static GrhInfo()
+        {
+            _catDic = new Dictionary<SpriteCategory, Dictionary<SpriteTitle, GrhData>>();
+            Debug.Assert(EqualityComparer<SpriteCategory>.Default.Equals("asdf", "ASDF"),
+                         "Sprite category must not be case sensitive.");
+            Debug.Assert(EqualityComparer<SpriteTitle>.Default.Equals("asdf", "ASDF"), "Sprite title must not be case sensitive.");
+        }
+
+        /// <summary>
         /// Notifies listeners when a <see cref="GrhData"/> has been added. This includes
         /// <see cref="GrhData"/>s added from loading.
         /// </summary>
@@ -56,17 +67,6 @@ namespace NetGore.Graphics
         /// Notifies listeners when a <see cref="GrhData"/> has been removed.
         /// </summary>
         public static event GrhDataEventHandler Removed;
-
-        /// <summary>
-        /// Initializes the <see cref="GrhInfo"/> class.
-        /// </summary>
-        static GrhInfo()
-        {
-            _catDic = new Dictionary<SpriteCategory, Dictionary<SpriteTitle, GrhData>>();
-            Debug.Assert(EqualityComparer<SpriteCategory>.Default.Equals("asdf", "ASDF"),
-                         "Sprite category must not be case sensitive.");
-            Debug.Assert(EqualityComparer<SpriteTitle>.Default.Equals("asdf", "ASDF"), "Sprite title must not be case sensitive.");
-        }
 
         /// <summary>
         /// Gets an IEnumerable of all of the <see cref="GrhData"/>s.

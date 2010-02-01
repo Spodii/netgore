@@ -26,16 +26,6 @@ namespace DemoGame.Client
 {
     class ClientPacketHandler : IMessageProcessor, IGetTime
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
-        readonly IDynamicEntityFactory _dynamicEntityFactory;
-
-        readonly GameMessages _gameMessages = GameMessages.Create();
-        readonly GameplayScreen _gameplayScreen;
-        readonly Stopwatch _pingWatch = new Stopwatch();
-        readonly MessageProcessorManager _ppManager;
-        readonly ISocketSender _socketSender;
-
         /// <summary>
         /// Handles when a CreateAccount message is received.
         /// </summary>
@@ -45,25 +35,15 @@ namespace DemoGame.Client
         /// the server.</param>
         public delegate void CreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
 
-        /// <summary>
-        /// Notifies listeners when a message has been received about creating an account.
-        /// </summary>
-        public event CreateAccountEventHandler ReceivedCreateAccount;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
+        readonly IDynamicEntityFactory _dynamicEntityFactory;
 
-        /// <summary>
-        /// Notifies listeners when a message has been received about creating an account character.
-        /// </summary>
-        public event CreateAccountEventHandler ReceivedCreateAccountCharacter;
-
-        /// <summary>
-        /// Notifies listeners when a successful login request has been made.
-        /// </summary>
-        public event ClientPacketHandlerEventHandler ReceivedLoginSuccessful;
-
-        /// <summary>
-        /// Notifies listeners when an unsuccessful login request has been made.
-        /// </summary>
-        public event ClientPacketHandlerEventHandler<string> ReceivedLoginUnsuccessful;
+        readonly GameMessages _gameMessages = GameMessages.Create();
+        readonly GameplayScreen _gameplayScreen;
+        readonly Stopwatch _pingWatch = new Stopwatch();
+        readonly MessageProcessorManager _ppManager;
+        readonly ISocketSender _socketSender;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
@@ -88,6 +68,26 @@ namespace DemoGame.Client
             _ppManager = new MessageProcessorManager(this, EnumHelper<ServerPacketID>.BitsRequired);
         }
 
+        /// <summary>
+        /// Notifies listeners when a message has been received about creating an account.
+        /// </summary>
+        public event CreateAccountEventHandler ReceivedCreateAccount;
+
+        /// <summary>
+        /// Notifies listeners when a message has been received about creating an account character.
+        /// </summary>
+        public event CreateAccountEventHandler ReceivedCreateAccountCharacter;
+
+        /// <summary>
+        /// Notifies listeners when a successful login request has been made.
+        /// </summary>
+        public event ClientPacketHandlerEventHandler ReceivedLoginSuccessful;
+
+        /// <summary>
+        /// Notifies listeners when an unsuccessful login request has been made.
+        /// </summary>
+        public event ClientPacketHandlerEventHandler<string> ReceivedLoginUnsuccessful;
+
         public AccountCharacterInfos AccountCharacterInfos
         {
             get { return _accountCharacterInfos; }
@@ -99,6 +99,11 @@ namespace DemoGame.Client
         public GameplayScreen GameplayScreen
         {
             get { return _gameplayScreen; }
+        }
+
+        public UserGuildInformation GuildInfo
+        {
+            get { return GameplayScreen.GuildInfo; }
         }
 
         /// <summary>
@@ -126,11 +131,6 @@ namespace DemoGame.Client
         public UserInfo UserInfo
         {
             get { return GameplayScreen.UserInfo; }
-        }
-
-        public UserGuildInformation GuildInfo
-        {
-            get { return GameplayScreen.GuildInfo; }
         }
 
         /// <summary>

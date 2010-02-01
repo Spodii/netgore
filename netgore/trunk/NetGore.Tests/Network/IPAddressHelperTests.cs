@@ -7,6 +7,8 @@ namespace NetGore.Tests.Network
     [TestFixture]
     public class IPAddressHelperTests
     {
+        #region Unit tests
+
         [Test]
         public void ByteArrayToStringTest()
         {
@@ -52,5 +54,7 @@ namespace NetGore.Tests.Network
             string s = IPAddressHelper.ToIPv4Address(u);
             Assert.AreEqual("123.232.112.12", s);
         }
+
+        #endregion
     }
 }

@@ -16,16 +16,13 @@ namespace DemoGame.Client
 
     class StatsForm : Form
     {
+        delegate string UserInfoLabelValueHandler(UserInfo userInfo);
+
         const float _xOffset = 21;
         readonly Grh _addStatGrh = new Grh(GrhInfo.GetData("GUI", "AddStat"));
         readonly UserInfo _userInfo;
 
         float _yOffset = 0;
-
-        /// <summary>
-        /// Notifies listeners when a Stat is requested to be raised.
-        /// </summary>
-        public event RaiseStatHandler RequestRaiseStat;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatsForm"/> class.
@@ -62,6 +59,11 @@ namespace DemoGame.Client
             NewStatLabel(StatType.Agi);
             NewStatLabel(StatType.Int);
         }
+
+        /// <summary>
+        /// Notifies listeners when a Stat is requested to be raised.
+        /// </summary>
+        public event RaiseStatHandler RequestRaiseStat;
 
         public UserInfo UserInfo
         {
@@ -292,7 +294,5 @@ namespace DemoGame.Client
                 Text = _title + ": " + _valueHandler(_statsForm.UserInfo);
             }
         }
-
-        delegate string UserInfoLabelValueHandler(UserInfo userInfo);
     }
 }

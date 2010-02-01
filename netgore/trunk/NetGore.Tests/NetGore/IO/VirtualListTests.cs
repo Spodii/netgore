@@ -12,13 +12,6 @@ namespace NetGore.Tests.IO
     {
         static readonly object[] _testValues = new object[] { new object(), new object(), new object() };
 
-        [Test]
-        public void AddTest()
-        {
-            var o = new object();
-            ListTOperation(x => x.Add(o));
-        }
-
         /// <summary>
         /// Checks that two ILists are the same.
         /// </summary>
@@ -49,6 +42,60 @@ namespace NetGore.Tests.IO
             }
         }
 
+        /// <summary>
+        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        static void CollectionTOperation(Action<ICollection<object>> action)
+        {
+            List<object> a = new List<object> { _testValues };
+            VirtualList<object> b = new VirtualList<object> { _testValues };
+
+            action(a);
+            action(b);
+
+            AssertEquality(a, b);
+        }
+
+        /// <summary>
+        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        static void ListOperation(Action<IList> action)
+        {
+            List<object> a = new List<object> { _testValues };
+            VirtualList<object> b = new VirtualList<object> { _testValues };
+
+            action(a);
+            action(b);
+
+            AssertEquality(a, b);
+        }
+
+        /// <summary>
+        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        static void ListTOperation(Action<IList<object>> action)
+        {
+            List<object> a = new List<object> { _testValues };
+            VirtualList<object> b = new VirtualList<object> { _testValues };
+
+            action(a);
+            action(b);
+
+            AssertEquality(a, b);
+        }
+
+        #region Unit tests
+
+        [Test]
+        public void AddTest()
+        {
+            var o = new object();
+            ListTOperation(x => x.Add(o));
+        }
+
         [Test]
         public void ClearTest()
         {
@@ -66,21 +113,6 @@ namespace NetGore.Tests.IO
         public void CollectionTClearTest()
         {
             CollectionTOperation(x => x.Clear());
-        }
-
-        /// <summary>
-        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
-        /// </summary>
-        /// <param name="action">The action to perform.</param>
-        static void CollectionTOperation(Action<ICollection<object>> action)
-        {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
-
-            action(a);
-            action(b);
-
-            AssertEquality(a, b);
         }
 
         [Test]
@@ -165,21 +197,6 @@ namespace NetGore.Tests.IO
             Assert.Throws<ArgumentOutOfRangeException>(() => ListOperation(x => x.Insert(3, o)));
         }
 
-        /// <summary>
-        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
-        /// </summary>
-        /// <param name="action">The action to perform.</param>
-        static void ListOperation(Action<IList> action)
-        {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
-
-            action(a);
-            action(b);
-
-            AssertEquality(a, b);
-        }
-
         [Test]
         public void ListRemoveAtTest()
         {
@@ -197,21 +214,6 @@ namespace NetGore.Tests.IO
         public void ListRemoveTest()
         {
             ListOperation(x => x.Remove(_testValues[0]));
-        }
-
-        /// <summary>
-        /// Performs an operation on a List and VirtualList and makes sure the outcome is the same.
-        /// </summary>
-        /// <param name="action">The action to perform.</param>
-        static void ListTOperation(Action<IList<object>> action)
-        {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
-
-            action(a);
-            action(b);
-
-            AssertEquality(a, b);
         }
 
         [Test]
@@ -232,5 +234,7 @@ namespace NetGore.Tests.IO
         {
             ListTOperation(x => x.Remove(_testValues[0]));
         }
+
+        #endregion
     }
 }

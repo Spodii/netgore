@@ -121,14 +121,6 @@ namespace NetGore.Network
         Socket _socket;
 
         /// <summary>
-        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
-        /// </summary>
-        public int TimeCreated
-        {
-            get { return _timeCreated; }
-        }
-
-        /// <summary>
         /// Wrapper for the socket BeginReceive method
         /// </summary>
         void BeginRecv()
@@ -478,18 +470,15 @@ namespace NetGore.Network
         #region ITCPSocket Members
 
         /// <summary>
-        /// Gets the port as a 16-bit unsigned integer.
+        /// Notifies listeners when the socket has successfully sent data, and how much data was sent.
+        /// Due to internal buffering, this event will likely not be raised for every single individual send call made.
         /// </summary>
-        public ushort Port
-        {
-            get { return _port; }
-        }
+        public event TCPSocketEventHandler<int> DataSent;
 
         /// <summary>
-        /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
-        /// is not used in any way by the TCPSocket itself.
+        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
         /// </summary>
-        public object Tag { get; set; }
+        public event TCPSocketEventHandler Disposed;
 
         /// <summary>
         /// Gets the remote endpoint address. Use this instead of Socket.RemoteEndPoint since
@@ -525,15 +514,65 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
+        /// Gets the port as a 16-bit unsigned integer.
         /// </summary>
-        public event TCPSocketEventHandler Disposed;
+        public ushort Port
+        {
+            get { return _port; }
+        }
 
         /// <summary>
-        /// Notifies listeners when the socket has successfully sent data, and how much data was sent.
-        /// Due to internal buffering, this event will likely not be raised for every single individual send call made.
+        /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
+        /// is not used in any way by the TCPSocket itself.
         /// </summary>
-        public event TCPSocketEventHandler<int> DataSent;
+        public object Tag { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
+        /// </summary>
+        public int TimeCreated
+        {
+            get { return _timeCreated; }
+        }
+
+        /// <summary>
+        /// Disposes all resources used by the TCPSocket.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
+
+            // Close down the socket
+            if (_socket != null)
+            {
+                try
+                {
+                    _socket.Shutdown(SocketShutdown.Both);
+                    _socket.Close();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+                finally
+                {
+                    _socket = null;
+                }
+            }
+
+            // Clear out the queues
+            lock (_recvLock)
+            {
+                if (_recvQueue != null)
+                    _recvQueue.Clear();
+            }
+
+            _isInitialized = false;
+
+            if (Disposed != null)
+                Disposed(this);
+        }
 
         /// <summary>
         /// Gets the queue of complete received data
@@ -609,45 +648,6 @@ namespace NetGore.Network
                        " than if you were to send a BitStream.");
 
             _sendQueue.Enqueue(data);
-        }
-
-        /// <summary>
-        /// Disposes all resources used by the TCPSocket.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-            _disposed = true;
-
-            // Close down the socket
-            if (_socket != null)
-            {
-                try
-                {
-                    _socket.Shutdown(SocketShutdown.Both);
-                    _socket.Close();
-                }
-                catch (ObjectDisposedException)
-                {
-                }
-                finally
-                {
-                    _socket = null;
-                }
-            }
-
-            // Clear out the queues
-            lock (_recvLock)
-            {
-                if (_recvQueue != null)
-                    _recvQueue.Clear();
-            }
-
-            _isInitialized = false;
-
-            if (Disposed != null)
-                Disposed(this);
         }
 
         #endregion

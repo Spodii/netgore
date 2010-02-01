@@ -32,6 +32,130 @@ namespace NetGore.Db
 
         #region IDataReader Members
 
+        ///<summary>
+        ///
+        ///                    Gets the column located at the specified index.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The column located at the specified index as an <see cref="T:System.Object" />.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The zero-based index of the column to get. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public object this[int i]
+        {
+            get { return _dataReader[i]; }
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the column with the specified name.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The column with the specified name as an <see cref="T:System.Object" />.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="name">
+        ///                    The name of the column to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    No column with the specified name was found. 
+        ///                </exception>
+        public object this[string name]
+        {
+            get { return _dataReader[name]; }
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets a value indicating the depth of nesting for the current row.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The level of nesting.
+        ///                
+        ///</returns>
+        ///
+        public int Depth
+        {
+            get { return _dataReader.Depth; }
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the number of columns in the current row.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.
+        ///                
+        ///</returns>
+        ///
+        public int FieldCount
+        {
+            get { return _dataReader.FieldCount; }
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets a value indicating whether the data reader is closed.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///true if the data reader is closed; otherwise, false.
+        ///                
+        ///</returns>
+        ///
+        public bool IsClosed
+        {
+            get { return _dataReader.IsClosed; }
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the number of rows changed, inserted, or deleted by execution of the SQL statement.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The number of rows changed, inserted, or deleted; 0 if no rows were affected or the statement failed; and -1 for SELECT statements.
+        ///                
+        ///</returns>
+        ///
+        public int RecordsAffected
+        {
+            get { return _dataReader.RecordsAffected; }
+        }
+
+        ///<summary>
+        ///
+        ///                    Closes the <see cref="T:System.Data.IDataReader" /> Object.
+        ///                
+        ///</summary>
+        ///
+        public void Close()
+        {
+            _dataReader.Close();
+        }
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.             
         /// </summary>
@@ -39,138 +163,6 @@ namespace NetGore.Db
         {
             _dataReader.Dispose();
             _command.Dispose();
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets the name for the field to find.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The name of the field or the empty string (""), if there is no value to return.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="i">
-        ///                    The index of the field to find. 
-        ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public string GetName(int i)
-        {
-            return _dataReader.GetName(i);
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets the data type information for the specified field.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The data type information for the specified field.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="i">
-        ///                    The index of the field to find. 
-        ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public string GetDataTypeName(int i)
-        {
-            return _dataReader.GetDataTypeName(i);
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets the <see cref="T:System.Type" /> information corresponding to the type of <see cref="T:System.Object" /> that would be returned from <see cref="M:System.Data.IDataRecord.GetValue(System.Int32)" />.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The <see cref="T:System.Type" /> information corresponding to the type of <see cref="T:System.Object" /> that would be returned from <see cref="M:System.Data.IDataRecord.GetValue(System.Int32)" />.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="i">
-        ///                    The index of the field to find. 
-        ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public Type GetFieldType(int i)
-        {
-            return _dataReader.GetFieldType(i);
-        }
-
-        ///<summary>
-        ///
-        ///                    Return the value of the specified field.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The <see cref="T:System.Object" /> which will contain the field value upon return.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="i">
-        ///                    The index of the field to find. 
-        ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public object GetValue(int i)
-        {
-            return _dataReader.GetValue(i);
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets all the attribute fields in the collection for the current record.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The number of instances of <see cref="T:System.Object" /> in the array.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="values">
-        ///                    An array of <see cref="T:System.Object" /> to copy the attribute fields into. 
-        ///                </param>
-        public int GetValues(object[] values)
-        {
-            return _dataReader.GetValues(values);
-        }
-
-        ///<summary>
-        ///
-        ///                    Return the index of the named field.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The index of the named field.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="name">
-        ///                    The name of the field to find. 
-        ///                </param>
-        public int GetOrdinal(string name)
-        {
-            return _dataReader.GetOrdinal(name);
         }
 
         ///<summary>
@@ -314,6 +306,167 @@ namespace NetGore.Db
 
         ///<summary>
         ///
+        ///                    Returns an <see cref="T:System.Data.IDataReader" /> for the specified column ordinal.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    An <see cref="T:System.Data.IDataReader" />.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The index of the field to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public IDataReader GetData(int i)
+        {
+            return _dataReader.GetData(i);
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the data type information for the specified field.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The data type information for the specified field.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The index of the field to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public string GetDataTypeName(int i)
+        {
+            return _dataReader.GetDataTypeName(i);
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the date and time data value of the specified field.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The date and time data value of the specified field.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The index of the field to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public DateTime GetDateTime(int i)
+        {
+            return _dataReader.GetDateTime(i);
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the fixed-position numeric value of the specified field.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The fixed-position numeric value of the specified field.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The index of the field to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public decimal GetDecimal(int i)
+        {
+            return _dataReader.GetDecimal(i);
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the double-precision floating point number of the specified field.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The double-precision floating point number of the specified field.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The index of the field to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public double GetDouble(int i)
+        {
+            return _dataReader.GetDouble(i);
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the <see cref="T:System.Type" /> information corresponding to the type of <see cref="T:System.Object" /> that would be returned from <see cref="M:System.Data.IDataRecord.GetValue(System.Int32)" />.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The <see cref="T:System.Type" /> information corresponding to the type of <see cref="T:System.Object" /> that would be returned from <see cref="M:System.Data.IDataRecord.GetValue(System.Int32)" />.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The index of the field to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public Type GetFieldType(int i)
+        {
+            return _dataReader.GetFieldType(i);
+        }
+
+        ///<summary>
+        ///
+        ///                    Gets the single-precision floating point number of the specified field.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    The single-precision floating point number of the specified field.
+        ///                
+        ///</returns>
+        ///
+        ///<param name="i">
+        ///                    The index of the field to find. 
+        ///                </param>
+        ///<exception cref="T:System.IndexOutOfRangeException">
+        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
+        ///                </exception>
+        public float GetFloat(int i)
+        {
+            return _dataReader.GetFloat(i);
+        }
+
+        ///<summary>
+        ///
         ///                    Returns the GUID value of the specified field.
         ///                
         ///</summary>
@@ -406,13 +559,13 @@ namespace NetGore.Db
 
         ///<summary>
         ///
-        ///                    Gets the single-precision floating point number of the specified field.
+        ///                    Gets the name for the field to find.
         ///                
         ///</summary>
         ///
         ///<returns>
         ///
-        ///                    The single-precision floating point number of the specified field.
+        ///                    The name of the field or the empty string (""), if there is no value to return.
         ///                
         ///</returns>
         ///
@@ -422,32 +575,49 @@ namespace NetGore.Db
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
         ///                </exception>
-        public float GetFloat(int i)
+        public string GetName(int i)
         {
-            return _dataReader.GetFloat(i);
+            return _dataReader.GetName(i);
         }
 
         ///<summary>
         ///
-        ///                    Gets the double-precision floating point number of the specified field.
+        ///                    Return the index of the named field.
         ///                
         ///</summary>
         ///
         ///<returns>
         ///
-        ///                    The double-precision floating point number of the specified field.
+        ///                    The index of the named field.
         ///                
         ///</returns>
         ///
-        ///<param name="i">
-        ///                    The index of the field to find. 
+        ///<param name="name">
+        ///                    The name of the field to find. 
         ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public double GetDouble(int i)
+        public int GetOrdinal(string name)
         {
-            return _dataReader.GetDouble(i);
+            return _dataReader.GetOrdinal(name);
+        }
+
+        ///<summary>
+        ///
+        ///                    Returns a <see cref="T:System.Data.DataTable" /> that describes the column metadata of the <see cref="T:System.Data.IDataReader" />.
+        ///                
+        ///</summary>
+        ///
+        ///<returns>
+        ///
+        ///                    A <see cref="T:System.Data.DataTable" /> that describes the column metadata.
+        ///                
+        ///</returns>
+        ///
+        ///<exception cref="T:System.InvalidOperationException">
+        ///                    The <see cref="T:System.Data.IDataReader" /> is closed. 
+        ///                </exception>
+        public DataTable GetSchemaTable()
+        {
+            return _dataReader.GetSchemaTable();
         }
 
         ///<summary>
@@ -475,13 +645,13 @@ namespace NetGore.Db
 
         ///<summary>
         ///
-        ///                    Gets the fixed-position numeric value of the specified field.
+        ///                    Return the value of the specified field.
         ///                
         ///</summary>
         ///
         ///<returns>
         ///
-        ///                    The fixed-position numeric value of the specified field.
+        ///                    The <see cref="T:System.Object" /> which will contain the field value upon return.
         ///                
         ///</returns>
         ///
@@ -491,55 +661,29 @@ namespace NetGore.Db
         ///<exception cref="T:System.IndexOutOfRangeException">
         ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
         ///                </exception>
-        public decimal GetDecimal(int i)
+        public object GetValue(int i)
         {
-            return _dataReader.GetDecimal(i);
+            return _dataReader.GetValue(i);
         }
 
         ///<summary>
         ///
-        ///                    Gets the date and time data value of the specified field.
+        ///                    Gets all the attribute fields in the collection for the current record.
         ///                
         ///</summary>
         ///
         ///<returns>
         ///
-        ///                    The date and time data value of the specified field.
+        ///                    The number of instances of <see cref="T:System.Object" /> in the array.
         ///                
         ///</returns>
         ///
-        ///<param name="i">
-        ///                    The index of the field to find. 
+        ///<param name="values">
+        ///                    An array of <see cref="T:System.Object" /> to copy the attribute fields into. 
         ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public DateTime GetDateTime(int i)
+        public int GetValues(object[] values)
         {
-            return _dataReader.GetDateTime(i);
-        }
-
-        ///<summary>
-        ///
-        ///                    Returns an <see cref="T:System.Data.IDataReader" /> for the specified column ordinal.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    An <see cref="T:System.Data.IDataReader" />.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="i">
-        ///                    The index of the field to find. 
-        ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public IDataReader GetData(int i)
-        {
-            return _dataReader.GetData(i);
+            return _dataReader.GetValues(values);
         }
 
         ///<summary>
@@ -562,100 +706,6 @@ namespace NetGore.Db
         public bool IsDBNull(int i)
         {
             return _dataReader.IsDBNull(i);
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets the number of columns in the current row.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.
-        ///                
-        ///</returns>
-        ///
-        public int FieldCount
-        {
-            get { return _dataReader.FieldCount; }
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets the column located at the specified index.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The column located at the specified index as an <see cref="T:System.Object" />.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="i">
-        ///                    The zero-based index of the column to get. 
-        ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. 
-        ///                </exception>
-        public object this[int i]
-        {
-            get { return _dataReader[i]; }
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets the column with the specified name.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The column with the specified name as an <see cref="T:System.Object" />.
-        ///                
-        ///</returns>
-        ///
-        ///<param name="name">
-        ///                    The name of the column to find. 
-        ///                </param>
-        ///<exception cref="T:System.IndexOutOfRangeException">
-        ///                    No column with the specified name was found. 
-        ///                </exception>
-        public object this[string name]
-        {
-            get { return _dataReader[name]; }
-        }
-
-        ///<summary>
-        ///
-        ///                    Closes the <see cref="T:System.Data.IDataReader" /> Object.
-        ///                
-        ///</summary>
-        ///
-        public void Close()
-        {
-            _dataReader.Close();
-        }
-
-        ///<summary>
-        ///
-        ///                    Returns a <see cref="T:System.Data.DataTable" /> that describes the column metadata of the <see cref="T:System.Data.IDataReader" />.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    A <see cref="T:System.Data.DataTable" /> that describes the column metadata.
-        ///                
-        ///</returns>
-        ///
-        ///<exception cref="T:System.InvalidOperationException">
-        ///                    The <see cref="T:System.Data.IDataReader" /> is closed. 
-        ///                </exception>
-        public DataTable GetSchemaTable()
-        {
-            return _dataReader.GetSchemaTable();
         }
 
         ///<summary>
@@ -688,56 +738,6 @@ namespace NetGore.Db
         public bool Read()
         {
             return _dataReader.Read();
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets a value indicating the depth of nesting for the current row.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The level of nesting.
-        ///                
-        ///</returns>
-        ///
-        public int Depth
-        {
-            get { return _dataReader.Depth; }
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets a value indicating whether the data reader is closed.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///true if the data reader is closed; otherwise, false.
-        ///                
-        ///</returns>
-        ///
-        public bool IsClosed
-        {
-            get { return _dataReader.IsClosed; }
-        }
-
-        ///<summary>
-        ///
-        ///                    Gets the number of rows changed, inserted, or deleted by execution of the SQL statement.
-        ///                
-        ///</summary>
-        ///
-        ///<returns>
-        ///
-        ///                    The number of rows changed, inserted, or deleted; 0 if no rows were affected or the statement failed; and -1 for SELECT statements.
-        ///                
-        ///</returns>
-        ///
-        public int RecordsAffected
-        {
-            get { return _dataReader.RecordsAffected; }
         }
 
         #endregion

@@ -72,11 +72,6 @@ namespace NetGore.Graphics
         float _speed = 1.0f;
 
         /// <summary>
-        /// Notifies listeners when the skeleton animation has rolled back over to the first frame.
-        /// </summary>
-        public event EventHandler Looped;
-
-        /// <summary>
         /// Skeleton animation constructor
         /// </summary>
         /// <param name="time">Current time</param>
@@ -103,6 +98,11 @@ namespace NetGore.Graphics
         public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[] { frame }))
         {
         }
+
+        /// <summary>
+        /// Notifies listeners when the skeleton animation has rolled back over to the first frame.
+        /// </summary>
+        public event EventHandler Looped;
 
         /// <summary>
         /// Gets a List of the additional layers that can be stacked on top of the original

@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class EntityTests
     {
+        #region Unit tests
+
         [Test]
         public void HitTestTest()
         {
@@ -89,6 +91,8 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(10, e.Size.X);
             Assert.AreEqual(10, e.Size.Y);
         }
+
+        #endregion
 
         class TestEntity : Entity
         {

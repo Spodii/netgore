@@ -10,17 +10,6 @@ namespace NetGore.Tests.NetGore
     {
         static readonly Vector2 SpatialSize = new Vector2(1024, 512);
 
-        [Test]
-        public void AddTest()
-        {
-            foreach (var spatial in GetSpatials())
-            {
-                var entity = new TestEntity();
-                spatial.Add(entity);
-                Assert.IsTrue(spatial.CollectionContains(entity), "Current spatial: " + spatial);
-            }
-        }
-
         static IEnumerable<Entity> CreateEntities(int amount, Vector2 minPos, Vector2 maxPos)
         {
             Entity[] ret = new Entity[amount];
@@ -30,6 +19,33 @@ namespace NetGore.Tests.NetGore
             }
 
             return ret;
+        }
+
+        static IEnumerable<ISpatialCollection> GetSpatials()
+        {
+            var a = new LinearSpatialCollection();
+            a.SetAreaSize(SpatialSize);
+
+            var b = new DynamicGridSpatialCollection();
+            b.SetAreaSize(SpatialSize);
+
+            var c = new StaticGridSpatialCollection();
+            c.SetAreaSize(SpatialSize);
+
+            return new ISpatialCollection[] { a, b };
+        }
+
+        #region Unit tests
+
+        [Test]
+        public void AddTest()
+        {
+            foreach (var spatial in GetSpatials())
+            {
+                var entity = new TestEntity();
+                spatial.Add(entity);
+                Assert.IsTrue(spatial.CollectionContains(entity), "Current spatial: " + spatial);
+            }
         }
 
         [Test]
@@ -54,20 +70,6 @@ namespace NetGore.Tests.NetGore
 
                 Assert.AreEqual(count, found.Count());
             }
-        }
-
-        static IEnumerable<ISpatialCollection> GetSpatials()
-        {
-            var a = new LinearSpatialCollection();
-            a.SetAreaSize(SpatialSize);
-
-            var b = new DynamicGridSpatialCollection();
-            b.SetAreaSize(SpatialSize);
-
-            var c = new StaticGridSpatialCollection();
-            c.SetAreaSize(SpatialSize);
-
-            return new ISpatialCollection[] { a, b };
         }
 
         [Test]
@@ -99,6 +101,8 @@ namespace NetGore.Tests.NetGore
                 Assert.IsFalse(spatial.CollectionContains(entity), "Current spatial: " + spatial);
             }
         }
+
+        #endregion
 
         class TestEntity : Entity
         {

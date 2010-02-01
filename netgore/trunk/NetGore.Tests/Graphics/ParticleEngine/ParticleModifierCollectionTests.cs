@@ -11,6 +11,29 @@ namespace NetGore.Tests.Graphics.ParticleEngine
     [TestFixture]
     public class ParticleModifierCollectionTests
     {
+        static void ConsistencyAsserts(ParticleModifierCollection c)
+        {
+            Assert.AreEqual(c.Where(x => x.ProcessOnRelease).Count(), c.ReleaseModifiers.Count(),
+                            "Sub-list has too many or too few elements.");
+            Assert.AreEqual(c.Where(x => x.ProcessOnUpdate).Count(), c.UpdateModifiers.Count(),
+                            "Sub-list has too many or too few elements.");
+
+            Assert.IsTrue(c.Where(x => x.ProcessOnRelease).ContainSameElements(c.ReleaseModifiers),
+                          "Sub-list does not match main list for given value.");
+            Assert.IsTrue(c.Where(x => x.ProcessOnUpdate).ContainSameElements(c.UpdateModifiers),
+                          "Sub-list does not match main list for given value.");
+
+            Assert.IsFalse(c.Any(x => x == null), "Shouldn't be able to add null items.");
+
+            Assert.AreEqual(c.HasReleaseModifiers, c.ReleaseModifiers.Count() > 0);
+            Assert.AreEqual(c.HasUpdateModifiers, c.UpdateModifiers.Count() > 0);
+
+            var concatDistinct = c.ReleaseModifiers.Concat(c.UpdateModifiers).Distinct();
+            Assert.IsTrue(c.ContainSameElements(concatDistinct), "Sub-collections don't contain same items as main collection.");
+        }
+
+        #region Unit tests
+
         [Test]
         public void AddNullTest()
         {
@@ -55,27 +78,6 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             Assert.AreEqual(1, c.UpdateModifiers.Count());
 
             ConsistencyAsserts(c);
-        }
-
-        static void ConsistencyAsserts(ParticleModifierCollection c)
-        {
-            Assert.AreEqual(c.Where(x => x.ProcessOnRelease).Count(), c.ReleaseModifiers.Count(),
-                            "Sub-list has too many or too few elements.");
-            Assert.AreEqual(c.Where(x => x.ProcessOnUpdate).Count(), c.UpdateModifiers.Count(),
-                            "Sub-list has too many or too few elements.");
-
-            Assert.IsTrue(c.Where(x => x.ProcessOnRelease).ContainSameElements(c.ReleaseModifiers),
-                          "Sub-list does not match main list for given value.");
-            Assert.IsTrue(c.Where(x => x.ProcessOnUpdate).ContainSameElements(c.UpdateModifiers),
-                          "Sub-list does not match main list for given value.");
-
-            Assert.IsFalse(c.Any(x => x == null), "Shouldn't be able to add null items.");
-
-            Assert.AreEqual(c.HasReleaseModifiers, c.ReleaseModifiers.Count() > 0);
-            Assert.AreEqual(c.HasUpdateModifiers, c.UpdateModifiers.Count() > 0);
-
-            var concatDistinct = c.ReleaseModifiers.Concat(c.UpdateModifiers).Distinct();
-            Assert.IsTrue(c.ContainSameElements(concatDistinct), "Sub-collections don't contain same items as main collection.");
         }
 
         [Test]
@@ -278,6 +280,8 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             Assert.IsTrue(c.ContainSameElements(a));
             Assert.AreEqual(c.Count, a.Count);
         }
+
+        #endregion
 
         class TestModifierA : ParticleModifier
         {

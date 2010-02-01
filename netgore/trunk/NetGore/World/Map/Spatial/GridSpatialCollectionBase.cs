@@ -448,140 +448,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets all spatials containing a given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatials at.</param>
-        /// <returns>All of the spatials at the given point.</returns>
-        public IEnumerable<ISpatial> GetMany(Vector2 p)
-        {
-            var segment = TryGetSegment(p);
-            if (segment == null)
-                return Enumerable.Empty<ISpatial>();
-
-            return AsImmutable(segment.Where(x => x.Contains(p)));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<ISpatial> GetMany(Rectangle rect)
-        {
-            var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect))));
-        }
-
-        /// <summary>
-        /// Gets all spatials at the given point.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <param name="p">The point to find the spatials at.</param>
-        /// <returns>
-        /// All spatials containing the given point that are of the given type.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Vector2 p)
-        {
-            var segment = TryGetSegment(p);
-            if (segment == null)
-                return Enumerable.Empty<T>();
-
-            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>());
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Rectangle rect)
-        {
-            var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>()));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s of the given type.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>()
-        {
-            return AsDistinctAndImmutable(_gridSegments.SelectMany(x => x).OfType<T>());
-        }
-
-        /// <summary>
-        /// Gets all spatials containing a given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatials at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>All of the spatials at the given point.</returns>
-        public IEnumerable<ISpatial> GetMany(Vector2 p, Predicate<ISpatial> condition)
-        {
-            var segment = TryGetSegment(p);
-            if (segment == null)
-                return Enumerable.Empty<ISpatial>();
-
-            return AsImmutable(segment.Where(x => x.Contains(p) && condition(x)));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Rectangle rect, Predicate<T> condition)
-        {
-            var segments = GetSegments(rect);
-            return
-                AsDistinctAndImmutable(
-                    segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>().Where(x => condition(x))));
-        }
-
-        /// <summary>
-        /// Gets all spatials at the given point.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
-        /// <param name="p">The point to find the spatials at.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>
-        /// All spatials containing the given point that are of the given type.
-        /// </returns>
-        public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
-        {
-            var segment = TryGetSegment(p);
-            if (segment == null)
-                return Enumerable.Empty<T>();
-
-            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>().Where(x => condition(x)));
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
-        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
-        /// <returns>
-        /// All <see cref="ISpatial"/>s found intersecting the given region.
-        /// </returns>
-        public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
-        {
-            var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect) && condition(x))));
-        }
-
-        /// <summary>
         /// Gets the first <see cref="ISpatial"/> found in the given region.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -755,6 +621,140 @@ namespace NetGore
             }
 
             return default(T);
+        }
+
+        /// <summary>
+        /// Gets all spatials containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatials at.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetMany(Vector2 p)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<ISpatial>();
+
+            return AsImmutable(segment.Where(x => x.Contains(p)));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<ISpatial> GetMany(Rectangle rect)
+        {
+            var segments = GetSegments(rect);
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect))));
+        }
+
+        /// <summary>
+        /// Gets all spatials at the given point.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
+        /// <param name="p">The point to find the spatials at.</param>
+        /// <returns>
+        /// All spatials containing the given point that are of the given type.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Vector2 p)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<T>();
+
+            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>());
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Rectangle rect)
+        {
+            var segments = GetSegments(rect);
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>()));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s of the given type.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>()
+        {
+            return AsDistinctAndImmutable(_gridSegments.SelectMany(x => x).OfType<T>());
+        }
+
+        /// <summary>
+        /// Gets all spatials containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatials at.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetMany(Vector2 p, Predicate<ISpatial> condition)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<ISpatial>();
+
+            return AsImmutable(segment.Where(x => x.Contains(p) && condition(x)));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Rectangle rect, Predicate<T> condition)
+        {
+            var segments = GetSegments(rect);
+            return
+                AsDistinctAndImmutable(
+                    segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>().Where(x => condition(x))));
+        }
+
+        /// <summary>
+        /// Gets all spatials at the given point.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for.</typeparam>
+        /// <param name="p">The point to find the spatials at.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>
+        /// All spatials containing the given point that are of the given type.
+        /// </returns>
+        public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
+        {
+            var segment = TryGetSegment(p);
+            if (segment == null)
+                return Enumerable.Empty<T>();
+
+            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>().Where(x => condition(x)));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for <see cref="ISpatial"/>s.</param>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>
+        /// All <see cref="ISpatial"/>s found intersecting the given region.
+        /// </returns>
+        public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
+        {
+            var segments = GetSegments(rect);
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect) && condition(x))));
         }
 
         /// <summary>

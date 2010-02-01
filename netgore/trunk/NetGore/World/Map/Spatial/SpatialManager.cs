@@ -64,15 +64,6 @@ namespace NetGore
         #region ISpatialCollection Members
 
         /// <summary>
-        /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
-        /// </summary>
-        /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
-        public void SetAreaSize(Vector2 size)
-        {
-            _rootSpatial.SetAreaSize(size);
-        }
-
-        /// <summary>
         /// Adds multiple <see cref="ISpatial"/>s to the <see cref="ISpatialCollection"/>.
         /// </summary>
         /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
@@ -228,6 +219,112 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
+        /// <returns>
+        /// The first <see cref="ISpatial"/> found in the given region, or null if none found.
+        /// </returns>
+        public T Get<T>(Rectangle rect, Predicate<T> condition)
+        {
+            return GetSpatialCollection(typeof(T)).Get(rect, condition);
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found in the given region.
+        /// </summary>
+        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
+        /// <returns>
+        /// The first <see cref="ISpatial"/> found in the given region, or null if none found.
+        /// </returns>
+        public ISpatial Get(Rectangle rect, Predicate<ISpatial> condition)
+        {
+            return GetSpatialCollection(typeof(ISpatial)).Get(rect, condition);
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>
+        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
+        /// </returns>
+        public T Get<T>(Vector2 p, Predicate<T> condition)
+        {
+            return GetSpatialCollection(typeof(T)).Get(p, condition);
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <returns>
+        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
+        /// </returns>
+        public T Get<T>(Vector2 p)
+        {
+            return GetSpatialCollection(typeof(T)).Get<T>(p);
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <returns>
+        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
+        /// </returns>
+        public ISpatial Get(Vector2 p)
+        {
+            return GetSpatialCollection(typeof(ISpatial)).Get(p);
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the spatial at.</param>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>
+        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
+        /// </returns>
+        public ISpatial Get(Vector2 p, Predicate<ISpatial> condition)
+        {
+            return GetSpatialCollection(typeof(ISpatial)).Get(p, condition);
+        }
+
+        /// <summary>
+        /// Gets the first ISpatial found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the ISpatial</param>
+        /// <returns>
+        /// First ISpatial found at the given point, or null if none found
+        /// </returns>
+        public ISpatial Get(Rectangle rect)
+        {
+            return GetSpatialCollection(typeof(ISpatial)).Get(rect);
+        }
+
+        /// <summary>
+        /// Gets the first ISpatial found in the given region
+        /// </summary>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <param name="rect">Region to check for the ISpatial</param>
+        /// <returns>
+        /// First ISpatial found at the given point, or null if none found
+        /// </returns>
+        public T Get<T>(Rectangle rect)
+        {
+            return GetSpatialCollection(typeof(T)).Get<T>(rect);
+        }
+
+        /// <summary>
         /// Gets all spatials containing a given point.
         /// </summary>
         /// <param name="p">Point to find the spatials at.</param>
@@ -340,118 +437,21 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found in the given region.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
-        /// <returns>
-        /// The first <see cref="ISpatial"/> found in the given region, or null if none found.
-        /// </returns>
-        public T Get<T>(Rectangle rect, Predicate<T> condition)
-        {
-            return GetSpatialCollection(typeof(T)).Get(rect, condition);
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found in the given region.
-        /// </summary>
-        /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
-        /// <returns>
-        /// The first <see cref="ISpatial"/> found in the given region, or null if none found.
-        /// </returns>
-        public ISpatial Get(Rectangle rect, Predicate<ISpatial> condition)
-        {
-            return GetSpatialCollection(typeof(ISpatial)).Get(rect, condition);
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
-        /// will be ignored.</typeparam>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <returns>
-        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
-        /// </returns>
-        public T Get<T>(Vector2 p, Predicate<T> condition)
-        {
-            return GetSpatialCollection(typeof(T)).Get(p, condition);
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
-        /// will be ignored.</typeparam>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <returns>
-        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
-        /// </returns>
-        public T Get<T>(Vector2 p)
-        {
-            return GetSpatialCollection(typeof(T)).Get<T>(p);
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <returns>
-        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
-        /// </returns>
-        public ISpatial Get(Vector2 p)
-        {
-            return GetSpatialCollection(typeof(ISpatial)).Get(p);
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the spatial at.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <returns>
-        /// First <see cref="ISpatial"/> found at the given point, or null if none found.
-        /// </returns>
-        public ISpatial Get(Vector2 p, Predicate<ISpatial> condition)
-        {
-            return GetSpatialCollection(typeof(ISpatial)).Get(p, condition);
-        }
-
-        /// <summary>
-        /// Gets the first ISpatial found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the ISpatial</param>
-        /// <returns>
-        /// First ISpatial found at the given point, or null if none found
-        /// </returns>
-        public ISpatial Get(Rectangle rect)
-        {
-            return GetSpatialCollection(typeof(ISpatial)).Get(rect);
-        }
-
-        /// <summary>
-        /// Gets the first ISpatial found in the given region
-        /// </summary>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <param name="rect">Region to check for the ISpatial</param>
-        /// <returns>
-        /// First ISpatial found at the given point, or null if none found
-        /// </returns>
-        public T Get<T>(Rectangle rect)
-        {
-            return GetSpatialCollection(typeof(T)).Get<T>(rect);
-        }
-
-        /// <summary>
         /// Removes an <see cref="ISpatial"/> from the spatial collection.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
         public void Remove(ISpatial spatial)
         {
             GetSpatialCollection(spatial.GetType()).Remove(spatial);
+        }
+
+        /// <summary>
+        /// Sets the size of the area to keep track of <see cref="ISpatial"/> objects in.
+        /// </summary>
+        /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
+        public void SetAreaSize(Vector2 size)
+        {
+            _rootSpatial.SetAreaSize(size);
         }
 
         #endregion

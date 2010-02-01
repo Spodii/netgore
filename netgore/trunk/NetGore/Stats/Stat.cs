@@ -82,6 +82,11 @@ namespace NetGore.Stats
         #region IStat<TStatType> Members
 
         /// <summary>
+        /// Notifies listeners that the value of this <see cref="IStat{TStatType}"/> has changed.
+        /// </summary>
+        public event IStatEventHandler<TStatType> Changed;
+
+        /// <summary>
         /// Gets the <typeparamref name="TStatType"/> of this <see cref="IStat{TStatType}"/>.
         /// </summary>
         /// <value></value>
@@ -109,6 +114,32 @@ namespace NetGore.Stats
                 if (Changed != null)
                     Changed(this);
             }
+        }
+
+        /// <summary>
+        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>, resulting in a new <see cref="IStat{TStatType}"/>
+        /// object of the same type as this <see cref="IStat{TStatType}"/>, and containing the same <see cref="IStatValueType"/>
+        /// with the same value, and same <typeparamref name="TStatType"/>.
+        /// </summary>
+        /// <returns>
+        /// The deep copy of the <see cref="IStat{TStatType}"/>.
+        /// </returns>
+        public virtual IStat<TStatType> DeepCopy()
+        {
+            return new Stat<TStatType>(StatType, _value, Value);
+        }
+
+        /// <summary>
+        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>, resulting in a new
+        /// <see cref="IStatValueType"/> object of the same type as this <see cref="IStat{TStatType}"/>'s
+        /// <see cref="IStatValueType"/>, and containing the same value.
+        /// </summary>
+        /// <returns>
+        /// The deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>.
+        /// </returns>
+        public IStatValueType DeepCopyValueType()
+        {
+            return _value.DeepCopy();
         }
 
         /// <summary>
@@ -154,37 +185,6 @@ namespace NetGore.Stats
         {
             _value.Write(bitStream);
         }
-
-        /// <summary>
-        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>, resulting in a new
-        /// <see cref="IStatValueType"/> object of the same type as this <see cref="IStat{TStatType}"/>'s
-        /// <see cref="IStatValueType"/>, and containing the same value.
-        /// </summary>
-        /// <returns>
-        /// The deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>.
-        /// </returns>
-        public IStatValueType DeepCopyValueType()
-        {
-            return _value.DeepCopy();
-        }
-
-        /// <summary>
-        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>, resulting in a new <see cref="IStat{TStatType}"/>
-        /// object of the same type as this <see cref="IStat{TStatType}"/>, and containing the same <see cref="IStatValueType"/>
-        /// with the same value, and same <typeparamref name="TStatType"/>.
-        /// </summary>
-        /// <returns>
-        /// The deep copy of the <see cref="IStat{TStatType}"/>.
-        /// </returns>
-        public virtual IStat<TStatType> DeepCopy()
-        {
-            return new Stat<TStatType>(StatType, _value, Value);
-        }
-
-        /// <summary>
-        /// Notifies listeners that the value of this <see cref="IStat{TStatType}"/> has changed.
-        /// </summary>
-        public event IStatEventHandler<TStatType> Changed;
 
         #endregion
     }

@@ -17,6 +17,29 @@ namespace NetGore.Tests.Db.ClassCreator
         IEnumerable<PropertyInfo> _dbAViewProperties;
         IEnumerable<Type> _dbAViewTypes;
 
+        [TestFixtureSetUp]
+        public void Setup()
+        {
+            TestDb.Execute(Resources.testdb_a);
+            TestDb.Execute(Resources.testdb_a_view);
+
+            _dbATypes = ClassCreatorHelper.GetTableTypes(Resources.testdb_a_name);
+            _dbAProperties = ClassCreatorHelper.GetTableTypeProperties(_dbATypes);
+
+            _dbAViewTypes = ClassCreatorHelper.GetTableTypes(Resources.testdb_a_view_name);
+            _dbAViewProperties = ClassCreatorHelper.GetTableTypeProperties(_dbAViewTypes);
+
+            _conn = TestDb.Open();
+        }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            TestDb.Close(_conn);
+        }
+
+        #region Unit tests
+
         [Test]
         public void CreateByteNullableTest()
         {
@@ -377,25 +400,6 @@ namespace NetGore.Tests.Db.ClassCreator
             ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "vc", typeof(string));
         }
 
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            TestDb.Execute(Resources.testdb_a);
-            TestDb.Execute(Resources.testdb_a_view);
-
-            _dbATypes = ClassCreatorHelper.GetTableTypes(Resources.testdb_a_name);
-            _dbAProperties = ClassCreatorHelper.GetTableTypeProperties(_dbATypes);
-
-            _dbAViewTypes = ClassCreatorHelper.GetTableTypes(Resources.testdb_a_view_name);
-            _dbAViewProperties = ClassCreatorHelper.GetTableTypeProperties(_dbAViewTypes);
-
-            _conn = TestDb.Open();
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            TestDb.Close(_conn);
-        }
+        #endregion
     }
 }

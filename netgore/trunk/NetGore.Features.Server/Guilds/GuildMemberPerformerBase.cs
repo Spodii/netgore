@@ -153,23 +153,6 @@ namespace NetGore.Features.Guilds
             #region IGuildMember Members
 
             /// <summary>
-            /// Gets the unique name of the guild member.
-            /// </summary>
-            public string Name
-            {
-                get { return _name; }
-            }
-
-            /// <summary>
-            /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
-            /// <see cref="IGuildMember"/> instance.
-            /// </summary>
-            public int ID
-            {
-                get { return _id; }
-            }
-
-            /// <summary>
             /// Gets or sets the guild member's current guild. Will be null if they are not part of any guilds.
             /// This value should only be set by the <see cref="IGuildManager"/>. When the value is changed,
             /// <see cref="IGuild.RemoveOnlineMember"/> should be called for the old value (if not null) and
@@ -191,6 +174,23 @@ namespace NetGore.Features.Guilds
             {
                 get { return _rank; }
                 set { _rank = value; }
+            }
+
+            /// <summary>
+            /// Gets an ID that can be used to distinguish this <see cref="IGuildMember"/> from any other
+            /// <see cref="IGuildMember"/> instance.
+            /// </summary>
+            public int ID
+            {
+                get { return _id; }
+            }
+
+            /// <summary>
+            /// Gets the unique name of the guild member.
+            /// </summary>
+            public string Name
+            {
+                get { return _name; }
             }
 
             /// <summary>

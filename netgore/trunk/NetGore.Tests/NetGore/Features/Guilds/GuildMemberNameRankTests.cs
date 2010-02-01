@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Features.Guilds;
 using NetGore.IO;
 using NUnit.Framework;
@@ -11,6 +8,8 @@ namespace NetGore.Tests.NetGore.Features.Guilds
     [TestFixture]
     public class GuildMemberNameRankTests
     {
+        #region Unit tests
+
         [Test]
         public void GuildMemberNameRankIOTest()
         {
@@ -46,5 +45,7 @@ namespace NetGore.Tests.NetGore.Features.Guilds
                 }
             }
         }
+
+        #endregion
     }
 }

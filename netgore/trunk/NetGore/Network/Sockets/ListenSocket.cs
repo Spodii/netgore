@@ -32,21 +32,6 @@ namespace NetGore.Network
         bool _disposed;
 
         /// <summary>
-        /// Notifies listeners when a connection has been accepted.
-        /// </summary>
-        public event ListenSocketAcceptHandler ConnectionAccepted;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">The <see cref="TCPSocket"/> for the connection that was accepted.</param>
-        protected virtual void OnConnectionAccepted(TCPSocket conn)
-        {
-        }
-
-        /// <summary>
         /// ListenSocket constructor
         /// </summary>
         /// <param name="port">Port to listen on</param>
@@ -82,6 +67,11 @@ namespace NetGore.Network
             // Start accepting right away
             BeginAccept();
         }
+
+        /// <summary>
+        /// Notifies listeners when a connection has been accepted.
+        /// </summary>
+        public event ListenSocketAcceptHandler ConnectionAccepted;
 
         /// <summary>
         /// If the listen socket is correctly working and accepting connections
@@ -164,6 +154,16 @@ namespace NetGore.Network
 
             if (ConnectionAccepted != null)
                 ConnectionAccepted(this, conn);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">The <see cref="TCPSocket"/> for the connection that was accepted.</param>
+        protected virtual void OnConnectionAccepted(TCPSocket conn)
+        {
         }
 
         #region IDisposable Members

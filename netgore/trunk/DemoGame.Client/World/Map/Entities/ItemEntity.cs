@@ -31,15 +31,6 @@ namespace DemoGame.Client
         ItemType _type;
         int _value = 0;
 
-        /// <summary>
-        /// Notifies listeners that this <see cref="Entity"/> was picked up
-        /// </summary>
-        public override event EntityEventHandler<CharacterEntity> OnPickup
-        {
-            add { }
-            remove { }
-        }
-
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
             _grh = new Grh(null);
@@ -57,6 +48,15 @@ namespace DemoGame.Client
             MapEntityIndex = mapEntityIndex;
             _amount = 0;
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
+        }
+
+        /// <summary>
+        /// Notifies listeners that this <see cref="Entity"/> was picked up
+        /// </summary>
+        public override event EntityEventHandler<CharacterEntity> OnPickup
+        {
+            add { }
+            remove { }
         }
 
         /// <summary>
@@ -182,6 +182,15 @@ namespace DemoGame.Client
         #region IDrawable Members
 
         /// <summary>
+        /// Notifies when the ItemEntity's render layer changes (which is never for ItemEntity)
+        /// </summary>
+        public event MapRenderLayerChange ChangedRenderLayer
+        {
+            add { }
+            remove { }
+        }
+
+        /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
         /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
         /// </summary>
@@ -189,15 +198,6 @@ namespace DemoGame.Client
         public int LayerDepth
         {
             get { return 0; }
-        }
-
-        /// <summary>
-        /// Draws the ItemEntity
-        /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(SpriteBatch sb)
-        {
-            Draw(sb, Position);
         }
 
         /// <summary>
@@ -213,12 +213,12 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Notifies when the ItemEntity's render layer changes (which is never for ItemEntity)
+        /// Draws the ItemEntity
         /// </summary>
-        public event MapRenderLayerChange ChangedRenderLayer
+        /// <param name="sb">SpriteBatch to draw to</param>
+        public void Draw(SpriteBatch sb)
         {
-            add { }
-            remove { }
+            Draw(sb, Position);
         }
 
         /// <summary>

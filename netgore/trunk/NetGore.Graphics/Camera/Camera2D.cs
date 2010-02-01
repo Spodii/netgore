@@ -87,21 +87,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets a <see cref="Rectangle"/> that describes the region of the world area visible by the camera.
-        /// </summary>
-        /// <returns>A <see cref="Rectangle"/> that describes the region of the world area visible by the camera.</returns>
-        public Rectangle GetViewArea()
-        {
-            var min = Min;
-            var max = Max;
-
-            Vector2 size;
-            Vector2.Subtract(ref max, ref min, out size);
-
-            return new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-        }
-
-        /// <summary>
         /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
         /// outside of the range of the map. Only valid if <see cref="ICamera2D.Map"/> is not null.
         /// </summary>
@@ -240,12 +225,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Moves the camera's position using the given <paramref name="offset"/>.
+        /// Gets a <see cref="Rectangle"/> that describes the region of the world area visible by the camera.
         /// </summary>
-        /// <param name="offset">The amount and direction to move the camera.</param>
-        public void Translate(Vector2 offset)
+        /// <returns>A <see cref="Rectangle"/> that describes the region of the world area visible by the camera.</returns>
+        public Rectangle GetViewArea()
         {
-            Min += offset;
+            var min = Min;
+            var max = Max;
+
+            Vector2 size;
+            Vector2.Subtract(ref max, ref min, out size);
+
+            return new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
         }
 
         /// <summary>
@@ -349,6 +340,15 @@ namespace NetGore.Graphics
         public Vector2 ToWorld(float screenX, float screenY)
         {
             return ToWorld(new Vector2(screenX, screenY));
+        }
+
+        /// <summary>
+        /// Moves the camera's position using the given <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The amount and direction to move the camera.</param>
+        public void Translate(Vector2 offset)
+        {
+            Min += offset;
         }
 
         /// <summary>

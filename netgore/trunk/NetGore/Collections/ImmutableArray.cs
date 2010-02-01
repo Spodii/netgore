@@ -111,6 +111,57 @@ namespace NetGore.Collections
         #region ICollection<T> Members
 
         /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <returns>The number of elements contained in the
+        /// <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
+        public int Count
+        {
+            get { return Length; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        /// <returns>True.</returns>
+        public bool IsReadOnly
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Not supported by the <see cref="ImmutableArray{T}"/>.
+        /// </summary>
+        /// <param name="item">Unused.</param>
+        /// <exception cref="NotSupportedException">Method is accessed.</exception>
+        public void Add(T item)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Not supported by the <see cref="ImmutableArray{T}"/>.
+        /// </summary>
+        /// <exception cref="NotSupportedException">Method is accessed.</exception>
+        public void Clear()
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns>
+        /// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>;
+        /// otherwise, false.
+        /// </returns>
+        public bool Contains(T item)
+        {
+            return _source.Contains(item);
+        }
+
+        /// <summary>
         /// Copies all the elements of the current one-dimensional System.Array to the specified one-dimensional
         /// System.Array starting at the specified destination System.Array index.
         /// </summary>
@@ -159,62 +210,11 @@ namespace NetGore.Collections
         /// Not supported by the <see cref="ImmutableArray{T}"/>.
         /// </summary>
         /// <param name="item">Unused.</param>
-        /// <exception cref="NotSupportedException">Method is accessed.</exception>
-        public void Add(T item)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Not supported by the <see cref="ImmutableArray{T}"/>.
-        /// </summary>
-        /// <exception cref="NotSupportedException">Method is accessed.</exception>
-        public void Clear()
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
-        /// </summary>
-        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
-        /// <returns>
-        /// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>;
-        /// otherwise, false.
-        /// </returns>
-        public bool Contains(T item)
-        {
-            return _source.Contains(item);
-        }
-
-        /// <summary>
-        /// Not supported by the <see cref="ImmutableArray{T}"/>.
-        /// </summary>
-        /// <param name="item">Unused.</param>
         /// <returns>None.</returns>
         /// <exception cref="NotSupportedException">Method is accessed.</exception>
         bool ICollection<T>.Remove(T item)
         {
             throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <returns>The number of elements contained in the
-        /// <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
-        public int Count
-        {
-            get { return Length; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
-        /// </summary>
-        /// <returns>True.</returns>
-        public bool IsReadOnly
-        {
-            get { return true; }
         }
 
         #endregion

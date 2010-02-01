@@ -7,6 +7,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class IsBetweenTests
     {
+        #region Unit tests
+
         [Test]
         public void IsBetweenByteTest()
         {
@@ -285,5 +287,7 @@ namespace NetGore.Tests.NetGore
                 }
             }
         }
+
+        #endregion
     }
 }

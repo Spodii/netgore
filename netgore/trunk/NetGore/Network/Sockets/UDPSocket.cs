@@ -114,6 +114,14 @@ namespace NetGore.Network
         #region IUDPSocket Members
 
         /// <summary>
+        /// Gets the maximum size of the data that can be sent in a single send.
+        /// </summary>
+        int IUDPSocket.MaxSendSize
+        {
+            get { return MaxPacketSize; }
+        }
+
+        /// <summary>
         /// Binds the <see cref="IUDPSocket"/> to a random available port.
         /// </summary>
         /// <returns>
@@ -162,11 +170,12 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the maximum size of the data that can be sent in a single send.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        int IUDPSocket.MaxSendSize
+        public void Dispose()
         {
-            get { return MaxPacketSize; }
+            if (_socket != null)
+                _socket.Close();
         }
 
         /// <summary>
@@ -218,15 +227,6 @@ namespace NetGore.Network
         public void Send(byte[] data, EndPoint endPoint)
         {
             Send(data, data.Length, endPoint);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_socket != null)
-                _socket.Close();
         }
 
         #endregion

@@ -10,6 +10,41 @@ namespace NetGore.Tests.Db.MySql
     [TestFixture]
     public class DbQueryReaderTests
     {
+        static MyReader CreateReader()
+        {
+            return new MyReader(DbManagerTestSettings.CreateConnectionPool());
+        }
+
+        static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth, int initialDepth)
+        {
+            DbConnectionPool cp = reader.ConnectionPool;
+            QueryTestValues v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
+            int expectedPoolSize = initialDepth - depth;
+
+            Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
+            using (IDataReader r = reader.ExecuteReader(v))
+            {
+                expectedPoolSize++;
+
+                Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
+                Assert.IsTrue(r.Read());
+                Assert.AreEqual(v.A + v.B + v.C, r[0]);
+                if (depth > 0)
+                    SelectTestRecurse(reader, depth - 1, initialDepth);
+                Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
+
+                expectedPoolSize--;
+            }
+            Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
+        }
+
+        static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth)
+        {
+            SelectTestRecurse(reader, depth, depth);
+        }
+
+        #region Unit tests
+
         [Test]
         public void ConcurrentSelectTest()
         {
@@ -22,11 +57,6 @@ namespace NetGore.Tests.Db.MySql
                     SelectTestRecurse(reader, 3);
                 }
             }
-        }
-
-        static MyReader CreateReader()
-        {
-            return new MyReader(DbManagerTestSettings.CreateConnectionPool());
         }
 
         [Test]
@@ -64,34 +94,6 @@ namespace NetGore.Tests.Db.MySql
             }
         }
 
-        static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth, int initialDepth)
-        {
-            DbConnectionPool cp = reader.ConnectionPool;
-            QueryTestValues v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
-            int expectedPoolSize = initialDepth - depth;
-
-            Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
-            using (IDataReader r = reader.ExecuteReader(v))
-            {
-                expectedPoolSize++;
-
-                Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
-                Assert.IsTrue(r.Read());
-                Assert.AreEqual(v.A + v.B + v.C, r[0]);
-                if (depth > 0)
-                    SelectTestRecurse(reader, depth - 1, initialDepth);
-                Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
-
-                expectedPoolSize--;
-            }
-            Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
-        }
-
-        static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth)
-        {
-            SelectTestRecurse(reader, depth, depth);
-        }
-
         [Test]
         public void SuperConcurrentSelectTest()
         {
@@ -102,6 +104,8 @@ namespace NetGore.Tests.Db.MySql
                 SelectTestRecurse(reader, 50);
             }
         }
+
+        #endregion
 
         class MyReader : DbQueryReader<QueryTestValues>
         {

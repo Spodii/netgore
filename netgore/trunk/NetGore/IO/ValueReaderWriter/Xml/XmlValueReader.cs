@@ -128,7 +128,7 @@ namespace NetGore.IO
         XmlValueReader GetXmlValueReaderFromNodeString(string name, string s)
         {
             string trimmed = s.Trim();
-            var bytes = UTF8Encoding.UTF8.GetBytes(trimmed);
+            var bytes = Encoding.UTF8.GetBytes(trimmed);
 
             XmlValueReader ret;
             using (MemoryStream ms = new MemoryStream(bytes))
@@ -234,24 +234,187 @@ namespace NetGore.IO
         #region IValueReader Members
 
         /// <summary>
-        /// Reads a single child node, while enforcing the idea that there should only be one node
-        /// in the key. If there is more than one node for the given <paramref name="key"/>, an
-        /// ArgumentException will be thrown.
+        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
-        /// <param name="key">The key of the child node to read.</param>
-        /// <returns>An IValueReader to read the child node.</returns>
-        /// <exception cref="ArgumentException">Zero or more than one values found for the given
-        /// <paramref name="key"/>.</exception>
-        public IValueReader ReadNode(string key)
+        public bool SupportsNameLookup
         {
-            if (_values[key].Count != 1)
-            {
-                const string errmsg = "ReadNode() requires there to be one and only one value for the given key.";
-                throw new ArgumentException(errmsg, "key");
-            }
+            get { return true; }
+        }
 
-            string nodeContents = _values[key][0];
-            return GetXmlValueReaderFromNodeString(key, nodeContents);
+        /// <summary>
+        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        public bool SupportsNodes
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        public bool UseEnumNames
+        {
+            get { return _useEnumNames; }
+        }
+
+        /// <summary>
+        /// Reads a boolean.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public bool ReadBool(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseBool(values[0]);
+        }
+
+        /// <summary>
+        /// Reads a 8-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public byte ReadByte(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseByte(values[0]);
+        }
+
+        /// <summary>
+        /// Reads a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public double ReadDouble(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseDouble(values[0]);
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
+        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnum<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            if (UseEnumNames)
+                return ReadEnumName<T>(name);
+            else
+                return ReadEnumValue<T>(name);
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return EnumHelper<T>.ReadName(this, name);
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return EnumHelper<T>.ReadValue(this, name);
+        }
+
+        /// <summary>
+        /// Reads a 32-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public float ReadFloat(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseFloat(values[0]);
+        }
+
+        /// <summary>
+        /// Reads a 32-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public int ReadInt(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseInt(values[0]);
+        }
+
+        /// <summary>
+        /// Reads a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public int ReadInt(string name, int bits)
+        {
+            return ReadInt(name);
+        }
+
+        /// <summary>
+        /// Reads a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public long ReadLong(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseLong(values[0]);
         }
 
         /// <summary>
@@ -300,180 +463,24 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
-        /// underlying integer value will be used. If false, the underlying integer value will be used. This
-        /// only to Enum I/O that does not explicitly state which method to use.
+        /// Reads a single child node, while enforcing the idea that there should only be one node
+        /// in the key. If there is more than one node for the given <paramref name="key"/>, an
+        /// ArgumentException will be thrown.
         /// </summary>
-        public bool UseEnumNames
+        /// <param name="key">The key of the child node to read.</param>
+        /// <returns>An IValueReader to read the child node.</returns>
+        /// <exception cref="ArgumentException">Zero or more than one values found for the given
+        /// <paramref name="key"/>.</exception>
+        public IValueReader ReadNode(string key)
         {
-            get { return _useEnumNames; }
-        }
+            if (_values[key].Count != 1)
+            {
+                const string errmsg = "ReadNode() requires there to be one and only one value for the given key.";
+                throw new ArgumentException(errmsg, "key");
+            }
 
-        /// <summary>
-        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
-        /// be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        public bool SupportsNameLookup
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
-        /// will result in a NotSupportedException being thrown.
-        /// </summary>
-        public bool SupportsNodes
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// Reads a 64-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public long ReadLong(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseLong(values[0]);
-        }
-
-        /// <summary>
-        /// Reads a 64-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public ulong ReadULong(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseULong(values[0]);
-        }
-
-        /// <summary>
-        /// Reads a 64-bit floating-point number.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public double ReadDouble(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseDouble(values[0]);
-        }
-
-        /// <summary>
-        /// Reads a 32-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public int ReadInt(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseInt(values[0]);
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            return EnumHelper<T>.ReadValue(this, name);
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            return EnumHelper<T>.ReadName(this, name);
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
-        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnum<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            if (UseEnumNames)
-                return ReadEnumName<T>(name);
-            else
-                return ReadEnumValue<T>(name);
-        }
-
-        /// <summary>
-        /// Reads a signed integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <param name="bits">Number of bits to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public int ReadInt(string name, int bits)
-        {
-            return ReadInt(name);
-        }
-
-        /// <summary>
-        /// Reads a 32-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public uint ReadUInt(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseUInt(values[0]);
-        }
-
-        /// <summary>
-        /// Reads an unsigned integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <param name="bits">Number of bits to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public uint ReadUInt(string name, int bits)
-        {
-            return ReadUInt(name);
+            string nodeContents = _values[key][0];
+            return GetXmlValueReaderFromNodeString(key, nodeContents);
         }
 
         /// <summary>
@@ -515,11 +522,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a boolean.
+        /// Reads a 8-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        public bool ReadBool(string name)
+        public sbyte ReadSByte(string name)
         {
             var values = _values[name];
 
@@ -529,7 +536,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return Parser.Invariant.ParseBool(values[0]);
+            return Parser.Invariant.ParseSByte(values[0]);
         }
 
         /// <summary>
@@ -551,78 +558,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a 16-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public ushort ReadUShort(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseUShort(values[0]);
-        }
-
-        /// <summary>
-        /// Reads a 8-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public byte ReadByte(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseByte(values[0]);
-        }
-
-        /// <summary>
-        /// Reads a 8-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public sbyte ReadSByte(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseSByte(values[0]);
-        }
-
-        /// <summary>
-        /// Reads a 32-bit floating-point number.
-        /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public float ReadFloat(string name)
-        {
-            var values = _values[name];
-
-            if (values.Count == 0)
-                throw CreateKeyNotFoundException(name);
-
-            if (values.Count > 1)
-                throw CreateDuplicateKeysException(name);
-
-            return Parser.Invariant.ParseFloat(values[0]);
-        }
-
-        /// <summary>
         /// Reads a variable-length string of up to 65535 characters in length.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
@@ -640,6 +575,71 @@ namespace NetGore.IO
             string ret = values[0];
             ret = UnescapeString(ret);
             return ret;
+        }
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public uint ReadUInt(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseUInt(values[0]);
+        }
+
+        /// <summary>
+        /// Reads an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public uint ReadUInt(string name, int bits)
+        {
+            return ReadUInt(name);
+        }
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public ulong ReadULong(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseULong(values[0]);
+        }
+
+        /// <summary>
+        /// Reads a 16-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public ushort ReadUShort(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseUShort(values[0]);
         }
 
         #endregion

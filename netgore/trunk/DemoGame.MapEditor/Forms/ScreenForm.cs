@@ -148,11 +148,6 @@ namespace DemoGame.MapEditor
         SpriteFont _spriteFont;
 
         /// <summary>
-        /// Notifies listeners when the map has changed.
-        /// </summary>
-        public event MapChangeEventHandler MapChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
         /// <param name="switches">The command-line switches.</param>
@@ -191,6 +186,11 @@ namespace DemoGame.MapEditor
             GameScreen.MouseWheel += GameScreen_MouseWheel;
             GameScreen.Resize += GameScreen_Resize;
         }
+
+        /// <summary>
+        /// Notifies listeners when the map has changed.
+        /// </summary>
+        public event MapChangeEventHandler MapChanged;
 
         /// <summary>
         /// Gets the camera used for the game screen.
@@ -694,30 +694,6 @@ namespace DemoGame.MapEditor
             _grid.Size = GameScreenSize;
         }
 
-        /// <summary>
-        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.MapChanged"/>
-        /// event when possible.
-        /// </summary>
-        protected virtual void OnMapChanged(Map oldMap, Map newMap)
-        {
-            // Clear the selected item
-            SelectedObjs.Clear();
-
-            // Forward the change to some controls manually
-            Camera.Map = newMap;
-            MapDrawingExtensions.Map = newMap;
-
-            // Automatically update all the controls that implement IMapBoundControl
-            foreach (var c in _mapBoundControls)
-            {
-                c.IMap = newMap;
-            }
-
-            // Handle the change on some controls manually
-            txtMapName.Text = newMap.Name ?? string.Empty;
-            txtMusic.Text = newMap.Music ?? string.Empty;
-        }
-
         void HandleSwitch_SaveAllMaps(string[] parameters)
         {
             foreach (string file in MapBase.GetMapFiles(ContentPaths.Dev))
@@ -999,6 +975,30 @@ namespace DemoGame.MapEditor
 
             if (IsKeyToForward(e.KeyCode))
                 OnKeyUp(e);
+        }
+
+        /// <summary>
+        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.MapChanged"/>
+        /// event when possible.
+        /// </summary>
+        protected virtual void OnMapChanged(Map oldMap, Map newMap)
+        {
+            // Clear the selected item
+            SelectedObjs.Clear();
+
+            // Forward the change to some controls manually
+            Camera.Map = newMap;
+            MapDrawingExtensions.Map = newMap;
+
+            // Automatically update all the controls that implement IMapBoundControl
+            foreach (var c in _mapBoundControls)
+            {
+                c.IMap = newMap;
+            }
+
+            // Handle the change on some controls manually
+            txtMapName.Text = newMap.Name ?? string.Empty;
+            txtMusic.Text = newMap.Music ?? string.Empty;
         }
 
         /// <summary>

@@ -23,17 +23,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Online Guild Members";
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GuildOnlineMembersForm"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
@@ -75,6 +64,17 @@ namespace NetGore.Features.Guilds
                 newValue.OnlineMemberAdded += _updateHandler;
                 newValue.OnlineMemberRemoved += _updateHandler;
             }
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Online Guild Members";
         }
     }
 }

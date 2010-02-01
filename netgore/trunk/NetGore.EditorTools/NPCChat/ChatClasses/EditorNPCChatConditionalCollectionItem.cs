@@ -17,11 +17,6 @@ namespace NetGore.EditorTools.NPCChat
         bool _not;
 
         /// <summary>
-        /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollectionItem"/> has changed.
-        /// </summary>
-        public event EditorNPCChatConditionalCollectionItemHandler Changed;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
         /// </summary>
         /// <param name="source">The source <see cref="NPCChatConditionalCollectionBase"/> to copy the values from. If null,
@@ -75,6 +70,11 @@ namespace NetGore.EditorTools.NPCChat
             _not = false;
             SetConditional(conditional);
         }
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollectionItem"/> has changed.
+        /// </summary>
+        public event EditorNPCChatConditionalCollectionItemHandler Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.

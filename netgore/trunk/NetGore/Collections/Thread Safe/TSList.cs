@@ -569,37 +569,59 @@ namespace NetGore.Collections
         #region IList<T> Members
 
         /// <summary>
-        /// Returns an enumerator that iterates through the collection.
+        /// Gets or sets the <see cref="T"/> at the specified index.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<T> GetEnumerator()
+        public T this[int index]
         {
-            IEnumerable<T> ret;
-
-            _lock.EnterReadLock();
-            try
+            get
             {
-                ret = _list.ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+                T ret;
 
-            return ret.GetEnumerator();
+                _lock.EnterReadLock();
+                try
+                {
+                    ret = _list[index];
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
+                }
+
+                return ret;
+            }
+            set
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    _list[index] = value;
+                }
+                finally
+                {
+                    _lock.ExitWriteLock();
+                }
+            }
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a collection.
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <value></value>
+        /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
+        public int Count
         {
-            return GetEnumerator();
+            get { return _list.Count; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise,
+        /// false.</returns>
+        bool ICollection<T>.IsReadOnly
+        {
+            get { return ((ICollection<T>)_list).IsReadOnly; }
         }
 
         /// <summary>
@@ -697,52 +719,37 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         /// <returns>
-        /// true if <paramref name="item"/> was successfully removed from the
-        /// <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if
-        /// <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is
-        /// read-only.</exception>
-        public bool Remove(T item)
+        public IEnumerator<T> GetEnumerator()
         {
-            bool ret;
+            IEnumerable<T> ret;
 
-            _lock.EnterWriteLock();
+            _lock.EnterReadLock();
             try
             {
-                ret = _list.Remove(item);
+                ret = _list.ToArray();
             }
             finally
             {
-                _lock.ExitWriteLock();
+                _lock.ExitReadLock();
             }
 
-            return ret;
+            return ret.GetEnumerator();
         }
 
         /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
-        /// <value></value>
-        /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
-        public int Count
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            get { return _list.Count; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
-        /// </summary>
-        /// <value></value>
-        /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise,
-        /// false.</returns>
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return ((ICollection<T>)_list).IsReadOnly; }
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -793,6 +800,34 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns>
+        /// true if <paramref name="item"/> was successfully removed from the
+        /// <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if
+        /// <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </returns>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is
+        /// read-only.</exception>
+        public bool Remove(T item)
+        {
+            bool ret;
+
+            _lock.EnterWriteLock();
+            try
+            {
+                ret = _list.Remove(item);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the item to remove.</param>
@@ -811,41 +846,6 @@ namespace NetGore.Collections
             finally
             {
                 _lock.ExitWriteLock();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="T"/> at the specified index.
-        /// </summary>
-        public T this[int index]
-        {
-            get
-            {
-                T ret;
-
-                _lock.EnterReadLock();
-                try
-                {
-                    ret = _list[index];
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
-            }
-            set
-            {
-                _lock.EnterWriteLock();
-                try
-                {
-                    _list[index] = value;
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
             }
         }
 

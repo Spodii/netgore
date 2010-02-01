@@ -9,6 +9,8 @@ namespace NetGore.Tests.Graphics.GUI
     [TestFixture]
     public class StyledTextTests
     {
+        #region Unit tests
+
         [Test]
         public void ConcastTestA()
         {
@@ -414,5 +416,7 @@ namespace NetGore.Tests.Graphics.GUI
             Assert.AreEqual("abc", a.ToString());
             Assert.AreEqual("123", b.ToString());
         }
+
+        #endregion
     }
 }

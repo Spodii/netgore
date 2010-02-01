@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NetGore.Features.Guilds;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -11,6 +10,32 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class IValueReaderWriterTests
     {
+        /// <summary>
+        /// Handler for creating a value from a double.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to create.</typeparam>
+        /// <param name="value">The value to give the new type. Round is fine as long as it is consistent.</param>
+        /// <returns>The new value as type <typeparamref name="T"/>.</returns>
+        delegate T CreateValueTypeHandler<T>(double value);
+
+        /// <summary>
+        /// Handler for reading a value.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="r">IValueReader to read from.</param>
+        /// <param name="name">Name to use for reading.</param>
+        /// <returns>The read value.</returns>
+        delegate T ReadTestValuesHandler<T>(IValueReader r, string name);
+
+        /// <summary>
+        /// Handler for writing a value.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="name">Name to use for writing.</param>
+        /// <param name="value">Value to write.</param>
+        delegate void WriteTestValuesHandler<T>(IValueWriter w, string name, T value);
+
         static readonly object[] _emptyObjArray = new object[0];
 
         static void AssertArraysEqual<T>(T[] expected, T[] actual)
@@ -102,6 +127,25 @@ namespace NetGore.Tests.IO
             const string errmsg = "Writer Type: `{0}`";
             AssertArraysEqual(expected, actual, errmsg, r.GetType());
         }
+
+        /// <summary>
+        /// Writes multiple test values. This is not like IValueWriter.WriteValues as it does not use nodes
+        /// nor does it track the number of items written. This is just to make it easy to write many
+        /// values over a loop.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="values">The values to write.</param>
+        /// <param name="writeHandler">The write handler.</param>
+        static void WriteTestValues<T>(IValueWriter w, T[] values, WriteTestValuesHandler<T> writeHandler)
+        {
+            for (int i = 0; i < values.Length; i++)
+            {
+                writeHandler(w, GetValueKey(i), values[i]);
+            }
+        }
+
+        #region Unit tests
 
         [Test]
         public void TestBools()
@@ -1393,39 +1437,7 @@ namespace NetGore.Tests.IO
             }
         }
 
-        /// <summary>
-        /// Writes multiple test values. This is not like IValueWriter.WriteValues as it does not use nodes
-        /// nor does it track the number of items written. This is just to make it easy to write many
-        /// values over a loop.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="w">IValueWriter to write to.</param>
-        /// <param name="values">The values to write.</param>
-        /// <param name="writeHandler">The write handler.</param>
-        static void WriteTestValues<T>(IValueWriter w, T[] values, WriteTestValuesHandler<T> writeHandler)
-        {
-            for (int i = 0; i < values.Length; i++)
-            {
-                writeHandler(w, GetValueKey(i), values[i]);
-            }
-        }
-
-        /// <summary>
-        /// Handler for creating a value from a double.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to create.</typeparam>
-        /// <param name="value">The value to give the new type. Round is fine as long as it is consistent.</param>
-        /// <returns>The new value as type <typeparamref name="T"/>.</returns>
-        delegate T CreateValueTypeHandler<T>(double value);
-
-        /// <summary>
-        /// Handler for reading a value.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="r">IValueReader to read from.</param>
-        /// <param name="name">Name to use for reading.</param>
-        /// <returns>The read value.</returns>
-        delegate T ReadTestValuesHandler<T>(IValueReader r, string name);
+        #endregion
 
         enum TestEnum
         {
@@ -1438,14 +1450,5 @@ namespace NetGore.Tests.IO
             G,
             Ayche = 100
         }
-
-        /// <summary>
-        /// Handler for writing a value.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="w">IValueWriter to write to.</param>
-        /// <param name="name">Name to use for writing.</param>
-        /// <param name="value">Value to write.</param>
-        delegate void WriteTestValuesHandler<T>(IValueWriter w, string name, T value);
     }
 }

@@ -9,6 +9,8 @@ namespace NetGore.Tests.Db.MySql
     [TestFixture]
     public class MySqlDbConnectionPoolTests
     {
+        #region Unit tests
+
         [Test]
         public void ConnectionCloseTest()
         {
@@ -79,5 +81,7 @@ namespace NetGore.Tests.Db.MySql
                 }
             }
         }
+
+        #endregion
     }
 }

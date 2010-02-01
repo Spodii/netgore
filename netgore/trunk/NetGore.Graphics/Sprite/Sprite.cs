@@ -15,16 +15,6 @@ namespace NetGore.Graphics
         Texture2D _texture;
 
         /// <summary>
-        /// Notifies listeners when the sprite's source has changed.
-        /// </summary>
-        public event EventHandler SourceChanged;
-
-        /// <summary>
-        /// Notifies listeners when the texture has changed.
-        /// </summary>
-        public event EventHandler TextureChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
         public Sprite()
@@ -44,6 +34,16 @@ namespace NetGore.Graphics
             _texture = texture;
             _source = source;
         }
+
+        /// <summary>
+        /// Notifies listeners when the sprite's source has changed.
+        /// </summary>
+        public event EventHandler SourceChanged;
+
+        /// <summary>
+        /// Notifies listeners when the texture has changed.
+        /// </summary>
+        public event EventHandler TextureChanged;
 
         /// <summary>
         /// Draws the Sprite.

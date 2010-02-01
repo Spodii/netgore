@@ -60,6 +60,73 @@ namespace NetGore.Graphics.GUI
         bool _willRaiseClick = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+        /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
+        protected Control(Control parent, Vector2 position, Vector2 clientSize)
+            : this(parent, parent.GUIManager, position, clientSize)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
+        protected Control(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
+            : this(null, guiManager, position, clientSize)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
+        /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
+        Control(Control parent, IGUIManager guiManager, Vector2 position, Vector2 clientSize)
+        {
+            if (guiManager == null)
+                throw new ArgumentNullException("guiManager", "GUIManager cannot be null.");
+
+            _gui = guiManager;
+            _parent = parent;
+
+            _border = ControlBorder.Empty;
+            _position = position;
+            _size = clientSize;
+
+            if (Parent != null)
+            {
+                // Check that the parent isn't disposed
+                if (parent._isDisposed)
+                    throw new ArgumentException("Parent control is disposed and cannot be used.", "parent");
+
+                // Add the Control to the parent
+                Parent._controls.Add(this);
+                _root = GetRootControl();
+                KeepInParent();
+            }
+            else
+            {
+                // This control is the root, so add it directly to the GUI manager
+                _root = this;
+                GUIManager.Add(this);
+            }
+
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            SetDefaultValues();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        /// <summary>
         /// Notifies listeners when the Control has begun being dragged.
         /// </summary>
         public event ControlEventHandler BeginDrag
@@ -201,73 +268,6 @@ namespace NetGore.Graphics.GUI
         {
             add { Events.AddHandler(_eventResized, value); }
             remove { Events.RemoveHandler(_eventResized, value); }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
-        /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        protected Control(Control parent, Vector2 position, Vector2 clientSize)
-            : this(parent, parent.GUIManager, position, clientSize)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        protected Control(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
-            : this(null, guiManager, position, clientSize)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
-        /// </summary>
-        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
-        /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
-        /// <param name="position">Position of the Control reletive to its parent.</param>
-        /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        Control(Control parent, IGUIManager guiManager, Vector2 position, Vector2 clientSize)
-        {
-            if (guiManager == null)
-                throw new ArgumentNullException("guiManager", "GUIManager cannot be null.");
-
-            _gui = guiManager;
-            _parent = parent;
-
-            _border = ControlBorder.Empty;
-            _position = position;
-            _size = clientSize;
-
-            if (Parent != null)
-            {
-                // Check that the parent isn't disposed
-                if (parent._isDisposed)
-                    throw new ArgumentException("Parent control is disposed and cannot be used.", "parent");
-
-                // Add the Control to the parent
-                Parent._controls.Add(this);
-                _root = GetRootControl();
-                KeepInParent();
-            }
-            else
-            {
-                // This control is the root, so add it directly to the GUI manager
-                _root = this;
-                GUIManager.Add(this);
-            }
-
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            SetDefaultValues();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -526,34 +526,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when a <see cref="Control"/> has begun being dragged.
-        /// This is called immediately before <see cref="Control.OnBeginDrag"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnBeginDrag"/> when possible.
-        /// </summary>
-        protected virtual void OnBeginDrag()
-        {
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.BorderChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
-        /// </summary>
-        protected virtual void OnBorderChanged()
-        {
-        }
-
-        /// <summary>
-        /// Handles when this <see cref="Control"/> was clicked.
-        /// This is called immediately before <see cref="Control.OnClick"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void OnClick(MouseClickEventArgs e)
-        {
-        }
-
-        /// <summary>
         /// Checks if the control contains a given point on the screen
         /// </summary>
         /// <param name="screenPoint">Point on the screen</param>
@@ -659,15 +631,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when this <see cref="Control"/> has ended being dragged.
-        /// This is called immediately before <see cref="Control.OnEndDrag"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.OnEndDrag"/> when possible.
-        /// </summary>
-        protected virtual void OnEndDrag()
-        {
-        }
-
-        /// <summary>
         /// Gets all of the child <see cref="Control"/>s from this <see cref="Control"/>.
         /// </summary>
         /// <returns>All of the child <see cref="Control"/>s from this <see cref="Control"/>. Does not include
@@ -754,15 +717,6 @@ namespace NetGore.Graphics.GUI
                     return c;
             }
             return null;
-        }
-
-        /// <summary>
-        /// Handles when this <see cref="Control"/> has gained focus.
-        /// This is called immediately before <see cref="Control.Focused"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.Focused"/> when possible.
-        /// </summary>
-        protected virtual void OnFocused()
-        {
         }
 
         /// <summary>
@@ -1031,6 +985,68 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public virtual void LoadSkin(ISkinManager skinManager)
+        {
+            var type = GetType();
+            string name = type.Name;
+
+            if (type.IsGenericType)
+                name = name.Substring(0, name.IndexOf('`'));
+
+            Border = skinManager.GetBorder(name);
+        }
+
+        /// <summary>
+        /// Handles when a <see cref="Control"/> has begun being dragged.
+        /// This is called immediately before <see cref="Control.OnBeginDrag"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnBeginDrag"/> when possible.
+        /// </summary>
+        protected virtual void OnBeginDrag()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnBorderChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when this <see cref="Control"/> was clicked.
+        /// This is called immediately before <see cref="Control.OnClick"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnClick(MouseClickEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when this <see cref="Control"/> has ended being dragged.
+        /// This is called immediately before <see cref="Control.OnEndDrag"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnEndDrag"/> when possible.
+        /// </summary>
+        protected virtual void OnEndDrag()
+        {
+        }
+
+        /// <summary>
+        /// Handles when this <see cref="Control"/> has gained focus.
+        /// This is called immediately before <see cref="Control.Focused"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Focused"/> when possible.
+        /// </summary>
+        protected virtual void OnFocused()
+        {
+        }
+
+        /// <summary>
         /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
         /// This is called immediately before <see cref="Control.KeyDown"/>.
         /// Override this method instead of using an event hook on <see cref="Control.KeyDown"/> when possible.
@@ -1058,22 +1074,6 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected virtual void OnKeyUp(KeyboardEventArgs e)
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-        /// from the given <paramref name="skinManager"/>.
-        /// </summary>
-        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-        public virtual void LoadSkin(ISkinManager skinManager)
-        {
-            var type = GetType();
-            string name = type.Name;
-
-            if (type.IsGenericType)
-                name = name.Substring(0, name.IndexOf('`'));
-
-            Border = skinManager.GetBorder(name);
         }
 
         /// <summary>
@@ -1136,6 +1136,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
+        /// </summary>
+        protected virtual void OnResized()
+        {
+        }
+
+        /// <summary>
         /// Gets a Vector2 for the offset created by the Parent's Border.
         /// </summary>
         /// <returns>A Vector2 for the offset created by the Parent's Border.</returns>
@@ -1171,15 +1180,6 @@ namespace NetGore.Graphics.GUI
                 _controls.Remove(child);
                 _controls.Add(child);
             }
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.Resized"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
-        /// </summary>
-        protected virtual void OnResized()
-        {
         }
 
         /// <summary>

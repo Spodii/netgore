@@ -99,11 +99,6 @@ namespace DemoGame
         float _width = float.MinValue;
 
         /// <summary>
-        /// Notifies listeners that the Map has been saved.
-        /// </summary>
-        public event MapBaseEventHandler Saved;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
         /// </summary>
         /// <param name="mapIndex">Index of the map.</param>
@@ -122,6 +117,11 @@ namespace DemoGame
 
             _updateStopWatch.Start();
         }
+
+        /// <summary>
+        /// Notifies listeners that the Map has been saved.
+        /// </summary>
+        public event MapBaseEventHandler Saved;
 
         /// <summary>
         /// Gets an IEnumerable of all the DynamicEntities on the Map.
@@ -1145,14 +1145,6 @@ namespace DemoGame
         #region IMap Members
 
         /// <summary>
-        /// Gets the size of the map in pixels.
-        /// </summary>
-        public Vector2 Size
-        {
-            get { return new Vector2(Width, Height); }
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of all the Entities on the Map.
         /// </summary>
         public IEnumerable<Entity> Entities
@@ -1166,6 +1158,22 @@ namespace DemoGame
         public float Height
         {
             get { return _height; }
+        }
+
+        /// <summary>
+        /// Gets the size of the map in pixels.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(Width, Height); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
+        /// </summary>
+        public ISpatialCollection Spatial
+        {
+            get { return _spatialCollection; }
         }
 
         /// <summary>
@@ -1219,14 +1227,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
-        /// </summary>
-        public ISpatialCollection Spatial
-        {
-            get { return _spatialCollection; }
-        }
-
-        /// <summary>
         /// Finds the <see cref="WallEntityBase"/> that the <paramref name="stander"/> is standing on.
         /// </summary>
         /// <param name="stander">The <see cref="ISpatial"/> to check for standing on a <see cref="WallEntityBase"/>.</param>
@@ -1252,18 +1252,6 @@ namespace DemoGame
         #region IMapTable Members
 
         /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IMapTable IMapTable.DeepCopy()
-        {
-            return new MapTable(this);
-        }
-
-        /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
         MapIndex IMapTable.ID
@@ -1285,6 +1273,18 @@ namespace DemoGame
 
                 _name = value;
             }
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IMapTable IMapTable.DeepCopy()
+        {
+            return new MapTable(this);
         }
 
         #endregion

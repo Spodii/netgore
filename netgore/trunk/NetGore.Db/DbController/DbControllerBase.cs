@@ -170,6 +170,29 @@ namespace NetGore.Db
         #region IDbController Members
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            lock (_instances)
+                _instances.Remove(this);
+
+            // Dispose of all the queries, where possible
+            foreach (var disposableQuery in _queryObjects.OfType<IDisposable>())
+            {
+                disposableQuery.Dispose();
+            }
+
+            // Dispose of the DbConnectionPool
+            _connectionPool.Dispose();
+        }
+
+        /// <summary>
         /// Gets the name of the tables and columns that reference the given primary key. In other words, the foreign
         /// keys for a given primary key.
         /// </summary>
@@ -229,29 +252,6 @@ namespace NetGore.Db
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-
-            lock (_instances)
-                _instances.Remove(this);
-
-            // Dispose of all the queries, where possible
-            foreach (var disposableQuery in _queryObjects.OfType<IDisposable>())
-            {
-                disposableQuery.Dispose();
-            }
-
-            // Dispose of the DbConnectionPool
-            _connectionPool.Dispose();
         }
 
         #endregion

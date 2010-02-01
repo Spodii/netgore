@@ -110,6 +110,41 @@ namespace NetGore.Features.Guilds
         #region IGuildManager<T> Members
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            foreach (var guild in this.Select(x => x.Value))
+            {
+                guild.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public IEnumerator<KeyValuePair<GuildID, T>> GetEnumerator()
+        {
+            return _guilds.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
         /// Gets the guild with the specified <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The ID of the guild to get.</param>
@@ -136,6 +171,54 @@ namespace NetGore.Features.Guilds
                 return null;
 
             return _guilds.Values.FirstOrDefault(x => StringComparer.OrdinalIgnoreCase.Equals(name, x.Name));
+        }
+
+        /// <summary>
+        /// Gets if the <paramref name="name"/> is an available guild name.
+        /// </summary>
+        /// <param name="name">The guild name to check if available.</param>
+        /// <returns>True if the <paramref name="name"/> is available; otherwise false.</returns>
+        public bool IsNameAvailable(string name)
+        {
+            if (!_guildSettings.IsValidName(name))
+                return false;
+
+            return InternalIsNameAvailable(name);
+        }
+
+        /// <summary>
+        /// Gets if the <paramref name="tag"/> is an available guild tag.
+        /// </summary>
+        /// <param name="tag">The guild tag to check if available.</param>
+        /// <returns>True if the <paramref name="tag"/> is available; otherwise false.</returns>
+        public bool IsTagAvailable(string tag)
+        {
+            if (!_guildSettings.IsValidTag(tag))
+                return false;
+
+            return InternalIsTagAvailable(tag);
+        }
+
+        /// <summary>
+        /// Logs an event from a guild.
+        /// </summary>
+        /// <param name="eventCreator">The guild member that created the event.</param>
+        /// <param name="guildEvent">The type of event that took place.</param>
+        /// <param name="eventTarget">Optionally contains the other guild member that the event involves. This member
+        /// may or may not actually be in the guild at this point.</param>
+        /// <param name="arg0">The optional first argument string.</param>
+        /// <param name="arg1">The optional second argument string.</param>
+        /// <param name="arg2">The optional third argument string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="eventCreator"/> is null.</exception>
+        public void LogEvent(IGuildMember eventCreator, GuildEvents guildEvent, IGuildMember eventTarget, string arg0, string arg1,
+                             string arg2)
+        {
+            if (eventCreator == null)
+                throw new ArgumentNullException("eventCreator");
+
+            Debug.Assert(EnumHelper<GuildEvents>.IsDefined(guildEvent));
+
+            InternalLogEvent(eventCreator, guildEvent, eventTarget, arg0, arg1, arg2);
         }
 
         /// <summary>
@@ -186,89 +269,6 @@ namespace NetGore.Features.Guilds
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Logs an event from a guild.
-        /// </summary>
-        /// <param name="eventCreator">The guild member that created the event.</param>
-        /// <param name="guildEvent">The type of event that took place.</param>
-        /// <param name="eventTarget">Optionally contains the other guild member that the event involves. This member
-        /// may or may not actually be in the guild at this point.</param>
-        /// <param name="arg0">The optional first argument string.</param>
-        /// <param name="arg1">The optional second argument string.</param>
-        /// <param name="arg2">The optional third argument string.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="eventCreator"/> is null.</exception>
-        public void LogEvent(IGuildMember eventCreator, GuildEvents guildEvent, IGuildMember eventTarget, string arg0, string arg1,
-                             string arg2)
-        {
-            if (eventCreator == null)
-                throw new ArgumentNullException("eventCreator");
-
-            Debug.Assert(EnumHelper<GuildEvents>.IsDefined(guildEvent));
-
-            InternalLogEvent(eventCreator, guildEvent, eventTarget, arg0, arg1, arg2);
-        }
-
-        /// <summary>
-        /// Gets if the <paramref name="name"/> is an available guild name.
-        /// </summary>
-        /// <param name="name">The guild name to check if available.</param>
-        /// <returns>True if the <paramref name="name"/> is available; otherwise false.</returns>
-        public bool IsNameAvailable(string name)
-        {
-            if (!_guildSettings.IsValidName(name))
-                return false;
-
-            return InternalIsNameAvailable(name);
-        }
-
-        /// <summary>
-        /// Gets if the <paramref name="tag"/> is an available guild tag.
-        /// </summary>
-        /// <param name="tag">The guild tag to check if available.</param>
-        /// <returns>True if the <paramref name="tag"/> is available; otherwise false.</returns>
-        public bool IsTagAvailable(string tag)
-        {
-            if (!_guildSettings.IsValidTag(tag))
-                return false;
-
-            return InternalIsTagAvailable(tag);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            foreach (var guild in this.Select(x => x.Value))
-            {
-                guild.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        /// <filterpriority>1</filterpriority>
-        public IEnumerator<KeyValuePair<GuildID, T>> GetEnumerator()
-        {
-            return _guilds.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         #endregion
