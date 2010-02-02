@@ -12,6 +12,7 @@ namespace NetGore.Db
     {
         readonly string _connectionString;
         readonly ObjectPool<PooledDbConnection> _pool;
+
         bool _disposed;
 
         /// <summary>
@@ -38,7 +39,12 @@ namespace NetGore.Db
         /// <param name="connectionString">ConnectionString to create the DbConnection with.</param>
         /// <returns>DbConnection to be used with this ObjectPool.</returns>
         protected abstract DbConnection CreateConnection(string connectionString);
-
+        
+        /// <summary>
+        /// Creates a new <see cref="PooledDbConnection"/> for the <see cref="_pool"/>.
+        /// </summary>
+        /// <param name="objectPool">The owner object pool.</param>
+        /// <returns>A new <see cref="PooledDbConnection"/> for the <see cref="_pool"/>.</returns>
         PooledDbConnection CreateNewObj(IObjectPool<PooledDbConnection> objectPool)
         {
             var ret = new PooledDbConnection(objectPool);

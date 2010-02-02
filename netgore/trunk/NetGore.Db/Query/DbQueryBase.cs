@@ -21,14 +21,25 @@ namespace NetGore.Db
         const string _disposedErrorMessage = "Can not access methods on a disposed object.";
         const int _initialStackSize = 2;
 
+        /// <summary>
+        /// Empty collection of <see cref="DbParameter"/>s to use when no <see cref="DbParameter"/>s are specified for
+        /// a query.
+        /// </summary>
+        static readonly IEnumerable<DbParameter> _emptyDbParameters = Enumerable.Empty<DbParameter>().ToCompact();
+
         readonly Stack<DbCommand> _commands = new Stack<DbCommand>(_initialStackSize);
         readonly object _commandsLock = new object();
         readonly string _commandText;
         readonly DbConnectionPool _connectionPool;
-        readonly bool _hasParameters;
         readonly IEnumerable<DbParameter> _parameters;
+
         bool _disposed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbQueryBase"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        /// <param name="commandText">The command text.</param>
         protected DbQueryBase(DbConnectionPool connectionPool, string commandText)
         {
             if (connectionPool == null)
@@ -40,12 +51,10 @@ namespace NetGore.Db
             _commandText = commandText;
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            // NOTE: Is this going to be okay? Will the virtual member call in constructor cause problems with this design?
-            _parameters = InitializeParameters() ?? Enumerable.Empty<DbParameter>();
+            _parameters = InitializeParameters() ?? _emptyDbParameters;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            // Keep track if we have any parameters or not
-            _hasParameters = (_parameters.Count() > 0);
+            _parameters = _parameters.ToCompact();
         }
 
         /// <summary>
@@ -53,7 +62,7 @@ namespace NetGore.Db
         /// </summary>
         public bool HasParameters
         {
-            get { return _hasParameters; }
+            get { return !_parameters.IsEmpty(); }
         }
 
         /// <summary>
@@ -73,9 +82,13 @@ namespace NetGore.Db
         {
             var cloneable = source as ICloneable;
             if (cloneable != null)
-                return (DbParameter)cloneable.Clone();
+            {
+                var ret = (DbParameter)cloneable.Clone();
+                Debug.Assert(ret != source,
+                             "Object was cloned, but this implement of ICloneable returns the same object! That is not what we want!");
+                return ret;
+            }
 
-            // FUTURE: Would be nice to have support of cloning ALL DbParameters...
             throw new NotImplementedException("Only DbParameters that implement ICloneable are currently supported.");
         }
 
@@ -84,7 +97,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="parameterName">Name of the parameter to create.</param>
         /// <returns>DbParameter that can be used with this DbQueryBase.</returns>
-        protected DbParameter CreateParameter(string parameterName)
+        DbParameter CreateParameter(string parameterName)
         {
             if (!parameterName.StartsWith(ParameterPrefix))
             {
@@ -284,9 +297,9 @@ namespace NetGore.Db
 
             DbCommand cmd = null;
 
+            // Pop the next available command, if it exists
             lock (_commandsLock)
             {
-                // Pop the next available command, if exists
                 if (_commands.Count > 0)
                     cmd = _commands.Pop();
             }
@@ -294,17 +307,17 @@ namespace NetGore.Db
             // Create a new command if we couldn't pop one from the stack
             if (cmd == null)
             {
+                // Create the new command and copy over the command text
                 cmd = conn.CreateCommand();
                 cmd.CommandText = CommandText;
 
-                if (HasParameters)
-                {
-                    foreach (var parameter in _parameters)
-                    {
-                        var clone = CloneDbParameter(parameter);
-                        cmd.Parameters.Add(clone);
-                    }
-                }
+                Debug.Assert(cmd.Parameters.Count == 0);
+
+                // Clone all of the parameters and add them to the new command
+                var clonedParameters = _parameters.Select(x => CloneDbParameter(x)).ToArray();
+                cmd.Parameters.AddRange(clonedParameters);
+
+                Debug.Assert(cmd.Parameters.Count == _parameters.Count());
             }
 
             // Set the connection
