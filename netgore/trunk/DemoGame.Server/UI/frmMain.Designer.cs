@@ -66,6 +66,8 @@
             this.chkDebug = new System.Windows.Forms.CheckBox();
             this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.lstLog = new DemoGame.Server.LogListBox();
+            this.txtFilterRegex = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -470,6 +472,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.label5);
+            this.splitContainer2.Panel1.Controls.Add(this.txtFilterRegex);
             this.splitContainer2.Panel1.Controls.Add(this.chkFatal);
             this.splitContainer2.Panel1.Controls.Add(this.chkError);
             this.splitContainer2.Panel1.Controls.Add(this.chkWarn);
@@ -572,6 +576,26 @@
             this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lbLog_SelectedIndexChanged);
             this.lstLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);
             // 
+            // txtFilterRegex
+            // 
+            this.txtFilterRegex.Dock = System.Windows.Forms.DockStyle.Right;
+            this.txtFilterRegex.Location = new System.Drawing.Point(355, 4);
+            this.txtFilterRegex.Name = "txtFilterRegex";
+            this.txtFilterRegex.Size = new System.Drawing.Size(177, 20);
+            this.txtFilterRegex.TabIndex = 15;
+            this.txtFilterRegex.TextChanged += new System.EventHandler(this.txtFilterRegex_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.label5.Location = new System.Drawing.Point(314, 4);
+            this.label5.Name = "label5";
+            this.label5.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label5.Size = new System.Drawing.Size(41, 16);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Regex:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -663,5 +687,7 @@
         private System.Windows.Forms.TextBox txtLogLevel;
         private System.Windows.Forms.TextBox txtLogMsg;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtFilterRegex;
     }
 }
