@@ -31,7 +31,7 @@ namespace DemoGame.Server
             if (item == null) 
                 return;
 
-            e.Graphics.DrawString(item.RenderedMessage, e.Font, Brushes.Black, e.Bounds);
+            e.Graphics.DrawString(item.RenderedMessage, e.Font, item.Level.GetColorBrush(), e.Bounds);
 
             e.DrawFocusRectangle();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -20,13 +21,25 @@ namespace DemoGame.Server
         const string _externalIPSite = "http://www.whatismyip.org/";
 
         /// <summary>
+        /// How many extra items are removed from the log buffer when removing. Allows for less removals to be made.
+        /// </summary>
+        const int _logBufferRemoveExtra = 50;
+
+        /// <summary>
+        /// The maximum number of log events to keep in memory.
+        /// </summary>
+        const int _logBufferSize = _maxLogDisplayLines * 2;
+
+        /// <summary>
         /// The maximum number of log entries to display.
         /// </summary>
-        const int _maxLogDisplayLines = 150;
+        const int _maxLogDisplayLines = 256;
 
         readonly object _consoleOutLock = new object();
+        readonly List<LoggingEvent> _logBuffer = new List<LoggingEvent>(_logBufferSize);
         readonly MemoryAppender _logger;
         readonly Thread _serverThread;
+        bool _formClosing = false;
 
         /// <summary>
         /// Incrementing counter that keeps track of the number of times <see cref="tmrUpdateDisplay_Tick"/> has been called.
@@ -87,7 +100,7 @@ namespace DemoGame.Server
         {
             if (!lstLog.Enabled || e == null)
                 return;
-            
+
             txtLogClass.Text = e.LocationInformation.ClassName;
             txtLogMethod.Text = e.LocationInformation.MethodName;
             txtLogLine.Text = e.LocationInformation.LineNumber;
@@ -97,8 +110,6 @@ namespace DemoGame.Server
 
             tabControl1.SelectTab(tbLogItem);
         }
-
-        bool _formClosing = false;
 
         /// <summary>
         /// Handles the FormClosing event of the frmMain control.
@@ -232,12 +243,16 @@ namespace DemoGame.Server
                 {
                     // Add the events
                     lstLog.Items.AddRange(events);
+                    _logBuffer.AddRange(events);
 
                     // If too long, truncate
                     while (lstLog.Items.Count > _maxLogDisplayLines)
                     {
                         lstLog.Items.RemoveAt(0);
                     }
+
+                    if (_logBuffer.Count > _logBufferSize)
+                        _logBuffer.RemoveRange(0, _logBuffer.Count - _logBufferSize + _logBufferRemoveExtra);
 
                     // Scroll down to see the latest item if nothing is selected
                     if (lstLog.SelectedIndex < 0)
