@@ -8,14 +8,21 @@ using InstallationValidator.Properties;
 
 namespace InstallationValidator
 {
-    public class TestListBox : ListBox
+    public sealed class TestListBox : ListBox
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestListBox"/> class.
+        /// </summary>
         public TestListBox()
         {
             DrawMode = DrawMode.OwnerDrawFixed;
             DoubleBuffered = true;
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             e.DrawBackground();
