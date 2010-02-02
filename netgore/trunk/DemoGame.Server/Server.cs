@@ -21,6 +21,8 @@ using NetGore.Scripting;
 
 namespace DemoGame.Server
 {
+    public delegate void ServerConsoleCommandCallback(Server server, string command, string returnString);
+
     /// <summary>
     /// The core component of the game server.
     /// </summary>
@@ -54,6 +56,14 @@ namespace DemoGame.Server
         readonly ServerSockets _sockets;
         readonly int _startupTime = Environment.TickCount;
         readonly World _world;
+        readonly ConsoleCommands _consoleCommands;
+        readonly Queue<string> _consoleCommandQueue = new Queue<string>();
+        readonly object _consoleCommandSync = new object();
+
+        /// <summary>
+        /// Notifies listeners when a console command has been executed.
+        /// </summary>
+        public event ServerConsoleCommandCallback ConsoleCommandExecuted;
 
         bool _disposed;
         bool _isRunning = true;
@@ -84,6 +94,7 @@ namespace DemoGame.Server
             LoadSettings();
 
             // Create some objects
+            _consoleCommands = new ConsoleCommands(this);
             _guildManager = new GuildManager(_dbController);
             _world = new World(this);
             _sockets = new ServerSockets(this);
@@ -282,6 +293,22 @@ namespace DemoGame.Server
                 // Update the time
                 serverTimeUpdater.Update(GetTime());
 
+                // Execute the queued commands
+                if (_consoleCommandQueue.Count > 0)
+                {
+                    lock (_consoleCommandSync)
+                    {
+                        while (_consoleCommandQueue.Count > 0)
+                        {
+                            var command = _consoleCommandQueue.Dequeue();
+                            var ret = _consoleCommands.ExecuteCommand(command);
+
+                            if (ConsoleCommandExecuted != null)
+                                ConsoleCommandExecuted.Invoke(this, command, ret);
+                        }
+                    }
+                }
+
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
                 if (sleepTime > 0)
@@ -291,6 +318,19 @@ namespace DemoGame.Server
             }
 
             _gameTimer.Stop();
+        }
+
+        /// <summary>
+        /// Enqueues a console command string to be executed. When the command is executed, the results will be returned
+        /// through the <see cref="Server.ConsoleCommandExecuted"/> event.
+        /// </summary>
+        /// <param name="commandString">The command to be executed.</param>
+        public void EnqueueConsoleCommand(string commandString)
+        {
+            lock (_consoleCommandSync)
+            {
+                _consoleCommandQueue.Enqueue(commandString);
+            }
         }
 
         /// <summary>
