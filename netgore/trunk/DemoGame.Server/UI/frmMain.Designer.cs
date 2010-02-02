@@ -114,8 +114,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(4);
-            this.splitContainer1.Size = new System.Drawing.Size(552, 515);
-            this.splitContainer1.SplitterDistance = 217;
+            this.splitContainer1.Size = new System.Drawing.Size(552, 521);
+            this.splitContainer1.SplitterDistance = 219;
             this.splitContainer1.TabIndex = 0;
             // 
             // tabControl1
@@ -127,7 +127,7 @@
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(542, 207);
+            this.tabControl1.Size = new System.Drawing.Size(542, 209);
             this.tabControl1.TabIndex = 1;
             // 
             // tbStatus
@@ -143,7 +143,7 @@
             this.tbStatus.Location = new System.Drawing.Point(4, 22);
             this.tbStatus.Name = "tbStatus";
             this.tbStatus.Padding = new System.Windows.Forms.Padding(3);
-            this.tbStatus.Size = new System.Drawing.Size(534, 181);
+            this.tbStatus.Size = new System.Drawing.Size(534, 183);
             this.tbStatus.TabIndex = 1;
             this.tbStatus.Text = "Status";
             this.tbStatus.UseVisualStyleBackColor = true;
@@ -226,7 +226,7 @@
             this.tpConsole.Location = new System.Drawing.Point(4, 22);
             this.tpConsole.Name = "tpConsole";
             this.tpConsole.Padding = new System.Windows.Forms.Padding(3);
-            this.tpConsole.Size = new System.Drawing.Size(534, 181);
+            this.tpConsole.Size = new System.Drawing.Size(534, 183);
             this.tpConsole.TabIndex = 0;
             this.tpConsole.Text = "Console";
             this.tpConsole.UseVisualStyleBackColor = true;
@@ -247,8 +247,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.txtConsoleIn);
-            this.splitContainer3.Size = new System.Drawing.Size(528, 175);
-            this.splitContainer3.SplitterDistance = 146;
+            this.splitContainer3.Size = new System.Drawing.Size(528, 177);
+            this.splitContainer3.SplitterDistance = 148;
             this.splitContainer3.TabIndex = 2;
             // 
             // txtConsoleOut
@@ -259,7 +259,7 @@
             this.txtConsoleOut.Location = new System.Drawing.Point(0, 0);
             this.txtConsoleOut.Name = "txtConsoleOut";
             this.txtConsoleOut.ReadOnly = true;
-            this.txtConsoleOut.Size = new System.Drawing.Size(528, 146);
+            this.txtConsoleOut.Size = new System.Drawing.Size(528, 148);
             this.txtConsoleOut.TabIndex = 0;
             this.txtConsoleOut.Text = "";
             // 
@@ -277,7 +277,7 @@
             this.tbLogItem.Controls.Add(this.splitContainer4);
             this.tbLogItem.Location = new System.Drawing.Point(4, 22);
             this.tbLogItem.Name = "tbLogItem";
-            this.tbLogItem.Size = new System.Drawing.Size(534, 181);
+            this.tbLogItem.Size = new System.Drawing.Size(534, 183);
             this.tbLogItem.TabIndex = 2;
             this.tbLogItem.Text = "Log Item";
             this.tbLogItem.UseVisualStyleBackColor = true;
@@ -298,7 +298,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.txtLogMsg);
             this.splitContainer4.Panel2.Controls.Add(this.label7);
-            this.splitContainer4.Size = new System.Drawing.Size(534, 181);
+            this.splitContainer4.Size = new System.Drawing.Size(534, 183);
             this.splitContainer4.SplitterDistance = 25;
             this.splitContainer4.TabIndex = 5;
             // 
@@ -435,7 +435,7 @@
             this.txtLogMsg.Multiline = true;
             this.txtLogMsg.Name = "txtLogMsg";
             this.txtLogMsg.ReadOnly = true;
-            this.txtLogMsg.Size = new System.Drawing.Size(534, 139);
+            this.txtLogMsg.Size = new System.Drawing.Size(534, 141);
             this.txtLogMsg.TabIndex = 14;
             // 
             // label7
@@ -454,7 +454,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(542, 284);
+            this.groupBox1.Size = new System.Drawing.Size(542, 288);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logging";
@@ -480,7 +480,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.lstLog);
-            this.splitContainer2.Size = new System.Drawing.Size(536, 265);
+            this.splitContainer2.Size = new System.Drawing.Size(536, 269);
             this.splitContainer2.SplitterDistance = 25;
             this.splitContainer2.TabIndex = 9;
             // 
@@ -562,7 +562,7 @@
             this.lstLog.FormattingEnabled = true;
             this.lstLog.Location = new System.Drawing.Point(0, 0);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(536, 225);
+            this.lstLog.Size = new System.Drawing.Size(536, 238);
             this.lstLog.TabIndex = 0;
             this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lbLog_SelectedIndexChanged);
             this.lstLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);
@@ -571,7 +571,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 515);
+            this.ClientSize = new System.Drawing.Size(552, 521);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmMain";
             this.Text = "frmMain";
