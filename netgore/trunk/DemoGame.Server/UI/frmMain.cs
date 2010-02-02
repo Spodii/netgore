@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using log4net.Appender;
@@ -39,6 +40,7 @@ namespace DemoGame.Server
         readonly List<LoggingEvent> _logBuffer = new List<LoggingEvent>(_logBufferSize);
         readonly MemoryAppender _logger;
         readonly Thread _serverThread;
+        Regex _filterRegex;
         bool _formClosing = false;
 
         /// <summary>
@@ -90,6 +92,56 @@ namespace DemoGame.Server
                 txtConsoleOut.ForeColor = color;
                 txtConsoleOut.AppendText(text + Environment.NewLine);
             }
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkDebug control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void chkDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkError control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void chkError_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkFatal control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void chkFatal_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkInfo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void chkInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkWarn control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void chkWarn_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
         }
 
         /// <summary>
@@ -152,6 +204,54 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Filters only the enabled log events.
+        /// </summary>
+        /// <param name="events">The unfiltered log events.</param>
+        /// <returns>The enabled log events.</returns>
+        LoggingEvent[] GetFilteredEvents(IEnumerable<LoggingEvent> events)
+        {
+            List<LoggingEvent> ret = new List<LoggingEvent>();
+
+            foreach (var e in events)
+            {
+                if (!GetLogCheckBox(e.Level).Checked)
+                    continue;
+
+                if (_filterRegex != null && !_filterRegex.IsMatch(e.RenderedMessage))
+                    continue;
+
+                ret.Add(e);
+            }
+
+            return ret.ToArray();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CheckBox"/> for a log <see cref="Level"/>.
+        /// </summary>
+        /// <param name="level">The log level.</param>
+        /// <returns>The <see cref="CheckBox"/> for a log <see cref="Level"/>, or null if invalid.</returns>
+        CheckBox GetLogCheckBox(Level level)
+        {
+            if (level == Level.Debug)
+                return chkDebug;
+
+            if (level == Level.Info)
+                return chkInfo;
+
+            if (level == Level.Warn)
+                return chkWarn;
+
+            if (level == Level.Error)
+                return chkError;
+
+            if (level == Level.Fatal)
+                return chkFatal;
+
+            return null;
+        }
+
+        /// <summary>
         /// Handles the KeyDown event of the lbLog control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -175,6 +275,36 @@ namespace DemoGame.Server
         void lbLog_SelectedIndexChanged(object sender, EventArgs e)
         {
             DisplayLogInfo(lstLog.SelectedItem as LoggingEvent);
+        }
+
+        /// <summary>
+        /// Fully rebuilds the log list.
+        /// </summary>
+        void RebuildLogList()
+        {
+            var events = GetFilteredEvents(_logBuffer);
+
+            lstLog.SuspendLayout();
+            lstLog.Enabled = false;
+            try
+            {
+                lstLog.Items.Clear();
+                lstLog.Items.AddRange(events);
+
+                // If too long, truncate
+                while (lstLog.Items.Count > _maxLogDisplayLines)
+                {
+                    lstLog.Items.RemoveAt(0);
+                }
+
+                lstLog.SelectedIndex = lstLog.Items.Count - 1;
+                lstLog.ClearSelected();
+            }
+            finally
+            {
+                lstLog.Enabled = true;
+                lstLog.ResumeLayout();
+            }
         }
 
         /// <summary>
@@ -219,41 +349,6 @@ namespace DemoGame.Server
             catch (InvalidOperationException)
             {
             }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="CheckBox"/> for a log <see cref="Level"/>.
-        /// </summary>
-        /// <param name="level">The log level.</param>
-        /// <returns>The <see cref="CheckBox"/> for a log <see cref="Level"/>, or null if invalid.</returns>
-        CheckBox GetLogCheckBox(Level level)
-        {
-            if (level == Level.Debug)
-                return chkDebug;
-
-            if (level == Level.Info)
-                return chkInfo;
-
-            if (level == Level.Warn)
-                return chkWarn;
-
-            if (level == Level.Error)
-                return chkError;
-
-            if (level == Level.Fatal)
-                return chkFatal;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Filters only the enabled log events.
-        /// </summary>
-        /// <param name="events">The unfiltered log events.</param>
-        /// <returns>The enabled log events.</returns>
-        LoggingEvent[] GetFilteredEvents(IEnumerable<LoggingEvent> events)
-        {
-            return events.Where(x => GetLogCheckBox(x.Level).Checked).ToArray();
         }
 
         /// <summary>
@@ -335,6 +430,26 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles the TextChanged event of the txtFilterRegex control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void txtFilterRegex_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _filterRegex = new Regex(txtFilterRegex.Text);
+                txtFilterRegex.BackColor = SystemColors.Window;
+                RebuildLogList();
+            }
+            catch (ArgumentException)
+            {
+                _filterRegex = null;
+                txtFilterRegex.BackColor = Color.Red;
+            }
+        }
+
+        /// <summary>
         /// Creates a background thread to find and update the external IP address text.
         /// </summary>
         void UpdateExternalIP()
@@ -392,86 +507,6 @@ namespace DemoGame.Server
             /// Informative messages.
             /// </summary>
             Info
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkFatal control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void chkFatal_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Fully rebuilds the log list.
-        /// </summary>
-        void RebuildLogList()
-        {
-            var events = GetFilteredEvents(_logBuffer);
-
-            lstLog.SuspendLayout();
-            lstLog.Enabled = false;
-            try
-            {
-                lstLog.Items.Clear();
-                lstLog.Items.AddRange(events);
-
-                // If too long, truncate
-                while (lstLog.Items.Count > _maxLogDisplayLines)
-                {
-                    lstLog.Items.RemoveAt(0);
-                }
-
-                lstLog.SelectedIndex = lstLog.Items.Count - 1;
-                lstLog.ClearSelected();
-            }
-            finally
-            {
-                lstLog.Enabled = true;
-                lstLog.ResumeLayout();
-            }
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkError control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void chkError_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkWarn control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void chkWarn_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkInfo control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void chkInfo_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkDebug control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void chkDebug_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
         }
     }
 }
