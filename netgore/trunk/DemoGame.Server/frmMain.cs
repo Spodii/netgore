@@ -27,7 +27,6 @@ namespace DemoGame.Server
         readonly object _consoleOutLock = new object();
         readonly MemoryAppender _logger;
         readonly Thread _serverThread;
-        readonly Thread _watchLogThread;
 
         ConsoleCommands _consoleCommands;
 
@@ -115,8 +114,6 @@ namespace DemoGame.Server
             _consoleCommands = new ConsoleCommands(_server);
 
             AppendToConsole("Server started. Type 'help' for a list of server console commands.", ConsoleTextType.Info);
-
-            _watchLogThread.Start();
         }
 
         /// <summary>
