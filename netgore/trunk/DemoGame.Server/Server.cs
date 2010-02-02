@@ -52,7 +52,6 @@ namespace DemoGame.Server
         readonly Queue<string> _consoleCommandQueue = new Queue<string>();
         readonly ConsoleCommands _consoleCommands;
         readonly object _consoleCommandSync = new object();
-
         readonly IDbController _dbController;
         readonly Stopwatch _gameTimer = new Stopwatch();
         readonly GuildManager _guildManager;
