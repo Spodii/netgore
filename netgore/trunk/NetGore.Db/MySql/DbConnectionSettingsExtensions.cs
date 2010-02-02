@@ -21,8 +21,14 @@ namespace NetGore.Db.MySql
                 Password = settings.Pass,
                 Server = settings.Host,
                 Port = settings.Port,
-                IgnorePrepare = false
+
+                IgnorePrepare = false,
+                Pooling = true,
+                UseCompression = false,
+                UsePerformanceMonitor = false,
+                UseUsageAdvisor = false
             };
+
             return sb.ToString();
         }
     }
