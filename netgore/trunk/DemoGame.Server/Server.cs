@@ -49,6 +49,10 @@ namespace DemoGame.Server
         /// </summary>
         const long _serverUpdateRate = 5; // 200 FPS
 
+        readonly Queue<string> _consoleCommandQueue = new Queue<string>();
+        readonly ConsoleCommands _consoleCommands;
+        readonly object _consoleCommandSync = new object();
+
         readonly IDbController _dbController;
         readonly Stopwatch _gameTimer = new Stopwatch();
         readonly GuildManager _guildManager;
@@ -56,14 +60,6 @@ namespace DemoGame.Server
         readonly ServerSockets _sockets;
         readonly int _startupTime = Environment.TickCount;
         readonly World _world;
-        readonly ConsoleCommands _consoleCommands;
-        readonly Queue<string> _consoleCommandQueue = new Queue<string>();
-        readonly object _consoleCommandSync = new object();
-
-        /// <summary>
-        /// Notifies listeners when a console command has been executed.
-        /// </summary>
-        public event ServerConsoleCommandCallback ConsoleCommandExecuted;
 
         bool _disposed;
         bool _isRunning = true;
@@ -105,6 +101,11 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Server loaded.");
         }
+
+        /// <summary>
+        /// Notifies listeners when a console command has been executed.
+        /// </summary>
+        public event ServerConsoleCommandCallback ConsoleCommandExecuted;
 
         /// <summary>
         /// Gets the DbController used to communicate with the database by this server.
@@ -258,6 +259,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Enqueues a console command string to be executed. When the command is executed, the results will be returned
+        /// through the <see cref="Server.ConsoleCommandExecuted"/> event.
+        /// </summary>
+        /// <param name="commandString">The command to be executed.</param>
+        public void EnqueueConsoleCommand(string commandString)
+        {
+            lock (_consoleCommandSync)
+            {
+                _consoleCommandQueue.Enqueue(commandString);
+            }
+        }
+
+        /// <summary>
         /// Main game loop for the server.
         /// </summary>
         void GameLoop()
@@ -318,19 +332,6 @@ namespace DemoGame.Server
             }
 
             _gameTimer.Stop();
-        }
-
-        /// <summary>
-        /// Enqueues a console command string to be executed. When the command is executed, the results will be returned
-        /// through the <see cref="Server.ConsoleCommandExecuted"/> event.
-        /// </summary>
-        /// <param name="commandString">The command to be executed.</param>
-        public void EnqueueConsoleCommand(string commandString)
-        {
-            lock (_consoleCommandSync)
-            {
-                _consoleCommandQueue.Enqueue(commandString);
-            }
         }
 
         /// <summary>
