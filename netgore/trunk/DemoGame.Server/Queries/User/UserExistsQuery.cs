@@ -16,7 +16,7 @@ namespace DemoGame.Server.Queries
                                                             CharacterTable.TableName);
 
         /// <summary>
-        /// UserExistsQuery constructor.
+        /// Initializes a new instance of the <see cref="UserExistsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
         public UserExistsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
