@@ -153,6 +153,8 @@ namespace DemoGame.Server
             if (!lstLog.Enabled || e == null)
                 return;
 
+            var t = e.TimeStamp.TimeOfDay;
+            txtLogTime.Text = string.Format("{0}:{1}:{2}", t.Hours, t.Minutes, t.Seconds);
             txtLogClass.Text = e.LocationInformation.ClassName;
             txtLogMethod.Text = e.LocationInformation.MethodName;
             txtLogLine.Text = e.LocationInformation.LineNumber;
