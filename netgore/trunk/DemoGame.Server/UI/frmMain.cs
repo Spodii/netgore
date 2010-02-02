@@ -142,11 +142,11 @@ namespace DemoGame.Server
 
             _serverThread.Start();
 
-            chkDebug.ForeColor = Level.Debug.GetColor();
-            chkInfo.ForeColor = Level.Info.GetColor();
-            chkWarn.ForeColor = Level.Warn.GetColor();
-            chkError.ForeColor = Level.Error.GetColor();
-            chkFatal.ForeColor = Level.Fatal.GetColor();
+            GetLogCheckBox(Level.Debug).ForeColor = Level.Debug.GetColor();
+            GetLogCheckBox(Level.Info).ForeColor = Level.Info.GetColor();
+            GetLogCheckBox(Level.Warn).ForeColor = Level.Warn.GetColor();
+            GetLogCheckBox(Level.Error).ForeColor = Level.Error.GetColor();
+            GetLogCheckBox(Level.Fatal).ForeColor = Level.Fatal.GetColor();
 
             AppendToConsole("Server started. Type 'help' for a list of server console commands.", ConsoleTextType.Info);
         }
@@ -222,6 +222,41 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the <see cref="CheckBox"/> for a log <see cref="Level"/>.
+        /// </summary>
+        /// <param name="level">The log level.</param>
+        /// <returns>The <see cref="CheckBox"/> for a log <see cref="Level"/>, or null if invalid.</returns>
+        CheckBox GetLogCheckBox(Level level)
+        {
+            if (level == Level.Debug)
+                return chkDebug;
+
+            if (level == Level.Info)
+                return chkInfo;
+
+            if (level == Level.Warn)
+                return chkWarn;
+
+            if (level == Level.Error)
+                return chkError;
+
+            if (level == Level.Fatal)
+                return chkFatal;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Filters only the enabled log events.
+        /// </summary>
+        /// <param name="events">The unfiltered log events.</param>
+        /// <returns>The enabled log events.</returns>
+        LoggingEvent[] GetFilteredEvents(IEnumerable<LoggingEvent> events)
+        {
+            return events.Where(x => GetLogCheckBox(x.Level).Checked).ToArray();
+        }
+
+        /// <summary>
         /// Handles the Tick event of the tmrUpdateDisplay control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -237,34 +272,39 @@ namespace DemoGame.Server
             // Ensure there are events
             if (events != null && events.Length > 0)
             {
-                lstLog.SuspendLayout();
-                lstLog.Enabled = false;
-                try
+                _logBuffer.AddRange(events);
+                events = GetFilteredEvents(events);
+
+                if (events != null && events.Length > 0)
                 {
-                    // Add the events
-                    lstLog.Items.AddRange(events);
-                    _logBuffer.AddRange(events);
-
-                    // If too long, truncate
-                    while (lstLog.Items.Count > _maxLogDisplayLines)
+                    lstLog.SuspendLayout();
+                    lstLog.Enabled = false;
+                    try
                     {
-                        lstLog.Items.RemoveAt(0);
+                        // Add the events
+                        lstLog.Items.AddRange(events);
+
+                        // If too long, truncate
+                        while (lstLog.Items.Count > _maxLogDisplayLines)
+                        {
+                            lstLog.Items.RemoveAt(0);
+                        }
+
+                        if (_logBuffer.Count > _logBufferSize)
+                            _logBuffer.RemoveRange(0, _logBuffer.Count - _logBufferSize + _logBufferRemoveExtra);
+
+                        // Scroll down to see the latest item if nothing is selected
+                        if (lstLog.SelectedIndex < 0)
+                        {
+                            lstLog.SelectedIndex = lstLog.Items.Count - 1;
+                            lstLog.ClearSelected();
+                        }
                     }
-
-                    if (_logBuffer.Count > _logBufferSize)
-                        _logBuffer.RemoveRange(0, _logBuffer.Count - _logBufferSize + _logBufferRemoveExtra);
-
-                    // Scroll down to see the latest item if nothing is selected
-                    if (lstLog.SelectedIndex < 0)
+                    finally
                     {
-                        lstLog.SelectedIndex = lstLog.Items.Count - 1;
-                        lstLog.ClearSelected();
+                        lstLog.Enabled = true;
+                        lstLog.ResumeLayout();
                     }
-                }
-                finally
-                {
-                    lstLog.Enabled = true;
-                    lstLog.ResumeLayout();
                 }
             }
 
@@ -352,6 +392,86 @@ namespace DemoGame.Server
             /// Informative messages.
             /// </summary>
             Info
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkFatal control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void chkFatal_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Fully rebuilds the log list.
+        /// </summary>
+        void RebuildLogList()
+        {
+            var events = GetFilteredEvents(_logBuffer);
+
+            lstLog.SuspendLayout();
+            lstLog.Enabled = false;
+            try
+            {
+                lstLog.Items.Clear();
+                lstLog.Items.AddRange(events);
+
+                // If too long, truncate
+                while (lstLog.Items.Count > _maxLogDisplayLines)
+                {
+                    lstLog.Items.RemoveAt(0);
+                }
+
+                lstLog.SelectedIndex = lstLog.Items.Count - 1;
+                lstLog.ClearSelected();
+            }
+            finally
+            {
+                lstLog.Enabled = true;
+                lstLog.ResumeLayout();
+            }
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkError control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void chkError_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkWarn control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void chkWarn_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkInfo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void chkInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkDebug control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void chkDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            RebuildLogList();
         }
     }
 }

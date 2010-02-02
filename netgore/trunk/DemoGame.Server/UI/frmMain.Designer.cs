@@ -496,6 +496,7 @@
             this.chkFatal.TabIndex = 13;
             this.chkFatal.Text = "Fatal";
             this.chkFatal.UseVisualStyleBackColor = true;
+            this.chkFatal.CheckedChanged += new System.EventHandler(this.chkFatal_CheckedChanged);
             // 
             // chkError
             // 
@@ -509,6 +510,7 @@
             this.chkError.TabIndex = 12;
             this.chkError.Text = "Error";
             this.chkError.UseVisualStyleBackColor = true;
+            this.chkError.CheckedChanged += new System.EventHandler(this.chkError_CheckedChanged);
             // 
             // chkWarn
             // 
@@ -522,6 +524,7 @@
             this.chkWarn.TabIndex = 11;
             this.chkWarn.Text = "Warn";
             this.chkWarn.UseVisualStyleBackColor = true;
+            this.chkWarn.CheckedChanged += new System.EventHandler(this.chkWarn_CheckedChanged);
             // 
             // chkInfo
             // 
@@ -535,6 +538,7 @@
             this.chkInfo.TabIndex = 10;
             this.chkInfo.Text = "Info";
             this.chkInfo.UseVisualStyleBackColor = true;
+            this.chkInfo.CheckedChanged += new System.EventHandler(this.chkInfo_CheckedChanged);
             // 
             // chkDebug
             // 
@@ -548,6 +552,7 @@
             this.chkDebug.TabIndex = 9;
             this.chkDebug.Text = "Debug";
             this.chkDebug.UseVisualStyleBackColor = true;
+            this.chkDebug.CheckedChanged += new System.EventHandler(this.chkDebug_CheckedChanged);
             // 
             // tmrUpdateDisplay
             // 
