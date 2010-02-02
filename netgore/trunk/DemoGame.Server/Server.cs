@@ -47,7 +47,6 @@ namespace DemoGame.Server
         /// </summary>
         const long _serverUpdateRate = 5; // 200 FPS
 
-        readonly ConsoleCommands _consoleCommands;
         readonly IDbController _dbController;
         readonly Stopwatch _gameTimer = new Stopwatch();
         readonly GuildManager _guildManager;
@@ -56,7 +55,6 @@ namespace DemoGame.Server
         readonly int _startupTime = Environment.TickCount;
         readonly World _world;
 
-        ConsoleInputBuffer _consoleInputBuffer;
         bool _disposed;
         bool _isRunning = true;
         IServerSettingTable _serverSettings;
@@ -89,7 +87,6 @@ namespace DemoGame.Server
             _guildManager = new GuildManager(_dbController);
             _world = new World(this);
             _sockets = new ServerSockets(this);
-            _consoleCommands = new ConsoleCommands(this);
 
             // Clean-up
             new ServerRuntimeCleaner(this);
@@ -264,9 +261,6 @@ namespace DemoGame.Server
             _gameTimer.Reset();
             _gameTimer.Start();
 
-            if (log.IsInfoEnabled)
-                log.Info("Server started. Type 'help' for a list of server console commands.");
-
             while (_isRunning)
             {
                 // Store the loop start time so we can calculate how long the loop took
@@ -288,17 +282,6 @@ namespace DemoGame.Server
                 // Update the time
                 serverTimeUpdater.Update(GetTime());
 
-                // Update console title
-                if (_tick % 500 == 0)
-                    UpdateSystemInformationDisplay();
-
-                // Handle input from the console
-                foreach (var inputStr in _consoleInputBuffer.GetBuffer())
-                {
-                    var resultStr = _consoleCommands.ExecuteCommand(inputStr);
-                    if (!string.IsNullOrEmpty(resultStr))
-                        Console.WriteLine(resultStr);
-                }
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
                 if (sleepTime > 0)
@@ -464,23 +447,8 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Starting server...");
 
-            // Create the console input buffer
-            if (_consoleInputBuffer != null)
-                _consoleInputBuffer.Dispose();
-            _consoleInputBuffer = new ConsoleInputBuffer();
-
             // Start the main game loop
             GameLoop();
-        }
-
-        /// <summary>
-        /// Updates the display of the system information.
-        /// </summary>
-        static void UpdateSystemInformationDisplay()
-        {
-            Console.Title = string.Format("NetGore Server - CPU: {0}%, MEM: {1}MB used, {2}MB free",
-                                          Math.Round(SystemPerformance.CPU.Usage), SystemPerformance.Memory.ProcessUsageMB,
-                                          SystemPerformance.Memory.AvailableMB);
         }
 
         /// <summary>
@@ -510,9 +478,6 @@ namespace DemoGame.Server
                 return;
 
             _disposed = true;
-
-            if (_consoleInputBuffer != null)
-                _consoleInputBuffer.Dispose();
 
             _world.Dispose();
             _dbController.Dispose();
