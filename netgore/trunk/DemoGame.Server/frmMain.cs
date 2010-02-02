@@ -28,8 +28,6 @@ namespace DemoGame.Server
         readonly MemoryAppender _logger;
         readonly Thread _serverThread;
 
-        ConsoleCommands _consoleCommands;
-
         /// <summary>
         /// Incrementing counter that keeps track of the number of times <see cref="tmrUpdateDisplay_Tick"/> has been called.
         /// </summary>
@@ -91,8 +89,11 @@ namespace DemoGame.Server
             AppendToConsole("Shutting down...", ConsoleTextType.Info);
             txtConsoleOut.Refresh();
 
-            _server.Shutdown();
-            _serverThread.Join();
+            if (!_server.IsDisposed)
+            {
+                _server.Shutdown();
+                _serverThread.Join();
+            }
         }
 
         /// <summary>
@@ -111,8 +112,6 @@ namespace DemoGame.Server
 
             _serverThread.Start();
 
-            _consoleCommands = new ConsoleCommands(_server);
-
             AppendToConsole("Server started. Type 'help' for a list of server console commands.", ConsoleTextType.Info);
         }
 
@@ -128,6 +127,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles when a console command was executed on the server.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="returnString">The command's return string.</param>
+        void Server_ConsoleCommandExecuted(Server server, string command, string returnString)
+        {
+            var e = new EventHandler(delegate
+                                     {
+                                         AppendToConsole(command, ConsoleTextType.Input);
+
+                                         if (!string.IsNullOrEmpty(returnString))
+                                             AppendToConsole(returnString, ConsoleTextType.InputReturn);
+                                     });
+
+            txtConsoleOut.Invoke(e);
+        }
+
+        /// <summary>
         /// Worker thread for the server.
         /// </summary>
         void ServerThread()
@@ -135,9 +153,14 @@ namespace DemoGame.Server
             // Create the server
             using (_server = new Server())
             {
+                _server.ConsoleCommandExecuted += Server_ConsoleCommandExecuted;
+
                 // Start the main loop (the thread will block here until the server is closed)
                 _server.Start();
             }
+
+            // Close the form if the server stops
+            Invoke(new EventHandler(delegate { Close(); }));
         }
 
         /// <summary>
@@ -204,12 +227,7 @@ namespace DemoGame.Server
 
             txtConsoleIn.Text = string.Empty;
 
-            var resultStr = _consoleCommands.ExecuteCommand(txt);
-
-            AppendToConsole(txt, ConsoleTextType.Input);
-
-            if (!string.IsNullOrEmpty(resultStr))
-                AppendToConsole(resultStr, ConsoleTextType.InputReturn);
+            _server.EnqueueConsoleCommand(txt);
         }
 
         /// <summary>

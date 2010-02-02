@@ -31,11 +31,19 @@
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tbStatus = new System.Windows.Forms.TabPage();
+            this.lblIP = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lblRAMFree = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblRAMUsed = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblCPU = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.tpConsole = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.txtConsoleOut = new System.Windows.Forms.RichTextBox();
             this.txtConsoleIn = new System.Windows.Forms.TextBox();
-            this.tbStatus = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.chkFatal = new System.Windows.Forms.CheckBox();
@@ -43,25 +51,17 @@
             this.chkWarn = new System.Windows.Forms.CheckBox();
             this.chkInfo = new System.Windows.Forms.CheckBox();
             this.chkDebug = new System.Windows.Forms.CheckBox();
-            this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblCPU = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblRAMUsed = new System.Windows.Forms.Label();
             this.lbLog = new DemoGame.Server.LogListBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lblRAMFree = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblIP = new System.Windows.Forms.Label();
+            this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tbStatus.SuspendLayout();
             this.tpConsole.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
-            this.tbStatus.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -100,13 +100,103 @@
             this.tabControl1.Size = new System.Drawing.Size(542, 207);
             this.tabControl1.TabIndex = 1;
             // 
+            // tbStatus
+            // 
+            this.tbStatus.Controls.Add(this.lblIP);
+            this.tbStatus.Controls.Add(this.label4);
+            this.tbStatus.Controls.Add(this.lblRAMFree);
+            this.tbStatus.Controls.Add(this.label3);
+            this.tbStatus.Controls.Add(this.lblRAMUsed);
+            this.tbStatus.Controls.Add(this.label2);
+            this.tbStatus.Controls.Add(this.lblCPU);
+            this.tbStatus.Controls.Add(this.label1);
+            this.tbStatus.Location = new System.Drawing.Point(4, 22);
+            this.tbStatus.Name = "tbStatus";
+            this.tbStatus.Padding = new System.Windows.Forms.Padding(3);
+            this.tbStatus.Size = new System.Drawing.Size(534, 181);
+            this.tbStatus.TabIndex = 1;
+            this.tbStatus.Text = "Status";
+            this.tbStatus.UseVisualStyleBackColor = true;
+            // 
+            // lblIP
+            // 
+            this.lblIP.AutoSize = true;
+            this.lblIP.Location = new System.Drawing.Point(80, 3);
+            this.lblIP.Name = "lblIP";
+            this.lblIP.Size = new System.Drawing.Size(52, 13);
+            this.lblIP.TabIndex = 7;
+            this.lblIP.Text = "127.0.0.1";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "External IP:";
+            // 
+            // lblRAMFree
+            // 
+            this.lblRAMFree.AutoSize = true;
+            this.lblRAMFree.Location = new System.Drawing.Point(80, 43);
+            this.lblRAMFree.Name = "lblRAMFree";
+            this.lblRAMFree.Size = new System.Drawing.Size(13, 13);
+            this.lblRAMFree.TabIndex = 5;
+            this.lblRAMFree.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 43);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "RAM Free:";
+            // 
+            // lblRAMUsed
+            // 
+            this.lblRAMUsed.AutoSize = true;
+            this.lblRAMUsed.Location = new System.Drawing.Point(80, 30);
+            this.lblRAMUsed.Name = "lblRAMUsed";
+            this.lblRAMUsed.Size = new System.Drawing.Size(13, 13);
+            this.lblRAMUsed.TabIndex = 3;
+            this.lblRAMUsed.Text = "0";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "RAM Usage:";
+            // 
+            // lblCPU
+            // 
+            this.lblCPU.AutoSize = true;
+            this.lblCPU.Location = new System.Drawing.Point(80, 16);
+            this.lblCPU.Name = "lblCPU";
+            this.lblCPU.Size = new System.Drawing.Size(21, 13);
+            this.lblCPU.TabIndex = 1;
+            this.lblCPU.Text = "0%";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(66, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "CPU Usage:";
+            // 
             // tpConsole
             // 
             this.tpConsole.Controls.Add(this.splitContainer3);
             this.tpConsole.Location = new System.Drawing.Point(4, 22);
             this.tpConsole.Name = "tpConsole";
             this.tpConsole.Padding = new System.Windows.Forms.Padding(3);
-            this.tpConsole.Size = new System.Drawing.Size(534, 182);
+            this.tpConsole.Size = new System.Drawing.Size(534, 181);
             this.tpConsole.TabIndex = 0;
             this.tpConsole.Text = "Console";
             this.tpConsole.UseVisualStyleBackColor = true;
@@ -127,8 +217,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.txtConsoleIn);
-            this.splitContainer3.Size = new System.Drawing.Size(528, 176);
-            this.splitContainer3.SplitterDistance = 147;
+            this.splitContainer3.Size = new System.Drawing.Size(528, 175);
+            this.splitContainer3.SplitterDistance = 146;
             this.splitContainer3.TabIndex = 2;
             // 
             // txtConsoleOut
@@ -137,7 +227,7 @@
             this.txtConsoleOut.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtConsoleOut.Location = new System.Drawing.Point(0, 0);
             this.txtConsoleOut.Name = "txtConsoleOut";
-            this.txtConsoleOut.Size = new System.Drawing.Size(528, 147);
+            this.txtConsoleOut.Size = new System.Drawing.Size(528, 146);
             this.txtConsoleOut.TabIndex = 0;
             this.txtConsoleOut.Text = "";
             // 
@@ -149,24 +239,6 @@
             this.txtConsoleIn.Size = new System.Drawing.Size(528, 20);
             this.txtConsoleIn.TabIndex = 2;
             this.txtConsoleIn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtConsoleIn_KeyDown);
-            // 
-            // tbStatus
-            // 
-            this.tbStatus.Controls.Add(this.lblIP);
-            this.tbStatus.Controls.Add(this.label4);
-            this.tbStatus.Controls.Add(this.lblRAMFree);
-            this.tbStatus.Controls.Add(this.label3);
-            this.tbStatus.Controls.Add(this.lblRAMUsed);
-            this.tbStatus.Controls.Add(this.label2);
-            this.tbStatus.Controls.Add(this.lblCPU);
-            this.tbStatus.Controls.Add(this.label1);
-            this.tbStatus.Location = new System.Drawing.Point(4, 22);
-            this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Padding = new System.Windows.Forms.Padding(3);
-            this.tbStatus.Size = new System.Drawing.Size(534, 181);
-            this.tbStatus.TabIndex = 1;
-            this.tbStatus.Text = "Status";
-            this.tbStatus.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -263,48 +335,6 @@
             this.chkDebug.Text = "Debug";
             this.chkDebug.UseVisualStyleBackColor = true;
             // 
-            // tmrUpdateDisplay
-            // 
-            this.tmrUpdateDisplay.Enabled = true;
-            this.tmrUpdateDisplay.Interval = 500;
-            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "CPU Usage:";
-            // 
-            // lblCPU
-            // 
-            this.lblCPU.AutoSize = true;
-            this.lblCPU.Location = new System.Drawing.Point(80, 16);
-            this.lblCPU.Name = "lblCPU";
-            this.lblCPU.Size = new System.Drawing.Size(21, 13);
-            this.lblCPU.TabIndex = 1;
-            this.lblCPU.Text = "0%";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "RAM Usage:";
-            // 
-            // lblRAMUsed
-            // 
-            this.lblRAMUsed.AutoSize = true;
-            this.lblRAMUsed.Location = new System.Drawing.Point(80, 30);
-            this.lblRAMUsed.Name = "lblRAMUsed";
-            this.lblRAMUsed.Size = new System.Drawing.Size(13, 13);
-            this.lblRAMUsed.TabIndex = 3;
-            this.lblRAMUsed.Text = "0";
-            // 
             // lbLog
             // 
             this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -316,41 +346,11 @@
             this.lbLog.TabIndex = 0;
             this.lbLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);
             // 
-            // label3
+            // tmrUpdateDisplay
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 43);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "RAM Free:";
-            // 
-            // lblRAMFree
-            // 
-            this.lblRAMFree.AutoSize = true;
-            this.lblRAMFree.Location = new System.Drawing.Point(80, 43);
-            this.lblRAMFree.Name = "lblRAMFree";
-            this.lblRAMFree.Size = new System.Drawing.Size(13, 13);
-            this.lblRAMFree.TabIndex = 5;
-            this.lblRAMFree.Text = "0";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "External IP:";
-            // 
-            // lblIP
-            // 
-            this.lblIP.AutoSize = true;
-            this.lblIP.Location = new System.Drawing.Point(80, 3);
-            this.lblIP.Name = "lblIP";
-            this.lblIP.Size = new System.Drawing.Size(52, 13);
-            this.lblIP.TabIndex = 7;
-            this.lblIP.Text = "127.0.0.1";
+            this.tmrUpdateDisplay.Enabled = true;
+            this.tmrUpdateDisplay.Interval = 500;
+            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
             // 
             // frmMain
             // 
@@ -366,13 +366,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tbStatus.ResumeLayout(false);
+            this.tbStatus.PerformLayout();
             this.tpConsole.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             this.splitContainer3.Panel2.PerformLayout();
             this.splitContainer3.ResumeLayout(false);
-            this.tbStatus.ResumeLayout(false);
-            this.tbStatus.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
