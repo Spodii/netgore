@@ -80,20 +80,39 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Sets the log display information.
+        /// </summary>
+        /// <param name="e">The log event.</param>
+        void DisplayLogInfo(LoggingEvent e)
+        {
+            if (!lstLog.Enabled || e == null)
+                return;
+            
+            txtLogClass.Text = e.LocationInformation.ClassName;
+            txtLogMethod.Text = e.LocationInformation.MethodName;
+            txtLogLine.Text = e.LocationInformation.LineNumber;
+            txtLogMsg.Text = e.RenderedMessage;
+            txtLogLevel.Text = e.Level.DisplayName;
+            txtLogLevel.ForeColor = e.Level.GetColor();
+
+            tabControl1.SelectTab(tbLogItem);
+        }
+
+        bool _formClosing = false;
+
+        /// <summary>
         /// Handles the FormClosing event of the frmMain control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
         void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _formClosing = true;
+
             AppendToConsole("Shutting down...", ConsoleTextType.Info);
             txtConsoleOut.Refresh();
 
-            if (!_server.IsDisposed)
-            {
-                _server.Shutdown();
-                _serverThread.Join();
-            }
+            _server.Shutdown();
         }
 
         /// <summary>
@@ -112,6 +131,12 @@ namespace DemoGame.Server
 
             _serverThread.Start();
 
+            chkDebug.ForeColor = Level.Debug.GetColor();
+            chkInfo.ForeColor = Level.Info.GetColor();
+            chkWarn.ForeColor = Level.Warn.GetColor();
+            chkError.ForeColor = Level.Error.GetColor();
+            chkFatal.ForeColor = Level.Fatal.GetColor();
+
             AppendToConsole("Server started. Type 'help' for a list of server console commands.", ConsoleTextType.Info);
         }
 
@@ -123,7 +148,22 @@ namespace DemoGame.Server
         void lbLog_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
-                lbLog.SelectedIndex = -1;
+            {
+                lstLog.Enabled = false;
+                lstLog.SelectedIndex = lstLog.Items.Count - 1;
+                lstLog.SelectedIndex = -1;
+                lstLog.Enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lbLog control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lbLog_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisplayLogInfo(lstLog.SelectedItem as LoggingEvent);
         }
 
         /// <summary>
@@ -160,7 +200,14 @@ namespace DemoGame.Server
             }
 
             // Close the form if the server stops
-            Invoke(new EventHandler(delegate { Close(); }));
+            try
+            {
+                if (!Disposing && !_formClosing)
+                    Invoke(new EventHandler(delegate { Close(); }));
+            }
+            catch (InvalidOperationException)
+            {
+            }
         }
 
         /// <summary>
@@ -179,28 +226,30 @@ namespace DemoGame.Server
             // Ensure there are events
             if (events != null && events.Length > 0)
             {
-                lbLog.SuspendLayout();
+                lstLog.SuspendLayout();
+                lstLog.Enabled = false;
                 try
                 {
                     // Add the events
-                    lbLog.Items.AddRange(events);
+                    lstLog.Items.AddRange(events);
 
                     // If too long, truncate
-                    while (lbLog.Items.Count > _maxLogDisplayLines)
+                    while (lstLog.Items.Count > _maxLogDisplayLines)
                     {
-                        lbLog.Items.RemoveAt(0);
+                        lstLog.Items.RemoveAt(0);
                     }
 
                     // Scroll down to see the latest item if nothing is selected
-                    if (lbLog.SelectedIndex < 0)
+                    if (lstLog.SelectedIndex < 0)
                     {
-                        lbLog.SelectedIndex = lbLog.Items.Count - 1;
-                        lbLog.ClearSelected();
+                        lstLog.SelectedIndex = lstLog.Items.Count - 1;
+                        lstLog.ClearSelected();
                     }
                 }
                 finally
                 {
-                    lbLog.ResumeLayout();
+                    lstLog.Enabled = true;
+                    lstLog.ResumeLayout();
                 }
             }
 
