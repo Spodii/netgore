@@ -5,7 +5,7 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DemoGame.Server</RootNamespace>
     <AssemblyName>DemoGame.Server</AssemblyName>
@@ -83,9 +83,11 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -140,11 +142,20 @@
     <Compile Include="DbObjs\ShopTable.cs" />
     <Compile Include="DbObjs\UserCharacterTable.cs" />
     <Compile Include="DynamicEntityFactory.cs" />
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Guilds\Guild.cs" />
     <Compile Include="Guilds\GuildIDCreator.cs" />
     <Compile Include="Guilds\GuildManager.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformer.cs" />
+    <Compile Include="LogListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
     <Compile Include="Queries\Account\CountRecentlyCreatedAccounts.cs" />
@@ -386,6 +397,12 @@
     <None Include="DbSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
