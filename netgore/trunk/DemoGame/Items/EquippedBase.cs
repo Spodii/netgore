@@ -14,14 +14,6 @@ namespace DemoGame
     /// </summary>
     public abstract class EquippedBase<T> : IEnumerable<KeyValuePair<EquipmentSlot, T>> where T : ItemEntityBase
     {
-        /// <summary>
-        /// Handles an event from the <see cref="EquippedBase{T}"/>.
-        /// </summary>
-        /// <param name="equippedBase">The <see cref="EquippedBase{T}"/>.</param>
-        /// <param name="item">The item the event is related to.</param>
-        /// <param name="slot">The slot of the item the event is related to.</param>
-        public delegate void EventHandler(EquippedBase<T> equippedBase, T item, EquipmentSlot slot);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -38,12 +30,12 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners when an item has been equipped.
         /// </summary>
-        public event EventHandler Equipped;
+        public event EquippedEventHandler<T> Equipped;
 
         /// <summary>
         /// Notifies listeners when an item has been unequipped.
         /// </summary>
-        public event EventHandler Unequipped;
+        public event EquippedEventHandler<T> Unequipped;
 
         /// <summary>
         /// Gets the item at the given <paramref name="slot"/>.

@@ -167,6 +167,8 @@ namespace DemoGame.Server
 
         int _statPoints;
 
+        readonly CharacterSkillCaster _skillCaster;
+
         CharacterTemplateID? _templateID;
 
         /// <summary>
@@ -229,8 +231,6 @@ namespace DemoGame.Server
         /// </summary>
         public event CharacterItemEventHandler UsedItem;
 
-        readonly CharacterSkillCaster _skillCaster;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Character"/> class.
         /// </summary>
@@ -260,9 +260,31 @@ namespace DemoGame.Server
             _equipped = CreateEquipped();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            ModStats.GetStat(StatType.MaxHP).Changed += ModStats_MaxHP_Changed;
-            ModStats.GetStat(StatType.MaxMP).Changed += ModStats_MaxMP_Changed;
+            // Set up the listeners for when the stat collections change
+            IStatCollectionStatEventHandler<StatType> statChangedHandler = delegate { _updateModStats = true; };
+            BaseStats.StatChanged += statChangedHandler;
+            ModStats.StatChanged += statChangedHandler;
+
+            // Set up the listeners for when the equipped items change
+            EquippedEventHandler<ItemEntity> equippedChangeHandler = delegate { _updateModStats = true; };
+            _equipped.Equipped += equippedChangeHandler;
+            _equipped.Unequipped += equippedChangeHandler;
+
+            // Listen to when the max HP and MP change to make sure the current HP and MP stay in a valid range
+            ModStats.GetStat(StatType.MaxHP).Changed += delegate(IStat<StatType> stat)
+            {
+                if (HP > stat.Value)
+                    HP = stat.Value;
+            };
+
+            ModStats.GetStat(StatType.MaxMP).Changed += delegate(IStat<StatType> stat)
+            {
+                if (MP > stat.Value)
+                    MP = stat.Value;
+            };
         }
+
+        bool _updateModStats = true;
 
         /// <summary>
         /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
@@ -871,7 +893,9 @@ namespace DemoGame.Server
             // Set the Character as not saved
             _saved = false;
 
-            UpdateModStats();
+            if (_updateModStats)
+                UpdateModStats();
+            
             UpdateSPRecovery();
             StatusEffects.Update();
             _skillCaster.Update();
@@ -1039,26 +1063,6 @@ namespace DemoGame.Server
                 log.InfoFormat("Loaded Character `{0}`.", Name);
         }
 
-        /// <summary>
-        /// Handles when the MaxHP mod stat changes.
-        /// </summary>
-        /// <param name="stat">The stat.</param>
-        void ModStats_MaxHP_Changed(IStat<StatType> stat)
-        {
-            if (HP > stat.Value)
-                HP = stat.Value;
-        }
-
-        /// <summary>
-        /// Handles when the MaxMP mod stat changes.
-        /// </summary>
-        /// <param name="stat">The stat.</param>
-        void ModStats_MaxMP_Changed(IStat<StatType> stat)
-        {
-            if (MP > stat.Value)
-                MP = stat.Value;
-        }
-
 #if TOPDOWN
     /// <summary>
     /// Starts moving the character down.
@@ -1210,7 +1214,7 @@ namespace DemoGame.Server
         protected virtual void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects,
                                                          ActiveStatusEffect activeStatusEffect)
         {
-            UpdateModStats();
+            _updateModStats = true;
         }
 
         /// <summary>
@@ -1221,7 +1225,7 @@ namespace DemoGame.Server
         protected virtual void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects,
                                                             ActiveStatusEffect activeStatusEffect)
         {
-            UpdateModStats();
+            _updateModStats = true;
         }
 
         /// <summary>
@@ -1321,6 +1325,8 @@ namespace DemoGame.Server
         /// </summary>
         protected void UpdateModStats()
         {
+            _updateModStats = false;
+
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
             foreach (var modStat in ModStats)
             {

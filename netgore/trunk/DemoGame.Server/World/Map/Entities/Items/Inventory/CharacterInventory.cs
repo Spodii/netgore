@@ -12,13 +12,17 @@ namespace DemoGame.Server
     public abstract class CharacterInventory : InventoryBase<ItemEntity>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly Character _character;
         readonly bool _isPersistent;
 
         bool _disposed = false;
-
         bool _isLoading;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterInventory"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the inventory belongs to.</param>
         protected CharacterInventory(Character character)
         {
             if (character == null)
