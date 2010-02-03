@@ -1,53 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using NetGore;
 using NetGore.Network;
 using NetGore.Stats;
 
 namespace DemoGame.Server
 {
-    class ChangedStatsTracker
-    {
-        // TODO: [STATS] This totally sucks, fix it up
-
-        readonly int[] _lastValues;
-        readonly IStatCollection<StatType> _statCollection;
-
-        public ChangedStatsTracker(IStatCollection<StatType> statCollection)
-        {
-            _statCollection = statCollection;
-            int size = _statCollection.Select(x => x.StatType.GetValue()).Max() + 1;
-            _lastValues = new int[size];
-
-            foreach (var istat in statCollection)
-            {
-                _lastValues[istat.StatType.GetValue()] = istat.Value;
-            }
-        }
-
-        public IEnumerable<IStat<StatType>> GetChangedStats()
-        {
-            var changed = new List<IStat<StatType>>();
-
-            foreach (var istat in _statCollection)
-            {
-                byte i = istat.StatType.GetValue();
-                int v = istat.Value;
-                if (_lastValues[i] != v)
-                {
-                    _lastValues[i] = v;
-                    changed.Add(istat);
-                }
-            }
-
-            return changed;
-        }
-    }
-
     public class UserStats : CharacterStats
     {
-        readonly ChangedStatsTracker _changedStats;
+        readonly ChangedStatsTracker<StatType> _changedStats;
         readonly User _user;
 
         public UserStats(User user, StatCollectionType statCollectionType) : base(statCollectionType)
@@ -56,7 +16,7 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("user");
 
             _user = user;
-            _changedStats = new ChangedStatsTracker(this);
+            _changedStats = new ChangedStatsTracker<StatType>(this);
         }
 
         public User User
