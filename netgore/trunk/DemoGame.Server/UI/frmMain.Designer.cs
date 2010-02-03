@@ -1,4 +1,4 @@
-﻿namespace DemoGame.Server
+﻿namespace DemoGame.Server.UI
 {
     partial class frmMain
     {
@@ -68,7 +68,7 @@
             this.chkWarn = new System.Windows.Forms.CheckBox();
             this.chkInfo = new System.Windows.Forms.CheckBox();
             this.chkDebug = new System.Windows.Forms.CheckBox();
-            this.lstLog = new DemoGame.Server.LogListBox();
+            this.lstLog = new DemoGame.Server.UI.LogListBox();
             this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
@@ -614,8 +614,6 @@
             // chkDebug
             // 
             this.chkDebug.AutoSize = true;
-            this.chkDebug.Checked = true;
-            this.chkDebug.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDebug.Dock = System.Windows.Forms.DockStyle.Left;
             this.chkDebug.Location = new System.Drawing.Point(4, 4);
             this.chkDebug.Name = "chkDebug";

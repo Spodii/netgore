@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using log4net.Core;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.UI
 {
     /// <summary>
     /// Extension methods for the <see cref="Level"/> class.

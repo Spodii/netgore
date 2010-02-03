@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using log4net.Core;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.UI
 {
     sealed class LogListBox : ListBox
     {
