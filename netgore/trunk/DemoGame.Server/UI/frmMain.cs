@@ -12,7 +12,7 @@ using log4net.Config;
 using log4net.Core;
 using NetGore;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.UI
 {
     public partial class frmMain : Form
     {
