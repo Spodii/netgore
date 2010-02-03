@@ -41,18 +41,20 @@ namespace DemoGame.Server
         /// </summary>
         public void UpdateClient()
         {
+            // Check if any stat values have changed
             var statsToUpdate = _changedStats.GetChangedStats();
             if (statsToUpdate.IsEmpty())
                 return;
 
+            // Build a packet containing all the new stat values and send it to the user
             using (PacketWriter pw = ServerPacket.GetWriter())
             {
                 foreach (var stat in statsToUpdate)
                 {
-                    pw.Reset();
                     ServerPacket.UpdateStat(pw, stat, StatCollectionType);
-                    User.Send(pw);
                 }
+
+                User.Send(pw);
             }
         }
     }
