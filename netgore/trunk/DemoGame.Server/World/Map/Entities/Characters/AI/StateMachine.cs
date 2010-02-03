@@ -35,7 +35,7 @@ namespace DemoGame.Server
         public StateMachine(Character actor) : base(actor)
         {
             //Adds an event handler so we know when the actor has been attacked.
-            Actor.OnAttackedByCharacter += new CharacterAttackCharacterEventHandler(Actor_OnAttackedByCharacter);
+            Actor.AttackedByCharacter += new CharacterAttackCharacterEventHandler(Actor_AttackedByCharacter);
         }
 
         /// <summary>
@@ -46,13 +46,13 @@ namespace DemoGame.Server
             get { return new AIID(_id); }
         }
 
-        void Actor_OnAttackedByCharacter(Character attacker, Character attacked, int damage)
+        void Actor_AttackedByCharacter(Character attacker, Character attacked, int damage)
         {
             //Set the _target as the attacker.
             _target = attacker;
 
             //Set up event handler for when the target dies.
-            _target.OnKilled += new CharacterEventHandler(_target_OnKilled);
+            _target.Killed += new CharacterEventHandler(_target_Killed);
 
             if (Actor.HP <= 10)
             {
@@ -67,7 +67,7 @@ namespace DemoGame.Server
         }
 
 
-        void _target_OnKilled(Character character)
+        void _target_Killed(Character character)
         {
             //Stop attacking target. Job done.
             _isAttackingTarget = false;
