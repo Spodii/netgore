@@ -5,11 +5,20 @@ using NetGore.Stats;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// A collection of stats for a <see cref="User"/>.
+    /// </summary>
     public class UserStats : CharacterStats
     {
         readonly ChangedStatsTracker<StatType> _changedStats;
         readonly User _user;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserStats"/> class.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> these stats belong to.</param>
+        /// <param name="statCollectionType">Type of the stat collection.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="user"/> is null.</exception>
         public UserStats(User user, StatCollectionType statCollectionType) : base(statCollectionType)
         {
             if (user == null)
@@ -19,6 +28,9 @@ namespace DemoGame.Server
             _changedStats = new ChangedStatsTracker<StatType>(this);
         }
 
+        /// <summary>
+        /// Gets the <see cref="User"/> these stats belong to.
+        /// </summary>
         public User User
         {
             get { return _user; }
