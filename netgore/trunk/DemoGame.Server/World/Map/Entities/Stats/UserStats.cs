@@ -77,6 +77,8 @@ namespace DemoGame.Server
 
                 User.Send(pw);
             }
+
+            _anyStatsChanged = false;
         }
     }
 }
