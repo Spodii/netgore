@@ -4,8 +4,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics
 {
+    /// <summary>
+    /// Helper methods for the <see cref="RenderTarget2D"/>.
+    /// </summary>
     public static class RenderTarget2DHelper
     {
+        /// <summary>
+        /// Creates a <see cref="Texture2D"/> using a <see cref="RenderTarget2D"/> to draw the contents.
+        /// </summary>
+        /// <param name="device">The graphics device.</param>
+        /// <param name="width">The texture width.</param>
+        /// <param name="height">The texture height.</param>
+        /// <param name="backColor">The color to fill the texture with before drawing.</param>
+        /// <param name="drawer">The <see cref="Action{T}"/> that does all the drawing using the given
+        /// <see cref="SpriteBatch"/>.</param>
+        /// <returns>The created <see cref="Texture2D"/>.</returns>
         public static Texture2D CreateTexture2D(GraphicsDevice device, int width, int height, Color backColor,
                                                 Action<SpriteBatch> drawer)
         {

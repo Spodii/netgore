@@ -17,7 +17,7 @@ namespace NetGore.Graphics
         protected MapPreviewerBase()
         {
             ImageFormat = ImageFileFormat.Png;
-            TextureSize = new Vector2(512);
+            TextureSize = new Vector2(2048);
             BackgroundColor = new Color(255, 0, 255, 255);
         }
 
