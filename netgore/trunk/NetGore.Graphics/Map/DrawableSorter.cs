@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
-using NetGore.Graphics;
 
-namespace DemoGame.Client
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Provides an interface for sorting <see cref="IDrawable"/>s by their <see cref="MapRenderLayer"/>

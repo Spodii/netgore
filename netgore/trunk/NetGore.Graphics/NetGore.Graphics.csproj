@@ -77,6 +77,7 @@
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Camera\Camera2D.cs" />
     <Compile Include="Camera\ICamera2D.cs" />
+    <Compile Include="Camera\ICamera2DProvider.cs" />
     <Compile Include="Character Sprite\GrhCharacterSprite.cs" />
     <Compile Include="Character Sprite\ICharacterSprite.cs" />
     <Compile Include="Character Sprite\SkeletonCharacterSprite.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Map\MapDrawingExtension\MapDrawingExtension.cs" />
     <Compile Include="Map\MapDrawingExtension\MapDrawingExtensionCollection.cs" />
     <Compile Include="Map\MapGrh.cs" />
+    <Compile Include="Map\MapPreviewerBase.cs" />
     <Compile Include="Map\MapRenderLayer.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierFactory.cs" />

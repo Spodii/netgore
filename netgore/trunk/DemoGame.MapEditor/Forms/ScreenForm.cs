@@ -963,65 +963,14 @@ namespace DemoGame.MapEditor
             if (startMoveCamera != _moveCamera)
                 e.Handled = true;
 
-            if (e.KeyCode == Keys.F8)
-                MakeMiniMapTest();
-
-            base.OnKeyUp(e);
-        }
-
-        void MakeMiniMapTest()
-        {
-            // TODO: !! TEST
-
-            var device = GameScreen.GraphicsDevice;
-            var cam = new Camera2D(new Vector2(1024, 1024));
-            Map.Camera = cam;
-
-            var oldFilter = Map.DrawFilter;
-            Map.DrawFilter = delegate(IDrawable d)
+            if (e.KeyCode == Keys.F12)
             {
-                if (d.MapRenderLayer == MapRenderLayer.SpriteBackground || d.MapRenderLayer == MapRenderLayer.SpriteForeground)
-                    return true;
-
-                return false;
-            };
-
-            var oldExtensions = _mapDrawingExtensions.ToArray();
-            _mapDrawingExtensions.Clear();
-
-            using (var sb = new SpriteBatch(device))
-            {
-                SurfaceFormat format = device.PresentationParameters.BackBufferFormat;
-                MultiSampleType sample = device.PresentationParameters.MultiSampleType;
-                int q = device.PresentationParameters.MultiSampleQuality;
-
-                using (var target = new RenderTarget2D(device,
-                    (int)cam.Size.X, (int)cam.Size.Y, 1, format, sample, q, RenderTargetUsage.PreserveContents))
-                {
-                    device.DepthStencilBuffer = null;
-                    device.SetRenderTarget(0, target);
-                    device.Clear(ClearOptions.Target, new Color(255, 0, 255, 255), 1.0f, 0);
-
-                    sb.BeginUnfiltered();
-
-                    Map.Draw(sb);
-
-                    sb.End();
-
-                    device.SetRenderTarget(0, null);
-
-                    TempFile f = new TempFile();
-                    using (var tex = target.GetTexture())
-                    {
-                        tex.Save(f.FilePath, ImageFileFormat.Jpg);
-                    }
-                }
+                var previewer = new MapPreviewer();
+                var tmpFile = new TempFile();
+                previewer.CreatePreview(GameScreen.GraphicsDevice, Map, _mapDrawingExtensions, tmpFile.FilePath);
             }
 
-            _mapDrawingExtensions.Add(oldExtensions);
-            Map.DrawFilter = oldFilter;
-
-            Map.Camera = Camera;
+            base.OnKeyUp(e);
         }
 
         /// <summary>
