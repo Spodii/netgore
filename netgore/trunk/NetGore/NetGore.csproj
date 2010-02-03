@@ -94,6 +94,7 @@
     <Compile Include="IO\Persistable\IPersistable.cs" />
     <Compile Include="IO\Persistable\PersistableHelper.cs" />
     <Compile Include="Network\Sockets\IUDPSocket.cs" />
+    <Compile Include="Stats\ChangedStatsTracker.cs" />
     <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
     <Compile Include="Stats\Collections\DynamicStatCollectionStatEventHandler.cs" />
     <Compile Include="Stats\Collections\FullStatCollection.cs" />
