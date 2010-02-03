@@ -13,6 +13,16 @@ namespace NetGore
     public abstract class GridSpatialCollectionBase : ISpatialCollection
     {
         /// <summary>
+        /// The default segment size to use for when the segment size is not specified.
+        /// </summary>
+        const int _defaultSegmentSize = 16384;
+
+        /// <summary>
+        /// The minimum allowed segment size allowed. A segment size below this value is considered invalid.
+        /// </summary>
+        public const int MinSegmentSize = 4;
+
+        /// <summary>
         /// The size of each grid segment.
         /// </summary>
         readonly int _gridSegmentSize;
@@ -25,11 +35,13 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="GridSpatialCollectionBase"/> class.
         /// </summary>
-        /// <param name="gridSegmentSize">Size of the grid segments. Must be greater than or equal to 4.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="gridSegmentSize"/> is less than 4.</exception>
+        /// <param name="gridSegmentSize">Size of the grid segments. Must be greater than or equal to
+        /// <see cref="GridSpatialCollectionBase.MinSegmentSize"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="gridSegmentSize"/> is less than
+        /// <see cref="GridSpatialCollectionBase.MinSegmentSize"/>.</exception>
         protected GridSpatialCollectionBase(int gridSegmentSize)
         {
-            if (gridSegmentSize < 4)
+            if (gridSegmentSize < MinSegmentSize)
                 throw new ArgumentOutOfRangeException("gridSegmentSize");
 
             _spatialMoveHandler = Spatial_Moved;
@@ -41,7 +53,8 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="GridSpatialCollectionBase"/> class.
         /// </summary> 
-        protected GridSpatialCollectionBase() : this(256)
+        protected GridSpatialCollectionBase()
+            : this(_defaultSegmentSize)
         {
         }
 
@@ -785,7 +798,7 @@ namespace NetGore
             Point newSize = WorldPositionToGridSegment(size);
 
             // Don't rebuild the grid of the size didn't change at all
-            if (newSize == GridSize)
+            if (_gridSegments != null && newSize == GridSize)
                 return;
 
             // Grab all the spatials in the grid
