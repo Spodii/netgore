@@ -939,6 +939,10 @@ namespace DemoGame.MapEditor
                 OnKeyDown(e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyUp(KeyEventArgs e)
         {
             Vector2 startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);

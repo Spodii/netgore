@@ -679,7 +679,7 @@ namespace DemoGame.MapEditor
             this.tpPersistent.Location = new System.Drawing.Point(4, 22);
             this.tpPersistent.Name = "tpPersistent";
             this.tpPersistent.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPersistent.Size = new System.Drawing.Size(275, 276);
+            this.tpPersistent.Size = new System.Drawing.Size(312, 276);
             this.tpPersistent.TabIndex = 1;
             this.tpPersistent.Text = "Persistent";
             this.tpPersistent.UseVisualStyleBackColor = true;
@@ -700,7 +700,7 @@ namespace DemoGame.MapEditor
             // 
             this.splitContainer8.Panel2.Controls.Add(this.btnDeletePersistentNPC);
             this.splitContainer8.Panel2.Controls.Add(this.btnAddPersistentNPC);
-            this.splitContainer8.Size = new System.Drawing.Size(269, 270);
+            this.splitContainer8.Size = new System.Drawing.Size(306, 270);
             this.splitContainer8.SplitterDistance = 241;
             this.splitContainer8.TabIndex = 12;
             // 
@@ -711,13 +711,13 @@ namespace DemoGame.MapEditor
             this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
             this.lstPersistentNPCs.Map = null;
             this.lstPersistentNPCs.Name = "lstPersistentNPCs";
-            this.lstPersistentNPCs.Size = new System.Drawing.Size(269, 238);
+            this.lstPersistentNPCs.Size = new System.Drawing.Size(306, 238);
             this.lstPersistentNPCs.TabIndex = 12;
             // 
             // btnDeletePersistentNPC
             // 
             this.btnDeletePersistentNPC.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnDeletePersistentNPC.Location = new System.Drawing.Point(121, 0);
+            this.btnDeletePersistentNPC.Location = new System.Drawing.Point(158, 0);
             this.btnDeletePersistentNPC.Name = "btnDeletePersistentNPC";
             this.btnDeletePersistentNPC.Size = new System.Drawing.Size(74, 25);
             this.btnDeletePersistentNPC.TabIndex = 12;
@@ -728,7 +728,7 @@ namespace DemoGame.MapEditor
             // btnAddPersistentNPC
             // 
             this.btnAddPersistentNPC.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAddPersistentNPC.Location = new System.Drawing.Point(195, 0);
+            this.btnAddPersistentNPC.Location = new System.Drawing.Point(232, 0);
             this.btnAddPersistentNPC.Name = "btnAddPersistentNPC";
             this.btnAddPersistentNPC.Size = new System.Drawing.Size(74, 25);
             this.btnAddPersistentNPC.TabIndex = 11;
