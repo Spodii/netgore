@@ -22,6 +22,12 @@ namespace NetGore.Stats
         int this[TStatType statType] { get; set; }
 
         /// <summary>
+        /// Notifies listeners when any of the <see cref="IStat{TStatType}"/>s in this collection have raised
+        /// their <see cref="IStat{StatType}.Changed"/> event.
+        /// </summary>
+        event IStatCollectionStatEventHandler<TStatType> StatChanged;
+
+        /// <summary>
         /// Gets the <see cref="StatCollectionType"/> that this collection is for.
         /// </summary>
         StatCollectionType StatCollectionType { get; }

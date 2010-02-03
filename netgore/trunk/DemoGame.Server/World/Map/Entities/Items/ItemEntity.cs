@@ -65,11 +65,15 @@ namespace DemoGame.Server
 
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
+            _statChangedHandler = StatCollection_StatChanged;
+
             _id = IDCreator.GetNext();
         }
 
         public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
+            _statChangedHandler = StatCollection_StatChanged;
+
             _id = iv.ID;
 
             _name = iv.Name;
@@ -90,6 +94,8 @@ namespace DemoGame.Server
                    SPValueType hp, SPValueType mp, string equippedBody, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
         {
+            _statChangedHandler = StatCollection_StatChanged;
+
             _id = IDCreator.GetNext();
 
             _name = name;
@@ -176,12 +182,6 @@ namespace DemoGame.Server
         static UpdateItemFieldQuery UpdateItemField
         {
             get { return _dbController.GetQuery<UpdateItemFieldQuery>(); }
-        }
-
-        void BaseStatChangeReceiver(IStat<StatType> stat)
-        {
-            string field = stat.StatType.GetDatabaseField(StatCollectionType.Base);
-            SynchronizeField(field, stat.Value);
         }
 
         /// <summary>
@@ -290,6 +290,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// The delegate used to hook to the <see cref="IStat{T}.Changed"/> event for the
+        /// <see cref="IStatCollection{T}"/>s in this class.
+        /// </summary>
+        readonly IStatCollectionStatEventHandler<StatType> _statChangedHandler;
+
+        /// <summary>
         /// Creates an <see cref="ItemStats"/> from the given collection of <see cref="IStat{StatType}"/>s.
         /// </summary>
         ItemStats NewItemStats(IEnumerable<KeyValuePair<StatType, int>> statValues, StatCollectionType statCollectionType)
@@ -299,18 +305,31 @@ namespace DemoGame.Server
             switch (statCollectionType)
             {
                 case StatCollectionType.Base:
-                    ret.StatChanged += BaseStatChangeReceiver;
-                    break;
                 case StatCollectionType.Requirement:
-                    ret.StatChanged += ReqStatChangeReceiver;
+                    ret.StatChanged += _statChangedHandler;
                     break;
+
                 case StatCollectionType.Modified:
                     throw new ArgumentException("ItemEntity does not use StatCollectionType.Modified.", "statCollectionType");
+
                 default:
                     throw new ArgumentOutOfRangeException("statCollectionType");
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IStatCollection{T}.StatChanged"/> event for the stat collections in this class.
+        /// </summary>
+        /// <param name="statCollection">The sender.</param>
+        /// <param name="stat">The stat who's value changed.</param>
+        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, IStat<StatType> stat)
+        {
+            Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified, "ItemEntity does not use StatCollectionType.Modified.");
+
+            string field = stat.StatType.GetDatabaseField(statCollection.StatCollectionType);
+            SynchronizeField(field, stat.Value);
         }
 
         /// <summary>
@@ -360,12 +379,6 @@ namespace DemoGame.Server
                 OnPickup(this, charEntity);
 
             return true;
-        }
-
-        void ReqStatChangeReceiver(IStat<StatType> stat)
-        {
-            string field = stat.StatType.GetDatabaseField(StatCollectionType.Requirement);
-            SynchronizeField(field, stat.Value);
         }
 
         /// <summary>

@@ -47,13 +47,17 @@ namespace NetGore.Stats
         /// <param name="collectionType">The type of <typeparamref name="TStatType"/>s that this collection contains.</param>
         public FullStatCollection(StatCollectionType collectionType)
         {
+            IStatEventHandler<TStatType> statChangedHandler = Stat_Changed;
+
             _collectionType = collectionType;
             _stats = new IStat<TStatType>[_statsArraySize];
 
             foreach (var statType in EnumHelper<TStatType>.Values)
             {
-                IStat<TStatType> istat = StatFactory<TStatType>.CreateStat(statType, collectionType);
-                _stats[_statTypeToInt(statType)] = istat;
+                var stat = StatFactory<TStatType>.CreateStat(statType, collectionType);
+                stat.Changed += statChangedHandler;
+
+                _stats[_statTypeToInt(statType)] = stat;
             }
         }
 
@@ -63,12 +67,17 @@ namespace NetGore.Stats
         /// <param name="source">The <see cref="FullStatCollection{StatType}"/> to copy the values from.</param>
         FullStatCollection(FullStatCollection<TStatType> source)
         {
-            _collectionType = source._collectionType;
+            IStatEventHandler<TStatType> statChangedHandler = Stat_Changed;
 
+            _collectionType = source._collectionType;
             _stats = new IStat<TStatType>[source._stats.Length];
+
             for (int i = 0; i < _stats.Length; i++)
             {
-                _stats[i] = source._stats[i].DeepCopy();
+                var stat = source._stats[i].DeepCopy();
+                stat.Changed += statChangedHandler;
+
+                _stats[i] = stat;
             }
         }
 
@@ -94,6 +103,15 @@ namespace NetGore.Stats
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> in this
+        /// <see cref="DynamicStatCollection{StatType}"/> has changed their value.
+        /// </summary>
+        /// <param name="stat">The <see cref="IStat{StatType}"/> whos value has changed.</param>
+        protected virtual void OnStatChanged(IStat<TStatType> stat)
+        {
+        }
+
+        /// <summary>
         /// Sets the value of all stats in this <see cref="FullStatCollection{StatType}"/>.
         /// </summary>
         /// <param name="value">Value to set all of the stat values to.</param>
@@ -105,7 +123,26 @@ namespace NetGore.Stats
             }
         }
 
+        /// <summary>
+        /// Handles the <see cref="IStat{TStatType}.Changed"/> events for <see cref="IStat{StatType}"/>s in this
+        /// <see cref="IStatCollection{TStatType}"/>.
+        /// </summary>
+        /// <param name="stat">The <see cref="IStat{TStatType}"/> that raised the event.</param>
+        void Stat_Changed(IStat<TStatType> stat)
+        {
+            OnStatChanged(stat);
+
+            if (StatChanged != null)
+                StatChanged(this, stat);
+        }
+
         #region IStatCollection<TStatType> Members
+
+        /// <summary>
+        /// Notifies listeners when any of the <see cref="IStat{TStatType}"/>s in this collection have raised
+        /// their <see cref="IStat{StatType}.Changed"/> event.
+        /// </summary>
+        public event IStatCollectionStatEventHandler<TStatType> StatChanged;
 
         /// <summary>
         /// Gets or sets the <see cref="System.Int32"/> with the specified stat type.

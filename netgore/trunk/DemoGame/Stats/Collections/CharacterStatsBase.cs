@@ -8,6 +8,10 @@ namespace DemoGame
     /// </summary>
     public abstract class CharacterStatsBase : FullStatCollection<StatType>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterStatsBase"/> class.
+        /// </summary>
+        /// <param name="statCollectionType">Type of the stat collection.</param>
         protected CharacterStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
         {
         }
