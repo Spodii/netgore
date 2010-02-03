@@ -83,7 +83,7 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Center
         {
-            get { return Min + Size / 2; }
+            get { return Min + (Size / 2f); }
         }
 
         /// <summary>
@@ -187,7 +187,10 @@ namespace NetGore.Graphics
                     throw new ArgumentOutOfRangeException("value");
 
                 // Update the value and the matrix
+                var oldSizeUnscaled = _size * _scale;
                 _scale = value;
+                _size = oldSizeUnscaled / _scale;
+
                 UpdateMatrix();
             }
         }
@@ -198,8 +201,8 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Size
         {
-            get { return _size / Scale; }
-            set { _size = value; }
+            get { return _size; }
+            set { _size = value / Scale; }
         }
 
         /// <summary>
