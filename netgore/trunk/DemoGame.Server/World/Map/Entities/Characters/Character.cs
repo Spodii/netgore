@@ -1316,6 +1316,9 @@ namespace DemoGame.Server
             return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
         }
 
+        /// <summary>
+        /// Updates the character's mod stats.
+        /// </summary>
         protected void UpdateModStats()
         {
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
@@ -1323,6 +1326,9 @@ namespace DemoGame.Server
             {
                 modStat.Value = ModStatHelper<StatType>.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
             }
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Updated mod stats for character `{0}`.", this);
         }
 
         /// <summary>
