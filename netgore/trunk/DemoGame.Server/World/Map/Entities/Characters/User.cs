@@ -208,7 +208,7 @@ namespace DemoGame.Server
         /// </returns>
         protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
         {
-            return new UserStats(this, statCollectionType);
+            return new UserStats(statCollectionType);
         }
 
         /// <summary>
@@ -318,21 +318,6 @@ namespace DemoGame.Server
 
             // Perform the general character updating
             base.HandleUpdate(imap, deltaTime);
-        }
-
-        /// <summary>
-        /// Synchronizes the <see cref="User"/> information with the client that the <see cref="User"/> belongs to for
-        /// information that is not handled by the <see cref="SyncValueAttribute"/>. This includes information such
-        /// as stats and inventory.
-        /// </summary>
-        public void SynchronizeExtraUserInformation()
-        {
-            // Stats
-            _userStatsBase.UpdateClient();
-            _userStatsMod.UpdateClient();
-
-            // Inventory
-            _userInventory.UpdateClient();
         }
 
         /// <summary>
@@ -508,6 +493,21 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        /// <summary>
+        /// Synchronizes the <see cref="User"/> information with the client that the <see cref="User"/> belongs to for
+        /// information that is not handled by the <see cref="SyncValueAttribute"/>. This includes information such
+        /// as stats and inventory.
+        /// </summary>
+        public void SynchronizeExtraUserInformation()
+        {
+            // Stats
+            _userStatsBase.UpdateClient(this);
+            _userStatsMod.UpdateClient(this);
+
+            // Inventory
+            _userInventory.UpdateClient();
         }
 
         public bool TryBuyItem(IItemTemplateTable itemTemplate, byte amount)
