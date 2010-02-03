@@ -18,7 +18,13 @@ namespace NetGore.Graphics
         {
             ImageFormat = ImageFileFormat.Png;
             TextureSize = new Vector2(512);
+            BackgroundColor = new Color(255, 0, 255, 255);
         }
+
+        /// <summary>
+        /// Gets or sets the background color for the generated preview map.
+        /// </summary>
+        public Color BackgroundColor { get; set; }
 
         /// <summary>
         /// Gets or sets the image format to use when creating previews.
@@ -72,42 +78,8 @@ namespace NetGore.Graphics
             drawExtensions.Clear();
 
             // Create the SpriteBatch
-            Texture2D ret;
-            using (var sb = new SpriteBatch(graphicsDevice))
-            {
-                SurfaceFormat format = graphicsDevice.PresentationParameters.BackBufferFormat;
-                MultiSampleType sample = graphicsDevice.PresentationParameters.MultiSampleType;
-                int q = graphicsDevice.PresentationParameters.MultiSampleQuality;
-
-                // Store the old graphics device values
-                var oldDepthStencilBuffer = graphicsDevice.DepthStencilBuffer;
-                var oldRenderTarget = graphicsDevice.GetRenderTarget(0) as RenderTarget2D;
-
-                // Create the target to render to
-                using (
-                    var target = new RenderTarget2D(graphicsDevice, (int)TextureSize.X, (int)TextureSize.Y, 1, format, sample, q,
-                                                    RenderTargetUsage.PreserveContents))
-                {
-                    // Set the graphics device to render to our target
-                    graphicsDevice.DepthStencilBuffer = null;
-                    graphicsDevice.SetRenderTarget(0, target);
-                    graphicsDevice.Clear(ClearOptions.Target, new Color(255, 0, 255, 255), 1.0f, 0);
-
-                    // Draw
-                    sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState, cam.Matrix);
-                    map.Draw(sb);
-                    sb.End();
-
-                    // Restore the render target to the backbuffer
-                    graphicsDevice.SetRenderTarget(0, oldRenderTarget);
-
-                    // Get the texture
-                    ret = target.GetTexture();
-                }
-
-                // Restore the graphics device values
-                graphicsDevice.DepthStencilBuffer = oldDepthStencilBuffer;
-            }
+            Texture2D ret = RenderTarget2DHelper.CreateTexture2D(graphicsDevice, (int)TextureSize.X, (int)TextureSize.Y,
+                                                                 BackgroundColor, x => DrawMap(x, map));
 
             // Restore the map values
             SetMapValues(map, oldCamera, oldDrawFilter, oldDrawParticles);
@@ -134,6 +106,19 @@ namespace NetGore.Graphics
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Handles setting up the <see cref="SpriteBatch"/> and drawing the <paramref name="map"/>. This is where
+        /// all the actual drawing to the preview map is done.
+        /// </summary>
+        /// <param name="sb">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="map">The <see cref="IDrawableMap"/> to draw.</param>
+        protected virtual void DrawMap(SpriteBatch sb, IDrawableMap map)
+        {
+            sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState, map.Camera.Matrix);
+            map.Draw(sb);
+            sb.End();
         }
 
         /// <summary>
