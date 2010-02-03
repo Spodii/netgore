@@ -49,6 +49,9 @@
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.label6 = new System.Windows.Forms.Label();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.txtLogTime = new System.Windows.Forms.TextBox();
+            this.txtLogClass = new System.Windows.Forms.TextBox();
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.txtLogMethod = new System.Windows.Forms.TextBox();
@@ -58,19 +61,16 @@
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtFilterRegex = new System.Windows.Forms.TextBox();
             this.chkFatal = new System.Windows.Forms.CheckBox();
             this.chkError = new System.Windows.Forms.CheckBox();
             this.chkWarn = new System.Windows.Forms.CheckBox();
             this.chkInfo = new System.Windows.Forms.CheckBox();
             this.chkDebug = new System.Windows.Forms.CheckBox();
-            this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
-            this.txtFilterRegex = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.splitContainer9 = new System.Windows.Forms.SplitContainer();
-            this.txtLogClass = new System.Windows.Forms.TextBox();
-            this.txtLogTime = new System.Windows.Forms.TextBox();
-            this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.lstLog = new DemoGame.Server.LogListBox();
+            this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
+            this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -90,6 +90,9 @@
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
+            this.splitContainer9.Panel1.SuspendLayout();
+            this.splitContainer9.Panel2.SuspendLayout();
+            this.splitContainer9.SuspendLayout();
             this.splitContainer8.Panel1.SuspendLayout();
             this.splitContainer8.Panel2.SuspendLayout();
             this.splitContainer8.SuspendLayout();
@@ -100,9 +103,6 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.splitContainer9.Panel1.SuspendLayout();
-            this.splitContainer9.Panel2.SuspendLayout();
-            this.splitContainer9.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -357,6 +357,47 @@
             this.splitContainer7.SplitterDistance = 240;
             this.splitContainer7.TabIndex = 0;
             // 
+            // splitContainer9
+            // 
+            this.splitContainer9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer9.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer9.IsSplitterFixed = true;
+            this.splitContainer9.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer9.Name = "splitContainer9";
+            // 
+            // splitContainer9.Panel1
+            // 
+            this.splitContainer9.Panel1.Controls.Add(this.txtLogTime);
+            // 
+            // splitContainer9.Panel2
+            // 
+            this.splitContainer9.Panel2.Controls.Add(this.txtLogClass);
+            this.splitContainer9.Size = new System.Drawing.Size(240, 25);
+            this.splitContainer9.SplitterDistance = 56;
+            this.splitContainer9.TabIndex = 0;
+            // 
+            // txtLogTime
+            // 
+            this.txtLogTime.BackColor = System.Drawing.SystemColors.Window;
+            this.txtLogTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtLogTime.Location = new System.Drawing.Point(0, 0);
+            this.txtLogTime.Name = "txtLogTime";
+            this.txtLogTime.ReadOnly = true;
+            this.txtLogTime.Size = new System.Drawing.Size(56, 20);
+            this.txtLogTime.TabIndex = 12;
+            this.tt.SetToolTip(this.txtLogTime, "Time the event was created");
+            // 
+            // txtLogClass
+            // 
+            this.txtLogClass.BackColor = System.Drawing.SystemColors.Window;
+            this.txtLogClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtLogClass.Location = new System.Drawing.Point(0, 0);
+            this.txtLogClass.Name = "txtLogClass";
+            this.txtLogClass.ReadOnly = true;
+            this.txtLogClass.Size = new System.Drawing.Size(180, 20);
+            this.txtLogClass.TabIndex = 11;
+            this.tt.SetToolTip(this.txtLogClass, "Class the event came from");
+            // 
             // splitContainer8
             // 
             this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -488,6 +529,28 @@
             this.splitContainer2.SplitterDistance = 25;
             this.splitContainer2.TabIndex = 9;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.label5.Location = new System.Drawing.Point(314, 4);
+            this.label5.Name = "label5";
+            this.label5.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label5.Size = new System.Drawing.Size(41, 16);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Regex:";
+            // 
+            // txtFilterRegex
+            // 
+            this.txtFilterRegex.Dock = System.Windows.Forms.DockStyle.Right;
+            this.txtFilterRegex.Location = new System.Drawing.Point(355, 4);
+            this.txtFilterRegex.Name = "txtFilterRegex";
+            this.txtFilterRegex.Size = new System.Drawing.Size(177, 20);
+            this.txtFilterRegex.TabIndex = 15;
+            this.tt.SetToolTip(this.txtFilterRegex, "Regex used to filter the log messages. Set to empty to avoid using. List is refre" +
+                    "shed when changed to a valid Regex.");
+            this.txtFilterRegex.TextChanged += new System.EventHandler(this.txtFilterRegex_TextChanged);
+            // 
             // chkFatal
             // 
             this.chkFatal.AutoSize = true;
@@ -563,75 +626,6 @@
             this.chkDebug.UseVisualStyleBackColor = true;
             this.chkDebug.CheckedChanged += new System.EventHandler(this.chkDebug_CheckedChanged);
             // 
-            // tmrUpdateDisplay
-            // 
-            this.tmrUpdateDisplay.Enabled = true;
-            this.tmrUpdateDisplay.Interval = 500;
-            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
-            // 
-            // txtFilterRegex
-            // 
-            this.txtFilterRegex.Dock = System.Windows.Forms.DockStyle.Right;
-            this.txtFilterRegex.Location = new System.Drawing.Point(355, 4);
-            this.txtFilterRegex.Name = "txtFilterRegex";
-            this.txtFilterRegex.Size = new System.Drawing.Size(177, 20);
-            this.txtFilterRegex.TabIndex = 15;
-            this.tt.SetToolTip(this.txtFilterRegex, "Regex used to filter the log messages. Set to empty to avoid using. List is refre" +
-                    "shed when changed to a valid Regex.");
-            this.txtFilterRegex.TextChanged += new System.EventHandler(this.txtFilterRegex_TextChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label5.Location = new System.Drawing.Point(314, 4);
-            this.label5.Name = "label5";
-            this.label5.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.label5.Size = new System.Drawing.Size(41, 16);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "Regex:";
-            // 
-            // splitContainer9
-            // 
-            this.splitContainer9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer9.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer9.IsSplitterFixed = true;
-            this.splitContainer9.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer9.Name = "splitContainer9";
-            // 
-            // splitContainer9.Panel1
-            // 
-            this.splitContainer9.Panel1.Controls.Add(this.txtLogTime);
-            // 
-            // splitContainer9.Panel2
-            // 
-            this.splitContainer9.Panel2.Controls.Add(this.txtLogClass);
-            this.splitContainer9.Size = new System.Drawing.Size(240, 25);
-            this.splitContainer9.SplitterDistance = 56;
-            this.splitContainer9.TabIndex = 0;
-            // 
-            // txtLogClass
-            // 
-            this.txtLogClass.BackColor = System.Drawing.SystemColors.Window;
-            this.txtLogClass.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtLogClass.Location = new System.Drawing.Point(0, 0);
-            this.txtLogClass.Name = "txtLogClass";
-            this.txtLogClass.ReadOnly = true;
-            this.txtLogClass.Size = new System.Drawing.Size(180, 20);
-            this.txtLogClass.TabIndex = 11;
-            this.tt.SetToolTip(this.txtLogClass, "Class the event came from");
-            // 
-            // txtLogTime
-            // 
-            this.txtLogTime.BackColor = System.Drawing.SystemColors.Window;
-            this.txtLogTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtLogTime.Location = new System.Drawing.Point(0, 0);
-            this.txtLogTime.Name = "txtLogTime";
-            this.txtLogTime.ReadOnly = true;
-            this.txtLogTime.Size = new System.Drawing.Size(56, 20);
-            this.txtLogTime.TabIndex = 12;
-            this.tt.SetToolTip(this.txtLogTime, "Time the event was created");
-            // 
             // lstLog
             // 
             this.lstLog.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -643,6 +637,12 @@
             this.lstLog.TabIndex = 0;
             this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lbLog_SelectedIndexChanged);
             this.lstLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);
+            // 
+            // tmrUpdateDisplay
+            // 
+            this.tmrUpdateDisplay.Enabled = true;
+            this.tmrUpdateDisplay.Interval = 500;
+            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
             // 
             // frmMain
             // 
@@ -677,6 +677,11 @@
             this.splitContainer7.Panel1.ResumeLayout(false);
             this.splitContainer7.Panel2.ResumeLayout(false);
             this.splitContainer7.ResumeLayout(false);
+            this.splitContainer9.Panel1.ResumeLayout(false);
+            this.splitContainer9.Panel1.PerformLayout();
+            this.splitContainer9.Panel2.ResumeLayout(false);
+            this.splitContainer9.Panel2.PerformLayout();
+            this.splitContainer9.ResumeLayout(false);
             this.splitContainer8.Panel1.ResumeLayout(false);
             this.splitContainer8.Panel2.ResumeLayout(false);
             this.splitContainer8.Panel2.PerformLayout();
@@ -691,11 +696,6 @@
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.ResumeLayout(false);
-            this.splitContainer9.Panel1.ResumeLayout(false);
-            this.splitContainer9.Panel1.PerformLayout();
-            this.splitContainer9.Panel2.ResumeLayout(false);
-            this.splitContainer9.Panel2.PerformLayout();
-            this.splitContainer9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
