@@ -420,14 +420,21 @@ namespace DemoGame.Client
         {
             // Find the drawable objects that are in view and pass the filter (if one is provided)
             var viewArea = Camera.GetViewArea();
+
             IEnumerable<IDrawable> drawableInView;
+            IEnumerable<IDrawable> bgInView;
             if (DrawFilter != null)
+            {
                 drawableInView = Spatial.GetMany<IDrawable>(viewArea, x => DrawFilter(x));
+                bgInView = _backgroundImages.Cast<IDrawable>().Where(x => DrawFilter(x) && x.InView(Camera));
+            }
             else
+            {
                 drawableInView = Spatial.GetMany<IDrawable>(viewArea);
+                bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(Camera));
+            }
 
             // Concat the background images (to the start of the list) since they aren't in any spatials
-            var bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(Camera));
             drawableInView = bgInView.Concat(drawableInView);
 
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
