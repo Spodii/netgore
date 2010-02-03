@@ -30,11 +30,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Notifies listeners when any of the stats have raised their <see cref="IStat{StatType}.Changed"/> event.
-        /// </summary>
-        public event IStatEventHandler<StatType> StatChanged;
-
-        /// <summary>
         /// Gets the <see cref="IStat{StatType}"/> for the stat of the given <paramref name="statType"/>.
         /// </summary>
         /// <param name="statType">The stat type of the stat to get.</param>
@@ -47,16 +42,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Handler for listening to all of the stats and forwarding to the OnStatChange
-        /// </summary>
-        /// <param name="stat">Stat that changed</param>
-        void HandleStatChanged(IStat<StatType> stat)
-        {
-            if (StatChanged != null)
-                StatChanged(stat);
-        }
-
-        /// <summary>
         /// Checks if the stats in this ItemStatsBase contain the same values as another ItemStatsBase
         /// </summary>
         /// <param name="other">ItemStatsBase to compare against</param>
@@ -65,19 +50,6 @@ namespace DemoGame
         public bool HasEqualValues(ItemStatsBase other)
         {
             return this.All(x => x.Value == other[x.StatType]);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> is added to this
-        /// <see cref="DynamicStatCollection{StatType}"/>. This will be invoked once and only once for every
-        /// <see cref="IStat{StatType}"/> added to this <see cref="DynamicStatCollection{StatType}"/>.
-        /// </summary>
-        /// <param name="stat">The <see cref="IStat{StatType}"/> that was added to this
-        /// <see cref="DynamicStatCollection{StatType}"/>.</param>
-        protected override void OnStatAdded(IStat<StatType> stat)
-        {
-            // Attach a listener to every stat to listen for changes
-            stat.Changed += HandleStatChanged;
         }
     }
 }
