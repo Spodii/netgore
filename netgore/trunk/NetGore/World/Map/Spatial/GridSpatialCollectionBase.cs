@@ -29,6 +29,7 @@ namespace NetGore
 
         readonly SpatialEventHandler<Vector2> _spatialMoveHandler;
         readonly SpatialEventHandler<Vector2> _spatialResizeHandler;
+
         IGridSpatialCollectionSegment[] _gridSegments;
         Point _gridSize;
 
