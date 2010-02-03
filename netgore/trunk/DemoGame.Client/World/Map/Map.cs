@@ -59,6 +59,8 @@ namespace DemoGame.Client
         {
             _camera = camera;
             _graphics = graphics;
+
+            DrawParticles = true;
         }
 
         /// <summary>
@@ -70,10 +72,15 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets or sets a filter to be used when determining what components on the map will be drawn. If null,
-        /// all components will be drawn.
+        /// Gets or sets a filter to be used when determining what components on the map will be drawn.
+        /// If null, all components will be drawn (same as returning true for each value).
         /// </summary>
         public Func<IDrawable, bool> DrawFilter { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the particle effects should be drawn.
+        /// </summary>
+        public bool DrawParticles { get; set; }
 
         /// <summary>
         /// Gets an IEnumerable of all the MapGrhs on the Map.
@@ -453,8 +460,11 @@ namespace DemoGame.Client
             }
 
             // Draw the particle effects
-            _particleEffectRenderer.SpriteBatch = sb;
-            _particleEffectRenderer.Draw(Camera, ParticleEffects);
+            if (DrawParticles)
+            {
+                _particleEffectRenderer.SpriteBatch = sb;
+                _particleEffectRenderer.Draw(Camera, ParticleEffects);
+            }
         }
 
         #endregion
