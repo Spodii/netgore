@@ -13,6 +13,7 @@ namespace NetGore.Graphics
     public class Camera2D : ICamera2D
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         bool _keepInMap = true;
 
         IMap _map;
