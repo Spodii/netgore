@@ -13,17 +13,7 @@ namespace NetGore.Graphics
     public class ScreenGrid : IPersistable
     {
         Color _color = new Color(255, 255, 255, 75);
-        Vector2 _screenSize;
         Vector2 _size = new Vector2(32);
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenGrid"/> class.
-        /// </summary>
-        /// <param name="screenSize">Size of the screen in pixels.</param>
-        public ScreenGrid(Vector2 screenSize)
-        {
-            _screenSize = screenSize;
-        }
 
         /// <summary>
         /// Gets or sets the color of the grid lines.
@@ -51,11 +41,6 @@ namespace NetGore.Graphics
                 _size.Y = value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the size of the screen.
-        /// </summary>
-        public Vector2 ScreenSize { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the <see cref="ScreenGrid"/>.
@@ -145,14 +130,14 @@ namespace NetGore.Graphics
             Vector2 p1 = new Vector2();
             Vector2 p2 = new Vector2();
 
-            Vector2 min = camera.Min;
+            var min = camera.Min;
+            var max = camera.Max;
+            var size = camera.Size;
             min -= new Vector2(min.X % Size.X, min.Y % Size.Y);
 
-            Vector2 max = camera.Min + _screenSize;
-
             // Vertical lines
-            p1.Y = camera.Min.Y;
-            p2.Y = p1.Y + _screenSize.Y;
+            p1.Y = min.Y;
+            p2.Y = p1.Y + size.Y;
             for (float x = min.X; x < max.X; x += Size.X)
             {
                 p1.X = x;
@@ -162,7 +147,7 @@ namespace NetGore.Graphics
 
             // Horizontal lines
             p1.X = camera.Min.X;
-            p2.X = p1.X + _screenSize.X;
+            p2.X = p1.X + size.X;
             for (float y = min.Y; y < max.Y; y += Size.Y)
             {
                 p1.Y = y;
