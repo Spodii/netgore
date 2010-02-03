@@ -103,6 +103,7 @@
     <Compile Include="IO\PropertySyncItemID.cs" />
     <Compile Include="IO\PropertySyncItemTemplateID.cs" />
     <Compile Include="IO\PropertySyncSPValueType.cs" />
+    <Compile Include="Items\EquippedEventHandler.cs" />
     <Compile Include="StatusEffect\ActiveStatusEffectID.cs" />
     <Compile Include="World\Map\Entities\AllianceID.cs" />
     <Compile Include="World\Map\Entities\CharacterID.cs" />
