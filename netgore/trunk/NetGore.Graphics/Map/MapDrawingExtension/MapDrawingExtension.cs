@@ -1,8 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
-using NetGore.Graphics;
 
-namespace DemoGame.Client
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Base class for implementing a <see cref="IMapDrawingExtension"/>.

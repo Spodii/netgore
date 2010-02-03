@@ -72,17 +72,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets or sets a filter to be used when determining what components on the map will be drawn.
-        /// If null, all components will be drawn (same as returning true for each value).
-        /// </summary>
-        public Func<IDrawable, bool> DrawFilter { get; set; }
-
-        /// <summary>
-        /// Gets or sets if the particle effects should be drawn.
-        /// </summary>
-        public bool DrawParticles { get; set; }
-
-        /// <summary>
         /// Gets an IEnumerable of all the MapGrhs on the Map.
         /// </summary>
         public IEnumerable<MapGrh> MapGrhs
@@ -418,6 +407,17 @@ namespace DemoGame.Client
                 _camera = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a filter to be used when determining what components on the map will be drawn.
+        /// If null, all components will be drawn (same as returning true for each value).
+        /// </summary>
+        public Func<IDrawable, bool> DrawFilter { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the particle effects should be drawn.
+        /// </summary>
+        public bool DrawParticles { get; set; }
 
         /// <summary>
         /// Draws the content of the map to the screen.

@@ -1,9 +1,9 @@
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Graphics;
 
-namespace DemoGame.Client
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Interface for an <see cref="IMap"/> that supports being drawn.
@@ -25,5 +25,16 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
         void Draw(SpriteBatch spriteBatch);
+
+        /// <summary>
+        /// Gets or sets a filter to be used when determining what components on the map will be drawn.
+        /// If null, all components will be drawn (same as returning true for each value).
+        /// </summary>
+        Func<IDrawable, bool> DrawFilter { get; }
+
+        /// <summary>
+        /// Gets or sets if the particle effects should be drawn.
+        /// </summary>
+        bool DrawParticles { get; set; }
     }
 }
