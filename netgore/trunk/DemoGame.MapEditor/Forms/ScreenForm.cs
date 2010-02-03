@@ -66,8 +66,7 @@ namespace DemoGame.MapEditor
         readonly ICamera2D _camera;
         readonly EditorCursorManager<ScreenForm> _cursorManager;
         readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
-        readonly ScreenGrid _grid;
-
+        readonly ScreenGrid _grid = new ScreenGrid();
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
         readonly IMapBoundControl[] _mapBoundControls;
         readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
@@ -159,7 +158,6 @@ namespace DemoGame.MapEditor
             scTabsAndSelected.Panel2Collapsed = true;
 
             _camera = new Camera2D(GameScreenSize);
-            _grid = new ScreenGrid(GameScreenSize);
 
             // Set up the object manager
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
@@ -691,7 +689,6 @@ namespace DemoGame.MapEditor
         void GameScreen_Resize(object sender, EventArgs e)
         {
             _camera.Size = GameScreenSize;
-            _grid.Size = GameScreenSize;
         }
 
         void HandleSwitch_SaveAllMaps(string[] parameters)
@@ -1040,7 +1037,6 @@ namespace DemoGame.MapEditor
             }
 
             _camera.Size = GameScreenSize;
-            _grid.Size = GameScreenSize;
         }
 
         void SelectedObjectsManager_FocusedChanged(SelectedObjectsManager<object> sender, object newFocused)

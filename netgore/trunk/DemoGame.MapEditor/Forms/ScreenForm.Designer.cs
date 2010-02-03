@@ -869,6 +869,7 @@ namespace DemoGame.MapEditor
             this.txtGridHeight.Name = "txtGridHeight";
             this.txtGridHeight.Size = new System.Drawing.Size(46, 20);
             this.txtGridHeight.TabIndex = 4;
+            this.txtGridHeight.Text = "32";
             this.txtGridHeight.TextChanged += new System.EventHandler(this.txtGridHeight_TextChanged);
             // 
             // label4
@@ -886,6 +887,7 @@ namespace DemoGame.MapEditor
             this.txtGridWidth.Name = "txtGridWidth";
             this.txtGridWidth.Size = new System.Drawing.Size(46, 20);
             this.txtGridWidth.TabIndex = 2;
+            this.txtGridWidth.Text = "32";
             this.txtGridWidth.TextChanged += new System.EventHandler(this.txtGridWidth_TextChanged);
             // 
             // label3
