@@ -14,11 +14,6 @@ namespace NetGore.Stats
     public class DynamicStatCollection<TStatType> : IStatCollection<TStatType>
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
-        /// <summary>
-        /// Notifies listeners when a stat has been added to this collection.
-        /// </summary>
-        public DynamicStatCollectionStatEventHandler<TStatType> StatAdded;
-
         readonly StatCollectionType _statCollectionType;
 
         readonly Dictionary<TStatType, IStat<TStatType>> _stats =
@@ -32,6 +27,11 @@ namespace NetGore.Stats
         {
             _statCollectionType = statCollectionType;
         }
+
+        /// <summary>
+        /// Notifies listeners when a stat has been added to this collection.
+        /// </summary>
+        public event DynamicStatCollectionStatEventHandler<TStatType> StatAdded;
 
         /// <summary>
         /// Adds an <see cref="IStat{StatType}"/> to the collection.
