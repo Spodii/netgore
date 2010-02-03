@@ -78,28 +78,6 @@ namespace DemoGame.Server
         const int _attackTimeout = 500;
 
         /// <summary>
-        /// Gets or sets the map that the <see cref="IUpdateableMapReference"/> is on. This should only be set
-        /// by the map that the object was added to.
-        /// </summary>
-        IMap IUpdateableMapReference.Map
-        {
-            get { return Map; }
-            set { _map = (Map)value; }
-        }
-
-        /// <summary>
-        /// Makes the <see cref="Character"/> use an <see cref="Emoticon"/>.
-        /// </summary>
-        /// <param name="emoticon">The emoticon to use.</param>
-        public void Emote(Emoticon emoticon)
-        {
-            using (var pw = ServerPacket.Emote(MapEntityIndex, emoticon))
-            {
-                Map.SendToArea(this, pw);
-            }
-        }
-
-        /// <summary>
         /// How frequently the SP is recovered in milliseconds.
         /// </summary>
         const int _spRecoveryRate = 3000;
@@ -685,6 +663,18 @@ namespace DemoGame.Server
 
             if (DroppedItem != null)
                 DroppedItem(this, droppedItem);
+        }
+
+        /// <summary>
+        /// Makes the <see cref="Character"/> use an <see cref="Emoticon"/>.
+        /// </summary>
+        /// <param name="emoticon">The emoticon to use.</param>
+        public void Emote(Emoticon emoticon)
+        {
+            using (var pw = ServerPacket.Emote(MapEntityIndex, emoticon))
+            {
+                Map.SendToArea(this, pw);
+            }
         }
 
         /// <summary>
@@ -1495,6 +1485,16 @@ namespace DemoGame.Server
             }
 
             return position;
+        }
+
+        /// <summary>
+        /// Gets or sets the map that the <see cref="IUpdateableMapReference"/> is on. This should only be set
+        /// by the map that the object was added to.
+        /// </summary>
+        IMap IUpdateableMapReference.Map
+        {
+            get { return Map; }
+            set { _map = (Map)value; }
         }
 
         #region ICharacterTable Members
