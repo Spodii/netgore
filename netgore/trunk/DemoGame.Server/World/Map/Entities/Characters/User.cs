@@ -318,12 +318,20 @@ namespace DemoGame.Server
 
             // Perform the general character updating
             base.HandleUpdate(imap, deltaTime);
+        }
 
-            // Synchronize the User's stats
+        /// <summary>
+        /// Synchronizes the <see cref="User"/> information with the client that the <see cref="User"/> belongs to for
+        /// information that is not handled by the <see cref="SyncValueAttribute"/>. This includes information such
+        /// as stats and inventory.
+        /// </summary>
+        public void SynchronizeExtraUserInformation()
+        {
+            // Stats
             _userStatsBase.UpdateClient();
             _userStatsMod.UpdateClient();
 
-            // Synchronize the Inventory
+            // Inventory
             _userInventory.UpdateClient();
         }
 

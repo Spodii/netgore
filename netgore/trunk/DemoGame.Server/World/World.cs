@@ -324,6 +324,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// The time that <see cref="User.SynchronizeExtraUserInformation"/> will be called next.
+        /// </summary>
+        int _syncExtraUserInfoTime = int.MinValue;
+
+        /// <summary>
+        /// The time that <see cref="World.UpdateRespawnables"/> will be called next.
+        /// </summary>
+        int _updateRespawnablesTime = int.MinValue;
+
+        /// <summary>
         /// Updates the World.
         /// </summary>
         public override void Update()
@@ -331,9 +341,33 @@ namespace DemoGame.Server
             ThreadAsserts.IsMainThread();
 
             ProcessDisposeStack();
-            UpdateRespawnables();
+
+            int currentTime = GetTime();
+
+            if (_updateRespawnablesTime < currentTime)
+            {
+                _updateRespawnablesTime = currentTime + ServerSettings.RespawnablesUpdateRate;
+                UpdateRespawnables();
+            }
+
+            if (_syncExtraUserInfoTime < currentTime)
+            {
+                _syncExtraUserInfoTime = currentTime + ServerSettings.SyncExtraUserInformationRate;
+                SyncExtraUserInformation();
+            }
 
             base.Update();
+        }
+
+        /// <summary>
+        /// Synchronizes the extra user information for all users.
+        /// </summary>
+        void SyncExtraUserInformation()
+        {
+            foreach (var user in _users.Values)
+            {
+                user.SynchronizeExtraUserInformation();
+            }
         }
 
         /// <summary>
@@ -360,6 +394,9 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Attempts to respawn <see cref="IRespawnable"/>s that are waiting to be respawned.
+        /// </summary>
         void UpdateRespawnables()
         {
             if (_respawnables.Count == 0)
