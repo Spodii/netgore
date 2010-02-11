@@ -146,6 +146,10 @@ namespace NetGore.Features.Groups
 
             // Clear the founder
             _founder = null;
+
+            // Remove all members from the group
+            foreach (var member in Members)
+                RemoveMember(member);
         }
 
         /// <summary>
@@ -199,6 +203,10 @@ namespace NetGore.Features.Groups
 
             if (MemberLeave != null)
                 MemberLeave(this, member);
+
+            // If they were the founder, disband the group completely
+            if (member == Founder)
+                Disband();
 
             return true;
         }
