@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="Groups\Group.cs" />
     <Compile Include="Groups\GroupManager.cs" />
-    <Compile Include="Groups\IGroupable.cs" />
+    <Compile Include="Groups\Event Handlers\IGroupManagerEventHandler.cs" />
+    <Compile Include="Groups\Event Handlers\IGroupManagerGroupEventHandler.cs" />
+    <Compile Include="Groups\IGroupManager.cs" />
     <Compile Include="Guilds\GuildBase.cs" />
     <Compile Include="Guilds\GuildInviteStatus.cs" />
     <Compile Include="Guilds\GuildManagerBase.cs" />
