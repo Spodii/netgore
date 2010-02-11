@@ -699,10 +699,10 @@ namespace NetGore.Features.Guilds
                 _tag = newTag;
                 Save();
 
-                OnNameChanged(invoker, oldValue, Name);
+                OnTagChanged(invoker, oldValue, Tag);
 
-                if (NameChanged != null)
-                    NameChanged(this, invoker, oldValue, Name);
+                if (TagChanged != null)
+                    TagChanged(this, invoker, oldValue, Tag);
             }
 
             return success;
