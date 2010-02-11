@@ -14,7 +14,7 @@ namespace NetGore.Features.Groups
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly IGroupEventHandler _groupDisbandHandler;
-        readonly List<IGroup> _groups;
+        readonly List<IGroup> _groups = new List<IGroup>();
         readonly Func<IGroupManager, IGroupable, IGroup> _tryCreateGroup;
 
         /// <summary>
