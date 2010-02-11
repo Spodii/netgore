@@ -5,10 +5,12 @@ using System.Text;
 
 namespace NetGore.Features.Groups
 {
+    public delegate void IGroupableEventHandler(IGroupable groupable);
+
     /// <summary>
     /// Interface for something that can be part of a group.
     /// </summary>
-    public interface IGroupable
+    public interface IGroupable : IDisposable
     {
         /// <summary>
         /// Gets if this <see cref="IGroupable"/> is close enough to the <paramref name="other"/> to
@@ -34,5 +36,10 @@ namespace NetGore.Features.Groups
         /// remove a <see cref="IGroupable"/> from a <see cref="IGroup"/>.
         /// </summary>
         IGroup Group { get; set; }
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IGroupable"/> has been disposed.
+        /// </summary>
+        event IGroupableEventHandler Disposed;
     }
 }

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.Groups
 {
     public interface IGroupManager
     {
+        /// <summary>
+        /// Notifies listeners when a new group has been created.
+        /// </summary>
+        event IGroupManagerGroupEventHandler GroupCreated;
+
         /// <summary>
         /// Gets all of the active <see cref="IGroup"/>s managed by this <see cref="IGroupManager"/>.
         /// </summary>
@@ -20,20 +24,16 @@ namespace NetGore.Features.Groups
         /// <paramref name="founder"/> set as the group's founder. Otherwise, returns null.
         /// A group may not be created by someone who is already in a group.</returns>
         IGroup TryCreateGroup(IGroupable founder);
-
-        /// <summary>
-        /// Notifies listeners when a new group has been created.
-        /// </summary>
-        event IGroupManagerGroupEventHandler GroupCreated;
     }
 
     public delegate void IGroupManagerEventHandler(IGroupManager groupManager);
+
     public delegate void IGroupManagerGroupEventHandler(IGroupManager groupManager, IGroup group);
 
     public class GroupManager : IGroupManager
     {
-        readonly List<IGroup> _groups;
         readonly Func<IGroupable, IGroup, bool> _canJoinGroup;
+        readonly List<IGroup> _groups;
         readonly Func<IGroupManager, IGroupable, IGroup> _tryCreateGroup;
 
         /// <summary>
@@ -48,6 +48,22 @@ namespace NetGore.Features.Groups
             _canJoinGroup = canJoinGroup;
             _tryCreateGroup = tryCreateGroup;
         }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling of the
+        /// <see cref="IGroupManager.GroupCreated"/> event.
+        /// </summary>
+        /// <param name="group">The <see cref="IGroup"/> that was created.</param>
+        protected virtual void OnCreateGroup(IGroup group)
+        {
+        }
+
+        #region IGroupManager Members
+
+        /// <summary>
+        /// Notifies listeners when a new group has been created.
+        /// </summary>
+        public event IGroupManagerGroupEventHandler GroupCreated;
 
         /// <summary>
         /// Gets all of the active <see cref="IGroup"/>s managed by this <see cref="IGroupManager"/>.
@@ -87,18 +103,6 @@ namespace NetGore.Features.Groups
             return newGroup;
         }
 
-        /// <summary>
-        /// When overridden in the derived class, allows for handling of the
-        /// <see cref="IGroupManager.GroupCreated"/> event.
-        /// </summary>
-        /// <param name="group">The <see cref="IGroup"/> that was created.</param>
-        protected virtual void OnCreateGroup(IGroup group)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when a new group has been created.
-        /// </summary>
-        public event IGroupManagerGroupEventHandler GroupCreated;
+        #endregion
     }
 }
