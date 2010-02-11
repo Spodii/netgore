@@ -48,6 +48,7 @@
     <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
     <Compile Include="Groups\GroupSettings.cs" />
+    <Compile Include="Groups\GroupShareMode.cs" />
     <Compile Include="Groups\IGroup.cs" />
     <Compile Include="Groups\IGroupable.cs" />
     <Compile Include="Groups\Event Handlers\IGroupEventHandler.cs" />

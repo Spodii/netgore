@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace NetGore.Features.Groups
 {
+    /// <summary>
+    /// Manages all of the <see cref="IGroup"/>s.
+    /// </summary>
     public class GroupManager : IGroupManager
     {
         readonly List<IGroup> _groups;

@@ -26,6 +26,16 @@ namespace NetGore.Features.Groups
         event IGroupMemberEventHandler MemberLeave;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="IGroup.ShareMode"/> has changed.
+        /// </summary>
+        event IGroupEventHandler ShareModeChanged;
+
+        /// <summary>
+        /// Gets or sets how rewards are distributed among the group members.
+        /// </summary>
+        GroupShareMode ShareMode { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="IGroupable"/> that is the founder of this group. If this value is false, the group
         /// is assumed to be disbanded.
         /// </summary>
@@ -58,6 +68,6 @@ namespace NetGore.Features.Groups
         /// <returns>True if the <paramref name="groupable"/> was successfully added to the group;
         /// otherwise false.
         /// This method will always return false is the <paramref name="groupable"/> is already in a group.</returns>
-        bool TryAdd(IGroupable groupable);
+        bool TryAddMember(IGroupable groupable);
     }
 }

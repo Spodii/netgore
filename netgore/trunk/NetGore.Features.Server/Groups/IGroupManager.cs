@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace NetGore.Features.Groups
 {
+    /// <summary>
+    /// Interface for a manager of the <see cref="IGroup"/>s.
+    /// </summary>
     public interface IGroupManager
     {
         /// <summary>
