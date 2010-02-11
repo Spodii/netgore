@@ -20,6 +20,7 @@ namespace NetGore.Features.Groups
         readonly List<IGroupable> _members = new List<IGroupable>();
 
         IGroupable _founder;
+        GroupShareMode _shareMode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class.
@@ -68,6 +69,13 @@ namespace NetGore.Features.Groups
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for handling of the <see cref="IGroup.ShareModeChanged"/> event.
+        /// </summary>
+        protected virtual void OnShareModeChanged()
+        {
+        }
+
         #region IGroup Members
 
         /// <summary>
@@ -86,6 +94,11 @@ namespace NetGore.Features.Groups
         public event IGroupMemberEventHandler MemberLeave;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="IGroup.ShareMode"/> has changed.
+        /// </summary>
+        public event IGroupEventHandler ShareModeChanged;
+
+        /// <summary>
         /// Gets the <see cref="IGroupable"/> that is the founder of this group. If this value is false, the group
         /// is assumed to be disbanded.
         /// </summary>
@@ -100,6 +113,24 @@ namespace NetGore.Features.Groups
         public IEnumerable<IGroupable> Members
         {
             get { return _members; }
+        }
+
+        /// <summary>
+        /// Gets or sets how rewards are distributed among the group members.
+        /// </summary>
+        public GroupShareMode ShareMode
+        {
+            get { return _shareMode; }
+            set
+            {
+                if (_shareMode == value)
+                    return;
+
+                _shareMode = value;
+
+                if (ShareModeChanged != null)
+                    ShareModeChanged(this);
+            }
         }
 
         /// <summary>
@@ -181,7 +212,7 @@ namespace NetGore.Features.Groups
         /// otherwise false.
         /// This method will always return false is the <paramref name="groupable"/> is already in a group.
         /// </returns>
-        public virtual bool TryAdd(IGroupable groupable)
+        public virtual bool TryAddMember(IGroupable groupable)
         {
             // Check the max members value
             if (_members.Count >= _groupSettings.MaxMembersPerGroup)
