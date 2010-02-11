@@ -35,6 +35,8 @@ namespace DemoGame.Server
 
         IShop<ShopItem> _shop;
 
+        MemoryMap _memory;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NPC"/> class.
         /// </summary>
@@ -54,6 +56,7 @@ namespace DemoGame.Server
                 log.InfoFormat("Created persistent NPC `{0}` from CharacterID `{1}`.", this, characterID);
 
             LoadPersistentNPCTemplateInfo();
+
         }
 
         /// <summary>
@@ -94,6 +97,10 @@ namespace DemoGame.Server
             Teleport(position);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
             ChangeMap(map);
+
+            //Set up memorymap - must be last thing to do.
+            _memory = new MemoryMap(32);
+            _memory.Initialize((int)map.Width, (int)map.Height);
         }
 
         /// <summary>
@@ -154,6 +161,14 @@ namespace DemoGame.Server
         public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
         {
             get { return RespawnMapIndex.HasValue; }
+        }
+
+        /// <summary>
+        /// Gets this NPC's memory.
+        /// </summary>
+        public MemoryMap Memory
+        {
+            get { return _memory; }
         }
 
         /// <summary>
@@ -235,6 +250,9 @@ namespace DemoGame.Server
             // Check for spawning if dead
             if (!IsAlive)
                 return;
+
+            //Update the NPC's memory - must be updated before the ai is updated becasue the ai will want to use this.
+            _memory.Update(Center.X, Center.Y);
 
             // Update the AI
             var ai = AI;
@@ -319,7 +337,7 @@ namespace DemoGame.Server
                 return;
 
             var v = template.TemplateTable;
-
+        
             _giveCash = v.GiveCash;
             _giveExp = v.GiveExp;
         }
