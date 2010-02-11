@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.Features.Groups
 {
@@ -9,6 +11,9 @@ namespace NetGore.Features.Groups
     /// </summary>
     public class GroupManager : IGroupManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        readonly IGroupEventHandler _groupDisbandHandler;
         readonly List<IGroup> _groups;
         readonly Func<IGroupManager, IGroupable, IGroup> _tryCreateGroup;
 
@@ -19,7 +24,24 @@ namespace NetGore.Features.Groups
         /// an <see cref="IGroupable"/>.</param>
         public GroupManager(Func<IGroupManager, IGroupable, IGroup> tryCreateGroup)
         {
+            _groupDisbandHandler = Group_Disbanded;
             _tryCreateGroup = tryCreateGroup;
+        }
+
+        /// <summary>
+        /// Handles when a <see cref="IGroup"/> in this <see cref="GroupManager"/> is disbanded.
+        /// </summary>
+        /// <param name="group">The group that was disbanded.</param>
+        void Group_Disbanded(IGroup group)
+        {
+            group.Disbanded -= _groupDisbandHandler;
+            if (!_groups.Remove(group))
+            {
+                const string errmsg =
+                    "Tried to remove disbanded group `{0}` from group manager `{1}`, but it was not in the _groups list!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, group, this);
+            }
         }
 
         /// <summary>
@@ -66,6 +88,9 @@ namespace NetGore.Features.Groups
 
             // Add the new group to the list
             _groups.Add(newGroup);
+
+            // Listen for when the group is disbanded so we can remove it
+            newGroup.Disbanded += _groupDisbandHandler;
 
             // Raise events
             OnCreateGroup(newGroup);
