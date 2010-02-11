@@ -47,6 +47,7 @@
     <Compile Include="Emoticons\Emoticon.cs" />
     <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
+    <Compile Include="Groups\GroupSettings.cs" />
     <Compile Include="Guilds\Event Handlers\GuildEventHandler.cs" />
     <Compile Include="Guilds\GuildEvents.cs" />
     <Compile Include="Guilds\GuildID.cs" />

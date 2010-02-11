@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Groups\Group.cs" />
+    <Compile Include="Groups\GroupManager.cs" />
+    <Compile Include="Groups\IGroupable.cs" />
     <Compile Include="Guilds\GuildBase.cs" />
     <Compile Include="Guilds\GuildInviteStatus.cs" />
     <Compile Include="Guilds\GuildManagerBase.cs" />
