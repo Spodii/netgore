@@ -99,8 +99,11 @@ namespace DemoGame.Server
             }
 
             // Attack if in range
+            /*
+            // NOTE: Temporary removal of NPC attacking
             if (IsInMeleeRange(_target))
                 Actor.Attack();
+            */
         }
     }
 }
