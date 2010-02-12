@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Graphics.GUI;
@@ -104,6 +105,11 @@ namespace DemoGame.Client
         public UserGuildInformation GuildInfo
         {
             get { return GameplayScreen.GuildInfo; }
+        }
+
+        public UserGroupInformation GroupInfo
+        {
+            get { return GameplayScreen.GroupInfo; }
         }
 
         /// <summary>
@@ -299,6 +305,12 @@ namespace DemoGame.Client
         void RecvGuildInfo(IIPSocket conn, BitStream r)
         {
             GuildInfo.Read(r);
+        }
+
+        [MessageHandler((byte)ServerPacketID.GroupInfo)]
+        void RecvGroupInfo(IIPSocket conn, BitStream r)
+        {
+            GroupInfo.Read(r);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]

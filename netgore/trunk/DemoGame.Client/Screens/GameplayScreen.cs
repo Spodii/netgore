@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
@@ -33,6 +34,7 @@ namespace DemoGame.Client
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
         readonly UserGuildInformation _guildInfo = new UserGuildInformation();
+        readonly UserGroupInformation _groupInfo = new UserGroupInformation();
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
 
@@ -97,6 +99,11 @@ namespace DemoGame.Client
         public UserGuildInformation GuildInfo
         {
             get { return _guildInfo; }
+        }
+
+        public UserGroupInformation GroupInfo
+        {
+            get { return _groupInfo; }
         }
 
         /// <summary>
