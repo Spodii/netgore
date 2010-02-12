@@ -48,6 +48,7 @@ GuildCreationFailedTagNotAvailable: Could not create guild - the tag "{0}" is no
 
 GuildInvited: {0} has invited you to join guild {1}.
 GuildInviteSuccess: You have successfully invited user {0} to join your guild.
+GuildInviteFailedCannotInviteSelf: You cannot invite yourself into a guild.
 GuildInviteFailedInvalidUser: Failed to invite user {0} to join the guild - the user is either offline or does not exist.
 GuildInviteFailedAlreadyInGuild: Failed to invite user {0} to join the guild - the user is already in a guild.
 GuildInviteFailedUnknownReason: Failed to invite user {0} to join the guild.

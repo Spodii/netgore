@@ -372,6 +372,12 @@ namespace DemoGame.Server
                     return;
                 }
 
+                if (invitee == User)
+                {
+                    User.Send(GameMessage.GuildInviteFailedCannotInviteSelf);
+                    return;
+                }
+
                 if (invitee.Guild != null)
                 {
                     User.Send(GameMessage.GuildInviteFailedAlreadyInGuild, invitee.Name);
