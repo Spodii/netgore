@@ -10,12 +10,40 @@ namespace NetGore.Features.Groups
 {
     public class UserGroupInformation
     {
+        /// <summary>
+        /// Delegate for handling events from the <see cref="UserGroupInformation"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="UserGroupInformation"/> the event came from.</param>
+        /// <param name="arg">The argument related to the event.</param>
+        public delegate void UserGroupInformationEventHandler<T>(UserGroupInformation sender, string arg);
+
+        /// <summary>
+        /// Delegate for handling events from the <see cref="UserGroupInformation"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="UserGroupInformation"/> the event came from.</param>
+        public delegate void UserGroupInformationEventHandler(UserGroupInformation sender);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly StringComparer _membersListComparer = StringComparer.OrdinalIgnoreCase;
 
         readonly List<string> _members = new List<string>();
 
         string _founder;
+
+        /// <summary>
+        /// Notifies listeners when the group has changed.
+        /// </summary>
+        public event UserGroupInformationEventHandler GroupChanged;
+
+        /// <summary>
+        /// Notifies listeners when a member has been added to the group.
+        /// </summary>
+        public event UserGroupInformationEventHandler<string> MemberAdded;
+
+        /// <summary>
+        /// Notifies listeners when a member has been removed from the group.
+        /// </summary>
+        public event UserGroupInformationEventHandler<string> MemberRemoved;
 
         /// <summary>
         /// Gets the name of the group's founder, or null if the user is not in a group.
@@ -39,6 +67,32 @@ namespace NetGore.Features.Groups
         public IEnumerable<string> Members
         {
             get { return _members; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the
+        /// <see cref="UserGroupInformation.GroupChanged"/> event.
+        /// </summary>
+        protected virtual void OnGroupChanged()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the
+        /// <see cref="UserGroupInformation.MemberAdded"/> event.
+        /// </summary>
+        /// <param name="memberName">Name of the member that was added.</param>
+        protected virtual void OnMemberAdded(string memberName)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the
+        /// <see cref="UserGroupInformation.MemberRemoved"/> event.
+        /// </summary>
+        /// <param name="memberName">Name of the member that was removed.</param>
+        protected virtual void OnMemberRemoved(string memberName)
+        {
         }
 
         /// <summary>
@@ -88,6 +142,12 @@ namespace NetGore.Features.Groups
                     log.WarnFormat(errmsg, name);
                 Debug.Fail(string.Format(errmsg, name));
             }
+
+            // Raise events
+            OnMemberAdded(name);
+
+            if (MemberAdded != null)
+                MemberAdded(this, name);
         }
 
         /// <summary>
@@ -105,6 +165,12 @@ namespace NetGore.Features.Groups
                     log.WarnFormat(errmsg, name);
                 Debug.Fail(string.Format(errmsg, name));
             }
+
+            // Raise events
+            OnMemberRemoved(name);
+
+            if (MemberRemoved != null)
+                MemberRemoved(this, name);
         }
 
         /// <summary>
@@ -118,16 +184,22 @@ namespace NetGore.Features.Groups
 
             bool isInGroup = bs.ReadBool();
 
-            if (!isInGroup)
-                return;
+            if (isInGroup)
+            {
+                // Read the group members
+                byte numMembers = bs.ReadByte();
+                var members = bs.ReadStrings(numMembers);
+                _members.AddRange(members);
 
-            // Read the group members
-            byte numMembers = bs.ReadByte();
-            var members = bs.ReadStrings(numMembers);
-            _members.AddRange(members);
+                // Read the founder's name
+                _founder = bs.ReadString();
+            }
 
-            // Read the founder's name
-            _founder = bs.ReadString();
+            // Raise events
+            OnGroupChanged();
+
+            if (GroupChanged != null)
+                GroupChanged(this);
         }
 
         /// <summary>
