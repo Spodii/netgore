@@ -104,6 +104,14 @@ namespace DemoGame
         /// </summary>
         ShopSellItemPlural,
 
+        GroupInvited,
+        GroupJoinFailedGroupIsFull,
+        GroupJoinFailedUnknownReason,
+        GroupJoined,
+        GroupLeave,
+        GroupMemberLeft,
+        GroupMemberJoined,
+
         GuildCreationSuccessful,
         GuildCreationFailedUnknownReason,
         GuildCreationFailedNameInvalid,

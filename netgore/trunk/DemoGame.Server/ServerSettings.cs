@@ -25,5 +25,11 @@ namespace DemoGame.Server
         /// will require more overhead.
         /// </summary>
         public const int RespawnablesUpdateRate = 800;
+
+        /// <summary>
+        /// The maximum allowed distance allowed between two group members for them to be allowed to share rewards
+        /// with the other group members.
+        /// </summary>
+        public const float MaxGroupShareDistance = 1000;
     }
 }

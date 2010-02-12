@@ -12,7 +12,7 @@ namespace NetGore.Features.Guilds
     public abstract class GuildMemberInfo<T> where T : class, IGuildMember
     {
         static readonly IObjectPool<GuildInviteStatus> _guildInvitePool =
-            new ObjectPool<GuildInviteStatus>(x => new GuildInviteStatus(), null, x => x.Reset(), false);
+            new ObjectPool<GuildInviteStatus>(x => new GuildInviteStatus(), null, x => x.Reset(), true);
 
         static readonly int _inviteResponseTime = GuildSettings.Instance.InviteResponseTime;
 

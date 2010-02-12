@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
+using DemoGame.Server.Groups;
 using DemoGame.Server.Guilds;
 using DemoGame.Server.Queries;
 using log4net;
@@ -10,6 +11,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db;
+using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.IO;
@@ -22,7 +24,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A user-controlled character.
     /// </summary>
-    public class User : Character, IGuildMember, IClientCommunicator
+    public class User : Character, IGuildMember, IClientCommunicator, IGroupable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
@@ -31,6 +33,7 @@ namespace DemoGame.Server
 
         readonly UserChatDialogState _chatState;
         readonly IIPSocket _conn;
+        readonly GroupMemberInfo _groupMemberInfo;
         readonly GuildMemberInfo _guildMemberInfo;
         readonly UserShoppingState _shoppingState;
         readonly SocketSendQueue _unreliableBuffer;
@@ -62,6 +65,7 @@ namespace DemoGame.Server
 
             // Create some objects
             _guildMemberInfo = new GuildMemberInfo(this);
+            _groupMemberInfo = new GroupMemberInfo(this);
             _shoppingState = new UserShoppingState(this);
             _chatState = new UserChatDialogState(this);
             _userStatsBase = (UserStats)BaseStats;
@@ -290,6 +294,8 @@ namespace DemoGame.Server
             var account = World.GetUserAccount(Conn);
             if (account != null)
                 account.CloseUser();
+
+            _groupMemberInfo.HandleDisposed();
         }
 
         /// <summary>
@@ -730,7 +736,29 @@ namespace DemoGame.Server
 
             // Handle killing a NPC
             if (killedNPC != null)
-                GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
+            {
+                int giveExp = killedNPC.GiveExp;
+                int giveCash = killedNPC.GiveCash;
+
+                // If in a group, split among the group members (as needed)
+                var group = ((IGroupable)this).Group;
+                if (group == null || group.ShareMode == GroupShareMode.NoSharing)
+                {
+                    // Not in a group or no sharing is being used in the group, give all to self
+                    GiveKillReward(giveExp, giveCash);
+                }
+                else
+                {
+                    // Share equally among the group members
+                    var members = group.GetGroupMembersInShareRange(this, true).OfType<User>().ToArray();
+                    giveExp = (giveExp / members.Length) + 1;
+                    giveCash = (giveCash / members.Length) + 1;
+                    foreach (var member in members)
+                    {
+                        member.GiveKillReward(giveExp, giveCash);
+                    }
+                }
+            }
         }
 
         void User_LevelChanged(Character character, byte oldLevel, byte level)
@@ -812,6 +840,45 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        #endregion
+
+        #region IGroupable Members
+
+        /// <summary>
+        /// Gets or sets the group that this <see cref="IGroupable"/> is currently part of. This property should only be
+        /// set by the <see cref="IGroup"/> and <see cref="IGroupable"/>, and should never be used to try and add or
+        /// remove a <see cref="IGroupable"/> from a <see cref="IGroup"/>.
+        /// </summary>
+        IGroup IGroupable.Group
+        {
+            get { return _groupMemberInfo.Group; }
+            set { _groupMemberInfo.Group = value; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IGroupable"/> is close enough to the <paramref name="other"/> to
+        /// share group-based rewards with them. This method should return the same value for two
+        /// <see cref="IGroupable"/>s, despite which one is used as the caller and which is used as
+        /// the parameter.
+        /// </summary>
+        /// <param name="other">The <see cref="IGroupable"/> to check if within distance of.</param>
+        /// <returns>True if the <paramref name="other"/> is close enough to this <see cref="IGroupable"/>
+        /// to share group-based rewards with them.</returns>
+        bool IGroupable.IsInShareDistance(IGroupable other)
+        {
+            return GroupHelper.IsInShareDistance(this, other as Character);
+        }
+
+        /// <summary>
+        /// Notifies this <see cref="IGroupable"/> that they have been invited to join another group. This should only
+        /// be called by the <see cref="IGroupManager"/>.
+        /// </summary>
+        /// <param name="group">The <see cref="IGroup"/> that this <see cref="IGroupable"/> was invited to join.</param>
+        void IGroupable.NotifyInvited(IGroup group)
+        {
+            _groupMemberInfo.ReceiveInvite(group, GetTime());
         }
 
         #endregion

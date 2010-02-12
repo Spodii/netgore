@@ -48,6 +48,7 @@
     <Compile Include="Groups\GroupManager.cs" />
     <Compile Include="Groups\Event Handlers\IGroupManagerEventHandler.cs" />
     <Compile Include="Groups\Event Handlers\IGroupManagerGroupEventHandler.cs" />
+    <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="Groups\IGroupManager.cs" />
     <Compile Include="Guilds\GuildBase.cs" />
     <Compile Include="Guilds\GuildInviteStatus.cs" />

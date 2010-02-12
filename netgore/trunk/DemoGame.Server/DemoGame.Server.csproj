@@ -138,6 +138,8 @@
     <Compile Include="DbObjs\ShopTable.cs" />
     <Compile Include="DbObjs\UserCharacterTable.cs" />
     <Compile Include="DynamicEntityFactory.cs" />
+    <Compile Include="Groups\GroupHelper.cs" />
+    <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="ServerSettings.cs" />
     <Compile Include="UI\frmMain.cs">
       <SubType>Form</SubType>
