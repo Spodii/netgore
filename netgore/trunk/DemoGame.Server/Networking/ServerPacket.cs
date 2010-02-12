@@ -137,6 +137,13 @@ namespace DemoGame.Server
             return ret;
         }
 
+        public static PacketWriter GroupInfo(Action<PacketWriter> populate)
+        {
+            var ret = GetWriter(ServerPacketID.GroupInfo);
+            populate(ret);
+            return ret;
+        }
+
         /// <summary>
         /// Tells the user their login attempt was successful.
         /// </summary>

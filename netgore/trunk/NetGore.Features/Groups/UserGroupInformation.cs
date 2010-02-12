@@ -208,11 +208,11 @@ namespace NetGore.Features.Groups
         /// The message is then read and handled by the receiver using <see cref="UserGroupInformation.Read"/>.
         /// </summary>
         /// <param name="bs">The <see cref="BitStream"/> to append the message to.</param>
-        /// <param name="memberName">The name of the group member to add.</param>
-        public static void WriteAddMember(BitStream bs, string memberName)
+        /// <param name="member">The group member to add.</param>
+        public static void WriteAddMember(BitStream bs, IGroupable member)
         {
             bs.WriteEnum(GroupInfoMessages.AddMember);
-            bs.Write(memberName);
+            bs.Write(member.Name);
         }
 
         /// <summary>
@@ -250,11 +250,11 @@ namespace NetGore.Features.Groups
         /// The message is then read and handled by the receiver using <see cref="UserGroupInformation.Read"/>.
         /// </summary>
         /// <param name="bs">The <see cref="BitStream"/> to append the message to.</param>
-        /// <param name="memberName">The name of the group member to remove.</param>
-        public static void WriteRemoveMember(BitStream bs, string memberName)
+        /// <param name="member">The group member to remove.</param>
+        public static void WriteRemoveMember(BitStream bs, IGroupable member)
         {
             bs.WriteEnum(GroupInfoMessages.RemoveMember);
-            bs.Write(memberName);
+            bs.Write(member.Name);
         }
 
         /// <summary>

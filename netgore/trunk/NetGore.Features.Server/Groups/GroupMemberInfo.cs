@@ -2,6 +2,10 @@
 
 namespace NetGore.Features.Groups
 {
+    /// <summary>
+    /// A container that assists in managing the group state for group members.
+    /// </summary>
+    /// <typeparam name="T">The type of group member.</typeparam>
     public abstract class GroupMemberInfo<T> where T : IGroupable
     {
         static readonly int _inviteResponseTime = GroupSettings.Instance.InviteResponseTime;

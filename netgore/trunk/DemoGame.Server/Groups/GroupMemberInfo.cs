@@ -3,6 +3,9 @@ using NetGore.Features.Groups;
 
 namespace DemoGame.Server.Groups
 {
+    /// <summary>
+    /// A container that assists in managing the group state for group members.
+    /// </summary>
     public class GroupMemberInfo : GroupMemberInfo<User>
     {
         /// <summary>
@@ -64,6 +67,11 @@ namespace DemoGame.Server.Groups
         /// group members in our group.</param>
         protected override void OnGroupMemberJoined(IGroupable groupMember)
         {
+            using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteAddMember(x, groupMember)))
+            {
+                Owner.Send(pw);
+            }
+
             Owner.Send(GameMessage.GroupMemberJoined, GetGroupMemberName(groupMember));
         }
 
@@ -76,6 +84,11 @@ namespace DemoGame.Server.Groups
         /// group members in our group.</param>
         protected override void OnGroupMemberLeft(IGroupable groupMember)
         {
+            using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteRemoveMember(x, groupMember)))
+            {
+                Owner.Send(pw);
+            }
+
             Owner.Send(GameMessage.GroupMemberLeft, GetGroupMemberName(groupMember));
         }
 
@@ -85,6 +98,11 @@ namespace DemoGame.Server.Groups
         /// <param name="group">The group the owner joined.</param>
         protected override void OnJoinGroup(IGroup group)
         {
+            using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteGroupInfo(x, group)))
+            {
+                Owner.Send(pw);
+            }
+
             // Don't send the message if we join our own group (since we already told we created the group)
             if (group.Founder != Owner)
                 Owner.Send(GameMessage.GroupJoined, GetGroupFounderName(group));
@@ -96,6 +114,11 @@ namespace DemoGame.Server.Groups
         /// <param name="group">The group the owner left.</param>
         protected override void OnLeaveGroup(IGroup group)
         {
+            using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteGroupInfo(x, group)))
+            {
+                Owner.Send(pw);
+            }
+
             Owner.Send(GameMessage.GroupLeave);
         }
 

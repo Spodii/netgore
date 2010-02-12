@@ -3,6 +3,9 @@ using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.Guilds
 {
+    /// <summary>
+    /// A container that assists in managing the guild state for guild members.
+    /// </summary>
     public class GuildMemberInfo : GuildMemberInfo<User>
     {
         static readonly GuildSettings _guildSettings = GuildSettings.Instance;
