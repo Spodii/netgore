@@ -12,7 +12,7 @@ namespace DemoGame.Server
     public class ChangedStatsTracker<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
-        /// Empty enumerable of <see cref="IStat{T}"/>s.
+        /// Empty enumerable of <see cref="IStat{TStatType}"/>s.
         /// </summary>
         static readonly IEnumerable<IStat<T>> _emptyStats = Enumerable.Empty<IStat<T>>();
 

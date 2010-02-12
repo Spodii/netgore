@@ -139,7 +139,9 @@ namespace NetGore.Features.Groups
 
             // Remove all members from the group
             foreach (var member in Members.ToImmutable())
+            {
                 RemoveMember(member);
+            }
 
             Debug.Assert(_members.Count == 0, "Uh-oh, some members managed to not get removed!");
         }
@@ -150,6 +152,22 @@ namespace NetGore.Features.Groups
         public virtual void Dispose()
         {
             Disband();
+        }
+
+        /// <summary>
+        /// Gets all the <see cref="IGroupable"/>s in this <see cref="IGroup"/> that are in range of the
+        /// <paramref name="origin"/> group member. This will include all group members where
+        /// <see cref="IGroupable.IsInShareDistance"/> returns true for the <paramref name="origin"/>.
+        /// </summary>
+        /// <param name="origin">The group member that will be used to get the group members that are near.</param>
+        /// <param name="includeOrigin">If true, the <paramref name="origin"/> will be included in the returned
+        /// collection. Otherwise, the <paramref name="origin"/> will not be included in the returned collection.</param>
+        /// <returns>
+        /// All the other group members within sharing range of the <paramref name="origin"/>.
+        /// </returns>
+        public IEnumerable<IGroupable> GetGroupMembersInShareRange(IGroupable origin, bool includeOrigin)
+        {
+            return _members.Where(x => x.IsInShareDistance(origin) && (includeOrigin || (x != origin)));
         }
 
         /// <summary>
@@ -232,7 +250,8 @@ namespace NetGore.Features.Groups
             if (_groupSettings.CanJoinGroupHandler != null && !_groupSettings.CanJoinGroupHandler(groupable, this))
             {
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Failed to add `{0}` to group `{1}` - GroupSettings.CanJoinGroupHandler returned false.", groupable, this);
+                    log.InfoFormat("Failed to add `{0}` to group `{1}` - GroupSettings.CanJoinGroupHandler returned false.",
+                                   groupable, this);
                 return false;
             }
 
@@ -265,22 +284,6 @@ namespace NetGore.Features.Groups
             member.NotifyInvited(this);
 
             return true;
-        }
-
-        /// <summary>
-        /// Gets all the <see cref="IGroupable"/>s in this <see cref="IGroup"/> that are in range of the
-        /// <paramref name="origin"/> group member. This will include all group members where
-        /// <see cref="IGroupable.IsInShareDistance"/> returns true for the <paramref name="origin"/>.
-        /// </summary>
-        /// <param name="origin">The group member that will be used to get the group members that are near.</param>
-        /// <param name="includeOrigin">If true, the <paramref name="origin"/> will be included in the returned
-        /// collection. Otherwise, the <paramref name="origin"/> will not be included in the returned collection.</param>
-        /// <returns>
-        /// All the other group members within sharing range of the <paramref name="origin"/>.
-        /// </returns>
-        public IEnumerable<IGroupable> GetGroupMembersInShareRange(IGroupable origin, bool includeOrigin)
-        {
-            return _members.Where(x => x.IsInShareDistance(origin) && (includeOrigin || (x != origin)));
         }
 
         #endregion

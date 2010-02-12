@@ -78,12 +78,15 @@ namespace DemoGame.Server
                 _server = server;
             }
 
+            public IGroupManager GroupManager
+            {
+                get { return Server.GroupManager; }
+            }
+
             public GuildManager GuildManager
             {
                 get { return Server.GuildManager; }
             }
-
-            public IGroupManager GroupManager { get { return Server.GroupManager; } }
 
             /// <summary>
             /// Gets the Server that the commands are coming from.
@@ -112,57 +115,18 @@ namespace DemoGame.Server
                 return true;
             }
 
-            [SayCommand("Tell")]
-            [SayCommand("Whisper")]
-            public void Tell(string userName, string message)
+            [SayCommand("CreateGroup")]
+            public void CreateGroup()
             {
-                // Check for a message to tell
-                if (string.IsNullOrEmpty(userName))
-                {
-                    // Invalid message
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoName))
-                    {
-                        User.Send(pw);
-                    }
+                if (!RequireNotInGroup())
                     return;
-                }
 
-                // Find the user to tell
-                if (string.IsNullOrEmpty(message))
-                {
-                    // No or invalid message
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoMessage))
-                    {
-                        User.Send(pw);
-                    }
-                    return;
-                }
+                var group = GroupManager.TryCreateGroup(User);
 
-                User target = World.FindUser(userName);
-
-                // Check if the target user is available or not
-                if (target != null)
-                {
-                    // Message to sender ("You tell...")
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellSender, target.Name, message))
-                    {
-                        User.Send(pw);
-                    }
-
-                    // Message to receivd ("X tells you...")
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellReceiver, User.Name, message))
-                    {
-                        target.Send(pw);
-                    }
-                }
+                if (group == null)
+                    User.Send(GameMessage.GroupCreateFailedUnknownReason);
                 else
-                {
-                    // User not found
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, userName))
-                    {
-                        User.Send(pw);
-                    }
-                }
+                    User.Send(GameMessage.GroupCreated);
             }
 
             [SayCommand("CreateGuild")]
@@ -213,103 +177,6 @@ namespace DemoGame.Server
                 User.Map.AddEntity(trap);
             }
 
-            bool RequireNotInGroup()
-            {
-                if (((IGroupable)User).Group != null)
-                {
-                    User.Send(GameMessage.InvalidCommandMustNotBeInGroup);
-                    return false;
-                }
-
-                return true;
-            }
-
-            bool RequireInGroup()
-            {
-                if (((IGroupable)User).Group == null)
-                {
-                    User.Send(GameMessage.InvalidCommandMustBeInGroup);
-                    return false;
-                }
-
-                return true;
-            }
-
-            [SayCommand("CreateGroup")]
-            public void CreateGroup()
-            {
-                if (!RequireNotInGroup())
-                    return;
-
-                var group = GroupManager.TryCreateGroup(User);
-
-                if (group == null)
-                    User.Send(GameMessage.GroupCreateFailedUnknownReason);
-                else
-                    User.Send(GameMessage.GroupCreated);
-            }
-
-            [SayCommand("JoinGroup")]
-            public void JoinGroup()
-            {
-                if (!RequireNotInGroup())
-                    return;
-
-                User.TryJoinGroup();
-            }
-
-            [SayCommand("GroupInvite")]
-            public void GroupInvite(string userName)
-            {
-                if (!RequireInGroup())
-                    return;
-
-                User target = World.FindUser(userName);
-
-                if (target == null)
-                {
-                    User.Send( GameMessage.GroupInviteFailedInvalidUser, userName);
-                    return;
-                }
-
-                if (target == User)
-                {
-                    User.Send(GameMessage.GroupInviteFailedCannotInviteSelf);
-                    return;
-                }
-
-                if (!(((IGroupable)User).Group.TryInvite(target)))
-                {
-                    // Invite failed
-                    if (((IGroupable)target).Group != null)
-                    {
-                        User.Send(GameMessage.GroupInviteFailedAlreadyInGroup, target.Name);
-                    }
-                    else
-                    {
-                        User.Send(GameMessage.GroupInviteFailedUnknownReason, target.Name);
-                    }
-                }
-                else
-                {
-                    // Invite successful
-                    using (var pw = ServerPacket.SendMessage(GameMessage.GroupInvite, User.Name, target.Name))
-                    {
-                        foreach (var u in ((IGroupable)User).Group.Members.OfType<User>())
-                            u.Send(pw);
-                    }
-                }
-            }
-
-            [SayCommand("LeaveGroup")]
-            public void LeaveGroup()
-            {
-                if (!RequireInGroup())
-                    return;
-
-                ((IGroupable)User).Group.RemoveMember(User);
-            }
-
             [SayCommand("Demote")]
             public void Demote(string userName)
             {
@@ -323,6 +190,47 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildDemote, userName);
                 else
                     User.Send(GameMessage.GuildDemoteFailed, userName);
+            }
+
+            [SayCommand("GroupInvite")]
+            public void GroupInvite(string userName)
+            {
+                if (!RequireInGroup())
+                    return;
+
+                User target = World.FindUser(userName);
+
+                if (target == null)
+                {
+                    User.Send(GameMessage.GroupInviteFailedInvalidUser, userName);
+                    return;
+                }
+
+                if (target == User)
+                {
+                    User.Send(GameMessage.GroupInviteFailedCannotInviteSelf);
+                    return;
+                }
+
+                if (!(((IGroupable)User).Group.TryInvite(target)))
+                {
+                    // Invite failed
+                    if (((IGroupable)target).Group != null)
+                        User.Send(GameMessage.GroupInviteFailedAlreadyInGroup, target.Name);
+                    else
+                        User.Send(GameMessage.GroupInviteFailedUnknownReason, target.Name);
+                }
+                else
+                {
+                    // Invite successful
+                    using (var pw = ServerPacket.SendMessage(GameMessage.GroupInvite, User.Name, target.Name))
+                    {
+                        foreach (var u in ((IGroupable)User).Group.Members.OfType<User>())
+                        {
+                            u.Send(pw);
+                        }
+                    }
+                }
             }
 
             [SayCommand("GSay")]
@@ -457,6 +365,15 @@ namespace DemoGame.Server
                 User.Guild.TryViewOnlineMembers(User);
             }
 
+            [SayCommand("JoinGroup")]
+            public void JoinGroup()
+            {
+                if (!RequireNotInGroup())
+                    return;
+
+                User.TryJoinGroup();
+            }
+
             [SayCommand("JoinGuild")]
             public void JoinGuild(string guildName)
             {
@@ -465,6 +382,15 @@ namespace DemoGame.Server
 
                 if (!User.TryJoinGuild(guildName))
                     User.Send(GameMessage.GuildJoinFailedInvalidOrNoInvite, guildName);
+            }
+
+            [SayCommand("LeaveGroup")]
+            public void LeaveGroup()
+            {
+                if (!RequireInGroup())
+                    return;
+
+                ((IGroupable)User).Group.RemoveMember(User);
             }
 
             [SayCommand("LeaveGuild")]
@@ -511,6 +437,28 @@ namespace DemoGame.Server
 
                 if (!User.Guild.TryChangeName(User, newName))
                     User.Send(GameMessage.GuildRenameFailedUnknownReason, newName);
+            }
+
+            bool RequireInGroup()
+            {
+                if (((IGroupable)User).Group == null)
+                {
+                    User.Send(GameMessage.InvalidCommandMustBeInGroup);
+                    return false;
+                }
+
+                return true;
+            }
+
+            bool RequireNotInGroup()
+            {
+                if (((IGroupable)User).Group != null)
+                {
+                    User.Send(GameMessage.InvalidCommandMustNotBeInGroup);
+                    return false;
+                }
+
+                return true;
             }
 
             /// <summary>
@@ -586,6 +534,59 @@ namespace DemoGame.Server
             public void Suicide()
             {
                 User.Kill();
+            }
+
+            [SayCommand("Tell")]
+            [SayCommand("Whisper")]
+            public void Tell(string userName, string message)
+            {
+                // Check for a message to tell
+                if (string.IsNullOrEmpty(userName))
+                {
+                    // Invalid message
+                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoName))
+                    {
+                        User.Send(pw);
+                    }
+                    return;
+                }
+
+                // Find the user to tell
+                if (string.IsNullOrEmpty(message))
+                {
+                    // No or invalid message
+                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoMessage))
+                    {
+                        User.Send(pw);
+                    }
+                    return;
+                }
+
+                User target = World.FindUser(userName);
+
+                // Check if the target user is available or not
+                if (target != null)
+                {
+                    // Message to sender ("You tell...")
+                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellSender, target.Name, message))
+                    {
+                        User.Send(pw);
+                    }
+
+                    // Message to receivd ("X tells you...")
+                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellReceiver, User.Name, message))
+                    {
+                        target.Send(pw);
+                    }
+                }
+                else
+                {
+                    // User not found
+                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, userName))
+                    {
+                        User.Send(pw);
+                    }
+                }
             }
 
             #region ISayCommands<User> Members

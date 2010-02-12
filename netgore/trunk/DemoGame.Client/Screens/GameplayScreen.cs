@@ -33,8 +33,8 @@ namespace DemoGame.Client
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
-        readonly UserGuildInformation _guildInfo = new UserGuildInformation();
         readonly UserGroupInformation _groupInfo = new UserGroupInformation();
+        readonly UserGuildInformation _guildInfo = new UserGuildInformation();
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
 
@@ -45,10 +45,10 @@ namespace DemoGame.Client
         SpriteFont _damageFont;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
-        SpriteFont _guiFont;
-        GUISettings _guiSettings;
-        GuildForm _guildForm;
         GroupForm _groupForm;
+        SpriteFont _guiFont;
+        GuildForm _guildForm;
+        GUISettings _guiSettings;
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
@@ -97,14 +97,14 @@ namespace DemoGame.Client
             get { return _equipmentInfoRequester; }
         }
 
-        public UserGuildInformation GuildInfo
-        {
-            get { return _guildInfo; }
-        }
-
         public UserGroupInformation GroupInfo
         {
             get { return _groupInfo; }
+        }
+
+        public UserGuildInformation GuildInfo
+        {
+            get { return _guildInfo; }
         }
 
         /// <summary>

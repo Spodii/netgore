@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NetGore;
 using NetGore.Network;
 using NetGore.Stats;
@@ -13,6 +14,12 @@ namespace DemoGame.Server
         readonly ChangedStatsTracker<StatType> _changedStats;
 
         /// <summary>
+        /// Is set to true whenever a stat changes. If false, we don't even need to try looking for changed stats
+        /// in <see cref="UserStats.UpdateClient"/>.
+        /// </summary>
+        bool _anyStatsChanged = false;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UserStats"/> class.
         /// </summary>
         /// <param name="statCollectionType">Type of the stat collection.</param>
@@ -21,12 +28,6 @@ namespace DemoGame.Server
         {
             _changedStats = new ChangedStatsTracker<StatType>(this);
         }
-
-        /// <summary>
-        /// Is set to true whenever a stat changes. If false, we don't even need to try looking for changed stats
-        /// in <see cref="UserStats.UpdateClient"/>.
-        /// </summary>
-        bool _anyStatsChanged = false;
 
         /// <summary>
         /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> in this

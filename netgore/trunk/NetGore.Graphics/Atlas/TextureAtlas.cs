@@ -457,6 +457,34 @@ namespace NetGore.Graphics
                 }
             }
 
+            /// <summary>
+            /// Draws the <see cref="Texture2D"/> for this atlas.
+            /// </summary>
+            /// <param name="device">Device to use to create the atlas.</param>
+            /// <param name="padding">The amount to pad each item.</param>
+            /// <param name="successfulItems">An IEnumerable of the <see cref="AtlasTextureItem"/>s that were
+            /// successfully draw to the atlas.</param>
+            /// <returns>A <see cref="Texture2D"/> of the atlas.</returns>
+            Texture2D DrawAtlas(GraphicsDevice device, int padding, out IEnumerable<AtlasTextureItem> successfulItems)
+            {
+                List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
+                successfulItems = successful;
+
+                Texture2D ret = RenderTarget2DHelper.CreateTexture2D(device, _width, _height, _backColor,
+                                                                     x => DrawAtlasDrawingHandler(x, padding, successful));
+
+#pragma warning disable 162
+                // Save the generated atlas
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                if (_saveGeneratedAtlasToTemp)
+                    SaveTextureToTempFile(ret);
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+#pragma warning restore 162
+
+                ret.Name = "Atlas Texture";
+                return ret;
+            }
+
             void DrawAtlasDrawingHandler(SpriteBatch sb, int padding, ICollection<AtlasTextureItem> successful)
             {
                 // Draw every atlas item to the texture
@@ -535,34 +563,6 @@ namespace NetGore.Graphics
                     successful.Add(item);
                 }
                 sb.End();
-            }
-
-            /// <summary>
-            /// Draws the <see cref="Texture2D"/> for this atlas.
-            /// </summary>
-            /// <param name="device">Device to use to create the atlas.</param>
-            /// <param name="padding">The amount to pad each item.</param>
-            /// <param name="successfulItems">An IEnumerable of the <see cref="AtlasTextureItem"/>s that were
-            /// successfully draw to the atlas.</param>
-            /// <returns>A <see cref="Texture2D"/> of the atlas.</returns>
-            Texture2D DrawAtlas(GraphicsDevice device, int padding, out IEnumerable<AtlasTextureItem> successfulItems)
-            {
-                List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
-                successfulItems = successful;
-
-                Texture2D ret = RenderTarget2DHelper.CreateTexture2D(device, _width, _height, 
-                    _backColor, x => DrawAtlasDrawingHandler(x, padding, successful));
-
-#pragma warning disable 162
-                // Save the generated atlas
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if (_saveGeneratedAtlasToTemp)
-                    SaveTextureToTempFile(ret);
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
-#pragma warning restore 162
-
-                ret.Name = "Atlas Texture";
-                return ret;
             }
 
             /// <summary>

@@ -8,5 +8,6 @@ namespace DemoGame
     /// <param name="equippedBase">The <see cref="EquippedBase{T}"/>.</param>
     /// <param name="item">The item the event is related to.</param>
     /// <param name="slot">The slot of the item the event is related to.</param>
-    public delegate void EquippedEventHandler<T>(EquippedBase<T> equippedBase, T item, EquipmentSlot slot) where T : ItemEntityBase;
+    public delegate void EquippedEventHandler<T>(EquippedBase<T> equippedBase, T item, EquipmentSlot slot)
+        where T : ItemEntityBase;
 }

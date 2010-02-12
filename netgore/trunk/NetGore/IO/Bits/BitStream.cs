@@ -714,6 +714,23 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an array of bools.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of bools.
+        /// </returns>
+        public bool[] ReadBools(int count)
+        {
+            bool[] ret = new bool[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadBool();
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Reads a byte from the BitStream and returns the result as a byte 
         /// </summary>
         /// <returns>Value of the next 8 bits in the BitStream as a byte</returns>
@@ -845,75 +862,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 32 bits from the BitStream and returns the result as an int 
-        /// </summary>
-        /// <returns>Value of the next 32 bits in the BitStream as a int</returns>
-        public int ReadInt()
-        {
-            return ReadInt(_bitsInt);
-        }
-
-        /// <summary>
-        /// Reads an array of unsigned 32-bit integers.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of unsigned 32-bit integers read from the BitStream.
-        /// </returns>
-        public uint[] ReadUInts(int count)
-        {
-            uint[] ret = new uint[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadUInt();
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads an array of unsigned 16-bit integers.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of unsigned 16-bit integers read from the BitStream.
-        /// </returns>
-        public ushort[] ReadUShorts(int count)
-        {
-            ushort[] ret = new ushort[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadUShort();
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads an array of 16-bit integers.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of 16-bit integers read from the BitStream.
-        /// </returns>
-        public short[] ReadShorts(int count)
-        {
-            short[] ret = new short[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadShort();
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads an array of signed 8-bit integers.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of signed 8-bit integers read from the BitStream.
-        /// </returns>
-        public sbyte[] ReadSBytes(int count)
-        {
-            sbyte[] ret = new sbyte[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadSByte();
-            return ret;
-        }
-
-        /// <summary>
         /// Reads an array of floats.
         /// </summary>
         /// <param name="count">The number of values to read.</param>
@@ -924,68 +872,19 @@ namespace NetGore.IO
         {
             float[] ret = new float[count];
             for (int i = 0; i < ret.Length; i++)
+            {
                 ret[i] = ReadFloat();
+            }
             return ret;
         }
 
         /// <summary>
-        /// Reads an array of longs.
+        /// Reads 32 bits from the BitStream and returns the result as an int 
         /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of longs.
-        /// </returns>
-        public long[] ReadLongs(int count)
+        /// <returns>Value of the next 32 bits in the BitStream as a int</returns>
+        public int ReadInt()
         {
-            long[] ret = new long[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadLong();
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads an array of ulongs.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of ulongs.
-        /// </returns>
-        public ulong[] ReadULongs(int count)
-        {
-            ulong[] ret = new ulong[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadULong();
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads an array of bools.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of bools.
-        /// </returns>
-        public bool[] ReadBools(int count)
-        {
-            bool[] ret = new bool[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadBool();
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads an array of 32-bit integers.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of 32-bit integers read from the BitStream.
-        /// </returns>
-        public int[] ReadInts(int count)
-        {
-            int[] ret = new int[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadInt();
-            return ret;
+            return ReadInt(_bitsInt);
         }
 
         /// <summary>
@@ -1010,6 +909,23 @@ namespace NetGore.IO
             {
                 dest[i] = ReadInt();
             }
+        }
+
+        /// <summary>
+        /// Reads an array of 32-bit integers.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of 32-bit integers read from the BitStream.
+        /// </returns>
+        public int[] ReadInts(int count)
+        {
+            int[] ret = new int[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadInt();
+            }
+            return ret;
         }
 
         /// <summary>
@@ -1048,6 +964,23 @@ namespace NetGore.IO
             {
                 dest[i] = ReadNullableLong();
             }
+        }
+
+        /// <summary>
+        /// Reads an array of longs.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of longs.
+        /// </returns>
+        public long[] ReadLongs(int count)
+        {
+            long[] ret = new long[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadLong();
+            }
+            return ret;
         }
 
         /// <summary>
@@ -1452,6 +1385,23 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an array of signed 8-bit integers.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of signed 8-bit integers read from the BitStream.
+        /// </returns>
+        public sbyte[] ReadSBytes(int count)
+        {
+            sbyte[] ret = new sbyte[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadSByte();
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Reads 16 bits from the BitStream and returns the result as a short
         /// </summary>
         /// <returns>Value of the next 16 bits in the BitStream as a short</returns>
@@ -1482,6 +1432,23 @@ namespace NetGore.IO
             {
                 dest[i] = ReadShort();
             }
+        }
+
+        /// <summary>
+        /// Reads an array of 16-bit integers.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of 16-bit integers read from the BitStream.
+        /// </returns>
+        public short[] ReadShorts(int count)
+        {
+            short[] ret = new short[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadShort();
+            }
+            return ret;
         }
 
         /// <summary>
@@ -1531,19 +1498,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of strings containing a maximum of DefaultStringMaxLength characters from the BitStream
-        /// </summary>
-        /// <param name="count">The number of strings to read.</param>
-        /// <returns>Strings read from the BitStream.</returns>
-        public string[] ReadStrings(int count)
-        {
-            string[] ret = new string[count];
-            for (int i = 0; i < ret.Length; i++)
-                ret[i] = ReadString();
-            return ret;
-        }
-
-        /// <summary>
         /// Reads a string containing a maximum of <paramref name="maxLength"/> characters from the BitStream
         /// </summary>
         /// <param name="maxLength">Maximum length of the string in characters. Must be equal to the specified
@@ -1587,6 +1541,21 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an array of strings containing a maximum of DefaultStringMaxLength characters from the BitStream
+        /// </summary>
+        /// <param name="count">The number of strings to read.</param>
+        /// <returns>Strings read from the BitStream.</returns>
+        public string[] ReadStrings(int count)
+        {
+            string[] ret = new string[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadString();
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Reads 32 bits from the BitStream and returns the result as a uint 
         /// </summary>
         /// <returns>Value of the next 32 bits in the BitStream as a uint</returns>
@@ -1624,6 +1593,23 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an array of unsigned 32-bit integers.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of unsigned 32-bit integers read from the BitStream.
+        /// </returns>
+        public uint[] ReadUInts(int count)
+        {
+            uint[] ret = new uint[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadUInt();
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Reads 64 bits from the BitStream and returns the result as a ulong 
         /// </summary>
         /// <returns>Value of the next 64 bits in the BitStream as a ulong</returns>
@@ -1645,6 +1631,23 @@ namespace NetGore.IO
             {
                 dest[i] = ReadULong();
             }
+        }
+
+        /// <summary>
+        /// Reads an array of ulongs.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of ulongs.
+        /// </returns>
+        public ulong[] ReadULongs(int count)
+        {
+            ulong[] ret = new ulong[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadULong();
+            }
+            return ret;
         }
 
         /// <summary>
@@ -1797,6 +1800,23 @@ namespace NetGore.IO
             {
                 dest[i] = ReadUShort();
             }
+        }
+
+        /// <summary>
+        /// Reads an array of unsigned 16-bit integers.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of unsigned 16-bit integers read from the BitStream.
+        /// </returns>
+        public ushort[] ReadUShorts(int count)
+        {
+            ushort[] ret = new ushort[count];
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadUShort();
+            }
+            return ret;
         }
 
         void RefillWorkBuffer()

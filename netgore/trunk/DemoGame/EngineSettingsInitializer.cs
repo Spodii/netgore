@@ -33,6 +33,13 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EngineSettingsInitializer"/> class.
+        /// </summary>
+        EngineSettingsInitializer() : base(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f))
+        {
+        }
+
+        /// <summary>
         /// Method used to determine if an <see cref="IGroupable"/> can join an existing <see cref="IGroup"/>.
         /// </summary>
         /// <param name="member">The <see cref="IGroupable"/> to check if can join the <paramref name="group"/>.</param>
@@ -43,13 +50,6 @@ namespace DemoGame
             // Put your additional group restrictions here, such as level range restrictions. No need to check for stuff
             // that is already checked for such as if the member is already in a group, if the group is full, etc.
             return true;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EngineSettingsInitializer"/> class.
-        /// </summary>
-        EngineSettingsInitializer() : base(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f))
-        {
         }
 
         /// <summary>

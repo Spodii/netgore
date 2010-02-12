@@ -31,11 +31,6 @@ namespace NetGore.Features.Groups
         event IGroupEventHandler ShareModeChanged;
 
         /// <summary>
-        /// Gets or sets how rewards are distributed among the group members.
-        /// </summary>
-        GroupShareMode ShareMode { get; set; }
-
-        /// <summary>
         /// Gets the <see cref="IGroupable"/> that is the founder of this group. If this value is false, the group
         /// is assumed to be disbanded.
         /// </summary>
@@ -47,9 +42,27 @@ namespace NetGore.Features.Groups
         IEnumerable<IGroupable> Members { get; }
 
         /// <summary>
+        /// Gets or sets how rewards are distributed among the group members.
+        /// </summary>
+        GroupShareMode ShareMode { get; set; }
+
+        /// <summary>
         /// Forces the group to disband.
         /// </summary>
         void Disband();
+
+        /// <summary>
+        /// Gets all the <see cref="IGroupable"/>s in this <see cref="IGroup"/> that are in range of the
+        /// <paramref name="origin"/> group member. This will include all group members where
+        /// <see cref="IGroupable.IsInShareDistance"/> returns true for the <paramref name="origin"/>.
+        /// </summary>
+        /// <param name="origin">The group member that will be used to get the group members that are near.</param>
+        /// <param name="includeOrigin">If true, the <paramref name="origin"/> will be included in the returned
+        /// collection. Otherwise, the <paramref name="origin"/> will not be included in the returned collection.</param>
+        /// <returns>
+        /// All the other group members within sharing range of the <paramref name="origin"/>.
+        /// </returns>
+        IEnumerable<IGroupable> GetGroupMembersInShareRange(IGroupable origin, bool includeOrigin);
 
         /// <summary>
         /// Removes a member from the group.
@@ -76,18 +89,5 @@ namespace NetGore.Features.Groups
         /// <param name="member">The <see cref="IGroupable"/> to invite.</param>
         /// <returns>True if the <paramref name="member"/> was successfully invited; otherwise false.</returns>
         bool TryInvite(IGroupable member);
-
-        /// <summary>
-        /// Gets all the <see cref="IGroupable"/>s in this <see cref="IGroup"/> that are in range of the
-        /// <paramref name="origin"/> group member. This will include all group members where
-        /// <see cref="IGroupable.IsInShareDistance"/> returns true for the <paramref name="origin"/>.
-        /// </summary>
-        /// <param name="origin">The group member that will be used to get the group members that are near.</param>
-        /// <param name="includeOrigin">If true, the <paramref name="origin"/> will be included in the returned
-        /// collection. Otherwise, the <paramref name="origin"/> will not be included in the returned collection.</param>
-        /// <returns>
-        /// All the other group members within sharing range of the <paramref name="origin"/>.
-        /// </returns>
-        IEnumerable<IGroupable> GetGroupMembersInShareRange(IGroupable origin, bool includeOrigin);
     }
 }

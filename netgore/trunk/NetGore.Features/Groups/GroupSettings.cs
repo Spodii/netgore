@@ -15,17 +15,8 @@ namespace NetGore.Features.Groups
 
         readonly Func<IGroupable, IGroup, bool> _canJoinGroupHandler;
 
-        readonly int _maxMembersPerGroup;
         readonly int _inviteResponseTime;
-
-        /// <summary>
-        /// Gets the amount of time in milliseconds that a user has to accept a group invite after receiving it. After this
-        /// amount of time, the invite will expire and they will have to be invited again.
-        /// </summary>
-        public int InviteResponseTime
-        {
-            get { return _inviteResponseTime; }
-        }
+        readonly int _maxMembersPerGroup;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupSettings"/> class.
@@ -60,6 +51,15 @@ namespace NetGore.Features.Groups
         public static GroupSettings Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// Gets the amount of time in milliseconds that a user has to accept a group invite after receiving it. After this
+        /// amount of time, the invite will expire and they will have to be invited again.
+        /// </summary>
+        public int InviteResponseTime
+        {
+            get { return _inviteResponseTime; }
         }
 
         /// <summary>

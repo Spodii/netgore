@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.Groups
 {
@@ -10,6 +8,18 @@ namespace NetGore.Features.Groups
     /// </summary>
     public interface IGroupable : IDisposable
     {
+        /// <summary>
+        /// Gets or sets the group that this <see cref="IGroupable"/> is currently part of. This property should only be
+        /// set by the <see cref="IGroup"/> and <see cref="IGroupable"/>, and should never be used to try and add or
+        /// remove a <see cref="IGroupable"/> from a <see cref="IGroup"/>.
+        /// </summary>
+        IGroup Group { get; set; }
+
+        /// <summary>
+        /// Gets the unique name of this group member.
+        /// </summary>
+        string Name { get; }
+
         /// <summary>
         /// Gets if this <see cref="IGroupable"/> is close enough to the <paramref name="other"/> to
         /// share group-based rewards with them. This method should return the same value for two
@@ -27,17 +37,5 @@ namespace NetGore.Features.Groups
         /// </summary>
         /// <param name="group">The <see cref="IGroup"/> that this <see cref="IGroupable"/> was invited to join.</param>
         void NotifyInvited(IGroup group);
-
-        /// <summary>
-        /// Gets or sets the group that this <see cref="IGroupable"/> is currently part of. This property should only be
-        /// set by the <see cref="IGroup"/> and <see cref="IGroupable"/>, and should never be used to try and add or
-        /// remove a <see cref="IGroupable"/> from a <see cref="IGroup"/>.
-        /// </summary>
-        IGroup Group { get; set; }
-
-        /// <summary>
-        /// Gets the unique name of this group member.
-        /// </summary>
-        string Name { get; }
     }
 }

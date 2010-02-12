@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.AI
 {
@@ -20,25 +18,19 @@ namespace NetGore.AI
      *                                                                                                                                 aPhRo_
      */
 
-
-
-
-
     public class MemoryMap
     {
         //2 dimensional List<T> holding data for each MemoryCell.
-        List<List<MemoryCell>> _memoryCells = new List<List<MemoryCell>>();
+        readonly double _cellSize;
+        readonly List<List<MemoryCell>> _memoryCells = new List<List<MemoryCell>>();
 
         //Holds some information about the list.
         int _cellsX;
         int _cellsY;
-        int _totalCells;
-
-        //Dimensions of a MemoryCell.
-        double _cellSize;
 
         int _maxX;
         int _minY;
+        int _totalCells;
 
         /// <summary>
         /// Constructor for a MemoryMap, uses default value of 64 for MemoryCell dimensions.
@@ -54,7 +46,12 @@ namespace NetGore.AI
         /// <param name="cellSize">Defines the dimensions of a MemoryCell.</param>
         public MemoryMap(int cellSize)
         {
-            _cellSize = (double)cellSize;
+            _cellSize = cellSize;
+        }
+
+        public int NumCells
+        {
+            get { return _totalCells; }
         }
 
         /// <summary>
@@ -77,35 +74,32 @@ namespace NetGore.AI
 
                 for (int Y = 0; Y < _cellsY; ++Y)
                 {
-                    _temp.Add(new MemoryCell((int)(X * _cellSize), 
-                                             (int)((X + 1) * _cellSize), 
-                                             (int)(Y * _cellSize), 
-                                             (int)((Y + 1) * _cellSize))); 
+                    _temp.Add(new MemoryCell((int)(X * _cellSize), (int)((X + 1) * _cellSize), (int)(Y * _cellSize),
+                                             (int)((Y + 1) * _cellSize)));
                 }
                 _memoryCells.Add(_temp);
             }
 
             _totalCells = _cellsX * _cellsY;
-                 
         }
 
         /// <summary>
-        /// Updates the MemoryMap.
+        /// Gets the total number of cells visited.
         /// </summary>
-        /// <param name="xPos">X position of the Entity</param>
-        /// <param name="yPos">Y position of the Entity</param>
-        public void Update(double xPos, double yPos)
+        /// <returns>Returns an integer greater than or equal to 0</returns>
+        public int NumberofCellsVisited()
         {
-            if (((xPos < 0) || (xPos > _maxX)) || ((yPos < 0) || (yPos > _minY)))
+            int total = 0;
+
+            for (int X = 0; X < _cellsX; ++X)
             {
-                return;
+                for (int Y = 0; Y < _cellsY; ++Y)
+                {
+                    if (_memoryCells[X][Y].TickCount > 0)
+                        ++total;
+                }
             }
-
-            int cellX = (int)(xPos / _cellSize) + 1;
-            int cellY = (int)(yPos / _cellSize) + 1;
-
-            _memoryCells[cellX][cellY].Update();
-
+            return total;
         }
 
         /// <summary>
@@ -123,24 +117,19 @@ namespace NetGore.AI
         }
 
         /// <summary>
-        /// Gets the total number of cells visited.
+        /// Updates the MemoryMap.
         /// </summary>
-        /// <returns>Returns an integer greater than or equal to 0</returns>
-        public int NumberofCellsVisited()
+        /// <param name="xPos">X position of the Entity</param>
+        /// <param name="yPos">Y position of the Entity</param>
+        public void Update(double xPos, double yPos)
         {
-            int total = 0;
+            if (((xPos < 0) || (xPos > _maxX)) || ((yPos < 0) || (yPos > _minY)))
+                return;
 
-            for (int X = 0; X < _cellsX; ++X)
-            {
-                for (int Y = 0; Y < _cellsY; ++Y)
-                {
-                    if (_memoryCells[X][Y].TickCount > 0)
-                    {
-                        ++total;
-                    }
-                }
-            }
-            return total;
+            int cellX = (int)(xPos / _cellSize) + 1;
+            int cellY = (int)(yPos / _cellSize) + 1;
+
+            _memoryCells[cellX][cellY].Update();
         }
 
         /// <summary>
@@ -155,17 +144,9 @@ namespace NetGore.AI
             int cellY = (int)(yPos / _cellSize);
 
             if (_memoryCells[cellX][cellY].TickCount > 0)
-            { return true; }
+                return true;
             else
-            { return false; }
-
+                return false;
         }
-
-        public int NumCells
-        {
-            get { return _totalCells; }
-        }
-
-
     }
 }

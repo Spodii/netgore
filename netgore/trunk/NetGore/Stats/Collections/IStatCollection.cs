@@ -15,17 +15,17 @@ namespace NetGore.Stats
         // TODO: IStatCollection tests...
 
         /// <summary>
+        /// Notifies listeners when any of the <see cref="IStat{TStatType}"/>s in this collection have raised
+        /// their <see cref="IStat{StatType}.Changed"/> event.
+        /// </summary>
+        event IStatCollectionStatEventHandler<TStatType> StatChanged;
+
+        /// <summary>
         /// Gets or sets the value of the stat with the given <paramref name="statType"/>.
         /// </summary>
         /// <param name="statType">The type of the stat to get or set the value for.</param>
         /// <returns>The value of the <see cref="IStat{TStatType}"/> with the given <paramref name="statType"/>.</returns>
         int this[TStatType statType] { get; set; }
-
-        /// <summary>
-        /// Notifies listeners when any of the <see cref="IStat{TStatType}"/>s in this collection have raised
-        /// their <see cref="IStat{StatType}.Changed"/> event.
-        /// </summary>
-        event IStatCollectionStatEventHandler<TStatType> StatChanged;
 
         /// <summary>
         /// Gets the <see cref="StatCollectionType"/> that this collection is for.

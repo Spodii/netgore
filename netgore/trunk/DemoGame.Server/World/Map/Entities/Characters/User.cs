@@ -312,14 +312,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Makes the user try and join whatever group they have an outstanding invite to.
-        /// </summary>
-        public void TryJoinGroup()
-        {
-            _groupMemberInfo.JoinGroup(GetTime());
-        }
-
-        /// <summary>
         /// Handles updating this <see cref="Entity"/>.
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
@@ -371,6 +363,115 @@ namespace DemoGame.Server
 
             // Notify users on the map of the level-up
             using (var pw = ServerPacket.NotifyLevel(MapEntityIndex))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.CashChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldCash">The old cash.</param>
+        /// <param name="cash">The cash.</param>
+        protected override void OnCashChanged(int oldCash, int cash)
+        {
+            base.OnCashChanged(oldCash, cash);
+
+            using (var pw = ServerPacket.SetCash(cash))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.ExpChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldExp">The old exp.</param>
+        /// <param name="exp">The exp.</param>
+        protected override void OnExpChanged(int oldExp, int exp)
+        {
+            base.OnExpChanged(oldExp, exp);
+
+            using (var pw = ServerPacket.SetExp(exp))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
+        protected override void OnKilledCharacter(Character killed)
+        {
+            base.OnKilledCharacter(killed);
+
+            Debug.Assert(killed != null);
+
+            var killedNPC = killed as NPC;
+
+            // Handle killing a NPC
+            if (killedNPC != null)
+            {
+                int giveExp = killedNPC.GiveExp;
+                int giveCash = killedNPC.GiveCash;
+
+                // If in a group, split among the group members (as needed)
+                var group = ((IGroupable)this).Group;
+                if (group == null || group.ShareMode == GroupShareMode.NoSharing)
+                {
+                    // Not in a group or no sharing is being used in the group, give all to self
+                    GiveKillReward(giveExp, giveCash);
+                }
+                else
+                {
+                    // Share equally among the group members
+                    var members = group.GetGroupMembersInShareRange(this, true).OfType<User>().ToArray();
+                    giveExp = (giveExp / members.Length) + 1;
+                    giveCash = (giveCash / members.Length) + 1;
+                    foreach (var member in members)
+                    {
+                        member.GiveKillReward(giveExp, giveCash);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.LevelChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected override void OnLevelChanged(byte oldValue, byte newValue)
+        {
+            base.OnLevelChanged(oldValue, newValue);
+
+            using (var pw = ServerPacket.SetLevel(newValue))
+            {
+                Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.StatPointsChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected override void OnStatPointsChanged(int oldValue, int newValue)
+        {
+            base.OnStatPointsChanged(oldValue, newValue);
+
+            using (var pw = ServerPacket.SetStatPoints(newValue))
             {
                 Send(pw);
             }
@@ -616,6 +717,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Makes the user try and join whatever group they have an outstanding invite to.
+        /// </summary>
+        public void TryJoinGroup()
+        {
+            _groupMemberInfo.JoinGroup(GetTime());
+        }
+
+        /// <summary>
         /// Tries to join a guild.
         /// </summary>
         /// <param name="guildName">The name of the guild.</param>
@@ -720,115 +829,6 @@ namespace DemoGame.Server
             // Lower the count of use-once items
             if (item.Type == ItemType.UseOnce)
                 Inventory.DecreaseItemAmount(slot);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.CashChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldCash">The old cash.</param>
-        /// <param name="cash">The cash.</param>
-        protected override void OnCashChanged(int oldCash, int cash)
-        {
-            base.OnCashChanged(oldCash, cash);
-
-            using (var pw = ServerPacket.SetCash(cash))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.ExpChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldExp">The old exp.</param>
-        /// <param name="exp">The exp.</param>
-        protected override void OnExpChanged(int oldExp, int exp)
-        {
-            base.OnExpChanged(oldExp, exp);
-
-            using (var pw = ServerPacket.SetExp(exp))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
-        protected override void OnKilledCharacter(Character killed)
-        {
-            base.OnKilledCharacter(killed);
-
-            Debug.Assert(killed != null);
-
-            var killedNPC = killed as NPC;
-
-            // Handle killing a NPC
-            if (killedNPC != null)
-            {
-                int giveExp = killedNPC.GiveExp;
-                int giveCash = killedNPC.GiveCash;
-
-                // If in a group, split among the group members (as needed)
-                var group = ((IGroupable)this).Group;
-                if (group == null || group.ShareMode == GroupShareMode.NoSharing)
-                {
-                    // Not in a group or no sharing is being used in the group, give all to self
-                    GiveKillReward(giveExp, giveCash);
-                }
-                else
-                {
-                    // Share equally among the group members
-                    var members = group.GetGroupMembersInShareRange(this, true).OfType<User>().ToArray();
-                    giveExp = (giveExp / members.Length) + 1;
-                    giveCash = (giveCash / members.Length) + 1;
-                    foreach (var member in members)
-                    {
-                        member.GiveKillReward(giveExp, giveCash);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.LevelChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected override void OnLevelChanged(byte oldValue, byte newValue)
-        {
-            base.OnLevelChanged(oldValue, newValue);
-
-            using (var pw = ServerPacket.SetLevel(newValue))
-            {
-                Send(pw);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.StatPointsChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected override void OnStatPointsChanged(int oldValue, int newValue)
-        {
-            base.OnStatPointsChanged(oldValue, newValue);
-
-            using (var pw = ServerPacket.SetStatPoints(newValue))
-            {
-                Send(pw);
-            }
         }
 
         #region IClientCommunicator Members

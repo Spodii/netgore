@@ -130,16 +130,16 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter GuildInfo(Action<PacketWriter> populate)
+        public static PacketWriter GroupInfo(Action<PacketWriter> populate)
         {
-            var ret = GetWriter(ServerPacketID.GuildInfo);
+            var ret = GetWriter(ServerPacketID.GroupInfo);
             populate(ret);
             return ret;
         }
 
-        public static PacketWriter GroupInfo(Action<PacketWriter> populate)
+        public static PacketWriter GuildInfo(Action<PacketWriter> populate)
         {
-            var ret = GetWriter(ServerPacketID.GroupInfo);
+            var ret = GetWriter(ServerPacketID.GuildInfo);
             populate(ret);
             return ret;
         }

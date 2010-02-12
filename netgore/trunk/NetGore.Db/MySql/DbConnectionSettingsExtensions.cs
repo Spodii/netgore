@@ -21,7 +21,6 @@ namespace NetGore.Db.MySql
                 Password = settings.Pass,
                 Server = settings.Host,
                 Port = settings.Port,
-
                 IgnorePrepare = false,
                 Pooling = true,
                 UseCompression = false,
