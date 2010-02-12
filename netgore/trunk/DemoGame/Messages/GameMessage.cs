@@ -107,6 +107,7 @@ namespace DemoGame
         GroupCreateFailedUnknownReason,
         GroupInvited,
         GroupInvite,
+        GroupInviteFailedCannotInviteSelf,
         GroupInviteFailedInvalidUser,
         GroupInviteFailedAlreadyInGroup,
         GroupInviteFailedUnknownReason,
