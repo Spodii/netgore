@@ -141,6 +141,7 @@ namespace DemoGame
 
         GuildInvited,
         GuildInviteSuccess,
+        GuildInviteFailedCannotInviteSelf,
         GuildInviteFailedInvalidUser,
         GuildInviteFailedAlreadyInGuild,
         GuildInviteFailedUnknownReason,
