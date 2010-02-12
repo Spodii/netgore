@@ -69,5 +69,18 @@ namespace NetGore.Features.Groups
         /// otherwise false.
         /// This method will always return false is the <paramref name="groupable"/> is already in a group.</returns>
         bool TryAddMember(IGroupable groupable);
+
+        /// <summary>
+        /// Gets all the <see cref="IGroupable"/>s in this <see cref="IGroup"/> that are in range of the
+        /// <paramref name="origin"/> group member. This will include all group members where
+        /// <see cref="IGroupable.IsInShareDistance"/> returns true for the <paramref name="origin"/>.
+        /// </summary>
+        /// <param name="origin">The group member that will be used to get the group members that are near.</param>
+        /// <param name="includeOrigin">If true, the <paramref name="origin"/> will be included in the returned
+        /// collection. Otherwise, the <paramref name="origin"/> will not be included in the returned collection.</param>
+        /// <returns>
+        /// All the other group members within sharing range of the <paramref name="origin"/>.
+        /// </returns>
+        IEnumerable<IGroupable> GetGroupMembersInShareRange(IGroupable origin, bool includeOrigin);
     }
 }

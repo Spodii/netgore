@@ -16,7 +16,6 @@ namespace NetGore.Features.Groups
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly GroupSettings _groupSettings = GroupSettings.Instance;
 
-        readonly IGroupableEventHandler _disposeHandler;
         readonly List<IGroupable> _members = new List<IGroupable>();
 
         IGroupable _founder;
@@ -31,19 +30,8 @@ namespace NetGore.Features.Groups
             if (founder == null)
                 throw new ArgumentNullException("founder");
 
-            _disposeHandler = IGroupable_DisposeHandler;
-
             _founder = founder;
             _members.Add(_founder);
-        }
-
-        /// <summary>
-        /// Handles when an <see cref="IGroupable"/> that is in this group is disposed.
-        /// </summary>
-        /// <param name="groupable">The <see cref="IGroupable"/> that was disposed.</param>
-        void IGroupable_DisposeHandler(IGroupable groupable)
-        {
-            RemoveMember(groupable);
         }
 
         /// <summary>
@@ -182,9 +170,6 @@ namespace NetGore.Features.Groups
             // Remove their group value
             member.Group = null;
 
-            // Remove the dispose listener
-            member.Disposed -= _disposeHandler;
-
             // Remove the member from the member list
             if (!_members.Remove(member))
             {
@@ -239,12 +224,17 @@ namespace NetGore.Features.Groups
                 return false;
             }
 
+            // Check that they can be added
+            if (_groupSettings.CanJoinGroupHandler != null && !_groupSettings.CanJoinGroupHandler(groupable, this))
+            {
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Failed to add `{0}` to group `{1}` - GroupSettings.CanJoinGroupHandler returned false.", groupable, this);
+                return false;
+            }
+
             // Add the member
             _members.Add(groupable);
             groupable.Group = this;
-
-            // Add the dispose listener
-            groupable.Disposed += _disposeHandler;
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Added `{0}` to group `{1}`.", groupable, this);
@@ -256,6 +246,22 @@ namespace NetGore.Features.Groups
                 MemberJoin(this, groupable);
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets all the <see cref="IGroupable"/>s in this <see cref="IGroup"/> that are in range of the
+        /// <paramref name="origin"/> group member. This will include all group members where
+        /// <see cref="IGroupable.IsInShareDistance"/> returns true for the <paramref name="origin"/>.
+        /// </summary>
+        /// <param name="origin">The group member that will be used to get the group members that are near.</param>
+        /// <param name="includeOrigin">If true, the <paramref name="origin"/> will be included in the returned
+        /// collection. Otherwise, the <paramref name="origin"/> will not be included in the returned collection.</param>
+        /// <returns>
+        /// All the other group members within sharing range of the <paramref name="origin"/>.
+        /// </returns>
+        public IEnumerable<IGroupable> GetGroupMembersInShareRange(IGroupable origin, bool includeOrigin)
+        {
+            return _members.Where(x => x.IsInShareDistance(origin) && (includeOrigin || (x != origin)));
         }
 
         #endregion

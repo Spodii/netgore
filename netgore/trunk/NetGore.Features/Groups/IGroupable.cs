@@ -5,8 +5,6 @@ using System.Text;
 
 namespace NetGore.Features.Groups
 {
-    public delegate void IGroupableEventHandler(IGroupable groupable);
-
     /// <summary>
     /// Interface for something that can be part of a group.
     /// </summary>
@@ -25,7 +23,7 @@ namespace NetGore.Features.Groups
 
         /// <summary>
         /// Notifies this <see cref="IGroupable"/> that they have been invited to join another group. This should only
-        /// be called by the <see cref="IGroupManager"/>.
+        /// be called by the <see cref="IGroup"/>.
         /// </summary>
         /// <param name="group">The <see cref="IGroup"/> that this <see cref="IGroupable"/> was invited to join.</param>
         void NotifyInvited(IGroup group);
@@ -36,10 +34,5 @@ namespace NetGore.Features.Groups
         /// remove a <see cref="IGroupable"/> from a <see cref="IGroup"/>.
         /// </summary>
         IGroup Group { get; set; }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="IGroupable"/> has been disposed.
-        /// </summary>
-        event IGroupableEventHandler Disposed;
     }
 }

@@ -210,6 +210,12 @@ namespace DemoGame.Server
                 User.Map.AddEntity(trap);
             }
 
+            [SayCommand("CreateGroup")]
+            public void CreateGroup()
+            {
+                // TODO: ...
+            }
+
             [SayCommand("Demote")]
             public void Demote(string userName)
             {
