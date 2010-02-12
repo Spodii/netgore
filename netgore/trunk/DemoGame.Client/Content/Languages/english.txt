@@ -28,6 +28,7 @@ GroupCreated: You have created a new group.
 GroupCreateFailedUnknownReason: Failed to create a new group.
 GroupInvited: You have been invited to join {0}'s group. Type /joingroup to join.
 GroupInvite: {0} has invited {1} to join the group.
+GroupInviteFailedCannotInviteSelf: You cannot invite yourself into a group.
 GroupInviteFailedInvalidUser: Failed to invite {0} to join the group. That user is either not online or does not exist.
 GroupInviteFailedAlreadyInGroup: Failed to invite {0} to join the group since they are already in a group.
 GroupInviteFailedUnknownReason: Failed to invite {0} to join the group.

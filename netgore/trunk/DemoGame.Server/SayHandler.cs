@@ -272,6 +272,12 @@ namespace DemoGame.Server
                     return;
                 }
 
+                if (target == User)
+                {
+                    User.Send(GameMessage.GroupInviteFailedCannotInviteSelf);
+                    return;
+                }
+
                 if (!(((IGroupable)User).Group.TryInvite(target)))
                 {
                     // Invite failed
