@@ -164,6 +164,18 @@ namespace NetGore
             set { Teleport(value); }
         }
 
+        Vector2 _lastPosition;
+
+        /// <summary>
+        /// Gets the position that this <see cref="Entity"/> was at on their last update. If they teleport, this
+        /// value will be set to the current position.
+        /// </summary>
+        [Browsable(false)]
+        public Vector2 LastPosition
+        {
+            get { return _lastPosition; }
+        }
+
         /// <summary>
         /// Gets or sets the size of the Entity.
         /// </summary>
@@ -383,6 +395,7 @@ namespace NetGore
             // Move the entity
             Vector2 oldPos = Position;
             _position = newPosition;
+            _lastPosition = newPosition;
 
             if (Moved != null)
                 Moved(this, oldPos);
@@ -394,6 +407,8 @@ namespace NetGore
         /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
         public virtual void UpdateVelocity(float deltaTime)
         {
+            _lastPosition = Position;
+
             // Only perform movement if moving
             if (StandingOn != null && Velocity == Vector2.Zero)
                 return;

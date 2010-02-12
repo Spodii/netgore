@@ -11,38 +11,47 @@
     <Item0>
       <Position>0,736</Position>
       <Size>1600,64</Size>
+      <IsPlatform>False</IsPlatform>
     </Item0>
     <Item1>
       <Position>192,578</Position>
       <Size>93,16</Size>
+      <IsPlatform>False</IsPlatform>
     </Item1>
     <Item2>
       <Position>6,676</Position>
       <Size>89,60</Size>
+      <IsPlatform>False</IsPlatform>
     </Item2>
     <Item3>
       <Position>32,482</Position>
       <Size>93,16</Size>
+      <IsPlatform>False</IsPlatform>
     </Item3>
     <Item4>
       <Position>1280,610</Position>
       <Size>93,16</Size>
+      <IsPlatform>False</IsPlatform>
     </Item4>
     <Item5>
       <Position>192,386</Position>
       <Size>93,16</Size>
+      <IsPlatform>False</IsPlatform>
     </Item5>
     <Item6>
       <Position>352,322</Position>
       <Size>93,16</Size>
+      <IsPlatform>False</IsPlatform>
     </Item6>
     <Item7>
       <Position>544,258</Position>
       <Size>93,16</Size>
+      <IsPlatform>False</IsPlatform>
     </Item7>
     <Item8>
       <Position>736,162</Position>
       <Size>93,16</Size>
+      <IsPlatform>False</IsPlatform>
     </Item8>
   </Walls>
   <DynamicEntities>
