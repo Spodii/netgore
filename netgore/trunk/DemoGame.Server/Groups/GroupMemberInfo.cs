@@ -85,7 +85,9 @@ namespace DemoGame.Server.Groups
         /// <param name="group">The group the owner joined.</param>
         protected override void OnJoinGroup(IGroup group)
         {
-            Owner.Send(GameMessage.GroupJoined, GetGroupFounderName(group));
+            // Don't send the message if we join our own group (since we already told we created the group)
+            if (group.Founder != Owner)
+                Owner.Send(GameMessage.GroupJoined, GetGroupFounderName(group));
         }
 
         /// <summary>
