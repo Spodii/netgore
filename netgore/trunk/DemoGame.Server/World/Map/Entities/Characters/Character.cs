@@ -21,51 +21,6 @@ using NetGore.Stats;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Handles Character events.
-    /// </summary>
-    /// <param name="character">The Character that the event took place on.</param>
-    public delegate void CharacterEventHandler(Character character);
-
-    /// <summary>
-    /// Handles Character attack events.
-    /// </summary>
-    /// <param name="attacker">The Character that did the attacking.</param>
-    /// <param name="attacked">The Character that was attacked.</param>
-    /// <param name="damage">Amount of damage that was inflicted.</param>
-    public delegate void CharacterAttackCharacterEventHandler(Character attacker, Character attacked, int damage);
-
-    /// <summary>
-    /// Handles Character Map events.
-    /// </summary>
-    /// <param name="character">The Character that the event took place on.</param>
-    /// <param name="map">The Map related to the event.</param>
-    public delegate void CharacterMapEventHandler(Character character, Map map);
-
-    /// <summary>
-    /// Handles Character killing events.
-    /// </summary>
-    /// <param name="killed">The Character that was killed.</param>
-    /// <param name="killer">The Character that did the killing.</param>
-    public delegate void CharacterKillEventHandler(Character killed, Character killer);
-
-    /// <summary>
-    /// Handles Character item events.
-    /// </summary>
-    /// <param name="character">The Character that the event took place on.</param>
-    /// <param name="item">The ItemEntity related to the event.</param>
-    public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
-
-    public delegate void CharacterExpEventHandler(Character character, int oldExp, int exp);
-
-    public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
-
-    public delegate void CharacterCashEventHandler(Character character, int oldCash, int cash);
-
-    public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
-
-    public delegate void CharacterStatPointsEventHandler(Character character, int oldValue, int newValue);
-
-    /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
     public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference
@@ -92,7 +47,6 @@ namespace DemoGame.Server
 
         static readonly ShopManager _shopManager = ShopManager.Instance;
         readonly CharacterStatsBase _baseStats;
-
         readonly CharacterEquipped _equipped;
         readonly CharacterInventory _inventory;
         readonly bool _isPersistent;
@@ -180,19 +134,42 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when this Character has successfully attacked another Character.
         /// </summary>
-        public event CharacterAttackCharacterEventHandler AttackedCharacter;
+        public event CharacterEventHandler<Character, int> AttackedCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character has been attacked by another Character.
         /// </summary>
-        public event CharacterAttackCharacterEventHandler AttackedByCharacter;
+        public event CharacterEventHandler<Character, int> AttackedByCharacter;
 
-        public event CharacterCashEventHandler CashChanged;
-        public event CharacterExpEventHandler ExpChanged;
-        public event CharacterChangeSPEventHandler HPChanged;
-        public event CharacterLevelEventHandler LevelChanged;
-        public event CharacterChangeSPEventHandler MPChanged;
-        public event CharacterStatPointsEventHandler StatPointsChanged;
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s cash value has changed.
+        /// </summary>
+        public event CharacterEventHandler<int, int> CashChanged;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s exp value has changed.
+        /// </summary>
+        public event CharacterEventHandler<int, int> ExpChanged;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s HP value has changed.
+        /// </summary>
+        public event CharacterEventHandler<SPValueType, SPValueType> HPChanged;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s level value has changed.
+        /// </summary>
+        public event CharacterEventHandler<byte, byte> LevelChanged;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s MP value has changed.
+        /// </summary>
+        public event CharacterEventHandler<SPValueType, SPValueType> MPChanged;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s StatPoints value has changed.
+        /// </summary>
+        public event CharacterEventHandler<int, int> StatPointsChanged;
 
         /// <summary>
         /// Notifies listeners when the Character's TemplateID has changed.
@@ -202,19 +179,19 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when this Character has dropped an item.
         /// </summary>
-        public event CharacterItemEventHandler DroppedItem;
+        public event CharacterEventHandler<ItemEntity> DroppedItem;
 
         /// <summary>
         /// Notifies listeners when this Character has received an item.
         /// </summary>
-        public event CharacterItemEventHandler GotItem;
+        public event CharacterEventHandler<ItemEntity> GotItem;
 
         // TODO: Implement OnGetItem. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
 
         /// <summary>
         /// Notifies listeners when this Character has killed another Character.
         /// </summary>
-        public event CharacterKillEventHandler KilledCharacter;
+        public event CharacterEventHandler<Character> KilledCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
@@ -224,12 +201,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when this Character has been killed by another Character.
         /// </summary>
-        public event CharacterKillEventHandler KilledByCharacter;
+        public event CharacterEventHandler<Character> KilledByCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character uses an item.
         /// </summary>
-        public event CharacterItemEventHandler UsedItem;
+        public event CharacterEventHandler<ItemEntity> UsedItem;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Character"/> class.

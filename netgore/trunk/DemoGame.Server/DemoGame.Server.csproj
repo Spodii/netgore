@@ -242,6 +242,7 @@
     <Compile Include="World\Map\Entities\Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="World\Map\Entities\Characters\CharacterEventHandler.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterIDCreator.cs" />
     <Compile Include="World\Map\Entities\Characters\IClientCommunicator.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
