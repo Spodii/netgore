@@ -138,8 +138,10 @@ namespace NetGore.Features.Groups
             _founder = null;
 
             // Remove all members from the group
-            foreach (var member in Members)
+            foreach (var member in Members.ToImmutable())
                 RemoveMember(member);
+
+            Debug.Assert(_members.Count == 0, "Uh-oh, some members managed to not get removed!");
         }
 
         /// <summary>
