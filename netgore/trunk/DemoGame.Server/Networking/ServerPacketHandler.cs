@@ -694,7 +694,7 @@ namespace DemoGame.Server
             }
 
             // Get the user
-            var user = World.GetUser(conn);
+            var user = World.GetUser(conn, errorOnFailure);
 
             // Check for a valid user
             if (user == null)
