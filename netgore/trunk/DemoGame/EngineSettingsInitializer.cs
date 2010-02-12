@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Features.StatusEffects;
@@ -22,12 +23,26 @@ namespace DemoGame
 
             ShopSettings.Initialize(new ShopSettings(6 * 6));
             StatusEffectsSettings.Initialize(new StatusEffectsSettings(500));
+            GroupSettings.Initialize(new GroupSettings(10, 1000 * 60, CanJoinGroupHandler));
 
             var rankNames = new string[] { "Recruit", "Member", "VIP", "Founder" };
             var nameRules = new StringRules(3, 50, CharType.All);
             var tagRules = new StringRules(1, 4, CharType.All);
             var maxRank = (GuildRank)(rankNames.Length - 1);
             GuildSettings.Initialize(new GuildSettings(1000 * 60, maxRank, rankNames, nameRules, tagRules, 3, 2, 1, 1, 2, 2));
+        }
+
+        /// <summary>
+        /// Method used to determine if an <see cref="IGroupable"/> can join an existing <see cref="IGroup"/>.
+        /// </summary>
+        /// <param name="member">The <see cref="IGroupable"/> to check if can join the <paramref name="group"/>.</param>
+        /// <param name="group">The <see cref="IGroup"/> the <paramref name="member"/> is trying to join.</param>
+        /// <returns>True if the <paramref name="member"/> can join the <paramref name="group"/>; otherwise false.</returns>
+        static bool CanJoinGroupHandler(IGroupable member, IGroup group)
+        {
+            // Put your additional group restrictions here, such as level range restrictions. No need to check for stuff
+            // that is already checked for such as if the member is already in a group, if the group is full, etc.
+            return true;
         }
 
         /// <summary>
