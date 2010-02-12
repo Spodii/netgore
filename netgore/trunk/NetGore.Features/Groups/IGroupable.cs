@@ -34,5 +34,10 @@ namespace NetGore.Features.Groups
         /// remove a <see cref="IGroupable"/> from a <see cref="IGroup"/>.
         /// </summary>
         IGroup Group { get; set; }
+
+        /// <summary>
+        /// Gets the unique name of this group member.
+        /// </summary>
+        string Name { get; }
     }
 }
