@@ -1,6 +1,8 @@
 InvalidCommand: Invalid command.
-InvalidCommandMustBeInGuild: This command cannot be used unless you are in a guild.
-InvalidCommandMustNotBeInGuild: This command cannot be used while you are in a guild.
+InvalidCommandMustBeInGuild: You must be in a guild to do that.
+InvalidCommandMustNotBeInGuild: You cannot do that while in a guild.
+InvalidCommandMustBeInGroup: You must be in a group to do that.
+InvalidCommandMustNotBeInGroup: You cannot do that while in a group. To leave your group, type /leavegroup.
 
 CommandShout: {0} shouts: "{1}"
 
@@ -21,6 +23,20 @@ ShopPurchaseSingular: You purchased a {0} for {1} cash.
 ShopPurchasePlural: You purchased {0} {1}s for {2} cash.
 ShopSellItemSingular: You sell a {0} for {1} cash.
 ShopSellItemPlural: You sell {0} {1}s for {2} cash.
+
+GroupCreated: You have created a new group.
+GroupCreateFailedUnknownReason: Failed to create a new group.
+GroupInvited: You have been invited to join {0}'s group. Type /joingroup to join.
+GroupInvite: {0} has invited {1} to join the group.
+GroupInviteFailedInvalidUser: Failed to invite {0} to join the group. That user is either not online or does not exist.
+GroupInviteFailedAlreadyInGroup: Failed to invite {0} to join the group since they are already in a group.
+GroupInviteFailedUnknownReason: Failed to invite {0} to join the group.
+GroupJoinFailedGroupIsFull: Failed to join {0}'s group - the group is already full.
+GroupJoinFailedUnknownReason: Failed to join {0}'s group.
+GroupJoined: You have joined {0}'s group.
+GroupLeave: You have left the group.
+GroupMemberLeft: {0} has left the group.
+GroupMemberJoined: {0} has joined the group.
 
 GuildCreationSuccessful: Guild "{0}" with tag "{1}" successfully created.
 GuildCreationFailedUnknownReason: Could not create guild "{0}" with tag "{1}" for an unknown reason.
