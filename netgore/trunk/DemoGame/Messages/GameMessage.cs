@@ -14,16 +14,6 @@ namespace DemoGame
         InvalidCommand,
 
         /// <summary>
-        /// Cannot execute command because the user is in a guild.
-        /// </summary>
-        InvalidCommandMustBeInGuild,
-
-        /// <summary>
-        /// Cannot execute command because the user is not in a guild.
-        /// </summary>
-        InvalidCommandMustNotBeInGuild,
-
-        /// <summary>
         /// Message received when a User shouts.
         /// </summary>
         CommandShout,
@@ -72,6 +62,8 @@ namespace DemoGame
         /// </summary>
         LoginAccountInUse,
 
+        #region Shops
+
         /// <summary>
         /// Tried to purchase an item from a shop, but they did not have enough money. Singular (tried to
         /// purchase just one item).
@@ -104,13 +96,40 @@ namespace DemoGame
         /// </summary>
         ShopSellItemPlural,
 
+        #endregion
+
+        #region Guilds
+
+        InvalidCommandMustBeInGroup,
+        InvalidCommandMustNotBeInGroup,
+
+        GroupCreated,
+        GroupCreateFailedUnknownReason,
         GroupInvited,
+        GroupInvite,
+        GroupInviteFailedInvalidUser,
+        GroupInviteFailedAlreadyInGroup,
+        GroupInviteFailedUnknownReason,
         GroupJoinFailedGroupIsFull,
         GroupJoinFailedUnknownReason,
         GroupJoined,
         GroupLeave,
         GroupMemberLeft,
         GroupMemberJoined,
+
+        #endregion
+
+        #region Groups
+
+        /// <summary>
+        /// Cannot execute command because the user is in a guild.
+        /// </summary>
+        InvalidCommandMustBeInGuild,
+
+        /// <summary>
+        /// Cannot execute command because the user is not in a guild.
+        /// </summary>
+        InvalidCommandMustNotBeInGuild,
 
         GuildCreationSuccessful,
         GuildCreationFailedUnknownReason,
@@ -153,5 +172,6 @@ namespace DemoGame
         GuildJoin,
         GuildJoinFailedInvalidOrNoInvite,
         GuildLeave,
+        #endregion
     }
 }

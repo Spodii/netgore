@@ -71,6 +71,13 @@ namespace NetGore.Features.Groups
         bool TryAddMember(IGroupable groupable);
 
         /// <summary>
+        /// Tries to invite the <paramref name="member"/> to this group.
+        /// </summary>
+        /// <param name="member">The <see cref="IGroupable"/> to invite.</param>
+        /// <returns>True if the <paramref name="member"/> was successfully invited; otherwise false.</returns>
+        bool TryInvite(IGroupable member);
+
+        /// <summary>
         /// Gets all the <see cref="IGroupable"/>s in this <see cref="IGroup"/> that are in range of the
         /// <paramref name="origin"/> group member. This will include all group members where
         /// <see cref="IGroupable.IsInShareDistance"/> returns true for the <paramref name="origin"/>.

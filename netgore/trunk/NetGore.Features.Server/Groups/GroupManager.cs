@@ -22,8 +22,12 @@ namespace NetGore.Features.Groups
         /// </summary>
         /// <param name="tryCreateGroup">A <see cref="Func{T,U,V}"/> that is used to create a group started by
         /// an <see cref="IGroupable"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="tryCreateGroup"/> is null.</exception>
         public GroupManager(Func<IGroupManager, IGroupable, IGroup> tryCreateGroup)
         {
+            if (tryCreateGroup == null)
+                throw new ArgumentNullException("tryCreateGroup");
+
             _groupDisbandHandler = Group_Disbanded;
             _tryCreateGroup = tryCreateGroup;
         }

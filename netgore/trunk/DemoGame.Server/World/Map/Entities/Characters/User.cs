@@ -309,6 +309,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Makes the user try and join whatever group they have an outstanding invite to.
+        /// </summary>
+        public void TryJoinGroup()
+        {
+            _groupMemberInfo.JoinGroup(GetTime());
+        }
+
+        /// <summary>
         /// Handles updating this <see cref="Entity"/>.
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>

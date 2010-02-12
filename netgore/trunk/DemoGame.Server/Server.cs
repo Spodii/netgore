@@ -13,6 +13,7 @@ using log4net;
 using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
+using NetGore.Features.Groups;
 using NetGore.Features.Shops;
 using NetGore.Features.StatusEffects;
 using NetGore.IO;
@@ -54,6 +55,7 @@ namespace DemoGame.Server
         readonly object _consoleCommandSync = new object();
         readonly IDbController _dbController;
         readonly Stopwatch _gameTimer = new Stopwatch();
+        readonly GroupManager _groupManager;
         readonly GuildManager _guildManager;
         readonly List<string> _motd = new List<string>();
         readonly ServerSockets _sockets;
@@ -91,6 +93,7 @@ namespace DemoGame.Server
             // Create some objects
             _consoleCommands = new ConsoleCommands(this);
             _guildManager = new GuildManager(_dbController);
+            _groupManager = new GroupManager((gm, x) => new Group(x));
             _world = new World(this);
             _sockets = new ServerSockets(this);
 
@@ -112,6 +115,11 @@ namespace DemoGame.Server
         public IDbController DbController
         {
             get { return _dbController; }
+        }
+
+        public IGroupManager GroupManager
+        {
+            get { return _groupManager; }
         }
 
         public GuildManager GuildManager

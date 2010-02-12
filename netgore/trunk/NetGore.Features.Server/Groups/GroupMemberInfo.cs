@@ -103,7 +103,7 @@ namespace NetGore.Features.Groups
         {
             UpdateTime(currentTime);
 
-            if (_inviteGroup == null)
+            if (_inviteGroup == null || Owner.Group != null)
                 return null;
 
             var g = _inviteGroup;

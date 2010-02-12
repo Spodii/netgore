@@ -4,6 +4,7 @@ using System.Text;
 using DemoGame.Server.Guilds;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Network;
 
@@ -82,6 +83,8 @@ namespace DemoGame.Server
                 get { return Server.GuildManager; }
             }
 
+            public IGroupManager GroupManager { get { return Server.GroupManager; } }
+
             /// <summary>
             /// Gets the Server that the commands are coming from.
             /// </summary>
@@ -111,7 +114,7 @@ namespace DemoGame.Server
 
             [SayCommand("Tell")]
             [SayCommand("Whisper")]
-            public void CmdTell(string userName, string message)
+            public void Tell(string userName, string message)
             {
                 // Check for a message to tell
                 if (string.IsNullOrEmpty(userName))
@@ -210,10 +213,95 @@ namespace DemoGame.Server
                 User.Map.AddEntity(trap);
             }
 
+            bool RequireNotInGroup()
+            {
+                if (((IGroupable)User).Group != null)
+                {
+                    User.Send(GameMessage.InvalidCommandMustNotBeInGroup);
+                    return false;
+                }
+
+                return true;
+            }
+
+            bool RequireInGroup()
+            {
+                if (((IGroupable)User).Group == null)
+                {
+                    User.Send(GameMessage.InvalidCommandMustBeInGroup);
+                    return false;
+                }
+
+                return true;
+            }
+
             [SayCommand("CreateGroup")]
             public void CreateGroup()
             {
-                // TODO: ...
+                if (!RequireNotInGroup())
+                    return;
+
+                var group = GroupManager.TryCreateGroup(User);
+
+                if (group == null)
+                    User.Send(GameMessage.GroupCreateFailedUnknownReason);
+                else
+                    User.Send(GameMessage.GroupCreated);
+            }
+
+            [SayCommand("JoinGroup")]
+            public void JoinGroup()
+            {
+                if (!RequireNotInGroup())
+                    return;
+
+                User.TryJoinGroup();
+            }
+
+            [SayCommand("GroupInvite")]
+            public void GroupInvite(string userName)
+            {
+                if (!RequireInGroup())
+                    return;
+
+                User target = World.FindUser(userName);
+
+                if (target == null)
+                {
+                    User.Send( GameMessage.GroupInviteFailedInvalidUser, userName);
+                    return;
+                }
+
+                if (!(((IGroupable)User).Group.TryInvite(target)))
+                {
+                    // Invite failed
+                    if (((IGroupable)target).Group != null)
+                    {
+                        User.Send(GameMessage.GroupInviteFailedAlreadyInGroup, target.Name);
+                    }
+                    else
+                    {
+                        User.Send(GameMessage.GroupInviteFailedUnknownReason, target.Name);
+                    }
+                }
+                else
+                {
+                    // Invite successful
+                    using (var pw = ServerPacket.SendMessage(GameMessage.GroupInvite, User.Name, target.Name))
+                    {
+                        foreach (var u in ((IGroupable)User).Group.Members.OfType<User>())
+                            u.Send(pw);
+                    }
+                }
+            }
+
+            [SayCommand("LeaveGroup")]
+            public void LeaveGroup()
+            {
+                if (!RequireInGroup())
+                    return;
+
+                ((IGroupable)User).Group.RemoveMember(User);
             }
 
             [SayCommand("Demote")]
