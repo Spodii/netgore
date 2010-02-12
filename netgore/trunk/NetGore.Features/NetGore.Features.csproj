@@ -54,6 +54,7 @@
     <Compile Include="Groups\Event Handlers\IGroupEventHandler.cs" />
     <Compile Include="Groups\Event Handlers\IGroupMemberEventHandler.cs" />
     <Compile Include="Groups\Event Handlers\IGroupableEventHandler.cs" />
+    <Compile Include="Groups\UserGroupInformation.cs" />
     <Compile Include="Guilds\Event Handlers\GuildEventHandler.cs" />
     <Compile Include="Guilds\GuildEvents.cs" />
     <Compile Include="Guilds\GuildID.cs" />
