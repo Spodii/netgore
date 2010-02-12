@@ -14,16 +14,16 @@ namespace NetGore.Stats
     public class DynamicStatCollection<TStatType> : IStatCollection<TStatType>
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
-        readonly StatCollectionType _statCollectionType;
-
-        readonly Dictionary<TStatType, IStat<TStatType>> _stats =
-            new Dictionary<TStatType, IStat<TStatType>>(EnumComparer<TStatType>.Instance);
-
         /// <summary>
         /// The delegate used to hook to the <see cref="IStat{TStatType}.Changed"/> event for
         /// <see cref="IStat{TStatType}"/>s in this collection.
         /// </summary>
         readonly IStatEventHandler<TStatType> _statChangedHandler;
+
+        readonly StatCollectionType _statCollectionType;
+
+        readonly Dictionary<TStatType, IStat<TStatType>> _stats =
+            new Dictionary<TStatType, IStat<TStatType>>(EnumComparer<TStatType>.Instance);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicStatCollection{TStatType}"/> class.
@@ -53,19 +53,6 @@ namespace NetGore.Stats
 
             if (StatAdded != null)
                 StatAdded(this, stat);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="IStat{TStatType}.Changed"/> events for <see cref="IStat{StatType}"/>s in this
-        /// <see cref="IStatCollection{TStatType}"/>.
-        /// </summary>
-        /// <param name="stat">The <see cref="IStat{TStatType}"/> that raised the event.</param>
-        void Stat_Changed(IStat<TStatType> stat)
-        {
-            OnStatChanged(stat);
-
-            if (StatChanged != null)
-                StatChanged(this, stat);
         }
 
         /// <summary>
@@ -132,7 +119,26 @@ namespace NetGore.Stats
         {
         }
 
+        /// <summary>
+        /// Handles the <see cref="IStat{TStatType}.Changed"/> events for <see cref="IStat{StatType}"/>s in this
+        /// <see cref="IStatCollection{TStatType}"/>.
+        /// </summary>
+        /// <param name="stat">The <see cref="IStat{TStatType}"/> that raised the event.</param>
+        void Stat_Changed(IStat<TStatType> stat)
+        {
+            OnStatChanged(stat);
+
+            if (StatChanged != null)
+                StatChanged(this, stat);
+        }
+
         #region IStatCollection<TStatType> Members
+
+        /// <summary>
+        /// Notifies listeners when any of the <see cref="IStat{TStatType}"/>s in this collection have raised
+        /// their <see cref="IStat{StatType}.Changed"/> event.
+        /// </summary>
+        public event IStatCollectionStatEventHandler<TStatType> StatChanged;
 
         /// <summary>
         /// Gets or sets the <see cref="System.Int32"/> with the specified stat type.
@@ -154,12 +160,6 @@ namespace NetGore.Stats
                 stat.Value = value;
             }
         }
-
-        /// <summary>
-        /// Notifies listeners when any of the <see cref="IStat{TStatType}"/>s in this collection have raised
-        /// their <see cref="IStat{StatType}.Changed"/> event.
-        /// </summary>
-        public event IStatCollectionStatEventHandler<TStatType> StatChanged;
 
         /// <summary>
         /// Gets the <see cref="StatCollectionType"/> that this collection is for.

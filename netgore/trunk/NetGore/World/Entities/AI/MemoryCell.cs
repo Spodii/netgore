@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace NetGore.AI
 {
     struct MemoryCell
     {
-
         //The number of ticks that the unit spends at a particular MemoryCell
-        int _ticks;
 
         //The rectangle that holds the position of the MemoryCell
-        Rectangle _cell;
+        readonly Rectangle _cell;
+        int _ticks;
 
         /// <summary>
         /// MemoryCell constuctor
@@ -25,22 +21,6 @@ namespace NetGore.AI
         public MemoryCell(int XMinimum, int XMaximum, int YMinimum, int YMaximum)
         {
             _cell = new Rectangle(XMinimum, YMinimum, XMaximum - XMinimum, YMaximum - YMinimum);
-            _ticks = 0;
-        }
-
-        /// <summary>
-        /// Updates the MemoryCell
-        /// </summary>
-        public void Update()
-        {
-            ++_ticks;
-        }
-
-        /// <summary>
-        /// Resets the MemoryCell
-        /// </summary>
-        public void Reset()
-        {
             _ticks = 0;
         }
 
@@ -60,5 +40,20 @@ namespace NetGore.AI
             get { return _ticks; }
         }
 
+        /// <summary>
+        /// Resets the MemoryCell
+        /// </summary>
+        public void Reset()
+        {
+            _ticks = 0;
+        }
+
+        /// <summary>
+        /// Updates the MemoryCell
+        /// </summary>
+        public void Update()
+        {
+            ++_ticks;
+        }
     }
 }

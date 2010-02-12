@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
 using log4net.Core;
 
@@ -28,7 +27,7 @@ namespace DemoGame.Server.UI
                 return;
 
             var item = Items[e.Index] as LoggingEvent;
-            if (item == null) 
+            if (item == null)
                 return;
 
             e.Graphics.DrawString(item.RenderedMessage, e.Font, item.Level.GetColorBrush(), e.Bounds);

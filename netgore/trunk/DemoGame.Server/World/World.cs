@@ -33,6 +33,16 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
+        /// The time that <see cref="User.SynchronizeExtraUserInformation"/> will be called next.
+        /// </summary>
+        int _syncExtraUserInfoTime = int.MinValue;
+
+        /// <summary>
+        /// The time that <see cref="World.UpdateRespawnables"/> will be called next.
+        /// </summary>
+        int _updateRespawnablesTime = int.MinValue;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
         /// <param name="parent">Server this world is part of.</param>
@@ -331,14 +341,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// The time that <see cref="User.SynchronizeExtraUserInformation"/> will be called next.
+        /// Synchronizes the extra user information for all users.
         /// </summary>
-        int _syncExtraUserInfoTime = int.MinValue;
-
-        /// <summary>
-        /// The time that <see cref="World.UpdateRespawnables"/> will be called next.
-        /// </summary>
-        int _updateRespawnablesTime = int.MinValue;
+        void SyncExtraUserInformation()
+        {
+            foreach (var user in _users.Values)
+            {
+                user.SynchronizeExtraUserInformation();
+            }
+        }
 
         /// <summary>
         /// Updates the World.
@@ -364,17 +375,6 @@ namespace DemoGame.Server
             }
 
             base.Update();
-        }
-
-        /// <summary>
-        /// Synchronizes the extra user information for all users.
-        /// </summary>
-        void SyncExtraUserInformation()
-        {
-            foreach (var user in _users.Values)
-            {
-                user.SynchronizeExtraUserInformation();
-            }
         }
 
         /// <summary>

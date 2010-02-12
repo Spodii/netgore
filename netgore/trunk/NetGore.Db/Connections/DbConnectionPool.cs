@@ -39,7 +39,7 @@ namespace NetGore.Db
         /// <param name="connectionString">ConnectionString to create the DbConnection with.</param>
         /// <returns>DbConnection to be used with this ObjectPool.</returns>
         protected abstract DbConnection CreateConnection(string connectionString);
-        
+
         /// <summary>
         /// Creates a new <see cref="PooledDbConnection"/> for the <see cref="_pool"/>.
         /// </summary>

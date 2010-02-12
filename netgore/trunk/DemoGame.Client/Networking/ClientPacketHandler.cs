@@ -102,14 +102,14 @@ namespace DemoGame.Client
             get { return _gameplayScreen; }
         }
 
-        public UserGuildInformation GuildInfo
-        {
-            get { return GameplayScreen.GuildInfo; }
-        }
-
         public UserGroupInformation GroupInfo
         {
             get { return GameplayScreen.GroupInfo; }
+        }
+
+        public UserGuildInformation GuildInfo
+        {
+            get { return GameplayScreen.GuildInfo; }
         }
 
         /// <summary>
@@ -301,16 +301,16 @@ namespace DemoGame.Client
             GameplayScreen.ChatDialogForm.EndDialog();
         }
 
-        [MessageHandler((byte)ServerPacketID.GuildInfo)]
-        void RecvGuildInfo(IIPSocket conn, BitStream r)
-        {
-            GuildInfo.Read(r);
-        }
-
         [MessageHandler((byte)ServerPacketID.GroupInfo)]
         void RecvGroupInfo(IIPSocket conn, BitStream r)
         {
             GroupInfo.Read(r);
+        }
+
+        [MessageHandler((byte)ServerPacketID.GuildInfo)]
+        void RecvGuildInfo(IIPSocket conn, BitStream r)
+        {
+            GuildInfo.Read(r);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]

@@ -174,6 +174,7 @@ namespace DemoGame
         GuildJoin,
         GuildJoinFailedInvalidOrNoInvite,
         GuildLeave,
+
         #endregion
     }
 }

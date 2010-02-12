@@ -13,14 +13,14 @@ namespace NetGore
     public abstract class GridSpatialCollectionBase : ISpatialCollection
     {
         /// <summary>
-        /// The default segment size to use for when the segment size is not specified.
-        /// </summary>
-        const int _defaultSegmentSize = 16384;
-
-        /// <summary>
         /// The minimum allowed segment size allowed. A segment size below this value is considered invalid.
         /// </summary>
         public const int MinSegmentSize = 4;
+
+        /// <summary>
+        /// The default segment size to use for when the segment size is not specified.
+        /// </summary>
+        const int _defaultSegmentSize = 16384;
 
         /// <summary>
         /// The size of each grid segment.
@@ -54,8 +54,7 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="GridSpatialCollectionBase"/> class.
         /// </summary> 
-        protected GridSpatialCollectionBase()
-            : this(_defaultSegmentSize)
+        protected GridSpatialCollectionBase() : this(_defaultSegmentSize)
         {
         }
 

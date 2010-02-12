@@ -32,6 +32,13 @@ namespace DemoGame.Server
         readonly ItemStats _baseStats;
         readonly ItemID _id;
         readonly ItemStats _reqStats;
+
+        /// <summary>
+        /// The delegate used to hook to the <see cref="IStat{T}.Changed"/> event for the
+        /// <see cref="IStatCollection{T}"/>s in this class.
+        /// </summary>
+        readonly IStatCollectionStatEventHandler<StatType> _statChangedHandler;
+
         byte _amount = 1;
         string _description;
         string _equippedBody;
@@ -290,12 +297,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// The delegate used to hook to the <see cref="IStat{T}.Changed"/> event for the
-        /// <see cref="IStatCollection{T}"/>s in this class.
-        /// </summary>
-        readonly IStatCollectionStatEventHandler<StatType> _statChangedHandler;
-
-        /// <summary>
         /// Creates an <see cref="ItemStats"/> from the given collection of <see cref="IStat{StatType}"/>s.
         /// </summary>
         ItemStats NewItemStats(IEnumerable<KeyValuePair<StatType, int>> statValues, StatCollectionType statCollectionType)
@@ -317,19 +318,6 @@ namespace DemoGame.Server
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Handles the <see cref="IStatCollection{T}.StatChanged"/> event for the stat collections in this class.
-        /// </summary>
-        /// <param name="statCollection">The sender.</param>
-        /// <param name="stat">The stat who's value changed.</param>
-        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, IStat<StatType> stat)
-        {
-            Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified, "ItemEntity does not use StatCollectionType.Modified.");
-
-            string field = stat.StatType.GetDatabaseField(statCollection.StatCollectionType);
-            SynchronizeField(field, stat.Value);
         }
 
         /// <summary>
@@ -411,6 +399,20 @@ namespace DemoGame.Server
             Amount -= amount;
 
             return child;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IStatCollection{T}.StatChanged"/> event for the stat collections in this class.
+        /// </summary>
+        /// <param name="statCollection">The sender.</param>
+        /// <param name="stat">The stat who's value changed.</param>
+        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, IStat<StatType> stat)
+        {
+            Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified,
+                         "ItemEntity does not use StatCollectionType.Modified.");
+
+            string field = stat.StatType.GetDatabaseField(statCollection.StatCollectionType);
+            SynchronizeField(field, stat.Value);
         }
 
         /// <summary>

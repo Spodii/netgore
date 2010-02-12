@@ -323,7 +323,7 @@ namespace DemoGame.Server.UI
 
                                          if (!string.IsNullOrEmpty(returnString))
                                              AppendToConsole(returnString, ConsoleTextType.InputReturn);
-                                             txtConsoleOut.ScrollToCaret();
+                                         txtConsoleOut.ScrollToCaret();
                                      });
 
             txtConsoleOut.Invoke(e);

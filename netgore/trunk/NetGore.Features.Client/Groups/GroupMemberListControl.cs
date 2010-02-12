@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Groups
@@ -17,8 +14,7 @@ namespace NetGore.Features.Groups
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public GroupMemberListControl(Control parent, Vector2 position, Vector2 clientSize)
-            : base(parent, position, clientSize)
+        public GroupMemberListControl(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
         {
         }
 

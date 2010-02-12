@@ -20,6 +20,7 @@ namespace DemoGame.Server
     public class NPC : Character
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly MemoryMap _memory = new MemoryMap(32);
 
         IAI _ai;
         NPCChatDialogBase _chatDialog;
@@ -34,8 +35,6 @@ namespace DemoGame.Server
         int _respawnTime = 0;
 
         IShop<ShopItem> _shop;
-
-        readonly MemoryMap _memory = new MemoryMap(32);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPC"/> class.
@@ -136,6 +135,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets this NPC's memory.
+        /// </summary>
+        public MemoryMap Memory
+        {
+            get { return _memory; }
+        }
+
+        /// <summary>
         /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn.
         /// </summary>
         public ushort RespawnSecs
@@ -159,14 +166,6 @@ namespace DemoGame.Server
         public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
         {
             get { return RespawnMapIndex.HasValue; }
-        }
-
-        /// <summary>
-        /// Gets this NPC's memory.
-        /// </summary>
-        public MemoryMap Memory
-        {
-            get { return _memory; }
         }
 
         /// <summary>
@@ -335,7 +334,7 @@ namespace DemoGame.Server
                 return;
 
             var v = template.TemplateTable;
-        
+
             _giveCash = v.GiveCash;
             _giveExp = v.GiveExp;
         }

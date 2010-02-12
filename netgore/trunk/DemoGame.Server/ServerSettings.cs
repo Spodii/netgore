@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DemoGame.Server
 {
@@ -13,11 +10,10 @@ namespace DemoGame.Server
     public static class ServerSettings
     {
         /// <summary>
-        /// How often, in milliseconds, to wait between calls to <see cref="User.SynchronizeExtraUserInformation"/>.
-        /// Lower values will result in smaller delays for certain things (such as changes to stats and inventory)
-        /// to update, but require more overhead.
+        /// The maximum allowed distance allowed between two group members for them to be allowed to share rewards
+        /// with the other group members.
         /// </summary>
-        public const int SyncExtraUserInformationRate = 150;
+        public const float MaxGroupShareDistance = 1000;
 
         /// <summary>
         /// How often, in milliseconds, to wait between calls to <see cref="World.UpdateRespawnables"/>.
@@ -27,9 +23,10 @@ namespace DemoGame.Server
         public const int RespawnablesUpdateRate = 800;
 
         /// <summary>
-        /// The maximum allowed distance allowed between two group members for them to be allowed to share rewards
-        /// with the other group members.
+        /// How often, in milliseconds, to wait between calls to <see cref="User.SynchronizeExtraUserInformation"/>.
+        /// Lower values will result in smaller delays for certain things (such as changes to stats and inventory)
+        /// to update, but require more overhead.
         /// </summary>
-        public const float MaxGroupShareDistance = 1000;
+        public const int SyncExtraUserInformationRate = 150;
     }
 }
