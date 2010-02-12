@@ -32,6 +32,8 @@ namespace NetGore.Features.Groups
 
             _founder = founder;
             _members.Add(_founder);
+
+            founder.Group = this;
         }
 
         /// <summary>
