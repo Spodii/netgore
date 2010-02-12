@@ -216,9 +216,30 @@ namespace DemoGame.Server
         public event CharacterEventHandler Attacked;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.Attacked"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnAttacked()
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this Character has successfully attacked another Character.
         /// </summary>
         public event CharacterAttackCharacterEventHandler AttackedCharacter;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
+        /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
+        /// the this <see cref="Character"/>.</param>
+        protected virtual void OnAttackedCharacter(Character attacked, int damage)
+        {
+        }
 
         /// <summary>
         /// Notifies listeners when this Character has been attacked by another Character.
@@ -226,9 +247,31 @@ namespace DemoGame.Server
         public event CharacterAttackCharacterEventHandler AttackedByCharacter;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Character"/> that attacked us.</param>
+        /// <param name="damage">The amount of damage inflicted on this <see cref="Character"/>.</param>
+        protected virtual void OnAttackedByCharacter(Character attacker, int damage)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s cash value has changed.
         /// </summary>
         public event CharacterCashEventHandler CashChanged;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.CashChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldCash">The old cash.</param>
+        /// <param name="cash">The cash.</param>
+        protected virtual void OnCashChanged(int oldCash, int cash)
+        {
+        }
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s exp value has changed.
@@ -236,9 +279,31 @@ namespace DemoGame.Server
         public event CharacterExpEventHandler ExpChanged;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.ExpChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldExp">The old exp.</param>
+        /// <param name="exp">The exp.</param>
+        protected virtual void OnExpChanged(int oldExp, int exp)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s HP value has changed.
         /// </summary>
         public event CharacterChangeSPEventHandler HPChanged;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.HPChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnHPChanged(SPValueType oldValue, SPValueType newValue)
+        {
+        }
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s level value has changed.
@@ -246,9 +311,31 @@ namespace DemoGame.Server
         public event CharacterLevelEventHandler LevelChanged;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.LevelChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnLevelChanged(byte oldValue, byte newValue)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s MP value has changed.
         /// </summary>
         public event CharacterChangeSPEventHandler MPChanged;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.MPChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnMPChanged(SPValueType oldValue, SPValueType newValue)
+        {
+        }
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s StatPoints value has changed.
@@ -256,14 +343,44 @@ namespace DemoGame.Server
         public event CharacterStatPointsEventHandler StatPointsChanged;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.StatPointsChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnStatPointsChanged(int oldValue, int newValue)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when the Character's TemplateID has changed.
         /// </summary>
         public event CharacterEventHandler TemplateIDChanged;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.TemplateIDChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnTemplateIDChanged()
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this Character has dropped an item.
         /// </summary>
         public event CharacterItemEventHandler DroppedItem;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.DroppedItem"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was dropped.</param>
+        protected virtual void OnDroppedItem(ItemEntity item)
+        {
+        }
 
         /// <summary>
         /// Notifies listeners when this Character has received an item.
@@ -278,9 +395,28 @@ namespace DemoGame.Server
         public event CharacterKillEventHandler KilledCharacter;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
+        protected virtual void OnKilledCharacter(Character killed)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
         /// </summary>
         public event CharacterEventHandler Killed;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.Killed"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnKilled()
+        {
+        }
 
         /// <summary>
         /// Notifies listeners when this Character has been killed by another Character.
@@ -288,14 +424,45 @@ namespace DemoGame.Server
         public event CharacterKillEventHandler KilledByCharacter;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="killer">The <see cref="Character"/> that killed this <see cref="Character"/>.</param>
+        protected virtual void OnKilledByCharacter(Character killer)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this Character uses an item.
         /// </summary>
         public event CharacterItemEventHandler UsedItem;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was used.</param>
+        protected virtual void OnUsedItem(ItemEntity item)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s map has changed.
         /// </summary>
         public event CharacterChangeMapEventHandler MapChanged;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.MapChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldMap">The old map.</param>
+        /// <param name="newMap">The new map.</param>
+        protected virtual void OnMapChanged(Map oldMap, Map newMap)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Character"/> class.
@@ -547,6 +714,7 @@ namespace DemoGame.Server
             // Update the last attack time to now
             _lastAttackTime = currTime;
 
+            OnAttacked();
             if (Attacked != null)
                 Attacked(this);
 
@@ -598,9 +766,11 @@ namespace DemoGame.Server
             target.Damage(this, damage);
 
             // Raise attack events
+            OnAttackedCharacter(target, damage);
             if (AttackedCharacter != null)
                 AttackedCharacter(this, target, damage);
 
+            target.OnAttackedByCharacter(this, damage);
             if (target.AttackedByCharacter != null)
                 target.AttackedByCharacter(this, target, damage);
         }
@@ -696,9 +866,11 @@ namespace DemoGame.Server
                     Character sourceCharacter = source as Character;
                     if (sourceCharacter != null)
                     {
+                        sourceCharacter.OnKilledCharacter(this);
                         if (sourceCharacter.KilledCharacter != null)
                             sourceCharacter.KilledCharacter(this, sourceCharacter);
 
+                        OnKilledByCharacter(sourceCharacter);
                         if (KilledByCharacter != null)
                             KilledByCharacter(this, sourceCharacter);
                     }
@@ -731,6 +903,7 @@ namespace DemoGame.Server
             // Add the item to the map
             Map.AddEntity(item);
 
+            OnDroppedItem(item);
             if (DroppedItem != null)
                 DroppedItem(this, item);
         }
@@ -749,6 +922,7 @@ namespace DemoGame.Server
             // Create the item on the map
             ItemEntity droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
 
+            OnDroppedItem(droppedItem);
             if (DroppedItem != null)
                 DroppedItem(this, droppedItem);
         }
@@ -1005,6 +1179,7 @@ namespace DemoGame.Server
         /// </summary>
         public virtual void Kill()
         {
+            OnKilled();
             if (Killed != null)
                 Killed(this);
         }
@@ -1489,8 +1664,12 @@ namespace DemoGame.Server
                     break;
             }
 
-            if (wasUsed && UsedItem != null)
-                UsedItem(this, item);
+            if (wasUsed)
+            {
+                OnUsedItem(item);
+                if (UsedItem != null)
+                    UsedItem(this, item);
+            }
 
             return wasUsed;
         }
@@ -1581,6 +1760,7 @@ namespace DemoGame.Server
 
                 _map = (Map)value;
 
+                OnMapChanged(oldMap, _map);
                 if (MapChanged != null)
                     MapChanged(this, oldMap, _map);
             }
@@ -1667,6 +1847,7 @@ namespace DemoGame.Server
                 int oldValue = _cash;
                 _cash = value;
 
+                OnCashChanged(oldValue, _cash);
                 if (CashChanged != null)
                     CashChanged(this, oldValue, _cash);
             }
@@ -1700,6 +1881,7 @@ namespace DemoGame.Server
                 int oldValue = _exp;
                 _exp = value;
 
+                OnExpChanged(oldValue, _exp);
                 if (ExpChanged != null)
                     ExpChanged(this, oldValue, _exp);
 
@@ -1734,6 +1916,7 @@ namespace DemoGame.Server
                 // Apply new value
                 _hp = newValue;
 
+                OnHPChanged(oldValue, _hp);
                 if (HPChanged != null)
                     HPChanged(this, oldValue, _hp);
 
@@ -1759,6 +1942,7 @@ namespace DemoGame.Server
                 _level = value;
                 _nextLevelExp = GameData.LevelCost(_level);
 
+                OnLevelChanged(oldValue, _level);
                 if (LevelChanged != null)
                     LevelChanged(this, oldValue, _level);
             }
@@ -1811,6 +1995,7 @@ namespace DemoGame.Server
                 // Apply new value
                 _mp = newValue;
 
+                OnMPChanged(oldValue, _mp);
                 if (MPChanged != null)
                     MPChanged(this, oldValue, _mp);
             }
@@ -1894,6 +2079,7 @@ namespace DemoGame.Server
                 int oldValue = _statPoints;
                 _statPoints = value;
 
+                OnStatPointsChanged(oldValue, _statPoints);
                 if (StatPointsChanged != null)
                     StatPointsChanged(this, oldValue, _statPoints);
             }
@@ -1930,6 +2116,7 @@ namespace DemoGame.Server
 
                 _templateID = value;
 
+                OnTemplateIDChanged();
                 if (TemplateIDChanged != null)
                     TemplateIDChanged(this);
             }

@@ -78,24 +78,27 @@ namespace DemoGame.Server
             // Ensure the correct Alliance is being used
             Alliance = AllianceManager["user"];
 
-            // Attach to some events
-            // TODO: Can get rid of all these event hooks by adding the On[EventName] virtual methods to Character
-            KilledCharacter += User_KilledCharacter;
-            StatPointsChanged += User_StatPointsChanged;
-            ExpChanged += User_ExpChanged;
-            CashChanged += User_CashChanged;
-            LevelChanged += User_LevelChanged;
-
-            _userInventory = (UserInventory)Inventory;
-
             // Activate the user
+            _userInventory = (UserInventory)Inventory;
             IsAlive = true;
 
             // Send the initial information
-            User_LevelChanged(this, Level, Level);
-            User_CashChanged(this, Cash, Cash);
-            User_ExpChanged(this, Exp, Exp);
-            User_StatPointsChanged(this, StatPoints, StatPoints);
+            using (var pw = ServerPacket.SetLevel(Level))
+            {
+                Send(pw);
+            }
+            using (var pw = ServerPacket.SetCash(Cash))
+            {
+                Send(pw);
+            }
+            using (var pw = ServerPacket.SetExp(Exp))
+            {
+                Send(pw);
+            }
+            using (var pw = ServerPacket.SetStatPoints(StatPoints))
+            {
+                Send(pw);
+            }
         }
 
         /// <summary>
@@ -719,25 +722,50 @@ namespace DemoGame.Server
                 Inventory.DecreaseItemAmount(slot);
         }
 
-        void User_CashChanged(Character character, int oldCash, int cash)
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.CashChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldCash">The old cash.</param>
+        /// <param name="cash">The cash.</param>
+        protected override void OnCashChanged(int oldCash, int cash)
         {
+            base.OnCashChanged(oldCash, cash);
+
             using (var pw = ServerPacket.SetCash(cash))
             {
                 Send(pw);
             }
         }
 
-        void User_ExpChanged(Character character, int oldExp, int exp)
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.ExpChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldExp">The old exp.</param>
+        /// <param name="exp">The exp.</param>
+        protected override void OnExpChanged(int oldExp, int exp)
         {
+            base.OnExpChanged(oldExp, exp);
+
             using (var pw = ServerPacket.SetExp(exp))
             {
                 Send(pw);
             }
         }
 
-        void User_KilledCharacter(Character killed, Character killer)
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
+        protected override void OnKilledCharacter(Character killed)
         {
-            Debug.Assert(killer == this);
+            base.OnKilledCharacter(killed);
+
             Debug.Assert(killed != null);
 
             var killedNPC = killed as NPC;
@@ -769,16 +797,34 @@ namespace DemoGame.Server
             }
         }
 
-        void User_LevelChanged(Character character, byte oldLevel, byte level)
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.LevelChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected override void OnLevelChanged(byte oldValue, byte newValue)
         {
-            using (var pw = ServerPacket.SetLevel(level))
+            base.OnLevelChanged(oldValue, newValue);
+
+            using (var pw = ServerPacket.SetLevel(newValue))
             {
                 Send(pw);
             }
         }
 
-        void User_StatPointsChanged(Character character, int oldValue, int newValue)
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.StatPointsChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected override void OnStatPointsChanged(int oldValue, int newValue)
         {
+            base.OnStatPointsChanged(oldValue, newValue);
+
             using (var pw = ServerPacket.SetStatPoints(newValue))
             {
                 Send(pw);
