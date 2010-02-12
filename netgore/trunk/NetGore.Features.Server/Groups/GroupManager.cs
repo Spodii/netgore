@@ -90,6 +90,9 @@ namespace NetGore.Features.Groups
             if (newGroup == null)
                 return null;
 
+            // Make sure the founder had their group property updated
+            founder.Group = newGroup;
+
             // Add the new group to the list
             _groups.Add(newGroup);
 
