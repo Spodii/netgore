@@ -12,7 +12,7 @@ namespace NetGore.Features.Guilds
         SpriteFont _cachedSpacingFont = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
+        /// Initializes a new instance of the <see cref="GuildMemberListControl"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
@@ -23,7 +23,7 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
+        /// Initializes a new instance of the <see cref="GuildMemberListControl"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>

@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Emoticons\EmoticonDisplayManager.cs" />
+    <Compile Include="Groups\GroupForm.cs" />
+    <Compile Include="Groups\GroupMemberListControl.cs" />
     <Compile Include="Guilds\GuildForm.cs" />
     <Compile Include="Guilds\GuildInfoFormBase.cs" />
     <Compile Include="Guilds\GuildMemberListControl.cs" />
@@ -77,7 +79,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Groups\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>

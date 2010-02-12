@@ -364,7 +364,17 @@ namespace DemoGame.Server.UI
             ++_interfaceUpdateTicker;
 
             // Get the latest events
-            LoggingEvent[] events = _logger.GetEvents();
+            LoggingEvent[] events;
+            try
+            {
+                events = _logger.GetEvents();
+            }
+            catch (ArgumentException)
+            {
+                // There is some bug in the _logger.GetEvents() that can throw this exception...
+                return;
+            }
+
             _logger.Clear();
 
             // Ensure there are events

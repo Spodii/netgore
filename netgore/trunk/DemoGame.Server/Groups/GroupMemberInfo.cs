@@ -114,7 +114,7 @@ namespace DemoGame.Server.Groups
         /// <param name="group">The group the owner left.</param>
         protected override void OnLeaveGroup(IGroup group)
         {
-            using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteGroupInfo(x, group)))
+            using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteGroupInfo(x, null)))
             {
                 Owner.Send(pw);
             }
