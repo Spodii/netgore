@@ -32,6 +32,10 @@ namespace InstallationValidator
                 return;
 
             var textRect = new Rectangle(e.Bounds.X + 10, e.Bounds.Y, e.Bounds.Width - 10, e.Bounds.Height);
+
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+
             e.Graphics.DrawString(test.Name, e.Font, Brushes.Black, textRect);
 
             e.DrawFocusRectangle();
