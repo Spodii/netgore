@@ -38,7 +38,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.DrawingGUI"/>.</exception>
-        void EndDrawingGUI();
+        void EndDrawGUI();
 
         /// <summary>
         /// Ends drawing the world.

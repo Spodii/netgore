@@ -32,6 +32,11 @@ namespace NetGore.Graphics
         Grh Sprite { get; set; }
 
         /// <summary>
+        /// Gets or sets if this light is enabled.
+        /// </summary>
+        bool IsEnabled { get; set; }
+
+        /// <summary>
         /// Draws the <see cref="ILight"/>.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>

@@ -9,10 +9,18 @@ namespace NetGore.Graphics
     /// </summary>
     public class Light : ILight
     {
-        Color _color;
+        Color _color = Color.White;
         Vector2 _position;
         ISpatial _positionProvider;
-        Vector2 _size;
+        Vector2 _size = new Vector2(128);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Light"/> class.
+        /// </summary>
+        public Light()
+        {
+            IsEnabled = true;
+        }
 
         /// <summary>
         /// Handles when the <see cref="ILight.PositionProvider"/> moves.
@@ -52,6 +60,11 @@ namespace NetGore.Graphics
             get { return _color; }
             set { _color = new Color(value, 255); }
         }
+
+        /// <summary>
+        /// Gets or sets if this light is enabled.
+        /// </summary>
+        public bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
@@ -142,10 +155,10 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (Sprite == null)
+            if (Sprite == null || !IsEnabled)
                 return;
 
-            Sprite.Draw(spriteBatch, Position - (Size / 2f), Color, SpriteEffects.None, Rotation, Center, Size / Sprite.Size);
+            Sprite.Draw(spriteBatch, Position - (Size / 2f), Color, SpriteEffects.None, Rotation, Vector2.Zero, Size / Sprite.Size);
         }
 
         /// <summary>

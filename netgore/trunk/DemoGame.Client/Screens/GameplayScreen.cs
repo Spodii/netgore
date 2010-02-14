@@ -285,19 +285,18 @@ namespace DemoGame.Client
                 World.Camera.CenterOn(World.UserChar);
 
             // Draw the world layer
-            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,
-                                        World.Camera.Matrix);
-            World.Draw(spriteBatch);
-            _chatBubbleManager.Draw(spriteBatch);
-            _damageTextPool.Draw(spriteBatch, _damageFont);
-            spriteBatch.End();
+            var sb = ScreenManager.DrawingManager.BeginDrawWorld(World.Camera);
+            World.Draw(sb);
+            _chatBubbleManager.Draw(sb);
+            _damageTextPool.Draw(sb, _damageFont);
+            ScreenManager.DrawingManager.EndDrawWorld();
 
             // Draw the HUD layer
-            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
-            _infoBox.Draw(spriteBatch);
-            GUIManager.Draw(spriteBatch);
-            spriteBatch.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
-            spriteBatch.End();
+            sb = ScreenManager.DrawingManager.BeginDrawGUI();
+            _infoBox.Draw(sb);
+            GUIManager.Draw(sb);
+            sb.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
+            ScreenManager.DrawingManager.EndDrawGUI();
         }
 
         void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
@@ -308,6 +307,8 @@ namespace DemoGame.Client
                 Socket.Send(pw);
             }
         }
+
+        ILight _userLight;
 
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
@@ -333,6 +334,13 @@ namespace DemoGame.Client
 
             // Other inits
             InitializeGUI();
+
+            // NOTE: Test lighting
+            var lightManager = ScreenManager.DrawingManager.LightManager;
+            lightManager.Ambient = new Color(100, 100, 100);
+            lightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+            _userLight = new Light { Size = new Vector2(512), IsEnabled = false };
+            lightManager.Add(_userLight);
 
             _chatBubbleManager = new ChatBubbleManager(GUIManager.SkinManager, _guiFont);
         }
@@ -518,7 +526,13 @@ namespace DemoGame.Client
             _currentTime = gameTime;
 
             if (UserChar == null)
+            {
+                _userLight.IsEnabled = false;
                 return;
+            }
+
+            _userLight.IsEnabled = true;
+            _userLight.Teleport(UserChar.Position);
 
             // HACK: What a stupid way to make sure the correct inventory and equipped is used...
             _inventoryForm.Inventory = UserInfo.Inventory;

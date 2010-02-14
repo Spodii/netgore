@@ -16,7 +16,6 @@ namespace NetGore.Graphics.GUI
     public class ScreenManager : DrawableGameComponent, IScreenManager
     {
         readonly ContentManager _content;
-        readonly IDrawingManager _drawingManager;
         readonly FrameCounter _fps = new FrameCounter();
         readonly ContentManager _mapContent;
         readonly MusicManager _musicManager;
@@ -24,6 +23,7 @@ namespace NetGore.Graphics.GUI
         readonly ISkinManager _skinManager;
         readonly SoundManager _soundManager;
 
+        IDrawingManager _drawingManager;
         IGameScreen _activeScreen;
         SpriteFont _menuFont;
         SpriteBatch _sb;
@@ -51,10 +51,20 @@ namespace NetGore.Graphics.GUI
 
             _content = new ContentManager(game.Services, rootContentDirectory);
             _mapContent = new ContentManager(game.Services, rootContentDirectory);
-            _drawingManager = new DrawingManager(GraphicsDevice);
 
             _soundManager = SoundManager.GetInstance(_content);
             _musicManager = MusicManager.GetInstance(_content);
+        }
+
+        /// <summary>
+        /// Initializes the component. Override this method to load any non-graphics resources and query for any
+        /// required services.
+        /// </summary>
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            _drawingManager = new DrawingManager(GraphicsDevice);
         }
 
         /// <summary>

@@ -100,14 +100,14 @@ namespace NetGore.Graphics
                 var oldBlendFunction = rs.BlendFunction;
                 var oldSABE = rs.SeparateAlphaBlendEnabled;
 
+                // Start the SpriteBatch
+                _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, camera.Matrix);
+
                 // Set the render state
                 rs.DestinationBlend = Blend.One;
                 rs.SourceBlend = Blend.DestinationAlpha;
                 rs.BlendFunction = BlendFunction.Add;
                 rs.SeparateAlphaBlendEnabled = true;
-
-                // Start the SpriteBatch
-                _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
 
                 // Draw the lights
                 foreach (var light in this)
