@@ -32,6 +32,11 @@ namespace NetGore.Graphics.GUI
         ContentManager Content { get; }
 
         /// <summary>
+        /// Gets the <see cref="IDrawingManager"/> to use.
+        /// </summary>
+        IDrawingManager DrawingManager { get; }
+
+        /// <summary>
         /// Gets the current FPS.
         /// </summary>
         int FPS { get; }
