@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore.IO
+namespace NetGore.Collections
 {
     /// <summary>
     /// Provides an interface for a class like <see cref="System.Collections.Generic.List{T}"/>,

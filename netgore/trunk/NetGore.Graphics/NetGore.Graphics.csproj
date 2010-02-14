@@ -83,6 +83,8 @@
     <Compile Include="Character Sprite\SkeletonCharacterSprite.cs" />
     <Compile Include="Chat Bubble\ChatBubble.cs" />
     <Compile Include="Chat Bubble\ChatBubbleManagerBase.cs" />
+    <Compile Include="DrawingManager\DrawingManager.cs" />
+    <Compile Include="DrawingManager\DrawingManagerState.cs" />
     <Compile Include="Exceptions\ParticleEmitterException.cs" />
     <Compile Include="Exceptions\ParticleEmitterLoadEmitterException.cs" />
     <Compile Include="Exceptions\ParticleEmitterLoadEmitterModifierException.cs" />
@@ -142,6 +144,11 @@
     <Compile Include="GUI\Tooltip\TooltipHandler.cs" />
     <Compile Include="IDrawable\IDrawable.cs" />
     <Compile Include="IDrawable\MapRenderLayerChange.cs" />
+    <Compile Include="DrawingManager\IDrawingManager.cs" />
+    <Compile Include="Light\ILightManager.cs" />
+    <Compile Include="Light\LightManager.cs" />
+    <Compile Include="Light\ILight.cs" />
+    <Compile Include="Light\Light.cs" />
     <Compile Include="Map\DrawableSorter.cs" />
     <Compile Include="Map\IDrawableMap.cs" />
     <Compile Include="Map\MapDrawingExtension\IMapDrawingExtension.cs" />
