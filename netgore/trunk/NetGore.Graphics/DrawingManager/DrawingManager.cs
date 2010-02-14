@@ -15,6 +15,15 @@ namespace NetGore.Graphics
         DrawingManagerState _state = DrawingManagerState.Idle;
 
         /// <summary>
+        /// Creates the <see cref="ILightManager"/> to use.
+        /// </summary>
+        /// <returns>The <see cref="ILightManager"/> to use.</returns>
+        protected virtual ILightManager CreateLightManager()
+        {
+            return new LightManager();
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DrawingManager"/> class.
         /// </summary>
         /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/>.</param>
@@ -22,6 +31,11 @@ namespace NetGore.Graphics
         {
             _gd = graphicsDevice;
             _sb = new SpriteBatch(_gd);
+
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            _lightManager = CreateLightManager();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             _lightManager.Initialize(_gd);
         }
 
@@ -88,7 +102,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.DrawingGUI"/>.</exception>
-        public void EndDrawingGUI()
+        public void EndDrawGUI()
         {
             if (State != DrawingManagerState.DrawingGUI)
                 throw new InvalidOperationException("This method can only be called after BeginDrawGUI.");
@@ -105,19 +119,36 @@ namespace NetGore.Graphics
         /// <see cref="DrawingManagerState.DrawingWorld"/>.</exception>
         public void EndDrawWorld()
         {
-            if (State != DrawingManagerState.DrawingGUI)
+            if (State != DrawingManagerState.DrawingWorld)
                 throw new InvalidOperationException("This method can only be called after BeginDrawWorld.");
 
             _state = DrawingManagerState.Idle;
 
             _sb.End();
 
-            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState);
-            _gd.RenderState.SourceBlend = Blend.Zero;
-            _gd.RenderState.DestinationBlend = Blend.SourceColor;
-            _gd.RenderState.BlendFunction = BlendFunction.Add;
+            var rs = _gd.RenderState;
+
+            // Store the old state values
+            var oldSourceBlend = rs.SourceBlend;
+            var oldDestinationBlend = rs.DestinationBlend;
+            var oldBlendFunction = rs.BlendFunction;
+
+            // Start drawing
+            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+
+            // Set the blending mode
+            rs.SourceBlend = Blend.Zero;
+            rs.DestinationBlend = Blend.SourceColor;
+            rs.BlendFunction = BlendFunction.Add;
+
+            // Draw the light map
             _sb.Draw(_lightMap, Vector2.Zero, Color.White);
             _sb.End();
+
+            // Restore the old blend mode
+            rs.SourceBlend = oldSourceBlend;
+            rs.DestinationBlend = oldDestinationBlend;
+            rs.BlendFunction = oldBlendFunction;
         }
 
         #endregion
