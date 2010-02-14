@@ -247,6 +247,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the center position of the <see cref="ISpatial"/>.
+        /// </summary>
+        [Browsable(false)]
+        public Vector2 Center
+        {
+            get { return Position + (Size / 2); }
+        }
+
+        /// <summary>
         /// Gets or sets the position to draw the <see cref="MapGrh"/> at.
         /// </summary>
         [Category(_mapGrhCategoryName)]
