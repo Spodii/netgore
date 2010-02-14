@@ -294,7 +294,7 @@ namespace NetGore.Graphics
         /// occupies.</returns>
         public Rectangle ToRectangle()
         {
-            return new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+            return SpatialHelper.ToRectangle(this);
         }
 
         #endregion
