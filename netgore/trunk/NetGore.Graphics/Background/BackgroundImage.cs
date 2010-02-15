@@ -372,6 +372,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
+        /// visible.
+        /// </summary>
+        public bool IsVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
         /// </summary>
         [Browsable(false)]
@@ -389,8 +399,11 @@ namespace NetGore.Graphics
             if (!IsSpriteSet())
                 return;
 
-            Vector2 position = GetPosition(Map.Size, Camera);
-            Sprite.Draw(sb, position, Color);
+            if (IsVisible)
+            {
+                Vector2 position = GetPosition(Map.Size, Camera);
+                Sprite.Draw(sb, position, Color);
+            }
         }
 
         /// <summary>
