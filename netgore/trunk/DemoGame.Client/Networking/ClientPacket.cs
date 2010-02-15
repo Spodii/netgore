@@ -227,10 +227,13 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter UseSkill(SkillType skillType)
+        public static PacketWriter UseSkill(SkillType skillType, MapEntityIndex? target)
         {
             PacketWriter pw = GetWriter(ClientPacketID.UseSkill);
             pw.WriteEnum(skillType);
+            pw.Write(target.HasValue);
+            if (target.HasValue)
+                pw.Write(target.Value);
             return pw;
         }
 

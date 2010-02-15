@@ -1711,16 +1711,29 @@ namespace DemoGame.Server
         /// Makes the Character use a skill.
         /// </summary>
         /// <param name="skillType">The type of skill to use.</param>
+        /// <param name="target">The target to use the skill on. Can be null.</param>
+        public void UseSkill(SkillType skillType, Character target)
+        {
+            UseSkill(_skillManager.GetSkill(skillType), target);
+        }
+
+        static readonly SkillManager _skillManager = SkillManager.Instance;
+
+        /// <summary>
+        /// Makes the Character use a skill.
+        /// </summary>
+        /// <param name="skillType">The type of skill to use.</param>
         public void UseSkill(SkillType skillType)
         {
-            UseSkill(SkillManager.Instance.GetSkill(skillType));
+            UseSkill(_skillManager.GetSkill(skillType), null);
         }
 
         /// <summary>
         /// Makes the Character use a skill.
         /// </summary>
         /// <param name="skill">The skill to use.</param>
-        public void UseSkill(ISkill<SkillType, StatType, Character> skill)
+        /// <param name="target">The target to use the skill on. Can be null.</param>
+        public void UseSkill(ISkill<SkillType, StatType, Character> skill, Character target)
         {
             if (skill == null)
             {
@@ -1729,7 +1742,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            _skillCaster.TryStartCastingSkill(skill, null);
+            _skillCaster.TryStartCastingSkill(skill, target);
         }
 
         /// <summary>

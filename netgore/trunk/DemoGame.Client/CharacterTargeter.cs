@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using IDrawable=NetGore.Graphics.IDrawable;
@@ -73,6 +74,33 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="MapEntityIndex"/> of the <see cref="CharacterTargeter.TargetCharacter"/>.
+        /// </summary>
+        public MapEntityIndex? TargetCharacterIndex
+        {
+            get
+            {
+                if (TargetCharacter == null)
+                    return null;
+
+                return TargetCharacter.MapEntityIndex;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MapEntityIndex"/> of the <see cref="CharacterTargeter.MouseOverCharacter"/>.
+        /// </summary>
+        public MapEntityIndex? MouseOverCharacterIndex
+        {
+            get
+            {
+                if (MouseOverCharacter == null)
+                    return null;
+
+                return MouseOverCharacter.MapEntityIndex;
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Character"/> that is currently being targeted.
