@@ -16,6 +16,7 @@ namespace DemoGame.Client
     public class DemoGame : Game
     {
         readonly GraphicsDeviceManager graphics;
+
         IEnumerable<TextureAtlas> _globalAtlases;
         ScreenManager _screenManager;
         ClientSockets _sockets;
