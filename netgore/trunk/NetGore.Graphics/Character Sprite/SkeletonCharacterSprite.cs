@@ -69,7 +69,7 @@ namespace NetGore.Graphics
         {
             SpriteEffects se = (heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             Vector2 p = position + new Vector2(_bodySize.X / 2f, _bodySize.Y);
-            _skelAnim.Draw(spriteBatch, p, se);
+            _skelAnim.Draw(spriteBatch, p, color, se);
         }
 
         /// <summary>
