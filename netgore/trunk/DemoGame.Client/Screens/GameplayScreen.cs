@@ -383,7 +383,7 @@ namespace DemoGame.Client
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
             _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = GuildInfo };
-            _groupForm = new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = GroupInfo };
+            new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = GroupInfo };
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 
