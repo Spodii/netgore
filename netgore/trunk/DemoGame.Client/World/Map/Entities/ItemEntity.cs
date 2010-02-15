@@ -159,11 +159,17 @@ namespace DemoGame.Client
             if (sb == null)
                 throw new ArgumentNullException("sb");
 
+            if (BeforeDraw != null)
+                BeforeDraw(this, sb);
+
             if (IsVisible)
             {
                 if (_grh != null)
                     _grh.Draw(sb, pos);
             }
+
+            if (AfterDraw != null)
+                AfterDraw(this, sb);
         }
 
         /// <summary>
@@ -185,9 +191,9 @@ namespace DemoGame.Client
         #region IDrawable Members
 
         /// <summary>
-        /// Notifies when the ItemEntity's render layer changes (which is never for ItemEntity)
+        /// Unused by the <see cref="ItemEntity"/> since the layer never changes.
         /// </summary>
-        public event MapRenderLayerChange ChangedRenderLayer
+        event MapRenderLayerChange IDrawable.RenderLayerChanged
         {
             add { }
             remove { }
@@ -203,14 +209,25 @@ namespace DemoGame.Client
             get { return 0; }
         }
 
+        bool _isVisible;
+
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
         /// visible.
         /// </summary>
         public bool IsVisible
         {
-            get;
-            set;
+            get { return _isVisible; }
+            set
+            {
+                if (_isVisible == value)
+                    return;
+
+                _isVisible = value;
+
+                if (VisibleChanged != null)
+                    VisibleChanged(this);
+            }
         }
 
         /// <summary>
@@ -224,6 +241,23 @@ namespace DemoGame.Client
                 return MapRenderLayer.Item;
             }
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler VisibleChanged;
+
+        /// <summary>
+        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler BeforeDraw;
+
+        /// <summary>
+        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler AfterDraw;
 
         /// <summary>
         /// Draws the ItemEntity
