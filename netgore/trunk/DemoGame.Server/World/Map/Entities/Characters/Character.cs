@@ -697,6 +697,17 @@ namespace DemoGame.Server
         {
         }
 
+        public void Attack(Character target)
+        {
+            if (target != null)
+            {
+                AttackReal(target);
+                return;
+            }
+
+            Attack();
+        }
+
         /// <summary>
         /// Makes the character perform an attack.
         /// </summary>
@@ -730,20 +741,20 @@ namespace DemoGame.Server
 
             foreach (Character c in hitChars)
             {
-                Attack(c);
+                AttackReal(c);
             }
         }
 
         /// <summary>
-        /// Tries to attacks a specific target Character. The attack can fail if the target is an invalid
+        /// Performs the actual attacking of a specific character. The attack can fail if the target is an invalid
         /// Character for this Character to attack.
         /// </summary>
         /// <param name="target">Character to attack.</param>
-        void Attack(Character target)
+        void AttackReal(Character target)
         {
             if (target == null)
             {
-                Debug.Fail("target is null.");
+                Attack();
                 return;
             }
 
@@ -1093,6 +1104,12 @@ namespace DemoGame.Server
         {
         }
 
+        /// <summary>
+        /// Performs the actual disposing of the Entity. This is called by the base Entity class when
+        /// a request has been made to dispose of the Entity. This is guarenteed to only be called once.
+        /// All classes that override this method should be sure to call base.DisposeHandler() after
+        /// handling what it needs to dispose.
+        /// </summary>
         protected override void HandleDispose()
         {
             // Make sure the Character was saved

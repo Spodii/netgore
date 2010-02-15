@@ -430,6 +430,7 @@ namespace DemoGame.Client
                 Map.RemoveEntity(dynamicEntity);
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Removed DynamicEntity with index `{0}`", mapEntityIndex);
+                dynamicEntity.Dispose();
             }
             else
             {

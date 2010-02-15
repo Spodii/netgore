@@ -551,13 +551,16 @@ namespace DemoGame.Client
             _chatBubbleManager.Update(_currentTime);
             _emoticonDisplayManager.Update(_currentTime);
 
+            // Update targeting
+            _characterTargeter.Update(GUIManager.MouseState);
+            _gameControls.TargetIndex = (_characterTargeter.TargetCharacter != null ? _characterTargeter.TargetCharacter.MapEntityIndex : (MapEntityIndex?)null);
+
+            // Update controls
             if (UserChar != null)
                 _gameControls.Update(GUIManager, _currentTime);
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
-
-            _characterTargeter.Update(GUIManager.MouseState);
 
             base.Update(gameTime);
         }

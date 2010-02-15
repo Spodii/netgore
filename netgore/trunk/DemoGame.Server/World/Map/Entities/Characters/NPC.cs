@@ -290,16 +290,14 @@ namespace DemoGame.Server
             {
                 foreach (var item in Inventory)
                 {
-                    Inventory.RemoveAt(item.Key, false);
                     DropItem(item.Value);
                 }
+
+                Inventory.RemoveAll(false);
             }
 
             // Remove equipment
-            foreach (var item in Equipped)
-            {
-                Equipped.RemoveAt(item.Key);
-            }
+            Equipped.RemoveAll(true);
 
             // Check to respawn
             if (WillRespawn)

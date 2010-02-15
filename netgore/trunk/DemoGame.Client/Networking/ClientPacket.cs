@@ -13,9 +13,13 @@ namespace DemoGame.Client
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
 
-        public static PacketWriter Attack()
+        public static PacketWriter Attack(MapEntityIndex? target)
         {
-            return GetWriter(ClientPacketID.Attack);
+            var pw = GetWriter(ClientPacketID.Attack);
+            pw.Write(target.HasValue);
+            if (target.HasValue)
+                pw.Write(target.Value);
+            return pw;
         }
 
         public static PacketWriter BuyFromShop(ShopItemIndex index, byte amount)
