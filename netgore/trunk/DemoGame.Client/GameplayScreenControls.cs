@@ -73,6 +73,8 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.EmoteSweat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Sweat));
         }
 
+        public MapEntityIndex? TargetIndex { get; set; }
+
         public GameplayScreen GameplayScreen
         {
             get { return _gameplayScreen; }
@@ -129,7 +131,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_Attack(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.Attack())
+            using (PacketWriter pw = ClientPacket.Attack(TargetIndex))
             {
                 Socket.Send(pw);
             }

@@ -151,6 +151,12 @@ namespace DemoGame.Client
             {
                 TargetCharacter = MouseOverCharacter;
             }
+
+            if (MouseOverCharacter != null && MouseOverCharacter.IsDisposed)
+                MouseOverCharacter = null;
+
+            if (TargetCharacter != null && TargetCharacter.IsDisposed)
+                TargetCharacter = null;
         }
 
         void World_MapChanged(World world, Map e)

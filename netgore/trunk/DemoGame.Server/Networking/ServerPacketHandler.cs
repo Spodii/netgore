@@ -88,12 +88,39 @@ namespace DemoGame.Server
             }
         }
 
+        static Character GetTargetCharacter(Character user, MapEntityIndex? index)
+        {
+            if (!index.HasValue)
+                return null;
+
+            // Check for a valid user
+            if (user == null || user.Map == null)
+                return null;
+
+            // Check for a valid target index
+            var target = user.Map.GetDynamicEntity<Character>(index.Value);
+            if (target == null || target.Map != user.Map)
+                return null;
+
+            // Check for a valid distance
+            if (user.GetDistance(target) > GameData.MaxTargetDistance)
+                return null;
+
+            return target;
+        }
+
         [MessageHandler((byte)ClientPacketID.Attack)]
         void RecvAttack(IIPSocket conn, BitStream r)
         {
             User user;
+            MapEntityIndex? targetIndex = null;
+
+            bool hasTarget = r.ReadBool();
+            if (hasTarget) 
+                targetIndex = r.ReadMapEntityIndex();
+
             if ((user = TryGetUser(conn)) != null)
-                user.Attack();
+                user.Attack(GetTargetCharacter(user, targetIndex));
         }
 
         [MessageHandler((byte)ClientPacketID.BuyFromShop)]

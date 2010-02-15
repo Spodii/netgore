@@ -24,6 +24,11 @@ namespace DemoGame
         public const float AnimationSpeedModifier = 0.13f;
 
         /// <summary>
+        /// The maximum distance a target can be from a character for them to be targeted.
+        /// </summary>
+        public const float MaxTargetDistance = 500f;
+
+        /// <summary>
         /// The IP address to use by default when creating accounts when no IP can be specified, such as if the account
         /// is created from the console.
         /// </summary>
