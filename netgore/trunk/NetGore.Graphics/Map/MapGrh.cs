@@ -20,6 +20,35 @@ namespace NetGore.Graphics
         const string _mapGrhCategoryName = "MapGrh";
         const string _positionKeyName = "Position";
 
+        Color _color = Color.White;
+
+        /// <summary>
+        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
+        /// value will be equal to white (ARGB: 255,255,255,255).
+        /// </summary>
+        public Color Color
+        {
+            get
+            {
+                return _color;
+            }
+            set
+            {
+                if (_color == value)
+                    return;
+
+                _color = value;
+
+                if (ColorChanged != null)
+                    ColorChanged(this);
+            }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler ColorChanged;
+
         readonly Grh _grh;
 
         bool _isForeground;
@@ -150,7 +179,7 @@ namespace NetGore.Graphics
             }
         }
 
-        bool _isVisible;
+        bool _isVisible = true;
 
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
@@ -214,7 +243,7 @@ namespace NetGore.Graphics
                 BeforeDraw(this, sb);
 
             if (IsVisible)
-                _grh.Draw(sb, Position, Color.White);
+                _grh.Draw(sb, Position, Color);
 
             if (AfterDraw != null)
                 AfterDraw(this, sb);

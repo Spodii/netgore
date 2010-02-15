@@ -64,7 +64,8 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
         /// <param name="position">The position to draw the sprite.</param>
         /// <param name="heading">The character's heading.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Direction heading)
+        /// <param name="color">The color of the sprite.</param>
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Direction heading, Color color)
         {
             SpriteEffects se = (heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             Vector2 p = position + new Vector2(_bodySize.X / 2f, _bodySize.Y);

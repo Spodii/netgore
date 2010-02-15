@@ -20,6 +20,17 @@ namespace NetGore.Graphics
         int LayerDepth { get; }
 
         /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
+        /// value will be equal to white (ARGB: 255,255,255,255).
+        /// </summary>
+        Color Color { get; set; }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
+        /// </summary>
+        event IDrawableEventHandler ColorChanged;
+
+        /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
         /// visible.
         /// </summary>

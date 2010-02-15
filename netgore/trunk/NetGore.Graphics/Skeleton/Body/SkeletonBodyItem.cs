@@ -81,8 +81,9 @@ namespace NetGore.Graphics
         /// <param name="sb">SpriteBatch to draw to.</param>
         /// <param name="position">Position to draw at.</param>
         /// <param name="scale">Amount to scale the Grh in percent (1.0f for no scaling).</param>
+        /// <param name="color">The color.</param>
         /// <param name="effect">SpriteEffects to use when drawing.</param>
-        internal void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
+        internal void Draw(SpriteBatch sb, Vector2 position, float scale, Color color, SpriteEffects effect)
         {
             // Validate
             if (Source == null)
@@ -114,7 +115,7 @@ namespace NetGore.Graphics
 
             // Draw
             Vector2 v = Source.Position + ItemInfo.Offset;
-            Grh.Draw(sb, (v * m) + position, Color.White, effect, angle, ItemInfo.Origin, scale);
+            Grh.Draw(sb, (v * m) + position, color, effect, angle, ItemInfo.Origin, scale);
         }
 
         /// <summary>

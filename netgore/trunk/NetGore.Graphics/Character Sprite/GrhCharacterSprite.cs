@@ -154,7 +154,8 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
         /// <param name="position">The position to draw the sprite.</param>
         /// <param name="heading">The character's heading.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Direction heading)
+        /// <param name="color">The color of the sprite.</param>
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Direction heading, Color color)
         {
             // If we have a body modifier being used, invalidate it if:
             // 1. The heading has changed.
@@ -189,7 +190,7 @@ namespace NetGore.Graphics
 
             // Update and draw the sprite
             _grh.Update(_currentTime);
-            _grh.Draw(spriteBatch, position);
+            _grh.Draw(spriteBatch, position, color);
         }
 
         /// <summary>

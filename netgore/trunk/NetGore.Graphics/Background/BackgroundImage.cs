@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
+using Color = Microsoft.Xna.Framework.Graphics.Color;
 
 namespace NetGore.Graphics
 {
@@ -26,6 +27,41 @@ namespace NetGore.Graphics
         float _depth;
         string _name;
 
+        
+        Color _color = Color.White;
+
+        /// <summary>
+        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
+        /// value will be equal to white (ARGB: 255,255,255,255).
+        /// </summary>
+        [Category("Display")]
+        [DisplayName("Color")]
+        [Description("The color to use when drawing the image where RGBA 255,255,255,255 will draw the image unaltered.")]
+        [DefaultValue(typeof(Color), "255, 255, 255, 255")]
+        [Browsable(true)]
+        public Color Color
+        {
+            get
+            {
+                return _color;
+            }
+            set
+            {
+                if (_color == value)
+                    return;
+
+                _color = value;
+
+                if (ColorChanged != null)
+                    ColorChanged(this);
+            }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler ColorChanged;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundImage"/> class.
         /// </summary>
@@ -43,7 +79,6 @@ namespace NetGore.Graphics
 
             // Set the default values
             Offset = Vector2.Zero;
-            Color = Color.White;
             Alignment = Alignment.TopLeft;
 
             _sprite = new Grh(null, AnimType.Loop, map.GetTime());
@@ -93,17 +128,6 @@ namespace NetGore.Graphics
         {
             get { return _cameraProvider.Camera; }
         }
-
-        /// <summary>
-        /// Gets or sets the color to use when drawing the image where RGBA 255,255,255,255 will draw
-        /// the image unaltered. Default is white (ARGB: 255,255,255,255).
-        /// </summary>
-        [Category("Display")]
-        [DisplayName("Color")]
-        [Description("The color to use when drawing the image where RGBA 255,255,255,255 will draw the image unaltered.")]
-        [DefaultValue(typeof(Color), "255, 255, 255, 255")]
-        [Browsable(true)]
-        public Color Color { get; set; }
 
         /// <summary>
         /// Gets or sets the depth of the image relative to other background images, and how fast the
@@ -371,7 +395,7 @@ namespace NetGore.Graphics
             get { return ImageDepthToLayerDepth(Depth); }
         }
 
-        bool _isVisible;
+        bool _isVisible = true;
 
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
