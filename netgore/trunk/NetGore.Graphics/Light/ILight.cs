@@ -32,6 +32,12 @@ namespace NetGore.Graphics
         Grh Sprite { get; set; }
 
         /// <summary>
+        /// Updates the <see cref="ILight"/>.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        void Update(int currentTime);
+
+        /// <summary>
         /// Gets or sets if this light is enabled.
         /// </summary>
         bool IsEnabled { get; set; }

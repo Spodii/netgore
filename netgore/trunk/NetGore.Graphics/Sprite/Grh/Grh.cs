@@ -348,8 +348,13 @@ namespace NetGore.Graphics
         /// <param name="currentTime">The current time.</param>
         void UpdateFrameIndex(int currentTime)
         {
+            int elapsedTime = currentTime - _lastUpdated;
+            Debug.Assert(elapsedTime >= 0, "How is the elapsed time negative? Did the computer fall into a wormhole?");
+            if (elapsedTime <= 0)
+                return;
+
             // Store the temporary new frame
-            float tmpFrame = _frame + ((currentTime - _lastUpdated) * GrhData.Speed);
+            float tmpFrame = _frame + (elapsedTime * GrhData.Speed);
 
             // Check if the frame limit has been exceeded
             if (tmpFrame >= GrhData.FramesCount)

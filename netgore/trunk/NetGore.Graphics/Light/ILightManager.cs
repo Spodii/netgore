@@ -28,6 +28,12 @@ namespace NetGore.Graphics
         bool IsInitialized { get; }
 
         /// <summary>
+        /// Updates all of the lights in this <see cref="ILightManager"/>, along with the <see cref="ILightManager"/> itself.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        void Update(int currentTime);
+
+        /// <summary>
         /// Draws all of the lights in this <see cref="ILightManager"/>.
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>

@@ -74,6 +74,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Updates all of the lights in this <see cref="ILightManager"/>, along with the <see cref="ILightManager"/> itself.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        public void Update(int currentTime)
+        {
+            foreach (var light in this)
+                light.Update(currentTime);
+        }
+
+        /// <summary>
         /// Draws all of the lights in this <see cref="ILightManager"/>.
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
