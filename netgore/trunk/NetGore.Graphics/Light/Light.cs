@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -59,6 +60,16 @@ namespace NetGore.Graphics
         {
             get { return _color; }
             set { _color = new Color(value, 255); }
+        }
+
+        /// <summary>
+        /// Updates the <see cref="ILight"/>.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        public void Update(int currentTime)
+        {
+            if (Sprite != null)
+                Sprite.Update(currentTime);
         }
 
         /// <summary>

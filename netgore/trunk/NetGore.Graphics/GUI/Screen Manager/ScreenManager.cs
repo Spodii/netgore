@@ -138,11 +138,15 @@ namespace NetGore.Graphics.GUI
         /// <param name="gameTime">Time elapsed since the last call to Update.</param>
         public override void Update(GameTime gameTime)
         {
+            int currentTime = gameTime.ToTotalMS();
+
+            DrawingManager.Update(currentTime);
+
             if (Updated != null)
                 Updated(this);
 
             if (_activeScreen != null)
-                _activeScreen.Update(gameTime.ToTotalMS());
+                _activeScreen.Update(currentTime);
         }
 
         #region IScreenManager Members

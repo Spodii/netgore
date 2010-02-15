@@ -41,6 +41,12 @@ namespace NetGore.Graphics
         void EndDrawGUI();
 
         /// <summary>
+        /// Updates the <see cref="IDrawingManager"/> and all components inside of it.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        void Update(int currentTime);
+
+        /// <summary>
         /// Ends drawing the world.
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
