@@ -245,15 +245,32 @@ namespace DemoGame.Client
             get { return 0; }
         }
 
+        bool _isVisible;
+
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
         /// visible.
         /// </summary>
         public bool IsVisible
         {
-            get;
-            set;
+            get { return _isVisible; }
+            set
+            {
+                if (_isVisible == value)
+                    return;
+
+                _isVisible = value;
+
+                if (VisibleChanged != null)
+                    VisibleChanged(this);
+            }
         }
+
+        /// <summary>
+        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler AfterDraw;
 
         /// <summary>
         /// Makes the object draw itself.
@@ -274,6 +291,9 @@ namespace DemoGame.Client
             UpdateAnimation();
 #endif
 
+            if (BeforeDraw != null)
+                BeforeDraw(this, sb);
+
             if (IsVisible)
             {
                 // Draw the character body
@@ -286,6 +306,9 @@ namespace DemoGame.Client
                 // Draw the name
                 DrawName(sb);
             }
+
+            if (AfterDraw != null)
+                AfterDraw(this, sb);
         }
 
         /// <summary>
@@ -301,9 +324,9 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Unused by the Character.
+        /// Unused by the <see cref="Character"/> since the layer never changes.
         /// </summary>
-        public event MapRenderLayerChange ChangedRenderLayer
+        event MapRenderLayerChange IDrawable.RenderLayerChanged
         {
             add { }
             remove { }
@@ -320,6 +343,17 @@ namespace DemoGame.Client
                 return MapRenderLayer.Chararacter;
             }
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler VisibleChanged;
+
+        /// <summary>
+        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler BeforeDraw;
 
         #endregion
 

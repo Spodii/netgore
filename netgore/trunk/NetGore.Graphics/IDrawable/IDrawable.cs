@@ -9,9 +9,9 @@ namespace NetGore.Graphics
     public interface IDrawable
     {
         /// <summary>
-        /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
+        /// Notifies listeners when the <see cref="IDrawable.MapRenderLayer"/> property has changed.
         /// </summary>
-        event MapRenderLayerChange ChangedRenderLayer;
+        event MapRenderLayerChange RenderLayerChanged;
 
         /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
@@ -29,6 +29,23 @@ namespace NetGore.Graphics
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
         MapRenderLayer MapRenderLayer { get; }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
+        /// </summary>
+        event IDrawableEventHandler VisibleChanged;
+
+        /// <summary>
+        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        event IDrawableDrawEventHandler BeforeDraw;
+
+        /// <summary>
+        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        event IDrawableDrawEventHandler AfterDraw;
 
         /// <summary>
         /// Makes the object draw itself.

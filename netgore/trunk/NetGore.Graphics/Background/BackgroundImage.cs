@@ -353,9 +353,9 @@ namespace NetGore.Graphics
         #region IDrawable Members
 
         /// <summary>
-        /// Unused by the <see cref="BackgroundImage"/>.
+        /// Unused by the <see cref="BackgroundImage"/> since the layer never changes.
         /// </summary>
-        event MapRenderLayerChange IDrawable.ChangedRenderLayer
+        event MapRenderLayerChange IDrawable.RenderLayerChanged
         {
             add { }
             remove { }
@@ -371,14 +371,25 @@ namespace NetGore.Graphics
             get { return ImageDepthToLayerDepth(Depth); }
         }
 
+        bool _isVisible;
+
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
         /// visible.
         /// </summary>
         public bool IsVisible
         {
-            get;
-            set;
+            get { return _isVisible; }
+            set
+            {
+                if (_isVisible == value)
+                    return;
+
+                _isVisible = value;
+
+                if (VisibleChanged != null)
+                    VisibleChanged(this);
+            }
         }
 
         /// <summary>
@@ -391,6 +402,23 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler VisibleChanged;
+
+        /// <summary>
+        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler BeforeDraw;
+
+        /// <summary>
+        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler AfterDraw;
+
+        /// <summary>
         /// Makes the object draw itself.
         /// </summary>
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
@@ -399,11 +427,17 @@ namespace NetGore.Graphics
             if (!IsSpriteSet())
                 return;
 
+            if (BeforeDraw != null)
+                BeforeDraw(this, sb);
+
             if (IsVisible)
             {
                 Vector2 position = GetPosition(Map.Size, Camera);
                 Sprite.Draw(sb, position, Color);
             }
+
+            if (AfterDraw != null)
+                AfterDraw(this, sb);
         }
 
         /// <summary>

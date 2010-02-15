@@ -143,6 +143,7 @@
     <Compile Include="GUI\Tooltip\TooltipArgs.cs" />
     <Compile Include="GUI\Tooltip\TooltipHandler.cs" />
     <Compile Include="IDrawable\IDrawable.cs" />
+    <Compile Include="IDrawable\IDrawableDrawEventHandler.cs" />
     <Compile Include="IDrawable\MapRenderLayerChange.cs" />
     <Compile Include="DrawingManager\IDrawingManager.cs" />
     <Compile Include="Light\ILightManager.cs" />
