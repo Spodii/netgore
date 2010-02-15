@@ -464,7 +464,7 @@ namespace DemoGame.Client
 
         void SkillsForm_RequestUseSkill(SkillType skillType)
         {
-            using (PacketWriter pw = ClientPacket.UseSkill(skillType))
+            using (PacketWriter pw = ClientPacket.UseSkill(skillType, _characterTargeter.TargetCharacterIndex))
             {
                 Socket.Send(pw);
             }
@@ -553,7 +553,7 @@ namespace DemoGame.Client
 
             // Update targeting
             _characterTargeter.Update(GUIManager.MouseState);
-            _gameControls.TargetIndex = (_characterTargeter.TargetCharacter != null ? _characterTargeter.TargetCharacter.MapEntityIndex : (MapEntityIndex?)null);
+            _gameControls.TargetIndex = _characterTargeter.TargetCharacterIndex;
 
             // Update controls
             if (UserChar != null)

@@ -555,6 +555,7 @@ namespace DemoGame.Server
         void RecvUseSkill(IIPSocket conn, BitStream r)
         {
             SkillType skillType;
+            MapEntityIndex? targetIndex = null;
 
             try
             {
@@ -568,11 +569,13 @@ namespace DemoGame.Server
                 return;
             }
 
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
+            bool hasTarget = r.ReadBool();
+            if (hasTarget)
+                targetIndex = r.ReadMapEntityIndex();
 
-            user.UseSkill(skillType);
+            User user;
+            if ((user = TryGetUser(conn)) != null)
+                user.UseSkill(skillType, GetTargetCharacter(user, targetIndex));
         }
 
         [MessageHandler((byte)ClientPacketID.UseWorld)]
