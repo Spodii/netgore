@@ -60,6 +60,7 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
+        CharacterTargeter _characterTargeter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -333,6 +334,7 @@ namespace DemoGame.Client
 
             // Other inits
             InitializeGUI();
+            _characterTargeter = new CharacterTargeter(World);
 
             // NOTE: Test lighting
             var lightManager = ScreenManager.DrawingManager.LightManager;
@@ -554,6 +556,8 @@ namespace DemoGame.Client
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
+
+            _characterTargeter.Update(GUIManager.MouseState);
 
             base.Update(gameTime);
         }

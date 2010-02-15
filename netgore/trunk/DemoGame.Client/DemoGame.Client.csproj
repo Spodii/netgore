@@ -147,6 +147,7 @@
     <Compile Include="Screens\NewAccountScreen.cs" />
     <Compile Include="Screens\GameScreenHelper.cs" />
     <Compile Include="StatTypeExtensions.cs" />
+    <Compile Include="CharacterTargeter.cs" />
     <Compile Include="UserEquipped.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="World\Map\Entities\Character.cs" />
