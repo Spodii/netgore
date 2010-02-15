@@ -246,6 +246,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
+        /// visible.
+        /// </summary>
+        public bool IsVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Makes the object draw itself.
         /// </summary>
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
@@ -264,15 +274,18 @@ namespace DemoGame.Client
             UpdateAnimation();
 #endif
 
-            // Draw the character body
-            _characterSprite.Draw(sb, DrawPosition, Heading);
+            if (IsVisible)
+            {
+                // Draw the character body
+                _characterSprite.Draw(sb, DrawPosition, Heading);
 
-            // Draw the HP/MP
-            DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));
-            DrawSPBar(sb, MPPercent, 1, new Color(0, 0, 255, 175));
+                // Draw the HP/MP
+                DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));
+                DrawSPBar(sb, MPPercent, 1, new Color(0, 0, 255, 175));
 
-            // Draw the name
-            DrawName(sb);
+                // Draw the name
+                DrawName(sb);
+            }
         }
 
         /// <summary>

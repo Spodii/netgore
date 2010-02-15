@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -55,6 +56,16 @@ namespace DemoGame.Client
         public int LayerDepth
         {
             get { return 0; }
+        }
+
+        /// <summary>
+        /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
+        /// visible.
+        /// </summary>
+        public bool IsVisible
+        {
+            get;
+            set;
         }
 
         /// <summary>

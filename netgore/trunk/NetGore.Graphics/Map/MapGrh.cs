@@ -151,6 +151,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
+        /// visible.
+        /// </summary>
+        public bool IsVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
         [Browsable(false)]
@@ -172,6 +182,7 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(SpriteBatch sb)
         {
+            if (IsVisible)
             _grh.Draw(sb, Position, Color.White);
         }
 

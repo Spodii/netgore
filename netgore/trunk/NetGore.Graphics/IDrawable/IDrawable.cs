@@ -20,6 +20,12 @@ namespace NetGore.Graphics
         int LayerDepth { get; }
 
         /// <summary>
+        /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
+        /// visible.
+        /// </summary>
+        bool IsVisible { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
         MapRenderLayer MapRenderLayer { get; }
