@@ -45,7 +45,6 @@ namespace DemoGame.Client
         SpriteFont _damageFont;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
-        GroupForm _groupForm;
         SpriteFont _guiFont;
         GuildForm _guildForm;
         GUISettings _guiSettings;
