@@ -21,6 +21,7 @@ namespace NetGore.Features.Groups
         public GroupForm(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
         {
             _memberList = new GroupMemberListControl(this, position, clientSize);
+            IsVisible = false;
         }
 
         /// <summary>
@@ -33,6 +34,7 @@ namespace NetGore.Features.Groups
         public GroupForm(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
         {
             _memberList = new GroupMemberListControl(this, position, clientSize);
+            IsVisible = false;
         }
 
         public UserGroupInformation GroupInfo
@@ -43,13 +45,26 @@ namespace NetGore.Features.Groups
                 if (_groupInfo == value)
                     return;
 
+                if (_groupInfo != null)
+                    _groupInfo.GroupChanged -= GroupInfo_GroupChanged;
+
                 _groupInfo = value;
 
                 if (_groupInfo != null)
+                {
                     _memberList.Items = _groupInfo.Members;
+                    _groupInfo.GroupChanged += GroupInfo_GroupChanged;
+                }
                 else
+                {
                     _memberList.Items = Enumerable.Empty<string>();
+                }
             }
+        }
+
+        void GroupInfo_GroupChanged(UserGroupInformation sender)
+        {
+            IsVisible = sender.IsInGroup;
         }
 
         /// <summary>
@@ -61,6 +76,9 @@ namespace NetGore.Features.Groups
             base.SetDefaultValues();
 
             Text = "Group Members";
+            IsVisible = false;
+            if (GroupInfo != null)
+                IsVisible = GroupInfo.IsInGroup;
         }
     }
 }
