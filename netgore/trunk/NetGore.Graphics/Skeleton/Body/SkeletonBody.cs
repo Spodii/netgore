@@ -102,7 +102,7 @@ namespace NetGore.Graphics
         /// <param name="position">Position to draw at.</param>
         public void Draw(SpriteBatch sb, Vector2 position)
         {
-            Draw(sb, position, 1.0f, SpriteEffects.None);
+            Draw(sb, position, Color.White, 1.0f, SpriteEffects.None);
         }
 
         /// <summary>
@@ -110,13 +110,14 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>
         /// <param name="position">Position to draw at.</param>
+        /// <param name="color">The color.</param>
         /// <param name="scale">Scale in percent (1.0f for normal scale).</param>
         /// <param name="effect"><see cref="SpriteEffects"/> to use when drawing.</param>
-        public void Draw(SpriteBatch sb, Vector2 position, float scale, SpriteEffects effect)
+        public void Draw(SpriteBatch sb, Vector2 position, Color color, float scale, SpriteEffects effect)
         {
             foreach (var bodyItem in BodyItems)
             {
-                bodyItem.Draw(sb, position, scale, effect);
+                bodyItem.Draw(sb, position, scale, color, effect);
             }
         }
 

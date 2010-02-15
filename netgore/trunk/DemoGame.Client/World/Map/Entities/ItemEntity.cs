@@ -165,7 +165,7 @@ namespace DemoGame.Client
             if (IsVisible)
             {
                 if (_grh != null)
-                    _grh.Draw(sb, pos);
+                    _grh.Draw(sb, pos, Color);
             }
 
             if (AfterDraw != null)
@@ -209,7 +209,7 @@ namespace DemoGame.Client
             get { return 0; }
         }
 
-        bool _isVisible;
+        bool _isVisible = true;
 
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
@@ -241,6 +241,35 @@ namespace DemoGame.Client
                 return MapRenderLayer.Item;
             }
         }
+
+        Color _color = Color.White;
+
+        /// <summary>
+        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
+        /// value will be equal to white (ARGB: 255,255,255,255).
+        /// </summary>
+        public Color Color
+        {
+            get
+            {
+                return _color;
+            }
+            set
+            {
+                if (_color == value)
+                    return;
+
+                _color = value;
+
+                if (ColorChanged != null)
+                    ColorChanged(this);
+            }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler ColorChanged;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.

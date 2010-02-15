@@ -327,7 +327,7 @@ namespace NetGore.Graphics
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="position">Position offset to draw at</param>
         /// <param name="effect">SpriteEffect to use when drawing</param>
-        public void Draw(SpriteBatch sb, Vector2 position, SpriteEffects effect)
+        public void Draw(SpriteBatch sb, Vector2 position, Color color, SpriteEffects effect)
         {
             if (sb == null)
             {
@@ -350,16 +350,38 @@ namespace NetGore.Graphics
             // is changed. Will have to change the way the BodyLayers is exposed so we can keep track of adds/removes.
             foreach (var item in _skelBody.BodyItems)
             {
-                item.Draw(sb, position, _scale, effect);
+                item.Draw(sb, position, _scale, color, effect);
                 foreach (var bodyLayer in BodyLayers)
                 {
                     foreach (var item2 in bodyLayer.BodyItems)
                     {
                         if (item2.Source == item.Source && item.Dest == item2.Dest)
-                            item2.Draw(sb, position, _scale, effect);
+                            item2.Draw(sb, position, _scale, color, effect);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Draws the skeleton animation
+        /// </summary>
+        /// <param name="sb">SpriteBatch to draw to</param>
+        /// <param name="position">Position offset to draw at</param>
+        /// <param name="effect">SpriteEffect to use when drawing</param>
+        public void Draw(SpriteBatch sb, Vector2 position, SpriteEffects effect)
+        {
+            Draw(sb, position, Color.White, effect);
+        }
+
+        /// <summary>
+        /// Draws the skeleton animation
+        /// </summary>
+        /// <param name="sb">SpriteBatch to draw to</param>
+        /// <param name="position">Position offset to draw at</param>
+        /// <param name="color">The color to draw with</param>
+        public void Draw(SpriteBatch sb, Vector2 position, Color color)
+        {
+            Draw(sb, position, color, SpriteEffects.None);
         }
 
         /// <summary>
