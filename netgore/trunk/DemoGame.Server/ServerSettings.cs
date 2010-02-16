@@ -33,6 +33,6 @@ namespace DemoGame.Server
         /// The <see cref="ItemTemplateID"/> that represents the template of the item used for attacking when
         /// no weapon is specified (see: <see cref="World.UnarmedWeapon"/>).
         /// </summary>
-        public static readonly ItemTemplateID UnarmedItemTemplateID = new ItemTemplateID(6);
+        public static readonly ItemTemplateID UnarmedItemTemplateID = new ItemTemplateID(0);
     }
 }

@@ -248,17 +248,17 @@ namespace DemoGame
         /// <returns>The <see cref="Rectangle"/> that describes the hit area for a melee attack.</returns>
         public static Rectangle GetMeleeAttackArea(CharacterEntity c, ushort range)
         {
-            var pos = c.Position;
-            var size= c.Size;
+            // Start with the rect for the char's area
+            var ret = c.ToRectangle();
 
-            if (c.Heading == Direction.East)
-            {
-                return new Rectangle((int)pos.X - range, (int)pos.Y, (int)(range + size.X), (int)size.Y);
-            }
-            else
-            {
-                return new Rectangle((int)pos.X, (int)pos.Y, (int)(pos.X + size.X + range), (int)size.Y);
-            }
+            // Add the range to the width
+            ret.Width += range;
+
+            // If looking left, subtract the range from the X position so that the area is to the left, not right
+            if (c.Heading == Direction.West)
+                ret.X -= range;
+
+            return ret;
         }
 
         /// <summary>

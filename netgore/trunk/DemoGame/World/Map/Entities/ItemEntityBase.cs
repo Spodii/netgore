@@ -63,6 +63,18 @@ namespace DemoGame
         public abstract ItemType Type { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of weapon.
+        /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
+        public abstract WeaponType WeaponType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the attack range of the item.
+        /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
+        public abstract ushort Range { get; set; }
+
+        /// <summary>
         /// Gets or sets the value of the item.
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
