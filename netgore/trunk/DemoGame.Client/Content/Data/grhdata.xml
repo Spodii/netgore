@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>189</Count>
+    <Count>191</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -1308,6 +1308,24 @@
       </Texture>
     </Item144>
     <Item145>
+      <Index>177</Index>
+      <Categorization>Item.Ranged.pistol</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Item/Ranged/pistol</Name>
+        <Source>0,0,15,18</Source>
+      </Texture>
+    </Item145>
+    <Item146>
+      <Index>182</Index>
+      <Categorization>Item.Ranged.rock</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Item/Ranged/rock</Name>
+        <Source>0,0,11,9</Source>
+      </Texture>
+    </Item146>
+    <Item147>
       <Index>114</Index>
       <Categorization>Map.Desert.doorway</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1315,8 +1333,8 @@
         <Name>Grh/Map/Desert/doorway</Name>
         <Source>0,0,101,99</Source>
       </Texture>
-    </Item145>
-    <Item146>
+    </Item147>
+    <Item148>
       <Index>115</Index>
       <Categorization>Map.Desert.hill 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1324,8 +1342,8 @@
         <Name>Grh/Map/Desert/hill 1</Name>
         <Source>0,0,97,64</Source>
       </Texture>
-    </Item146>
-    <Item147>
+    </Item148>
+    <Item149>
       <Index>116</Index>
       <Categorization>Map.Desert.hill 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1333,8 +1351,8 @@
         <Name>Grh/Map/Desert/hill 2</Name>
         <Source>0,0,69,43</Source>
       </Texture>
-    </Item147>
-    <Item148>
+    </Item149>
+    <Item150>
       <Index>117</Index>
       <Categorization>Map.Desert.Platforms.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1342,8 +1360,8 @@
         <Name>Grh/Map/Desert/Platforms/01</Name>
         <Source>0,0,93,47</Source>
       </Texture>
-    </Item148>
-    <Item149>
+    </Item150>
+    <Item151>
       <Index>118</Index>
       <Categorization>Map.Desert.Shrubbery.blue flower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1351,8 +1369,8 @@
         <Name>Grh/Map/Desert/Shrubbery/blue flower</Name>
         <Source>0,0,23,34</Source>
       </Texture>
-    </Item149>
-    <Item150>
+    </Item151>
+    <Item152>
       <Index>119</Index>
       <Categorization>Map.Desert.Shrubbery.cactus</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1360,8 +1378,8 @@
         <Name>Grh/Map/Desert/Shrubbery/cactus</Name>
         <Source>0,0,40,65</Source>
       </Texture>
-    </Item150>
-    <Item151>
+    </Item152>
+    <Item153>
       <Index>120</Index>
       <Categorization>Map.Desert.Shrubbery.red flower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1369,8 +1387,8 @@
         <Name>Grh/Map/Desert/Shrubbery/red flower</Name>
         <Source>0,0,23,34</Source>
       </Texture>
-    </Item151>
-    <Item152>
+    </Item153>
+    <Item154>
       <Index>121</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1378,8 +1396,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 01</Name>
         <Source>0,0,24,23</Source>
       </Texture>
-    </Item152>
-    <Item153>
+    </Item154>
+    <Item155>
       <Index>122</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1387,8 +1405,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 02</Name>
         <Source>0,0,22,27</Source>
       </Texture>
-    </Item153>
-    <Item154>
+    </Item155>
+    <Item156>
       <Index>123</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1396,8 +1414,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 03</Name>
         <Source>0,0,13,16</Source>
       </Texture>
-    </Item154>
-    <Item155>
+    </Item156>
+    <Item157>
       <Index>124</Index>
       <Categorization>Map.Desert.Shrubbery.tree</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1405,8 +1423,8 @@
         <Name>Grh/Map/Desert/Shrubbery/tree</Name>
         <Source>0,0,39,89</Source>
       </Texture>
-    </Item155>
-    <Item156>
+    </Item157>
+    <Item158>
       <Index>145</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Center.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1414,8 +1432,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Center/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item156>
-    <Item157>
+    </Item158>
+    <Item159>
       <Index>146</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Left.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1423,8 +1441,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Left/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item157>
-    <Item158>
+    </Item159>
+    <Item160>
       <Index>147</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Right.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1432,8 +1450,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Right/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item158>
-    <Item159>
+    </Item160>
+    <Item161>
       <Index>148</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Center.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1441,8 +1459,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Center/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item159>
-    <Item160>
+    </Item161>
+    <Item162>
       <Index>149</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Left.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1450,8 +1468,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Left/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item160>
-    <Item161>
+    </Item162>
+    <Item163>
       <Index>150</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Right.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1459,8 +1477,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Right/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item161>
-    <Item162>
+    </Item163>
+    <Item164>
       <Index>7</Index>
       <Categorization>Map.Platform.Grass.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1468,8 +1486,8 @@
         <Name>Grh/Map/Platform/Grass/Bottom</Name>
         <Source>0,0,32,1</Source>
       </Texture>
-    </Item162>
-    <Item163>
+    </Item164>
+    <Item165>
       <Index>4</Index>
       <Categorization>Map.Platform.Grass.Mid-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1477,8 +1495,8 @@
         <Name>Grh/Map/Platform/Grass/Mid-Left</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item163>
-    <Item164>
+    </Item165>
+    <Item166>
       <Index>5</Index>
       <Categorization>Map.Platform.Grass.Mid-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1486,8 +1504,8 @@
         <Name>Grh/Map/Platform/Grass/Mid-Mid</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item164>
-    <Item165>
+    </Item166>
+    <Item167>
       <Index>6</Index>
       <Categorization>Map.Platform.Grass.Mid-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1495,8 +1513,8 @@
         <Name>Grh/Map/Platform/Grass/Mid-Right</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item165>
-    <Item166>
+    </Item167>
+    <Item168>
       <Index>1</Index>
       <Categorization>Map.Platform.Grass.Top-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1504,8 +1522,8 @@
         <Name>Grh/Map/Platform/Grass/Top-Left</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item166>
-    <Item167>
+    </Item168>
+    <Item169>
       <Index>2</Index>
       <Categorization>Map.Platform.Grass.Top-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1513,8 +1531,8 @@
         <Name>Grh/Map/Platform/Grass/Top-Mid</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item167>
-    <Item168>
+    </Item169>
+    <Item170>
       <Index>3</Index>
       <Categorization>Map.Platform.Grass.Top-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1522,8 +1540,8 @@
         <Name>Grh/Map/Platform/Grass/Top-Right</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item168>
-    <Item169>
+    </Item170>
+    <Item171>
       <Index>66</Index>
       <Categorization>Particle.ankh</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1531,8 +1549,8 @@
         <Name>Grh/Particle/ankh</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item169>
-    <Item170>
+    </Item171>
+    <Item172>
       <Index>67</Index>
       <Categorization>Particle.ball</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1540,8 +1558,8 @@
         <Name>Grh/Particle/ball</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item170>
-    <Item171>
+    </Item172>
+    <Item173>
       <Index>68</Index>
       <Categorization>Particle.raindrop</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1549,8 +1567,8 @@
         <Name>Grh/Particle/raindrop</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item171>
-    <Item172>
+    </Item173>
+    <Item174>
       <Index>69</Index>
       <Categorization>Particle.shield</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1558,8 +1576,8 @@
         <Name>Grh/Particle/shield</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item172>
-    <Item173>
+    </Item174>
+    <Item175>
       <Index>70</Index>
       <Categorization>Particle.skull</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1567,8 +1585,8 @@
         <Name>Grh/Particle/skull</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item173>
-    <Item174>
+    </Item175>
+    <Item176>
       <Index>72</Index>
       <Categorization>Particle.snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1576,8 +1594,8 @@
         <Name>Grh/Particle/snow</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item174>
-    <Item175>
+    </Item176>
+    <Item177>
       <Index>71</Index>
       <Categorization>Particle.snow sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1585,8 +1603,8 @@
         <Name>Grh/Particle/snow sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item175>
-    <Item176>
+    </Item177>
+    <Item178>
       <Index>73</Index>
       <Categorization>Particle.sparkle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1594,8 +1612,8 @@
         <Name>Grh/Particle/sparkle</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item176>
-    <Item177>
+    </Item178>
+    <Item179>
       <Index>74</Index>
       <Categorization>Particle.splatter</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1603,8 +1621,8 @@
         <Name>Grh/Particle/splatter</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item177>
-    <Item178>
+    </Item179>
+    <Item180>
       <Index>76</Index>
       <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1612,8 +1630,8 @@
         <Name>Grh/Particle/star</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item178>
-    <Item179>
+    </Item180>
+    <Item181>
       <Index>75</Index>
       <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1621,8 +1639,8 @@
         <Name>Grh/Particle/star sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item179>
-    <Item180>
+    </Item181>
+    <Item182>
       <Index>77</Index>
       <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1630,8 +1648,8 @@
         <Name>Grh/Particle/sword</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item180>
-    <Item181>
+    </Item182>
+    <Item183>
       <Index>140</Index>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1639,8 +1657,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item181>
-    <Item182>
+    </Item183>
+    <Item184>
       <Index>142</Index>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1648,8 +1666,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item182>
-    <Item183>
+    </Item184>
+    <Item185>
       <Index>141</Index>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1657,8 +1675,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item183>
-    <Item184>
+    </Item185>
+    <Item186>
       <Index>61</Index>
       <Categorization>System.Blank</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1666,8 +1684,8 @@
         <Name>Grh/System/Blank</Name>
         <Source>0,0,2,2</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item186>
+    <Item187>
       <Index>62</Index>
       <Categorization>System.Joint</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1675,8 +1693,8 @@
         <Name>Grh/System/Joint</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item185>
-    <Item186>
+    </Item187>
+    <Item188>
       <Index>64</Index>
       <Categorization>System.Move</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1684,8 +1702,8 @@
         <Name>Grh/System/Move</Name>
         <Source>0,0,17,17</Source>
       </Texture>
-    </Item186>
-    <Item187>
+    </Item188>
+    <Item189>
       <Index>65</Index>
       <Categorization>System.Resize</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1693,8 +1711,8 @@
         <Name>Grh/System/Resize</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item187>
-    <Item188>
+    </Item189>
+    <Item190>
       <Index>63</Index>
       <Categorization>System.Triangle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1702,7 +1720,7 @@
         <Name>Grh/System/Triangle</Name>
         <Source>0,0,30,30</Source>
       </Texture>
-    </Item188>
+    </Item190>
   </Stationary>
   <Animated>
     <Count>0</Count>
