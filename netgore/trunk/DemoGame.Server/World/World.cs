@@ -57,6 +57,9 @@ namespace DemoGame.Server
             // Create some objects
             _guildMemberPerformer = new GuildMemberPerformer(this);
 
+            // Create the unarmed weapon
+            _unarmedWeapon = new ItemEntity(_itemTemplateManager[ServerSettings.UnarmedItemTemplateID], 1);
+
             // Load the maps
             var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
             _maps = new DArray<Map>(mapFiles.Count() + 10, false);
@@ -98,6 +101,17 @@ namespace DemoGame.Server
         {
             get { return Server.DbController; }
         }
+
+        /// <summary>
+        /// Gets the <see cref="ItemEntity"/> that is used to represent attacking unarmed (i.e. fists). This is
+        /// the item used for attacking when no weapon is specified.
+        /// </summary>
+        public ItemEntity UnarmedWeapon
+        {
+            get { return _unarmedWeapon; }
+        }
+
+        readonly ItemEntity _unarmedWeapon;
 
         /// <summary>
         /// Gets a stack of objects that need to be disposed. The stack is processed once every frame.

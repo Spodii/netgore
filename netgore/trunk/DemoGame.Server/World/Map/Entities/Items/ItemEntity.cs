@@ -65,7 +65,7 @@ namespace DemoGame.Server
 
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
-                pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.Graphic, t.Value, amount, t.HP,
+                pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.WeaponType, t.Range, t.Graphic, t.Value, amount, t.HP,
                 t.MP, t.EquippedBody, t.Stats, t.ReqStats)
         {
         }
@@ -97,7 +97,7 @@ namespace DemoGame.Server
             Resized += ItemEntity_Resized;
         }
 
-        ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
+        ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount,
                    SPValueType hp, SPValueType mp, string equippedBody, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
         {
@@ -111,6 +111,8 @@ namespace DemoGame.Server
             _value = value;
             _amount = amount;
             _type = type;
+            _weaponType = weaponType;
+            _range = range;
             _hp = hp;
             _mp = mp;
             _equippedBody = equippedBody;
@@ -126,7 +128,7 @@ namespace DemoGame.Server
 
         ItemEntity(ItemEntity s)
             : this(
-                s.Position, s.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.EquippedBody,
+                s.Position, s.Size, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.EquippedBody,
                 s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
@@ -591,6 +593,25 @@ namespace DemoGame.Server
             }
         }
 
+        ushort _range;
+
+        /// <summary>
+        /// Gets or sets the value of the database column `range`.
+        /// </summary>
+        public ushort Range
+        {
+            get { return _range; }
+            set
+            {
+                if (_range == value)
+                    return;
+
+                _range = value;
+
+                SynchronizeField("range", _range);
+            }
+        }
+
         /// <summary>
         /// Gets an IEnumerable of KeyValuePairs containing the values in the `ReqStat` collection. The
         /// key is the collection's key and the value is the value for that corresponding key.
@@ -640,6 +661,25 @@ namespace DemoGame.Server
                 _value = value;
 
                 SynchronizeField("value", _value);
+            }
+        }
+
+        WeaponType _weaponType;
+
+        /// <summary>
+        /// Gets or sets the value of the database column `weapon_type`.
+        /// </summary>
+        public WeaponType WeaponType
+        {
+            get { return _weaponType; }
+            set
+            {
+                if (_weaponType == value)
+                    return;
+
+                _weaponType = value;
+
+                SynchronizeField("weapon_type", _weaponType);
             }
         }
 

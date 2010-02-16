@@ -104,6 +104,7 @@ namespace DemoGame.DbClassCreator
 
                 generator.AddCustomType(typeof(ItemTemplateID), "item_template", "id");
                 generator.AddCustomType(typeof(GrhIndex), "item_template", "graphic");
+                generator.AddCustomType(typeof(ItemType), "item_template", "type");
 
                 generator.AddCustomType(typeof(MapIndex), "map", "id");
 
@@ -129,6 +130,7 @@ namespace DemoGame.DbClassCreator
                 generator.AddCustomType(typeof(ShopID), "*", "shop_id");
                 generator.AddCustomType(typeof(AIID), "*", "ai_id");
                 generator.AddCustomType(typeof(GuildID), "*", "guild_id");
+                generator.AddCustomType(typeof(WeaponType), "*", "weapon_type");
 
                 // Renaming
                 var formatter = generator.Formatter;

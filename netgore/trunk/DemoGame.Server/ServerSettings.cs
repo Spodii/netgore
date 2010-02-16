@@ -28,5 +28,11 @@ namespace DemoGame.Server
         /// to update, but require more overhead.
         /// </summary>
         public const int SyncExtraUserInformationRate = 150;
+
+        /// <summary>
+        /// The <see cref="ItemTemplateID"/> that represents the template of the item used for attacking when
+        /// no weapon is specified (see: <see cref="World.UnarmedWeapon"/>).
+        /// </summary>
+        public static readonly ItemTemplateID UnarmedItemTemplateID = new ItemTemplateID(6);
     }
 }

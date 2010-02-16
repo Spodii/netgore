@@ -536,7 +536,7 @@ namespace DemoGame.Server
             if (IsInMeleeRange(_target))
             {
                 Actor.StopMoving();
-                Actor.Attack();
+                Actor.Attack(_target);
             }
         }
 
@@ -636,7 +636,7 @@ namespace DemoGame.Server
             if (IsInMeleeRange(_target))
             {
                 Actor.StopMoving();
-                Actor.Attack();
+                Actor.Attack(_target);
             }
         }
 

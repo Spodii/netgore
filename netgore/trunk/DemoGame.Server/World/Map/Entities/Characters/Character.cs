@@ -130,6 +130,7 @@ namespace DemoGame.Server
         static readonly Random _rand = new Random();
 
         static readonly ShopManager _shopManager = ShopManager.Instance;
+
         readonly CharacterStatsBase _baseStats;
         readonly CharacterEquipped _equipped;
         readonly CharacterInventory _inventory;
@@ -151,10 +152,21 @@ namespace DemoGame.Server
         Alliance _alliance;
 
         int _cash;
-
         int _exp;
         SPValueType _hp;
         CharacterID _id;
+
+        /// <summary>
+        /// Gets the weapon to use for attacking. Cannot be null.
+        /// </summary>
+        public ItemEntity Weapon { get { 
+            var weapon = _equipped[EquipmentSlot.RightHand];
+
+            if (weapon == null)
+                return World.UnarmedWeapon;
+
+            return weapon;
+        } }
 
         /// <summary>
         /// If the character is alive or not.
@@ -699,77 +711,158 @@ namespace DemoGame.Server
 
         public void Attack(Character target)
         {
-            if (target != null)
-            {
-                AttackReal(target);
-                return;
-            }
-
-            Attack();
+            Attack(null, target);
         }
 
         /// <summary>
-        /// Makes the character perform an attack.
+        /// Attacks the <paramref name="target"/> using the given <paramref name="weapon"/>.
         /// </summary>
-        public void Attack()
+        /// <param name="weapon">The weapon to use for attacking. If null, will be treated as an unarmed melee attack.</param>
+        /// <param name="target">The <see cref="Character"/> to attack. If null, the target will be selected
+        /// automatically if applicable.</param>
+        public void Attack(ItemEntity weapon, Character target)
         {
+            var currTime = GetTime();
+
+            // Don't allow attacking while casting a skill
             if (_skillCaster.IsCastingSkill)
                 return;
 
-            int currTime = GetTime();
-
-            // Ensure enough time has elapsed since the last attack
-            if (currTime - _lastAttackTime <= _attackTimeout)
+            // Check that enough time has elapsed since the last attack
+            if (_lastAttackTime + _attackTimeout > currTime)
                 return;
+
+            // If no weapon is specified, use the unarmed weapon
+            if (weapon == null)
+                weapon = World.UnarmedWeapon;
+
+            // Abort if using an unknown weapon type
+            if (weapon.WeaponType == WeaponType.Unknown)
+            {
+                // TODO: Send a message to the client: "You cannot attack using a {0}."
+                return;
+            }
+
+            // Check if a target was given to us
+            if (target != null)
+            {
+                // Check for a valid target
+                if (!target.IsAlive)
+                {
+                    const string errmsg = "`{0}` tried to attack target `{1}`, but the target is not alive.";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, this, target);
+                    Debug.Fail(string.Format(errmsg, this, target));
+                    return;
+                }
+
+                if (target.Map != Map)
+                {
+                    const string errmsg = "`{0}` tried to attack target `{1}`, but the target is on a different map.";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, this, target);
+                    Debug.Fail(string.Format(errmsg, this, target));
+                    return;
+                }
+
+                if (this.GetDistance(target) > weapon.Range)
+                {
+                    // TODO: Send a message to the client: "Cannot attack {0} because they are too far away."
+                    return;
+                }
+            }
+
+            // Call the appropriate attack method
+            switch (weapon.WeaponType)
+            {
+                case WeaponType.Melee:
+                    AttackMelee(weapon, target);
+                    break;
+
+                case WeaponType.Projectile:
+                case WeaponType.Gun:
+                    AttackRanged(weapon, target);
+                    break;
+
+                default:
+                    const string errmsg = "No attack support defined for WeaponType `{0}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, weapon.WeaponType);
+                    break;
+            }
 
             // Update the last attack time to now
             _lastAttackTime = currTime;
+        }
 
-            OnAttacked();
-            if (Attacked != null)
-                Attacked(this);
-
-            // Inform the map that the user has performed an attack
+        /// <summary>
+        /// Handles attacking with a melee weapon.
+        /// </summary>
+        /// <param name="weapon">The weapon to attack with.</param>
+        /// <param name="target">The target to attack. Can be null.</param>
+        void AttackMelee(ItemEntity weapon, Character target)
+        {
+            // We will show the melee attack animation no matter what, so just send it now
             using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
             {
                 Map.SendToArea(this, charAttack);
             }
 
-            // Damage all hit characters
-            Rectangle hitRect = BodyInfo.GetHitRect(this, BodyInfo.PunchRect);
-            var hitChars = Map.Spatial.GetMany<Character>(hitRect);
+            OnAttacked();
+            if (Attacked != null)
+                Attacked(this);
 
-            foreach (Character c in hitChars)
+            // If melee and no target was defined, try to find one automatically
+            if (target == null)
             {
-                AttackReal(c);
+                var hitArea = GameData.GetMeleeAttackArea(this, weapon.Range);
+                target = Map.Spatial.Get<Character>(hitArea, x => x != this && x.IsAlive && Alliance.CanAttack(x.Alliance));
             }
+
+            // Check that we managed to find a target
+            if (target == null)
+                return;
+
+            // We found a target, so attack it
+            AttackApplyReal(target);
         }
 
         /// <summary>
-        /// Performs the actual attacking of a specific character. The attack can fail if the target is an invalid
-        /// Character for this Character to attack.
+        /// Handles attacking with a ranged weapon.
         /// </summary>
-        /// <param name="target">Character to attack.</param>
-        void AttackReal(Character target)
+        /// <param name="weapon">The weapon to attack with.</param>
+        /// <param name="target">The target to attack. Can be null.</param>
+        void AttackRanged(ItemEntity weapon, Character target)
         {
+            // We can't do anything with ranged attacks if no target is given
             if (target == null)
             {
-                Attack();
+                // TODO: Send a message to the client: "You must select a target to attack first."
                 return;
             }
 
-            // Only attack living characters
-            if (!target.IsAlive)
-                return;
+            // Attack
+            using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
+            {
+                Map.SendToArea(this, charAttack);
+            }
 
-            // Don't attack self
-            if (target == this)
-                return;
+            OnAttacked();
+            if (Attacked != null)
+                Attacked(this);
 
-            // Check that the alliance allows the character to attack the target
-            if (!Alliance.CanAttack(target.Alliance))
-                return;
+            AttackApplyReal(target);
 
+            // TODO: Reduce "ammo" for the weapon
+        }
+
+        /// <summary>
+        /// Performs the actual attacking of a specific character. This should only be called by
+        /// <see cref="AttackMelee"/> or <see cref="AttackRanged"/>.
+        /// </summary>
+        /// <param name="target">Character to attack.</param>
+        void AttackApplyReal(Character target)
+        {
             // Get the damage
             int damage = GetAttackDamage(target);
 

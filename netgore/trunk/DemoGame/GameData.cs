@@ -225,6 +225,43 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> that describes all of the potential area that
+        /// a ranged attack can reach.
+        /// </summary>
+        /// <param name="c">The <see cref="CharacterEntity"/> that is attacking.</param>
+        /// <param name="range">The range of the attack.</param>
+        /// <returns>A <see cref="Rectangle"/> that describes all of the potential area that
+        /// a ranged attack can reach.</returns>
+        public static Rectangle GetRangedAttackArea(CharacterEntity c, ushort range)
+        {
+            var vrange = new Vector2(range);
+            var min = c.Position - vrange;
+            var max = c.Max + vrange;
+            return new Rectangle((int)min.X, (int)min.Y, (int)max.X, (int)max.Y);
+        }
+        
+        /// <summary>
+        /// Gets a <see cref="Rectangle"/> containing the hit area for a melee attack.
+        /// </summary>
+        /// <param name="c">The <see cref="CharacterEntity"/> that is attacking.</param>
+        /// <param name="range">The range of the attack.</param>
+        /// <returns>The <see cref="Rectangle"/> that describes the hit area for a melee attack.</returns>
+        public static Rectangle GetMeleeAttackArea(CharacterEntity c, ushort range)
+        {
+            var pos = c.Position;
+            var size= c.Size;
+
+            if (c.Heading == Direction.East)
+            {
+                return new Rectangle((int)pos.X - range, (int)pos.Y, (int)(range + size.X), (int)size.Y);
+            }
+            else
+            {
+                return new Rectangle((int)pos.X, (int)pos.Y, (int)(pos.X + size.X + range), (int)size.Y);
+            }
+        }
+
+        /// <summary>
         /// Gets the experience required for a given stat level.
         /// </summary>
         /// <param name="x">Stat level to check (current stat level).</param>
