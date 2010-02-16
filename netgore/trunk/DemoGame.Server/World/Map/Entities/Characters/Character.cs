@@ -711,7 +711,7 @@ namespace DemoGame.Server
 
         public void Attack(Character target)
         {
-            Attack(null, target);
+            Attack(Weapon, target);
         }
 
         /// <summary>
@@ -734,7 +734,7 @@ namespace DemoGame.Server
 
             // If no weapon is specified, use the unarmed weapon
             if (weapon == null)
-                weapon = World.UnarmedWeapon;
+                weapon = Weapon;
 
             // Abort if using an unknown weapon type
             if (weapon.WeaponType == WeaponType.Unknown)
@@ -788,6 +788,7 @@ namespace DemoGame.Server
                     const string errmsg = "No attack support defined for WeaponType `{0}`.";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, weapon.WeaponType);
+                    Debug.Fail(string.Format(errmsg, weapon.WeaponType));
                     break;
             }
 
@@ -841,6 +842,31 @@ namespace DemoGame.Server
                 return;
             }
 
+            bool ammoUsed = false;
+
+            // Check for the needed ammo
+            switch (weapon.WeaponType)
+            {
+                case WeaponType.Projectile:
+                    // Grab projectile ammo out of the inventory first if possible to avoid having to constantly reload
+                    var invAmmo = Inventory.FirstOrDefault(x => weapon.CanStack(x.Value));
+                    if (invAmmo.Value != null)
+                        Inventory.DecreaseItemAmount(invAmmo.Key);
+                    else
+                        weapon.Dispose();
+
+                    ammoUsed = true;
+                    break;
+
+                case WeaponType.Gun:
+                    // By default, guns won't use ammo. But if you want to require guns to use ammo, you can do so here
+                    ammoUsed = true;
+                    break;
+            }
+
+            if (!ammoUsed)
+                return;
+
             // Attack
             using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
             {
@@ -852,8 +878,6 @@ namespace DemoGame.Server
                 Attacked(this);
 
             AttackApplyReal(target);
-
-            // TODO: Reduce "ammo" for the weapon
         }
 
         /// <summary>

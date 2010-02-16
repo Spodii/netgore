@@ -65,7 +65,7 @@ namespace DemoGame.Server
 
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
-                pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.WeaponType, t.Range, t.Graphic, t.Value, amount, t.HP,
+                pos, new Vector2(t.Width, t.Height), t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic, t.Value, amount, t.HP,
                 t.MP, t.EquippedBody, t.Stats, t.ReqStats)
         {
         }
@@ -89,6 +89,8 @@ namespace DemoGame.Server
             _value = iv.Value;
             _amount = iv.Amount;
             _type = iv.Type;
+            _weaponType = iv.WeaponType;
+            _range = iv.Range;
             _equippedBody = iv.EquippedBody;
 
             _baseStats = NewItemStats(iv.Stats, StatCollectionType.Base);
@@ -229,7 +231,7 @@ namespace DemoGame.Server
 
             // Check for non-equal values
             if (Value != source.Value || GraphicIndex != source.GraphicIndex || Type != source.Type || Name != source.Name ||
-                Description != source.Description)
+                Description != source.Description || Range != source.Range || WeaponType != source.WeaponType)
                 return false;
 
             // Check for non-equal stats
@@ -598,7 +600,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the value of the database column `range`.
         /// </summary>
-        public ushort Range
+        public override ushort Range
         {
             get { return _range; }
             set
@@ -669,7 +671,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the value of the database column `weapon_type`.
         /// </summary>
-        public WeaponType WeaponType
+        public override WeaponType WeaponType
         {
             get { return _weaponType; }
             set

@@ -25,28 +25,38 @@ namespace DemoGame.Client
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Grh _grh;
 
-        byte _amount = 1;
-        string _description = string.Empty;
-        string _name = string.Empty;
-        ItemType _type;
-        int _value = 0;
-
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Name = string.Empty;
+            Description = string.Empty;
+            Amount = 1;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             _grh = new Grh(null);
         }
 
         public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
-            _amount = amount;
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Name = string.Empty;
+            Description = string.Empty;
+            Amount = amount;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
         public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, int currentTime)
             : base(pos, size)
         {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Name = string.Empty;
+            Description = string.Empty;
+            Amount = 0;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             MapEntityIndex = mapEntityIndex;
-            _amount = 0;
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
@@ -64,8 +74,8 @@ namespace DemoGame.Client
         /// </summary>
         public override byte Amount
         {
-            get { return _amount; }
-            set { _amount = value; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -73,8 +83,8 @@ namespace DemoGame.Client
         /// </summary>
         public override string Description
         {
-            get { return _description; }
-            set { _description = value; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -99,8 +109,8 @@ namespace DemoGame.Client
         /// </summary>
         public override string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -108,8 +118,26 @@ namespace DemoGame.Client
         /// </summary>
         public override ItemType Type
         {
-            get { return _type; }
-            set { _type = value; }
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the type of weapon.
+        /// </summary>
+        public override WeaponType WeaponType
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the attack range of the item.
+        /// </summary>
+        public override ushort Range
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -117,8 +145,8 @@ namespace DemoGame.Client
         /// </summary>
         public override int Value
         {
-            get { return _value; }
-            set { _value = value; }
+            get;
+            set;
         }
 
         /// <summary>
