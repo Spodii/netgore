@@ -8,7 +8,6 @@
       <Fall>fall</Fall>
       <Jump>jump</Jump>
       <Punch>punch</Punch>
-      <PunchRect>15,0,30,39</PunchRect>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>30,78</Size>
@@ -19,7 +18,6 @@
       <Fall>fall</Fall>
       <Jump>jump</Jump>
       <Punch>punch</Punch>
-      <PunchRect>15,0,30,39</PunchRect>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>30,78</Size>

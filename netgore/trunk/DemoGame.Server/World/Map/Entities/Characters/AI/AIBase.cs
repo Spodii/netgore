@@ -67,14 +67,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets a Rectangle defining the melee hit area for the Actor.
+        /// Gets a <see cref="Rectangle"/> describing the visible screen area.
         /// </summary>
-        /// <returns>A Rectangle defining the melee hit area for the Actor.</returns>
-        protected Rectangle GetMeleeRect()
-        {
-            return BodyInfo.GetHitRect(Actor, Actor.BodyInfo.PunchRect);
-        }
-
+        /// <returns>A <see cref="Rectangle"/> describing the visible screen area.</returns>
         protected Rectangle GetVisibleMapArea()
         {
             var center = Actor.Center;
@@ -95,7 +90,7 @@ namespace DemoGame.Server
         /// <returns>True if the entity is in melee range of the Actor, else false.</returns>
         protected bool IsInMeleeRange(Entity entity)
         {
-            var hitRect = GetMeleeRect();
+            var hitRect = GameData.GetMeleeAttackArea(Actor, Actor.Weapon.Range);
             return entity.Intersects(hitRect);
         }
 
