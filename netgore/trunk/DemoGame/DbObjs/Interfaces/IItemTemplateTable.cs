@@ -17,6 +17,13 @@ public interface IItemTemplateTable
 IItemTemplateTable DeepCopy();
 
 /// <summary>
+/// Gets the value of the database column `ammo_type`.
+/// </summary>
+System.Byte AmmoType
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `description`.
 /// </summary>
 System.String Description

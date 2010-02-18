@@ -23,6 +23,7 @@ public static  class ItemTemplateTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this IItemTemplateTable source, NetGore.Db.DbParameterValues paramValues)
 {
+paramValues["@ammo_type"] = (System.Byte)source.AmmoType;
 paramValues["@description"] = (System.String)source.Description;
 paramValues["@equipped_body"] = (System.String)source.EquippedBody;
 paramValues["@graphic"] = (System.UInt16)source.Graphic;
@@ -59,6 +60,10 @@ paramValues["@width"] = (System.Byte)source.Width;
 public static void ReadValues(this ItemTemplateTable source, System.Data.IDataReader dataReader)
 {
 System.Int32 i;
+
+i = dataReader.GetOrdinal("ammo_type");
+
+source.AmmoType = (System.Byte)(System.Byte)dataReader.GetByte(i);
 
 i = dataReader.GetOrdinal("description");
 
@@ -173,6 +178,11 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 {
 switch (dataReader.GetName(i))
 {
+case "ammo_type":
+source.AmmoType = (System.Byte)(System.Byte)dataReader.GetByte(i);
+break;
+
+
 case "description":
 source.Description = (System.String)(System.String)dataReader.GetString(i);
 break;
@@ -314,6 +324,11 @@ for (int i = 0; i < paramValues.Count; i++)
 {
 switch (paramValues.GetParameterName(i))
 {
+case "@ammo_type":
+paramValues[i] = (System.Byte)source.AmmoType;
+break;
+
+
 case "@description":
 paramValues[i] = (System.String)source.Description;
 break;

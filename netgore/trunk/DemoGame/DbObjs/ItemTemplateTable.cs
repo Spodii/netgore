@@ -16,7 +16,7 @@ public class ItemTemplateTable : IItemTemplateTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"description", "equipped_body", "graphic", "height", "hp", "id", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
+ static  readonly System.String[] _dbColumns = new string[] {"ammo_type", "description", "equipped_body", "graphic", "height", "hp", "id", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"description", "equipped_body", "graphic", "height", "hp", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"ammo_type", "description", "equipped_body", "graphic", "height", "hp", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -114,7 +114,11 @@ public const System.String TableName = "item_template";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 24;
+public const System.Int32 ColumnCount = 25;
+/// <summary>
+/// The field that maps onto the database column `ammo_type`.
+/// </summary>
+System.Byte _ammoType;
 /// <summary>
 /// The field that maps onto the database column `description`.
 /// </summary>
@@ -175,6 +179,22 @@ System.Byte _weaponType;
 /// The field that maps onto the database column `width`.
 /// </summary>
 System.Byte _width;
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `ammo_type`.
+/// The underlying database type is `tinyint(3) unsigned`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.Byte AmmoType
+{
+get
+{
+return (System.Byte)_ammoType;
+}
+set
+{
+this._ammoType = (System.Byte)value;
+}
+}
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `description`.
 /// The underlying database type is `varchar(255)`.
@@ -444,6 +464,7 @@ public ItemTemplateTable()
 /// <summary>
 /// ItemTemplateTable constructor.
 /// </summary>
+/// <param name="ammoType">The initial value for the corresponding property.</param>
 /// <param name="description">The initial value for the corresponding property.</param>
 /// <param name="equippedBody">The initial value for the corresponding property.</param>
 /// <param name="graphic">The initial value for the corresponding property.</param>
@@ -468,8 +489,9 @@ public ItemTemplateTable()
 /// <param name="value">The initial value for the corresponding property.</param>
 /// <param name="weaponType">The initial value for the corresponding property.</param>
 /// <param name="width">The initial value for the corresponding property.</param>
-public ItemTemplateTable(System.String @description, System.String @equippedBody, NetGore.GrhIndex @graphic, System.Byte @height, DemoGame.SPValueType @hP, DemoGame.ItemTemplateID @iD, DemoGame.SPValueType @mP, System.String @name, System.UInt16 @range, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statReqAgi, System.Int16 @statReqInt, System.Int16 @statReqStr, System.Int16 @statStr, DemoGame.ItemType @type, System.Int32 @value, DemoGame.WeaponType @weaponType, System.Byte @width)
+public ItemTemplateTable(System.Byte @ammoType, System.String @description, System.String @equippedBody, NetGore.GrhIndex @graphic, System.Byte @height, DemoGame.SPValueType @hP, DemoGame.ItemTemplateID @iD, DemoGame.SPValueType @mP, System.String @name, System.UInt16 @range, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statReqAgi, System.Int16 @statReqInt, System.Int16 @statReqStr, System.Int16 @statStr, DemoGame.ItemType @type, System.Int32 @value, DemoGame.WeaponType @weaponType, System.Byte @width)
 {
+this.AmmoType = (System.Byte)@ammoType;
 this.Description = (System.String)@description;
 this.EquippedBody = (System.String)@equippedBody;
 this.Graphic = (NetGore.GrhIndex)@graphic;
@@ -522,6 +544,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IItemTemplateTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
+dic["@ammo_type"] = (System.Byte)source.AmmoType;
 dic["@description"] = (System.String)source.Description;
 dic["@equipped_body"] = (System.String)source.EquippedBody;
 dic["@graphic"] = (NetGore.GrhIndex)source.Graphic;
@@ -554,6 +577,7 @@ dic["@width"] = (System.Byte)source.Width;
 /// <param name="source">The IItemTemplateTable to copy the values from.</param>
 public void CopyValuesFrom(IItemTemplateTable source)
 {
+this.AmmoType = (System.Byte)source.AmmoType;
 this.Description = (System.String)source.Description;
 this.EquippedBody = (System.String)source.EquippedBody;
 this.Graphic = (NetGore.GrhIndex)source.Graphic;
@@ -591,6 +615,9 @@ public System.Object GetValue(System.String columnName)
 {
 switch (columnName)
 {
+case "ammo_type":
+return AmmoType;
+
 case "description":
 return Description;
 
@@ -677,6 +704,10 @@ public void SetValue(System.String columnName, System.Object value)
 {
 switch (columnName)
 {
+case "ammo_type":
+this.AmmoType = (System.Byte)value;
+break;
+
 case "description":
 this.Description = (System.String)value;
 break;
@@ -789,6 +820,9 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 {
 switch (columnName)
 {
+case "ammo_type":
+return new ColumnMetadata("ammo_type", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+
 case "description":
 return new ColumnMetadata("description", "", "varchar(255)", null, typeof(System.String), false, false, false);
 

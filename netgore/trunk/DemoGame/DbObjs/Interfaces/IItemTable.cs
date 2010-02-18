@@ -66,6 +66,13 @@ DemoGame.ItemID ID
 get;
 }
 /// <summary>
+/// Gets the value of the database column `item_template_id`.
+/// </summary>
+System.Nullable<DemoGame.ItemTemplateID> ItemTemplateID
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `mp`.
 /// </summary>
 DemoGame.SPValueType MP
