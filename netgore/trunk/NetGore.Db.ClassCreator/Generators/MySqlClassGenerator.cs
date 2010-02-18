@@ -95,7 +95,7 @@ namespace NetGore.Db.ClassCreator
 
             foreach (var column in ret)
             {
-                var type = GetColumnType(table, column.Name);
+                var type = GetColumnType(table, column);
                 if (column.IsNullable)
                 {
                     if (type != typeof(string))
@@ -112,13 +112,16 @@ namespace NetGore.Db.ClassCreator
             return ret;
         }
 
-        Type GetColumnType(string table, string column)
+        Type GetColumnType(string table, DbColumnInfo column)
         {
             Type ret;
 
+            if (column.DatabaseType.Equals("tinyint(1) unsigned", StringComparison.OrdinalIgnoreCase))
+                return typeof(bool);
+
             using (var cmd = _conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT `" + column + "` FROM `" + table + "` WHERE 0=1";
+                cmd.CommandText = "SELECT `" + column.Name + "` FROM `" + table + "` WHERE 0=1";
                 using (var r = cmd.ExecuteReader())
                 {
                     Debug.Assert(r.FieldCount == 1);
