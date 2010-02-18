@@ -113,6 +113,18 @@ namespace NetGore.Tests.Db.ClassCreator
         }
 
         [Test]
+        public void CreateBoolTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "boo", typeof(bool));
+        }
+
+        [Test]
+        public void CreateBoolFromUnsignedTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "boou", typeof(bool));
+        }
+
+        [Test]
         public void CreateShortNullableTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "sn", typeof(short?));

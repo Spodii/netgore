@@ -62,7 +62,7 @@ namespace NetGore.Tests.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///{Bodies}
+        ///&lt;Bodies&gt;
         ///	&lt;Body Index=&quot;1&quot;&gt;
         ///		&lt;Size Width=&quot;30&quot; Height=&quot;78&quot; /&gt;
         ///		&lt;Body SkelBody=&quot;basic&quot; /&gt;
@@ -72,7 +72,7 @@ namespace NetGore.Tests.Properties {
         ///		&lt;Fall SkelSet=&quot;fall&quot; /&gt;
         ///		
         ///		&lt;Punch SkelSet=&quot;punch&quot; X=&quot;$width/2&quot; Y=&quot;0&quot; Width=&quot;$width&quot; Height=&quot;$height/2&quot; /&gt;
-        ///	{/Body}
+        ///	&lt;/Body&gt;
         ///	&lt;Body Index=&quot;2&quot;&gt;
         ///		&lt;Size Width=&quot;300&quot; Height=&quot;78&quot; /&gt;
         ///		&lt;Body SkelBody=&quot;aa&quot; /&gt;
@@ -90,6 +90,8 @@ namespace NetGore.Tests.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DROP TABLE IF EXISTS `testdb_a`;
         ///CREATE TABLE IF NOT EXISTS `testdb_a` (
+        ///  `boo` tinyint(1) NOT NULL,
+        ///  `boou` tinyint(1) unsigned NOT NULL,
         ///  `b` tinyint(4) NOT NULL,
         ///  `bn` tinyint(4) DEFAULT NULL,
         ///  `bu` tinyint(3) unsigned NOT NULL,
@@ -100,9 +102,7 @@ namespace NetGore.Tests.Properties {
         ///  `sun` smallint(5) unsigned DEFAULT NULL,
         ///  `i` int(11) NOT NULL,
         ///  `in` int(11) DEFAULT NULL,
-        ///  `iu` int(10) unsigned NOT NULL,
-        ///  `iun` int(10) unsigned DEFAULT NULL,
-        ///  `l` bigint(20) NO [rest of string was truncated]&quot;;.
+        ///  `iu` int(10) unsigned  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string testdb_a {
             get {

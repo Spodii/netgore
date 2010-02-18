@@ -143,10 +143,11 @@
 &lt;/Bodies&gt;</value>
     <comment>Xml file contents used for the XmlInfoReader tests.</comment>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="testdb_a" xml:space="preserve">
     <value>DROP TABLE IF EXISTS `testdb_a`;
 CREATE TABLE IF NOT EXISTS `testdb_a` (
+  `boo` tinyint(1) NOT NULL,
+  `boou` tinyint(1) unsigned NOT NULL,
   `b` tinyint(4) NOT NULL,
   `bn` tinyint(4) DEFAULT NULL,
   `bu` tinyint(3) unsigned NOT NULL,
