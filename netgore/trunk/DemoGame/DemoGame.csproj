@@ -77,6 +77,8 @@
     <Compile Include="DbObjs\Interfaces\IAllianceTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterEquippedTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterInventoryTable.cs" />
+    <Compile Include="DbObjs\Interfaces\ICharacterQuestStatusKillsTable.cs" />
+    <Compile Include="DbObjs\Interfaces\ICharacterQuestStatusTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterStatusEffectTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateEquippedTable.cs" />
@@ -91,6 +93,10 @@
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapTable.cs" />
     <Compile Include="DbObjs\Interfaces\INpcCharacterTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestRequireFinishItemTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestRequireKillTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestRequireStartItemTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestRequireStartQuestTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRewardItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRewardTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestTable.cs" />

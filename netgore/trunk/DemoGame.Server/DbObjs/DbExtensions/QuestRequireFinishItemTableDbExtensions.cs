@@ -9,10 +9,10 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Contains extension methods for class QuestRewardItemTable that assist in performing
+/// Contains extension methods for class QuestRequireFinishItemTable that assist in performing
 /// reads and writes to and from a database.
 /// </summary>
-public static  class QuestRewardItemTableDbExtensions
+public static  class QuestRequireFinishItemTableDbExtensions
 {
 /// <summary>
 /// Copies the column values into the given DbParameterValues using the database column name
@@ -21,7 +21,7 @@ public static  class QuestRewardItemTableDbExtensions
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(this IQuestRewardItemTable source, NetGore.Db.DbParameterValues paramValues)
+public static void CopyValues(this IQuestRequireFinishItemTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@amount"] = (System.Byte)source.Amount;
 paramValues["@item_template_id"] = (System.UInt16)source.ItemTemplateID;
@@ -35,7 +35,7 @@ paramValues["@quest_id"] = (System.UInt16)source.QuestID;
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this QuestRewardItemTable source, System.Data.IDataReader dataReader)
+public static void ReadValues(this QuestRequireFinishItemTable source, System.Data.IDataReader dataReader)
 {
 System.Int32 i;
 
@@ -62,7 +62,7 @@ source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.Quest
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this QuestRewardItemTable source, System.Data.IDataReader dataReader)
+public static void TryReadValues(this QuestRequireFinishItemTable source, System.Data.IDataReader dataReader)
 {
 for (int i = 0; i < dataReader.FieldCount; i++)
 {
@@ -98,7 +98,7 @@ break;
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(this IQuestRewardItemTable source, NetGore.Db.DbParameterValues paramValues)
+public static void TryCopyValues(this IQuestRequireFinishItemTable source, NetGore.Db.DbParameterValues paramValues)
 {
 for (int i = 0; i < paramValues.Count; i++)
 {

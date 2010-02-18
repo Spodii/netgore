@@ -9,14 +9,14 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Provides a strongly-typed structure for the database table `quest_reward_item`.
+/// Provides a strongly-typed structure for the database table `character_quest_status`.
 /// </summary>
-public class QuestRewardItemTable : IQuestRewardItemTable, NetGore.IO.IPersistable
+public class CharacterQuestStatusTable : ICharacterQuestStatusTable, NetGore.IO.IPersistable
 {
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"amount", "item_template_id", "quest_id" };
+ static  readonly System.String[] _dbColumns = new string[] {"character_id", "completed_on", "quest_id", "started_on" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -30,7 +30,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 /// <summary>
 /// Array of the database column names for columns that are primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"item_template_id", "quest_id" };
+ static  readonly System.String[] _dbColumnsKeys = new string[] { };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"amount" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"character_id", "completed_on", "quest_id", "started_on" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -58,53 +58,57 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 /// <summary>
 /// The name of the database table that this class represents.
 /// </summary>
-public const System.String TableName = "quest_reward_item";
+public const System.String TableName = "character_quest_status";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 3;
+public const System.Int32 ColumnCount = 4;
 /// <summary>
-/// The field that maps onto the database column `amount`.
+/// The field that maps onto the database column `character_id`.
 /// </summary>
-System.Byte _amount;
+System.Int32 _characterID;
 /// <summary>
-/// The field that maps onto the database column `item_template_id`.
+/// The field that maps onto the database column `completed_on`.
 /// </summary>
-System.UInt16 _itemTemplateID;
+System.Nullable<System.DateTime> _completedOn;
 /// <summary>
 /// The field that maps onto the database column `quest_id`.
 /// </summary>
 System.UInt16 _questID;
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `amount`.
-/// The underlying database type is `tinyint(3) unsigned`.
+/// The field that maps onto the database column `started_on`.
+/// </summary>
+System.DateTime _startedOn;
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `character_id`.
+/// The underlying database type is `int(11)`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.Byte Amount
+public DemoGame.CharacterID CharacterID
 {
 get
 {
-return (System.Byte)_amount;
+return (DemoGame.CharacterID)_characterID;
 }
 set
 {
-this._amount = (System.Byte)value;
+this._characterID = (System.Int32)value;
 }
 }
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `item_template_id`.
-/// The underlying database type is `smallint(5) unsigned`.
+/// Gets or sets the value for the field that maps onto the database column `completed_on`.
+/// The underlying database type is `datetime`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public DemoGame.ItemTemplateID ItemTemplateID
+public System.Nullable<System.DateTime> CompletedOn
 {
 get
 {
-return (DemoGame.ItemTemplateID)_itemTemplateID;
+return (System.Nullable<System.DateTime>)_completedOn;
 }
 set
 {
-this._itemTemplateID = (System.UInt16)value;
+this._completedOn = (System.Nullable<System.DateTime>)value;
 }
 }
 /// <summary>
@@ -123,6 +127,22 @@ set
 this._questID = (System.UInt16)value;
 }
 }
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `started_on`.
+/// The underlying database type is `datetime`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.DateTime StartedOn
+{
+get
+{
+return (System.DateTime)_startedOn;
+}
+set
+{
+this._startedOn = (System.DateTime)value;
+}
+}
 
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -131,33 +151,35 @@ this._questID = (System.UInt16)value;
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-public IQuestRewardItemTable DeepCopy()
+public ICharacterQuestStatusTable DeepCopy()
 {
-return new QuestRewardItemTable(this);
+return new CharacterQuestStatusTable(this);
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// CharacterQuestStatusTable constructor.
 /// </summary>
-public QuestRewardItemTable()
+public CharacterQuestStatusTable()
 {
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// CharacterQuestStatusTable constructor.
 /// </summary>
-/// <param name="amount">The initial value for the corresponding property.</param>
-/// <param name="itemTemplateID">The initial value for the corresponding property.</param>
+/// <param name="characterID">The initial value for the corresponding property.</param>
+/// <param name="completedOn">The initial value for the corresponding property.</param>
 /// <param name="questID">The initial value for the corresponding property.</param>
-public QuestRewardItemTable(System.Byte @amount, DemoGame.ItemTemplateID @itemTemplateID, NetGore.Features.Quests.QuestID @questID)
+/// <param name="startedOn">The initial value for the corresponding property.</param>
+public CharacterQuestStatusTable(DemoGame.CharacterID @characterID, System.Nullable<System.DateTime> @completedOn, NetGore.Features.Quests.QuestID @questID, System.DateTime @startedOn)
 {
-this.Amount = (System.Byte)@amount;
-this.ItemTemplateID = (DemoGame.ItemTemplateID)@itemTemplateID;
+this.CharacterID = (DemoGame.CharacterID)@characterID;
+this.CompletedOn = (System.Nullable<System.DateTime>)@completedOn;
 this.QuestID = (NetGore.Features.Quests.QuestID)@questID;
+this.StartedOn = (System.DateTime)@startedOn;
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// CharacterQuestStatusTable constructor.
 /// </summary>
-/// <param name="source">IQuestRewardItemTable to copy the initial values from.</param>
-public QuestRewardItemTable(IQuestRewardItemTable source)
+/// <param name="source">ICharacterQuestStatusTable to copy the initial values from.</param>
+public CharacterQuestStatusTable(ICharacterQuestStatusTable source)
 {
 CopyValuesFrom(source);
 }
@@ -178,22 +200,24 @@ CopyValues(this, dic);
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(IQuestRewardItemTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
+public static void CopyValues(ICharacterQuestStatusTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@amount"] = (System.Byte)source.Amount;
-dic["@item_template_id"] = (DemoGame.ItemTemplateID)source.ItemTemplateID;
+dic["@character_id"] = (DemoGame.CharacterID)source.CharacterID;
+dic["@completed_on"] = (System.Nullable<System.DateTime>)source.CompletedOn;
 dic["@quest_id"] = (NetGore.Features.Quests.QuestID)source.QuestID;
+dic["@started_on"] = (System.DateTime)source.StartedOn;
 }
 
 /// <summary>
-/// Copies the values from the given <paramref name="source"/> into this QuestRewardItemTable.
+/// Copies the values from the given <paramref name="source"/> into this CharacterQuestStatusTable.
 /// </summary>
-/// <param name="source">The IQuestRewardItemTable to copy the values from.</param>
-public void CopyValuesFrom(IQuestRewardItemTable source)
+/// <param name="source">The ICharacterQuestStatusTable to copy the values from.</param>
+public void CopyValuesFrom(ICharacterQuestStatusTable source)
 {
-this.Amount = (System.Byte)source.Amount;
-this.ItemTemplateID = (DemoGame.ItemTemplateID)source.ItemTemplateID;
+this.CharacterID = (DemoGame.CharacterID)source.CharacterID;
+this.CompletedOn = (System.Nullable<System.DateTime>)source.CompletedOn;
 this.QuestID = (NetGore.Features.Quests.QuestID)source.QuestID;
+this.StartedOn = (System.DateTime)source.StartedOn;
 }
 
 /// <summary>
@@ -207,14 +231,17 @@ public System.Object GetValue(System.String columnName)
 {
 switch (columnName)
 {
-case "amount":
-return Amount;
+case "character_id":
+return CharacterID;
 
-case "item_template_id":
-return ItemTemplateID;
+case "completed_on":
+return CompletedOn;
 
 case "quest_id":
 return QuestID;
+
+case "started_on":
+return StartedOn;
 
 default:
 throw new ArgumentException("Field not found.","columnName");
@@ -230,16 +257,20 @@ public void SetValue(System.String columnName, System.Object value)
 {
 switch (columnName)
 {
-case "amount":
-this.Amount = (System.Byte)value;
+case "character_id":
+this.CharacterID = (DemoGame.CharacterID)value;
 break;
 
-case "item_template_id":
-this.ItemTemplateID = (DemoGame.ItemTemplateID)value;
+case "completed_on":
+this.CompletedOn = (System.Nullable<System.DateTime>)value;
 break;
 
 case "quest_id":
 this.QuestID = (NetGore.Features.Quests.QuestID)value;
+break;
+
+case "started_on":
+this.StartedOn = (System.DateTime)value;
 break;
 
 default:
@@ -258,14 +289,17 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 {
 switch (columnName)
 {
-case "amount":
-return new ColumnMetadata("amount", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+case "character_id":
+return new ColumnMetadata("character_id", "", "int(11)", null, typeof(System.Int32), false, false, false);
 
-case "item_template_id":
-return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+case "completed_on":
+return new ColumnMetadata("completed_on", "", "datetime", null, typeof(System.Nullable<System.DateTime>), true, false, false);
 
 case "quest_id":
-return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+
+case "started_on":
+return new ColumnMetadata("started_on", "", "datetime", null, typeof(System.DateTime), false, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

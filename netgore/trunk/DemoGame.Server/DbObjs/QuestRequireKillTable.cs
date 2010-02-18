@@ -9,14 +9,14 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Provides a strongly-typed structure for the database table `quest_reward_item`.
+/// Provides a strongly-typed structure for the database table `quest_require_kill`.
 /// </summary>
-public class QuestRewardItemTable : IQuestRewardItemTable, NetGore.IO.IPersistable
+public class QuestRequireKillTable : IQuestRequireKillTable, NetGore.IO.IPersistable
 {
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"amount", "item_template_id", "quest_id" };
+ static  readonly System.String[] _dbColumns = new string[] {"amount", "character_template_id", "quest_id" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -30,7 +30,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 /// <summary>
 /// Array of the database column names for columns that are primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"item_template_id", "quest_id" };
+ static  readonly System.String[] _dbColumnsKeys = new string[] { };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"amount" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"amount", "character_template_id", "quest_id" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -58,7 +58,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 /// <summary>
 /// The name of the database table that this class represents.
 /// </summary>
-public const System.String TableName = "quest_reward_item";
+public const System.String TableName = "quest_require_kill";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
@@ -66,45 +66,45 @@ public const System.Int32 ColumnCount = 3;
 /// <summary>
 /// The field that maps onto the database column `amount`.
 /// </summary>
-System.Byte _amount;
+System.UInt16 _amount;
 /// <summary>
-/// The field that maps onto the database column `item_template_id`.
+/// The field that maps onto the database column `character_template_id`.
 /// </summary>
-System.UInt16 _itemTemplateID;
+System.Nullable<System.UInt16> _characterTemplateID;
 /// <summary>
 /// The field that maps onto the database column `quest_id`.
 /// </summary>
-System.UInt16 _questID;
+System.Nullable<System.UInt16> _questID;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `amount`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public System.Byte Amount
-{
-get
-{
-return (System.Byte)_amount;
-}
-set
-{
-this._amount = (System.Byte)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `item_template_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public DemoGame.ItemTemplateID ItemTemplateID
+public System.UInt16 Amount
 {
 get
 {
-return (DemoGame.ItemTemplateID)_itemTemplateID;
+return (System.UInt16)_amount;
 }
 set
 {
-this._itemTemplateID = (System.UInt16)value;
+this._amount = (System.UInt16)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `character_template_id`.
+/// The underlying database type is `smallint(5) unsigned`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.Nullable<DemoGame.CharacterTemplateID> CharacterTemplateID
+{
+get
+{
+return (System.Nullable<DemoGame.CharacterTemplateID>)_characterTemplateID;
+}
+set
+{
+this._characterTemplateID = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -112,15 +112,15 @@ this._itemTemplateID = (System.UInt16)value;
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public NetGore.Features.Quests.QuestID QuestID
+public System.Nullable<NetGore.Features.Quests.QuestID> QuestID
 {
 get
 {
-return (NetGore.Features.Quests.QuestID)_questID;
+return (System.Nullable<NetGore.Features.Quests.QuestID>)_questID;
 }
 set
 {
-this._questID = (System.UInt16)value;
+this._questID = (System.Nullable<System.UInt16>)value;
 }
 }
 
@@ -131,33 +131,33 @@ this._questID = (System.UInt16)value;
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-public IQuestRewardItemTable DeepCopy()
+public IQuestRequireKillTable DeepCopy()
 {
-return new QuestRewardItemTable(this);
+return new QuestRequireKillTable(this);
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// QuestRequireKillTable constructor.
 /// </summary>
-public QuestRewardItemTable()
+public QuestRequireKillTable()
 {
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// QuestRequireKillTable constructor.
 /// </summary>
 /// <param name="amount">The initial value for the corresponding property.</param>
-/// <param name="itemTemplateID">The initial value for the corresponding property.</param>
+/// <param name="characterTemplateID">The initial value for the corresponding property.</param>
 /// <param name="questID">The initial value for the corresponding property.</param>
-public QuestRewardItemTable(System.Byte @amount, DemoGame.ItemTemplateID @itemTemplateID, NetGore.Features.Quests.QuestID @questID)
+public QuestRequireKillTable(System.UInt16 @amount, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.Features.Quests.QuestID> @questID)
 {
-this.Amount = (System.Byte)@amount;
-this.ItemTemplateID = (DemoGame.ItemTemplateID)@itemTemplateID;
-this.QuestID = (NetGore.Features.Quests.QuestID)@questID;
+this.Amount = (System.UInt16)@amount;
+this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)@characterTemplateID;
+this.QuestID = (System.Nullable<NetGore.Features.Quests.QuestID>)@questID;
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// QuestRequireKillTable constructor.
 /// </summary>
-/// <param name="source">IQuestRewardItemTable to copy the initial values from.</param>
-public QuestRewardItemTable(IQuestRewardItemTable source)
+/// <param name="source">IQuestRequireKillTable to copy the initial values from.</param>
+public QuestRequireKillTable(IQuestRequireKillTable source)
 {
 CopyValuesFrom(source);
 }
@@ -178,22 +178,22 @@ CopyValues(this, dic);
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(IQuestRewardItemTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
+public static void CopyValues(IQuestRequireKillTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@amount"] = (System.Byte)source.Amount;
-dic["@item_template_id"] = (DemoGame.ItemTemplateID)source.ItemTemplateID;
-dic["@quest_id"] = (NetGore.Features.Quests.QuestID)source.QuestID;
+dic["@amount"] = (System.UInt16)source.Amount;
+dic["@character_template_id"] = (System.Nullable<DemoGame.CharacterTemplateID>)source.CharacterTemplateID;
+dic["@quest_id"] = (System.Nullable<NetGore.Features.Quests.QuestID>)source.QuestID;
 }
 
 /// <summary>
-/// Copies the values from the given <paramref name="source"/> into this QuestRewardItemTable.
+/// Copies the values from the given <paramref name="source"/> into this QuestRequireKillTable.
 /// </summary>
-/// <param name="source">The IQuestRewardItemTable to copy the values from.</param>
-public void CopyValuesFrom(IQuestRewardItemTable source)
+/// <param name="source">The IQuestRequireKillTable to copy the values from.</param>
+public void CopyValuesFrom(IQuestRequireKillTable source)
 {
-this.Amount = (System.Byte)source.Amount;
-this.ItemTemplateID = (DemoGame.ItemTemplateID)source.ItemTemplateID;
-this.QuestID = (NetGore.Features.Quests.QuestID)source.QuestID;
+this.Amount = (System.UInt16)source.Amount;
+this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)source.CharacterTemplateID;
+this.QuestID = (System.Nullable<NetGore.Features.Quests.QuestID>)source.QuestID;
 }
 
 /// <summary>
@@ -210,8 +210,8 @@ switch (columnName)
 case "amount":
 return Amount;
 
-case "item_template_id":
-return ItemTemplateID;
+case "character_template_id":
+return CharacterTemplateID;
 
 case "quest_id":
 return QuestID;
@@ -231,15 +231,15 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "amount":
-this.Amount = (System.Byte)value;
+this.Amount = (System.UInt16)value;
 break;
 
-case "item_template_id":
-this.ItemTemplateID = (DemoGame.ItemTemplateID)value;
+case "character_template_id":
+this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)value;
 break;
 
 case "quest_id":
-this.QuestID = (NetGore.Features.Quests.QuestID)value;
+this.QuestID = (System.Nullable<NetGore.Features.Quests.QuestID>)value;
 break;
 
 default:
@@ -259,13 +259,13 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 switch (columnName)
 {
 case "amount":
-return new ColumnMetadata("amount", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+return new ColumnMetadata("amount", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
-case "item_template_id":
-return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+case "character_template_id":
+return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "quest_id":
-return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

@@ -3,9 +3,9 @@ using System.Linq;
 namespace DemoGame.DbObjs
 {
 /// <summary>
-/// Interface for a class that can be used to serialize values to the database table `quest_reward_item`.
+/// Interface for a class that can be used to serialize values to the database table `quest_require_start_item`.
 /// </summary>
-public interface IQuestRewardItemTable
+public interface IQuestRequireStartItemTable
 {
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -14,7 +14,7 @@ public interface IQuestRewardItemTable
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-IQuestRewardItemTable DeepCopy();
+IQuestRequireStartItemTable DeepCopy();
 
 /// <summary>
 /// Gets the value of the database column `amount`.

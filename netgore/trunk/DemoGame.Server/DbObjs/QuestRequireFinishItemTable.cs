@@ -9,9 +9,9 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Provides a strongly-typed structure for the database table `quest_reward_item`.
+/// Provides a strongly-typed structure for the database table `quest_require_finish_item`.
 /// </summary>
-public class QuestRewardItemTable : IQuestRewardItemTable, NetGore.IO.IPersistable
+public class QuestRequireFinishItemTable : IQuestRequireFinishItemTable, NetGore.IO.IPersistable
 {
 /// <summary>
 /// Array of the database column names.
@@ -58,7 +58,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 /// <summary>
 /// The name of the database table that this class represents.
 /// </summary>
-public const System.String TableName = "quest_reward_item";
+public const System.String TableName = "quest_require_finish_item";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
@@ -131,33 +131,33 @@ this._questID = (System.UInt16)value;
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-public IQuestRewardItemTable DeepCopy()
+public IQuestRequireFinishItemTable DeepCopy()
 {
-return new QuestRewardItemTable(this);
+return new QuestRequireFinishItemTable(this);
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// QuestRequireFinishItemTable constructor.
 /// </summary>
-public QuestRewardItemTable()
+public QuestRequireFinishItemTable()
 {
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// QuestRequireFinishItemTable constructor.
 /// </summary>
 /// <param name="amount">The initial value for the corresponding property.</param>
 /// <param name="itemTemplateID">The initial value for the corresponding property.</param>
 /// <param name="questID">The initial value for the corresponding property.</param>
-public QuestRewardItemTable(System.Byte @amount, DemoGame.ItemTemplateID @itemTemplateID, NetGore.Features.Quests.QuestID @questID)
+public QuestRequireFinishItemTable(System.Byte @amount, DemoGame.ItemTemplateID @itemTemplateID, NetGore.Features.Quests.QuestID @questID)
 {
 this.Amount = (System.Byte)@amount;
 this.ItemTemplateID = (DemoGame.ItemTemplateID)@itemTemplateID;
 this.QuestID = (NetGore.Features.Quests.QuestID)@questID;
 }
 /// <summary>
-/// QuestRewardItemTable constructor.
+/// QuestRequireFinishItemTable constructor.
 /// </summary>
-/// <param name="source">IQuestRewardItemTable to copy the initial values from.</param>
-public QuestRewardItemTable(IQuestRewardItemTable source)
+/// <param name="source">IQuestRequireFinishItemTable to copy the initial values from.</param>
+public QuestRequireFinishItemTable(IQuestRequireFinishItemTable source)
 {
 CopyValuesFrom(source);
 }
@@ -178,7 +178,7 @@ CopyValues(this, dic);
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(IQuestRewardItemTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
+public static void CopyValues(IQuestRequireFinishItemTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@amount"] = (System.Byte)source.Amount;
 dic["@item_template_id"] = (DemoGame.ItemTemplateID)source.ItemTemplateID;
@@ -186,10 +186,10 @@ dic["@quest_id"] = (NetGore.Features.Quests.QuestID)source.QuestID;
 }
 
 /// <summary>
-/// Copies the values from the given <paramref name="source"/> into this QuestRewardItemTable.
+/// Copies the values from the given <paramref name="source"/> into this QuestRequireFinishItemTable.
 /// </summary>
-/// <param name="source">The IQuestRewardItemTable to copy the values from.</param>
-public void CopyValuesFrom(IQuestRewardItemTable source)
+/// <param name="source">The IQuestRequireFinishItemTable to copy the values from.</param>
+public void CopyValuesFrom(IQuestRequireFinishItemTable source)
 {
 this.Amount = (System.Byte)source.Amount;
 this.ItemTemplateID = (DemoGame.ItemTemplateID)source.ItemTemplateID;

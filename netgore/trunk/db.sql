@@ -274,6 +274,60 @@ INSERT INTO `character_inventory` VALUES (1,18,4),(1,20,1),(1,21,2),(1,23,3),(1,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `character_quest_status`
+--
+
+DROP TABLE IF EXISTS `character_quest_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `character_quest_status` (
+  `character_id` int(11) NOT NULL,
+  `quest_id` smallint(5) unsigned NOT NULL,
+  `started_on` datetime NOT NULL,
+  `completed_on` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `character_quest_status`
+--
+
+LOCK TABLES `character_quest_status` WRITE;
+/*!40000 ALTER TABLE `character_quest_status` DISABLE KEYS */;
+/*!40000 ALTER TABLE `character_quest_status` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character_quest_status_kills`
+--
+
+DROP TABLE IF EXISTS `character_quest_status_kills`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `character_quest_status_kills` (
+  `character_id` int(11) NOT NULL,
+  `quest_id` smallint(5) unsigned NOT NULL,
+  `character_template_id` smallint(5) unsigned NOT NULL,
+  `count` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`character_id`,`quest_id`,`character_template_id`),
+  KEY `quest_id` (`quest_id`),
+  KEY `character_template_id` (`character_template_id`),
+  CONSTRAINT `character_quest_status_kills_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_quest_status_kills_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_quest_status_kills_ibfk_3` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `character_quest_status_kills`
+--
+
+LOCK TABLES `character_quest_status_kills` WRITE;
+/*!40000 ALTER TABLE `character_quest_status_kills` DISABLE KEYS */;
+/*!40000 ALTER TABLE `character_quest_status_kills` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `character_status_effect`
 --
 
@@ -740,10 +794,12 @@ DROP TABLE IF EXISTS `quest`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest` (
-  `id` int(11) NOT NULL,
+  `id` smallint(5) unsigned NOT NULL,
   `name` varchar(0) NOT NULL,
   `description` text NOT NULL,
-  `repeatable` tinyint(1) unsigned NOT NULL,
+  `repeatable` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `reward_cash` int(11) NOT NULL DEFAULT '0',
+  `reward_exp` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -758,6 +814,113 @@ LOCK TABLES `quest` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `quest_require_finish_item`
+--
+
+DROP TABLE IF EXISTS `quest_require_finish_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `quest_require_finish_item` (
+  `quest_id` smallint(5) unsigned NOT NULL,
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  `amount` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`quest_id`,`item_template_id`),
+  KEY `item_template_id` (`item_template_id`),
+  CONSTRAINT `quest_require_finish_item_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `quest_require_finish_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quest_require_finish_item`
+--
+
+LOCK TABLES `quest_require_finish_item` WRITE;
+/*!40000 ALTER TABLE `quest_require_finish_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quest_require_finish_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `quest_require_kill`
+--
+
+DROP TABLE IF EXISTS `quest_require_kill`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `quest_require_kill` (
+  `quest_id` smallint(5) unsigned DEFAULT NULL,
+  `character_template_id` smallint(5) unsigned DEFAULT NULL,
+  `amount` smallint(5) unsigned NOT NULL,
+  KEY `quest_id` (`quest_id`),
+  KEY `character_template_id` (`character_template_id`),
+  CONSTRAINT `quest_require_kill_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `quest_require_kill_ibfk_2` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quest_require_kill`
+--
+
+LOCK TABLES `quest_require_kill` WRITE;
+/*!40000 ALTER TABLE `quest_require_kill` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quest_require_kill` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `quest_require_start_item`
+--
+
+DROP TABLE IF EXISTS `quest_require_start_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `quest_require_start_item` (
+  `quest_id` smallint(5) unsigned NOT NULL,
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  `amount` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`quest_id`,`item_template_id`),
+  KEY `item_template_id` (`item_template_id`),
+  CONSTRAINT `quest_require_start_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `quest_require_start_item_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quest_require_start_item`
+--
+
+LOCK TABLES `quest_require_start_item` WRITE;
+/*!40000 ALTER TABLE `quest_require_start_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quest_require_start_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `quest_require_start_quest`
+--
+
+DROP TABLE IF EXISTS `quest_require_start_quest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `quest_require_start_quest` (
+  `quest_id` smallint(5) unsigned NOT NULL,
+  `req_quest_id` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`quest_id`,`req_quest_id`),
+  KEY `req_quest_id` (`req_quest_id`),
+  CONSTRAINT `quest_require_start_quest_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `quest_require_start_quest_ibfk_2` FOREIGN KEY (`req_quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quest_require_start_quest`
+--
+
+LOCK TABLES `quest_require_start_quest` WRITE;
+/*!40000 ALTER TABLE `quest_require_start_quest` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quest_require_start_quest` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `quest_reward_item`
 --
 
@@ -765,13 +928,13 @@ DROP TABLE IF EXISTS `quest_reward_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest_reward_item` (
-  `quest_id` int(11) NOT NULL,
-  `item_id` smallint(5) unsigned NOT NULL,
+  `quest_id` smallint(5) unsigned NOT NULL,
+  `item_template_id` smallint(5) unsigned NOT NULL,
   `amount` tinyint(3) unsigned NOT NULL,
-  PRIMARY KEY (`quest_id`,`item_id`),
-  KEY `item_id` (`item_id`),
-  CONSTRAINT `quest_reward_item_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `quest_reward_item_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`quest_id`,`item_template_id`),
+  KEY `item_template_id` (`item_template_id`),
+  CONSTRAINT `quest_reward_item_ibfk_3` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `quest_reward_item_ibfk_4` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1089,4 +1252,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-02-17 22:35:44
+-- Dump completed on 2010-02-18 13:29:29

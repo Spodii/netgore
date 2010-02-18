@@ -3,9 +3,9 @@ using System.Linq;
 namespace DemoGame.DbObjs
 {
 /// <summary>
-/// Interface for a class that can be used to serialize values to the database table `quest_reward_item`.
+/// Interface for a class that can be used to serialize values to the database table `character_quest_status`.
 /// </summary>
-public interface IQuestRewardItemTable
+public interface ICharacterQuestStatusTable
 {
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -14,19 +14,19 @@ public interface IQuestRewardItemTable
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-IQuestRewardItemTable DeepCopy();
+ICharacterQuestStatusTable DeepCopy();
 
 /// <summary>
-/// Gets the value of the database column `amount`.
+/// Gets the value of the database column `character_id`.
 /// </summary>
-System.Byte Amount
+DemoGame.CharacterID CharacterID
 {
 get;
 }
 /// <summary>
-/// Gets the value of the database column `item_template_id`.
+/// Gets the value of the database column `completed_on`.
 /// </summary>
-DemoGame.ItemTemplateID ItemTemplateID
+System.Nullable<System.DateTime> CompletedOn
 {
 get;
 }
@@ -34,6 +34,13 @@ get;
 /// Gets the value of the database column `quest_id`.
 /// </summary>
 NetGore.Features.Quests.QuestID QuestID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `started_on`.
+/// </summary>
+System.DateTime StartedOn
 {
 get;
 }

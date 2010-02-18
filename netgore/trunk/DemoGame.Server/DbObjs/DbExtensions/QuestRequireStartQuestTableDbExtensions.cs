@@ -9,10 +9,10 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Contains extension methods for class QuestRewardItemTable that assist in performing
+/// Contains extension methods for class QuestRequireStartQuestTable that assist in performing
 /// reads and writes to and from a database.
 /// </summary>
-public static  class QuestRewardItemTableDbExtensions
+public static  class QuestRequireStartQuestTableDbExtensions
 {
 /// <summary>
 /// Copies the column values into the given DbParameterValues using the database column name
@@ -21,11 +21,10 @@ public static  class QuestRewardItemTableDbExtensions
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(this IQuestRewardItemTable source, NetGore.Db.DbParameterValues paramValues)
+public static void CopyValues(this IQuestRequireStartQuestTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@amount"] = (System.Byte)source.Amount;
-paramValues["@item_template_id"] = (System.UInt16)source.ItemTemplateID;
 paramValues["@quest_id"] = (System.UInt16)source.QuestID;
+paramValues["@req_quest_id"] = (System.UInt16)source.ReqQuestID;
 }
 
 /// <summary>
@@ -35,21 +34,17 @@ paramValues["@quest_id"] = (System.UInt16)source.QuestID;
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this QuestRewardItemTable source, System.Data.IDataReader dataReader)
+public static void ReadValues(this QuestRequireStartQuestTable source, System.Data.IDataReader dataReader)
 {
 System.Int32 i;
-
-i = dataReader.GetOrdinal("amount");
-
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
-
-i = dataReader.GetOrdinal("item_template_id");
-
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("quest_id");
 
 source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("req_quest_id");
+
+source.ReqQuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 }
 
 /// <summary>
@@ -62,24 +57,19 @@ source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.Quest
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this QuestRewardItemTable source, System.Data.IDataReader dataReader)
+public static void TryReadValues(this QuestRequireStartQuestTable source, System.Data.IDataReader dataReader)
 {
 for (int i = 0; i < dataReader.FieldCount; i++)
 {
 switch (dataReader.GetName(i))
 {
-case "amount":
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
-break;
-
-
-case "item_template_id":
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
-break;
-
-
 case "quest_id":
 source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+break;
+
+
+case "req_quest_id":
+source.ReqQuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 break;
 
 
@@ -98,24 +88,19 @@ break;
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(this IQuestRewardItemTable source, NetGore.Db.DbParameterValues paramValues)
+public static void TryCopyValues(this IQuestRequireStartQuestTable source, NetGore.Db.DbParameterValues paramValues)
 {
 for (int i = 0; i < paramValues.Count; i++)
 {
 switch (paramValues.GetParameterName(i))
 {
-case "@amount":
-paramValues[i] = (System.Byte)source.Amount;
-break;
-
-
-case "@item_template_id":
-paramValues[i] = (System.UInt16)source.ItemTemplateID;
-break;
-
-
 case "@quest_id":
 paramValues[i] = (System.UInt16)source.QuestID;
+break;
+
+
+case "@req_quest_id":
+paramValues[i] = (System.UInt16)source.ReqQuestID;
 break;
 
 

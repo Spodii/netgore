@@ -9,10 +9,10 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Contains extension methods for class QuestRewardItemTable that assist in performing
+/// Contains extension methods for class CharacterQuestStatusTable that assist in performing
 /// reads and writes to and from a database.
 /// </summary>
-public static  class QuestRewardItemTableDbExtensions
+public static  class CharacterQuestStatusTableDbExtensions
 {
 /// <summary>
 /// Copies the column values into the given DbParameterValues using the database column name
@@ -21,11 +21,12 @@ public static  class QuestRewardItemTableDbExtensions
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(this IQuestRewardItemTable source, NetGore.Db.DbParameterValues paramValues)
+public static void CopyValues(this ICharacterQuestStatusTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@amount"] = (System.Byte)source.Amount;
-paramValues["@item_template_id"] = (System.UInt16)source.ItemTemplateID;
+paramValues["@character_id"] = (System.Int32)source.CharacterID;
+paramValues["@completed_on"] = (System.Nullable<System.DateTime>)source.CompletedOn;
 paramValues["@quest_id"] = (System.UInt16)source.QuestID;
+paramValues["@started_on"] = (System.DateTime)source.StartedOn;
 }
 
 /// <summary>
@@ -35,21 +36,25 @@ paramValues["@quest_id"] = (System.UInt16)source.QuestID;
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this QuestRewardItemTable source, System.Data.IDataReader dataReader)
+public static void ReadValues(this CharacterQuestStatusTable source, System.Data.IDataReader dataReader)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("amount");
+i = dataReader.GetOrdinal("character_id");
 
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
 
-i = dataReader.GetOrdinal("item_template_id");
+i = dataReader.GetOrdinal("completed_on");
 
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+source.CompletedOn = (System.Nullable<System.DateTime>)(System.Nullable<System.DateTime>)(dataReader.IsDBNull(i) ? (System.Nullable<System.DateTime>)null : dataReader.GetDateTime(i));
 
 i = dataReader.GetOrdinal("quest_id");
 
 source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("started_on");
+
+source.StartedOn = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 }
 
 /// <summary>
@@ -62,24 +67,29 @@ source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.Quest
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this QuestRewardItemTable source, System.Data.IDataReader dataReader)
+public static void TryReadValues(this CharacterQuestStatusTable source, System.Data.IDataReader dataReader)
 {
 for (int i = 0; i < dataReader.FieldCount; i++)
 {
 switch (dataReader.GetName(i))
 {
-case "amount":
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+case "character_id":
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
 break;
 
 
-case "item_template_id":
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+case "completed_on":
+source.CompletedOn = (System.Nullable<System.DateTime>)(System.Nullable<System.DateTime>)(dataReader.IsDBNull(i) ? (System.Nullable<System.DateTime>)null : dataReader.GetDateTime(i));
 break;
 
 
 case "quest_id":
 source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+break;
+
+
+case "started_on":
+source.StartedOn = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 break;
 
 
@@ -98,24 +108,29 @@ break;
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(this IQuestRewardItemTable source, NetGore.Db.DbParameterValues paramValues)
+public static void TryCopyValues(this ICharacterQuestStatusTable source, NetGore.Db.DbParameterValues paramValues)
 {
 for (int i = 0; i < paramValues.Count; i++)
 {
 switch (paramValues.GetParameterName(i))
 {
-case "@amount":
-paramValues[i] = (System.Byte)source.Amount;
+case "@character_id":
+paramValues[i] = (System.Int32)source.CharacterID;
 break;
 
 
-case "@item_template_id":
-paramValues[i] = (System.UInt16)source.ItemTemplateID;
+case "@completed_on":
+paramValues[i] = (System.Nullable<System.DateTime>)source.CompletedOn;
 break;
 
 
 case "@quest_id":
 paramValues[i] = (System.UInt16)source.QuestID;
+break;
+
+
+case "@started_on":
+paramValues[i] = (System.DateTime)source.StartedOn;
 break;
 
 

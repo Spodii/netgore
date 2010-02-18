@@ -26,7 +26,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `id`.
 /// </summary>
-System.Int32 ID
+NetGore.Features.Quests.QuestID ID
 {
 get;
 }
@@ -41,6 +41,20 @@ get;
 /// Gets the value of the database column `repeatable`.
 /// </summary>
 System.Boolean Repeatable
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `reward_cash`.
+/// </summary>
+System.Int32 RewardCash
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `reward_exp`.
+/// </summary>
+System.Int32 RewardExp
 {
 get;
 }
