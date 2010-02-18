@@ -30,6 +30,7 @@ paramValues["@graphic"] = (System.UInt16)source.Graphic;
 paramValues["@height"] = (System.Byte)source.Height;
 paramValues["@hp"] = (System.Int16)source.HP;
 paramValues["@id"] = (System.Int32)source.ID;
+paramValues["@item_template_id"] = (System.Nullable<System.UInt16>)source.ItemTemplateID;
 paramValues["@mp"] = (System.Int16)source.MP;
 paramValues["@name"] = (System.String)source.Name;
 paramValues["@range"] = (System.UInt16)source.Range;
@@ -88,6 +89,10 @@ source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
 i = dataReader.GetOrdinal("id");
 
 source.ID = (DemoGame.ItemID)(DemoGame.ItemID)dataReader.GetInt32(i);
+
+i = dataReader.GetOrdinal("item_template_id");
+
+source.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)(System.Nullable<DemoGame.ItemTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("mp");
 
@@ -210,6 +215,11 @@ break;
 
 case "id":
 source.ID = (DemoGame.ItemID)(DemoGame.ItemID)dataReader.GetInt32(i);
+break;
+
+
+case "item_template_id":
+source.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)(System.Nullable<DemoGame.ItemTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
@@ -356,6 +366,11 @@ break;
 
 case "@id":
 paramValues[i] = (System.Int32)source.ID;
+break;
+
+
+case "@item_template_id":
+paramValues[i] = (System.Nullable<System.UInt16>)source.ItemTemplateID;
 break;
 
 

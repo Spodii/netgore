@@ -65,7 +65,7 @@ namespace DemoGame.Server
 
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
-                pos, new Vector2(t.Width, t.Height), t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic, t.Value, amount, t.HP,
+                pos, new Vector2(t.Width, t.Height), t.ID, t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic, t.Value, amount, t.HP,
                 t.MP, t.EquippedBody, t.Stats, t.ReqStats)
         {
         }
@@ -82,6 +82,7 @@ namespace DemoGame.Server
             _statChangedHandler = StatCollection_StatChanged;
 
             _id = iv.ID;
+            _templateID = iv.ItemTemplateID;
 
             _name = iv.Name;
             _description = iv.Description;
@@ -99,7 +100,7 @@ namespace DemoGame.Server
             Resized += ItemEntity_Resized;
         }
 
-        ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount,
+        ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type, WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount,
                    SPValueType hp, SPValueType mp, string equippedBody, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
         {
@@ -107,6 +108,7 @@ namespace DemoGame.Server
 
             _id = IDCreator.GetNext();
 
+            _templateID = templateID;
             _name = name;
             _description = desc;
             _graphicIndex = graphic;
@@ -130,7 +132,7 @@ namespace DemoGame.Server
 
         ItemEntity(ItemEntity s)
             : this(
-                s.Position, s.Size, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.EquippedBody,
+                s.Position, s.Size, s.ItemTemplateID, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.EquippedBody,
                 s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
@@ -560,6 +562,25 @@ namespace DemoGame.Server
         {
             get { return _id; }
         }
+
+        /// <summary>
+        /// Gets the value of the database column `item_template_id`.
+        /// </summary>
+        public ItemTemplateID? ItemTemplateID
+        {
+            get { return _templateID; }
+            private set
+            {
+                if (_templateID == value)
+                    return;
+
+                _templateID = value;
+
+                SynchronizeField("item_template_id", _mp);
+            }
+        }
+
+        ItemTemplateID? _templateID;
 
         /// <summary>
         /// Gets the value of the database column `mp`.

@@ -16,7 +16,7 @@ public class ItemTable : IItemTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"amount", "description", "equipped_body", "graphic", "height", "hp", "id", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
+ static  readonly System.String[] _dbColumns = new string[] {"amount", "description", "equipped_body", "graphic", "height", "hp", "id", "item_template_id", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"amount", "description", "equipped_body", "graphic", "height", "hp", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"amount", "description", "equipped_body", "graphic", "height", "hp", "item_template_id", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -114,7 +114,7 @@ public const System.String TableName = "item";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 25;
+public const System.Int32 ColumnCount = 26;
 /// <summary>
 /// The field that maps onto the database column `amount`.
 /// </summary>
@@ -143,6 +143,10 @@ System.Int16 _hP;
 /// The field that maps onto the database column `id`.
 /// </summary>
 System.Int32 _iD;
+/// <summary>
+/// The field that maps onto the database column `item_template_id`.
+/// </summary>
+System.Nullable<System.UInt16> _itemTemplateID;
 /// <summary>
 /// The field that maps onto the database column `mp`.
 /// </summary>
@@ -289,6 +293,22 @@ return (DemoGame.ItemID)_iD;
 set
 {
 this._iD = (System.Int32)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `item_template_id`.
+/// The underlying database type is `smallint(5) unsigned`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.Nullable<DemoGame.ItemTemplateID> ItemTemplateID
+{
+get
+{
+return (System.Nullable<DemoGame.ItemTemplateID>)_itemTemplateID;
+}
+set
+{
+this._itemTemplateID = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -471,6 +491,7 @@ public ItemTable()
 /// <param name="height">The initial value for the corresponding property.</param>
 /// <param name="hP">The initial value for the corresponding property.</param>
 /// <param name="iD">The initial value for the corresponding property.</param>
+/// <param name="itemTemplateID">The initial value for the corresponding property.</param>
 /// <param name="mP">The initial value for the corresponding property.</param>
 /// <param name="name">The initial value for the corresponding property.</param>
 /// <param name="range">The initial value for the corresponding property.</param>
@@ -489,7 +510,7 @@ public ItemTable()
 /// <param name="value">The initial value for the corresponding property.</param>
 /// <param name="weaponType">The initial value for the corresponding property.</param>
 /// <param name="width">The initial value for the corresponding property.</param>
-public ItemTable(System.Byte @amount, System.String @description, System.String @equippedBody, NetGore.GrhIndex @graphic, System.Byte @height, DemoGame.SPValueType @hP, DemoGame.ItemID @iD, DemoGame.SPValueType @mP, System.String @name, System.UInt16 @range, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statReqAgi, System.Int16 @statReqInt, System.Int16 @statReqStr, System.Int16 @statStr, DemoGame.ItemType @type, System.Int32 @value, DemoGame.WeaponType @weaponType, System.Byte @width)
+public ItemTable(System.Byte @amount, System.String @description, System.String @equippedBody, NetGore.GrhIndex @graphic, System.Byte @height, DemoGame.SPValueType @hP, DemoGame.ItemID @iD, System.Nullable<DemoGame.ItemTemplateID> @itemTemplateID, DemoGame.SPValueType @mP, System.String @name, System.UInt16 @range, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statReqAgi, System.Int16 @statReqInt, System.Int16 @statReqStr, System.Int16 @statStr, DemoGame.ItemType @type, System.Int32 @value, DemoGame.WeaponType @weaponType, System.Byte @width)
 {
 this.Amount = (System.Byte)@amount;
 this.Description = (System.String)@description;
@@ -498,6 +519,7 @@ this.Graphic = (NetGore.GrhIndex)@graphic;
 this.Height = (System.Byte)@height;
 this.HP = (DemoGame.SPValueType)@hP;
 this.ID = (DemoGame.ItemID)@iD;
+this.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)@itemTemplateID;
 this.MP = (DemoGame.SPValueType)@mP;
 this.Name = (System.String)@name;
 this.Range = (System.UInt16)@range;
@@ -551,6 +573,7 @@ dic["@graphic"] = (NetGore.GrhIndex)source.Graphic;
 dic["@height"] = (System.Byte)source.Height;
 dic["@hp"] = (DemoGame.SPValueType)source.HP;
 dic["@id"] = (DemoGame.ItemID)source.ID;
+dic["@item_template_id"] = (System.Nullable<DemoGame.ItemTemplateID>)source.ItemTemplateID;
 dic["@mp"] = (DemoGame.SPValueType)source.MP;
 dic["@name"] = (System.String)source.Name;
 dic["@range"] = (System.UInt16)source.Range;
@@ -584,6 +607,7 @@ this.Graphic = (NetGore.GrhIndex)source.Graphic;
 this.Height = (System.Byte)source.Height;
 this.HP = (DemoGame.SPValueType)source.HP;
 this.ID = (DemoGame.ItemID)source.ID;
+this.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)source.ItemTemplateID;
 this.MP = (DemoGame.SPValueType)source.MP;
 this.Name = (System.String)source.Name;
 this.Range = (System.UInt16)source.Range;
@@ -635,6 +659,9 @@ return HP;
 
 case "id":
 return ID;
+
+case "item_template_id":
+return ItemTemplateID;
 
 case "mp":
 return MP;
@@ -730,6 +757,10 @@ break;
 
 case "id":
 this.ID = (DemoGame.ItemID)value;
+break;
+
+case "item_template_id":
+this.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)value;
 break;
 
 case "mp":
@@ -840,6 +871,9 @@ return new ColumnMetadata("hp", "", "smallint(6)", "0", typeof(System.Int16), fa
 
 case "id":
 return new ColumnMetadata("id", "", "int(11)", null, typeof(System.Int32), false, true, false);
+
+case "item_template_id":
+return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "mp":
 return new ColumnMetadata("mp", "", "smallint(6)", "0", typeof(System.Int16), false, false, false);

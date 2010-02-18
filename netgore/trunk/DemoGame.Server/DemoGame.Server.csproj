@@ -121,6 +121,9 @@
     <Compile Include="DbObjs\DbExtensions\MapSpawnTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\NpcCharacterTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\QuestRewardItemTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\QuestRewardTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\QuestTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerSettingTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerTimeTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopItemTableDbExtensions.cs" />
@@ -132,6 +135,9 @@
     <Compile Include="DbObjs\GuildTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />
     <Compile Include="DbObjs\NpcCharacterTable.cs" />
+    <Compile Include="DbObjs\QuestRewardItemTable.cs" />
+    <Compile Include="DbObjs\QuestRewardTable.cs" />
+    <Compile Include="DbObjs\QuestTable.cs" />
     <Compile Include="DbObjs\ServerSettingTable.cs" />
     <Compile Include="DbObjs\ServerTimeTable.cs" />
     <Compile Include="DbObjs\ShopItemTable.cs" />

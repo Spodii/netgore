@@ -91,6 +91,9 @@
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapTable.cs" />
     <Compile Include="DbObjs\Interfaces\INpcCharacterTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestRewardItemTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestRewardTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestTable.cs" />
     <Compile Include="DbObjs\Interfaces\IServerSettingTable.cs" />
     <Compile Include="DbObjs\Interfaces\IServerTimeTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopItemTable.cs" />
