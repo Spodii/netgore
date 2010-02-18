@@ -24,8 +24,8 @@ public static  class QuestRewardItemTableDbExtensions
 public static void CopyValues(this IQuestRewardItemTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@amount"] = (System.Byte)source.Amount;
-paramValues["@item_id"] = (System.UInt16)source.ItemID;
-paramValues["@quest_id"] = (System.Int32)source.QuestId;
+paramValues["@item_template_id"] = (System.UInt16)source.ItemTemplateID;
+paramValues["@quest_id"] = (System.UInt16)source.QuestID;
 }
 
 /// <summary>
@@ -43,13 +43,13 @@ i = dataReader.GetOrdinal("amount");
 
 source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
 
-i = dataReader.GetOrdinal("item_id");
+i = dataReader.GetOrdinal("item_template_id");
 
-source.ItemID = (DemoGame.ItemID)(DemoGame.ItemID)dataReader.GetUInt16(i);
+source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("quest_id");
 
-source.QuestId = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 }
 
 /// <summary>
@@ -73,13 +73,13 @@ source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
 break;
 
 
-case "item_id":
-source.ItemID = (DemoGame.ItemID)(DemoGame.ItemID)dataReader.GetUInt16(i);
+case "item_template_id":
+source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
 break;
 
 
 case "quest_id":
-source.QuestId = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 break;
 
 
@@ -109,13 +109,13 @@ paramValues[i] = (System.Byte)source.Amount;
 break;
 
 
-case "@item_id":
-paramValues[i] = (System.UInt16)source.ItemID;
+case "@item_template_id":
+paramValues[i] = (System.UInt16)source.ItemTemplateID;
 break;
 
 
 case "@quest_id":
-paramValues[i] = (System.Int32)source.QuestId;
+paramValues[i] = (System.UInt16)source.QuestID;
 break;
 
 

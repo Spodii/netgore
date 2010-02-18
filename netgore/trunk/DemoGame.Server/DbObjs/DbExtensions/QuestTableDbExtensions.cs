@@ -24,9 +24,11 @@ public static  class QuestTableDbExtensions
 public static void CopyValues(this IQuestTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@description"] = (System.String)source.Description;
-paramValues["@id"] = (System.Int32)source.ID;
+paramValues["@id"] = (System.UInt16)source.ID;
 paramValues["@name"] = (System.String)source.Name;
 paramValues["@repeatable"] = (System.Boolean)source.Repeatable;
+paramValues["@reward_cash"] = (System.Int32)source.RewardCash;
+paramValues["@reward_exp"] = (System.Int32)source.RewardExp;
 }
 
 /// <summary>
@@ -46,7 +48,7 @@ source.Description = (System.String)(System.String)dataReader.GetString(i);
 
 i = dataReader.GetOrdinal("id");
 
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("name");
 
@@ -55,6 +57,14 @@ source.Name = (System.String)(System.String)dataReader.GetString(i);
 i = dataReader.GetOrdinal("repeatable");
 
 source.Repeatable = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+
+i = dataReader.GetOrdinal("reward_cash");
+
+source.RewardCash = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+
+i = dataReader.GetOrdinal("reward_exp");
+
+source.RewardExp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
 }
 
 /// <summary>
@@ -79,7 +89,7 @@ break;
 
 
 case "id":
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 break;
 
 
@@ -90,6 +100,16 @@ break;
 
 case "repeatable":
 source.Repeatable = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+break;
+
+
+case "reward_cash":
+source.RewardCash = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+break;
+
+
+case "reward_exp":
+source.RewardExp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
 break;
 
 
@@ -120,7 +140,7 @@ break;
 
 
 case "@id":
-paramValues[i] = (System.Int32)source.ID;
+paramValues[i] = (System.UInt16)source.ID;
 break;
 
 
@@ -131,6 +151,16 @@ break;
 
 case "@repeatable":
 paramValues[i] = (System.Boolean)source.Repeatable;
+break;
+
+
+case "@reward_cash":
+paramValues[i] = (System.Int32)source.RewardCash;
+break;
+
+
+case "@reward_exp":
+paramValues[i] = (System.Int32)source.RewardExp;
 break;
 
 

@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Emoticons\" />
+    <Folder Include="Quests\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>

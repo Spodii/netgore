@@ -16,7 +16,7 @@ public class QuestRewardItemTable : IQuestRewardItemTable, NetGore.IO.IPersistab
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"amount", "item_id", "quest_id" };
+ static  readonly System.String[] _dbColumns = new string[] {"amount", "item_template_id", "quest_id" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -30,7 +30,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 /// <summary>
 /// Array of the database column names for columns that are primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"item_id", "quest_id" };
+ static  readonly System.String[] _dbColumnsKeys = new string[] {"item_template_id", "quest_id" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
 /// </summary>
@@ -68,13 +68,13 @@ public const System.Int32 ColumnCount = 3;
 /// </summary>
 System.Byte _amount;
 /// <summary>
-/// The field that maps onto the database column `item_id`.
+/// The field that maps onto the database column `item_template_id`.
 /// </summary>
-System.UInt16 _itemID;
+System.UInt16 _itemTemplateID;
 /// <summary>
 /// The field that maps onto the database column `quest_id`.
 /// </summary>
-System.Int32 _questId;
+System.UInt16 _questID;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `amount`.
 /// The underlying database type is `tinyint(3) unsigned`.
@@ -92,35 +92,35 @@ this._amount = (System.Byte)value;
 }
 }
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `item_id`.
+/// Gets or sets the value for the field that maps onto the database column `item_template_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public DemoGame.ItemID ItemID
+public DemoGame.ItemTemplateID ItemTemplateID
 {
 get
 {
-return (DemoGame.ItemID)_itemID;
+return (DemoGame.ItemTemplateID)_itemTemplateID;
 }
 set
 {
-this._itemID = (System.UInt16)value;
+this._itemTemplateID = (System.UInt16)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `quest_id`.
-/// The underlying database type is `int(11)`.
+/// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.Int32 QuestId
+public NetGore.Features.Quests.QuestID QuestID
 {
 get
 {
-return (System.Int32)_questId;
+return (NetGore.Features.Quests.QuestID)_questID;
 }
 set
 {
-this._questId = (System.Int32)value;
+this._questID = (System.UInt16)value;
 }
 }
 
@@ -145,13 +145,13 @@ public QuestRewardItemTable()
 /// QuestRewardItemTable constructor.
 /// </summary>
 /// <param name="amount">The initial value for the corresponding property.</param>
-/// <param name="itemID">The initial value for the corresponding property.</param>
-/// <param name="questId">The initial value for the corresponding property.</param>
-public QuestRewardItemTable(System.Byte @amount, DemoGame.ItemID @itemID, System.Int32 @questId)
+/// <param name="itemTemplateID">The initial value for the corresponding property.</param>
+/// <param name="questID">The initial value for the corresponding property.</param>
+public QuestRewardItemTable(System.Byte @amount, DemoGame.ItemTemplateID @itemTemplateID, NetGore.Features.Quests.QuestID @questID)
 {
 this.Amount = (System.Byte)@amount;
-this.ItemID = (DemoGame.ItemID)@itemID;
-this.QuestId = (System.Int32)@questId;
+this.ItemTemplateID = (DemoGame.ItemTemplateID)@itemTemplateID;
+this.QuestID = (NetGore.Features.Quests.QuestID)@questID;
 }
 /// <summary>
 /// QuestRewardItemTable constructor.
@@ -181,8 +181,8 @@ CopyValues(this, dic);
 public static void CopyValues(IQuestRewardItemTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@amount"] = (System.Byte)source.Amount;
-dic["@item_id"] = (DemoGame.ItemID)source.ItemID;
-dic["@quest_id"] = (System.Int32)source.QuestId;
+dic["@item_template_id"] = (DemoGame.ItemTemplateID)source.ItemTemplateID;
+dic["@quest_id"] = (NetGore.Features.Quests.QuestID)source.QuestID;
 }
 
 /// <summary>
@@ -192,8 +192,8 @@ dic["@quest_id"] = (System.Int32)source.QuestId;
 public void CopyValuesFrom(IQuestRewardItemTable source)
 {
 this.Amount = (System.Byte)source.Amount;
-this.ItemID = (DemoGame.ItemID)source.ItemID;
-this.QuestId = (System.Int32)source.QuestId;
+this.ItemTemplateID = (DemoGame.ItemTemplateID)source.ItemTemplateID;
+this.QuestID = (NetGore.Features.Quests.QuestID)source.QuestID;
 }
 
 /// <summary>
@@ -210,11 +210,11 @@ switch (columnName)
 case "amount":
 return Amount;
 
-case "item_id":
-return ItemID;
+case "item_template_id":
+return ItemTemplateID;
 
 case "quest_id":
-return QuestId;
+return QuestID;
 
 default:
 throw new ArgumentException("Field not found.","columnName");
@@ -234,12 +234,12 @@ case "amount":
 this.Amount = (System.Byte)value;
 break;
 
-case "item_id":
-this.ItemID = (DemoGame.ItemID)value;
+case "item_template_id":
+this.ItemTemplateID = (DemoGame.ItemTemplateID)value;
 break;
 
 case "quest_id":
-this.QuestId = (System.Int32)value;
+this.QuestID = (NetGore.Features.Quests.QuestID)value;
 break;
 
 default:
@@ -261,11 +261,11 @@ switch (columnName)
 case "amount":
 return new ColumnMetadata("amount", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
 
-case "item_id":
-return new ColumnMetadata("item_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+case "item_template_id":
+return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 
 case "quest_id":
-return new ColumnMetadata("quest_id", "", "int(11)", null, typeof(System.Int32), false, true, false);
+return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

@@ -24,16 +24,16 @@ System.Byte Amount
 get;
 }
 /// <summary>
-/// Gets the value of the database column `item_id`.
+/// Gets the value of the database column `item_template_id`.
 /// </summary>
-DemoGame.ItemID ItemID
+DemoGame.ItemTemplateID ItemTemplateID
 {
 get;
 }
 /// <summary>
 /// Gets the value of the database column `quest_id`.
 /// </summary>
-System.Int32 QuestId
+NetGore.Features.Quests.QuestID QuestID
 {
 get;
 }
