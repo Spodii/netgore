@@ -21,7 +21,6 @@ namespace NetGore.Db.ClassCreator
         readonly IEnumerable<CustomTypeMapping> _customTypes;
         readonly Dictionary<Type, string> _dataReaderReadMethods;
         readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
-
         readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
