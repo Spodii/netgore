@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using NetGore;
 using NetGore.Db;
 
@@ -30,7 +32,7 @@ namespace InstallationValidator.Tests
         {
             try
             {
-                MySqlHelper.ConnectionSettings = new DbConnectionSettings(MySqlHelper.DbSettingsFile);
+                MySqlHelper.ConnectionSettings = new DbConnectionSettings(MySqlHelper.DbSettingsFile, true);
             }
             catch (Exception ex)
             {

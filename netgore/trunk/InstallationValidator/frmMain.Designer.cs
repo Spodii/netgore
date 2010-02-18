@@ -32,7 +32,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.gbTests = new System.Windows.Forms.GroupBox();
-            this.lstTests = new InstallationValidator.TestListBox();
             this.btnSetupGuide = new System.Windows.Forms.Button();
             this.btnRun = new System.Windows.Forms.Button();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -43,6 +42,8 @@
             this.txtStatus = new System.Windows.Forms.TextBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            this.lstTests = new InstallationValidator.TestListBox();
+            this.btnDbSettings = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -74,7 +75,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer1.Size = new System.Drawing.Size(623, 420);
-            this.splitContainer1.SplitterDistance = 205;
+            this.splitContainer1.SplitterDistance = 250;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -90,9 +91,10 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.btnDbSettings);
             this.splitContainer2.Panel2.Controls.Add(this.btnSetupGuide);
             this.splitContainer2.Panel2.Controls.Add(this.btnRun);
-            this.splitContainer2.Size = new System.Drawing.Size(205, 420);
+            this.splitContainer2.Size = new System.Drawing.Size(250, 420);
             this.splitContainer2.SplitterDistance = 389;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -102,30 +104,19 @@
             this.gbTests.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbTests.Location = new System.Drawing.Point(0, 0);
             this.gbTests.Name = "gbTests";
-            this.gbTests.Size = new System.Drawing.Size(205, 389);
+            this.gbTests.Size = new System.Drawing.Size(250, 389);
             this.gbTests.TabIndex = 0;
             this.gbTests.TabStop = false;
             this.gbTests.Text = "Tests";
             // 
-            // lstTests
-            // 
-            this.lstTests.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstTests.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstTests.FormattingEnabled = true;
-            this.lstTests.Location = new System.Drawing.Point(3, 16);
-            this.lstTests.Name = "lstTests";
-            this.lstTests.Size = new System.Drawing.Size(199, 368);
-            this.lstTests.TabIndex = 1;
-            this.lstTests.SelectedIndexChanged += new System.EventHandler(this.lstTests_SelectedIndexChanged);
-            // 
             // btnSetupGuide
             // 
             this.btnSetupGuide.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnSetupGuide.Location = new System.Drawing.Point(-1, 0);
+            this.btnSetupGuide.Location = new System.Drawing.Point(91, 0);
             this.btnSetupGuide.Name = "btnSetupGuide";
-            this.btnSetupGuide.Size = new System.Drawing.Size(103, 27);
+            this.btnSetupGuide.Size = new System.Drawing.Size(76, 27);
             this.btnSetupGuide.TabIndex = 2;
-            this.btnSetupGuide.Text = "View Setup Guide";
+            this.btnSetupGuide.Text = "Setup Guide";
             this.tt.SetToolTip(this.btnSetupGuide, "Opens the Setup Guide page on the NetGore site");
             this.btnSetupGuide.UseVisualStyleBackColor = true;
             this.btnSetupGuide.Click += new System.EventHandler(this.btnSetupGuide_Click);
@@ -135,9 +126,9 @@
             this.btnRun.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnRun.Image = global::InstallationValidator.Properties.Resources.idle;
             this.btnRun.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRun.Location = new System.Drawing.Point(102, 0);
+            this.btnRun.Location = new System.Drawing.Point(167, 0);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(103, 27);
+            this.btnRun.Size = new System.Drawing.Size(83, 27);
             this.btnRun.TabIndex = 1;
             this.btnRun.Text = "Run Tests";
             this.tt.SetToolTip(this.btnRun, "Runs all of the tests");
@@ -158,7 +149,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(414, 420);
+            this.splitContainer3.Size = new System.Drawing.Size(369, 420);
             this.splitContainer3.SplitterDistance = 124;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -168,7 +159,7 @@
             this.gbTestDesc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbTestDesc.Location = new System.Drawing.Point(0, 0);
             this.gbTestDesc.Name = "gbTestDesc";
-            this.gbTestDesc.Size = new System.Drawing.Size(414, 124);
+            this.gbTestDesc.Size = new System.Drawing.Size(369, 124);
             this.gbTestDesc.TabIndex = 0;
             this.gbTestDesc.TabStop = false;
             this.gbTestDesc.Text = "Selected Test Description";
@@ -181,7 +172,7 @@
             this.txtDesc.Multiline = true;
             this.txtDesc.Name = "txtDesc";
             this.txtDesc.ReadOnly = true;
-            this.txtDesc.Size = new System.Drawing.Size(408, 105);
+            this.txtDesc.Size = new System.Drawing.Size(363, 105);
             this.txtDesc.TabIndex = 0;
             // 
             // splitContainer4
@@ -198,7 +189,7 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.lblStatus);
-            this.splitContainer4.Size = new System.Drawing.Size(414, 292);
+            this.splitContainer4.Size = new System.Drawing.Size(369, 292);
             this.splitContainer4.SplitterDistance = 263;
             this.splitContainer4.TabIndex = 0;
             // 
@@ -208,7 +199,7 @@
             this.gbStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbStatus.Location = new System.Drawing.Point(0, 0);
             this.gbStatus.Name = "gbStatus";
-            this.gbStatus.Size = new System.Drawing.Size(414, 263);
+            this.gbStatus.Size = new System.Drawing.Size(369, 263);
             this.gbStatus.TabIndex = 0;
             this.gbStatus.TabStop = false;
             this.gbStatus.Text = "Selected Test Status";
@@ -221,7 +212,7 @@
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.ReadOnly = true;
-            this.txtStatus.Size = new System.Drawing.Size(408, 244);
+            this.txtStatus.Size = new System.Drawing.Size(363, 244);
             this.txtStatus.TabIndex = 1;
             // 
             // lblStatus
@@ -229,9 +220,33 @@
             this.lblStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatus.Location = new System.Drawing.Point(0, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(414, 25);
+            this.lblStatus.Size = new System.Drawing.Size(369, 25);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "label1";
+            // 
+            // lstTests
+            // 
+            this.lstTests.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstTests.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstTests.FormattingEnabled = true;
+            this.lstTests.Location = new System.Drawing.Point(3, 16);
+            this.lstTests.Name = "lstTests";
+            this.lstTests.Size = new System.Drawing.Size(244, 368);
+            this.lstTests.TabIndex = 1;
+            this.lstTests.SelectedIndexChanged += new System.EventHandler(this.lstTests_SelectedIndexChanged);
+            // 
+            // btnDbSettings
+            // 
+            this.btnDbSettings.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDbSettings.Location = new System.Drawing.Point(0, 0);
+            this.btnDbSettings.Name = "btnDbSettings";
+            this.btnDbSettings.Size = new System.Drawing.Size(91, 27);
+            this.btnDbSettings.TabIndex = 3;
+            this.btnDbSettings.Text = "DbSettings.xml";
+            this.tt.SetToolTip(this.btnDbSettings, "Opens the DbSettings.xml file, which contains the database connection information" +
+                    ".");
+            this.btnDbSettings.UseVisualStyleBackColor = true;
+            this.btnDbSettings.Click += new System.EventHandler(this.btnDbSettings_Click);
             // 
             // frmMain
             // 
@@ -279,6 +294,7 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnSetupGuide;
         private System.Windows.Forms.ToolTip tt;
+        private System.Windows.Forms.Button btnDbSettings;
 
     }
 }
