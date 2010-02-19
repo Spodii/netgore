@@ -1981,12 +1981,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the amount of Cash the Character has on hand.
+        /// Gets or sets the amount of Cash the Character has on hand.
         /// </summary>
         public int Cash
         {
             get { return _cash; }
-            protected set
+            set
             {
                 if (_cash == value)
                     return;
@@ -2015,12 +2015,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the amount of experience the Character has.
+        /// Gets or sets the amount of experience the Character has.
         /// </summary>
         public int Exp
         {
             get { return _exp; }
-            private set
+            set
             {
                 if (_exp == value)
                     return;

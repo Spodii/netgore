@@ -158,6 +158,21 @@
     <Compile Include="DynamicEntityFactory.cs" />
     <Compile Include="Groups\GroupHelper.cs" />
     <Compile Include="Groups\GroupMemberInfo.cs" />
+    <Compile Include="Queries\Quest\SelectQuestIDsQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestRequireFinishItemQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestRequireKillQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestRequireStartItemQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestRequireStartQuestQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestRewardItemQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestValuesQueryBase.cs" />
+    <Compile Include="Quests\Requirements\ItemsQuestRequirement.cs" />
+    <Compile Include="Quests\Rewards\ExpQuestReward.cs" />
+    <Compile Include="Quests\Rewards\ItemsQuestReward.cs" />
+    <Compile Include="Quests\Quest.cs" />
+    <Compile Include="Quests\QuestManager.cs" />
+    <Compile Include="Quests\ItemTemplateAndAmount.cs" />
+    <Compile Include="Quests\Rewards\MoneyQuestReward.cs" />
     <Compile Include="ServerSettings.cs" />
     <Compile Include="UI\frmMain.cs">
       <SubType>Form</SubType>

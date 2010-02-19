@@ -8,20 +8,25 @@ namespace DemoGame.Server.Guilds
 {
     public class GuildMemberPerformer : GuildMemberPerformerBase
     {
+        static readonly GuildManager _guildManager = GuildManager.Instance;
+        readonly Func<string, IGuildMember> _findGuildMember;
         readonly SelectGuildMemberByNameQuery _selectGuildMemberQuery;
-        readonly World _world;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildMemberPerformerBase"/> class.
         /// </summary>
-        /// <param name="world">The world.</param>
-        public GuildMemberPerformer(World world) : base(GetSaveHandler(world.DbController))
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        /// <param name="findGuildMember">The <see cref="Func{T,U}"/> used to find a guild member by name.</param>
+        public GuildMemberPerformer(IDbController dbController, Func<string, IGuildMember> findGuildMember)
+            : base(GetSaveHandler(dbController))
         {
-            if (world == null)
-                throw new ArgumentNullException("world");
+            if (dbController == null)
+                throw new ArgumentNullException("dbController");
+            if (findGuildMember == null)
+                throw new ArgumentNullException("findGuildMember");
 
-            _world = world;
-            _selectGuildMemberQuery = _world.DbController.GetQuery<SelectGuildMemberByNameQuery>();
+            _findGuildMember = findGuildMember;
+            _selectGuildMemberQuery = dbController.GetQuery<SelectGuildMemberByNameQuery>();
         }
 
         /// <summary>
@@ -64,7 +69,7 @@ namespace DemoGame.Server.Guilds
         /// loaded; otherwise false.</returns>
         protected override bool TryGetGuildMember(string name, out IGuildMember guildMember)
         {
-            guildMember = _world.FindUser(name);
+            guildMember = _findGuildMember(name);
             return guildMember != null;
         }
 
@@ -87,7 +92,7 @@ namespace DemoGame.Server.Guilds
                 return false;
             }
 
-            var guild = _world.GuildManager.GetGuild(v.GuildID);
+            var guild = _guildManager.GetGuild(v.GuildID);
             if (guild == null)
             {
                 values = new TemporaryGuildMemberPoolValues();

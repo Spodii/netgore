@@ -63,6 +63,7 @@ namespace DemoGame.Server
         public class SayCommands : ISayCommands<User>
         {
             static readonly GuildSettings _guildSettings = GuildSettings.Instance;
+            static readonly GuildManager _guildManager = GuildManager.Instance;
 
             readonly Server _server;
 
@@ -81,11 +82,6 @@ namespace DemoGame.Server
             public IGroupManager GroupManager
             {
                 get { return Server.GroupManager; }
-            }
-
-            public GuildManager GuildManager
-            {
-                get { return Server.GuildManager; }
             }
 
             /// <summary>
@@ -142,7 +138,7 @@ namespace DemoGame.Server
                     return;
                 }
 
-                if (!GuildManager.IsNameAvailable(name))
+                if (!_guildManager.IsNameAvailable(name))
                 {
                     User.Send(GameMessage.GuildCreationFailedNameNotAvailable, name);
                     return;
@@ -155,14 +151,14 @@ namespace DemoGame.Server
                     return;
                 }
 
-                if (!GuildManager.IsTagAvailable(tag))
+                if (!_guildManager.IsTagAvailable(tag))
                 {
                     User.Send(GameMessage.GuildCreationFailedTagNotAvailable, tag);
                     return;
                 }
 
                 // Create
-                var guild = GuildManager.TryCreateGuild(User, name, tag);
+                var guild = _guildManager.TryCreateGuild(User, name, tag);
                 if (guild == null)
                     User.Send(GameMessage.GuildCreationFailedUnknownReason, name, tag);
                 else
@@ -429,7 +425,7 @@ namespace DemoGame.Server
                     return;
                 }
 
-                if (!GuildManager.IsNameAvailable(newName))
+                if (!_guildManager.IsNameAvailable(newName))
                 {
                     User.Send(GameMessage.GuildRenameFailedNameNotAvailable, newName);
                     return;
@@ -511,7 +507,7 @@ namespace DemoGame.Server
                     return;
                 }
 
-                if (!GuildManager.IsTagAvailable(newTag))
+                if (!_guildManager.IsTagAvailable(newTag))
                 {
                     User.Send(GameMessage.GuildRetagFailedNameNotAvailable, newTag);
                     return;

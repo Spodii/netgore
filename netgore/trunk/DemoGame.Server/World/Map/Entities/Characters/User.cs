@@ -30,6 +30,7 @@ namespace DemoGame.Server
         static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
         static readonly ReplaceGuildMemberQuery _replaceGuildMemberQuery;
         static readonly SelectGuildMemberQuery _selectGuildMemberQuery;
+        static readonly GuildManager _guildManager = GuildManager.Instance;
 
         readonly UserChatDialogState _chatState;
         readonly IIPSocket _conn;
@@ -273,7 +274,7 @@ namespace DemoGame.Server
             if (guildInfo != null)
             {
                 Debug.Assert(guildInfo.CharacterID == ID);
-                _guildMemberInfo.Guild = World.GuildManager.GetGuild(guildInfo.GuildID);
+                _guildMemberInfo.Guild = _guildManager.GetGuild(guildInfo.GuildID);
                 _guildMemberInfo.GuildRank = guildInfo.Rank;
             }
 
@@ -731,7 +732,7 @@ namespace DemoGame.Server
         /// <returns>True if successfully joined the guild; otherwise false.</returns>
         public bool TryJoinGuild(string guildName)
         {
-            var guild = World.GuildManager.GetGuild(guildName);
+            var guild = _guildManager.GetGuild(guildName);
             return _guildMemberInfo.AcceptInvite(guild, GetTime());
         }
 

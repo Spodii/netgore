@@ -55,7 +55,7 @@ namespace DemoGame.Server
             _server = parent;
 
             // Create some objects
-            _guildMemberPerformer = new GuildMemberPerformer(this);
+            _guildMemberPerformer = new GuildMemberPerformer(DbController, FindUser);
 
             // Create the unarmed weapon
             _unarmedWeapon = new ItemEntity(_itemTemplateManager[ServerSettings.UnarmedItemTemplateID], 1);
@@ -126,11 +126,6 @@ namespace DemoGame.Server
         public Stack<IDisposable> DisposeStack
         {
             get { return _disposeStack; }
-        }
-
-        public GuildManager GuildManager
-        {
-            get { return Server.GuildManager; }
         }
 
         public GuildMemberPerformer GuildMemberPerformer
