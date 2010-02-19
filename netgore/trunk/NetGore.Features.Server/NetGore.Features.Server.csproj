@@ -62,7 +62,6 @@
     <Compile Include="Quests\IQuestRequirementCollection.cs" />
     <Compile Include="Quests\IQuestReward.cs" />
     <Compile Include="Quests\IQuestRewardCollection.cs" />
-    <Compile Include="Quests\Quest.cs" />
     <Compile Include="Quests\QuestCollection.cs" />
     <Compile Include="Quests\QuestRequirementCollection.cs" />
     <Compile Include="Quests\QuestRewardCollection.cs" />

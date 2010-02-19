@@ -26,7 +26,7 @@ namespace DemoGame.Server.Quests
                 throw new ArgumentNullException("items");
 
             // Store the valid items
-            _items = items.Where(x => x.AssertHasValidValues()).OrderBy(x => x.ItemTemplate).ToCompact();
+            _items = items.Where(x => x.AssertHasValidValues()).OrderBy(x => x.ItemTemplate.ID).ToCompact();
         }
 
         /// <summary>
