@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuestReward<TCharacter> where TCharacter : DynamicEntity
+    public interface IQuestReward<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Gives the quest reward to the <paramref name="character"/>.

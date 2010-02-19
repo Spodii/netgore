@@ -58,11 +58,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\IQuestCollection.cs" />
+    <Compile Include="Quests\IQuestPerformer.cs" />
+    <Compile Include="Quests\IQuestProvider.cs" />
     <Compile Include="Quests\IQuestRequirement.cs" />
     <Compile Include="Quests\IQuestRequirementCollection.cs" />
     <Compile Include="Quests\IQuestReward.cs" />
     <Compile Include="Quests\IQuestRewardCollection.cs" />
     <Compile Include="Quests\QuestCollection.cs" />
+    <Compile Include="Quests\Event Handlers\QuestPerformerEventHandler.cs" />
+    <Compile Include="Quests\Event Handlers\QuestPerformerQuestEventHandler.cs" />
+    <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
     <Compile Include="Quests\QuestRequirementCollection.cs" />
     <Compile Include="Quests\QuestRewardCollection.cs" />
     <Compile Include="Shops\CharacterShoppingState.cs" />

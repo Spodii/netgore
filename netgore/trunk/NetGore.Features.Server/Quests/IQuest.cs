@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuest<TCharacter> where TCharacter : DynamicEntity
+    public interface IQuest<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Gets the unique ID of the quest.

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public abstract class QuestCollection<TCharacter> : IQuestCollection<TCharacter> where TCharacter : DynamicEntity
+    public abstract class QuestCollection<TCharacter> : IQuestCollection<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         IQuest<TCharacter>[] _quests;
 

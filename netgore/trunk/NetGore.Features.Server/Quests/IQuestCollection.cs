@@ -5,7 +5,7 @@ using NetGore.Collections;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuestCollection<TCharacter> : IEnumerable<IQuest<TCharacter>> where TCharacter : DynamicEntity
+    public interface IQuestCollection<TCharacter> : IEnumerable<IQuest<TCharacter>> where TCharacter:IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Gets the <see cref="IQuest{TCharacter}"/> for a given <see cref="QuestID"/>.

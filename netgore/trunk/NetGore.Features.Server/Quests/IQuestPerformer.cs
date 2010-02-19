@@ -1,0 +1,71 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace NetGore.Features.Quests
+{
+    /// <summary>
+    /// Interface for an object that is able to accept and complete quests.
+    /// </summary>
+    public interface IQuestPerformer<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
+    {
+        /// <summary>
+        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has accepted a new quest.
+        /// </summary>
+        event QuestPerformerQuestEventHandler<TCharacter> QuestAccepted;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has finished a quest.
+        /// </summary>
+        event QuestPerformerQuestEventHandler<TCharacter> QuestFinished;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has canceled an active quest.
+        /// </summary>
+        event QuestPerformerQuestEventHandler<TCharacter> QuestCanceled;
+
+        /// <summary>
+        /// Gets the quests that this <see cref="IQuestPerformer{TCharacter}"/> has completed.
+        /// </summary>
+        IEnumerable<IQuest<TCharacter>> CompletedQuests { get; }
+
+        /// <summary>
+        /// Gets the incomplete quests that this <see cref="IQuestPerformer{TCharacter}"/> is currently working on.
+        /// </summary>
+        IEnumerable<IQuest<TCharacter>> ActiveQuests { get; }
+
+        /// <summary>
+        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> has finished the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> has completed.</param>
+        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> has completed the given <paramref name="quest"/>;
+        /// otherwise false.</returns>
+        bool HasCompletedQuest(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> can accept the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> can accept.</param>
+        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> can accept the given <paramref name="quest"/>;
+        /// otherwise false.</returns>
+        bool CanAcceptQuest(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// Tries to add the given <paramref name="quest"/> to this <see cref="IQuestPerformer{TCharacter}"/>'s list
+        /// of active quests.
+        /// </summary>
+        /// <param name="quest">The quest to try to add to this <see cref="IQuestPerformer{TCharacter}"/>'s list
+        /// of active quests.</param>
+        /// <returns>True if the <paramref name="quest"/> was successfully added; otherwise false.</returns>
+        bool TryAddQuest(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// Cancels an active quest.
+        /// </summary>
+        /// <param name="quest">The active quest to cancel.</param>
+        /// <returns>True if the <paramref name="quest"/> was canceled; false if the <paramref name="quest"/> failed to
+        /// be canceled, such as if the <paramref name="quest"/> was not in the list of active quests.</returns>
+        bool CancelQuest(IQuest<TCharacter> quest);
+    }
+}

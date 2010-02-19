@@ -3,9 +3,9 @@ using System.Linq;
 namespace DemoGame.DbObjs
 {
 /// <summary>
-/// Interface for a class that can be used to serialize values to the database table `quest_require_kill`.
+/// Interface for a class that can be used to serialize values to the database table `character_quest_provider`.
 /// </summary>
-public interface IQuestRequireKillTable
+public interface ICharacterQuestProviderTable
 {
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -14,19 +14,12 @@ public interface IQuestRequireKillTable
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-IQuestRequireKillTable DeepCopy();
+ICharacterQuestProviderTable DeepCopy();
 
 /// <summary>
-/// Gets the value of the database column `amount`.
+/// Gets the value of the database column `character_id`.
 /// </summary>
-System.UInt16 Amount
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `character_template_id`.
-/// </summary>
-DemoGame.CharacterTemplateID CharacterTemplateID
+DemoGame.CharacterID CharacterID
 {
 get;
 }

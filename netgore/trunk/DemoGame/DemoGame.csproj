@@ -77,12 +77,14 @@
     <Compile Include="DbObjs\Interfaces\IAllianceTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterEquippedTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterInventoryTable.cs" />
+    <Compile Include="DbObjs\Interfaces\ICharacterQuestProviderTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterQuestStatusKillsTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterQuestStatusTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterStatusEffectTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateEquippedTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateInventoryTable.cs" />
+    <Compile Include="DbObjs\Interfaces\ICharacterTemplateQuestProviderTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IGameConstantTable.cs" />
     <Compile Include="DbObjs\Interfaces\IGuildEventTable.cs" />

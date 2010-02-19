@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +7,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server.Groups;
 using DemoGame.Server.Guilds;
 using DemoGame.Server.Queries;
+using DemoGame.Server.Quests;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -13,6 +15,7 @@ using NetGore.AI;
 using NetGore.Db;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Network;
@@ -24,7 +27,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A user-controlled character.
     /// </summary>
-    public class User : Character, IGuildMember, IClientCommunicator, IGroupable
+    public class User : Character, IGuildMember, IClientCommunicator, IGroupable, IQuestPerformer<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
@@ -41,6 +44,7 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
+        readonly QuestPerformerStatusHelper _questInfo;
 
         /// <summary>
         /// Initializes the <see cref="User"/> class.
@@ -69,6 +73,7 @@ namespace DemoGame.Server
             _groupMemberInfo = new GroupMemberInfo(this);
             _shoppingState = new UserShoppingState(this);
             _chatState = new UserChatDialogState(this);
+            _questInfo = new QuestPerformerStatusHelper(this);
             _userStatsBase = (UserStats)BaseStats;
             _userStatsMod = (UserStats)ModStats;
             _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
@@ -999,5 +1004,83 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has accepted a new quest.
+        /// </summary>
+        public event QuestPerformerQuestEventHandler<User> QuestAccepted;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has finished a quest.
+        /// </summary>
+        public event QuestPerformerQuestEventHandler<User> QuestFinished;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has canceled an active quest.
+        /// </summary>
+        public event QuestPerformerQuestEventHandler<User> QuestCanceled;
+
+        /// <summary>
+        /// Gets the quests that this <see cref="IQuestPerformer{TCharacter}"/> has completed.
+        /// </summary>
+        public IEnumerable<IQuest<User>> CompletedQuests
+        {
+            get {
+                return _questInfo.CompletedQuests;
+            }
+        }
+
+        /// <summary>
+        /// Gets the incomplete quests that this <see cref="IQuestPerformer{TCharacter}"/> is currently working on.
+        /// </summary>
+        public IEnumerable<IQuest<User>> ActiveQuests
+        {
+            get { return _questInfo.ActiveQuests; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> has finished the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> has completed.</param>
+        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> has completed the given <paramref name="quest"/>;
+        /// otherwise false.</returns>
+        public bool HasCompletedQuest(IQuest<User> quest)
+        {
+            return _questInfo.HasCompletedQuest(quest);
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> can accept the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> can accept.</param>
+        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> can accept the given <paramref name="quest"/>;
+        /// otherwise false.</returns>
+        public bool CanAcceptQuest(IQuest<User> quest)
+        {
+            return _questInfo.CanAcceptQuest(quest);
+        }
+
+        /// <summary>
+        /// Tries to add the given <paramref name="quest"/> to this <see cref="IQuestPerformer{TCharacter}"/>'s list
+        /// of active quests.
+        /// </summary>
+        /// <param name="quest">The quest to try to add to this <see cref="IQuestPerformer{TCharacter}"/>'s list
+        /// of active quests.</param>
+        /// <returns>True if the <paramref name="quest"/> was successfully added; otherwise false.</returns>
+        public bool TryAddQuest(IQuest<User> quest)
+        {
+            return _questInfo.TryAddQuest(quest);
+        }
+
+        /// <summary>
+        /// Cancels an active quest.
+        /// </summary>
+        /// <param name="quest">The active quest to cancel.</param>
+        /// <returns>True if the <paramref name="quest"/> was canceled; false if the <paramref name="quest"/> failed to
+        /// be canceled, such as if the <paramref name="quest"/> was not in the list of active quests.</returns>
+        public bool CancelQuest(IQuest<User> quest)
+        {
+            return _questInfo.CancelQuest(quest);
+        }
     }
 }

@@ -9,10 +9,10 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
-/// Contains extension methods for class QuestRequireKillTable that assist in performing
+/// Contains extension methods for class CharacterQuestProviderTable that assist in performing
 /// reads and writes to and from a database.
 /// </summary>
-public static  class QuestRequireKillTableDbExtensions
+public static  class CharacterQuestProviderTableDbExtensions
 {
 /// <summary>
 /// Copies the column values into the given DbParameterValues using the database column name
@@ -21,10 +21,9 @@ public static  class QuestRequireKillTableDbExtensions
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(this IQuestRequireKillTable source, NetGore.Db.DbParameterValues paramValues)
+public static void CopyValues(this ICharacterQuestProviderTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@amount"] = (System.UInt16)source.Amount;
-paramValues["@character_template_id"] = (System.UInt16)source.CharacterTemplateID;
+paramValues["@character_id"] = (System.Int32)source.CharacterID;
 paramValues["@quest_id"] = (System.UInt16)source.QuestID;
 }
 
@@ -35,17 +34,13 @@ paramValues["@quest_id"] = (System.UInt16)source.QuestID;
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this QuestRequireKillTable source, System.Data.IDataReader dataReader)
+public static void ReadValues(this CharacterQuestProviderTable source, System.Data.IDataReader dataReader)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("amount");
+i = dataReader.GetOrdinal("character_id");
 
-source.Amount = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("character_template_id");
-
-source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
 
 i = dataReader.GetOrdinal("quest_id");
 
@@ -62,19 +57,14 @@ source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.Quest
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this QuestRequireKillTable source, System.Data.IDataReader dataReader)
+public static void TryReadValues(this CharacterQuestProviderTable source, System.Data.IDataReader dataReader)
 {
 for (int i = 0; i < dataReader.FieldCount; i++)
 {
 switch (dataReader.GetName(i))
 {
-case "amount":
-source.Amount = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
-break;
-
-
-case "character_template_id":
-source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
+case "character_id":
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
 break;
 
 
@@ -98,19 +88,14 @@ break;
 /// </summary>
 /// <param name="source">The object to copy the values from.</param>
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(this IQuestRequireKillTable source, NetGore.Db.DbParameterValues paramValues)
+public static void TryCopyValues(this ICharacterQuestProviderTable source, NetGore.Db.DbParameterValues paramValues)
 {
 for (int i = 0; i < paramValues.Count; i++)
 {
 switch (paramValues.GetParameterName(i))
 {
-case "@amount":
-paramValues[i] = (System.UInt16)source.Amount;
-break;
-
-
-case "@character_template_id":
-paramValues[i] = (System.UInt16)source.CharacterTemplateID;
+case "@character_id":
+paramValues[i] = (System.Int32)source.CharacterID;
 break;
 
 
