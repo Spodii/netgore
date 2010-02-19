@@ -121,7 +121,7 @@ this._iD = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `name`.
-/// The underlying database type is `varchar(0)`.
+/// The underlying database type is `varchar(250)`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
 public System.String Name
@@ -358,7 +358,7 @@ case "id":
 return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 
 case "name":
-return new ColumnMetadata("name", "", "varchar(0)", null, typeof(System.String), false, false, false);
+return new ColumnMetadata("name", "", "varchar(250)", null, typeof(System.String), false, false, false);
 
 case "repeatable":
 return new ColumnMetadata("repeatable", "", "tinyint(1) unsigned", "0", typeof(System.Boolean), false, false, false);

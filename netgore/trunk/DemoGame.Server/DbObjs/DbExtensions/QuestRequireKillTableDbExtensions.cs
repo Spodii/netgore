@@ -24,8 +24,8 @@ public static  class QuestRequireKillTableDbExtensions
 public static void CopyValues(this IQuestRequireKillTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@amount"] = (System.UInt16)source.Amount;
-paramValues["@character_template_id"] = (System.Nullable<System.UInt16>)source.CharacterTemplateID;
-paramValues["@quest_id"] = (System.Nullable<System.UInt16>)source.QuestID;
+paramValues["@character_template_id"] = (System.UInt16)source.CharacterTemplateID;
+paramValues["@quest_id"] = (System.UInt16)source.QuestID;
 }
 
 /// <summary>
@@ -45,11 +45,11 @@ source.Amount = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("character_template_id");
 
-source.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("quest_id");
 
-source.QuestID = (System.Nullable<NetGore.Features.Quests.QuestID>)(System.Nullable<NetGore.Features.Quests.QuestID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 }
 
 /// <summary>
@@ -74,12 +74,12 @@ break;
 
 
 case "character_template_id":
-source.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
 break;
 
 
 case "quest_id":
-source.QuestID = (System.Nullable<NetGore.Features.Quests.QuestID>)(System.Nullable<NetGore.Features.Quests.QuestID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 break;
 
 
@@ -110,12 +110,12 @@ break;
 
 
 case "@character_template_id":
-paramValues[i] = (System.Nullable<System.UInt16>)source.CharacterTemplateID;
+paramValues[i] = (System.UInt16)source.CharacterTemplateID;
 break;
 
 
 case "@quest_id":
-paramValues[i] = (System.Nullable<System.UInt16>)source.QuestID;
+paramValues[i] = (System.UInt16)source.QuestID;
 break;
 
 

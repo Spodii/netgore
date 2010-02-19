@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public class QuestRequirementCollection<TCharacter> : IQuestRequirementCollection<TCharacter> where TCharacter : DynamicEntity
+    public class QuestRequirementCollection<TCharacter> : IQuestRequirementCollection<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         static readonly IEnumerable<IQuestRequirement<TCharacter>> _emptyQuestRequirements = new IQuestRequirement<TCharacter>[0];
 

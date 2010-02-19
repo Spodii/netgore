@@ -26,14 +26,14 @@ get;
 /// <summary>
 /// Gets the value of the database column `character_template_id`.
 /// </summary>
-System.Nullable<DemoGame.CharacterTemplateID> CharacterTemplateID
+DemoGame.CharacterTemplateID CharacterTemplateID
 {
 get;
 }
 /// <summary>
 /// Gets the value of the database column `quest_id`.
 /// </summary>
-System.Nullable<NetGore.Features.Quests.QuestID> QuestID
+NetGore.Features.Quests.QuestID QuestID
 {
 get;
 }

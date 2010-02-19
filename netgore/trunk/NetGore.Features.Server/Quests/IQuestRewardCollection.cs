@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuestRewardCollection<TCharacter> : IEnumerable<IQuestReward<TCharacter>> where TCharacter : DynamicEntity
+    public interface IQuestRewardCollection<TCharacter> : IEnumerable<IQuestReward<TCharacter>> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Checks if the quest rewards can be given to the <paramref name="character"/>.

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuestRequirementCollection<TCharacter> : IEnumerable<IQuestRequirement<TCharacter>> where TCharacter : DynamicEntity
+    public interface IQuestRequirementCollection<TCharacter> : IEnumerable<IQuestRequirement<TCharacter>> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Checks if the <paramref name="character"/> meets this test requirement.
