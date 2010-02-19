@@ -56,6 +56,16 @@
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quests\IQuest.cs" />
+    <Compile Include="Quests\IQuestCollection.cs" />
+    <Compile Include="Quests\IQuestRequirement.cs" />
+    <Compile Include="Quests\IQuestRequirementCollection.cs" />
+    <Compile Include="Quests\IQuestReward.cs" />
+    <Compile Include="Quests\IQuestRewardCollection.cs" />
+    <Compile Include="Quests\Quest.cs" />
+    <Compile Include="Quests\QuestCollection.cs" />
+    <Compile Include="Quests\QuestRequirementCollection.cs" />
+    <Compile Include="Quests\QuestRewardCollection.cs" />
     <Compile Include="Shops\CharacterShoppingState.cs" />
     <Compile Include="Shops\IShop.cs" />
     <Compile Include="Shops\IShopItem.cs" />
@@ -80,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Emoticons\" />
-    <Folder Include="Quests\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>

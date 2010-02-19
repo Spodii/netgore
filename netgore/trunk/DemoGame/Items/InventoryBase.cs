@@ -291,6 +291,25 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the number of free inventory slots.
+        /// </summary>
+        public int FreeSlots
+        {
+            get
+            {
+                int count = 0;
+
+                for (int i = 0; i < _buffer.Length; i++)
+                {
+                    if (this[new InventorySlot(i)] == null)
+                        ++count;
+                }
+
+                return count;
+            }
+        }
+
+        /// <summary>
         /// Gets the index of the first unused Inventory slot.
         /// </summary>
         /// <param name="emptySlot">If function returns true, contains the index of the first unused Inventory slot.</param>

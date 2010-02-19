@@ -12,6 +12,7 @@ namespace DemoGame.Server.Guilds
     public class GuildManager : GuildManagerBase<Guild>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly GuildManager _instance;
 
         readonly IDbController _dbController;
         readonly InsertGuildEventQuery _insertGuildEventQuery;
@@ -20,9 +21,17 @@ namespace DemoGame.Server.Guilds
         readonly SelectGuildByTagQuery _selectGuildByTagQuery;
 
         /// <summary>
+        /// Initializes the <see cref="GuildManager"/> class.
+        /// </summary>
+        static GuildManager()
+        {
+            _instance = new GuildManager(DbControllerBase.GetInstance());
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GuildManagerBase{T}"/> class.
         /// </summary>
-        public GuildManager(IDbController dbController) : base(dbController.GetQuery<GuildIDCreator>())
+        GuildManager(IDbController dbController) : base(dbController.GetQuery<GuildIDCreator>())
         {
             _dbController = dbController;
 
@@ -33,6 +42,14 @@ namespace DemoGame.Server.Guilds
             _insertGuildQuery = _dbController.GetQuery<InsertGuildQuery>();
 
             Initialize();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GuildManager"/> instance.
+        /// </summary>
+        public static GuildManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

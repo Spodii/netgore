@@ -9,6 +9,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Guilds;
 using DemoGame.Server.Queries;
+using DemoGame.Server.Quests;
 using log4net;
 using NetGore;
 using NetGore.Db;
@@ -56,7 +57,6 @@ namespace DemoGame.Server
         readonly IDbController _dbController;
         readonly Stopwatch _gameTimer = new Stopwatch();
         readonly GroupManager _groupManager;
-        readonly GuildManager _guildManager;
         readonly List<string> _motd = new List<string>();
         readonly ServerSockets _sockets;
         readonly int _startupTime = Environment.TickCount;
@@ -92,7 +92,6 @@ namespace DemoGame.Server
 
             // Create some objects
             _consoleCommands = new ConsoleCommands(this);
-            _guildManager = new GuildManager(_dbController);
             _groupManager = new GroupManager((gm, x) => new Group(x));
             _world = new World(this);
             _sockets = new ServerSockets(this);
@@ -120,11 +119,6 @@ namespace DemoGame.Server
         public IGroupManager GroupManager
         {
             get { return _groupManager; }
-        }
-
-        public GuildManager GuildManager
-        {
-            get { return _guildManager; }
         }
 
         /// <summary>
@@ -504,7 +498,7 @@ namespace DemoGame.Server
         /// </summary>
         static void ValidateDbControllerQueryAttributes()
         {
-            const string errmsg = "Type `{0}` fails to implement attribute `{1}`. Ensure this is okay.";
+            const string errmsg = "Type `{0}` fails to implement attribute `{1}`. Ensure this is okay. If you are unsure, add the attribute anyways.";
             var attribType = typeof(DbControllerQueryAttribute);
 
             new DbControllerQueryAttributeChecker(delegate(DbControllerQueryAttributeChecker sender, Type type)
