@@ -54,6 +54,10 @@
     <Compile Include="Guilds\GuildMembersFormBase.cs" />
     <Compile Include="Guilds\GuildOnlineMembersForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quests\IQuestDescription.cs" />
+    <Compile Include="Quests\IQuestDescriptionCollection.cs" />
+    <Compile Include="Quests\QuestDescription.cs" />
+    <Compile Include="Quests\QuestDescriptionCollection.cs" />
     <Compile Include="Shops\ShopInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +83,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Quests\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>

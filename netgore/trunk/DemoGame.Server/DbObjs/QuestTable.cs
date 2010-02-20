@@ -16,7 +16,7 @@ public class QuestTable : IQuestTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"description", "id", "name", "repeatable", "reward_cash", "reward_exp" };
+ static  readonly System.String[] _dbColumns = new string[] {"id", "repeatable", "reward_cash", "reward_exp" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"description", "name", "repeatable", "reward_cash", "reward_exp" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"repeatable", "reward_cash", "reward_exp" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -62,19 +62,11 @@ public const System.String TableName = "quest";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 6;
-/// <summary>
-/// The field that maps onto the database column `description`.
-/// </summary>
-System.String _description;
+public const System.Int32 ColumnCount = 4;
 /// <summary>
 /// The field that maps onto the database column `id`.
 /// </summary>
 System.UInt16 _iD;
-/// <summary>
-/// The field that maps onto the database column `name`.
-/// </summary>
-System.String _name;
 /// <summary>
 /// The field that maps onto the database column `repeatable`.
 /// </summary>
@@ -87,22 +79,6 @@ System.Int32 _rewardCash;
 /// The field that maps onto the database column `reward_exp`.
 /// </summary>
 System.Int32 _rewardExp;
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `description`.
-/// The underlying database type is `text`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public System.String Description
-{
-get
-{
-return (System.String)_description;
-}
-set
-{
-this._description = (System.String)value;
-}
-}
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `id`.
 /// The underlying database type is `smallint(5) unsigned`.
@@ -117,22 +93,6 @@ return (NetGore.Features.Quests.QuestID)_iD;
 set
 {
 this._iD = (System.UInt16)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `name`.
-/// The underlying database type is `varchar(250)`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public System.String Name
-{
-get
-{
-return (System.String)_name;
-}
-set
-{
-this._name = (System.String)value;
 }
 }
 /// <summary>
@@ -204,17 +164,13 @@ public QuestTable()
 /// <summary>
 /// QuestTable constructor.
 /// </summary>
-/// <param name="description">The initial value for the corresponding property.</param>
 /// <param name="iD">The initial value for the corresponding property.</param>
-/// <param name="name">The initial value for the corresponding property.</param>
 /// <param name="repeatable">The initial value for the corresponding property.</param>
 /// <param name="rewardCash">The initial value for the corresponding property.</param>
 /// <param name="rewardExp">The initial value for the corresponding property.</param>
-public QuestTable(System.String @description, NetGore.Features.Quests.QuestID @iD, System.String @name, System.Boolean @repeatable, System.Int32 @rewardCash, System.Int32 @rewardExp)
+public QuestTable(NetGore.Features.Quests.QuestID @iD, System.Boolean @repeatable, System.Int32 @rewardCash, System.Int32 @rewardExp)
 {
-this.Description = (System.String)@description;
 this.ID = (NetGore.Features.Quests.QuestID)@iD;
-this.Name = (System.String)@name;
 this.Repeatable = (System.Boolean)@repeatable;
 this.RewardCash = (System.Int32)@rewardCash;
 this.RewardExp = (System.Int32)@rewardExp;
@@ -246,9 +202,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IQuestTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@description"] = (System.String)source.Description;
 dic["@id"] = (NetGore.Features.Quests.QuestID)source.ID;
-dic["@name"] = (System.String)source.Name;
 dic["@repeatable"] = (System.Boolean)source.Repeatable;
 dic["@reward_cash"] = (System.Int32)source.RewardCash;
 dic["@reward_exp"] = (System.Int32)source.RewardExp;
@@ -260,9 +214,7 @@ dic["@reward_exp"] = (System.Int32)source.RewardExp;
 /// <param name="source">The IQuestTable to copy the values from.</param>
 public void CopyValuesFrom(IQuestTable source)
 {
-this.Description = (System.String)source.Description;
 this.ID = (NetGore.Features.Quests.QuestID)source.ID;
-this.Name = (System.String)source.Name;
 this.Repeatable = (System.Boolean)source.Repeatable;
 this.RewardCash = (System.Int32)source.RewardCash;
 this.RewardExp = (System.Int32)source.RewardExp;
@@ -279,14 +231,8 @@ public System.Object GetValue(System.String columnName)
 {
 switch (columnName)
 {
-case "description":
-return Description;
-
 case "id":
 return ID;
-
-case "name":
-return Name;
 
 case "repeatable":
 return Repeatable;
@@ -311,16 +257,8 @@ public void SetValue(System.String columnName, System.Object value)
 {
 switch (columnName)
 {
-case "description":
-this.Description = (System.String)value;
-break;
-
 case "id":
 this.ID = (NetGore.Features.Quests.QuestID)value;
-break;
-
-case "name":
-this.Name = (System.String)value;
 break;
 
 case "repeatable":
@@ -351,14 +289,8 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 {
 switch (columnName)
 {
-case "description":
-return new ColumnMetadata("description", "", "text", null, typeof(System.String), false, false, false);
-
 case "id":
 return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
-
-case "name":
-return new ColumnMetadata("name", "", "varchar(250)", null, typeof(System.String), false, false, false);
 
 case "repeatable":
 return new ColumnMetadata("repeatable", "", "tinyint(1) unsigned", "0", typeof(System.Boolean), false, false, false);

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<QuestData>
+  <QuestDescriptions>
+    <Count>1</Count>
+    <Item0>
+      <Description>Super duper awesome test quest of doom.</Description>
+      <Name>Test Quest</Name>
+      <QuestID>0</QuestID>
+    </Item0>
+  </QuestDescriptions>
+</QuestData>
