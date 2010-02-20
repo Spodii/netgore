@@ -158,6 +158,9 @@ namespace DemoGame.Client
             get { return World.UserChar; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="UserInfo"/>.
+        /// </summary>
         public UserInfo UserInfo
         {
             get { return _userInfo; }

@@ -1,6 +1,7 @@
 using System.Linq;
 using NetGore;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Network;
 
@@ -60,6 +61,13 @@ namespace DemoGame.Client
         {
             PacketWriter pw = GetWriter(ClientPacketID.GetInventoryItemInfo);
             pw.Write(slot);
+            return pw;
+        }
+
+        public static PacketWriter HasQuestStartRequirements(QuestID questID)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.HasQuestStartRequirements);
+            pw.Write(questID);
             return pw;
         }
 

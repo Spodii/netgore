@@ -161,6 +161,14 @@ namespace DemoGame.Server
             return ret;
         }
 
+        public static PacketWriter HasQuestStartRequirements(QuestID questID, bool hasRequirements)
+        {
+            var ret = GetWriter(ServerPacketID.HasQuestStartRequirementsReply);
+            ret.Write(questID);
+            ret.Write(hasRequirements);
+            return ret;
+        }
+
         /// <summary>
         /// Tells the user their login attempt was successful.
         /// </summary>
