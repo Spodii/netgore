@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Network;
 using NetGore.Stats;
@@ -19,6 +20,15 @@ namespace DemoGame.Server
     static class ServerPacket
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
+
+        public static void SetProvidedQuests(PacketWriter pw, MapEntityIndex mapEntityIndex, IEnumerable<QuestID> quests)
+        {
+            pw.WriteEnum(ServerPacketID.SetProvidedQuests);
+            pw.Write(mapEntityIndex);
+            pw.Write((byte)quests.Count());
+            foreach (var q in quests)
+                pw.Write(q);
+        }
 
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {

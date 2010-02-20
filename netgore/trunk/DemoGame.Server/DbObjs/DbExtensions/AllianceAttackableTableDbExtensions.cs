@@ -25,7 +25,6 @@ public static void CopyValues(this IAllianceAttackableTable source, NetGore.Db.D
 {
 paramValues["@alliance_id"] = (System.Byte)source.AllianceID;
 paramValues["@attackable_id"] = (System.Byte)source.AttackableID;
-paramValues["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
 }
 
 /// <summary>
@@ -46,10 +45,6 @@ source.AllianceID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte
 i = dataReader.GetOrdinal("attackable_id");
 
 source.AttackableID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
-
-i = dataReader.GetOrdinal("placeholder");
-
-source.Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
 }
 
 /// <summary>
@@ -75,11 +70,6 @@ break;
 
 case "attackable_id":
 source.AttackableID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
-break;
-
-
-case "placeholder":
-source.Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
 break;
 
 
@@ -111,11 +101,6 @@ break;
 
 case "@attackable_id":
 paramValues[i] = (System.Byte)source.AttackableID;
-break;
-
-
-case "@placeholder":
-paramValues[i] = (System.Nullable<System.Byte>)source.Placeholder;
 break;
 
 

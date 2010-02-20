@@ -58,6 +58,62 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Allows for handling of the <see cref="User.QuestAccepted"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected virtual void OnQuestAccepted(IQuest<User> quest)
+        {
+        }
+
+        /// <summary>
+        /// Allows for handling of the <see cref="User.QuestCanceled"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected virtual void OnQuestCanceled(IQuest<User> quest)
+        {
+        }
+
+        /// <summary>
+        /// Allows for handling of the <see cref="User.QuestFinished"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected virtual void OnQuestFinished(IQuest<User> quest)
+        {
+        }
+
+        /// <summary>
+        /// Creates the <see cref="QuestPerformerStatusHelper"/> for this user.
+        /// </summary>
+        /// <returns>The <see cref="QuestPerformerStatusHelper"/> for this user.</returns>
+        QuestPerformerStatusHelper CreateQuestInfo()
+        {
+            var ret = new QuestPerformerStatusHelper(this);
+
+            ret.QuestAccepted += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            {
+                OnQuestAccepted(quest);
+                if (QuestAccepted != null)
+                    QuestAccepted(this, quest);
+            };
+            
+            ret.QuestCanceled += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            {
+                OnQuestCanceled(quest);
+                if (QuestCanceled != null)
+                    QuestCanceled(this, quest);
+            };
+
+            ret.QuestFinished += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            {
+                OnQuestFinished(quest);
+                if (QuestFinished != null)
+                    QuestFinished(this, quest);
+            };
+
+            return ret;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="User"/> class.
         /// </summary>
         /// <param name="conn">Connection to the user's client.</param>
@@ -73,7 +129,7 @@ namespace DemoGame.Server
             _groupMemberInfo = new GroupMemberInfo(this);
             _shoppingState = new UserShoppingState(this);
             _chatState = new UserChatDialogState(this);
-            _questInfo = new QuestPerformerStatusHelper(this);
+            _questInfo = CreateQuestInfo();
             _userStatsBase = (UserStats)BaseStats;
             _userStatsMod = (UserStats)ModStats;
             _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);

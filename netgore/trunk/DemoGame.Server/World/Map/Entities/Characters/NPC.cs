@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +9,10 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
+using NetGore.IO;
+using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
 
@@ -17,16 +21,17 @@ namespace DemoGame.Server
     /// <summary>
     /// A non-player character
     /// </summary>
-    public class NPC : Character
+    public class NPC : Character, IQuestProvider<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly MemoryMap _memory = new MemoryMap(32);
 
         IAI _ai;
         NPCChatDialogBase _chatDialog;
-
         ushort _giveCash;
         ushort _giveExp;
+        IEnumerable<IQuest<User>> _quests;
         ushort _respawnSecs;
 
         /// <summary>
@@ -58,7 +63,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// NPC constructor.
+        /// Initializes a new instance of the <see cref="NPC"/> class.
         /// </summary>
         /// <param name="parent">World that the NPC belongs to.</param>
         /// <param name="template">NPCTemplate used to create the NPC.</param>
@@ -78,6 +83,7 @@ namespace DemoGame.Server
             _respawnSecs = v.Respawn;
             _giveExp = v.GiveExp;
             _giveCash = v.GiveCash;
+            _quests = template.Quests;
 
             RespawnMapIndex = map.Index;
             RespawnPosition = position;
@@ -162,10 +168,23 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets if this NPC will respawn after dieing.
         /// </summary>
-        // ReSharper disable MemberCanBeMadeStatic.Global
-        public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
+        public bool WillRespawn 
         {
             get { return RespawnMapIndex.HasValue; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles post creation-serialization processing. This method is invoked
+        /// immediately after the <see cref="DynamicEntity"/>'s creation values have been serialized.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> that was used to serialize the values.</param>
+        protected override void AfterSendCreated(IValueWriter writer)
+        {
+            base.AfterSendCreated(writer);
+
+            var pw = writer as PacketWriter;
+            if (pw != null && !Quests.IsEmpty())
+                ServerPacket.SetProvidedQuests(pw, MapEntityIndex, Quests.Select(x => x.QuestID).ToImmutable());
         }
 
         /// <summary>
@@ -335,6 +354,7 @@ namespace DemoGame.Server
 
             _giveCash = v.GiveCash;
             _giveExp = v.GiveExp;
+            _quests = template.Quests;
         }
 
         /// <summary>
@@ -439,5 +459,17 @@ namespace DemoGame.Server
 
             return true;
         }
+
+        #region IQuestProvider<User> Members
+
+        /// <summary>
+        /// Gets the quests that this quest provider provides.
+        /// </summary>
+        public IEnumerable<IQuest<User>> Quests
+        {
+            get { return _quests; }
+        }
+
+        #endregion
     }
 }

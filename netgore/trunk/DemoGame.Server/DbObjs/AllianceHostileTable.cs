@@ -16,7 +16,7 @@ public class AllianceHostileTable : IAllianceHostileTable, NetGore.IO.IPersistab
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"alliance_id", "hostile_id", "placeholder" };
+ static  readonly System.String[] _dbColumns = new string[] {"alliance_id", "hostile_id" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"placeholder" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] { };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -62,7 +62,7 @@ public const System.String TableName = "alliance_hostile";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 3;
+public const System.Int32 ColumnCount = 2;
 /// <summary>
 /// The field that maps onto the database column `alliance_id`.
 /// </summary>
@@ -71,10 +71,6 @@ System.Byte _allianceID;
 /// The field that maps onto the database column `hostile_id`.
 /// </summary>
 System.Byte _hostileID;
-/// <summary>
-/// The field that maps onto the database column `placeholder`.
-/// </summary>
-System.Nullable<System.Byte> _placeholder;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
 /// The underlying database type is `tinyint(3) unsigned`.
@@ -107,23 +103,6 @@ set
 this._hostileID = (System.Byte)value;
 }
 }
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `placeholder`.
-/// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
-/// "Unused placeholder column - please do not remove".
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public System.Nullable<System.Byte> Placeholder
-{
-get
-{
-return (System.Nullable<System.Byte>)_placeholder;
-}
-set
-{
-this._placeholder = (System.Nullable<System.Byte>)value;
-}
-}
 
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -147,12 +126,10 @@ public AllianceHostileTable()
 /// </summary>
 /// <param name="allianceID">The initial value for the corresponding property.</param>
 /// <param name="hostileID">The initial value for the corresponding property.</param>
-/// <param name="placeholder">The initial value for the corresponding property.</param>
-public AllianceHostileTable(DemoGame.AllianceID @allianceID, DemoGame.AllianceID @hostileID, System.Nullable<System.Byte> @placeholder)
+public AllianceHostileTable(DemoGame.AllianceID @allianceID, DemoGame.AllianceID @hostileID)
 {
 this.AllianceID = (DemoGame.AllianceID)@allianceID;
 this.HostileID = (DemoGame.AllianceID)@hostileID;
-this.Placeholder = (System.Nullable<System.Byte>)@placeholder;
 }
 /// <summary>
 /// AllianceHostileTable constructor.
@@ -183,7 +160,6 @@ public static void CopyValues(IAllianceHostileTable source, System.Collections.G
 {
 dic["@alliance_id"] = (DemoGame.AllianceID)source.AllianceID;
 dic["@hostile_id"] = (DemoGame.AllianceID)source.HostileID;
-dic["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
 }
 
 /// <summary>
@@ -194,7 +170,6 @@ public void CopyValuesFrom(IAllianceHostileTable source)
 {
 this.AllianceID = (DemoGame.AllianceID)source.AllianceID;
 this.HostileID = (DemoGame.AllianceID)source.HostileID;
-this.Placeholder = (System.Nullable<System.Byte>)source.Placeholder;
 }
 
 /// <summary>
@@ -213,9 +188,6 @@ return AllianceID;
 
 case "hostile_id":
 return HostileID;
-
-case "placeholder":
-return Placeholder;
 
 default:
 throw new ArgumentException("Field not found.","columnName");
@@ -239,10 +211,6 @@ case "hostile_id":
 this.HostileID = (DemoGame.AllianceID)value;
 break;
 
-case "placeholder":
-this.Placeholder = (System.Nullable<System.Byte>)value;
-break;
-
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -264,9 +232,6 @@ return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof
 
 case "hostile_id":
 return new ColumnMetadata("hostile_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
-
-case "placeholder":
-return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove", "tinyint(3) unsigned", null, typeof(System.Nullable<System.Byte>), true, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

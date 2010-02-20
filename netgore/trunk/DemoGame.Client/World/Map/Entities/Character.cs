@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Features.Quests;
 using NetGore.Graphics;
 using IDrawable=NetGore.Graphics.IDrawable;
 
@@ -14,9 +16,12 @@ namespace DemoGame.Client
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawable
     {
-        readonly EntityInterpolator _interpolator = new EntityInterpolator();
-        ICharacterSprite _characterSprite;
+        static readonly IEnumerable<QuestID> _emptyQuestIDs = new QuestID[0];
 
+        readonly EntityInterpolator _interpolator = new EntityInterpolator();
+
+        IEnumerable<QuestID> _providedQuests = _emptyQuestIDs;
+        ICharacterSprite _characterSprite;
         bool _hasChatDialog;
         bool _hasShop;
         int _lastDrawnTime;
@@ -195,6 +200,15 @@ namespace DemoGame.Client
             base.SetHeading(newHeading);
         }
 
+        /// <summary>
+        /// Gets or sets the IDs of the quests provided by this <see cref="Character"/>.
+        /// </summary>
+        public IEnumerable<QuestID> ProvidedQuests
+        {
+            get { return _providedQuests; }
+            set { _providedQuests = value ?? _emptyQuestIDs; }
+        }
+
 #if !TOPDOWN
         /// <summary>
         /// Updates the character's sprites.
@@ -253,10 +267,7 @@ namespace DemoGame.Client
         /// </summary>
         public Color Color
         {
-            get
-            {
-                return _color;
-            }
+            get { return _color; }
             set
             {
                 if (_color == value)
