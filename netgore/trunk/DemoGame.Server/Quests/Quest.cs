@@ -13,8 +13,6 @@ namespace DemoGame.Server.Quests
     public class Quest : IQuest<User>
     {
         readonly QuestID _questID;
-        readonly string _name;
-        readonly string _description;
         readonly bool _repeatable;
         readonly IQuestRewardCollection<User> _rewards;
         readonly IQuestRequirementCollection<User> _startRequirements;
@@ -25,8 +23,6 @@ namespace DemoGame.Server.Quests
             _questID = questID;
 
             var info = dbController.GetQuery<SelectQuestQuery>().Execute(questID);
-            _name = info.Name;
-            _description = info.Description;
             _repeatable = info.Repeatable;
 
             _rewards = LoadRewards(questID, info, dbController);
@@ -81,22 +77,6 @@ namespace DemoGame.Server.Quests
         public QuestID QuestID
         {
             get { return _questID; }
-        }
-
-        /// <summary>
-        /// Gets the name of the quest.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets the quest's description.
-        /// </summary>
-        public string Description
-        {
-            get { return _description; }
         }
 
         /// <summary>

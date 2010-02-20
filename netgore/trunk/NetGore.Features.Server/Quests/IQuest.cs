@@ -13,16 +13,6 @@ namespace NetGore.Features.Quests
         QuestID QuestID { get; }
 
         /// <summary>
-        /// Gets the name of the quest.
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Gets the quest's description.
-        /// </summary>
-        string Description { get; }
-
-        /// <summary>
         /// Gets if this quest can be repeated.
         /// </summary>
         bool Repeatable { get; }

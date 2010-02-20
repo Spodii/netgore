@@ -23,9 +23,7 @@ public static  class QuestTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this IQuestTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@description"] = (System.String)source.Description;
 paramValues["@id"] = (System.UInt16)source.ID;
-paramValues["@name"] = (System.String)source.Name;
 paramValues["@repeatable"] = (System.Boolean)source.Repeatable;
 paramValues["@reward_cash"] = (System.Int32)source.RewardCash;
 paramValues["@reward_exp"] = (System.Int32)source.RewardExp;
@@ -42,17 +40,9 @@ public static void ReadValues(this QuestTable source, System.Data.IDataReader da
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("description");
-
-source.Description = (System.String)(System.String)dataReader.GetString(i);
-
 i = dataReader.GetOrdinal("id");
 
 source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("name");
-
-source.Name = (System.String)(System.String)dataReader.GetString(i);
 
 i = dataReader.GetOrdinal("repeatable");
 
@@ -83,18 +73,8 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 {
 switch (dataReader.GetName(i))
 {
-case "description":
-source.Description = (System.String)(System.String)dataReader.GetString(i);
-break;
-
-
 case "id":
 source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
-break;
-
-
-case "name":
-source.Name = (System.String)(System.String)dataReader.GetString(i);
 break;
 
 
@@ -134,18 +114,8 @@ for (int i = 0; i < paramValues.Count; i++)
 {
 switch (paramValues.GetParameterName(i))
 {
-case "@description":
-paramValues[i] = (System.String)source.Description;
-break;
-
-
 case "@id":
 paramValues[i] = (System.UInt16)source.ID;
-break;
-
-
-case "@name":
-paramValues[i] = (System.String)source.Name;
 break;
 
 

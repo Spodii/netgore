@@ -17,23 +17,9 @@ public interface IQuestTable
 IQuestTable DeepCopy();
 
 /// <summary>
-/// Gets the value of the database column `description`.
-/// </summary>
-System.String Description
-{
-get;
-}
-/// <summary>
 /// Gets the value of the database column `id`.
 /// </summary>
 NetGore.Features.Quests.QuestID ID
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `name`.
-/// </summary>
-System.String Name
 {
 get;
 }
