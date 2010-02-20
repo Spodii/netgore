@@ -30,13 +30,6 @@ DemoGame.AllianceID HostileID
 {
 get;
 }
-/// <summary>
-/// Gets the value of the database column `placeholder`.
-/// </summary>
-System.Nullable<System.Byte> Placeholder
-{
-get;
-}
 }
 
 }

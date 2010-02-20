@@ -30,7 +30,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 /// <summary>
 /// Array of the database column names for columns that are primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] { };
+ static  readonly System.String[] _dbColumnsKeys = new string[] {"character_id", "quest_id" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
 /// </summary>
@@ -44,7 +44,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"character_id", "completed_on", "quest_id", "started_on" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"completed_on", "started_on" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -290,13 +290,13 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 switch (columnName)
 {
 case "character_id":
-return new ColumnMetadata("character_id", "", "int(11)", null, typeof(System.Int32), false, false, false);
+return new ColumnMetadata("character_id", "", "int(11)", null, typeof(System.Int32), false, true, false);
 
 case "completed_on":
 return new ColumnMetadata("completed_on", "", "datetime", null, typeof(System.Nullable<System.DateTime>), true, false, false);
 
 case "quest_id":
-return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 
 case "started_on":
 return new ColumnMetadata("started_on", "", "datetime", null, typeof(System.DateTime), false, false, false);

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
+using DemoGame.Server.Quests;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -13,9 +14,11 @@ namespace DemoGame.Server
     public class CharacterTemplateManager : DbTableDataManager<CharacterTemplateID, CharacterTemplate>
     {
         static readonly CharacterTemplateManager _instance;
+        static readonly QuestManager _questManager = QuestManager.Instance;
 
-        SelectCharacterTemplateEquippedQuery _selectCharacterTemplateEquippedQuery;
-        SelectCharacterTemplateInventoryQuery _selectCharacterTemplateInventoryQuery;
+        SelectCharacterTemplateEquippedQuery _selectEquippedQuery;
+        SelectCharacterTemplateInventoryQuery _selectInventoryQuery;
+        SelectCharacterTemplateQuestsQuery _selectQuestsQuery;
         SelectCharacterTemplateQuery _selectCharacterTemplateQuery;
 
         /// <summary>
@@ -52,8 +55,9 @@ namespace DemoGame.Server
         protected override void CacheDbQueries(IDbController dbController)
         {
             _selectCharacterTemplateQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
-            _selectCharacterTemplateInventoryQuery = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>();
-            _selectCharacterTemplateEquippedQuery = dbController.GetQuery<SelectCharacterTemplateEquippedQuery>();
+            _selectInventoryQuery = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>();
+            _selectEquippedQuery = dbController.GetQuery<SelectCharacterTemplateEquippedQuery>();
+            _selectQuestsQuery = dbController.GetQuery<SelectCharacterTemplateQuestsQuery>();
 
             base.CacheDbQueries(dbController);
         }
@@ -95,8 +99,9 @@ namespace DemoGame.Server
         protected override CharacterTemplate LoadItem(CharacterTemplateID id)
         {
             CharacterTemplateTable v = _selectCharacterTemplateQuery.Execute(id);
-            var itemValues = _selectCharacterTemplateInventoryQuery.Execute(id);
-            var equippedValues = _selectCharacterTemplateEquippedQuery.Execute(id);
+            var itemValues = _selectInventoryQuery.Execute(id);
+            var equippedValues = _selectEquippedQuery.Execute(id);
+            var questValues = _selectQuestsQuery.Execute(id);
 
             Debug.Assert(id == v.ID);
             Debug.Assert(itemValues.All(x => id == x.CharacterTemplateID));
@@ -106,8 +111,9 @@ namespace DemoGame.Server
 
             var items = itemValues.Select(x => new CharacterTemplateInventoryItem(itm[x.ItemTemplateID], x.Min, x.Max, x.Chance));
             var equipped = equippedValues.Select(x => new CharacterTemplateEquipmentItem(itm[x.ItemTemplateID], x.Chance));
+            var quests = questValues.Select(x => _questManager.GetQuest(x));
 
-            CharacterTemplate template = new CharacterTemplate(v, items, equipped);
+            CharacterTemplate template = new CharacterTemplate(v, items, equipped, quests);
 
             return template;
         }

@@ -77,7 +77,6 @@
     <Compile Include="DbObjs\Interfaces\IAllianceTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterEquippedTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterInventoryTable.cs" />
-    <Compile Include="DbObjs\Interfaces\ICharacterQuestProviderTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterQuestStatusKillsTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterQuestStatusTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterStatusEffectTable.cs" />

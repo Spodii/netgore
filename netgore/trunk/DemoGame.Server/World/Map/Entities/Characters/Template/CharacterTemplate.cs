@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
 using NetGore;
+using NetGore.Features.Quests;
 
 namespace DemoGame.Server
 {
@@ -19,6 +20,7 @@ namespace DemoGame.Server
         readonly IEnumerable<CharacterTemplateEquipmentItem> _equipment;
         readonly IEnumerable<CharacterTemplateInventoryItem> _inventory;
         readonly ICharacterTemplateTable _templateTable;
+        readonly IEnumerable<IQuest<User>> _quests;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterTemplate"/> class.
@@ -26,8 +28,9 @@ namespace DemoGame.Server
         /// <param name="templateTable">The template table.</param>
         /// <param name="inventory">The inventory.</param>
         /// <param name="equipment">The equipment.</param>
+        /// <param name="quests">The quests.</param>
         public CharacterTemplate(ICharacterTemplateTable templateTable, IEnumerable<CharacterTemplateInventoryItem> inventory,
-                                 IEnumerable<CharacterTemplateEquipmentItem> equipment)
+                                 IEnumerable<CharacterTemplateEquipmentItem> equipment, IEnumerable<IQuest<User>> quests)
         {
             if (templateTable == null)
                 throw new ArgumentNullException("templateTable");
@@ -38,14 +41,24 @@ namespace DemoGame.Server
 
             Debug.Assert(!inventory.Any(x => x == null));
             Debug.Assert(!equipment.Any(x => x == null));
+            Debug.Assert(!quests.Any(x => x == null));
 
             _inventory = inventory.ToCompact();
             _equipment = equipment.ToCompact();
+            _quests = quests.ToCompact();
 
             _templateTable = templateTable;
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded CharacterTemplate `{0}`.", this);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplate"/>'s quests.
+        /// </summary>
+        public IEnumerable<IQuest<User>> Quests
+        {
+            get { return _quests; }
         }
 
         /// <summary>

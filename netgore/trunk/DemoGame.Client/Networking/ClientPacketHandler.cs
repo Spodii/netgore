@@ -13,6 +13,7 @@ using NetGore.Audio;
 using NetGore.Features.Emoticons;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -176,6 +177,20 @@ namespace DemoGame.Client
             }
 
             _pingWatch.Start();
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetProvidedQuests)]
+        void RecvSetProvidedQuests(IIPSocket conn, BitStream r)
+        {
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            byte count = r.ReadByte();
+            QuestID[] questIDs = new QuestID[count];
+            for (int i = 0; i < count; i++)
+                questIDs[i] = r.ReadQuestID();
+
+            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            if (character != null)
+                character.ProvidedQuests = questIDs;
         }
 
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]

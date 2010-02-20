@@ -95,7 +95,6 @@
     <Compile Include="DbObjs\AllianceTable.cs" />
     <Compile Include="DbObjs\CharacterEquippedTable.cs" />
     <Compile Include="DbObjs\CharacterInventoryTable.cs" />
-    <Compile Include="DbObjs\CharacterQuestProviderTable.cs" />
     <Compile Include="DbObjs\CharacterQuestStatusKillsTable.cs" />
     <Compile Include="DbObjs\CharacterQuestStatusTable.cs" />
     <Compile Include="DbObjs\CharacterStatusEffectTable.cs" />
@@ -111,7 +110,6 @@
     <Compile Include="DbObjs\DbExtensions\AllianceTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterEquippedTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterInventoryTableDbExtensions.cs" />
-    <Compile Include="DbObjs\DbExtensions\CharacterQuestProviderTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterQuestStatusKillsTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterQuestStatusTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterStatusEffectTableDbExtensions.cs" />

@@ -216,10 +216,20 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles post-creation processing. This is required if you want to make use
-        /// of any of the Entity's values, which are not available at the constructor.
+        /// When overridden in the derived class, handles post-creation processing. This method is invoked immediately
+        /// after the <see cref="DynamicEntity"/> has been created and all of the serialized values have been read.
         /// </summary>
-        protected virtual void AfterCreation()
+        /// <param name="reader">The <see cref="IValueReader"/> that was used to deserialize the values.</param>
+        protected virtual void AfterCreated(IValueReader reader)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles post creation-serialization processing. This method is invoked
+        /// immediately after the <see cref="DynamicEntity"/>'s creation values have been serialized.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> that was used to serialize the values.</param>
+        protected virtual void AfterSendCreated(IValueWriter writer)
         {
         }
 
@@ -375,7 +385,7 @@ namespace NetGore
             }
 
             // Perform post-creation tasks
-            AfterCreation();
+            AfterCreated(reader);
         }
 
         /// <summary>
@@ -500,6 +510,9 @@ namespace NetGore
 
             // Obviously synchronized if we write all the values
             _isSynchronized = true;
+
+            // Perform post creation-serialized tasks
+            AfterSendCreated(writer);
         }
     }
 }
