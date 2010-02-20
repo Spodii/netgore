@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.Quests;
 using log4net;
 using NetGore;
 using NetGore.Db;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Network;
@@ -19,6 +21,7 @@ namespace DemoGame.Server
     class ServerPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly QuestManager _questManager = QuestManager.Instance;
 
         readonly Queue<IIPSocket> _disconnectedSockets = new Queue<IIPSocket>();
         readonly MessageProcessorManager _ppManager;
@@ -186,6 +189,33 @@ namespace DemoGame.Server
             User user;
             if ((user = TryGetUser(conn)) != null)
                 user.SendEquipmentItemStats(slot);
+        }
+
+        [MessageHandler((byte)ClientPacketID.HasQuestStartRequirements)]
+        void RecvHasQuestStartRequirements(IIPSocket conn, BitStream r)
+        {
+            var questID = r.ReadQuestID();
+
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            var quest = _questManager.GetQuest(questID);
+            bool hasRequirements = false;
+
+            if (quest == null)
+            {
+                const string errmsg = "User `{0}` sent request for invalid quest ID `{1}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user, questID);
+            }
+            else
+            {
+                hasRequirements = quest.StartRequirements.HasRequirements(user);
+            }
+
+            using (var pw = ServerPacket.HasQuestStartRequirements(questID, hasRequirements))
+                user.Send(pw);
         }
 
         [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]

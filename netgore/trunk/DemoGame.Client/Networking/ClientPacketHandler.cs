@@ -333,6 +333,15 @@ namespace DemoGame.Client
             GuildInfo.Read(r);
         }
 
+        [MessageHandler((byte)ServerPacketID.HasQuestStartRequirementsReply)]
+        void RecvHasQuestStartRequirementsReply(IIPSocket conn, BitStream r)
+        {
+            QuestID questID = r.ReadQuestID();
+            bool hasRequirements = r.ReadBool();
+
+            UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
+        }
+
         [MessageHandler((byte)ServerPacketID.QuestInfo)]
         void RecvQuestInfo(IIPSocket conn, BitStream r)
         {
@@ -632,6 +641,9 @@ namespace DemoGame.Client
             // Create the new map
             Map newMap = new Map(mapIndex, World.Camera, World, GameplayScreen.ScreenManager.GraphicsDevice);
             newMap.Load(ContentPaths.Build, false, _dynamicEntityFactory);
+            
+            // Clear quest requirements caches
+            UserInfo.HasStartQuestRequirements.Clear();
 
             // Change maps
             World.SetMap(newMap);

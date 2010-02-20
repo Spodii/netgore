@@ -18,6 +18,7 @@ namespace DemoGame.Client
         readonly UserEquipped _equipped = new UserEquipped();
         readonly UserGroupInformation _groupInfo = new UserGroupInformation();
         readonly UserGuildInformation _guildInfo = new UserGuildInformation();
+        readonly HasQuestRequirementsTracker _hasStartQuestRequirements;
         readonly Inventory _inventory;
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
         readonly UserQuestInformation _questInfo = new UserQuestInformation();
@@ -28,6 +29,14 @@ namespace DemoGame.Client
                 throw new ArgumentNullException("socket");
 
             _inventory = new Inventory(socket);
+
+            _hasStartQuestRequirements = new HasQuestRequirementsTracker(delegate(QuestID x)
+            {
+                using (var pw = ClientPacket.HasQuestStartRequirements(x))
+                {
+                    socket.Send(pw);
+                }
+            });
         }
 
         public CharacterStats BaseStats
@@ -52,6 +61,11 @@ namespace DemoGame.Client
         public UserGuildInformation GuildInfo
         {
             get { return _guildInfo; }
+        }
+
+        public HasQuestRequirementsTracker HasStartQuestRequirements
+        {
+            get { return _hasStartQuestRequirements; }
         }
 
         public SPValueType HP { get; set; }

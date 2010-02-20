@@ -26,6 +26,7 @@ namespace DemoGame
         EndChatDialog,
         GroupInfo,
         GuildInfo,
+        HasQuestStartRequirementsReply,
         LoginSuccessful,
         LoginUnsuccessful,
         NotifyExpCash,
