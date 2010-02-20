@@ -105,12 +105,17 @@ namespace DemoGame.Client
 
         public UserGroupInformation GroupInfo
         {
-            get { return GameplayScreen.GroupInfo; }
+            get { return GameplayScreen.UserInfo.GroupInfo; }
         }
 
         public UserGuildInformation GuildInfo
         {
-            get { return GameplayScreen.GuildInfo; }
+            get { return GameplayScreen.UserInfo.GuildInfo; }
+        }
+
+        public UserQuestInformation QuestInfo
+        {
+            get { return GameplayScreen.UserInfo.QuestInfo; }
         }
 
         /// <summary>
@@ -326,6 +331,12 @@ namespace DemoGame.Client
         void RecvGuildInfo(IIPSocket conn, BitStream r)
         {
             GuildInfo.Read(r);
+        }
+
+        [MessageHandler((byte)ServerPacketID.QuestInfo)]
+        void RecvQuestInfo(IIPSocket conn, BitStream r)
+        {
+            QuestInfo.Read(r);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]

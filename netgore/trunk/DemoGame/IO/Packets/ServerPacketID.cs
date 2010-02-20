@@ -35,6 +35,7 @@ namespace DemoGame
         PlaySound,
         PlaySoundAt,
         PlaySoundAtEntity,
+        QuestInfo,
         RemoveDynamicEntity,
         RemoveStatusEffect,
         StartCastingSkill,

@@ -15,6 +15,13 @@ namespace DemoGame.Server.Quests
         /// <param name="owner">The quest performer that this object will track the quest status of.</param>
         public QuestPerformerStatusHelper(User owner) : base(owner)
         {
+            // Send the initial quest status
+            var completed = CompletedQuests.Select(x => x.QuestID);
+            var active = ActiveQuests.Select(x => x.QuestID);
+            using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteQuestInfo(x, completed, active)))
+            {
+                Owner.Send(pw);
+            }
         }
 
         /// <summary>
@@ -55,6 +62,56 @@ namespace DemoGame.Server.Quests
         protected override void NotifyCannotGiveQuestRewards(IQuest<User> quest)
         {
             // TODO: !! ...
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="QuestPerformerStatusHelper{TCharacter}.QuestAccepted"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected override void OnQuestAccepted(IQuest<User> quest)
+        {
+            base.OnQuestAccepted(quest);
+
+            using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteAddActiveQuest(x, quest.QuestID)))
+            {
+                Owner.Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="QuestPerformerStatusHelper{TCharacter}.QuestCanceled"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was canceled.</param>
+        protected override void OnQuestCanceled(IQuest<User> quest)
+        {
+            base.OnQuestCanceled(quest);
+
+            using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteRemoveActiveQuest(x, quest.QuestID)))
+            {
+                Owner.Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="QuestPerformerStatusHelper{TCharacter}.QuestFinished"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was finished.</param>
+        protected override void OnQuestFinished(IQuest<User> quest)
+        {
+            base.OnQuestFinished(quest);
+
+            using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteRemoveActiveQuest(x, quest.QuestID)))
+            {
+                Owner.Send(pw);
+            }
+
+            using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteAddCompletedQuest(x, quest.QuestID)))
+            {
+                Owner.Send(pw);
+            }
         }
     }
 }

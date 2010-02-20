@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using NetGore;
+using NetGore.Features.Groups;
+using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Network;
 using NetGore.Stats;
 
@@ -13,8 +16,11 @@ namespace DemoGame.Client
     {
         readonly CharacterStats _baseStats = new CharacterStats(StatCollectionType.Base);
         readonly UserEquipped _equipped = new UserEquipped();
+        readonly UserGroupInformation _groupInfo = new UserGroupInformation();
+        readonly UserGuildInformation _guildInfo = new UserGuildInformation();
         readonly Inventory _inventory;
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
+        readonly UserQuestInformation _questInfo = new UserQuestInformation();
 
         public UserInfo(ISocketSender socket)
         {
@@ -37,6 +43,16 @@ namespace DemoGame.Client
         }
 
         public int Exp { get; set; }
+
+        public UserGroupInformation GroupInfo
+        {
+            get { return _groupInfo; }
+        }
+
+        public UserGuildInformation GuildInfo
+        {
+            get { return _guildInfo; }
+        }
 
         public SPValueType HP { get; set; }
 
@@ -76,6 +92,11 @@ namespace DemoGame.Client
 
                 return (byte)((MP / (float)max) * 100.0f).Clamp(0, 100);
             }
+        }
+
+        public UserQuestInformation QuestInfo
+        {
+            get { return _questInfo; }
         }
 
         public int StatPoints { get; set; }

@@ -74,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quests\QuestID.cs" />
     <Compile Include="Quests\QuestSettings.cs" />
+    <Compile Include="Quests\UserQuestInformation.cs" />
     <Compile Include="Shops\ShopID.cs" />
     <Compile Include="Shops\ShopItemIndex.cs" />
     <Compile Include="Shops\ShopItemIndexExtensions.cs" />
