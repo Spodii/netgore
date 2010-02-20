@@ -48,6 +48,33 @@ namespace NetGore.Features.Quests
         public event QuestEventHandler QuestAccepted;
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="QuestPerformerStatusHelper{TCharacter}.QuestAccepted"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected virtual void OnQuestAccepted(IQuest<TCharacter> quest)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="QuestPerformerStatusHelper{TCharacter}.QuestCanceled"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was canceled.</param>
+        protected virtual void OnQuestCanceled(IQuest<TCharacter> quest)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="QuestPerformerStatusHelper{TCharacter}.QuestFinished"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was finished.</param>
+        protected virtual void OnQuestFinished(IQuest<TCharacter> quest)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when a quest has been canceled.
         /// </summary>
         public event QuestEventHandler QuestCanceled;
@@ -94,13 +121,17 @@ namespace NetGore.Features.Quests
         {
             bool ret = _activeQuests.Remove(quest);
 
-            if (ret)
-            {
-                if (QuestCanceled != null)
-                    QuestCanceled(this, quest);
-            }
+            // Ensure the quest was even in the collection
+            if (!ret)
+                return false;
 
-            return ret;
+            // Raise events
+            OnQuestCanceled(quest);
+
+            if (QuestCanceled != null)
+                QuestCanceled(this, quest);
+
+            return true;
         }
 
         public bool HasCompletedQuest(IQuest<TCharacter> quest)
@@ -159,6 +190,9 @@ namespace NetGore.Features.Quests
 
             quest.Rewards.Give(Owner);
 
+            // Raise events
+            OnQuestFinished(quest);
+
             if (QuestFinished != null)
                 QuestFinished(this, quest);
 
@@ -171,6 +205,9 @@ namespace NetGore.Features.Quests
                 return false;
 
             _activeQuests.Add(quest);
+
+            // Raise events
+            OnQuestAccepted(quest);
 
             if (QuestAccepted != null)
                 QuestAccepted(this, quest);

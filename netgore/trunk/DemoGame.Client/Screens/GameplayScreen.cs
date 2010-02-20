@@ -11,6 +11,7 @@ using NetGore.Audio;
 using NetGore.Features.Emoticons;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
 using NetGore.Graphics;
@@ -33,8 +34,6 @@ namespace DemoGame.Client
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly GameplayScreenControls _gameControls;
-        readonly UserGroupInformation _groupInfo = new UserGroupInformation();
-        readonly UserGuildInformation _guildInfo = new UserGuildInformation();
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
 
@@ -95,16 +94,6 @@ namespace DemoGame.Client
         public EquipmentInfoRequester EquipmentInfoRequester
         {
             get { return _equipmentInfoRequester; }
-        }
-
-        public UserGroupInformation GroupInfo
-        {
-            get { return _groupInfo; }
-        }
-
-        public UserGuildInformation GuildInfo
-        {
-            get { return _guildInfo; }
         }
 
         /// <summary>
@@ -384,8 +373,8 @@ namespace DemoGame.Client
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
-            _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = GuildInfo };
-            new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = GroupInfo };
+            _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo };
+            new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 

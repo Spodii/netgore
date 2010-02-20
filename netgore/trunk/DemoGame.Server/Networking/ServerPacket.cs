@@ -147,6 +147,13 @@ namespace DemoGame.Server
             return ret;
         }
 
+        public static PacketWriter QuestInfo(Action<PacketWriter> populate)
+        {
+            var ret = GetWriter(ServerPacketID.QuestInfo);
+            populate(ret);
+            return ret;
+        }
+
         public static PacketWriter GuildInfo(Action<PacketWriter> populate)
         {
             var ret = GetWriter(ServerPacketID.GuildInfo);

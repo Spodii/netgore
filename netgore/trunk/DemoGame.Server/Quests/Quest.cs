@@ -18,6 +18,11 @@ namespace DemoGame.Server.Quests
         readonly IQuestRequirementCollection<User> _startRequirements;
         readonly IQuestRequirementCollection<User> _finishRequirements;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Quest"/> class.
+        /// </summary>
+        /// <param name="questID">The quest's ID.</param>
+        /// <param name="dbController">The <see cref="IDbController"/> to use to load the values.</param>
         public Quest(QuestID questID, IDbController dbController)
         {
             _questID = questID;
@@ -30,6 +35,13 @@ namespace DemoGame.Server.Quests
             _finishRequirements = LoadFinishRequirements(questID, dbController);
         }
 
+        /// <summary>
+        /// Loads the rewards for finishing a quest.
+        /// </summary>
+        /// <param name="questID">The ID of the quest.</param>
+        /// <param name="table">The <see cref="IQuestTable"/>.</param>
+        /// <param name="dbController">The <see cref="IDbController"/> to use to load values.</param>
+        /// <returns>The rewards for finishing a quest.</returns>
         static IQuestRewardCollection<User> LoadRewards(QuestID questID, IQuestTable table, IDbController dbController)
         {
             var l = new List<IQuestReward<User>>
@@ -45,6 +57,12 @@ namespace DemoGame.Server.Quests
             return new QuestRewardCollection<User>(l);
         }
 
+        /// <summary>
+        /// Loads the requirements for starting a quest.
+        /// </summary>
+        /// <param name="questID">The ID of the quest.</param>
+        /// <param name="dbController">The <see cref="IDbController"/> to use to load values.</param>
+        /// <returns>The requirements for starting a quest.</returns>
         static IQuestRequirementCollection<User> LoadStartRequirements(QuestID questID, IDbController dbController)
         {
             var l = new List<IQuestRequirement<User>>();
@@ -58,6 +76,12 @@ namespace DemoGame.Server.Quests
             return new QuestRequirementCollection<User>(l);
         }
 
+        /// <summary>
+        /// Loads the requirements for finishing a quest.
+        /// </summary>
+        /// <param name="questID">The ID of the quest.</param>
+        /// <param name="dbController">The <see cref="IDbController"/> to use to load values.</param>
+        /// <returns>The requirements for finishing a quest.</returns>
         static IQuestRequirementCollection<User> LoadFinishRequirements(QuestID questID, IDbController dbController)
         {
             var l = new List<IQuestRequirement<User>>();
