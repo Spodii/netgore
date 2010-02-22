@@ -47,6 +47,11 @@
     <Compile Include="Emoticons\Emoticon.cs" />
     <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
+    <Compile Include="Friends\Event Handlers\FriendEventHandler.cs" />
+    <Compile Include="Friends\FriendEvents.cs" />
+    <Compile Include="Friends\FriendName.cs" />
+    <Compile Include="Friends\IFriend.cs" />
+    <Compile Include="Friends\IFriendList.cs" />
     <Compile Include="Groups\GroupSettings.cs" />
     <Compile Include="Groups\GroupShareMode.cs" />
     <Compile Include="Groups\IGroup.cs" />
