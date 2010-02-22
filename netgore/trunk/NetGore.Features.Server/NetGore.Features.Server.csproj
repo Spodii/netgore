@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Emoticons\" />
+    <Folder Include="Friends\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>
