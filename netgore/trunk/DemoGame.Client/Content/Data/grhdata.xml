@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>191</Count>
+    <Count>194</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -1650,6 +1650,33 @@
       </Texture>
     </Item182>
     <Item183>
+      <Index>183</Index>
+      <Categorization>Quest.available</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Quest/available</Name>
+        <Source>0,0,11,20</Source>
+      </Texture>
+    </Item183>
+    <Item184>
+      <Index>184</Index>
+      <Categorization>Quest.started</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Quest/started</Name>
+        <Source>0,0,11,20</Source>
+      </Texture>
+    </Item184>
+    <Item185>
+      <Index>185</Index>
+      <Categorization>Quest.turnin</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Quest/turnin</Name>
+        <Source>0,0,4,20</Source>
+      </Texture>
+    </Item185>
+    <Item186>
       <Index>140</Index>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1657,8 +1684,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item183>
-    <Item184>
+    </Item186>
+    <Item187>
       <Index>142</Index>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1666,8 +1693,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item187>
+    <Item188>
       <Index>141</Index>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1675,8 +1702,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item185>
-    <Item186>
+    </Item188>
+    <Item189>
       <Index>61</Index>
       <Categorization>System.Blank</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1684,8 +1711,8 @@
         <Name>Grh/System/Blank</Name>
         <Source>0,0,2,2</Source>
       </Texture>
-    </Item186>
-    <Item187>
+    </Item189>
+    <Item190>
       <Index>62</Index>
       <Categorization>System.Joint</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1693,8 +1720,8 @@
         <Name>Grh/System/Joint</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item187>
-    <Item188>
+    </Item190>
+    <Item191>
       <Index>64</Index>
       <Categorization>System.Move</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1702,8 +1729,8 @@
         <Name>Grh/System/Move</Name>
         <Source>0,0,17,17</Source>
       </Texture>
-    </Item188>
-    <Item189>
+    </Item191>
+    <Item192>
       <Index>65</Index>
       <Categorization>System.Resize</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1711,8 +1738,8 @@
         <Name>Grh/System/Resize</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item189>
-    <Item190>
+    </Item192>
+    <Item193>
       <Index>63</Index>
       <Categorization>System.Triangle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1720,7 +1747,7 @@
         <Name>Grh/System/Triangle</Name>
         <Source>0,0,30,30</Source>
       </Texture>
-    </Item190>
+    </Item193>
   </Stationary>
   <Animated>
     <Count>0</Count>
