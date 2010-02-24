@@ -23,6 +23,10 @@ namespace DemoGame.Client
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
         readonly UserQuestInformation _questInfo = new UserQuestInformation();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserInfo"/> class.
+        /// </summary>
+        /// <param name="socket">The socket.</param>
         public UserInfo(ISocketSender socket)
         {
             if (socket == null)
