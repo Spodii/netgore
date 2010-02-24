@@ -57,7 +57,6 @@ namespace DemoGame.Client
         ClientSockets _socket;
         StatsForm _statsForm;
         StatusEffectsForm _statusEffectsForm;
-        UserInfo _userInfo;
         World _world;
         CharacterTargeter _characterTargeter;
 
@@ -163,7 +162,7 @@ namespace DemoGame.Client
         /// </summary>
         public UserInfo UserInfo
         {
-            get { return _userInfo; }
+            get { return World.UserInfo; }
         }
 
         /// <summary>
@@ -313,16 +312,15 @@ namespace DemoGame.Client
 
             _socket = ClientSockets.Instance;
 
-            _world = new World(this, new Camera2D(GameData.ScreenSize));
+            _world = new World(this, new Camera2D(GameData.ScreenSize), new UserInfo(Socket));
             _world.MapChanged += World_MapChanged;
 
             // Create the socket
             Socket.Disconnected += OnDisconnect;
 
             // Create some misc goodies that require a reference to the Socket
-            _userInfo = new UserInfo(Socket);
-            _equipmentInfoRequester = new EquipmentInfoRequester(_userInfo.Equipped, Socket);
-            _inventoryInfoRequester = new InventoryInfoRequester(_userInfo.Inventory, Socket);
+            _equipmentInfoRequester = new EquipmentInfoRequester(UserInfo.Equipped, Socket);
+            _inventoryInfoRequester = new InventoryInfoRequester(UserInfo.Inventory, Socket);
 
             // Other inits
             InitializeGUI();

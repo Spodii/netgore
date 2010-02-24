@@ -124,7 +124,6 @@ namespace DemoGame.Client
         public Map Map
         {
             get { return GameplayScreen.World.Map; }
-            set { GameplayScreen.World.Map = value; }
         }
 
         SoundManager SoundManager
@@ -646,7 +645,7 @@ namespace DemoGame.Client
             UserInfo.HasStartQuestRequirements.Clear();
 
             // Change maps
-            World.SetMap(newMap);
+            World.Map = newMap;
 
             // Unload all map content from the previous map and from the new map loading
             GameplayScreen.ScreenManager.MapContent.Unload();

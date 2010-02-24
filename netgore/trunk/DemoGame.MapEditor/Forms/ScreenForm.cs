@@ -175,7 +175,7 @@ namespace DemoGame.MapEditor
             CursorManager.CurrentCursorChanged += CursorManager_CurrentCursorChanged;
 
             // Create the world
-            _world = new World(this, _camera);
+            _world = new World(this, _camera, null);
 
             // Set up the GameScreenControl
             GameScreen.Camera = _camera;

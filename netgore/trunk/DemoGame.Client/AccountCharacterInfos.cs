@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DemoGame.Client
 {
-    class AccountCharacterInfos
+    public class AccountCharacterInfos
     {
         public delegate void AccountCharactersLoadedHandler(AccountCharacterInfos sender);
 
