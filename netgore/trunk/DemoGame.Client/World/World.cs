@@ -1,33 +1,23 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Features.Emoticons;
+using NetGore.Features.Quests;
 using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
     public class World : WorldBase
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly MapDrawEventHandler _drawEmoticonHandler = DrawEmoticonsHandler;
         static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
         readonly ICamera2D _camera;
-
-        /// <summary>
-        /// Interface used to get the current time
-        /// </summary>
         readonly IGetTime _getTime;
+        readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
+        readonly UserInfo _userInfo;
 
-        /// <summary>
-        /// Map currently being used
-        /// </summary>
         Map _map;
-
         MapEntityIndex _usercharIndex;
 
         /// <summary>
@@ -35,10 +25,24 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="getTime">Interface to get the current time.</param>
         /// <param name="camera">Primary world view camera.</param>
-        public World(IGetTime getTime, ICamera2D camera)
+        /// <param name="userInfo">The user info. Can be null.</param>
+        public World(IGetTime getTime, ICamera2D camera, UserInfo userInfo)
         {
+            _userInfo = userInfo;
             _getTime = getTime;
             _camera = camera;
+
+            MapDrawingExtensions.Add(new EmoticonMapDrawingExtension(_emoticonDisplayManager));
+
+            if (userInfo != null)
+            {
+                var e = new QuestMapDrawingExtension<Character>(userInfo.QuestInfo, userInfo.HasStartQuestRequirements,
+                                                                m =>
+                                                                m.Spatial.GetMany<Character>(m.Camera.GetViewArea(),
+                                                                                             c => !c.ProvidedQuests.IsEmpty()),
+                                                                c => c.ProvidedQuests);
+                MapDrawingExtensions.Add(e);
+            }
         }
 
         /// <summary>
@@ -67,24 +71,35 @@ namespace DemoGame.Client
             get { return _map; }
             set
             {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                // Check that the map actually needs to change
                 if (Map == value)
                     return;
 
-                // Remove the map event hooks from the old map
+                // Invalidate the user's character index until it is reset
+                IsUserCharIndexSet = false;
+
+                // Dispose of the old map
                 if (Map != null)
-                    Map.EndDrawLayer -= _drawEmoticonHandler;
+                    Map.Dispose();
 
                 // Set the map
                 _map = value;
                 _camera.Map = Map;
 
-                // Add the map event hooks to the new map
-                if (Map != null)
-                    Map.EndDrawLayer += _drawEmoticonHandler;
+                MapDrawingExtensions.Map = Map;
 
+                // Add the map event hooks to the new map
                 if (MapChanged != null)
                     MapChanged(this, Map);
             }
+        }
+
+        public MapDrawingExtensionCollection MapDrawingExtensions
+        {
+            get { return _mapDrawingExtensions; }
         }
 
         /// <summary>
@@ -115,24 +130,20 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the <see cref="UserInfo"/>. Can be null.
+        /// </summary>
+        public UserInfo UserInfo
+        {
+            get { return _userInfo; }
+        }
+
+        /// <summary>
         /// Draws the world
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to</param>
         public void Draw(SpriteBatch sb)
         {
             _map.Draw(sb);
-        }
-
-        /// <summary>
-        /// Handles drawing the emoticons.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="layer">The layer.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        static void DrawEmoticonsHandler(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
-        {
-            if (layer == MapRenderLayer.Chararacter)
-                _emoticonDisplayManager.Draw(spriteBatch);
         }
 
         /// <summary>
@@ -144,32 +155,10 @@ namespace DemoGame.Client
             return _getTime.GetTime();
         }
 
-        public void SetMap(Map newMap)
-        {
-            if (newMap == null)
-                throw new ArgumentNullException("newMap");
-
-            // Check that the map actually needs to change
-            if (Map == newMap)
-            {
-                const string errmsg = "Requested to change map to the map we are already on.";
-                Debug.Fail(errmsg);
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                return;
-            }
-
-            // Invalidate the user's character index until it is reset
-            IsUserCharIndexSet = false;
-
-            // Dispose of the old map
-            if (Map != null)
-                Map.Dispose();
-
-            // Set the new map
-            Map = newMap;
-        }
-
+        /// <summary>
+        /// When overridden in the derived class, handles updating all of the Maps in this World.
+        /// </summary>
+        /// <param name="deltaTime">Delta time to use for updating the maps.</param>
         protected override void UpdateMaps(int deltaTime)
         {
             // Update the map

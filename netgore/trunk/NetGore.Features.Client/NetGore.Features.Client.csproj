@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Emoticons\EmoticonDisplayManager.cs" />
+    <Compile Include="Emoticons\EmoticonMapDrawingExtension.cs" />
     <Compile Include="Groups\GroupForm.cs" />
     <Compile Include="Groups\GroupMemberListControl.cs" />
     <Compile Include="Guilds\GuildForm.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Quests\IQuestDescriptionCollection.cs" />
     <Compile Include="Quests\QuestDescription.cs" />
     <Compile Include="Quests\QuestDescriptionCollection.cs" />
+    <Compile Include="Quests\QuestMapDrawingExtension.cs" />
     <Compile Include="Shops\ShopInfo.cs" />
   </ItemGroup>
   <ItemGroup>

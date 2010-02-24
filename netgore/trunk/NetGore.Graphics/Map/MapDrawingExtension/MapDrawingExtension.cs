@@ -49,7 +49,7 @@ namespace NetGore.Graphics
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that was just drawn.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void DrawAfterLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        void IMapDrawingExtension.DrawAfterLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
         {
             if (!Enabled)
                 return;
@@ -63,7 +63,7 @@ namespace NetGore.Graphics
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that is going to be drawn.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void DrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        void IMapDrawingExtension.DrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
         {
             if (!Enabled)
                 return;
