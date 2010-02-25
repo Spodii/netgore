@@ -841,163 +841,163 @@
     </Item92>
     <Item93>
       <Index>153</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Background</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Background</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Background</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item93>
     <Item94>
       <Index>154</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Bottom</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Bottom</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Bottom</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item94>
     <Item95>
       <Index>155</Index>
-      <Categorization>GUI.Default.Controls.PagedList.BottomLeft</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/BottomLeft</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item95>
     <Item96>
       <Index>156</Index>
-      <Categorization>GUI.Default.Controls.PagedList.BottomRight</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/BottomRight</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item96>
     <Item97>
       <Index>157</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Center</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Center</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Center</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Center</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item97>
     <Item98>
       <Index>162</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Left</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Left</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Left</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item98>
     <Item99>
       <Index>163</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Right</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Right</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Right</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item99>
     <Item100>
       <Index>168</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.First</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.First</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/First</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/First</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item100>
     <Item101>
       <Index>172</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.First_MouseOver</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.First_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/First_MouseOver</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/First_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item101>
     <Item102>
       <Index>169</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.Last</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.Last</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/Last</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Last</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item102>
     <Item103>
       <Index>173</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.Last_MouseOver</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.Last_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/Last_MouseOver</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Last_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item103>
     <Item104>
       <Index>170</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.Next</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.Next</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/Next</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Next</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item104>
     <Item105>
       <Index>174</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.Next_MouseOver</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.Next_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/Next_MouseOver</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Next_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item105>
     <Item106>
       <Index>171</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.Previous</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.Previous</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/Previous</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Previous</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item106>
     <Item107>
       <Index>175</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Toolbar.Previous_MouseOver</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Toolbar.Previous_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Toolbar/Previous_MouseOver</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Previous_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
     </Item107>
     <Item108>
       <Index>164</Index>
-      <Categorization>GUI.Default.Controls.PagedList.Top</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/Top</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/Top</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item108>
     <Item109>
       <Index>165</Index>
-      <Categorization>GUI.Default.Controls.PagedList.TopLeft</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/TopLeft</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item109>
     <Item110>
       <Index>166</Index>
-      <Categorization>GUI.Default.Controls.PagedList.TopRight</Categorization>
+      <Categorization>GUI.Default.Controls.ListBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/PagedList/TopRight</Name>
+        <Name>Grh/GUI/Default/Controls/ListBox/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
     </Item110>
