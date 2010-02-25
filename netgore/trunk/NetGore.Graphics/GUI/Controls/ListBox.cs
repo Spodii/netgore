@@ -32,16 +32,21 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const int _toolbarPadding = 2;
 
+        static readonly object _eventSelectedIndexChanged = new object();
+        static readonly object _eventShowPagingChanged = new object();
+
         readonly SpriteControl _btnFirst;
         readonly SpriteControl _btnLast;
         readonly SpriteControl _btnNext;
         readonly SpriteControl _btnPrev;
+        bool _canSelect = true;
 
         int _currentPage = 1;
         Action<SpriteBatch, Vector2, int> _itemDrawer;
         int _itemHeight = 12;
         IEnumerable<T> _items;
         StyledText _pageText = new StyledText("1/1");
+        int _selectedIndex;
         bool _showPaging = true;
         int _toolbarHeight = 8;
 
@@ -100,6 +105,39 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Notifies listeners when the <see cref="ListBox{T}.SelectedIndex"/> changes.
+        /// </summary>
+        public event ControlEventHandler SelectedIndexChanged
+        {
+            add { Events.AddHandler(_eventSelectedIndexChanged, value); }
+            remove { Events.RemoveHandler(_eventSelectedIndexChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="ListBox{T}.ShowPaging"/> changes.
+        /// </summary>
+        public event ControlEventHandler ShowPagingChanged
+        {
+            add { Events.AddHandler(_eventShowPagingChanged, value); }
+            remove { Events.RemoveHandler(_eventShowPagingChanged, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets if this list allows items to be selected.
+        /// </summary>
+        public bool CanSelect
+        {
+            get { return _canSelect; }
+            set {
+                if (_canSelect == value)
+                    return;
+
+                _selectedIndex = -1;
+                _canSelect = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the current page. If the value is set to greater than the total number of pages, the last page
         /// will be used instead. If the value is less than 1, the first page will be used instead.
         /// </summary>
@@ -125,6 +163,10 @@ namespace NetGore.Graphics.GUI
             set { _itemDrawer = value ?? GetDefaultItemDrawer(); }
         }
 
+        /// <summary>
+        /// Gets or sets the height of each item in the list. By default, this is equal to the height of the
+        /// <see cref="TextControl.Font"/>.
+        /// </summary>
         public int ItemHeight
         {
             get { return _itemHeight; }
@@ -149,7 +191,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 _items = value;
-                CurrentPage = CurrentPage;
+                SelectedIndex = -1;
             }
         }
 
@@ -182,6 +224,60 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the selected item index. If the value is set to greater than the number of items in the list,
+        /// then it will be set to the last item in the list. If <see cref="ListBox{T}.CanSelect"/> is not set,
+        /// this value will always return -1. If no items are selected, this will return -1.
+        /// </summary>
+        public int SelectedIndex
+        {
+            get
+            {
+                if (!CanSelect)
+                    return -1;
+
+                int c = Items.Count();
+                if (_selectedIndex >= c)
+                    SelectedIndex = c - 1;
+
+                return _selectedIndex;
+            }
+
+            set
+            {
+                if (!CanSelect)
+                    return;
+
+                if (value < 0)
+                    value = -1;
+
+                int c = Items.Count();
+                if (value >= c)
+                    value = c - 1;
+
+                if (_selectedIndex == value)
+                    return;
+
+                _selectedIndex = value;
+
+                InvokeSelectedIndexChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the selected item.
+        /// </summary>
+        public T SelectedItem
+        {
+            get
+            {
+                if (SelectedIndex < 0)
+                    return default(T);
+
+                return Items.ElementAtOrDefault(SelectedIndex);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets if the paging buttons are shown.
         /// </summary>
         public bool ShowPaging
@@ -200,6 +296,8 @@ namespace NetGore.Graphics.GUI
                 _btnPrev.IsVisible = ShowPaging;
 
                 UpdateButtonPositions();
+
+                InvokeShowPagingChanged();
             }
         }
 
@@ -247,11 +345,27 @@ namespace NetGore.Graphics.GUI
             int ih = ItemHeight;
             int count = Items.Count();
 
+            var selIndex = SelectedIndex;
+
             for (int i = offset; i < offset + ipp && i < count; i++)
             {
                 ItemDrawer(spriteBatch, pos, i);
+
+                if (selIndex == i)
+                    DrawSelectionRegion(spriteBatch, new Rectangle((int)pos.X, (int)pos.Y, (int)ClientSize.X, ItemHeight));
+
                 pos += new Vector2(0, ih);
             }
+        }
+
+        /// <summary>
+        /// Draws the selection region a selected item.
+        /// </summary>
+        /// <param name="sb">The <see cref="SpriteBatch"/>.</param>
+        /// <param name="area">The area to draw the selection.</param>
+        protected virtual void DrawSelectionRegion(SpriteBatch sb, Rectangle area)
+        {
+            XNARectangle.Draw(sb, area, new Color(100, 255, 100, 150));
         }
 
         /// <summary>
@@ -276,6 +390,30 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeSelectedIndexChanged()
+        {
+            OnSelectedIndexChanged();
+            var handler = Events[_eventSelectedIndexChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeShowPagingChanged()
+        {
+            OnShowPagingChanged();
+            var handler = Events[_eventShowPagingChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
         /// from the given <paramref name="skinManager"/>.
         /// </summary>
@@ -285,6 +423,23 @@ namespace NetGore.Graphics.GUI
             base.LoadSkin(skinManager);
 
             UpdateButtonPositions();
+        }
+
+        /// <summary>
+        /// Handles when this <see cref="Control"/> was clicked.
+        /// This is called immediately before <see cref="Control.OnClick"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnClick(MouseClickEventArgs e)
+        {
+            base.OnClick(e);
+
+            if (!CanSelect)
+                return;
+
+            int itemIndex = (int)Math.Floor(e.Y / ItemHeight) + ((CurrentPage - 1) * ItemsPerPage);
+            SelectedIndex = itemIndex;
         }
 
         /// <summary>
@@ -310,6 +465,24 @@ namespace NetGore.Graphics.GUI
             base.OnResized();
 
             UpdateButtonPositions();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="ListBox{T}.SelectedIndex"/> changes.
+        /// This is called immediately before <see cref="ListBox{T}.SelectedIndexChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="ListBox{T}.SelectedIndexChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnSelectedIndexChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="ListBox{T}.ShowPaging"/> changes.
+        /// This is called immediately before <see cref="ListBox{T}.ShowPagingChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="ListBox{T}.ShowPagingChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnShowPagingChanged()
+        {
         }
 
         void UpdateButtonPositions()
