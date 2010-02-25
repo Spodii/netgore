@@ -5,7 +5,7 @@ using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Groups
 {
-    public class GroupMemberListControl : PagedList<string>
+    public class GroupMemberListControl : ListBox<string>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupMemberListControl"/> class.
@@ -16,6 +16,7 @@ namespace NetGore.Features.Groups
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
         public GroupMemberListControl(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
         {
+            ShowPaging = true;
         }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace NetGore.Features.Groups
         public GroupMemberListControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
             : base(guiManager, position, clientSize)
         {
+            ShowPaging = true;
         }
     }
 }

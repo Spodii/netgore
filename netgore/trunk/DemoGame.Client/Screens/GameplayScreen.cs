@@ -59,6 +59,7 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         World _world;
         CharacterTargeter _characterTargeter;
+        AvailableQuestsForm _availableQuestsForm;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -106,6 +107,11 @@ namespace DemoGame.Client
         public InventoryInfoRequester InventoryInfoRequester
         {
             get { return _inventoryInfoRequester; }
+        }
+
+        public AvailableQuestsForm AvailableQuestsForm
+        {
+            get { return _availableQuestsForm; }
         }
 
         public Map Map
@@ -376,6 +382,8 @@ namespace DemoGame.Client
 
             _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo };
             new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
+
+            _availableQuestsForm = new AvailableQuestsForm(cScreen, new Vector2(200), new Vector2(250, 350));
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 

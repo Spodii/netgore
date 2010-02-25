@@ -207,10 +207,11 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter StartNPCChatDialog(MapEntityIndex npcIndex)
+        public static PacketWriter StartNPCChatDialog(MapEntityIndex npcIndex, bool forceSkipQuestDialog)
         {
             PacketWriter pw = GetWriter(ClientPacketID.StartNPCChatDialog);
             pw.Write(npcIndex);
+            pw.Write(forceSkipQuestDialog);
             return pw;
         }
 

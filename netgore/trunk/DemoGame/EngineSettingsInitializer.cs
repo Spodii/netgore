@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.StatusEffects;
 
@@ -24,6 +25,7 @@ namespace DemoGame
             ShopSettings.Initialize(new ShopSettings(6 * 6));
             StatusEffectsSettings.Initialize(new StatusEffectsSettings(500));
             GroupSettings.Initialize(new GroupSettings(10, 1000 * 60, CanJoinGroupHandler));
+            QuestSettings.Initialize(new QuestSettings(20));
 
             var rankNames = new string[] { "Recruit", "Member", "VIP", "Founder" };
             var nameRules = new StringRules(3, 50, CharType.All);

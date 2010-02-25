@@ -153,7 +153,8 @@ namespace DemoGame.GUITester
                 items.Add(i.ToString());
             }
 
-            var pl = new PagedList<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items };
+            var lb = new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items, ShowPaging = true };
+            lb.Clicked += (x, y) => lb.ShowPaging = !lb.ShowPaging;
         }
 
         static void testLabelF4_Clicked(object sender, MouseClickEventArgs e)

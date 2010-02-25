@@ -19,16 +19,6 @@ namespace NetGore.Features.Quests
         readonly TCharacter _owner;
 
         /// <summary>
-        /// Gets the completed quests.
-        /// </summary>
-        public IEnumerable<IQuest<TCharacter>> CompletedQuests { get { return _completedQuests; } }
-
-        /// <summary>
-        /// Gets the active quests.
-        /// </summary>
-        public IEnumerable<IQuest<TCharacter>> ActiveQuests { get { return _activeQuests; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="QuestPerformerStatusHelper{TCharacter}"/> class.
         /// </summary>
         /// <param name="owner">The quest performer that this object will track the quest status of.</param>
@@ -46,6 +36,139 @@ namespace NetGore.Features.Quests
         /// Notifies listeners when a quest has been accepted.
         /// </summary>
         public event QuestEventHandler QuestAccepted;
+
+        /// <summary>
+        /// Notifies listeners when a quest has been canceled.
+        /// </summary>
+        public event QuestEventHandler QuestCanceled;
+
+        /// <summary>
+        /// Notifies listeners when a quest has been finished.
+        /// </summary>
+        public event QuestEventHandler QuestFinished;
+
+        /// <summary>
+        /// Gets the active quests.
+        /// </summary>
+        public IEnumerable<IQuest<TCharacter>> ActiveQuests
+        {
+            get { return _activeQuests; }
+        }
+
+        /// <summary>
+        /// Gets the completed quests.
+        /// </summary>
+        public IEnumerable<IQuest<TCharacter>> CompletedQuests
+        {
+            get { return _completedQuests; }
+        }
+
+        /// <summary>
+        /// Gets the quest performer that this object tracks the quest status of.
+        /// </summary>
+        public TCharacter Owner
+        {
+            get { return _owner; }
+        }
+
+        /// <summary>
+        /// Checks if the <see cref="QuestPerformerStatusHelper{TCharacter}.Owner"/> can accept an
+        /// <see cref="IQuest{TCharacter}"/>.
+        /// </summary>
+        /// <param name="quest">The quest to see if the owner can accept.</param>
+        /// <returns>True if the owner can accept the <paramref name="quest"/>; otherwise false.</returns>
+        public bool CanAcceptQuest(IQuest<TCharacter> quest)
+        {
+            return CanAcceptQuest(quest, false);
+        }
+
+        /// <summary>
+        /// Checks if the <see cref="QuestPerformerStatusHelper{TCharacter}.Owner"/> can accept an
+        /// <see cref="IQuest{TCharacter}"/>.
+        /// </summary>
+        /// <param name="quest">The quest to see if the owner can accept.</param>
+        /// <param name="notifyOwner">If true, the owner will be notified that they failed to accept the quest. If false,
+        /// they will not receive any notification. Default is false.</param>
+        /// <returns>
+        /// True if the owner can accept the <paramref name="quest"/>; otherwise false.
+        /// </returns>
+        public bool CanAcceptQuest(IQuest<TCharacter> quest, bool notifyOwner)
+        {
+            // Cannot accept the quest if we have reached the active quest limit, it is already in the active quests,
+            // or it is a non-repeatable quest and we have finished it
+            if (_activeQuests.Contains(quest))
+                return false;
+
+            if (!quest.Repeatable && HasCompletedQuest(quest))
+                return false;
+
+            if (_activeQuests.Count >= _questSettings.MaxActiveQuests)
+            {
+                if (notifyOwner)
+                    NotifyCannotAcceptTooManyActive(quest);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Cancels an active quest.
+        /// </summary>
+        /// <param name="quest">The quest to cancel.</param>
+        /// <returns>True if the quest was successfully canceled; otherwise false.</returns>
+        public bool CancelQuest(IQuest<TCharacter> quest)
+        {
+            bool ret = _activeQuests.Remove(quest);
+
+            // Ensure the quest was even in the collection
+            if (!ret)
+                return false;
+
+            // Raise events
+            OnQuestCanceled(quest);
+
+            if (QuestCanceled != null)
+                QuestCanceled(this, quest);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if the owner has completed a <see cref="IQuest{TCharacter}"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if the owner has completed.</param>
+        /// <returns>True if the owner has completed the <paramref name="quest"/>; otherwise false.</returns>
+        public bool HasCompletedQuest(IQuest<TCharacter> quest)
+        {
+            return _completedQuests.Contains(quest);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, loads the active quests.
+        /// </summary>
+        /// <returns>The loaded active quests.</returns>
+        protected abstract IEnumerable<IQuest<TCharacter>> LoadActiveQuests();
+
+        /// <summary>
+        /// When overridden in the derived class, loads the completed quests.
+        /// </summary>
+        /// <returns>The loaded completed quests.</returns>
+        protected abstract IEnumerable<IQuest<TCharacter>> LoadCompletedQuests();
+
+        /// <summary>
+        /// When overridden in the derived clas,s notifies the owner that they were unable to accept a quest
+        /// because they have too many active quests.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected abstract void NotifyCannotAcceptTooManyActive(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to turn in the quest
+        /// because the cannot receive the quest rewards (e.g. full inventory).
+        /// </summary>
+        /// <param name="quest">The quest that caused the error.</param>
+        protected abstract void NotifyCannotGiveQuestRewards(IQuest<TCharacter> quest);
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of the
@@ -75,96 +198,35 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Notifies listeners when a quest has been canceled.
+        /// Tries to add a quest to the active quest list.
         /// </summary>
-        public event QuestEventHandler QuestCanceled;
-
-        /// <summary>
-        /// Notifies listeners when a quest has been finished.
-        /// </summary>
-        public event QuestEventHandler QuestFinished;
-
-        /// <summary>
-        /// Gets the quest performer that this object tracks the quest status of.
-        /// </summary>
-        public TCharacter Owner
+        /// <param name="quest">The quest to add to the owner's active quest list.</param>
+        /// <returns>True if the <paramref name="quest"/> was successfully added to the active quest list;
+        /// false if the <paramref name="quest"/> was invalid, if the owner has too many active quests, or if
+        /// the owner does not have the requirements needed to start the quest.</returns>
+        public bool TryAddQuest(IQuest<TCharacter> quest)
         {
-            get { return _owner; }
-        }
-
-        public bool CanAcceptQuest(IQuest<TCharacter> quest)
-        {
-            return CanAcceptQuest(quest, false);
-        }
-
-        public bool CanAcceptQuest(IQuest<TCharacter> quest, bool notifyOwner)
-        {
-            // Cannot accept the quest if we have reached the active quest limit, it is already in the active quests,
-            // or it is a non-repeatable quest and we have finished it
-            if (_activeQuests.Contains(quest))
+            if (!CanAcceptQuest(quest, true))
                 return false;
 
-            if (!quest.Repeatable && HasCompletedQuest(quest))
-                return false;
-
-            if (_activeQuests.Count >= _questSettings.MaxActiveQuests)
-            {
-                if (notifyOwner)
-                    NotifyCannotAcceptTooManyActive(quest);
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool CancelQuest(IQuest<TCharacter> quest)
-        {
-            bool ret = _activeQuests.Remove(quest);
-
-            // Ensure the quest was even in the collection
-            if (!ret)
-                return false;
+            _activeQuests.Add(quest);
 
             // Raise events
-            OnQuestCanceled(quest);
+            OnQuestAccepted(quest);
 
-            if (QuestCanceled != null)
-                QuestCanceled(this, quest);
+            if (QuestAccepted != null)
+                QuestAccepted(this, quest);
 
             return true;
         }
 
-        public bool HasCompletedQuest(IQuest<TCharacter> quest)
-        {
-            return _completedQuests.Contains(quest);
-        }
-
         /// <summary>
-        /// When overridden in the derived class, loads the active quests.
+        /// Tries to finish a quest for the owner.
         /// </summary>
-        /// <returns>The loaded active quests.</returns>
-        protected abstract IEnumerable<IQuest<TCharacter>> LoadActiveQuests();
-
-        /// <summary>
-        /// When overridden in the derived class, loads the completed quests.
-        /// </summary>
-        /// <returns>The loaded completed quests.</returns>
-        protected abstract IEnumerable<IQuest<TCharacter>> LoadCompletedQuests();
-
-        /// <summary>
-        /// When overridden in the derived class, notifies the owner that they were unable to turn in the quest
-        /// because the cannot receive the quest rewards (e.g. full inventory).
-        /// </summary>
-        /// <param name="quest">The quest that caused the error.</param>
-        protected abstract void NotifyCannotGiveQuestRewards(IQuest<TCharacter> quest);
-
-        /// <summary>
-        /// When overridden in the derived clas,s notifies the owner that they were unable to accept a quest
-        /// because they have too many active quests.
-        /// </summary>
-        /// <param name="quest">The quest that could not be accepted.</param>
-        protected abstract void NotifyCannotAcceptTooManyActive(IQuest<TCharacter> quest);
-
+        /// <param name="quest">The quest to turn in.</param>
+        /// <returns>True if the quest was successfully turned in; false if the owner did not have the <paramref name="quest"/>
+        /// in their active quest list, if the quest was invalid, or if they did not have the requirements needed
+        /// to finish the quest.</returns>
         public bool TryFinishQuest(IQuest<TCharacter> quest)
         {
             // Make sure they even have this in their active quests
@@ -195,22 +257,6 @@ namespace NetGore.Features.Quests
 
             if (QuestFinished != null)
                 QuestFinished(this, quest);
-
-            return true;
-        }
-
-        public bool TryAddQuest(IQuest<TCharacter> quest)
-        {
-            if (!CanAcceptQuest(quest, true))
-                return false;
-
-            _activeQuests.Add(quest);
-
-            // Raise events
-            OnQuestAccepted(quest);
-
-            if (QuestAccepted != null)
-                QuestAccepted(this, quest);
 
             return true;
         }

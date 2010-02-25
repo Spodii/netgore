@@ -505,6 +505,27 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter StartQuestChatDialog(MapEntityIndex npcIndex, QuestID[] availableQuests)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.StartQuestChatDialog);
+
+            pw.Write(npcIndex);
+
+            if (availableQuests != null)
+            {
+                Debug.Assert(availableQuests.Length <= byte.MaxValue);
+                pw.Write((byte)availableQuests.Length);
+                foreach (var q in availableQuests)
+                    pw.Write(q);
+            }
+            else
+            {
+                pw.Write((byte)0);
+            }
+
+            return pw;
+        }
+
         public static PacketWriter StartChatDialog(MapEntityIndex npcIndex, ushort dialogIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartChatDialog);

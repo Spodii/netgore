@@ -6,7 +6,7 @@ using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Guilds
 {
-    public class GuildMemberListControl : PagedList<GuildMemberNameRank>
+    public class GuildMemberListControl : ListBox<GuildMemberNameRank>
     {
         int _cachedSpacing = 5;
         SpriteFont _cachedSpacingFont = null;
@@ -20,6 +20,7 @@ namespace NetGore.Features.Guilds
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
         public GuildMemberListControl(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
         {
+            ShowPaging = true;
         }
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace NetGore.Features.Guilds
         public GuildMemberListControl(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
             : base(guiManager, position, clientSize)
         {
+            ShowPaging = true;
         }
 
         void DefaultDrawer(SpriteBatch sb, Vector2 pos, int v)
