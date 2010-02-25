@@ -6,6 +6,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NetGore;
+using NetGore.Features.Quests;
 using NetGore.Graphics.GUI;
 using NetGore.NPCChat;
 
@@ -22,11 +23,10 @@ namespace DemoGame.Client
 
         readonly TextBox _dialogTextControl;
         readonly ResponseText[] _responseTextControls = new ResponseText[_numDisplayedResponses];
+
         NPCChatDialogBase _dialog;
         NPCChatDialogItemBase _page;
-
         byte _responseOffset = 0;
-
         NPCChatResponseBase[] _responses;
 
         /// <summary>

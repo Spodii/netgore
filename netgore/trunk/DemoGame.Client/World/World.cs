@@ -5,6 +5,7 @@ using NetGore;
 using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -16,9 +17,12 @@ namespace DemoGame.Client
         readonly IGetTime _getTime;
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
         readonly UserInfo _userInfo;
+        readonly QuestDescriptionCollection _questDescriptions = new QuestDescriptionCollection();
 
         Map _map;
         MapEntityIndex _usercharIndex;
+
+        public IQuestDescriptionCollection QuestDescriptions { get { return _questDescriptions; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
@@ -33,6 +37,8 @@ namespace DemoGame.Client
             _camera = camera;
 
             MapDrawingExtensions.Add(new EmoticonMapDrawingExtension(_emoticonDisplayManager));
+
+            _questDescriptions.Load(ContentPaths.Build);
 
             if (userInfo != null)
             {

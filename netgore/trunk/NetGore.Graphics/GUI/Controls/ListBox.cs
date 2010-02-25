@@ -7,15 +7,15 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// A control that displays a paginated list of items.
+    /// A control that displays a list of items.
     /// </summary>
     /// <typeparam name="T">The type of items being displayed.</typeparam>
-    public class PagedList<T> : TextControl
+    public class ListBox<T> : TextControl
     {
         /// <summary>
         /// The name of this <see cref="Control"/> for when looking up the skin information.
         /// </summary>
-        const string _controlSkinName = "PagedList";
+        const string _controlSkinName = "ListBox";
 
         /// <summary>
         /// The string to append to a toolbar sprite to get the MouseOver sprite.
@@ -42,16 +42,17 @@ namespace NetGore.Graphics.GUI
         int _itemHeight = 12;
         IEnumerable<T> _items;
         StyledText _pageText = new StyledText("1/1");
+        bool _showPaging = true;
         int _toolbarHeight = 8;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
+        /// Initializes a new instance of the <see cref="ListBox{T}"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public PagedList(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
+        public ListBox(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             if (Font != null)
@@ -72,13 +73,13 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
+        /// Initializes a new instance of the <see cref="ListBox{T}"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        public PagedList(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
+        public ListBox(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             if (Font != null)
@@ -159,7 +160,7 @@ namespace NetGore.Graphics.GUI
         {
             get
             {
-                var listHeight = ClientSize.Y - _toolbarHeight;
+                var listHeight = ClientSize.Y - ToolbarDisplayHeight;
                 var value = listHeight / ItemHeight;
                 return (int)Math.Max(1, value);
             }
@@ -181,6 +182,36 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets if the paging buttons are shown.
+        /// </summary>
+        public bool ShowPaging
+        {
+            get { return _showPaging; }
+            set
+            {
+                if (_showPaging == value)
+                    return;
+
+                _showPaging = value;
+
+                _btnFirst.IsVisible = ShowPaging;
+                _btnLast.IsVisible = ShowPaging;
+                _btnNext.IsVisible = ShowPaging;
+                _btnPrev.IsVisible = ShowPaging;
+
+                UpdateButtonPositions();
+            }
+        }
+
+        /// <summary>
+        /// Gets the height the paging toolbar display will be. If paging is not being shown, this will be 0.
+        /// </summary>
+        int ToolbarDisplayHeight
+        {
+            get { return (ShowPaging ? _toolbarHeight : 0); }
+        }
+
+        /// <summary>
         /// Draws the <see cref="Control"/>.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
@@ -189,16 +220,20 @@ namespace NetGore.Graphics.GUI
             // Border
             var sp = ScreenPosition;
             var size = Size;
-            var rect = new Rectangle((int)sp.X, (int)sp.Y, (int)size.X, (int)size.Y - _toolbarHeight);
+            var rect = new Rectangle((int)sp.X, (int)sp.Y, (int)size.X, (int)size.Y - ToolbarDisplayHeight);
             Border.Draw(spriteBatch, rect);
 
             // Draw the items
             DrawItems(spriteBatch);
 
             // Draw the page number
-            var cs = ClientSize;
-            var pagePos = new Vector2((cs.X / 2) - (_pageText.GetWidth(Font) / 2), cs.Y - _toolbarHeight + (_toolbarPadding * 2));
-            _pageText.Draw(spriteBatch, Font, sp + pagePos, ForeColor);
+            if (ShowPaging)
+            {
+                var cs = ClientSize;
+                var pagePos = new Vector2((cs.X / 2) - (_pageText.GetWidth(Font) / 2),
+                                          cs.Y - ToolbarDisplayHeight + (_toolbarPadding * 2));
+                _pageText.Draw(spriteBatch, Font, sp + pagePos, ForeColor);
+            }
         }
 
         void DrawItems(SpriteBatch spriteBatch)
@@ -308,7 +343,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// A button that is on the <see cref="PagedList{T}"/>'s toolbar.
+        /// A button that is on the <see cref="ListBox{T}"/>'s toolbar.
         /// </summary>
         class PagedListButton : PictureBox
         {

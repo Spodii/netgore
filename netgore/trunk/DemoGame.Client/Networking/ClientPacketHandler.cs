@@ -113,17 +113,17 @@ namespace DemoGame.Client
             get { return GameplayScreen.UserInfo.GuildInfo; }
         }
 
-        public UserQuestInformation QuestInfo
-        {
-            get { return GameplayScreen.UserInfo.QuestInfo; }
-        }
-
         /// <summary>
         /// Gets the <see cref="Map"/> used by the <see cref="World"/>.
         /// </summary>
         public Map Map
         {
             get { return GameplayScreen.World.Map; }
+        }
+
+        public UserQuestInformation QuestInfo
+        {
+            get { return GameplayScreen.UserInfo.QuestInfo; }
         }
 
         SoundManager SoundManager
@@ -181,20 +181,6 @@ namespace DemoGame.Client
             }
 
             _pingWatch.Start();
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetProvidedQuests)]
-        void RecvSetProvidedQuests(IIPSocket conn, BitStream r)
-        {
-            var mapEntityIndex = r.ReadMapEntityIndex();
-            byte count = r.ReadByte();
-            QuestID[] questIDs = new QuestID[count];
-            for (int i = 0; i < count; i++)
-                questIDs[i] = r.ReadQuestID();
-
-            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
-            if (character != null)
-                character.ProvidedQuests = questIDs;
         }
 
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
@@ -341,12 +327,6 @@ namespace DemoGame.Client
             UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
         }
 
-        [MessageHandler((byte)ServerPacketID.QuestInfo)]
-        void RecvQuestInfo(IIPSocket conn, BitStream r)
-        {
-            QuestInfo.Read(r);
-        }
-
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
@@ -451,6 +431,12 @@ namespace DemoGame.Client
 
             if (!SoundManager.TryPlay(soundID, entity))
                 LogFailPlaySound(soundID);
+        }
+
+        [MessageHandler((byte)ServerPacketID.QuestInfo)]
+        void RecvQuestInfo(IIPSocket conn, BitStream r)
+        {
+            QuestInfo.Read(r);
         }
 
         [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
@@ -640,7 +626,7 @@ namespace DemoGame.Client
             // Create the new map
             Map newMap = new Map(mapIndex, World.Camera, World, GameplayScreen.ScreenManager.GraphicsDevice);
             newMap.Load(ContentPaths.Build, false, _dynamicEntityFactory);
-            
+
             // Clear quest requirements caches
             UserInfo.HasStartQuestRequirements.Clear();
 
@@ -664,6 +650,22 @@ namespace DemoGame.Client
                 return;
 
             User.MPPercent = UserInfo.MPPercent;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetProvidedQuests)]
+        void RecvSetProvidedQuests(IIPSocket conn, BitStream r)
+        {
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            byte count = r.ReadByte();
+            QuestID[] questIDs = new QuestID[count];
+            for (int i = 0; i < count; i++)
+            {
+                questIDs[i] = r.ReadQuestID();
+            }
+
+            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            if (character != null)
+                character.ProvidedQuests = questIDs;
         }
 
         [MessageHandler((byte)ServerPacketID.SetSkillGroupCooldown)]
@@ -706,6 +708,21 @@ namespace DemoGame.Client
 
             NPCChatDialogBase dialog = NPCChatManager.GetDialog(dialogIndex);
             GameplayScreen.ChatDialogForm.StartDialog(dialog);
+        }
+
+        [MessageHandler((byte)ServerPacketID.StartQuestChatDialog)]
+        void RecvStartQuestChatDialog(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
+            byte numQuests = r.ReadByte();
+
+            QuestID[] availableQuests = new QuestID[numQuests];
+            for (int i = 0; i < availableQuests.Length; i++)
+            {
+                availableQuests[i] = r.ReadQuestID();
+            }
+
+            GameplayScreen.AvailableQuestsForm.Display(availableQuests.Select(x => World.QuestDescriptions[x]));
         }
 
         [MessageHandler((byte)ServerPacketID.StartShopping)]

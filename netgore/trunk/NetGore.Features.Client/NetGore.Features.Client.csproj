@@ -60,6 +60,8 @@
     <Compile Include="Quests\IQuestDescriptionCollection.cs" />
     <Compile Include="Quests\QuestDescription.cs" />
     <Compile Include="Quests\QuestDescriptionCollection.cs" />
+    <Compile Include="Quests\AvailableQuestsForm.cs" />
+    <Compile Include="Quests\QuestDescriptionListBox.cs" />
     <Compile Include="Quests\QuestMapDrawingExtension.cs" />
     <Compile Include="Shops\ShopInfo.cs" />
   </ItemGroup>

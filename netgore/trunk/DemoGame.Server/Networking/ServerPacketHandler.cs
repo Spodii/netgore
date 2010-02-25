@@ -529,6 +529,7 @@ namespace DemoGame.Server
         void RecvStartNPCChatDialog(IIPSocket conn, BitStream r)
         {
             MapEntityIndex npcIndex = r.ReadMapEntityIndex();
+            bool forceSkipQuestDialog = r.ReadBool();
 
             User user;
             Map map;
@@ -539,6 +540,19 @@ namespace DemoGame.Server
             if (npc == null)
                 return;
 
+            // If the NPC provides any quests that this user can do, show that instead
+            if (!forceSkipQuestDialog && !npc.Quests.IsEmpty())
+            {
+                var availableQuests = npc.Quests.Where(x => user.CanAcceptQuest(x)).Select(x => x.QuestID).ToArray();
+                if (availableQuests.Length > 0)
+                {
+                    using (var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests))
+                        user.Send(pw);
+                    return;
+                }
+            }
+            
+            // Force-skipped the quest dialog, or there was no available quests, so start the chat dialog
             user.ChatState.StartChat(npc);
         }
 

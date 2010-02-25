@@ -245,11 +245,11 @@ namespace DemoGame.Client
 
         void HandleGameControl_TalkToNPC(GameControl sender)
         {
-            CharacterEntity npc = Map.Spatial.Get<CharacterEntity>(UserChar.ToRectangle(), x => x.HasChatDialog);
+            CharacterEntity npc = Map.Spatial.Get<Character>(UserChar.ToRectangle(), x => x.HasChatDialog || !x.ProvidedQuests.IsEmpty());
             if (npc == null)
                 return;
 
-            using (PacketWriter pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex))
+            using (PacketWriter pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex, false))
             {
                 Socket.Send(pw);
             }

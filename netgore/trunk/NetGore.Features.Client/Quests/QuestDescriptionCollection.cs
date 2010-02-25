@@ -9,8 +9,40 @@ namespace NetGore.Features.Quests
     public class QuestDescriptionCollection : IQuestDescriptionCollection
     {
         const string _questDescriptionsNodeName = "QuestDescriptions";
+        const string _rootFileNodeName = "QuestData";
 
         readonly DArray<IQuestDescription> _questDescriptions = new DArray<IQuestDescription>(false);
+
+        /// <summary>
+        /// Gets the file path for the quest descriptions file.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
+        /// <returns>The file path for the quest descriptions file.</returns>
+        public static string GetFilePath(ContentPaths contentPath)
+        {
+            return contentPath.Data.Join("questdata.xml");
+        }
+
+        /// <summary>
+        /// Loads the quest descriptions from file.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
+        public void Load(ContentPaths contentPath)
+        {
+            ReadState(new XmlValueReader(GetFilePath(contentPath), _rootFileNodeName));
+        }
+
+        /// <summary>
+        /// Saves the quest descriptions to file.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
+        public void Save(ContentPaths contentPath)
+        {
+            using (var w = new XmlValueWriter(GetFilePath(contentPath), _rootFileNodeName))
+            {
+                WriteState(w);
+            }
+        }
 
         #region IQuestDescriptionCollection Members
 
@@ -55,7 +87,9 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
-        /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/>
+        /// is read-only.</exception>
         public void Add(IQuestDescription item)
         {
             if (_questDescriptions.CanGet(item.QuestID.GetRawValue()))
@@ -67,7 +101,8 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
-        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only. </exception>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/>
+        /// is read-only.</exception>
         public void Clear()
         {
             _questDescriptions.Clear();
@@ -76,19 +111,32 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
         /// </summary>
-        /// <returns>
-        /// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
-        /// </returns>
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns>
+        /// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>;
+        /// otherwise, false.
+        /// </returns>
         public bool Contains(IQuestDescription item)
         {
             return _questDescriptions.Contains(item);
         }
 
         /// <summary>
-        /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
+        /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an
+        /// <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
         /// </summary>
-        /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-<paramref name="arrayIndex"/> is equal to or greater than the length of <paramref name="array"/>.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <paramref name="T"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
+        /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of
+        /// the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The
+        /// <see cref="T:System.Array"/> must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-
+        /// <paramref name="arrayIndex"/> is equal to or greater than the length of <paramref name="array"/>.-or-
+        /// The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than
+        /// the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-
+        /// Type T cannot be cast automatically to the type of the destination <paramref name="array"/>.
+        /// </exception>
         public void CopyTo(IQuestDescription[] array, int arrayIndex)
         {
             _questDescriptions.CopyTo(array, arrayIndex);
@@ -100,7 +148,6 @@ namespace NetGore.Features.Quests
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>1</filterpriority>
         public IEnumerator<IQuestDescription> GetEnumerator()
         {
             return _questDescriptions.Where(x => x != null).GetEnumerator();
@@ -112,7 +159,6 @@ namespace NetGore.Features.Quests
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -136,10 +182,14 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         /// <returns>
-        /// true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// true if <paramref name="item"/> was successfully removed from the
+        /// <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if
+        /// <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </returns>
-        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is
+        /// read-only.</exception>
         public bool Remove(IQuestDescription item)
         {
             return _questDescriptions.Remove(item);
