@@ -81,11 +81,25 @@ namespace NetGore.Features.Quests
         void CreateChildren()
         {
             _lblAvailableQuests = new Label(this, Vector2.Zero) { Text = "Available Quests:" };
+
             _lstQuests = new QuestDescriptionListBox(this, Vector2.Zero, new Vector2(32)) { Items = _emptyQuests, ShowPaging = false };
+            _lstQuests.SelectedIndexChanged += lstQuests_SelectedIndexChanged;
+
             _lblQuestInfo = new Label(this, Vector2.Zero) { Text = "Quest Information:" };
+
             _txtQuestInfo = new TextBox(this, Vector2.Zero, new Vector2(32)) { IsMultiLine = true, IsEnabled = false };
 
             RepositionChildren();
+        }
+
+        void lstQuests_SelectedIndexChanged(Control sender)
+        {
+            var selectedItem = _lstQuests.SelectedItem;
+
+            if (selectedItem == null)
+                _txtQuestInfo.Text = string.Empty;
+            else
+                _txtQuestInfo.Text = selectedItem.Description;
         }
 
         /// <summary>
