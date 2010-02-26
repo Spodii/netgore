@@ -183,6 +183,26 @@ namespace DemoGame.Client
             _pingWatch.Start();
         }
 
+        [MessageHandler((byte)ServerPacketID.AcceptQuestReply)]
+        void RecvAcceptQuestReply(IIPSocket conn, BitStream r)
+        {
+            QuestID questID = r.ReadQuestID();
+            bool successful = r.ReadBool();
+
+            if (successful)
+            {
+                // Since we just accepted the quest, we know we can't accept it again
+                UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, false);
+
+                // Remove the quest from the available quests list
+                var aqf = GameplayScreen.AvailableQuestsForm;
+                if (aqf.IsVisible)
+                {
+                    aqf.AvailableQuests = aqf.AvailableQuests.Where(x => x.QuestID != questID).ToImmutable();
+                }
+            }
+        }
+
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
@@ -722,7 +742,7 @@ namespace DemoGame.Client
                 availableQuests[i] = r.ReadQuestID();
             }
 
-            GameplayScreen.AvailableQuestsForm.Display(availableQuests.Select(x => World.QuestDescriptions[x]));
+            GameplayScreen.AvailableQuestsForm.Display(availableQuests.Select(x => World.QuestDescriptions[x]), npcIndex);
         }
 
         [MessageHandler((byte)ServerPacketID.StartShopping)]

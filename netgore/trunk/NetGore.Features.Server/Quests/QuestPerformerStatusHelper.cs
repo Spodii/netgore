@@ -97,10 +97,18 @@ namespace NetGore.Features.Quests
             // Cannot accept the quest if we have reached the active quest limit, it is already in the active quests,
             // or it is a non-repeatable quest and we have finished it
             if (_activeQuests.Contains(quest))
+            {
+                if (notifyOwner)
+                    NotifyCannotAcceptAlreadyStarted(quest);
                 return false;
+            }
 
             if (!quest.Repeatable && HasCompletedQuest(quest))
+            {
+                if (notifyOwner)
+                    NotifyCannotAcceptAlreadyCompleted(quest);
                 return false;
+            }
 
             if (_activeQuests.Count >= _questSettings.MaxActiveQuests)
             {
@@ -157,11 +165,25 @@ namespace NetGore.Features.Quests
         protected abstract IEnumerable<IQuest<TCharacter>> LoadCompletedQuests();
 
         /// <summary>
-        /// When overridden in the derived clas,s notifies the owner that they were unable to accept a quest
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
         /// because they have too many active quests.
         /// </summary>
         /// <param name="quest">The quest that could not be accepted.</param>
         protected abstract void NotifyCannotAcceptTooManyActive(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they have already completed it.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected abstract void NotifyCannotAcceptAlreadyCompleted(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they have already started it.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected abstract void NotifyCannotAcceptAlreadyStarted(IQuest<TCharacter> quest);
 
         /// <summary>
         /// When overridden in the derived class, notifies the owner that they were unable to turn in the quest

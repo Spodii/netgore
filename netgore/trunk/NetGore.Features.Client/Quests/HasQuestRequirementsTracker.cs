@@ -64,6 +64,15 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Updates the status for the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to get the status for.</param>
+        public void Update(QuestID quest)
+        {
+            _sendRequest(quest);
+        }
+
+        /// <summary>
         /// Starts getting the status for the given <paramref name="quest"/> if the value is not already acquired.
         /// </summary>
         /// <param name="quest">The quest to get the status for.</param>

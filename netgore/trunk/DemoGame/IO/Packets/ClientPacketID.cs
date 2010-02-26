@@ -14,6 +14,7 @@ namespace DemoGame
         [EditorBrowsable(EditorBrowsableState.Never)]
         RESERVED = 0,
 
+        AcceptQuest,
         Attack,
         BuyFromShop,
         CreateNewAccount,

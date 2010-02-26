@@ -180,6 +180,11 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// The maximum number of pixels a user may be away from a NPC to be able to talk to it.
+        /// </summary>
+        public const int MaxNPCChatDistance = 16;
+
+        /// <summary>
         /// Gets if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to shop.
         /// </summary>
         /// <param name="shopper">The Entity doing the shopping.</param>

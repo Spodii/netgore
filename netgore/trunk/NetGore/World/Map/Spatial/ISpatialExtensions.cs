@@ -10,6 +10,20 @@ namespace NetGore
     public static class ISpatialExtensions
     {
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> representing the area that an <see cref="ISpatial"/> occupies, plus some
+        /// padding in all directions.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to get the rectangle for.</param>
+        /// <param name="padding">How many units to expand the resulting <see cref="Rectangle"/> in each direction.</param>
+        /// <returns>A <see cref="Rectangle"/> representing the area that an <see cref="ISpatial"/> occupies, plus some
+        /// padding in all directions.</returns>
+        public static Rectangle ToRectangle(this ISpatial spatial, int padding)
+        {
+            var r = spatial.ToRectangle();
+            return new Rectangle(r.X - padding, r.Y - padding, r.Width + (padding * 2), r.Height + (padding * 2));
+        }
+
+        /// <summary>
         /// Gets if an <see cref="ISpatial"/> is fully contained inside of another <see cref="ISpatial"/>. That is, if
         /// the <see cref="contained"/> resides completely inside of the <see cref="container"/>.
         /// </summary>

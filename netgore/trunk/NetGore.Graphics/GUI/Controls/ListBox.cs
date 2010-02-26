@@ -182,7 +182,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the items to display.
         /// </summary>
-        public IEnumerable<T> Items
+        public virtual IEnumerable<T> Items
         {
             get { return _items; }
             set
@@ -349,10 +349,10 @@ namespace NetGore.Graphics.GUI
 
             for (int i = offset; i < offset + ipp && i < count; i++)
             {
-                ItemDrawer(spriteBatch, pos, i);
-
                 if (selIndex == i)
                     DrawSelectionRegion(spriteBatch, new Rectangle((int)pos.X, (int)pos.Y, (int)ClientSize.X, ItemHeight));
+
+                ItemDrawer(spriteBatch, pos, i);
 
                 pos += new Vector2(0, ih);
             }
@@ -365,7 +365,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="area">The area to draw the selection.</param>
         protected virtual void DrawSelectionRegion(SpriteBatch sb, Rectangle area)
         {
-            XNARectangle.Draw(sb, area, new Color(100, 255, 100, 150));
+            XNARectangle.Draw(sb, area, new Color(100, 100, 255, 150));
         }
 
         /// <summary>

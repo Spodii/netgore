@@ -30,6 +30,14 @@ namespace DemoGame.Server
                 pw.Write(q);
         }
 
+        public static PacketWriter AcceptQuestReply(QuestID questID, bool successful)
+        {
+            var pw = GetWriter(ServerPacketID.AcceptQuestReply);
+            pw.Write(questID);
+            pw.Write(successful);
+            return pw;
+        }
+
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {
             ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));

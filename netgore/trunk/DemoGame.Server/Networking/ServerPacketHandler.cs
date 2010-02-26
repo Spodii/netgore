@@ -112,6 +112,37 @@ namespace DemoGame.Server
             return target;
         }
 
+        [MessageHandler((byte)ClientPacketID.AcceptQuest)]
+        void RecvAcceptQuest(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex providerIndex = r.ReadMapEntityIndex();
+            QuestID questID = r.ReadQuestID();
+
+            // Get the user
+            User user;
+            if ((user = TryGetUser(conn)) == null || user.Map == null)
+                return;
+
+            // Get the provider
+            var npc = user.Map.GetDynamicEntity<Character>(providerIndex);
+            var provider = npc as IQuestProvider<User>;
+            if (provider == null)
+                return;
+
+            // Check the distance and state
+            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed || user.GetDistance(npc) > GameData.MaxNPCChatDistance)
+                return;
+
+            // Get the quest
+            var quest = _questManager.GetQuest(questID);
+            if (quest == null)
+                return;
+
+            bool successfullyAdded = user.TryAddQuest(quest);
+            using (var pw = ServerPacket.AcceptQuestReply(questID, successfullyAdded))
+                user.Send(pw);
+        }
+
         [MessageHandler((byte)ClientPacketID.Attack)]
         void RecvAttack(IIPSocket conn, BitStream r)
         {
@@ -540,10 +571,14 @@ namespace DemoGame.Server
             if (npc == null)
                 return;
 
+            // Check the distance and state
+            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed || user.GetDistance(npc) > GameData.MaxNPCChatDistance)
+                return;
+
             // If the NPC provides any quests that this user can do, show that instead
             if (!forceSkipQuestDialog && !npc.Quests.IsEmpty())
             {
-                var availableQuests = npc.Quests.Where(x => user.CanAcceptQuest(x)).Select(x => x.QuestID).ToArray();
+                var availableQuests = npc.Quests.Where(x => !user.ActiveQuests.Contains(x) && (x.Repeatable || !user.HasCompletedQuest(x))).Select(x => x.QuestID).ToArray();
                 if (availableQuests.Length > 0)
                 {
                     using (var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests))
