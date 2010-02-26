@@ -69,7 +69,7 @@ namespace DemoGame.GUITester
             GrhInfo.Load(ContentPaths.Build, Content);
 
             SkinManager skinManager = new SkinManager("Default");
-            _gui = new GUIManager(_font, skinManager);
+            _gui = new GUIManager(_font, skinManager, new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height));
 
             topForm = new Form(_gui, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
             topForm.MouseMoved += topForm_MouseMoved;
@@ -153,17 +153,20 @@ namespace DemoGame.GUITester
                 items.Add(i.ToString());
             }
 
-            var lb = new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100))
+            new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100))
             { Items = items, ShowPaging = true };
         }
 
-        static void testLabelF4_Clicked(object sender, MouseClickEventArgs e)
+        void testLabelF4_Clicked(object sender, MouseClickEventArgs e)
         {
             Label source = (Label)sender;
             if (source.Text == "I was clicked!")
                 source.Text = "Click me!";
             else
                 source.Text = "I was clicked!";
+
+            var msgBox = new MessageBox(_gui, "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf", MessageBoxButton.YesNoCancel);
+            msgBox.OptionSelected += (x, y) => new MessageBox(_gui, "You selected: " + y, MessageBoxButton.Ok);
         }
 
         static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)

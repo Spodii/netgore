@@ -98,6 +98,8 @@
     <Compile Include="Extensions\GameTimeExtensions.cs" />
     <Compile Include="GUI\Control Bases\Control.cs" />
     <Compile Include="GUI\Controls\ListBox.cs" />
+    <Compile Include="GUI\Controls\MessageBox.cs" />
+    <Compile Include="GUI\Controls\MessageBoxButton.cs" />
     <Compile Include="GUI\EventArgs\ControlEventHandler.cs" />
     <Compile Include="GUI\Control Bases\SpriteControl.cs" />
     <Compile Include="GUI\Control Bases\TextControl.cs" />

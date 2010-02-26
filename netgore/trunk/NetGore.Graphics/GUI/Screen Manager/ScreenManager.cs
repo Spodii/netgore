@@ -306,7 +306,7 @@ namespace NetGore.Graphics.GUI
         /// </returns>
         public virtual IGUIManager CreateGUIManager(SpriteFont font)
         {
-            return new GUIManager(font, SkinManager);
+            return new GUIManager(font, SkinManager, ScreenSize);
         }
 
         /// <summary>

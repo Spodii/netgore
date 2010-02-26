@@ -65,6 +65,13 @@ namespace NetGore.Graphics.GUI
         IEnumerable<Keys> KeysPressed { get; }
 
         /// <summary>
+        /// Gets or sets the size of the screen.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Either the x- or y-coordinate of the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        Vector2 ScreenSize { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="KeyboardState"/> that was used immediately before the current
         /// <see cref="IGUIManager.KeyboardState"/>.
         /// </summary>
