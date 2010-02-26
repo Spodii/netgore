@@ -12,22 +12,23 @@ using NetGore.IO;
 namespace NetGore.NPCChat
 {
     /// <summary>
-    /// Base class for managing the NPCChatDialogBases.
+    /// Base class for managing the <see cref="NPCChatDialogBase"/>s.
     /// </summary>
     public abstract class NPCChatManagerBase : IEnumerable<NPCChatDialogBase>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly bool _isReadonly;
         readonly DArray<NPCChatDialogBase> _npcChatDialogs = new DArray<NPCChatDialogBase>(32, false);
 
         /// <summary>
-        /// NPCChatManagerBase constructor.
+        /// Initializes a new instance of the <see cref="NPCChatManagerBase"/> class.
         /// </summary>
         /// <param name="isReadonly">If this manager is read-only.</param>
         protected NPCChatManagerBase(bool isReadonly)
         {
             _isReadonly = isReadonly;
-            Load();
+            Load(ContentPaths.Build);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Gets if this NPCChatManagerBase is read-only.
+        /// Gets if this manager is read-only.
         /// </summary>
         public bool IsReadonly
         {
@@ -98,11 +99,12 @@ namespace NetGore.NPCChat
         /// <summary>
         /// Loads the data from file.
         /// </summary>
-        void Load()
+        /// <param name="contentPath">The content path to load the data from.</param>
+        void Load(ContentPaths contentPath)
         {
             _npcChatDialogs.Clear();
 
-            var filePath = GetFilePath(ContentPaths.Dev);
+            var filePath = GetFilePath(contentPath);
 
             if (!File.Exists(filePath))
             {
@@ -138,14 +140,15 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Saves the NPCChatDialogBases in this NPCChatManagerBase to file.
+        /// Saves the <see cref="NPCChatDialogBase"/>s in this <see cref="NPCChatManagerBase"/> to file.
         /// </summary>
-        public void Save()
+        /// <param name="contentPath">The content path.</param>
+        public void Save(ContentPaths contentPath)
         {
             var dialogs = _npcChatDialogs.Where(x => x != null);
 
             // Write
-            var filePath = GetFilePath(ContentPaths.Dev);
+            var filePath = GetFilePath(contentPath);
             using (var writer = new XmlValueWriter(filePath, "ChatDialogs"))
             {
                 writer.WriteManyNodes("ChatDialogs", dialogs, ((w, item) => item.Write(w)));
