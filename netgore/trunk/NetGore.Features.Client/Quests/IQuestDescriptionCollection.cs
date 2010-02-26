@@ -12,5 +12,14 @@ namespace NetGore.Features.Quests
         /// <param name="questID">The ID of the quest to get the <see cref="IQuestDescription"/> for.</param>
         /// <returns>The <see cref="IQuestDescription"/> for the given <see cref="QuestID"/>.</returns>
         IQuestDescription this[QuestID questID] { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IQuestDescription"/> for a quest, or an empty description if the quest
+        /// description could not be found for the specified <paramref name="questID"/>.
+        /// </summary>
+        /// <param name="questID">The ID of the quest to get the <see cref="IQuestDescription"/> for.</param>
+        /// <returns>The <see cref="IQuestDescription"/> for a quest, or an empty description if the quest
+        /// description could not be found for the specified <paramref name="questID"/>.</returns>
+        IQuestDescription GetOrDefault(QuestID questID);
     }
 }
