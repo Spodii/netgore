@@ -396,9 +396,9 @@ namespace NetGore.Graphics.GUI
                     Size += (_border.Size - oldBorderSize);
 
                 // The border changed, thus the ClientArea probably changed and we need to update the KeepInParent
-                foreach (Control child in Controls)
+                for (int i = 0; i < _controls.Count; i++)
                 {
-                    child.KeepInParent();
+                    _controls[i].KeepInParent();
                 }
 
                 InvokeBorderChanged();
@@ -821,9 +821,9 @@ namespace NetGore.Graphics.GUI
 
             DrawControl(spriteBatch);
 
-            foreach (Control c in Controls)
+            for (int i = 0; i < _controls.Count; i++)
             {
-                c.DrawControlStart(spriteBatch);
+                _controls[i].DrawControlStart(spriteBatch);
             }
         }
 
@@ -1775,9 +1775,9 @@ namespace NetGore.Graphics.GUI
             }
 
             // Update all the child controls
-            foreach (Control c in Controls)
+            for (int i = 0; i < _controls.Count; i++)
             {
-                c.UpdateControl(currentTime);
+                _controls[i].UpdateControl(currentTime);
             }
 
             // Set the top-most controls if needed
@@ -1807,9 +1807,9 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Update the child controls
-            foreach (Control c in Controls)
+            for (int i = 0; i < _controls.Count; i++)
             {
-                c.UpdateKeyboard();
+                _controls[i].UpdateKeyboard();
             }
 
             // Only raise events for the control with focus
@@ -1860,9 +1860,9 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Update the child controls
-            foreach (Control c in Controls)
+            for (int i = 0; i < _controls.Count; i++)
             {
-                c.UpdateMouse();
+                _controls[i].UpdateMouse();
             }
 
             // Update the control's position if it is being dragged
