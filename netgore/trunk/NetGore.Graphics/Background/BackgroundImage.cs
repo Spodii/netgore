@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
-using Color = Microsoft.Xna.Framework.Graphics.Color;
 
 namespace NetGore.Graphics
 {
@@ -24,43 +23,10 @@ namespace NetGore.Graphics
         readonly ICamera2DProvider _cameraProvider;
         readonly IMap _map;
         readonly Grh _sprite;
-        float _depth;
-        string _name;
-
-        
         Color _color = Color.White;
-
-        /// <summary>
-        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
-        /// value will be equal to white (ARGB: 255,255,255,255).
-        /// </summary>
-        [Category("Display")]
-        [DisplayName("Color")]
-        [Description("The color to use when drawing the image where RGBA 255,255,255,255 will draw the image unaltered.")]
-        [DefaultValue(typeof(Color), "255, 255, 255, 255")]
-        [Browsable(true)]
-        public Color Color
-        {
-            get
-            {
-                return _color;
-            }
-            set
-            {
-                if (_color == value)
-                    return;
-
-                _color = value;
-
-                if (ColorChanged != null)
-                    ColorChanged(this);
-            }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
-        /// </summary>
-        public event IDrawableEventHandler ColorChanged;
+        float _depth;
+        bool _isVisible = true;
+        string _name;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundImage"/> class.
@@ -377,6 +343,23 @@ namespace NetGore.Graphics
         #region IDrawable Members
 
         /// <summary>
+        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler AfterDraw;
+
+        /// <summary>
+        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler BeforeDraw;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler ColorChanged;
+
+        /// <summary>
         /// Unused by the <see cref="BackgroundImage"/> since the layer never changes.
         /// </summary>
         event MapRenderLayerChange IDrawable.RenderLayerChanged
@@ -386,16 +369,33 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
-        /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
+        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
         /// </summary>
-        [Browsable(false)]
-        public int LayerDepth
-        {
-            get { return ImageDepthToLayerDepth(Depth); }
-        }
+        public event IDrawableEventHandler VisibleChanged;
 
-        bool _isVisible = true;
+        /// <summary>
+        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
+        /// value will be equal to white (ARGB: 255,255,255,255).
+        /// </summary>
+        [Category("Display")]
+        [DisplayName("Color")]
+        [Description("The color to use when drawing the image where RGBA 255,255,255,255 will draw the image unaltered.")]
+        [DefaultValue(typeof(Color), "255, 255, 255, 255")]
+        [Browsable(true)]
+        public Color Color
+        {
+            get { return _color; }
+            set
+            {
+                if (_color == value)
+                    return;
+
+                _color = value;
+
+                if (ColorChanged != null)
+                    ColorChanged(this);
+            }
+        }
 
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
@@ -417,6 +417,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
+        /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
+        /// </summary>
+        [Browsable(false)]
+        public int LayerDepth
+        {
+            get { return ImageDepthToLayerDepth(Depth); }
+        }
+
+        /// <summary>
         /// Gets the <see cref="IDrawable.MapRenderLayer"/> that this object is rendered on.
         /// </summary>
         [Browsable(false)]
@@ -424,23 +434,6 @@ namespace NetGore.Graphics
         {
             get { return MapRenderLayer.Background; }
         }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
-        /// </summary>
-        public event IDrawableEventHandler VisibleChanged;
-
-        /// <summary>
-        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
-        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
-        /// </summary>
-        public event IDrawableDrawEventHandler BeforeDraw;
-
-        /// <summary>
-        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
-        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
-        /// </summary>
-        public event IDrawableDrawEventHandler AfterDraw;
 
         /// <summary>
         /// Makes the object draw itself.

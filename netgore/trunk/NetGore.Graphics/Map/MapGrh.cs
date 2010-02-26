@@ -20,38 +20,11 @@ namespace NetGore.Graphics
         const string _mapGrhCategoryName = "MapGrh";
         const string _positionKeyName = "Position";
 
+        readonly Grh _grh;
         Color _color = Color.White;
 
-        /// <summary>
-        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
-        /// value will be equal to white (ARGB: 255,255,255,255).
-        /// </summary>
-        public Color Color
-        {
-            get
-            {
-                return _color;
-            }
-            set
-            {
-                if (_color == value)
-                    return;
-
-                _color = value;
-
-                if (ColorChanged != null)
-                    ColorChanged(this);
-            }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
-        /// </summary>
-        public event IDrawableEventHandler ColorChanged;
-
-        readonly Grh _grh;
-
         bool _isForeground;
+        bool _isVisible = true;
         short _layerDepth;
         Vector2 _position;
 
@@ -151,9 +124,69 @@ namespace NetGore.Graphics
         #region IDrawable Members
 
         /// <summary>
+        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler AfterDraw;
+
+        /// <summary>
+        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler BeforeDraw;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler ColorChanged;
+
+        /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.MapRenderLayer"/> property has changed.
         /// </summary>
         public event MapRenderLayerChange RenderLayerChanged;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler VisibleChanged;
+
+        /// <summary>
+        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
+        /// value will be equal to white (ARGB: 255,255,255,255).
+        /// </summary>
+        public Color Color
+        {
+            get { return _color; }
+            set
+            {
+                if (_color == value)
+                    return;
+
+                _color = value;
+
+                if (ColorChanged != null)
+                    ColorChanged(this);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
+        /// visible.
+        /// </summary>
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                if (_isVisible == value)
+                    return;
+
+                _isVisible = value;
+
+                if (VisibleChanged != null)
+                    VisibleChanged(this);
+            }
+        }
 
         /// <summary>
         /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
@@ -179,27 +212,6 @@ namespace NetGore.Graphics
             }
         }
 
-        bool _isVisible = true;
-
-        /// <summary>
-        /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
-        /// visible.
-        /// </summary>
-        public bool IsVisible
-        {
-            get { return _isVisible; }
-            set
-            {
-                if (_isVisible == value)
-                    return;
-
-                _isVisible = value;
-
-                if (VisibleChanged != null)
-                    VisibleChanged(this);
-            }
-        }
-
         /// <summary>
         /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
@@ -215,23 +227,6 @@ namespace NetGore.Graphics
                     return MapRenderLayer.SpriteBackground;
             }
         }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
-        /// </summary>
-        public event IDrawableEventHandler VisibleChanged;
-
-        /// <summary>
-        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
-        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
-        /// </summary>
-        public event IDrawableDrawEventHandler BeforeDraw;
-
-        /// <summary>
-        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
-        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
-        /// </summary>
-        public event IDrawableDrawEventHandler AfterDraw;
 
         /// <summary>
         /// Makes the object draw itself.
@@ -312,21 +307,21 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
-        /// </summary>
-        [Browsable(false)]
-        public Vector2 Max
-        {
-            get { return Position + Size; }
-        }
-
-        /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
         /// </summary>
         [Browsable(false)]
         public Vector2 Center
         {
             get { return Position + (Size / 2); }
+        }
+
+        /// <summary>
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        [Browsable(false)]
+        public Vector2 Max
+        {
+            get { return Position + Size; }
         }
 
         /// <summary>

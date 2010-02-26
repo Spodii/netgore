@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Server.Queries;
 using NetGore.Features.Quests;
@@ -46,26 +45,6 @@ namespace DemoGame.Server.Quests
         }
 
         /// <summary>
-        /// When overridden in the derived clas,s notifies the owner that they were unable to accept a quest
-        /// because they have too many active quests.
-        /// </summary>
-        /// <param name="quest">The quest that could not be accepted.</param>
-        protected override void NotifyCannotAcceptTooManyActive(IQuest<User> quest)
-        {
-            Owner.Send(GameMessage.QuestAcceptFailedTooManyActive);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
-        /// because they do not have the needed requirements.
-        /// </summary>
-        /// <param name="quest">The quest that could not be accepted.</param>
-        protected override void NotifyCannotAcceptDoNotHaveStartRequirements(IQuest<User> quest)
-        {
-            Owner.Send(GameMessage.QuestAcceptFailedDoNotHaveStartRequirements);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
         /// because they have already completed it.
         /// </summary>
@@ -83,6 +62,26 @@ namespace DemoGame.Server.Quests
         protected override void NotifyCannotAcceptAlreadyStarted(IQuest<User> quest)
         {
             Owner.Send(GameMessage.QuestAcceptFailedAlreadyStarted);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they do not have the needed requirements.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected override void NotifyCannotAcceptDoNotHaveStartRequirements(IQuest<User> quest)
+        {
+            Owner.Send(GameMessage.QuestAcceptFailedDoNotHaveStartRequirements);
+        }
+
+        /// <summary>
+        /// When overridden in the derived clas,s notifies the owner that they were unable to accept a quest
+        /// because they have too many active quests.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected override void NotifyCannotAcceptTooManyActive(IQuest<User> quest)
+        {
+            Owner.Send(GameMessage.QuestAcceptFailedTooManyActive);
         }
 
         /// <summary>

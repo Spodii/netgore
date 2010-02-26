@@ -6,7 +6,6 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NetGore;
-using NetGore.Features.Quests;
 using NetGore.Graphics.GUI;
 using NetGore.NPCChat;
 

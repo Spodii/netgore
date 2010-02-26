@@ -32,19 +32,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Creates a <see cref="Rectangle"/> describing the area of a <see cref="ISpatial"/>.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/> to get the <see cref="Rectangle"/> for.</param>
-        /// <returns>A <see cref="Rectangle"/> describing the area of a <see cref="ISpatial"/>.</returns>
-        public static Rectangle ToRectangle(ISpatial spatial)
-        {
-            var p = spatial.Position;
-            var s = spatial.Size;
-
-            return new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
-        }
-
-        /// <summary>
         /// Finds the Minimal Translational Distance between two <see cref="ISpatial"/>s.
         /// </summary>
         /// <param name="source">Source (dynamic) <see cref="ISpatial"/> that will be the one moving.</param>
@@ -89,6 +76,19 @@ namespace NetGore
                 return Vector2.Zero;
 
             return CreateMTDVector(side, mtd);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Rectangle"/> describing the area of a <see cref="ISpatial"/>.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to get the <see cref="Rectangle"/> for.</param>
+        /// <returns>A <see cref="Rectangle"/> describing the area of a <see cref="ISpatial"/>.</returns>
+        public static Rectangle ToRectangle(ISpatial spatial)
+        {
+            var p = spatial.Position;
+            var s = spatial.Size;
+
+            return new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
         }
     }
 }

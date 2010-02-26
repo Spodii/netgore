@@ -31,20 +31,20 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
+        static readonly GuildManager _guildManager = GuildManager.Instance;
         static readonly ReplaceGuildMemberQuery _replaceGuildMemberQuery;
         static readonly SelectGuildMemberQuery _selectGuildMemberQuery;
-        static readonly GuildManager _guildManager = GuildManager.Instance;
 
         readonly UserChatDialogState _chatState;
         readonly IIPSocket _conn;
         readonly GroupMemberInfo _groupMemberInfo;
         readonly GuildMemberInfo _guildMemberInfo;
+        readonly QuestPerformerStatusHelper _questInfo;
         readonly UserShoppingState _shoppingState;
         readonly SocketSendQueue _unreliableBuffer;
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
-        readonly QuestPerformerStatusHelper _questInfo;
 
         /// <summary>
         /// Initializes the <see cref="User"/> class.
@@ -55,62 +55,6 @@ namespace DemoGame.Server
             _deleteGuildMemberQuery = dbController.GetQuery<DeleteGuildMemberQuery>();
             _replaceGuildMemberQuery = dbController.GetQuery<ReplaceGuildMemberQuery>();
             _selectGuildMemberQuery = dbController.GetQuery<SelectGuildMemberQuery>();
-        }
-
-        /// <summary>
-        /// Allows for handling of the <see cref="User.QuestAccepted"/> event without creating an event hook.
-        /// </summary>
-        /// <param name="quest">The quest that was accepted.</param>
-        protected virtual void OnQuestAccepted(IQuest<User> quest)
-        {
-        }
-
-        /// <summary>
-        /// Allows for handling of the <see cref="User.QuestCanceled"/> event without creating an event hook.
-        /// </summary>
-        /// <param name="quest">The quest that was accepted.</param>
-        protected virtual void OnQuestCanceled(IQuest<User> quest)
-        {
-        }
-
-        /// <summary>
-        /// Allows for handling of the <see cref="User.QuestFinished"/> event without creating an event hook.
-        /// </summary>
-        /// <param name="quest">The quest that was accepted.</param>
-        protected virtual void OnQuestFinished(IQuest<User> quest)
-        {
-        }
-
-        /// <summary>
-        /// Creates the <see cref="QuestPerformerStatusHelper"/> for this user.
-        /// </summary>
-        /// <returns>The <see cref="QuestPerformerStatusHelper"/> for this user.</returns>
-        QuestPerformerStatusHelper CreateQuestInfo()
-        {
-            var ret = new QuestPerformerStatusHelper(this);
-
-            ret.QuestAccepted += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
-            {
-                OnQuestAccepted(quest);
-                if (QuestAccepted != null)
-                    QuestAccepted(this, quest);
-            };
-            
-            ret.QuestCanceled += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
-            {
-                OnQuestCanceled(quest);
-                if (QuestCanceled != null)
-                    QuestCanceled(this, quest);
-            };
-
-            ret.QuestFinished += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
-            {
-                OnQuestFinished(quest);
-                if (QuestFinished != null)
-                    QuestFinished(this, quest);
-            };
-
-            return ret;
         }
 
         /// <summary>
@@ -255,6 +199,38 @@ namespace DemoGame.Server
         protected override CharacterInventory CreateInventory()
         {
             return new UserInventory(this);
+        }
+
+        /// <summary>
+        /// Creates the <see cref="QuestPerformerStatusHelper"/> for this user.
+        /// </summary>
+        /// <returns>The <see cref="QuestPerformerStatusHelper"/> for this user.</returns>
+        QuestPerformerStatusHelper CreateQuestInfo()
+        {
+            var ret = new QuestPerformerStatusHelper(this);
+
+            ret.QuestAccepted += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            {
+                OnQuestAccepted(quest);
+                if (QuestAccepted != null)
+                    QuestAccepted(this, quest);
+            };
+
+            ret.QuestCanceled += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            {
+                OnQuestCanceled(quest);
+                if (QuestCanceled != null)
+                    QuestCanceled(this, quest);
+            };
+
+            ret.QuestFinished += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            {
+                OnQuestFinished(quest);
+                if (QuestFinished != null)
+                    QuestFinished(this, quest);
+            };
+
+            return ret;
         }
 
         /// <summary>
@@ -520,6 +496,30 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        /// <summary>
+        /// Allows for handling of the <see cref="User.QuestAccepted"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected virtual void OnQuestAccepted(IQuest<User> quest)
+        {
+        }
+
+        /// <summary>
+        /// Allows for handling of the <see cref="User.QuestCanceled"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected virtual void OnQuestCanceled(IQuest<User> quest)
+        {
+        }
+
+        /// <summary>
+        /// Allows for handling of the <see cref="User.QuestFinished"/> event without creating an event hook.
+        /// </summary>
+        /// <param name="quest">The quest that was accepted.</param>
+        protected virtual void OnQuestFinished(IQuest<User> quest)
+        {
         }
 
         /// <summary>
@@ -1061,15 +1061,12 @@ namespace DemoGame.Server
 
         #endregion
 
+        #region IQuestPerformer<User> Members
+
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has accepted a new quest.
         /// </summary>
         public event QuestPerformerQuestEventHandler<User> QuestAccepted;
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has finished a quest.
-        /// </summary>
-        public event QuestPerformerQuestEventHandler<User> QuestFinished;
 
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has canceled an active quest.
@@ -1077,14 +1074,9 @@ namespace DemoGame.Server
         public event QuestPerformerQuestEventHandler<User> QuestCanceled;
 
         /// <summary>
-        /// Gets the quests that this <see cref="IQuestPerformer{TCharacter}"/> has completed.
+        /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has finished a quest.
         /// </summary>
-        public IEnumerable<IQuest<User>> CompletedQuests
-        {
-            get {
-                return _questInfo.CompletedQuests;
-            }
-        }
+        public event QuestPerformerQuestEventHandler<User> QuestFinished;
 
         /// <summary>
         /// Gets the incomplete quests that this <see cref="IQuestPerformer{TCharacter}"/> is currently working on.
@@ -1095,14 +1087,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> has finished the given <paramref name="quest"/>.
+        /// Gets the quests that this <see cref="IQuestPerformer{TCharacter}"/> has completed.
         /// </summary>
-        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> has completed.</param>
-        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> has completed the given <paramref name="quest"/>;
-        /// otherwise false.</returns>
-        public bool HasCompletedQuest(IQuest<User> quest)
+        public IEnumerable<IQuest<User>> CompletedQuests
         {
-            return _questInfo.HasCompletedQuest(quest);
+            get { return _questInfo.CompletedQuests; }
         }
 
         /// <summary>
@@ -1117,6 +1106,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Cancels an active quest.
+        /// </summary>
+        /// <param name="quest">The active quest to cancel.</param>
+        /// <returns>True if the <paramref name="quest"/> was canceled; false if the <paramref name="quest"/> failed to
+        /// be canceled, such as if the <paramref name="quest"/> was not in the list of active quests.</returns>
+        public bool CancelQuest(IQuest<User> quest)
+        {
+            return _questInfo.CancelQuest(quest);
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> has finished the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> has completed.</param>
+        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> has completed the given <paramref name="quest"/>;
+        /// otherwise false.</returns>
+        public bool HasCompletedQuest(IQuest<User> quest)
+        {
+            return _questInfo.HasCompletedQuest(quest);
+        }
+
+        /// <summary>
         /// Tries to add the given <paramref name="quest"/> to this <see cref="IQuestPerformer{TCharacter}"/>'s list
         /// of active quests.
         /// </summary>
@@ -1128,15 +1139,6 @@ namespace DemoGame.Server
             return _questInfo.TryAddQuest(quest);
         }
 
-        /// <summary>
-        /// Cancels an active quest.
-        /// </summary>
-        /// <param name="quest">The active quest to cancel.</param>
-        /// <returns>True if the <paramref name="quest"/> was canceled; false if the <paramref name="quest"/> failed to
-        /// be canceled, such as if the <paramref name="quest"/> was not in the list of active quests.</returns>
-        public bool CancelQuest(IQuest<User> quest)
-        {
-            return _questInfo.CancelQuest(quest);
-        }
+        #endregion
     }
 }

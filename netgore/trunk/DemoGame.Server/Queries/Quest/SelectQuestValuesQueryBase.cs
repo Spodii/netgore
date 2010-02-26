@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using NetGore.Db;
 using NetGore.Features.Quests;
 
@@ -22,16 +20,10 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
         /// <param name="tableName">Name of the table.</param>
-        protected SelectQuestValuesQueryBase(DbConnectionPool connectionPool, string tableName) : base(connectionPool, string.Format(_queryStr, tableName))
+        protected SelectQuestValuesQueryBase(DbConnectionPool connectionPool, string tableName)
+            : base(connectionPool, string.Format(_queryStr, tableName))
         {
         }
-
-        /// <summary>
-        /// When overridden in the derived class, reads a row from the database.
-        /// </summary>
-        /// <param name="reader">The <see cref="IDataReader"/> to use to read.</param>
-        /// <returns>The values read from the <paramref name="reader"/>.</returns>
-        protected abstract T ReadRow(IDataReader reader);
 
         public IEnumerable<T> Execute(QuestID id)
         {
@@ -58,6 +50,13 @@ namespace DemoGame.Server.Queries
         {
             return CreateParameters("@id");
         }
+
+        /// <summary>
+        /// When overridden in the derived class, reads a row from the database.
+        /// </summary>
+        /// <param name="reader">The <see cref="IDataReader"/> to use to read.</param>
+        /// <returns>The values read from the <paramref name="reader"/>.</returns>
+        protected abstract T ReadRow(IDataReader reader);
 
         /// <summary>
         /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>

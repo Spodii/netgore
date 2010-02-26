@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuestRequirementCollection<TCharacter> : IEnumerable<IQuestRequirement<TCharacter>> where TCharacter : IQuestPerformer<TCharacter>
+    public interface IQuestRequirementCollection<TCharacter> : IEnumerable<IQuestRequirement<TCharacter>>
+        where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Checks if the <paramref name="character"/> meets this test requirement.

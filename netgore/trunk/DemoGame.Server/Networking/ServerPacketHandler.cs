@@ -130,7 +130,8 @@ namespace DemoGame.Server
                 return;
 
             // Check the distance and state
-            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed || user.GetDistance(npc) > GameData.MaxNPCChatDistance)
+            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed ||
+                user.GetDistance(npc) > GameData.MaxNPCChatDistance)
                 return;
 
             // Get the quest
@@ -140,7 +141,9 @@ namespace DemoGame.Server
 
             bool successfullyAdded = user.TryAddQuest(quest);
             using (var pw = ServerPacket.AcceptQuestReply(questID, successfullyAdded))
+            {
                 user.Send(pw);
+            }
         }
 
         [MessageHandler((byte)ClientPacketID.Attack)]
@@ -150,7 +153,7 @@ namespace DemoGame.Server
             MapEntityIndex? targetIndex = null;
 
             bool hasTarget = r.ReadBool();
-            if (hasTarget) 
+            if (hasTarget)
                 targetIndex = r.ReadMapEntityIndex();
 
             if ((user = TryGetUser(conn)) != null)
@@ -241,12 +244,12 @@ namespace DemoGame.Server
                     log.WarnFormat(errmsg, user, questID);
             }
             else
-            {
                 hasRequirements = quest.StartRequirements.HasRequirements(user);
-            }
 
             using (var pw = ServerPacket.HasQuestStartRequirements(questID, hasRequirements))
+            {
                 user.Send(pw);
+            }
         }
 
         [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]
@@ -572,21 +575,26 @@ namespace DemoGame.Server
                 return;
 
             // Check the distance and state
-            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed || user.GetDistance(npc) > GameData.MaxNPCChatDistance)
+            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed ||
+                user.GetDistance(npc) > GameData.MaxNPCChatDistance)
                 return;
 
             // If the NPC provides any quests that this user can do, show that instead
             if (!forceSkipQuestDialog && !npc.Quests.IsEmpty())
             {
-                var availableQuests = npc.Quests.Where(x => !user.ActiveQuests.Contains(x) && (x.Repeatable || !user.HasCompletedQuest(x))).Select(x => x.QuestID).ToArray();
+                var availableQuests =
+                    npc.Quests.Where(x => !user.ActiveQuests.Contains(x) && (x.Repeatable || !user.HasCompletedQuest(x))).Select(
+                        x => x.QuestID).ToArray();
                 if (availableQuests.Length > 0)
                 {
                     using (var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests))
+                    {
                         user.Send(pw);
+                    }
                     return;
                 }
             }
-            
+
             // Force-skipped the quest dialog, or there was no available quests, so start the chat dialog
             user.ChatState.StartChat(npc);
         }

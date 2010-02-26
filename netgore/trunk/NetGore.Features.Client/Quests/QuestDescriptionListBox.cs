@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
@@ -34,8 +33,8 @@ namespace NetGore.Features.Quests
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <param name="hasStartQuestReqs">A func used to check if the user has the requirements to start a quest.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        public QuestDescriptionListBox(IGUIManager guiManager, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs)
-            : base(guiManager, position, clientSize)
+        public QuestDescriptionListBox(IGUIManager guiManager, Vector2 position, Vector2 clientSize,
+                                       Func<QuestID, bool> hasStartQuestReqs) : base(guiManager, position, clientSize)
         {
             _hasStartQuestReqs = hasStartQuestReqs;
         }
@@ -50,10 +49,7 @@ namespace NetGore.Features.Quests
                 var ret = base.Items.OrderBy(x => x.QuestID).OrderBy(x => _hasStartQuestReqs(x.QuestID));
                 return ret;
             }
-            set
-            {
-                base.Items = value;
-            }
+            set { base.Items = value; }
         }
 
         /// <summary>
@@ -63,6 +59,17 @@ namespace NetGore.Features.Quests
         protected override Action<SpriteBatch, Vector2, int> GetDefaultItemDrawer()
         {
             return QuestDescriptionDrawer;
+        }
+
+        /// <summary>
+        /// Gets if the user has the requirements to start the given quest.
+        /// </summary>
+        /// <param name="questID">The ID of the quest to start.</param>
+        /// <returns>True if the user has the requirements to start the quest with the given <paramref name="questID"/>;
+        /// otherwise false.</returns>
+        protected virtual bool HasStartQuestReqs(QuestID questID)
+        {
+            return _hasStartQuestReqs(questID);
         }
 
         void QuestDescriptionDrawer(SpriteBatch sb, Vector2 pos, int index)
@@ -78,17 +85,6 @@ namespace NetGore.Features.Quests
 
             var color = HasStartQuestReqs(item.QuestID) ? ForeColor : new Color(150, 0, 0);
             sb.DrawString(Font, item.Name, pos + new Vector2(indexStrWidth, 0), color);
-        }
-
-        /// <summary>
-        /// Gets if the user has the requirements to start the given quest.
-        /// </summary>
-        /// <param name="questID">The ID of the quest to start.</param>
-        /// <returns>True if the user has the requirements to start the quest with the given <paramref name="questID"/>;
-        /// otherwise false.</returns>
-        protected virtual bool HasStartQuestReqs(QuestID questID)
-        {
-            return _hasStartQuestReqs(questID);
         }
     }
 }

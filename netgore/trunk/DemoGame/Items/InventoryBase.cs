@@ -84,6 +84,25 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the number of free inventory slots.
+        /// </summary>
+        public int FreeSlots
+        {
+            get
+            {
+                int count = 0;
+
+                for (int i = 0; i < _buffer.Length; i++)
+                {
+                    if (this[new InventorySlot(i)] == null)
+                        ++count;
+                }
+
+                return count;
+            }
+        }
+
+        /// <summary>
         /// Adds as much of the item, if not all, to the inventory as possible. The actual 
         /// item object is not given to the Inventory, but rather a deep copy of it. 
         /// The passed item's amount will be reduced either to 0 if the Inventory took all
@@ -288,25 +307,6 @@ namespace DemoGame
         public void RemoveAt(InventorySlot slot, bool dispose)
         {
             ClearSlot(slot, dispose);
-        }
-
-        /// <summary>
-        /// Gets the number of free inventory slots.
-        /// </summary>
-        public int FreeSlots
-        {
-            get
-            {
-                int count = 0;
-
-                for (int i = 0; i < _buffer.Length; i++)
-                {
-                    if (this[new InventorySlot(i)] == null)
-                        ++count;
-                }
-
-                return count;
-            }
         }
 
         /// <summary>

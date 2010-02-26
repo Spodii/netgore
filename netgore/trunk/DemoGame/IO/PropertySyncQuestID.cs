@@ -15,8 +15,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="PropertySyncQuestID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncQuestID(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncQuestID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

@@ -128,7 +128,8 @@ namespace NetGore.Graphics.GUI
         public bool CanSelect
         {
             get { return _canSelect; }
-            set {
+            set
+            {
                 if (_canSelect == value)
                     return;
 

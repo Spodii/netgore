@@ -15,6 +15,11 @@ namespace NetGore.Graphics
         Color Color { get; set; }
 
         /// <summary>
+        /// Gets or sets if this light is enabled.
+        /// </summary>
+        bool IsEnabled { get; set; }
+
+        /// <summary>
         /// Gets or sets an <see cref="ISpatial"/> that provides the position to use. If set, the
         /// <see cref="ISpatial.Position"/> value will automatically be acquired with the position of the
         /// <see cref="ISpatial"/> instead, and setting the position will have no affect.
@@ -30,17 +35,6 @@ namespace NetGore.Graphics
         /// Gets or sets the <see cref="Grh"/> used to draw the light. If null, the light will not be drawn.
         /// </summary>
         Grh Sprite { get; set; }
-
-        /// <summary>
-        /// Updates the <see cref="ILight"/>.
-        /// </summary>
-        /// <param name="currentTime">The current game time in milliseconds.</param>
-        void Update(int currentTime);
-
-        /// <summary>
-        /// Gets or sets if this light is enabled.
-        /// </summary>
-        bool IsEnabled { get; set; }
 
         /// <summary>
         /// Draws the <see cref="ILight"/>.
@@ -65,5 +59,11 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="newPosition">The new position.</param>
         void Teleport(Vector2 newPosition);
+
+        /// <summary>
+        /// Updates the <see cref="ILight"/>.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        void Update(int currentTime);
     }
 }

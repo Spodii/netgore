@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 
@@ -14,8 +11,6 @@ namespace NetGore.Features.Emoticons
     {
         readonly EmoticonDisplayManager _displayManager;
 
-        public EmoticonDisplayManager DisplayManager { get { return _displayManager; } }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EmoticonMapDrawingExtension"/> class.
         /// </summary>
@@ -23,6 +18,11 @@ namespace NetGore.Features.Emoticons
         public EmoticonMapDrawingExtension(EmoticonDisplayManager displayManager)
         {
             _displayManager = displayManager;
+        }
+
+        public EmoticonDisplayManager DisplayManager
+        {
+            get { return _displayManager; }
         }
 
         /// <summary>

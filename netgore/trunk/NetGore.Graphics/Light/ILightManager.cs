@@ -28,12 +28,6 @@ namespace NetGore.Graphics
         bool IsInitialized { get; }
 
         /// <summary>
-        /// Updates all of the lights in this <see cref="ILightManager"/>, along with the <see cref="ILightManager"/> itself.
-        /// </summary>
-        /// <param name="currentTime">The current game time in milliseconds.</param>
-        void Update(int currentTime);
-
-        /// <summary>
         /// Draws all of the lights in this <see cref="ILightManager"/>.
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
@@ -51,5 +45,11 @@ namespace NetGore.Graphics
         /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="graphicsDevice"/> is null.</exception>
         void Initialize(GraphicsDevice graphicsDevice);
+
+        /// <summary>
+        /// Updates all of the lights in this <see cref="ILightManager"/>, along with the <see cref="ILightManager"/> itself.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        void Update(int currentTime);
     }
 }

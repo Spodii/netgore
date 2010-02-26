@@ -168,7 +168,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets if this NPC will respawn after dieing.
         /// </summary>
-        public bool WillRespawn 
+        public bool WillRespawn
         {
             get { return RespawnMapIndex.HasValue; }
         }

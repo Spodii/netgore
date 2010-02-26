@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Features.Quests;
@@ -12,16 +10,16 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectActiveQuestsQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr = string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NULL",
-            CharacterQuestStatusTable.TableName);
+        static readonly string _queryStr =
+            string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NULL",
+                          CharacterQuestStatusTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectActiveQuestsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public SelectActiveQuestsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectActiveQuestsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "quest_id", "completed_on", "character_id");
         }
@@ -66,16 +64,16 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCompletedQuestsQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr = string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NOT NULL",
-            CharacterQuestStatusTable.TableName);
+        static readonly string _queryStr =
+            string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NOT NULL",
+                          CharacterQuestStatusTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCompletedQuestsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public SelectCompletedQuestsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectCompletedQuestsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "quest_id", "completed_on", "character_id");
         }

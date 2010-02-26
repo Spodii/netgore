@@ -31,9 +31,9 @@ namespace DemoGame.Client
             menuButtons["Login"].Clicked += delegate { ScreenManager.SetScreen(LoginScreen.ScreenName); };
             menuButtons["New Account"].Clicked += delegate { ScreenManager.SetScreen(NewAccountScreen.ScreenName); };
             menuButtons["Options"].Clicked += delegate
-                                              {
-                                                  /* Not implemented */
-                                              };
+            {
+                /* Not implemented */
+            };
             menuButtons["Quit"].Clicked += delegate { ScreenManager.Game.Exit(); };
         }
     }

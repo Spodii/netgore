@@ -19,8 +19,8 @@ namespace DemoGame.Server
 
         readonly IEnumerable<CharacterTemplateEquipmentItem> _equipment;
         readonly IEnumerable<CharacterTemplateInventoryItem> _inventory;
-        readonly ICharacterTemplateTable _templateTable;
         readonly IEnumerable<IQuest<User>> _quests;
+        readonly ICharacterTemplateTable _templateTable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterTemplate"/> class.
@@ -54,14 +54,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the <see cref="CharacterTemplate"/>'s quests.
-        /// </summary>
-        public IEnumerable<IQuest<User>> Quests
-        {
-            get { return _quests; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="CharacterTemplate"/>'s equipment items.
         /// </summary>
         public IEnumerable<CharacterTemplateEquipmentItem> Equipment
@@ -75,6 +67,14 @@ namespace DemoGame.Server
         public IEnumerable<CharacterTemplateInventoryItem> Inventory
         {
             get { return _inventory; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplate"/>'s quests.
+        /// </summary>
+        public IEnumerable<IQuest<User>> Quests
+        {
+            get { return _quests; }
         }
 
         /// <summary>

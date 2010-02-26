@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore;
@@ -12,11 +10,11 @@ namespace DemoGame.Server.Quests
 {
     public class Quest : IQuest<User>
     {
+        readonly IQuestRequirementCollection<User> _finishRequirements;
         readonly QuestID _questID;
         readonly bool _repeatable;
         readonly IQuestRewardCollection<User> _rewards;
         readonly IQuestRequirementCollection<User> _startRequirements;
-        readonly IQuestRequirementCollection<User> _finishRequirements;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Quest"/> class.
@@ -36,6 +34,25 @@ namespace DemoGame.Server.Quests
         }
 
         /// <summary>
+        /// Loads the requirements for finishing a quest.
+        /// </summary>
+        /// <param name="questID">The ID of the quest.</param>
+        /// <param name="dbController">The <see cref="IDbController"/> to use to load values.</param>
+        /// <returns>The requirements for finishing a quest.</returns>
+        static IQuestRequirementCollection<User> LoadFinishRequirements(QuestID questID, IDbController dbController)
+        {
+            var l = new List<IQuestRequirement<User>>();
+
+            var reqItems = dbController.GetQuery<SelectQuestRequireFinishItemQuery>().Execute(questID);
+            if (!reqItems.IsEmpty())
+                l.Add(new ItemsQuestRequirement(reqItems.Select(x => new ItemTemplateAndAmount(x.ItemTemplateID, x.Amount))));
+
+            // TODO: !! Add: Finish kill requirements
+
+            return new QuestRequirementCollection<User>(l);
+        }
+
+        /// <summary>
         /// Loads the rewards for finishing a quest.
         /// </summary>
         /// <param name="questID">The ID of the quest.</param>
@@ -44,15 +61,11 @@ namespace DemoGame.Server.Quests
         /// <returns>The rewards for finishing a quest.</returns>
         static IQuestRewardCollection<User> LoadRewards(QuestID questID, IQuestTable table, IDbController dbController)
         {
-            var l = new List<IQuestReward<User>>
-            { 
-                new MoneyQuestReward(table.RewardCash), 
-                new ExpQuestReward(table.RewardExp) 
-            };
+            var l = new List<IQuestReward<User>> { new MoneyQuestReward(table.RewardCash), new ExpQuestReward(table.RewardExp) };
 
             var rewardItems = dbController.GetQuery<SelectQuestRewardItemQuery>().Execute(questID);
             if (!rewardItems.IsEmpty())
-                l.Add(new ItemsQuestReward(rewardItems.Select(x => new ItemTemplateAndAmount(x.ItemTemplateID,x.Amount))));
+                l.Add(new ItemsQuestReward(rewardItems.Select(x => new ItemTemplateAndAmount(x.ItemTemplateID, x.Amount))));
 
             return new QuestRewardCollection<User>(l);
         }
@@ -76,23 +89,14 @@ namespace DemoGame.Server.Quests
             return new QuestRequirementCollection<User>(l);
         }
 
+        #region IQuest<User> Members
+
         /// <summary>
-        /// Loads the requirements for finishing a quest.
+        /// Gets the requirements for finishing this quest.
         /// </summary>
-        /// <param name="questID">The ID of the quest.</param>
-        /// <param name="dbController">The <see cref="IDbController"/> to use to load values.</param>
-        /// <returns>The requirements for finishing a quest.</returns>
-        static IQuestRequirementCollection<User> LoadFinishRequirements(QuestID questID, IDbController dbController)
+        public IQuestRequirementCollection<User> FinishRequirements
         {
-            var l = new List<IQuestRequirement<User>>();
-
-            var reqItems = dbController.GetQuery<SelectQuestRequireFinishItemQuery>().Execute(questID);
-            if (!reqItems.IsEmpty())
-                l.Add(new ItemsQuestRequirement(reqItems.Select(x => new ItemTemplateAndAmount(x.ItemTemplateID, x.Amount))));
-
-            // TODO: !! Add: Finish kill requirements
-
-            return new QuestRequirementCollection<User>(l);
+            get { return _finishRequirements; }
         }
 
         /// <summary>
@@ -127,12 +131,6 @@ namespace DemoGame.Server.Quests
             get { return _startRequirements; }
         }
 
-        /// <summary>
-        /// Gets the requirements for finishing this quest.
-        /// </summary>
-        public IQuestRequirementCollection<User> FinishRequirements
-        {
-            get { return _finishRequirements; }
-        }
+        #endregion
     }
 }

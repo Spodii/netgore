@@ -21,16 +21,19 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Gets the maximum number of active quests a single quest performer may have at once.
-        /// </summary>
-        public byte MaxActiveQuests { get { return _maxActiveQuests; } }
-
-        /// <summary>
         /// Gets the <see cref="QuestSettings"/> instance.
         /// </summary>
         public static QuestSettings Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// Gets the maximum number of active quests a single quest performer may have at once.
+        /// </summary>
+        public byte MaxActiveQuests
+        {
+            get { return _maxActiveQuests; }
         }
 
         /// <summary>

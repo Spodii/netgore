@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace NetGore.Features.Friends
 {
     public interface IFriendList : IDisposable

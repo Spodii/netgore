@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -12,14 +11,13 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterTemplateQuestsQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly string _queryStr = string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_template_id`=@id",
-            CharacterTemplateQuestProviderTable.TableName);
+                                                         CharacterTemplateQuestProviderTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateQuestsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectCharacterTemplateQuestsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectCharacterTemplateQuestsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

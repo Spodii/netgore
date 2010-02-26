@@ -13,7 +13,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectQuestRequireFinishItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectQuestRequireFinishItemQuery(DbConnectionPool connectionPool) 
+        public SelectQuestRequireFinishItemQuery(DbConnectionPool connectionPool)
             : base(connectionPool, QuestRequireFinishItemTable.TableName)
         {
         }

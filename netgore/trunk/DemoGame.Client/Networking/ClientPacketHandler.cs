@@ -197,9 +197,7 @@ namespace DemoGame.Client
                 // Remove the quest from the available quests list
                 var aqf = GameplayScreen.AvailableQuestsForm;
                 if (aqf.IsVisible)
-                {
                     aqf.AvailableQuests = aqf.AvailableQuests.Where(x => x.QuestID != questID).ToImmutable();
-                }
             }
         }
 

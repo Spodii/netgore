@@ -159,14 +159,18 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the weapon to use for attacking. Cannot be null.
         /// </summary>
-        public ItemEntity Weapon { get { 
-            var weapon = _equipped[EquipmentSlot.RightHand];
+        public ItemEntity Weapon
+        {
+            get
+            {
+                var weapon = _equipped[EquipmentSlot.RightHand];
 
-            if (weapon == null)
-                return World.UnarmedWeapon;
+                if (weapon == null)
+                    return World.UnarmedWeapon;
 
-            return weapon;
-        } }
+                return weapon;
+            }
+        }
 
         /// <summary>
         /// If the character is alive or not.
@@ -517,16 +521,16 @@ namespace DemoGame.Server
 
             // Listen to when the max HP and MP change to make sure the current HP and MP stay in a valid range
             ModStats.GetStat(StatType.MaxHP).Changed += delegate(IStat<StatType> stat)
-                                                        {
-                                                            if (HP > stat.Value)
-                                                                HP = stat.Value;
-                                                        };
+            {
+                if (HP > stat.Value)
+                    HP = stat.Value;
+            };
 
             ModStats.GetStat(StatType.MaxMP).Changed += delegate(IStat<StatType> stat)
-                                                        {
-                                                            if (MP > stat.Value)
-                                                                MP = stat.Value;
-                                                        };
+            {
+                if (MP > stat.Value)
+                    MP = stat.Value;
+            };
         }
 
         bool _updateModStats = true;

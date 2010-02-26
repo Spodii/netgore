@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Features.Quests;
@@ -14,11 +11,6 @@ namespace DemoGame.Server.Quests
     public class QuestManager : QuestCollection<User>
     {
         static readonly QuestManager _instance;
-
-        /// <summary>
-        /// Gets the <see cref="QuestManager"/> instance.
-        /// </summary>
-        public static QuestManager Instance { get { return _instance; } }
 
         readonly IDbController _dbController;
 
@@ -39,6 +31,14 @@ namespace DemoGame.Server.Quests
             _dbController = dbController;
 
             LoadQuests(dbController.GetQuery<SelectQuestIDsQuery>().Execute());
+        }
+
+        /// <summary>
+        /// Gets the <see cref="QuestManager"/> instance.
+        /// </summary>
+        public static QuestManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

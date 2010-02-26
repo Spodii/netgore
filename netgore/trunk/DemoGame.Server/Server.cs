@@ -7,9 +7,7 @@ using System.Reflection;
 using System.Threading;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
-using DemoGame.Server.Guilds;
 using DemoGame.Server.Queries;
-using DemoGame.Server.Quests;
 using log4net;
 using NetGore;
 using NetGore.Db;
@@ -498,15 +496,16 @@ namespace DemoGame.Server
         /// </summary>
         static void ValidateDbControllerQueryAttributes()
         {
-            const string errmsg = "Type `{0}` fails to implement attribute `{1}`. Ensure this is okay. If you are unsure, add the attribute anyways.";
+            const string errmsg =
+                "Type `{0}` fails to implement attribute `{1}`. Ensure this is okay. If you are unsure, add the attribute anyways.";
             var attribType = typeof(DbControllerQueryAttribute);
 
             new DbControllerQueryAttributeChecker(delegate(DbControllerQueryAttributeChecker sender, Type type)
-                                                  {
-                                                      Debug.Fail(string.Format(errmsg, type, attribType));
-                                                      if (log.IsErrorEnabled)
-                                                          log.ErrorFormat(errmsg, type, attribType);
-                                                  });
+            {
+                Debug.Fail(string.Format(errmsg, type, attribType));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, type, attribType);
+            });
         }
 
         #region IDisposable Members

@@ -5,9 +5,17 @@ using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public abstract class QuestCollection<TCharacter> : IQuestCollection<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
+    public abstract class QuestCollection<TCharacter> : IQuestCollection<TCharacter>
+        where TCharacter : IQuestPerformer<TCharacter>
     {
         IQuest<TCharacter>[] _quests;
+
+        /// <summary>
+        /// When overridden in the derived class, loads the quest with the specified <see cref="QuestID"/>.
+        /// </summary>
+        /// <param name="questID">The ID of the quest to load.</param>
+        /// <returns>The <see cref="IQuest{TCharacter}"/> for the <paramref name="questID"/>.</returns>
+        protected abstract IQuest<TCharacter> LoadQuest(QuestID questID);
 
         /// <summary>
         /// Loads all of the quests. This only needs to be called once.
@@ -32,22 +40,7 @@ namespace NetGore.Features.Quests
             }
         }
 
-        /// <summary>
-        /// When overridden in the derived class, loads the quest with the specified <see cref="QuestID"/>.
-        /// </summary>
-        /// <param name="questID">The ID of the quest to load.</param>
-        /// <returns>The <see cref="IQuest{TCharacter}"/> for the <paramref name="questID"/>.</returns>
-        protected abstract IQuest<TCharacter> LoadQuest(QuestID questID);
-
-        /// <summary>
-        /// Gets the <see cref="IQuest{TCharacter}"/> for a given <see cref="QuestID"/>.
-        /// </summary>
-        /// <param name="questID">The ID of the quest.</param>
-        /// <returns>The <see cref="IQuest{TCharacter}"/> for the given <paramref name="questID"/>.</returns>
-        public IQuest<TCharacter> GetQuest(QuestID questID)
-        {
-            return _quests[questID.GetRawValue()];
-        }
+        #region IQuestCollection<TCharacter> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -70,5 +63,17 @@ namespace NetGore.Features.Quests
         {
             return GetEnumerator();
         }
+
+        /// <summary>
+        /// Gets the <see cref="IQuest{TCharacter}"/> for a given <see cref="QuestID"/>.
+        /// </summary>
+        /// <param name="questID">The ID of the quest.</param>
+        /// <returns>The <see cref="IQuest{TCharacter}"/> for the given <paramref name="questID"/>.</returns>
+        public IQuest<TCharacter> GetQuest(QuestID questID)
+        {
+            return _quests[questID.GetRawValue()];
+        }
+
+        #endregion
     }
 }

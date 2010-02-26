@@ -2,8 +2,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
-using NetGore.Features.Quests;
-using NetGore.IO;
 
 namespace DemoGame.Client
 {

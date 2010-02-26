@@ -13,8 +13,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectQuestRewardItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectQuestRewardItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, QuestRewardItemTable.TableName)
+        public SelectQuestRewardItemQuery(DbConnectionPool connectionPool) : base(connectionPool, QuestRewardItemTable.TableName)
         {
         }
 
