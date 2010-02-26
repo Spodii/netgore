@@ -173,20 +173,6 @@ namespace NetGore.Features.Quests
 
         /// <summary>
         /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
-        /// because they have too many active quests.
-        /// </summary>
-        /// <param name="quest">The quest that could not be accepted.</param>
-        protected abstract void NotifyCannotAcceptTooManyActive(IQuest<TCharacter> quest);
-
-        /// <summary>
-        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
-        /// because they do not have the needed requirements.
-        /// </summary>
-        /// <param name="quest">The quest that could not be accepted.</param>
-        protected abstract void NotifyCannotAcceptDoNotHaveStartRequirements(IQuest<TCharacter> quest);
-
-        /// <summary>
-        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
         /// because they have already completed it.
         /// </summary>
         /// <param name="quest">The quest that could not be accepted.</param>
@@ -198,6 +184,20 @@ namespace NetGore.Features.Quests
         /// </summary>
         /// <param name="quest">The quest that could not be accepted.</param>
         protected abstract void NotifyCannotAcceptAlreadyStarted(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they do not have the needed requirements.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected abstract void NotifyCannotAcceptDoNotHaveStartRequirements(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they have too many active quests.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected abstract void NotifyCannotAcceptTooManyActive(IQuest<TCharacter> quest);
 
         /// <summary>
         /// When overridden in the derived class, notifies the owner that they were unable to turn in the quest

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -13,15 +11,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectQuestQuery : DbQueryReader<QuestID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id",
-            QuestTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", QuestTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQuestQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectQuestQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectQuestQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(QuestTable.DbKeyColumns, "id");
         }

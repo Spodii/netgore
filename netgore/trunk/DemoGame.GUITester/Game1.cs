@@ -86,16 +86,16 @@ namespace DemoGame.GUITester
             }
 
             _textBox.KeyUp += delegate(object sender, KeyboardEventArgs e)
-                              {
-                                  if (e.Keys.Contains(Keys.F1))
-                                      Debug.Fail(_textBox.Text);
-                                  else if (e.Keys.Contains(Keys.F2))
-                                      _textBox.Size += new Vector2(25, 0);
-                                  else if (e.Keys.Contains(Keys.F3))
-                                      _textBox.Size += new Vector2(-25, 0);
-                                  else if (e.Keys.Contains(Keys.F4))
-                                      _textBox.IsMultiLine = !_textBox.IsMultiLine;
-                              };
+            {
+                if (e.Keys.Contains(Keys.F1))
+                    Debug.Fail(_textBox.Text);
+                else if (e.Keys.Contains(Keys.F2))
+                    _textBox.Size += new Vector2(25, 0);
+                else if (e.Keys.Contains(Keys.F3))
+                    _textBox.Size += new Vector2(-25, 0);
+                else if (e.Keys.Contains(Keys.F4))
+                    _textBox.IsMultiLine = !_textBox.IsMultiLine;
+            };
 
             var styledTexts = new List<StyledText>
             {
@@ -153,7 +153,8 @@ namespace DemoGame.GUITester
                 items.Add(i.ToString());
             }
 
-            var lb = new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items, ShowPaging = true };
+            var lb = new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100))
+            { Items = items, ShowPaging = true };
         }
 
         static void testLabelF4_Clicked(object sender, MouseClickEventArgs e)

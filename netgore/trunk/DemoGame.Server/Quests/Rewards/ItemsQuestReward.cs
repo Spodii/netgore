@@ -16,11 +16,6 @@ namespace DemoGame.Server.Quests
         readonly IEnumerable<ItemTemplateAndAmount> _items;
 
         /// <summary>
-        /// Gets the items given as a quest reward.
-        /// </summary>
-        public IEnumerable<ItemTemplateAndAmount> Items { get { return _items; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ItemsQuestReward"/> class.
         /// </summary>
         /// <param name="items">The items.</param>
@@ -32,6 +27,14 @@ namespace DemoGame.Server.Quests
 
             // Store the valid items
             _items = items.Where(x => x.AssertHasValidValues()).OrderBy(x => x.ItemTemplate.ID).ToCompact();
+        }
+
+        /// <summary>
+        /// Gets the items given as a quest reward.
+        /// </summary>
+        public IEnumerable<ItemTemplateAndAmount> Items
+        {
+            get { return _items; }
         }
 
         #region IQuestReward<User> Members
@@ -59,14 +62,15 @@ namespace DemoGame.Server.Quests
             {
                 // Create the new item instance from the template
                 var addItem = new ItemEntity(item.ItemTemplate, item.Amount);
-                
+
                 // Add to the character's inventory
                 var remaining = character.Inventory.Add(addItem);
 
                 // Ensure it was all added
                 if (remaining != null)
                 {
-                    const string errmsg = "Failed to add all of the quest reward item `{0}` to `{1}`'s inventory. Only {2} of {3} of the items were added.";
+                    const string errmsg =
+                        "Failed to add all of the quest reward item `{0}` to `{1}`'s inventory. Only {2} of {3} of the items were added.";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, addItem, character, item.Amount - remaining.Amount, item.Amount);
                     Debug.Fail(string.Format(errmsg, addItem, character, item.Amount - remaining.Amount, item.Amount));

@@ -15,15 +15,6 @@ namespace NetGore.Graphics
         DrawingManagerState _state = DrawingManagerState.Idle;
 
         /// <summary>
-        /// Creates the <see cref="ILightManager"/> to use.
-        /// </summary>
-        /// <returns>The <see cref="ILightManager"/> to use.</returns>
-        protected virtual ILightManager CreateLightManager()
-        {
-            return new LightManager();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DrawingManager"/> class.
         /// </summary>
         /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/>.</param>
@@ -37,6 +28,15 @@ namespace NetGore.Graphics
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _lightManager.Initialize(_gd);
+        }
+
+        /// <summary>
+        /// Creates the <see cref="ILightManager"/> to use.
+        /// </summary>
+        /// <returns>The <see cref="ILightManager"/> to use.</returns>
+        protected virtual ILightManager CreateLightManager()
+        {
+            return new LightManager();
         }
 
         #region IDrawingManager Members
@@ -113,15 +113,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the <see cref="IDrawingManager"/> and all components inside of it.
-        /// </summary>
-        /// <param name="currentTime">The current game time in milliseconds.</param>
-        public void Update(int currentTime)
-        {
-            LightManager.Update(currentTime);
-        }
-
-        /// <summary>
         /// Ends drawing the world.
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
@@ -158,6 +149,15 @@ namespace NetGore.Graphics
             rs.SourceBlend = oldSourceBlend;
             rs.DestinationBlend = oldDestinationBlend;
             rs.BlendFunction = oldBlendFunction;
+        }
+
+        /// <summary>
+        /// Updates the <see cref="IDrawingManager"/> and all components inside of it.
+        /// </summary>
+        /// <param name="currentTime">The current game time in milliseconds.</param>
+        public void Update(int currentTime)
+        {
+            LightManager.Update(currentTime);
         }
 
         #endregion

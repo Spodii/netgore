@@ -23,8 +23,8 @@ namespace NetGore.Graphics.GUI
         readonly ISkinManager _skinManager;
         readonly SoundManager _soundManager;
 
-        IDrawingManager _drawingManager;
         IGameScreen _activeScreen;
+        IDrawingManager _drawingManager;
         SpriteFont _menuFont;
         SpriteBatch _sb;
 
@@ -54,17 +54,6 @@ namespace NetGore.Graphics.GUI
 
             _soundManager = SoundManager.GetInstance(_content);
             _musicManager = MusicManager.GetInstance(_content);
-        }
-
-        /// <summary>
-        /// Initializes the component. Override this method to load any non-graphics resources and query for any
-        /// required services.
-        /// </summary>
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            _drawingManager = new DrawingManager(GraphicsDevice);
         }
 
         /// <summary>
@@ -99,6 +88,17 @@ namespace NetGore.Graphics.GUI
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _activeScreen.Draw(SpriteBatch, gameTime.ToTotalMS());
+        }
+
+        /// <summary>
+        /// Initializes the component. Override this method to load any non-graphics resources and query for any
+        /// required services.
+        /// </summary>
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            _drawingManager = new DrawingManager(GraphicsDevice);
         }
 
         /// <summary>

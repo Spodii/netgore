@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using System.Text;
 using NetGore.IO;
-using NetGore.IO.PropertySync;
 
 namespace NetGore.Features.Quests
 {
@@ -11,9 +9,9 @@ namespace NetGore.Features.Quests
     public interface IQuestDescription : IPersistable
     {
         /// <summary>
-        /// Gets the <see cref="QuestID"/> for the quest that this description is for.
+        /// Gets the quest's description.
         /// </summary>
-        QuestID QuestID { get; }
+        string Description { get; }
 
         /// <summary>
         /// Gets the name of the quest.
@@ -21,8 +19,8 @@ namespace NetGore.Features.Quests
         string Name { get; }
 
         /// <summary>
-        /// Gets the quest's description.
+        /// Gets the <see cref="QuestID"/> for the quest that this description is for.
         /// </summary>
-        string Description { get; }
+        QuestID QuestID { get; }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
-using NetGore.Graphics.GUI;
 using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
@@ -43,7 +42,7 @@ namespace DemoGame.Client
             _mouseOverAfterDrawHandler = MouseOverCharacter_AfterDraw;
             _targetBeforeDrawHandler = TargetCharacter_BeforeDraw;
             _targetAfterDrawHandler = TargetCharacter_AfterDraw;
-            
+
             World.MapChanged += World_MapChanged;
         }
 
@@ -71,20 +70,6 @@ namespace DemoGame.Client
                     _mouseOverChar.BeforeDraw += _mouseOverBeforeDrawHandler;
                     _mouseOverChar.AfterDraw += _mouseOverAfterDrawHandler;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="MapEntityIndex"/> of the <see cref="CharacterTargeter.TargetCharacter"/>.
-        /// </summary>
-        public MapEntityIndex? TargetCharacterIndex
-        {
-            get
-            {
-                if (TargetCharacter == null)
-                    return null;
-
-                return TargetCharacter.MapEntityIndex;
             }
         }
 
@@ -126,6 +111,20 @@ namespace DemoGame.Client
                     _targetChar.BeforeDraw += _targetBeforeDrawHandler;
                     _targetChar.AfterDraw += _targetAfterDrawHandler;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MapEntityIndex"/> of the <see cref="CharacterTargeter.TargetCharacter"/>.
+        /// </summary>
+        public MapEntityIndex? TargetCharacterIndex
+        {
+            get
+            {
+                if (TargetCharacter == null)
+                    return null;
+
+                return TargetCharacter.MapEntityIndex;
             }
         }
 
@@ -176,9 +175,7 @@ namespace DemoGame.Client
             MouseOverCharacter = World.Map.Spatial.Get<Character>(World.Camera.Min + cursorPos, x => x != World.UserChar);
 
             if (MouseOverCharacter != null && mouseState.LeftButton == ButtonState.Pressed)
-            {
                 TargetCharacter = MouseOverCharacter;
-            }
 
             if (MouseOverCharacter != null && MouseOverCharacter.IsDisposed)
                 MouseOverCharacter = null;

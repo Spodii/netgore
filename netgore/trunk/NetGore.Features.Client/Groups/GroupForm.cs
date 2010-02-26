@@ -56,9 +56,7 @@ namespace NetGore.Features.Groups
                     _groupInfo.GroupChanged += GroupInfo_GroupChanged;
                 }
                 else
-                {
                     _memberList.Items = Enumerable.Empty<string>();
-                }
             }
         }
 

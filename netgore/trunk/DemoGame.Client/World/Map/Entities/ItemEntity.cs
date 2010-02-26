@@ -24,6 +24,8 @@ namespace DemoGame.Client
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Grh _grh;
+        Color _color = Color.White;
+        bool _isVisible = true;
 
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
@@ -72,20 +74,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the size of this item cluster (1 for a single item)
         /// </summary>
-        public override byte Amount
-        {
-            get;
-            set;
-        }
+        public override byte Amount { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the item
         /// </summary>
-        public override string Description
-        {
-            get;
-            set;
-        }
+        public override string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the graphic that is used for this item
@@ -107,47 +101,27 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the name of the item
         /// </summary>
-        public override string Name
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the type of item this is.
-        /// </summary>
-        public override ItemType Type
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the type of weapon.
-        /// </summary>
-        public override WeaponType WeaponType
-        {
-            get;
-            set;
-        }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the attack range of the item.
         /// </summary>
-        public override ushort Range
-        {
-            get;
-            set;
-        }
+        public override ushort Range { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of item this is.
+        /// </summary>
+        public override ItemType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the value of the item
         /// </summary>
-        public override int Value
-        {
-            get;
-            set;
-        }
+        public override int Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of weapon.
+        /// </summary>
+        public override WeaponType WeaponType { get; set; }
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
@@ -219,6 +193,23 @@ namespace DemoGame.Client
         #region IDrawable Members
 
         /// <summary>
+        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler AfterDraw;
+
+        /// <summary>
+        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
+        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
+        /// </summary>
+        public event IDrawableDrawEventHandler BeforeDraw;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
+        /// </summary>
+        public event IDrawableEventHandler ColorChanged;
+
+        /// <summary>
         /// Unused by the <see cref="ItemEntity"/> since the layer never changes.
         /// </summary>
         event MapRenderLayerChange IDrawable.RenderLayerChanged
@@ -228,16 +219,28 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
-        /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
+        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
         /// </summary>
-        [Browsable(false)]
-        public int LayerDepth
-        {
-            get { return 0; }
-        }
+        public event IDrawableEventHandler VisibleChanged;
 
-        bool _isVisible = true;
+        /// <summary>
+        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
+        /// value will be equal to white (ARGB: 255,255,255,255).
+        /// </summary>
+        public Color Color
+        {
+            get { return _color; }
+            set
+            {
+                if (_color == value)
+                    return;
+
+                _color = value;
+
+                if (ColorChanged != null)
+                    ColorChanged(this);
+            }
+        }
 
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
@@ -259,6 +262,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the depth of the object for the <see cref="IDrawable.MapRenderLayer"/> the object is on. A higher
+        /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
+        /// </summary>
+        [Browsable(false)]
+        public int LayerDepth
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
         /// Gets the MapRenderLayer for the ItemEntity
         /// </summary>
         public MapRenderLayer MapRenderLayer
@@ -269,52 +282,6 @@ namespace DemoGame.Client
                 return MapRenderLayer.Item;
             }
         }
-
-        Color _color = Color.White;
-
-        /// <summary>
-        /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
-        /// value will be equal to white (ARGB: 255,255,255,255).
-        /// </summary>
-        public Color Color
-        {
-            get
-            {
-                return _color;
-            }
-            set
-            {
-                if (_color == value)
-                    return;
-
-                _color = value;
-
-                if (ColorChanged != null)
-                    ColorChanged(this);
-            }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
-        /// </summary>
-        public event IDrawableEventHandler ColorChanged;
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
-        /// </summary>
-        public event IDrawableEventHandler VisibleChanged;
-
-        /// <summary>
-        /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
-        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
-        /// </summary>
-        public event IDrawableDrawEventHandler BeforeDraw;
-
-        /// <summary>
-        /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
-        /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
-        /// </summary>
-        public event IDrawableDrawEventHandler AfterDraw;
 
         /// <summary>
         /// Draws the ItemEntity

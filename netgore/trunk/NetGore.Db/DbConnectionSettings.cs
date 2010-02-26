@@ -33,9 +33,7 @@ namespace NetGore.Db
             string destSettingsFile;
 
             if (forceDefaultSettings)
-            {
                 destSettingsFile = Path.GetFullPath(fileName);
-            }
             else
             {
                 // Copy over the default settings file to the destination settings file

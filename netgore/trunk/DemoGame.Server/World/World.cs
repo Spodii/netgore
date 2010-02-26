@@ -28,6 +28,7 @@ namespace DemoGame.Server
         readonly DArray<Map> _maps;
         readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
         readonly Server _server;
+        readonly ItemEntity _unarmedWeapon;
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
         bool _disposed;
@@ -108,17 +109,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the <see cref="ItemEntity"/> that is used to represent attacking unarmed (i.e. fists). This is
-        /// the item used for attacking when no weapon is specified.
-        /// </summary>
-        public ItemEntity UnarmedWeapon
-        {
-            get { return _unarmedWeapon; }
-        }
-
-        readonly ItemEntity _unarmedWeapon;
-
-        /// <summary>
         /// Gets a stack of objects that need to be disposed. The stack is processed once every frame.
         /// Use for any Dispose call that would otherwise cause a potential exception (such as
         /// trying to Dispose a character during their Update) or threading complications.
@@ -147,6 +137,15 @@ namespace DemoGame.Server
         public Server Server
         {
             get { return _server; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ItemEntity"/> that is used to represent attacking unarmed (i.e. fists). This is
+        /// the item used for attacking when no weapon is specified.
+        /// </summary>
+        public ItemEntity UnarmedWeapon
+        {
+            get { return _unarmedWeapon; }
         }
 
         /// <summary>

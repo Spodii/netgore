@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace NetGore.Features.Quests
 {
     public interface IQuest<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
+        /// <summary>
+        /// Gets the requirements for finishing this quest.
+        /// </summary>
+        IQuestRequirementCollection<TCharacter> FinishRequirements { get; }
+
         /// <summary>
         /// Gets the unique ID of the quest.
         /// </summary>
@@ -26,10 +28,5 @@ namespace NetGore.Features.Quests
         /// Gets the requirements for starting this quest.
         /// </summary>
         IQuestRequirementCollection<TCharacter> StartRequirements { get; }
-
-        /// <summary>
-        /// Gets the requirements for finishing this quest.
-        /// </summary>
-        IQuestRequirementCollection<TCharacter> FinishRequirements { get; }
     }
 }

@@ -34,7 +34,7 @@ namespace DemoGame.Server
         readonly ItemStats _reqStats;
 
         /// <summary>
-        /// The delegate used to hook to the <see cref="IStat{T}.Changed"/> event for the
+        /// The delegate used to hook to the <see cref="IStat{TStatType}.Changed"/> event for the
         /// <see cref="IStatCollection{T}"/>s in this class.
         /// </summary>
         readonly IStatCollectionStatEventHandler<StatType> _statChangedHandler;
@@ -46,8 +46,11 @@ namespace DemoGame.Server
         SPValueType _hp;
         SPValueType _mp;
         string _name;
+        ushort _range;
+        ItemTemplateID? _templateID;
         ItemType _type;
         int _value;
+        WeaponType _weaponType;
 
         public ItemEntity(IItemTemplateTable t, byte amount) : this(t, Vector2.Zero, amount)
         {
@@ -65,8 +68,8 @@ namespace DemoGame.Server
 
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
-                pos, new Vector2(t.Width, t.Height), t.ID, t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic, t.Value, amount, t.HP,
-                t.MP, t.EquippedBody, t.Stats, t.ReqStats)
+                pos, new Vector2(t.Width, t.Height), t.ID, t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic,
+                t.Value, amount, t.HP, t.MP, t.EquippedBody, t.Stats, t.ReqStats)
         {
         }
 
@@ -100,8 +103,9 @@ namespace DemoGame.Server
             Resized += ItemEntity_Resized;
         }
 
-        ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type, WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount,
-                   SPValueType hp, SPValueType mp, string equippedBody, IEnumerable<KeyValuePair<StatType, int>> baseStats,
+        ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type,
+                   WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount, SPValueType hp, SPValueType mp,
+                   string equippedBody, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
         {
             _statChangedHandler = StatCollection_StatChanged;
@@ -132,8 +136,8 @@ namespace DemoGame.Server
 
         ItemEntity(ItemEntity s)
             : this(
-                s.Position, s.Size, s.ItemTemplateID, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.EquippedBody,
-                s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
+                s.Position, s.Size, s.ItemTemplateID, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex,
+                s.Value, s.Amount, s.HP, s.MP, s.EquippedBody, s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
 
@@ -580,8 +584,6 @@ namespace DemoGame.Server
             }
         }
 
-        ItemTemplateID? _templateID;
-
         /// <summary>
         /// Gets the value of the database column `mp`.
         /// </summary>
@@ -615,8 +617,6 @@ namespace DemoGame.Server
                 SynchronizeField("name", _name);
             }
         }
-
-        ushort _range;
 
         /// <summary>
         /// Gets or sets the value of the database column `range`.
@@ -686,8 +686,6 @@ namespace DemoGame.Server
                 SynchronizeField("value", _value);
             }
         }
-
-        WeaponType _weaponType;
 
         /// <summary>
         /// Gets or sets the value of the database column `weapon_type`.

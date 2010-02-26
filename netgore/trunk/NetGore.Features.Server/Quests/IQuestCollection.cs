@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NetGore.Collections;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuestCollection<TCharacter> : IEnumerable<IQuest<TCharacter>> where TCharacter:IQuestPerformer<TCharacter>
+    public interface IQuestCollection<TCharacter> : IEnumerable<IQuest<TCharacter>> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Gets the <see cref="IQuest{TCharacter}"/> for a given <see cref="QuestID"/>.

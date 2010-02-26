@@ -15,11 +15,11 @@ namespace DemoGame.Server
     {
         static readonly CharacterTemplateManager _instance;
         static readonly QuestManager _questManager = QuestManager.Instance;
+        SelectCharacterTemplateQuery _selectCharacterTemplateQuery;
 
         SelectCharacterTemplateEquippedQuery _selectEquippedQuery;
         SelectCharacterTemplateInventoryQuery _selectInventoryQuery;
         SelectCharacterTemplateQuestsQuery _selectQuestsQuery;
-        SelectCharacterTemplateQuery _selectCharacterTemplateQuery;
 
         /// <summary>
         /// Initializes the <see cref="CharacterTemplateManager"/> class.

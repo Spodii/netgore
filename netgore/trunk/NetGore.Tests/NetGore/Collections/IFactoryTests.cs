@@ -32,13 +32,13 @@ namespace NetGore.Tests.NetGore.Collections
             int createCount = 0;
 
             Func<int, string> creator = delegate(int key)
-                                        {
-                                            // ReSharper disable AccessToModifiedClosure
-                                            createCount++;
-                                            // ReSharper restore AccessToModifiedClosure
+            {
+                // ReSharper disable AccessToModifiedClosure
+                createCount++;
+                // ReSharper restore AccessToModifiedClosure
 
-                                            return key.ToString();
-                                        };
+                return key.ToString();
+            };
 
             var factories = CreateFactories(creator).ToArray();
 
@@ -71,13 +71,13 @@ namespace NetGore.Tests.NetGore.Collections
             int createCount = 0;
 
             Func<int, string> creator = delegate(int key)
-                                        {
-                                            // ReSharper disable AccessToModifiedClosure
-                                            createCount++;
-                                            // ReSharper restore AccessToModifiedClosure
+            {
+                // ReSharper disable AccessToModifiedClosure
+                createCount++;
+                // ReSharper restore AccessToModifiedClosure
 
-                                            return key.ToString();
-                                        };
+                return key.ToString();
+            };
 
             var factories = CreateFactories(creator).ToArray();
 
@@ -244,12 +244,12 @@ namespace NetGore.Tests.NetGore.Collections
             int createCount = 0;
 
             Func<int, string> creator = delegate(int key)
-                                        {
-                                            createCount++;
+            {
+                createCount++;
 
-                                            Thread.Sleep(5);
-                                            return key.ToString();
-                                        };
+                Thread.Sleep(5);
+                return key.ToString();
+            };
 
             var factories = CreateFactories(creator).Where(x => x.IsThreadSafe).ToArray();
 
@@ -259,20 +259,20 @@ namespace NetGore.Tests.NetGore.Collections
 
                 // Some threads increment and some decrement so there will definitely be overlap
                 ThreadStart threadWorkloadA = delegate
-                                              {
-                                                  for (int j = 0; j < numKeysAccessed; j++)
-                                                  {
-                                                      Assert.AreEqual(j.ToString(), f[j]);
-                                                  }
-                                              };
+                {
+                    for (int j = 0; j < numKeysAccessed; j++)
+                    {
+                        Assert.AreEqual(j.ToString(), f[j]);
+                    }
+                };
 
                 ThreadStart threadWorkloadB = delegate
-                                              {
-                                                  for (int j = numKeysAccessed - 1; j >= 0; j--)
-                                                  {
-                                                      Assert.AreEqual(j.ToString(), f[j]);
-                                                  }
-                                              };
+                {
+                    for (int j = numKeysAccessed - 1; j >= 0; j--)
+                    {
+                        Assert.AreEqual(j.ToString(), f[j]);
+                    }
+                };
 
                 List<Thread> threads = new List<Thread>();
 

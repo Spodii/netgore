@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public class QuestRewardCollection<TCharacter> : IQuestRewardCollection<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
+    public class QuestRewardCollection<TCharacter> : IQuestRewardCollection<TCharacter>
+        where TCharacter : IQuestPerformer<TCharacter>
     {
         static readonly IEnumerable<IQuestReward<TCharacter>> _emptyQuestRewards = new IQuestReward<TCharacter>[0];
 
@@ -22,6 +23,8 @@ namespace NetGore.Features.Quests
                 _questRewards = questRewards.ToCompact();
         }
 
+        #region IQuestRewardCollection<TCharacter> Members
+
         /// <summary>
         /// Checks if the quest rewards can be given to the <paramref name="character"/>.
         /// </summary>
@@ -30,16 +33,6 @@ namespace NetGore.Features.Quests
         public bool CanGive(TCharacter character)
         {
             return this.All(x => x.CanGive(character));
-        }
-
-        /// <summary>
-        /// Gives the quest rewards to the <paramref name="character"/>.
-        /// </summary>
-        /// <param name="character">The character to give the quest rewards to.</param>
-        public void Give(TCharacter character)
-        {
-            foreach (var reward in this)
-                reward.Give(character);
         }
 
         /// <summary>
@@ -65,5 +58,19 @@ namespace NetGore.Features.Quests
         {
             return GetEnumerator();
         }
+
+        /// <summary>
+        /// Gives the quest rewards to the <paramref name="character"/>.
+        /// </summary>
+        /// <param name="character">The character to give the quest rewards to.</param>
+        public void Give(TCharacter character)
+        {
+            foreach (var reward in this)
+            {
+                reward.Give(character);
+            }
+        }
+
+        #endregion
     }
 }

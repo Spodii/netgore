@@ -1,11 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public class QuestRequirementCollection<TCharacter> : IQuestRequirementCollection<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
+    public class QuestRequirementCollection<TCharacter> : IQuestRequirementCollection<TCharacter>
+        where TCharacter : IQuestPerformer<TCharacter>
     {
         static readonly IEnumerable<IQuestRequirement<TCharacter>> _emptyQuestRequirements = new IQuestRequirement<TCharacter>[0];
 
@@ -23,27 +23,7 @@ namespace NetGore.Features.Quests
                 _questRequirements = questRequirements.ToCompact();
         }
 
-        /// <summary>
-        /// Checks if the <paramref name="character"/> meets this test requirement.
-        /// </summary>
-        /// <param name="character">The character to check if they meet the requirements.</param>
-        /// <returns>True if the <paramref name="character"/> meets the requirements defined by this
-        /// <see cref="IQuestRequirement{TCharacter}"/>; otherwise false.</returns>
-        public bool HasRequirements(TCharacter character)
-        {
-            return this.All(x => x.HasRequirements(character));
-        }
-
-        /// <summary>
-        /// Takes the quest requirements from the <paramref name="character"/>, if applicable. Not required,
-        /// and only applies for when turning in a quest and not starting a quest.
-        /// </summary>
-        /// <param name="character">The <paramref name="character"/> to take the requirements from.</param>
-        public void TakeRequirements(TCharacter character)
-        {
-            foreach (var req in this)
-                req.TakeRequirements(character);
-        }
+        #region IQuestRequirementCollection<TCharacter> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -66,5 +46,31 @@ namespace NetGore.Features.Quests
         {
             return GetEnumerator();
         }
+
+        /// <summary>
+        /// Checks if the <paramref name="character"/> meets this test requirement.
+        /// </summary>
+        /// <param name="character">The character to check if they meet the requirements.</param>
+        /// <returns>True if the <paramref name="character"/> meets the requirements defined by this
+        /// <see cref="IQuestRequirement{TCharacter}"/>; otherwise false.</returns>
+        public bool HasRequirements(TCharacter character)
+        {
+            return this.All(x => x.HasRequirements(character));
+        }
+
+        /// <summary>
+        /// Takes the quest requirements from the <paramref name="character"/>, if applicable. Not required,
+        /// and only applies for when turning in a quest and not starting a quest.
+        /// </summary>
+        /// <param name="character">The <paramref name="character"/> to take the requirements from.</param>
+        public void TakeRequirements(TCharacter character)
+        {
+            foreach (var req in this)
+            {
+                req.TakeRequirements(character);
+            }
+        }
+
+        #endregion
     }
 }

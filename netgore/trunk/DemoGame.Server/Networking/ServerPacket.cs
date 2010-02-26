@@ -21,15 +21,6 @@ namespace DemoGame.Server
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
 
-        public static void SetProvidedQuests(PacketWriter pw, MapEntityIndex mapEntityIndex, IEnumerable<QuestID> quests)
-        {
-            pw.WriteEnum(ServerPacketID.SetProvidedQuests);
-            pw.Write(mapEntityIndex);
-            pw.Write((byte)quests.Count());
-            foreach (var q in quests)
-                pw.Write(q);
-        }
-
         public static PacketWriter AcceptQuestReply(QuestID questID, bool successful)
         {
             var pw = GetWriter(ServerPacketID.AcceptQuestReply);
@@ -155,13 +146,6 @@ namespace DemoGame.Server
             return ret;
         }
 
-        public static PacketWriter QuestInfo(Action<PacketWriter> populate)
-        {
-            var ret = GetWriter(ServerPacketID.QuestInfo);
-            populate(ret);
-            return ret;
-        }
-
         public static PacketWriter GuildInfo(Action<PacketWriter> populate)
         {
             var ret = GetWriter(ServerPacketID.GuildInfo);
@@ -257,6 +241,13 @@ namespace DemoGame.Server
             pw.Write(sound);
             pw.Write(mapEntityIndex);
             return pw;
+        }
+
+        public static PacketWriter QuestInfo(Action<PacketWriter> populate)
+        {
+            var ret = GetWriter(ServerPacketID.QuestInfo);
+            populate(ret);
+            return ret;
         }
 
         public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)
@@ -473,6 +464,17 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static void SetProvidedQuests(PacketWriter pw, MapEntityIndex mapEntityIndex, IEnumerable<QuestID> quests)
+        {
+            pw.WriteEnum(ServerPacketID.SetProvidedQuests);
+            pw.Write(mapEntityIndex);
+            pw.Write((byte)quests.Count());
+            foreach (var q in quests)
+            {
+                pw.Write(q);
+            }
+        }
+
         public static PacketWriter SetSkillGroupCooldown(byte skillGroup, ushort cooldownTime)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetSkillGroupCooldown);
@@ -513,6 +515,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter StartChatDialog(MapEntityIndex npcIndex, ushort dialogIndex)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.StartChatDialog);
+            pw.Write(npcIndex);
+            pw.Write(dialogIndex);
+            return pw;
+        }
+
         public static PacketWriter StartQuestChatDialog(MapEntityIndex npcIndex, QuestID[] availableQuests)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartQuestChatDialog);
@@ -524,21 +534,13 @@ namespace DemoGame.Server
                 Debug.Assert(availableQuests.Length <= byte.MaxValue);
                 pw.Write((byte)availableQuests.Length);
                 foreach (var q in availableQuests)
+                {
                     pw.Write(q);
+                }
             }
             else
-            {
                 pw.Write((byte)0);
-            }
 
-            return pw;
-        }
-
-        public static PacketWriter StartChatDialog(MapEntityIndex npcIndex, ushort dialogIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.StartChatDialog);
-            pw.Write(npcIndex);
-            pw.Write(dialogIndex);
             return pw;
         }
 

@@ -24,11 +24,6 @@ namespace DemoGame
         public const float AnimationSpeedModifier = 0.13f;
 
         /// <summary>
-        /// The maximum distance a target can be from a character for them to be targeted.
-        /// </summary>
-        public const float MaxTargetDistance = 500f;
-
-        /// <summary>
         /// The IP address to use by default when creating accounts when no IP can be specified, such as if the account
         /// is created from the console.
         /// </summary>
@@ -51,6 +46,11 @@ namespace DemoGame
         public const int MaxInventorySize = 6 * 6;
 
         /// <summary>
+        /// The maximum number of pixels a user may be away from a NPC to be able to talk to it.
+        /// </summary>
+        public const int MaxNPCChatDistance = 16;
+
+        /// <summary>
         /// The maximum accounts that can be created for a single IP address over a given period of time. The period
         /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
         /// </summary>
@@ -70,6 +70,11 @@ namespace DemoGame
         /// Maximum length of the Name string used by the server's Say messages.
         /// </summary>
         public const int MaxServerSayNameLength = 60;
+
+        /// <summary>
+        /// The maximum distance a target can be from a character for them to be targeted.
+        /// </summary>
+        public const float MaxTargetDistance = 500f;
 
         /// <summary>
         /// The rules for the account email addresses.
@@ -166,6 +171,27 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> containing the hit area for a melee attack.
+        /// </summary>
+        /// <param name="c">The <see cref="CharacterEntity"/> that is attacking.</param>
+        /// <param name="range">The range of the attack.</param>
+        /// <returns>The <see cref="Rectangle"/> that describes the hit area for a melee attack.</returns>
+        public static Rectangle GetMeleeAttackArea(CharacterEntity c, ushort range)
+        {
+            // Start with the rect for the char's area
+            var ret = c.ToRectangle();
+
+            // Add the range to the width
+            ret.Width += range;
+
+            // If looking left, subtract the range from the X position so that the area is to the left, not right
+            if (c.Heading == Direction.West)
+                ret.X -= range;
+
+            return ret;
+        }
+
+        /// <summary>
         /// Gets a <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
         /// the given <paramref name="spatial"/>.
         /// </summary>
@@ -180,9 +206,20 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// The maximum number of pixels a user may be away from a NPC to be able to talk to it.
+        /// Gets a <see cref="Rectangle"/> that describes all of the potential area that
+        /// a ranged attack can reach.
         /// </summary>
-        public const int MaxNPCChatDistance = 16;
+        /// <param name="c">The <see cref="CharacterEntity"/> that is attacking.</param>
+        /// <param name="range">The range of the attack.</param>
+        /// <returns>A <see cref="Rectangle"/> that describes all of the potential area that
+        /// a ranged attack can reach.</returns>
+        public static Rectangle GetRangedAttackArea(CharacterEntity c, ushort range)
+        {
+            var vrange = new Vector2(range);
+            var min = c.Position - vrange;
+            var max = c.Max + vrange;
+            return new Rectangle((int)min.X, (int)min.Y, (int)max.X, (int)max.Y);
+        }
 
         /// <summary>
         /// Gets if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to shop.
@@ -227,43 +264,6 @@ namespace DemoGame
         public static float MovementSpeedToVelocity(int movementSpeed)
         {
             return movementSpeed / 10000.0f;
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Rectangle"/> that describes all of the potential area that
-        /// a ranged attack can reach.
-        /// </summary>
-        /// <param name="c">The <see cref="CharacterEntity"/> that is attacking.</param>
-        /// <param name="range">The range of the attack.</param>
-        /// <returns>A <see cref="Rectangle"/> that describes all of the potential area that
-        /// a ranged attack can reach.</returns>
-        public static Rectangle GetRangedAttackArea(CharacterEntity c, ushort range)
-        {
-            var vrange = new Vector2(range);
-            var min = c.Position - vrange;
-            var max = c.Max + vrange;
-            return new Rectangle((int)min.X, (int)min.Y, (int)max.X, (int)max.Y);
-        }
-        
-        /// <summary>
-        /// Gets a <see cref="Rectangle"/> containing the hit area for a melee attack.
-        /// </summary>
-        /// <param name="c">The <see cref="CharacterEntity"/> that is attacking.</param>
-        /// <param name="range">The range of the attack.</param>
-        /// <returns>The <see cref="Rectangle"/> that describes the hit area for a melee attack.</returns>
-        public static Rectangle GetMeleeAttackArea(CharacterEntity c, ushort range)
-        {
-            // Start with the rect for the char's area
-            var ret = c.ToRectangle();
-
-            // Add the range to the width
-            ret.Width += range;
-
-            // If looking left, subtract the range from the X position so that the area is to the left, not right
-            if (c.Heading == Direction.West)
-                ret.X -= range;
-
-            return ret;
         }
 
         /// <summary>

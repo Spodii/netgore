@@ -318,13 +318,13 @@ namespace DemoGame.Server.UI
         void Server_ConsoleCommandExecuted(Server server, string command, string returnString)
         {
             var e = new EventHandler(delegate
-                                     {
-                                         AppendToConsole(command, ConsoleTextType.Input);
+            {
+                AppendToConsole(command, ConsoleTextType.Input);
 
-                                         if (!string.IsNullOrEmpty(returnString))
-                                             AppendToConsole(returnString, ConsoleTextType.InputReturn);
-                                         txtConsoleOut.ScrollToCaret();
-                                     });
+                if (!string.IsNullOrEmpty(returnString))
+                    AppendToConsole(returnString, ConsoleTextType.InputReturn);
+                txtConsoleOut.ScrollToCaret();
+            });
 
             txtConsoleOut.Invoke(e);
         }
@@ -474,28 +474,28 @@ namespace DemoGame.Server.UI
 
             // Create the work method
             w.DoWork += delegate
-                        {
-                            hostName = Dns.GetHostName();
+            {
+                hostName = Dns.GetHostName();
 
-                            try
-                            {
-                                using (var c = new WebClient())
-                                {
-                                    externalIP = c.DownloadString(_externalIPSite);
-                                }
-                            }
-                            catch (WebException)
-                            {
-                                externalIP = "Failed to get IP";
-                            }
-                        };
+                try
+                {
+                    using (var c = new WebClient())
+                    {
+                        externalIP = c.DownloadString(_externalIPSite);
+                    }
+                }
+                catch (WebException)
+                {
+                    externalIP = "Failed to get IP";
+                }
+            };
 
             // Create the updater
             w.RunWorkerCompleted += delegate
-                                    {
-                                        lblIP.Text = string.Format("{0} ({1})", externalIP, hostName);
-                                        w.Dispose();
-                                    };
+            {
+                lblIP.Text = string.Format("{0} ({1})", externalIP, hostName);
+                w.Dispose();
+            };
 
             // Run the worker
             w.RunWorkerAsync();

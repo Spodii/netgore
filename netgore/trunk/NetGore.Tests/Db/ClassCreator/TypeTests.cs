@@ -41,6 +41,18 @@ namespace NetGore.Tests.Db.ClassCreator
         #region Unit tests
 
         [Test]
+        public void CreateBoolFromUnsignedTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "boou", typeof(bool));
+        }
+
+        [Test]
+        public void CreateBoolTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "boo", typeof(bool));
+        }
+
+        [Test]
         public void CreateByteNullableTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "bun", typeof(byte?));
@@ -110,18 +122,6 @@ namespace NetGore.Tests.Db.ClassCreator
         public void CreateSByteTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "b", typeof(sbyte));
-        }
-
-        [Test]
-        public void CreateBoolTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "boo", typeof(bool));
-        }
-
-        [Test]
-        public void CreateBoolFromUnsignedTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "boou", typeof(bool));
         }
 
         [Test]

@@ -16,13 +16,11 @@ namespace DemoGame.Client
         readonly ICamera2D _camera;
         readonly IGetTime _getTime;
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
-        readonly UserInfo _userInfo;
         readonly QuestDescriptionCollection _questDescriptions = new QuestDescriptionCollection();
+        readonly UserInfo _userInfo;
 
         Map _map;
         MapEntityIndex _usercharIndex;
-
-        public IQuestDescriptionCollection QuestDescriptions { get { return _questDescriptions; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
@@ -106,6 +104,11 @@ namespace DemoGame.Client
         public MapDrawingExtensionCollection MapDrawingExtensions
         {
             get { return _mapDrawingExtensions; }
+        }
+
+        public IQuestDescriptionCollection QuestDescriptions
+        {
+            get { return _questDescriptions; }
         }
 
         /// <summary>

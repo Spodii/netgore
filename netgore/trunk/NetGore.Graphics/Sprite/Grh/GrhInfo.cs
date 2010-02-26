@@ -471,26 +471,23 @@ namespace NetGore.Graphics
 
             // Create a little delegate to add the GrhDatas by index to reduce code bloat without exposing this to other methods
             Action<IEnumerable<GrhData>> grhDataAdder = delegate(IEnumerable<GrhData> grhDatas)
-                                                        {
-                                                            foreach (var grhData in grhDatas)
-                                                            {
-                                                                int index = (int)grhData.GrhIndex;
-                                                                Debug.Assert(
-                                                                    !_grhDatas.CanGet(index) || _grhDatas[index] == null,
-                                                                    "Index already occupied!");
+            {
+                foreach (var grhData in grhDatas)
+                {
+                    int index = (int)grhData.GrhIndex;
+                    Debug.Assert(!_grhDatas.CanGet(index) || _grhDatas[index] == null, "Index already occupied!");
 
-                                                                if (!grhData.GrhIndex.IsInvalid)
-                                                                    _grhDatas[index] = grhData;
-                                                                else
-                                                                {
-                                                                    const string errmsg =
-                                                                        "Tried to add GrhData `{0}` which has an invalid GrhIndex.";
-                                                                    string err = string.Format(errmsg, grhData);
-                                                                    log.Fatal(err);
-                                                                    Debug.Fail(err);
-                                                                }
-                                                            }
-                                                        };
+                    if (!grhData.GrhIndex.IsInvalid)
+                        _grhDatas[index] = grhData;
+                    else
+                    {
+                        const string errmsg = "Tried to add GrhData `{0}` which has an invalid GrhIndex.";
+                        string err = string.Format(errmsg, grhData);
+                        log.Fatal(err);
+                        Debug.Fail(err);
+                    }
+                }
+            };
 
             try
             {

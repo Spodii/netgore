@@ -36,6 +36,8 @@ namespace DemoGame.Client
         readonly GameplayScreenControls _gameControls;
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
+        AvailableQuestsForm _availableQuestsForm;
+        CharacterTargeter _characterTargeter;
 
         ChatBubbleManager _chatBubbleManager;
         NPCChatDialogForm _chatDialogForm;
@@ -57,9 +59,8 @@ namespace DemoGame.Client
         ClientSockets _socket;
         StatsForm _statsForm;
         StatusEffectsForm _statusEffectsForm;
+        ILight _userLight;
         World _world;
-        CharacterTargeter _characterTargeter;
-        AvailableQuestsForm _availableQuestsForm;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -68,6 +69,11 @@ namespace DemoGame.Client
         public GameplayScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             _gameControls = new GameplayScreenControls(this);
+        }
+
+        public AvailableQuestsForm AvailableQuestsForm
+        {
+            get { return _availableQuestsForm; }
         }
 
         /// <summary>
@@ -107,11 +113,6 @@ namespace DemoGame.Client
         public InventoryInfoRequester InventoryInfoRequester
         {
             get { return _inventoryInfoRequester; }
-        }
-
-        public AvailableQuestsForm AvailableQuestsForm
-        {
-            get { return _availableQuestsForm; }
         }
 
         public Map Map
@@ -205,6 +206,14 @@ namespace DemoGame.Client
         public void AppendToChatOutput(List<StyledText> text)
         {
             _chatForm.AppendToOutput(text);
+        }
+
+        void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)
+        {
+            using (var pw = ClientPacket.AcceptQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
+            {
+                Socket.Send(pw);
+            }
         }
 
         void ChatDialogForm_RequestEndDialog(NPCChatDialogForm sender)
@@ -305,8 +314,6 @@ namespace DemoGame.Client
             }
         }
 
-        ILight _userLight;
-
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
@@ -383,7 +390,8 @@ namespace DemoGame.Client
             _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo };
             new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
-            _availableQuestsForm = new AvailableQuestsForm(cScreen, new Vector2(200), new Vector2(250, 350), x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false);
+            _availableQuestsForm = new AvailableQuestsForm(cScreen, new Vector2(200), new Vector2(250, 350),
+                                                           x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false);
             _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
@@ -400,12 +408,6 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
-        }
-
-        void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)
-        {
-            using (var pw = ClientPacket.AcceptQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
-                Socket.Send(pw);
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)

@@ -62,8 +62,8 @@ namespace DemoGame.Server
         /// </summary>
         public class SayCommands : ISayCommands<User>
         {
-            static readonly GuildSettings _guildSettings = GuildSettings.Instance;
             static readonly GuildManager _guildManager = GuildManager.Instance;
+            static readonly GuildSettings _guildSettings = GuildSettings.Instance;
 
             readonly Server _server;
 

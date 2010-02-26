@@ -41,21 +41,21 @@ namespace DemoGame.Server.Guilds
             var deleteQuery = dbController.GetQuery<DeleteGuildMemberQuery>();
 
             return delegate(IGuildMember target)
-                   {
-                       if (target.Guild == null)
-                       {
-                           var id = new CharacterID(target.ID);
-                           deleteQuery.Execute(id);
-                       }
-                       else
-                       {
-                           var id = new CharacterID(target.ID);
-                           var guildID = target.Guild.ID;
-                           var rank = target.GuildRank;
-                           var args = new ReplaceGuildMemberQuery.QueryArgs(id, guildID, rank);
-                           replaceQuery.Execute(args);
-                       }
-                   };
+            {
+                if (target.Guild == null)
+                {
+                    var id = new CharacterID(target.ID);
+                    deleteQuery.Execute(id);
+                }
+                else
+                {
+                    var id = new CharacterID(target.ID);
+                    var guildID = target.Guild.ID;
+                    var rank = target.GuildRank;
+                    var args = new ReplaceGuildMemberQuery.QueryArgs(id, guildID, rank);
+                    replaceQuery.Execute(args);
+                }
+            };
         }
 
         /// <summary>

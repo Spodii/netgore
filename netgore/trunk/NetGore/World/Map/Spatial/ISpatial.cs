@@ -19,14 +19,14 @@ namespace NetGore
         event SpatialEventHandler<Vector2> Resized;
 
         /// <summary>
-        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
-        /// </summary>
-        Vector2 Max { get; }
-
-        /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
         /// </summary>
         Vector2 Center { get; }
+
+        /// <summary>
+        /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
+        /// </summary>
+        Vector2 Max { get; }
 
         /// <summary>
         /// Gets the world coordinates of the top-left corner of this <see cref="ISpatial"/>.

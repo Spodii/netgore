@@ -153,23 +153,23 @@ namespace NetGore.EditorTools
 
             _editGrhDataForm = new EditGrhForm(gd, _mapGrhWalls, _createWall, _gameScreenSize);
             _editGrhDataForm.FormClosed += delegate
-                                           {
-                                               if (_editGrhDataForm == null)
-                                                   return;
+            {
+                if (_editGrhDataForm == null)
+                    return;
 
-                                               if (deleteOnCancel && _editGrhDataForm.WasCanceled)
-                                               {
-                                                   // Delete the GrhData
-                                                   GrhInfo.Delete(gd);
-                                               }
-                                               else
-                                               {
-                                                   // Update the GrhData
-                                                   UpdateGrhData(gd);
-                                               }
+                if (deleteOnCancel && _editGrhDataForm.WasCanceled)
+                {
+                    // Delete the GrhData
+                    GrhInfo.Delete(gd);
+                }
+                else
+                {
+                    // Update the GrhData
+                    UpdateGrhData(gd);
+                }
 
-                                               _editGrhDataForm = null;
-                                           };
+                _editGrhDataForm = null;
+            };
 
             _editGrhDataForm.Show();
 
@@ -192,10 +192,10 @@ namespace NetGore.EditorTools
             Enabled = false;
             MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing.Cast<GrhData>(), _contentManager);
             frm.FormClosed += delegate
-                              {
-                                  RebuildTree();
-                                  Enabled = true;
-                              };
+            {
+                RebuildTree();
+                Enabled = true;
+            };
             frm.Show();
         }
 

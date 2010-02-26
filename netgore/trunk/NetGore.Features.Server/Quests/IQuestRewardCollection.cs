@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.Features.Quests
 {
-    public interface IQuestRewardCollection<TCharacter> : IEnumerable<IQuestReward<TCharacter>> where TCharacter : IQuestPerformer<TCharacter>
+    public interface IQuestRewardCollection<TCharacter> : IEnumerable<IQuestReward<TCharacter>>
+        where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Checks if the quest rewards can be given to the <paramref name="character"/>.
