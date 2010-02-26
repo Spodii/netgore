@@ -97,7 +97,7 @@ namespace NetGore.Graphics.GUI
             if (!EnumHelper<MessageBoxButton>.IsDefined(type))
                 type = MessageBoxButton.None;
 
-            InvokeClosed(type);
+            InvokeOptionSelected(type);
 
             Dispose();
         }
@@ -141,12 +141,12 @@ namespace NetGore.Graphics.GUI
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
         /// <param name="button">The button that was used to close the <see cref="MessageBox"/>.</param>
-        void InvokeClosed(MessageBoxButton button)
+        void InvokeOptionSelected(MessageBoxButton button)
         {
             OnOptionSelected(button);
-            var handler = Events[_eventOptionSelected] as ControlEventHandler;
+            var handler = Events[_eventOptionSelected] as ControlEventHandler<MessageBoxButton>;
             if (handler != null)
-                handler(this);
+                handler(this, button);
         }
 
         /// <summary>
