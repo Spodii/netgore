@@ -176,5 +176,17 @@ namespace DemoGame
         GuildLeave,
 
         #endregion
+
+        #region Quests
+
+        QuestAccepted,
+        QuestAcceptFailedAlreadyCompleted,
+        QuestAcceptFailedAlreadyStarted,
+        QuestAcceptFailedTooManyActive,
+        QuestCanceled,
+        QuestFinished,
+        QuestFinishFailedCannotGiveRewards,
+
+        #endregion
     }
 }

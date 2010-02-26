@@ -150,10 +150,10 @@ namespace DemoGame.Server
                 return false;
             }
 
-            if (!_user.Intersects(npc))
+            if (_user.GetDistance(npc) > GameData.MaxNPCChatDistance)
             {
                 if (log.IsInfoEnabled)
-                    log.InfoFormat(errmsg, _user, npc, "Characters are not touching");
+                    log.InfoFormat(errmsg, _user, npc, "Too far away from the NPC to chat");
                 return false;
             }
 

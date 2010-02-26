@@ -14,6 +14,8 @@ namespace DemoGame
     /// </summary>
     public class GameMessages : MessageCollectionBase<GameMessage>
     {
+        // TODO: Rename "GameMessages" to "GameMessageManager"
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>

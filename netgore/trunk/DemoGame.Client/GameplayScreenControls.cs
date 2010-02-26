@@ -245,7 +245,8 @@ namespace DemoGame.Client
 
         void HandleGameControl_TalkToNPC(GameControl sender)
         {
-            CharacterEntity npc = Map.Spatial.Get<Character>(UserChar.ToRectangle(), x => x.HasChatDialog || !x.ProvidedQuests.IsEmpty());
+            var r = UserChar.ToRectangle(GameData.MaxNPCChatDistance);
+            CharacterEntity npc = Map.Spatial.Get<Character>(r, x => x.HasChatDialog || !x.ProvidedQuests.IsEmpty());
             if (npc == null)
                 return;
 

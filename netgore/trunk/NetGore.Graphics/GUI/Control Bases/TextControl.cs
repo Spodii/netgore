@@ -13,6 +13,7 @@ namespace NetGore.Graphics.GUI
     {
         static readonly object _eventFontChanged = new object();
         static readonly object _eventTextChanged = new object();
+
         SpriteFont _font = null;
         Color _foreColor = Color.Black;
         string _text = string.Empty;

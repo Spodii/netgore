@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Server.Queries;
 using NetGore.Features.Quests;
@@ -51,7 +52,27 @@ namespace DemoGame.Server.Quests
         /// <param name="quest">The quest that could not be accepted.</param>
         protected override void NotifyCannotAcceptTooManyActive(IQuest<User> quest)
         {
-            // TODO: !! ...
+            Owner.Send(GameMessage.QuestAcceptFailedTooManyActive);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they have already completed it.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected override void NotifyCannotAcceptAlreadyCompleted(IQuest<User> quest)
+        {
+            Owner.Send(GameMessage.QuestAcceptFailedAlreadyCompleted);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they have already started it.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected override void NotifyCannotAcceptAlreadyStarted(IQuest<User> quest)
+        {
+            Owner.Send(GameMessage.QuestAcceptFailedAlreadyStarted);
         }
 
         /// <summary>
@@ -61,7 +82,7 @@ namespace DemoGame.Server.Quests
         /// <param name="quest">The quest that caused the error.</param>
         protected override void NotifyCannotGiveQuestRewards(IQuest<User> quest)
         {
-            // TODO: !! ...
+            Owner.Send(GameMessage.QuestFinishFailedCannotGiveRewards);
         }
 
         /// <summary>
@@ -77,6 +98,8 @@ namespace DemoGame.Server.Quests
             {
                 Owner.Send(pw);
             }
+
+            Owner.Send(GameMessage.QuestAccepted);
         }
 
         /// <summary>
@@ -92,6 +115,8 @@ namespace DemoGame.Server.Quests
             {
                 Owner.Send(pw);
             }
+
+            Owner.Send(GameMessage.QuestCanceled);
         }
 
         /// <summary>
@@ -112,6 +137,8 @@ namespace DemoGame.Server.Quests
             {
                 Owner.Send(pw);
             }
+
+            Owner.Send(GameMessage.QuestFinished);
         }
     }
 }

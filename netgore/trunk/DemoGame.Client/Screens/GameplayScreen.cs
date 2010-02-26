@@ -383,7 +383,8 @@ namespace DemoGame.Client
             _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo };
             new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
-            _availableQuestsForm = new AvailableQuestsForm(cScreen, new Vector2(200), new Vector2(250, 350));
+            _availableQuestsForm = new AvailableQuestsForm(cScreen, new Vector2(200), new Vector2(250, 350), x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false);
+            _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 
@@ -399,6 +400,12 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+        }
+
+        void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)
+        {
+            using (var pw = ClientPacket.AcceptQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
+                Socket.Send(pw);
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
