@@ -740,7 +740,7 @@ namespace DemoGame.Client
                 availableQuests[i] = r.ReadQuestID();
             }
 
-            GameplayScreen.AvailableQuestsForm.Display(availableQuests.Select(x => World.QuestDescriptions[x]), npcIndex);
+            GameplayScreen.AvailableQuestsForm.Display(availableQuests.Select(x => World.QuestDescriptions.GetOrDefault(x)), npcIndex);
         }
 
         [MessageHandler((byte)ServerPacketID.StartShopping)]
