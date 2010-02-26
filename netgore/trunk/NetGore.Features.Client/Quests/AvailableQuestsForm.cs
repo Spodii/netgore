@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -240,8 +241,10 @@ namespace NetGore.Features.Quests
 
             _lstQuests.Position = new Vector2(_padding, _lblAvailableQuests.Position.Y + _lblAvailableQuests.Size.Y + _padding);
             _lstQuests.ClientSize = new Vector2(cs.X - _lstQuests.Border.Width - _padding2,
-                                                (Math.Min(1, _lastItemsListSize) * _lstQuests.ItemHeight) +
+                                                (Math.Max(1, _lastItemsListSize) * _lstQuests.ItemHeight) +
                                                 _lstQuests.Border.Height + 5);
+
+            Debug.Assert(_lstQuests.ItemsPerPage >= _lastItemsListSize);
 
             _lblQuestInfo.Position = new Vector2(_padding, _lstQuests.Position.Y + _lstQuests.Size.Y + _padding2);
 
