@@ -57,6 +57,16 @@ namespace DemoGame.Server.Quests
 
         /// <summary>
         /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they do not have the needed requirements.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected override void NotifyCannotAcceptDoNotHaveStartRequirements(IQuest<User> quest)
+        {
+            Owner.Send(GameMessage.QuestAcceptFailedDoNotHaveStartRequirements);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
         /// because they have already completed it.
         /// </summary>
         /// <param name="quest">The quest that could not be accepted.</param>

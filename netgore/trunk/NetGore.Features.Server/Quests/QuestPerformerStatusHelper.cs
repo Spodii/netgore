@@ -117,6 +117,13 @@ namespace NetGore.Features.Quests
                 return false;
             }
 
+            if (!quest.StartRequirements.HasRequirements(Owner))
+            {
+                if (notifyOwner)
+                    NotifyCannotAcceptDoNotHaveStartRequirements(quest);
+                return false;
+            }
+
             return true;
         }
 
@@ -170,6 +177,13 @@ namespace NetGore.Features.Quests
         /// </summary>
         /// <param name="quest">The quest that could not be accepted.</param>
         protected abstract void NotifyCannotAcceptTooManyActive(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
+        /// because they do not have the needed requirements.
+        /// </summary>
+        /// <param name="quest">The quest that could not be accepted.</param>
+        protected abstract void NotifyCannotAcceptDoNotHaveStartRequirements(IQuest<TCharacter> quest);
 
         /// <summary>
         /// When overridden in the derived class, notifies the owner that they were unable to accept a quest
