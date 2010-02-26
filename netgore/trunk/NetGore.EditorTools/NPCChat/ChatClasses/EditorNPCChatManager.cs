@@ -72,7 +72,9 @@ namespace NetGore.EditorTools.NPCChat
         /// </summary>
         public static void SaveDialogs()
         {
-            _instance.Save();
+            // Save the dialog to both build and dev
+            _instance.Save(ContentPaths.Build);
+            _instance.Save(ContentPaths.Dev);
         }
     }
 }
