@@ -44,6 +44,8 @@ namespace NetGore.Features.Guilds
                 _cachedSpacing = (int)Font.MeasureString("W").X;
             }
 
+            pos = pos.Round();
+
             // Rank
             sb.DrawString(Font, Items.ElementAt(v).Rank.ToString(), pos, Color.Green);
 
