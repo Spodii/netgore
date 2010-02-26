@@ -172,6 +172,18 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
+        /// </summary>
+        protected override void OnResized()
+        {
+            base.OnResized();
+
+            UpdateTextPosition();
+        }
+
+        /// <summary>
         /// Handles when the <see cref="TextControl.Text"/> has changed.
         /// This is called immediately before <see cref="TextControl.TextChanged"/>.
         /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
@@ -181,6 +193,18 @@ namespace NetGore.Graphics.GUI
             base.OnTextChanged();
 
             UpdateTextSize();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
+        /// </summary>
+        protected override void OnBorderChanged()
+        {
+            base.OnBorderChanged();
+
+            UpdateTextPosition();
         }
 
         /// <summary>
@@ -197,7 +221,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Updates the size and position of the button text
+        /// Updates the size and position of the button's text.
         /// </summary>
         void UpdateTextSize()
         {
@@ -207,6 +231,14 @@ namespace NetGore.Graphics.GUI
             // Get the size of the text
             _textSize = Font.MeasureString(Text);
 
+            UpdateTextPosition();
+        }
+
+        /// <summary>
+        /// Updates teh position of the button's text.
+        /// </summary>
+        void UpdateTextPosition()
+        {
             // Center the text on the control
             _textPos = Size / 2 - _textSize / 2;
 
