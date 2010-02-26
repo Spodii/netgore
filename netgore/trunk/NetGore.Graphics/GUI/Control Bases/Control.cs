@@ -746,9 +746,9 @@ namespace NetGore.Graphics.GUI
             _isDisposed = true;
             if (disposeManaged)
             {
-                // Dispose of all the child controls. A temporary list must be
+                // Dispose of all the child controls. An immutable collection must be
                 // created so we can iterate through them since the list will be modifying as it goes.
-                var tmpControls = new List<Control>(Controls);
+                var tmpControls = Controls.ToImmutable();
                 foreach (Control child in tmpControls)
                 {
                     child.Dispose();
@@ -838,9 +838,9 @@ namespace NetGore.Graphics.GUI
             float x = 1;
             float y = 1;
 
-            foreach (var c in Controls)
+            for (int i = 0; i < _controls.Count; i++)
             {
-                var max = c.Position + c.Size;
+                var max = _controls[i].Position + _controls[i].Size;
                 x = Math.Max(max.X, x);
                 y = Math.Max(max.Y, y);
             }
@@ -925,8 +925,9 @@ namespace NetGore.Graphics.GUI
         /// <returns>Child found at the given point if any, else null.</returns>
         public Control GetChild(Vector2 point, bool canFocusOnly)
         {
-            foreach (Control c in Controls)
+            for (int i = 0; i < _controls.Count; i++)
             {
+                var c = _controls[i];
                 if (canFocusOnly && !c.CanFocus)
                     continue;
 
@@ -934,6 +935,7 @@ namespace NetGore.Graphics.GUI
                 if (IsPointInRegion(point, sp, sp + c.Size))
                     return c;
             }
+
             return null;
         }
 
