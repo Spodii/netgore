@@ -1733,22 +1733,13 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Updates the Control.
+        /// Updates the Control and all the controls under it.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
         public void Update(int currentTime)
         {
-            if (Parent != null)
-                throw new MethodAccessException("Update() may only be called from the root control.");
-
-            if (_isDisposed)
-            {
-                const string errmsg = "Attempted to update disposed control `{0}`.";
-                Debug.Fail(string.Format(errmsg, this));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
+            if (IsDisposed)
                 return;
-            }
 
             // Do not update the mouse or keyboard for the Control unless it is the focused root
             if (GUIManager.FocusedRoot == this)
@@ -1767,14 +1758,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="currentTime">The current time in milliseconds.</param>
         protected virtual void UpdateControl(int currentTime)
         {
-            if (_isDisposed)
-            {
-                const string errmsg = "Attempted to update disposed control `{0}`.";
-                Debug.Fail(string.Format(errmsg, this));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
+            if (IsDisposed)
                 return;
-            }
 
             // Update all the child controls
             for (int i = 0; i < _controls.Count; i++)
@@ -1795,14 +1780,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void UpdateKeyboard()
         {
-            if (_isDisposed)
-            {
-                const string errmsg = "Attempted to update disposed control `{0}`.";
-                Debug.Fail(string.Format(errmsg, this));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
+            if (IsDisposed)
                 return;
-            }
 
             // Skip disabled or invisible controls
             if (!IsEnabled || !IsVisible)
@@ -1837,18 +1816,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets if this <see cref="Control"/> has been disposed;
+        /// </summary>
+        public bool IsDisposed { get { return _isDisposed; } }
+
+        /// <summary>
         /// Updates the Control with mouse related events.
         /// </summary>
         protected virtual void UpdateMouse()
         {
-            if (_isDisposed)
-            {
-                const string errmsg = "Attempted to update disposed control `{0}`.";
-                Debug.Fail(string.Format(errmsg, this));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
+            if (IsDisposed)
                 return;
-            }
 
             // Skip disabled or invisible controls
             if (!IsEnabled || !IsVisible)
