@@ -126,6 +126,9 @@ namespace NetGore.Graphics.GUI
                 Parent._controls.Add(this);
                 _root = GetRootControl();
                 KeepInParent();
+
+                if (Parent.ResizeToChildren)
+                    Parent.UpdateResizeToChildren();
             }
             else
             {

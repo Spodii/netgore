@@ -29,6 +29,7 @@ namespace NetGore.Graphics.GUI
         Keys[] _lastPressedKeys = null;
         MouseState _mouseState;
         Control _underCursor;
+        Vector2 _screenSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
@@ -36,11 +37,14 @@ namespace NetGore.Graphics.GUI
         /// <param name="font">Default SpriteFont to use for controls added to this <see cref="GUIManager"/>.</param>
         /// <param name="skinManager">The <see cref="ISkinManager"/> that handles the skinning for this
         /// <see cref="GUIManager"/>.</param>
+        /// <param name="screenSize">The initial screen size value.</param>
         /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
-        public GUIManager(SpriteFont font, ISkinManager skinManager)
+        public GUIManager(SpriteFont font, ISkinManager skinManager, Vector2 screenSize)
         {
             if (skinManager == null)
                 throw new ArgumentNullException();
+
+            ScreenSize = screenSize;
 
             _skinManager = skinManager;
             Font = font;
@@ -346,6 +350,22 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Keys> KeysPressed
         {
             get { return _keysPressed; }
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the screen.
+        /// </summary>
+        /// <value></value>
+        /// <exception cref="ArgumentOutOfRangeException">Either the x- or y-coordinate of the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        public Vector2 ScreenSize
+        {
+            get { return _screenSize; }
+            set {
+                if (value.X <= 0 || value.Y <= 0)
+                    throw new ArgumentOutOfRangeException("value");
+
+                _screenSize = value; }
         }
 
         /// <summary>
