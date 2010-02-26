@@ -85,6 +85,7 @@ GuildLeave: You have left guild "{0}".
 QuestAccepted: You have accepted a new quest!
 QuestAcceptFailedAlreadyCompleted: You cannot accept that quest since you have already completed it.
 QuestAcceptFailedAlreadyStarted: You have already accepted that quest.
+QuestAcceptFailedDoNotHaveStartRequirements: You do not have all the needed requirements to start this quest.
 QuestAcceptFailedTooManyActive: You cannot accept any more quests. Try to complete or give up on some of your current quests first.
 QuestCanceled: You have canceled a quest.
 QuestFinished: You have finished the quest!

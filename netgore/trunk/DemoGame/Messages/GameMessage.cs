@@ -182,6 +182,7 @@ namespace DemoGame
         QuestAccepted,
         QuestAcceptFailedAlreadyCompleted,
         QuestAcceptFailedAlreadyStarted,
+        QuestAcceptFailedDoNotHaveStartRequirements,
         QuestAcceptFailedTooManyActive,
         QuestCanceled,
         QuestFinished,
