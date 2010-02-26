@@ -81,6 +81,8 @@ namespace NetGore.Features.Quests
             string indexStr = "  " + (index + 1) + ". ";
             var indexStrWidth = Font.MeasureString(indexStr).X;
 
+            pos = pos.Round();
+
             sb.DrawString(Font, indexStr, pos, ForeColor);
 
             var color = HasStartQuestReqs(item.QuestID) ? ForeColor : new Color(150, 0, 0);

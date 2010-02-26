@@ -111,7 +111,7 @@ namespace NetGore.Graphics
 
             // Draw the text
             Vector2 textPos = drawPos + new Vector2(_manager.Border.LeftWidth, _manager.Border.TopHeight);
-            sb.DrawString(_manager.Font, Text, textPos, _manager.FontColor);
+            sb.DrawString(_manager.Font, Text, textPos.Round(), _manager.FontColor);
         }
 
         /// <summary>

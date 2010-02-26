@@ -160,10 +160,9 @@ namespace NetGore.Graphics.GUI
         /// <see cref="Color"/> is equal to <see cref="ColorForDefault"/>.</param>
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont, Vector2 position, Color defaultColor)
         {
-            if (Color == ColorForDefault)
-                spriteBatch.DrawString(spriteFont, Text, position, defaultColor);
-            else
-                spriteBatch.DrawString(spriteFont, Text, position, Color);
+            var colorToUse = (Color == ColorForDefault ? defaultColor : Color);
+
+            spriteBatch.DrawString(spriteFont, Text, position.Round(), colorToUse);
         }
 
         /// <summary>
