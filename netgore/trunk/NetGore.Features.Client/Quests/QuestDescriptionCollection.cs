@@ -72,7 +72,12 @@ namespace NetGore.Features.Quests
         /// description could not be found for the specified <paramref name="questID"/>.</returns>
         public virtual IQuestDescription GetOrDefault(QuestID questID)
         {
-            return new QuestDescription { Name = "[Unknown Quest: " + questID + "]", Description = "No description for this quest could be found.", QuestID = questID };
+            var ret = this[questID];
+
+            if (ret == null)
+                return new QuestDescription { Name = "[Unknown Quest: " + questID + "]", Description = "No description for this quest could be found.", QuestID = questID };
+            else
+                return ret;
         }
 
         /// <summary>
