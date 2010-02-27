@@ -112,7 +112,7 @@ namespace NetGore.Graphics.GUI
         protected void DrawText(ISpriteBatch spriteBatch, Vector2 position)
         {
             if (!string.IsNullOrEmpty(Text) && Font != null)
-                spriteBatch.DrawString(Font, Text, (ScreenPosition + position).Floor(), _foreColor);
+                spriteBatch.DrawString(Font, Text, ScreenPosition + position, _foreColor);
         }
 
         /// <summary>

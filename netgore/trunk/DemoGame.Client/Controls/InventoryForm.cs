@@ -137,7 +137,19 @@ namespace DemoGame.Client
                 _invForm = parent;
                 _slot = slot;
                 Tooltip = _tooltipHandler;
-                MouseUp += _invForm.InventoryItemPB_OnMouseUp;
+            }
+
+            /// <summary>
+            /// Handles when a mouse button has been raised on the <see cref="Control"/>.
+            /// This is called immediately before <see cref="Control.OnMouseUp"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void OnMouseUp(MouseClickEventArgs e)
+            {
+                base.OnMouseUp(e);
+
+                _invForm.InventoryItemPB_OnMouseUp(this, e);
             }
 
             public InventorySlot Slot
@@ -166,7 +178,7 @@ namespace DemoGame.Client
 
                 // Draw the item in the center of the slot
                 Vector2 offset = (_itemSize - item.Grh.Size) / 2f;
-                item.Draw(spriteBatch, ScreenPosition + offset);
+                item.Draw(spriteBatch, ScreenPosition + offset.Round());
 
                 // Draw the amount
                 if (item.Amount > 1)
