@@ -65,13 +65,6 @@ namespace NetGore.Graphics.GUI
         IEnumerable<Keys> KeysPressed { get; }
 
         /// <summary>
-        /// Gets or sets the size of the screen.
-        /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">Either the x- or y-coordinate of the <paramref name="value"/>
-        /// is less than or equal to zero.</exception>
-        Vector2 ScreenSize { get; set; }
-
-        /// <summary>
         /// Gets the <see cref="KeyboardState"/> that was used immediately before the current
         /// <see cref="IGUIManager.KeyboardState"/>.
         /// </summary>
@@ -108,6 +101,13 @@ namespace NetGore.Graphics.GUI
         /// This value is updated on each call to <see cref="IGUIManager.Update"/>.
         /// </summary>
         IEnumerable<Keys> NewKeysUp { get; }
+
+        /// <summary>
+        /// Gets or sets the size of the screen.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Either the x- or y-coordinate of the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        Vector2 ScreenSize { get; set; }
 
         /// <summary>
         /// Gets the <see cref="ISkinManager"/> used by this <see cref="IGUIManager"/> to perform

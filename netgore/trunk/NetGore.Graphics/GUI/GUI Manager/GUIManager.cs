@@ -28,8 +28,8 @@ namespace NetGore.Graphics.GUI
         MouseState _lastMouseState;
         Keys[] _lastPressedKeys = null;
         MouseState _mouseState;
-        Control _underCursor;
         Vector2 _screenSize;
+        Control _underCursor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
@@ -353,22 +353,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the size of the screen.
-        /// </summary>
-        /// <value></value>
-        /// <exception cref="ArgumentOutOfRangeException">Either the x- or y-coordinate of the <paramref name="value"/>
-        /// is less than or equal to zero.</exception>
-        public Vector2 ScreenSize
-        {
-            get { return _screenSize; }
-            set {
-                if (value.X <= 0 || value.Y <= 0)
-                    throw new ArgumentOutOfRangeException("value");
-
-                _screenSize = value; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="KeyboardState"/> that was used immediately before the current
         /// <see cref="IGUIManager.KeyboardState"/>.
         /// </summary>
@@ -443,6 +427,24 @@ namespace NetGore.Graphics.GUI
 
                 // Return the cached released keys list
                 return _keysUp;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the screen.
+        /// </summary>
+        /// <value></value>
+        /// <exception cref="ArgumentOutOfRangeException">Either the x- or y-coordinate of the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        public Vector2 ScreenSize
+        {
+            get { return _screenSize; }
+            set
+            {
+                if (value.X <= 0 || value.Y <= 0)
+                    throw new ArgumentOutOfRangeException("value");
+
+                _screenSize = value;
             }
         }
 

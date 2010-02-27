@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,23 +60,6 @@ namespace NetGore.Features.Quests
 
                 return _questDescriptions[questID.GetRawValue()];
             }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IQuestDescription"/> for a quest, or an empty description if the quest
-        /// description could not be found for the specified <paramref name="questID"/>.
-        /// </summary>
-        /// <param name="questID">The ID of the quest to get the <see cref="IQuestDescription"/> for.</param>
-        /// <returns>The <see cref="IQuestDescription"/> for a quest, or an empty description if the quest
-        /// description could not be found for the specified <paramref name="questID"/>.</returns>
-        public virtual IQuestDescription GetOrDefault(QuestID questID)
-        {
-            var ret = this[questID];
-
-            if (ret == null)
-                return new QuestDescription { Name = "[Unknown Quest: " + questID + "]", Description = "No description for this quest could be found.", QuestID = questID };
-            else
-                return ret;
         }
 
         /// <summary>
@@ -180,6 +162,30 @@ namespace NetGore.Features.Quests
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQuestDescription"/> for a quest, or an empty description if the quest
+        /// description could not be found for the specified <paramref name="questID"/>.
+        /// </summary>
+        /// <param name="questID">The ID of the quest to get the <see cref="IQuestDescription"/> for.</param>
+        /// <returns>The <see cref="IQuestDescription"/> for a quest, or an empty description if the quest
+        /// description could not be found for the specified <paramref name="questID"/>.</returns>
+        public virtual IQuestDescription GetOrDefault(QuestID questID)
+        {
+            var ret = this[questID];
+
+            if (ret == null)
+            {
+                return new QuestDescription
+                {
+                    Name = "[Unknown Quest: " + questID + "]",
+                    Description = "No description for this quest could be found.",
+                    QuestID = questID
+                };
+            }
+            else
+                return ret;
         }
 
         /// <summary>

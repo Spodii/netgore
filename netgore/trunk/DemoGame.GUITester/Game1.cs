@@ -153,8 +153,7 @@ namespace DemoGame.GUITester
                 items.Add(i.ToString());
             }
 
-            new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100))
-            { Items = items, ShowPaging = true };
+            new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items, ShowPaging = true };
         }
 
         void testLabelF4_Clicked(object sender, MouseClickEventArgs e)
@@ -165,7 +164,9 @@ namespace DemoGame.GUITester
             else
                 source.Text = "I was clicked!";
 
-            var msgBox = new MessageBox(_gui, "My message box", "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf", MessageBoxButton.YesNoCancel);
+            var msgBox = new MessageBox(_gui, "My message box",
+                                        "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf",
+                                        MessageBoxButton.YesNoCancel);
             msgBox.OptionSelected += (x, y) => new MessageBox(_gui, "Hello", "You selected: " + y, MessageBoxButton.Ok);
         }
 

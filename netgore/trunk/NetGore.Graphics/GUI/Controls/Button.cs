@@ -93,6 +93,18 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when the <see cref="Control.Border"/> has changed.
+        /// This is called immediately before <see cref="Control.BorderChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
+        /// </summary>
+        protected override void OnBorderChanged()
+        {
+            base.OnBorderChanged();
+
+            UpdateTextPosition();
+        }
+
+        /// <summary>
         /// Handles when the <see cref="TextControl.Font"/> has changed.
         /// This is called immediately before <see cref="TextControl.FontChanged"/>.
         /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
@@ -196,18 +208,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.BorderChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
-        /// </summary>
-        protected override void OnBorderChanged()
-        {
-            base.OnBorderChanged();
-
-            UpdateTextPosition();
-        }
-
-        /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
         /// base class's method to ensure that changes to settings are hierchical.
         /// </summary>
@@ -218,6 +218,19 @@ namespace NetGore.Graphics.GUI
             CanDrag = false;
             CanFocus = false;
             _currentBorder = Border;
+        }
+
+        /// <summary>
+        /// Updates teh position of the button's text.
+        /// </summary>
+        void UpdateTextPosition()
+        {
+            // Center the text on the control
+            _textPos = Size / 2 - _textSize / 2;
+
+            // Make sure we have rounded values or else things get icky
+            _textPos.X = (float)Math.Round(_textPos.X);
+            _textPos.Y = (float)Math.Round(_textPos.Y);
         }
 
         /// <summary>
@@ -232,19 +245,6 @@ namespace NetGore.Graphics.GUI
             _textSize = Font.MeasureString(Text);
 
             UpdateTextPosition();
-        }
-
-        /// <summary>
-        /// Updates teh position of the button's text.
-        /// </summary>
-        void UpdateTextPosition()
-        {
-            // Center the text on the control
-            _textPos = Size / 2 - _textSize / 2;
-
-            // Make sure we have rounded values or else things get icky
-            _textPos.X = (float)Math.Round(_textPos.X);
-            _textPos.Y = (float)Math.Round(_textPos.Y);
         }
     }
 }
