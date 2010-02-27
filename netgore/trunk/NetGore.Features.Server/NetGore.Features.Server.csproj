@@ -67,6 +67,7 @@
     <Compile Include="Quests\QuestCollection.cs" />
     <Compile Include="Quests\Event Handlers\QuestPerformerEventHandler.cs" />
     <Compile Include="Quests\Event Handlers\QuestPerformerQuestEventHandler.cs" />
+    <Compile Include="Quests\QuestHelper.cs" />
     <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
     <Compile Include="Quests\QuestRequirementCollection.cs" />
     <Compile Include="Quests\QuestRewardCollection.cs" />

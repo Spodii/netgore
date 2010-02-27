@@ -161,6 +161,14 @@ namespace DemoGame.Server
             return ret;
         }
 
+        public static PacketWriter HasQuestFinishRequirements(QuestID questID, bool hasRequirements)
+        {
+            var ret = GetWriter(ServerPacketID.HasQuestFinishRequirementsReply);
+            ret.Write(questID);
+            ret.Write(hasRequirements);
+            return ret;
+        }
+
         /// <summary>
         /// Tells the user their login attempt was successful.
         /// </summary>
@@ -523,17 +531,33 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter StartQuestChatDialog(MapEntityIndex npcIndex, QuestID[] availableQuests)
+        public static PacketWriter StartQuestChatDialog(MapEntityIndex npcIndex, IEnumerable<QuestID> availableQuests, IEnumerable<QuestID> turnInQuests)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartQuestChatDialog);
 
             pw.Write(npcIndex);
 
+            // Write the list of available quests
             if (availableQuests != null)
             {
-                Debug.Assert(availableQuests.Length <= byte.MaxValue);
-                pw.Write((byte)availableQuests.Length);
-                foreach (var q in availableQuests)
+                var values = availableQuests.ToImmutable();
+                Debug.Assert(values.Count() <= byte.MaxValue);
+                pw.Write((byte)values.Count());
+                foreach (var q in values)
+                {
+                    pw.Write(q);
+                }
+            }
+            else
+                pw.Write((byte)0);
+
+            // Write the list of quests that can be turned in
+            if (turnInQuests != null)
+            {
+                var values = turnInQuests.ToImmutable();
+                Debug.Assert(values.Count() <= byte.MaxValue);
+                pw.Write((byte)values.Count());
+                foreach (var q in values)
                 {
                     pw.Write(q);
                 }

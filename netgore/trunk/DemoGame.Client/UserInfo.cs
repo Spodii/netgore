@@ -18,10 +18,12 @@ namespace DemoGame.Client
         readonly UserEquipped _equipped = new UserEquipped();
         readonly UserGroupInformation _groupInfo = new UserGroupInformation();
         readonly UserGuildInformation _guildInfo = new UserGuildInformation();
+        readonly HasQuestRequirementsTracker _hasFinishQuestRequirements;
         readonly HasQuestRequirementsTracker _hasStartQuestRequirements;
         readonly Inventory _inventory;
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
-        readonly UserQuestInformation _questInfo = new UserQuestInformation();
+        readonly UserQuestInformation _questInfo;
+        readonly ISocketSender _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
@@ -32,15 +34,15 @@ namespace DemoGame.Client
             if (socket == null)
                 throw new ArgumentNullException("socket");
 
-            _inventory = new Inventory(socket);
+            _socket = socket;
 
-            _hasStartQuestRequirements = new HasQuestRequirementsTracker(delegate(QuestID x)
-            {
-                using (var pw = ClientPacket.HasQuestStartRequirements(x))
-                {
-                    socket.Send(pw);
-                }
-            });
+            // Create the collections for tracking if quest requirements statuses
+            _hasStartQuestRequirements = new HasQuestRequirementsTracker(SendHasQuestStartRequirements);
+            _hasFinishQuestRequirements = new HasQuestRequirementsTracker(SendHasQuestFinishRequirements);
+
+            // Create some other stuff
+            _inventory = new Inventory(socket);
+            _questInfo = new UserQuestInformationExtended(this);
         }
 
         public CharacterStats BaseStats
@@ -65,6 +67,11 @@ namespace DemoGame.Client
         public UserGuildInformation GuildInfo
         {
             get { return _guildInfo; }
+        }
+
+        public HasQuestRequirementsTracker HasFinishQuestRequirements
+        {
+            get { return _hasFinishQuestRequirements; }
         }
 
         public HasQuestRequirementsTracker HasStartQuestRequirements
@@ -118,5 +125,86 @@ namespace DemoGame.Client
         }
 
         public int StatPoints { get; set; }
+
+        void SendHasQuestFinishRequirements(QuestID questID)
+        {
+            using (var pw = ClientPacket.HasQuestFinishRequirements(questID))
+            {
+                _socket.Send(pw);
+            }
+        }
+
+        void SendHasQuestStartRequirements(QuestID questID)
+        {
+            using (var pw = ClientPacket.HasQuestStartRequirements(questID))
+            {
+                _socket.Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// Implementation of the <see cref="UserQuestInformation"/> that is extended to perform some additional
+        /// actions when the status of quests changes.
+        /// </summary>
+        class UserQuestInformationExtended : UserQuestInformation
+        {
+            readonly UserInfo _userInfo;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserQuestInformationExtended"/> class.
+            /// </summary>
+            /// <param name="userInfo">The user info.</param>
+            public UserQuestInformationExtended(UserInfo userInfo)
+            {
+                if (userInfo == null)
+                    throw new ArgumentNullException("userInfo");
+
+                _userInfo = userInfo;
+            }
+
+            UserInfo UserInfo
+            {
+                get { return _userInfo; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, allows for handling the
+            /// <see cref="UserQuestInformation.ActiveQuestAdded"/> event.
+            /// </summary>
+            /// <param name="questID">The ID of the quest that was added.</param>
+            protected override void OnActiveQuestAdded(QuestID questID)
+            {
+                base.OnActiveQuestAdded(questID);
+
+                UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, false);
+                UserInfo.HasFinishQuestRequirements.Update(questID);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, allows for handling the
+            /// <see cref="UserQuestInformation.ActiveQuestRemoved"/> event.
+            /// </summary>
+            /// <param name="questID">The ID of the quest that was removed.</param>
+            protected override void OnActiveQuestRemoved(QuestID questID)
+            {
+                base.OnActiveQuestRemoved(questID);
+
+                UserInfo.HasStartQuestRequirements.Update(questID);
+                UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(questID, false);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, allows for handling the
+            /// <see cref="UserQuestInformation.CompletedQuestAdded"/> event.
+            /// </summary>
+            /// <param name="questID">The ID of the quest that was added.</param>
+            protected override void OnCompletedQuestAdded(QuestID questID)
+            {
+                base.OnCompletedQuestAdded(questID);
+
+                UserInfo.HasStartQuestRequirements.Update(questID);
+                UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(questID, false);
+            }
+        }
     }
 }

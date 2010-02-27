@@ -24,6 +24,7 @@ namespace DemoGame
         EndNPCChatDialog,
         GetEquipmentItemInfo,
         GetInventoryItemInfo,
+        HasQuestFinishRequirements,
         HasQuestStartRequirements,
         Login,
         MoveLeft,

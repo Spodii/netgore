@@ -16,6 +16,7 @@ namespace NetGore.Features.Quests
         static readonly object _eventQuestAccepted = new object();
 
         readonly Func<QuestID, bool> _hasStartQuestReqs;
+        readonly Func<QuestID, bool> _hasFinishQuestReqs;
 
         Button _btnAccept;
         Button _btnClose;
@@ -32,11 +33,13 @@ namespace NetGore.Features.Quests
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <param name="hasStartQuestReqs">A func used to check if the user has the requirements to start a quest.</param>
+        /// <param name="hasFinishQuestReqs">A func used to check if the user has the requirements to finish a quest.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public AvailableQuestsForm(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs)
+        public AvailableQuestsForm(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs, Func<QuestID, bool> hasFinishQuestReqs)
             : base(parent, position, clientSize)
         {
             _hasStartQuestReqs = hasStartQuestReqs;
+            _hasFinishQuestReqs = hasFinishQuestReqs;
 
             CreateChildren();
             IsVisible = false;
@@ -92,17 +95,7 @@ namespace NetGore.Features.Quests
         public MapEntityIndex QuestProviderIndex { get; set; }
 
         /// <summary>
-        /// Handles the Clicked event of the _btnClose control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void _btnClose_Clicked(object sender, MouseClickEventArgs e)
-        {
-            IsVisible = false;
-        }
-
-        /// <summary>
-        /// Handles the Clicked event of the btnAccept control.
+        /// Handles the Clicked event of the <see cref="_btnAccept"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
@@ -116,13 +109,23 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Handles the Clicked event of the <see cref="_btnClose"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
+        void btnClose_Clicked(object sender, MouseClickEventArgs e)
+        {
+            IsVisible = false;
+        }
+
+        /// <summary>
         /// Creates the children controls for this form.
         /// </summary>
         void CreateChildren()
         {
             _lblAvailableQuests = new Label(this, Vector2.Zero) { Text = "Available Quests:" };
 
-            _lstQuests = new QuestDescriptionListBox(this, Vector2.Zero, new Vector2(32), _hasStartQuestReqs)
+            _lstQuests = new QuestDescriptionListBox(this, Vector2.Zero, new Vector2(32), _hasStartQuestReqs, _hasFinishQuestReqs)
             { Items = _emptyQuests, ShowPaging = false };
             _lstQuests.SelectedIndexChanged += lstQuests_SelectedIndexChanged;
 
@@ -134,7 +137,7 @@ namespace NetGore.Features.Quests
             _btnAccept.Clicked += btnAccept_Clicked;
 
             _btnClose = new Button(this, Vector2.Zero, new Vector2(60, 18)) { Text = "Close" };
-            _btnClose.Clicked += _btnClose_Clicked;
+            _btnClose.Clicked += btnClose_Clicked;
 
             RepositionChildren();
         }
@@ -178,16 +181,32 @@ namespace NetGore.Features.Quests
                 handler(this, questDescription);
         }
 
+        /// <summary>
+        /// Handles when the available quests list's index changes.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
         void lstQuests_SelectedIndexChanged(Control sender)
         {
+            // Get the selected item
             var selectedItem = _lstQuests.SelectedItem;
 
-            if (selectedItem == null)
-                _txtQuestInfo.Text = string.Empty;
-            else
-                _txtQuestInfo.Text = selectedItem.Description;
+            var acceptButtonText = "Accept";
 
-            _btnAccept.IsEnabled = (selectedItem != null);
+            if (selectedItem == null)
+            {
+                _txtQuestInfo.Text = string.Empty;
+                _btnAccept.IsEnabled = false;
+            }
+            else
+            {
+                _txtQuestInfo.Text = selectedItem.Description;
+                _btnAccept.IsEnabled = true;
+
+                if (_hasFinishQuestReqs(selectedItem.QuestID))
+                    acceptButtonText = "Turn in!";
+            }
+
+            _btnAccept.Text = acceptButtonText;
         }
 
         /// <summary>
