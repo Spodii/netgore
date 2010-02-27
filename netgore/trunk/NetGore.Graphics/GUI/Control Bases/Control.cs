@@ -716,7 +716,7 @@ namespace NetGore.Graphics.GUI
 
             // Create the queue if it has not yet been created
             if (_setTopMostQueue == null)
-                _setTopMostQueue = new Queue<Control>(1);
+                _setTopMostQueue = new Queue<Control>(2);
 
             // Add the control to the queue
             _setTopMostQueue.Enqueue(control);
