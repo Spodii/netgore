@@ -165,8 +165,8 @@ namespace DemoGame.GUITester
             else
                 source.Text = "I was clicked!";
 
-            var msgBox = new MessageBox(_gui, "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf", MessageBoxButton.YesNoCancel);
-            msgBox.OptionSelected += (x, y) => new MessageBox(_gui, "You selected: " + y, MessageBoxButton.Ok);
+            var msgBox = new MessageBox(_gui, "My message box", "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf", MessageBoxButton.YesNoCancel);
+            msgBox.OptionSelected += (x, y) => new MessageBox(_gui, "Hello", "You selected: " + y, MessageBoxButton.Ok);
         }
 
         static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)
