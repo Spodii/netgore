@@ -55,6 +55,7 @@ namespace NetGore.Graphics
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
+
             spriteBatch.Draw(_texture, dest, _source, Color.White);
         }
 
@@ -67,6 +68,7 @@ namespace NetGore.Graphics
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
+
             spriteBatch.Draw(_texture, position, _source, Color.White);
         }
 
@@ -87,6 +89,7 @@ namespace NetGore.Graphics
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
+
             spriteBatch.Draw(_texture, dest, _source, color, rotation, origin, effects, layerDepth);
         }
 
@@ -107,6 +110,7 @@ namespace NetGore.Graphics
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
+
             spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -127,6 +131,7 @@ namespace NetGore.Graphics
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
+
             spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -140,12 +145,12 @@ namespace NetGore.Graphics
             get { return _source; }
             set
             {
-                if (_source != value)
-                {
-                    _source = value;
-                    if (SourceChanged != null)
-                        SourceChanged(this, null);
-                }
+                if (_source == value)
+                    return;
+
+                _source = value;
+                if (SourceChanged != null)
+                    SourceChanged(this, null);
             }
         }
 
@@ -157,12 +162,12 @@ namespace NetGore.Graphics
             get { return _texture; }
             set
             {
-                if (_texture != value)
-                {
-                    _texture = value;
-                    if (TextureChanged != null)
-                        TextureChanged(this, null);
-                }
+                if (_texture == value)
+                    return;
+
+                _texture = value;
+                if (TextureChanged != null)
+                    TextureChanged(this, null);
             }
         }
 
@@ -176,6 +181,7 @@ namespace NetGore.Graphics
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
+
             spriteBatch.Draw(_texture, position, _source, color);
         }
 
@@ -189,6 +195,7 @@ namespace NetGore.Graphics
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
+
             spriteBatch.Draw(_texture, dest, _source, color);
         }
 

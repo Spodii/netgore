@@ -162,7 +162,7 @@ namespace NetGore.Graphics.GUI
         {
             var colorToUse = (Color == ColorForDefault ? defaultColor : Color);
 
-            spriteBatch.DrawString(spriteFont, Text, position.Round(), colorToUse);
+            spriteBatch.DrawString(spriteFont, Text, position, colorToUse);
         }
 
         /// <summary>

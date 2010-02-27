@@ -88,7 +88,7 @@ namespace DemoGame.Client
         /// <param name="sf">SpriteFont to draw with.</param>
         public void Draw(ISpriteBatch sb, SpriteFont sf)
         {
-            sb.DrawString(sf, _text, _pos.Floor(), new Color(255, 255, 255, (byte)_alpha));
+            sb.DrawString(sf, _text, _pos, new Color(255, 255, 255, (byte)_alpha));
         }
 
         /// <summary>

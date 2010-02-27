@@ -128,7 +128,7 @@ namespace DemoGame.Client
                 Color color = new Color(item.Color.R, item.Color.G, item.Color.B, alpha);
 
                 // Draw
-                sb.DrawString(_sf, item.Message, pos.Floor(), color);
+                sb.DrawString(_sf, item.Message, pos, color);
             }
         }
 
