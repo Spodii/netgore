@@ -96,6 +96,10 @@ namespace NetGore.Network
             }
         }
 
+        /// <summary>
+        /// Binds the UDP socket to a random available port.
+        /// </summary>
+        /// <returns>The port the UDP socket binded to.</returns>
         public int BindUDP()
         {
             return _udpSocket.Bind();
