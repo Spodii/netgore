@@ -8,12 +8,27 @@ namespace NetGore.Graphics.GUI
     public class MessageBox : Form
     {
         const int _padding = 4;
+        static readonly object _eventButtonTypesChanged = new object();
         static readonly object _eventOptionSelected = new object();
+        static readonly object _eventTitleChanged = new object();
 
         /// <summary>
         /// The valid <see cref="MessageBoxButton"/> types for creating buttons.
         /// </summary>
         static readonly IEnumerable<MessageBoxButton> _validButtonCreationTypes;
+
+        /// <summary>
+        /// List of the child controls created by the <see cref="MessageBox"/>.
+        /// </summary>
+        readonly List<Control> _msgBoxChildren = new List<Control>();
+
+        /// <summary>
+        /// If true, the child controls will not be updated.
+        /// </summary>
+        readonly bool _suspendCreateChildControls = true;
+
+        MessageBoxButton _buttonTypes;
+        string _title;
 
         /// <summary>
         /// Initializes the <see cref="MessageBox"/> class.
@@ -31,45 +46,33 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="MessageBox"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
+        /// <param name="title">The message box title.</param>
         /// <param name="text">The text to display.</param>
         /// <param name="buttonTypes">The <see cref="MessageBoxButton"/>s to display.</param>
-        public MessageBox(IGUIManager guiManager, string text, MessageBoxButton buttonTypes)
+        public MessageBox(IGUIManager guiManager, string title, string text, MessageBoxButton buttonTypes)
             : base(guiManager, Vector2.Zero, new Vector2(32))
         {
+            DisposeOnSelection = true;
             ResizeToChildren = true;
 
-            // Create the text
-            var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(text) }, true, Font, MaxWidth - (_padding * 2) - Border.Width);
-            int yOffset = _padding;
-            var labels = new List<Label>();
-            foreach (var line in lines)
-            {
-                var concatLine = StyledText.ToString(line);
-                var lbl = new Label(this, new Vector2(_padding, yOffset)) { Text = concatLine };
-                labels.Add(lbl);
-                yOffset += Font.LineSpacing;
-            }
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Text = text;
+            Title = title;
+            ButtonTypes = buttonTypes;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            yOffset += _padding;
+            _suspendCreateChildControls = false;
 
-            // Create the buttons
-            var buttons = CreateButtons(buttonTypes);
+            CreateChildControls();
+        }
 
-            // Expand the form if needed to fit the buttons
-            float neededButtonWidth = buttons.Sum(x => x.Size.X) + ((buttons.Count() + 1) * _padding);
-            if (ClientSize.X < neededButtonWidth)
-                ClientSize = new Vector2(neededButtonWidth, ClientSize.Y);
-
-            // Arrange the buttons
-            float xOffset = Math.Max(_padding, (ClientSize.X - neededButtonWidth) / 2f);
-            foreach (var button in buttons)
-            {
-                button.Position = new Vector2(xOffset, yOffset);
-                xOffset += button.Size.X + _padding;
-            }
-
-            // Center to the screen
-            Position = (GUIManager.ScreenSize / 2f) - (Size / 2f);
+        /// <summary>
+        /// Notifies listeners when the <see cref="MessageBox.ButtonTypes"/> has changed.
+        /// </summary>
+        public event ControlEventHandler ButtonTypesChanged
+        {
+            add { Events.AddHandler(_eventButtonTypesChanged, value); }
+            remove { Events.RemoveHandler(_eventButtonTypesChanged, value); }
         }
 
         /// <summary>
@@ -82,9 +85,60 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Notifies listeners when the <see cref="MessageBox.Title"/> has changed.
+        /// </summary>
+        public event ControlEventHandler TitleChanged
+        {
+            add { Events.AddHandler(_eventTitleChanged, value); }
+            remove { Events.RemoveHandler(_eventTitleChanged, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="MessageBoxButton"/>s that are included in this <see cref="MessageBox"/>.
+        /// </summary>
+        public MessageBoxButton ButtonTypes
+        {
+            get { return _buttonTypes; }
+            set
+            {
+                if (_buttonTypes == value)
+                    return;
+
+                _buttonTypes = value;
+
+                InvokeButtonTypesChanged();
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the maximum width of a <see cref="MessageBox"/>.
         /// </summary>
         public static int MaxWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets if this <see cref="MessageBox"/> will automatically be disposed when any of the options
+        /// have been selected. Disposing will happen after the <see cref="MessageBox.OptionSelected"/> event is
+        /// raised, so it is possible to effectively change this value through the <see cref="MessageBox.OptionSelected"/>
+        /// event handlers.
+        /// </summary>
+        public bool DisposeOnSelection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        public virtual string Title
+        {
+            get { return _title; }
+            set
+            {
+                if (_title == value)
+                    return;
+
+                _title = value;
+
+                InvokeTitleChanged();
+            }
+        }
 
         /// <summary>
         /// Handles the Clicked event of the Button control.
@@ -99,7 +153,8 @@ namespace NetGore.Graphics.GUI
 
             InvokeOptionSelected(type);
 
-            Dispose();
+            if (DisposeOnSelection)
+                Dispose();
         }
 
         /// <summary>
@@ -137,6 +192,72 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Creates the child controls for the <see cref="MessageBox"/>.
+        /// </summary>
+        void CreateChildControls()
+        {
+            if (_suspendCreateChildControls)
+                return;
+
+            // Clear out the old controls
+            if (_msgBoxChildren.Count > 0)
+            {
+                foreach (var c in _msgBoxChildren)
+                {
+                    c.Dispose();
+                }
+
+                _msgBoxChildren.Clear();
+            }
+
+            // Create the text
+            var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(Text) }, true, Font,
+                                               MaxWidth - (_padding * 2) - Border.Width);
+            int yOffset = _padding;
+            foreach (var line in lines)
+            {
+                var concatLine = StyledText.ToString(line);
+                var lbl = new Label(this, new Vector2(_padding, yOffset)) { Text = concatLine };
+                _msgBoxChildren.Add(lbl);
+                yOffset += Font.LineSpacing;
+            }
+
+            yOffset += _padding;
+
+            // Create the buttons
+            var buttons = CreateButtons(ButtonTypes);
+            _msgBoxChildren.AddRange(buttons.Cast<Control>());
+
+            // Expand the form if needed to fit the buttons
+            float neededButtonWidth = buttons.Sum(x => x.Size.X) + ((buttons.Count() + 1) * _padding);
+            if (ClientSize.X < neededButtonWidth)
+                ClientSize = new Vector2(neededButtonWidth, ClientSize.Y);
+
+            // Arrange the buttons
+            float xOffset = Math.Max(_padding, (ClientSize.X - neededButtonWidth) / 2f);
+            foreach (var button in buttons)
+            {
+                button.Position = new Vector2(xOffset, yOffset);
+                xOffset += button.Size.X + _padding;
+            }
+
+            // Center to the screen
+            Position = (GUIManager.ScreenSize / 2f) - (Size / 2f);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeButtonTypesChanged()
+        {
+            OnButtonTypesChanged();
+            var handler = Events[_eventButtonTypesChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
@@ -150,6 +271,28 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeTitleChanged()
+        {
+            OnTitleChanged();
+            var handler = Events[_eventTitleChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="MessageBox.ButtonTypes"/> has changed.
+        /// This is called immediately before <see cref="MessageBox.ButtonTypesChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="MessageBox.ButtonTypesChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnButtonTypesChanged()
+        {
+            CreateChildControls();
+        }
+
+        /// <summary>
         /// Handles when the <see cref="MessageBox"/> has been closed from an option button being clicked.
         /// This is called immediately before <see cref="CheckBox.TickedOverSpriteChanged"/>.
         /// Override this method instead of using an event hook on <see cref="CheckBox.TickedOverSpriteChanged"/> when possible.
@@ -157,6 +300,28 @@ namespace NetGore.Graphics.GUI
         /// <param name="button">The button that was used to close the <see cref="MessageBox"/>.</param>
         protected virtual void OnOptionSelected(MessageBoxButton button)
         {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Text"/> has changed.
+        /// This is called immediately before <see cref="TextControl.TextChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
+        /// </summary>
+        protected override void OnTextChanged()
+        {
+            base.OnTextChanged();
+
+            CreateChildControls();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="MessageBox.Title"/> has changed.
+        /// This is called immediately before <see cref="MessageBox.TitleChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="MessageBox.TitleChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnTitleChanged()
+        {
+            CreateChildControls();
         }
     }
 }
