@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using DemoGame.Client.NPCChat;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Features.Emoticons;

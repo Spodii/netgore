@@ -514,6 +514,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets if this <see cref="Control"/> has been disposed;
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        /// <summary>
         /// Gets or sets if the <see cref="Control"/> is enabled.
         /// </summary>
         [SyncValue]
@@ -1814,11 +1822,6 @@ namespace NetGore.Graphics.GUI
             if (keysUp != null && keysUp.Count() > 0)
                 InvokeKeyUp(new KeyboardEventArgs(keysUp, keyboardState));
         }
-
-        /// <summary>
-        /// Gets if this <see cref="Control"/> has been disposed;
-        /// </summary>
-        public bool IsDisposed { get { return _isDisposed; } }
 
         /// <summary>
         /// Updates the Control with mouse related events.
