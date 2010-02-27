@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore.Graphics.GUI
 {
+    /// <summary>
+    /// A simple pop-up message box that displays a message and one or more response options.
+    /// </summary>
     public class MessageBox : Form
     {
         const int _padding = 4;
