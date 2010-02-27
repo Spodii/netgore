@@ -27,6 +27,7 @@ namespace DemoGame
         EndChatDialog,
         GroupInfo,
         GuildInfo,
+        HasQuestFinishRequirementsReply,
         HasQuestStartRequirementsReply,
         LoginSuccessful,
         LoginUnsuccessful,

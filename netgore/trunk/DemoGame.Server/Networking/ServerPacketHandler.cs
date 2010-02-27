@@ -252,6 +252,33 @@ namespace DemoGame.Server
             }
         }
 
+        [MessageHandler((byte)ClientPacketID.HasQuestFinishRequirements)]
+        void RecvHasQuestFinishRequirements(IIPSocket conn, BitStream r)
+        {
+            var questID = r.ReadQuestID();
+
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            var quest = _questManager.GetQuest(questID);
+            bool hasRequirements = false;
+
+            if (quest == null)
+            {
+                const string errmsg = "User `{0}` sent request for invalid quest ID `{1}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user, questID);
+            }
+            else
+                hasRequirements = quest.FinishRequirements.HasRequirements(user);
+
+            using (var pw = ServerPacket.HasQuestFinishRequirements(questID, hasRequirements))
+            {
+                user.Send(pw);
+            }
+        }
+
         [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]
         void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
         {
@@ -579,15 +606,16 @@ namespace DemoGame.Server
                 user.GetDistance(npc) > GameData.MaxNPCChatDistance)
                 return;
 
-            // If the NPC provides any quests that this user can do, show that instead
+            // If the NPC provides any quests that this user can do or turn in, show that instead
             if (!forceSkipQuestDialog && !npc.Quests.IsEmpty())
             {
-                var availableQuests =
-                    npc.Quests.Where(x => !user.ActiveQuests.Contains(x) && (x.Repeatable || !user.HasCompletedQuest(x))).Select(
-                        x => x.QuestID).ToArray();
-                if (availableQuests.Length > 0)
+                IQuest<User>[] availableQuests;
+                IQuest<User>[] turnInQuests;
+                QuestHelper.GetAvailableQuests(user, npc, out availableQuests, out turnInQuests);
+               
+                if (availableQuests.Length > 0 || turnInQuests.Length > 0)
                 {
-                    using (var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests))
+                    using (var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests.Select(x => x.QuestID), turnInQuests.Select(x => x.QuestID)))
                     {
                         user.Send(pw);
                     }

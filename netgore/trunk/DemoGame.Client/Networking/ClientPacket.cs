@@ -79,6 +79,13 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter HasQuestFinishRequirements(QuestID questID)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.HasQuestFinishRequirements);
+            pw.Write(questID);
+            return pw;
+        }
+
         static PacketWriter GetWriter(ClientPacketID id)
         {
             PacketWriter pw = _writerPool.Acquire();

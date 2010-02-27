@@ -345,6 +345,15 @@ namespace DemoGame.Client
             UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
         }
 
+        [MessageHandler((byte)ServerPacketID.HasQuestFinishRequirementsReply)]
+        void RecvHasQuestFinishRequirementsReply(IIPSocket conn, BitStream r)
+        {
+            QuestID questID = r.ReadQuestID();
+            bool hasRequirements = r.ReadBool();
+
+            UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
+        }
+
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
@@ -732,15 +741,35 @@ namespace DemoGame.Client
         void RecvStartQuestChatDialog(IIPSocket conn, BitStream r)
         {
             MapEntityIndex npcIndex = r.ReadMapEntityIndex();
-            byte numQuests = r.ReadByte();
 
-            QuestID[] availableQuests = new QuestID[numQuests];
+            // Available quests
+            byte numAvailableQuests = r.ReadByte();
+            QuestID[] availableQuests = new QuestID[numAvailableQuests];
             for (int i = 0; i < availableQuests.Length; i++)
             {
                 availableQuests[i] = r.ReadQuestID();
             }
 
-            var questDescriptions = availableQuests.Select(x => World.QuestDescriptions.GetOrDefault(x));
+            // Quests that can be turned in
+            byte numTurnInQuests = r.ReadByte();
+            QuestID[] turnInQuests = new QuestID[numTurnInQuests];
+            for (int i = 0; i < turnInQuests.Length; i++)
+            {
+                turnInQuests[i] = r.ReadQuestID();
+            }
+
+            // For the quests that are available, make sure we set their status to not being able to be turned in (just in case)
+            foreach (var id in availableQuests)
+                UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(id, false);
+            
+            // For the quests that were marked as being able to turn in, set their status to being able to be finished
+            foreach (var id in turnInQuests)
+                UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(id, true);
+
+            // Grab the descriptions for both the available quests and quests we can turn in
+            var questDescriptions = availableQuests.Concat(turnInQuests).Distinct().Select(x => World.QuestDescriptions.GetOrDefault(x));
+            
+            // Display the form
             GameplayScreen.AvailableQuestsForm.Display(questDescriptions, npcIndex);
         }
 

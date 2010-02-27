@@ -14,8 +14,9 @@ namespace DemoGame.Server
         readonly ServerPacketHandler _packetHandler;
 
         /// <summary>
-        /// Constructor for the socket
+        /// Initializes a new instance of the <see cref="ServerSockets"/> class.
         /// </summary>
+        /// <param name="server">The server.</param>
         public ServerSockets(Server server)
         {
             _packetHandler = new ServerPacketHandler(this, server);
