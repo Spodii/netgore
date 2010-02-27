@@ -12,8 +12,8 @@ namespace NetGore.Graphics.GUI
     {
         const int _padding = 4;
         static readonly object _eventButtonTypesChanged = new object();
+        static readonly object _eventMessageChanged = new object();
         static readonly object _eventOptionSelected = new object();
-        static readonly object _eventTitleChanged = new object();
 
         /// <summary>
         /// The valid <see cref="MessageBoxButton"/> types for creating buttons.
@@ -31,7 +31,7 @@ namespace NetGore.Graphics.GUI
         readonly bool _suspendCreateChildControls = true;
 
         MessageBoxButton _buttonTypes;
-        string _title;
+        string _message;
 
         /// <summary>
         /// Initializes the <see cref="MessageBox"/> class.
@@ -49,10 +49,10 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="MessageBox"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
-        /// <param name="title">The message box title.</param>
-        /// <param name="text">The text to display.</param>
+        /// <param name="text">The message box's title text.</param>
+        /// <param name="message">The message to display.</param>
         /// <param name="buttonTypes">The <see cref="MessageBoxButton"/>s to display.</param>
-        public MessageBox(IGUIManager guiManager, string title, string text, MessageBoxButton buttonTypes)
+        public MessageBox(IGUIManager guiManager, string text, string message, MessageBoxButton buttonTypes)
             : base(guiManager, Vector2.Zero, new Vector2(32))
         {
             DisposeOnSelection = true;
@@ -60,7 +60,7 @@ namespace NetGore.Graphics.GUI
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Text = text;
-            Title = title;
+            Message = message;
             ButtonTypes = buttonTypes;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
@@ -79,21 +79,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Notifies listeners when the <see cref="MessageBox.Message"/> has changed.
+        /// </summary>
+        public event ControlEventHandler MessageChanged
+        {
+            add { Events.AddHandler(_eventMessageChanged, value); }
+            remove { Events.RemoveHandler(_eventMessageChanged, value); }
+        }
+
+        /// <summary>
         /// Notifies listeners when the <see cref="MessageBox"/> has been closed from an option button being clicked.
         /// </summary>
         public event ControlEventHandler<MessageBoxButton> OptionSelected
         {
             add { Events.AddHandler(_eventOptionSelected, value); }
             remove { Events.RemoveHandler(_eventOptionSelected, value); }
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="MessageBox.Title"/> has changed.
-        /// </summary>
-        public event ControlEventHandler TitleChanged
-        {
-            add { Events.AddHandler(_eventTitleChanged, value); }
-            remove { Events.RemoveHandler(_eventTitleChanged, value); }
         }
 
         /// <summary>
@@ -129,17 +129,17 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
-        public virtual string Title
+        public virtual string Message
         {
-            get { return _title; }
+            get { return _message; }
             set
             {
-                if (_title == value)
+                if (_message == value)
                     return;
 
-                _title = value;
+                _message = value;
 
-                InvokeTitleChanged();
+                InvokeMessageChanged();
             }
         }
 
@@ -214,7 +214,7 @@ namespace NetGore.Graphics.GUI
             }
 
             // Create the text
-            var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(Text) }, true, Font,
+            var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(Message) }, true, Font,
                                                MaxWidth - (_padding * 2) - Border.Width);
             int yOffset = _padding;
             foreach (var line in lines)
@@ -264,6 +264,18 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
+        void InvokeMessageChanged()
+        {
+            OnMessageChanged();
+            var handler = Events[_eventMessageChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
         /// <param name="button">The button that was used to close the <see cref="MessageBox"/>.</param>
         void InvokeOptionSelected(MessageBoxButton button)
         {
@@ -274,23 +286,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        void InvokeTitleChanged()
-        {
-            OnTitleChanged();
-            var handler = Events[_eventTitleChanged] as ControlEventHandler;
-            if (handler != null)
-                handler(this);
-        }
-
-        /// <summary>
         /// Handles when the <see cref="MessageBox.ButtonTypes"/> has changed.
         /// This is called immediately before <see cref="MessageBox.ButtonTypesChanged"/>.
         /// Override this method instead of using an event hook on <see cref="MessageBox.ButtonTypesChanged"/> when possible.
         /// </summary>
         protected virtual void OnButtonTypesChanged()
+        {
+            CreateChildControls();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="MessageBox.Message"/> has changed.
+        /// This is called immediately before <see cref="MessageBox.MessageChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="MessageBox.MessageChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnMessageChanged()
         {
             CreateChildControls();
         }
@@ -314,16 +324,6 @@ namespace NetGore.Graphics.GUI
         {
             base.OnTextChanged();
 
-            CreateChildControls();
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="MessageBox.Title"/> has changed.
-        /// This is called immediately before <see cref="MessageBox.TitleChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="MessageBox.TitleChanged"/> when possible.
-        /// </summary>
-        protected virtual void OnTitleChanged()
-        {
             CreateChildControls();
         }
     }
