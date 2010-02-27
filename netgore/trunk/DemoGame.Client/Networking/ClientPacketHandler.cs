@@ -336,15 +336,6 @@ namespace DemoGame.Client
             GuildInfo.Read(r);
         }
 
-        [MessageHandler((byte)ServerPacketID.HasQuestStartRequirementsReply)]
-        void RecvHasQuestStartRequirementsReply(IIPSocket conn, BitStream r)
-        {
-            QuestID questID = r.ReadQuestID();
-            bool hasRequirements = r.ReadBool();
-
-            UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
-        }
-
         [MessageHandler((byte)ServerPacketID.HasQuestFinishRequirementsReply)]
         void RecvHasQuestFinishRequirementsReply(IIPSocket conn, BitStream r)
         {
@@ -352,6 +343,15 @@ namespace DemoGame.Client
             bool hasRequirements = r.ReadBool();
 
             UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
+        }
+
+        [MessageHandler((byte)ServerPacketID.HasQuestStartRequirementsReply)]
+        void RecvHasQuestStartRequirementsReply(IIPSocket conn, BitStream r)
+        {
+            QuestID questID = r.ReadQuestID();
+            bool hasRequirements = r.ReadBool();
+
+            UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
@@ -760,15 +760,20 @@ namespace DemoGame.Client
 
             // For the quests that are available, make sure we set their status to not being able to be turned in (just in case)
             foreach (var id in availableQuests)
+            {
                 UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(id, false);
-            
+            }
+
             // For the quests that were marked as being able to turn in, set their status to being able to be finished
             foreach (var id in turnInQuests)
+            {
                 UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(id, true);
+            }
 
             // Grab the descriptions for both the available quests and quests we can turn in
-            var questDescriptions = availableQuests.Concat(turnInQuests).Distinct().Select(x => World.QuestDescriptions.GetOrDefault(x));
-            
+            var questDescriptions =
+                availableQuests.Concat(turnInQuests).Distinct().Select(x => World.QuestDescriptions.GetOrDefault(x));
+
             // Display the form
             GameplayScreen.AvailableQuestsForm.Display(questDescriptions, npcIndex);
         }

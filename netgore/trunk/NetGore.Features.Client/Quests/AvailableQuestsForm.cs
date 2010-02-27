@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
@@ -16,8 +15,8 @@ namespace NetGore.Features.Quests
         static readonly IEnumerable<IQuestDescription> _emptyQuests = Enumerable.Empty<IQuestDescription>();
         static readonly object _eventQuestAccepted = new object();
 
-        readonly Func<QuestID, bool> _hasStartQuestReqs;
         readonly Func<QuestID, bool> _hasFinishQuestReqs;
+        readonly Func<QuestID, bool> _hasStartQuestReqs;
 
         Button _btnAccept;
         Button _btnClose;
@@ -36,8 +35,8 @@ namespace NetGore.Features.Quests
         /// <param name="hasStartQuestReqs">A func used to check if the user has the requirements to start a quest.</param>
         /// <param name="hasFinishQuestReqs">A func used to check if the user has the requirements to finish a quest.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public AvailableQuestsForm(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs, Func<QuestID, bool> hasFinishQuestReqs)
-            : base(parent, position, clientSize)
+        public AvailableQuestsForm(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs,
+                                   Func<QuestID, bool> hasFinishQuestReqs) : base(parent, position, clientSize)
         {
             _hasStartQuestReqs = hasStartQuestReqs;
             _hasFinishQuestReqs = hasFinishQuestReqs;

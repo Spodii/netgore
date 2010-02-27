@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Collections;
 using NetGore.Graphics;
-using Color=System.Drawing.Color;
 
 namespace NetGore.EditorTools
 {

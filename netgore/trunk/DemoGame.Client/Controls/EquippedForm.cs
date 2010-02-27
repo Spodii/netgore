@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using DemoGame.DbObjs;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 

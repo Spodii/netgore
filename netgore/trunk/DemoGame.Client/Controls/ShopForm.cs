@@ -4,7 +4,6 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;

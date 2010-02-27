@@ -139,19 +139,6 @@ namespace DemoGame.Client
                 Tooltip = _tooltipHandler;
             }
 
-            /// <summary>
-            /// Handles when a mouse button has been raised on the <see cref="Control"/>.
-            /// This is called immediately before <see cref="Control.OnMouseUp"/>.
-            /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
-            /// </summary>
-            /// <param name="e">The event args.</param>
-            protected override void OnMouseUp(MouseClickEventArgs e)
-            {
-                base.OnMouseUp(e);
-
-                _invForm.InventoryItemPB_OnMouseUp(this, e);
-            }
-
             public InventorySlot Slot
             {
                 get { return _slot; }
@@ -195,6 +182,19 @@ namespace DemoGame.Client
                 base.LoadSkin(skinManager);
 
                 Sprite = GUIManager.SkinManager.GetSprite("item_slot");
+            }
+
+            /// <summary>
+            /// Handles when a mouse button has been raised on the <see cref="Control"/>.
+            /// This is called immediately before <see cref="Control.OnMouseUp"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void OnMouseUp(MouseClickEventArgs e)
+            {
+                base.OnMouseUp(e);
+
+                _invForm.InventoryItemPB_OnMouseUp(this, e);
             }
 
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)

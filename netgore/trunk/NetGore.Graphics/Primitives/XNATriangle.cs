@@ -48,7 +48,8 @@ namespace NetGore.Graphics
         /// <param name="effects">SpriteEffects to use.</param>
         /// <param name="rotation">Rotation in radians.</param>
         /// <param name="origin">Relative origin of the rotation.</param>
-        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, SpriteEffects effects, float rotation, Vector2 origin)
+        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, SpriteEffects effects, float rotation,
+                                Vector2 origin)
         {
             LoadGrh();
             _triangleGrh.Draw(sb, dest, color, effects, rotation, origin);
