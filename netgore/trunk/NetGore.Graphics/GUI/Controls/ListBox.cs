@@ -375,7 +375,7 @@ namespace NetGore.Graphics.GUI
         /// <returns>The default item drawer.</returns>
         protected virtual Action<SpriteBatch, Vector2, int> GetDefaultItemDrawer()
         {
-            return (sb, p, v) => sb.DrawString(Font, Items.ElementAtOrDefault(v).ToString(), p.Round(), ForeColor);
+            return (sb, p, v) => sb.DrawString(Font, Items.ElementAtOrDefault(v).ToString(), p.Floor(), ForeColor);
         }
 
         static Vector2 GetSpriteSize(SpriteControl spriteControl)
