@@ -512,7 +512,7 @@ CREATE TABLE `game_constant` (
   `screen_height` smallint(5) unsigned NOT NULL,
   `server_ping_port` smallint(5) unsigned NOT NULL,
   `server_tcp_port` smallint(5) unsigned NOT NULL,
-  `server_ip` varchar(15) NOT NULL,
+  `server_ip` varchar(50) NOT NULL,
   `world_physics_update_rate` smallint(5) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
