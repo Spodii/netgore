@@ -326,5 +326,17 @@ namespace NetGore.Graphics.GUI
 
             CreateChildControls();
         }
+
+        /// <summary>
+        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        protected override void UpdateControl(int currentTime)
+        {
+            base.UpdateControl(currentTime);
+
+            // Force to have focus
+            SetFocus();
+        }
     }
 }

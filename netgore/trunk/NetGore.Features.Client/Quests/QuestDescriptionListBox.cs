@@ -81,7 +81,7 @@ namespace NetGore.Features.Quests
             string indexStr = "  " + (index + 1) + ". ";
             var indexStrWidth = Font.MeasureString(indexStr).X;
 
-            pos = pos.Round();
+            pos = pos.Floor();
 
             sb.DrawString(Font, indexStr, pos, ForeColor);
 
