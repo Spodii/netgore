@@ -114,17 +114,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the maximum width of a <see cref="MessageBox"/>.
-        /// </summary>
-        public static int MaxWidth { get; set; }
-
-        /// <summary>
         /// Gets or sets if this <see cref="MessageBox"/> will automatically be disposed when any of the options
         /// have been selected. Disposing will happen after the <see cref="MessageBox.OptionSelected"/> event is
         /// raised, so it is possible to effectively change this value through the <see cref="MessageBox.OptionSelected"/>
         /// event handlers.
         /// </summary>
         public bool DisposeOnSelection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum width of a <see cref="MessageBox"/>.
+        /// </summary>
+        public static int MaxWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
