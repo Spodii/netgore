@@ -160,7 +160,7 @@ namespace NetGore.Network
                 return;
 
             _disposed = true;
-            
+
             if (_socket != null)
                 _socket.Close();
         }

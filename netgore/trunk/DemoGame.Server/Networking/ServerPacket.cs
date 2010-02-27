@@ -153,17 +153,17 @@ namespace DemoGame.Server
             return ret;
         }
 
-        public static PacketWriter HasQuestStartRequirements(QuestID questID, bool hasRequirements)
+        public static PacketWriter HasQuestFinishRequirements(QuestID questID, bool hasRequirements)
         {
-            var ret = GetWriter(ServerPacketID.HasQuestStartRequirementsReply);
+            var ret = GetWriter(ServerPacketID.HasQuestFinishRequirementsReply);
             ret.Write(questID);
             ret.Write(hasRequirements);
             return ret;
         }
 
-        public static PacketWriter HasQuestFinishRequirements(QuestID questID, bool hasRequirements)
+        public static PacketWriter HasQuestStartRequirements(QuestID questID, bool hasRequirements)
         {
-            var ret = GetWriter(ServerPacketID.HasQuestFinishRequirementsReply);
+            var ret = GetWriter(ServerPacketID.HasQuestStartRequirementsReply);
             ret.Write(questID);
             ret.Write(hasRequirements);
             return ret;
@@ -531,7 +531,8 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter StartQuestChatDialog(MapEntityIndex npcIndex, IEnumerable<QuestID> availableQuests, IEnumerable<QuestID> turnInQuests)
+        public static PacketWriter StartQuestChatDialog(MapEntityIndex npcIndex, IEnumerable<QuestID> availableQuests,
+                                                        IEnumerable<QuestID> turnInQuests)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartQuestChatDialog);
 

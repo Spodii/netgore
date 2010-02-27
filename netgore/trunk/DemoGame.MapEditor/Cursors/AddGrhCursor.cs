@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using Color=Microsoft.Xna.Framework.Graphics.Color;

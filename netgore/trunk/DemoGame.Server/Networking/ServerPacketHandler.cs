@@ -612,10 +612,12 @@ namespace DemoGame.Server
                 IQuest<User>[] availableQuests;
                 IQuest<User>[] turnInQuests;
                 QuestHelper.GetAvailableQuests(user, npc, out availableQuests, out turnInQuests);
-               
+
                 if (availableQuests.Length > 0 || turnInQuests.Length > 0)
                 {
-                    using (var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests.Select(x => x.QuestID), turnInQuests.Select(x => x.QuestID)))
+                    using (
+                        var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests.Select(x => x.QuestID),
+                                                                   turnInQuests.Select(x => x.QuestID)))
                     {
                         user.Send(pw);
                     }

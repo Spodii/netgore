@@ -8,7 +8,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.IO;
 using Point=System.Drawing.Point;

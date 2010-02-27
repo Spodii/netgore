@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Audio;
 
 namespace NetGore.Graphics.GUI

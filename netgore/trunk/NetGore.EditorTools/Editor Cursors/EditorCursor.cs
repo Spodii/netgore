@@ -1,7 +1,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
 

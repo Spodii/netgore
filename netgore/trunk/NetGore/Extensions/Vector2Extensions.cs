@@ -21,6 +21,28 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets a <see cref="Vector2"/> with the X and Y components rounded up.
+        /// </summary>
+        /// <param name="source"><see cref="Vector2"/> to round.</param>
+        /// <returns>A <see cref="Vector2"/> containing the ceiling-down value of the <paramref name="source"/>
+        /// <see cref="Vector2"/>.</returns>
+        public static Vector2 Ceiling(this Vector2 source)
+        {
+            return new Vector2((float)Math.Ceiling(source.X), (float)Math.Ceiling(source.Y));
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Vector2"/> with the X and Y components rounded down.
+        /// </summary>
+        /// <param name="source"><see cref="Vector2"/> to round.</param>
+        /// <returns>A <see cref="Vector2"/> containing the rounded-down value of the <paramref name="source"/>
+        /// <see cref="Vector2"/>.</returns>
+        public static Vector2 Floor(this Vector2 source)
+        {
+            return new Vector2((float)Math.Floor(source.X), (float)Math.Floor(source.Y));
+        }
+
+        /// <summary>
         /// Checks if both of a <see cref="Vector2"/>'s coordinates are greater than or equal to the
         /// corresponding coordinates in another <see cref="Vector2"/>.
         /// </summary>
@@ -129,28 +151,6 @@ namespace NetGore
         public static Vector2 Round(this Vector2 source)
         {
             return new Vector2((float)Math.Round(source.X), (float)Math.Round(source.Y));
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Vector2"/> with the X and Y components rounded down.
-        /// </summary>
-        /// <param name="source"><see cref="Vector2"/> to round.</param>
-        /// <returns>A <see cref="Vector2"/> containing the rounded-down value of the <paramref name="source"/>
-        /// <see cref="Vector2"/>.</returns>
-        public static Vector2 Floor(this Vector2 source)
-        {
-            return new Vector2((float)Math.Floor(source.X), (float)Math.Floor(source.Y));
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Vector2"/> with the X and Y components rounded up.
-        /// </summary>
-        /// <param name="source"><see cref="Vector2"/> to round.</param>
-        /// <returns>A <see cref="Vector2"/> containing the ceiling-down value of the <paramref name="source"/>
-        /// <see cref="Vector2"/>.</returns>
-        public static Vector2 Ceiling(this Vector2 source)
-        {
-            return new Vector2((float)Math.Ceiling(source.X), (float)Math.Ceiling(source.Y));
         }
 
         /// <summary>
