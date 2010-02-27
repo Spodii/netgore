@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Quests
@@ -92,7 +93,7 @@ namespace NetGore.Features.Quests
         /// Gets the default item drawer.
         /// </summary>
         /// <returns>The default item drawer.</returns>
-        protected override Action<SpriteBatch, Vector2, int> GetDefaultItemDrawer()
+        protected override Action<ISpriteBatch, Vector2, int> GetDefaultItemDrawer()
         {
             return QuestDescriptionDrawer;
         }
@@ -119,7 +120,7 @@ namespace NetGore.Features.Quests
             return _hasStartQuestReqs(questID);
         }
 
-        void QuestDescriptionDrawer(SpriteBatch sb, Vector2 pos, int index)
+        void QuestDescriptionDrawer(ISpriteBatch sb, Vector2 pos, int index)
         {
             var item = Items.ElementAtOrDefault(index);
             if (item == null)

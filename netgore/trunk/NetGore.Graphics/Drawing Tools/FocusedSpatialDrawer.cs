@@ -57,8 +57,8 @@ namespace NetGore.Graphics
         /// Draws the <see cref="FocusedSpatialDrawer"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to focus on.</param>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void Draw(ISpatial spatial, SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpatial spatial, ISpriteBatch sb)
         {
             Focused = spatial;
             Draw(sb);
@@ -67,8 +67,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the <see cref="FocusedSpatialDrawer"/>.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             if (Focused == null)
                 return;

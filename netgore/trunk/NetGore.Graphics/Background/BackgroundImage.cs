@@ -180,7 +180,7 @@ namespace NetGore.Graphics
             }
         }
 
-        protected void Draw(SpriteBatch spriteBatch, Vector2 spriteSize)
+        protected void Draw(ISpriteBatch spriteBatch, Vector2 spriteSize)
         {
             if (!IsSpriteSet())
                 return;
@@ -438,8 +438,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Makes the object draw itself.
         /// </summary>
-        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
-        public virtual void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
+        public virtual void Draw(ISpriteBatch sb)
         {
             if (!IsSpriteSet())
                 return;

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Guilds
@@ -36,7 +37,7 @@ namespace NetGore.Features.Guilds
             ShowPaging = true;
         }
 
-        void DefaultDrawer(SpriteBatch sb, Vector2 pos, int v)
+        void DefaultDrawer(ISpriteBatch sb, Vector2 pos, int v)
         {
             if (Font != _cachedSpacingFont)
             {
@@ -57,7 +58,7 @@ namespace NetGore.Features.Guilds
         /// Gets the default item drawer.
         /// </summary>
         /// <returns>The default item drawer.</returns>
-        protected override Action<SpriteBatch, Vector2, int> GetDefaultItemDrawer()
+        protected override Action<ISpriteBatch, Vector2, int> GetDefaultItemDrawer()
         {
             return DefaultDrawer;
         }

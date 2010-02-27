@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.EditorTools.Properties;
+using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {
@@ -69,8 +70,8 @@ namespace NetGore.EditorTools
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
-        public virtual void DrawInterface(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public virtual void DrawInterface(ISpriteBatch spriteBatch)
         {
         }
 
@@ -78,8 +79,8 @@ namespace NetGore.EditorTools
         /// When overridden in the derived class, handles drawing the cursor's selection layer, 
         /// which displays a selection box for when selecting multiple objects.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
-        public virtual void DrawSelection(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public virtual void DrawSelection(ISpriteBatch spriteBatch)
         {
         }
 

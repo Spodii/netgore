@@ -103,7 +103,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the thickness of the line
+        /// Gets or sets the thickness of the line.
         /// </summary>
         public float Thickness
         {
@@ -112,13 +112,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws a line
+        /// Draws a line.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="p1">First point of the line</param>
-        /// <param name="p2">Second point of the line</param>
-        /// <param name="color">Color of the line</param>
-        public static void Draw(SpriteBatch sb, Vector2 p1, Vector2 p2, Color color)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="p1">First point of the line.</param>
+        /// <param name="p2">Second point of the line.</param>
+        /// <param name="color">Color of the line.</param>
+        public static void Draw(ISpriteBatch sb, Vector2 p1, Vector2 p2, Color color)
         {
             // Create the static XNALine instance if needed
             if (_xnaLine == null)
@@ -130,31 +130,31 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the line
+        /// Draws the line.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="tex">Texture to use for drawing</param>
-        public void Draw(SpriteBatch sb, Texture2D tex)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="tex">Texture to use for drawing.</param>
+        public void Draw(ISpriteBatch sb, Texture2D tex)
         {
             Draw(sb, tex, Color);
         }
 
         /// <summary>
-        /// Draws the line
+        /// Draws the line.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             Draw(sb, Color);
         }
 
         /// <summary>
-        /// Draws the line
+        /// Draws the line.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="tex">Texture to use for drawing</param>
-        /// <param name="color">Color to use instead of the local set color</param>
-        public void Draw(SpriteBatch sb, Texture2D tex, Color color)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="tex">Texture to use for drawing.</param>
+        /// <param name="color">Color to use instead of the local set color.</param>
+        public void Draw(ISpriteBatch sb, Texture2D tex, Color color)
         {
             if (sb == null)
             {
@@ -181,11 +181,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the line
+        /// Draws the line.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="color">Color to use instead of the local set color</param>
-        public void Draw(SpriteBatch sb, Color color)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="color">Color to use instead of the local set color.</param>
+        public void Draw(ISpriteBatch sb, Color color)
         {
             if (sb == null)
             {
@@ -206,18 +206,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Finds the angle (in radians) between two points
+        /// Finds the angle (in radians) between two points.
         /// </summary>
-        /// <param name="p1">First point</param>
-        /// <param name="p2">Second point</param>
-        /// <returns>Angle between the two points, in radians</returns>
+        /// <param name="p1">First point.</param>
+        /// <param name="p2">Second point.</param>
+        /// <returns>Angle between the two points, in radians.</returns>
         static float GetAngle(Vector2 p1, Vector2 p2)
         {
             return (float)Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
         }
 
         /// <summary>
-        /// Ensures the _blankGrh is loaded
+        /// Ensures the _blankGrh is loaded.
         /// </summary>
         static void LoadBlankGrh()
         {
@@ -232,7 +232,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Recalculates the locals for the line
+        /// Recalculates the locals for the line.
         /// </summary>
         void RecalculatePoints()
         {
@@ -241,10 +241,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets both the points of the line
+        /// Sets both the points of the line.
         /// </summary>
-        /// <param name="p1">First point of the line</param>
-        /// <param name="p2">Second point of the line</param>
+        /// <param name="p1">First point of the line.</param>
+        /// <param name="p2">Second point of the line.</param>
         public void SetPoints(Vector2 p1, Vector2 p2)
         {
             _p1 = p1;

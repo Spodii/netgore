@@ -155,11 +155,11 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the line of text.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="font">The <see cref="SpriteFont"/> to draw the text with.</param>
         /// <param name="screenPos">The screen position to start drawing the text at.</param>
         /// <param name="defaultColor">The default color of the text.</param>
-        public void Draw(SpriteBatch sb, SpriteFont font, Vector2 screenPos, Color defaultColor)
+        public void Draw(ISpriteBatch sb, SpriteFont font, Vector2 screenPos, Color defaultColor)
         {
             for (int i = 0; i < _texts.Count; i++)
             {
@@ -173,13 +173,13 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the line of text.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="font">The <see cref="SpriteFont"/> to draw the text with.</param>
         /// <param name="screenPos">The screen position to start drawing the text at.</param>
         /// <param name="defaultColor">The default color of the text.</param>
         /// <param name="firstChar">The index of the first character to draw.</param>
         /// <param name="numChars">The maximum number of characters to draw.</param>
-        public void Draw(SpriteBatch sb, SpriteFont font, Vector2 screenPos, Color defaultColor, int firstChar, int numChars)
+        public void Draw(ISpriteBatch sb, SpriteFont font, Vector2 screenPos, Color defaultColor, int firstChar, int numChars)
         {
             if (firstChar + numChars > _lineText.Length)
                 numChars = _lineText.Length - firstChar;

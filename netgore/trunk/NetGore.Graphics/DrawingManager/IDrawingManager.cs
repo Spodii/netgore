@@ -19,19 +19,19 @@ namespace NetGore.Graphics
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.
         /// </summary>
-        /// <returns>The <see cref="SpriteBatch"/> to use to draw the GUI.</returns>
+        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the GUI.</returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
-        SpriteBatch BeginDrawGUI();
+        ISpriteBatch BeginDrawGUI();
 
         /// <summary>
         /// Begins drawing of the world.
         /// </summary>
         /// <param name="camera">The camera describing the the current view of the world.</param>
-        /// <returns>The <see cref="SpriteBatch"/> to use to draw the world objects.</returns>
+        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the world objects.</returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
-        SpriteBatch BeginDrawWorld(ICamera2D camera);
+        ISpriteBatch BeginDrawWorld(ICamera2D camera);
 
         /// <summary>
         /// Ends drawing the graphical user interface.

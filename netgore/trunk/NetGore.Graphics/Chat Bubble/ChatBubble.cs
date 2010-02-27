@@ -96,8 +96,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the <see cref="ChatBubble"/>.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             if (IsExpired)
                 return;

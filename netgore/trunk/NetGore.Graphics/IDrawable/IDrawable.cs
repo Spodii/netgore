@@ -61,8 +61,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Makes the object draw itself.
         /// </summary>
-        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
-        void Draw(SpriteBatch sb);
+        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
+        void Draw(ISpriteBatch sb);
 
         /// <summary>
         /// Checks if in the object is in view of the specified <paramref name="camera"/>.

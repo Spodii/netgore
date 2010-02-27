@@ -9,7 +9,7 @@ namespace NetGore.Graphics
     {
         readonly GraphicsDevice _gd;
         readonly ILightManager _lightManager;
-        readonly SpriteBatch _sb;
+        readonly ISpriteBatch _sb;
 
         Texture2D _lightMap;
         DrawingManagerState _state = DrawingManagerState.Idle;
@@ -21,7 +21,7 @@ namespace NetGore.Graphics
         public DrawingManager(GraphicsDevice graphicsDevice)
         {
             _gd = graphicsDevice;
-            _sb = new SpriteBatch(_gd);
+            _sb = new RoundedXnaSpriteBatch(_gd);
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _lightManager = CreateLightManager();
@@ -60,10 +60,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.
         /// </summary>
-        /// <returns>The <see cref="SpriteBatch"/> to use to draw the GUI.</returns>
+        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the GUI.</returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
-        public SpriteBatch BeginDrawGUI()
+        public ISpriteBatch BeginDrawGUI()
         {
             if (State != DrawingManagerState.Idle)
                 throw new InvalidOperationException("This method cannot be called while already busy drawing.");
@@ -79,10 +79,10 @@ namespace NetGore.Graphics
         /// Begins drawing of the world.
         /// </summary>
         /// <param name="camera">The camera describing the the current view of the world.</param>
-        /// <returns>The <see cref="SpriteBatch"/> to use to draw the world objects.</returns>
+        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the world objects.</returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
-        public SpriteBatch BeginDrawWorld(ICamera2D camera)
+        public ISpriteBatch BeginDrawWorld(ICamera2D camera)
         {
             if (State != DrawingManagerState.Idle)
                 throw new InvalidOperationException("This method cannot be called while already busy drawing.");

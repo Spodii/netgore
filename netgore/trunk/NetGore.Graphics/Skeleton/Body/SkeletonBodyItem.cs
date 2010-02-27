@@ -78,12 +78,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the <see cref="SkeletonBodyItem"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="position">Position to draw at.</param>
         /// <param name="scale">Amount to scale the Grh in percent (1.0f for no scaling).</param>
         /// <param name="color">The color.</param>
         /// <param name="effect">SpriteEffects to use when drawing.</param>
-        internal void Draw(SpriteBatch sb, Vector2 position, float scale, Color color, SpriteEffects effect)
+        internal void Draw(ISpriteBatch sb, Vector2 position, float scale, Color color, SpriteEffects effect)
         {
             // Validate
             if (Source == null)

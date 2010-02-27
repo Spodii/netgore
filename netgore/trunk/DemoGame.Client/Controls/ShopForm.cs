@@ -149,8 +149,8 @@ namespace DemoGame.Client
             /// <summary>
             /// Draws the <see cref="Control"/>.
             /// </summary>
-            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-            protected override void DrawControl(SpriteBatch spriteBatch)
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+            protected override void DrawControl(ISpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
                 var itemInfo = ItemInfo;

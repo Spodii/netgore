@@ -168,13 +168,13 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the specified range of lines.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="font">The <see cref="SpriteFont"/> to use.</param>
         /// <param name="start">The index of the first line to draw.</param>
         /// <param name="count">The maximum of lines to draw.</param>
         /// <param name="screenPos">The top-left corner of the location to begin drawing the text.</param>
         /// <param name="defaultColor">The default font color.</param>
-        public void Draw(SpriteBatch sb, SpriteFont font, int start, int count, Vector2 screenPos, Color defaultColor)
+        public void Draw(ISpriteBatch sb, SpriteFont font, int start, int count, Vector2 screenPos, Color defaultColor)
         {
             int end = Math.Min(start + count, _lines.Count);
             for (int i = start; i < end; i++)

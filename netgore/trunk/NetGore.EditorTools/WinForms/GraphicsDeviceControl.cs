@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Graphics;
 using Color=System.Drawing.Color;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
@@ -19,7 +20,7 @@ namespace NetGore.EditorTools
         readonly ServiceContainer _services = new ServiceContainer();
 
         GraphicsDeviceService _gds;
-        SpriteBatch _spriteBatch;
+        ISpriteBatch _spriteBatch;
 
         /// <summary>
         /// Gets a GraphicsDevice this control can use.
@@ -38,9 +39,9 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the <see cref="SpriteBatch"/> used to draw to this <see cref="GraphicsDeviceControl"/>.
+        /// Gets the <see cref="ISpriteBatch"/> used to draw to this <see cref="GraphicsDeviceControl"/>.
         /// </summary>
-        public SpriteBatch SpriteBatch
+        public ISpriteBatch SpriteBatch
         {
             get { return _spriteBatch; }
         }
@@ -91,8 +92,8 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Derived classes override this to draw themselves using the GraphicsDevice.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
-        protected abstract void Draw(SpriteBatch spriteBatch);
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
+        protected abstract void Draw(ISpriteBatch spriteBatch);
 
         /// <summary>
         /// Ends drawing the control. This is called after derived classes
@@ -181,7 +182,7 @@ namespace NetGore.EditorTools
                 _services.AddService<IGraphicsDeviceService>(_gds);
 
                 // Create our SpriteBatch
-                _spriteBatch = new SpriteBatch(GraphicsDevice);
+                _spriteBatch = new RoundedXnaSpriteBatch(GraphicsDevice);
 
                 // Give derived classes a chance to initialize themselves
                 Initialize();

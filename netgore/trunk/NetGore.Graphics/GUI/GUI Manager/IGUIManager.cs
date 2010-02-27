@@ -133,8 +133,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws all of the <see cref="Control"/>s in this <see cref="IGUIManager"/>.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing the <see cref="Control"/>s.</param>
-        void Draw(SpriteBatch spriteBatch);
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing the <see cref="Control"/>s.</param>
+        void Draw(ISpriteBatch spriteBatch);
 
         /// <summary>
         /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManager"/>, including all

@@ -17,45 +17,45 @@ namespace NetGore.Graphics
         static Grh _triangleGrh = null;
 
         /// <summary>
-        /// Draws a triangle
+        /// Draws a triangle.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="dest">Destination rectangle</param>
-        /// <param name="color">Color of the box</param>
-        public static void Draw(SpriteBatch sb, Rectangle dest, Color color)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="dest">Destination rectangle.</param>
+        /// <param name="color">Color of the box.</param>
+        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color)
         {
             Draw(sb, dest, color, SpriteEffects.None);
         }
 
         /// <summary>
-        /// Draws a triangle
+        /// Draws a triangle.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="dest">Destination rectangle</param>
-        /// <param name="color">Color of the box</param>
-        /// <param name="effects">SpriteEffects to use</param>
-        public static void Draw(SpriteBatch sb, Rectangle dest, Color color, SpriteEffects effects)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="dest">Destination rectangle.</param>
+        /// <param name="color">Color of the box.</param>
+        /// <param name="effects">SpriteEffects to use.</param>
+        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, SpriteEffects effects)
         {
             Draw(sb, dest, color, effects, 0f, Vector2.Zero);
         }
 
         /// <summary>
-        /// Draws a triangle
+        /// Draws a triangle.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="dest">Destination rectangle</param>
-        /// <param name="color">Color of the box</param>
-        /// <param name="effects">SpriteEffects to use</param>
-        /// <param name="rotation">Rotation in radians</param>
-        /// <param name="origin">Relative origin of the rotation</param>
-        public static void Draw(SpriteBatch sb, Rectangle dest, Color color, SpriteEffects effects, float rotation, Vector2 origin)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="dest">Destination rectangle.</param>
+        /// <param name="color">Color of the box.</param>
+        /// <param name="effects">SpriteEffects to use.</param>
+        /// <param name="rotation">Rotation in radians.</param>
+        /// <param name="origin">Relative origin of the rotation.</param>
+        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, SpriteEffects effects, float rotation, Vector2 origin)
         {
             LoadGrh();
             _triangleGrh.Draw(sb, dest, color, effects, rotation, origin);
         }
 
         /// <summary>
-        /// Loads the _blankGrh, if needed, for drawing the triangle
+        /// Loads the _blankGrh, if needed, for drawing the triangle.
         /// </summary>
         static void LoadGrh()
         {

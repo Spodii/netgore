@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Guilds
@@ -76,8 +77,8 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Draws the Control.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             if (GuildInfo != null && GuildInfo.InGuild)
             {

@@ -41,7 +41,7 @@ namespace DemoGame.Client
             _statusEffects.Add(statusEffectType, power, secsLeft, GetTime());
         }
 
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             int currentTime = GetTime();
 
@@ -174,7 +174,7 @@ namespace DemoGame.Client
                 get { return _statusEffectType; }
             }
 
-            public void Draw(SpriteBatch sb, Vector2 position, int currentTime)
+            public void Draw(ISpriteBatch sb, Vector2 position, int currentTime)
             {
                 _grh.Update(currentTime);
                 _grh.Draw(sb, position);

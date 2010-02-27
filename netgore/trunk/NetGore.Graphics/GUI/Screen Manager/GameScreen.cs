@@ -173,9 +173,9 @@ namespace NetGore.Graphics.GUI
         /// there is often no need to clear the screen. This will only be called while the screen is the
         /// active screen.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
         /// <param name="gameTime">The current game time.</param>
-        public virtual void Draw(SpriteBatch spriteBatch, int gameTime)
+        public virtual void Draw(ISpriteBatch spriteBatch, int gameTime)
         {
             spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
             GUIManager.Draw(spriteBatch);

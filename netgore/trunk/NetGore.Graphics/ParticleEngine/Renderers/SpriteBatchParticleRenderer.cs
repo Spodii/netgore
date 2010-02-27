@@ -16,9 +16,9 @@ namespace NetGore.Graphics.ParticleEngine
         SpriteBlendMode _startingBlendMode = SpriteBlendMode.AlphaBlend;
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteBatch"/> used to draw.
+        /// Gets or sets the <see cref="ISpriteBatch"/> used to draw.
         /// </summary>
-        public SpriteBatch SpriteBatch { get; set; }
+        public ISpriteBatch SpriteBatch { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="SpriteBlendMode"/> the <see cref="SpriteBatch"/> is using

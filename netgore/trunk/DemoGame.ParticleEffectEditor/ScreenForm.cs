@@ -113,7 +113,7 @@ namespace DemoGame.ParticleEffectEditor
         /// Main entry point for all the screen drawing.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch.</param>
-        public void DrawGame(SpriteBatch spriteBatch)
+        public void DrawGame(ISpriteBatch spriteBatch)
         {
             if (_renderer == null)
                 _renderer = new SpriteBatchParticleRenderer { SpriteBatch = spriteBatch };

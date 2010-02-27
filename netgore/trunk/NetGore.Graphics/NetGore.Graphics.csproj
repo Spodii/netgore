@@ -204,7 +204,7 @@
     <Compile Include="Skeleton\Body\SkeletonBodyInfo.cs" />
     <Compile Include="Skeleton\Body\SkeletonBodyItemInfo.cs" />
     <Compile Include="Skeleton\SkeletonFrame.cs" />
-    <Compile Include="Extensions\SpriteBatchExtensions.cs" />
+    <Compile Include="Extensions\ISpriteBatchExtensions.cs" />
     <Compile Include="Primitives\XNAArrow.cs" />
     <Compile Include="Primitives\XNARectangle.cs" />
     <Compile Include="FrameCounter.cs" />

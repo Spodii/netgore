@@ -74,7 +74,7 @@ namespace NetGore.Graphics
         /// <param name="map">The map.</param>
         /// <param name="layer">The layer.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
-        void Map_BeginDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        void Map_BeginDrawLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
         {
             Debug.Assert(Map == map, "How did we get an event from the wrong map?");
             Debug.Assert(spriteBatch != null);
@@ -91,7 +91,7 @@ namespace NetGore.Graphics
         /// <param name="map">The map.</param>
         /// <param name="layer">The layer.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
-        void Map_EndDrawLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        void Map_EndDrawLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
         {
             Debug.Assert(Map == map, "How did we get an event from the wrong map?");
             Debug.Assert(spriteBatch != null);

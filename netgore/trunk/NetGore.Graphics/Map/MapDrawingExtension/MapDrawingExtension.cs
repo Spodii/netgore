@@ -21,8 +21,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that was just drawn.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected virtual void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected virtual void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
         {
         }
 
@@ -31,8 +31,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that is going to be drawn.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected virtual void HandleDrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected virtual void HandleDrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
         {
         }
 
@@ -48,8 +48,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that was just drawn.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        void IMapDrawingExtension.DrawAfterLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        void IMapDrawingExtension.DrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
         {
             if (!Enabled)
                 return;
@@ -62,8 +62,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that is going to be drawn.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        void IMapDrawingExtension.DrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        void IMapDrawingExtension.DrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
         {
             if (!Enabled)
                 return;

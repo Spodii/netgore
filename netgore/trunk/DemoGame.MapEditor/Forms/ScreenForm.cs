@@ -565,7 +565,7 @@ namespace DemoGame.MapEditor
         /// Draws the game.
         /// </summary>
         /// <param name="sb">The sprite batch.</param>
-        void DrawGame(SpriteBatch sb)
+        void DrawGame(ISpriteBatch sb)
         {
             // Clear the background
             GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);

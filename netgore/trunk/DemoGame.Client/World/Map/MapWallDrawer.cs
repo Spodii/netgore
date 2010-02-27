@@ -15,8 +15,8 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that was just drawn.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
         {
             if (layer != MapRenderLayer.SpriteForeground)
                 return;

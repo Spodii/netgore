@@ -153,12 +153,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the StyledText to the <paramref name="spriteBatch"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw the StyledText to.</param>
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw the StyledText to.</param>
         /// <param name="spriteFont">SpriteFont to use for drawing the characters.</param>
         /// <param name="position">Top-left corner of where to begin drawing the StyledText.</param>
         /// <param name="defaultColor">The default color to use for drawing the text. Only used if the
         /// <see cref="Color"/> is equal to <see cref="ColorForDefault"/>.</param>
-        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont, Vector2 position, Color defaultColor)
+        public void Draw(ISpriteBatch spriteBatch, SpriteFont spriteFont, Vector2 position, Color defaultColor)
         {
             var colorToUse = (Color == ColorForDefault ? defaultColor : Color);
 

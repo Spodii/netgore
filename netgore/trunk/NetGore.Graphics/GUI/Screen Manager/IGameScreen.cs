@@ -66,9 +66,9 @@ namespace NetGore.Graphics.GUI
         /// there is often no need to clear the screen. This will only be called while the screen is the 
         /// active screen.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
         /// <param name="gameTime">The current game time.</param>
-        void Draw(SpriteBatch spriteBatch, int gameTime);
+        void Draw(ISpriteBatch spriteBatch, int gameTime);
 
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been

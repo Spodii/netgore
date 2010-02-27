@@ -485,7 +485,7 @@ namespace NetGore.Graphics
                 return ret;
             }
 
-            void DrawAtlasDrawingHandler(SpriteBatch sb, int padding, ICollection<AtlasTextureItem> successful)
+            void DrawAtlasDrawingHandler(ISpriteBatch sb, int padding, ICollection<AtlasTextureItem> successful)
             {
                 // Draw every atlas item to the texture
                 sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.SaveState);
@@ -566,13 +566,13 @@ namespace NetGore.Graphics
             }
 
             /// <summary>
-            /// Draws a single item the atlas through a <see cref="SpriteBatch"/>.
+            /// Draws a single item the atlas through a <see cref="ISpriteBatch"/>.
             /// </summary>
-            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
             /// <param name="texture">The source texture.</param>
             /// <param name="dest">The drawing destination on the atlas.</param>
             /// <param name="src">The source rectangle to draw from the <paramref name="texture"/>.</param>
-            static void DrawToAtlas(SpriteBatch spriteBatch, Texture2D texture, Vector2 dest, Rectangle src)
+            static void DrawToAtlas(ISpriteBatch spriteBatch, Texture2D texture, Vector2 dest, Rectangle src)
             {
                 spriteBatch.Draw(texture, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }

@@ -7,7 +7,7 @@ namespace NetGore.Graphics
 {
     public static class XNAArrow
     {
-        public static void Draw(SpriteBatch sb, Vector2 source, Vector2 dest, Color color)
+        public static void Draw(ISpriteBatch sb, Vector2 source, Vector2 dest, Color color)
         {
             float dist = Vector2.Distance(source, dest);
             float angle = GetAngle(source, dest);

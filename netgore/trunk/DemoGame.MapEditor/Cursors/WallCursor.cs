@@ -80,8 +80,8 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the cursor's selection layer,
         /// which displays a selection box for when selecting multiple objects.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
-        public override void DrawSelection(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public override void DrawSelection(ISpriteBatch spriteBatch)
         {
             Vector2 cursorPos = Container.CursorPos;
 

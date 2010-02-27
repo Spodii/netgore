@@ -25,10 +25,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the map borders.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="map">Map to draw the borders for.</param>
         /// <param name="camera">Camera used to view the map.</param>
-        public virtual void Draw(SpriteBatch sb, IMap map, ICamera2D camera)
+        public virtual void Draw(ISpriteBatch sb, IMap map, ICamera2D camera)
         {
             if (sb == null || sb.IsDisposed)
                 return;
@@ -73,10 +73,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws a border.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="min">Minimum point to draw.</param>
         /// <param name="max">Maximum point to draw.</param>
-        protected virtual void DrawBorder(SpriteBatch sb, Vector2 min, Vector2 max)
+        protected virtual void DrawBorder(ISpriteBatch sb, Vector2 min, Vector2 max)
         {
             Color drawColor = new Color(255, 0, 0, 175);
             XNARectangle.Draw(sb, CreateRect(min, max), drawColor);

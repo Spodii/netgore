@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
@@ -14,42 +15,42 @@ namespace DemoGame.Client
     public class DamageText : IPoolable
     {
         /// <summary>
-        /// Gravity to apply to the text (has nothing to do with the World's gravity)
+        /// Gravity to apply to the text (has nothing to do with the World's gravity).
         /// </summary>
         static readonly Vector2 _gravity = new Vector2(0, 0.05f);
 
         /// <summary>
-        /// Random number generator
+        /// Random number generator.
         /// </summary>
         static readonly Random _random = new Random();
 
         /// <summary>
-        /// Current alpha of the text
+        /// Current alpha of the text.
         /// </summary>
         float _alpha;
 
         /// <summary>
-        /// Time at which the text was last updated
+        /// Time at which the text was last updated.
         /// </summary>
         int _lastUpdate;
 
         /// <summary>
-        /// Current position of the text
+        /// Current position of the text.
         /// </summary>
         Vector2 _pos;
 
         /// <summary>
-        /// The text to draw
+        /// The text to draw.
         /// </summary>
         string _text;
 
         /// <summary>
-        /// Current velocity of the text
+        /// Current velocity of the text.
         /// </summary>
         Vector2 _velocity;
 
         /// <summary>
-        /// Gets the alpha value used when drawing the DamageText
+        /// Gets the alpha value used when drawing the DamageText.
         /// </summary>
         public float Alpha
         {
@@ -57,11 +58,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Activates the DamageText
+        /// Activates the DamageText.
         /// </summary>
-        /// <param name="damage">Damage value to display</param>
-        /// <param name="entity">Entity the damage was done to</param>
-        /// <param name="currTime">Current time</param>
+        /// <param name="damage">Damage value to display.</param>
+        /// <param name="entity">Entity the damage was done to.</param>
+        /// <param name="currTime">Current time.</param>
         public void Activate(int damage, Entity entity, int currTime)
         {
             if (entity == null)
@@ -81,19 +82,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the DamageText
+        /// Draws the DamageText.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="sf">SpriteFont to draw with</param>
-        public void Draw(SpriteBatch sb, SpriteFont sf)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="sf">SpriteFont to draw with.</param>
+        public void Draw(ISpriteBatch sb, SpriteFont sf)
         {
             sb.DrawString(sf, _text, _pos.Floor(), new Color(255, 255, 255, (byte)_alpha));
         }
 
         /// <summary>
-        /// Updates the DamageText
+        /// Updates the DamageText.
         /// </summary>
-        /// <param name="currTime">Current time</param>
+        /// <param name="currTime">Current time.</param>
         public void Update(int currTime)
         {
             // Get the delta time

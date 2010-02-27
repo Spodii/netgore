@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
 namespace NetGore.Features.Quests
@@ -158,8 +159,8 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Draws the Control.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             // Check if we need to update the size of the items list
             if (_lstQuests.Items.Count() != _lastItemsListSize)

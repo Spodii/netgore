@@ -18,7 +18,7 @@ namespace DemoGame.GUITester
         readonly GraphicsDeviceManager _graphics;
         SpriteFont _font;
         IGUIManager _gui;
-        SpriteBatch _sb;
+        ISpriteBatch _sb;
         TextBox _textBox;
         ControlBorder _topBorder;
         Form topForm;
@@ -64,7 +64,7 @@ namespace DemoGame.GUITester
 
         protected override void LoadContent()
         {
-            _sb = new SpriteBatch(GraphicsDevice);
+            _sb = new RoundedXnaSpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
             GrhInfo.Load(ContentPaths.Build, Content);
 
