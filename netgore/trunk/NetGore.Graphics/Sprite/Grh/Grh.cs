@@ -140,9 +140,9 @@ namespace NetGore.Graphics
         /// Performs a detailed check to ensure the Grh can be drawn without problem. This should be called before
         /// any drawing is done!
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <returns>True if it is safe for the Grh to draw to the <paramref name="spriteBatch"/>, else false.</returns>
-        bool CanDrawGrh(SpriteBatch spriteBatch)
+        bool CanDrawGrh(ISpriteBatch spriteBatch)
         {
             // Invalid GrhData
             if (GrhData == null)
@@ -184,11 +184,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch.
+        /// Draws the current frame of the <see cref="Grh"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to use to draw.</param>
         /// <param name="dest">Top-left corner pixel of the destination.</param>
-        public void Draw(SpriteBatch sb, Vector2 dest)
+        public void Draw(ISpriteBatch sb, Vector2 dest)
         {
             if (!CanDrawGrh(sb))
                 return;
@@ -197,13 +197,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch.
+        /// Draws the current frame of the <see cref="Grh"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
         /// <param name="dest">Top-left corner pixel of the destination.</param>
         /// <param name="color">Color of the sprite (default Color.White).</param>
         /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
-        public void Draw(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect)
+        public void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect)
         {
             if (!CanDrawGrh(sb))
                 return;
@@ -212,16 +212,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch.
+        /// Draws the current frame of the <see cref="Grh"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
         /// <param name="dest">Top-left corner pixel of the destination.</param>
         /// <param name="color">Color of the sprite (default Color.White).</param>
         /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
         /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
         /// <param name="scale">Uniform multiply by which to scale the width and height.</param>
-        public void Draw(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
+        public void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
                          float scale)
         {
             if (!CanDrawGrh(sb))
@@ -231,16 +231,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch.
+        /// Draws the current frame of the <see cref="Grh"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
         /// <param name="dest">Top-left corner pixel of the destination.</param>
         /// <param name="color">Color of the sprite (default Color.White).</param>
         /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
         /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
         /// <param name="scale">Vector2 defining the scale.</param>
-        public void Draw(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
+        public void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
                          Vector2 scale)
         {
             if (!CanDrawGrh(sb))
@@ -250,15 +250,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch.
+        /// Draws the current frame of the <see cref="Grh"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
         /// <param name="dest">Destination rectangle.</param>
         /// <param name="color">Color of the sprite (default Color.White).</param>
         /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
         /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
-        public void Draw(SpriteBatch sb, Rectangle dest, Color color, SpriteEffects effect, float rotation, Vector2 origin)
+        public void Draw(ISpriteBatch sb, Rectangle dest, Color color, SpriteEffects effect, float rotation, Vector2 origin)
         {
             if (!CanDrawGrh(sb))
                 return;
@@ -410,12 +410,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch.
+        /// Draws the current frame of the <see cref="Grh"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
         /// <param name="dest">Top-left corner pixel of the destination.</param>
         /// <param name="color">Color of the sprite (default Color.White).</param>
-        public void Draw(SpriteBatch sb, Vector2 dest, Color color)
+        public void Draw(ISpriteBatch sb, Vector2 dest, Color color)
         {
             if (!CanDrawGrh(sb))
                 return;
@@ -424,12 +424,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch.
+        /// Draws the current frame of the <see cref="Grh"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
         /// <param name="dest">Destination rectangle to draw to.</param>
         /// <param name="color">Color of the sprite (default Color.White).</param>
-        public void Draw(SpriteBatch sb, Rectangle dest, Color color)
+        public void Draw(ISpriteBatch sb, Rectangle dest, Color color)
         {
             if (!CanDrawGrh(sb))
                 return;

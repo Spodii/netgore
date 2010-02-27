@@ -275,7 +275,7 @@ namespace NetGore.EditorTools
             txtH.Enabled = enabled;
         }
 
-        public void Draw(SpriteBatch sb)
+        public void Draw(ISpriteBatch sb)
         {
             // Update the Grh first
             _grh.Update((int)_stopwatch.ElapsedMilliseconds);

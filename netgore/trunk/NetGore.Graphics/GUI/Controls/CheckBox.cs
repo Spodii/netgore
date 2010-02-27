@@ -237,10 +237,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws the control
+        /// Draws the control.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             // Draw the border
             Border.Draw(spriteBatch, this);

@@ -231,8 +231,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Makes the object draw itself.
         /// </summary>
-        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
+        public void Draw(ISpriteBatch sb)
         {
             if (BeforeDraw != null)
                 BeforeDraw(this, sb);

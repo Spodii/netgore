@@ -39,8 +39,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="skeleton">The <see cref="Skeleton"/> to draw.</param>
         /// <param name="camera">Camera to use.</param>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw with.</param>
-        public void Draw(Skeleton skeleton, ICamera2D camera, SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
+        public void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb)
         {
             Draw(skeleton, camera, sb, null);
         }
@@ -50,9 +50,9 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="skeleton">The <see cref="Skeleton"/> to draw.</param>
         /// <param name="camera">Camera to use.</param>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
         /// <param name="selectedNode">The <see cref="SkeletonNode"/> to draw as selected.</param>
-        public void Draw(Skeleton skeleton, ICamera2D camera, SpriteBatch sb, SkeletonNode selectedNode)
+        public void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb, SkeletonNode selectedNode)
         {
             if (skeleton == null)
             {
@@ -89,7 +89,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Loads the static Grhs if needed
+        /// Loads the static Grhs if needed.
         /// </summary>
         static void LoadStaticGrhs()
         {
@@ -103,14 +103,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Recursively draws the joints and bones of a skeleton
+        /// Recursively draws the joints and bones of a skeleton.
         /// </summary>
-        /// <param name="camera">Camera to use</param>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="selectedNode">SpriteBatch to draw to</param>
-        /// <param name="node">Current node being drawn</param>
-        /// <param name="colorIndex">Index of the color to use from the ColorList</param>
-        static void RecursiveDraw(ICamera2D camera, SpriteBatch sb, SkeletonNode selectedNode, SkeletonNode node, int colorIndex)
+        /// <param name="camera">Camera to use.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="selectedNode">SpriteBatch to draw to.</param>
+        /// <param name="node">Current node being drawn.</param>
+        /// <param name="colorIndex">Index of the color to use from the ColorList.</param>
+        static void RecursiveDraw(ICamera2D camera, ISpriteBatch sb, SkeletonNode selectedNode, SkeletonNode node, int colorIndex)
         {
             // Find the color of the joint
             Color color = _colorList[colorIndex];

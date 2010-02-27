@@ -192,8 +192,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the <see cref="Tooltip"/>.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw the <see cref="Tooltip"/> with.</param>
-        public virtual void Draw(SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw the <see cref="Tooltip"/> with.</param>
+        public virtual void Draw(ISpriteBatch sb)
         {
             if (sb == null)
                 throw new ArgumentNullException("sb");

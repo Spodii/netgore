@@ -112,8 +112,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws all of the <see cref="ChatBubble"/>s in this <see cref="ChatBubbleManagerBase"/>.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             foreach (var bubble in _chatBubbles.Values)
             {

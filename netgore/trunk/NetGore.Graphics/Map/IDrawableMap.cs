@@ -33,7 +33,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the map.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
-        void Draw(SpriteBatch spriteBatch);
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw with.</param>
+        void Draw(ISpriteBatch spriteBatch);
     }
 }

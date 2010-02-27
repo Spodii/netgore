@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Uses an interpolation to animate between multiple skeletons
+    /// Uses an interpolation to animate between multiple skeletons.
     /// </summary>
     public class SkeletonAnimation
     {
@@ -21,27 +21,27 @@ namespace NetGore.Graphics
         readonly Skeleton _skel;
 
         /// <summary>
-        /// Current keyframe
+        /// Current keyframe.
         /// </summary>
         SkeletonFrame _currFrame;
 
         /// <summary>
-        /// Current frame (unrounded)
+        /// Current frame (unrounded).
         /// </summary>
         float _frame = 0.0f;
 
         /// <summary>
-        /// Time the skeleton was last updated
+        /// Time the skeleton was last updated.
         /// </summary>
         int _lastTime = 0;
 
         /// <summary>
-        /// Skeleton animation modifier
+        /// Skeleton animation modifier.
         /// </summary>
         SkeletonAnimation _mod = null;
 
         /// <summary>
-        /// Next keyframe
+        /// Next keyframe.
         /// </summary>
         SkeletonFrame _nextFrame;
 
@@ -52,30 +52,30 @@ namespace NetGore.Graphics
         SkeletonAnimation _parent = null;
 
         /// <summary>
-        /// Scaling modifier
+        /// Scaling modifier.
         /// </summary>
         float _scale = 1.0f;
 
         /// <summary>
-        /// Skeleton body information
+        /// Skeleton body information.
         /// </summary>
         SkeletonBody _skelBody = null;
 
         /// <summary>
-        /// Contains the frames used to animate the skeleton
+        /// Contains the frames used to animate the skeleton.
         /// </summary>
         SkeletonSet _skelSet;
 
         /// <summary>
-        /// Speed modifier for animating
+        /// Speed modifier for animating.
         /// </summary>
         float _speed = 1.0f;
 
         /// <summary>
-        /// Skeleton animation constructor
+        /// Initializes a new instance of the <see cref="SkeletonAnimation"/> class.
         /// </summary>
-        /// <param name="time">Current time</param>
-        /// <param name="skeletonSet">SkeletonSet to use for the keyframes</param>
+        /// <param name="time">Current time.</param>
+        /// <param name="skeletonSet">SkeletonSet to use for the keyframes.</param>
         public SkeletonAnimation(int time, SkeletonSet skeletonSet)
         {
             if (skeletonSet == null)
@@ -91,10 +91,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Skeleton animaiton constructor
+        /// Initializes a new instance of the <see cref="SkeletonAnimation"/> class.
         /// </summary>
-        /// <param name="time">Current time</param>
-        /// <param name="frame">Single frame to use for the keyframe</param>
+        /// <param name="time">Current time.</param>
+        /// <param name="frame">Single frame to use for the keyframe.</param>
         public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[] { frame }))
         {
         }
@@ -105,7 +105,7 @@ namespace NetGore.Graphics
         public event EventHandler Looped;
 
         /// <summary>
-        /// Gets a List of the additional layers that can be stacked on top of the original
+        /// Gets a List of the additional layers that can be stacked on top of the original.
         /// <see cref="SkeletonBody"/>.
         /// </summary>
         public List<SkeletonBody> BodyLayers
@@ -114,7 +114,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the skeleton for the current frame
+        /// Gets the skeleton for the current frame.
         /// </summary>
         public SkeletonFrame CurrentFrame
         {
@@ -122,7 +122,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the frame number of the animation
+        /// Gets the frame number of the animation.
         /// </summary>
         public float Frame
         {
@@ -130,7 +130,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the SkeletonAnimation used to modify this SkeletonAnimation
+        /// Gets the SkeletonAnimation used to modify this SkeletonAnimation.
         /// </summary>
         public SkeletonAnimation Modifier
         {
@@ -138,7 +138,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the skeleton for the next frame
+        /// Gets the skeleton for the next frame.
         /// </summary>
         public SkeletonFrame NextFrame
         {
@@ -146,7 +146,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the scale of the resulting skeleton
+        /// Gets or sets the scale of the resulting skeleton.
         /// </summary>
         public float Scale
         {
@@ -155,7 +155,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the skeleton used by the animation to interpolate between frames and draw
+        /// Gets the skeleton used by the animation to interpolate between frames and draw.
         /// </summary>
         public Skeleton Skeleton
         {
@@ -163,7 +163,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the skeleton body used by the animator
+        /// Gets the skeleton body used by the animator.
         /// </summary>
         public SkeletonBody SkeletonBody
         {
@@ -172,7 +172,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the skeleton set currently in use by the animator
+        /// Gets the skeleton set currently in use by the animator.
         /// </summary>
         public SkeletonSet SkeletonSet
         {
@@ -180,7 +180,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the speed multiplier of the animation in percent (1.0 for normal speed)
+        /// Gets or sets the speed multiplier of the animation in percent (1.0 for normal speed).
         /// </summary>
         public float Speed
         {
@@ -189,11 +189,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Adds a SkeletonAnimation modifier to this SkeletonAnimation
+        /// Adds a SkeletonAnimation modifier to this SkeletonAnimation.
         /// </summary>
-        /// <param name="modifier">SkeletonAnimation to use as a modifier</param>
+        /// <param name="modifier">SkeletonAnimation to use as a modifier.</param>
         /// <param name="loop">If true, the modifier will loop forever until Detach() is called on the
-        /// modifier or RemoveModifiers() is called on the parent</param>
+        /// modifier or RemoveModifiers() is called on the parent.</param>
         public void AddModifier(SkeletonAnimation modifier, bool loop)
         {
             if (modifier == null)
@@ -216,18 +216,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Adds a SkeletonAnimation modifier to this SkeletonAnimation
+        /// Adds a SkeletonAnimation modifier to this SkeletonAnimation.
         /// </summary>
-        /// <param name="modifier">SkeletonAnimation to use as a modifier</param>
+        /// <param name="modifier">SkeletonAnimation to use as a modifier.</param>
         public void AddModifier(SkeletonAnimation modifier)
         {
             AddModifier(modifier, false);
         }
 
         /// <summary>
-        /// Changes the SkeletonSet used to animate
+        /// Changes the SkeletonSet used to animate.
         /// </summary>
-        /// <param name="newSet">New SkeletonSet to use</param>
+        /// <param name="newSet">New SkeletonSet to use.</param>
         public void ChangeSet(SkeletonSet newSet)
         {
             if (newSet == null)
@@ -291,7 +291,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// If the SkeletonAnimation is used as a modifier, this will detach it from its parent
+        /// If the SkeletonAnimation is used as a modifier, this will detach it from its parent.
         /// </summary>
         public void Detach()
         {
@@ -303,31 +303,32 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the skeleton animation
+        /// Draws the skeleton animation.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             Draw(sb, Vector2.Zero, SpriteEffects.None);
         }
 
         /// <summary>
-        /// Draws the skeleton animation
+        /// Draws the skeleton animation.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="position">Position offset to draw at</param>
-        public void Draw(SpriteBatch sb, Vector2 position)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="position">Position offset to draw at.</param>
+        public void Draw(ISpriteBatch sb, Vector2 position)
         {
             Draw(sb, position, SpriteEffects.None);
         }
 
         /// <summary>
-        /// Draws the skeleton animation
+        /// Draws the skeleton animation.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="position">Position offset to draw at</param>
-        /// <param name="effect">SpriteEffect to use when drawing</param>
-        public void Draw(SpriteBatch sb, Vector2 position, Color color, SpriteEffects effect)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="position">Position offset to draw at.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="effect">SpriteEffect to use when drawing.</param>
+        public void Draw(ISpriteBatch sb, Vector2 position, Color color, SpriteEffects effect)
         {
             if (sb == null)
             {
@@ -363,29 +364,29 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the skeleton animation
+        /// Draws the skeleton animation.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="position">Position offset to draw at</param>
-        /// <param name="effect">SpriteEffect to use when drawing</param>
-        public void Draw(SpriteBatch sb, Vector2 position, SpriteEffects effect)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="position">Position offset to draw at.</param>
+        /// <param name="effect">SpriteEffect to use when drawing.</param>
+        public void Draw(ISpriteBatch sb, Vector2 position, SpriteEffects effect)
         {
             Draw(sb, position, Color.White, effect);
         }
 
         /// <summary>
-        /// Draws the skeleton animation
+        /// Draws the skeleton animation.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="position">Position offset to draw at</param>
-        /// <param name="color">The color to draw with</param>
-        public void Draw(SpriteBatch sb, Vector2 position, Color color)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="position">Position offset to draw at.</param>
+        /// <param name="color">The color to draw with.</param>
+        public void Draw(ISpriteBatch sb, Vector2 position, Color color)
         {
             Draw(sb, position, color, SpriteEffects.None);
         }
 
         /// <summary>
-        /// Removes a SkeletonAnimation after a single loop by hooking to the OnLoop event
+        /// Removes a SkeletonAnimation after a single loop by hooking to the OnLoop event.
         /// </summary>
         static void modifier_Looped(object sender, EventArgs e)
         {
@@ -404,14 +405,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Recursively updates all the children of a node
+        /// Recursively updates all the children of a node.
         /// </summary>
-        /// <param name="srcA">Source skeleton node for the current frame</param>
-        /// <param name="srcB">Source skeleton node for the next frame</param>
-        /// <param name="srcP">Parent skeleton node (use null if theres no parent)</param>
-        /// <param name="dest">Destination skeleton node to have the two sources applied to</param>
+        /// <param name="srcA">Source skeleton node for the current frame.</param>
+        /// <param name="srcB">Source skeleton node for the next frame.</param>
+        /// <param name="srcP">Parent skeleton node (use null if theres no parent).</param>
+        /// <param name="dest">Destination skeleton node to have the two sources applied to.</param>
         /// <param name="framePercent">A value between 0.0 and 1.0 stating how far along the animation is
-        /// from the current frame</param>
+        /// from the current frame.</param>
         void RecursiveUpdate(SkeletonNode srcA, SkeletonNode srcB, SkeletonNode srcP, SkeletonNode dest, float framePercent)
         {
             // Set the position
@@ -452,10 +453,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the parent SkeletonAnimation that this modifier modifies
+        /// Updates the parent SkeletonAnimation that this modifier modifies.
         /// </summary>
-        /// <param name="src">Source root SkeletonNode</param>
-        /// <param name="dest">Destination root SkeletonNode</param>
+        /// <param name="src">Source root SkeletonNode.</param>
+        /// <param name="dest">Destination root SkeletonNode.</param>
         static void RecursiveUpdateParent(SkeletonNode src, SkeletonNode dest)
         {
             // Update modified values
@@ -488,9 +489,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the skeleton animation
+        /// Updates the skeleton animation.
         /// </summary>
-        /// <param name="currentTime">Current time</param>
+        /// <param name="currentTime">Current time.</param>
         public void Update(int currentTime)
         {
             // If theres no frames and no modifier, don't update

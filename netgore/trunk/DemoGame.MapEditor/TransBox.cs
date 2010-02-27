@@ -14,12 +14,12 @@ namespace DemoGame.MapEditor
     public class TransBox
     {
         /// <summary>
-        /// Color for a box connected to multiple walls
+        /// Color for a box connected to multiple walls.
         /// </summary>
         static readonly Color _colorGroup = new Color(0, 255, 0, 175);
 
         /// <summary>
-        /// Color for a normal box connected to a single wall
+        /// Color for a normal box connected to a single wall.
         /// </summary>
         static readonly Color _colorNormal = new Color(255, 255, 255, 175);
 
@@ -29,36 +29,36 @@ namespace DemoGame.MapEditor
         static Vector2 _scaleSize;
 
         /// <summary>
-        /// Area the box occupies
+        /// Area the box occupies.
         /// </summary>
         public readonly Rectangle Area;
 
         /// <summary>
-        /// Entity the box is attached to
+        /// Entity the box is attached to.
         /// </summary>
         public readonly Entity Entity;
 
         /// <summary>
-        /// Position (top-left corner) of the box
+        /// Position (top-left corner) of the box.
         /// </summary>
         public readonly Vector2 Position;
 
         /// <summary>
-        /// Type of transformation box
+        /// Type of transformation box.
         /// </summary>
         public readonly TransBoxType TransType;
 
         /// <summary>
-        /// Grh used to draw the TransBox
+        /// Grh used to draw the TransBox.
         /// </summary>
         readonly Grh _grh;
 
         /// <summary>
-        /// Creates a transformation box
+        /// Creates a transformation box.
         /// </summary>
-        /// <param name="transType">Type of transformation box</param>
-        /// <param name="entity">Entity to attach the box to</param>
-        /// <param name="position">Position to create the transformation box</param>
+        /// <param name="transType">Type of transformation box.</param>
+        /// <param name="entity">Entity to attach the box to.</param>
+        /// <param name="position">Position to create the transformation box.</param>
         public TransBox(TransBoxType transType, Entity entity, Vector2 position)
         {
             TransType = transType;
@@ -78,7 +78,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the GrhData for the moving icon
+        /// Gets the GrhData for the moving icon.
         /// </summary>
         public static GrhData Move
         {
@@ -86,7 +86,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the size of the moving icon
+        /// Gets the size of the moving icon.
         /// </summary>
         public static Vector2 MoveSize
         {
@@ -94,7 +94,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the GrhData for the scaling icon
+        /// Gets the GrhData for the scaling icon.
         /// </summary>
         public static GrhData Scale
         {
@@ -102,7 +102,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the size of the scaling icon
+        /// Gets the size of the scaling icon.
         /// </summary>
         public static Vector2 ScaleSize
         {
@@ -110,10 +110,10 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Draws the transformation box
+        /// Draws the transformation box.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             if (TransType == TransBoxType.Move)
             {
@@ -134,10 +134,10 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Initializes the TransBoxes
+        /// Initializes the TransBoxes.
         /// </summary>
-        /// <param name="moveIconData">GrhData for the move icon</param>
-        /// <param name="sizeIconData">GrhData for the resize icon</param>
+        /// <param name="moveIconData">GrhData for the move icon.</param>
+        /// <param name="sizeIconData">GrhData for the resize icon.</param>
         public static void Initialize(GrhData moveIconData, GrhData sizeIconData)
         {
             _move = moveIconData;
@@ -148,10 +148,10 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Creates a series of transformation boxes around an entity
+        /// Creates a series of transformation boxes around an entity.
         /// </summary>
-        /// <param name="entity">Entity to create the transformation boxes for</param>
-        /// <param name="destList">Pre-existing list to add the results to</param>
+        /// <param name="entity">Entity to create the transformation boxes for.</param>
+        /// <param name="destList">Pre-existing list to add the results to.</param>
         public static void SurroundEntity(Entity entity, ICollection<TransBox> destList)
         {
             var ret = SurroundEntity(entity);
@@ -162,9 +162,9 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Creates a series of transformation boxes around an entity
+        /// Creates a series of transformation boxes around an entity.
         /// </summary>
-        /// <param name="entity">Entity to create the transformation boxes for</param>
+        /// <param name="entity">Entity to create the transformation boxes for.</param>
         public static List<TransBox> SurroundEntity(Entity entity)
         {
             var ret = new List<TransBox>(9);

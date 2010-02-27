@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.EditorTools;
+using NetGore.Graphics;
 
 namespace DemoGame.ParticleEffectEditor
 {
@@ -12,7 +13,7 @@ namespace DemoGame.ParticleEffectEditor
         /// Derived classes override this to draw themselves using the GraphicsDevice.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
-        protected override void Draw(SpriteBatch spriteBatch)
+        protected override void Draw(ISpriteBatch spriteBatch)
         {
             ScreenForm screenToUse = ScreenForm;
             if (screenToUse == null)

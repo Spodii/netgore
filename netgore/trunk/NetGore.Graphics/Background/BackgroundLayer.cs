@@ -63,10 +63,10 @@ namespace NetGore.Graphics
         public BackgroundLayerLayout VerticalLayout { get; set; }
 
         /// <summary>
-        /// Draws the image to the specified SpriteBatch.
+        /// Draws the image to the specified <see cref="ISpriteBatch"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw the image to.</param>
-        public override void Draw(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw the image to.</param>
+        public override void Draw(ISpriteBatch spriteBatch)
         {
             Vector2 spriteSize = SpriteSourceSize;
 

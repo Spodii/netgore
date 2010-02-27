@@ -84,7 +84,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets a general-purpose <see cref="SpriteBatch"/> to use for drawing the screens.
         /// </summary>
-        SpriteBatch SpriteBatch { get; }
+        ISpriteBatch SpriteBatch { get; }
 
         /// <summary>
         /// Adds a <see cref="IGameScreen"/> to this manager.

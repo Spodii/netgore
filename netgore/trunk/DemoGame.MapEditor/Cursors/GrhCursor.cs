@@ -62,8 +62,8 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
-        public override void DrawInterface(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             // Selected Grh move box
             if (_mapGrhMoveBox != null)
@@ -74,8 +74,8 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the cursor's selection layer,
         /// which displays a selection box for when selecting multiple objects.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
-        public override void DrawSelection(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public override void DrawSelection(ISpriteBatch spriteBatch)
         {
             Vector2 cursorPos = Container.CursorPos;
 

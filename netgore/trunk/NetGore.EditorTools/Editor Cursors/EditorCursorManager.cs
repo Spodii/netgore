@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Collections;
+using NetGore.Graphics;
 using Color=System.Drawing.Color;
 
 namespace NetGore.EditorTools
@@ -226,8 +227,8 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Draws the interface for the current cursor.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
-        public void DrawInterface(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
+        public void DrawInterface(ISpriteBatch spriteBatch)
         {
             var cursor = GetCurrentCursor();
 
@@ -238,8 +239,8 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Draws the selection for the current cursor.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
-        public void DrawSelection(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
+        public void DrawSelection(ISpriteBatch spriteBatch)
         {
             var cursor = GetCurrentCursor();
 

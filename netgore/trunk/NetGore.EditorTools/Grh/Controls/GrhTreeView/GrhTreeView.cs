@@ -265,8 +265,8 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Draws the <see cref="GrhTreeView"/>.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             if (_editGrhDataForm != null)
                 _editGrhDataForm.Draw(sb);

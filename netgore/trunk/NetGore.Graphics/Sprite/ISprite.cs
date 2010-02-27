@@ -22,18 +22,18 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the <see cref="ISprite"/>.
         /// </summary>
-        /// <param name="spriteBatch"><see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="position">Position to draw to.</param>
         /// <param name="color"><see cref="Color"/> to draw with.</param>
-        void Draw(SpriteBatch spriteBatch, Vector2 position, Color color);
+        void Draw(ISpriteBatch spriteBatch, Vector2 position, Color color);
 
         /// <summary>
         /// Draws the <see cref="ISprite"/>.
         /// </summary>
-        /// <param name="spriteBatch"><see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="dest"><see cref="Rectangle"/> to draw to.</param>
         /// <param name="color"><see cref="Color"/> to draw with.</param>
-        void Draw(SpriteBatch spriteBatch, Rectangle dest, Color color);
+        void Draw(ISpriteBatch spriteBatch, Rectangle dest, Color color);
 
         /// <summary>
         /// Updates the <see cref="ISprite"/>.

@@ -95,8 +95,8 @@ namespace NetGore.Features.Emoticons
         /// <summary>
         /// Draws the emoticons in the <see cref="EmoticonDisplayManager"/>.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch spriteBatch)
         {
             foreach (var kvp in _activeEmoticons)
             {
@@ -179,9 +179,9 @@ namespace NetGore.Features.Emoticons
             /// <summary>
             /// Draws the emoticon.
             /// </summary>
-            /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
             /// <param name="position">The world position to draw the emoticon.</param>
-            public void Draw(SpriteBatch spriteBatch, Vector2 position)
+            public void Draw(ISpriteBatch spriteBatch, Vector2 position)
             {
                 // Check for a valid state
                 if (!IsValidStateToUse)

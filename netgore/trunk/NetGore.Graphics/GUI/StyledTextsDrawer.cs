@@ -68,10 +68,10 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the <see cref="StyledText"/>s in this <see cref="StyledTextsDrawer"/>.
         /// </summary>
-        /// <param name="sb">The SpriteBatch.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/>.</param>
         /// <param name="defaultColor">The default color.</param>
         /// <param name="offset">The offset to start drawing the text at.</param>
-        public void Draw(SpriteBatch sb, Color defaultColor, Vector2 offset)
+        public void Draw(ISpriteBatch sb, Color defaultColor, Vector2 offset)
         {
             foreach (StyledTextWithPosition item in _textsWithPos)
             {

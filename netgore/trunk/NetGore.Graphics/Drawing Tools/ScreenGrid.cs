@@ -107,9 +107,9 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the grid.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="camera">The <see cref="Camera2D"/> describing the view.</param>
-        public void Draw(SpriteBatch sb, ICamera2D camera)
+        public void Draw(ISpriteBatch sb, ICamera2D camera)
         {
             if (sb == null)
             {

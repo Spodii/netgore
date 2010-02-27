@@ -486,8 +486,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws all of the <see cref="Control"/>s in this <see cref="IGUIManager"/>.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing the <see cref="Control"/>s.</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing the <see cref="Control"/>s.</param>
+        public void Draw(ISpriteBatch spriteBatch)
         {
             // Iterate forward through the list so the last control is on top
             foreach (Control control in Controls)

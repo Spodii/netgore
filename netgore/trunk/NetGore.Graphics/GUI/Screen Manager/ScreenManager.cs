@@ -26,7 +26,7 @@ namespace NetGore.Graphics.GUI
         IGameScreen _activeScreen;
         IDrawingManager _drawingManager;
         SpriteFont _menuFont;
-        SpriteBatch _sb;
+        ISpriteBatch _sb;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenManager"/> class.
@@ -108,7 +108,7 @@ namespace NetGore.Graphics.GUI
         protected override void LoadContent()
         {
             // Read the global content used between screens
-            _sb = new SpriteBatch(GraphicsDevice);
+            _sb = new RoundedXnaSpriteBatch(GraphicsDevice);
             _menuFont = _content.Load<SpriteFont>("Font/Menu");
 
             // Tell the other screens to load their content, too
@@ -259,7 +259,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets a general-purpose <see cref="SpriteBatch"/> to use for drawing the screens.
         /// </summary>
-        public SpriteBatch SpriteBatch
+        public ISpriteBatch SpriteBatch
         {
             get { return _sb; }
         }

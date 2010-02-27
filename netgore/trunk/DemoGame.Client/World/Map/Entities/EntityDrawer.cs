@@ -12,41 +12,41 @@ namespace DemoGame.Client
     public static class EntityDrawer
     {
         /// <summary>
-        /// Color for an arrow
+        /// Color for an arrow.
         /// </summary>
         static readonly Color _arrowColor = new Color(255, 255, 255, 150);
 
         /// <summary>
-        /// Border color of the Entity
+        /// Border color of the Entity.
         /// </summary>
         static readonly Color _borderColor = new Color(0, 0, 0, 255);
 
         /// <summary>
-        /// Basic Entity color
+        /// Basic Entity color.
         /// </summary>
         static readonly Color _entityColor = new Color(0, 0, 255, 150);
 
         /// <summary>
-        /// Color of the destination of a TeleportEntity
+        /// Color of the destination of a TeleportEntity.
         /// </summary>
         static readonly Color _teleDestColor = new Color(255, 0, 0, 75);
 
         /// <summary>
-        /// Color of the source TeleportEntity
+        /// Color of the source TeleportEntity.
         /// </summary>
         static readonly Color _teleSourceColor = new Color(0, 255, 0, 150);
 
         /// <summary>
-        /// Color of WallEntities
+        /// Color of WallEntities.
         /// </summary>
         static readonly Color _wallColor = new Color(255, 255, 255, 100);
 
         /// <summary>
-        /// Draws an Entity
+        /// Draws an Entity.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="entity">Entity to draw</param>
-        public static void Draw(SpriteBatch sb, Entity entity)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="entity">Entity to draw.</param>
+        public static void Draw(ISpriteBatch sb, Entity entity)
         {
             WallEntityBase wallEntity;
             TeleportEntity teleportEntity;
@@ -64,11 +64,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws a TeleportEntity
+        /// Draws a TeleportEntity.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="tele">TeleportEntity to draw</param>
-        public static void Draw(SpriteBatch sb, TeleportEntity tele)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="tele">TeleportEntity to draw.</param>
+        public static void Draw(ISpriteBatch sb, TeleportEntity tele)
         {
             // Source
             Draw(sb, tele.ToRectangle(), _teleSourceColor);
@@ -84,11 +84,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws a WallEntity
+        /// Draws a WallEntity.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="wall">WallEntity to draw</param>
-        public static void Draw(SpriteBatch sb, WallEntityBase wall)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="wall">WallEntity to draw.</param>
+        public static void Draw(ISpriteBatch sb, WallEntityBase wall)
         {
             Draw(sb, wall, Vector2.Zero);
         }
@@ -96,10 +96,10 @@ namespace DemoGame.Client
         /// <summary>
         /// Draws a WallEntity
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to</param>
         /// <param name="wall">WallEntity to draw</param>
         /// <param name="offset">Offset to draw the WallEntity at from the original position</param>
-        public static void Draw(SpriteBatch sb, WallEntityBase wall, Vector2 offset)
+        public static void Draw(ISpriteBatch sb, WallEntityBase wall, Vector2 offset)
         {
             // Find the positon to draw to
             Vector2 p = wall.Position + offset;
@@ -112,10 +112,10 @@ namespace DemoGame.Client
         /// <summary>
         /// Draws a <see cref="Rectangle"/>.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="rect">The <see cref="Rectangle"/> to draw.</param>
         /// <param name="color">Color to draw the CollisionBox.</param>
-        static void Draw(SpriteBatch sb, Rectangle rect, Color color)
+        static void Draw(ISpriteBatch sb, Rectangle rect, Color color)
         {
             XNARectangle.Draw(sb, rect, color, _borderColor);
         }

@@ -497,7 +497,7 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
-        public void DrawGame(SpriteBatch sb)
+        public void DrawGame(ISpriteBatch sb)
         {
             GameScreen.GraphicsDevice.Clear(Microsoft.Xna.Framework.Graphics.Color.CornflowerBlue);
 

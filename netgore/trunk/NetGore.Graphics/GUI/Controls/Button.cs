@@ -45,7 +45,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the ControlBorder used for when the mouse is over the control
+        /// Gets or sets the ControlBorder used for when the mouse is over the control.
         /// </summary>
         public ControlBorder BorderOver
         {
@@ -54,7 +54,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the ControlBorder used for when the control is pressed
+        /// Gets or sets the ControlBorder used for when the control is pressed.
         /// </summary>
         public ControlBorder BorderPressed
         {
@@ -63,10 +63,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draw the Button
+        /// Draw the Button.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             // Find the border, and try using the default if null in case one of the
             // mouse over or pressed borders were not set

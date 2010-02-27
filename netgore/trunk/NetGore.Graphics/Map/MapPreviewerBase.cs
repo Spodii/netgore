@@ -112,9 +112,9 @@ namespace NetGore.Graphics
         /// Handles setting up the <see cref="SpriteBatch"/> and drawing the <paramref name="map"/>. This is where
         /// all the actual drawing to the preview map is done.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/> to use for drawing.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use for drawing.</param>
         /// <param name="map">The <see cref="IDrawableMap"/> to draw.</param>
-        protected virtual void DrawMap(SpriteBatch sb, IDrawableMap map)
+        protected virtual void DrawMap(ISpriteBatch sb, IDrawableMap map)
         {
             sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState, map.Camera.Matrix);
             map.Draw(sb);

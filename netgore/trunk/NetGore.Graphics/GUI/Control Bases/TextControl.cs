@@ -107,9 +107,9 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the text for the control.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="position">Position relative to the Control to draw the text.</param>
-        protected void DrawText(SpriteBatch spriteBatch, Vector2 position)
+        protected void DrawText(ISpriteBatch spriteBatch, Vector2 position)
         {
             if (!string.IsNullOrEmpty(Text) && Font != null)
                 spriteBatch.DrawString(Font, Text, (ScreenPosition + position).Floor(), _foreColor);

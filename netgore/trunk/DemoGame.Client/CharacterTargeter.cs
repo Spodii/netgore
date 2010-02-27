@@ -136,7 +136,7 @@ namespace DemoGame.Client
             get { return _world; }
         }
 
-        void MouseOverCharacter_AfterDraw(IDrawable sender, SpriteBatch sb)
+        void MouseOverCharacter_AfterDraw(IDrawable sender, ISpriteBatch sb)
         {
             if (sender == TargetCharacter)
                 return;
@@ -144,7 +144,7 @@ namespace DemoGame.Client
             sender.Color = _oldMouseOverColor;
         }
 
-        void MouseOverCharacter_BeforeDraw(IDrawable sender, SpriteBatch sb)
+        void MouseOverCharacter_BeforeDraw(IDrawable sender, ISpriteBatch sb)
         {
             if (sender == TargetCharacter)
                 return;
@@ -153,12 +153,12 @@ namespace DemoGame.Client
             sender.Color = _mouseOverColor;
         }
 
-        void TargetCharacter_AfterDraw(IDrawable sender, SpriteBatch sb)
+        void TargetCharacter_AfterDraw(IDrawable sender, ISpriteBatch sb)
         {
             sender.Color = _oldTargetColor;
         }
 
-        void TargetCharacter_BeforeDraw(IDrawable sender, SpriteBatch sb)
+        void TargetCharacter_BeforeDraw(IDrawable sender, ISpriteBatch sb)
         {
             _oldTargetColor = sender.Color;
             sender.Color = _targetColor;

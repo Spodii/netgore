@@ -39,8 +39,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the <see cref="ILight"/>.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
-        void Draw(SpriteBatch spriteBatch);
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw with.</param>
+        void Draw(ISpriteBatch spriteBatch);
 
         /// <summary>
         /// Translates this <see cref="ILight"/> relative to the current position.

@@ -42,7 +42,7 @@ namespace NetGore.Graphics.GUI
         bool _canSelect = true;
 
         int _currentPage = 1;
-        Action<SpriteBatch, Vector2, int> _itemDrawer;
+        Action<ISpriteBatch, Vector2, int> _itemDrawer;
         int _itemHeight = 12;
         IEnumerable<T> _items;
         StyledText _pageText = new StyledText("1/1");
@@ -158,7 +158,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets how to draw items in the list.
         /// </summary>
-        public Action<SpriteBatch, Vector2, int> ItemDrawer
+        public Action<ISpriteBatch, Vector2, int> ItemDrawer
         {
             get { return _itemDrawer; }
             set { _itemDrawer = value ?? GetDefaultItemDrawer(); }
@@ -313,8 +313,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the <see cref="Control"/>.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             // Border
             var sp = ScreenPosition;
@@ -335,7 +335,7 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        void DrawItems(SpriteBatch spriteBatch)
+        void DrawItems(ISpriteBatch spriteBatch)
         {
             if (Items == null)
                 return;
@@ -362,9 +362,9 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the selection region a selected item.
         /// </summary>
-        /// <param name="sb">The <see cref="SpriteBatch"/>.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/>.</param>
         /// <param name="area">The area to draw the selection.</param>
-        protected virtual void DrawSelectionRegion(SpriteBatch sb, Rectangle area)
+        protected virtual void DrawSelectionRegion(ISpriteBatch sb, Rectangle area)
         {
             XNARectangle.Draw(sb, area, new Color(100, 100, 255, 150));
         }
@@ -373,7 +373,7 @@ namespace NetGore.Graphics.GUI
         /// Gets the default item drawer.
         /// </summary>
         /// <returns>The default item drawer.</returns>
-        protected virtual Action<SpriteBatch, Vector2, int> GetDefaultItemDrawer()
+        protected virtual Action<ISpriteBatch, Vector2, int> GetDefaultItemDrawer()
         {
             return (sb, p, v) => sb.DrawString(Font, Items.ElementAtOrDefault(v).ToString(), p.Floor(), ForeColor);
         }

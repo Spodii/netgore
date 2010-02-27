@@ -31,7 +31,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets or sets the method used to draw this control.
         /// </summary>
-        public Action<SpriteBatch> DrawHandler { get; set; }
+        public Action<ISpriteBatch> DrawHandler { get; set; }
 
         /// <summary>
         /// Gets the <see cref="MouseButtons"/> current pressed.
@@ -49,8 +49,8 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Derived classes override this to draw themselves using the GraphicsDevice.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
-        protected override void Draw(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
+        protected override void Draw(ISpriteBatch spriteBatch)
         {
             if (UpdateHandler != null)
                 UpdateHandler();

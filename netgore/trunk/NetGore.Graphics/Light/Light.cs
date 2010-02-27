@@ -152,8 +152,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the <see cref="ILight"/>.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw with.</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw with.</param>
+        public void Draw(ISpriteBatch spriteBatch)
         {
             if (Sprite == null || !IsEnabled)
                 return;

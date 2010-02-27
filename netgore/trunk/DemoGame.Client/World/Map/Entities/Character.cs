@@ -104,8 +104,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Draws the Character's name.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
-        void DrawName(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        void DrawName(ISpriteBatch sb)
         {
             SpriteFont font = NameFont;
             if (font != null && !string.IsNullOrEmpty(Name))
@@ -119,11 +119,11 @@ namespace DemoGame.Client
         /// <summary>
         /// Draws a bar for the Character's SP.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="percent">The percent of the SP being drawn.</param>
         /// <param name="index">The 0-based index of the bar being drawn.</param>
         /// <param name="color">The color to draw the bar.</param>
-        void DrawSPBar(SpriteBatch sb, byte percent, byte index, Color color)
+        void DrawSPBar(ISpriteBatch sb, byte percent, byte index, Color color)
         {
             const float spBarWidth = 55;
             const float spBarHeight = 6;
@@ -315,8 +315,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Makes the object draw itself.
         /// </summary>
-        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
+        public void Draw(ISpriteBatch sb)
         {
             // Get the delta time
             int currentTime = GetTime();

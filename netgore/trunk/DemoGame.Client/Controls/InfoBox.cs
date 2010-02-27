@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
@@ -69,19 +70,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Adds a message to the InfoBox
+        /// Adds a message to the InfoBox.
         /// </summary>
-        /// <param name="message">Message to add</param>
+        /// <param name="message">Message to add.</param>
         public void Add(string message)
         {
             Add(message, _defaultColor);
         }
 
         /// <summary>
-        /// Adds a message to the InfoBox
+        /// Adds a message to the InfoBox.
         /// </summary>
-        /// <param name="message">Message to add</param>
-        /// <param name="color">Color of the message's text</param>
+        /// <param name="message">Message to add.</param>
+        /// <param name="color">Color of the message's text.</param>
         public void Add(string message, Color color)
         {
             ThreadAsserts.IsMainThread();
@@ -99,10 +100,10 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the InfoBox
+        /// Draws the InfoBox.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw with</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw with.</param>
+        public void Draw(ISpriteBatch sb)
         {
             ThreadAsserts.IsMainThread();
 
@@ -157,7 +158,7 @@ namespace DemoGame.Client
             public readonly float Width;
 
             /// <summary>
-            /// InfoBoxItem constructor.
+            /// Initializes a new instance of the <see cref="InfoBoxItem"/> struct.
             /// </summary>
             /// <param name="time">Current time.</param>
             /// <param name="msg">Message to display.</param>

@@ -60,8 +60,8 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use to draw.</param>
-        public override void DrawInterface(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }

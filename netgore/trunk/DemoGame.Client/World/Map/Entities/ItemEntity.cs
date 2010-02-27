@@ -125,16 +125,22 @@ namespace DemoGame.Client
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
-        /// not actually pick up this <see cref="Entity"/>
+        /// not actually pick up this <see cref="Entity"/>.
         /// </summary>
         /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="Entity"/></param>
-        /// <returns>True if this <see cref="Entity"/> can be picked up, else false</returns>
+        /// <returns>True if this <see cref="Entity"/> can be picked up, else false.</returns>
         public override bool CanPickup(CharacterEntity charEntity)
         {
             // Every character can try to pick up an item
             return true;
         }
 
+        /// <summary>
+        /// Checks if this item can be stacked with another item. To stack, both items must contain the same
+        /// stat modifiers, name, description, value, and graphic index.
+        /// </summary>
+        /// <param name="source">Item to check if can stack on this item</param>
+        /// <returns>True if the two items can stack on each other, else false</returns>
         public override bool CanStack(ItemEntityBase source)
         {
             throw new MethodAccessException("Client has no way to know if two ItemEntities can stack since it doesn't" +
@@ -145,18 +151,18 @@ namespace DemoGame.Client
         /// Creates a deep copy of the inheritor, which is a new class with the same values, and returns
         /// the copy as an ItemEntityBase.
         /// </summary>
-        /// <returns>A deep copy of the object</returns>
+        /// <returns>A deep copy of the object.</returns>
         public override ItemEntityBase DeepCopy()
         {
             return new ItemEntity(MapEntityIndex, Position, Size, GraphicIndex, _grh.LastUpdated);
         }
 
         /// <summary>
-        /// Draws the ItemEntity
+        /// Draws the ItemEntity.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="pos">Position to draw at</param>
-        public void Draw(SpriteBatch sb, Vector2 pos)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="pos">Position to draw at.</param>
+        public void Draw(ISpriteBatch sb, Vector2 pos)
         {
             if (sb == null)
                 throw new ArgumentNullException("sb");
@@ -175,10 +181,10 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Picks up this <see cref="Entity"/>
+        /// Picks up this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to pick up this <see cref="Entity"/></param>
-        /// <returns>True if this <see cref="Entity"/> was successfully picked up, else false</returns>
+        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to pick up this <see cref="Entity"/>.</param>
+        /// <returns>True if this <see cref="Entity"/> was successfully picked up, else false.</returns>
         public override bool Pickup(CharacterEntity charEntity)
         {
             const string errmsg = "Client is not allowed to pick up items.";
@@ -284,10 +290,10 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the ItemEntity
+        /// Draws the ItemEntity.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             Draw(sb, Position);
         }

@@ -12,18 +12,18 @@ namespace NetGore.Graphics
     public static class XNARectangle
     {
         /// <summary>
-        /// Grh for the System.Blank GrhData that is used to draw the rectangle
+        /// Grh for the System.Blank GrhData that is used to draw the rectangle.
         /// </summary>
         static Grh _blankGrh = null;
 
         /// <summary>
-        /// Draws a rectangle
+        /// Draws a rectangle.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="dest">Destination rectangle</param>
-        /// <param name="color">Color of the box</param>
-        /// <param name="borderColor">Color of the border to draw around the rectangle</param>
-        public static void Draw(SpriteBatch sb, Rectangle dest, Color color, Color borderColor)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="dest">Destination rectangle.</param>
+        /// <param name="color">Color of the box.</param>
+        /// <param name="borderColor">Color of the border to draw around the rectangle.</param>
+        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, Color borderColor)
         {
             LoadGrh();
             _blankGrh.Draw(sb, dest, color);
@@ -46,19 +46,19 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws a rectangle
+        /// Draws a rectangle.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="dest">Destination rectangle</param>
-        /// <param name="color">Color of the box</param>
-        public static void Draw(SpriteBatch sb, Rectangle dest, Color color)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="dest">Destination rectangle.</param>
+        /// <param name="color">Color of the box.</param>
+        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color)
         {
             LoadGrh();
             _blankGrh.Draw(sb, dest, color);
         }
 
         /// <summary>
-        /// Loads the _blankGrh, if needed, for drawing the rectangle
+        /// Loads the _blankGrh, if needed, for drawing the rectangle.
         /// </summary>
         static void LoadGrh()
         {

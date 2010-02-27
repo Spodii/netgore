@@ -14,7 +14,7 @@ namespace NetGore.Graphics
         Grh _defaultSprite;
         GraphicsDevice _gd;
         ResolveTexture2D _lightMap;
-        SpriteBatch _sb;
+        ISpriteBatch _sb;
 
         #region ILightManager Members
 
@@ -152,7 +152,7 @@ namespace NetGore.Graphics
             var pp = _gd.PresentationParameters;
             _lightMap = new ResolveTexture2D(_gd, pp.BackBufferWidth, pp.BackBufferHeight, 1, pp.BackBufferFormat);
 
-            _sb = new SpriteBatch(_gd);
+            _sb = new RoundedXnaSpriteBatch(_gd);
         }
 
         /// <summary>

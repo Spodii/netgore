@@ -326,8 +326,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the Control.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected override void DrawControl(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             base.DrawControl(spriteBatch);
 
@@ -349,7 +349,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
         /// <param name="textPos">The screen position to start drawing the text at.</param>
-        void DrawCursor(SpriteBatch sb, Vector2 textPos)
+        void DrawCursor(ISpriteBatch sb, Vector2 textPos)
         {
             if (!HasFocus || !IsEnabled)
                 return;

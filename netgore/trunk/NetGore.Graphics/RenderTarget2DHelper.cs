@@ -17,10 +17,10 @@ namespace NetGore.Graphics
         /// <param name="height">The texture height.</param>
         /// <param name="backColor">The color to fill the texture with before drawing.</param>
         /// <param name="drawer">The <see cref="Action{T}"/> that does all the drawing using the given
-        /// <see cref="SpriteBatch"/>.</param>
+        /// <see cref="ISpriteBatch"/>.</param>
         /// <returns>The created <see cref="Texture2D"/>.</returns>
         public static Texture2D CreateTexture2D(GraphicsDevice device, int width, int height, Color backColor,
-                                                Action<SpriteBatch> drawer)
+                                                Action<ISpriteBatch> drawer)
         {
             const RenderTargetUsage usage = RenderTargetUsage.PreserveContents;
             const int mipMapLevels = 1;
@@ -46,7 +46,7 @@ namespace NetGore.Graphics
                 device.Clear(ClearOptions.Target, backColor, 1.0f, 0);
 
                 // Create the SpriteBatch
-                using (var sb = new SpriteBatch(device))
+                using (var sb = new RoundedXnaSpriteBatch(device))
                 {
                     // Do the drawing
                     drawer(sb);

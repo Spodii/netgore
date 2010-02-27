@@ -8,6 +8,6 @@ namespace NetGore.Graphics
     /// </summary>
     /// <param name="map">Map that the drawing is taking place on.</param>
     /// <param name="layer">The layer that the drawing event is related to.</param>
-    /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
-    public delegate void MapDrawEventHandler(IDrawableMap map, MapRenderLayer layer, SpriteBatch spriteBatch);
+    /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> that was used to do the drawing.</param>
+    public delegate void MapDrawEventHandler(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch);
 }

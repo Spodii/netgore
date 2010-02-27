@@ -420,10 +420,10 @@ namespace DemoGame.Client
         public bool DrawParticles { get; set; }
 
         /// <summary>
-        /// Draws the content of the map to the screen.
+        /// Draws the map.
         /// </summary>
-        /// <param name="sb">SpriteBatch object used for drawing.</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
+        public void Draw(ISpriteBatch sb)
         {
             // Find the drawable objects that are in view and pass the filter (if one is provided)
             var viewArea = Camera.GetViewArea();

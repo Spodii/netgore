@@ -336,10 +336,10 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the <see cref="ControlBorder"/> to the specified region.
         /// </summary>
-        /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw with.</param>
         /// <param name="region">Region to draw the <see cref="ControlBorder"/> to. These values represent
         /// the absolute screen position.</param>
-        public void Draw(SpriteBatch sb, Rectangle region)
+        public void Draw(ISpriteBatch sb, Rectangle region)
         {
             if (!_canDraw)
                 return;
@@ -404,9 +404,9 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the <see cref="ControlBorder"/> to a given <see cref="Control"/>.
         /// </summary>
-        /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw with.</param>
         /// <param name="c">Control to draw to.</param>
-        public void Draw(SpriteBatch sb, Control c)
+        public void Draw(ISpriteBatch sb, Control c)
         {
             if (!_canDraw)
                 return;

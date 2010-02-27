@@ -147,18 +147,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the world
+        /// Draws the world.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             _map.Draw(sb);
         }
 
         /// <summary>
-        /// Gets the current time
+        /// Gets the current time.
         /// </summary>
-        /// <returns>Current time</returns>
+        /// <returns>Current time.</returns>
         public override int GetTime()
         {
             return _getTime.GetTime();

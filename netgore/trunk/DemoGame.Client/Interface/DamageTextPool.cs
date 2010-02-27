@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
@@ -25,11 +26,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws all the DamageTexts in the pool
+        /// Draws all the DamageTexts in the pool.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="sf">SpriteFont to draw the damage text with</param>
-        public void Draw(SpriteBatch sb, SpriteFont sf)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="sf">SpriteFont to draw the damage text with.</param>
+        public void Draw(ISpriteBatch sb, SpriteFont sf)
         {
             _pool.Perform(x => x.Draw(sb, sf));
         }

@@ -731,10 +731,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Checks if the control contains a given point on the screen
+        /// Checks if the control contains a given point on the screen.
         /// </summary>
-        /// <param name="screenPoint">Point on the screen</param>
-        /// <returns>True if the Control contains the given screen point, else false</returns>
+        /// <param name="screenPoint">Point on the screen.</param>
+        /// <returns>True if the Control contains the given screen point, else false.</returns>
         public bool ContainsPoint(Vector2 screenPoint)
         {
             Vector2 sp = ScreenPosition;
@@ -742,7 +742,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Disposes of the Control and all its resources
+        /// Disposes of the Control and all its resources.
         /// </summary>
         /// <param name="disposeManaged">If true, managed resources need to be disposed. If false,
         /// this was raised by a destructor which means the managed resources are already disposed.</param>
@@ -780,10 +780,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Primary drawing routine
+        /// Primary drawing routine.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        public void Draw(SpriteBatch sb)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
         {
             if (Parent != null)
                 throw new MethodAccessException("Draw() may only be called from the root control.");
@@ -803,8 +803,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws the <see cref="Control"/>.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
-        protected virtual void DrawControl(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        protected virtual void DrawControl(ISpriteBatch spriteBatch)
         {
             Border.Draw(spriteBatch, this);
         }
@@ -812,8 +812,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Draws this Control and all of its children Controls.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to</param>
-        void DrawControlStart(SpriteBatch spriteBatch)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to</param>
+        void DrawControlStart(ISpriteBatch spriteBatch)
         {
             if (_isDisposed)
             {
