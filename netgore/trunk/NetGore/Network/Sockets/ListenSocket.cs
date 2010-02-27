@@ -17,24 +17,24 @@ namespace NetGore.Network
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// SocketAsyncEventArgs for the accept event
+        /// SocketAsyncEventArgs for the accept event.
         /// </summary>
         readonly SocketAsyncEventArgs _acceptEventArgs;
 
         /// <summary>
-        /// Socket used for the connection
+        /// Socket used for the connection.
         /// </summary>
         readonly Socket _socket;
 
         /// <summary>
-        /// If the ListenSocket is disposed
+        /// If the ListenSocket is disposed.
         /// </summary>
         bool _disposed;
 
         /// <summary>
-        /// ListenSocket constructor
+        /// Initializes a new instance of the <see cref="ListenSocket"/> class.
         /// </summary>
-        /// <param name="port">Port to listen on</param>
+        /// <param name="port">The port to listen on.</param>
         public ListenSocket(int port)
         {
             // Set up the accept event args
@@ -74,7 +74,7 @@ namespace NetGore.Network
         public event ListenSocketAcceptHandler ConnectionAccepted;
 
         /// <summary>
-        /// If the listen socket is correctly working and accepting connections
+        /// Gets if the listen socket is correctly working and accepting connections.
         /// </summary>
         public bool IsAlive
         {
@@ -82,7 +82,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Begins async accepting - use this instead of socket.BeginAccept
+        /// Begins async accepting. Use this instead of socket.BeginAccept.
         /// </summary>
         void BeginAccept()
         {
@@ -103,23 +103,6 @@ namespace NetGore.Network
             }
         }
 
-        /// <summary>
-        /// Disposes of the ListenSocket
-        /// </summary>
-        /// <param name="disposeManaged">If true, managed resources will be disposed</param>
-        void Dispose(bool disposeManaged)
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-            if (disposeManaged)
-            {
-                if (_socket != null)
-                    _socket.Close();
-            }
-        }
-
         void EndAccept(object sender, SocketAsyncEventArgs e)
         {
             Socket sock = e.AcceptSocket;
@@ -135,7 +118,7 @@ namespace NetGore.Network
             // Check if the EndAccept was caused by the ListenSocket closing down
             if (e.SocketError == SocketError.OperationAborted)
             {
-                Dispose(true);
+                Dispose();
                 return;
             }
 
@@ -169,12 +152,17 @@ namespace NetGore.Network
         #region IDisposable Members
 
         /// <summary>
-        /// Disposes the socket and shuts it down
+        /// Disposes the socket and shuts it down.
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (_disposed)
+                return;
+
+            _disposed = true;
+            
+            if (_socket != null)
+                _socket.Close();
         }
 
         #endregion
