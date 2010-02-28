@@ -64,7 +64,7 @@ namespace DemoGame.Server.Quests
                 var addItem = new ItemEntity(item.ItemTemplate, item.Amount);
 
                 // Add to the character's inventory
-                var remaining = character.Inventory.Add(addItem);
+                var remaining = character.GiveItem(addItem);
 
                 // Ensure it was all added
                 if (remaining != null)
