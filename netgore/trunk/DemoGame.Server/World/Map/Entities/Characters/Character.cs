@@ -399,13 +399,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Notifies listeners when this Character has received an item.
-        /// </summary>
-        public event CharacterItemEventHandler GotItem;
-
-        // TODO: Implement OnGetItem. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
-
-        /// <summary>
         /// Notifies listeners when this Character has killed another Character.
         /// </summary>
         public event CharacterKillEventHandler KilledCharacter;
