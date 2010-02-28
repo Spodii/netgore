@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -8,35 +9,20 @@ using NetGore.Features.Quests;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectCompletedQuestsQuery : DbQueryReader<CharacterID>
+    public class UpdateCharacterQuestStatusFinishedQuery : DbQueryNonReader<UpdateCharacterQuestStatusFinishedQuery.QueryArgs>
     {
         static readonly string _queryStr =
-            string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NOT NULL",
+            string.Format("UPDATE `{0}` SET `completed_on`=NOW() WHERE `character_id`=@charID AND `quest_id`=@questID",
                           CharacterQuestStatusTable.TableName);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectCompletedQuestsQuery"/> class.
+        /// Initializes a new instance of the <see cref="UpdateCharacterQuestStatusFinishedQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public SelectCompletedQuestsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public UpdateCharacterQuestStatusFinishedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "quest_id", "completed_on", "character_id");
-        }
-
-        public IEnumerable<QuestID> Execute(CharacterID id)
-        {
-            List<QuestID> ret = new List<QuestID>();
-
-            using (var r = ExecuteReader(id))
-            {
-                while (r.Read())
-                {
-                    ret.Add(r.GetQuestID(0));
-                }
-            }
-
-            return ret;
+            QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "character_id", "quest_id", "completed_on");
         }
 
         /// <summary>
@@ -46,7 +32,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@id");
+            return CreateParameters("@charID", "@questID");
         }
 
         /// <summary>
@@ -55,9 +41,22 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, CharacterID item)
+        protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@id"] = (int)item;
+            p["@charID"] = (int)item.CharacterID;
+            p["@questID"] = (int)item.QuestID;
+        }
+
+        public struct QueryArgs
+        {
+            public readonly CharacterID CharacterID;
+            public readonly QuestID QuestID;
+
+            public QueryArgs(CharacterID characterID, QuestID questID)
+            {
+                CharacterID = characterID;
+                QuestID = questID;
+            }
         }
     }
 }
