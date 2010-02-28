@@ -23,7 +23,6 @@ namespace NetGore.Network
         public LatencyTrackerServer(int port)
         {
             _port = (ushort)port;
-
             _socket = new UDPSocket();
             _socket.Bind(port);
 
