@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
@@ -29,25 +30,30 @@ namespace DemoGame.Server.Quests
             _repeatable = info.Repeatable;
 
             _rewards = LoadRewards(questID, info, dbController);
-            _startRequirements = LoadStartRequirements(questID, dbController);
-            _finishRequirements = LoadFinishRequirements(questID, dbController);
+            _startRequirements = LoadStartRequirements(dbController);
+            _finishRequirements = LoadFinishRequirements(dbController);
         }
 
         /// <summary>
         /// Loads the requirements for finishing a quest.
         /// </summary>
-        /// <param name="questID">The ID of the quest.</param>
         /// <param name="dbController">The <see cref="IDbController"/> to use to load values.</param>
         /// <returns>The requirements for finishing a quest.</returns>
-        static IQuestRequirementCollection<User> LoadFinishRequirements(QuestID questID, IDbController dbController)
+        IQuestRequirementCollection<User> LoadFinishRequirements(IDbController dbController)
         {
             var l = new List<IQuestRequirement<User>>();
 
-            var reqItems = dbController.GetQuery<SelectQuestRequireFinishItemQuery>().Execute(questID);
+            // Items
+            var reqItems = dbController.GetQuery<SelectQuestRequireFinishItemQuery>().Execute(QuestID);
+            Debug.Assert(reqItems.All(x => x.QuestID == QuestID));
             if (!reqItems.IsEmpty())
-                l.Add(new ItemsQuestRequirement(reqItems.Select(x => new ItemTemplateAndAmount(x.ItemTemplateID, x.Amount))));
+                l.Add(new ItemsQuestRequirement(this, reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
-            // TODO: !! Add: Finish kill requirements
+            // Kills
+            var reqKills = dbController.GetQuery<SelectQuestRequireKillQuery>().Execute(QuestID);
+            Debug.Assert(reqItems.All(x => x.QuestID == QuestID));
+            if (!reqKills.IsEmpty())
+                l.Add(new KillQuestRequirement(this, reqKills.Select(x => new KeyValuePair<CharacterTemplateID, ushort>(x.CharacterTemplateID, x.Amount))));
 
             return new QuestRequirementCollection<User>(l);
         }
@@ -63,9 +69,10 @@ namespace DemoGame.Server.Quests
         {
             var l = new List<IQuestReward<User>> { new MoneyQuestReward(table.RewardCash), new ExpQuestReward(table.RewardExp) };
 
+            // Items
             var rewardItems = dbController.GetQuery<SelectQuestRewardItemQuery>().Execute(questID);
             if (!rewardItems.IsEmpty())
-                l.Add(new ItemsQuestReward(rewardItems.Select(x => new ItemTemplateAndAmount(x.ItemTemplateID, x.Amount))));
+                l.Add(new ItemsQuestReward(rewardItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
             return new QuestRewardCollection<User>(l);
         }
@@ -73,16 +80,16 @@ namespace DemoGame.Server.Quests
         /// <summary>
         /// Loads the requirements for starting a quest.
         /// </summary>
-        /// <param name="questID">The ID of the quest.</param>
         /// <param name="dbController">The <see cref="IDbController"/> to use to load values.</param>
         /// <returns>The requirements for starting a quest.</returns>
-        static IQuestRequirementCollection<User> LoadStartRequirements(QuestID questID, IDbController dbController)
+        IQuestRequirementCollection<User> LoadStartRequirements(IDbController dbController)
         {
             var l = new List<IQuestRequirement<User>>();
 
-            var reqItems = dbController.GetQuery<SelectQuestRequireStartItemQuery>().Execute(questID);
+            // Items
+            var reqItems = dbController.GetQuery<SelectQuestRequireStartItemQuery>().Execute(QuestID);
             if (!reqItems.IsEmpty())
-                l.Add(new ItemsQuestRequirement(reqItems.Select(x => new ItemTemplateAndAmount(x.ItemTemplateID, x.Amount))));
+                l.Add(new ItemsQuestRequirement(this, reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
             // TODO: !! Add: Starting requirement quests
 

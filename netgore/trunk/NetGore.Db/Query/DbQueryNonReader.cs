@@ -35,7 +35,7 @@ namespace NetGore.Db
         /// Executes the query on the database.
         /// </summary>
         /// <returns>Number of rows affected by the query.</returns>
-        public int Execute()
+        public virtual int Execute()
         {
             int returnValue;
 
@@ -92,7 +92,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>Number of rows affected by the query.</returns>
-        public int Execute(T item)
+        public virtual int Execute(T item)
         {
             int returnValue;
 

@@ -15,7 +15,7 @@ namespace NetGore.Features.Quests
     /// <typeparam name="TCharacter">The type of quest performer.</typeparam>
     /// <typeparam name="TKillID">The type of identifier for the targets to kill.</typeparam>
     public abstract class QuestPerformerKillCounterBase<TCharacter, TKillID> : IQuestPerformerKillCounter<TCharacter, TKillID>
-        where TCharacter : IQuestPerformer<TCharacter> where TKillID : IEquatable<TKillID>
+        where TCharacter : IQuestPerformer<TCharacter>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -25,6 +25,8 @@ namespace NetGore.Features.Quests
         static readonly ObjectPool<KillCounterCollection> _counterCollectionPool =
             new ObjectPool<KillCounterCollection>(x => new KillCounterCollection(), null, x => x.Dispose(), true);
 
+        static readonly IEqualityComparer<TKillID> _killIDEqualityComparer = EqualityComparer<TKillID>.Default;
+
         readonly List<KillCounterCollection> _counters = new List<KillCounterCollection>();
         readonly TCharacter _owner;
 
@@ -32,8 +34,46 @@ namespace NetGore.Features.Quests
         /// Initializes a new instance of the <see cref="QuestPerformerKillCounterBase{TCharacter, TKillID}"/> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        protected QuestPerformerKillCounterBase(TCharacter owner)
+        protected QuestPerformerKillCounterBase(TCharacter owner) : this(owner, null)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuestPerformerKillCounterBase{TCharacter, TKillID}"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="initialCounts">The initial counts.</param>
+        protected QuestPerformerKillCounterBase(TCharacter owner,
+                                                IEnumerable<KeyValuePair<IQuest<TCharacter>, IEnumerable<KeyValuePair<TKillID, ushort>>>> initialCounts)
+        {
+            // Add the initial values
+            if (initialCounts != null)
+            {
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
+                foreach (var quest in initialCounts)
+                {
+                    // Add the counter for the quest
+                    var counter = _counterCollectionPool.Acquire();
+                    var reqKills = GetRequiredKills(quest.Key);
+                    counter.Initialize(quest.Key, reqKills);
+                    _counters.Add(counter);
+
+                    // Set the initial values
+                    foreach (var killCount in quest.Value)
+                    {
+                        if (counter.SetCount(killCount.Key, killCount.Value))
+                        {
+                            const string errmsg =
+                                "Failed to set initial kill count for `{0}` to `{1}` on quest `{2}` for quest performer `{3}`." +
+                                " This likely means that the kill requirements for the quest have changed, in which case this isn't a problem.";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, killCount.Key, killCount.Value, quest.Key, owner);
+                        }
+                    }
+                }
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            }
+
             _owner = owner;
             _owner.QuestAccepted += Owner_QuestAccepted;
             _owner.QuestCanceled += Owner_QuestFinished;
@@ -106,7 +146,7 @@ namespace NetGore.Features.Quests
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of when a quest has been added
-        /// to this collection.
+        /// to this collection. This does not include quests added when loading the collection.
         /// </summary>
         /// <param name="quest">The quest that was added.</param>
         protected virtual void OnQuestAdded(IQuest<TCharacter> quest)
@@ -115,7 +155,7 @@ namespace NetGore.Features.Quests
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of when a quest has been removed
-        /// from this collection.
+        /// from this collection. This does not include quests added when loading the collection.
         /// </summary>
         /// <param name="quest">The quest that was removed.</param>
         protected virtual void OnQuestRemoved(IQuest<TCharacter> quest)
@@ -317,7 +357,7 @@ namespace NetGore.Features.Quests
             {
                 foreach (var counter in _killCounters)
                 {
-                    if (counter.KillID.Equals(target))
+                    if (_killIDEqualityComparer.Equals(counter.KillID, target))
                     {
                         if (counter.KillCount < counter.RequiredKills)
                         {
@@ -355,6 +395,27 @@ namespace NetGore.Features.Quests
                     killCounter.Initialize(reqKill.Key, reqKill.Value);
                     _killCounters.Add(killCounter);
                 }
+            }
+
+            /// <summary>
+            /// Sets the current kill count for the <paramref name="target"/>.
+            /// </summary>
+            /// <param name="target">The target to set the kill count for.</param>
+            /// <param name="count">The new kill count value. If greater than the required number of kills,
+            /// the required number of kills will be used instead.</param>
+            /// <returns>True if the value was successfully set; otherwise false.</returns>
+            public bool SetCount(TKillID target, ushort count)
+            {
+                foreach (var counter in _killCounters)
+                {
+                    if (_killIDEqualityComparer.Equals(counter.KillID, target))
+                    {
+                        counter.KillCount = Math.Min(count, counter.RequiredKills);
+                        return true;
+                    }
+                }
+
+                return false;
             }
 
             #region IDisposable Members

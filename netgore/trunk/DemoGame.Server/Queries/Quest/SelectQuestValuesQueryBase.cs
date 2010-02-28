@@ -25,7 +25,12 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<T> Execute(QuestID id)
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <param name="id">The <see cref="QuestID"/> to get the values for.</param>
+        /// <returns>The returned values from the query.</returns>
+        public virtual IEnumerable<T> Execute(QuestID id)
         {
             List<T> ret = new List<T>();
 

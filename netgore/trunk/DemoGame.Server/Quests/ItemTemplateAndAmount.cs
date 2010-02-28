@@ -6,7 +6,7 @@ using log4net;
 
 namespace DemoGame.Server.Quests
 {
-    public struct ItemTemplateAndAmount
+    public struct QuestItemTemplateAmount
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
@@ -15,22 +15,22 @@ namespace DemoGame.Server.Quests
         readonly IItemTemplateTable _itemTemplate;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemTemplateAndAmount"/> struct.
+        /// Initializes a new instance of the <see cref="QuestItemTemplateAmount"/> struct.
         /// </summary>
         /// <param name="itemTemplate">The item template.</param>
         /// <param name="amount">The amount.</param>
-        public ItemTemplateAndAmount(IItemTemplateTable itemTemplate, byte amount)
+        public QuestItemTemplateAmount(IItemTemplateTable itemTemplate, byte amount)
         {
             _itemTemplate = itemTemplate;
             _amount = amount;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemTemplateAndAmount"/> struct.
+        /// Initializes a new instance of the <see cref="QuestItemTemplateAmount"/> struct.
         /// </summary>
         /// <param name="itemTemplateID">The item template ID.</param>
         /// <param name="amount">The amount.</param>
-        public ItemTemplateAndAmount(ItemTemplateID itemTemplateID, byte amount)
+        public QuestItemTemplateAmount(ItemTemplateID itemTemplateID, byte amount)
             : this(_itemTemplateManager[itemTemplateID], amount)
         {
         }
@@ -52,7 +52,7 @@ namespace DemoGame.Server.Quests
         }
 
         /// <summary>
-        /// Checks if this <see cref="ItemTemplateAndAmount"/> contains valid values for the amount and item template.
+        /// Checks if this <see cref="QuestItemTemplateAmount"/> contains valid values for the amount and item template.
         /// The amount must be greater than 0 and the item template must not be null.
         /// </summary>
         /// <returns>True if the values are valid; otherwise false.</returns>

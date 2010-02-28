@@ -13,17 +13,24 @@ namespace DemoGame.Server.Quests
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly IEnumerable<ItemTemplateAndAmount> _items;
+        readonly IEnumerable<QuestItemTemplateAmount> _items;
+        readonly IQuest<User> _quest;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemsQuestRequirement"/> class.
         /// </summary>
-        /// <param name="items">The items.</param>
+        /// <param name="quest">The quest that this requirement is for.</param>
+        /// <param name="items">The items and amounts required by the quest.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="quest"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="items"/> is null or empty.</exception>
-        public ItemsQuestRequirement(IEnumerable<ItemTemplateAndAmount> items)
+        public ItemsQuestRequirement(IQuest<User> quest, IEnumerable<QuestItemTemplateAmount> items)
         {
+            if (quest == null)
+                throw new ArgumentNullException("quest");
             if (items == null || items.IsEmpty())
                 throw new ArgumentNullException("items");
+
+            _quest = quest;
 
             // Store the valid items
             _items = items.Where(x => x.AssertHasValidValues()).OrderBy(x => x.ItemTemplate.ID).ToCompact();
@@ -32,7 +39,7 @@ namespace DemoGame.Server.Quests
         /// <summary>
         /// Gets the item templates and amounts required for the quest.
         /// </summary>
-        public IEnumerable<ItemTemplateAndAmount> Items
+        public IEnumerable<QuestItemTemplateAmount> Items
         {
             get { return _items; }
         }
@@ -40,11 +47,21 @@ namespace DemoGame.Server.Quests
         #region IQuestRequirement<User> Members
 
         /// <summary>
+        /// Gets the <see cref="IQuest{TCharacter}"/> that this quest requirement is for.
+        /// </summary>
+        public IQuest<User> Quest
+        {
+            get { return _quest; }
+        }
+
+        /// <summary>
         /// Checks if the <paramref name="character"/> meets this test requirement.
         /// </summary>
         /// <param name="character">The character to check if they meet the requirements.</param>
-        /// <returns>True if the <paramref name="character"/> meets the requirements defined by this
-        /// <see cref="IQuestRequirement{TCharacter}"/>; otherwise false.</returns>
+        /// <returns>
+        /// True if the <paramref name="character"/> meets the requirements defined by this
+        /// <see cref="IQuestRequirement{TCharacter}"/>; otherwise false.
+        /// </returns>
         public bool HasRequirements(User character)
         {
             // Check each of the required items

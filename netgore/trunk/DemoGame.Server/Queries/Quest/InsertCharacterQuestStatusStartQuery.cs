@@ -47,11 +47,37 @@ namespace DemoGame.Server.Queries
             p["@questID"] = (int)item.QuestID;
         }
 
+        /// <summary>
+        /// Executes the query on the database using the specified parameters.
+        /// </summary>
+        /// <param name="characterID">The character ID.</param>
+        /// <param name="questID">The quest ID.</param>
+        /// <returns>Number of rows affected by the query.</returns>
+        public int Execute(CharacterID characterID, QuestID questID)
+        {
+            return Execute(new QueryArgs(characterID, questID));
+        }
+
+        /// <summary>
+        /// Arguments for the <see cref="DeleteCharacterQuestStatusKillsQuery"/> query.
+        /// </summary>
         public struct QueryArgs
         {
+            /// <summary>
+            /// The character ID.
+            /// </summary>
             public readonly CharacterID CharacterID;
+
+            /// <summary>
+            /// The quest ID.
+            /// </summary>
             public readonly QuestID QuestID;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
+            /// </summary>
+            /// <param name="characterID">The character ID.</param>
+            /// <param name="questID">The quest ID.</param>
             public QueryArgs(CharacterID characterID, QuestID questID)
             {
                 CharacterID = characterID;
