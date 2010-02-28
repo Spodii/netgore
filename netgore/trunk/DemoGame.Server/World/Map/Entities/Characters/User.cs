@@ -30,10 +30,13 @@ namespace DemoGame.Server
     public class User : Character, IGuildMember, IClientCommunicator, IGroupable, IQuestPerformer<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly DeleteCharacterQuestStatusQuery _deleteCharacterQuestStatusQuery;
         static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
         static readonly GuildManager _guildManager = GuildManager.Instance;
+        static readonly InsertCharacterQuestStatusStartQuery _insertCharacterQuestStatusStartQuery;
         static readonly ReplaceGuildMemberQuery _replaceGuildMemberQuery;
         static readonly SelectGuildMemberQuery _selectGuildMemberQuery;
+        static readonly UpdateCharacterQuestStatusFinishedQuery _updateCharacterQuestStatusFinishedQuery;
 
         readonly UserChatDialogState _chatState;
         readonly IIPSocket _conn;
@@ -55,6 +58,10 @@ namespace DemoGame.Server
             _deleteGuildMemberQuery = dbController.GetQuery<DeleteGuildMemberQuery>();
             _replaceGuildMemberQuery = dbController.GetQuery<ReplaceGuildMemberQuery>();
             _selectGuildMemberQuery = dbController.GetQuery<SelectGuildMemberQuery>();
+
+            _insertCharacterQuestStatusStartQuery = dbController.GetQuery<InsertCharacterQuestStatusStartQuery>();
+            _deleteCharacterQuestStatusQuery = dbController.GetQuery<DeleteCharacterQuestStatusQuery>();
+            _updateCharacterQuestStatusFinishedQuery = dbController.GetQuery<UpdateCharacterQuestStatusFinishedQuery>();
         }
 
         /// <summary>
@@ -504,6 +511,7 @@ namespace DemoGame.Server
         /// <param name="quest">The quest that was accepted.</param>
         protected virtual void OnQuestAccepted(IQuest<User> quest)
         {
+            _insertCharacterQuestStatusStartQuery.Execute(new InsertCharacterQuestStatusStartQuery.QueryArgs(ID, quest.QuestID));
         }
 
         /// <summary>
@@ -512,6 +520,7 @@ namespace DemoGame.Server
         /// <param name="quest">The quest that was accepted.</param>
         protected virtual void OnQuestCanceled(IQuest<User> quest)
         {
+            _deleteCharacterQuestStatusQuery.Execute(new DeleteCharacterQuestStatusQuery.QueryArgs(ID, quest.QuestID));
         }
 
         /// <summary>
@@ -520,6 +529,8 @@ namespace DemoGame.Server
         /// <param name="quest">The quest that was accepted.</param>
         protected virtual void OnQuestFinished(IQuest<User> quest)
         {
+            _updateCharacterQuestStatusFinishedQuery.Execute(new UpdateCharacterQuestStatusFinishedQuery.QueryArgs(ID,
+                                                                                                                   quest.QuestID));
         }
 
         /// <summary>
