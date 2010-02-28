@@ -48,6 +48,10 @@ namespace DemoGame.Server
             get { return Character.DbController; }
         }
 
+        /// <summary>
+        /// Decrements the amount of the item at the given <paramref name="slot"/>.
+        /// </summary>
+        /// <param name="slot">The slot of the inventory item who's amount is to be decremented.</param>
         public void DecreaseItemAmount(InventorySlot slot)
         {
             // Get the ItemEntity
