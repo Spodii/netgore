@@ -20,7 +20,7 @@ namespace DemoGame.Server
         public ServerSockets(Server server)
         {
             _packetHandler = new ServerPacketHandler(this, server);
-            Listen(GameData.ServerTCPPort);
+            Listen(GameData.ServerTCPPort, ServerSettings.AllowRemoteConnections);
 
             _latencyTracker = new LatencyTrackerServer(GameData.ServerPingPort);
         }
