@@ -1651,14 +1651,23 @@
     </Item182>
     <Item183>
       <Index>183</Index>
-      <Categorization>Quest.available</Categorization>
+      <Categorization>Quest.can start</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/Quest/available</Name>
+        <Name>Grh/Quest/can start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
     </Item183>
     <Item184>
+      <Index>186</Index>
+      <Categorization>Quest.cannot start</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Quest/cannot start</Name>
+        <Source>0,0,11,20</Source>
+      </Texture>
+    </Item184>
+    <Item185>
       <Index>184</Index>
       <Categorization>Quest.started</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1666,23 +1675,14 @@
         <Name>Grh/Quest/started</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item185>
+    <Item186>
       <Index>185</Index>
       <Categorization>Quest.turnin</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Quest/turnin</Name>
         <Source>0,0,4,20</Source>
-      </Texture>
-    </Item185>
-    <Item186>
-      <Index>186</Index>
-      <Categorization>Quest.unavailable</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Quest/unavailable</Name>
-        <Source>0,0,11,20</Source>
       </Texture>
     </Item186>
     <Item187>

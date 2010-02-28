@@ -39,11 +39,22 @@ namespace DemoGame.Client
 
             if (userInfo != null)
             {
-                var e = new QuestMapDrawingExtension<Character>(userInfo.QuestInfo, userInfo.HasStartQuestRequirements,
+                Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
+                Func<QuestID, bool> questFinishReqs =
+                    x =>
+                    UserInfo.QuestInfo.ActiveQuests.Contains(x) &&
+                    (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
+
+                var e = new QuestMapDrawingExtension<Character>(userInfo.QuestInfo, questStartReqs, questFinishReqs,
                                                                 m =>
                                                                 m.Spatial.GetMany<Character>(m.Camera.GetViewArea(),
                                                                                              c => !c.ProvidedQuests.IsEmpty()),
                                                                 c => c.ProvidedQuests);
+                e.QuestAvailableCanStartIndicator = new Grh(GrhInfo.GetData("Quest", "can start"));
+                e.QuestStartedIndicator = new Grh(GrhInfo.GetData("Quest", "started"));
+                e.QuestAvailableCannotStartIndicator = new Grh(GrhInfo.GetData("Quest", "cannot start"));
+                e.QuestTurnInIndicator = new Grh(GrhInfo.GetData("Quest", "turnin"));
+
                 MapDrawingExtensions.Add(e);
             }
         }
