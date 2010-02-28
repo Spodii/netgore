@@ -119,6 +119,19 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles when the delete button has been pressed.
+        /// </summary>
+        public override void PressDelete()
+        {
+            foreach (var selected in Container.SelectedObjs.SelectedObjects.OfType<Entity>())
+            {
+                selected.Dispose();
+            }
+
+            Container.SelectedObjs.Clear();
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
         /// <param name="e">Mouse events.</param>
