@@ -21,11 +21,12 @@ namespace DemoGame.Server
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
 
-        public static PacketWriter AcceptQuestReply(QuestID questID, bool successful)
+        public static PacketWriter AcceptOrTurnInQuestReply(QuestID questID, bool successful, bool accepted)
         {
-            var pw = GetWriter(ServerPacketID.AcceptQuestReply);
+            var pw = GetWriter(ServerPacketID.AcceptOrTurnInQuestReply);
             pw.Write(questID);
             pw.Write(successful);
+            pw.Write(accepted);
             return pw;
         }
 

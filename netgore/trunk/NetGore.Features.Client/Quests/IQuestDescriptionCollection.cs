@@ -4,6 +4,9 @@ using NetGore.IO;
 
 namespace NetGore.Features.Quests
 {
+    /// <summary>
+    /// Interface for a collection of <see cref="IQuestDescription"/>s.
+    /// </summary>
     public interface IQuestDescriptionCollection : IPersistable, ICollection<IQuestDescription>
     {
         /// <summary>

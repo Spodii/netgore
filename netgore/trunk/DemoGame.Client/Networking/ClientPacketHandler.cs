@@ -183,17 +183,15 @@ namespace DemoGame.Client
             _pingWatch.Start();
         }
 
-        [MessageHandler((byte)ServerPacketID.AcceptQuestReply)]
-        void RecvAcceptQuestReply(IIPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.AcceptOrTurnInQuestReply)]
+        void RecvAcceptOrTurnInQuestReply(IIPSocket conn, BitStream r)
         {
             QuestID questID = r.ReadQuestID();
             bool successful = r.ReadBool();
+            bool accepted = r.ReadBool();
 
             if (successful)
             {
-                // Since we just accepted the quest, we know we can't accept it again
-                UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, false);
-
                 // Remove the quest from the available quests list
                 var aqf = GameplayScreen.AvailableQuestsForm;
                 if (aqf.IsVisible)

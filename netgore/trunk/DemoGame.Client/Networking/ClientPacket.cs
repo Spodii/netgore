@@ -14,9 +14,9 @@ namespace DemoGame.Client
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
 
-        public static PacketWriter AcceptQuest(MapEntityIndex questProvider, QuestID questID)
+        public static PacketWriter AcceptOrTurnInQuest(MapEntityIndex questProvider, QuestID questID)
         {
-            var pw = GetWriter(ClientPacketID.AcceptQuest);
+            var pw = GetWriter(ClientPacketID.AcceptOrTurnInQuest);
             pw.Write(questProvider);
             pw.Write(questID);
             return pw;
