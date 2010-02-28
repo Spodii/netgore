@@ -150,7 +150,7 @@
     <Compile Include="Items\EquippedBase.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="Messages\GameMessage.cs" />
-    <Compile Include="Messages\GameMessages.cs" />
+    <Compile Include="Messages\GameMessageCollection.cs" />
     <Compile Include="Items\InventorySlotExtensions.cs" />
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />

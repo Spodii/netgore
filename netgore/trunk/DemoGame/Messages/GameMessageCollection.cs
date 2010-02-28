@@ -12,10 +12,8 @@ namespace DemoGame
     /// <summary>
     /// Class containing all of the messages for the correspoding GameMessage.
     /// </summary>
-    public class GameMessages : MessageCollectionBase<GameMessage>
+    public class GameMessageCollection : MessageCollectionBase<GameMessage>
     {
-        // TODO: Rename "GameMessages" to "GameMessageManager"
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -29,31 +27,31 @@ namespace DemoGame
         const string _languageFileSuffix = ".txt";
 
         /// <summary>
-        /// The <see cref="GameMessages"/> instance for the default language.
+        /// The <see cref="GameMessageCollection"/> instance for the default language.
         /// </summary>
-        static readonly GameMessages _defaultMessages;
+        static readonly GameMessageCollection _defaultMessages;
 
         /// <summary>
-        /// Contains the instances of the <see cref="GameMessages"/> indexed by language.
+        /// Contains the instances of the <see cref="GameMessageCollection"/> indexed by language.
         /// </summary>
-        static readonly Dictionary<string, GameMessages> _instances;
+        static readonly Dictionary<string, GameMessageCollection> _instances;
 
         readonly string _language;
 
         /// <summary>
-        /// Initializes the <see cref="GameMessages"/> class.
+        /// Initializes the <see cref="GameMessageCollection"/> class.
         /// </summary>
-        static GameMessages()
+        static GameMessageCollection()
         {
-            _instances = new Dictionary<string, GameMessages>(StringComparer.OrdinalIgnoreCase);
+            _instances = new Dictionary<string, GameMessageCollection>(StringComparer.OrdinalIgnoreCase);
             _defaultMessages = Create();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameMessages"/> class.
+        /// Initializes a new instance of the <see cref="GameMessageCollection"/> class.
         /// </summary>
         /// <param name="language">Name of the language to load.</param>
-        GameMessages(string language)
+        GameMessageCollection(string language)
             : base(ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix), _defaultMessages)
         {
             _language = language;
@@ -79,25 +77,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the <see cref="GameMessages"/> for the default language.
+        /// Gets the <see cref="GameMessageCollection"/> for the default language.
         /// </summary>
-        /// <returns>The <see cref="GameMessages"/> for the default language.</returns>
-        public static GameMessages Create()
+        /// <returns>The <see cref="GameMessageCollection"/> for the default language.</returns>
+        public static GameMessageCollection Create()
         {
             return Create(_defaultLanguageName);
         }
 
         /// <summary>
-        /// Gets the <see cref="GameMessages"/> for the specified language.
+        /// Gets the <see cref="GameMessageCollection"/> for the specified language.
         /// </summary>
         /// <param name="language">The game message language.</param>
-        /// <returns>The <see cref="GameMessages"/> for the specified language.</returns>
-        public static GameMessages Create(string language)
+        /// <returns>The <see cref="GameMessageCollection"/> for the specified language.</returns>
+        public static GameMessageCollection Create(string language)
         {
-            GameMessages instance;
+            GameMessageCollection instance;
             if (!_instances.TryGetValue(language, out instance))
             {
-                instance = new GameMessages(language);
+                instance = new GameMessageCollection(language);
                 _instances.Add(language, instance);
             }
 

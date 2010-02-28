@@ -41,7 +41,7 @@ namespace DemoGame.Client
 
         readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
         readonly IDynamicEntityFactory _dynamicEntityFactory;
-        readonly GameMessages _gameMessages = GameMessages.Create();
+        readonly GameMessageCollection _gameMessages = GameMessageCollection.Create();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;

@@ -40,7 +40,7 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         /// <param name="gameMessages">Collection of GameMessages to use to grab the message.</param>
         /// <returns>String of the parsed GameMessage read from the BitStream.</returns>
-        public static string ReadGameMessage(this BitStream bitStream, GameMessages gameMessages)
+        public static string ReadGameMessage(this BitStream bitStream, GameMessageCollection gameMessages)
         {
             if (gameMessages == null)
                 throw new ArgumentNullException("gameMessages");
