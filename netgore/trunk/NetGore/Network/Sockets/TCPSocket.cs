@@ -242,7 +242,7 @@ namespace NetGore.Network
 
             try
             {
-                // Attempt to synchronously connect to the host 
+                // Attempt to synchronously connect to the host
                 var ips = Dns.GetHostAddresses(host);
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 _socket.Connect(ips[0], port);

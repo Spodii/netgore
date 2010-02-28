@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using log4net;
 
@@ -71,7 +72,8 @@ namespace NetGore.Network
         public LatencyTrackerClient(string hostAddress, int hostPort)
         {
             // Find the remote endpoint
-            IPAddress ipAddress = IPAddress.Parse(hostAddress);
+            var ips = Dns.GetHostAddresses(hostAddress);
+            IPAddress ipAddress = ips.FirstOrDefault();
             if (ipAddress == null)
                 throw new ArgumentException("hostAddress");
 
