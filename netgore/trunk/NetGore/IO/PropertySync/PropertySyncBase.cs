@@ -51,6 +51,17 @@ namespace NetGore.IO.PropertySync
         /// <returns>Value read from the <see cref="IValueReader"/>.</returns>
         protected abstract T Read(string name, IValueReader reader);
 
+        /// <summary>
+        /// Exposes the Read method internally.
+        /// </summary>
+        /// <param name="name">Name of the value.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <returns>Value read from the <see cref="IValueReader"/>.</returns>
+        internal T InternalRead(string name, IValueReader reader)
+        {
+            return Read(name, reader);
+        }
+
         void SetValue(object binder, T value)
         {
             PropertyInterface.Set(binder, value);
@@ -63,6 +74,17 @@ namespace NetGore.IO.PropertySync
         /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
         /// <param name="value">Value to write.</param>
         protected abstract void Write(string name, IValueWriter writer, T value);
+
+        /// <summary>
+        /// Exposes the Write method internally.
+        /// </summary>
+        /// <param name="name">Name of the value.</param>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="value">Value to write.</param>
+        protected internal void InternalWrite(string name, IValueWriter writer, T value)
+        {
+            Write(name, writer, value);
+        }
 
         #region IPropertySync Members
 

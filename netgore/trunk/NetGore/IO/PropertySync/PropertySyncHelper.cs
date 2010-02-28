@@ -55,7 +55,86 @@ namespace NetGore.IO.PropertySync
 
                 // Store the handled type
                 _propertySyncTypes.Add(attrib.HandledType, type);
+
+                // If the type can be made nullable, also store the nullable type
+                if (attrib.HandledType.IsValueType && !attrib.HandledType.IsGenericType)
+                {
+                    try
+                    {
+                        var nullableType = typeof(Nullable<>).MakeGenericType(attrib.HandledType);
+                        var psType = typeof(PropertySyncNullable<>).MakeGenericType(attrib.HandledType);
+                        _propertySyncTypes.Add(nullableType, psType);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                    }
+                    catch (NotSupportedException)
+                    {
+                    }
+                    catch (ArgumentException)
+                    {
+                    }
+                    catch (TypeLoadException)
+                    {
+                    }
+                    catch (TargetInvocationException)
+                    {
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to create nullable type from `{0}`. Reason: {1}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, attrib.HandledType, ex);
+                        Debug.Fail(string.Format(errmsg, attrib.HandledType, ex));
+                    }
+                }
             }
+        }
+
+        /// <summary>
+        /// Cache that handles creating the <see cref="IPropertySync"/>s that are not actually hooked
+        /// to a property with a <see cref="SyncValueAttributeInfo"/>. These can be reused since they are only used
+        /// for reading/writing the type, not for an actual particular attribute.
+        /// </summary>
+        static readonly ThreadSafeHashCache<Type, IPropertySync> _unhookedPropertySyncCache =
+            new ThreadSafeHashCache<Type, IPropertySync>(x =>
+                (IPropertySync)TypeFactory.GetTypeInstance(_propertySyncTypes[x], (SyncValueAttributeInfo)null));
+
+        /// <summary>
+        /// Gets the <see cref="IPropertySync"/> for a given <paramref name="type"/> that does not pass a
+        /// valid <see cref="SyncValueAttributeInfo"/>. Attempting to perform state tracking operations on the created
+        /// object will result in an exception being thrown. This method is intended only as a way to provide access
+        /// to the code for reading and writing the values for the <see cref="PropertySyncNullable{T}"/>.
+        /// </summary>
+        /// <param name="type">The type for the <see cref="IPropertySync"/> to handle.</param>
+        /// <returns>The <see cref="IPropertySync"/> for a given <paramref name="type"/> that does not pass a
+        /// valid <see cref="SyncValueAttributeInfo"/>.</returns>
+        static internal IPropertySync GetUnhookedPropertySync(Type type)
+        {
+            return _unhookedPropertySyncCache[type];
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IPropertySync"/> for a given <see cref="SyncValueAttributeInfo"/>.
+        /// </summary>
+        /// <param name="attribInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
+        /// <returns>The <see cref="IPropertySync"/> for a given <see cref="SyncValueAttributeInfo"/>.</returns>
+        /// <exception cref="TypeLoadException">Could not create an <see cref="IPropertySync"/> from the 
+        /// <paramref name="attribInfo"/>.</exception>
+        static internal IPropertySync GetPropertySync(SyncValueAttributeInfo attribInfo)
+        {
+            var propertySyncType = _propertySyncTypes[attribInfo.PropertyType];
+            var instance = (IPropertySync)TypeFactory.GetTypeInstance(propertySyncType, attribInfo);
+
+            if (instance == null)
+            {
+                const string errmsg = "Failed to create IPropertySync of type `{0}` for `{1}`.";
+                string err = string.Format(errmsg, _propertySyncTypes[attribInfo.PropertyType], attribInfo);
+                log.Fatal(err);
+                throw new TypeLoadException(err);
+            }
+
+            return instance;
         }
 
         /// <summary>
@@ -71,16 +150,7 @@ namespace NetGore.IO.PropertySync
             // Loop through each of the property sync infos
             for (int i = 0; i < ret.Length; i++)
             {
-                var propertySyncType = _propertySyncTypes[infos[i].PropertyType];
-                var instance = (IPropertySync)TypeFactory.GetTypeInstance(propertySyncType, infos[i]);
-                if (instance == null)
-                {
-                    const string errmsg = "Failed to create IPropertySync of type `{0}` for `{1}`.";
-                    string err = string.Format(errmsg, propertySyncType, infos[i]);
-                    log.Fatal(err);
-                    throw new TypeLoadException(err);
-                }
-
+                var instance = GetPropertySync(infos[i]);
                 ret[i] = instance;
             }
 
