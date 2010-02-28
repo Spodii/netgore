@@ -101,9 +101,11 @@ namespace DemoGame.Server
                 log.Info("Server loaded.");
 
             if (log.IsWarnEnabled && !ServerSettings.AllowRemoteConnections)
-                log.Warn("NOTICE: ServerSettings.AllowRemoteConnections is set to false."
-                    + " As a result, the server will allow accept local connections." +
-                    " If you do not care or want remote machines to connect to the server, please ignore this message.");
+            {
+                log.Warn("NOTICE: ServerSettings.AllowRemoteConnections is set to false." +
+                         " As a result, the server will allow accept local connections." +
+                         " If you do not care or want remote machines to connect to the server, please ignore this message.");
+            }
         }
 
         /// <summary>

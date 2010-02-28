@@ -91,6 +91,13 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Gets or sets the indicator for a quest provider that has quests but the user does not meet
+        /// the requirements to start any of them.
+        /// If null, the indicator will not be drawn.
+        /// </summary>
+        public Grh QuestAvailableCannotStartIndicator { get; set; }
+
+        /// <summary>
         /// Gets or sets the indicator for a quest provider that has quests that the user can start.
         /// If null, the indicator will not be drawn.
         /// </summary>
@@ -118,11 +125,48 @@ namespace NetGore.Features.Quests
         public Grh QuestTurnInIndicator { get; set; }
 
         /// <summary>
-        /// Gets or sets the indicator for a quest provider that has quests but the user does not meet
-        /// the requirements to start any of them.
-        /// If null, the indicator will not be drawn.
+        /// Gets if the any of the provided quests has the status of
+        /// not being started.
         /// </summary>
-        public Grh QuestAvailableCannotStartIndicator { get; set; }
+        /// <param name="incomplete">The incomplete quests.</param>
+        /// <returns>The state of the respective quest-providing status.</returns>
+        bool CheckStatusCannotStart(IEnumerable<QuestID> incomplete)
+        {
+            return incomplete.Any(x => !QuestInfo.ActiveQuests.Contains(x));
+        }
+
+        /// <summary>
+        /// Gets if the any of the provided quests has the status of
+        /// being able to be started.
+        /// </summary>
+        /// <param name="incomplete">The incomplete quests.</param>
+        /// <returns>The state of the respective quest-providing status.</returns>
+        bool CheckStatusCanStart(IEnumerable<QuestID> incomplete)
+        {
+            return incomplete.Any(x => !QuestInfo.ActiveQuests.Contains(x) && HasStartQuestReqs(x));
+        }
+
+        /// <summary>
+        /// Gets if the any of the provided quests has the status of
+        /// being started.
+        /// </summary>
+        /// <param name="incomplete">The incomplete quests.</param>
+        /// <returns>The state of the respective quest-providing status.</returns>
+        bool CheckStatusStarted(IEnumerable<QuestID> incomplete)
+        {
+            return incomplete.Any(x => QuestInfo.ActiveQuests.Contains(x));
+        }
+
+        /// <summary>
+        /// Gets if the any of the provided quests has the status of
+        /// being able to be turned in.
+        /// </summary>
+        /// <param name="incomplete">The incomplete quests.</param>
+        /// <returns>The state of the respective quest-providing status.</returns>
+        bool CheckStatusTurnIn(IEnumerable<QuestID> incomplete)
+        {
+            return incomplete.Any(x => QuestInfo.ActiveQuests.Contains(x) && HasFinishQuestReqs(x));
+        }
 
         /// <summary>
         /// The default quest indicator drawer.
@@ -182,50 +226,6 @@ namespace NetGore.Features.Quests
                 else if (CheckStatusCannotStart(incomplete))
                     IndicatorDrawer(QuestAvailableCannotStartIndicator, c, spriteBatch);
             }
-        }
-
-        /// <summary>
-        /// Gets if the any of the provided quests has the status of
-        /// being able to be turned in.
-        /// </summary>
-        /// <param name="incomplete">The incomplete quests.</param>
-        /// <returns>The state of the respective quest-providing status.</returns>
-        bool CheckStatusTurnIn(IEnumerable<QuestID> incomplete)
-        {
-            return incomplete.Any(x => QuestInfo.ActiveQuests.Contains(x) && HasFinishQuestReqs(x));
-        }
-
-        /// <summary>
-        /// Gets if the any of the provided quests has the status of
-        /// being started.
-        /// </summary>
-        /// <param name="incomplete">The incomplete quests.</param>
-        /// <returns>The state of the respective quest-providing status.</returns>
-        bool CheckStatusStarted(IEnumerable<QuestID> incomplete)
-        {
-            return incomplete.Any(x => QuestInfo.ActiveQuests.Contains(x));
-        }
-
-        /// <summary>
-        /// Gets if the any of the provided quests has the status of
-        /// being able to be started.
-        /// </summary>
-        /// <param name="incomplete">The incomplete quests.</param>
-        /// <returns>The state of the respective quest-providing status.</returns>
-        bool CheckStatusCanStart(IEnumerable<QuestID> incomplete)
-        {
-            return incomplete.Any(x => !QuestInfo.ActiveQuests.Contains(x) && HasStartQuestReqs(x));
-        }
-
-        /// <summary>
-        /// Gets if the any of the provided quests has the status of
-        /// not being started.
-        /// </summary>
-        /// <param name="incomplete">The incomplete quests.</param>
-        /// <returns>The state of the respective quest-providing status.</returns>
-        bool CheckStatusCannotStart(IEnumerable<QuestID> incomplete)
-        {
-            return incomplete.Any(x => !QuestInfo.ActiveQuests.Contains(x));
         }
     }
 }
