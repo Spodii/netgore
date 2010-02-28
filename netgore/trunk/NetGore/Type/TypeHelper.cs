@@ -16,6 +16,41 @@ namespace NetGore
         const bool _gacDefault = false;
 
         /// <summary>
+        /// Gets the underlying non-nullable type of a nullable type.
+        /// </summary>
+        /// <param name="nullableType">The nullable type.</param>
+        /// <returns>The underlying non-nullable type.</returns>
+        /// <exception cref="ArgumentException"><paramref name="nullableType"/> is not a nullable type.</exception>
+        public static Type NullableToNonNullable(Type nullableType)
+        {
+            if (!nullableType.IsValueType || !nullableType.IsGenericType)
+                throw new ArgumentException("nullableType");
+
+            var ret = nullableType.GetGenericArguments().FirstOrDefault();
+            if (ret == null)
+                throw new ArgumentException("nullableType");
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets the nullable type of a non-nullable type.
+        /// </summary>
+        /// <param name="type">The non-nullable type. If already a nullable type, the same type will be returned.</param>
+        /// <returns>The nullable type.</returns>
+        /// <exception cref="ArgumentException"><paramref name="type"/>.</exception>
+        public static Type NonNullableToNullable(Type type)
+        {
+            if (!type.IsValueType)
+                throw new ArgumentException("type");
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return type;
+
+            return typeof(Nullable<>).MakeGenericType(type);
+        }
+
+        /// <summary>
         /// Gets all Types from every Assembly.
         /// </summary>
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.

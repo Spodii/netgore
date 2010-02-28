@@ -88,6 +88,7 @@
     <Compile Include="IO\PropertyInterface\PropertyInterfaceManager.cs" />
     <Compile Include="IO\PropertySync\IPropertySync.cs" />
     <Compile Include="IO\PropertySync\PropertySyncHelper.cs" />
+    <Compile Include="IO\PropertySync\PropertySyncNullable.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncPoint.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncRectangle.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncVector3.cs" />
