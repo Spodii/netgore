@@ -11,7 +11,7 @@ namespace NetGore.Features.Quests
     /// </summary>
     /// <typeparam name="TCharacter">The type of quest performer.</typeparam>
     /// <typeparam name="TKillID">The type of identifier for the targets to kill.</typeparam>
-    public interface IQuestPerformerKillCounter<TCharacter, TKillID> : IDisposable where TCharacter : IQuestPerformer<TCharacter> where TKillID : IEquatable<TKillID>
+    public interface IQuestPerformerKillCounter<TCharacter, TKillID> : IDisposable where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
         /// Gets the kill counts for the given <paramref name="quest"/> for each of the required kill counters. The

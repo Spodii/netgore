@@ -162,6 +162,7 @@
     <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="Queries\Quest\DeleteCharacterQuestStatusQuery.cs" />
     <Compile Include="Queries\Quest\InsertCharacterQuestStatusStartQuery.cs" />
+    <Compile Include="Queries\Quest\DeleteCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Quest\SelectActiveQuestsQuery.cs" />
     <Compile Include="Queries\Quest\SelectCompletedQuestsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestIDsQuery.cs" />
@@ -171,10 +172,14 @@
     <Compile Include="Queries\Quest\SelectQuestRequireStartItemQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestRequireStartQuestQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestRewardItemQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestValuesQueryBase.cs" />
     <Compile Include="Queries\Quest\UpdateCharacterQuestStatusFinishedQuery.cs" />
+    <Compile Include="Queries\Quest\UpdateCharacterQuestStatusKillsQuery.cs" />
+    <Compile Include="Quests\QuestPerformerKillCounter.cs" />
     <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
     <Compile Include="Quests\Requirements\ItemsQuestRequirement.cs" />
+    <Compile Include="Quests\Requirements\KillQuestRequirement.cs" />
     <Compile Include="Quests\Rewards\ExpQuestReward.cs" />
     <Compile Include="Quests\Rewards\ItemsQuestReward.cs" />
     <Compile Include="Quests\Quest.cs" />

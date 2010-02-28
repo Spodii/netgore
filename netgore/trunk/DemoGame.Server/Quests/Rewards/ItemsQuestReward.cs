@@ -13,14 +13,14 @@ namespace DemoGame.Server.Quests
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly IEnumerable<ItemTemplateAndAmount> _items;
+        readonly IEnumerable<QuestItemTemplateAmount> _items;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemsQuestReward"/> class.
         /// </summary>
         /// <param name="items">The items.</param>
         /// <exception cref="ArgumentNullException"><paramref name="items"/> is null or empty.</exception>
-        public ItemsQuestReward(IEnumerable<ItemTemplateAndAmount> items)
+        public ItemsQuestReward(IEnumerable<QuestItemTemplateAmount> items)
         {
             if (items == null || items.IsEmpty())
                 throw new ArgumentNullException("items");
@@ -32,7 +32,7 @@ namespace DemoGame.Server.Quests
         /// <summary>
         /// Gets the items given as a quest reward.
         /// </summary>
-        public IEnumerable<ItemTemplateAndAmount> Items
+        public IEnumerable<QuestItemTemplateAmount> Items
         {
             get { return _items; }
         }

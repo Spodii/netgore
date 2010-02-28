@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -8,20 +9,20 @@ using NetGore.Features.Quests;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class UpdateCharacterQuestStatusFinishedQuery : DbQueryNonReader<UpdateCharacterQuestStatusFinishedQuery.QueryArgs>
+    public class DeleteCharacterQuestStatusKillsQuery : DbQueryNonReader<DeleteCharacterQuestStatusKillsQuery.QueryArgs>
     {
-        static readonly string _queryStr =
-            string.Format("UPDATE `{0}` SET `completed_on`=NOW() WHERE `character_id`=@charID AND `quest_id`=@questID",
-                          CharacterQuestStatusTable.TableName);
+        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID",
+            CharacterQuestStatusKillsTable.TableName);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateCharacterQuestStatusFinishedQuery"/> class.
+        /// Initializes a new instance of the <see cref="DeleteCharacterQuestStatusKillsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public UpdateCharacterQuestStatusFinishedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public DeleteCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, _queryStr)
         {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "character_id", "quest_id", "completed_on");
+            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_id", "quest_id");
         }
 
         /// <summary>

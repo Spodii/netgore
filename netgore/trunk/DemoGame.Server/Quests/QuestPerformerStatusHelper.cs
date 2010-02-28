@@ -9,12 +9,21 @@ namespace DemoGame.Server.Quests
     {
         static readonly QuestManager _questManager = QuestManager.Instance;
 
+        readonly QuestPerformerKillCounter _questKillCounter;
+
+        /// <summary>
+        /// Gets the <see cref="QuestPerformerKillCounter"/>.
+        /// </summary>
+        public QuestPerformerKillCounter QuestKillCounter { get { return _questKillCounter; } }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestPerformerStatusHelper"/> class.
         /// </summary>
         /// <param name="owner">The quest performer that this object will track the quest status of.</param>
         public QuestPerformerStatusHelper(User owner) : base(owner)
         {
+            _questKillCounter = new QuestPerformerKillCounter(owner);
+
             // Send the initial quest status
             var completed = CompletedQuests.Select(x => x.QuestID);
             var active = ActiveQuests.Select(x => x.QuestID);

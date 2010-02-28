@@ -5,6 +5,11 @@ namespace NetGore.Features.Quests
     public interface IQuestRequirement<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
+        /// Gets the <see cref="IQuest{TCharacter}"/> that this quest requirement is for.
+        /// </summary>
+        IQuest<TCharacter> Quest { get; }
+
+        /// <summary>
         /// Checks if the <paramref name="character"/> meets this test requirement.
         /// </summary>
         /// <param name="character">The character to check if they meet the requirements.</param>
