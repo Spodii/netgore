@@ -267,14 +267,18 @@ namespace NetGore.Network
         /// Set up the server and starts listening for connections
         /// </summary>
         /// <param name="port">Port to bind to</param>
-        public void Listen(int port)
+        /// <param name="allowRemoteConnections">If true, remote connections will be allowed. If false, only
+        /// local connections will be allowed. When true, you must ensure that your firewall does not block
+        /// the <paramref name="port"/>. If you are behind a router, you must also forward TCP and UDP on
+        /// the <paramref name="port"/> to this machine through your router's settings.</param>
+        public void Listen(int port, bool allowRemoteConnections)
         {
             // If a ListenSocket already exists, dispose of it
             if (_listenSocket != null)
                 _listenSocket.Dispose();
 
             // Create the new ListenSocket
-            _listenSocket = new ListenSocket(port);
+            _listenSocket = new ListenSocket(port, allowRemoteConnections);
             _listenSocket.ConnectionAccepted += SocketAcceptHandler;
 
             // Check if the ListenSocket was created successfully

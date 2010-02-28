@@ -35,7 +35,11 @@ namespace NetGore.Network
         /// Initializes a new instance of the <see cref="ListenSocket"/> class.
         /// </summary>
         /// <param name="port">The port to listen on.</param>
-        public ListenSocket(int port)
+        /// <param name="allowRemoteConnections">If true, remote connections will be allowed. If false, only
+        /// local connections will be allowed. When true, you must ensure that your firewall does not block
+        /// the <paramref name="port"/>. If you are behind a router, you must also forward TCP and UDP on
+        /// the <paramref name="port"/> to this machine through your router's settings.</param>
+        public ListenSocket(int port, bool allowRemoteConnections)
         {
             // Set up the accept event args
             _acceptEventArgs = new SocketAsyncEventArgs();
@@ -44,7 +48,7 @@ namespace NetGore.Network
             try
             {
                 // Use IPAddress.Any for public
-                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Loopback, port);
+                IPEndPoint localEndPoint = new IPEndPoint((allowRemoteConnections ? IPAddress.Any : IPAddress.Loopback), port);
                 _socket = new Socket(localEndPoint.Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Socket created on address {0}", localEndPoint.ToString());

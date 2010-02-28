@@ -158,13 +158,7 @@ namespace NetGore
         {
             Vector2 position = r.ReadVector2(_positionValueKey);
             Vector2 size = r.ReadVector2(_sizeValueKey);
-            try
-            {
-                IsPlatform = r.ReadBool(_isPlatformValueKey);
-            }
-            catch (Exception ex)
-            {
-            }
+            IsPlatform = r.ReadBool(_isPlatformValueKey);
 
             SetPositionRaw(position);
             SetSizeRaw(size);
