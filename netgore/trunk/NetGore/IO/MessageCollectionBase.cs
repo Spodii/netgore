@@ -13,7 +13,7 @@ namespace NetGore.IO
     /// Base class for a collection of messages loaded from a file.
     /// </summary>
     /// <typeparam name="T">The Type of key.</typeparam>
-    public abstract class MessageCollectionBase<T> : IEnumerable<KeyValuePair<T, string>>
+    public abstract class MessageCollectionBase<T> : IMessageCollection<T>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -71,70 +71,6 @@ namespace NetGore.IO
         protected virtual IEqualityComparer<T> GetEqualityComparer()
         {
             return EqualityComparer<T>.Default;
-        }
-
-        /// <summary>
-        /// Gets the specified message, parsed using the supplied parameters.
-        /// </summary>
-        /// <param name="id">ID of the message to get.</param>
-        /// <param name="args">Parameters used to parse the message.</param>
-        /// <returns>Parsed message for the <paramref name="id"/>, or null if the <paramref name="id"/> 
-        /// is not found or invalid.</returns>
-        public virtual string GetMessage(T id, params string[] args)
-        {
-            // Try to get the message
-            string ret;
-            if (!_messages.TryGetValue(id, out ret))
-            {
-                if (log.IsWarnEnabled)
-                    log.WarnFormat("Failed to load message `{0}` since the ID did not exist in the dictionary.", id.ToString());
-                return null;
-            }
-
-            // Parse the message if needed
-            if (args == null || args.Length == 0)
-                return ret;
-
-            string parsed;
-
-            try
-            {
-                parsed = string.Format(ret, args);
-            }
-            catch (FormatException)
-            {
-                // Invalid number of arguments - return the unparsed string
-                const string errmsg = "Too few arguments supplied for message `{0}`.";
-                Debug.Fail(string.Format(errmsg, id));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, id.ToString());
-                return ret;
-            }
-
-#if DEBUG
-            // Check if any parameters were missed
-            bool valid;
-            try
-            {
-                var subArgs = args.Take(args.Length - 1);
-                string parsed2 = (subArgs.Count() > 0) ? string.Format(ret, subArgs) : ret;
-                valid = (parsed2 != parsed);
-            }
-            catch (FormatException)
-            {
-                valid = true;
-            }
-
-            if (!valid)
-            {
-                const string errmsg = "Too many arguments supplied for GameMessage `{0}`.";
-                Debug.Fail(string.Format(errmsg, id));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, id);
-            }
-#endif
-
-            return parsed;
         }
 
         /// <summary>
@@ -246,7 +182,7 @@ namespace NetGore.IO
             return false;
         }
 
-        #region IEnumerable<KeyValuePair<T,string>> Members
+        #region IMessageCollection<T> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -268,6 +204,70 @@ namespace NetGore.IO
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the specified message, parsed using the supplied parameters.
+        /// </summary>
+        /// <param name="id">ID of the message to get.</param>
+        /// <param name="args">Parameters used to parse the message.</param>
+        /// <returns>Parsed message for the <paramref name="id"/>, or null if the <paramref name="id"/> 
+        /// is not found or invalid.</returns>
+        public virtual string GetMessage(T id, params string[] args)
+        {
+            // Try to get the message
+            string ret;
+            if (!_messages.TryGetValue(id, out ret))
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat("Failed to load message `{0}` since the ID did not exist in the dictionary.", id.ToString());
+                return null;
+            }
+
+            // Parse the message if needed
+            if (args == null || args.Length == 0)
+                return ret;
+
+            string parsed;
+
+            try
+            {
+                parsed = string.Format(ret, args);
+            }
+            catch (FormatException)
+            {
+                // Invalid number of arguments - return the unparsed string
+                const string errmsg = "Too few arguments supplied for message `{0}`.";
+                Debug.Fail(string.Format(errmsg, id));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, id.ToString());
+                return ret;
+            }
+
+#if DEBUG
+            // Check if any parameters were missed
+            bool valid;
+            try
+            {
+                var subArgs = args.Take(args.Length - 1);
+                string parsed2 = (subArgs.Count() > 0) ? string.Format(ret, subArgs) : ret;
+                valid = (parsed2 != parsed);
+            }
+            catch (FormatException)
+            {
+                valid = true;
+            }
+
+            if (!valid)
+            {
+                const string errmsg = "Too many arguments supplied for GameMessage `{0}`.";
+                Debug.Fail(string.Format(errmsg, id));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, id);
+            }
+#endif
+
+            return parsed;
         }
 
         #endregion
