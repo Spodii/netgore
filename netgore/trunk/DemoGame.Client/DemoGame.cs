@@ -95,7 +95,7 @@ namespace DemoGame.Client
             IsFixedTimeStep = true;
 
             // Set the graphics settings
-            graphics.SynchronizeWithVerticalRetrace = false; // vsync
+            graphics.SynchronizeWithVerticalRetrace = true; // vsync
             graphics.PreferMultiSampling = false;
 
             // Disable filtering, which makes our 2d art look like crap
