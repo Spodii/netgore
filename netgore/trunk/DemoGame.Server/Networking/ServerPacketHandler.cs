@@ -149,14 +149,18 @@ namespace DemoGame.Server
                 // Quest already started, try to turn in
                 bool success = user.TryFinishQuest(quest);
                 using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, false))
+                {
                     user.Send(pw);
+                }
             }
             else
             {
                 // Quest not started yet, try to add it
                 bool success = user.TryAddQuest(quest);
                 using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, true))
+                {
                     user.Send(pw);
+                }
             }
         }
 
