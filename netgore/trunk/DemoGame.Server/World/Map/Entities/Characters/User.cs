@@ -1139,6 +1139,19 @@ namespace DemoGame.Server
             return _questInfo.TryAddQuest(quest);
         }
 
+        /// <summary>
+        /// Tries to finish the given <paramref name="quest"/> that this <see cref="IQuestPerformer{TCharacter}"/>
+        /// has started.
+        /// </summary>
+        /// <param name="quest">The quest to turn in.</param>
+        /// <returns>
+        /// True if the <paramref name="quest"/> was successfully finished; otherwise false.
+        /// </returns>
+        public bool TryFinishQuest(IQuest<User> quest)
+        {
+            return _questInfo.TryFinishQuest(quest);
+        }
+
         #endregion
     }
 }

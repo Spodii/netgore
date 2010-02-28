@@ -6,6 +6,9 @@ using NetGore.IO;
 
 namespace NetGore.Features.Quests
 {
+    /// <summary>
+    /// A collection of <see cref="IQuestDescription"/>s.
+    /// </summary>
     public class QuestDescriptionCollection : IQuestDescriptionCollection
     {
         const string _questDescriptionsNodeName = "QuestDescriptions";

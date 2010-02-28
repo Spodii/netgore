@@ -112,8 +112,8 @@ namespace DemoGame.Server
             return target;
         }
 
-        [MessageHandler((byte)ClientPacketID.AcceptQuest)]
-        void RecvAcceptQuest(IIPSocket conn, BitStream r)
+        [MessageHandler((byte)ClientPacketID.AcceptOrTurnInQuest)]
+        void RecvAcceptOrTurnInQuest(IIPSocket conn, BitStream r)
         {
             MapEntityIndex providerIndex = r.ReadMapEntityIndex();
             QuestID questID = r.ReadQuestID();
@@ -139,10 +139,24 @@ namespace DemoGame.Server
             if (quest == null)
                 return;
 
-            bool successfullyAdded = user.TryAddQuest(quest);
-            using (var pw = ServerPacket.AcceptQuestReply(questID, successfullyAdded))
+            // Ensure this provider even provides this quest
+            if (!provider.Quests.Contains(quest))
+                return;
+
+            // If the user already has the quest, try to turn it in
+            if (user.ActiveQuests.Contains(quest))
             {
-                user.Send(pw);
+                // Quest already started, try to turn in
+                bool success = user.TryFinishQuest(quest);
+                using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, false))
+                    user.Send(pw);
+            }
+            else
+            {
+                // Quest not started yet, try to add it
+                bool success = user.TryAddQuest(quest);
+                using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, true))
+                    user.Send(pw);
             }
         }
 

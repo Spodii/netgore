@@ -14,7 +14,7 @@ namespace DemoGame
         [EditorBrowsable(EditorBrowsableState.Never)]
         RESERVED = 0,
 
-        AcceptQuestReply,
+        AcceptOrTurnInQuestReply,
         AddStatusEffect,
         CharAttack,
         CharDamage,

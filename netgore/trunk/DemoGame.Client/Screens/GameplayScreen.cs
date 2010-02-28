@@ -210,7 +210,7 @@ namespace DemoGame.Client
 
         void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)
         {
-            using (var pw = ClientPacket.AcceptQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
+            using (var pw = ClientPacket.AcceptOrTurnInQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
             {
                 Socket.Send(pw);
             }
