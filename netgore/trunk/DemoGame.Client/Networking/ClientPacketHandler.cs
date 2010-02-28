@@ -38,9 +38,9 @@ namespace DemoGame.Client
         public delegate void CreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
         readonly IDynamicEntityFactory _dynamicEntityFactory;
-
         readonly GameMessages _gameMessages = GameMessages.Create();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
@@ -385,21 +385,8 @@ namespace DemoGame.Client
             _gameplayScreen.InfoBox.Add(msg);
         }
 
-        [MessageHandler((byte)ServerPacketID.NotifyLevel)]
-        void RecvNotifyLevel(IIPSocket conn, BitStream r)
-        {
-            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
-
-            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
-            if (chr == null)
-                return;
-
-            if (chr == World.UserChar)
-                _gameplayScreen.InfoBox.Add("You have leveled up!");
-        }
-
         [MessageHandler((byte)ServerPacketID.NotifyGetItem)]
-        void RecvNotifyPickup(IIPSocket conn, BitStream r)
+        void RecvNotifyGetItem(IIPSocket conn, BitStream r)
         {
             string name = r.ReadString();
             byte amount = r.ReadByte();
@@ -411,6 +398,19 @@ namespace DemoGame.Client
                 msg = string.Format("You got a {0}", name);
 
             _gameplayScreen.InfoBox.Add(msg);
+        }
+
+        [MessageHandler((byte)ServerPacketID.NotifyLevel)]
+        void RecvNotifyLevel(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
+
+            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
+            if (chr == null)
+                return;
+
+            if (chr == World.UserChar)
+                _gameplayScreen.InfoBox.Add("You have leveled up!");
         }
 
         [MessageHandler((byte)ServerPacketID.Ping)]
