@@ -34,6 +34,36 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void MinElementTest()
+        {
+            string[] s = new string[] { "asdf", "f", "asfkdljas", "sdf" };
+            var r = s.MinElement(x => x.Length);
+            Assert.AreEqual("f", r);
+        }
+
+        [Test]
+        public void MaxElementTest()
+        {
+            string[] s = new string[] { "asdf", "f", "asfkdljas", "sdf" };
+            var r = s.MaxElement(x => x.Length);
+            Assert.AreEqual("asfkdljas", r);
+        }
+
+        [Test]
+        public void MaxElementEmptyTest()
+        {
+            string[] s = new string[0];
+            Assert.Throws<ArgumentException>(() => s.MaxElement(x => x.Length));
+        }
+
+        [Test]
+        public void MinElementEmptyTest()
+        {
+            string[] s = new string[0];
+            Assert.Throws<ArgumentException>(() => s.MinElement(x => x.Length));
+        }
+
+        [Test]
         public void ImplodeSplitWithStringTest()
         {
             var l = new List<int>(50);
