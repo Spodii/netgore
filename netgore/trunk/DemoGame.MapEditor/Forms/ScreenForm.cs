@@ -146,6 +146,8 @@ namespace DemoGame.MapEditor
         /// </summary>
         SpriteFont _spriteFont;
 
+        DrawingManager _drawingManager;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
@@ -582,7 +584,8 @@ namespace DemoGame.MapEditor
                 return;
 
             // Begin the rendering
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            _drawingManager.LightManager.Ambient = Map.AmbientLight;
+            sb = _drawingManager.BeginDrawWorld(_camera);
 
             // Map
             Map.Draw(sb);
@@ -629,10 +632,10 @@ namespace DemoGame.MapEditor
             _focusedSpatialDrawer.Draw(SelectedObjs.Focused as ISpatial, sb);
 
             // End map rendering
-            sb.End();
+            _drawingManager.EndDrawWorld();
 
             // Begin GUI rendering
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            sb = _drawingManager.BeginDrawGUI();
 
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
@@ -640,7 +643,7 @@ namespace DemoGame.MapEditor
             sb.DrawStringShaded(SpriteFont, _cursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
             // End GUI rendering
-            sb.End();
+            _drawingManager.EndDrawGUI();
         }
 
         /// <summary>
@@ -778,6 +781,7 @@ namespace DemoGame.MapEditor
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
+            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
 
             // Font
             _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
@@ -1192,23 +1196,63 @@ namespace DemoGame.MapEditor
 
         #endregion
 
-        private void txtAmbientG_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void txtAmbientB_Leave(object sender, EventArgs e)
+        byte GetMapLightValueFromControlText(Control tb)
         {
             int v;
-            if (!int.TryParse(txtAmbientB.Text, out v))
+            if (!int.TryParse(tb.Text, out v))
                 v = byte.MaxValue;
 
             v = v.Clamp(byte.MinValue, byte.MaxValue);
 
-            if (txtAmbientB.Text != v.ToString())
-                txtAmbientB.Text = v.ToString();
+            if (tb.Text != v.ToString())
+                tb.Text = v.ToString();
 
-               
+            return (byte)v;
+        }
+
+        private void txtAmbientB_Leave(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            var v = GetMapLightValueFromControlText(txtAmbientB);
+            Map.AmbientLight = new Color(Map.AmbientLight.R, Map.AmbientLight.G, v);
+        }
+
+        private void txtAmbientG_Leave(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            var v = GetMapLightValueFromControlText(txtAmbientG);
+            Map.AmbientLight = new Color(Map.AmbientLight.R, v, Map.AmbientLight.B);
+        }
+
+        private void txtAmbientR_Leave(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            var v = GetMapLightValueFromControlText(txtAmbientR);
+            Map.AmbientLight = new Color(v, Map.AmbientLight.G, Map.AmbientLight.B);
+        }
+
+        private void txtAmbientR_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtAmbientR_Leave(sender, e);
+        }
+
+        private void txtAmbientG_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtAmbientG_Leave(sender, e);
+        }
+
+        private void txtAmbientB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtAmbientB_Leave(sender, e);
         }
     }
 }

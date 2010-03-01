@@ -125,7 +125,19 @@ namespace NetGore.Graphics
             }
 
             // Get and return the light map
-            _gd.ResolveBackBuffer(_lightMap);
+            try
+            {
+                _gd.ResolveBackBuffer(_lightMap);
+            }
+            catch (ArgumentException)
+            {
+                // If there was an exception, it was probably due to the backbuffer being resized. So reinitailize and
+                // redraw. This could go into an infinite recursion and overflow the stack, but if that happens, we
+                // are stuck with an error of not being able to create the lightmap anyways, so who cares. :]
+                Initialize(_gd);
+                Draw(camera);
+            }
+
             return _lightMap;
         }
 
@@ -144,15 +156,13 @@ namespace NetGore.Graphics
             if (_lightMap != null && !_lightMap.IsDisposed)
                 _lightMap.Dispose();
 
-            if (_sb != null && !_sb.IsDisposed)
-                _sb.Dispose();
-
             _gd = graphicsDevice;
 
             var pp = _gd.PresentationParameters;
             _lightMap = new ResolveTexture2D(_gd, pp.BackBufferWidth, pp.BackBufferHeight, 1, pp.BackBufferFormat);
 
-            _sb = new RoundedXnaSpriteBatch(_gd);
+            if (_sb == null)
+                _sb = new RoundedXnaSpriteBatch(_gd);
         }
 
         /// <summary>
