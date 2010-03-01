@@ -44,6 +44,12 @@ namespace DemoGame.MapEditor
             this.scTabsAndSelected = new System.Windows.Forms.SplitContainer();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtAmbientB = new System.Windows.Forms.TextBox();
+            this.txtAmbientG = new System.Windows.Forms.TextBox();
+            this.txtAmbientR = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.chkIndoors = new System.Windows.Forms.CheckBox();
             this.MapSizeGroupBox = new System.Windows.Forms.GroupBox();
             this.btnApplySize = new System.Windows.Forms.Button();
             this.txtMapHeight = new System.Windows.Forms.TextBox();
@@ -122,6 +128,7 @@ namespace DemoGame.MapEditor
             this.scTabsAndSelected.SuspendLayout();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPageGrhs.SuspendLayout();
@@ -323,6 +330,7 @@ namespace DemoGame.MapEditor
             // 
             // tabPageGeneral
             // 
+            this.tabPageGeneral.Controls.Add(this.groupBox2);
             this.tabPageGeneral.Controls.Add(this.MapSizeGroupBox);
             this.tabPageGeneral.Controls.Add(this.tableLayoutPanel1);
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
@@ -333,6 +341,70 @@ namespace DemoGame.MapEditor
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.ToolTipText = "General map information";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox2.Controls.Add(this.txtAmbientB);
+            this.groupBox2.Controls.Add(this.txtAmbientG);
+            this.groupBox2.Controls.Add(this.txtAmbientR);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.chkIndoors);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Location = new System.Drawing.Point(3, 104);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(314, 48);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Lighting";
+            // 
+            // txtAmbientB
+            // 
+            this.txtAmbientB.Location = new System.Drawing.Point(221, 17);
+            this.txtAmbientB.MaxLength = 3;
+            this.txtAmbientB.Name = "txtAmbientB";
+            this.txtAmbientB.Size = new System.Drawing.Size(25, 20);
+            this.txtAmbientB.TabIndex = 4;
+            this.txtAmbientB.Text = "255";
+            this.txtAmbientB.Leave += new System.EventHandler(this.txtAmbientB_Leave);
+            // 
+            // txtAmbientG
+            // 
+            this.txtAmbientG.Location = new System.Drawing.Point(190, 17);
+            this.txtAmbientG.MaxLength = 3;
+            this.txtAmbientG.Name = "txtAmbientG";
+            this.txtAmbientG.Size = new System.Drawing.Size(25, 20);
+            this.txtAmbientG.TabIndex = 3;
+            this.txtAmbientG.Text = "255";
+            this.txtAmbientG.TextChanged += new System.EventHandler(this.txtAmbientG_TextChanged);
+            // 
+            // txtAmbientR
+            // 
+            this.txtAmbientR.Location = new System.Drawing.Point(159, 17);
+            this.txtAmbientR.MaxLength = 3;
+            this.txtAmbientR.Name = "txtAmbientR";
+            this.txtAmbientR.Size = new System.Drawing.Size(25, 20);
+            this.txtAmbientR.TabIndex = 2;
+            this.txtAmbientR.Text = "255";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(73, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(80, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Ambient (RGB):";
+            // 
+            // chkIndoors
+            // 
+            this.chkIndoors.AutoSize = true;
+            this.chkIndoors.Location = new System.Drawing.Point(6, 19);
+            this.chkIndoors.Name = "chkIndoors";
+            this.chkIndoors.Size = new System.Drawing.Size(61, 17);
+            this.chkIndoors.TabIndex = 0;
+            this.chkIndoors.Text = "Indoors";
+            this.chkIndoors.UseVisualStyleBackColor = true;
             // 
             // MapSizeGroupBox
             // 
@@ -1023,6 +1095,8 @@ namespace DemoGame.MapEditor
             this.scTabsAndSelected.ResumeLayout(false);
             this.tcMenu.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.MapSizeGroupBox.ResumeLayout(false);
             this.MapSizeGroupBox.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -1122,5 +1196,11 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Panel panToolBar;
         private System.Windows.Forms.Label lblZoom;
         private System.Windows.Forms.NumericUpDown numZoom;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox txtAmbientB;
+        private System.Windows.Forms.TextBox txtAmbientG;
+        private System.Windows.Forms.TextBox txtAmbientR;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox chkIndoors;
     }
 }
