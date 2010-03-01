@@ -5,6 +5,7 @@
     <Music>main</Music>
     <Width>1600</Width>
     <Height>800</Height>
+    <Indoors>False</Indoors>
   </Header>
   <Walls>
     <Count>9</Count>
@@ -176,6 +177,9 @@
         <VerticalLayout>Stretched</VerticalLayout>
       </Item1>
     </BackgroundImages>
+    <Lighting>
+      <Ambient>150,150,150,255</Ambient>
+    </Lighting>
     <ParticleEffects>
       <Count>1</Count>
       <Item0>
