@@ -17,8 +17,10 @@ namespace DemoGame.Client
     {
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
+        const string _lightingNodeName = "Lighting";
         const string _particleEffectsNodeName = "ParticleEffects";
         const string _usedIndiciesNodeName = "UsedIndicies";
+
         static readonly SpriteBatchParticleRenderer _particleEffectRenderer = new SpriteBatchParticleRenderer();
 
         /// <summary>
@@ -242,17 +244,24 @@ namespace DemoGame.Client
             }
         }
 
-        void LoadGrhs(IValueReader r)
+        void LoadLighting(IValueReader reader)
         {
-            IValueReader nodeReader = r.ReadNode(_mapGrhsNodeName);
+            reader = reader.ReadNode(_lightingNodeName);
+
+            AmbientLight = reader.ReadColor("Ambient");
+        }
+
+        void LoadGrhs(IValueReader reader)
+        {
+            reader = reader.ReadNode(_mapGrhsNodeName);
 
             // Used GrhIndexes
-            var usedGrhIndexes = nodeReader.ReadMany(_usedIndiciesNodeName, ((reader, key) => reader.ReadGrhIndex(key)));
+            var usedGrhIndexes = reader.ReadMany(_usedIndiciesNodeName, ((r, key) => r.ReadGrhIndex(key)));
             BuildAtlas(usedGrhIndexes);
 
             // MapGrhs
             int currentTime = GetTime();
-            var loadedMapGrhs = nodeReader.ReadManyNodes(_mapGrhsNodeName, x => new MapGrh(x, currentTime));
+            var loadedMapGrhs = reader.ReadManyNodes(_mapGrhsNodeName, x => new MapGrh(x, currentTime));
             foreach (MapGrh mapGrh in loadedMapGrhs)
             {
                 AddMapGrh(mapGrh);
@@ -267,6 +276,7 @@ namespace DemoGame.Client
         {
             LoadGrhs(reader);
             LoadBackgroundImages(reader);
+            LoadLighting(reader);
             _particleEffects.Read(reader, _particleEffectsNodeName);
         }
 
@@ -313,7 +323,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Writes all the MapGrhs to a XmlWriter.
+        /// Writes all the MapGrhs to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="w">IValueWriter to write to.</param>
         void SaveGrhs(IValueWriter w)
@@ -329,6 +339,15 @@ namespace DemoGame.Client
             w.WriteEndNode(_mapGrhsNodeName);
         }
 
+        void SaveLighting(IValueWriter w)
+        {
+            w.WriteStartNode(_lightingNodeName);
+            {
+                w.Write("Ambient", AmbientLight);
+            }
+            w.WriteEndNode(_lightingNodeName);
+        }
+
         /// <summary>
         /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
@@ -337,6 +356,7 @@ namespace DemoGame.Client
         {
             SaveGrhs(w);
             SaveBackgroundImages(w);
+            SaveLighting(w);
             _particleEffects.Write(w, _particleEffectsNodeName);
         }
 

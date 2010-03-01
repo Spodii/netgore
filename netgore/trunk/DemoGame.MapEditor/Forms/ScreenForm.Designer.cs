@@ -40,16 +40,9 @@ namespace DemoGame.MapEditor
             this.panToolBar = new System.Windows.Forms.Panel();
             this.numZoom = new System.Windows.Forms.NumericUpDown();
             this.lblZoom = new System.Windows.Forms.Label();
-            this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
             this.scTabsAndSelected = new System.Windows.Forms.SplitContainer();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtAmbientB = new System.Windows.Forms.TextBox();
-            this.txtAmbientG = new System.Windows.Forms.TextBox();
-            this.txtAmbientR = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.chkIndoors = new System.Windows.Forms.CheckBox();
             this.MapSizeGroupBox = new System.Windows.Forms.GroupBox();
             this.btnApplySize = new System.Windows.Forms.Button();
             this.txtMapHeight = new System.Windows.Forms.TextBox();
@@ -65,23 +58,19 @@ namespace DemoGame.MapEditor
             this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
-            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
             this.tabEffects = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.lstMapParticleEffects = new DemoGame.MapEditor.MapParticleEffectsListBox();
             this.lstAvailableParticleEffects = new NetGore.EditorTools.ParticleEffectListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
             this.tcSpawns = new System.Windows.Forms.TabControl();
             this.tpSpawns = new System.Windows.Forms.TabPage();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
             this.btnDeleteSpawn = new System.Windows.Forms.Button();
             this.btnAddSpawn = new System.Windows.Forms.Button();
             this.tpPersistent = new System.Windows.Forms.TabPage();
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
-            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
             this.btnDeletePersistentNPC = new System.Windows.Forms.Button();
             this.btnAddPersistentNPC = new System.Windows.Forms.Button();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
@@ -107,6 +96,17 @@ namespace DemoGame.MapEditor
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
+            this.chkIndoors = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtAmbientR = new System.Windows.Forms.TextBox();
+            this.txtAmbientG = new System.Windows.Forms.TextBox();
+            this.txtAmbientB = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
+            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
+            this.lstMapParticleEffects = new DemoGame.MapEditor.MapParticleEffectsListBox();
+            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
+            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -128,7 +128,6 @@ namespace DemoGame.MapEditor
             this.scTabsAndSelected.SuspendLayout();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPageGrhs.SuspendLayout();
@@ -156,6 +155,7 @@ namespace DemoGame.MapEditor
             this.scSelectedItems.Panel1.SuspendLayout();
             this.scSelectedItems.Panel2.SuspendLayout();
             this.scSelectedItems.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -256,21 +256,6 @@ namespace DemoGame.MapEditor
             this.lblZoom.TabIndex = 9;
             this.lblZoom.Text = "Zoom (%):";
             // 
-            // GameScreen
-            // 
-            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.GameScreen.Camera = null;
-            this.GameScreen.CursorPos = new Microsoft.Xna.Framework.Vector2(0F, 0F);
-            this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GameScreen.DrawHandler = null;
-            this.GameScreen.Location = new System.Drawing.Point(0, 0);
-            this.GameScreen.Name = "GameScreen";
-            this.GameScreen.Padding = new System.Windows.Forms.Padding(5);
-            this.GameScreen.Size = new System.Drawing.Size(800, 600);
-            this.GameScreen.TabIndex = 8;
-            this.GameScreen.Text = "Game Screen";
-            this.GameScreen.UpdateHandler = null;
-            // 
             // splitContainer3
             // 
             splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -330,6 +315,7 @@ namespace DemoGame.MapEditor
             // 
             // tabPageGeneral
             // 
+            this.tabPageGeneral.Controls.Add(this.chkIndoors);
             this.tabPageGeneral.Controls.Add(this.groupBox2);
             this.tabPageGeneral.Controls.Add(this.MapSizeGroupBox);
             this.tabPageGeneral.Controls.Add(this.tableLayoutPanel1);
@@ -341,74 +327,6 @@ namespace DemoGame.MapEditor
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.ToolTipText = "General map information";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox2.Controls.Add(this.txtAmbientB);
-            this.groupBox2.Controls.Add(this.txtAmbientG);
-            this.groupBox2.Controls.Add(this.txtAmbientR);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.chkIndoors);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(3, 104);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(314, 48);
-            this.groupBox2.TabIndex = 8;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Lighting";
-            // 
-            // txtAmbientB
-            // 
-            this.txtAmbientB.Location = new System.Drawing.Point(221, 17);
-            this.txtAmbientB.MaxLength = 3;
-            this.txtAmbientB.Name = "txtAmbientB";
-            this.txtAmbientB.Size = new System.Drawing.Size(25, 20);
-            this.txtAmbientB.TabIndex = 4;
-            this.txtAmbientB.Text = "255";
-            this.txtAmbientB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientB_KeyDown);
-            this.txtAmbientB.Leave += new System.EventHandler(this.txtAmbientB_Leave);
-            // 
-            // txtAmbientG
-            // 
-            this.txtAmbientG.Location = new System.Drawing.Point(190, 17);
-            this.txtAmbientG.MaxLength = 3;
-            this.txtAmbientG.Name = "txtAmbientG";
-            this.txtAmbientG.Size = new System.Drawing.Size(25, 20);
-            this.txtAmbientG.TabIndex = 3;
-            this.txtAmbientG.Text = "255";
-            this.txtAmbientG.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientG_KeyDown);
-            this.txtAmbientG.Leave += new System.EventHandler(this.txtAmbientG_Leave);
-            // 
-            // txtAmbientR
-            // 
-            this.txtAmbientR.Location = new System.Drawing.Point(159, 17);
-            this.txtAmbientR.MaxLength = 3;
-            this.txtAmbientR.Name = "txtAmbientR";
-            this.txtAmbientR.Size = new System.Drawing.Size(25, 20);
-            this.txtAmbientR.TabIndex = 2;
-            this.txtAmbientR.Text = "255";
-            this.txtAmbientR.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientR_KeyDown);
-            this.txtAmbientR.Leave += new System.EventHandler(this.txtAmbientR_Leave);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(73, 20);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(80, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "Ambient (RGB):";
-            // 
-            // chkIndoors
-            // 
-            this.chkIndoors.AutoSize = true;
-            this.chkIndoors.Location = new System.Drawing.Point(6, 19);
-            this.chkIndoors.Name = "chkIndoors";
-            this.chkIndoors.Size = new System.Drawing.Size(61, 17);
-            this.chkIndoors.TabIndex = 0;
-            this.chkIndoors.Text = "Indoors";
-            this.chkIndoors.UseVisualStyleBackColor = true;
             // 
             // MapSizeGroupBox
             // 
@@ -581,17 +499,6 @@ namespace DemoGame.MapEditor
             this.splitContainer5.SplitterDistance = 273;
             this.splitContainer5.TabIndex = 4;
             // 
-            // lstBGItems
-            // 
-            this.lstBGItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstBGItems.FormattingEnabled = true;
-            this.lstBGItems.Location = new System.Drawing.Point(0, 0);
-            this.lstBGItems.Map = null;
-            this.lstBGItems.Name = "lstBGItems";
-            this.lstBGItems.Size = new System.Drawing.Size(320, 264);
-            this.lstBGItems.TabIndex = 1;
-            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
-            // 
             // btnNewBGLayer
             // 
             this.btnNewBGLayer.Dock = System.Windows.Forms.DockStyle.Left;
@@ -641,17 +548,6 @@ namespace DemoGame.MapEditor
             this.splitContainer6.Size = new System.Drawing.Size(320, 302);
             this.splitContainer6.SplitterDistance = 144;
             this.splitContainer6.TabIndex = 4;
-            // 
-            // lstMapParticleEffects
-            // 
-            this.lstMapParticleEffects.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMapParticleEffects.FormattingEnabled = true;
-            this.lstMapParticleEffects.Location = new System.Drawing.Point(0, 0);
-            this.lstMapParticleEffects.Map = null;
-            this.lstMapParticleEffects.Name = "lstMapParticleEffects";
-            this.lstMapParticleEffects.Size = new System.Drawing.Size(320, 134);
-            this.lstMapParticleEffects.TabIndex = 4;
-            this.lstMapParticleEffects.SelectedIndexChanged += new System.EventHandler(this.lstMapParticleEffects_SelectedIndexChanged);
             // 
             // lstAvailableParticleEffects
             // 
@@ -716,17 +612,6 @@ namespace DemoGame.MapEditor
             this.splitContainer7.SplitterDistance = 241;
             this.splitContainer7.TabIndex = 8;
             // 
-            // lstNPCSpawns
-            // 
-            this.lstNPCSpawns.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstNPCSpawns.FormattingEnabled = true;
-            this.lstNPCSpawns.Location = new System.Drawing.Point(0, 0);
-            this.lstNPCSpawns.Map = null;
-            this.lstNPCSpawns.Name = "lstNPCSpawns";
-            this.lstNPCSpawns.PropertyGrid = null;
-            this.lstNPCSpawns.Size = new System.Drawing.Size(306, 238);
-            this.lstNPCSpawns.TabIndex = 6;
-            // 
             // btnDeleteSpawn
             // 
             this.btnDeleteSpawn.Dock = System.Windows.Forms.DockStyle.Right;
@@ -779,16 +664,6 @@ namespace DemoGame.MapEditor
             this.splitContainer8.Size = new System.Drawing.Size(306, 270);
             this.splitContainer8.SplitterDistance = 241;
             this.splitContainer8.TabIndex = 12;
-            // 
-            // lstPersistentNPCs
-            // 
-            this.lstPersistentNPCs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstPersistentNPCs.FormattingEnabled = true;
-            this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
-            this.lstPersistentNPCs.Map = null;
-            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
-            this.lstPersistentNPCs.Size = new System.Drawing.Size(306, 238);
-            this.lstPersistentNPCs.TabIndex = 12;
             // 
             // btnDeletePersistentNPC
             // 
@@ -1066,6 +941,133 @@ namespace DemoGame.MapEditor
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.cmdNew_Click);
             // 
+            // chkIndoors
+            // 
+            this.chkIndoors.AutoSize = true;
+            this.chkIndoors.Dock = System.Windows.Forms.DockStyle.Top;
+            this.chkIndoors.Location = new System.Drawing.Point(3, 152);
+            this.chkIndoors.Name = "chkIndoors";
+            this.chkIndoors.Size = new System.Drawing.Size(314, 17);
+            this.chkIndoors.TabIndex = 9;
+            this.chkIndoors.Text = "Indoors";
+            this.chkIndoors.UseVisualStyleBackColor = true;
+            this.chkIndoors.CheckedChanged += new System.EventHandler(this.chkIndoors_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(80, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Ambient (RGB):";
+            // 
+            // txtAmbientR
+            // 
+            this.txtAmbientR.Location = new System.Drawing.Point(92, 17);
+            this.txtAmbientR.MaxLength = 3;
+            this.txtAmbientR.Name = "txtAmbientR";
+            this.txtAmbientR.Size = new System.Drawing.Size(25, 20);
+            this.txtAmbientR.TabIndex = 2;
+            this.txtAmbientR.Text = "255";
+            this.txtAmbientR.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientR_KeyDown);
+            this.txtAmbientR.Leave += new System.EventHandler(this.txtAmbientR_Leave);
+            // 
+            // txtAmbientG
+            // 
+            this.txtAmbientG.Location = new System.Drawing.Point(123, 17);
+            this.txtAmbientG.MaxLength = 3;
+            this.txtAmbientG.Name = "txtAmbientG";
+            this.txtAmbientG.Size = new System.Drawing.Size(25, 20);
+            this.txtAmbientG.TabIndex = 3;
+            this.txtAmbientG.Text = "255";
+            this.txtAmbientG.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientG_KeyDown);
+            this.txtAmbientG.Leave += new System.EventHandler(this.txtAmbientG_Leave);
+            // 
+            // txtAmbientB
+            // 
+            this.txtAmbientB.Location = new System.Drawing.Point(154, 17);
+            this.txtAmbientB.MaxLength = 3;
+            this.txtAmbientB.Name = "txtAmbientB";
+            this.txtAmbientB.Size = new System.Drawing.Size(25, 20);
+            this.txtAmbientB.TabIndex = 4;
+            this.txtAmbientB.Text = "255";
+            this.txtAmbientB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientB_KeyDown);
+            this.txtAmbientB.Leave += new System.EventHandler(this.txtAmbientB_Leave);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox2.Controls.Add(this.txtAmbientB);
+            this.groupBox2.Controls.Add(this.txtAmbientG);
+            this.groupBox2.Controls.Add(this.txtAmbientR);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Location = new System.Drawing.Point(3, 104);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(314, 48);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Lighting";
+            // 
+            // GameScreen
+            // 
+            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.GameScreen.Camera = null;
+            this.GameScreen.CursorPos = new Microsoft.Xna.Framework.Vector2(0F, 0F);
+            this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GameScreen.DrawHandler = null;
+            this.GameScreen.Location = new System.Drawing.Point(0, 0);
+            this.GameScreen.Name = "GameScreen";
+            this.GameScreen.Padding = new System.Windows.Forms.Padding(5);
+            this.GameScreen.Size = new System.Drawing.Size(800, 600);
+            this.GameScreen.TabIndex = 8;
+            this.GameScreen.Text = "Game Screen";
+            this.GameScreen.UpdateHandler = null;
+            // 
+            // lstBGItems
+            // 
+            this.lstBGItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstBGItems.FormattingEnabled = true;
+            this.lstBGItems.Location = new System.Drawing.Point(0, 0);
+            this.lstBGItems.Map = null;
+            this.lstBGItems.Name = "lstBGItems";
+            this.lstBGItems.Size = new System.Drawing.Size(320, 264);
+            this.lstBGItems.TabIndex = 1;
+            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
+            // 
+            // lstMapParticleEffects
+            // 
+            this.lstMapParticleEffects.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMapParticleEffects.FormattingEnabled = true;
+            this.lstMapParticleEffects.Location = new System.Drawing.Point(0, 0);
+            this.lstMapParticleEffects.Map = null;
+            this.lstMapParticleEffects.Name = "lstMapParticleEffects";
+            this.lstMapParticleEffects.Size = new System.Drawing.Size(320, 134);
+            this.lstMapParticleEffects.TabIndex = 4;
+            this.lstMapParticleEffects.SelectedIndexChanged += new System.EventHandler(this.lstMapParticleEffects_SelectedIndexChanged);
+            // 
+            // lstNPCSpawns
+            // 
+            this.lstNPCSpawns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstNPCSpawns.FormattingEnabled = true;
+            this.lstNPCSpawns.Location = new System.Drawing.Point(0, 0);
+            this.lstNPCSpawns.Map = null;
+            this.lstNPCSpawns.Name = "lstNPCSpawns";
+            this.lstNPCSpawns.PropertyGrid = null;
+            this.lstNPCSpawns.Size = new System.Drawing.Size(306, 238);
+            this.lstNPCSpawns.TabIndex = 6;
+            // 
+            // lstPersistentNPCs
+            // 
+            this.lstPersistentNPCs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstPersistentNPCs.FormattingEnabled = true;
+            this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
+            this.lstPersistentNPCs.Map = null;
+            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
+            this.lstPersistentNPCs.Size = new System.Drawing.Size(306, 238);
+            this.lstPersistentNPCs.TabIndex = 12;
+            // 
             // ScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1099,8 +1101,7 @@ namespace DemoGame.MapEditor
             this.scTabsAndSelected.ResumeLayout(false);
             this.tcMenu.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.tabPageGeneral.PerformLayout();
             this.MapSizeGroupBox.ResumeLayout(false);
             this.MapSizeGroupBox.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -1132,6 +1133,8 @@ namespace DemoGame.MapEditor
             this.scSelectedItems.Panel1.ResumeLayout(false);
             this.scSelectedItems.Panel2.ResumeLayout(false);
             this.scSelectedItems.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1200,11 +1203,11 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Panel panToolBar;
         private System.Windows.Forms.Label lblZoom;
         private System.Windows.Forms.NumericUpDown numZoom;
+        private System.Windows.Forms.CheckBox chkIndoors;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtAmbientB;
         private System.Windows.Forms.TextBox txtAmbientG;
         private System.Windows.Forms.TextBox txtAmbientR;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.CheckBox chkIndoors;
     }
 }

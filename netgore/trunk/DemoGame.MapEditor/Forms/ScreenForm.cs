@@ -1011,6 +1011,10 @@ namespace DemoGame.MapEditor
             // Handle the change on some controls manually
             txtMapName.Text = newMap.Name ?? string.Empty;
             txtMusic.Text = newMap.Music ?? string.Empty;
+            txtAmbientR.Text = newMap.AmbientLight.R.ToString();
+            txtAmbientG.Text = newMap.AmbientLight.G.ToString();
+            txtAmbientB.Text = newMap.AmbientLight.B.ToString();
+            chkIndoors.Checked = newMap.Indoors;
         }
 
         /// <summary>
@@ -1253,6 +1257,14 @@ namespace DemoGame.MapEditor
         {
             if (e.KeyCode == Keys.Return)
                 txtAmbientB_Leave(sender, e);
+        }
+
+        private void chkIndoors_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            Map.Indoors = chkIndoors.Checked;
         }
     }
 }
