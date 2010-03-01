@@ -282,6 +282,8 @@ namespace DemoGame.Client
             if (UserChar == null)
                 return;
 
+            DrawingManager.LightManager.Ambient = Map.AmbientLight;
+
             // Update the camera
             World.Camera.Min = World.UserChar.GetCameraPos();
 
@@ -291,8 +293,6 @@ namespace DemoGame.Client
                 World.Camera.CenterOn(World.UserChar);
 
             // Draw the world layer
-            DrawingManager.LightManager.Ambient = Map.AmbientLight;
-
             var sb = DrawingManager.BeginDrawWorld(World.Camera);
             World.Draw(sb);
             _chatBubbleManager.Draw(sb);

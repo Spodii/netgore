@@ -366,6 +366,7 @@ namespace DemoGame.MapEditor
             this.txtAmbientB.Size = new System.Drawing.Size(25, 20);
             this.txtAmbientB.TabIndex = 4;
             this.txtAmbientB.Text = "255";
+            this.txtAmbientB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientB_KeyDown);
             this.txtAmbientB.Leave += new System.EventHandler(this.txtAmbientB_Leave);
             // 
             // txtAmbientG
@@ -376,7 +377,8 @@ namespace DemoGame.MapEditor
             this.txtAmbientG.Size = new System.Drawing.Size(25, 20);
             this.txtAmbientG.TabIndex = 3;
             this.txtAmbientG.Text = "255";
-            this.txtAmbientG.TextChanged += new System.EventHandler(this.txtAmbientG_TextChanged);
+            this.txtAmbientG.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientG_KeyDown);
+            this.txtAmbientG.Leave += new System.EventHandler(this.txtAmbientG_Leave);
             // 
             // txtAmbientR
             // 
@@ -386,6 +388,8 @@ namespace DemoGame.MapEditor
             this.txtAmbientR.Size = new System.Drawing.Size(25, 20);
             this.txtAmbientR.TabIndex = 2;
             this.txtAmbientR.Text = "255";
+            this.txtAmbientR.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAmbientR_KeyDown);
+            this.txtAmbientR.Leave += new System.EventHandler(this.txtAmbientR_Leave);
             // 
             // label6
             // 
