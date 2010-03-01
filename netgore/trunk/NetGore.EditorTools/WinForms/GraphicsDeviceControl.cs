@@ -15,7 +15,7 @@ namespace NetGore.EditorTools
     /// a Windows Form. Derived classes can override the Initialize and Draw
     /// methods to add their own drawing code.
     /// </summary>
-    public abstract class GraphicsDeviceControl : Control
+    public class GraphicsDeviceControl : Control
     {
         readonly ServiceContainer _services = new ServiceContainer();
 
@@ -90,10 +90,12 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Derived classes override this to draw themselves using the GraphicsDevice.
+        /// When overridden in the derived class, draws the graphics to the control.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
-        protected abstract void Draw(ISpriteBatch spriteBatch);
+        protected virtual void Draw(ISpriteBatch spriteBatch)
+        {
+        }
 
         /// <summary>
         /// Ends drawing the control. This is called after derived classes

@@ -45,6 +45,7 @@ namespace DemoGame
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeWidthKey = "Width";
+        const string _headerNodeIndoorsKey = "Indoors";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
         const string _wallsNodeName = "Walls";
@@ -138,6 +139,11 @@ namespace DemoGame
         {
             get { return _mapIndex; }
         }
+
+        /// <summary>
+        /// Gets or sets if this map represents the map of an area that is indoors.
+        /// </summary>
+        public bool Indoors { get; set; }
 
         /// <summary>
         /// Gets or sets if the map is updating every frame
@@ -281,28 +287,6 @@ namespace DemoGame
                 if (displacement != Vector2.Zero)
                     wall.HandleCollideInto(entity, displacement);
             }
-
-            // TODO: Ensure position is valid
-            /*
-            // Ensure the position we found is actually valid
-            // Its not uncommon for this to return false when teleporting an Entity inside of a bunch of walls or
-            // something, resulting in the displaced position being inside another Wall
-            Vector2 closestValid;
-            bool validPositionFound;
-            if (!IsValidPlacementPosition(entity.CB, out closestValid, out validPositionFound))
-            {
-                if (!validPositionFound)
-                {
-                    // TODO: What do we do when we can't find a valid position at all!?
-                    Debug.Fail("What do we do when we can't find a valid position at all!?");
-                    return;
-                }
-
-                entity.Teleport(closestValid);
-
-                Debug.Assert(!this.GetSpatial<WallEntityBase>().ContainsEntities<WallEntityBase>(entity.CB));
-            }
-            */
         }
 
         /// <summary>
@@ -779,6 +763,7 @@ namespace DemoGame
             Music = nodeReader.ReadString(_headerNodeMusicKey);
             _width = nodeReader.ReadFloat(_headerNodeWidthKey);
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
+            Indoors = nodeReader.ReadBool(_headerNodeIndoorsKey);
 
             // Set the size for the spatial
             Spatial.SetAreaSize(Size);
@@ -965,6 +950,7 @@ namespace DemoGame
                 w.Write(_headerNodeMusicKey, Music);
                 w.Write(_headerNodeWidthKey, Width);
                 w.Write(_headerNodeHeightKey, Height);
+                w.Write(_headerNodeIndoorsKey, Indoors);
             }
             w.WriteEndNode(_headerNodeName);
         }
