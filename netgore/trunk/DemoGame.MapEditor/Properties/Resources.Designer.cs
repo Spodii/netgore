@@ -88,6 +88,20 @@ namespace DemoGame.MapEditor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap cursor_lights {
+            get {
+                object obj = ResourceManager.GetObject("cursor_lights", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_lightsadd {
+            get {
+                object obj = ResourceManager.GetObject("cursor_lightsadd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap cursor_walls {
             get {
                 object obj = ResourceManager.GetObject("cursor_walls", resourceCulture);

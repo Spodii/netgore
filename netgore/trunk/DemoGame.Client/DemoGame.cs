@@ -37,12 +37,13 @@ namespace DemoGame.Client
         {
             base.BeginRun();
 
-            // Create the screen manager
-            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Content");
-            Components.Add(_screenManager);
-
             // Read the GrhInfo
             LoadGrhInfo();
+
+            // Create the screen manager
+            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Content");
+            _screenManager.DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+            Components.Add(_screenManager);
 
             // Create the screens
             new GameplayScreen(_screenManager);
