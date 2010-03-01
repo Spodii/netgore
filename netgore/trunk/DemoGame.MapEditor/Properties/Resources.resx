@@ -130,6 +130,12 @@
   <data name="cursor_grhsadd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cursor_grhsadd.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="cursor_lights" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cursor_lights.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursor_lightsadd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cursor_lightsadd.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="cursor_walls" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cursor_walls.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

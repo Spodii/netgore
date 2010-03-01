@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -49,7 +50,7 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Center
         {
-            get { return Position + (Size / 2f); }
+            get { return Position; }
         }
 
         /// <summary>
@@ -65,6 +66,16 @@ namespace NetGore.Graphics
         /// Gets or sets if this light is enabled.
         /// </summary>
         public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets an object that can be used to identify or store information about this <see cref="ILight"/>.
+        /// This property is purely optional.
+        /// </summary>
+        public object Tag
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.

@@ -342,7 +342,6 @@ namespace DemoGame.Client
             _characterTargeter = new CharacterTargeter(World);
 
             // NOTE: Test lighting
-            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
             _userLight = new Light { Size = new Vector2(512), IsEnabled = false };
             DrawingManager.LightManager.Add(_userLight);
 

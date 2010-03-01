@@ -148,6 +148,8 @@ namespace DemoGame.MapEditor
 
         DrawingManager _drawingManager;
 
+        public DrawingManager DrawingManager { get { return _drawingManager; } }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
@@ -584,8 +586,8 @@ namespace DemoGame.MapEditor
                 return;
 
             // Begin the rendering
-            _drawingManager.LightManager.Ambient = Map.AmbientLight;
-            sb = _drawingManager.BeginDrawWorld(_camera);
+            DrawingManager.LightManager.Ambient = Map.AmbientLight;
+            sb = DrawingManager.BeginDrawWorld(_camera);
 
             // Map
             Map.Draw(sb);
@@ -624,6 +626,16 @@ namespace DemoGame.MapEditor
             {
                 box.Draw(sb);
             }
+            
+            // Light sources
+            if (chkLightSources.Checked)
+            {
+                var offset = AddLightCursor.LightSprite.Size / 2f;
+                foreach (var light in DrawingManager.LightManager)
+                {
+                    AddLightCursor.LightSprite.Draw(sb, light.Position - offset);
+                }
+            }
 
             // Tool interface
             CursorManager.DrawInterface(sb);
@@ -632,10 +644,10 @@ namespace DemoGame.MapEditor
             _focusedSpatialDrawer.Draw(SelectedObjs.Focused as ISpatial, sb);
 
             // End map rendering
-            _drawingManager.EndDrawWorld();
+            DrawingManager.EndDrawWorld();
 
             // Begin GUI rendering
-            sb = _drawingManager.BeginDrawGUI();
+            sb = DrawingManager.BeginDrawGUI();
 
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
@@ -643,7 +655,7 @@ namespace DemoGame.MapEditor
             sb.DrawStringShaded(SpriteFont, _cursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
             // End GUI rendering
-            _drawingManager.EndDrawGUI();
+            DrawingManager.EndDrawGUI();
         }
 
         /// <summary>
@@ -775,13 +787,12 @@ namespace DemoGame.MapEditor
 
         void LoadEditor()
         {
-            // Read the database connection
+            // Create the database connection
             DbConnectionSettings settings = new DbConnectionSettings();
             _dbController = new ServerDbController(settings.GetMySqlConnectionString());
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
-            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
 
             // Font
             _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
@@ -791,6 +802,9 @@ namespace DemoGame.MapEditor
             GrhInfo.Load(ContentPaths.Dev, _content);
             treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
+
+            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
+            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
             // Start the stopwatch for the elapsed time checking
             _stopWatch.Start();

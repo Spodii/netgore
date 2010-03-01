@@ -71,9 +71,11 @@
     <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Cursors\AddEntityCursor.cs" />
     <Compile Include="Cursors\AddGrhCursor.cs" />
+    <Compile Include="Cursors\AddLightCursor.cs" />
     <Compile Include="Cursors\AddWallCursor.cs" />
     <Compile Include="Cursors\EntityCursor.cs" />
     <Compile Include="Cursors\GrhCursor.cs" />
+    <Compile Include="Cursors\LightCursor.cs" />
     <Compile Include="Cursors\WallCursor.cs" />
     <Compile Include="Forms\Controls\GameScreenControl.cs">
       <SubType>Component</SubType>
@@ -156,6 +158,12 @@
       <Name>NetGore</Name>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_lights.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_lightsadd.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
