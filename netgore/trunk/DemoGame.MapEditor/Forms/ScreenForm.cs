@@ -1191,5 +1191,24 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        private void txtAmbientG_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void txtAmbientB_Leave(object sender, EventArgs e)
+        {
+            int v;
+            if (!int.TryParse(txtAmbientB.Text, out v))
+                v = byte.MaxValue;
+
+            v = v.Clamp(byte.MinValue, byte.MaxValue);
+
+            if (txtAmbientB.Text != v.ToString())
+                txtAmbientB.Text = v.ToString();
+
+               
+        }
     }
 }

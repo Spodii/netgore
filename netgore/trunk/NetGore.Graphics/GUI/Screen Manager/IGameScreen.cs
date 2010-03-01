@@ -20,6 +20,11 @@ namespace NetGore.Graphics.GUI
         MusicManager MusicManager { get; }
 
         /// <summary>
+        /// Gets the <see cref="IDrawingManager"/> that is used to help draw on this screen.
+        /// </summary>
+        IDrawingManager DrawingManager { get; }
+
+        /// <summary>
         /// Gets the unique name of this screen.
         /// </summary>
         string Name { get; }

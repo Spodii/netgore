@@ -39,6 +39,7 @@ namespace DemoGame.Client
         readonly List<MapGrh> _mapGrhs = new List<MapGrh>(128);
 
         readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
+        Color _ambientLight = Color.White;
 
         TextureAtlas _atlas;
         ICamera2D _camera;
@@ -61,6 +62,15 @@ namespace DemoGame.Client
             _graphics = graphics;
 
             DrawParticles = true;
+        }
+
+        /// <summary>
+        /// Gets or sets the ambient light color.
+        /// </summary>
+        public Color AmbientLight
+        {
+            get { return _ambientLight; }
+            set { _ambientLight = value; }
         }
 
         /// <summary>

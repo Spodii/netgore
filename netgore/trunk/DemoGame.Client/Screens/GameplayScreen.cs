@@ -291,18 +291,20 @@ namespace DemoGame.Client
                 World.Camera.CenterOn(World.UserChar);
 
             // Draw the world layer
-            var sb = ScreenManager.DrawingManager.BeginDrawWorld(World.Camera);
+            DrawingManager.LightManager.Ambient = Map.AmbientLight;
+
+            var sb = DrawingManager.BeginDrawWorld(World.Camera);
             World.Draw(sb);
             _chatBubbleManager.Draw(sb);
             _damageTextPool.Draw(sb, _damageFont);
-            ScreenManager.DrawingManager.EndDrawWorld();
+            DrawingManager.EndDrawWorld();
 
             // Draw the HUD layer
-            sb = ScreenManager.DrawingManager.BeginDrawGUI();
+            sb = DrawingManager.BeginDrawGUI();
             _infoBox.Draw(sb);
             GUIManager.Draw(sb);
             sb.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
-            ScreenManager.DrawingManager.EndDrawGUI();
+            DrawingManager.EndDrawGUI();
         }
 
         void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
@@ -340,11 +342,9 @@ namespace DemoGame.Client
             _characterTargeter = new CharacterTargeter(World);
 
             // NOTE: Test lighting
-            var lightManager = ScreenManager.DrawingManager.LightManager;
-            lightManager.Ambient = new Color(100, 100, 100);
-            lightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
             _userLight = new Light { Size = new Vector2(512), IsEnabled = false };
-            lightManager.Add(_userLight);
+            DrawingManager.LightManager.Add(_userLight);
 
             _chatBubbleManager = new ChatBubbleManager(GUIManager.SkinManager, _guiFont);
         }
