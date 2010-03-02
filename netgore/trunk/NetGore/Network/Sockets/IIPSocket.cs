@@ -5,6 +5,12 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
+    /// Handles events from the <see cref="IIPSocket"/>.
+    /// </summary>
+    /// <param name="socket">The <see cref="IIPSocket"/> the event came from.</param>
+    public delegate void IIPSocketEventHandler(IIPSocket socket);
+
+    /// <summary>
     /// Interface for a socket that abstracts the protocol implementation (ie TCP or UDP) into a single
     /// object that just sends and receives data.
     /// </summary>
@@ -57,6 +63,11 @@ namespace NetGore.Network
         /// </summary>
         /// <returns>Queue of received data if any, or null if no queued data.</returns>
         byte[][] GetRecvData();
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IIPSocket"/> has been disposed.
+        /// </summary>
+        event IIPSocketEventHandler Disposed;
 
         /// <summary>
         /// Sends data over a reliable stream.
