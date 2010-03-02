@@ -27,6 +27,8 @@ namespace NetGore.Network
         /// </summary>
         const int _headerSize = 0;
 
+        static readonly byte[] _defaultConnectData = new byte[] { 0 };
+
         /// <summary>
         /// Buffer for receiving data.
         /// </summary>
@@ -167,6 +169,51 @@ namespace NetGore.Network
             BeginReceiveFrom();
 
             return _port;
+        }
+
+        /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="host">The host to connect to.</param>
+        public void Connect(EndPoint host)
+        {
+            Connect(host, _defaultConnectData);
+        }
+
+        /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="host">The host to connect to.</param>
+        /// <param name="data">The initial data to send.</param>
+        public void Connect(EndPoint host, byte[] data)
+        {
+            if (_bindEndPoint == null)
+                _bindEndPoint = new IPEndPoint(0, 0);
+
+            Send(data, host);
+
+            BeginReceiveFrom();
+        }
+
+        /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="ip">The IP address of the host to connect to.</param>
+        /// <param name="port">The port of the host to connect to.</param>
+        public void Connect(string ip, int port)
+        {
+            Connect(ip, port, _defaultConnectData);
+        }
+
+        /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="ip">The IP address of the host to connect to.</param>
+        /// <param name="port">The port of the host to connect to.</param>
+        /// <param name="data">The initial data to send.</param>
+        public void Connect(string ip, int port, byte[] data)
+        {
+            Connect(new IPEndPoint(Dns.GetHostAddresses(ip).FirstOrDefault(), port), data);
         }
 
         /// <summary>

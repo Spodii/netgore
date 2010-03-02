@@ -15,7 +15,6 @@ namespace DemoGame.Client
         const int _updateLatencyInterval = 5000;
         static ClientSockets _instance;
         readonly ClientPacketHandler _packetHandler;
-        readonly int _udpPort;
 
         IIPSocket _conn = null;
         bool _isConnecting = false;
@@ -33,9 +32,6 @@ namespace DemoGame.Client
                 throw new MethodAccessException("ClientSockets instance was already created. Use that instead.");
 
             _packetHandler = new ClientPacketHandler(this, gameplayScreen, DynamicEntityFactory.Instance);
-
-            // Bind the UDP port
-            _udpPort = BindUDP();
         }
 
         /// <summary>
@@ -150,13 +146,6 @@ namespace DemoGame.Client
             Ping();
 
             _isConnecting = false;
-
-            // Make sure the very first thing we send is the Client's UDP port so the server knows what
-            // port to use when sending the data
-            using (PacketWriter pw = ClientPacket.SetUDPPort(_udpPort))
-            {
-                Send(pw);
-            }
         }
 
         /// <summary>
