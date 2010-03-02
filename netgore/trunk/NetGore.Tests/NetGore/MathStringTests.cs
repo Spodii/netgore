@@ -37,9 +37,9 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AddTest()
         {
-            for (int i = -100; i < 100; i++)
+            for (int i = -100; i < 100; i += 9)
             {
-                for (int j = -100; j < 100; j++)
+                for (int j = -100; j < 100; j += 9)
                 {
                     const string op = "+";
                     int target = i + j;
@@ -59,11 +59,11 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void Divide3Test()
         {
-            for (int i = -10; i < 10; i++)
+            for (int i = -7; i < 7; i++)
             {
-                for (int j = -10; j < 10; j++)
+                for (int j = -7; j < 7; j++)
                 {
-                    for (int k = -10; k < 10; k++)
+                    for (int k = -7; k < 7; k++)
                     {
                         if (j == 0 || k == 0)
                             continue;
@@ -87,9 +87,9 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void DivideTest()
         {
-            for (int i = -100; i < 100; i++)
+            for (int i = -70; i < 70; i += 3)
             {
-                for (int j = -100; j < 100; j++)
+                for (int j = -70; j < 70; j += 3)
                 {
                     if (j == 0)
                         continue;
@@ -187,9 +187,9 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void MultiplyTest()
         {
-            for (int i = -100; i < 100; i++)
+            for (int i = -70; i < 70; i += 3)
             {
-                for (int j = -100; j < 100; j++)
+                for (int j = -70; j < 70; j += 3)
                 {
                     const string op = "*";
                     int target = i * j;
@@ -209,11 +209,11 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void Subtract3Test()
         {
-            for (int i = -10; i < 10; i++)
+            for (int i = -7; i < 7; i++)
             {
-                for (int j = -10; j < 10; j++)
+                for (int j = -7; j < 7; j++)
                 {
-                    for (int k = -10; k < 10; k++)
+                    for (int k = -7; k < 7; k++)
                     {
                         const string op = "-";
                         int target = i - j - k;
@@ -234,9 +234,9 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void SubtractTest()
         {
-            for (int i = -100; i < 100; i++)
+            for (int i = -70; i < 70; i += 3)
             {
-                for (int j = -100; j < 100; j++)
+                for (int j = -70; j < 70; j += 3)
                 {
                     const string op = "-";
                     int target = i - j;

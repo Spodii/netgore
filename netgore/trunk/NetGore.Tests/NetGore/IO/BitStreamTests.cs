@@ -18,7 +18,10 @@ namespace NetGore.Tests.IO
 
         delegate void BitStreamWriteHandler<T>(T value);
 
-        const long rangeIterations = 10000000;
+        /// <summary>
+        /// Maximum number of iterations to use for I/O tests.
+        /// </summary>
+        const long _maxRangeIterations = 100000;
 
         static readonly IEnumerable<MethodInfo> _bitStreamReaderHandlerMethods =
             typeof(BitStream).GetMethods().Where(
@@ -178,7 +181,7 @@ namespace NetGore.Tests.IO
         {
             long minValue = GetFieldValue<T>("MinValue");
             long maxValue = GetFieldValue<T>("MaxValue");
-            return Range(minValue, maxValue, rangeIterations);
+            return Range(minValue, maxValue, _maxRangeIterations);
         }
 
         #region Unit tests
@@ -327,13 +330,13 @@ namespace NetGore.Tests.IO
         public void DoubleIO()
         {
             const int numBits = 64;
-            const int iterations = 20000;
+            const int iterations = 5000;
 
             Random rnd = new Random();
 
             // Structuring the loop like this allows us to run tons of numbers, but without having
             // to wait so goddamn long for any results
-            for (int loop = 0; loop < 100; loop++)
+            for (int loop = 0; loop < 10; loop++)
             {
                 var values = new List<double> { double.MinValue, 1, double.MaxValue };
                 for (int i = 0; i < iterations; i++)
@@ -361,13 +364,13 @@ namespace NetGore.Tests.IO
         public void FloatIO()
         {
             const int numBits = 32;
-            const int iterations = 20000;
+            const int iterations = 5000;
 
             Random rnd = new Random();
 
             // Structuring the loop like this allows us to run tons of numbers, but without having
             // to wait so goddamn long for any results
-            for (int loop = 0; loop < 100; loop++)
+            for (int loop = 0; loop < 10; loop++)
             {
                 var values = new List<float> { float.MinValue, 1, float.MaxValue };
                 for (int i = 0; i < iterations; i++)
@@ -425,7 +428,7 @@ namespace NetGore.Tests.IO
         public void IntBitIO()
         {
             const int numBits = 32;
-            const int iterations = 50000;
+            const int iterations = 10000;
 
             Random rnd = new Random();
 
@@ -529,7 +532,7 @@ namespace NetGore.Tests.IO
         public void LongIO()
         {
             const int numBits = 64;
-            const int iterations = 20000;
+            const int iterations = 5000;
 
             Random rnd = new Random();
 
@@ -1273,7 +1276,7 @@ namespace NetGore.Tests.IO
         public void ULongIO()
         {
             const int numBits = 64;
-            const int iterations = 20000;
+            const int iterations = 5000;
 
             Random rnd = new Random();
 
@@ -1344,9 +1347,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void VariableLengthStringIO()
         {
-            const int count = 20;
+            const int count = 10;
 
-            for (int length = 0; length < 300; length++)
+            for (int length = 0; length < 300; length += 4)
             {
                 BitStream bs = new BitStream(BitStreamMode.Write, 65536);
 

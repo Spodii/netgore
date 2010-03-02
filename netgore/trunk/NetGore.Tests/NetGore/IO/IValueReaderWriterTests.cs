@@ -829,7 +829,7 @@ namespace NetGore.Tests.IO
                         continue;
                 }
 
-                for (int i = 1; i < 100; i++)
+                for (int i = 1; i < 40; i++)
                 {
                     using (ReaderWriterCreatorBase creator = createCreator())
                     {
