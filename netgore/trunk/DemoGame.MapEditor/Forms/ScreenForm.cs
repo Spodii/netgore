@@ -121,13 +121,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         int _currentTime = 0;
 
-        /// <summary>
-        /// World position of the cursor.
-        /// </summary>
-        Vector2 _cursorPos = Vector2.Zero;
-
         IDbController _dbController;
-
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
 
@@ -652,7 +646,7 @@ namespace DemoGame.MapEditor
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
             cursorPosText -= new Vector2(100, 30);
-            sb.DrawStringShaded(SpriteFont, _cursorPos.ToString(), cursorPosText, Color.White, Color.Black);
+            sb.DrawStringShaded(SpriteFont, CursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
             // End GUI rendering
             DrawingManager.EndDrawGUI();
