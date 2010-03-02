@@ -566,7 +566,7 @@ namespace NetGore.Tests.NetGore
         {
             var names = Enum.GetNames(typeof(TestEnum));
 
-            for (int i = 0; i < 5000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 string s = CreateRandomString();
                 if (names.Contains(s, StringComparer.OrdinalIgnoreCase))
