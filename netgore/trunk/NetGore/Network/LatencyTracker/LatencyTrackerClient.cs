@@ -79,9 +79,9 @@ namespace NetGore.Network
             IPEndPoint endPoint = new IPEndPoint(ipAddress, hostPort);
             _endPoint = endPoint;
 
-            // Create the socket
+            // Create the socket and connect
             _socket = new UDPSocket();
-            _socket.Bind();
+            _socket.Connect(endPoint);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created LatencyTrackerClient to ping remote address `{0}:{1}`.", hostAddress, hostPort);
