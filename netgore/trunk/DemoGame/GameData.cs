@@ -118,7 +118,7 @@ namespace DemoGame
         /// </summary>
         public static string ServerIP
         {
-            get { return "96.253.146.31"; }
+            get { return "127.0.0.1"; }
         }
 
         /// <summary>
