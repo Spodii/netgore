@@ -167,6 +167,9 @@ namespace NetGore.Network
             }
 #endif
 
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", dataToSend.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(dataToSend, 0, dataToSend.Length));
+
             if (_socket == null)
             {
                 const string errmsg = "BeginSend() failed since the socket is null (this.Disposed == `{0}`).";

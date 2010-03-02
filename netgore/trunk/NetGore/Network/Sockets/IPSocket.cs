@@ -258,9 +258,6 @@ namespace NetGore.Network
         /// it is received.</param>
         public void Send(byte[] data, bool reliable)
         {
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", data.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(data, 0, data.Length));
-
             // Send reliable data over TCP
             if (reliable)
             {
@@ -296,11 +293,6 @@ namespace NetGore.Network
         /// it is received.</param>
         public void Send(BitStream data, bool reliable)
         {
-            var buffer = data.GetBuffer();
-
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", data.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(buffer, 0, data.Length));
-
             // Send reliable data over TCP
             if (reliable)
             {
@@ -324,7 +316,7 @@ namespace NetGore.Network
             if (_udpEndPoint == null)
                 _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
             
-            _udpSocket.Send(buffer, data.Length, _udpEndPoint);
+            _udpSocket.Send(data.GetBuffer(), data.Length, _udpEndPoint);
         }
 
         /// <summary>
