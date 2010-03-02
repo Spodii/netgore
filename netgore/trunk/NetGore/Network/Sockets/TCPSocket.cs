@@ -498,6 +498,14 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
+
+        /// <summary>
         /// Gets if the socket is currently connected
         /// </summary>
         public bool IsConnected
@@ -542,6 +550,7 @@ namespace NetGore.Network
         {
             if (_disposed)
                 return;
+
             _disposed = true;
 
             // Close down the socket

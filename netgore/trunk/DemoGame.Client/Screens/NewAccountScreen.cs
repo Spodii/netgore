@@ -40,15 +40,30 @@ namespace DemoGame.Client
                     throw new Exception("Failed to reference the ClientSockets.");
             }
 
-            _sockets.Connected += sockets_Connected;
-            _sockets.Disconnected += sockets_Disconnected;
-            _sockets.ConnectFailed += sockets_ConnectFailed;
-            _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
+            SetSocketHooks(true);
 
             _createAccountButton.IsEnabled = true;
             _errorLabel.IsVisible = false;
 
             base.Activate();
+        }
+
+        void SetSocketHooks(bool add)
+        {
+            if (add)
+            {
+                _sockets.Connected += sockets_Connected;
+                _sockets.Disconnected += sockets_Disconnected;
+                _sockets.ConnectFailed += sockets_ConnectFailed;
+                _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
+            }
+            else
+            {
+                _sockets.Connected -= sockets_Connected;
+                _sockets.Disconnected -= sockets_Disconnected;
+                _sockets.ConnectFailed -= sockets_ConnectFailed;
+                _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
+            }
         }
 
         void ClickButton_CreateAccount(object sender, MouseClickEventArgs e)
@@ -87,6 +102,8 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
+            SetSocketHooks(false);
+
             if (_sockets.IsConnected)
                 _sockets.Disconnect();
 

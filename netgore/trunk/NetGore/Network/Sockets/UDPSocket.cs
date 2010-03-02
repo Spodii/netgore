@@ -49,6 +49,8 @@ namespace NetGore.Network
         /// </summary>
         EndPoint _bindEndPoint;
 
+        bool _disposed = false;
+
         /// <summary>
         /// The port used by this UDPSocket.
         /// </summary>
@@ -68,8 +70,16 @@ namespace NetGore.Network
         /// </summary>
         void BeginReceiveFrom()
         {
-            _socket.BeginReceiveFrom(_receiveBuffer, 0, _receiveBuffer.Length, SocketFlags.None, ref _bindEndPoint,
-                                     ReceiveFromCallback, this);
+            try
+            {
+                _socket.BeginReceiveFrom(_receiveBuffer, 0, _receiveBuffer.Length, SocketFlags.None, ref _bindEndPoint,
+                                         ReceiveFromCallback, this);
+            }
+            catch (ObjectDisposedException)
+            {
+                Dispose();
+                return;
+            }
         }
 
         /// <summary>
@@ -90,6 +100,11 @@ namespace NetGore.Network
 
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Received {0} bytes from {1}", bytesRead, remoteEndPoint);
+            }
+            catch (ObjectDisposedException)
+            {
+                Dispose();
+                return;
             }
             catch (SocketException e)
             {
@@ -114,6 +129,19 @@ namespace NetGore.Network
         }
 
         #region IUDPSocket Members
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
+        /// </summary>
+        public event UDPSocketEventHandler Disposed;
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
 
         /// <summary>
         /// Gets the maximum size of the data that can be sent in a single send.
@@ -221,8 +249,18 @@ namespace NetGore.Network
         /// </summary>
         public void Dispose()
         {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
             if (_socket != null)
                 _socket.Close();
+
+            if (Disposed != null)
+                Disposed(this);
+
+            _receiveQueue.Clear();
         }
 
         /// <summary>
@@ -260,7 +298,15 @@ namespace NetGore.Network
             if (length > MaxPacketSize)
                 throw new ArgumentOutOfRangeException("data", "Data is too large to send.");
 
-            _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
+            try
+            {
+                _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
+            }
+            catch (ObjectDisposedException)
+            {
+                Dispose();
+                return;
+            }
 
             if (log.IsDebugEnabled)
                 log.DebugFormat("Sent `{0}` bytes to `{1}`", length, endPoint);

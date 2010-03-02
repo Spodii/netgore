@@ -32,6 +32,11 @@ namespace NetGore.Network
         uint IP { get; }
 
         /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        bool IsDisposed { get; }
+
+        /// <summary>
         /// Gets the maximum size of the data that can be sent in a single send.
         /// </summary>
         int MaxSendSize { get; }
