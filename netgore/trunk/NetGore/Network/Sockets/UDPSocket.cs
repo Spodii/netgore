@@ -97,9 +97,6 @@ namespace NetGore.Network
                 int bytesRead = _socket.EndReceiveFrom(result, ref remoteEndPoint);
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
-
-                if (log.IsDebugEnabled)
-                    log.DebugFormat("Received {0} bytes from {1}", bytesRead, remoteEndPoint);
             }
             catch (ObjectDisposedException)
             {
@@ -307,9 +304,6 @@ namespace NetGore.Network
                 Dispose();
                 return;
             }
-
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Sent `{0}` bytes to `{1}`", length, endPoint);
         }
 
         /// <summary>
