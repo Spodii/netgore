@@ -242,6 +242,8 @@ namespace DemoGame.Server
 
             if (v.ChatDialog.HasValue)
                 _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
+            else
+                _chatDialog = null;
 
             if (v.ShopID.HasValue)
             {
@@ -355,6 +357,11 @@ namespace DemoGame.Server
             _giveCash = v.GiveCash;
             _giveExp = v.GiveExp;
             _quests = template.Quests;
+
+            if (v.ChatDialog.HasValue)
+                _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
+            else
+                _chatDialog = null;
         }
 
         /// <summary>
