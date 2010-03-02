@@ -185,9 +185,12 @@ namespace NetGore
         /// </summary>
         /// <typeparam name="T">The type of objects to enumerate.</typeparam>
         /// <param name="source">The IEnumerable to check if empty.</param>
-        /// <returns>True if the <paramref name="source"/> is empty; otherwise false.</returns>
+        /// <returns>True if the <paramref name="source"/> is null or empty; otherwise false.</returns>
         public static bool IsEmpty<T>(this IEnumerable<T> source)
         {
+            if (source == null)
+                return true;
+
             return !source.Any();
         }
 

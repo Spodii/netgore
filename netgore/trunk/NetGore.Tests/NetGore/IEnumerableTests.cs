@@ -13,6 +13,35 @@ namespace NetGore.Tests.NetGore
         #region Unit tests
 
         [Test]
+        public void IsEmptyOnEmptyCollectionsTest()
+        {
+            Assert.IsTrue(new List<int>().IsEmpty());
+            Assert.IsTrue(new int[0].IsEmpty());
+            Assert.IsTrue(string.Empty.IsEmpty());
+            Assert.IsTrue(new Dictionary<int, int>().IsEmpty());
+            Assert.IsTrue(new HashSet<int>().IsEmpty());
+            Assert.IsTrue(new Stack<int>().IsEmpty());
+            Assert.IsTrue(new Queue<int>().IsEmpty());
+        }
+
+        [Test]
+        public void IsEmptyOnNonEmptyCollectionsTest()
+        {
+            Assert.IsFalse(new List<int> { 1, 2, 3 }.IsEmpty());
+            Assert.IsFalse(new int[] { 1, 2, 3 }.IsEmpty());
+            Assert.IsFalse("asdlkfjasldkfj".IsEmpty());
+            Assert.IsFalse(new Dictionary<int, int> { { 5, 1 }, { 3, 4 } }.IsEmpty());
+            Assert.IsFalse(new HashSet<int> { 1, 2, 3, 4, 5 }.IsEmpty());
+        }
+
+        [Test]
+        public void IsEmptyOnNullTest()
+        {
+            List<int> l = null;
+            Assert.IsTrue(l.IsEmpty());
+        }
+
+        [Test]
         public void ImplodeSplitWithCharTest()
         {
             var l = new List<int>(50);
