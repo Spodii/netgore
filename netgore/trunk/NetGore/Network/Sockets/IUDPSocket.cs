@@ -53,6 +53,15 @@ namespace NetGore.Network
         /// <param name="port">The port of the host to connect to.</param>
         void Connect(string ip, int port);
 
+        /// <summary>
+        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
+        /// </summary>
+        event UDPSocketEventHandler Disposed;
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        bool IsDisposed { get; }
 
         /// <summary>
         /// Connects the <see cref="IUDPSocket"/> to the specified host.

@@ -40,7 +40,10 @@ namespace NetGore.Network
                 throw new ArgumentNullException("udpSocket");
 
             _tcpSocket = tcpSocket;
+            _tcpSocket.Disposed += TCPSocket_Disposed;
+
             _udpSocket = udpSocket;
+            _udpSocket.Disposed += UDPSocket_Disposed;
 
             _tcpSocket.Tag = this;
         }
@@ -91,6 +94,24 @@ namespace NetGore.Network
             first.CopyTo(joined, 0);
             second.CopyTo(joined, first.Length);
             return joined;
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TCPSocket"/> is disposed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void TCPSocket_Disposed(TCPSocket sender)
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="UDPSocket"/> is disposed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void UDPSocket_Disposed(UDPSocket sender)
+        {
+            Dispose();
         }
 
         #region IIPSocket Members
@@ -168,8 +189,11 @@ namespace NetGore.Network
 
             _disposed = true;
 
-            if (_tcpSocket != null)
+            if (_tcpSocket != null && !_tcpSocket.IsDisposed)
                 _tcpSocket.Dispose();
+
+            if (_udpSocket != null && !_udpSocket.IsDisposed)
+                _udpSocket.Dispose();
         }
 
         /// <summary>
