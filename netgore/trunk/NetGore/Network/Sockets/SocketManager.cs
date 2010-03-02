@@ -338,7 +338,7 @@ namespace NetGore.Network
         /// the corresponding event when possible.
         /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
-        protected virtual void OnConnected(IPSocket conn)
+        protected virtual void OnConnected(IIPSocket conn)
         {
         }
 
@@ -348,7 +348,7 @@ namespace NetGore.Network
         /// the corresponding event when possible.
         /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
-        protected virtual void OnConnectedFrom(IPSocket conn)
+        protected virtual void OnConnectedFrom(IIPSocket conn)
         {
         }
 
@@ -367,7 +367,7 @@ namespace NetGore.Network
         /// the corresponding event when possible.
         /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
-        protected virtual void OnDisconnected(IPSocket conn)
+        protected virtual void OnDisconnected(IIPSocket conn)
         {
         }
 

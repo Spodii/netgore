@@ -11,7 +11,7 @@ namespace NetGore.Network
     /// Client that pings a <see cref="LatencyTrackerServer"/> to find the latency between the location of
     /// this <see cref="LatencyTrackerClient"/> and the target <see cref="LatencyTrackerServer"/>.
     /// </summary>
-    public class LatencyTrackerClient
+    public class LatencyTrackerClient : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -197,6 +197,28 @@ namespace NetGore.Network
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Ping had a one-way latency of `{0}`.", _latency);
+        }
+
+        bool _isDisposed;
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed { get { return _isDisposed; } }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            _pingTimer.Stop();
+            if (_socket != null && !_socket.IsDisposed)
+                _socket.Dispose();
         }
 
         /// <summary>

@@ -39,12 +39,10 @@ namespace NetGore.Network
             if (udpSocket == null)
                 throw new ArgumentNullException("udpSocket");
 
+            _udpSocket = udpSocket;
+
             _tcpSocket = tcpSocket;
             _tcpSocket.Disposed += TCPSocket_Disposed;
-
-            _udpSocket = udpSocket;
-            _udpSocket.Disposed += UDPSocket_Disposed;
-
             _tcpSocket.Tag = this;
         }
 
@@ -101,15 +99,6 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="sender">The sender.</param>
         void TCPSocket_Disposed(TCPSocket sender)
-        {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="UDPSocket"/> is disposed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void UDPSocket_Disposed(UDPSocket sender)
         {
             Dispose();
         }
@@ -192,8 +181,8 @@ namespace NetGore.Network
             if (_tcpSocket != null && !_tcpSocket.IsDisposed)
                 _tcpSocket.Dispose();
 
-            if (_udpSocket != null && !_udpSocket.IsDisposed)
-                _udpSocket.Dispose();
+            if (Disposed != null)
+                Disposed(this);
         }
 
         /// <summary>
@@ -239,6 +228,11 @@ namespace NetGore.Network
 
             return ret;
         }
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="IIPSocket"/> has been disposed.
+        /// </summary>
+        public event IIPSocketEventHandler Disposed;
 
         /// <summary>
         /// Sends data over a reliable stream.

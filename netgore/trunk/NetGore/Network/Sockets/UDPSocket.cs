@@ -75,8 +75,9 @@ namespace NetGore.Network
                 _socket.BeginReceiveFrom(_receiveBuffer, 0, _receiveBuffer.Length, SocketFlags.None, ref _bindEndPoint,
                                          ReceiveFromCallback, this);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException ex)
             {
+                Debug.Fail(ex.ToString());
                 Dispose();
                 return;
             }
@@ -98,10 +99,10 @@ namespace NetGore.Network
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException ex)
             {
+                received = null;
                 Dispose();
-                return;
             }
             catch (SocketException e)
             {
@@ -112,13 +113,12 @@ namespace NetGore.Network
             finally
             {
                 // Start receiving again
-                BeginReceiveFrom();
+                if (!IsDisposed)
+                    BeginReceiveFrom();
             }
 
             // Push the received data into the receive queue
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (received != null)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 lock (_receiveQueue)
                     _receiveQueue.Enqueue(new AddressedPacket(received, remoteEndPoint));
@@ -302,8 +302,9 @@ namespace NetGore.Network
             {
                 _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException ex)
             {
+                Debug.Fail(ex.ToString());
                 Dispose();
                 return;
             }

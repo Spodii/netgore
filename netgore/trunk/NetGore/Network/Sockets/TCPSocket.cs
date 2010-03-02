@@ -555,8 +555,9 @@ namespace NetGore.Network
                     _socket.Shutdown(SocketShutdown.Both);
                     _socket.Close();
                 }
-                catch (ObjectDisposedException)
+                catch (ObjectDisposedException ex)
                 {
+                    Debug.Fail(ex.ToString());
                 }
                 finally
                 {

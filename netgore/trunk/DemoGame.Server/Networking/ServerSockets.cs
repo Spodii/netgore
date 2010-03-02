@@ -31,7 +31,7 @@ namespace DemoGame.Server
         /// the corresponding event when possible.
         /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnConnectedFrom(IPSocket conn)
+        protected override void OnConnectedFrom(IIPSocket conn)
         {
             base.OnConnectedFrom(conn);
 

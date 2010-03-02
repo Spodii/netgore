@@ -14,6 +14,7 @@ namespace DemoGame.Client
     {
         const int _updateLatencyInterval = 5000;
         static ClientSockets _instance;
+
         readonly ClientPacketHandler _packetHandler;
 
         IIPSocket _conn = null;
@@ -137,15 +138,31 @@ namespace DemoGame.Client
         /// the corresponding event when possible.
         /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnConnected(IPSocket conn)
+        protected override void OnConnected(IIPSocket conn)
         {
             base.OnConnected(conn);
 
             _conn = conn;
+            _conn.Disposed += Conn_Disposed;
             _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
             Ping();
 
             _isConnecting = false;
+        }
+
+        void Conn_Disposed(IIPSocket socket)
+        {
+            if (socket == _conn)
+            {
+                _conn.Disposed -= Conn_Disposed;
+                _conn = null;
+
+                if (_latencyTracker != null)
+                {
+                    _latencyTracker.Dispose();
+                    _latencyTracker = null;
+                }
+            }
         }
 
         /// <summary>
@@ -158,6 +175,12 @@ namespace DemoGame.Client
             base.OnConnectFailed();
 
             _isConnecting = false;
+
+            if (_conn != null)
+            {
+                _conn.Dispose();
+                _conn = null;
+            }
         }
 
         /// <summary>
@@ -166,11 +189,17 @@ namespace DemoGame.Client
         /// the corresponding event when possible.
         /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnDisconnected(IPSocket conn)
+        protected override void OnDisconnected(IIPSocket conn)
         {
             base.OnDisconnected(conn);
 
             _isConnecting = false;
+
+            if (_conn != null)
+            {
+                _conn.Dispose();
+                _conn = null;
+            }
         }
 
         void Ping()
