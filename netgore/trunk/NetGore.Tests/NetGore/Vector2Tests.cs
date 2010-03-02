@@ -16,7 +16,7 @@ namespace NetGore.Tests.NetGore
         {
             const int max = 1000;
 
-            Random r = new Random(102);
+            Random r = new Random(987);
 
             for (int i = 0; i < 30; i++)
             {
@@ -24,6 +24,22 @@ namespace NetGore.Tests.NetGore
                 var c = v.Ceiling();
                 Assert.AreEqual(Math.Ceiling(v.X), c.X);
                 Assert.AreEqual(Math.Ceiling(v.Y), c.Y);
+            }
+        }
+
+        [Test]
+        public void RoundTest()
+        {
+            const int max = 1000;
+
+            Random r = new Random(578);
+
+            for (int i = 0; i < 30; i++)
+            {
+                var v = new Vector2(r.NextFloat() * max, r.NextFloat() * max);
+                var c = v.Round();
+                Assert.AreEqual(Math.Round(v.X), c.X);
+                Assert.AreEqual(Math.Round(v.Y), c.Y);
             }
         }
 

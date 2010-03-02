@@ -21,6 +21,28 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets a <see cref="Vector3"/> with the X and Y components rounded up.
+        /// </summary>
+        /// <param name="source"><see cref="Vector3"/> to round.</param>
+        /// <returns>A <see cref="Vector3"/> containing the ceiling-down value of the <paramref name="source"/>
+        /// <see cref="Vector3"/>.</returns>
+        public static Vector3 Ceiling(this Vector3 source)
+        {
+            return new Vector3((float)Math.Ceiling(source.X), (float)Math.Ceiling(source.Y), (float)Math.Ceiling(source.Z));
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Vector3"/> with the X and Y components rounded down.
+        /// </summary>
+        /// <param name="source"><see cref="Vector3"/> to round.</param>
+        /// <returns>A <see cref="Vector3"/> containing the rounded-down value of the <paramref name="source"/>
+        /// <see cref="Vector3"/>.</returns>
+        public static Vector3 Floor(this Vector3 source)
+        {
+            return new Vector3((float)Math.Floor(source.X), (float)Math.Floor(source.Y), (float)Math.Floor(source.Z));
+        }
+
+        /// <summary>
         /// Checks if both of a <see cref="Vector3"/>'s coordinates are greater than or equal to the
         /// corresponding coordinates in another <see cref="Vector3"/>.
         /// </summary>
