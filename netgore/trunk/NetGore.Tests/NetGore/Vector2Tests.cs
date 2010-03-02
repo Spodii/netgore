@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.Extensions;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore
@@ -8,6 +10,38 @@ namespace NetGore.Tests.NetGore
     public class Vector2Tests
     {
         #region Unit tests
+
+        [Test]
+        public void CeilingTest()
+        {
+            const int max = 1000;
+
+            Random r = new Random(102);
+
+            for (int i = 0; i < 30; i++)
+            {
+                var v = new Vector2(r.NextFloat() * max, r.NextFloat() * max);
+                var c = v.Ceiling();
+                Assert.AreEqual(Math.Ceiling(v.X), c.X);
+                Assert.AreEqual(Math.Ceiling(v.Y), c.Y);
+            }
+        }
+
+        [Test]
+        public void FloorTest()
+        {
+            const int max = 1000;
+
+            Random r = new Random(102);
+
+            for (int i = 0; i < 30; i++)
+            {
+                var v = new Vector2(r.NextFloat() * max, r.NextFloat() * max);
+                var c = v.Floor();
+                Assert.AreEqual(Math.Floor(v.X), c.X);
+                Assert.AreEqual(Math.Floor(v.Y), c.Y);
+            }
+        }
 
         [Test]
         public void AbsTest()
