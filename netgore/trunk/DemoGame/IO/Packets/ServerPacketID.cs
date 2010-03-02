@@ -41,6 +41,7 @@ namespace DemoGame
         QuestInfo,
         RemoveDynamicEntity,
         RemoveStatusEffect,
+        RequestUDPConnection,
         StartCastingSkill,
         SendAccountCharacters,
         SendEquipmentItemInfo,

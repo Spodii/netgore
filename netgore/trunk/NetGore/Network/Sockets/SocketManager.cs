@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using log4net;
@@ -97,20 +98,22 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Binds the UDP socket to a random available port.
+        /// Establishes the UDP connection for a client when requested by the server.
         /// </summary>
-        /// <returns>The port the UDP socket binded to.</returns>
-        public int BindUDP()
+        /// <param name="host">The host to connect to.</param>
+        /// <param name="port">The port to connect to.</param>
+        /// <param name="challenge">The received challenge value from the server.</param>
+        public void ConnectUDP(string host, int port, int challenge)
         {
-            return _udpSocket.Bind();
+            _udpSocket.Connect(host, port, BitConverter.GetBytes(challenge));
         }
 
         /// <summary>
-        /// Creates a socket and connects it to the specified server
+        /// Creates a socket and connects it to the specified server.
         /// </summary>
-        /// <param name="host">Host address (IP or domain name) to connect to</param>
-        /// <param name="port">Port number to connect to</param>
-        /// <returns>Socket used to create the connection or null if unsuccessful</returns>
+        /// <param name="host">Host address (IP or domain name) to connect to.</param>
+        /// <param name="port">Port number to connect to.</param>
+        /// <returns>Socket used to create the connection or null if unsuccessful.</returns>
         public IIPSocket Connect(string host, int port)
         {
             // Create the socket to connect with
@@ -243,6 +246,37 @@ namespace NetGore.Network
 
             lock (_connectionsLock)
             {
+                // On the server, we don't receive data over UDP, so anything going through here is going to be
+                // a request to set the UDP port for a client.
+                if (_listenSocket != null)
+                {
+                    var udpData = _udpSocket.GetRecvData();
+                    if (udpData != null)
+                    {
+                        foreach (var v in udpData)
+                        {
+                            int challenge = BitConverter.ToInt32(v.Data, 0);
+                            var ipEP = ((IPEndPoint)v.RemoteEndPoint);
+                            var ipAsUInt = IPAddressHelper.IPv4AddressToUInt(ipEP.Address.GetAddressBytes(), 0);
+
+                            var c = Connections.FirstOrDefault(x => x.TCPSocket.IP == ipAsUInt);
+                            if (c == null)
+                                continue;
+
+                            if (c.GetHashCode() == challenge)
+                            {
+                                c.SetRemoteUnreliablePort(ipEP.Port);
+                            }
+                            else
+                            {
+                                const string errmsg = "Address `{0}` failed hash challenge to set UDP port for connection.";
+                                if (log.IsWarnEnabled)
+                                    log.WarnFormat(errmsg, ipEP.Address);
+                            }
+                        }
+                    }
+                }
+
                 // Loop through each socket
                 foreach (IPSocket conn in Connections)
                 {
@@ -258,27 +292,29 @@ namespace NetGore.Network
                         ret.Add(new SocketReceiveData(conn, data));
                     }
                 }
+
+
             }
 
             return ret;
         }
 
         /// <summary>
-        /// Set up the server and starts listening for connections
+        /// Set up the server and starts listening for connections.
         /// </summary>
-        /// <param name="port">Port to bind to</param>
+        /// <param name="tcpPort">TCP port to listen on.</param>
+        /// <param name="udpPort">UDP port to bind to.</param>
         /// <param name="allowRemoteConnections">If true, remote connections will be allowed. If false, only
         /// local connections will be allowed. When true, you must ensure that your firewall does not block
-        /// the <paramref name="port"/>. If you are behind a router, you must also forward TCP and UDP on
-        /// the <paramref name="port"/> to this machine through your router's settings.</param>
-        public void Listen(int port, bool allowRemoteConnections)
+        /// the given ports.</param>
+        public void Listen(int tcpPort, int udpPort, bool allowRemoteConnections)
         {
             // If a ListenSocket already exists, dispose of it
             if (_listenSocket != null)
                 _listenSocket.Dispose();
 
             // Create the new ListenSocket
-            _listenSocket = new ListenSocket(port, allowRemoteConnections);
+            _listenSocket = new ListenSocket(tcpPort, allowRemoteConnections);
             _listenSocket.ConnectionAccepted += SocketAcceptHandler;
 
             // Check if the ListenSocket was created successfully
@@ -289,6 +325,8 @@ namespace NetGore.Network
                 Debug.Fail("Unable to create listen socket.");
                 return;
             }
+
+            _udpSocket.Bind(udpPort);
 
             if (log.IsInfoEnabled)
                 log.Info("Listen socket accepting connections");

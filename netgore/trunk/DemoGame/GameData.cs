@@ -118,7 +118,7 @@ namespace DemoGame
         /// </summary>
         public static string ServerIP
         {
-            get { return "127.0.0.1"; }
+            get { return "96.253.146.31"; }
         }
 
         /// <summary>
@@ -130,11 +130,19 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the port used by the server for TCP connections.
+        /// Gets the port used by the server for TCP connections for the main game networking.
         /// </summary>
         public static int ServerTCPPort
         {
             get { return 44445; }
+        }
+
+        /// <summary>
+        /// Gets the port used by the server for UDP connections for the main game networking.
+        /// </summary>
+        public static int ServerUDPPort
+        {
+            get { return 44447; }
         }
 
         /// <summary>

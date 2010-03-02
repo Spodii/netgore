@@ -34,6 +34,35 @@ namespace NetGore.Network
         AddressedPacket[] GetRecvData();
 
         /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="host">The host to connect to.</param>
+        void Connect(EndPoint host);
+
+        /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="host">The host to connect to.</param>
+        /// <param name="data">The initial data to send.</param>
+        void Connect(EndPoint host, byte[] data);
+
+        /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="ip">The IP address of the host to connect to.</param>
+        /// <param name="port">The port of the host to connect to.</param>
+        void Connect(string ip, int port);
+
+
+        /// <summary>
+        /// Connects the <see cref="IUDPSocket"/> to the specified host.
+        /// </summary>
+        /// <param name="ip">The IP address of the host to connect to.</param>
+        /// <param name="port">The port of the host to connect to.</param>
+        /// <param name="data">The initial data to send.</param>
+        void Connect(string ip, int port, byte[] data);
+
+        /// <summary>
         /// Sends data to the specified <paramref name="endPoint"/>.
         /// </summary>
         /// <param name="data">Data to send.</param>

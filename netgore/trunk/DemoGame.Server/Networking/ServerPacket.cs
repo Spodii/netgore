@@ -273,6 +273,13 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter RequestUDPConnection(int challenge)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.RequestUDPConnection);
+            pw.Write(challenge);
+            return pw;
+        }
+
         public static PacketWriter SendAccountCharacters(AccountCharacterInfo[] charInfos)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendAccountCharacters);

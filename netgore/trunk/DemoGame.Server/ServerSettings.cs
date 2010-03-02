@@ -12,12 +12,12 @@ namespace DemoGame.Server
         /// <summary>
         /// If remote connections are allowed. By default, this is set to false, which will only allow connections
         /// made locally (from the same computer). If set to true, you must make sure that the needed ports defined by
-        /// <see cref="GameData.ServerTCPPort"/> and <see cref="GameData.ServerPingPort"/> allow incoming connections
+        /// <see cref="GameData.ServerPort"/> and <see cref="GameData.ServerPingPort"/> allow incoming connections
         /// and can be listened on. If you have a firewall, you need to add an exception in it to allow this. If you are
         /// behind a router, forward these ports (for both TCP and UDP) to the local IP address of the machine hosting
         /// the server process in the network.
         /// </summary>
-        public const bool AllowRemoteConnections = false;
+        public const bool AllowRemoteConnections = true;
 
         /// <summary>
         /// The maximum allowed distance allowed between two group members for them to be allowed to share rewards
