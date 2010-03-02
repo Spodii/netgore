@@ -125,9 +125,6 @@ namespace NetGore.Network
         /// </summary>
         void BeginRecv()
         {
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Beginning receive from {0}", Address);
-
             try
             {
                 // Set up the event args
@@ -221,9 +218,6 @@ namespace NetGore.Network
                 return;
             }
 
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Beginning send of `{0}` bytes to `{1}`", msgLength, Address);
-
             if (DataSent != null)
                 DataSent(this, msgLength);
         }
@@ -281,9 +275,6 @@ namespace NetGore.Network
             }
 
             _recvBufferPos += readLength;
-
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Received {0} bytes from {1}", readLength, Address);
 
             // Since data was added to the receive buffer we will need to check for new complete messages
             ProcessRecvBuffer();

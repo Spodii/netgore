@@ -218,15 +218,26 @@ namespace NetGore.Network
 
             // If they're both not null, we have to join them together
             // If only one is null, we can just return that one
+            byte[][] ret;
             if (fromTCP == null)
-                return fromUDP;
+                ret = fromUDP;
             else
             {
                 if (fromUDP != null)
-                    return JoinArrays(fromUDP, fromTCP);
+                    ret = JoinArrays(fromUDP, fromTCP);
                 else
-                    return fromTCP;
+                    ret = fromTCP;
             }
+
+            if (log.IsDebugEnabled)
+            {
+                foreach (var r in ret)
+                {
+                    log.DebugFormat("Received `{0}` bytes from `{1}`{2}", r.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(r));
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -247,6 +258,9 @@ namespace NetGore.Network
         /// it is received.</param>
         public void Send(byte[] data, bool reliable)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", data.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(data, 0, data.Length));
+
             // Send reliable data over TCP
             if (reliable)
             {
@@ -282,6 +296,11 @@ namespace NetGore.Network
         /// it is received.</param>
         public void Send(BitStream data, bool reliable)
         {
+            var buffer = data.GetBuffer();
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", data.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(buffer, 0, data.Length));
+
             // Send reliable data over TCP
             if (reliable)
             {
@@ -304,8 +323,8 @@ namespace NetGore.Network
             // Create the EndPoint if it has not already been created
             if (_udpEndPoint == null)
                 _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
-
-            _udpSocket.Send(data.GetBuffer(), data.Length, _udpEndPoint);
+            
+            _udpSocket.Send(buffer, data.Length, _udpEndPoint);
         }
 
         /// <summary>
