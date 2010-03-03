@@ -105,7 +105,7 @@
     <Compile Include="Graphics\GUI\StyledTextTests.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleModifierCollectionTests.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleModifierTests.cs" />
-    <Compile Include="NetGore\IO\BitOpsTests.cs" />
+    <Compile Include="NetGore\BitOpsTests.cs" />
     <Compile Include="NetGore\IO\BitStreamTests.cs" />
     <Compile Include="NetGore\IO\IValueReaderWriterTests.cs" />
     <Compile Include="NetGore\IO\PropertySyncTests.cs" />
