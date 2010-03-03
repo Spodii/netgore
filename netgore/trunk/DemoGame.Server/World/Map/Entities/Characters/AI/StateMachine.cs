@@ -35,7 +35,7 @@ namespace DemoGame.Server
         public StateMachine(Character actor) : base(actor)
         {
             //Adds an event handler so we know when the actor has been attacked.
-            Actor.AttackedByCharacter += new CharacterAttackCharacterEventHandler(Actor_AttackedByCharacter);
+            Actor.AttackedByCharacter += new Character.CharacterAttackCharacterEventHandler(Actor_AttackedByCharacter);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace DemoGame.Server
             _target = attacker;
 
             //Set up event handler for when the target dies.
-            _target.Killed += new CharacterEventHandler(_target_Killed);
+            _target.Killed += new Character.CharacterEventHandler(_target_Killed);
 
             if (Actor.HP <= 10)
             {
@@ -159,7 +159,7 @@ namespace DemoGame.Server
             if (IsInMeleeRange(_target))
             {
                 Actor.StopMoving();
-                Actor.Attack();
+                Actor.Attack(_target);
             }
             
             
@@ -239,7 +239,7 @@ namespace DemoGame.Server
             if (IsInMeleeRange(_target))
             {
                 Actor.StopMoving();
-                Actor.Attack();
+                Actor.Attack(_target);
             }
         }
 
