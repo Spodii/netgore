@@ -61,11 +61,23 @@ namespace NetGore.Graphics
             Vector2 velocity = entity.Velocity.Abs();
 
             // If the velocity we grabbed is zero, but we're not at the position we need to be at, we will have to use
-            // the greatest velocity so we can "guess" on how to move (since not moving is not a good option)
-            if (velocity.X == 0 && position.X != _drawPosition.X)
-                velocity.X = _greatestVelocity.X;
-            if (velocity.Y == 0 && position.Y != _drawPosition.Y)
-                velocity.Y = _greatestVelocity.Y;
+            // the greatest velocity so we can "guess" on how to move (since not moving is not a good option). If we also
+            // don't have a greatestVelocity (the entity has never moved), then we just warp the entity's draw position
+            // straight to the real position.
+            if (velocity.X <= float.Epsilon && position.X != _drawPosition.X)
+            {
+                if (_greatestVelocity.X <= float.Epsilon)
+                    _drawPosition.X = position.X;
+                else
+                    velocity.X = _greatestVelocity.X;
+            }
+            if (velocity.Y <= float.Epsilon && position.Y != _drawPosition.Y)
+            {
+                if (_greatestVelocity.Y <= float.Epsilon)
+                    _drawPosition.Y = position.Y;
+                else
+                    velocity.Y = _greatestVelocity.Y;
+            }
 
             // Make sure we point in the correct direction - that is, point the DrawPosition to the Position
             if (position.X < _drawPosition.X)
