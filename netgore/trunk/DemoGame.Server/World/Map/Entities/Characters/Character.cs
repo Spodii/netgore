@@ -1622,7 +1622,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Synchronizes this Character's SP to the specified <paramref name="user"/>.
+        /// Synchronizes this Character's stat points (SP) to the specified <paramref name="user"/>.
         /// </summary>
         /// <param name="user">The <see cref="User"/> to synchronize to.</param>
         public void SynchronizeSPTo(User user)
