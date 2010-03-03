@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.Extensions;
 using NUnit.Framework;
 
@@ -10,6 +8,8 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class RandomTests
     {
+        #region Unit tests
+
         [Test]
         public void NextFloatTest()
         {
@@ -25,5 +25,7 @@ namespace NetGore.Tests.NetGore
                 last = f;
             }
         }
+
+        #endregion
     }
 }
