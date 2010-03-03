@@ -50,7 +50,6 @@ namespace NetGore.EditorTools
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmbWallType = new System.Windows.Forms.ComboBox();
             this.txtWallH = new System.Windows.Forms.TextBox();
             this.txtWallW = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -61,7 +60,7 @@ namespace NetGore.EditorTools
             this.label15 = new System.Windows.Forms.Label();
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.lstWalls = new System.Windows.Forms.ListBox();
+            this.lstWalls = new WallsListBox();
             this.gbStationary = new System.Windows.Forms.GroupBox();
             this.chkAutoSize = new System.Windows.Forms.CheckBox();
             this.txtH = new System.Windows.Forms.TextBox();
@@ -74,6 +73,7 @@ namespace NetGore.EditorTools
             this.label4 = new System.Windows.Forms.Label();
             this.txtTexture = new NetGore.EditorTools.GrhDataTextureTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.chkPlatform = new System.Windows.Forms.CheckBox();
             this.gbCategorization.SuspendLayout();
             this.gbAnimated.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -243,7 +243,7 @@ namespace NetGore.EditorTools
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cmbWallType);
+            this.groupBox1.Controls.Add(this.chkPlatform);
             this.groupBox1.Controls.Add(this.txtWallH);
             this.groupBox1.Controls.Add(this.txtWallW);
             this.groupBox1.Controls.Add(this.label18);
@@ -262,19 +262,10 @@ namespace NetGore.EditorTools
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Binded Walls";
             // 
-            // cmbWallType
-            // 
-            this.cmbWallType.Enabled = false;
-            this.cmbWallType.FormattingEnabled = true;
-            this.cmbWallType.Location = new System.Drawing.Point(6, 207);
-            this.cmbWallType.Name = "cmbWallType";
-            this.cmbWallType.Size = new System.Drawing.Size(163, 21);
-            this.cmbWallType.TabIndex = 21;
-            // 
             // txtWallH
             // 
             this.txtWallH.Enabled = false;
-            this.txtWallH.Location = new System.Drawing.Point(114, 260);
+            this.txtWallH.Location = new System.Drawing.Point(111, 247);
             this.txtWallH.Name = "txtWallH";
             this.txtWallH.Size = new System.Drawing.Size(55, 20);
             this.txtWallH.TabIndex = 20;
@@ -283,7 +274,7 @@ namespace NetGore.EditorTools
             // txtWallW
             // 
             this.txtWallW.Enabled = false;
-            this.txtWallW.Location = new System.Drawing.Point(26, 260);
+            this.txtWallW.Location = new System.Drawing.Point(26, 247);
             this.txtWallW.Name = "txtWallW";
             this.txtWallW.Size = new System.Drawing.Size(55, 20);
             this.txtWallW.TabIndex = 19;
@@ -292,7 +283,7 @@ namespace NetGore.EditorTools
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(91, 264);
+            this.label18.Location = new System.Drawing.Point(91, 250);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(18, 13);
             this.label18.TabIndex = 18;
@@ -301,7 +292,7 @@ namespace NetGore.EditorTools
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 264);
+            this.label17.Location = new System.Drawing.Point(6, 250);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(21, 13);
             this.label17.TabIndex = 17;
@@ -310,7 +301,7 @@ namespace NetGore.EditorTools
             // txtWallY
             // 
             this.txtWallY.Enabled = false;
-            this.txtWallY.Location = new System.Drawing.Point(114, 234);
+            this.txtWallY.Location = new System.Drawing.Point(111, 221);
             this.txtWallY.Name = "txtWallY";
             this.txtWallY.Size = new System.Drawing.Size(55, 20);
             this.txtWallY.TabIndex = 16;
@@ -319,7 +310,7 @@ namespace NetGore.EditorTools
             // txtWallX
             // 
             this.txtWallX.Enabled = false;
-            this.txtWallX.Location = new System.Drawing.Point(26, 234);
+            this.txtWallX.Location = new System.Drawing.Point(26, 221);
             this.txtWallX.Name = "txtWallX";
             this.txtWallX.Size = new System.Drawing.Size(55, 20);
             this.txtWallX.TabIndex = 15;
@@ -328,7 +319,7 @@ namespace NetGore.EditorTools
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(91, 238);
+            this.label16.Location = new System.Drawing.Point(92, 224);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(17, 13);
             this.label16.TabIndex = 14;
@@ -337,7 +328,7 @@ namespace NetGore.EditorTools
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 238);
+            this.label15.Location = new System.Drawing.Point(6, 224);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(17, 13);
             this.label15.TabIndex = 13;
@@ -491,6 +482,17 @@ namespace NetGore.EditorTools
             this.label3.TabIndex = 5;
             this.label3.Text = "Texture:";
             // 
+            // chkPlatform
+            // 
+            this.chkPlatform.AutoSize = true;
+            this.chkPlatform.Location = new System.Drawing.Point(6, 198);
+            this.chkPlatform.Name = "chkPlatform";
+            this.chkPlatform.Size = new System.Drawing.Size(64, 17);
+            this.chkPlatform.TabIndex = 21;
+            this.chkPlatform.Text = "Platform";
+            this.chkPlatform.UseVisualStyleBackColor = true;
+            this.chkPlatform.CheckedChanged += new System.EventHandler(this.chkPlatform_CheckedChanged);
+            // 
             // EditGrhForm
             // 
             this.ClientSize = new System.Drawing.Size(414, 339);
@@ -543,7 +545,6 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.ComboBox cmbWallType;
         private System.Windows.Forms.TextBox txtWallH;
         private System.Windows.Forms.TextBox txtWallW;
         private System.Windows.Forms.Label label18;
@@ -552,7 +553,7 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.TextBox txtWallX;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ListBox lstWalls;
+        private WallsListBox lstWalls;
         private System.Windows.Forms.GroupBox gbStationary;
         private System.Windows.Forms.CheckBox chkAutoSize;
         private System.Windows.Forms.TextBox txtH;
@@ -565,6 +566,7 @@ namespace NetGore.EditorTools
         private System.Windows.Forms.Label label4;
         private GrhDataTextureTextBox txtTexture;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox chkPlatform;
 
     }
 }

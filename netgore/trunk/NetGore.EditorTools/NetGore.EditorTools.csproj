@@ -76,6 +76,9 @@
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="FileDialogs.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\WallsListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Grh\GrhUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

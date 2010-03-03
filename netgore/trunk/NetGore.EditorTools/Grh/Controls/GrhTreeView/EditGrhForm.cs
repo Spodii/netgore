@@ -312,7 +312,7 @@ namespace NetGore.EditorTools
             WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             bool isEnabled = (wall != null);
 
-            cmbWallType.Enabled = isEnabled;
+            chkPlatform.Enabled = isEnabled;
             txtWallX.Enabled = isEnabled;
             txtWallY.Enabled = isEnabled;
             txtWallH.Enabled = isEnabled;
@@ -325,6 +325,7 @@ namespace NetGore.EditorTools
                 txtWallY.Text = wall.Position.Y.ToString();
                 txtWallW.Text = wall.Size.X.ToString();
                 txtWallH.Text = wall.Size.Y.ToString();
+                chkPlatform.Checked = wall.IsPlatform;
             }
         }
 
@@ -621,6 +622,15 @@ namespace NetGore.EditorTools
                 return false;
             }
             return true;
+        }
+
+        private void chkPlatform_CheckedChanged(object sender, EventArgs e)
+        {
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            if (wall == null)
+                return;
+
+            wall.IsPlatform = chkPlatform.Checked;
         }
     }
 }
