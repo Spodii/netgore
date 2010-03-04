@@ -76,6 +76,8 @@ namespace NetGore.Graphics
         public static void DrawStringShaded(this ISpriteBatch spriteBatch, SpriteFont spriteFont, string text, Vector2 position,
                                             Color fontColor, Color borderColor)
         {
+            position = position.Round();
+
             spriteBatch.DrawString(spriteFont, text, position - new Vector2(0, 1), borderColor);
             spriteBatch.DrawString(spriteFont, text, position - new Vector2(1, 0), borderColor);
             spriteBatch.DrawString(spriteFont, text, position + new Vector2(0, 1), borderColor);
