@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 
@@ -26,6 +27,34 @@ namespace DemoGame.Client
         public LoginScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             PlayMusic = false;
+        }
+
+        /// <summary>
+        /// Handles the KeyPressed event of the _cNameText control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        void cNameText_KeyDown(object sender, KeyboardEventArgs e)
+        {
+            if (e.KeyboardState.IsKeyDown(Keys.Tab))
+            {
+                _cPasswordText.SetFocus();
+                _cPasswordText.CursorLinePosition = _cPasswordText.Text.Length;
+            }
+        }
+
+        /// <summary>
+        /// Handles the KeyPressed event of the _cPasswordText control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        void cPasswordText_KeyDown(object sender, KeyboardEventArgs e)
+        {
+            if (e.KeyboardState.IsKeyDown(Keys.Tab))
+            {
+                _cNameText.SetFocus();
+                _cNameText.CursorLinePosition = _cNameText.Text.Length;
+            }
         }
 
         /// <summary>
@@ -82,10 +111,12 @@ namespace DemoGame.Client
             // Create the login fields
             new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
             _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
+            _cNameText.KeyDown += cNameText_KeyDown;
 
             new Label(cScreen, new Vector2(60, 320)) { Text = "Password:" };
             _cPasswordText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = "qwerty123" };
+            _cPasswordText.KeyDown += cPasswordText_KeyDown;
 
             _cError = new Label(cScreen, new Vector2(60, 500)) { ForeColor = Color.Red };
 

@@ -85,7 +85,7 @@ namespace NetGore.Graphics.GUI
         /// the cursor is immediately before. For example, 2 would mean the cursor is immediately before the character
         /// on the line at index 2 (or between the second and 3rd character).
         /// </summary>
-        int CursorLinePosition
+        public int CursorLinePosition
         {
             get { return _cursorLinePosition; }
             set
