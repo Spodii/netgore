@@ -128,6 +128,7 @@
     <Compile Include="DbObjs\DbExtensions\MapTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\NpcCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireFinishItemTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\QuestRequireFinishQuestTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireKillTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireStartItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireStartQuestTableDbExtensions.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="DbObjs\MapSpawnTable.cs" />
     <Compile Include="DbObjs\NpcCharacterTable.cs" />
     <Compile Include="DbObjs\QuestRequireFinishItemTable.cs" />
+    <Compile Include="DbObjs\QuestRequireFinishQuestTable.cs" />
     <Compile Include="DbObjs\QuestRequireKillTable.cs" />
     <Compile Include="DbObjs\QuestRequireStartItemTable.cs" />
     <Compile Include="DbObjs\QuestRequireStartQuestTable.cs" />
@@ -167,8 +169,10 @@
     <Compile Include="Queries\Quest\SelectCompletedQuestsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestIDsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestRequireFinishCompleteQuestsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestRequireFinishItemQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestRequireKillQuery.cs" />
+    <Compile Include="Queries\Quest\SelectQuestRequireStartCompleteQuestsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestRequireStartItemQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestRequireStartQuestQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestRewardItemQuery.cs" />
@@ -178,6 +182,7 @@
     <Compile Include="Queries\Quest\UpdateCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Quests\QuestPerformerKillCounter.cs" />
     <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
+    <Compile Include="Quests\Requirements\CompleteQuestQuestRequirement.cs" />
     <Compile Include="Quests\Requirements\ItemsQuestRequirement.cs" />
     <Compile Include="Quests\Requirements\KillQuestRequirement.cs" />
     <Compile Include="Quests\Rewards\ExpQuestReward.cs" />

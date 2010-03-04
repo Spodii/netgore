@@ -11,6 +11,10 @@ using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Quests
 {
+    /// <summary>
+    /// A quest requirement that requires killing a certain number of certain characters, identified by their
+    /// template. Can only be used as a quest finish requirement.
+    /// </summary>
     public class KillQuestRequirement : IQuestRequirement<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

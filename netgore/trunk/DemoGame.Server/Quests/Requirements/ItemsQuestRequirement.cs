@@ -9,6 +9,10 @@ using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Quests
 {
+    /// <summary>
+    /// A quest requirement that requires one or more items to be in the quest performer's inventory, with an amount
+    /// of one or more. Can be used as both a requirement to start or complete a quest.
+    /// </summary>
     public class ItemsQuestRequirement : IQuestRequirement<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

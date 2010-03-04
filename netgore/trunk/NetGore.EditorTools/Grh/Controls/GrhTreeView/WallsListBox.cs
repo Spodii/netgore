@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
@@ -12,9 +13,9 @@ namespace NetGore.EditorTools
         /// </summary>
         public WallsListBox()
         {
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
-            DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            DrawMode = DrawMode.OwnerDrawFixed;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -24,9 +25,8 @@ namespace NetGore.EditorTools
         /// <returns>The string to display.</returns>
         public override string ItemToString(WallEntityBase item)
         {
-            return string.Format("({0},{1}) [{2}x{3}]{4}",
-                item.Position.X, item.Position.Y, item.Size.X, item.Size.Y,
-                item.IsPlatform ? " - Platform" : string.Empty);
+            return string.Format("({0},{1}) [{2}x{3}]{4}", item.Position.X, item.Position.Y, item.Size.X, item.Size.Y,
+                                 item.IsPlatform ? " - Platform" : string.Empty);
         }
     }
 }
