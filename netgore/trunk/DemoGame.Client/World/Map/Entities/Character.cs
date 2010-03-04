@@ -128,7 +128,7 @@ namespace DemoGame.Client
             const float spBarWidth = 55;
             const float spBarHeight = 6;
 
-            Vector2 pos = DrawPosition + new Vector2((Size.X / 2f) - (spBarWidth / 2f), Size.Y + (spBarHeight * index));
+            Vector2 pos = DrawPosition + new Vector2((Size.X / 2f) - (spBarWidth / 2f), Size.Y + (spBarHeight * index)).Round();
 
             Rectangle border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
             Rectangle bar = border;
