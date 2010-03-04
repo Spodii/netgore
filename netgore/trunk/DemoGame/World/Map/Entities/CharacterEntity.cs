@@ -166,7 +166,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
+        protected override void HandleUpdate(IMap imap, int deltaTime)
         {
             ThreadAsserts.IsMainThread();
             Debug.Assert(imap != null, "How the hell is a null Map updating?");
@@ -258,7 +258,7 @@ namespace DemoGame
         /// Performs the post-collision detection updating.
         /// </summary>
         /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        protected virtual void UpdatePostCollision(float deltaTime)
+        protected virtual void UpdatePostCollision(int deltaTime)
         {
             // Update the character's state
             UpdateState();
@@ -267,8 +267,9 @@ namespace DemoGame
         /// <summary>
         /// Performs the pre-collision detection updating.
         /// </summary>
+        /// <param name="map">The map.</param>
         /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        protected virtual void UpdatePreCollision(IMap map, float deltaTime)
+        protected virtual void UpdatePreCollision(IMap map, int deltaTime)
         {
             // Update velocity
             UpdateVelocity(deltaTime);
@@ -343,7 +344,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="imap">The map that this <see cref="IUpdateableEntity"/> is on.</param>
         /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        public void Update(IMap imap, float deltaTime)
+        public void Update(IMap imap, int deltaTime)
         {
             HandleUpdate(imap, deltaTime);
         }

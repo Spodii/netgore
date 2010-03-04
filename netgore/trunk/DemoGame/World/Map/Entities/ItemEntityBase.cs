@@ -112,7 +112,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
+        protected override void HandleUpdate(IMap imap, int deltaTime)
         {
             // For items, once they hit the ground, they no longer update
             if (StandingOn != null)
@@ -154,7 +154,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="imap">The map that this <see cref="IUpdateableEntity"/> is on.</param>
         /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
-        public void Update(IMap imap, float deltaTime)
+        public void Update(IMap imap, int deltaTime)
         {
             HandleUpdate(imap, deltaTime);
         }
