@@ -95,6 +95,7 @@
     <Compile Include="DbObjs\Interfaces\IMapTable.cs" />
     <Compile Include="DbObjs\Interfaces\INpcCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireFinishItemTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IQuestRequireFinishQuestTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireKillTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireStartItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireStartQuestTable.cs" />

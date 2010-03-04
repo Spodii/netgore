@@ -41,6 +41,7 @@ namespace DemoGame.Server.Quests
         /// <returns>The requirements for finishing a quest.</returns>
         IQuestRequirementCollection<User> LoadFinishRequirements(IDbController dbController)
         {
+            var questManager = QuestManager.Instance;
             var l = new List<IQuestRequirement<User>>();
 
             // Items
@@ -54,6 +55,11 @@ namespace DemoGame.Server.Quests
             Debug.Assert(reqItems.All(x => x.QuestID == QuestID));
             if (!reqKills.IsEmpty())
                 l.Add(new KillQuestRequirement(this, reqKills.Select(x => new KeyValuePair<CharacterTemplateID, ushort>(x.CharacterTemplateID, x.Amount))));
+
+            // Complete quests
+            var reqCompleteQuests = dbController.GetQuery<SelectQuestRequireFinishCompleteQuestsQuery>().Execute(QuestID);
+            if (!reqCompleteQuests.IsEmpty())
+                l.Add(new CompleteQuestQuestRequirement(this, reqCompleteQuests.Select(x => questManager.GetQuest(x))));
 
             return new QuestRequirementCollection<User>(l);
         }
@@ -84,6 +90,7 @@ namespace DemoGame.Server.Quests
         /// <returns>The requirements for starting a quest.</returns>
         IQuestRequirementCollection<User> LoadStartRequirements(IDbController dbController)
         {
+            var questManager = QuestManager.Instance;
             var l = new List<IQuestRequirement<User>>();
 
             // Items
@@ -91,7 +98,10 @@ namespace DemoGame.Server.Quests
             if (!reqItems.IsEmpty())
                 l.Add(new ItemsQuestRequirement(this, reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
-            // TODO: !! Add: Starting requirement quests
+            // Complete quests
+            var reqCompleteQuests = dbController.GetQuery<SelectQuestRequireStartCompleteQuestsQuery>().Execute(QuestID);
+            if (!reqCompleteQuests.IsEmpty())
+                l.Add(new CompleteQuestQuestRequirement(this, reqCompleteQuests.Select(x => questManager.GetQuest(x))));
 
             return new QuestRequirementCollection<User>(l);
         }
