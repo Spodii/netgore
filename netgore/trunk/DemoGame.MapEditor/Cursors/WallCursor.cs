@@ -21,6 +21,7 @@ namespace DemoGame.MapEditor
         readonly MenuItem _mnuSnapToGrid;
         readonly MenuItem _mnuSnapToWalls;
         readonly List<WallEntityBase> _selectedWalls = new List<WallEntityBase>();
+
         MouseButtons _mouseDragButton = MouseButtons.None;
         Vector2 _mouseDragStart = Vector2.Zero;
 

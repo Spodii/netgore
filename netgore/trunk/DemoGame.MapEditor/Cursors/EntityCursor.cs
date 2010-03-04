@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
@@ -62,7 +63,8 @@ namespace DemoGame.MapEditor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
-            spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+            if (!string.IsNullOrEmpty(_toolTip))
+                spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -167,10 +169,23 @@ namespace DemoGame.MapEditor
                     _toolTipObject = hoverEntity;
                     _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X,
                                              hoverEntity.Size.Y);
-                    _toolTipPos = new Vector2(hoverEntity.Max.X, hoverEntity.Position.Y);
-                    _toolTipPos -= new Vector2(5, Container.SpriteFont.LineSpacing * _toolTip.Split('\n').Length);
+                    _toolTipPos = GetToolTipPos(Container.SpriteFont, _toolTip, hoverEntity);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the position to display the tooltip text.
+        /// </summary>
+        /// <param name="font">The font to use.</param>
+        /// <param name="text">The tooltip text.</param>
+        /// <param name="entity">The entity the tooltip is for.</param>
+        /// <returns>The position to display the tooltip text.</returns>
+        public static Vector2 GetToolTipPos(SpriteFont font, string text, ISpatial entity)
+        {
+            var pos = new Vector2(entity.Max.X, entity.Position.Y);
+            pos -= new Vector2(5, (font.LineSpacing * text.Split('\n').Length) + 5);
+            return pos;
         }
 
         /// <summary>

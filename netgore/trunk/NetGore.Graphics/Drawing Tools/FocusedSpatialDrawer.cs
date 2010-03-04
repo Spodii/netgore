@@ -19,6 +19,7 @@ namespace NetGore.Graphics
         static readonly Color _trackColor = new Color(0, 0, 0, 0);
         static readonly Color _trackInnerBorderColor = new Color(255, 255, 255, 150);
         static readonly Color _trackOutterBorderColor = new Color(0, 0, 0, 150);
+
         ISpatial _focused;
         int _steps;
 
