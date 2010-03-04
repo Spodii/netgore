@@ -467,13 +467,20 @@ namespace NetGore.Graphics
             if (!IsSpriteSet())
                 return false;
 
-            Vector2 position = GetPosition(Map.Size, Camera);
-            Rectangle Background = new Rectangle((int)position.X, (int)position.Y, (int)_sprite.Size.X, (int)_sprite.Size.Y);
+            // FUTURE: Implement properly
+            return true;
 
-            if (camera.GetViewArea().Intersects(Background))
-                return true;
-            else
+            /*
+            Vector2 position = GetPosition(Map.Size, Camera);
+            if (position.X > camera.Max.X || position.Y > camera.Max.Y)
                 return false;
+
+            Vector2 max = position + Sprite.Size;
+            if (max.X < camera.Min.X || max.Y < camera.Min.Y)
+                return false;
+
+            return true;
+            */
         }
 
         #endregion
