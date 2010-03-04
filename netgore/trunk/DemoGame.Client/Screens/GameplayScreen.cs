@@ -285,7 +285,7 @@ namespace DemoGame.Client
             DrawingManager.LightManager.Ambient = Map.AmbientLight;
 
             // Update the camera
-            World.Camera.Min = World.UserChar.GetCameraPos();
+            World.Camera.Min = World.UserChar.GetCameraPos(World.Camera);
 
             // Since we only update entities in view, and the draw position is included in that update, make sure
             // that the camera focuses on the user properly if they teleport out of view of the camera.
