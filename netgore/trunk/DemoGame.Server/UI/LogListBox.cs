@@ -30,7 +30,7 @@ namespace DemoGame.Server.UI
             if (item == null)
                 return;
 
-            e.Graphics.DrawString(item.RenderedMessage, e.Font, item.Level.GetColorBrush(), e.Bounds);
+            e.Graphics.DrawString(item.RenderedMessage, e.Font, item.Level.GetSystemColorBrush(), e.Bounds);
 
             e.DrawFocusRectangle();
         }

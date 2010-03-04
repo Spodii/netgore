@@ -604,6 +604,30 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the area occupied by this <see cref="Control"/> where the
+        /// position is relative to the the parent control (that is, same position as <see cref="Control.Position"/>).
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that represents the area occupied by this <see cref="Control"/>.</returns>
+        public Rectangle GetRelativeArea()
+        {
+            var pos = Position;
+            var size = Size;
+            return new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Rectangle"/> that represents the area occupied by this <see cref="Control"/> where the
+        /// position is the absolute screen position (that is, same position as <see cref="Control.ScreenPosition"/>).
+        /// </summary>
+        /// <returns>A <see cref="Rectangle"/> that represents the area occupied by this <see cref="Control"/>.</returns>
+        public Rectangle GetScreenArea()
+        {
+            var pos = ScreenPosition;
+            var size = Size;
+            return new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+        }
+
+        /// <summary>
         /// Gets or sets if this <see cref="Control"/>'s size will automatically be set to the size needed to fit
         /// all the child <see cref="Control"/>s.
         /// </summary>

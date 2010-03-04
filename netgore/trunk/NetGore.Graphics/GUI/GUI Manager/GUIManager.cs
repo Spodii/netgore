@@ -14,6 +14,7 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class GUIManager : IGUIManager
     {
+        static readonly IEnumerable<Keys> _emptyKeys = new Keys[0];
         readonly List<Control> _controls = new List<Control>(2);
         readonly ISkinManager _skinManager;
         readonly Tooltip _tooltip;
@@ -349,7 +350,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public IEnumerable<Keys> KeysPressed
         {
-            get { return _keysPressed; }
+            get { return _keysPressed ?? _emptyKeys; }
         }
 
         /// <summary>
@@ -367,7 +368,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public IEnumerable<Keys> LastKeysPressed
         {
-            get { return _lastPressedKeys; }
+            get { return _lastPressedKeys ?? _emptyKeys; }
         }
 
         /// <summary>
@@ -405,7 +406,7 @@ namespace NetGore.Graphics.GUI
                 }
 
                 // Return the cached pressed keys list
-                return _keysDown;
+                return _keysDown ?? _emptyKeys;
             }
         }
 
@@ -426,7 +427,7 @@ namespace NetGore.Graphics.GUI
                 }
 
                 // Return the cached released keys list
-                return _keysUp;
+                return _keysUp ?? _emptyKeys;
             }
         }
 

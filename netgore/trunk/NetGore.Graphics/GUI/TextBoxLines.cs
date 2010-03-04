@@ -32,6 +32,28 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Truncates the specified number of lines from the start of the collection.
+        /// </summary>
+        /// <param name="numLines">The number of lines to truncate.</param>
+        public void Truncate(int numLines)
+        {
+            if (numLines <= 0)
+                return;
+
+            if (numLines >= _lines.Count)
+            {
+                Clear();
+            }
+            else
+            {
+                _lines.RemoveRange(0, numLines);
+                _currentLineIndex = (ushort)Math.Max(0, _lines.Count - numLines);
+                if (_currentLineIndex > _lines.Count)
+                    _currentLineIndex = (ushort)(_lines.Count - 1);
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="TextBoxLine"/> at the given index.
         /// </summary>
         /// <param name="lineIndex">The index of the line.</param>
