@@ -603,12 +603,16 @@ namespace DemoGame.Client
             if (oldMap != null)
             {
                 foreach (var light in oldMap.Lights)
+                {
                     DrawingManager.LightManager.Remove(light);
+                }
             }
 
             // Add the lights for the new map
             foreach (var light in newMap.Lights)
+            {
                 DrawingManager.LightManager.Add(light);
+            }
         }
 
         #region IGetTime Members

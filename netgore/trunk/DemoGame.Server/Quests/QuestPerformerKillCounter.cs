@@ -9,12 +9,14 @@ namespace DemoGame.Server.Quests
 {
     public class QuestPerformerKillCounter : QuestPerformerKillCounterBase<User, CharacterTemplateID>
     {
+        static readonly DeleteCharacterQuestStatusKillsQuery _deleteCharacterQuestStatusKillsQuery;
+
         static readonly IEnumerable<KeyValuePair<CharacterTemplateID, ushort>> _emptyKillReqs =
             Enumerable.Empty<KeyValuePair<CharacterTemplateID, ushort>>();
+
         static readonly QuestManager _questManager = QuestManager.Instance;
         static readonly SelectQuestStatusKillsQuery _selectQuestStatusKillsQuery;
         static readonly UpdateCharacterQuestStatusKillsQuery _updateCharacterQuestStatusKillsQuery;
-        static readonly DeleteCharacterQuestStatusKillsQuery _deleteCharacterQuestStatusKillsQuery;
 
         /// <summary>
         /// Initializes the <see cref="QuestPerformerKillCounter"/> class.
@@ -26,32 +28,6 @@ namespace DemoGame.Server.Quests
             _updateCharacterQuestStatusKillsQuery = dbController.GetQuery<UpdateCharacterQuestStatusKillsQuery>();
             _updateCharacterQuestStatusKillsQuery = dbController.GetQuery<UpdateCharacterQuestStatusKillsQuery>();
             _deleteCharacterQuestStatusKillsQuery = dbController.GetQuery<DeleteCharacterQuestStatusKillsQuery>();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of when a quest has been added
-        /// to this collection. This does not include quests added when loading the collection.
-        /// </summary>
-        /// <param name="quest">The quest that was added.</param>
-        protected override void OnQuestAdded(IQuest<User> quest)
-        {
-            base.OnQuestAdded(quest);
-
-            // Ensure the quest's values have been removed from the database (such as if the user already did this quest)
-            _deleteCharacterQuestStatusKillsQuery.Execute(Owner.ID, quest.QuestID);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of when a quest has been removed
-        /// from this collection. This does not include quests added when loading the collection.
-        /// </summary>
-        /// <param name="quest">The quest that was removed.</param>
-        protected override void OnQuestRemoved(IQuest<User> quest)
-        {
-            base.OnQuestRemoved(quest);
-
-            // Ensure the quest's values have been removed from the database (such as if the user already did this quest)
-            _deleteCharacterQuestStatusKillsQuery.Execute(Owner.ID, quest.QuestID);
         }
 
         /// <summary>
@@ -108,6 +84,32 @@ namespace DemoGame.Server.Quests
                                                        ushort reqCount)
         {
             _updateCharacterQuestStatusKillsQuery.Execute(Owner.ID, quest.QuestID, target, count);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a quest has been added
+        /// to this collection. This does not include quests added when loading the collection.
+        /// </summary>
+        /// <param name="quest">The quest that was added.</param>
+        protected override void OnQuestAdded(IQuest<User> quest)
+        {
+            base.OnQuestAdded(quest);
+
+            // Ensure the quest's values have been removed from the database (such as if the user already did this quest)
+            _deleteCharacterQuestStatusKillsQuery.Execute(Owner.ID, quest.QuestID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of when a quest has been removed
+        /// from this collection. This does not include quests added when loading the collection.
+        /// </summary>
+        /// <param name="quest">The quest that was removed.</param>
+        protected override void OnQuestRemoved(IQuest<User> quest)
+        {
+            base.OnQuestRemoved(quest);
+
+            // Ensure the quest's values have been removed from the database (such as if the user already did this quest)
+            _deleteCharacterQuestStatusKillsQuery.Execute(Owner.ID, quest.QuestID);
         }
     }
 }

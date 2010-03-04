@@ -41,11 +41,11 @@ namespace DemoGame
         const int _findValidPlacementPadding = 128;
 
         const string _headerNodeHeightKey = "Height";
+        const string _headerNodeIndoorsKey = "Indoors";
         const string _headerNodeMusicKey = "Music";
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeWidthKey = "Width";
-        const string _headerNodeIndoorsKey = "Indoors";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
         const string _wallsNodeName = "Walls";

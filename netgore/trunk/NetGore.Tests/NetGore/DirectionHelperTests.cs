@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 
@@ -10,11 +7,13 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class DirectionHelperTests
     {
+        #region Unit tests
+
         [Test]
-        public void DirectionNorthTest()
+        public void DirectionEastTest()
         {
-            var v = new Vector2(0, -1);
-            Assert.AreEqual(Direction.North, DirectionHelper.FromVector(v));
+            var v = new Vector2(1, 0);
+            Assert.AreEqual(Direction.East, DirectionHelper.FromVector(v));
         }
 
         [Test]
@@ -25,6 +24,13 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void DirectionNorthTest()
+        {
+            var v = new Vector2(0, -1);
+            Assert.AreEqual(Direction.North, DirectionHelper.FromVector(v));
+        }
+
+        [Test]
         public void DirectionNorthWestTest()
         {
             var v = new Vector2(-1, -1);
@@ -32,10 +38,10 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void DirectionSouthTest()
+        public void DirectionNullTest()
         {
-            var v = new Vector2(0, 1);
-            Assert.AreEqual(Direction.South, DirectionHelper.FromVector(v));
+            var v = new Vector2(0, 0);
+            Assert.AreEqual(null, DirectionHelper.FromVector(v));
         }
 
         [Test]
@@ -43,6 +49,13 @@ namespace NetGore.Tests.NetGore
         {
             var v = new Vector2(1, 1);
             Assert.AreEqual(Direction.SouthEast, DirectionHelper.FromVector(v));
+        }
+
+        [Test]
+        public void DirectionSouthTest()
+        {
+            var v = new Vector2(0, 1);
+            Assert.AreEqual(Direction.South, DirectionHelper.FromVector(v));
         }
 
         [Test]
@@ -59,18 +72,6 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(Direction.West, DirectionHelper.FromVector(v));
         }
 
-        [Test]
-        public void DirectionEastTest()
-        {
-            var v = new Vector2(1, 0);
-            Assert.AreEqual(Direction.East, DirectionHelper.FromVector(v));
-        }
-
-        [Test]
-        public void DirectionNullTest()
-        {
-            var v = new Vector2(0, 0);
-            Assert.AreEqual(null, DirectionHelper.FromVector(v));
-        }
+        #endregion
     }
 }

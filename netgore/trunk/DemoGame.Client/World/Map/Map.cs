@@ -16,9 +16,9 @@ namespace DemoGame.Client
     public class Map : MapBase, IDisposable, IDrawableMap
     {
         const string _bgImagesNodeName = "BackgroundImages";
-        const string _mapGrhsNodeName = "MapGrhs";
         const string _lightingNodeName = "Lighting";
         const string _lightsNodeName = "Lights";
+        const string _mapGrhsNodeName = "MapGrhs";
         const string _particleEffectsNodeName = "ParticleEffects";
         const string _usedIndiciesNodeName = "UsedIndicies";
 
@@ -32,30 +32,11 @@ namespace DemoGame.Client
         readonly DrawableSorter _drawableSorter = new DrawableSorter();
 
         /// <summary>
-        /// Adds a light to the map as long as it does not already exist in the map's light collection.
-        /// </summary>
-        /// <param name="light">The <see cref="ILight"/> to add.</param>
-        public void AddLight(ILight light)
-        {
-            if (!_lights.Contains(light))
-                _lights.Add(light);
-        }
-
-        /// <summary>
-        /// Removes a light from the map.
-        /// </summary>
-        /// <param name="light">The <see cref="ILight"/> to add.</param>
-        /// <returns>True if the <paramref name="light"/> was removed; false if the <paramref name="light"/> was not
-        /// in the map's light collection and thus not removed.</returns>
-        public bool RemoveLight(ILight light)
-        {
-            return _lights.Remove(light);
-        }
-
-        /// <summary>
         /// Graphics device used when building the atlas
         /// </summary>
         readonly GraphicsDevice _graphics;
+
+        readonly List<ILight> _lights = new List<ILight>();
 
         /// <summary>
         /// List of map grhs on the map
@@ -97,19 +78,20 @@ namespace DemoGame.Client
             set { _ambientLight = value; }
         }
 
-        readonly List<ILight> _lights = new List<ILight>();
-
-        /// <summary>
-        /// Gets the lights on the map.
-        /// </summary>
-        public IEnumerable<ILight> Lights { get { return _lights; } }
-
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.
         /// </summary>
         public IEnumerable<BackgroundImage> BackgroundImages
         {
             get { return _backgroundImages; }
+        }
+
+        /// <summary>
+        /// Gets the lights on the map.
+        /// </summary>
+        public IEnumerable<ILight> Lights
+        {
+            get { return _lights; }
         }
 
         /// <summary>
@@ -135,6 +117,16 @@ namespace DemoGame.Client
         public void AddBackgroundImage(BackgroundImage bgImage)
         {
             _backgroundImages.Add(bgImage);
+        }
+
+        /// <summary>
+        /// Adds a light to the map as long as it does not already exist in the map's light collection.
+        /// </summary>
+        /// <param name="light">The <see cref="ILight"/> to add.</param>
+        public void AddLight(ILight light)
+        {
+            if (!_lights.Contains(light))
+                _lights.Add(light);
         }
 
         /// <summary>
@@ -290,6 +282,23 @@ namespace DemoGame.Client
             }
         }
 
+        void LoadLighting(IValueReader reader)
+        {
+            reader = reader.ReadNode(_lightingNodeName);
+
+            AmbientLight = reader.ReadColor("Ambient");
+
+            _lights.Clear();
+
+            var loadedLights = reader.ReadManyNodes(_lightsNodeName, x => new Light(x));
+            _lights.AddRange(loadedLights);
+
+            foreach (var light in loadedLights)
+            {
+                light.Tag = this;
+            }
+        }
+
         /// <summary>
         /// Handles loading of custom values.
         /// </summary>
@@ -310,6 +319,17 @@ namespace DemoGame.Client
         public bool RemoveBackgroundImage(BackgroundImage bgImage)
         {
             return _backgroundImages.Remove(bgImage);
+        }
+
+        /// <summary>
+        /// Removes a light from the map.
+        /// </summary>
+        /// <param name="light">The <see cref="ILight"/> to add.</param>
+        /// <returns>True if the <paramref name="light"/> was removed; false if the <paramref name="light"/> was not
+        /// in the map's light collection and thus not removed.</returns>
+        public bool RemoveLight(ILight light)
+        {
+            return _lights.Remove(light);
         }
 
         /// <summary>
@@ -359,21 +379,6 @@ namespace DemoGame.Client
                 w.WriteManyNodes(_mapGrhsNodeName, _mapGrhs, ((writer, item) => item.Write(writer)));
             }
             w.WriteEndNode(_mapGrhsNodeName);
-        }
-
-        void LoadLighting(IValueReader reader)
-        {
-            reader = reader.ReadNode(_lightingNodeName);
-
-            AmbientLight = reader.ReadColor("Ambient");
-
-            _lights.Clear();
-
-            var loadedLights = reader.ReadManyNodes(_lightsNodeName, x => new Light(x));
-            _lights.AddRange(loadedLights);
-
-            foreach (var light in loadedLights)
-                light.Tag = this;
         }
 
         void SaveLighting(IValueWriter w)

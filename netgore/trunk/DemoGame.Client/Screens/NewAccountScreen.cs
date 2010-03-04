@@ -48,24 +48,6 @@ namespace DemoGame.Client
             base.Activate();
         }
 
-        void SetSocketHooks(bool add)
-        {
-            if (add)
-            {
-                _sockets.Connected += sockets_Connected;
-                _sockets.Disconnected += sockets_Disconnected;
-                _sockets.ConnectFailed += sockets_ConnectFailed;
-                _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
-            }
-            else
-            {
-                _sockets.Connected -= sockets_Connected;
-                _sockets.Disconnected -= sockets_Disconnected;
-                _sockets.ConnectFailed -= sockets_ConnectFailed;
-                _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
-            }
-        }
-
         void ClickButton_CreateAccount(object sender, MouseClickEventArgs e)
         {
             if (!GameData.AccountName.IsValid(_cNameText.Text))
@@ -158,6 +140,24 @@ namespace DemoGame.Client
                 ShowMessage("Account successfully created!");
 
             _sockets.Disconnect();
+        }
+
+        void SetSocketHooks(bool add)
+        {
+            if (add)
+            {
+                _sockets.Connected += sockets_Connected;
+                _sockets.Disconnected += sockets_Disconnected;
+                _sockets.ConnectFailed += sockets_ConnectFailed;
+                _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
+            }
+            else
+            {
+                _sockets.Connected -= sockets_Connected;
+                _sockets.Disconnected -= sockets_Disconnected;
+                _sockets.ConnectFailed -= sockets_ConnectFailed;
+                _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
+            }
         }
 
         void ShowError(string errorMsg)

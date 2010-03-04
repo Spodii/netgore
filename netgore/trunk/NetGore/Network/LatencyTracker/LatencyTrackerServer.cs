@@ -60,9 +60,7 @@ namespace NetGore.Network
                 if (packet.Length != LatencyTrackerHelper.SignatureSize)
                 {
                     if (packet.Length > 1 && packet[0] != 0)
-                    {
                         Debug.Fail("Received invalid data. Possibly just garbage on the channel.");
-                    }
 
                     continue;
                 }

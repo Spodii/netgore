@@ -81,6 +81,21 @@ namespace DemoGame.Client
             get { return _conn; }
         }
 
+        void Conn_Disposed(IIPSocket socket)
+        {
+            if (socket == _conn)
+            {
+                _conn.Disposed -= Conn_Disposed;
+                _conn = null;
+
+                if (_latencyTracker != null)
+                {
+                    _latencyTracker.Dispose();
+                    _latencyTracker = null;
+                }
+            }
+        }
+
         /// <summary>
         /// Starts the client's connection to the server, or does nothing if <see cref="ClientSockets.IsConnecting"/>
         /// or <see cref="ClientSockets.IsConnected"/> is true.
@@ -148,21 +163,6 @@ namespace DemoGame.Client
             Ping();
 
             _isConnecting = false;
-        }
-
-        void Conn_Disposed(IIPSocket socket)
-        {
-            if (socket == _conn)
-            {
-                _conn.Disposed -= Conn_Disposed;
-                _conn = null;
-
-                if (_latencyTracker != null)
-                {
-                    _latencyTracker.Dispose();
-                    _latencyTracker = null;
-                }
-            }
         }
 
         /// <summary>

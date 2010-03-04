@@ -26,6 +26,17 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
+        /// Executes the query on the database using the specified parameters.
+        /// </summary>
+        /// <param name="characterID">The character ID.</param>
+        /// <param name="questID">The quest ID.</param>
+        /// <returns>Number of rows affected by the query.</returns>
+        public int Execute(CharacterID characterID, QuestID questID)
+        {
+            return Execute(new QueryArgs(characterID, questID));
+        }
+
+        /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
         /// <returns>IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
@@ -45,17 +56,6 @@ namespace DemoGame.Server.Queries
         {
             p["@charID"] = (int)item.CharacterID;
             p["@questID"] = (int)item.QuestID;
-        }
-
-        /// <summary>
-        /// Executes the query on the database using the specified parameters.
-        /// </summary>
-        /// <param name="characterID">The character ID.</param>
-        /// <param name="questID">The quest ID.</param>
-        /// <returns>Number of rows affected by the query.</returns>
-        public int Execute(CharacterID characterID, QuestID questID)
-        {
-            return Execute(new QueryArgs(characterID, questID));
         }
 
         /// <summary>

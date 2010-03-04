@@ -275,6 +275,15 @@ namespace NetGore.EditorTools
             txtH.Enabled = enabled;
         }
 
+        void chkPlatform_CheckedChanged(object sender, EventArgs e)
+        {
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            if (wall == null)
+                return;
+
+            wall.IsPlatform = chkPlatform.Checked;
+        }
+
         public void Draw(ISpriteBatch sb)
         {
             // Update the Grh first
@@ -622,15 +631,6 @@ namespace NetGore.EditorTools
                 return false;
             }
             return true;
-        }
-
-        private void chkPlatform_CheckedChanged(object sender, EventArgs e)
-        {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
-            if (wall == null)
-                return;
-
-            wall.IsPlatform = chkPlatform.Checked;
         }
     }
 }

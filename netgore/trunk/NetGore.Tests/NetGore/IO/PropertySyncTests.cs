@@ -37,7 +37,6 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual(value, property.GetValue(cDest, null));
         }
 
-
         static void TestSyncNullable(string propertyName, object value)
         {
             // Get the property
@@ -62,6 +61,19 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         #region Unit tests
+
+        [Test]
+        public void AutomaticNullableTypesTest()
+        {
+            TestSyncNullable("mBool", true);
+            TestSyncNullable("mByte", null);
+            TestSyncNullable("mColor", new Color(255, 243, 234, 12));
+            TestSyncNullable("mFloat", null);
+            TestSyncNullable("mGrhIndex", new GrhIndex(5));
+            TestSyncNullable("mInt", null);
+            TestSyncNullable("mLong", (long)1032);
+            TestSyncNullable("mMapEntityIndex", null);
+        }
 
         [Test]
         public void BoolTest()
@@ -145,19 +157,6 @@ namespace NetGore.Tests.NetGore.IO
         public void Vector2Test()
         {
             TestSync("mVector2", new Vector2(23, 32));
-        }
-
-        [Test]
-        public void AutomaticNullableTypesTest()
-        {
-            TestSyncNullable("mBool", true);
-            TestSyncNullable("mByte", null);
-            TestSyncNullable("mColor", new Color(255, 243, 234, 12));
-            TestSyncNullable("mFloat", null);
-            TestSyncNullable("mGrhIndex", new GrhIndex(5));
-            TestSyncNullable("mInt", null);
-            TestSyncNullable("mLong", (long)1032);
-            TestSyncNullable("mMapEntityIndex", null);
         }
 
         #endregion

@@ -11,9 +11,8 @@ namespace DemoGame.Server.Queries
     public class SelectQuestStatusKillsQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryStr =
-            string.Format(
-                "SELECT `quest_id`,`character_template_id`,`count` FROM `{0}` WHERE `character_id`=@charID",
-                CharacterQuestStatusKillsTable.TableName);
+            string.Format("SELECT `quest_id`,`character_template_id`,`count` FROM `{0}` WHERE `character_id`=@charID",
+                          CharacterQuestStatusKillsTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQuestStatusKillsQuery"/> class.
@@ -21,8 +20,8 @@ namespace DemoGame.Server.Queries
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
         public SelectQuestStatusKillsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_template_id", "count", "character_id",
-                                         "quest_id");
+            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_template_id", "count",
+                                         "character_id", "quest_id");
         }
 
         public IEnumerable<KeyValuePair<QuestID, List<KeyValuePair<CharacterTemplateID, ushort>>>> Execute(CharacterID charID)

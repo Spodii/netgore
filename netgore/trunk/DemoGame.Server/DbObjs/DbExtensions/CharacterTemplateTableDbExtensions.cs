@@ -1,414 +1,364 @@
 using System;
+using System.Data;
 using System.Linq;
-using NetGore;
-using NetGore.IO;
-using System.Collections.Generic;
-using System.Collections;
-using NetGore.Db;
 using DemoGame.DbObjs;
+using NetGore.AI;
+using NetGore.Db;
+using NetGore.Features.Shops;
+
 namespace DemoGame.Server.DbObjs
 {
-/// <summary>
-/// Contains extension methods for class CharacterTemplateTable that assist in performing
-/// reads and writes to and from a database.
-/// </summary>
-public static  class CharacterTemplateTableDbExtensions
-{
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(this ICharacterTemplateTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@ai_id"] = (System.Nullable<System.UInt16>)source.AIID;
-paramValues["@alliance_id"] = (System.Byte)source.AllianceID;
-paramValues["@body_id"] = (System.UInt16)source.BodyID;
-paramValues["@chat_dialog"] = (System.Nullable<System.UInt16>)source.ChatDialog;
-paramValues["@exp"] = (System.Int32)source.Exp;
-paramValues["@give_cash"] = (System.UInt16)source.GiveCash;
-paramValues["@give_exp"] = (System.UInt16)source.GiveExp;
-paramValues["@id"] = (System.UInt16)source.ID;
-paramValues["@level"] = (System.Byte)source.Level;
-paramValues["@move_speed"] = (System.UInt16)source.MoveSpeed;
-paramValues["@name"] = (System.String)source.Name;
-paramValues["@respawn"] = (System.UInt16)source.Respawn;
-paramValues["@shop_id"] = (System.Nullable<System.UInt16>)source.ShopID;
-paramValues["@statpoints"] = (System.Int32)source.StatPoints;
-paramValues["@stat_agi"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
-paramValues["@stat_defence"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
-paramValues["@stat_int"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
-paramValues["@stat_maxhit"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-paramValues["@stat_maxhp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-paramValues["@stat_maxmp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
-paramValues["@stat_minhit"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-paramValues["@stat_str"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
-}
+    /// <summary>
+    /// Contains extension methods for class CharacterTemplateTable that assist in performing
+    /// reads and writes to and from a database.
+    /// </summary>
+    public static class CharacterTemplateTableDbExtensions
+    {
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public static void CopyValues(this ICharacterTemplateTable source, DbParameterValues paramValues)
+        {
+            paramValues["@ai_id"] = (ushort?)source.AIID;
+            paramValues["@alliance_id"] = (Byte)source.AllianceID;
+            paramValues["@body_id"] = (UInt16)source.BodyID;
+            paramValues["@chat_dialog"] = source.ChatDialog;
+            paramValues["@exp"] = source.Exp;
+            paramValues["@give_cash"] = source.GiveCash;
+            paramValues["@give_exp"] = source.GiveExp;
+            paramValues["@id"] = (UInt16)source.ID;
+            paramValues["@level"] = source.Level;
+            paramValues["@move_speed"] = source.MoveSpeed;
+            paramValues["@name"] = source.Name;
+            paramValues["@respawn"] = source.Respawn;
+            paramValues["@shop_id"] = (ushort?)source.ShopID;
+            paramValues["@statpoints"] = source.StatPoints;
+            paramValues["@stat_agi"] = (Int16)source.GetStat(StatType.Agi);
+            paramValues["@stat_defence"] = (Int16)source.GetStat(StatType.Defence);
+            paramValues["@stat_int"] = (Int16)source.GetStat(StatType.Int);
+            paramValues["@stat_maxhit"] = (Int16)source.GetStat(StatType.MaxHit);
+            paramValues["@stat_maxhp"] = (Int16)source.GetStat(StatType.MaxHP);
+            paramValues["@stat_maxmp"] = (Int16)source.GetStat(StatType.MaxMP);
+            paramValues["@stat_minhit"] = (Int16)source.GetStat(StatType.MinHit);
+            paramValues["@stat_str"] = (Int16)source.GetStat(StatType.Str);
+        }
 
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this CharacterTemplateTable source, System.Data.IDataReader dataReader)
-{
-System.Int32 i;
+        /// <summary>
+        /// Reads the values from an IDataReader and assigns the read values to this
+        /// object's properties. The database column's name is used to as the key, so the value
+        /// will not be found if any aliases are used or not all columns were selected.
+        /// </summary>
+        /// <param name="source">The object to add the extension method to.</param>
+        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+        public static void ReadValues(this CharacterTemplateTable source, IDataReader dataReader)
+        {
+            Int32 i;
 
-i = dataReader.GetOrdinal("ai_id");
+            i = dataReader.GetOrdinal("ai_id");
 
-source.AIID = (System.Nullable<NetGore.AI.AIID>)(System.Nullable<NetGore.AI.AIID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+            source.AIID = (AIID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
-i = dataReader.GetOrdinal("alliance_id");
+            i = dataReader.GetOrdinal("alliance_id");
 
-source.AllianceID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
+            source.AllianceID = (AllianceID)dataReader.GetByte(i);
 
-i = dataReader.GetOrdinal("body_id");
+            i = dataReader.GetOrdinal("body_id");
 
-source.BodyID = (DemoGame.BodyIndex)(DemoGame.BodyIndex)dataReader.GetUInt16(i);
+            source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
 
-i = dataReader.GetOrdinal("chat_dialog");
+            i = dataReader.GetOrdinal("chat_dialog");
 
-source.ChatDialog = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+            source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
-i = dataReader.GetOrdinal("exp");
+            i = dataReader.GetOrdinal("exp");
 
-source.Exp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+            source.Exp = dataReader.GetInt32(i);
 
-i = dataReader.GetOrdinal("give_cash");
+            i = dataReader.GetOrdinal("give_cash");
 
-source.GiveCash = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+            source.GiveCash = dataReader.GetUInt16(i);
 
-i = dataReader.GetOrdinal("give_exp");
+            i = dataReader.GetOrdinal("give_exp");
 
-source.GiveExp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+            source.GiveExp = dataReader.GetUInt16(i);
 
-i = dataReader.GetOrdinal("id");
+            i = dataReader.GetOrdinal("id");
 
-source.ID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
+            source.ID = (CharacterTemplateID)dataReader.GetUInt16(i);
 
-i = dataReader.GetOrdinal("level");
+            i = dataReader.GetOrdinal("level");
 
-source.Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
+            source.Level = dataReader.GetByte(i);
 
-i = dataReader.GetOrdinal("move_speed");
+            i = dataReader.GetOrdinal("move_speed");
 
-source.MoveSpeed = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+            source.MoveSpeed = dataReader.GetUInt16(i);
 
-i = dataReader.GetOrdinal("name");
+            i = dataReader.GetOrdinal("name");
 
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+            source.Name = dataReader.GetString(i);
 
-i = dataReader.GetOrdinal("respawn");
+            i = dataReader.GetOrdinal("respawn");
 
-source.Respawn = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+            source.Respawn = dataReader.GetUInt16(i);
 
-i = dataReader.GetOrdinal("shop_id");
+            i = dataReader.GetOrdinal("shop_id");
 
-source.ShopID = (System.Nullable<NetGore.Features.Shops.ShopID>)(System.Nullable<NetGore.Features.Shops.ShopID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+            source.ShopID = (ShopID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
-i = dataReader.GetOrdinal("statpoints");
+            i = dataReader.GetOrdinal("statpoints");
 
-source.StatPoints = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+            source.StatPoints = dataReader.GetInt32(i);
 
-i = dataReader.GetOrdinal("stat_agi");
+            i = dataReader.GetOrdinal("stat_agi");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+            source.SetStat(StatType.Agi, dataReader.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_defence");
+            i = dataReader.GetOrdinal("stat_defence");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+            source.SetStat(StatType.Defence, dataReader.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_int");
+            i = dataReader.GetOrdinal("stat_int");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+            source.SetStat(StatType.Int, dataReader.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_maxhit");
+            i = dataReader.GetOrdinal("stat_maxhit");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+            source.SetStat(StatType.MaxHit, dataReader.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_maxhp");
+            i = dataReader.GetOrdinal("stat_maxhp");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+            source.SetStat(StatType.MaxHP, dataReader.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_maxmp");
+            i = dataReader.GetOrdinal("stat_maxmp");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+            source.SetStat(StatType.MaxMP, dataReader.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_minhit");
+            i = dataReader.GetOrdinal("stat_minhit");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+            source.SetStat(StatType.MinHit, dataReader.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_str");
+            i = dataReader.GetOrdinal("stat_str");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-}
+            source.SetStat(StatType.Str, dataReader.GetInt16(i));
+        }
 
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. Unlike ReadValues(), this method not only doesn't require
-/// all values to be in the IDataReader, but also does not require the values in
-/// the IDataReader to be a defined field for the table this class represents.
-/// Because of this, you need to be careful when using this method because values
-/// can easily be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this CharacterTemplateTable source, System.Data.IDataReader dataReader)
-{
-for (int i = 0; i < dataReader.FieldCount; i++)
-{
-switch (dataReader.GetName(i))
-{
-case "ai_id":
-source.AIID = (System.Nullable<NetGore.AI.AIID>)(System.Nullable<NetGore.AI.AIID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
+        /// match one of the column names, or if there is no field for a key, then it will be
+        /// ignored. Because of this, it is important to be careful when using this method
+        /// since columns or keys can be skipped without any indication.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public static void TryCopyValues(this ICharacterTemplateTable source, DbParameterValues paramValues)
+        {
+            for (int i = 0; i < paramValues.Count; i++)
+            {
+                switch (paramValues.GetParameterName(i))
+                {
+                    case "@ai_id":
+                        paramValues[i] = (ushort?)source.AIID;
+                        break;
 
+                    case "@alliance_id":
+                        paramValues[i] = (Byte)source.AllianceID;
+                        break;
 
-case "alliance_id":
-source.AllianceID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
-break;
+                    case "@body_id":
+                        paramValues[i] = (UInt16)source.BodyID;
+                        break;
 
+                    case "@chat_dialog":
+                        paramValues[i] = source.ChatDialog;
+                        break;
 
-case "body_id":
-source.BodyID = (DemoGame.BodyIndex)(DemoGame.BodyIndex)dataReader.GetUInt16(i);
-break;
+                    case "@exp":
+                        paramValues[i] = source.Exp;
+                        break;
 
+                    case "@give_cash":
+                        paramValues[i] = source.GiveCash;
+                        break;
 
-case "chat_dialog":
-source.ChatDialog = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
+                    case "@give_exp":
+                        paramValues[i] = source.GiveExp;
+                        break;
 
+                    case "@id":
+                        paramValues[i] = (UInt16)source.ID;
+                        break;
 
-case "exp":
-source.Exp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
-break;
+                    case "@level":
+                        paramValues[i] = source.Level;
+                        break;
 
+                    case "@move_speed":
+                        paramValues[i] = source.MoveSpeed;
+                        break;
 
-case "give_cash":
-source.GiveCash = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
-break;
+                    case "@name":
+                        paramValues[i] = source.Name;
+                        break;
 
+                    case "@respawn":
+                        paramValues[i] = source.Respawn;
+                        break;
 
-case "give_exp":
-source.GiveExp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
-break;
+                    case "@shop_id":
+                        paramValues[i] = (ushort?)source.ShopID;
+                        break;
 
+                    case "@statpoints":
+                        paramValues[i] = source.StatPoints;
+                        break;
 
-case "id":
-source.ID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
-break;
+                    case "@stat_agi":
+                        paramValues[i] = (Int16)source.GetStat(StatType.Agi);
+                        break;
 
+                    case "@stat_defence":
+                        paramValues[i] = (Int16)source.GetStat(StatType.Defence);
+                        break;
 
-case "level":
-source.Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
-break;
+                    case "@stat_int":
+                        paramValues[i] = (Int16)source.GetStat(StatType.Int);
+                        break;
 
+                    case "@stat_maxhit":
+                        paramValues[i] = (Int16)source.GetStat(StatType.MaxHit);
+                        break;
 
-case "move_speed":
-source.MoveSpeed = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
-break;
+                    case "@stat_maxhp":
+                        paramValues[i] = (Int16)source.GetStat(StatType.MaxHP);
+                        break;
 
+                    case "@stat_maxmp":
+                        paramValues[i] = (Int16)source.GetStat(StatType.MaxMP);
+                        break;
 
-case "name":
-source.Name = (System.String)(System.String)dataReader.GetString(i);
-break;
+                    case "@stat_minhit":
+                        paramValues[i] = (Int16)source.GetStat(StatType.MinHit);
+                        break;
 
-
-case "respawn":
-source.Respawn = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
-break;
-
-
-case "shop_id":
-source.ShopID = (System.Nullable<NetGore.Features.Shops.ShopID>)(System.Nullable<NetGore.Features.Shops.ShopID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
-
-
-case "statpoints":
-source.StatPoints = (System.Int32)(System.Int32)dataReader.GetInt32(i);
-break;
-
-
-case "stat_agi":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "stat_defence":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "stat_int":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "stat_maxhit":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "stat_maxhp":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "stat_maxmp":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "stat_minhit":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "stat_str":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-}
-
-}
-}
-
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(this ICharacterTemplateTable source, NetGore.Db.DbParameterValues paramValues)
-{
-for (int i = 0; i < paramValues.Count; i++)
-{
-switch (paramValues.GetParameterName(i))
-{
-case "@ai_id":
-paramValues[i] = (System.Nullable<System.UInt16>)source.AIID;
-break;
-
-
-case "@alliance_id":
-paramValues[i] = (System.Byte)source.AllianceID;
-break;
-
-
-case "@body_id":
-paramValues[i] = (System.UInt16)source.BodyID;
-break;
-
-
-case "@chat_dialog":
-paramValues[i] = (System.Nullable<System.UInt16>)source.ChatDialog;
-break;
-
-
-case "@exp":
-paramValues[i] = (System.Int32)source.Exp;
-break;
-
-
-case "@give_cash":
-paramValues[i] = (System.UInt16)source.GiveCash;
-break;
-
-
-case "@give_exp":
-paramValues[i] = (System.UInt16)source.GiveExp;
-break;
-
-
-case "@id":
-paramValues[i] = (System.UInt16)source.ID;
-break;
-
-
-case "@level":
-paramValues[i] = (System.Byte)source.Level;
-break;
-
-
-case "@move_speed":
-paramValues[i] = (System.UInt16)source.MoveSpeed;
-break;
-
-
-case "@name":
-paramValues[i] = (System.String)source.Name;
-break;
-
-
-case "@respawn":
-paramValues[i] = (System.UInt16)source.Respawn;
-break;
-
-
-case "@shop_id":
-paramValues[i] = (System.Nullable<System.UInt16>)source.ShopID;
-break;
-
-
-case "@statpoints":
-paramValues[i] = (System.Int32)source.StatPoints;
-break;
-
-
-case "@stat_agi":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
-break;
-
-
-case "@stat_defence":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
-break;
-
-
-case "@stat_int":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
-break;
-
-
-case "@stat_maxhit":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-break;
-
-
-case "@stat_maxhp":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-break;
-
-
-case "@stat_maxmp":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
-break;
-
-
-case "@stat_minhit":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-break;
-
-
-case "@stat_str":
-paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
-break;
-
-
-}
-
-}
-}
-
-}
-
+                    case "@stat_str":
+                        paramValues[i] = (Int16)source.GetStat(StatType.Str);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the values from an IDataReader and assigns the read values to this
+        /// object's properties. Unlike ReadValues(), this method not only doesn't require
+        /// all values to be in the IDataReader, but also does not require the values in
+        /// the IDataReader to be a defined field for the table this class represents.
+        /// Because of this, you need to be careful when using this method because values
+        /// can easily be skipped without any indication.
+        /// </summary>
+        /// <param name="source">The object to add the extension method to.</param>
+        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+        public static void TryReadValues(this CharacterTemplateTable source, IDataReader dataReader)
+        {
+            for (int i = 0; i < dataReader.FieldCount; i++)
+            {
+                switch (dataReader.GetName(i))
+                {
+                    case "ai_id":
+                        source.AIID = (AIID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        break;
+
+                    case "alliance_id":
+                        source.AllianceID = (AllianceID)dataReader.GetByte(i);
+                        break;
+
+                    case "body_id":
+                        source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
+                        break;
+
+                    case "chat_dialog":
+                        source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        break;
+
+                    case "exp":
+                        source.Exp = dataReader.GetInt32(i);
+                        break;
+
+                    case "give_cash":
+                        source.GiveCash = dataReader.GetUInt16(i);
+                        break;
+
+                    case "give_exp":
+                        source.GiveExp = dataReader.GetUInt16(i);
+                        break;
+
+                    case "id":
+                        source.ID = (CharacterTemplateID)dataReader.GetUInt16(i);
+                        break;
+
+                    case "level":
+                        source.Level = dataReader.GetByte(i);
+                        break;
+
+                    case "move_speed":
+                        source.MoveSpeed = dataReader.GetUInt16(i);
+                        break;
+
+                    case "name":
+                        source.Name = dataReader.GetString(i);
+                        break;
+
+                    case "respawn":
+                        source.Respawn = dataReader.GetUInt16(i);
+                        break;
+
+                    case "shop_id":
+                        source.ShopID = (ShopID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        break;
+
+                    case "statpoints":
+                        source.StatPoints = dataReader.GetInt32(i);
+                        break;
+
+                    case "stat_agi":
+                        source.SetStat(StatType.Agi, dataReader.GetInt16(i));
+                        break;
+
+                    case "stat_defence":
+                        source.SetStat(StatType.Defence, dataReader.GetInt16(i));
+                        break;
+
+                    case "stat_int":
+                        source.SetStat(StatType.Int, dataReader.GetInt16(i));
+                        break;
+
+                    case "stat_maxhit":
+                        source.SetStat(StatType.MaxHit, dataReader.GetInt16(i));
+                        break;
+
+                    case "stat_maxhp":
+                        source.SetStat(StatType.MaxHP, dataReader.GetInt16(i));
+                        break;
+
+                    case "stat_maxmp":
+                        source.SetStat(StatType.MaxMP, dataReader.GetInt16(i));
+                        break;
+
+                    case "stat_minhit":
+                        source.SetStat(StatType.MinHit, dataReader.GetInt16(i));
+                        break;
+
+                    case "stat_str":
+                        source.SetStat(StatType.Str, dataReader.GetInt16(i));
+                        break;
+                }
+            }
+        }
+    }
 }

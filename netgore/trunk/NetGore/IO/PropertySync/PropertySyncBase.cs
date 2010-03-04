@@ -44,14 +44,6 @@ namespace NetGore.IO.PropertySync
         }
 
         /// <summary>
-        /// When overridden in the derived class, reads a value with the specified name from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="name">Name of the value.</param>
-        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
-        /// <returns>Value read from the <see cref="IValueReader"/>.</returns>
-        protected abstract T Read(string name, IValueReader reader);
-
-        /// <summary>
         /// Exposes the Read method internally.
         /// </summary>
         /// <param name="name">Name of the value.</param>
@@ -61,6 +53,25 @@ namespace NetGore.IO.PropertySync
         {
             return Read(name, reader);
         }
+
+        /// <summary>
+        /// Exposes the Write method internally.
+        /// </summary>
+        /// <param name="name">Name of the value.</param>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="value">Value to write.</param>
+        protected internal void InternalWrite(string name, IValueWriter writer, T value)
+        {
+            Write(name, writer, value);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reads a value with the specified name from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="name">Name of the value.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <returns>Value read from the <see cref="IValueReader"/>.</returns>
+        protected abstract T Read(string name, IValueReader reader);
 
         void SetValue(object binder, T value)
         {
@@ -74,17 +85,6 @@ namespace NetGore.IO.PropertySync
         /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
         /// <param name="value">Value to write.</param>
         protected abstract void Write(string name, IValueWriter writer, T value);
-
-        /// <summary>
-        /// Exposes the Write method internally.
-        /// </summary>
-        /// <param name="name">Name of the value.</param>
-        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
-        /// <param name="value">Value to write.</param>
-        protected internal void InternalWrite(string name, IValueWriter writer, T value)
-        {
-            Write(name, writer, value);
-        }
 
         #region IPropertySync Members
 

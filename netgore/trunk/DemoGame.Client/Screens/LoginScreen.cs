@@ -30,34 +30,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the KeyPressed event of the _cNameText control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
-        void cNameText_KeyDown(object sender, KeyboardEventArgs e)
-        {
-            if (e.KeyboardState.IsKeyDown(Keys.Tab))
-            {
-                _cPasswordText.SetFocus();
-                _cPasswordText.CursorLinePosition = _cPasswordText.Text.Length;
-            }
-        }
-
-        /// <summary>
-        /// Handles the KeyPressed event of the _cPasswordText control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
-        void cPasswordText_KeyDown(object sender, KeyboardEventArgs e)
-        {
-            if (e.KeyboardState.IsKeyDown(Keys.Tab))
-            {
-                _cNameText.SetFocus();
-                _cNameText.CursorLinePosition = _cNameText.Text.Length;
-            }
-        }
-
-        /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
         /// active screen. Objects in here often will want to be destroyed on Deactivate().
         /// </summary>
@@ -83,6 +55,34 @@ namespace DemoGame.Client
             _sockets.PacketHandler.ReceivedLoginSuccessful += sockets_ReceivedLoginSuccessful;
 
             base.Activate();
+        }
+
+        /// <summary>
+        /// Handles the KeyPressed event of the _cNameText control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        void cNameText_KeyDown(object sender, KeyboardEventArgs e)
+        {
+            if (e.KeyboardState.IsKeyDown(Keys.Tab))
+            {
+                _cPasswordText.SetFocus();
+                _cPasswordText.CursorLinePosition = _cPasswordText.Text.Length;
+            }
+        }
+
+        /// <summary>
+        /// Handles the KeyPressed event of the _cPasswordText control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        void cPasswordText_KeyDown(object sender, KeyboardEventArgs e)
+        {
+            if (e.KeyboardState.IsKeyDown(Keys.Tab))
+            {
+                _cNameText.SetFocus();
+                _cNameText.CursorLinePosition = _cNameText.Text.Length;
+            }
         }
 
         /// <summary>

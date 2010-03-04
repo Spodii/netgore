@@ -17,6 +17,11 @@ namespace NetGore.Network
     public interface IIPSocket : IDisposable
     {
         /// <summary>
+        /// Notifies listeners when this <see cref="IIPSocket"/> has been disposed.
+        /// </summary>
+        event IIPSocketEventHandler Disposed;
+
+        /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
         /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
         /// </summary>
@@ -63,11 +68,6 @@ namespace NetGore.Network
         /// </summary>
         /// <returns>Queue of received data if any, or null if no queued data.</returns>
         byte[][] GetRecvData();
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="IIPSocket"/> has been disposed.
-        /// </summary>
-        event IIPSocketEventHandler Disposed;
 
         /// <summary>
         /// Sends data over a reliable stream.

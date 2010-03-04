@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -11,28 +10,17 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteCharacterQuestStatusKillsQuery : DbQueryNonReader<DeleteCharacterQuestStatusKillsQuery.QueryArgs>
     {
-        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID",
-            CharacterQuestStatusKillsTable.TableName);
+        static readonly string _queryStr = string.Format(
+            "DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID", CharacterQuestStatusKillsTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterQuestStatusKillsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public DeleteCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public DeleteCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_id", "quest_id");
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
-        /// If null, no parameters will be used.</returns>
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return CreateParameters("@charID", "@questID");
         }
 
         /// <summary>
@@ -44,6 +32,16 @@ namespace DemoGame.Server.Queries
         public int Execute(CharacterID characterID, QuestID questID)
         {
             return Execute(new QueryArgs(characterID, questID));
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.</returns>
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters("@charID", "@questID");
         }
 
         /// <summary>

@@ -471,9 +471,9 @@ namespace NetGore.Graphics
             Rectangle Background = new Rectangle((int)position.X, (int)position.Y, (int)_sprite.Size.X, (int)_sprite.Size.Y);
 
             if (camera.GetViewArea().Intersects(Background))
-            { return true; }
+                return true;
             else
-            { return false; }
+                return false;
         }
 
         #endregion

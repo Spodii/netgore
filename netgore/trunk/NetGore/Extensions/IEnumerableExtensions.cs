@@ -217,6 +217,60 @@ namespace NetGore
         /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
         /// <param name="src">The IEnumerable containing the elements to compare.</param>
         /// <param name="func">The Func used to find the value to compare on.</param>
+        /// <param name="throwOnEmpty">If true, an <see cref="ArgumentException"/> will be thrown if the
+        /// <paramref name="src"/> is empty.</param>
+        /// <returns>
+        /// The element in the <paramref name="src"/> with the greatest value as defined
+        /// by <paramref name="func"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException"><paramref name="src"/> is null or empty and <paramref name="throwOnEmpty"/>
+        /// is true..</exception>
+        static T MaxElement<T, TCompare>(IEnumerable<T> src, Func<T, TCompare> func, bool throwOnEmpty)
+            where TCompare : IComparable<TCompare>
+        {
+            if (src == null)
+                throw new ArgumentException("The source IEnumerable cannot be null.", "src");
+
+            // Turn the elements into an array to reduce some overhead (since we have to digest anyways)
+            var elements = src.ToArray();
+
+            // Check if the elements array is empty
+            if (elements.Length == 0)
+            {
+                if (throwOnEmpty)
+                    throw new ArgumentException("The source IEnumerable cannot be empty.", "src");
+                else
+                    return default(T);
+            }
+
+            // Set the initial max element to the first element
+            T maxItem = elements[0];
+            TCompare maxValue = func(maxItem);
+
+            // Compare against all the remaining values
+            for (int i = 1; i < elements.Length; i++)
+            {
+                // Get the "value" of the element
+                TCompare temp = func(elements[i]);
+
+                // Set the new min element if the value is greater
+                if (temp.CompareTo(maxValue) > 0)
+                {
+                    maxValue = temp;
+                    maxItem = elements[i];
+                }
+            }
+
+            return maxItem;
+        }
+
+        /// <summary>
+        /// Returns the element in the given IEnumerable with the greatest value.
+        /// </summary>
+        /// <typeparam name="T">The Type of collection element.</typeparam>
+        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
+        /// <param name="src">The IEnumerable containing the elements to compare.</param>
+        /// <param name="func">The Func used to find the value to compare on.</param>
         /// <returns>The element in the <paramref name="src"/> with the greatest value as defined
         /// by <paramref name="func"/>.</returns>
         public static T MaxElementOrDefault<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
@@ -293,60 +347,6 @@ namespace NetGore
             }
 
             return minItem;
-        }
-
-        /// <summary>
-        /// Returns the element in the given IEnumerable with the greatest value.
-        /// </summary>
-        /// <typeparam name="T">The Type of collection element.</typeparam>
-        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
-        /// <param name="src">The IEnumerable containing the elements to compare.</param>
-        /// <param name="func">The Func used to find the value to compare on.</param>
-        /// <param name="throwOnEmpty">If true, an <see cref="ArgumentException"/> will be thrown if the
-        /// <paramref name="src"/> is empty.</param>
-        /// <returns>
-        /// The element in the <paramref name="src"/> with the greatest value as defined
-        /// by <paramref name="func"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException"><paramref name="src"/> is null or empty and <paramref name="throwOnEmpty"/>
-        /// is true..</exception>
-        static T MaxElement<T, TCompare>(IEnumerable<T> src, Func<T, TCompare> func, bool throwOnEmpty)
-            where TCompare : IComparable<TCompare>
-        {
-            if (src == null)
-                throw new ArgumentException("The source IEnumerable cannot be null.", "src");
-
-            // Turn the elements into an array to reduce some overhead (since we have to digest anyways)
-            var elements = src.ToArray();
-
-            // Check if the elements array is empty
-            if (elements.Length == 0)
-            {
-                if (throwOnEmpty)
-                    throw new ArgumentException("The source IEnumerable cannot be empty.", "src");
-                else
-                    return default(T);
-            }
-
-            // Set the initial max element to the first element
-            T maxItem = elements[0];
-            TCompare maxValue = func(maxItem);
-
-            // Compare against all the remaining values
-            for (int i = 1; i < elements.Length; i++)
-            {
-                // Get the "value" of the element
-                TCompare temp = func(elements[i]);
-
-                // Set the new min element if the value is greater
-                if (temp.CompareTo(maxValue) > 0)
-                {
-                    maxValue = temp;
-                    maxItem = elements[i];
-                }
-            }
-
-            return maxItem;
         }
 
         /// <summary>

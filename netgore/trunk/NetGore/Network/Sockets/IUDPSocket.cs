@@ -10,6 +10,16 @@ namespace NetGore.Network
     public interface IUDPSocket : IDisposable
     {
         /// <summary>
+        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
+        /// </summary>
+        event UDPSocketEventHandler Disposed;
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        bool IsDisposed { get; }
+
+        /// <summary>
         /// Gets the maximum size of the data that can be sent in a single send.
         /// </summary>
         int MaxSendSize { get; }
@@ -26,12 +36,6 @@ namespace NetGore.Network
         /// <param name="port">Port to bind to.</param>
         /// <returns>Port that the <see cref="IUDPSocket"/> binded to.</returns>
         int Bind(int port);
-
-        /// <summary>
-        /// Gets the queued data received by this <see cref="IUDPSocket"/>.
-        /// </summary>
-        /// <returns>The queued data received by this <see cref="IUDPSocket"/>, or null if empty.</returns>
-        AddressedPacket[] GetRecvData();
 
         /// <summary>
         /// Connects the <see cref="IUDPSocket"/> to the specified host.
@@ -54,22 +58,18 @@ namespace NetGore.Network
         void Connect(string ip, int port);
 
         /// <summary>
-        /// Notifies listeners when the <see cref="ITCPSocket"/> has been disposed.
-        /// </summary>
-        event UDPSocketEventHandler Disposed;
-
-        /// <summary>
-        /// Gets if this object has been disposed.
-        /// </summary>
-        bool IsDisposed { get; }
-
-        /// <summary>
         /// Connects the <see cref="IUDPSocket"/> to the specified host.
         /// </summary>
         /// <param name="ip">The IP address of the host to connect to.</param>
         /// <param name="port">The port of the host to connect to.</param>
         /// <param name="data">The initial data to send.</param>
         void Connect(string ip, int port, byte[] data);
+
+        /// <summary>
+        /// Gets the queued data received by this <see cref="IUDPSocket"/>.
+        /// </summary>
+        /// <returns>The queued data received by this <see cref="IUDPSocket"/>, or null if empty.</returns>
+        AddressedPacket[] GetRecvData();
 
         /// <summary>
         /// Sends data to the specified <paramref name="endPoint"/>.

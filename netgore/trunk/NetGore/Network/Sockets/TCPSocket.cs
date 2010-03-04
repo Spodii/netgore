@@ -168,7 +168,10 @@ namespace NetGore.Network
 #endif
 
             if (log.IsDebugEnabled)
-                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", dataToSend.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(dataToSend, 0, dataToSend.Length));
+            {
+                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", dataToSend.Length, Address,
+                                Environment.NewLine + LogHelper.GetBufferDump(dataToSend, 0, dataToSend.Length));
+            }
 
             if (_socket == null)
             {
@@ -492,19 +495,19 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets if this object has been disposed.
-        /// </summary>
-        public bool IsDisposed
-        {
-            get { return _disposed; }
-        }
-
-        /// <summary>
         /// Gets if the socket is currently connected
         /// </summary>
         public bool IsConnected
         {
             get { return (_socket != null && _socket.Connected); }
+        }
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
         }
 
         /// <summary>

@@ -16,57 +16,6 @@ namespace NetGore.Tests.NetGore
         #region Unit tests
 
         [Test]
-        public void NonNullableToNullableValidTest()
-        {
-            var t = TypeHelper.NonNullableToNullable(typeof(int));
-            Assert.AreEqual(typeof(int?), t);
-        }
-
-        [Test]
-        public void NonNullableToNullableValidAlreadyNullableTest()
-        {
-            var t = TypeHelper.NonNullableToNullable(typeof(int?));
-            Assert.AreEqual(typeof(int?), t);
-        }
-
-        [Test]
-        public void NullableToNonNullableValidTest()
-        {
-            var t = TypeHelper.NullableToNonNullable(typeof(int?));
-            Assert.AreEqual(typeof(int), t);
-        }
-
-        [Test]
-        public void NullableToNonNullableInvalidTest()
-        {
-            Assert.Throws<ArgumentException>(() => TypeHelper.NullableToNonNullable(typeof(int)));
-        }
-
-        [Test]
-        public void NullableToNonNullableInvalid2Test()
-        {
-            Assert.Throws<ArgumentException>(() => TypeHelper.NullableToNonNullable(typeof(object)));
-        }
-
-        [Test]
-        public void NullableToNonNullableInvalid3Test()
-        {
-            Assert.Throws<ArgumentException>(() => TypeHelper.NullableToNonNullable(typeof(string)));
-        }
-
-        [Test]
-        public void NonNullableToNullableInvalidTest()
-        {
-            Assert.Throws<ArgumentException>(() => TypeHelper.NonNullableToNullable(typeof(object)));
-        }
-
-        [Test]
-        public void NonNullableToNullableInvalid2Test()
-        {
-            Assert.Throws<ArgumentException>(() => TypeHelper.NonNullableToNullable(typeof(string)));
-        }
-
-        [Test]
         public void IsClassTypeTreePublicTest()
         {
             var a = typeof(A);
@@ -90,6 +39,57 @@ namespace NetGore.Tests.NetGore
             Assert.IsFalse(TypeHelper.IsClassTypeTreePublic(bba));
 
             Assert.IsTrue(TypeHelper.IsClassTypeTreePublic(typeof(TypeHelperTests)));
+        }
+
+        [Test]
+        public void NonNullableToNullableInvalid2Test()
+        {
+            Assert.Throws<ArgumentException>(() => TypeHelper.NonNullableToNullable(typeof(string)));
+        }
+
+        [Test]
+        public void NonNullableToNullableInvalidTest()
+        {
+            Assert.Throws<ArgumentException>(() => TypeHelper.NonNullableToNullable(typeof(object)));
+        }
+
+        [Test]
+        public void NonNullableToNullableValidAlreadyNullableTest()
+        {
+            var t = TypeHelper.NonNullableToNullable(typeof(int?));
+            Assert.AreEqual(typeof(int?), t);
+        }
+
+        [Test]
+        public void NonNullableToNullableValidTest()
+        {
+            var t = TypeHelper.NonNullableToNullable(typeof(int));
+            Assert.AreEqual(typeof(int?), t);
+        }
+
+        [Test]
+        public void NullableToNonNullableInvalid2Test()
+        {
+            Assert.Throws<ArgumentException>(() => TypeHelper.NullableToNonNullable(typeof(object)));
+        }
+
+        [Test]
+        public void NullableToNonNullableInvalid3Test()
+        {
+            Assert.Throws<ArgumentException>(() => TypeHelper.NullableToNonNullable(typeof(string)));
+        }
+
+        [Test]
+        public void NullableToNonNullableInvalidTest()
+        {
+            Assert.Throws<ArgumentException>(() => TypeHelper.NullableToNonNullable(typeof(int)));
+        }
+
+        [Test]
+        public void NullableToNonNullableValidTest()
+        {
+            var t = TypeHelper.NullableToNonNullable(typeof(int?));
+            Assert.AreEqual(typeof(int), t);
         }
 
         #endregion
