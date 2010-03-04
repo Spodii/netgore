@@ -1237,6 +1237,9 @@
     </BackgroundImages>
     <Lighting>
       <Ambient>255,255,255,255</Ambient>
+      <Lights>
+        <Count>0</Count>
+      </Lights>
     </Lighting>
     <ParticleEffects>
       <Count>0</Count>

@@ -184,7 +184,7 @@ namespace DemoGame.Client
                 TargetCharacter = null;
         }
 
-        void World_MapChanged(World world, Map e)
+        void World_MapChanged(World world, Map oldMap, Map newMap)
         {
             MouseOverCharacter = null;
             TargetCharacter = null;

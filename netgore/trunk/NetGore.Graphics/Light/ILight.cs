@@ -1,13 +1,14 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
     /// <summary>
     /// Interface that describes a single light.
     /// </summary>
-    public interface ILight : ISpatial
+    public interface ILight : ISpatial, IPersistable
     {
         /// <summary>
         /// Gets or sets the color of the light. The alpha value has no affect and will always be set to 255.

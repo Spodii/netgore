@@ -70,7 +70,8 @@ namespace NetGore.Graphics
             if (item.Sprite == null)
                 item.Sprite = DefaultSprite;
 
-            base.Add(item);
+            if (!Contains(item))
+                base.Add(item);
         }
 
         /// <summary>

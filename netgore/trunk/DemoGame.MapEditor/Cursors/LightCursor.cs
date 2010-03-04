@@ -48,8 +48,7 @@ namespace DemoGame.MapEditor
         {
             var cursorPos = Container.CursorPos;
 
-            var mapLights = Container.DrawingManager.LightManager.Where(x => x.Tag == Container.Map);
-            var closestLight = mapLights.MinElementOrDefault(x => cursorPos.QuickDistance(x.Center));
+            var closestLight = Container.Map.Lights.MinElementOrDefault(x => cursorPos.QuickDistance(x.Center));
             if (closestLight == null)
                 return null;
 

@@ -74,6 +74,7 @@ namespace DemoGame.MapEditor
 
             var light = new Light { Tag = Container.Map, Position = Container.CursorPos };
             Container.DrawingManager.LightManager.Add(light);
+            Container.Map.AddLight(light);
         }
     }
 }

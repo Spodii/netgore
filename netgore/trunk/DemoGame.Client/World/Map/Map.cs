@@ -18,6 +18,7 @@ namespace DemoGame.Client
         const string _bgImagesNodeName = "BackgroundImages";
         const string _mapGrhsNodeName = "MapGrhs";
         const string _lightingNodeName = "Lighting";
+        const string _lightsNodeName = "Lights";
         const string _particleEffectsNodeName = "ParticleEffects";
         const string _usedIndiciesNodeName = "UsedIndicies";
 
@@ -29,6 +30,27 @@ namespace DemoGame.Client
         readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
 
         readonly DrawableSorter _drawableSorter = new DrawableSorter();
+
+        /// <summary>
+        /// Adds a light to the map as long as it does not already exist in the map's light collection.
+        /// </summary>
+        /// <param name="light">The <see cref="ILight"/> to add.</param>
+        public void AddLight(ILight light)
+        {
+            if (!_lights.Contains(light))
+                _lights.Add(light);
+        }
+
+        /// <summary>
+        /// Removes a light from the map.
+        /// </summary>
+        /// <param name="light">The <see cref="ILight"/> to add.</param>
+        /// <returns>True if the <paramref name="light"/> was removed; false if the <paramref name="light"/> was not
+        /// in the map's light collection and thus not removed.</returns>
+        public bool RemoveLight(ILight light)
+        {
+            return _lights.Remove(light);
+        }
 
         /// <summary>
         /// Graphics device used when building the atlas
@@ -74,6 +96,13 @@ namespace DemoGame.Client
             get { return _ambientLight; }
             set { _ambientLight = value; }
         }
+
+        readonly List<ILight> _lights = new List<ILight>();
+
+        /// <summary>
+        /// Gets the lights on the map.
+        /// </summary>
+        public IEnumerable<ILight> Lights { get { return _lights; } }
 
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.
@@ -244,13 +273,6 @@ namespace DemoGame.Client
             }
         }
 
-        void LoadLighting(IValueReader reader)
-        {
-            reader = reader.ReadNode(_lightingNodeName);
-
-            AmbientLight = reader.ReadColor("Ambient");
-        }
-
         void LoadGrhs(IValueReader reader)
         {
             reader = reader.ReadNode(_mapGrhsNodeName);
@@ -339,11 +361,27 @@ namespace DemoGame.Client
             w.WriteEndNode(_mapGrhsNodeName);
         }
 
+        void LoadLighting(IValueReader reader)
+        {
+            reader = reader.ReadNode(_lightingNodeName);
+
+            AmbientLight = reader.ReadColor("Ambient");
+
+            _lights.Clear();
+
+            var loadedLights = reader.ReadManyNodes(_lightsNodeName, x => new Light(x));
+            _lights.AddRange(loadedLights);
+
+            foreach (var light in loadedLights)
+                light.Tag = this;
+        }
+
         void SaveLighting(IValueWriter w)
         {
             w.WriteStartNode(_lightingNodeName);
             {
                 w.Write("Ambient", AmbientLight);
+                w.WriteManyNodes(_lightsNodeName, _lights.ToArray(), (wr, l) => l.WriteState(wr));
             }
             w.WriteEndNode(_lightingNodeName);
         }

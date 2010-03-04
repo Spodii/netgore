@@ -575,29 +575,40 @@ namespace DemoGame.Client
             base.Update(gameTime);
         }
 
-        void World_MapChanged(World world, Map map)
+        void World_MapChanged(World world, Map oldMap, Map newMap)
         {
             // Stop all sounds
             SoundManager.Stop();
 
             // Set the new music
-            if (string.IsNullOrEmpty(map.Music))
+            if (string.IsNullOrEmpty(newMap.Music))
             {
                 PlayMusic = false;
                 return;
             }
-            else if (!MusicManager.TryPlay(map.Music))
+            else if (!MusicManager.TryPlay(newMap.Music))
             {
-                IMusic musicTrack = MusicManager.GetItem(map.Music);
+                IMusic musicTrack = MusicManager.GetItem(newMap.Music);
                 if (musicTrack == null)
                 {
                     const string errmsg = "Failed to play map music track: `{0}`";
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, map.Music);
-                    Debug.Fail(string.Format(errmsg, map.Music));
+                        log.ErrorFormat(errmsg, newMap.Music);
+                    Debug.Fail(string.Format(errmsg, newMap.Music));
                 }
                 ScreenMusic = musicTrack;
             }
+
+            // Remove the lights from the old map
+            if (oldMap != null)
+            {
+                foreach (var light in oldMap.Lights)
+                    DrawingManager.LightManager.Remove(light);
+            }
+
+            // Add the lights for the new map
+            foreach (var light in newMap.Lights)
+                DrawingManager.LightManager.Add(light);
         }
 
         #region IGetTime Members

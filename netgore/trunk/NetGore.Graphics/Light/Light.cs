@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.IO;
+using NetGore;
 
 namespace NetGore.Graphics
 {
@@ -21,6 +23,15 @@ namespace NetGore.Graphics
         public Light()
         {
             IsEnabled = true;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Light"/> class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the initial light state from.</param>
+        public Light(IValueReader reader)
+        {
+            ReadState(reader);
         }
 
         /// <summary>
@@ -220,5 +231,49 @@ namespace NetGore.Graphics
         }
 
         #endregion
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            PositionProvider = null;
+            Tag = null;
+
+            Position = reader.ReadVector2(_positionValueKey);
+            Size = reader.ReadVector2(_sizeValueKey);
+            Color = reader.ReadColor(_colorValueKey);
+            Rotation = reader.ReadFloat(_rotationValueKey);
+            IsEnabled = reader.ReadBool(_isEnabledValueKey);
+
+            var grhIndex = reader.ReadGrhIndex(_spriteValueKey);
+            if (grhIndex.IsInvalid)
+                Sprite = new Grh(grhIndex, AnimType.Loop, 0);
+            else
+                Sprite = null;
+        }
+
+        const string _colorValueKey = "Color";
+        const string _isEnabledValueKey = "IsEnabled";
+        const string _positionValueKey = "Position";
+        const string _rotationValueKey = "Rotation";
+        const string _sizeValueKey = "Size";
+        const string _spriteValueKey = "Sprite";
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            writer.Write(_positionValueKey, Position);
+            writer.Write(_sizeValueKey, Size);
+            writer.Write(_colorValueKey, Color);
+            writer.Write(_rotationValueKey, Rotation);
+            writer.Write(_isEnabledValueKey, IsEnabled);
+            writer.Write(_spriteValueKey, Sprite != null ? Sprite.GrhData.GrhIndex : GrhIndex.Invalid);
+        }
     }
 }

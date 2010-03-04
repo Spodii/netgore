@@ -179,6 +179,33 @@
     </BackgroundImages>
     <Lighting>
       <Ambient>150,150,150,255</Ambient>
+      <Lights>
+        <Count>3</Count>
+        <Item0>
+          <Position>405,107</Position>
+          <Size>128,128</Size>
+          <Color>255,255,255,255</Color>
+          <Rotation>0</Rotation>
+          <IsEnabled>True</IsEnabled>
+          <Sprite>176</Sprite>
+        </Item0>
+        <Item1>
+          <Position>815,149</Position>
+          <Size>128,128</Size>
+          <Color>255,255,255,255</Color>
+          <Rotation>0</Rotation>
+          <IsEnabled>True</IsEnabled>
+          <Sprite>176</Sprite>
+        </Item1>
+        <Item2>
+          <Position>846,703</Position>
+          <Size>128,128</Size>
+          <Color>255,255,255,255</Color>
+          <Rotation>0</Rotation>
+          <IsEnabled>True</IsEnabled>
+          <Sprite>176</Sprite>
+        </Item2>
+      </Lights>
     </Lighting>
     <ParticleEffects>
       <Count>1</Count>
