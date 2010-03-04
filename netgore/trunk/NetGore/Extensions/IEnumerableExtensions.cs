@@ -207,20 +207,138 @@ namespace NetGore
         public static T MaxElement<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
             where TCompare : IComparable<TCompare>
         {
+            return MaxElement(src, func, true);
+        }
+
+        /// <summary>
+        /// Returns the element in the given IEnumerable with the greatest value.
+        /// </summary>
+        /// <typeparam name="T">The Type of collection element.</typeparam>
+        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
+        /// <param name="src">The IEnumerable containing the elements to compare.</param>
+        /// <param name="func">The Func used to find the value to compare on.</param>
+        /// <returns>The element in the <paramref name="src"/> with the greatest value as defined
+        /// by <paramref name="func"/>.</returns>
+        public static T MaxElementOrDefault<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
+            where TCompare : IComparable<TCompare>
+        {
+            return MaxElement(src, func, false);
+        }
+
+        /// <summary>
+        /// Returns the element in the given IEnumerable with the least value.
+        /// </summary>
+        /// <typeparam name="T">The Type of collection element.</typeparam>
+        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
+        /// <param name="src">The IEnumerable containing the elements to compare.</param>
+        /// <param name="func">The Func used to find the value to compare on.</param>
+        /// <returns>The element in the <paramref name="src"/> with the least value as defined
+        /// by <paramref name="func"/>.</returns>
+        /// <exception cref="ArgumentException"><paramref name="src"/> is null or empty.</exception>
+        public static T MinElement<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
+            where TCompare : IComparable<TCompare>
+        {
+            return MinElement(src, func, true);
+        }
+
+        /// <summary>
+        /// Returns the element in the given IEnumerable with the least value.
+        /// </summary>
+        /// <typeparam name="T">The Type of collection element.</typeparam>
+        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
+        /// <param name="src">The IEnumerable containing the elements to compare.</param>
+        /// <param name="func">The Func used to find the value to compare on.</param>
+        /// <param name="throwOnEmpty">If true, an <see cref="ArgumentException"/> will be thrown if the
+        /// <paramref name="src"/> is empty.</param>
+        /// <returns>
+        /// The element in the <paramref name="src"/> with the least value as defined
+        /// by <paramref name="func"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException"><paramref name="src"/> is null or empty and <paramref name="throwOnEmpty"/>
+        /// is true..</exception>
+        static T MinElement<T, TCompare>(IEnumerable<T> src, Func<T, TCompare> func, bool throwOnEmpty)
+            where TCompare : IComparable<TCompare>
+        {
             if (src == null)
                 throw new ArgumentException("The source IEnumerable cannot be null.", "src");
 
+            // Turn the elements into an array to reduce some overhead (since we have to digest anyways)
             var elements = src.ToArray();
-            if (elements.Length == 0)
-                throw new ArgumentException("The source IEnumerable cannot be empty.", "src");
 
+            // Check if the elements array is empty
+            if (elements.Length == 0)
+            {
+                if (throwOnEmpty)
+                    throw new ArgumentException("The source IEnumerable cannot be empty.", "src");
+                else
+                    return default(T);
+            }
+
+            // Set the initial min element to the first element
+            T minItem = elements[0];
+            TCompare minValue = func(minItem);
+
+            // Compare against all the remaining values
+            for (int i = 1; i < elements.Length; i++)
+            {
+                // Get the "value" of the element
+                TCompare temp = func(elements[i]);
+
+                // Set the new min element if the value is less
+                if (temp.CompareTo(minValue) < 0)
+                {
+                    minValue = temp;
+                    minItem = elements[i];
+                }
+            }
+
+            return minItem;
+        }
+
+        /// <summary>
+        /// Returns the element in the given IEnumerable with the greatest value.
+        /// </summary>
+        /// <typeparam name="T">The Type of collection element.</typeparam>
+        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
+        /// <param name="src">The IEnumerable containing the elements to compare.</param>
+        /// <param name="func">The Func used to find the value to compare on.</param>
+        /// <param name="throwOnEmpty">If true, an <see cref="ArgumentException"/> will be thrown if the
+        /// <paramref name="src"/> is empty.</param>
+        /// <returns>
+        /// The element in the <paramref name="src"/> with the greatest value as defined
+        /// by <paramref name="func"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException"><paramref name="src"/> is null or empty and <paramref name="throwOnEmpty"/>
+        /// is true..</exception>
+        static T MaxElement<T, TCompare>(IEnumerable<T> src, Func<T, TCompare> func, bool throwOnEmpty)
+            where TCompare : IComparable<TCompare>
+        {
+            if (src == null)
+                throw new ArgumentException("The source IEnumerable cannot be null.", "src");
+
+            // Turn the elements into an array to reduce some overhead (since we have to digest anyways)
+            var elements = src.ToArray();
+
+            // Check if the elements array is empty
+            if (elements.Length == 0)
+            {
+                if (throwOnEmpty)
+                    throw new ArgumentException("The source IEnumerable cannot be empty.", "src");
+                else
+                    return default(T);
+            }
+
+            // Set the initial max element to the first element
             T maxItem = elements[0];
             TCompare maxValue = func(maxItem);
 
+            // Compare against all the remaining values
             for (int i = 1; i < elements.Length; i++)
             {
+                // Get the "value" of the element
                 TCompare temp = func(elements[i]);
 
+                // Set the new min element if the value is greater
                 if (temp.CompareTo(maxValue) > 0)
                 {
                     maxValue = temp;
@@ -241,31 +359,10 @@ namespace NetGore
         /// <returns>The element in the <paramref name="src"/> with the least value as defined
         /// by <paramref name="func"/>.</returns>
         /// <exception cref="ArgumentException"><paramref name="src"/> is null or empty.</exception>
-        public static T MinElement<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
+        public static T MinElementOrDefault<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
             where TCompare : IComparable<TCompare>
         {
-            if (src == null)
-                throw new ArgumentException("The source IEnumerable cannot be null.", "src");
-
-            var elements = src.ToArray();
-            if (elements.Length == 0)
-                throw new ArgumentException("The source IEnumerable cannot be empty.", "src");
-
-            T maxItem = elements[0];
-            TCompare maxValue = func(maxItem);
-
-            for (int i = 1; i < elements.Length; i++)
-            {
-                TCompare temp = func(elements[i]);
-
-                if (temp.CompareTo(maxValue) < 0)
-                {
-                    maxValue = temp;
-                    maxItem = elements[i];
-                }
-            }
-
-            return maxItem;
+            return MinElement(src, func, false);
         }
 
         /// <summary>

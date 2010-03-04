@@ -83,6 +83,7 @@ namespace NetGore.Tests.NetGore
         {
             string[] s = new string[0];
             Assert.Throws<ArgumentException>(() => s.MaxElement(x => x.Length));
+            Assert.IsNull(s.MaxElementOrDefault(x => x.Length));
         }
 
         [Test]
@@ -90,6 +91,7 @@ namespace NetGore.Tests.NetGore
         {
             string[] s = new string[0];
             Assert.Throws<ArgumentException>(() => s.MinElement(x => x.Length));
+            Assert.IsNull(s.MinElementOrDefault(x => x.Length));
         }
 
         [Test]
