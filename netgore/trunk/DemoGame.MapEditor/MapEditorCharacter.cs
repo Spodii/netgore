@@ -47,7 +47,7 @@ namespace DemoGame.MapEditor
         /// Perform pre-collision velocity and position updating.
         /// </summary>
         /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
-        public override void UpdateVelocity(float deltaTime)
+        public override void UpdateVelocity(int deltaTime)
         {
             SetVelocityRaw(Vector2.Zero);
         }

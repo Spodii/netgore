@@ -263,7 +263,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
+        protected override void HandleUpdate(IMap imap, int deltaTime)
         {
             // Check for spawning if dead
             if (!IsAlive)

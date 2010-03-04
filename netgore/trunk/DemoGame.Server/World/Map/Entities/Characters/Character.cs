@@ -1247,7 +1247,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected override void HandleUpdate(IMap imap, float deltaTime)
+        protected override void HandleUpdate(IMap imap, int deltaTime)
         {
             Debug.Assert(imap == Map, "Character.Update()'s imap is, for whatever reason, not equal to the set Map.");
 

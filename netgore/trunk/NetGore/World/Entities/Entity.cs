@@ -262,7 +262,7 @@ namespace NetGore
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
-        protected virtual void HandleUpdate(IMap imap, float deltaTime)
+        protected virtual void HandleUpdate(IMap imap, int deltaTime)
         {
             // If moving, perform collision detection
             if (Velocity != Vector2.Zero)
@@ -405,7 +405,7 @@ namespace NetGore
         /// Perform pre-collision velocity and position updating.
         /// </summary>
         /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
-        public virtual void UpdateVelocity(float deltaTime)
+        public virtual void UpdateVelocity(int deltaTime)
         {
             _lastPosition = Position;
 

@@ -25,6 +25,9 @@ namespace DemoGame.Client
         bool _hasChatDialog;
         bool _hasShop;
         int _lastDrawnTime;
+        Color _color = Color.White;
+        bool _isVisible = true;
+
 #if !TOPDOWN
         CharacterState _lastState = CharacterState.Idle;
 #endif
@@ -111,7 +114,7 @@ namespace DemoGame.Client
             if (font != null && !string.IsNullOrEmpty(Name))
             {
                 Vector2 nameSize = GetNameSize();
-                Vector2 namePos = DrawPosition + new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y);
+                Vector2 namePos = DrawPosition + (new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y)).Round();
                 sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
             }
         }
@@ -204,6 +207,31 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Handles updating this <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+        /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+        protected override void HandleUpdate(IMap imap, int deltaTime)
+        {
+            base.HandleUpdate(imap, deltaTime);
+
+            // Get the delta time
+            int currentTime = GetTime();
+            int lastDrawnDelta = Math.Min(currentTime - _lastDrawnTime, GameData.MaxDrawDeltaTime);
+            _lastDrawnTime = currentTime;
+
+            // Update the sprite
+            _characterSprite.Update(currentTime);
+
+#if !TOPDOWN
+            UpdateAnimation();
+#endif
+
+            // Update the interpolation
+            _interpolator.Update(this, lastDrawnDelta);
+        }
+
+        /// <summary>
         /// Gets or sets the IDs of the quests provided by this <see cref="Character"/>.
         /// </summary>
         public IEnumerable<QuestID> ProvidedQuests
@@ -213,9 +241,9 @@ namespace DemoGame.Client
         }
 
 #if !TOPDOWN
-        /// <summary>
-        /// Updates the character's sprites.
-        /// </summary>
+    /// <summary>
+    /// Updates the character's sprites.
+    /// </summary>
         void UpdateAnimation()
         {
             // Only update if the state has changed
@@ -262,8 +290,6 @@ namespace DemoGame.Client
             get { return 0; }
         }
 
-        Color _color = Color.White;
-
         /// <summary>
         /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
         /// value will be equal to white (ARGB: 255,255,255,255).
@@ -287,8 +313,6 @@ namespace DemoGame.Client
         /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
         /// </summary>
         public event IDrawableEventHandler ColorChanged;
-
-        bool _isVisible = true;
 
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
@@ -321,19 +345,6 @@ namespace DemoGame.Client
         /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(ISpriteBatch sb)
         {
-            // Get the delta time
-            int currentTime = GetTime();
-            int deltaTime = Math.Min(currentTime - _lastDrawnTime, GameData.MaxDrawDeltaTime);
-            _lastDrawnTime = currentTime;
-
-            // Update the drawable stuff
-            _characterSprite.Update(currentTime);
-            _interpolator.Update(this, deltaTime);
-
-#if !TOPDOWN
-            UpdateAnimation();
-#endif
-
             if (BeforeDraw != null)
                 BeforeDraw(this, sb);
 
