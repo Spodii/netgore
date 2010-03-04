@@ -62,7 +62,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when the map has changed.
         /// </summary>
-        public event WorldEventHandler<Map> MapChanged;
+        public event WorldEventHandler<Map, Map> MapChanged;
 
         /// <summary>
         /// Gets the camera used for the active view.
@@ -92,6 +92,8 @@ namespace DemoGame.Client
                 if (Map == value)
                     return;
 
+                var oldMap = Map;
+
                 // Invalidate the user's character index until it is reset
                 IsUserCharIndexSet = false;
 
@@ -107,7 +109,7 @@ namespace DemoGame.Client
 
                 // Add the map event hooks to the new map
                 if (MapChanged != null)
-                    MapChanged(this, Map);
+                    MapChanged(this, oldMap, Map);
             }
         }
 

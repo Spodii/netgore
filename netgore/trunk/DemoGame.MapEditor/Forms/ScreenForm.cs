@@ -1015,6 +1015,20 @@ namespace DemoGame.MapEditor
                 c.IMap = newMap;
             }
 
+            // Remove all lights for the old map from the light manager
+            if (oldMap != newMap)
+            {
+                if (oldMap != null)
+                {
+                    foreach (var light in oldMap.Lights)
+                        DrawingManager.LightManager.Remove(light);
+                }
+
+                // Add the lights from the new map
+                foreach (var light in newMap.Lights)
+                    DrawingManager.LightManager.Add(light);
+            }
+
             // Handle the change on some controls manually
             txtMapName.Text = newMap.Name ?? string.Empty;
             txtMusic.Text = newMap.Music ?? string.Empty;
