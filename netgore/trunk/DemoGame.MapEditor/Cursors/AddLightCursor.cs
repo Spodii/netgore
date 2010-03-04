@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -66,24 +67,13 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
         /// <param name="e">Mouse events.</param>
-        public override void MouseDown(System.Windows.Forms.MouseEventArgs e)
+        public override void MouseDown(MouseEventArgs e)
         {
-            if (e.Button != System.Windows.Forms.MouseButtons.Left)
+            if (e.Button != MouseButtons.Left)
                 return;
 
-            var light = new Light { Tag = Container.Map };
-            light.Position = Container.CursorPos;
+            var light = new Light { Tag = Container.Map, Position = Container.CursorPos };
             Container.DrawingManager.LightManager.Add(light);
-        }
-
-        static Rectangle GetCursorSelectionArea(Vector2 cursorPos)
-        {
-            return LightCursor.GetCursorSelectionArea(cursorPos);
-        }
-
-        static Rectangle GetLightSelectionArea(ISpatial light)
-        {
-            return LightCursor.GetLightSelectionArea(light);
         }
     }
 }

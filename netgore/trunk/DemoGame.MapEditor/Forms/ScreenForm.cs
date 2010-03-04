@@ -644,8 +644,7 @@ namespace DemoGame.MapEditor
             sb = DrawingManager.BeginDrawGUI();
 
             // Cursor position
-            Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
-            cursorPosText -= new Vector2(100, 30);
+            Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - new Vector2(100, 30);
             sb.DrawStringShaded(SpriteFont, CursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
             // End GUI rendering
@@ -1165,10 +1164,10 @@ namespace DemoGame.MapEditor
                 Cursor != Cursors.SizeNWSE && Cursor != Cursors.SizeWE)
                 return;
 
-            CursorManager.Update();
-
             // Set to default if it wasn't yet set
             Cursor = Cursors.Default;
+
+            CursorManager.Update();
         }
 
         void UpdateGame()

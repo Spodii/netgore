@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -12,6 +13,9 @@ namespace DemoGame.MapEditor
 {
     sealed class LightCursor : EditorCursor<ScreenForm>
     {
+        ILight _selectedLight;
+        Vector2 _selectedLightOffset;
+
         /// <summary>
         /// Gets the cursor's <see cref="Image"/>.
         /// </summary>
@@ -36,17 +40,50 @@ namespace DemoGame.MapEditor
             get { return 40; }
         }
 
-        public static Rectangle GetLightSelectionArea(ISpatial light)
+        ILight FindMouseOverLight()
         {
-            return light.ToRectangle(16);
+            var cursorPos = Container.CursorPos;
+
+            var mapLights = Container.DrawingManager.LightManager.Where(x => x.Tag == Container.Map);
+            var closestLight = mapLights.MinElementOrDefault(x => cursorPos.QuickDistance(x.Center));
+            if (closestLight == null)
+                return null;
+
+            if (cursorPos.QuickDistance(closestLight.Position) > 5)
+                return null;
+
+            return closestLight;
         }
 
-        public static Rectangle GetCursorSelectionArea(Vector2 cursorPos)
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been pressed.
+        /// </summary>
+        /// <param name="e">Mouse events.</param>
+        public override void MouseDown(MouseEventArgs e)
         {
-            return new Rectangle((int)cursorPos.X, (int)cursorPos.Y, 4, 4);
+            _selectedLight = FindMouseOverLight();
+            if (_selectedLight != null)
+                _selectedLightOffset = Container.CursorPos - _selectedLight.Center;
         }
 
-        static readonly Color _closestLightRectColor = new Color(0, 255, 0);
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been released.
+        /// </summary>
+        /// <param name="e">Mouse events.</param>
+        public override void MouseUp(MouseEventArgs e)
+        {
+            _selectedLight = null;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the cursor has moved.
+        /// </summary>
+        /// <param name="e">Mouse events.</param>
+        public override void MouseMove(MouseEventArgs e)
+        {
+            if (_selectedLight != null)
+                _selectedLight.Teleport(Container.CursorPos - _selectedLightOffset);
+        }
 
         /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
@@ -55,18 +92,9 @@ namespace DemoGame.MapEditor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
-            if (Container.DrawingManager.LightManager.IsEmpty())
-                return;
-
-            var cursorRect = GetCursorSelectionArea(Container.CursorPos);
-
-            // Find the closest light
-            var closestLight = Container.DrawingManager.LightManager.MinElement(x => x.GetDistance(cursorRect));
-            if (closestLight == null)
-                return;
-
-            // Draw a rectangle around the closest light
-            XNARectangle.Draw(spriteBatch, GetLightSelectionArea(closestLight), _closestLightRectColor, Color.Black);
+            // If we have a light under the cursor or selected, use the SizeAll cursor
+            if (_selectedLight != null || FindMouseOverLight() != null)
+                Container.Cursor = Cursors.SizeAll;
         }
     }
 }

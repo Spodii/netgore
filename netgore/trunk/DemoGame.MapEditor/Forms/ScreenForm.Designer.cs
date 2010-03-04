@@ -86,6 +86,7 @@ namespace DemoGame.MapEditor
             this.btnAddPersistentNPC = new System.Windows.Forms.Button();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkLightSources = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawPersistentNPCs = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawSpawnAreas = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawBackground = new NetGore.EditorTools.PersistableCheckBox();
@@ -107,7 +108,6 @@ namespace DemoGame.MapEditor
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
-            this.chkLightSources = new NetGore.EditorTools.PersistableCheckBox();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -844,6 +844,18 @@ namespace DemoGame.MapEditor
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Display Options";
             // 
+            // chkLightSources
+            // 
+            this.chkLightSources.AutoSize = true;
+            this.chkLightSources.Checked = true;
+            this.chkLightSources.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkLightSources.Location = new System.Drawing.Point(6, 113);
+            this.chkLightSources.Name = "chkLightSources";
+            this.chkLightSources.Size = new System.Drawing.Size(91, 17);
+            this.chkLightSources.TabIndex = 17;
+            this.chkLightSources.Text = "Light Sources";
+            this.chkLightSources.UseVisualStyleBackColor = true;
+            // 
             // chkDrawPersistentNPCs
             // 
             this.chkDrawPersistentNPCs.AutoSize = true;
@@ -1069,18 +1081,6 @@ namespace DemoGame.MapEditor
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.cmdNew_Click);
-            // 
-            // chkLightSources
-            // 
-            this.chkLightSources.AutoSize = true;
-            this.chkLightSources.Checked = true;
-            this.chkLightSources.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLightSources.Location = new System.Drawing.Point(6, 113);
-            this.chkLightSources.Name = "chkLightSources";
-            this.chkLightSources.Size = new System.Drawing.Size(91, 17);
-            this.chkLightSources.TabIndex = 17;
-            this.chkLightSources.Text = "Light Sources";
-            this.chkLightSources.UseVisualStyleBackColor = true;
             // 
             // ScreenForm
             // 
