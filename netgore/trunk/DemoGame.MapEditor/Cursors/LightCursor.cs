@@ -13,6 +13,9 @@ namespace DemoGame.MapEditor
     {
         ILight _selectedLight;
         Vector2 _selectedLightOffset;
+        string _toolTip = string.Empty;
+        object _toolTipObj = null;
+        Vector2 _toolTipPos;
 
         /// <summary>
         /// Gets the cursor's <see cref="Image"/>.
@@ -48,6 +51,10 @@ namespace DemoGame.MapEditor
             // If we have a light under the cursor or selected, use the SizeAll cursor
             if (_selectedLight != null || FindMouseOverLight() != null)
                 Container.Cursor = Cursors.SizeAll;
+
+            // Draw the tooltip
+            if (_toolTipObj != null && !string.IsNullOrEmpty(_toolTip))
+                spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Microsoft.Xna.Framework.Graphics.Color.White, Microsoft.Xna.Framework.Graphics.Color.Black);
         }
 
         /// <summary>
@@ -77,6 +84,33 @@ namespace DemoGame.MapEditor
             _selectedLight = FindMouseOverLight();
             if (_selectedLight != null)
                 _selectedLightOffset = Container.CursorPos - _selectedLight.Center;
+
+            Container.SelectedObjs.SetSelected(_selectedLight);
+
+            _toolTipObj = null;
+        }
+
+        void UpdateToolTip()
+        {
+            if (_selectedLight != null)
+            {
+                _toolTipObj = null;
+                _toolTip = null;
+                return;
+            }
+
+            // Display the tooltip for the light under the cursor
+            var light = FindMouseOverLight();
+            if (_toolTipObj == light)
+                return;
+
+            _toolTipObj = light;
+            if (light == null)
+                return;
+
+            _toolTip = string.Format("{0}\n{1} ({2}x{3})", light, light.Position, light.Size.X, light.Size.Y);
+            _toolTipPos = EntityCursor.GetToolTipPos(Container.SpriteFont, _toolTip, light);
+            _toolTipPos.X = light.Position.X + 5;
         }
 
         /// <summary>
@@ -86,7 +120,16 @@ namespace DemoGame.MapEditor
         public override void MouseMove(MouseEventArgs e)
         {
             if (_selectedLight != null)
+            {
+                // Move the light if dragging one
                 _selectedLight.Teleport(Container.CursorPos - _selectedLightOffset);
+
+                _toolTipObj = null;
+            }
+            else
+            {
+                UpdateToolTip();
+            }
         }
 
         /// <summary>
@@ -96,6 +139,7 @@ namespace DemoGame.MapEditor
         public override void MouseUp(MouseEventArgs e)
         {
             _selectedLight = null;
+            UpdateToolTip();
         }
     }
 }
