@@ -236,23 +236,23 @@ namespace NetGore.Tests.NetGore
             /// <summary>
             /// Initializes a new instance of the <see cref="TestSpatial"/> class.
             /// </summary>
-            /// <param name="position">The position.</param>
-            /// <param name="size">The size.</param>
-            TestSpatial(Vector2 position, Vector2 size)
-            {
-                _position = position;
-                _size = size;
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TestSpatial"/> class.
-            /// </summary>
             /// <param name="x">The x.</param>
             /// <param name="y">The y.</param>
             /// <param name="width">The width.</param>
             /// <param name="height">The height.</param>
             public TestSpatial(int x, int y, int width, int height) : this(new Vector2(x, y), new Vector2(width, height))
             {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="TestSpatial"/> class.
+            /// </summary>
+            /// <param name="position">The position.</param>
+            /// <param name="size">The size.</param>
+            TestSpatial(Vector2 position, Vector2 size)
+            {
+                _position = position;
+                _size = size;
             }
 
             #region ISpatial Members

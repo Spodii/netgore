@@ -48,13 +48,19 @@ namespace DemoGame.Server.Quests
             var reqItems = dbController.GetQuery<SelectQuestRequireFinishItemQuery>().Execute(QuestID);
             Debug.Assert(reqItems.All(x => x.QuestID == QuestID));
             if (!reqItems.IsEmpty())
-                l.Add(new ItemsQuestRequirement(this, reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
+                l.Add(new ItemsQuestRequirement(this,
+                                                reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
             // Kills
             var reqKills = dbController.GetQuery<SelectQuestRequireKillQuery>().Execute(QuestID);
             Debug.Assert(reqItems.All(x => x.QuestID == QuestID));
             if (!reqKills.IsEmpty())
-                l.Add(new KillQuestRequirement(this, reqKills.Select(x => new KeyValuePair<CharacterTemplateID, ushort>(x.CharacterTemplateID, x.Amount))));
+            {
+                l.Add(new KillQuestRequirement(this,
+                                               reqKills.Select(
+                                                   x =>
+                                                   new KeyValuePair<CharacterTemplateID, ushort>(x.CharacterTemplateID, x.Amount))));
+            }
 
             // Complete quests
             var reqCompleteQuests = dbController.GetQuery<SelectQuestRequireFinishCompleteQuestsQuery>().Execute(QuestID);
@@ -96,7 +102,8 @@ namespace DemoGame.Server.Quests
             // Items
             var reqItems = dbController.GetQuery<SelectQuestRequireStartItemQuery>().Execute(QuestID);
             if (!reqItems.IsEmpty())
-                l.Add(new ItemsQuestRequirement(this, reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
+                l.Add(new ItemsQuestRequirement(this,
+                                                reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
             // Complete quests
             var reqCompleteQuests = dbController.GetQuery<SelectQuestRequireStartCompleteQuestsQuery>().Execute(QuestID);

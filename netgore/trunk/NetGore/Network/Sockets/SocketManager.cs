@@ -98,17 +98,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Establishes the UDP connection for a client when requested by the server.
-        /// </summary>
-        /// <param name="host">The host to connect to.</param>
-        /// <param name="port">The port to connect to.</param>
-        /// <param name="challenge">The received challenge value from the server.</param>
-        public void ConnectUDP(string host, int port, int challenge)
-        {
-            _udpSocket.Connect(host, port, BitConverter.GetBytes(challenge));
-        }
-
-        /// <summary>
         /// Creates a socket and connects it to the specified server.
         /// </summary>
         /// <param name="host">Host address (IP or domain name) to connect to.</param>
@@ -182,6 +171,17 @@ namespace NetGore.Network
             }
 
             return Connections.Count(x => x.IP == targetConn.IP);
+        }
+
+        /// <summary>
+        /// Establishes the UDP connection for a client when requested by the server.
+        /// </summary>
+        /// <param name="host">The host to connect to.</param>
+        /// <param name="port">The port to connect to.</param>
+        /// <param name="challenge">The received challenge value from the server.</param>
+        public void ConnectUDP(string host, int port, int challenge)
+        {
+            _udpSocket.Connect(host, port, BitConverter.GetBytes(challenge));
         }
 
         /// <summary>
@@ -264,9 +264,7 @@ namespace NetGore.Network
                                 continue;
 
                             if (c.GetHashCode() == challenge)
-                            {
                                 c.SetRemoteUnreliablePort(ipEP.Port);
-                            }
                             else
                             {
                                 const string errmsg = "Address `{0}` failed hash challenge to set UDP port for connection.";
@@ -292,8 +290,6 @@ namespace NetGore.Network
                         ret.Add(new SocketReceiveData(conn, data));
                     }
                 }
-
-
             }
 
             return ret;

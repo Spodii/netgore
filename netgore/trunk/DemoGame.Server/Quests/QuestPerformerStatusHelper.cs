@@ -12,11 +12,6 @@ namespace DemoGame.Server.Quests
         readonly QuestPerformerKillCounter _questKillCounter;
 
         /// <summary>
-        /// Gets the <see cref="QuestPerformerKillCounter"/>.
-        /// </summary>
-        public QuestPerformerKillCounter QuestKillCounter { get { return _questKillCounter; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="QuestPerformerStatusHelper"/> class.
         /// </summary>
         /// <param name="owner">The quest performer that this object will track the quest status of.</param>
@@ -31,6 +26,14 @@ namespace DemoGame.Server.Quests
             {
                 Owner.Send(pw);
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="QuestPerformerKillCounter"/>.
+        /// </summary>
+        public QuestPerformerKillCounter QuestKillCounter
+        {
+            get { return _questKillCounter; }
         }
 
         /// <summary>

@@ -106,6 +106,11 @@ namespace NetGore.Network
         #region IIPSocket Members
 
         /// <summary>
+        /// Notifies listeners when this <see cref="IIPSocket"/> has been disposed.
+        /// </summary>
+        public event IIPSocketEventHandler Disposed;
+
+        /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
         /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
         /// </summary>
@@ -222,17 +227,13 @@ namespace NetGore.Network
             {
                 foreach (var r in ret)
                 {
-                    log.DebugFormat("Received `{0}` bytes from `{1}`{2}", r.Length, Address, Environment.NewLine + LogHelper.GetBufferDump(r));
+                    log.DebugFormat("Received `{0}` bytes from `{1}`{2}", r.Length, Address,
+                                    Environment.NewLine + LogHelper.GetBufferDump(r));
                 }
             }
 
             return ret;
         }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="IIPSocket"/> has been disposed.
-        /// </summary>
-        public event IIPSocketEventHandler Disposed;
 
         /// <summary>
         /// Sends data over a reliable stream.
@@ -309,7 +310,7 @@ namespace NetGore.Network
             // Create the EndPoint if it has not already been created
             if (_udpEndPoint == null)
                 _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
-            
+
             _udpSocket.Send(data.GetBuffer(), data.Length, _udpEndPoint);
         }
 

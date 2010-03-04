@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace NetGore.IO.PropertySync
 {
@@ -18,8 +17,7 @@ namespace NetGore.IO.PropertySync
         /// Initializes a new instance of the <see cref="PropertySyncBase{T}"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncNullable(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncNullable(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
             var nonNullableType = TypeHelper.NullableToNonNullable(syncValueAttributeInfo.PropertyType);
             _nonNullableSync = (PropertySyncBase<T>)PropertySyncHelper.GetUnhookedPropertySync(nonNullableType);

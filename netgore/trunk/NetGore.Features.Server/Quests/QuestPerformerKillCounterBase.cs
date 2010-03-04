@@ -44,7 +44,9 @@ namespace NetGore.Features.Quests
         /// <param name="owner">The owner.</param>
         /// <param name="initialCounts">The initial counts.</param>
         protected QuestPerformerKillCounterBase(TCharacter owner,
-                                                IEnumerable<KeyValuePair<IQuest<TCharacter>, IEnumerable<KeyValuePair<TKillID, ushort>>>> initialCounts)
+                                                IEnumerable
+                                                    <KeyValuePair<IQuest<TCharacter>, IEnumerable<KeyValuePair<TKillID, ushort>>>>
+                                                    initialCounts)
         {
             // Add the initial values
             if (initialCounts != null)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.Quests
 {
@@ -14,6 +13,18 @@ namespace NetGore.Features.Quests
     public interface IQuestPerformerKillCounter<TCharacter, TKillID> : IDisposable where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
+        /// Notifies listeners when the kill counter for a quest has been incremented. This event will only be invoked
+        /// if, when the target was killed, the kill count was less than the required kill count. As a result, the
+        /// kill count will never be zero.
+        /// </summary>
+        event QuestPerformerKillCounterKillIncrementEventHandler<TCharacter, TKillID> KillCountIncremented;
+
+        /// <summary>
+        /// Gets the quest performer that this collection belongs to.
+        /// </summary>
+        TCharacter Owner { get; }
+
+        /// <summary>
         /// Gets the kill counts for the given <paramref name="quest"/> for each of the required kill counters. The
         /// returned counts will not exceed the number of required kills for the <paramref name="quest"/> for the
         /// respective target.
@@ -25,13 +36,6 @@ namespace NetGore.Features.Quests
         IEnumerable<KeyValuePair<TKillID, ushort>> GetKillCounts(IQuest<TCharacter> quest);
 
         /// <summary>
-        /// Notifies listeners when the kill counter for a quest has been incremented. This event will only be invoked
-        /// if, when the target was killed, the kill count was less than the required kill count. As a result, the
-        /// kill count will never be zero.
-        /// </summary>
-        event QuestPerformerKillCounterKillIncrementEventHandler<TCharacter, TKillID> KillCountIncremented;
-
-        /// <summary>
         /// Checks if the required kill count has been reached for all of the required targets for the given
         /// <paramref name="quest"/>.
         /// </summary>
@@ -40,10 +44,5 @@ namespace NetGore.Features.Quests
         /// <paramref name="quest"/>; otherwise false.</returns>
         /// <exception cref="ArgumentException"><paramref name="quest"/> has not been added to the collection.</exception>
         bool HasAllKills(IQuest<TCharacter> quest);
-
-        /// <summary>
-        /// Gets the quest performer that this collection belongs to.
-        /// </summary>
-        TCharacter Owner { get; }
     }
 }

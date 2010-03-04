@@ -21,12 +21,6 @@ namespace NetGore.Graphics
         bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets an object that can be used to identify or store information about this <see cref="ILight"/>.
-        /// This property is purely optional.
-        /// </summary>
-        object Tag { get; set; }
-
-        /// <summary>
         /// Gets or sets an <see cref="ISpatial"/> that provides the position to use. If set, the
         /// <see cref="ISpatial.Position"/> value will automatically be acquired with the position of the
         /// <see cref="ISpatial"/> instead, and setting the position will have no affect.
@@ -42,6 +36,12 @@ namespace NetGore.Graphics
         /// Gets or sets the <see cref="Grh"/> used to draw the light. If null, the light will not be drawn.
         /// </summary>
         Grh Sprite { get; set; }
+
+        /// <summary>
+        /// Gets or sets an object that can be used to identify or store information about this <see cref="ILight"/>.
+        /// This property is purely optional.
+        /// </summary>
+        object Tag { get; set; }
 
         /// <summary>
         /// Draws the <see cref="ILight"/>.

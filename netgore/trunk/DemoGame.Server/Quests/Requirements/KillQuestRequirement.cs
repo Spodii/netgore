@@ -33,12 +33,6 @@ namespace DemoGame.Server.Quests
         }
 
         /// <summary>
-        /// Gets the <see cref="KeyValuePair{T,U}"/>s for the <see cref="CharacterTemplateID"/>s required to be killed,
-        /// and the minimum amount of kills required for the respective <see cref="CharacterTemplateID"/>.
-        /// </summary>
-        public IEnumerable<KeyValuePair<CharacterTemplateID, ushort>> RequiredKills { get { return _reqKills; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="KillQuestRequirement"/> class.
         /// </summary>
         /// <param name="quest">The quest that this requirement is for.</param>
@@ -56,6 +50,15 @@ namespace DemoGame.Server.Quests
 
             // Store the valid kills
             _reqKills = requiredKills.Where(AssertValidValue).ToCompact();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="KeyValuePair{T,U}"/>s for the <see cref="CharacterTemplateID"/>s required to be killed,
+        /// and the minimum amount of kills required for the respective <see cref="CharacterTemplateID"/>.
+        /// </summary>
+        public IEnumerable<KeyValuePair<CharacterTemplateID, ushort>> RequiredKills
+        {
+            get { return _reqKills; }
         }
 
         /// <summary>

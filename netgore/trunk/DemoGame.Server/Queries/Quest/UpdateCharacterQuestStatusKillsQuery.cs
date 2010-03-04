@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -14,7 +12,8 @@ namespace DemoGame.Server.Queries
     public class UpdateCharacterQuestStatusKillsQuery : DbQueryNonReader<ICharacterQuestStatusKillsTable>
     {
         static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE `count`=@count",
-            CharacterQuestStatusKillsTable.TableName, FormatParametersIntoValuesString(CharacterQuestStatusKillsTable.DbColumns));
+                                                         CharacterQuestStatusKillsTable.TableName,
+                                                         FormatParametersIntoValuesString(CharacterQuestStatusKillsTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateCharacterQuestStatusKillsQuery"/> class.
@@ -24,16 +23,6 @@ namespace DemoGame.Server.Queries
         public UpdateCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "count");
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
-        /// If null, no parameters will be used.</returns>
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return CreateParameters(CharacterQuestStatusKillsTable.DbColumns.Select(x => "@" + x));
         }
 
         /// <summary>
@@ -47,6 +36,16 @@ namespace DemoGame.Server.Queries
         public int Execute(CharacterID characterID, QuestID questID, CharacterTemplateID characterTemplateID, ushort count)
         {
             return Execute(new QueryArgs(characterID, questID, characterTemplateID, count));
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.</returns>
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters(CharacterQuestStatusKillsTable.DbColumns.Select(x => "@" + x));
         }
 
         /// <summary>
@@ -71,26 +70,6 @@ namespace DemoGame.Server.Queries
             readonly QuestID _questID;
 
             /// <summary>
-            /// Gets the value of the database column `character_id`.
-            /// </summary>
-            public CharacterID CharacterID { get { return _characterID; } }
-
-            /// <summary>
-            /// Gets the value of the database column `character_template_id`.
-            /// </summary>
-            public CharacterTemplateID CharacterTemplateID { get { return _characterTemplateID; } }
-
-            /// <summary>
-            /// Gets the value of the database column `count`.
-            /// </summary>
-            public ushort Count { get { return _count; } }
-
-            /// <summary>
-            /// Gets the value of the database column `quest_id`.
-            /// </summary>
-            public QuestID QuestID { get { return _questID; } }
-
-            /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
             /// </summary>
             /// <param name="characterID">The character ID.</param>
@@ -105,6 +84,40 @@ namespace DemoGame.Server.Queries
                 _count = count;
             }
 
+            #region ICharacterQuestStatusKillsTable Members
+
+            /// <summary>
+            /// Gets the value of the database column `character_id`.
+            /// </summary>
+            public CharacterID CharacterID
+            {
+                get { return _characterID; }
+            }
+
+            /// <summary>
+            /// Gets the value of the database column `character_template_id`.
+            /// </summary>
+            public CharacterTemplateID CharacterTemplateID
+            {
+                get { return _characterTemplateID; }
+            }
+
+            /// <summary>
+            /// Gets the value of the database column `count`.
+            /// </summary>
+            public ushort Count
+            {
+                get { return _count; }
+            }
+
+            /// <summary>
+            /// Gets the value of the database column `quest_id`.
+            /// </summary>
+            public QuestID QuestID
+            {
+                get { return _questID; }
+            }
+
             /// <summary>
             /// Creates a deep copy of this table. All the values will be the same
             /// but they will be contained in a different object instance.
@@ -116,6 +129,8 @@ namespace DemoGame.Server.Queries
             {
                 return new QueryArgs(CharacterID, QuestID, CharacterTemplateID, Count);
             }
+
+            #endregion
         }
     }
 }

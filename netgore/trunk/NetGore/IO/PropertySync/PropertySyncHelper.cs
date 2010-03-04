@@ -24,6 +24,15 @@ namespace NetGore.IO.PropertySync
         static readonly Dictionary<Type, Type> _propertySyncTypes = new Dictionary<Type, Type>();
 
         /// <summary>
+        /// Cache that handles creating the <see cref="IPropertySync"/>s that are not actually hooked
+        /// to a property with a <see cref="SyncValueAttributeInfo"/>. These can be reused since they are only used
+        /// for reading/writing the type, not for an actual particular attribute.
+        /// </summary>
+        static readonly ThreadSafeHashCache<Type, IPropertySync> _unhookedPropertySyncCache =
+            new ThreadSafeHashCache<Type, IPropertySync>(
+                x => (IPropertySync)TypeFactory.GetTypeInstance(_propertySyncTypes[x], (SyncValueAttributeInfo)null));
+
+        /// <summary>
         /// Initializes the <see cref="PropertySyncHelper"/> class.
         /// </summary>
         static PropertySyncHelper()
@@ -92,36 +101,13 @@ namespace NetGore.IO.PropertySync
         }
 
         /// <summary>
-        /// Cache that handles creating the <see cref="IPropertySync"/>s that are not actually hooked
-        /// to a property with a <see cref="SyncValueAttributeInfo"/>. These can be reused since they are only used
-        /// for reading/writing the type, not for an actual particular attribute.
-        /// </summary>
-        static readonly ThreadSafeHashCache<Type, IPropertySync> _unhookedPropertySyncCache =
-            new ThreadSafeHashCache<Type, IPropertySync>(x =>
-                (IPropertySync)TypeFactory.GetTypeInstance(_propertySyncTypes[x], (SyncValueAttributeInfo)null));
-
-        /// <summary>
-        /// Gets the <see cref="IPropertySync"/> for a given <paramref name="type"/> that does not pass a
-        /// valid <see cref="SyncValueAttributeInfo"/>. Attempting to perform state tracking operations on the created
-        /// object will result in an exception being thrown. This method is intended only as a way to provide access
-        /// to the code for reading and writing the values for the <see cref="PropertySyncNullable{T}"/>.
-        /// </summary>
-        /// <param name="type">The type for the <see cref="IPropertySync"/> to handle.</param>
-        /// <returns>The <see cref="IPropertySync"/> for a given <paramref name="type"/> that does not pass a
-        /// valid <see cref="SyncValueAttributeInfo"/>.</returns>
-        static internal IPropertySync GetUnhookedPropertySync(Type type)
-        {
-            return _unhookedPropertySyncCache[type];
-        }
-
-        /// <summary>
         /// Gets the <see cref="IPropertySync"/> for a given <see cref="SyncValueAttributeInfo"/>.
         /// </summary>
         /// <param name="attribInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
         /// <returns>The <see cref="IPropertySync"/> for a given <see cref="SyncValueAttributeInfo"/>.</returns>
         /// <exception cref="TypeLoadException">Could not create an <see cref="IPropertySync"/> from the 
         /// <paramref name="attribInfo"/>.</exception>
-        static internal IPropertySync GetPropertySync(SyncValueAttributeInfo attribInfo)
+        internal static IPropertySync GetPropertySync(SyncValueAttributeInfo attribInfo)
         {
             var propertySyncType = _propertySyncTypes[attribInfo.PropertyType];
             var instance = (IPropertySync)TypeFactory.GetTypeInstance(propertySyncType, attribInfo);
@@ -155,6 +141,20 @@ namespace NetGore.IO.PropertySync
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IPropertySync"/> for a given <paramref name="type"/> that does not pass a
+        /// valid <see cref="SyncValueAttributeInfo"/>. Attempting to perform state tracking operations on the created
+        /// object will result in an exception being thrown. This method is intended only as a way to provide access
+        /// to the code for reading and writing the values for the <see cref="PropertySyncNullable{T}"/>.
+        /// </summary>
+        /// <param name="type">The type for the <see cref="IPropertySync"/> to handle.</param>
+        /// <returns>The <see cref="IPropertySync"/> for a given <paramref name="type"/> that does not pass a
+        /// valid <see cref="SyncValueAttributeInfo"/>.</returns>
+        internal static IPropertySync GetUnhookedPropertySync(Type type)
+        {
+            return _unhookedPropertySyncCache[type];
         }
 
         /// <summary>

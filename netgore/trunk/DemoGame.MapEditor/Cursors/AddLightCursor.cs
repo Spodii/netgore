@@ -3,10 +3,8 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {

@@ -26,20 +26,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnConnectedFrom(IIPSocket conn)
-        {
-            base.OnConnectedFrom(conn);
-
-            using (var pw = ServerPacket.RequestUDPConnection(conn.GetHashCode()))
-                conn.Send(pw, true);
-        }
-
-        /// <summary>
         /// Updates the sockets
         /// </summary>
         public void Heartbeat()
@@ -60,6 +46,22 @@ namespace DemoGame.Server
 
             // Update the latency tracker
             _latencyTracker.Update();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected override void OnConnectedFrom(IIPSocket conn)
+        {
+            base.OnConnectedFrom(conn);
+
+            using (var pw = ServerPacket.RequestUDPConnection(conn.GetHashCode()))
+            {
+                conn.Send(pw, true);
+            }
         }
 
         /// <summary>

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace NetGore.Features.Quests
@@ -16,5 +15,6 @@ namespace NetGore.Features.Quests
     /// <paramref name="quest"/>.</param>
     /// <param name="reqCount">The required kill count for completing the quest.</param>
     public delegate void QuestPerformerKillCounterKillIncrementEventHandler<TCharacter, TKillID>(
-        IQuestPerformerKillCounter<TCharacter, TKillID> sender, IQuest<TCharacter> quest, TKillID target, ushort count, ushort reqCount) where TCharacter : IQuestPerformer<TCharacter>;
+        IQuestPerformerKillCounter<TCharacter, TKillID> sender, IQuest<TCharacter> quest, TKillID target, ushort count,
+        ushort reqCount) where TCharacter : IQuestPerformer<TCharacter>;
 }

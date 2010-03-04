@@ -148,6 +148,11 @@ namespace DemoGame.Server
             get { return _conn; }
         }
 
+        public QuestPerformerStatusHelper QuestInfo
+        {
+            get { return _questInfo; }
+        }
+
         /// <summary>
         /// Always returns null.
         /// </summary>
@@ -1167,10 +1172,5 @@ namespace DemoGame.Server
         }
 
         #endregion
-
-        public QuestPerformerStatusHelper QuestInfo
-        {
-            get { return _questInfo; }
-        }
     }
 }

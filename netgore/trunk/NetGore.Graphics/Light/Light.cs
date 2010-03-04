@@ -1,9 +1,7 @@
-using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
-using NetGore;
 
 namespace NetGore.Graphics
 {
@@ -12,6 +10,12 @@ namespace NetGore.Graphics
     /// </summary>
     public class Light : ILight
     {
+        const string _colorValueKey = "Color";
+        const string _isEnabledValueKey = "IsEnabled";
+        const string _positionValueKey = "Position";
+        const string _rotationValueKey = "Rotation";
+        const string _sizeValueKey = "Size";
+        const string _spriteValueKey = "Sprite";
         Color _color = Color.White;
         Vector2 _position;
         ISpatial _positionProvider;
@@ -77,16 +81,6 @@ namespace NetGore.Graphics
         /// Gets or sets if this light is enabled.
         /// </summary>
         public bool IsEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets an object that can be used to identify or store information about this <see cref="ILight"/>.
-        /// This property is purely optional.
-        /// </summary>
-        public object Tag
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
@@ -172,6 +166,12 @@ namespace NetGore.Graphics
         public Grh Sprite { get; set; }
 
         /// <summary>
+        /// Gets or sets an object that can be used to identify or store information about this <see cref="ILight"/>.
+        /// This property is purely optional.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
         /// Draws the <see cref="ILight"/>.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw with.</param>
@@ -190,6 +190,29 @@ namespace NetGore.Graphics
         public void Move(Vector2 offset)
         {
             Position += offset;
+        }
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            PositionProvider = null;
+            Tag = null;
+
+            Position = reader.ReadVector2(_positionValueKey);
+            Size = reader.ReadVector2(_sizeValueKey);
+            Color = reader.ReadColor(_colorValueKey);
+            Rotation = reader.ReadFloat(_rotationValueKey);
+            IsEnabled = reader.ReadBool(_isEnabledValueKey);
+
+            var grhIndex = reader.ReadGrhIndex(_spriteValueKey);
+            if (grhIndex.IsInvalid)
+                Sprite = new Grh(grhIndex, AnimType.Loop, 0);
+            else
+                Sprite = null;
         }
 
         /// <summary>
@@ -230,38 +253,6 @@ namespace NetGore.Graphics
                 Sprite.Update(currentTime);
         }
 
-        #endregion
-
-        /// <summary>
-        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
-        /// same order as they were written.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        public void ReadState(IValueReader reader)
-        {
-            PositionProvider = null;
-            Tag = null;
-
-            Position = reader.ReadVector2(_positionValueKey);
-            Size = reader.ReadVector2(_sizeValueKey);
-            Color = reader.ReadColor(_colorValueKey);
-            Rotation = reader.ReadFloat(_rotationValueKey);
-            IsEnabled = reader.ReadBool(_isEnabledValueKey);
-
-            var grhIndex = reader.ReadGrhIndex(_spriteValueKey);
-            if (grhIndex.IsInvalid)
-                Sprite = new Grh(grhIndex, AnimType.Loop, 0);
-            else
-                Sprite = null;
-        }
-
-        const string _colorValueKey = "Color";
-        const string _isEnabledValueKey = "IsEnabled";
-        const string _positionValueKey = "Position";
-        const string _rotationValueKey = "Rotation";
-        const string _sizeValueKey = "Size";
-        const string _spriteValueKey = "Sprite";
-
         /// <summary>
         /// Writes the state of the object to an <see cref="IValueWriter"/>.
         /// </summary>
@@ -275,5 +266,7 @@ namespace NetGore.Graphics
             writer.Write(_isEnabledValueKey, IsEnabled);
             writer.Write(_spriteValueKey, Sprite != null ? Sprite.GrhData.GrhIndex : GrhIndex.Invalid);
         }
+
+        #endregion
     }
 }

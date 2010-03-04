@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using log4net;
 using NetGore;
 using NetGore.Features.Quests;
 
@@ -15,8 +12,8 @@ namespace DemoGame.Server.Quests
     /// </summary>
     public class CompleteQuestQuestRequirement : IQuestRequirement<User>
     {
-        readonly IEnumerable<IQuest<User>> _reqQuests;
         readonly IQuest<User> _quest;
+        readonly IEnumerable<IQuest<User>> _reqQuests;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompleteQuestQuestRequirement"/> class.
@@ -44,6 +41,8 @@ namespace DemoGame.Server.Quests
         {
             get { return _reqQuests; }
         }
+
+        #region IQuestRequirement<User> Members
 
         /// <summary>
         /// Gets the <see cref="IQuest{TCharacter}"/> that this quest requirement is for.
@@ -73,5 +72,7 @@ namespace DemoGame.Server.Quests
         {
             // Nothing to "take"
         }
+
+        #endregion
     }
 }

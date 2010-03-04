@@ -12,6 +12,25 @@ namespace NetGore.Tests.NetGore
         #region Unit tests
 
         [Test]
+        public void AbsTest()
+        {
+            for (int x = -10; x < 10; x++)
+            {
+                for (int y = -10; y < 10; y++)
+                {
+                    for (int z = -10; z < 10; z++)
+                    {
+                        Vector3 v = new Vector3(x, y, z);
+                        v = v.Abs();
+                        Assert.LessOrEqual(0, v.X);
+                        Assert.LessOrEqual(0, v.Y);
+                        Assert.LessOrEqual(0, v.Z);
+                    }
+                }
+            }
+        }
+
+        [Test]
         public void CeilingTest()
         {
             const int max = 1000;
@@ -29,23 +48,6 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void RoundTest()
-        {
-            const int max = 1000;
-
-            Random r = new Random(578);
-
-            for (int i = 0; i < 30; i++)
-            {
-                var v = new Vector3(r.NextFloat() * max, r.NextFloat() * max, r.NextFloat() * max);
-                var c = v.Round();
-                Assert.AreEqual(Math.Round(v.X), c.X);
-                Assert.AreEqual(Math.Round(v.Y), c.Y);
-                Assert.AreEqual(Math.Round(v.Z), c.Z);
-            }
-        }
-
-        [Test]
         public void FloorTest()
         {
             const int max = 1000;
@@ -59,25 +61,6 @@ namespace NetGore.Tests.NetGore
                 Assert.AreEqual(Math.Floor(v.X), c.X);
                 Assert.AreEqual(Math.Floor(v.Y), c.Y);
                 Assert.AreEqual(Math.Floor(v.Z), c.Z);
-            }
-        }
-
-        [Test]
-        public void AbsTest()
-        {
-            for (int x = -10; x < 10; x++)
-            {
-                for (int y = -10; y < 10; y++)
-                {
-                    for (int z = -10; z < 10; z++)
-                    {
-                        Vector3 v = new Vector3(x, y, z);
-                        v = v.Abs();
-                        Assert.LessOrEqual(0, v.X);
-                        Assert.LessOrEqual(0, v.Y);
-                        Assert.LessOrEqual(0, v.Z);
-                    }
-                }
             }
         }
 
@@ -202,6 +185,23 @@ namespace NetGore.Tests.NetGore
                         }
                     }
                 }
+            }
+        }
+
+        [Test]
+        public void RoundTest()
+        {
+            const int max = 1000;
+
+            Random r = new Random(578);
+
+            for (int i = 0; i < 30; i++)
+            {
+                var v = new Vector3(r.NextFloat() * max, r.NextFloat() * max, r.NextFloat() * max);
+                var c = v.Round();
+                Assert.AreEqual(Math.Round(v.X), c.X);
+                Assert.AreEqual(Math.Round(v.Y), c.Y);
+                Assert.AreEqual(Math.Round(v.Z), c.Z);
             }
         }
 

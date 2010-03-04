@@ -41,6 +41,7 @@ namespace NetGore.Network
         readonly byte[] _sendBuffer = new byte[LatencyTrackerHelper.SignatureSize];
 
         readonly IUDPSocket _socket;
+        bool _isDisposed;
 
         /// <summary>
         /// The calculated average latency.
@@ -102,6 +103,14 @@ namespace NetGore.Network
         public bool IsBusy
         {
             get { return _waitingForPong; }
+        }
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
         }
 
         /// <summary>
@@ -199,28 +208,6 @@ namespace NetGore.Network
                 log.InfoFormat("Ping had a one-way latency of `{0}`.", _latency);
         }
 
-        bool _isDisposed;
-
-        /// <summary>
-        /// Gets if this object has been disposed.
-        /// </summary>
-        public bool IsDisposed { get { return _isDisposed; } }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_isDisposed)
-                return;
-
-            _isDisposed = true;
-
-            _pingTimer.Stop();
-            if (_socket != null && !_socket.IsDisposed)
-                _socket.Dispose();
-        }
-
         /// <summary>
         /// Updates the buffer and parses any received data. Recommended this is called every frame.
         /// </summary>
@@ -260,5 +247,24 @@ namespace NetGore.Network
                 break;
             }
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            _pingTimer.Stop();
+            if (_socket != null && !_socket.IsDisposed)
+                _socket.Dispose();
+        }
+
+        #endregion
     }
 }

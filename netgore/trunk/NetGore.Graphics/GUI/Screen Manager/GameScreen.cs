@@ -65,19 +65,19 @@ namespace NetGore.Graphics.GUI
         #region IGameScreen Members
 
         /// <summary>
-        /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
-        /// </summary>
-        public IGUIManager GUIManager
-        {
-            get { return _guiManager; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="IDrawingManager"/> that is used to help draw on this screen.
         /// </summary>
         public IDrawingManager DrawingManager
         {
             get { return ScreenManager.DrawingManager; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
+        /// </summary>
+        public IGUIManager GUIManager
+        {
+            get { return _guiManager; }
         }
 
         /// <summary>

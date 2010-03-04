@@ -486,14 +486,6 @@ namespace DemoGame.Client
             }
         }
 
-        [MessageHandler((byte)ServerPacketID.RequestUDPConnection)]
-        void RecvRequestUDPConnection(IIPSocket conn, BitStream r)
-        {
-            int challenge = r.ReadInt();
-
-            ClientSockets.Instance.ConnectUDP(GameData.ServerIP, GameData.ServerUDPPort, challenge);
-        }
-
         [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
@@ -501,6 +493,14 @@ namespace DemoGame.Client
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
+        }
+
+        [MessageHandler((byte)ServerPacketID.RequestUDPConnection)]
+        void RecvRequestUDPConnection(IIPSocket conn, BitStream r)
+        {
+            int challenge = r.ReadInt();
+
+            ClientSockets.Instance.ConnectUDP(GameData.ServerIP, GameData.ServerUDPPort, challenge);
         }
 
         [MessageHandler((byte)ServerPacketID.SendAccountCharacters)]

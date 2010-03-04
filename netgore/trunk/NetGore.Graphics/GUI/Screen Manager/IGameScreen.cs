@@ -10,6 +10,11 @@ namespace NetGore.Graphics.GUI
     public interface IGameScreen : IDisposable
     {
         /// <summary>
+        /// Gets the <see cref="IDrawingManager"/> that is used to help draw on this screen.
+        /// </summary>
+        IDrawingManager DrawingManager { get; }
+
+        /// <summary>
         /// Gets the <see cref="IGUIManager"/> that is used for the GUI of this <see cref="IGameScreen"/>.
         /// </summary>
         IGUIManager GUIManager { get; }
@@ -18,11 +23,6 @@ namespace NetGore.Graphics.GUI
         /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="IGameScreen"/>.
         /// </summary>
         MusicManager MusicManager { get; }
-
-        /// <summary>
-        /// Gets the <see cref="IDrawingManager"/> that is used to help draw on this screen.
-        /// </summary>
-        IDrawingManager DrawingManager { get; }
 
         /// <summary>
         /// Gets the unique name of this screen.

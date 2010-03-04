@@ -122,6 +122,7 @@ namespace DemoGame.MapEditor
         int _currentTime = 0;
 
         IDbController _dbController;
+        DrawingManager _drawingManager;
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
 
@@ -139,10 +140,6 @@ namespace DemoGame.MapEditor
         /// The Default SpriteFont.
         /// </summary>
         SpriteFont _spriteFont;
-
-        DrawingManager _drawingManager;
-
-        public DrawingManager DrawingManager { get { return _drawingManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -216,6 +213,11 @@ namespace DemoGame.MapEditor
         IDbController DbController
         {
             get { return _dbController; }
+        }
+
+        public DrawingManager DrawingManager
+        {
+            get { return _drawingManager; }
         }
 
         /// <summary>
@@ -413,6 +415,14 @@ namespace DemoGame.MapEditor
         void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
         {
             MapDrawFilterHelper.DrawBackground = chkDrawBackground.Checked;
+        }
+
+        void chkIndoors_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            Map.Indoors = chkIndoors.Checked;
         }
 
         void chkShowGrhs_CheckedChanged(object sender, EventArgs e)
@@ -620,7 +630,7 @@ namespace DemoGame.MapEditor
             {
                 box.Draw(sb);
             }
-            
+
             // Light sources
             if (chkLightSources.Checked)
             {
@@ -697,6 +707,20 @@ namespace DemoGame.MapEditor
         void GameScreen_Resize(object sender, EventArgs e)
         {
             _camera.Size = GameScreenSize;
+        }
+
+        byte GetMapLightValueFromControlText(Control tb)
+        {
+            int v;
+            if (!int.TryParse(tb.Text, out v))
+                v = byte.MaxValue;
+
+            v = v.Clamp(byte.MinValue, byte.MaxValue);
+
+            if (tb.Text != v.ToString())
+                tb.Text = v.ToString();
+
+            return (byte)v;
         }
 
         void HandleSwitch_SaveAllMaps(string[] parameters)
@@ -1021,12 +1045,16 @@ namespace DemoGame.MapEditor
                 if (oldMap != null)
                 {
                     foreach (var light in oldMap.Lights)
+                    {
                         DrawingManager.LightManager.Remove(light);
+                    }
                 }
 
                 // Add the lights from the new map
                 foreach (var light in newMap.Lights)
+                {
                     DrawingManager.LightManager.Add(light);
+                }
             }
 
             // Handle the change on some controls manually
@@ -1101,6 +1129,51 @@ namespace DemoGame.MapEditor
                 return;
 
             _selectedGrh.SetGrh(e.GrhData.GrhIndex, AnimType.Loop, _currentTime);
+        }
+
+        void txtAmbientB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtAmbientB_Leave(sender, e);
+        }
+
+        void txtAmbientB_Leave(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            var v = GetMapLightValueFromControlText(txtAmbientB);
+            Map.AmbientLight = new Color(Map.AmbientLight.R, Map.AmbientLight.G, v);
+        }
+
+        void txtAmbientG_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtAmbientG_Leave(sender, e);
+        }
+
+        void txtAmbientG_Leave(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            var v = GetMapLightValueFromControlText(txtAmbientG);
+            Map.AmbientLight = new Color(Map.AmbientLight.R, v, Map.AmbientLight.B);
+        }
+
+        void txtAmbientR_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtAmbientR_Leave(sender, e);
+        }
+
+        void txtAmbientR_Leave(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            var v = GetMapLightValueFromControlText(txtAmbientR);
+            Map.AmbientLight = new Color(v, Map.AmbientLight.G, Map.AmbientLight.B);
         }
 
         void txtGridHeight_TextChanged(object sender, EventArgs e)
@@ -1220,72 +1293,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        byte GetMapLightValueFromControlText(Control tb)
-        {
-            int v;
-            if (!int.TryParse(tb.Text, out v))
-                v = byte.MaxValue;
-
-            v = v.Clamp(byte.MinValue, byte.MaxValue);
-
-            if (tb.Text != v.ToString())
-                tb.Text = v.ToString();
-
-            return (byte)v;
-        }
-
-        private void txtAmbientB_Leave(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            var v = GetMapLightValueFromControlText(txtAmbientB);
-            Map.AmbientLight = new Color(Map.AmbientLight.R, Map.AmbientLight.G, v);
-        }
-
-        private void txtAmbientG_Leave(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            var v = GetMapLightValueFromControlText(txtAmbientG);
-            Map.AmbientLight = new Color(Map.AmbientLight.R, v, Map.AmbientLight.B);
-        }
-
-        private void txtAmbientR_Leave(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            var v = GetMapLightValueFromControlText(txtAmbientR);
-            Map.AmbientLight = new Color(v, Map.AmbientLight.G, Map.AmbientLight.B);
-        }
-
-        private void txtAmbientR_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-                txtAmbientR_Leave(sender, e);
-        }
-
-        private void txtAmbientG_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-                txtAmbientG_Leave(sender, e);
-        }
-
-        private void txtAmbientB_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-                txtAmbientB_Leave(sender, e);
-        }
-
-        private void chkIndoors_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            Map.Indoors = chkIndoors.Checked;
-        }
     }
 }

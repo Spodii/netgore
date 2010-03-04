@@ -6,8 +6,6 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Rectangle=Microsoft.Xna.Framework.Rectangle;
-using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
 {
@@ -41,6 +39,18 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles drawing the interface for the cursor, which is
+        /// displayed over everything else. This can include the name of entities, selection boxes, etc.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public override void DrawInterface(ISpriteBatch spriteBatch)
+        {
+            // If we have a light under the cursor or selected, use the SizeAll cursor
+            if (_selectedLight != null || FindMouseOverLight() != null)
+                Container.Cursor = Cursors.SizeAll;
+        }
+
+        /// <summary>
         /// Finds the <see cref="ILight"/> under the cursor.
         /// </summary>
         /// <returns>The <see cref="ILight"/> under the cursor, or null if no <see cref="ILight"/> is under the cursor.</returns>
@@ -70,15 +80,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when a mouse button has been released.
-        /// </summary>
-        /// <param name="e">Mouse events.</param>
-        public override void MouseUp(MouseEventArgs e)
-        {
-            _selectedLight = null;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
         /// <param name="e">Mouse events.</param>
@@ -89,15 +90,12 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles drawing the interface for the cursor, which is
-        /// displayed over everything else. This can include the name of entities, selection boxes, etc.
+        /// When overridden in the derived class, handles when a mouse button has been released.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        public override void DrawInterface(ISpriteBatch spriteBatch)
+        /// <param name="e">Mouse events.</param>
+        public override void MouseUp(MouseEventArgs e)
         {
-            // If we have a light under the cursor or selected, use the SizeAll cursor
-            if (_selectedLight != null || FindMouseOverLight() != null)
-                Container.Cursor = Cursors.SizeAll;
+            _selectedLight = null;
         }
     }
 }
