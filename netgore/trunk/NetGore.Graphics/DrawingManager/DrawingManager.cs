@@ -84,14 +84,44 @@ namespace NetGore.Graphics
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
         public ISpriteBatch BeginDrawWorld(ICamera2D camera)
         {
+            return BeginDrawWorld(camera, true, false);
+        }
+
+        /// <summary>
+        /// Begins drawing of the world.
+        /// </summary>
+        /// <param name="camera">The camera describing the the current view of the world.</param>
+        /// <param name="useLighting">Whether or not the <see cref="IDrawingManager.LightManager"/> is used to
+        /// produce the world lighting.</param>
+        /// <param name="bypassClear">If true, the backbuffer will not be cleared before the drawing starts,
+        /// resulting in the new images being drawn on top of the previous frame instead of from a fresh screen.</param>
+        /// <returns>
+        /// The <see cref="ISpriteBatch"/> to use to draw the world objects.
+        /// </returns>
+        /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
+        /// <see cref="DrawingManagerState.Idle"/>.</exception>
+        public ISpriteBatch BeginDrawWorld(ICamera2D camera, bool useLighting, bool bypassClear)
+        {
             if (State != DrawingManagerState.Idle)
                 throw new InvalidOperationException("This method cannot be called while already busy drawing.");
 
             _state = DrawingManagerState.DrawingWorld;
 
-            _lightMap = _lightManager.Draw(camera);
+            // If using lighting, grab the light map
+            if (useLighting)
+            {
+                _lightMap = _lightManager.Draw(camera);
+            }
+            else
+            {
+                _lightMap = null;
+            }
 
-            _gd.Clear(Color.CornflowerBlue);
+            // Clear the buffer
+            if (!bypassClear)
+                _gd.Clear(Color.CornflowerBlue);
+
+            // Start the SpriteBatch
             _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, camera.Matrix);
 
             return _sb;
@@ -126,29 +156,33 @@ namespace NetGore.Graphics
 
             _sb.End();
 
-            var rs = _gd.RenderState;
+            // We only have to go through all these extra steps if we are using a light map.
+            if (_lightMap != null)
+            {
+                var rs = _gd.RenderState;
 
-            // Store the old state values
-            var oldSourceBlend = rs.SourceBlend;
-            var oldDestinationBlend = rs.DestinationBlend;
-            var oldBlendFunction = rs.BlendFunction;
+                // Store the old state values
+                var oldSourceBlend = rs.SourceBlend;
+                var oldDestinationBlend = rs.DestinationBlend;
+                var oldBlendFunction = rs.BlendFunction;
 
-            // Start drawing
-            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+                // Start drawing
+                _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
 
-            // Set the blending mode
-            rs.SourceBlend = Blend.Zero;
-            rs.DestinationBlend = Blend.SourceColor;
-            rs.BlendFunction = BlendFunction.Add;
+                // Set the blending mode
+                rs.SourceBlend = Blend.Zero;
+                rs.DestinationBlend = Blend.SourceColor;
+                rs.BlendFunction = BlendFunction.Add;
 
-            // Draw the light map
-            _sb.Draw(_lightMap, Vector2.Zero, Color.White);
-            _sb.End();
+                // Draw the light map
+                _sb.Draw(_lightMap, Vector2.Zero, Color.White);
+                _sb.End();
 
-            // Restore the old blend mode
-            rs.SourceBlend = oldSourceBlend;
-            rs.DestinationBlend = oldDestinationBlend;
-            rs.BlendFunction = oldBlendFunction;
+                // Restore the old blend mode
+                rs.SourceBlend = oldSourceBlend;
+                rs.DestinationBlend = oldDestinationBlend;
+                rs.BlendFunction = oldBlendFunction;
+            }
         }
 
         /// <summary>

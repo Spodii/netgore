@@ -615,6 +615,10 @@ namespace DemoGame.MapEditor
                 }
             }
 
+            // End drawing with lighting, start drawing world without lighting
+            DrawingManager.EndDrawWorld();
+            sb = DrawingManager.BeginDrawWorld(Camera, false, true);
+
             // Border
             _mapBorderDrawer.Draw(sb, Map, _camera);
 
