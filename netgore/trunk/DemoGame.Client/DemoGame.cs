@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -52,6 +53,7 @@ namespace DemoGame.Client
             new CharacterSelectionScreen(_screenManager);
             new CreateCharacterScreen(_screenManager);
             new NewAccountScreen(_screenManager);
+            _screenManager.ConsoleScreen = new ConsoleScreen(_screenManager);
             _screenManager.SetScreen(MainMenuScreen.ScreenName);
 
             // NOTE: Temporary volume reduction
@@ -63,6 +65,7 @@ namespace DemoGame.Client
             });
 
             _sockets = ClientSockets.Instance;
+
             _screenManager.Updated += screenManager_Updated;
         }
 
@@ -153,10 +156,22 @@ namespace DemoGame.Client
             _screenManager.MapContent.Unload();
         }
 
+        /// <summary>
+        /// Handles when the <see cref="IScreenManager"/> is updated.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> that was updated.</param>
         void screenManager_Updated(IScreenManager screenManager)
         {
             // Update the sockets
             _sockets.Heartbeat();
+
+            // No matter the screen, if tilde is pressed, show the console
+            var screen = screenManager.ActiveScreen;
+            if (screen != null)
+            {
+                if (screen.GUIManager.NewKeysDown.Contains(Keys.OemTilde))
+                    screenManager.ShowConsole = !screenManager.ShowConsole;
+            }
         }
     }
 }

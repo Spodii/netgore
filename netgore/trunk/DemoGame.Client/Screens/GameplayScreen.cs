@@ -275,9 +275,8 @@ namespace DemoGame.Client
         /// there is often no need to clear the screen. This will only be called while the screen is the
         /// active screen.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
         /// <param name="gameTime">The current game time.</param>
-        public override void Draw(ISpriteBatch spriteBatch, int gameTime)
+        public override void Draw(int gameTime)
         {
             if (UserChar == null)
                 return;

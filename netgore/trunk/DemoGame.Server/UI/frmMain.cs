@@ -160,7 +160,7 @@ namespace DemoGame.Server.UI
             txtLogLine.Text = e.LocationInformation.LineNumber;
             txtLogMsg.Text = e.RenderedMessage;
             txtLogLevel.Text = e.Level.DisplayName;
-            txtLogLevel.ForeColor = e.Level.GetColor();
+            txtLogLevel.ForeColor = e.Level.GetSystemColor();
 
             tabControl1.SelectTab(tbLogItem);
         }
@@ -196,11 +196,11 @@ namespace DemoGame.Server.UI
 
             _serverThread.Start();
 
-            GetLogCheckBox(Level.Debug).ForeColor = Level.Debug.GetColor();
-            GetLogCheckBox(Level.Info).ForeColor = Level.Info.GetColor();
-            GetLogCheckBox(Level.Warn).ForeColor = Level.Warn.GetColor();
-            GetLogCheckBox(Level.Error).ForeColor = Level.Error.GetColor();
-            GetLogCheckBox(Level.Fatal).ForeColor = Level.Fatal.GetColor();
+            GetLogCheckBox(Level.Debug).ForeColor = Level.Debug.GetSystemColor();
+            GetLogCheckBox(Level.Info).ForeColor = Level.Info.GetSystemColor();
+            GetLogCheckBox(Level.Warn).ForeColor = Level.Warn.GetSystemColor();
+            GetLogCheckBox(Level.Error).ForeColor = Level.Error.GetSystemColor();
+            GetLogCheckBox(Level.Fatal).ForeColor = Level.Fatal.GetSystemColor();
 
             AppendToConsole("Server started. Type 'help' for a list of server console commands.", ConsoleTextType.Info);
         }

@@ -26,7 +26,6 @@ namespace NetGore.Graphics.GUI
         IGameScreen _activeScreen;
         IDrawingManager _drawingManager;
         SpriteFont _menuFont;
-        ISpriteBatch _sb;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenManager"/> class.
@@ -80,14 +79,19 @@ namespace NetGore.Graphics.GUI
         /// <param name="gameTime">Time passed since the last call to Draw.</param>
         public override void Draw(GameTime gameTime)
         {
+            // Update the FPS
             _fps.Update(gameTime.ElapsedRealTime);
 
-            if (_activeScreen == null)
-                return;
-
+            // Clear the device
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _activeScreen.Draw(SpriteBatch, gameTime.ToTotalMS());
+            // Draw the active screen
+            if (_activeScreen != null)
+                _activeScreen.Draw(gameTime.ToTotalMS());
+
+            // Draw the console
+            if (ShowConsole && ConsoleScreen != null)
+                ConsoleScreen.Draw(gameTime.ToTotalMS());
         }
 
         /// <summary>
@@ -108,7 +112,6 @@ namespace NetGore.Graphics.GUI
         protected override void LoadContent()
         {
             // Read the global content used between screens
-            _sb = new RoundedXnaSpriteBatch(GraphicsDevice);
             _menuFont = _content.Load<SpriteFont>("Font/Menu");
 
             // Tell the other screens to load their content, too
@@ -124,12 +127,15 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected override void UnloadContent()
         {
-            _content.Unload();
-
+            // Unload all of the screens
             foreach (var screen in _screens.Values)
             {
                 screen.UnloadContent();
             }
+
+            // Unload the content managers
+            _content.Unload();
+            _mapContent.Unload();
         }
 
         /// <summary>
@@ -140,13 +146,20 @@ namespace NetGore.Graphics.GUI
         {
             int currentTime = gameTime.ToTotalMS();
 
+            // Update the drawing manager
             DrawingManager.Update(currentTime);
 
+            // Update the active screen
+            if (ActiveScreen != null)
+                ActiveScreen.Update(currentTime);
+
+            // Update the console screen
+            if (ShowConsole && ConsoleScreen != null)
+                ConsoleScreen.Update(currentTime);
+
+            // Raise update event
             if (Updated != null)
                 Updated(this);
-
-            if (_activeScreen != null)
-                _activeScreen.Update(currentTime);
         }
 
         #region IScreenManager Members
@@ -182,6 +195,25 @@ namespace NetGore.Graphics.GUI
                 if (lastScreen != null)
                     lastScreen.Deactivate();
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IGameScreen"/> to use to show the console.
+        /// </summary>
+        public IGameScreen ConsoleScreen
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets if to show the console. If <see cref="IScreenManager.ConsoleScreen"/> is null, the console
+        /// will not be shown even if this value is true.
+        /// </summary>
+        public bool ShowConsole
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -254,14 +286,6 @@ namespace NetGore.Graphics.GUI
         public SoundManager SoundManager
         {
             get { return _soundManager; }
-        }
-
-        /// <summary>
-        /// Gets a general-purpose <see cref="SpriteBatch"/> to use for drawing the screens.
-        /// </summary>
-        public ISpriteBatch SpriteBatch
-        {
-            get { return _sb; }
         }
 
         /// <summary>

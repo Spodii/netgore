@@ -27,6 +27,17 @@ namespace NetGore.Graphics.GUI
         IGameScreen ActiveScreen { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="IGameScreen"/> to use to show the console.
+        /// </summary>
+        IGameScreen ConsoleScreen { get; set; }
+
+        /// <summary>
+        /// Gets or sets if to show the console. If <see cref="IScreenManager.ConsoleScreen"/> is null, the console
+        /// will not be shown even if this value is true.
+        /// </summary>
+        bool ShowConsole { get; set; }
+
+        /// <summary>
         /// Gets the global <see cref="ContentManager"/> shared between all screens.
         /// </summary>
         ContentManager Content { get; }
@@ -80,11 +91,6 @@ namespace NetGore.Graphics.GUI
         /// Gets the <see cref="SoundManager"/> managed by this <see cref="ScreenManager"/>.
         /// </summary>
         SoundManager SoundManager { get; }
-
-        /// <summary>
-        /// Gets a general-purpose <see cref="SpriteBatch"/> to use for drawing the screens.
-        /// </summary>
-        ISpriteBatch SpriteBatch { get; }
 
         /// <summary>
         /// Adds a <see cref="IGameScreen"/> to this manager.

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -23,6 +24,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         readonly NumCharsToDrawCache _numCharsToDraw;
 
+        int _bufferTruncateSize = 100;
+
         int _currentTime;
 
         /// <summary>
@@ -40,6 +43,7 @@ namespace NetGore.Graphics.GUI
         int _lineBufferOffset = 0;
 
         int _lineCharBufferOffset = 0;
+        int _maxBufferSize = 200;
 
         /// <summary>
         /// The maximum number of visible lines to draw (how many lines fit into the visible area).
@@ -78,6 +82,29 @@ namespace NetGore.Graphics.GUI
             // Set the initial line length and number of visible lines
             UpdateMaxLineLength();
             UpdateMaxVisibleLines();
+        }
+
+        /// <summary>
+        /// Gets or sets the number of lines to trim the buffer down to when the number of lines in this
+        /// <see cref="TextBox"/> has exceeded the <see cref="TextBox.MaxBufferSize"/>. For best performance, this
+        /// value should be at least 20% less than the <see cref="TextBox.MaxBufferSize"/> since truncating has nearly
+        /// the same overhead no matter how many lines are truncated. This value should always be less than the
+        /// <see cref="TextBox.MaxBufferSize"/>.
+        /// By default, this value is equal to 100.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than zero.</exception>
+        [SyncValue]
+        [DefaultValue(100)]
+        public int BufferTruncateSize
+        {
+            get { return _bufferTruncateSize; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("value");
+
+                _bufferTruncateSize = value;
+            }
         }
 
         /// <summary>
@@ -158,7 +185,7 @@ namespace NetGore.Graphics.GUI
                 if (_lineBufferOffset == value)
                     return;
 
-                if (_lineBufferOffset < 0 || _lineBufferOffset > LineCount)
+                if (value < 0 || value > LineCount)
                     throw new ArgumentOutOfRangeException("value");
 
                 _lineBufferOffset = value;
@@ -185,6 +212,27 @@ namespace NetGore.Graphics.GUI
         public int LineCount
         {
             get { return _lines.Count; }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum line buffer of a multi-line <see cref="TextBox"/>. Once this value has been reached,
+        /// the number of lines in the <see cref="TextBox"/> will be reduced to <see cref="TextBox.BufferTruncateSize"/>.
+        /// If less than or equal to zero, truncating will not be performed.
+        /// By default, this value is equal to 200.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than or equal to zero.</exception>
+        [SyncValue]
+        [DefaultValue(200)]
+        public int MaxBufferSize
+        {
+            get { return _maxBufferSize; }
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("value");
+
+                _maxBufferSize = value;
+            }
         }
 
         /// <summary>
@@ -264,6 +312,8 @@ namespace NetGore.Graphics.GUI
                     newLine.Append(textLines[i]);
                     _lines.Insert(_lines.Count, newLine);
                 }
+
+                TruncateIfNeeded();
             }
 
             _numCharsToDraw.Invalidate();
@@ -290,7 +340,10 @@ namespace NetGore.Graphics.GUI
             Append(text);
 
             if (IsMultiLine)
+            {
                 _lines.Insert(_lines.Count, new TextBoxLine(_lines));
+                TruncateIfNeeded();
+            }
         }
 
         /// <summary>
@@ -305,7 +358,10 @@ namespace NetGore.Graphics.GUI
             }
 
             if (IsMultiLine)
+            {
                 _lines.Insert(_lines.Count, new TextBoxLine(_lines));
+                TruncateIfNeeded();
+            }
             else
                 Append(" ");
         }
@@ -452,6 +508,7 @@ namespace NetGore.Graphics.GUI
             _lines.CurrentLine.Insert(text, CursorLinePosition);
             ((IEditableText)this).MoveCursor(MoveCursorDirection.Right);
             _numCharsToDraw.Invalidate();
+            TruncateIfNeeded();
         }
 
         /// <summary>
@@ -524,6 +581,31 @@ namespace NetGore.Graphics.GUI
         void ResetCursorBlink()
         {
             _cursorBlinkTimer = _currentTime;
+        }
+
+        /// <summary>
+        /// Checks if the <see cref="TextBox"/>'s lines need to be truncated, and if they do, truncates.
+        /// </summary>
+        void TruncateIfNeeded()
+        {
+            // Can't truncate if not multiline or no max buffer size has been set
+            if (!IsMultiLine || MaxBufferSize <= 0)
+                return;
+
+            // Check if we have exceeded the maximum buffer size
+            if (_lines.Count <= MaxBufferSize)
+                return;
+
+            // Truncate down to the BufferTruncateSize
+            _lines.Truncate(_lines.Count - BufferTruncateSize);
+
+            // Update some values to ensure they are valid for our new size
+            if (LineBufferOffset >= _lines.Count)
+                LineBufferOffset = _lines.Count - 1;
+
+            EnsureHorizontalOffsetValid();
+            EnsureCursorPositionValid();
+            _numCharsToDraw.Invalidate();
         }
 
         /// <summary>
