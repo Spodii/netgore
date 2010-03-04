@@ -33,6 +33,21 @@ namespace NetGore.Graphics
         ISpriteBatch BeginDrawWorld(ICamera2D camera);
 
         /// <summary>
+        /// Begins drawing of the world.
+        /// </summary>
+        /// <param name="camera">The camera describing the the current view of the world.</param>
+        /// <param name="useLighting">Whether or not the <see cref="IDrawingManager.LightManager"/> is used to
+        /// produce the world lighting.</param>
+        /// <param name="bypassClear">If true, the backbuffer will not be cleared before the drawing starts,
+        /// resulting in the new images being drawn on top of the previous frame instead of from a fresh screen.</param>
+        /// <returns>
+        /// The <see cref="ISpriteBatch"/> to use to draw the world objects.
+        /// </returns>
+        /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
+        /// <see cref="DrawingManagerState.Idle"/>.</exception>
+        ISpriteBatch BeginDrawWorld(ICamera2D camera, bool useLighting, bool bypassClear);
+
+        /// <summary>
         /// Ends drawing the graphical user interface.
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
