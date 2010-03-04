@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
@@ -15,11 +13,12 @@ namespace DemoGame.Client
 {
     class ConsoleScreen : GameScreen
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "console";
         static readonly Color _overlayColor = new Color(255, 255, 255, 200);
 
+        readonly List<Level> _disabledLogLevels = new List<Level>();
         readonly MemoryAppender _logger = new MemoryAppender();
+        readonly List<CheckBox> _logLevelCheckBoxes = new List<CheckBox>();
 
         SpriteFont _consoleFont;
         Panel _cScreen;
@@ -32,6 +31,21 @@ namespace DemoGame.Client
         /// <exception cref="ArgumentNullException"><paramref name="screenManager"/> is null.</exception>
         public ConsoleScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
+        }
+
+        /// <summary>
+        /// Creates a <see cref="CheckBox"/> for a <see cref="Level"/>.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="index">The display index.</param>
+        /// <returns>The created <see cref="CheckBox"/>.</returns>
+        CheckBox CreateLogLevelCheckBox(Level level, int index)
+        {
+            var pos = new Vector2(_cScreen.Size.X - 100, 5);
+            var ret = new CheckBox(_cScreen, pos) { Font = _consoleFont, Text = level.Name, Tag = level, ForeColor = level.GetColor(), Value = true };
+            ret.Position += new Vector2(0, ret.Size.Y * index);
+            ret.ValueChanged += LevelCheckBox_ValueChanged;
+            return ret;
         }
 
         /// <summary>
@@ -60,13 +74,12 @@ namespace DemoGame.Client
         /// <returns>The enabled log events.</returns>
         LoggingEvent[] GetFilteredEvents(IEnumerable<LoggingEvent> events)
         {
-            // TODO: !! Add support to filter the logs
-
             List<LoggingEvent> ret = new List<LoggingEvent>();
 
             foreach (var e in events)
             {
-                ret.Add(e);
+                if (!_disabledLogLevels.Contains(e.Level))
+                    ret.Add(e);
             }
 
             return ret.ToArray();
@@ -81,23 +94,33 @@ namespace DemoGame.Client
         {
             BasicConfigurator.Configure(_logger);
 
+            _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console");
+
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             _txtOutput = new TextBox(_cScreen, Vector2.Zero, _cScreen.Size)
-            { Size = _cScreen.Size, Border = ControlBorder.Empty, MaxBufferSize = 200, BufferTruncateSize = 80 };
+            {  Font = _consoleFont, Size = _cScreen.Size, Border = ControlBorder.Empty, MaxBufferSize = 200, BufferTruncateSize = 80 };
+
+            // Create the logging level checkboxes
+            _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Fatal, 0));
+            _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Error, 1));
+            _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Warn, 2));
+            _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Info, 3));
+            _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Debug, 4));
+
+            // Disable debug by default
+            _logLevelCheckBoxes.First(x => (Level)x.Tag == Level.Debug).Value = false;
         }
 
         /// <summary>
-        /// Handles the loading of game content. Any content that is loaded should be placed in here.
-        /// This will be invoked once (right after Initialize()), along with an additional time for
-        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
+        /// Handles when the value changes for a <see cref="CheckBox"/> for a <see cref="Level"/>.
         /// </summary>
-        public override void LoadContent()
+        /// <param name="sender">The sender.</param>
+        void LevelCheckBox_ValueChanged(Control sender)
         {
-            base.LoadContent();
-
-            _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console");
-            _txtOutput.Font = _consoleFont;
+            // Rebuild the list of disabled log levels
+            _disabledLogLevels.Clear();
+            _disabledLogLevels.AddRange(_logLevelCheckBoxes.Where(x => !x.Value).Select(x => (Level)x.Tag));
         }
 
         /// <summary>
