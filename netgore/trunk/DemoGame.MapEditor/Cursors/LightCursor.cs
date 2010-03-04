@@ -40,6 +40,10 @@ namespace DemoGame.MapEditor
             get { return 40; }
         }
 
+        /// <summary>
+        /// Finds the <see cref="ILight"/> under the cursor.
+        /// </summary>
+        /// <returns>The <see cref="ILight"/> under the cursor, or null if no <see cref="ILight"/> is under the cursor.</returns>
         ILight FindMouseOverLight()
         {
             var cursorPos = Container.CursorPos;
