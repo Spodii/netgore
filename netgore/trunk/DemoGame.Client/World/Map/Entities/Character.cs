@@ -141,11 +141,14 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the position for the Camera to focus on this Character.
         /// </summary>
-        /// <returns>Position for the Camera to focus on this Character.</returns>
-        public Vector2 GetCameraPos()
+        /// <param name="camera">The <see cref="ICamera2D"/> to get the position for.</param>
+        /// <returns>
+        /// Position for the Camera to focus on this Character.
+        /// </returns>
+        public Vector2 GetCameraPos(ICamera2D camera)
         {
-            Vector2 p1 = DrawPosition + (Size / 2.0f) - (GameData.ScreenSize / 2.0f);
-            return new Vector2((float)Math.Round(p1.X), (float)Math.Round(p1.Y));
+            Vector2 pos = DrawPosition + (Size / 2.0f) - (camera.Size / 2.0f);
+            return pos.Round();
         }
 
         /// <summary>
