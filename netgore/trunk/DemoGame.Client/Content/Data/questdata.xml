@@ -3,9 +3,14 @@
   <QuestDescriptions>
     <Count>1</Count>
     <Item0>
-      <Description>Super duper awesome test quest of doom.</Description>
-      <Name>Test Quest</Name>
+      <Description>Super duper awesome test quest of doom that has so many requirements, you will probably never be able to start it! Muahaha!</Description>
+      <Name>Mr. Impossible Quest</Name>
       <QuestID>0</QuestID>
     </Item0>
+    <Item1>
+      <Description>A super-duper easy quest that, as far as I remember, involves doing nearly nothing and can be repeated as much as you like. Yeah, life is good.</Description>
+      <Name>Super Easy Quest</Name>
+      <QuestID>1</QuestID>
+    </Item1>
   </QuestDescriptions>
 </QuestData>
