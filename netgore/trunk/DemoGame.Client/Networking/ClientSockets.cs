@@ -124,7 +124,8 @@ namespace DemoGame.Client
             _packetHandler.Process(recvData);
 
             // Update the latency tracker
-            _latencyTracker.Update();
+            if (_latencyTracker != null)
+                _latencyTracker.Update();
 
             // Check if enough time has elapsed for sending another ping
             if (_lastPingTime + _updateLatencyInterval < GetTime())
