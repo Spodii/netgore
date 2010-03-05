@@ -74,7 +74,7 @@ namespace NetGore
         /// <returns>The distinct and immutable copy of the <paramref name="values"/>.</returns>
         protected IEnumerable<T> AsDistinctAndImmutable<T>(IEnumerable<T> values)
         {
-            return AsImmutable<T>(values.Distinct());
+            return AsImmutable(values.Distinct());
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace NetGore
         /// <returns>The immutable copy of the <paramref name="values"/>.</returns>
         protected virtual IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
         {
-            return values.ToImmutable<T>();
+            return values.ToImmutable();
         }
 
         /// <summary>
@@ -703,7 +703,7 @@ namespace NetGore
         /// </returns>
         public IEnumerable<T> GetMany<T>()
         {
-            return AsDistinctAndImmutable<T>(_gridSegments.SelectMany(x => x).OfType<T>());
+            return AsDistinctAndImmutable(_gridSegments.SelectMany(x => x).OfType<T>());
         }
 
         /// <summary>
@@ -718,7 +718,7 @@ namespace NetGore
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
-            return AsImmutable<ISpatial>(segment.Where(x => x.Contains(p) && condition(x)));
+            return AsImmutable(segment.Where(x => x.Contains(p) && condition(x)));
         }
 
         /// <summary>
@@ -734,7 +734,7 @@ namespace NetGore
         {
             var segments = GetSegments(rect);
             return
-                AsDistinctAndImmutable<T>(
+                AsDistinctAndImmutable(
                     segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>().Where(x => condition(x))));
         }
 
@@ -753,7 +753,7 @@ namespace NetGore
             if (segment == null)
                 return Enumerable.Empty<T>();
 
-            return AsImmutable<T>(segment.Where(x => x.Contains(p)).OfType<T>().Where(x => condition(x)));
+            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>().Where(x => condition(x)));
         }
 
         /// <summary>
@@ -767,7 +767,7 @@ namespace NetGore
         public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable<ISpatial>(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect) && condition(x))));
+            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect) && condition(x))));
         }
 
         /// <summary>

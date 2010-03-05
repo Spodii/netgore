@@ -246,24 +246,6 @@ namespace DemoGame.Server
             SetShopFromID(v.ShopID);
         }
 
-        void SetShopFromID(ShopID? shopID)
-        {
-            if (!shopID.HasValue)
-            {
-                _shop = null;
-                return;
-            }
-
-            if (!ShopManager.TryGetValue(shopID.Value, out _shop))
-            {
-                const string errmsg = "Failed to load shop with ID `{0}` for NPC `{1}`. Setting shop as null.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, shopID.Value, this);
-                Debug.Fail(string.Format(errmsg, shopID.Value, this));
-                _shop = null;
-            }
-        }
-
         /// <summary>
         /// Handles updating this <see cref="Entity"/>.
         /// </summary>
@@ -471,6 +453,24 @@ namespace DemoGame.Server
             _ai = newAI;
 
             return true;
+        }
+
+        void SetShopFromID(ShopID? shopID)
+        {
+            if (!shopID.HasValue)
+            {
+                _shop = null;
+                return;
+            }
+
+            if (!ShopManager.TryGetValue(shopID.Value, out _shop))
+            {
+                const string errmsg = "Failed to load shop with ID `{0}` for NPC `{1}`. Setting shop as null.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, shopID.Value, this);
+                Debug.Fail(string.Format(errmsg, shopID.Value, this));
+                _shop = null;
+            }
         }
 
         #region IQuestProvider<User> Members

@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Reflection;
-using log4net;
 using Microsoft.Xna.Framework;
 using NetGore.Graphics.GUI;
 

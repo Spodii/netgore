@@ -97,6 +97,20 @@ namespace DemoGame.MapEditor
             return true;
         }
 
+        /// <summary>
+        /// Gets the position to display the tooltip text.
+        /// </summary>
+        /// <param name="font">The font to use.</param>
+        /// <param name="text">The tooltip text.</param>
+        /// <param name="entity">The entity the tooltip is for.</param>
+        /// <returns>The position to display the tooltip text.</returns>
+        public static Vector2 GetToolTipPos(SpriteFont font, string text, ISpatial entity)
+        {
+            var pos = new Vector2(entity.Max.X, entity.Position.Y);
+            pos -= new Vector2(5, (font.LineSpacing * text.Split('\n').Length) + 5);
+            return pos;
+        }
+
         void Menu_IgnoreWalls_Click(object sender, EventArgs e)
         {
             _mnuIgnoreWalls.Checked = !_mnuIgnoreWalls.Checked;
@@ -172,20 +186,6 @@ namespace DemoGame.MapEditor
                     _toolTipPos = GetToolTipPos(Container.SpriteFont, _toolTip, hoverEntity);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the position to display the tooltip text.
-        /// </summary>
-        /// <param name="font">The font to use.</param>
-        /// <param name="text">The tooltip text.</param>
-        /// <param name="entity">The entity the tooltip is for.</param>
-        /// <returns>The position to display the tooltip text.</returns>
-        public static Vector2 GetToolTipPos(SpriteFont font, string text, ISpatial entity)
-        {
-            var pos = new Vector2(entity.Max.X, entity.Position.Y);
-            pos -= new Vector2(5, (font.LineSpacing * text.Split('\n').Length) + 5);
-            return pos;
         }
 
         /// <summary>
