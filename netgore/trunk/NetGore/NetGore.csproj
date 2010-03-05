@@ -98,6 +98,7 @@
     <Compile Include="IO\Persistable\IPersistable.cs" />
     <Compile Include="IO\Persistable\PersistableHelper.cs" />
     <Compile Include="LogHelper.cs" />
+    <Compile Include="Strings\NaturalStringComparer.cs" />
     <Compile Include="Network\Sockets\IUDPSocket.cs" />
     <Compile Include="Network\Sockets\UDPSocketEventHandler.cs" />
     <Compile Include="Stats\ChangedStatsTracker.cs" />
