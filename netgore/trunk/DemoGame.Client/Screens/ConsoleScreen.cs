@@ -84,24 +84,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Filters only the enabled log events.
-        /// </summary>
-        /// <param name="events">The unfiltered log events.</param>
-        /// <returns>The enabled log events.</returns>
-        LoggingEvent[] GetFilteredEvents(IEnumerable<LoggingEvent> events)
-        {
-            List<LoggingEvent> ret = new List<LoggingEvent>();
-
-            foreach (var e in events)
-            {
-                if (!_disabledLogLevels.Contains(e.Level))
-                    ret.Add(e);
-            }
-
-            return ret.ToArray();
-        }
-
-        /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
         /// use this instead of the constructor. This is invoked only once.
@@ -199,14 +181,10 @@ namespace DemoGame.Client
             // Ensure there are events
             if (events != null && events.Length > 0)
             {
-                events = GetFilteredEvents(events);
-                if (events != null && events.Length > 0)
+                foreach (var e in events)
                 {
-                    foreach (var e in events)
-                    {
-                        var styledText = new StyledText(e.RenderedMessage, e.Level.GetColor());
-                        _txtOutput.AppendLine(styledText);
-                    }
+                    var styledText = new StyledText(e.RenderedMessage, e.Level.GetColor());
+                    _txtOutput.AppendLine(styledText);
                 }
             }
 
