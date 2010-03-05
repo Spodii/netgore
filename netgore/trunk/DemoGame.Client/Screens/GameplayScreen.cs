@@ -385,7 +385,7 @@ namespace DemoGame.Client
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
-            _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo };
+            _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo, IsVisible = false };
             new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
@@ -410,6 +410,9 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+            _guiSettings.Add("GuildForm", _guildForm);
+            _guiSettings.Add("StatusEffectsForm", _statusEffectsForm);
+            _guiSettings.Add("SkillsForm", _skillsForm);
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)

@@ -26,6 +26,7 @@ namespace NetGore.Features.Guilds
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
         public GuildForm(Control parent, Vector2 position) : base(parent, position, new Vector2(125, 275))
         {
+            IsVisible = false;
             CreateControls();
         }
 
@@ -37,6 +38,7 @@ namespace NetGore.Features.Guilds
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
         public GuildForm(IGUIManager guiManager, Vector2 position) : base(guiManager, position, new Vector2(125, 275))
         {
+            IsVisible = false;
             CreateControls();
         }
 
