@@ -102,7 +102,7 @@ namespace NetGore.Graphics
                 return;
 
             Vector2 size = Size;
-            Vector2 drawPos = _manager.GetDrawOffset(Owner, size);
+            Vector2 drawPos = _manager.GetDrawOffset(Owner, size).Round();
 
             // Draw the border
             Rectangle borderArea = new Rectangle((int)drawPos.X, (int)drawPos.Y, (int)size.X, (int)size.Y);
