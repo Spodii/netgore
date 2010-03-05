@@ -1365,6 +1365,7 @@ namespace DemoGame.Server
                 }
             }
 
+            // Set the base stats
             BaseStats.CopyValuesFrom(v.Stats, false);
         }
 
