@@ -109,13 +109,9 @@ namespace NetGore.Graphics
 
             // If using lighting, grab the light map
             if (useLighting)
-            {
                 _lightMap = _lightManager.Draw(camera);
-            }
             else
-            {
                 _lightMap = null;
-            }
 
             // Clear the buffer
             if (!bypassClear)

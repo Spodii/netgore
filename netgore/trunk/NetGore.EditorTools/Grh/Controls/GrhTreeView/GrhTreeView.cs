@@ -19,6 +19,8 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GrhTreeView : TreeView, IComparer, IComparer<TreeNode>
     {
+        static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
+
         /// <summary>
         /// Timer to update the animated <see cref="Grh"/>s in the <see cref="GrhTreeView"/>.
         /// </summary>
@@ -989,6 +991,8 @@ namespace NetGore.EditorTools
 
         #endregion
 
+        #region IComparer<TreeNode> Members
+
         /// <summary>
         /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
         /// </summary>
@@ -1019,6 +1023,6 @@ namespace NetGore.EditorTools
             return _nodeTextComparer.Compare(x.Text, y.Text);
         }
 
-        static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
+        #endregion
     }
 }

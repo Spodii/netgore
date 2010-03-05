@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
 {
@@ -54,7 +55,7 @@ namespace DemoGame.MapEditor
 
             // Draw the tooltip
             if (_toolTipObj != null && !string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Microsoft.Xna.Framework.Graphics.Color.White, Microsoft.Xna.Framework.Graphics.Color.Black);
+                spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -90,6 +91,33 @@ namespace DemoGame.MapEditor
             _toolTipObj = null;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles when the cursor has moved.
+        /// </summary>
+        /// <param name="e">Mouse events.</param>
+        public override void MouseMove(MouseEventArgs e)
+        {
+            if (_selectedLight != null)
+            {
+                // Move the light if dragging one
+                _selectedLight.Teleport(Container.CursorPos - _selectedLightOffset);
+
+                _toolTipObj = null;
+            }
+            else
+                UpdateToolTip();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when a mouse button has been released.
+        /// </summary>
+        /// <param name="e">Mouse events.</param>
+        public override void MouseUp(MouseEventArgs e)
+        {
+            _selectedLight = null;
+            UpdateToolTip();
+        }
+
         void UpdateToolTip()
         {
             if (_selectedLight != null)
@@ -111,35 +139,6 @@ namespace DemoGame.MapEditor
             _toolTip = string.Format("{0}\n{1} ({2}x{3})", light, light.Position, light.Size.X, light.Size.Y);
             _toolTipPos = EntityCursor.GetToolTipPos(Container.SpriteFont, _toolTip, light);
             _toolTipPos.X = light.Position.X + 5;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when the cursor has moved.
-        /// </summary>
-        /// <param name="e">Mouse events.</param>
-        public override void MouseMove(MouseEventArgs e)
-        {
-            if (_selectedLight != null)
-            {
-                // Move the light if dragging one
-                _selectedLight.Teleport(Container.CursorPos - _selectedLightOffset);
-
-                _toolTipObj = null;
-            }
-            else
-            {
-                UpdateToolTip();
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when a mouse button has been released.
-        /// </summary>
-        /// <param name="e">Mouse events.</param>
-        public override void MouseUp(MouseEventArgs e)
-        {
-            _selectedLight = null;
-            UpdateToolTip();
         }
     }
 }

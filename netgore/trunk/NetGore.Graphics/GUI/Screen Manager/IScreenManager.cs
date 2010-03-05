@@ -32,12 +32,6 @@ namespace NetGore.Graphics.GUI
         IGameScreen ConsoleScreen { get; set; }
 
         /// <summary>
-        /// Gets or sets if to show the console. If <see cref="IScreenManager.ConsoleScreen"/> is null, the console
-        /// will not be shown even if this value is true.
-        /// </summary>
-        bool ShowConsole { get; set; }
-
-        /// <summary>
         /// Gets the global <see cref="ContentManager"/> shared between all screens.
         /// </summary>
         ContentManager Content { get; }
@@ -81,6 +75,12 @@ namespace NetGore.Graphics.GUI
         /// Gets the size of the screen in pixels.
         /// </summary>
         Vector2 ScreenSize { get; }
+
+        /// <summary>
+        /// Gets or sets if to show the console. If <see cref="IScreenManager.ConsoleScreen"/> is null, the console
+        /// will not be shown even if this value is true.
+        /// </summary>
+        bool ShowConsole { get; set; }
 
         /// <summary>
         /// Gets the <see cref="ISkinManager"/> used to manage all the general skinning between all screens.

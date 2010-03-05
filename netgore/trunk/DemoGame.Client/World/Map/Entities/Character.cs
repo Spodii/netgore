@@ -241,9 +241,9 @@ namespace DemoGame.Client
         }
 
 #if !TOPDOWN
-    /// <summary>
-    /// Updates the character's sprites.
-    /// </summary>
+        /// <summary>
+        /// Updates the character's sprites.
+        /// </summary>
         void UpdateAnimation()
         {
             // Only update if the state has changed
