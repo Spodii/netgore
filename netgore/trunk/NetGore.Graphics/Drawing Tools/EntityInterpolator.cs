@@ -10,6 +10,13 @@ namespace NetGore.Graphics
     public class EntityInterpolator
     {
         /// <summary>
+        /// The lowest acceptable velocity to use for when no velocity is given. This is to ensure that an entity
+        /// does that currently has no velocity does not end up getting stuck moving REAALLLYY slowly since their
+        /// _greatestVelocity is greater than zero, but just barely.
+        /// </summary>
+        const float _lowestAcceptableVelocity = 0.05f;
+
+        /// <summary>
         /// The maximum distance allowed between the Entity's Position and the DrawPosition. If the distance between
         /// these two points exceeds this value, the DrawPosition should be set to the Position instead of interpolating
         /// to it.
@@ -66,14 +73,14 @@ namespace NetGore.Graphics
             // straight to the real position.
             if (velocity.X <= float.Epsilon && position.X != _drawPosition.X)
             {
-                if (_greatestVelocity.X <= float.Epsilon)
+                if (_greatestVelocity.X <= _lowestAcceptableVelocity)
                     _drawPosition.X = position.X;
                 else
                     velocity.X = _greatestVelocity.X;
             }
             if (velocity.Y <= float.Epsilon && position.Y != _drawPosition.Y)
             {
-                if (_greatestVelocity.Y <= float.Epsilon)
+                if (_greatestVelocity.Y <= _lowestAcceptableVelocity)
                     _drawPosition.Y = position.Y;
                 else
                     velocity.Y = _greatestVelocity.Y;
