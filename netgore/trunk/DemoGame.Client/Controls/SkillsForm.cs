@@ -26,6 +26,8 @@ namespace DemoGame.Client
         public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent)
             : base(parent, position, new Vector2(150, 100))
         {
+            IsVisible = false;
+
             _cooldownManager = cooldownManager;
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
