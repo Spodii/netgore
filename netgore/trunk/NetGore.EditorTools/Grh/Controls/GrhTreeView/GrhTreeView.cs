@@ -17,7 +17,7 @@ namespace NetGore.EditorTools
     /// <summary>
     /// TreeView used to display Grhs
     /// </summary>
-    public class GrhTreeView : TreeView, IComparer
+    public class GrhTreeView : TreeView, IComparer, IComparer<TreeNode>
     {
         /// <summary>
         /// Timer to update the animated <see cref="Grh"/>s in the <see cref="GrhTreeView"/>.
@@ -984,8 +984,29 @@ namespace NetGore.EditorTools
         /// <returns>-1 if a is first, 1 if b is first, or 0 for no preference.</returns>
         int IComparer.Compare(object a, object b)
         {
-            TreeNode x = (TreeNode)a;
-            TreeNode y = (TreeNode)b;
+            return ((IComparer<TreeNode>)this).Compare(a as TreeNode, b as TreeNode);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
+        /// </summary>
+        /// <returns>
+        /// Value Condition
+        ///     Less than zero
+        ///     <paramref name="x"/> is less than <paramref name="y"/>.
+        /// Zero
+        ///     <paramref name="x"/> equals <paramref name="y"/>.
+        /// Greater than zero
+        ///     <paramref name="x"/> is greater than <paramref name="y"/>.
+        /// </returns>
+        /// <param name="x">The first object to compare.</param><param name="y">The second object to compare.</param>
+        int IComparer<TreeNode>.Compare(TreeNode x, TreeNode y)
+        {
+            // Can't do much if either of the nodes are null... but no biggie, they never should be anyways
+            if (x == null || y == null)
+                return 0;
 
             // Folders take priority
             if (!IsGrhDataNode(x) && IsGrhDataNode(y))
@@ -995,9 +1016,9 @@ namespace NetGore.EditorTools
                 return 1;
 
             // Text sort
-            return x.Text.CompareTo(y.Text);
+            return _nodeTextComparer.Compare(x.Text, y.Text);
         }
 
-        #endregion
+        static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
     }
 }
