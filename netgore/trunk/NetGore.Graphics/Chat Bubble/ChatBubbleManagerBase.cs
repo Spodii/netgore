@@ -31,7 +31,7 @@ namespace NetGore.Graphics
         /// <param name="font">The <see cref="SpriteFont"/> to use to write the bubble's text.</param>
         protected ChatBubbleManagerBase(ControlBorder border, SpriteFont font)
         {
-            Lifespan = 5000;
+            Lifespan = 50000;
             FontColor = Color.Black;
             BorderColor = Color.White;
 

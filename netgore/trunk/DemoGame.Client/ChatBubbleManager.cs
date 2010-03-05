@@ -48,7 +48,7 @@ namespace DemoGame.Client
             // Move up a little to avoid covering their name
             p.Y -= 20f;
 
-            return p;
+            return p.Floor();
         }
 
         /// <summary>
