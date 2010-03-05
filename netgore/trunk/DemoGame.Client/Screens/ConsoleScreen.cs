@@ -20,8 +20,8 @@ namespace DemoGame.Client
         readonly List<Level> _disabledLogLevels = new List<Level>();
         readonly MemoryAppender _logger = new MemoryAppender();
         readonly List<CheckBox> _logLevelCheckBoxes = new List<CheckBox>();
-        Button _btnShowSettings;
 
+        Button _btnShowSettings;
         SpriteFont _consoleFont;
         Panel _cScreen;
         Panel _cSettingsPanel;
