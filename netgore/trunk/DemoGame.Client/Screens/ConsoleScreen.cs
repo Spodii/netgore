@@ -20,12 +20,12 @@ namespace DemoGame.Client
         readonly List<Level> _disabledLogLevels = new List<Level>();
         readonly MemoryAppender _logger = new MemoryAppender();
         readonly List<CheckBox> _logLevelCheckBoxes = new List<CheckBox>();
+        Button _btnShowSettings;
 
         SpriteFont _consoleFont;
         Panel _cScreen;
-        TextBox _txtOutput;
         Panel _cSettingsPanel;
-        Button _btnShowSettings;
+        TextBox _txtOutput;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameScreen"/> class.
@@ -34,6 +34,17 @@ namespace DemoGame.Client
         /// <exception cref="ArgumentNullException"><paramref name="screenManager"/> is null.</exception>
         public ConsoleScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the btnShowSettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
+        void btnShowSettings_Clicked(object sender, MouseClickEventArgs e)
+        {
+            _cSettingsPanel.IsVisible = !_cSettingsPanel.IsVisible;
+            _btnShowSettings.Text = (_cSettingsPanel.IsVisible ? "Hide" : "Show") + " settings";
         }
 
         /// <summary>
@@ -120,12 +131,16 @@ namespace DemoGame.Client
 
             // Create the panel that holds the settings options
             var settingsButtonSize = _consoleFont.MeasureString("Show Settings") + new Vector2(10, 4);
-            _btnShowSettings = new Button(_cScreen, new Vector2(_cScreen.Size.X, 0), settingsButtonSize) { Font = _consoleFont, Text = "Hide Settings" };
+            _btnShowSettings = new Button(_cScreen, new Vector2(_cScreen.Size.X, 0), settingsButtonSize)
+            { Font = _consoleFont, Text = "Hide Settings" };
             _btnShowSettings.Position += new Vector2(-4, 4);
             _btnShowSettings.Clicked += btnShowSettings_Clicked;
 
             var settingsPanelSize = new Vector2(400, 400);
-            _cSettingsPanel = new Panel(_cScreen, new Vector2(_cScreen.Size.X - settingsPanelSize.X - 4, _btnShowSettings.Position.Y + _btnShowSettings.Size.Y + 8), settingsPanelSize) { IsVisible = true, CanDrag = false };
+            _cSettingsPanel = new Panel(_cScreen,
+                                        new Vector2(_cScreen.Size.X - settingsPanelSize.X - 4,
+                                                    _btnShowSettings.Position.Y + _btnShowSettings.Size.Y + 8), settingsPanelSize)
+            { IsVisible = true, CanDrag = false };
 
             // Create the logging level checkboxes
             _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Fatal, 0));
@@ -136,17 +151,6 @@ namespace DemoGame.Client
 
             // Disable debug by default
             _logLevelCheckBoxes.First(x => (Level)x.Tag == Level.Debug).Value = false;
-        }
-
-        /// <summary>
-        /// Handles the Clicked event of the btnShowSettings control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void btnShowSettings_Clicked(object sender, MouseClickEventArgs e)
-        {
-            _cSettingsPanel.IsVisible = !_cSettingsPanel.IsVisible;
-            _btnShowSettings.Text = (_cSettingsPanel.IsVisible ? "Hide" : "Show") + " settings";
         }
 
         /// <summary>
@@ -162,7 +166,9 @@ namespace DemoGame.Client
             // Also add filters to the logger to reject the disabled log levels
             _logger.ClearFilters();
             foreach (var disabledLevel in _disabledLogLevels)
+            {
                 _logger.AddFilter(new LevelMatchFilter { AcceptOnMatch = false, LevelToMatch = disabledLevel });
+            }
         }
 
         /// <summary>
