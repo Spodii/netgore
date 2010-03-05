@@ -84,6 +84,8 @@ namespace DemoGame.Server
             _giveExp = v.GiveExp;
             _giveCash = v.GiveCash;
             _quests = template.Quests;
+            _chatDialog = v.ChatDialog.HasValue ? NPCChatManager.GetDialog(v.ChatDialog.Value) : null;
+            SetShopFromID(v.ShopID);
 
             RespawnMapIndex = map.Index;
             RespawnPosition = position;
@@ -240,21 +242,25 @@ namespace DemoGame.Server
         {
             base.HandleAdditionalLoading(v);
 
-            if (v.ChatDialog.HasValue)
-                _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
-            else
-                _chatDialog = null;
+            _chatDialog = v.ChatDialog.HasValue ? NPCChatManager.GetDialog(v.ChatDialog.Value) : null;
+            SetShopFromID(v.ShopID);
+        }
 
-            if (v.ShopID.HasValue)
+        void SetShopFromID(ShopID? shopID)
+        {
+            if (!shopID.HasValue)
             {
-                if (!ShopManager.TryGetValue(v.ShopID.Value, out _shop))
-                {
-                    const string errmsg = "Failed to load shop with ID `{0}` for NPC `{1}`. Setting shop as null.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, v.ShopID.Value, this);
-                    Debug.Fail(string.Format(errmsg, v.ShopID.Value, this));
-                    _shop = null;
-                }
+                _shop = null;
+                return;
+            }
+
+            if (!ShopManager.TryGetValue(shopID.Value, out _shop))
+            {
+                const string errmsg = "Failed to load shop with ID `{0}` for NPC `{1}`. Setting shop as null.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, shopID.Value, this);
+                Debug.Fail(string.Format(errmsg, shopID.Value, this));
+                _shop = null;
             }
         }
 
