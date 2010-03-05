@@ -14,7 +14,7 @@ namespace CodeReleasePreparer
         /// <summary>
         /// If true, ONLY the database schema part will be built. Otherwise, a complete clean will be done.
         /// </summary>
-        const bool _buildSchemaOnly = false;
+        const bool _buildSchemaOnly = true;
 
         static readonly string[] _deleteFilePatterns = new string[]
         { @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
