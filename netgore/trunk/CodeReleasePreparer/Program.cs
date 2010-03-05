@@ -14,7 +14,7 @@ namespace CodeReleasePreparer
         /// <summary>
         /// If true, ONLY the database schema part will be built. Otherwise, a complete clean will be done.
         /// </summary>
-        const bool _buildSchemaOnly = true;
+        const bool _buildSchemaOnly = false;
 
         static readonly string[] _deleteFilePatterns = new string[]
         { @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
@@ -81,29 +81,33 @@ namespace CodeReleasePreparer
 
             if (!IsSpodi())
             {
-                Console.WriteLine(@"                                _.--""""""""""--._");
-                Console.WriteLine(@"                              .'             '.");
-                Console.WriteLine(@"                             /                 \");
-                Console.WriteLine(@"                            ;                   ;");
-                Console.WriteLine(@"                            |                   |");
-                Console.WriteLine(@"                            |                   |");
-                Console.WriteLine(@"                            ;                   ;");
-                Console.WriteLine(@"                             \ (`'--,   ,--'`) /");
-                Console.WriteLine(@"                              ) )(')/ _ \(')( (");
-                Console.WriteLine(@"                             (_ `""""` / \ `""""` _)");
-                Console.WriteLine(@"                              \`'-, /   \ ,-'`/");
-                Console.WriteLine(@"                               `\ / `'`'` \ /`");
-                Console.WriteLine(@"                                | _. ; ; ._ |");
-                Console.WriteLine(@"                                |\ '-'-'-' /|");
-                Console.WriteLine(@"                                | | _ _ _ | |");
-                Console.WriteLine(@"                                 \ '.;_;.' /");
-                Console.WriteLine(@"                                  \       /");
-                Console.WriteLine(@"                                   ',___,'");
-                Console.WriteLine(@"                                    q___p");
-                Console.WriteLine(@"                                    q___p");
-                Console.WriteLine(@"                                    q___p");
+                // Screen of doom!
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(@"______________________");
+                Console.WriteLine(@"|\/        |         /          _.--""""""""""--._          (,_    ,_,    _,)");
+                Console.WriteLine(@"|/\________|_______ /         .'             '.        /|\`-._( )_.-'/|\");
+                Console.WriteLine(@"| /\       |       /         /                 \      / | \`-'/ \'-`/ | \");
+                Console.WriteLine(@"|/  \______|_____ /         ;                   ;    /__|.-'`-\_/-`'-.|__\");
+                Console.WriteLine(@"|  / \     |     /          |                   |   `          ""          `");
+                Console.WriteLine(@"| /   \____|____/           |                   |");
+                Console.WriteLine(@"|/    /\   |   /            ;                   ;");
+                Console.WriteLine(@"|    /  \__|__/|             \ (`'--,   ,--'`) /");
+                Console.WriteLine(@"|   /   /\ | / |              ) )(')/ _ \(')( (");
+                Console.WriteLine(@"|   |  /  \|/  |             (_ `""""` / \ `""""` _)");
+                Console.WriteLine(@"|----------/   |              \`'-, /   \ ,-'`/");
+                Console.WriteLine(@"|   |  |  /    |               `\ / `'`'` \ /`");
+                Console.WriteLine(@"|   |  | / / / | \ \            | _. ; ; ._ |");
+                Console.WriteLine(@"|   |  \/ / /  |  \ \           |\ '-'-'-' /|");
+                Console.WriteLine(@"|\   \ /  \ \_(*)_/ /           | | _ _ _ | |    _..__.          .__.._");
+                Console.WriteLine(@"| \   /    \_(~:~)_/             \ '.;_;.' /.   ^""-.._ '-(\__/)-' _..-""^");
+                Console.WriteLine(@"|  \ /      /-(:)-\               \       /           '-.' oo '.-'");
+                Console.WriteLine(@"|   /      / / * \ \               ',___,'               `-..-'");
+                Console.WriteLine(@"|  /       \ \   / /                q___p");
+                Console.WriteLine(@"| /         \     /                 q___p");
+                Console.WriteLine(@"|/                                  q___p");
                 Console.WriteLine(@"");
-                Console.WriteLine("You are not Spodi! Press any key to terminate program...");
+                Console.WriteLine("     IMPOSTER! You are not Spodi! Press any key to terminate program...");
                 Console.ReadLine();
                 return;
             }
