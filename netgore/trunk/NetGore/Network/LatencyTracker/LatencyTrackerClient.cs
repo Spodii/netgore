@@ -164,8 +164,8 @@ namespace NetGore.Network
             _pingTimer.Reset();
             _pingTimer.Start();
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Ping sent to remote address `{0}`.", _endPoint);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Ping sent to remote address `{0}`.", _endPoint);
         }
 
         /// <summary>
@@ -204,8 +204,8 @@ namespace NetGore.Network
             // Recalculate the average latency
             _latency = (ushort)_latencies.Average(x => x);
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Ping had a one-way latency of `{0}`.", _latency);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Ping had a one-way latency of `{0}`.", _latency);
         }
 
         /// <summary>
