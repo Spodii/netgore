@@ -23,6 +23,8 @@ namespace DemoGame.Client
         SpriteFont _consoleFont;
         Panel _cScreen;
         TextBox _txtOutput;
+        Panel _cSettingsPanel;
+        Button _btnShowSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameScreen"/> class.
@@ -41,10 +43,12 @@ namespace DemoGame.Client
         /// <returns>The created <see cref="CheckBox"/>.</returns>
         CheckBox CreateLogLevelCheckBox(Level level, int index)
         {
-            var pos = new Vector2(_cScreen.Size.X - 100, 5);
-            var ret = new CheckBox(_cScreen, pos) { Font = _consoleFont, Text = level.Name, Tag = level, ForeColor = level.GetColor(), Value = true };
+            var ret = new CheckBox(_cSettingsPanel, new Vector2(_cSettingsPanel.Size.X - 100, 5))
+            { Font = _consoleFont, Text = level.Name, Tag = level, ForeColor = level.GetColor(), Value = true };
+
             ret.Position += new Vector2(0, ret.Size.Y * index);
             ret.ValueChanged += LevelCheckBox_ValueChanged;
+
             return ret;
         }
 
@@ -99,8 +103,28 @@ namespace DemoGame.Client
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
+            // The main console output textbox
             _txtOutput = new TextBox(_cScreen, Vector2.Zero, _cScreen.Size)
-            {  Font = _consoleFont, Size = _cScreen.Size, Border = ControlBorder.Empty, MaxBufferSize = 200, BufferTruncateSize = 80, CanFocus = false, CanDrag = false, IsMultiLine = true, IsEnabled = false };
+            {
+                Font = _consoleFont,
+                Size = _cScreen.Size,
+                Border = ControlBorder.Empty,
+                MaxBufferSize = 200,
+                BufferTruncateSize = 80,
+                CanFocus = false,
+                CanDrag = false,
+                IsMultiLine = true,
+                IsEnabled = false
+            };
+
+            // Create the panel that holds the settings options
+            var settingsButtonSize = _consoleFont.MeasureString("Show Settings") + new Vector2(10, 4);
+            _btnShowSettings = new Button(_cScreen, new Vector2(_cScreen.Size.X, 0), settingsButtonSize) { Font = _consoleFont, Text = "Hide Settings" };
+            _btnShowSettings.Position += new Vector2(-4, 4);
+            _btnShowSettings.Clicked += btnShowSettings_Clicked;
+
+            var settingsPanelSize = new Vector2(400, 400);
+            _cSettingsPanel = new Panel(_cScreen, new Vector2(_cScreen.Size.X - settingsPanelSize.X - 4, _btnShowSettings.Position.Y + _btnShowSettings.Size.Y + 8), settingsPanelSize) { IsVisible = true, CanDrag = false };
 
             // Create the logging level checkboxes
             _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Fatal, 0));
@@ -111,6 +135,28 @@ namespace DemoGame.Client
 
             // Disable debug by default
             _logLevelCheckBoxes.First(x => (Level)x.Tag == Level.Debug).Value = false;
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the btnShowSettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
+        void btnShowSettings_Clicked(object sender, MouseClickEventArgs e)
+        {
+            _cSettingsPanel.IsVisible = !_cSettingsPanel.IsVisible;
+            _btnShowSettings.Text = (_cSettingsPanel.IsVisible ? "Hide" : "Show") + " settings";
+        }
+
+        /// <summary>
+        /// Handles when the value changes for a <see cref="CheckBox"/> for a <see cref="Level"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void LevelCheckBox_ValueChanged(Control sender)
+        {
+            // Rebuild the list of disabled log levels
+            _disabledLogLevels.Clear();
+            _disabledLogLevels.AddRange(_logLevelCheckBoxes.Where(x => !x.Value).Select(x => (Level)x.Tag));
         }
 
         /// <summary>
@@ -156,17 +202,6 @@ namespace DemoGame.Client
             _txtOutput.LineBufferOffset = Math.Max(0, _txtOutput.LineCount - _txtOutput.MaxVisibleLines);
             _txtOutput.Resized += delegate { UpdateConsoleBufferSize(); };
             _txtOutput.FontChanged += delegate { UpdateConsoleBufferSize(); };
-        }
-
-        /// <summary>
-        /// Handles when the value changes for a <see cref="CheckBox"/> for a <see cref="Level"/>.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void LevelCheckBox_ValueChanged(Control sender)
-        {
-            // Rebuild the list of disabled log levels
-            _disabledLogLevels.Clear();
-            _disabledLogLevels.AddRange(_logLevelCheckBoxes.Where(x => !x.Value).Select(x => (Level)x.Tag));
         }
 
         /// <summary>
