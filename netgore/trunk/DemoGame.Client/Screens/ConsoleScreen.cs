@@ -4,6 +4,7 @@ using System.Linq;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
+using log4net.Filter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
@@ -157,6 +158,11 @@ namespace DemoGame.Client
             // Rebuild the list of disabled log levels
             _disabledLogLevels.Clear();
             _disabledLogLevels.AddRange(_logLevelCheckBoxes.Where(x => !x.Value).Select(x => (Level)x.Tag));
+
+            // Also add filters to the logger to reject the disabled log levels
+            _logger.ClearFilters();
+            foreach (var disabledLevel in _disabledLogLevels)
+                _logger.AddFilter(new LevelMatchFilter { AcceptOnMatch = false, LevelToMatch = disabledLevel });
         }
 
         /// <summary>
