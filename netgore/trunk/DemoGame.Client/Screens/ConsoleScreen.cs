@@ -93,13 +93,14 @@ namespace DemoGame.Client
         public override void Initialize()
         {
             BasicConfigurator.Configure(_logger);
+            ScreenManager.Updated += ScreenManager_Updated;
 
             _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console");
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             _txtOutput = new TextBox(_cScreen, Vector2.Zero, _cScreen.Size)
-            {  Font = _consoleFont, Size = _cScreen.Size, Border = ControlBorder.Empty, MaxBufferSize = 200, BufferTruncateSize = 80 };
+            {  Font = _consoleFont, Size = _cScreen.Size, Border = ControlBorder.Empty, MaxBufferSize = 200, BufferTruncateSize = 80, CanFocus = false, CanDrag = false, IsMultiLine = true, IsEnabled = false };
 
             // Create the logging level checkboxes
             _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Fatal, 0));
@@ -113,23 +114,15 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles when the value changes for a <see cref="CheckBox"/> for a <see cref="Level"/>.
+        /// Handles when the <see cref="ScreenManager"/> updates.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        void LevelCheckBox_ValueChanged(Control sender)
+        /// <param name="screenManager">The screen manager.</param>
+        void ScreenManager_Updated(IScreenManager screenManager)
         {
-            // Rebuild the list of disabled log levels
-            _disabledLogLevels.Clear();
-            _disabledLogLevels.AddRange(_logLevelCheckBoxes.Where(x => !x.Value).Select(x => (Level)x.Tag));
-        }
-
-        /// <summary>
-        /// Updates the screen if it is currently the active screen.
-        /// </summary>
-        /// <param name="gameTime">The current game time.</param>
-        public override void Update(int gameTime)
-        {
-            base.Update(gameTime);
+            // The logger we use to grab log messages and output to the console will continue to queue messages
+            // indefinitely until it is cleared. Because of this, we can't just flush the log by overriding
+            // the screen's Update method. Instead, we have this event hook for when the ScreenManager
+            // updates so we can clear out the log buffer every tick.
 
             // Get the latest events
             LoggingEvent[] events;
@@ -163,6 +156,17 @@ namespace DemoGame.Client
             _txtOutput.LineBufferOffset = Math.Max(0, _txtOutput.LineCount - _txtOutput.MaxVisibleLines);
             _txtOutput.Resized += delegate { UpdateConsoleBufferSize(); };
             _txtOutput.FontChanged += delegate { UpdateConsoleBufferSize(); };
+        }
+
+        /// <summary>
+        /// Handles when the value changes for a <see cref="CheckBox"/> for a <see cref="Level"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void LevelCheckBox_ValueChanged(Control sender)
+        {
+            // Rebuild the list of disabled log levels
+            _disabledLogLevels.Clear();
+            _disabledLogLevels.AddRange(_logLevelCheckBoxes.Where(x => !x.Value).Select(x => (Level)x.Tag));
         }
 
         /// <summary>
