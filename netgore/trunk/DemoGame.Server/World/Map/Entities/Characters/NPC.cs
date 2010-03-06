@@ -25,8 +25,6 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly MemoryMap _memory = new MemoryMap(32);
-
         IAI _ai;
         NPCChatDialogBase _chatDialog;
         ushort _giveCash;
@@ -104,8 +102,6 @@ namespace DemoGame.Server
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             ChangeMap(map);
-
-            _memory.Initialize((int)map.Width, (int)map.Height);
         }
 
         /// <summary>
@@ -140,14 +136,6 @@ namespace DemoGame.Server
         {
             get { return _giveExp; }
             protected set { _giveExp = value; }
-        }
-
-        /// <summary>
-        /// Gets this NPC's memory.
-        /// </summary>
-        public MemoryMap Memory
-        {
-            get { return _memory; }
         }
 
         /// <summary>
@@ -256,9 +244,6 @@ namespace DemoGame.Server
             // Check for spawning if dead
             if (!IsAlive)
                 return;
-
-            // Update the NPC's memory - must be updated before the ai is updated becasue the ai will want to use this.
-            _memory.Update(Center.X, Center.Y);
 
             // Update the AI
             var ai = AI;
