@@ -1249,8 +1249,6 @@ namespace DemoGame.Server
         /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
         protected override void HandleUpdate(IMap imap, int deltaTime)
         {
-            Debug.Assert(imap == Map, "Character.Update()'s imap is, for whatever reason, not equal to the set Map.");
-
             // Update shouldn't be called on disposed Characters since they shouldn't be referenced
             // by the Map anymore
             if (IsDisposed)

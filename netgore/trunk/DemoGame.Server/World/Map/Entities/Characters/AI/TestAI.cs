@@ -46,6 +46,8 @@ namespace DemoGame.Server
                 _lastTargetUpdateTime = time;
             }
 
+            _target = GetClosestHostile();
+
             // Ensure the target is still valid
             if (!IsValidTarget(_target))
                 _target = null;
