@@ -24,17 +24,17 @@ namespace DemoGame.Server.UI
         /// <summary>
         /// How many extra items are removed from the log buffer when removing. Allows for less removals to be made.
         /// </summary>
-        const int _logBufferRemoveExtra = 50;
+        const int _logBufferRemoveExtra = 64;
 
         /// <summary>
         /// The maximum number of log events to keep in memory.
         /// </summary>
-        const int _logBufferSize = _maxLogDisplayLines * 2;
+        const int _logBufferSize = _maxLogDisplayLines * 2 + _logBufferRemoveExtra;
 
         /// <summary>
         /// The maximum number of log entries to display.
         /// </summary>
-        const int _maxLogDisplayLines = 256;
+        const int _maxLogDisplayLines = 128;
 
         readonly object _consoleOutLock = new object();
         readonly List<LoggingEvent> _logBuffer = new List<LoggingEvent>(_logBufferSize);
@@ -384,6 +384,10 @@ namespace DemoGame.Server.UI
             if (events != null && events.Length > 0)
             {
                 _logBuffer.AddRange(events);
+
+                if (_logBuffer.Count > _logBufferSize)
+                    _logBuffer.RemoveRange(0, _logBuffer.Count - _logBufferSize + _logBufferRemoveExtra);
+
                 events = GetFilteredEvents(events);
 
                 if (events != null && events.Length > 0)
@@ -400,9 +404,6 @@ namespace DemoGame.Server.UI
                         {
                             lstLog.Items.RemoveAt(0);
                         }
-
-                        if (_logBuffer.Count > _logBufferSize)
-                            _logBuffer.RemoveRange(0, _logBuffer.Count - _logBufferSize + _logBufferRemoveExtra);
 
                         // Scroll down to see the latest item if nothing is selected
                         if (lstLog.SelectedIndex < 0)
