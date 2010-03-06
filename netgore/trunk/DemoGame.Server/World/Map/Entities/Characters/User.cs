@@ -943,7 +943,6 @@ namespace DemoGame.Server
                 const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
                 DelayedDispose();
 
                 return;

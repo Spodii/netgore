@@ -216,6 +216,9 @@ namespace DemoGame.Server.UI
 
             foreach (var e in events)
             {
+                if (e == null)
+                    continue;
+
                 if (!GetLogCheckBox(e.Level).Checked)
                     continue;
 

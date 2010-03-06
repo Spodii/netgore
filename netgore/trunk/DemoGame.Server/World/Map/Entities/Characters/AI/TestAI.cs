@@ -10,6 +10,9 @@ namespace DemoGame.Server
     {
         const int _id = 1;
 
+        /// <summary>
+        /// How frequently to check for a new target.
+        /// </summary>
         const int _targetUpdateRate = 2000;
 
         int _lastTargetUpdateTime = int.MinValue;
@@ -39,18 +42,14 @@ namespace DemoGame.Server
             if (AISettings.AIDisabled)
                 return;
 
-            // Update the time
             int time = GetTime();
-            if (_lastTargetUpdateTime + _targetUpdateRate < time)
+
+            // Ensure the target is still valid, or enough time has elapsed to check for a better target
+            if ((_target != null && !IsValidTarget(_target)) || (_lastTargetUpdateTime + _targetUpdateRate < time))
             {
                 _lastTargetUpdateTime = time;
+                _target = GetClosestHostile();
             }
-
-            _target = GetClosestHostile();
-
-            // Ensure the target is still valid
-            if (!IsValidTarget(_target))
-                _target = null;
 
             // Check if we have a target or not
             if (_target == null)
