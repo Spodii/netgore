@@ -421,26 +421,31 @@ namespace DemoGame.Server
         {
             if (_respawnables.Count == 0)
                 return;
-
-            var toRespawn = new Stack<IRespawnable>(_respawnables);
-            var respawned = new Stack<IRespawnable>();
-
+            
             int currentTime = GetTime();
+            var toRespawn = new Stack<IRespawnable>();
 
-            // Try to respawn each IRespawnable
-            while (toRespawn.Count > 0)
+            // Get all of the IRespawnables to be respawned, removing them from the master list and
+            // pushing them into a temporary stack
+            for (int i = 0; i < _respawnables.Count; i++)
             {
-                IRespawnable respawnable = toRespawn.Pop();
-                if (respawnable.ReadyToRespawn(currentTime))
-                {
-                    respawnable.Respawn();
-                    respawned.Push(respawnable);
-                }
+                var r = _respawnables[i];
+
+                // Check if they are ready to respawn
+                if (!r.ReadyToRespawn(currentTime))
+                    continue;
+
+                // Remove from the master list, decrement iterator so we re-check this index, and add to temporary stack
+                _respawnables.RemoveAt(i);
+                i--;
+                toRespawn.Push(r);
             }
 
-            // Remove the successful respawns from the master list
-            if (respawned.Count > 0)
-                _respawnables.RemoveAll(respawned.Contains);
+            // Respawn all
+            foreach (var r in toRespawn)
+            {
+                r.Respawn();
+            }
         }
 
         /// <summary>
