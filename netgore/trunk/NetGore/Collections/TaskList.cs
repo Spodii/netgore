@@ -10,7 +10,7 @@ namespace NetGore.Collections
     /// This collection is not thread-safe.
     /// </summary>
     /// <typeparam name="T">The type of value to store.</typeparam>
-    public class TaskList<T>
+    public abstract class TaskList<T>
     {
         readonly ObjectPool<TaskListNode> _pool = new ObjectPool<TaskListNode>(x => new TaskListNode(), false);
 
@@ -32,12 +32,16 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles processing the given task.
+        /// </summary>
+        /// <param name="item">The value of the task to process.</param>
+        /// <returns>True if the <paramref name="item"/> is to be removed from the collection; otherwise false.</returns>
+        protected abstract bool ProcessItem(T item);
+
+        /// <summary>
         /// Processes all of the tasks in the list.
         /// </summary>
-        /// <param name="func">A <see cref="Func{T,TResult}"/> that describes how to process each of the items in the
-        /// collection. If the <paramref name="func"/> returns true, the item will be removed. If it returns false,
-        /// the item will remain in the list.</param>
-        public void Perform(Func<T, bool> func)
+        public void Perform()
         {
             TaskListNode last = null;
             TaskListNode current = _first;
@@ -46,7 +50,7 @@ namespace NetGore.Collections
             while (current != null)
             {
                 // Perform the func and get if we need to remove the node
-                bool remove = func(current.Value);
+                bool remove = ProcessItem(current.Value);
 
                 if (remove)
                 {
