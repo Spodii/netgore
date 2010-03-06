@@ -406,6 +406,14 @@ namespace DemoGame.Server.UI
                         {
                             lstLog.SelectedIndex = lstLog.Items.Count - 1;
                             lstLog.ClearSelected();
+
+                            // Auto-scroll
+                            int numItems = lstLog.ClientSize.Height / lstLog.ItemHeight;
+                            lstLog.TopIndex = Math.Max(0, lstLog.Items.Count - numItems + 1);
+                        }
+                        else
+                        {
+                            lstLog.TopIndex = lstLog.SelectedIndex;
                         }
                     }
                     finally

@@ -136,7 +136,8 @@ namespace NetGore.Db.Schema
             MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder
             { UserID = dbSettings.User, Password = dbSettings.Pass, Server = dbSettings.Host, Database = "information_schema" };
 
-            var conn = new MySqlConnection(s.ToString());
+            var connStr = s.ToString();
+            var conn = new MySqlConnection(connStr);
             conn.Open();
 
             return conn;
