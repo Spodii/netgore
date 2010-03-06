@@ -85,16 +85,19 @@ namespace NetGore.Collections
                     // Clear the value of the node to ensure we don't hold onto any references, then push the node
                     // back into the pool so it can be reused
                     current.Value = default(T);
-                    _pool.Free(current);
+
+                    var tmp = current;
+                    current = current.Next;
+
+                    tmp.Next = null;
+                    _pool.Free(tmp);
                 }
                 else
                 {
                     // No nodes removed, so just set the last node to the current
                     last = current;
+                    current = current.Next;
                 }
-
-                // Set the current node to the next node
-                current = current.Next;
             }
 
             PostProcess();
