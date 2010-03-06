@@ -26,7 +26,6 @@ namespace DemoGame.Server
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
         readonly GuildMemberPerformer _guildMemberPerformer;
         readonly DArray<Map> _maps;
-        readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
         readonly Server _server;
         readonly ItemEntity _unarmedWeapon;
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
@@ -39,7 +38,7 @@ namespace DemoGame.Server
         int _syncExtraUserInfoTime = int.MinValue;
 
         /// <summary>
-        /// The time that <see cref="World.UpdateRespawnables"/> will be called next.
+        /// The time that that the <see cref="_respawnTaskList"/> will be processed next.
         /// </summary>
         int _updateRespawnablesTime = int.MinValue;
 
@@ -51,6 +50,8 @@ namespace DemoGame.Server
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
+
+            _respawnTaskList = new RespawnTaskList(this);
 
             // Store the parent
             _server = parent;
@@ -159,8 +160,10 @@ namespace DemoGame.Server
 
             Debug.Assert(respawnable.DynamicEntity != null);
 
-            _respawnables.Add(respawnable);
+            _respawnTaskList.Add(respawnable);
         }
+
+        readonly RespawnTaskList _respawnTaskList;
 
         /// <summary>
         /// Adds a user to the world
@@ -378,7 +381,7 @@ namespace DemoGame.Server
             if (_updateRespawnablesTime < currentTime)
             {
                 _updateRespawnablesTime = currentTime + ServerSettings.RespawnablesUpdateRate;
-                UpdateRespawnables();
+                _respawnTaskList.Process();
             }
 
             if (_syncExtraUserInfoTime < currentTime)
@@ -414,37 +417,41 @@ namespace DemoGame.Server
             }
         }
 
-        /// <summary>
-        /// Attempts to respawn <see cref="IRespawnable"/>s that are waiting to be respawned.
-        /// </summary>
-        void UpdateRespawnables()
+        class RespawnTaskList : TaskList<IRespawnable>
         {
-            if (_respawnables.Count == 0)
-                return;
-            
-            int currentTime = GetTime();
-            var toRespawn = new Stack<IRespawnable>();
+            readonly IGetTime _getTime;
 
-            // Get all of the IRespawnables to be respawned, removing them from the master list and
-            // pushing them into a temporary stack
-            for (int i = 0; i < _respawnables.Count; i++)
+            int _currentTime;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RespawnTaskList"/> class.
+            /// </summary>
+            /// <param name="getTime">The <see cref="IGetTime"/>.</param>
+            public RespawnTaskList(IGetTime getTime)
             {
-                var r = _respawnables[i];
-
-                // Check if they are ready to respawn
-                if (!r.ReadyToRespawn(currentTime))
-                    continue;
-
-                // Remove from the master list, decrement iterator so we re-check this index, and add to temporary stack
-                _respawnables.RemoveAt(i);
-                i--;
-                toRespawn.Push(r);
+                _getTime = getTime;
             }
 
-            // Respawn all
-            foreach (var r in toRespawn)
+            /// <summary>
+            /// When overridden in the derived class, allows for additional processing before tasks are processed.
+            /// </summary>
+            protected override void PreProcess()
             {
-                r.Respawn();
+                _currentTime = _getTime.GetTime();
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, handles processing the given task.
+            /// </summary>
+            /// <param name="item">The value of the task to process.</param>
+            /// <returns>True if the <paramref name="item"/> is to be removed from the collection; otherwise false.</returns>
+            protected override bool ProcessItem(IRespawnable item)
+            {
+                if (!item.ReadyToRespawn(_currentTime))
+                    return false;
+
+                item.Respawn();
+                return true;
             }
         }
 

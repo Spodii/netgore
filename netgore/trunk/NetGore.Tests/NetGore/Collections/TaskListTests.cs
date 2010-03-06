@@ -27,7 +27,7 @@ namespace NetGore.Tests.NetGore.Collections
             public void Perform(Func<T, bool> f)
             {
                 _func = f;
-                Perform();
+                Process();
                 _func = null;
             }
         }
