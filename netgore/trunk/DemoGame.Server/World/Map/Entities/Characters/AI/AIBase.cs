@@ -73,17 +73,12 @@ namespace DemoGame.Server
         protected virtual Character GetClosestHostile()
         {
             var visibleArea = GetVisibleMapArea();
+            var center = Actor.Center;
 
             // Get the characters that we are even hostile towards and are in view
-            var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea, x => Actor.Alliance.IsHostile(x.Alliance));
-
-            // If no matches, return null
-            if (possibleChars.Count() == 0)
-                return null;
-
-            // Get the closest of the bunch
-            var center = Actor.Center;
-            var closest = possibleChars.MinElement(x => center.QuickDistance(x.Center));
+            var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea, 
+                x => Actor.Alliance.IsHostile(x.Alliance) && x != Actor);
+            var closest = possibleChars.MinElementOrDefault(x => center.QuickDistance(x.Center));
 
             return closest;
         }
