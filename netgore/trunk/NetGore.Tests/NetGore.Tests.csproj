@@ -68,6 +68,7 @@
     <Compile Include="NetGore\AlignmentHelperTests.cs" />
     <Compile Include="NetGore\ClassTypeTreeTests.cs" />
     <Compile Include="NetGore\Collections\IFactoryTests.cs" />
+    <Compile Include="NetGore\Collections\TaskListTests.cs" />
     <Compile Include="NetGore\DirectionHelperTests.cs" />
     <Compile Include="NetGore\Features\Guilds\GuildMemberNameRankTests.cs" />
     <Compile Include="NetGore\GrhIndexTests.cs" />

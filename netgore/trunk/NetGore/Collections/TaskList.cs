@@ -1,0 +1,107 @@
+﻿using System;
+using System.Linq;
+
+namespace NetGore.Collections
+{
+    /// <summary>
+    /// A very basic yet light-weight collection that only supports processing all items in the collection at once.
+    /// The purpose of this list is for when you have a collection that has to process all items in the collection
+    /// at once, and some or all of the items can be removed while processing.
+    /// This collection is not thread-safe.
+    /// </summary>
+    /// <typeparam name="T">The type of value to store.</typeparam>
+    public class TaskList<T>
+    {
+        readonly ObjectPool<TaskListNode> _pool = new ObjectPool<TaskListNode>(x => new TaskListNode(), false);
+
+        /// <summary>
+        /// The first node in the list, or null if the list is empty.
+        /// </summary>
+        TaskListNode _first = null;
+
+        /// <summary>
+        /// Adds a new item to this <see cref="TaskList{T}"/> at the head of the list.
+        /// </summary>
+        /// <param name="value">The value of the node to add.</param>
+        public void Add(T value)
+        {
+            var newHead = _pool.Acquire();
+            newHead.Value = value;
+            newHead.Next = _first;
+            _first = newHead;
+        }
+
+        /// <summary>
+        /// Processes all of the tasks in the list.
+        /// </summary>
+        /// <param name="func">A <see cref="Func{T,TResult}"/> that describes how to process each of the items in the
+        /// collection. If the <paramref name="func"/> returns true, the item will be removed. If it returns false,
+        /// the item will remain in the list.</param>
+        public void Perform(Func<T, bool> func)
+        {
+            TaskListNode last = null;
+            TaskListNode current = _first;
+
+            // Loop through the nodes until we hit null, indicating the end of the list
+            while (current != null)
+            {
+                // Perform the func and get if we need to remove the node
+                bool remove = func(current.Value);
+
+                if (remove)
+                {
+                    // Remove the node
+                    if (last != null)
+                    {
+                        // Skip over the node by setting the previous node's Next to the current node's Next
+                        last.Next = current.Next;
+                    }
+                    else
+                    {
+                        // No previous node, so just set the next node as the head, bumping the current node into nothingness
+                        _first = current.Next;
+                    }
+
+                    // Clear the value of the node to ensure we don't hold onto any references, then push the node
+                    // back into the pool so it can be reused
+                    current.Value = default(T);
+                    _pool.Free(current);
+                }
+                else
+                {
+                    // No nodes removed, so just set the last node to the current
+                    last = current;
+                }
+
+                // Set the current node to the next node
+                current = current.Next;
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="TaskList{T}"/> node that contains the value of the node, and the next node in the list.
+        /// </summary>
+        class TaskListNode : IPoolable
+        {
+            /// <summary>
+            /// Gets or sets the next node in the list, or null if this is the last node in the list.
+            /// </summary>
+            public TaskListNode Next { get; set; }
+
+            /// <summary>
+            /// Gets or sets the value of the node.
+            /// </summary>
+            public T Value { get; set; }
+
+            #region IPoolable Members
+
+            /// <summary>
+            /// Gets or sets the index of the object in the pool. This value should never be used by anything
+            /// other than the pool that owns this object.
+            /// </summary>
+            int IPoolable.PoolIndex { get; set; }
+
+            #endregion
+        }
+    }
+}
