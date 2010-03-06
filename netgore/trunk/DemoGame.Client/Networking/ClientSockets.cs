@@ -19,6 +19,7 @@ namespace DemoGame.Client
 
         IIPSocket _conn = null;
         bool _isConnecting = false;
+        int _lastLatency;
         int _lastPingTime;
         LatencyTrackerClient _latencyTracker;
 
@@ -62,7 +63,14 @@ namespace DemoGame.Client
         /// </summary>
         public int Latency
         {
-            get { return _latencyTracker.Latency; }
+            get
+            {
+                // Store the last latency in case this method is called and the _latencyTracker has been disposed
+                if (_latencyTracker != null)
+                    _lastLatency = _latencyTracker.Latency;
+
+                return _lastLatency;
+            }
         }
 
         /// <summary>

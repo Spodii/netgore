@@ -44,11 +44,33 @@ namespace DemoGame.Server
         protected abstract void DoUpdate();
 
         /// <summary>
+        /// Checks if the <paramref name="target"/> is valid.
+        /// </summary>
+        /// <param name="target">The target <see cref="Character"/>.</param>
+        /// <returns>True if the <paramref name="target"/> is valid; otherwise false.</returns>
+        protected virtual bool IsValidTarget(Character target)
+        {
+            if (target == null)
+                return false;
+
+            if (!target.IsAlive)
+                return false;
+
+            if (target.Map != Actor.Map)
+                return false;
+
+            if (target.IsDisposed)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets the closest Character to this Actor that the Actor is hostile towards (as defined by
         /// the Actor's alliance). Only checks Characters in view of the Actor.
         /// </summary>
         /// <returns>Closest Character this Actor is hostile towards, or null if none in range.</returns>
-        protected Character GetClosestHostile()
+        protected virtual Character GetClosestHostile()
         {
             var visibleArea = GetVisibleMapArea();
 
@@ -88,7 +110,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="entity">Entity to check against.</param>
         /// <returns>True if the entity is in melee range of the Actor, else false.</returns>
-        protected bool IsInMeleeRange(Entity entity)
+        protected virtual bool IsInMeleeRange(Entity entity)
         {
             var hitRect = GameData.GetMeleeAttackArea(Actor, Actor.Weapon.Range);
             return entity.Intersects(hitRect);
@@ -99,7 +121,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="entity">Entity to check against.</param>
         /// <returns>True if the entity is in view of the Actor, else false.</returns>
-        protected bool IsInView(Entity entity)
+        protected virtual bool IsInView(Entity entity)
         {
             var dist = Actor.Center - entity.Center;
             dist = dist.Abs();

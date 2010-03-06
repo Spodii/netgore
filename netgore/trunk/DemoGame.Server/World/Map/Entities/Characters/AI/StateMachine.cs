@@ -454,9 +454,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Chases the target by checking where abouts the _target is in relation to the Actor.
+        /// Chases the target by checking where abouts the Target is in relation to the Actor.
         /// </summary>
-        public void ChaseTarget()
+        void ChaseTarget()
         {
             //Checks whether the _target is above the Actor.
             if (_target.Position.Y < Actor.Position.Y)
@@ -685,7 +685,7 @@ namespace DemoGame.Server
             }
         }
 
-        public void Patrol()
+        void Patrol()
         {
             //Move randomly.
             if (Rand(0, 40) == 0)
@@ -711,7 +711,7 @@ namespace DemoGame.Server
         /// <param name="CurrentState">The CurrentState of the actor.</param>
         void UpdateState(State CurrentState)
         {
-            //If the AI has been disabled just set to Idle and ignore anything else.
+            // If the AI has been disabled just set to Idle and ignore anything else
             if (AISettings.AIDisabled)
                 CurrentState = State.Idle;
 

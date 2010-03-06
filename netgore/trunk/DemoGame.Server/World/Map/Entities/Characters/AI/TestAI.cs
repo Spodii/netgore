@@ -36,18 +36,19 @@ namespace DemoGame.Server
         /// </summary>
         protected override void DoUpdate()
         {
-            // Update the target
+            if (AISettings.AIDisabled)
+                return;
+
+            // Update the time
             int time = GetTime();
             if (_lastTargetUpdateTime + _targetUpdateRate < time)
             {
                 _lastTargetUpdateTime = time;
-
-                //Check to see if AI is disabled.
-                if (!AISettings.AIDisabled)
-                    _target = GetClosestHostile();
-                else
-                    _target = null;
             }
+
+            // Ensure the target is still valid
+            if (!IsValidTarget(_target))
+                _target = null;
 
             // Check if we have a target or not
             if (_target == null)
