@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.Collections
@@ -12,7 +13,7 @@ namespace NetGore.Collections
     /// <typeparam name="T">The type of value to store.</typeparam>
     public abstract class TaskList<T>
     {
-        readonly ObjectPool<TaskListNode> _pool = new ObjectPool<TaskListNode>(x => new TaskListNode(), false);
+        readonly Stack<TaskListNode> _pool = new Stack<TaskListNode>();
 
         /// <summary>
         /// The first node in the list, or null if the list is empty.
@@ -25,9 +26,18 @@ namespace NetGore.Collections
         /// <param name="value">The value of the node to add.</param>
         public void Add(T value)
         {
-            var newHead = _pool.Acquire();
+            // Get the node object
+            TaskListNode newHead;
+            if (_pool.Count > 0)
+                newHead = _pool.Pop();
+            else
+                newHead = new TaskListNode();
+
+            // Set the node's values
             newHead.Value = value;
             newHead.Next = _first;
+            
+            // Set as the new head
             _first = newHead;
         }
 
@@ -90,7 +100,7 @@ namespace NetGore.Collections
                     current = current.Next;
 
                     tmp.Next = null;
-                    _pool.Free(tmp);
+                    _pool.Push(tmp);
                 }
                 else
                 {
@@ -106,7 +116,7 @@ namespace NetGore.Collections
         /// <summary>
         /// A <see cref="TaskList{T}"/> node that contains the value of the node, and the next node in the list.
         /// </summary>
-        class TaskListNode : IPoolable
+        class TaskListNode
         {
             /// <summary>
             /// Gets or sets the next node in the list, or null if this is the last node in the list.
@@ -117,16 +127,6 @@ namespace NetGore.Collections
             /// Gets or sets the value of the node.
             /// </summary>
             public T Value { get; set; }
-
-            #region IPoolable Members
-
-            /// <summary>
-            /// Gets or sets the index of the object in the pool. This value should never be used by anything
-            /// other than the pool that owns this object.
-            /// </summary>
-            int IPoolable.PoolIndex { get; set; }
-
-            #endregion
         }
     }
 }
