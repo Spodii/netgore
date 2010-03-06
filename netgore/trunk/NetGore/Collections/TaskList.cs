@@ -39,12 +39,28 @@ namespace NetGore.Collections
         protected abstract bool ProcessItem(T item);
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional processing before tasks are processed.
+        /// </summary>
+        protected virtual void PreProcess()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional processing after all tasks have been processed.
+        /// </summary>
+        protected virtual void PostProcess()
+        {
+        }
+
+        /// <summary>
         /// Processes all of the tasks in the list.
         /// </summary>
-        public void Perform()
+        public void Process()
         {
             TaskListNode last = null;
             TaskListNode current = _first;
+
+            PreProcess();
 
             // Loop through the nodes until we hit null, indicating the end of the list
             while (current != null)
@@ -80,6 +96,8 @@ namespace NetGore.Collections
                 // Set the current node to the next node
                 current = current.Next;
             }
+
+            PostProcess();
         }
 
         /// <summary>

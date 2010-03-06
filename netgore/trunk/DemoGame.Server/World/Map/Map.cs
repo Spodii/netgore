@@ -28,9 +28,10 @@ namespace DemoGame.Server
         /// </summary>
         const int _emptyMapNoUpdateDelay = 60000;
 
-        readonly List<NPC> _npcs;
-        readonly TSList<User> _users;
+        readonly List<NPC> _npcs = new List<NPC>();
+        readonly TSList<User> _users = new TSList<User>();
         readonly World _world;
+
         bool _disposed;
 
         /// <summary>
@@ -47,16 +48,13 @@ namespace DemoGame.Server
         IEnumerable<NPCSpawner> _npcSpawners;
 
         /// <summary>
-        /// Map constructor.
+        /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
         /// <param name="mapIndex">Index of the Map.</param>
         /// <param name="world">World that the Map will be inside of.</param>
         public Map(MapIndex mapIndex, World world) : base(mapIndex, world)
         {
             _world = world;
-
-            _npcs = new List<NPC>();
-            _users = new TSList<User>();
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created Map `{0}`.", this);
