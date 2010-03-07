@@ -8,6 +8,9 @@ namespace DemoGame
     /// </summary>
     public enum GameMessage : byte
     {
+        CannotAttackWithWeapon,
+        CannotAttackTooFarAway,
+
         /// <summary>
         /// Invalid Say chat command.
         /// </summary>
