@@ -31,6 +31,7 @@ namespace DemoGame.Server
         readonly List<NPC> _npcs = new List<NPC>();
         readonly TSList<User> _users = new TSList<User>();
         readonly World _world;
+        readonly MapItemsCleaner _mapItemsCleaner = new MapItemsCleaner();
 
         bool _disposed;
 
@@ -114,24 +115,6 @@ namespace DemoGame.Server
         public World World
         {
             get { return _world; }
-        }
-
-        /// <summary>
-        /// Adds an Entity to the map.
-        /// </summary>
-        /// <param name="entity">Entity to add to the map.</param>
-        public override void AddEntity(Entity entity)
-        {
-            // Add IRespawnable entities that are not ready to spawn to the respawn queue
-            // Everything else goes right into the map like normal
-            IRespawnable respawnable = entity as IRespawnable;
-            if (respawnable != null && !respawnable.ReadyToRespawn(GetTime()))
-            {
-                AddToRespawn(respawnable);
-                return;
-            }
-
-            base.AddEntity(entity);
         }
 
         /// <summary>
@@ -246,6 +229,24 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Adds an Entity to the map.
+        /// </summary>
+        /// <param name="entity">Entity to add to the map.</param>
+        public override void AddEntity(Entity entity)
+        {
+            // Add IRespawnable entities that are not ready to spawn to the respawn queue.
+            // Everything else goes right into the map like normal.
+            IRespawnable respawnable = entity as IRespawnable;
+            if (respawnable != null && !respawnable.ReadyToRespawn(GetTime()))
+            {
+                AddToRespawn(respawnable);
+                return;
+            }
+
+            base.AddEntity(entity);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional processing on Entities added to the map.
         /// This is called after the Entity has finished being added to the map.
         /// </summary>
@@ -271,6 +272,11 @@ namespace DemoGame.Server
                 }
             }
 
+            // Add items to the MapItemsCleaner
+            var item = entity as ItemEntityBase;
+            if (item != null)
+                _mapItemsCleaner.Add(item, GetTime());
+            
             // Handle the different types of entities
             Character character = entity as Character;
             if (character != null)
@@ -303,6 +309,11 @@ namespace DemoGame.Server
                     }
                 }
             }
+
+            // Remove items to the MapItemsCleaner
+            var item = entity as ItemEntityBase;
+            if (item != null)
+                _mapItemsCleaner.Remove(item);
         }
 
         /// <summary>
@@ -570,6 +581,9 @@ namespace DemoGame.Server
 
                 _inactiveCounter -= deltaTime;
             }
+            
+            // Remove old map items
+            _mapItemsCleaner.Update(GetTime());
 
             base.Update(deltaTime);
 
