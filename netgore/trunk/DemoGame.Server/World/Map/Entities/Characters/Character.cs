@@ -706,18 +706,23 @@ namespace DemoGame.Server
         {
         }
 
+        /// <summary>
+        /// Attacks the <paramref name="target"/> using the equipped weapon.
+        /// </summary>
+        /// <param name="target">The <see cref="Character"/> to attack. If null, the target will be selected
+        /// automatically if applicable.</param>
         public void Attack(Character target)
         {
-            Attack(Weapon, target);
+            Attack(target, Weapon);
         }
 
         /// <summary>
         /// Attacks the <paramref name="target"/> using the given <paramref name="weapon"/>.
         /// </summary>
-        /// <param name="weapon">The weapon to use for attacking. If null, will be treated as an unarmed melee attack.</param>
         /// <param name="target">The <see cref="Character"/> to attack. If null, the target will be selected
         /// automatically if applicable.</param>
-        public void Attack(ItemEntity weapon, Character target)
+        /// <param name="weapon">The weapon to use for attacking. If null, will be treated as an unarmed melee attack.</param>
+        public void Attack(Character target, ItemEntity weapon)
         {
             var currTime = GetTime();
 
