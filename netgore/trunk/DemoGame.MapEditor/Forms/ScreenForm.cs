@@ -1276,14 +1276,11 @@ namespace DemoGame.MapEditor
             // Move the camera
             _camera.Min += _moveCamera;
 
-            // Update the map
+            // Update other stuff
             Map.Update(deltaTime);
-
-            // Update the cursor
             UpdateCursor();
-
-            // Update the selected grh
-            _selectedGrh.Update(_currentTime);
+            DrawingManager.Update(currTime);
+            _selectedGrh.Update(currTime);
         }
 
         #region IGetTime Members
