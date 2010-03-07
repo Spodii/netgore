@@ -100,7 +100,7 @@ namespace NetGore.Collections
             _lastUpdateTime = currentTime;
 
             // Get the items to remove
-            var toRemove = _items.Where(x => x.Value < currentTime).Select(x => x.Key).ToArray();
+            var toRemove = _items.Where(x => x.Value <= currentTime).Select(x => x.Key).ToArray();
             if (toRemove == null || toRemove.Length == 0)
                 return 0;
 
