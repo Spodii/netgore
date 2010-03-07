@@ -186,7 +186,7 @@ namespace NetGore.Collections
             get { return _list.Count; }
         }
 
-        private virtual int OnCompare(int A, int B)
+        private int OnCompare(int A, int B)
         {
             return _comparer.Compare(_list[A], _list[B]);
         }
