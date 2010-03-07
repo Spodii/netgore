@@ -1,3 +1,7 @@
+CannotAttackWithWeapon: You cannot attack with a {0}.
+CannotAttackTooFarAway: The target is too far away to attack.
+CannotAttackNeedTarget: You must select a target to attack first.
+
 InvalidCommand: Invalid command.
 InvalidCommandMustBeInGuild: You must be in a guild to do that.
 InvalidCommandMustNotBeInGuild: You cannot do that while in a guild.

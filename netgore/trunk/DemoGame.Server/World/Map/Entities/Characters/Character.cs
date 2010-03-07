@@ -741,7 +741,7 @@ namespace DemoGame.Server
             // Abort if using an unknown weapon type
             if (weapon.WeaponType == WeaponType.Unknown)
             {
-                // TODO: Send a message to the client: "You cannot attack using a {0}."
+                TrySend(GameMessage.CannotAttackWithWeapon, weapon.Name);
                 return;
             }
 
@@ -769,7 +769,7 @@ namespace DemoGame.Server
 
                 if (this.GetDistance(target) > weapon.Range)
                 {
-                    // TODO: Send a message to the client: "Cannot attack {0} because they are too far away."
+                    TrySend(GameMessage.CannotAttackTooFarAway);
                     return;
                 }
             }
@@ -796,6 +796,29 @@ namespace DemoGame.Server
 
             // Update the last attack time to now
             _lastAttackTime = currTime;
+        }
+
+        /// <summary>
+        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
+        /// </summary>
+        /// <param name="gameMessage">The game message.</param>
+        void TrySend(GameMessage gameMessage)
+        {
+            var comm = this as IClientCommunicator;
+            if (comm != null)
+                comm.Send(gameMessage);
+        }
+
+        /// <summary>
+        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
+        /// </summary>
+        /// <param name="gameMessage">The game message.</param>
+        /// <param name="parameters">The message parameters.</param>
+        void TrySend(GameMessage gameMessage, params object[] parameters)
+        {
+            var comm = this as IClientCommunicator;
+            if (comm != null)
+                comm.Send(gameMessage, parameters);
         }
 
         /// <summary>
@@ -840,7 +863,7 @@ namespace DemoGame.Server
             // We can't do anything with ranged attacks if no target is given
             if (target == null)
             {
-                // TODO: Send a message to the client: "You must select a target to attack first."
+                TrySend(GameMessage.CannotAttackTooFarAway);
                 return;
             }
 
