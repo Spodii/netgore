@@ -65,7 +65,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up
         /// </summary>
-        public override event EntityEventHandler<CharacterEntity> OnPickup
+        public override event EntityEventHandler<CharacterEntity> PickedUp
         {
             add { }
             remove { }

@@ -128,7 +128,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up
         /// </summary>
-        public abstract event EntityEventHandler<CharacterEntity> OnPickup;
+        public abstract event EntityEventHandler<CharacterEntity> PickedUp;
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does

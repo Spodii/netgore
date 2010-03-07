@@ -149,7 +149,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up.
         /// </summary>
-        public override event EntityEventHandler<CharacterEntity> OnPickup;
+        public override event EntityEventHandler<CharacterEntity> PickedUp;
 
         public ItemStats BaseStats
         {
@@ -373,8 +373,8 @@ namespace DemoGame.Server
             }
 
             // Notify listeners
-            if (OnPickup != null)
-                OnPickup(this, charEntity);
+            if (PickedUp != null)
+                PickedUp(this, charEntity);
 
             return true;
         }
