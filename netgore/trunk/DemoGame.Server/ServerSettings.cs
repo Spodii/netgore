@@ -26,11 +26,24 @@ namespace DemoGame.Server
         public const float MaxGroupShareDistance = 1000;
 
         /// <summary>
-        /// How often, in milliseconds, to wait between calls to <see cref="World.UpdateRespawnables"/>.
+        /// How often, in milliseconds, to wait between check to respawn <see cref="IRespawnable"/> entities.
         /// Lower values will result in <see cref="IRespawnable"/>s respawning closer to their desired time, but
         /// will require more overhead.
         /// </summary>
         public const int RespawnablesUpdateRate = 800;
+        
+        /// <summary>
+        /// The amount of time an item may remain on the map before it is removed automatically.
+        /// </summary>
+        public const int DefaultMapItemLife = 1000 * 60 * 3;
+
+        /// <summary>
+        /// The minimum amount of time in milliseconds that may elapse between checks for expired items.
+        /// The lower this value, the closer the time the items are removed will be to the
+        /// actual sepcified time, but the greater the performance cost. It is recommended to keep this
+        /// value greater than at least 10 seconds to avoid unneccesary performance overhead.
+        /// </summary>
+        public const int MapItemExpirationUpdateRate = 1000 * 30;
 
         /// <summary>
         /// How often, in milliseconds, to wait between calls to <see cref="User.SynchronizeExtraUserInformation"/>.
