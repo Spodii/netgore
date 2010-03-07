@@ -767,6 +767,12 @@ namespace DemoGame.Server
                     return;
                 }
 
+                if (!Alliance.CanAttack(target.Alliance))
+                {
+                    TrySend(GameMessage.CannotAttackAllianceConflict, target.Name);
+                    return;
+                }
+
                 if (this.GetDistance(target) > weapon.Range)
                 {
                     TrySend(GameMessage.CannotAttackTooFarAway);
@@ -863,7 +869,7 @@ namespace DemoGame.Server
             // We can't do anything with ranged attacks if no target is given
             if (target == null)
             {
-                TrySend(GameMessage.CannotAttackTooFarAway);
+                TrySend(GameMessage.CannotAttackNeedTarget);
                 return;
             }
 

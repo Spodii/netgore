@@ -10,6 +10,8 @@ namespace DemoGame
     {
         CannotAttackWithWeapon,
         CannotAttackTooFarAway,
+        CannotAttackNeedTarget,
+        CannotAttackAllianceConflict,
 
         /// <summary>
         /// Invalid Say chat command.
