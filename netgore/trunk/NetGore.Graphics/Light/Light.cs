@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,6 +17,7 @@ namespace NetGore.Graphics
         const string _rotationValueKey = "Rotation";
         const string _sizeValueKey = "Size";
         const string _spriteValueKey = "Sprite";
+
         Color _color = Color.White;
         Vector2 _position;
         ISpatial _positionProvider;
@@ -63,6 +65,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Center
         {
             get { return Position; }
@@ -71,6 +74,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the color of the light. The alpha value has no affect and will always be set to 255.
         /// </summary>
+        [DisplayName("Color")]
+        [Description("The color of the light. The alpha value has no affect and will always be set to 255.")]
+        [DefaultValue(typeof(Color), "{255, 255, 255, 255}")]
+        [Browsable(true)]
         public Color Color
         {
             get { return _color; }
@@ -80,11 +87,16 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets if this light is enabled.
         /// </summary>
+        [DisplayName("Enabled")]
+        [Description("If this light is enabled.")]
+        [DefaultValue(true)]
+        [Browsable(true)]
         public bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Max
         {
             get { return Position + Size; }
@@ -93,6 +105,9 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the world coordinates of the top-left corner of this <see cref="ISpatial"/>.
         /// </summary>
+        [DisplayName("Position")]
+        [Description("The world position of the light.")]
+        [Browsable(true)]
         public Vector2 Position
         {
             get { return _position; }
@@ -114,6 +129,7 @@ namespace NetGore.Graphics
         /// <see cref="ISpatial.Position"/> value will automatically be acquired with the position of the
         /// <see cref="ISpatial"/> instead, and setting the position will have no affect.
         /// </summary>
+        [Browsable(false)]
         public ISpatial PositionProvider
         {
             get { return _positionProvider; }
@@ -138,11 +154,18 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the amount to rotate the <see cref="ILight"/> in radians.
         /// </summary>
+        [DisplayName("Rotation")]
+        [Description("The amount to rotate the light in radians.")]
+        [DefaultValue(0f)]
+        [Browsable(true)]
         public float Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the size of this <see cref="ILight"/>.
         /// </summary>
+        [DisplayName("Size")]
+        [Description("The size of the light.")]
+        [Browsable(true)]
         public Vector2 Size
         {
             get { return _size; }
@@ -163,12 +186,17 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the <see cref="Grh"/> used to draw the light. If null, the light will not be drawn.
         /// </summary>
+        [DisplayName("Sprite")]
+        [Description("The sprite used to draw the light.")]
+        [Browsable(true)]
+        [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Grh Sprite { get; set; }
 
         /// <summary>
         /// Gets or sets an object that can be used to identify or store information about this <see cref="ILight"/>.
         /// This property is purely optional.
         /// </summary>
+        [Browsable(false)]
         public object Tag { get; set; }
 
         /// <summary>
