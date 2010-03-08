@@ -10,16 +10,26 @@ namespace NetGore.Collections
         List<T> _list = new List<T>();
         IComparer<T> _comparer;
 
+        /// <summary>
+        /// Sets up a default PriorityQueue.
+        /// </summary>
         public PriorityQueue()
         {
             _comparer = Comparer<T>.Default;
         }
 
+        /// <summary>
+        /// Sets up a PriorityQueue with a specified <see cref="IComparer"/>
+        /// </summary>
         public PriorityQueue(IComparer<T> comparer)
         {
             _comparer = comparer;
         }
 
+        /// <summary>
+        /// Sets up a PriorityQueue with a specified <see cref="IComparer"/> and an initial capacity.
+        /// </summary>
+        /// <param name="capacity">Inital capacity of queue.</param>
         public PriorityQueue(IComparer<T> comparer, int capacity)
         {
             _list.Capacity = capacity;
@@ -33,6 +43,10 @@ namespace NetGore.Collections
             _list[B] = C;
         }
 
+        /// <summary>
+        /// Gets the smallest object without removing it from the queue.
+        /// </summary>
+        /// <returns>The smallest object in the queue.</returns>
         public T Peek()
         {
 
@@ -41,6 +55,10 @@ namespace NetGore.Collections
             return default(T);
         }
         
+        /// <summary>
+        /// Gets the smallest object and removes it from the queue.
+        /// </summary>
+        /// <returns>The smallest object.</returns>
         public T Pop()
         {
             T Result = _list[0];
@@ -77,6 +95,11 @@ namespace NetGore.Collections
 
         }
         
+        /// <summary>
+        /// Pushes an object onto the queue.
+        /// </summary>
+        /// <param name="Object">The object to be put onto the queue.</param>
+        /// <returns>The position of the Object when it is pushed onto the queue.</returns>
         public int Push(T Object)
         {
 
@@ -106,6 +129,10 @@ namespace NetGore.Collections
             return A;
         }
        
+        /// <summary>
+        /// Removes an object from the queue.
+        /// </summary>
+        /// <param name="Object">The object to remove.</param>
         public void RemoveLocation(T Object)
         {
             int idx = -1;
@@ -124,6 +151,10 @@ namespace NetGore.Collections
                 _list.RemoveAt(idx);
             }
 
+        /// <summary>
+        /// Notifies the queue that the object at position i has changed and needs to update.
+        /// </summary>
+        /// <param name="i">Index that has changed.</param>
         public void Update(int i)
         {
             int A, B, C, D;
@@ -131,11 +162,14 @@ namespace NetGore.Collections
 
             do
             {
+                // Index at top of queue.
                 if (A == 0)
                     break;
 
-                D = (int)((A - 1) * 0.5f);
+                // Half of (index -1)
+                D = ((A - 1) /2);
 
+                // If A is less than D then we switch the positions
                 if (OnCompare(A, D) < 0)
                 {
                     Switch(A, D);
@@ -157,30 +191,40 @@ namespace NetGore.Collections
                 C = 2 * A + 1;
                 D = 2 * A + 2;
 
+                // If C is less than _list.Count and if A is greater than C then A = C.
                 if (_list.Count > C && OnCompare(A, C) > 0)
                 {
                     A = C;
                 }
 
+                // If D is less than _list.Count and if A is greater than D then A = D.
                 if (_list.Count > D && OnCompare(A, D) > 0)
                 {
                     A = D;
                 }
 
+                // If A is equal to B then we've finished moving the elements.
                 if (A == B)
                     break;
 
+                // Switch the element A to position B and vice versa.
                 Switch(A, B);
             } while (true);
 
 
         }
 
+        /// <summary>
+        /// Clears the queue.
+        /// </summary>
         public void Clear()
         {
             _list.Clear();
         }
 
+        /// <summary>
+        /// Returns the number of elements in the queue.
+        /// </summary>
         public int Count
         {
             get { return _list.Count; }
@@ -191,6 +235,10 @@ namespace NetGore.Collections
             return _comparer.Compare(_list[A], _list[B]);
         }
 
+        /// <summary>
+        /// Used for getting and setting values in the queue.
+        /// </summary>
+        /// <param name="idx">Index in queue.</param>
         public T this[int idx]
         {
             get 
