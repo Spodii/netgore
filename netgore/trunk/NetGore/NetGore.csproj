@@ -231,13 +231,17 @@
     <Compile Include="World\AlignmentHelper.cs" />
     <Compile Include="World\Entities\AI\AIAttribute.cs" />
     <Compile Include="World\Entities\AI\AIFactoryBase.cs" />
+    <Compile Include="World\Entities\AI\AIGrid.cs" />
     <Compile Include="World\Entities\AI\AIID.cs" />
+    <Compile Include="World\Entities\AI\Heuristics.cs" />
     <Compile Include="World\Entities\AI\IAI.cs" />
     <Compile Include="World\Alignment.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="ConsoleInputBuffer.cs" />
+    <Compile Include="World\Entities\AI\IPathFinder.cs" />
     <Compile Include="World\Entities\AI\MemoryCell.cs" />
     <Compile Include="World\Entities\AI\MemoryMap.cs" />
+    <Compile Include="World\Entities\AI\PathFinder.cs" />
     <Compile Include="World\Entities\IDynamicEntityFactory.cs" />
     <Compile Include="World\Entities\IUpdateableEntity.cs" />
     <Compile Include="World\Entities\IUsableEntity.cs" />
