@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EE6959A2-B5BD-4817-8D05-6A01AE107E31}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -68,6 +68,7 @@
     <Compile Include="NetGore\AlignmentHelperTests.cs" />
     <Compile Include="NetGore\ClassTypeTreeTests.cs" />
     <Compile Include="NetGore\Collections\IFactoryTests.cs" />
+    <Compile Include="NetGore\Collections\PriorityQueueTests.cs" />
     <Compile Include="NetGore\Collections\TaskListTests.cs" />
     <Compile Include="NetGore\Collections\TimeExpirationQueueTests.cs" />
     <Compile Include="NetGore\DirectionHelperTests.cs" />
