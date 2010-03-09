@@ -25,6 +25,21 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
+        public void InlineJScriptTest()
+        {
+            const string fileContents = @"A: ""Spodi says $0*$1 equals "" + $0 * $1 + """;
+
+            MsgColl c;
+            using (TempFile f = new TempFile())
+            {
+                File.WriteAllText(f.FilePath, fileContents);
+                c = new MsgColl(f.FilePath);
+            }
+
+            Assert.AreEqual("Spodi says 4*7 equals " + 4 * 7, c.GetMessage(MsgType.A, "4", "7"));
+        }
+
+        [Test]
         public void MissingMessageTest()
         {
             const string fileContents =
