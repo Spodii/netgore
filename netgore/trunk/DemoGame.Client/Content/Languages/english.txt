@@ -1,97 +1,97 @@
-CannotAttackWithWeapon: You cannot attack with a {0}.
-CannotAttackTooFarAway: The target is too far away to attack.
-CannotAttackNeedTarget: You must select a target to attack first.
-CannotAttackAllianceConflict: You feel you shouldn't attack {0}.
+CannotAttackWithWeapon: "You cannot attack with a $0."
+CannotAttackTooFarAway: "The target is too far away to attack."
+CannotAttackNeedTarget: "You must select a target to attack first."
+CannotAttackAllianceConflict: "You feel you shouldn't attack $0."
 
-InvalidCommand: Invalid command.
-InvalidCommandMustBeInGuild: You must be in a guild to do that.
-InvalidCommandMustNotBeInGuild: You cannot do that while in a guild.
-InvalidCommandMustBeInGroup: You must be in a group to do that.
-InvalidCommandMustNotBeInGroup: You cannot do that while in a group. To leave your group, type /leavegroup.
+InvalidCommand: "Invalid command."
+InvalidCommandMustBeInGuild: "You must be in a guild to do that."
+InvalidCommandMustNotBeInGuild: "You cannot do that while in a guild."
+InvalidCommandMustBeInGroup: "You must be in a group to do that."
+InvalidCommandMustNotBeInGroup: "You cannot do that while in a group. To leave your group, type /leavegroup."
 
-CommandShout: {0} shouts: "{1}"
+CommandShout: "$0 shouts: \"$1\""
 
-CommandTellNoName: Tell what to whom?
-CommandTellNoMessage: What do you want to say?
-CommandTellSender: You tell {0}: "{1}"
-CommandTellReceiver: {0} tells you: "{1}"
-CommandTellInvalidUser: User {0} does not exist.
-CommandTellOfflineUser: User {0} is currently offline.
+CommandTellNoName: "Tell what to whom?"
+CommandTellNoMessage: "What do you want to say?"
+CommandTellSender: "You tell $0: \"$1\""
+CommandTellReceiver: "$0 tells you: \"$1\""
+CommandTellInvalidUser: "User $0 does not exist."
+CommandTellOfflineUser: "User $0 is currently offline."
 
-LoginInvalidName: Account with the given name does not exist.
-LoginInvalidPassword: Incorrect password.
-LoginAccountInUse: Account is already in use.
+LoginInvalidName: "Account with the given name does not exist."
+LoginInvalidPassword: "Incorrect password."
+LoginAccountInUse: "Account is already in use."
 
-ShopInsufficientFundsToPurchaseSingular: You do not have enough money to purchase a {0}.
-ShopInsufficientFundsToPurchasePlural: You do not have enough money to purchase {0} {1}s.
-ShopPurchaseSingular: You purchased a {0} for {1} cash.
-ShopPurchasePlural: You purchased {0} {1}s for {2} cash.
-ShopSellItemSingular: You sell a {0} for {1} cash.
-ShopSellItemPlural: You sell {0} {1}s for {2} cash.
+ShopInsufficientFundsToPurchaseSingular: "You do not have enough money to purchase a $0."
+ShopInsufficientFundsToPurchasePlural: "You do not have enough money to purchase $0 $1s."
+ShopPurchaseSingular: "You purchased a $0 for $1 cash."
+ShopPurchasePlural: "You purchased $0 $1s for $2 cash."
+ShopSellItemSingular: "You sell a $0 for $1 cash."
+ShopSellItemPlural: "You sell $0 $1s for $2 cash."
 
-GroupCreated: You have created a new group.
-GroupCreateFailedUnknownReason: Failed to create a new group.
-GroupInvited: You have been invited to join {0}'s group. Type /joingroup to join.
-GroupInvite: {0} has invited {1} to join the group.
-GroupInviteFailedCannotInviteSelf: You cannot invite yourself into a group.
-GroupInviteFailedInvalidUser: Failed to invite {0} to join the group. That user is either not online or does not exist.
-GroupInviteFailedAlreadyInGroup: Failed to invite {0} to join the group since they are already in a group.
-GroupInviteFailedUnknownReason: Failed to invite {0} to join the group.
-GroupJoinFailedGroupIsFull: Failed to join {0}'s group - the group is already full.
-GroupJoinFailedUnknownReason: Failed to join {0}'s group.
-GroupJoined: You have joined {0}'s group.
-GroupLeave: You have left the group.
-GroupMemberLeft: {0} has left the group.
-GroupMemberJoined: {0} has joined the group.
+GroupCreated: "You have created a new group."
+GroupCreateFailedUnknownReason: "Failed to create a new group."
+GroupInvited: "You have been invited to join $0's group. Type /joingroup to join."
+GroupInvite: "$0 has invited $1 to join the group."
+GroupInviteFailedCannotInviteSelf: "You cannot invite yourself into a group."
+GroupInviteFailedInvalidUser: "Failed to invite $0 to join the group. That user is either not online or does not exist."
+GroupInviteFailedAlreadyInGroup: "Failed to invite $0 to join the group since they are already in a group."
+GroupInviteFailedUnknownReason: "Failed to invite $0 to join the group."
+GroupJoinFailedGroupIsFull: "Failed to join $0's group - the group is already full."
+GroupJoinFailedUnknownReason: "Failed to join $0's group."
+GroupJoined: "You have joined $0's group."
+GroupLeave: "You have left the group."
+GroupMemberLeft: "$0 has left the group."
+GroupMemberJoined: "$0 has joined the group."
 
-GuildCreationSuccessful: Guild "{0}" with tag "{1}" successfully created.
-GuildCreationFailedUnknownReason: Could not create guild "{0}" with tag "{1}" for an unknown reason.
-GuildCreationFailedNameInvalid: Could not create guild - the name "{0}" is invalid.
-GuildCreationFailedNameNotAvailable: Could not create guild - the name "{0}" is not available.
-GuildCreationFailedTagInvalid: Could not create guild - the tag "{0}" is invalid.
-GuildCreationFailedTagNotAvailable: Could not create guild - the tag "{0}" is not available.
+GuildCreationSuccessful: "Guild \"$0\" with tag \"$1\" successfully created."
+GuildCreationFailedUnknownReason: "Could not create guild \"$0\" with tag \"$1\" for an unknown reason."
+GuildCreationFailedNameInvalid: "Could not create guild - the name \"$0\" is invalid."
+GuildCreationFailedNameNotAvailable: "Could not create guild - the name \"$0\" is not available."
+GuildCreationFailedTagInvalid: "Could not create guild - the tag \"$0\" is invalid."
+GuildCreationFailedTagNotAvailable: "Could not create guild - the tag \"$0\" is not available."
 
-GuildInvited: {0} has invited you to join guild {1}.
-GuildInviteSuccess: You have successfully invited user {0} to join your guild.
-GuildInviteFailedCannotInviteSelf: You cannot invite yourself into a guild.
-GuildInviteFailedInvalidUser: Failed to invite user {0} to join the guild - the user is either offline or does not exist.
-GuildInviteFailedAlreadyInGuild: Failed to invite user {0} to join the guild - the user is already in a guild.
-GuildInviteFailedUnknownReason: Failed to invite user {0} to join the guild.
+GuildInvited: "$0 has invited you to join guild $1."
+GuildInviteSuccess: "You have successfully invited user $0 to join your guild."
+GuildInviteFailedCannotInviteSelf: "You cannot invite yourself into a guild."
+GuildInviteFailedInvalidUser: "Failed to invite user $0 to join the guild - the user is either offline or does not exist."
+GuildInviteFailedAlreadyInGuild: "Failed to invite user $0 to join the guild - the user is already in a guild."
+GuildInviteFailedUnknownReason: "Failed to invite user $0 to join the guild."
 
-GuildRenamed: The guild's name has been changed from {0} to {1} by {2}.
-GuildRenameFailedInvalidValue: Failed to rename the guild to {0} since the name is invalid.
-GuildRenameFailedNameNotAvailable: Failed to rename the guild to {0} since the name is already being used by another guild.
-GuildRenameFailedUnknownReason: Failed to rename the guild to {0}.
+GuildRenamed: "The guild's name has been changed from $0 to $1 by $2."
+GuildRenameFailedInvalidValue: "Failed to rename the guild to $0 since the name is invalid."
+GuildRenameFailedNameNotAvailable: "Failed to rename the guild to $0 since the name is already being used by another guild."
+GuildRenameFailedUnknownReason: "Failed to rename the guild to $0."
 
-GuildRetagged: The guild's tag has been changed from {0} to {1} by {2}.
-GuildRetagFailedInvalidValue: Failed to change the guild's tag to {0} since the tag is invalid.
-GuildRetagFailedNameNotAvailable: Failed to change the guild's tag to {0} since the tag is already being used by another guild.
-GuildRetagFailedUnknownReason: Failed to change the guild's tag to {0}.
+GuildRetagged: "The guild's tag has been changed from $0 to $1 by $2."
+GuildRetagFailedInvalidValue: "Failed to change the guild's tag to $0 since the tag is invalid."
+GuildRetagFailedNameNotAvailable: "Failed to change the guild's tag to $0 since the tag is already being used by another guild."
+GuildRetagFailedUnknownReason: "Failed to change the guild's tag to $0."
 
-GuildKick: You have kicked {0} out of the guild.
-GuildKickFailedInvalidUser: Failed to kick {0} since no such user exists.
-GuildKickFailedNotInGuild: Failed to kick {0} since they are not in your guild.
-GuildKickFailedTooHighRank: Failed to kick {0} since their rank is greater than yours.
-GuildKickFailedUnknownReason: Failed to kick {0} out of the guild.
+GuildKick: "You have kicked $0 out of the guild."
+GuildKickFailedInvalidUser: "Failed to kick $0 since no such user exists."
+GuildKickFailedNotInGuild: "Failed to kick $0 since they are not in your guild."
+GuildKickFailedTooHighRank: "Failed to kick $0 since their rank is greater than yours."
+GuildKickFailedUnknownReason: "Failed to kick $0 out of the guild."
 
-GuildPromotion: You have been promoted in your guild to rank {0}!
-GuildPromote: You promoted user {0}.
-GuildPromoteFailed: Failed to promote user {0}.
+GuildPromotion: "You have been promoted in your guild to rank $0!"
+GuildPromote: "You promoted user $0."
+GuildPromoteFailed: "Failed to promote user $0."
 
-GuildDemotion: You have been demoted in your guild to rank {0}.
-GuildDemote: You demoted user {0}.
-GuildDemoteFailed: Failed to promote user {0}.
+GuildDemotion: "You have been demoted in your guild to rank $0."
+GuildDemote: "You demoted user $0."
+GuildDemoteFailed: "Failed to promote user $0."
 
-GuildInsufficientPermissions: Your rank in the guild is not high enough to perform this action. You must be a {0} or higher rank.
-GuildJoin: You have joined guild "{0}".
-GuildJoinFailedInvalidOrNoInvite: Unable to join guild {0} - the guild either does not exist or you do not have an invite to this guild.
-GuildLeave: You have left guild "{0}".
+GuildInsufficientPermissions: "Your rank in the guild is not high enough to perform this action. You must be a $0 or higher rank."
+GuildJoin: "You have joined guild \"$0\"."
+GuildJoinFailedInvalidOrNoInvite: "Unable to join guild $0 - the guild either does not exist or you do not have an invite to this guild."
+GuildLeave: "You have left guild \"$0\"."
 
-QuestAccepted: You have accepted a new quest!
-QuestAcceptFailedAlreadyCompleted: You cannot accept that quest since you have already completed it.
-QuestAcceptFailedAlreadyStarted: You have already accepted that quest.
-QuestAcceptFailedDoNotHaveStartRequirements: You do not have all the needed requirements to start this quest.
-QuestAcceptFailedTooManyActive: You cannot accept any more quests. Try to complete or give up on some of your current quests first.
-QuestCanceled: You have canceled a quest.
-QuestFinished: You have finished the quest!
-QuestFinishFailedCannotGiveRewards: Cannot turn in the quest because you cannot receive the quest's rewards! Make sure you have enough room in your inventory.
+QuestAccepted: "You have accepted a new quest!"
+QuestAcceptFailedAlreadyCompleted: "You cannot accept that quest since you have already completed it."
+QuestAcceptFailedAlreadyStarted: "You have already accepted that quest."
+QuestAcceptFailedDoNotHaveStartRequirements: "You do not have all the needed requirements to start this quest."
+QuestAcceptFailedTooManyActive: "You cannot accept any more quests. Try to complete or give up on some of your current quests first."
+QuestCanceled: "You have canceled a quest."
+QuestFinished: "You have finished the quest!"
+QuestFinishFailedCannotGiveRewards: "Cannot turn in the quest because you cannot receive the quest's rewards! Make sure you have enough room in your inventory."
