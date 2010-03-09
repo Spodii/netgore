@@ -196,25 +196,17 @@ namespace NetGore.AI
                 if (_found)
                 {
                     _close.Clear();
-                    int posX = (int)End.X;
-                    int posY = (int)End.Y;
-
+    
                     Node _tmpNode = _nodeGrid[((int)End.Y << (int)_grid.Log2GridY) + (int)End.X];
-                    Node _node;
-                    _node.F = _tmpNode.F;
-                    _node.G = _tmpNode.G;
-                    _node.PX = _tmpNode.PX;
-                    _node.PY = _tmpNode.PY;
-                    _node.X = (int)End.X;
-                    _node.Y = (int)End.Y;
-                    _node.H = 0;
+                    Node _node = new Node
+                    { F = _tmpNode.F, G = _tmpNode.G, PX = _tmpNode.PX, PY = _tmpNode.PY, X = (int)End.X, Y = (int)End.Y, H = 0 };
 
                     while (_node.X != _node.PX || _node.Y != _node.PY)
                     {
                         _close.Add(_node);
 
-                        posX = _node.PX;
-                        posY = _node.PY;
+                        var posX = _node.PX;
+                        var posY = _node.PY;
                         _tmpNode = _nodeGrid[(posY << (int)_grid.Log2GridY) + posX];
                         _node.F = _tmpNode.F;
                         _node.G = _tmpNode.G;
