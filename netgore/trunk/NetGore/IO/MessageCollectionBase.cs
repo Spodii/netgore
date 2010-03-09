@@ -1,190 +1,14 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
-using Microsoft.JScript;
 
 namespace NetGore.IO
 {
-    public class AssemblyClassInvoker
-    {
-        readonly Type _classType;
-        readonly object _classInstance;
-
-        public AssemblyClassInvoker(Assembly assembly, string className)
-        {
-            _classType = assembly.GetType(className);
-            _classInstance = Activator.CreateInstance(_classType);
-        }
-
-        public object Invoke(string method, params object[] args)
-        {
-            var result = _classType.InvokeMember(method, BindingFlags.InvokeMethod, null, _classInstance, args );
-            return result;
-        }
-
-        public string InvokeAsString(string method, params object[] args)
-        {
-            return Invoke(method, args).ToString();
-        }
-    }
-
-    public class JScriptAssemblyCreator
-    {
-        readonly List<string> _methods = new List<string>();
-
-        bool _hasAddedMessageScriptMethods = false;
-
-        public string Namespace { get; set; }
-        public string ClassName { get; set; }
-
-        public void AddMessageScriptMethod(string name, string messageScript)
-        {
-            if (!_hasAddedMessageScriptMethods)
-            {
-                _hasAddedMessageScriptMethods = true;
-                AddSpecialMessageScriptMethods();
-            }
-
-            var convertedScript = MessageScriptToJScript(messageScript, 0, messageScript.Length);
-            AddMethod(name, "public", "String", "p", "return " + convertedScript + ";");
-        }
-
-        public virtual AssemblyClassInvoker Compile()
-        {
-            var sourceCode = GetSourceCode(_methods);
-            
-            var provider = new JScriptCodeProvider();
-            var compiler = provider.CreateCompiler();
-
-            var p = new CompilerParameters { GenerateInMemory = true };
-            var r = compiler.CompileAssemblyFromSource(p, sourceCode);
-
-            return CreateAssemblyClassInvoker(r.CompiledAssembly, ClassName);
-        }
-
-        protected virtual AssemblyClassInvoker CreateAssemblyClassInvoker(Assembly assembly, string className)
-        {
-            return new AssemblyClassInvoker(assembly, className);
-        }
-
-        protected virtual void AddSpecialMessageScriptMethods()
-        {
-            AddSpecialMessageScriptMethod_GetSafe();
-        }
-
-        protected virtual void AddSpecialMessageScriptMethod_GetSafe()
-        {
-            AddMethod("GetSafe", "private", "String", "p, i : int", "return p.Length > i ? p[i] : \"<Param Missing>\";");
-        }
-
-        protected virtual string GetSourceCode(List<string> methods)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("class " + ClassName);
-            sb.AppendLine("{");
-
-            foreach (var method in methods)
-                sb.AppendLine(method);
-
-            sb.AppendLine("}");
-
-            return sb.ToString();
-        }
-
-        public void AddMethod(string name, string visibility, string returnType, string args, string innerCode)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            // Header
-            sb.Append(visibility);
-            sb.Append(" function ");
-            sb.Append(name);
-            sb.Append("(");
-            sb.Append(args);
-            sb.Append(")");
-            if (!string.IsNullOrEmpty(returnType))
-                sb.Append(" : " + returnType);
-
-            sb.AppendLine();
-
-            // Body
-            sb.AppendLine("{");
-            sb.AppendLine(innerCode);
-            sb.AppendLine("}");
-
-            _methods.Add(sb.ToString());
-        }
-
-        protected virtual string MessageScriptToJScript(string s, int start, int length)
-        {
-            // TODO: Comments
-            StringBuilder sb = new StringBuilder((int)((s.Length + 8) * 1.5));
-
-            bool inQuoteBlock = false;
-            var chars = s.ToCharArray();
-            for (int i = start; i < start + length; i++)
-            {
-                var c = chars[i];
-                switch (c)
-                {
-                    case '"':
-
-                        // Keep track of whether or not we are in a quoted block
-                        if (i == start || chars[i - 1] != '\\')
-                        {
-                            inQuoteBlock = !inQuoteBlock;
-                        }
-                        sb.Append('"');
-                        break;
-
-                    case '$':
-                        if (i > start && chars[i - 1] == '\\')
-                        {
-                            sb.Length--;
-                            sb.Append('$');
-                            break;
-                        }
-
-                        int pieceStart = i;
-                        while (++i < (start + length))
-                        {
-                            if (!char.IsDigit(chars[i]))
-                                break;
-                        }
-                        i--;
-
-                        if (inQuoteBlock)
-                            sb.Append("\" + ");
-
-                        sb.Append("GetSafe(p,");
-                        sb.Append(chars, pieceStart + 1, i - pieceStart);
-                        sb.Append(")");
-
-                        if (inQuoteBlock)
-                            sb.Append(" + \"");
-
-                        break;
-
-                    default:
-                        sb.Append(c);
-                        break;
-                }
-            }
-
-            if (inQuoteBlock)
-                sb.Append("\"");
-
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// Base class for a collection of messages loaded from a file.
     /// </summary>
@@ -192,6 +16,8 @@ namespace NetGore.IO
     public abstract class MessageCollectionBase<T> : IMessageCollection<T>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        readonly AssemblyClassInvoker _invoker;
 
         /// <summary>
         /// Dictionary of messages for this language.
@@ -219,19 +45,24 @@ namespace NetGore.IO
             if (log.IsDebugEnabled)
                 log.DebugFormat("Loading MessageCollectionBase from file `{0}`.", file);
 
+            // Load the script messages
             _messages = Load(file, secondary);
 
-            var assemblyCreator = new JScriptAssemblyCreator();
-            assemblyCreator.Namespace = "GameMessages";
-            assemblyCreator.ClassName = "English"; // TODO: Proper name
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            var assemblyCreator = GetAssemblyCreator();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
+            // Populate the assembly creator
+            assemblyCreator.ClassName = "Messages";
 
             foreach (var msg in _messages)
+            {
                 assemblyCreator.AddMessageScriptMethod(msg.Key.ToString(), msg.Value);
+            }
 
+            // Create the assembly and assembly invoker
             _invoker = assemblyCreator.Compile();
         }
-
-        readonly AssemblyClassInvoker _invoker;
 
         /// <summary>
         /// Adds all messages from the <paramref name="source"/> that do not exist in the <paramref name="dest"/>.
@@ -249,6 +80,15 @@ namespace NetGore.IO
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Added message `{0}` from default messages.", sourceMsg.Key.ToString());
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="JScriptAssemblyCreator"/> to use for creating the <see cref="Assembly"/>.
+        /// </summary>
+        /// <returns>The <see cref="JScriptAssemblyCreator"/> to use for creating the <see cref="Assembly"/>.</returns>
+        protected virtual JScriptAssemblyCreator GetAssemblyCreator()
+        {
+            return new JScriptAssemblyCreator();
         }
 
         /// <summary>
@@ -402,7 +242,14 @@ namespace NetGore.IO
         /// is not found or invalid.</returns>
         public virtual string GetMessage(T id, params string[] args)
         {
-            return _invoker.InvokeAsString(id.ToString(), new object[] { args });
+            try
+            {
+                return _invoker.InvokeAsString(id.ToString(), new object[] { args });
+            }
+            catch (MissingMemberException)
+            {
+                return null;
+            }
         }
 
         #endregion
