@@ -946,7 +946,7 @@ namespace DemoGame
 
             w.WriteStartNode(_headerNodeName);
             {
-                w.Write(_headerNodeNameKey, "INSERT VALUE");
+                w.Write(_headerNodeNameKey, Name);
                 w.Write(_headerNodeMusicKey, Music);
                 w.Write(_headerNodeWidthKey, Width);
                 w.Write(_headerNodeHeightKey, Height);
