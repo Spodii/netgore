@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
@@ -26,6 +28,7 @@ namespace DemoGame
             StatusEffectsSettings.Initialize(new StatusEffectsSettings(500));
             GroupSettings.Initialize(new GroupSettings(10, 1000 * 60, CanJoinGroupHandler));
             QuestSettings.Initialize(new QuestSettings(20));
+            GameTimeSettings.Initialize(new GameTimeSettings(19, 6, -0.5f, 50, new DateTime(2010, 1, 1), 1000f));
 
             var rankNames = new string[] { "Recruit", "Member", "VIP", "Founder" };
             var nameRules = new StringRules(3, 50, CharType.All);

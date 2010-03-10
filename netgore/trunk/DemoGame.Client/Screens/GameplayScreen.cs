@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
+using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
@@ -281,7 +282,8 @@ namespace DemoGame.Client
             if (UserChar == null)
                 return;
 
-            DrawingManager.LightManager.Ambient = Map.AmbientLight;
+            // Update the ambient light based on the game time
+            DrawingManager.LightManager.Ambient = Map.GetModifiedAmbientLight();
 
             // Update the camera
             World.Camera.Min = World.UserChar.GetCameraPos(World.Camera);
@@ -303,6 +305,7 @@ namespace DemoGame.Client
             _infoBox.Draw(sb);
             GUIManager.Draw(sb);
             sb.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
+            sb.DrawString(_damageFont, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour , GameDateTime.Now.Minute), new Vector2(0, _damageFont.LineSpacing+1), Color.White);
             DrawingManager.EndDrawGUI();
         }
 

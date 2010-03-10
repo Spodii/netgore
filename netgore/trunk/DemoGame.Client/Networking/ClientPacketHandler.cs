@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
+using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;

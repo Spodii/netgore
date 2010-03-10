@@ -52,6 +52,8 @@
     <Compile Include="Friends\FriendName.cs" />
     <Compile Include="Friends\IFriend.cs" />
     <Compile Include="Friends\IFriendList.cs" />
+    <Compile Include="GameTime\GameDateTime.cs" />
+    <Compile Include="GameTime\GameTimeSettings.cs" />
     <Compile Include="Groups\GroupSettings.cs" />
     <Compile Include="Groups\GroupShareMode.cs" />
     <Compile Include="Groups\IGroup.cs" />

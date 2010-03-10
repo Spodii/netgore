@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Features.GameTime;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
@@ -77,6 +78,23 @@ namespace DemoGame.Client
             get { return _ambientLight; }
             set { _ambientLight = value; }
         }
+
+        /// <summary>
+        /// Gets the ambient light color for the map based on whether or not the map is indoors
+        /// and the current game-time.
+        /// </summary>
+        /// <returns>The ambient light color for the map based on whether or not the map is indoors
+        /// and the current game-time.</returns>
+        public Color GetModifiedAmbientLight()
+        {
+            // Indoor maps are not affected by time
+            if (Indoors)
+                return AmbientLight;
+
+            return _gameTimeSettings.GetModifiedAmbientLight(AmbientLight);
+        }
+
+        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
 
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.

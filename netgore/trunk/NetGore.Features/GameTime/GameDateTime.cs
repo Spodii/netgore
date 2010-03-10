@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore.Features.GameTime
 {
     /// <summary>
     /// A structure containing the virtual game time.
@@ -41,38 +41,36 @@ namespace DemoGame
         /// </summary>
         static GameDateTime()
         {
-            BaseTime = new DateTime(2010, 1, 1, 0, 0, 0);
             MinutesPerHour = 60;
             DaysPerMonth = 30;
             HoursPerDay = 24;
             MonthsPerYear = 12;
-            GameTimeMultiplier = 20f;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameDateTime"/> struct.
         /// </summary>
         /// <param name="totalMinutes">The total number of real-world minutes that have elapsed since the
-        /// <see cref="GameDateTime.BaseTime"/>.</param>
-        public GameDateTime(uint totalMinutes)
+        /// <see cref="GameTimeSettings.BaseTime"/>.</param>
+        public GameDateTime(double totalMinutes)
         {
             // Convert the total real-world minutes to total game-world minutes
-            totalMinutes = (uint)(totalMinutes * GameTimeMultiplier);
+            totalMinutes = totalMinutes * _gameTimeSettings.GameTimeMultiplier;
 
             // Years
-            var year = totalMinutes / MinutesPerYear;
+            var year = (int)(totalMinutes / MinutesPerYear);
             totalMinutes -= MinutesPerYear * year;
 
             // Months
-            var month = totalMinutes / MinutesPerMonth;
+            var month = (int)(totalMinutes / MinutesPerMonth);
             totalMinutes -= MinutesPerMonth * month;
 
             // Days
-            var day = totalMinutes / MinutesPerDay;
+            var day = (int)(totalMinutes / MinutesPerDay);
             totalMinutes -= MinutesPerDay * day;
 
             // Hours
-            var hour = totalMinutes / MinutesPerHour;
+            var hour = (int)(totalMinutes / MinutesPerHour);
             totalMinutes -= MinutesPerHour * hour;
 
             // Store in the appropriate member variables
@@ -93,15 +91,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="DateTime"/> that represents the real-world time at which the game's time
-        /// starts. This is the time used for when finding the total real-world minutes that have elapsed. Therefore, it
-        /// is only logical that the value is always less than the current time. To make the game time persist, this
-        /// value should be set to a constant date (such as the first day of year 2010).
-        /// The default value is the first day of year 2010.
-        /// </summary>
-        public static DateTime BaseTime { get; set; }
-
-        /// <summary>
         /// Gets or sets the base year value in game-time. That is, when the total elapsed game time is 0 minutes,
         /// this is what the year will be.
         /// </summary>
@@ -120,12 +109,6 @@ namespace DemoGame
         /// </summary>
         public static uint DaysPerMonth { get; set; }
 
-        /// <summary>
-        /// Gets or sets how much faster the game-time moves than real-world time. A value of 1.0f represents that a
-        /// minute in game-time is equal to a minute in real-world time, and 2.0f represents that the game-time
-        /// progresses twice as fast as real-world time.
-        /// </summary>
-        public static float GameTimeMultiplier { get; set; }
 
         /// <summary>
         /// Gets the hour in game-time.
@@ -141,7 +124,7 @@ namespace DemoGame
         public static uint HoursPerDay { get; set; }
 
         /// <summary>
-        /// Gets the hour in game-time.
+        /// Gets the minute in game-time.
         /// </summary>
         public int Minute
         {
@@ -228,9 +211,9 @@ namespace DemoGame
         /// <summary>
         /// Gets the total number of real-world minutes for this <see cref="GameDateTime"/>.
         /// </summary>
-        public uint TotalRealMinutes
+        public double TotalRealMinutes
         {
-            get { return (uint)(TotalMinutes / GameTimeMultiplier); }
+            get { return TotalMinutes / _gameTimeSettings.GameTimeMultiplier; }
         }
 
         /// <summary>
@@ -270,6 +253,8 @@ namespace DemoGame
             return Equals((GameDateTime)obj);
         }
 
+        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
+
         /// <summary>
         /// Gets a <see cref="GameDateTime"/> for a <see cref="DateTime"/>.
         /// </summary>
@@ -277,15 +262,8 @@ namespace DemoGame
         /// <returns>The <see cref="GameDateTime"/> for the <paramref name="realDateTime"/>.</returns>
         public static GameDateTime FromDateTime(DateTime realDateTime)
         {
-            var realTimeDiff = realDateTime - BaseTime - ServerTimeOffset;
-            return new GameDateTime((uint)realTimeDiff.TotalMinutes);
-        }
-
-        public DateTime ToDateTime()
-        {
-            var time = BaseTime + ServerTimeOffset;
-            time = time.AddMinutes(TotalRealMinutes);
-            return time.ToLocalTime();
+            var realTimeDiff = realDateTime - _gameTimeSettings.BaseTime - ServerTimeOffset;
+            return new GameDateTime(realTimeDiff.TotalMinutes);
         }
 
         /// <summary>
