@@ -66,6 +66,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets if the actor is hostile towards the given <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The character to check if the actor is hostile towards.</param>
+        /// <returns>True if the actor is hostile towards the <paramref name="character"/>; otherwise false.</returns>
+        protected virtual bool IsHostileTowards(Character character)
+        {
+            return Actor.Alliance.IsHostile(character.Alliance);
+        }
+
+        /// <summary>
         /// Gets the closest Character to this Actor that the Actor is hostile towards (as defined by
         /// the Actor's alliance). Only checks Characters in view of the Actor.
         /// </summary>
@@ -77,7 +87,7 @@ namespace DemoGame.Server
 
             // Get the characters that we are even hostile towards and are in view
             var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea, 
-                x => Actor.Alliance.IsHostile(x.Alliance) && x != Actor);
+                x => IsHostileTowards(x) && x != Actor);
             var closest = possibleChars.MinElementOrDefault(x => center.QuickDistance(x.Center));
 
             return closest;
