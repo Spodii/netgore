@@ -58,10 +58,15 @@ namespace DemoGame.Server
         {
             base.OnConnectedFrom(conn);
 
+            // Get the UDP connection set up
             using (var pw = ServerPacket.RequestUDPConnection(conn.GetHashCode()))
             {
                 conn.Send(pw, true);
             }
+
+            // Send the current server time
+            using (var pw = ServerPacket.SetGameTime(DateTime.Now))
+                conn.Send(pw);
         }
 
         /// <summary>
