@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.Features.GameTime;
 using NetGore.Features.Shops;
 using NetGore.Features.StatusEffects;
 using NUnit.Framework;
@@ -21,6 +23,7 @@ namespace NetGore.Tests
             EngineSettings.Initialize(new EngineSettings(new Vector2(0f, 0.0009f), new Vector2(0.5f, 0.5f)));
             ShopSettings.Initialize(new ShopSettings(6 * 6));
             StatusEffectsSettings.Initialize(new StatusEffectsSettings(500));
+            GameTimeSettings.Initialize(new GameTimeSettings(19, 6, -0.5f, 50, new DateTime(2010, 1, 1), 20f));
         }
     }
 }

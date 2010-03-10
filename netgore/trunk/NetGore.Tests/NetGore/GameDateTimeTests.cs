@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DemoGame;
+using NetGore.Features.GameTime;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore
@@ -37,14 +38,6 @@ namespace NetGore.Tests.NetGore
             var b = new GameDateTime(25);
 
             Assert.AreEqual(new GameDateTime(25), a - b);
-        }
-
-        [Test]
-        public void BaseTimeTest()
-        {
-            GameDateTime.BaseTime = DateTime.Now;
-            var gt = GameDateTime.Now;
-            Assert.AreEqual(GameDateTime.BaseYear, gt.Year);
         }
 
         [Test]
@@ -142,8 +135,8 @@ namespace NetGore.Tests.NetGore
         {
             const int minutes = 123123123;
             var gt = new GameDateTime(minutes);
-            Assert.AreEqual(minutes, gt.TotalRealMinutes);
-            Assert.AreEqual(gt, new GameDateTime(gt.TotalRealMinutes));
+            Assert.AreEqual(minutes, (int)gt.TotalRealMinutes);
+            Assert.AreEqual(gt, new GameDateTime((int)gt.TotalRealMinutes));
         }
     }
 }
