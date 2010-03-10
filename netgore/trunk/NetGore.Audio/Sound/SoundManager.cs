@@ -101,7 +101,7 @@ namespace NetGore.Audio
         /// </summary>
         public override void Stop()
         {
-            foreach (var item in GetAudio)
+            foreach (var item in Items)
             {
                 item.Stop();
             }

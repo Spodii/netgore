@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.EditorTools;
@@ -1295,5 +1296,24 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        /// <summary>
+        /// Handles the Click event of the btnSelectMusic control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnSelectMusic_Click(object sender, EventArgs e)
+        {
+            var mm = MusicManager.GetInstance(_content);
+            var current = mm.GetItem(Map.Music);
+
+            using (var f = new MusicUITypeEditorForm(_content, current))
+            {
+                if (f.ShowDialog(this) == DialogResult.OK)
+                {
+                    txtMusic.Text = f.SelectedItem.Name;
+                }
+            }
+        }
     }
 }

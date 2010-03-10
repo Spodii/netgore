@@ -79,16 +79,16 @@
     <Compile Include="Grh\Controls\GrhTreeView\WallsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grh\GrhUITypeEditorForm.cs">
+    <Compile Include="UI Editors\GrhUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Grh\GrhUITypeEditorForm.Designer.cs">
+    <Compile Include="UI Editors\GrhUITypeEditorForm.Designer.cs">
       <DependentUpon>GrhUITypeEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Editor Cursors\EditorCursor.cs" />
     <Compile Include="Editor Cursors\EditorCursorManager.cs" />
     <Compile Include="Particles\EmitterModifierCollectionEditor.cs" />
-    <Compile Include="Grh\GrhEditor.cs" />
+    <Compile Include="UI Editors\GrhEditor.cs" />
     <Compile Include="Persistable Controls\PersistableCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -103,6 +103,27 @@
     </Compile>
     <Compile Include="SelectedObjectManagerEventHandler.cs" />
     <Compile Include="SelectedObjectsManager.cs" />
+    <Compile Include="UI Editors\MusicUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI Editors\MusicUITypeEditorForm.Designer.cs">
+      <DependentUpon>MusicUITypeEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Editors\SoundUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI Editors\SoundUITypeEditorForm.Designer.cs">
+      <DependentUpon>SoundUITypeEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Editors\UITypeEditorListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI Editors\UITypeEditorListForm.Designer.cs">
+      <DependentUpon>UITypeEditorListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Editors\UITypeEditorListFormListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Undo Manager\IUndoEvent.cs" />
     <Compile Include="Undo Manager\IUndoManager.cs" />
     <Compile Include="Undo Manager\UndoManagerBase.cs" />
@@ -222,6 +243,11 @@
     <Compile Include="WinForms\ServiceContainer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
+      <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
+      <Name>NetGore.Audio</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>
@@ -242,7 +268,7 @@
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Grh\GrhUITypeEditorForm.resx">
+    <EmbeddedResource Include="UI Editors\GrhUITypeEditorForm.resx">
       <DependentUpon>GrhUITypeEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -254,6 +280,14 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Editors\MusicUITypeEditorForm.resx">
+      <DependentUpon>MusicUITypeEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Editors\UITypeEditorListForm.resx">
+      <DependentUpon>UITypeEditorListForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

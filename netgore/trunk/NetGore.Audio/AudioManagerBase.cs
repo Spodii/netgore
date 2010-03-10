@@ -137,6 +137,7 @@ namespace NetGore.Audio
     public abstract class AudioManagerBase<T, TID> : AudioManagerBase where T : class, IAudio
     {
         const string _itemsNodeName = "Items";
+
         readonly DArray<T> _items = new DArray<T>(false);
         readonly Dictionary<string, T> _itemsByName = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
 
@@ -156,9 +157,9 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the audio items in this manager.
+        /// Gets all of the audio items in this collection.
         /// </summary>
-        public IEnumerable<T> GetAudio
+        public IEnumerable<T> Items
         {
             get { return _items; }
         }
