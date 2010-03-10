@@ -58,9 +58,11 @@ namespace DemoGame.MapEditor
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.NameLabel = new System.Windows.Forms.Label();
-            this.txtMusic = new System.Windows.Forms.TextBox();
             this.txtMapName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.txtMusic = new System.Windows.Forms.TextBox();
+            this.btnSelectMusic = new System.Windows.Forms.Button();
             this.tabPageGrhs = new System.Windows.Forms.TabPage();
             this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
@@ -132,6 +134,9 @@ namespace DemoGame.MapEditor
             this.groupBox2.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.splitContainer9.Panel1.SuspendLayout();
+            this.splitContainer9.Panel2.SuspendLayout();
+            this.splitContainer9.SuspendLayout();
             this.tabPageGrhs.SuspendLayout();
             this.tabPageBackground.SuspendLayout();
             this.splitContainer5.Panel1.SuspendLayout();
@@ -478,9 +483,9 @@ namespace DemoGame.MapEditor
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.NameLabel, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txtMusic, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtMapName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.splitContainer9, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -500,15 +505,6 @@ namespace DemoGame.MapEditor
             this.NameLabel.TabIndex = 0;
             this.NameLabel.Text = "Map Name:";
             // 
-            // txtMusic
-            // 
-            this.txtMusic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtMusic.Location = new System.Drawing.Point(73, 28);
-            this.txtMusic.Name = "txtMusic";
-            this.txtMusic.Size = new System.Drawing.Size(238, 20);
-            this.txtMusic.TabIndex = 5;
-            this.txtMusic.TextChanged += new System.EventHandler(this.txtMusic_TextChanged);
-            // 
             // txtMapName
             // 
             this.txtMapName.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -527,6 +523,44 @@ namespace DemoGame.MapEditor
             this.label5.Size = new System.Drawing.Size(64, 13);
             this.label5.TabIndex = 4;
             this.label5.Text = "Music:";
+            // 
+            // splitContainer9
+            // 
+            this.splitContainer9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer9.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer9.IsSplitterFixed = true;
+            this.splitContainer9.Location = new System.Drawing.Point(73, 28);
+            this.splitContainer9.Name = "splitContainer9";
+            // 
+            // splitContainer9.Panel1
+            // 
+            this.splitContainer9.Panel1.Controls.Add(this.txtMusic);
+            // 
+            // splitContainer9.Panel2
+            // 
+            this.splitContainer9.Panel2.Controls.Add(this.btnSelectMusic);
+            this.splitContainer9.Size = new System.Drawing.Size(238, 21);
+            this.splitContainer9.SplitterDistance = 209;
+            this.splitContainer9.TabIndex = 5;
+            // 
+            // txtMusic
+            // 
+            this.txtMusic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtMusic.Location = new System.Drawing.Point(0, 0);
+            this.txtMusic.Name = "txtMusic";
+            this.txtMusic.Size = new System.Drawing.Size(209, 20);
+            this.txtMusic.TabIndex = 6;
+            // 
+            // btnSelectMusic
+            // 
+            this.btnSelectMusic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSelectMusic.Location = new System.Drawing.Point(0, 0);
+            this.btnSelectMusic.Name = "btnSelectMusic";
+            this.btnSelectMusic.Size = new System.Drawing.Size(25, 21);
+            this.btnSelectMusic.TabIndex = 0;
+            this.btnSelectMusic.Text = "...";
+            this.btnSelectMusic.UseVisualStyleBackColor = true;
+            this.btnSelectMusic.Click += new System.EventHandler(this.btnSelectMusic_Click);
             // 
             // tabPageGrhs
             // 
@@ -1122,6 +1156,10 @@ namespace DemoGame.MapEditor
             this.MapSizeGroupBox.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.splitContainer9.Panel1.ResumeLayout(false);
+            this.splitContainer9.Panel1.PerformLayout();
+            this.splitContainer9.Panel2.ResumeLayout(false);
+            this.splitContainer9.ResumeLayout(false);
             this.tabPageGrhs.ResumeLayout(false);
             this.tabPageBackground.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
@@ -1168,7 +1206,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label NameLabel;
-        private System.Windows.Forms.TextBox txtMusic;
         private System.Windows.Forms.TextBox txtMapName;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabPageGrhs;
@@ -1224,5 +1261,8 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.TextBox txtAmbientR;
         private System.Windows.Forms.Label label6;
         private PersistableCheckBox chkLightSources;
+        private System.Windows.Forms.SplitContainer splitContainer9;
+        private System.Windows.Forms.TextBox txtMusic;
+        private System.Windows.Forms.Button btnSelectMusic;
     }
 }

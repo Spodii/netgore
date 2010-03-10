@@ -32,7 +32,7 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Handles the Load event of the GrhUITypeEditorForm control.
+        /// Handles the Load event of the <see cref="GrhUITypeEditorForm"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>

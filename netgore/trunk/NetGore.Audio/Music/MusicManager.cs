@@ -14,6 +14,7 @@ namespace NetGore.Audio
     {
         static readonly object _instanceLock = new object();
         static MusicManager _instance;
+
         IMusic _currentlyPlaying;
 
         /// <summary>
