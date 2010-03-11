@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -11,6 +12,7 @@ namespace DemoGame
     /// Defines a value used to determine the chance that an ItemTemplate will be created.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(ItemChanceTypeConverter))]
     public struct ItemChance : IComparable<ItemChance>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         #region Non-Templated Code

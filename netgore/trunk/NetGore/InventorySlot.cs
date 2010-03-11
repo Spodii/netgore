@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
@@ -10,6 +11,7 @@ namespace NetGore
     /// Represents the index of a slot in the Inventory.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(InventorySlotTypeConverter))]
     public struct InventorySlot : IComparable<InventorySlot>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -11,6 +12,7 @@ namespace DemoGame
     /// Represents a unique ID for a User's account.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(AccountIDTypeConverter))]
     public struct AccountID : IComparable<AccountID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

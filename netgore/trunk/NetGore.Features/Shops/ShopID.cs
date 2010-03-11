@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
@@ -10,6 +11,7 @@ namespace NetGore.Features.Shops
     /// Represents the unique ID of a shop.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(ShopIDTypeConverter))]
     public struct ShopID : IComparable<ShopID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

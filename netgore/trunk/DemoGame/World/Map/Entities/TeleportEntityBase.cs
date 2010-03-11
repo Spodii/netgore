@@ -6,7 +6,7 @@ using NetGore;
 namespace DemoGame
 {
     /// <summary>
-    /// An Entity that can teleport another Entity to a new position and map upon use.
+    /// An <see cref="Entity"/> that can teleport another <see cref="Entity"/> to a new position and map upon use.
     /// </summary>
     public abstract class TeleportEntityBase : DynamicEntity, IUsableEntity
     {
@@ -18,7 +18,9 @@ namespace DemoGame
         /// </summary>
         protected TeleportEntityBase() : base(Vector2.Zero, Vector2.One)
         {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Weight = 0f;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>

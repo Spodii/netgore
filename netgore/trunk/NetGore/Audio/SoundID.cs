@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
@@ -10,6 +11,7 @@ namespace NetGore.Audio
     /// Represents the unique ID of a sound track.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(SoundIDTypeConverter))]
     public struct SoundID : IComparable<SoundID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

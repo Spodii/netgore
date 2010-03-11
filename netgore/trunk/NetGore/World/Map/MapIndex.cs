@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
@@ -10,6 +11,7 @@ namespace NetGore
     /// Represents the index of a Map.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(MapIndexTypeConverter))]
     public struct MapIndex : IComparable<MapIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

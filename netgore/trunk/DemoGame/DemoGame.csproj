@@ -70,6 +70,8 @@
     <Compile Include="Account\AccountID.cs" />
     <Compile Include="Account\AccountCharacterInfo.cs" />
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
+    <Compile Include="Account\AccountIDTypeConverter.cs" />
+    <Compile Include="Body\BodyIndexTypeConverter.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountIpsTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceAttackableTable.cs" />
@@ -117,11 +119,16 @@
     <Compile Include="IO\PropertySyncSPValueType.cs" />
     <Compile Include="IO\PropertySyncWeaponType.cs" />
     <Compile Include="Items\EquippedEventHandler.cs" />
+    <Compile Include="Items\ItemChanceTypeConverter.cs" />
+    <Compile Include="Items\ItemIDTypeConverter.cs" />
+    <Compile Include="Items\ItemTemplateIDTypeConverter.cs" />
     <Compile Include="Items\WeaponType.cs" />
     <Compile Include="LevelExtensions.cs" />
     <Compile Include="StatusEffect\ActiveStatusEffectID.cs" />
     <Compile Include="World\Map\Entities\AllianceID.cs" />
+    <Compile Include="World\Map\Entities\AllianceIDTypeConverter.cs" />
     <Compile Include="World\Map\Entities\CharacterID.cs" />
+    <Compile Include="World\Map\Entities\CharacterIDTypeConverter.cs" />
     <Compile Include="World\Map\Entities\CharacterTemplateID.cs" />
     <Compile Include="DbObjs\ColumnCollections\StatTypeConstDictionary.cs" />
     <Compile Include="DbObjs\ColumnMetadata.cs" />
@@ -131,6 +138,7 @@
     <Compile Include="Items\ItemChance.cs" />
     <Compile Include="Items\ItemID.cs" />
     <Compile Include="Items\ItemTemplateID.cs" />
+    <Compile Include="World\Map\Entities\CharacterTemplateIDTypeConverter.cs" />
     <Compile Include="World\Map\MapSpawnValuesID.cs" />
     <Compile Include="Skills\SkillInfoAttribute.cs" />
     <Compile Include="Skills\SkillInfoManager.cs" />
@@ -175,6 +183,7 @@
     <Compile Include="Stats\StatTypeExtensions.cs" />
     <Compile Include="StatusEffect\DefaultStatusEffectMergeType.cs" />
     <Compile Include="StatusEffect\StatusEffectType.cs" />
+    <Compile Include="World\Map\MapSpawnValuesIDTypeConverter.cs" />
     <Compile Include="World\WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>

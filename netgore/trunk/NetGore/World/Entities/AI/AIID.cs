@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
@@ -10,6 +11,7 @@ namespace NetGore.AI
     /// Represents the ID for an AI module.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(AIIDTypeConverter))]
     public struct AIID : IComparable<AIID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
