@@ -788,7 +788,7 @@ namespace DemoGame.Server
                     break;
 
                 case WeaponType.Projectile:
-                case WeaponType.Gun:
+                case WeaponType.Ranged:
                     AttackRanged(weapon, target);
                     break;
 
@@ -889,7 +889,7 @@ namespace DemoGame.Server
                     ammoUsed = true;
                     break;
 
-                case WeaponType.Gun:
+                case WeaponType.Ranged:
                     // By default, guns won't use ammo. But if you want to require guns to use ammo, you can do so here
                     ammoUsed = true;
                     break;

@@ -18,12 +18,12 @@ namespace DemoGame
         Melee,
 
         /// <summary>
-        /// A weapon that fires projectiles (e.g. guns and bows).
+        /// A weapon that can be used from a range (e.g. guns and bows).
         /// </summary>
-        Gun,
+        Ranged,
 
         /// <summary>
-        /// A weapon that is a thrown projectile (e.g. throwing knives and ninja stars).
+        /// A weapon that is a thrown projectile (e.g. throwing knives and rocks).
         /// </summary>
         Projectile
     }
