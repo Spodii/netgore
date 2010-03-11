@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework.Content;
@@ -37,7 +32,7 @@ namespace DemoGame.DbEditor
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            
+
             Show();
             Refresh();
 
@@ -60,11 +55,6 @@ namespace DemoGame.DbEditor
             CustomUITypeEditors.AddEditors(_dbController);
 
             pgItemTemplate.SelectedObject = _dbController.GetQuery<SelectItemTemplateQuery>().Execute(new ItemTemplateID(1));
-        }
-
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
