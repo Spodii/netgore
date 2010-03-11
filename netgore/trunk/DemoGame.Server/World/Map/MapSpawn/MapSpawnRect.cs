@@ -13,6 +13,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Describes a rectangle that describes the area in a Map where spawning will take place.
     /// </summary>
+    [TypeConverter(typeof(MapSpawnRectEditor))]
     public struct MapSpawnRect
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -78,7 +79,8 @@ namespace DemoGame.Server
         [DisplayName("X")]
         [Browsable(true)]
         [DefaultValue(null)]
-        [Description("The X-coordinate of the spawn rectangle. If null, the rectangle will be located at the left side of the Map.")]
+        [Description(
+            "The X-coordinate of the spawn rectangle. If null, the rectangle will be located at the left side of the Map.")]
         public ushort? X
         {
             get { return _x; }
@@ -91,7 +93,8 @@ namespace DemoGame.Server
         [DisplayName("Y")]
         [Browsable(true)]
         [DefaultValue(null)]
-        [Description("The Y-coordinate of the spawn rectangle. If null, the rectangle will be located at the top side of the Map.")]
+        [Description("The Y-coordinate of the spawn rectangle. If null, the rectangle will be located at the top side of the Map."
+            )]
         public ushort? Y
         {
             get { return _y; }
