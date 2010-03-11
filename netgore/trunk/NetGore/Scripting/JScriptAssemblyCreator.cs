@@ -14,8 +14,6 @@ namespace NetGore
     {
         readonly List<string> _members = new List<string>();
 
-        bool _hasAddedMessageScriptMethods = false;
-
         /// <summary>
         /// Gets or sets the name of the class to generate. This value must be set before calling Compile().
         /// </summary>
@@ -28,12 +26,6 @@ namespace NetGore
         /// <param name="messageScript">The raw message script.</param>
         public void AddMessageScriptMethod(string name, string messageScript)
         {
-            if (!_hasAddedMessageScriptMethods)
-            {
-                _hasAddedMessageScriptMethods = true;
-                AddSpecialMessageScriptMethods();
-            }
-
             var convertedScript = MessageScriptToJScript(messageScript, 0, messageScript.Length);
             AddMethod(name, "public", "String", "p", "return " + convertedScript + ";");
         }
@@ -72,22 +64,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Adds the GetSafe JScript method that ensures the parameter index being grabbed for the input
-        /// arguments of a message script method is valid or, if its not, returns a message instead of throwing
-        /// an exception.
+        /// Adds raw code to the generated code on the member level.
         /// </summary>
-        protected virtual void AddSpecialMessageScriptMethod_GetSafe()
+        /// <param name="memberCode">The code to add.</param>
+        public void AddRawMember(string memberCode)
         {
-            AddMethod("GetSafe", "private", "String", "p, i : int", "return p.Length > i ? p[i] : \"<Param Missing>\";");
-        }
-
-        /// <summary>
-        /// Adds the special methods requires for the message script methods. Override in the derived class
-        /// to add additional messages.
-        /// </summary>
-        protected virtual void AddSpecialMessageScriptMethods()
-        {
-            AddSpecialMessageScriptMethod_GetSafe();
+            _members.Insert(0, memberCode);
         }
 
         /// <summary>

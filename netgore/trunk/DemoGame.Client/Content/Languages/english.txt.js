@@ -1,0 +1,1 @@
+/* Code in this file will end up in the generated JScript for English only */
