@@ -24,17 +24,17 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Keeps track of how many controls are sharing the singletonInstance
         /// </summary>
-        static int referenceCount;
+        static int _referenceCount;
 
         /// <summary>
         /// Singleton device service instance
         /// </summary>
-        static GraphicsDeviceService singletonInstance;
+        static GraphicsDeviceService _instance;
 
         /// <summary>
         /// Current device settings
         /// </summary>
-        readonly PresentationParameters pp;
+        readonly PresentationParameters _pp;
 
         /// <summary>
         /// Graphics device
@@ -42,12 +42,14 @@ namespace NetGore.EditorTools
         GraphicsDevice graphicsDevice;
 
         /// <summary>
-        /// Constructor is private, because this is a singleton class:
-        /// client controls should use the public AddRef method instead.
+        /// Initializes a new instance of the <see cref="GraphicsDeviceService"/> class.
         /// </summary>
+        /// <param name="windowHandle">The window handle.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         GraphicsDeviceService(IntPtr windowHandle, int width, int height)
         {
-            pp = new PresentationParameters
+            _pp = new PresentationParameters
             {
                 BackBufferWidth = Math.Max(width, 1),
                 BackBufferHeight = Math.Max(height, 1),
@@ -56,7 +58,7 @@ namespace NetGore.EditorTools
                 AutoDepthStencilFormat = DepthFormat.Depth24
             };
 
-            graphicsDevice = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, DeviceType.Hardware, windowHandle, pp);
+            graphicsDevice = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, DeviceType.Hardware, windowHandle, _pp);
         }
 
         /// <summary>
@@ -65,14 +67,14 @@ namespace NetGore.EditorTools
         public static GraphicsDeviceService AddRef(IntPtr windowHandle, int width, int height)
         {
             // Increment the "how many controls sharing the device" reference count.
-            if (Interlocked.Increment(ref referenceCount) == 1)
+            if (Interlocked.Increment(ref _referenceCount) == 1)
             {
                 // If this is the first control to start using the
                 // device, we must create the singleton instance.
-                singletonInstance = new GraphicsDeviceService(windowHandle, width, height);
+                _instance = new GraphicsDeviceService(windowHandle, width, height);
             }
 
-            return singletonInstance;
+            return _instance;
         }
 
         /// <summary>
@@ -81,7 +83,7 @@ namespace NetGore.EditorTools
         public void Release(bool disposing)
         {
             // Decrement the "how many controls sharing the device" reference count.
-            if (Interlocked.Decrement(ref referenceCount) != 0)
+            if (Interlocked.Decrement(ref _referenceCount) != 0)
                 return;
 
             // If this is the last control to finish using the
@@ -108,11 +110,11 @@ namespace NetGore.EditorTools
                 DeviceResetting(this, EventArgs.Empty);
 
             // Set the backbuffer size to the specified sizes (if they are larger than the current size)
-            pp.BackBufferWidth = Math.Max(pp.BackBufferWidth, width);
-            pp.BackBufferHeight = Math.Max(pp.BackBufferHeight, height);
+            _pp.BackBufferWidth = Math.Max(_pp.BackBufferWidth, width);
+            _pp.BackBufferHeight = Math.Max(_pp.BackBufferHeight, height);
 
             // Reset the GraphicsDevice
-            graphicsDevice.Reset(pp);
+            graphicsDevice.Reset(_pp);
 
             if (DeviceReset != null)
                 DeviceReset(this, EventArgs.Empty);

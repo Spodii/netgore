@@ -987,7 +987,6 @@ namespace DemoGame.SkeletonEditor
             this.Name = "ScreenForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Skeleton Editor";
-            this.Load += new System.EventHandler(this.ScreenForm_Load);
             this.tcMenu.ResumeLayout(false);
             this.tabSkeleton.ResumeLayout(false);
             this.tabSkeleton.PerformLayout();

@@ -35,6 +35,8 @@ namespace NetGore.Graphics
         /// </summary>
         static DArray<GrhData> _grhDatas;
 
+        static bool _isLoaded = false;
+
         /// <summary>
         /// If the <see cref="GrhData"/>s are currently being loaded
         /// </summary>
@@ -80,6 +82,14 @@ namespace NetGore.Graphics
 
                 return _grhDatas;
             }
+        }
+
+        /// <summary>
+        /// Gets if the <see cref="GrhData"/>s have already been loaded.
+        /// </summary>
+        public static bool IsLoaded
+        {
+            get { return _isLoaded; }
         }
 
         /// <summary>
@@ -461,6 +471,11 @@ namespace NetGore.Graphics
         /// <param name="cm">The <see cref="ContentManager"/> to use for loaded <see cref="GrhData"/>s.</param>
         public static void Load(ContentPaths contentPath, ContentManager cm)
         {
+            if (IsLoaded)
+                return;
+
+            _isLoaded = true;
+
             string path = GetGrhDataFilePath(contentPath);
 
             if (cm == null)
