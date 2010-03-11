@@ -70,7 +70,6 @@ namespace NetGore.Graphics
         [Browsable(true)]
         [DisplayName("GrhData")]
         [Description("The GrhData that is drawn for this MapGrh.")]
-        [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Grh Grh
         {
             get { return _grh; }

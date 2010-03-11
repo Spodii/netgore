@@ -161,7 +161,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets or sets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Editor(EditorHelper.EmitterModifierCollectionEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         [Category(_emitterCategoryName)]
         [Description("Collection of modifiers for the actual emitter.")]
         [DisplayName("Emitter Modifiers")]
@@ -260,7 +259,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Editor(EditorHelper.ParticleModifierCollectionEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         [Category(_emitterCategoryName)]
         [Description("Collection of modifiers for individual particles.")]
         [DisplayName("Particle Modifiers")]
@@ -355,7 +353,6 @@ namespace NetGore.Graphics.ParticleEngine
         [Browsable(true)]
         [DisplayName("GrhData")]
         [Description("The GrhData that is drawn for the emitted particles.")]
-        [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Grh Sprite
         {
             get { return _sprite; }

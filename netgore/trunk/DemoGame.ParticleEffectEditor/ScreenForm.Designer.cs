@@ -156,7 +156,6 @@ namespace DemoGame.ParticleEffectEditor
             this.Name = "ScreenForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Particle Effect Editor";
-            this.Load += new System.EventHandler(this.ScreenForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabEffect.ResumeLayout(false);
             this.gbEmitter.ResumeLayout(false);

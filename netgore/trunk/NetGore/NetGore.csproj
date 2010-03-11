@@ -145,7 +145,6 @@
     <Compile Include="Converters\Variable Values\VariableSByteConverter.cs" />
     <Compile Include="Converters\Variable Values\VariableShortConverter.cs" />
     <Compile Include="Converters\Variable Values\VariableUShortConverter.cs" />
-    <Compile Include="EditorHelper.cs" />
     <Compile Include="Enum\EnumComparer.cs" />
     <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="Exceptions\InstantiateTypeException.cs" />

@@ -189,7 +189,6 @@ namespace NetGore.Graphics
         [DisplayName("Sprite")]
         [Description("The sprite used to draw the light.")]
         [Browsable(true)]
-        [Editor(EditorHelper.GrhEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Grh Sprite { get; set; }
 
         /// <summary>
