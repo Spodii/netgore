@@ -380,6 +380,7 @@
     <Compile Include="World\Map\MapItemsCleaner.cs" />
     <Compile Include="World\Map\MapSpawn\EditorMapSpawnValues.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnRect.cs" />
+    <Compile Include="World\Map\MapSpawn\MapSpawnRectEditor.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnValues.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="World\Map\NPCSpawner.cs" />
