@@ -73,10 +73,11 @@ namespace NetGore.EditorTools
         /// <summary>
         /// When overridden in the derived class, sets the item that will be selected by default.
         /// </summary>
+        /// <param name="items">The items to choose from.</param>
         /// <returns>
         /// The item that will be selected by default.
         /// </returns>
-        protected override ISound SetDefaultSelectedItem()
+        protected override ISound SetDefaultSelectedItem(IEnumerable<ISound> items)
         {
             return _current;
         }

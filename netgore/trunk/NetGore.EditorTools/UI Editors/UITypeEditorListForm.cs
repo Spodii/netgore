@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
+    /// <summary>
+    /// A <see cref="Form"/> for showing a list of items for a <see cref="UITypeEditor"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of listed item.</typeparam>
     public partial class UITypeEditorListForm<T> : Form
     {
         /// <summary>
@@ -63,16 +68,19 @@ namespace NetGore.EditorTools
                 lstItems.Items.AddRange(items.Cast<object>().ToArray());
 
             // Set the default selected item
-            lstItems.SelectedItem = SetDefaultSelectedItem();
+            lstItems.SelectedItem = SetDefaultSelectedItem(lstItems.Items.Cast<T>());
         }
 
         /// <summary>
         /// When overridden in the derived class, sets the item that will be selected by default.
         /// </summary>
-        /// <returns>The item that will be selected by default.</returns>
-        protected virtual T SetDefaultSelectedItem()
+        /// <param name="items">The items to choose from.</param>
+        /// <returns>
+        /// The item that will be selected by default.
+        /// </returns>
+        protected virtual T SetDefaultSelectedItem(IEnumerable<T> items)
         {
-            return default(T);
+            return items.FirstOrDefault();
         }
 
         /// <summary>
