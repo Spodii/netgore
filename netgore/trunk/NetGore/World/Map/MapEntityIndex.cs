@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
@@ -14,6 +15,7 @@ namespace NetGore
     /// contain a <see cref="MapEntityIndex"/>.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(MapEntityIndexTypeConverter))]
     public struct MapEntityIndex : IComparable<MapEntityIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

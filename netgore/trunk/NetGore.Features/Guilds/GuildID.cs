@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Features.Guilds
 {
+    /// <summary>
+    /// Represents the unique ID of a single guild.
+    /// </summary>
     [Serializable]
+    [TypeConverter(typeof(GuildIDTypeConverter))]
     public struct GuildID : IComparable<GuildID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -11,6 +12,7 @@ namespace DemoGame
     /// Represents a unique ID for a persistent Character instance.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(CharacterIDTypeConverter))]
     public struct CharacterID : IComparable<CharacterID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

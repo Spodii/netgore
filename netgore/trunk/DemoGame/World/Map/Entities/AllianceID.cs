@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -11,6 +12,7 @@ namespace DemoGame
     /// Represents the integral value of an Alliance's index.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(AllianceIDTypeConverter))]
     public struct AllianceID : IComparable<AllianceID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Asserts\ThreadAsserts.cs" />
+    <Compile Include="Audio\MusicIDTypeConverter.cs" />
+    <Compile Include="Audio\SoundIDTypeConverter.cs" />
     <Compile Include="BitOps.cs" />
     <Compile Include="Collections\Cache\HashCache.cs" />
     <Compile Include="Collections\Cache\ICache.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Extensions\Vector4Extensions.cs" />
     <Compile Include="InventorySlot.cs" />
+    <Compile Include="InventorySlotTypeConverter.cs" />
     <Compile Include="Scripting\AssemblyClassInvoker.cs" />
     <Compile Include="IO\Bits\BitStreamExtensions.cs" />
     <Compile Include="IO\IMessageCollection.cs" />
@@ -235,6 +238,7 @@
     <Compile Include="World\Entities\AI\AIFactoryBase.cs" />
     <Compile Include="World\Entities\AI\AIGrid.cs" />
     <Compile Include="World\Entities\AI\AIID.cs" />
+    <Compile Include="World\Entities\AI\AIIDTypeConverter.cs" />
     <Compile Include="World\Entities\AI\Heuristics.cs" />
     <Compile Include="World\Entities\AI\IAI.cs" />
     <Compile Include="World\Alignment.cs" />
@@ -258,6 +262,8 @@
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
+    <Compile Include="World\Map\MapEntityIndexTypeConverter.cs" />
+    <Compile Include="World\Map\MapIndexTypeConverter.cs" />
     <Compile Include="World\Map\Spatial\DynamicGridSpatialCollection.cs" />
     <Compile Include="World\Map\Spatial\GridSpatialCollectionBase.cs" />
     <Compile Include="World\Map\Spatial\IGridSpatialCollectionSegment.cs" />

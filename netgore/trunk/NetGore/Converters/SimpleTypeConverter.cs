@@ -24,6 +24,12 @@ namespace NetGore
         /// </returns>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
+            if (sourceType == typeof(T))
+                return true;
+
+            if (sourceType == typeof(string))
+                return true;
+
             return ((sourceType == typeof(string)) || base.CanConvertFrom(context, sourceType));
         }
 
@@ -40,6 +46,9 @@ namespace NetGore
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(T))
+                return true;
+
+            if (destinationType == typeof(string))
                 return true;
 
             return base.CanConvertTo(context, destinationType);
@@ -126,8 +135,11 @@ namespace NetGore
 
             if (destinationType == typeof(string) && value is T)
             {
-                var valueAsT = (T)value;
-                return ConvertToString(valueAsT);
+                return ConvertToString((T)value);
+            }
+            else if (destinationType == typeof(T))
+            {
+                return (T)value;
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

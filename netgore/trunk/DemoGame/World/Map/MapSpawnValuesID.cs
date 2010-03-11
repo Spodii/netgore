@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -11,6 +12,7 @@ namespace DemoGame
     /// Represents the unique ID of a MapSpawnValues.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(MapSpawnValuesIDTypeConverter))]
     public struct MapSpawnValuesID : IComparable<MapSpawnValuesID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

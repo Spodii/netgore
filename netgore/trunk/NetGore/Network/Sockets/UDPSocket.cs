@@ -84,7 +84,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Callback for ReceiveFrom.
+        /// Callback for <see cref="Socket.BeginReceiveFrom"/>.
         /// </summary>
         /// <param name="result">Async result.</param>
         void ReceiveFromCallback(IAsyncResult result)
@@ -99,7 +99,7 @@ namespace NetGore.Network
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
             }
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException)
             {
                 received = null;
                 Dispose();

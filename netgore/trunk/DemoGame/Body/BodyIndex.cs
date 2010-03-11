@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -11,6 +12,7 @@ namespace DemoGame
     /// Represents the index of a BodyInfo.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(BodyIndexTypeConverter))]
     public struct BodyIndex : IComparable<BodyIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>

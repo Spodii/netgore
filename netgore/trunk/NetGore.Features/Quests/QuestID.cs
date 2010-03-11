@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
@@ -10,6 +11,7 @@ namespace NetGore.Features.Quests
     /// Represents the unique ID of an individual quest.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(QuestIDTypeConverter))]
     public struct QuestID : IComparable<QuestID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
