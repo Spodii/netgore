@@ -17,6 +17,9 @@ namespace DemoGame.MapEditor
     {
         MapBase _map;
 
+        /// <summary>
+        /// Gets or sets the map used to populate this list box.
+        /// </summary>
         public MapBase Map
         {
             get { return _map; }
