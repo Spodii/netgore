@@ -33,6 +33,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional code to be added to the generated JScript.
+        /// </summary>
+        /// <param name="file">The file that is being loaded.</param>
+        /// <param name="assemblyCreator">The assembly creator.</param>
+        protected virtual void LoadAdditionalJScriptMembers(string file, JScriptAssemblyCreator assemblyCreator)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MessageCollectionBase{T}"/> class.
         /// </summary>
         /// <param name="file">Path to the file to load the messages from.</param>
@@ -54,6 +63,10 @@ namespace NetGore.IO
 
             // Populate the assembly creator
             assemblyCreator.ClassName = "Messages";
+
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            LoadAdditionalJScriptMembers(file, assemblyCreator);
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             foreach (var msg in _messages)
             {
