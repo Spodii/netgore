@@ -19,6 +19,11 @@ namespace NetGore
         public const string GrhEditorTypeName = "NetGore.EditorTools.GrhEditor, NetGore.EditorTools";
 
         /// <summary>
+        /// The fully qualified name for the GrhEditor.
+        /// </summary>
+        public const string MusicEditorTypeName = "NetGore.EditorTools.MusicEditor, NetGore.EditorTools";
+
+        /// <summary>
         /// The fully qualified name for the ParticleModifierCollectionEditor.
         /// </summary>
         public const string ParticleModifierCollectionEditorTypeName =

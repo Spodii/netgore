@@ -4,14 +4,14 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using NetGore.Graphics;
+using NetGore.Audio;
 
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="GrhData"/> to use on a <see cref="Grh"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="IMusic"/>.
     /// </summary>
-    public class GrhEditor : UITypeEditor
+    public class MusicEditor : UITypeEditor
     {
         /// <summary>
         /// Edits the specified object's value using the editor style indicated by the
@@ -29,17 +29,27 @@ namespace NetGore.EditorTools
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            var grh = value as Grh;
 
-            if (svc != null && grh != null)
+            if (svc != null)
             {
-                using (var editorForm = new GrhUITypeEditorForm(grh))
+                if (context.PropertyDescriptor.PropertyType == typeof(string))
                 {
-                    var originalGrhData = grh.GrhData;
-                    if (svc.ShowDialog(editorForm) != DialogResult.OK)
+                    using (var editorForm = new MusicUITypeEditorForm(null, value as string))
                     {
-                        // Revert to the original
-                        grh.SetGrh(originalGrhData);
+                        if (svc.ShowDialog(editorForm) != DialogResult.OK)
+                        {
+                            value = editorForm.SelectedItem.Name;
+                        }
+                    }
+                }
+                else if (context.PropertyDescriptor.PropertyType == typeof(IMusic))
+                {
+                    using (var editorForm = new MusicUITypeEditorForm(null, value as IMusic))
+                    {
+                        if (svc.ShowDialog(editorForm) != DialogResult.OK)
+                        {
+                            value = editorForm.SelectedItem;
+                        }
                     }
                 }
             }
@@ -63,36 +73,6 @@ namespace NetGore.EditorTools
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;
-        }
-
-        /// <summary>
-        /// Indicates whether the specified context supports painting a representation of an object's value within the
-        /// specified context.
-        /// </summary>
-        /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that can be used to gain
-        /// additional context information.</param>
-        /// <returns>
-        /// true if <see cref="M:System.Drawing.Design.UITypeEditor.PaintValue(System.Object,System.Drawing.Graphics,System.Drawing.Rectangle)"/>
-        /// is implemented; otherwise, false.
-        /// </returns>
-        public override bool GetPaintValueSupported(ITypeDescriptorContext context)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Paints a representation of the value of an object using the specified
-        /// <see cref="T:System.Drawing.Design.PaintValueEventArgs"/>.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Drawing.Design.PaintValueEventArgs"/> that indicates what to paint and
-        /// where to paint it.</param>
-        public override void PaintValue(PaintValueEventArgs e)
-        {
-            var image = GrhImageList.TryGetImage(e.Value as Grh);
-            if (image != null)
-                e.Graphics.DrawImage(image, e.Bounds);
-
-            base.PaintValue(e);
         }
     }
 }

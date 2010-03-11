@@ -898,8 +898,6 @@ namespace DemoGame.MapEditor
             this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NetGore Map Editor";
-            this.Load += new System.EventHandler(this.ScreenForm_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScreenForm_FormClosing);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.ResumeLayout(false);
