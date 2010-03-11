@@ -7,7 +7,7 @@ using NetGore.IO;
 namespace DemoGame
 {
     /// <summary>
-    /// Contains the point value of a Character's status.
+    /// Contains the value of a Character's Status Points (i.e. Health Points, Mana Points, etc).
     /// </summary>
     public struct SPValueType
     {
@@ -75,6 +75,12 @@ namespace DemoGame
             return new SPValueType(value);
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return _value.ToString();
@@ -100,16 +106,31 @@ namespace DemoGame
             bitStream.Write(_value);
         }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="DemoGame.SPValueType"/> to <see cref="System.Int16"/>.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns>The result of the conversion.</returns>
         public static implicit operator short(SPValueType v)
         {
             return v._value;
         }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.Int16"/> to <see cref="DemoGame.SPValueType"/>.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns>The result of the conversion.</returns>
         public static implicit operator SPValueType(short v)
         {
             return new SPValueType(v);
         }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="DemoGame.SPValueType"/>.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns>The result of the conversion.</returns>
         public static implicit operator SPValueType(int v)
         {
             Debug.Assert(v <= short.MaxValue);
