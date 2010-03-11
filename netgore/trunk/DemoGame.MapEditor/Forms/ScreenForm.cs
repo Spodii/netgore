@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.Server;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,6 +17,9 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using Character=DemoGame.Client.Character;
+using Map=DemoGame.Client.Map;
+using World=DemoGame.Client.World;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedParameter.Local
@@ -157,8 +161,8 @@ namespace DemoGame.MapEditor
 
             // Set up the object manager
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
-            _selectedObjectsManager.SelectedChanged += SelectedObjectsManager_SelectedChanged;
-            _selectedObjectsManager.FocusedChanged += SelectedObjectsManager_FocusedChanged;
+            SelectedObjs.SelectedChanged += SelectedObjectsManager_SelectedChanged;
+            SelectedObjs.FocusedChanged += SelectedObjectsManager_FocusedChanged;
 
             // Get the IMapBoundControls
             _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
@@ -791,13 +795,13 @@ namespace DemoGame.MapEditor
         void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstBGItems.SelectedItem != null)
-                _selectedObjectsManager.SetSelected(lstBGItems.SelectedItem);
+                SelectedObjs.SetSelected(lstBGItems.SelectedItem);
         }
 
         void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstMapParticleEffects.SelectedItem != null)
-                _selectedObjectsManager.SetSelected(lstMapParticleEffects.SelectedItem);
+                SelectedObjs.SetSelected(lstMapParticleEffects.SelectedItem);
         }
 
         void lstSelected_Click(object sender, EventArgs e)
@@ -1072,13 +1076,13 @@ namespace DemoGame.MapEditor
 
         void SelectedObjectsManager_FocusedChanged(SelectedObjectsManager<object> sender, object newFocused)
         {
-            scTabsAndSelected.Panel2Collapsed = (_selectedObjectsManager.SelectedObjects.Count() == 0 &&
-                                                 _selectedObjectsManager.Focused == null);
+            scTabsAndSelected.Panel2Collapsed = (SelectedObjs.SelectedObjects.Count() == 0 &&
+                                                 SelectedObjs.Focused == null);
         }
 
         void SelectedObjectsManager_SelectedChanged(SelectedObjectsManager<object> sender)
         {
-            scSelectedItems.Panel2Collapsed = _selectedObjectsManager.SelectedObjects.Count() < 2;
+            scSelectedItems.Panel2Collapsed = SelectedObjs.SelectedObjects.Count() < 2;
         }
 
         void tabPageGrhs_Enter(object sender, EventArgs e)
@@ -1164,5 +1168,39 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstNPCSpawns control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lstNPCSpawns_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpSpawns)
+                return;
+
+            var selected = lstNPCSpawns.SelectedItemReal;
+            if (selected == null)
+                return;
+
+            SelectedObjs.SetSelected(selected);
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstPersistentNPCs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpPersistent)
+                return;
+
+            var selected = lstPersistentNPCs.SelectedItem;
+            if (selected == null)
+                return;
+
+            SelectedObjs.SetSelected(selected);
+        }
     }
 }
