@@ -1070,6 +1070,8 @@ namespace DemoGame.MapEditor
             txtAmbientG.Text = newMap.AmbientLight.G.ToString();
             txtAmbientB.Text = newMap.AmbientLight.B.ToString();
             chkIndoors.Checked = newMap.Indoors;
+
+            pgMap.SelectedObject = newMap;
         }
 
         /// <summary>

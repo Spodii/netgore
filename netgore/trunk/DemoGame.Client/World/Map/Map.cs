@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Features.GameTime;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
@@ -73,10 +76,13 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the ambient light color.
         /// </summary>
+        [Browsable(true)]
+        [Category("Map")]
+        [DefaultValue(typeof(Color), "{255, 255, 255, 255}")]
         public Color AmbientLight
         {
             get { return _ambientLight; }
-            set { _ambientLight = value; }
+            set { _ambientLight = new Color(value.R, value.G, value.B, 255); }
         }
 
         /// <summary>
@@ -99,6 +105,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<BackgroundImage> BackgroundImages
         {
             get { return _backgroundImages; }
@@ -107,6 +114,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the lights on the map.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<ILight> Lights
         {
             get { return _lights; }
@@ -115,6 +123,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets an IEnumerable of all the MapGrhs on the Map.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<MapGrh> MapGrhs
         {
             get { return _mapGrhs; }
@@ -123,6 +132,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the <see cref="MapParticleEffectCollection"/> containing the particle effects for the map.
         /// </summary>
+        [Browsable(false)]
         public MapParticleEffectCollection ParticleEffects
         {
             get { return _particleEffects; }
@@ -383,6 +393,26 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets the size of the map. This properly is only added for usage in editors.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The size of the map in pixels.")]
+        [EditorBrowsable( EditorBrowsableState.Never)]
+        [DisplayName("Size")]
+        [Category("Map")]
+        public Vector2 _Size
+        {
+            get
+            {
+                return Size;
+            }
+            set
+            {
+                SetDimensions(value);
+            }
+        }
+
+        /// <summary>
         /// Writes all the MapGrhs to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="w">IValueWriter to write to.</param>
@@ -487,6 +517,7 @@ namespace DemoGame.Client
         /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        [Browsable(false)]
         public ICamera2D Camera
         {
             get { return _camera; }
@@ -503,17 +534,20 @@ namespace DemoGame.Client
         /// Gets or sets a filter to be used when determining what components on the map will be drawn.
         /// If null, all components will be drawn (same as returning true for each value).
         /// </summary>
+        [Browsable(false)]
         public Func<IDrawable, bool> DrawFilter { get; set; }
 
         /// <summary>
         /// Gets or sets if the particle effects should be drawn.
         /// </summary>
+        [Browsable(false)]
         public bool DrawParticles { get; set; }
 
         /// <summary>
         /// Draws the map.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
+        [Browsable(false)]
         public void Draw(ISpriteBatch sb)
         {
             // Find the drawable objects that are in view and pass the filter (if one is provided)
