@@ -4,14 +4,14 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using DemoGame.Server;
+using DemoGame.DbObjs;
 
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="CharacterTemplateID"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="ItemTemplateID"/>.
     /// </summary>
-    public class CharacterTemplateIDEditor : UITypeEditor
+    public class ItemTemplateIDEditor : UITypeEditor
     {
         /// <summary>
         /// Edits the specified object's value using the editor style indicated by the
@@ -32,14 +32,14 @@ namespace DemoGame.EditorTools
 
             if (svc != null)
             {
-                using (var editorForm = new CharacterTemplateUITypeEditorForm(value))
+                using (var editorForm = new ItemTemplateUITypeEditorForm(value))
                 {
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplateID))
-                            value = editorForm.SelectedItem.ID;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplate))
+                        if (context.PropertyDescriptor.PropertyType == typeof(IItemTemplateTable))
                             value = editorForm.SelectedItem;
+                        else if (context.PropertyDescriptor.PropertyType == typeof(ItemTemplateID))
+                            value = editorForm.SelectedItem.ID;
                         else if (context.PropertyDescriptor.PropertyType == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
                     }

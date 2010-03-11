@@ -4,8 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
-using DemoGame.Server;
-using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 
 namespace DemoGame.EditorTools
@@ -13,7 +11,7 @@ namespace DemoGame.EditorTools
     /// <summary>
     /// A <see cref="Form"/> for listing the character template information from the database.
     /// </summary>
-    public class CharacterTemplateUITypeEditorForm : UITypeEditorDbListForm<ICharacterTemplateTable>
+    public class ItemTemplateUITypeEditorForm : UITypeEditorDbListForm<IItemTemplateTable>
     {
         readonly object _selected;
 
@@ -21,7 +19,7 @@ namespace DemoGame.EditorTools
         /// Initializes a new instance of the <see cref="CharacterTemplateUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="selected">The default selected item.</param>
-        public CharacterTemplateUITypeEditorForm(object selected)
+        public ItemTemplateUITypeEditorForm(object selected)
         {
             _selected = selected;
         }
@@ -33,7 +31,7 @@ namespace DemoGame.EditorTools
         /// <returns>
         /// The item that will be selected by default.
         /// </returns>
-        protected override ICharacterTemplateTable SetDefaultSelectedItem(IEnumerable<ICharacterTemplateTable> items)
+        protected override IItemTemplateTable SetDefaultSelectedItem(IEnumerable<IItemTemplateTable> items)
         {
             if (_selected == null)
                 return base.SetDefaultSelectedItem(items);
@@ -45,22 +43,16 @@ namespace DemoGame.EditorTools
                 return items.FirstOrDefault(x => stringComp.Equals(x.Name, asString));
             }
 
-            if (_selected is CharacterTemplateID)
+            if (_selected is ItemTemplateID)
             {
-                var asID = (CharacterTemplateID)_selected;
+                var asID = (ItemTemplateID)_selected;
                 return items.FirstOrDefault(x => x.ID == asID);
             }
 
-            if (_selected is ICharacterTemplateTable)
+            if (_selected is IItemTemplateTable)
             {
-                var asTable = (ICharacterTemplateTable)_selected;
+                var asTable = (IItemTemplateTable)_selected;
                 return items.FirstOrDefault(x => x == asTable);
-            }
-
-            if (_selected is CharacterTemplate)
-            {
-                var asTemplate = (CharacterTemplate)_selected;
-                return items.FirstOrDefault(x => x.ID == asTemplate.TemplateTable.ID);
             }
 
             return base.SetDefaultSelectedItem(items);
@@ -71,7 +63,7 @@ namespace DemoGame.EditorTools
         /// </summary>
         /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
         /// <param name="item">The item being drawn.</param>
-        protected override void DrawListItem(DrawItemEventArgs e, ICharacterTemplateTable item)
+        protected override void DrawListItem(DrawItemEventArgs e, IItemTemplateTable item)
         {
             e.DrawBackground();
 
@@ -91,12 +83,12 @@ namespace DemoGame.EditorTools
         /// When overridden in the derived class, gets the items to add to the list.
         /// </summary>
         /// <returns>The items to add to the list.</returns>
-        protected override IEnumerable<ICharacterTemplateTable> GetListItems()
+        protected override IEnumerable<IItemTemplateTable> GetListItems()
         {
-            var ids = DbController.GetQuery<SelectCharacterTemplateIDsQuery>().Execute();
+            var ids = DbController.GetQuery<SelectItemTemplateIDsQuery>().Execute();
 
-            var ret = new List<ICharacterTemplateTable>();
-            var templateQuery = DbController.GetQuery<SelectCharacterTemplateQuery>();
+            var ret = new List<IItemTemplateTable>();
+            var templateQuery = DbController.GetQuery<SelectItemTemplateQuery>();
             foreach (var id in ids)
             {
                 var template = templateQuery.Execute(id);

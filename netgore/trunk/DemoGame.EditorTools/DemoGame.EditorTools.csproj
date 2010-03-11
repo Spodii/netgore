@@ -56,6 +56,10 @@
     <Compile Include="UITypeEditorDbListForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UITypeEditors\ItemTemplateIDEditor.cs" />
+    <Compile Include="UITypeEditors\ItemTemplateUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">

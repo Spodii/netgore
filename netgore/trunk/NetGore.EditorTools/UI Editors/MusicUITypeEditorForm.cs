@@ -12,7 +12,7 @@ using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
-    public partial class MusicUITypeEditorForm : UITypeEditorListForm<IMusic>
+    public class MusicUITypeEditorForm : UITypeEditorListForm<IMusic>
     {
         readonly ContentManager _cm;
         readonly IMusic _current;
@@ -26,8 +26,6 @@ namespace NetGore.EditorTools
         {
             _cm = cm;
             _current = current;
-
-            InitializeComponent();
         }
 
         /// <summary>
