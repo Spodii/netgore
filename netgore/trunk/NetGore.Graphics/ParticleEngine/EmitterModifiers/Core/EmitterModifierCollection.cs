@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NetGore.Collections;
 using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -17,11 +18,28 @@ namespace NetGore.Graphics.ParticleEngine
             return ret;
         }
 
+        /// <summary>
+        /// Applies the <see cref="EmitterModifier"/>s in this collection to the given <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to apply the effects to.</param>
+        /// <param name="elapsedTime">The elapsed time since the last update.</param>
         public void ProcessEmitter(ParticleEmitter emitter, int elapsedTime)
         {
             foreach (var modifier in this)
             {
                 modifier.Update(emitter, elapsedTime);
+            }
+        }
+
+        /// <summary>
+        /// Reverts the changes from the <see cref="EmitterModifier"/>s.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert the changes on.</param>
+        public void RestoreEmitter(ParticleEmitter emitter)
+        {
+            foreach (var modifier in this.Reverse<EmitterModifier>())
+            {
+                modifier.Restore(emitter);
             }
         }
 

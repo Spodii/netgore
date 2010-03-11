@@ -583,7 +583,10 @@ namespace NetGore.Graphics.ParticleEngine
 
             // Check if the sprite is loaded
             if (Sprite == null || Sprite.GrhData == null)
+            {
+                EmitterModifiers.RestoreEmitter(this);
                 return;
+            }
 
             // Update the current time on the modifiers
             ParticleModifiers.UpdateCurrentTime(currentTime);
@@ -630,6 +633,8 @@ namespace NetGore.Graphics.ParticleEngine
 
                 ++i;
             }
+
+            EmitterModifiers.RestoreEmitter(this);
         }
 
         /// <summary>
