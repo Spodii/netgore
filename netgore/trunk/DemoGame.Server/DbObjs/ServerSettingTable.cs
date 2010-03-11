@@ -72,6 +72,7 @@ System.String _motd;
 /// The underlying database type is `varchar(250)`. The database column contains the comment: 
 /// "The message of the day.".
 /// </summary>
+[System.ComponentModel.Description("The message of the day.")]
 [NetGore.SyncValueAttribute()]
 public System.String Motd
 {
