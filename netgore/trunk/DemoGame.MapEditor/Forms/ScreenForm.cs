@@ -279,8 +279,6 @@ namespace DemoGame.MapEditor
 
                 // Reset some of the variables
                 _camera.Min = Vector2.Zero;
-                txtMapWidth.Text = Map.Width.ToString();
-                txtMapHeight.Text = Map.Height.ToString();
 
                 // Notify listeners
                 OnMapChanged(oldMap, Map);
@@ -418,32 +416,9 @@ namespace DemoGame.MapEditor
             MapDrawFilterHelper.DrawBackground = chkDrawBackground.Checked;
         }
 
-        void chkIndoors_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            Map.Indoors = chkIndoors.Checked;
-        }
-
         void chkShowGrhs_CheckedChanged(object sender, EventArgs e)
         {
             MapDrawFilterHelper.DrawMapGrhs = chkShowGrhs.Checked;
-        }
-
-        void cmdApplySize_Click(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            uint width;
-            uint height;
-
-            if (Parser.Current.TryParse(txtMapWidth.Text, out width) && Parser.Current.TryParse(txtMapHeight.Text, out height))
-                Map.SetDimensions(new Vector2(width, height));
-
-            txtMapWidth_TextChanged(null, null);
-            txtMapHeight_TextChanged(null, null);
         }
 
         void cmdLoad_Click(object sender, EventArgs e)
@@ -713,20 +688,6 @@ namespace DemoGame.MapEditor
         void GameScreen_Resize(object sender, EventArgs e)
         {
             _camera.Size = GameScreenSize;
-        }
-
-        byte GetMapLightValueFromControlText(Control tb)
-        {
-            int v;
-            if (!int.TryParse(tb.Text, out v))
-                v = byte.MaxValue;
-
-            v = v.Clamp(byte.MinValue, byte.MaxValue);
-
-            if (tb.Text != v.ToString())
-                tb.Text = v.ToString();
-
-            return (byte)v;
         }
 
         void HandleSwitch_SaveAllMaps(string[] parameters)
@@ -1063,14 +1024,6 @@ namespace DemoGame.MapEditor
                 }
             }
 
-            // Handle the change on some controls manually
-            txtMapName.Text = newMap.Name ?? string.Empty;
-            txtMusic.Text = newMap.Music ?? string.Empty;
-            txtAmbientR.Text = newMap.AmbientLight.R.ToString();
-            txtAmbientG.Text = newMap.AmbientLight.G.ToString();
-            txtAmbientB.Text = newMap.AmbientLight.B.ToString();
-            chkIndoors.Checked = newMap.Indoors;
-
             pgMap.SelectedObject = newMap;
         }
 
@@ -1139,51 +1092,6 @@ namespace DemoGame.MapEditor
             _selectedGrh.SetGrh(e.GrhData.GrhIndex, AnimType.Loop, _currentTime);
         }
 
-        void txtAmbientB_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-                txtAmbientB_Leave(sender, e);
-        }
-
-        void txtAmbientB_Leave(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            var v = GetMapLightValueFromControlText(txtAmbientB);
-            Map.AmbientLight = new Color(Map.AmbientLight.R, Map.AmbientLight.G, v);
-        }
-
-        void txtAmbientG_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-                txtAmbientG_Leave(sender, e);
-        }
-
-        void txtAmbientG_Leave(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            var v = GetMapLightValueFromControlText(txtAmbientG);
-            Map.AmbientLight = new Color(Map.AmbientLight.R, v, Map.AmbientLight.B);
-        }
-
-        void txtAmbientR_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-                txtAmbientR_Leave(sender, e);
-        }
-
-        void txtAmbientR_Leave(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            var v = GetMapLightValueFromControlText(txtAmbientR);
-            Map.AmbientLight = new Color(v, Map.AmbientLight.G, Map.AmbientLight.B);
-        }
-
         void txtGridHeight_TextChanged(object sender, EventArgs e)
         {
             if (Map == null)
@@ -1202,50 +1110,6 @@ namespace DemoGame.MapEditor
             float result;
             if (Parser.Current.TryParse(txtGridWidth.Text, out result))
                 Grid.Width = result;
-        }
-
-        void txtMapHeight_TextChanged(object sender, EventArgs e)
-        {
-            uint o;
-            if (Parser.Current.TryParse(txtMapHeight.Text, out o))
-            {
-                if (o == Map.Height)
-                    txtMapHeight.BackColor = EditorColors.Normal;
-                else
-                    txtMapHeight.BackColor = EditorColors.Changed;
-            }
-            else
-                txtMapHeight.BackColor = EditorColors.Error;
-        }
-
-        void txtMapName_TextChanged(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            Map.Name = txtMapName.Text;
-        }
-
-        void txtMapWidth_TextChanged(object sender, EventArgs e)
-        {
-            uint o;
-            if (Parser.Current.TryParse(txtMapWidth.Text, out o))
-            {
-                if (o == Map.Width)
-                    txtMapWidth.BackColor = EditorColors.Normal;
-                else
-                    txtMapWidth.BackColor = EditorColors.Changed;
-            }
-            else
-                txtMapWidth.BackColor = EditorColors.Error;
-        }
-
-        void txtMusic_TextChanged(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            Map.Music = txtMusic.Text;
         }
 
         /// <summary>
@@ -1298,24 +1162,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        /// <summary>
-        /// Handles the Click event of the btnSelectMusic control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnSelectMusic_Click(object sender, EventArgs e)
-        {
-            var mm = MusicManager.GetInstance(_content);
-            var current = mm.GetItem(Map.Music);
-
-            using (var f = new MusicUITypeEditorForm(_content, current))
-            {
-                if (f.ShowDialog(this) == DialogResult.OK)
-                {
-                    txtMusic.Text = f.SelectedItem.Name;
-                }
-            }
-        }
     }
 }
