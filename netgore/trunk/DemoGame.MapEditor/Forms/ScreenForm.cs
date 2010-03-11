@@ -1183,7 +1183,7 @@ namespace DemoGame.MapEditor
             if (selected == null)
                 return;
 
-            SelectedObjs.SetSelected(selected);
+            SelectedObjs.SetSelected(new EditorMapSpawnValues(selected, Map));
         }
 
         /// <summary>
