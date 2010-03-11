@@ -25,6 +25,11 @@ namespace NetGore
         Vector2 Size { get; }
 
         /// <summary>
+        /// Gets the unique index of the map.
+        /// </summary>
+        MapIndex Index { get; }
+
+        /// <summary>
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
         ISpatialCollection Spatial { get; }

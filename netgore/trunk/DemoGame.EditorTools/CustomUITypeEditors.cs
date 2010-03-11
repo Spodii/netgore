@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.EditorTools
@@ -37,7 +38,8 @@ namespace DemoGame.EditorTools
             _added = true;
 
             AddEditorsHelper(new EditorTypes(typeof(CharacterTemplateID), typeof(CharacterTemplateIDEditor)),
-                             new EditorTypes(typeof(ItemTemplateID), typeof(ItemTemplateIDEditor)));
+                             new EditorTypes(typeof(ItemTemplateID), typeof(ItemTemplateIDEditor)),
+                             new EditorTypes(typeof(MapIndex), typeof(MapIndexEditor)));
         }
 
         /// <summary>

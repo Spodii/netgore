@@ -60,6 +60,10 @@
     <Compile Include="UITypeEditors\ItemTemplateUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UITypeEditors\MapIndexEditor.cs" />
+    <Compile Include="UITypeEditors\MapUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">

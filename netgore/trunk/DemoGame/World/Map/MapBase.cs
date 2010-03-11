@@ -135,7 +135,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the index of the map.
+        /// Gets the unique index of the map.
         /// </summary>
         [Browsable(true)]
         [Category("Map")]
