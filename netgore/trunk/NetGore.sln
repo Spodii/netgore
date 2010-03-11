@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Server", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.EditorTools", "DemoGame.EditorTools\DemoGame.EditorTools.csproj", "{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbEditor", "DemoGame.DbEditor\DemoGame.DbEditor.csproj", "{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -269,15 +271,21 @@ Global
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Debug|x86.ActiveCfg = Debug|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Debug|x86.Build.0 = Debug|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugCS|x86.ActiveCfg = Debug|x86
-		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugCS|x86.Build.0 = Debug|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugDbClassGen|x86.Build.0 = Debug|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugTopDown|x86.ActiveCfg = Debug|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugTopDown|x86.Build.0 = Debug|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Release|x86.ActiveCfg = Release|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Release|x86.Build.0 = Release|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.ReleaseClient|x86.Build.0 = Release|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Debug|x86.ActiveCfg = Debug|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Debug|x86.Build.0 = Debug|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.DebugCS|x86.ActiveCfg = Debug|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.DebugTopDown|x86.ActiveCfg = Debug|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.DebugTopDown|x86.Build.0 = Debug|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Release|x86.ActiveCfg = Release|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Release|x86.Build.0 = Release|x86
+		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseClient|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

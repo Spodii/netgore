@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DemoGame.DbEditor</RootNamespace>
+    <AssemblyName>DemoGame.DbEditor</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">
+      <Project>{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}</Project>
+      <Name>DemoGame.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame.EditorTools\DemoGame.EditorTools.csproj">
+      <Project>{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}</Project>
+      <Name>DemoGame.EditorTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame.Server\DemoGame.Server.csproj">
+      <Project>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</Project>
+      <Name>DemoGame.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame\DemoGame.csproj">
+      <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
+      <Name>DemoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
+      <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
+      <Name>NetGore.Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
+      <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
+      <Name>NetGore.EditorTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Client\NetGore.Features.Client.csproj">
+      <Project>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</Project>
+      <Name>NetGore.Features.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Server\NetGore.Features.Server.csproj">
+      <Project>{431BC2DD-0DDD-47FC-827C-9182A361B4E8}</Project>
+      <Name>NetGore.Features.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
+      <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
+      <Name>NetGore.Features</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
+      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
+      <Name>NetGore.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>NetGore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
