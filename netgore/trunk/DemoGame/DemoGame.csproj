@@ -102,7 +102,6 @@
     <Compile Include="DbObjs\Interfaces\IQuestRequireStartItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireStartQuestTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRewardItemTable.cs" />
-    <Compile Include="DbObjs\Interfaces\IQuestRewardTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestTable.cs" />
     <Compile Include="DbObjs\Interfaces\IServerSettingTable.cs" />
     <Compile Include="DbObjs\Interfaces\IServerTimeTable.cs" />

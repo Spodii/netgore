@@ -133,7 +133,6 @@
     <Compile Include="DbObjs\DbExtensions\QuestRequireStartItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireStartQuestTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRewardItemTableDbExtensions.cs" />
-    <Compile Include="DbObjs\DbExtensions\QuestRewardTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerSettingTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerTimeTableDbExtensions.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="DbObjs\QuestRequireStartItemTable.cs" />
     <Compile Include="DbObjs\QuestRequireStartQuestTable.cs" />
     <Compile Include="DbObjs\QuestRewardItemTable.cs" />
-    <Compile Include="DbObjs\QuestRewardTable.cs" />
     <Compile Include="DbObjs\QuestTable.cs" />
     <Compile Include="DbObjs\ServerSettingTable.cs" />
     <Compile Include="DbObjs\ServerTimeTable.cs" />
