@@ -490,9 +490,6 @@ namespace DemoGame.NPCChatEditor
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NPC Chat Editor";
-            this.Load += new System.EventHandler(this.frmMain_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
-            this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.gbSelectedNode.ResumeLayout(false);
             this.gbSelectedNode.PerformLayout();
             this.gbConditionals.ResumeLayout(false);

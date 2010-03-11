@@ -1073,7 +1073,7 @@ namespace DemoGame.MapEditor
             HandleSwitches(_switches);
 
             // Set the custom UITypeEditors
-            CustomUITypeEditors.AddEditors(_dbController);
+            EditorTools.CustomUITypeEditors.AddEditors(_dbController);
 
             _camera.Size = GameScreenSize;
         }

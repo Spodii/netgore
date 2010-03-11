@@ -22,7 +22,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets or sets the color of the <see cref="Particle"/>.
         /// </summary>
-        [Editor(EditorHelper.XnaColorEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public Color Color;
 
         /// <summary>

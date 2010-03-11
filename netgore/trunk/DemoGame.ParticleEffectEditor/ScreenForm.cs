@@ -131,12 +131,20 @@ namespace DemoGame.ParticleEffectEditor
                 Emitter.Origin = new Vector2(e.X, e.Y);
         }
 
-        void ScreenForm_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             GameScreen.ScreenForm = this;
 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
             GrhInfo.Load(ContentPaths.Build, _content);
+
+            CustomUITypeEditors.AddEditors();
         }
 
         /// <summary>
