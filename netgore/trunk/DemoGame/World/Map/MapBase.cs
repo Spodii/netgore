@@ -139,6 +139,7 @@ namespace DemoGame
         /// </summary>
         [Browsable(true)]
         [Category("Map")]
+        [Description("The unique index of the map.")]
         public MapIndex Index
         {
             get { return _mapIndex; }

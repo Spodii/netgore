@@ -79,6 +79,7 @@ namespace DemoGame.Client
         [Browsable(true)]
         [Category("Map")]
         [DefaultValue(typeof(Color), "{255, 255, 255, 255}")]
+        [Description("The default ambient light color. The alpha value is unused and will always be 255.")]
         public Color AmbientLight
         {
             get { return _ambientLight; }
