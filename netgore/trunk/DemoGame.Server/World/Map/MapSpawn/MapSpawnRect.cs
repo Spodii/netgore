@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -16,25 +17,10 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// The height of the rectangle. If null, the rectangle will be stretched to fit the height of the Map.
-        /// </summary>
-        public ushort? Height;
-
-        /// <summary>
-        /// The width of the rectangle. If null, the rectangle will be stretched to fit the width of the Map.
-        /// </summary>
-        public ushort? Width;
-
-        /// <summary>
-        /// The X co-ordinate of the rectangle. If null, the rectangle will be located at the left side of the Map.
-        /// </summary>
-        public ushort? X;
-
-        /// <summary>
-        /// The Y co-ordinate of the rectangle. If null, the rectangle will be located at the top side of the Map.
-        /// </summary>
-        public ushort? Y;
+        ushort? _height;
+        ushort? _width;
+        ushort? _x;
+        ushort? _y;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapSpawnRect"/> struct.
@@ -54,10 +40,62 @@ namespace DemoGame.Server
         /// <param name="height">The height.</param>
         public MapSpawnRect(ushort? x, ushort? y, ushort? width, ushort? height)
         {
-            X = x;
-            Y = y;
-            Width = width;
-            Height = height;
+            _x = x;
+            _y = y;
+            _width = width;
+            _height = height;
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the rectangle. If null, the rectangle will be stretched to fit the height of the Map.
+        /// </summary>
+        [DisplayName("Height")]
+        [Browsable(true)]
+        [DefaultValue(null)]
+        [Description("The height of the spawn rectangle. If null, the rectangle will be stretched to fit the height of the Map.")]
+        public ushort? Height
+        {
+            get { return _height; }
+            set { _height = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the width of the rectangle. If null, the rectangle will be stretched to fit the width of the Map.
+        /// </summary>
+        [DisplayName("Width")]
+        [Browsable(true)]
+        [DefaultValue(null)]
+        [Description("The width of the spawn rectangle. If null, the rectangle will be stretched to fit the height of the Map.")]
+        public ushort? Width
+        {
+            get { return _width; }
+            set { _width = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the X co-ordinate of the rectangle. If null, the rectangle will be located at the left side of the Map.
+        /// </summary>
+        [DisplayName("X")]
+        [Browsable(true)]
+        [DefaultValue(null)]
+        [Description("The X-coordinate of the spawn rectangle. If null, the rectangle will be located at the left side of the Map.")]
+        public ushort? X
+        {
+            get { return _x; }
+            set { _x = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the Y co-ordinate of the rectangle. If null, the rectangle will be located at the top side of the Map.
+        /// </summary>
+        [DisplayName("Y")]
+        [Browsable(true)]
+        [DefaultValue(null)]
+        [Description("The Y-coordinate of the spawn rectangle. If null, the rectangle will be located at the top side of the Map.")]
+        public ushort? Y
+        {
+            get { return _y; }
+            set { _y = value; }
         }
 
         /// <summary>
@@ -75,8 +113,7 @@ namespace DemoGame.Server
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        /// <param name="obj">Another object to compare to. 
-        ///                 </param>
+        /// <param name="obj">Another object to compare to.</param>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
