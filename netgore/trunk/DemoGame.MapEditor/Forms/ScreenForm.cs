@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.EditorTools;
 using DemoGame.Server;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
@@ -1070,6 +1071,9 @@ namespace DemoGame.MapEditor
 
             // Handle any command-line switches
             HandleSwitches(_switches);
+
+            // Set the custom UITypeEditors
+            CustomUITypeEditors.AddEditors(_dbController);
 
             _camera.Size = GameScreenSize;
         }

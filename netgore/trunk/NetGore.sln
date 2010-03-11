@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Client", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Server", "NetGore.Features.Server\NetGore.Features.Server.csproj", "{431BC2DD-0DDD-47FC-827C-9182A361B4E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.EditorTools", "DemoGame.EditorTools\DemoGame.EditorTools.csproj", "{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -264,6 +266,18 @@ Global
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|x86.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.ReleaseClient|x86.ActiveCfg = Release|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Debug|x86.ActiveCfg = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Debug|x86.Build.0 = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugCS|x86.ActiveCfg = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugCS|x86.Build.0 = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugDbClassGen|x86.Build.0 = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugTopDown|x86.ActiveCfg = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.DebugTopDown|x86.Build.0 = Debug|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Release|x86.ActiveCfg = Release|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.Release|x86.Build.0 = Release|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.ReleaseClient|x86.ActiveCfg = Release|x86
+		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.ReleaseClient|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
