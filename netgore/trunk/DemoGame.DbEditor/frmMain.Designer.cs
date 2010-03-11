@@ -146,6 +146,7 @@
             this.Name = "frmMain";
             this.Padding = new System.Windows.Forms.Padding(6);
             this.Text = "NetGore Database Editor";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.tabControl1.ResumeLayout(false);
             this.tpItemTemplate.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);

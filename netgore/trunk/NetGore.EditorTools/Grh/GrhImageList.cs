@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -173,6 +174,19 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the image key for a <see cref="GrhIndex"/>.
+        /// </summary>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/> to get the image key for.</param>
+        /// <returns>The image key for the <paramref name="grhIndex"/>.</returns>
+        public static string GetImageKey(GrhIndex grhIndex)
+        {
+            if (grhIndex.IsInvalid)
+                return string.Empty;
+
+            return grhIndex.ToString();
+        }
+
+        /// <summary>
         /// Gets the image key for a <see cref="GrhData"/>.
         /// </summary>
         /// <param name="grhData">The <see cref="GrhData"/> to get the image key for.</param>
@@ -185,7 +199,7 @@ namespace NetGore.EditorTools
             if (!grhData.GrhIndex.IsInvalid)
             {
                 // For normal GrhDatas, we return the unique GrhIndex
-                return grhData.GrhIndex.ToString();
+                return GetImageKey(grhData.GrhIndex);
             }
             else
             {
@@ -331,7 +345,17 @@ namespace NetGore.EditorTools
             if (grhData == null)
                 return null;
 
-            var imageKey = GetImageKey(grhData.GetFrame(0));
+            return TryGetImage(grhData.Frames.FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Image"/> for a <see cref="GrhIndex"/>.
+        /// </summary>
+        /// <param name="grhIndex">The <see cref="GrhIndex"/> to get the image for.</param>
+        /// <returns>The <see cref="Image"/> for the <paramref name="grhIndex"/>, or null if invalid.</returns>
+        public static Image TryGetImage(GrhIndex grhIndex)
+        {
+            var imageKey = GetImageKey(grhIndex);
             if (string.IsNullOrEmpty(imageKey))
                 return null;
 
@@ -340,6 +364,27 @@ namespace NetGore.EditorTools
                 return null;
 
             return images[imageKey];
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Image"/> for an object.
+        /// </summary>
+        /// <param name="o">The object to get the <see cref="Image"/> for. Multiple types are supported.</param>
+        /// <returns>The <see cref="Image"/> for the <paramref name="o"/>, or null if invalid.</returns>
+        public static Image TryGetImage(object o)
+        {
+            if (o is int)
+                return TryGetImage(new GrhIndex((int)o));
+            else if (o is GrhIndex)
+                return TryGetImage((GrhIndex)o);
+            else if (o is IConvertible)
+                return TryGetImage(new GrhIndex(((IConvertible)o).ToInt32(CultureInfo.InvariantCulture)));
+            else if (o is Grh)
+                return TryGetImage((Grh)o);
+            else if (o is GrhData)
+                return TryGetImage((GrhData)o);
+            else
+                return null;
         }
 
         /// <summary>
