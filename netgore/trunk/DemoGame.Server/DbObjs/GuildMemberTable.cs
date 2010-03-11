@@ -84,6 +84,7 @@ System.Byte _rank;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "The character that is a member of the guild.".
 /// </summary>
+[System.ComponentModel.Description("The character that is a member of the guild.")]
 [NetGore.SyncValueAttribute()]
 public DemoGame.CharacterID CharacterID
 {
@@ -101,6 +102,7 @@ this._characterID = (System.Int32)value;
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
 /// "The guild the member is a part of.".
 /// </summary>
+[System.ComponentModel.Description("The guild the member is a part of.")]
 [NetGore.SyncValueAttribute()]
 public NetGore.Features.Guilds.GuildID GuildID
 {
@@ -118,6 +120,7 @@ this._guildID = (System.UInt16)value;
 /// The underlying database type is `datetime`. The database column contains the comment: 
 /// "When the member joined the guild.".
 /// </summary>
+[System.ComponentModel.Description("When the member joined the guild.")]
 [NetGore.SyncValueAttribute()]
 public System.DateTime Joined
 {
@@ -135,6 +138,7 @@ this._joined = (System.DateTime)value;
 /// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
 /// "The member's ranking in the guild.".
 /// </summary>
+[System.ComponentModel.Description("The member's ranking in the guild.")]
 [NetGore.SyncValueAttribute()]
 public NetGore.Features.Guilds.GuildRank Rank
 {

@@ -80,6 +80,7 @@ System.DateTime _time;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "The ID of the account.".
 /// </summary>
+[System.ComponentModel.Description("The ID of the account.")]
 [NetGore.SyncValueAttribute()]
 public DemoGame.AccountID AccountID
 {
@@ -97,6 +98,7 @@ this._accountID = (System.Int32)value;
 /// The underlying database type is `int(10) unsigned`. The database column contains the comment: 
 /// "The IP that logged into the account.".
 /// </summary>
+[System.ComponentModel.Description("The IP that logged into the account.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt32 Ip
 {
@@ -114,6 +116,7 @@ this._ip = (System.UInt32)value;
 /// The underlying database type is `datetime`. The database column contains the comment: 
 /// "When this IP last logged into this account.".
 /// </summary>
+[System.ComponentModel.Description("When this IP last logged into this account.")]
 [NetGore.SyncValueAttribute()]
 public System.DateTime Time
 {

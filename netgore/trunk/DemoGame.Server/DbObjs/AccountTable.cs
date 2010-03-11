@@ -100,6 +100,7 @@ System.DateTime _timeLastLogin;
 /// The underlying database type is `int(10) unsigned`. The database column contains the comment: 
 /// "The IP address that created the account.".
 /// </summary>
+[System.ComponentModel.Description("The IP address that created the account.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt32 CreatorIp
 {
@@ -117,6 +118,7 @@ this._creatorIp = (System.UInt32)value;
 /// The underlying database type is `int(10) unsigned`. The database column contains the comment: 
 /// "IP address currently logged in to the account, or null if nobody is logged in.".
 /// </summary>
+[System.ComponentModel.Description("IP address currently logged in to the account, or null if nobody is logged in.")]
 [NetGore.SyncValueAttribute()]
 public System.Nullable<System.UInt32> CurrentIp
 {
@@ -134,6 +136,7 @@ this._currentIp = (System.Nullable<System.UInt32>)value;
 /// The underlying database type is `varchar(60)`. The database column contains the comment: 
 /// "The email address.".
 /// </summary>
+[System.ComponentModel.Description("The email address.")]
 [NetGore.SyncValueAttribute()]
 public System.String Email
 {
@@ -151,6 +154,7 @@ this._email = (System.String)value;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "The account ID.".
 /// </summary>
+[System.ComponentModel.Description("The account ID.")]
 [NetGore.SyncValueAttribute()]
 public DemoGame.AccountID ID
 {
@@ -168,6 +172,7 @@ this._iD = (System.Int32)value;
 /// The underlying database type is `varchar(30)`. The database column contains the comment: 
 /// "The account name.".
 /// </summary>
+[System.ComponentModel.Description("The account name.")]
 [NetGore.SyncValueAttribute()]
 public System.String Name
 {
@@ -185,6 +190,7 @@ this._name = (System.String)value;
 /// The underlying database type is `varchar(40)`. The database column contains the comment: 
 /// "The account password.".
 /// </summary>
+[System.ComponentModel.Description("The account password.")]
 [NetGore.SyncValueAttribute()]
 public System.String Password
 {
@@ -202,6 +208,7 @@ this._password = (System.String)value;
 /// The underlying database type is `datetime`. The database column contains the comment: 
 /// "The DateTime of when the account was created.".
 /// </summary>
+[System.ComponentModel.Description("The DateTime of when the account was created.")]
 [NetGore.SyncValueAttribute()]
 public System.DateTime TimeCreated
 {
@@ -219,6 +226,7 @@ this._timeCreated = (System.DateTime)value;
 /// The underlying database type is `datetime`. The database column contains the comment: 
 /// "The DateTime that the account was last logged in to.".
 /// </summary>
+[System.ComponentModel.Description("The DateTime that the account was last logged in to.")]
 [NetGore.SyncValueAttribute()]
 public System.DateTime TimeLastLogin
 {

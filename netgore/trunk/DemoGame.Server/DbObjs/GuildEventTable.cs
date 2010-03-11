@@ -104,6 +104,7 @@ System.Nullable<System.Int32> _targetCharacterID;
 /// The underlying database type is `varchar(0)`. The database column contains the comment: 
 /// "The first optional event argument.".
 /// </summary>
+[System.ComponentModel.Description("The first optional event argument.")]
 [NetGore.SyncValueAttribute()]
 public System.String Arg0
 {
@@ -121,6 +122,7 @@ this._arg0 = (System.String)value;
 /// The underlying database type is `varchar(0)`. The database column contains the comment: 
 /// "The second optional event argument.".
 /// </summary>
+[System.ComponentModel.Description("The second optional event argument.")]
 [NetGore.SyncValueAttribute()]
 public System.String Arg1
 {
@@ -138,6 +140,7 @@ this._arg1 = (System.String)value;
 /// The underlying database type is `varchar(0)`. The database column contains the comment: 
 /// "The third optional event argument.".
 /// </summary>
+[System.ComponentModel.Description("The third optional event argument.")]
 [NetGore.SyncValueAttribute()]
 public System.String Arg2
 {
@@ -155,6 +158,7 @@ this._arg2 = (System.String)value;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "The character that invoked the event.".
 /// </summary>
+[System.ComponentModel.Description("The character that invoked the event.")]
 [NetGore.SyncValueAttribute()]
 public DemoGame.CharacterID CharacterID
 {
@@ -172,6 +176,7 @@ this._characterID = (System.Int32)value;
 /// The underlying database type is `datetime`. The database column contains the comment: 
 /// "When the event was created.".
 /// </summary>
+[System.ComponentModel.Description("When the event was created.")]
 [NetGore.SyncValueAttribute()]
 public System.DateTime Created
 {
@@ -189,6 +194,7 @@ this._created = (System.DateTime)value;
 /// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
 /// "The ID of the event that took place.".
 /// </summary>
+[System.ComponentModel.Description("The ID of the event that took place.")]
 [NetGore.SyncValueAttribute()]
 public System.Byte EventID
 {
@@ -206,6 +212,7 @@ this._eventID = (System.Byte)value;
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
 /// "The guild the event took place on.".
 /// </summary>
+[System.ComponentModel.Description("The guild the event took place on.")]
 [NetGore.SyncValueAttribute()]
 public NetGore.Features.Guilds.GuildID GuildID
 {
@@ -223,6 +230,7 @@ this._guildID = (System.UInt16)value;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "The ID of the event.".
 /// </summary>
+[System.ComponentModel.Description("The ID of the event.")]
 [NetGore.SyncValueAttribute()]
 public System.Int32 ID
 {
@@ -240,6 +248,7 @@ this._iD = (System.Int32)value;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "The optional character that the event involves.".
 /// </summary>
+[System.ComponentModel.Description("The optional character that the event involves.")]
 [NetGore.SyncValueAttribute()]
 public System.Nullable<DemoGame.CharacterID> TargetCharacterID
 {

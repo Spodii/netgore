@@ -88,6 +88,7 @@ System.UInt16 _timeLeftSecs;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "ID of the Character that the status effect is on.".
 /// </summary>
+[System.ComponentModel.Description("ID of the Character that the status effect is on.")]
 [NetGore.SyncValueAttribute()]
 public DemoGame.CharacterID CharacterID
 {
@@ -105,6 +106,7 @@ this._characterID = (System.Int32)value;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "Unique ID of the status effect instance.".
 /// </summary>
+[System.ComponentModel.Description("Unique ID of the status effect instance.")]
 [NetGore.SyncValueAttribute()]
 public DemoGame.ActiveStatusEffectID ID
 {
@@ -122,6 +124,7 @@ this._iD = (System.Int32)value;
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
 /// "The power of this status effect instance.".
 /// </summary>
+[System.ComponentModel.Description("The power of this status effect instance.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 Power
 {
@@ -139,6 +142,7 @@ this._power = (System.UInt16)value;
 /// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
 /// "ID of the status effect that this effect is for. This corresponds to the StatusEffectType enum's value.".
 /// </summary>
+[System.ComponentModel.Description("ID of the status effect that this effect is for. This corresponds to the StatusEffectType enum's value.")]
 [NetGore.SyncValueAttribute()]
 public DemoGame.StatusEffectType StatusEffect
 {
@@ -156,6 +160,7 @@ this._statusEffect = (System.Byte)value;
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
 /// "The amount of time remaining for this status effect in seconds.".
 /// </summary>
+[System.ComponentModel.Description("The amount of time remaining for this status effect in seconds.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 TimeLeftSecs
 {
