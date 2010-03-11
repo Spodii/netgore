@@ -77,10 +77,10 @@ namespace NetGore.Graphics.ParticleEngine
                 second = alphaEmitters;
             }
 
-            if (first.Count() > 0)
+            if (!first.IsEmpty())
                 RenderEmitters(first);
 
-            if (second.Count() > 0)
+            if (!second.IsEmpty())
             {
                 SpriteBatch.End();
                 BeginSpriteBatch(camera);
