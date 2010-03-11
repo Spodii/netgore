@@ -37,9 +37,9 @@ namespace DemoGame.EditorTools
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
                         if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplateID))
-                            value = editorForm.SelectedItem;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplate))
                             value = editorForm.SelectedItem.ID;
+                        else if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplate))
+                            value = editorForm.SelectedItem;
                         else if (context.PropertyDescriptor.PropertyType == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
                     }

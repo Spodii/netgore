@@ -11,7 +11,7 @@ using NetGore.Audio;
 
 namespace NetGore.EditorTools
 {
-    public partial class SoundUITypeEditorForm : UITypeEditorListForm<ISound>
+    public class SoundUITypeEditorForm : UITypeEditorListForm<ISound>
     {
         readonly ContentManager _cm;
         readonly ISound _current;
@@ -25,8 +25,6 @@ namespace NetGore.EditorTools
         {
             _cm = cm;
             _current = current;
-
-            InitializeComponent();
         }
         
         /// <summary>
