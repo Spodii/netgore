@@ -19,7 +19,9 @@ namespace DemoGame.Server
     public class MapSpawnValues : IMapSpawnTable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly MapSpawnValuesID _id;
+
         CharacterTemplateID _characterTemplateID;
         IDbController _dbController;
         MapIndex _mapIndex;
@@ -27,7 +29,7 @@ namespace DemoGame.Server
         MapSpawnRect _spawnArea;
 
         /// <summary>
-        /// MapSpawnValues constructor.
+        /// Initializes a new instance of the <see cref="MapSpawnValues"/> class.
         /// </summary>
         /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
@@ -40,7 +42,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// MapSpawnValues constructor.
+        /// Initializes a new instance of the <see cref="MapSpawnValues"/> class.
         /// </summary>
         /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
         /// <param name="v">The IMapSpawnTable containing the values to use.</param>
@@ -50,7 +52,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// MapSpawnValues constructor.
+        /// Initializes a new instance of the <see cref="MapSpawnValues"/> class.
         /// </summary>
         /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
         /// <param name="id">The unique ID of this MapSpawnValues.</param>
@@ -266,6 +268,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `amount`.
         /// </summary>
+        [Browsable(false)]
         byte IMapSpawnTable.Amount
         {
             get { return SpawnAmount; }
@@ -292,6 +295,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `height`.
         /// </summary>
+        [Browsable(false)]
         ushort? IMapSpawnTable.Height
         {
             get { return SpawnArea.Height; }

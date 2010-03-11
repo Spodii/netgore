@@ -17,11 +17,6 @@ namespace DemoGame.MapEditor
     {
         MapBase _map;
 
-        public NPCSpawnsListBox()
-        {
-            SelectedIndexChanged += HandleSelectedIndexChanged;
-        }
-
         public MapBase Map
         {
             get { return _map; }
@@ -35,12 +30,6 @@ namespace DemoGame.MapEditor
                 ReloadSpawns();
             }
         }
-
-        /// <summary>
-        /// Gets or sets the PropertyGrid to display the property values for the selected NPC in this NPCSpawnsListBox.
-        /// </summary>
-        [Description("The PropertyGrid to display the property values for the selected NPC in this NPCSpawnsListBox.")]
-        public PropertyGrid PropertyGrid { get; set; }
 
         public void AddNewItem()
         {
@@ -98,17 +87,9 @@ namespace DemoGame.MapEditor
             }
         }
 
-        void HandleSelectedIndexChanged(object sender, EventArgs e)
+        public MapSpawnValues SelectedItemReal
         {
-            if (PropertyGrid == null)
-                return;
-
-            NPCSpawnsListBoxItem selected = SelectedItem as NPCSpawnsListBoxItem;
-            if (selected == null)
-                return;
-
-            if (PropertyGrid.SelectedObject != selected.Value)
-                PropertyGrid.SelectedObject = selected.Value;
+            get { return ((NPCSpawnsListBoxItem)SelectedItem).Value; }
         }
 
         void ReloadSpawns()
