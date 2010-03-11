@@ -16,8 +16,8 @@ namespace DemoGame.ParticleEffectEditor
     public partial class ScreenForm : Form, IGetTime
     {
         const string _defaultCategory = "Particle";
-        readonly ICamera2D _camera;
 
+        readonly ICamera2D _camera;
         readonly string _defaultTitle;
         readonly Stopwatch _watch = new Stopwatch();
 
