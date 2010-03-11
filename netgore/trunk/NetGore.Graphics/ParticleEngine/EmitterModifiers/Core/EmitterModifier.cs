@@ -30,6 +30,13 @@ namespace NetGore.Graphics.ParticleEngine
         protected abstract void HandleUpdate(ParticleEmitter emitter, int elapsedTime);
 
         /// <summary>
+        /// When overridden in the derived class, handles reverting changes made to the <see cref="ParticleEmitter"/>
+        /// by this <see cref="EmitterModifier"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert the changes to.</param>
+        protected abstract void HandleRestore(ParticleEmitter emitter);
+
+        /// <summary>
         /// Reads a <see cref="EmitterModifier"/> from an <see cref="IValueReader"/>.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
@@ -68,11 +75,20 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Updates the <see cref="EmitterModifier"/>.
         /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to modifier.</param>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to modify.</param>
         /// <param name="elapsedTime">The amount of time that has elapsed since the last update.</param>
         public void Update(ParticleEmitter emitter, int elapsedTime)
         {
             HandleUpdate(emitter, elapsedTime);
+        }
+
+        /// <summary>
+        /// Restores the <see cref="ParticleEmitter"/> from changes made by this <see cref="EmitterModifier"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert changes on.</param>
+        public void Restore(ParticleEmitter emitter)
+        {
+            HandleRestore(emitter);
         }
 
         /// <summary>
