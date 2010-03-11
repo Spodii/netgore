@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -127,6 +128,7 @@ namespace DemoGame
         /// <summary>
         /// Gets an IEnumerable of all the DynamicEntities on the Map.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<DynamicEntity> DynamicEntities
         {
             get { return _dynamicEntities; }
@@ -135,6 +137,8 @@ namespace DemoGame
         /// <summary>
         /// Gets the index of the map.
         /// </summary>
+        [Browsable(true)]
+        [Category("Map")]
         public MapIndex Index
         {
             get { return _mapIndex; }
@@ -143,11 +147,16 @@ namespace DemoGame
         /// <summary>
         /// Gets or sets if this map represents the map of an area that is indoors.
         /// </summary>
+        [Browsable(true)]
+        [Category("Map")]
+        [Description("If this map represents an area that is indoors.")]
+        [DefaultValue(false)]
         public bool Indoors { get; set; }
 
         /// <summary>
         /// Gets or sets if the map is updating every frame
         /// </summary>
+        [Browsable(false)]
         public bool IsUpdating
         {
             get { return _isUpdating; }
@@ -167,6 +176,10 @@ namespace DemoGame
         /// <summary>
         /// Gets or sets the name of the music to play for the map, or empty or null if there is no music.
         /// </summary>
+        [Browsable(true)]
+        [Category("Map")]
+        [Description("The name of the music to play on the map.")]
+        [DefaultValue("")]
         public string Music { get; set; }
 
         /// <summary>
@@ -1133,6 +1146,7 @@ namespace DemoGame
         /// <summary>
         /// Gets an IEnumerable of all the Entities on the Map.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<Entity> Entities
         {
             get { return _entities; }
@@ -1141,6 +1155,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the height of the map in pixels
         /// </summary>
+        [Browsable(false)]
         public float Height
         {
             get { return _height; }
@@ -1149,6 +1164,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the size of the map in pixels.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Size
         {
             get { return new Vector2(Width, Height); }
@@ -1157,6 +1173,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
+        [Browsable(false)]
         public ISpatialCollection Spatial
         {
             get { return _spatialCollection; }
@@ -1165,6 +1182,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the width of the map in pixels.
         /// </summary>
+        [Browsable(false)]
         public float Width
         {
             get { return _width; }
@@ -1249,6 +1267,9 @@ namespace DemoGame
         /// Gets or sets the name of the map.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        [Browsable(true)]
+        [Description("The name of the map.")]
+        [Category("Map")]
         public string Name
         {
             get { return _name; }
