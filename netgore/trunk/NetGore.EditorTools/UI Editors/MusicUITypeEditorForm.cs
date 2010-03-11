@@ -31,6 +31,15 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MusicUITypeEditorForm"/> class.
+        /// </summary>
+        /// <param name="cm">The cm.</param>
+        /// <param name="current">The name of the currently selected <see cref="IMusic"/>. Can be null.</param>
+        public MusicUITypeEditorForm(ContentManager cm, string current) : this(cm, MusicManager.GetInstance(cm).GetItem(current))
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
         /// </summary>
         /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>

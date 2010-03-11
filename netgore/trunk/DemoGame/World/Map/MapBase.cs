@@ -180,6 +180,7 @@ namespace DemoGame
         [Category("Map")]
         [Description("The name of the music to play on the map.")]
         [DefaultValue("")]
+        [Editor(EditorHelper.MusicEditorTypeName, EditorHelper.UITypeEditorTypeName)]
         public string Music { get; set; }
 
         /// <summary>

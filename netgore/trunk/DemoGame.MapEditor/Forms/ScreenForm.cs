@@ -769,64 +769,6 @@ namespace DemoGame.MapEditor
             }
         }
 
-        void LoadEditor()
-        {
-            // Create the database connection
-            DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController = new ServerDbController(settings.GetMySqlConnectionString());
-
-            // Create the engine objects 
-            _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
-
-            // Font
-            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
-            Character.NameFont = SpriteFont;
-
-            // Read the Grh information
-            GrhInfo.Load(ContentPaths.Dev, _content);
-            treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
-            TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
-
-            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
-            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
-
-            // Start the stopwatch for the elapsed time checking
-            _stopWatch.Start();
-
-            // Hook all controls to forward camera movement keys Form
-            KeyEventHandler kehDown = OnKeyDownForward;
-            KeyEventHandler kehUp = OnKeyUpForward;
-            HookFormKeyEvents(this, kehDown, kehUp);
-
-            // Read the first map
-            // ReSharper disable EmptyGeneralCatchClause
-            try
-            {
-                Map = new Map(new MapIndex(1), Camera, _world, GameScreen.GraphicsDevice);
-            }
-            catch (Exception)
-            {
-                // Doesn't matter if we fail to load the first map...
-            }
-            // ReSharper restore EmptyGeneralCatchClause
-
-            // Set up the MapDrawExtensionCollection
-            CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);
-            CreateMapDrawExtension<MapWallDrawer>(chkShowWalls);
-
-            MapSpawnDrawer v = CreateMapDrawExtension<MapSpawnDrawer>(chkDrawSpawnAreas);
-            lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
-
-            _mapDrawingExtensions.Add(new MapPersistentNPCDrawer(lstPersistentNPCs));
-
-            // Populate the SettingsManager
-            Show();
-            Refresh();
-            PopulateSettingsManager();
-
-            SelectedObjs.Clear();
-        }
-
         void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)
         {
             ParticleEmitter effect;
@@ -1042,28 +984,88 @@ namespace DemoGame.MapEditor
             SettingsManager.Add("Grid", Grid);
         }
 
-        void ScreenForm_FormClosing(object sender, FormClosingEventArgs e)
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             GrhInfo.Save(ContentPaths.Dev);
             SettingsManager.Save();
+
+            base.OnFormClosing(e);
         }
 
-        void ScreenForm_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
+            // Create the database connection
+            DbConnectionSettings settings = new DbConnectionSettings();
+            _dbController = new ServerDbController(settings.GetMySqlConnectionString());
+
+            // Create the engine objects 
+            _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
+
+            // Grab the audio manager instances, which will ensure that they are property initialized
+            // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
+            SoundManager.GetInstance(_content);
+            MusicManager.GetInstance(_content);
+
+            // Font
+            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
+            Character.NameFont = SpriteFont;
+
+            // Read the Grh information
+            GrhInfo.Load(ContentPaths.Dev, _content);
+            treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
+            TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
+
+            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
+            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+
+            // Start the stopwatch for the elapsed time checking
+            _stopWatch.Start();
+
+            // Hook all controls to forward camera movement keys Form
+            KeyEventHandler kehDown = OnKeyDownForward;
+            KeyEventHandler kehUp = OnKeyUpForward;
+            HookFormKeyEvents(this, kehDown, kehUp);
+
+            // Read the first map
+            // ReSharper disable EmptyGeneralCatchClause
             try
             {
-                LoadEditor();
-                HandleSwitches(_switches);
+                Map = new Map(new MapIndex(1), Camera, _world, GameScreen.GraphicsDevice);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Stupid hack we have to do to get the exceptions to even show at all from this event
-                string errmsg = "Exception: " + ex;
-                Debug.Fail(errmsg);
-                MessageBox.Show(errmsg);
-                Dispose();
-                throw;
+                // Doesn't matter if we fail to load the first map...
             }
+            // ReSharper restore EmptyGeneralCatchClause
+
+            // Set up the MapDrawExtensionCollection
+            CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);
+            CreateMapDrawExtension<MapWallDrawer>(chkShowWalls);
+
+            MapSpawnDrawer v = CreateMapDrawExtension<MapSpawnDrawer>(chkDrawSpawnAreas);
+            lstNPCSpawns.SelectedIndexChanged += ((o, x) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
+
+            _mapDrawingExtensions.Add(new MapPersistentNPCDrawer(lstPersistentNPCs));
+
+            // Populate the SettingsManager
+            Show();
+            Refresh();
+            PopulateSettingsManager();
+
+            SelectedObjs.Clear();
+
+            // Handle any command-line switches
+            HandleSwitches(_switches);
 
             _camera.Size = GameScreenSize;
         }

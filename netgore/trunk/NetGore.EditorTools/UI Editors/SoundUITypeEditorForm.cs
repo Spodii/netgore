@@ -28,6 +28,16 @@ namespace NetGore.EditorTools
 
             InitializeComponent();
         }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SoundUITypeEditorForm"/> class.
+        /// </summary>
+        /// <param name="cm">The cm.</param>
+        /// <param name="current">The name of the currently selected <see cref="ISound"/>. Can be null.</param>
+        public SoundUITypeEditorForm(ContentManager cm, string current)
+            : this(cm, SoundManager.GetInstance(cm).GetItem(current))
+        {
+        }
 
         /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.

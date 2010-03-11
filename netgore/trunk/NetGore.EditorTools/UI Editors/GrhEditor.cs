@@ -4,7 +4,6 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using NetGore.Audio;
 using NetGore.Graphics;
 
 namespace NetGore.EditorTools
@@ -67,7 +66,7 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Indicates whether the specified context supports painting a representation of an object's value within th
+        /// Indicates whether the specified context supports painting a representation of an object's value within the
         /// specified context.
         /// </summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that can be used to gain
