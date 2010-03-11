@@ -101,6 +101,7 @@ namespace DemoGame.Server
         /// Gets or sets the maximum number of Characters that will be spawned by this MapSpawnValues.
         /// </summary>
         [Browsable(true)]
+        [DisplayName("Amount")]
         [Description("The maximum number of Characters that will be spawned by this MapSpawnValues.")]
         public byte SpawnAmount
         {
@@ -119,6 +120,7 @@ namespace DemoGame.Server
         /// Gets the area on the map the spawning will take place at.
         /// </summary>
         [Browsable(true)]
+        [DisplayName("Area")]
         [Description("The area on the map the spawning will take place at.")]
         public MapSpawnRect SpawnArea
         {
@@ -203,8 +205,12 @@ namespace DemoGame.Server
         /// values that are not in range of the <paramref name="map"/>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="map"/>'s MapIndex does not match this
         /// MapSpawnValues's <see cref="MapIndex"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
         public void SetSpawnArea(MapBase map, MapSpawnRect newSpawnArea)
         {
+            if (map == null)
+                throw new ArgumentNullException("map");
+
             if (map.Index != MapIndex)
                 throw new ArgumentException("The index of the specified map does not match this MapIndex", "map");
 
