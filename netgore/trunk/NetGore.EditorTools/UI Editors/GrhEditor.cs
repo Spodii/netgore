@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
@@ -88,7 +89,7 @@ namespace NetGore.EditorTools
         /// where to paint it.</param>
         public override void PaintValue(PaintValueEventArgs e)
         {
-            var image = GrhImageList.TryGetImage(e.Value as Grh);
+            var image = GrhImageList.TryGetImage(e.Value);
             if (image != null)
                 e.Graphics.DrawImage(image, e.Bounds);
 
