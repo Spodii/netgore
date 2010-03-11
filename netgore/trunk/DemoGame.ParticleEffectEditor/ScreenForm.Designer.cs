@@ -143,6 +143,7 @@ namespace DemoGame.ParticleEffectEditor
             this.GameScreen.TabIndex = 0;
             this.GameScreen.Text = "gameScreenControl1";
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
+            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             // 
             // ScreenForm
             // 

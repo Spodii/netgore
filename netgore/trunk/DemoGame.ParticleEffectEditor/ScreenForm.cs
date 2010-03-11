@@ -42,6 +42,9 @@ namespace DemoGame.ParticleEffectEditor
             _watch.Start();
         }
 
+        /// <summary>
+        /// Gets or sets the current <see cref="ParticleEmitter"/>.
+        /// </summary>
         public ParticleEmitter Emitter
         {
             get { return _emitter; }
@@ -61,6 +64,11 @@ namespace DemoGame.ParticleEffectEditor
             get { return GameScreen.GraphicsDevice; }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnLoad control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnLoad_Click(object sender, EventArgs e)
         {
             string filePath;
@@ -71,6 +79,11 @@ namespace DemoGame.ParticleEffectEditor
                 Emitter = emitter;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnSave_Click(object sender, EventArgs e)
         {
             ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter);
@@ -125,6 +138,21 @@ namespace DemoGame.ParticleEffectEditor
             spriteBatch.End();
         }
 
+        /// <summary>
+        /// Handles the MouseDown event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void GameScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            GameScreen_MouseMove(sender, e);
+        }
+
+        /// <summary>
+        /// Handles the MouseMove event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
