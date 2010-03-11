@@ -92,19 +92,21 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         static DbClassGenerator()
         {
-            _valueReaderReadMethods = new Dictionary<Type, string>();
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(byte), "ReadByte"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(sbyte), "ReadSByte"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(int), "ReadInt"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(uint), "ReadUInt"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(float), "ReadFloat"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(short), "ReadShort"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ushort), "ReadUShort"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(long), "ReadLong"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(ulong), "ReadULong"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(double), "ReadDouble"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(bool), "ReadBool"));
-            _valueReaderReadMethods.Add(new KeyValuePair<Type, string>(typeof(string), "ReadString"));
+            _valueReaderReadMethods = new Dictionary<Type, string>
+            {
+                { typeof(byte), "ReadByte" },
+                { typeof(sbyte), "ReadSByte" },
+                { typeof(int), "ReadInt" },
+                { typeof(uint), "ReadUInt" },
+                { typeof(float), "ReadFloat" },
+                { typeof(short), "ReadShort" },
+                { typeof(ushort), "ReadUShort" },
+                { typeof(long), "ReadLong" },
+                { typeof(ulong), "ReadULong" },
+                { typeof(double), "ReadDouble" },
+                { typeof(bool), "ReadBool" },
+                { typeof(string), "ReadString" }
+            };
         }
 
         /// <summary>
@@ -569,6 +571,10 @@ namespace NetGore.Db.ClassCreator
 
                     sb.AppendLine(Formatter.GetXmlComment(comment));
 
+                    if (!string.IsNullOrEmpty(column.Comment))
+                        sb.AppendLine(Formatter.GetAttribute("System.ComponentModel.Description",
+                                                             "\"" + column.Comment.Replace("\"", "\\\"") + "\""));
+
                     sb.AppendLine(Formatter.GetAttribute(typeof(SyncValueAttribute)));
                     sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), cd.GetExternalType(column),
                                                         cd.GetInternalType(column), MemberVisibilityLevel.Public,
@@ -763,13 +769,13 @@ namespace NetGore.Db.ClassCreator
             sb.Append(ColumnMetadataClassName);
             sb.Append(Formatter.OpenParameterString);
             sb.Append("\"" + column.Name + "\"" + Formatter.ParameterSpacer);
-            sb.Append("\"" + column.Comment + "\"" + Formatter.ParameterSpacer);
-            sb.Append("\"" + column.DatabaseType + "\"" + Formatter.ParameterSpacer);
+            sb.Append("\"" + column.Comment.Replace("\"", "\\\"") + "\"" + Formatter.ParameterSpacer);
+            sb.Append("\"" + column.DatabaseType.Replace("\"", "\\\"") + "\"" + Formatter.ParameterSpacer);
 
             if (column.DefaultValue == null || (column.DefaultValue.ToString() == "" && !(column.DefaultValue is string)))
                 sb.Append("null" + Formatter.ParameterSpacer);
             else if (column.DefaultValue is string)
-                sb.Append("\"" + column.DefaultValue + "\"" + Formatter.ParameterSpacer);
+                sb.Append("\"" + column.DefaultValue.ToString().Replace("\"", "\\\"") + "\"" + Formatter.ParameterSpacer);
             else
                 sb.Append(column.DefaultValue + Formatter.ParameterSpacer);
 
@@ -1259,10 +1265,11 @@ namespace NetGore.Db.ClassCreator
             /// <summary>
             /// Determines whether the specified objects are equal.
             /// </summary>
+            /// <param name="x">The first object of type <see cref="ColumnCollection"/> to compare.</param>
+            /// <param name="y">The second object of type <see cref="ColumnCollection"/> to compare.</param>
             /// <returns>
             /// true if the specified objects are equal; otherwise, false.
             /// </returns>
-            /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
             public bool Equals(ColumnCollection x, ColumnCollection y)
             {
                 return x.KeyType == y.KeyType;
@@ -1271,10 +1278,10 @@ namespace NetGore.Db.ClassCreator
             /// <summary>
             /// Returns a hash code for the specified object.
             /// </summary>
-            /// <returns>
-            /// A hash code for the specified object.
-            /// </returns>
-            /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
+            /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param>
+            /// <returns>A hash code for the specified object.</returns>
+            /// <exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type
+            /// and <paramref name="obj"/> is null.</exception>
             public int GetHashCode(ColumnCollection obj)
             {
                 return obj.KeyType.GetHashCode();
