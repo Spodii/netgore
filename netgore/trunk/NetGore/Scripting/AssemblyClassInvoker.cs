@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace NetGore.IO
+namespace NetGore
 {
     /// <summary>
     /// Helper for invoking the methods of an <see cref="Assembly"/>.

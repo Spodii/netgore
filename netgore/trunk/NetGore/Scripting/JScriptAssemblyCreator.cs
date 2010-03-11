@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.JScript;
 
-namespace NetGore.IO
+namespace NetGore
 {
     /// <summary>
     /// Helps with creating an <see cref="Assembly"/> using JScript.
