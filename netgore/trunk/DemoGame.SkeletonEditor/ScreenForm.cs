@@ -885,45 +885,43 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
-        void ScreenForm_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
-            try
-            {
-                // Create the engine objects
-                _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
-                _content = new ContentManager(GameScreen.Services, "Content");
-                GrhInfo.Load(ContentPaths.Dev, _content);
+            base.OnLoad(e);
 
-                // Create the skeleton-related objects
-                _skeleton = new Skeleton();
-                Skeleton frameSkeleton = new Skeleton(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev);
-                SkeletonFrame frame = new SkeletonFrame(SkeletonLoader.StandingSkeletonName, frameSkeleton);
-                _skeletonAnim = new SkeletonAnimation(GetTime(), frame);
-                _skeletonDrawer = new SkeletonDrawer();
+            // Create the engine objects
+            _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
+            _content = new ContentManager(GameScreen.Services, "Content");
+            GrhInfo.Load(ContentPaths.Dev, _content);
 
-                LoadFrame(Skeleton.GetFilePath(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev));
-                LoadAnim(SkeletonSet.GetFilePath(SkeletonLoader.WalkingSkeletonSetName, ContentPaths.Dev));
-                LoadBody(SkeletonBodyInfo.GetFilePath(SkeletonLoader.BasicSkeletonBodyName, ContentPaths.Dev));
+            // Create the skeleton-related objects
+            _skeleton = new Skeleton();
+            Skeleton frameSkeleton = new Skeleton(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev);
+            SkeletonFrame frame = new SkeletonFrame(SkeletonLoader.StandingSkeletonName, frameSkeleton);
+            _skeletonAnim = new SkeletonAnimation(GetTime(), frame);
+            _skeletonDrawer = new SkeletonDrawer();
 
-                // Center lines
-                _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0),
-                                             Microsoft.Xna.Framework.Graphics.Color.Lime));
-                _centerLines.Add(new XNALine(new Vector2(0, -5), new Vector2(0, 5), Microsoft.Xna.Framework.Graphics.Color.Red));
+            LoadFrame(Skeleton.GetFilePath(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev));
+            LoadAnim(SkeletonSet.GetFilePath(SkeletonLoader.WalkingSkeletonSetName, ContentPaths.Dev));
+            LoadBody(SkeletonBodyInfo.GetFilePath(SkeletonLoader.BasicSkeletonBodyName, ContentPaths.Dev));
 
-                _watch.Start();
+            // Center lines
+            _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0),
+                                         Microsoft.Xna.Framework.Graphics.Color.Lime));
+            _centerLines.Add(new XNALine(new Vector2(0, -5), new Vector2(0, 5), Microsoft.Xna.Framework.Graphics.Color.Red));
 
-                HandleSwitches(_switches);
+            _watch.Start();
 
-                // Zoom in and start animation
-                radioAnimate.Checked = true;
-                chkDrawSkel.Checked = false;
-                _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Exception: " + ex);
-                throw;
-            }
+            HandleSwitches(_switches);
+
+            // Zoom in and start animation
+            radioAnimate.Checked = true;
+            chkDrawSkel.Checked = false;
+            _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
         }
 
         void SetAnimByTxt()
