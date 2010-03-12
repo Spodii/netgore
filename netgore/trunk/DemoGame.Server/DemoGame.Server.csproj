@@ -160,7 +160,9 @@
     <Compile Include="DynamicEntityFactory.cs" />
     <Compile Include="Groups\GroupHelper.cs" />
     <Compile Include="Groups\GroupMemberInfo.cs" />
+    <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Item\Template\DeleteItemTemplateQuery.cs" />
+    <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Item\Template\ReplaceItemTemplateQuery.cs" />
     <Compile Include="Queries\Map\SelectMapIDsQuery.cs" />
     <Compile Include="Queries\Quest\DeleteCharacterQuestStatusQuery.cs" />
