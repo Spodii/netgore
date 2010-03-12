@@ -107,6 +107,7 @@
             this.btnItemTemplate.TabIndex = 3;
             this.btnItemTemplate.Text = "...";
             this.btnItemTemplate.UseVisualStyleBackColor = true;
+            this.btnItemTemplate.Click += new System.EventHandler(this.btnItemTemplate_Click);
             // 
             // label1
             // 

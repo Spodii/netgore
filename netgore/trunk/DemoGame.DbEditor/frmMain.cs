@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
+using DemoGame.EditorTools;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -75,6 +76,22 @@ namespace DemoGame.DbEditor
                 return;
 
             _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnItemTemplate control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnItemTemplate_Click(object sender, EventArgs e)
+        {
+            using (var f = new ItemTemplateUITypeEditorForm(pgItemTemplate.SelectedObject))
+            {
+                if (f.ShowDialog(this) == DialogResult.OK)
+                {
+                    pgItemTemplate.SelectedObject = f.SelectedItem;
+                }
+            }
         }
     }
 }
