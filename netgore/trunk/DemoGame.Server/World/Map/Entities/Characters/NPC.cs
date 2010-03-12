@@ -93,8 +93,8 @@ namespace DemoGame.Server
             // Done loading
             SetAsLoaded();
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Created NPC instance from template `{0}`.", template);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Created NPC instance from template `{0}`.", template);
 
             // Spawn
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
