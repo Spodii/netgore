@@ -1722,7 +1722,7 @@ namespace DemoGame.Server
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
+            return string.Format("{0} [{1}; {2}]", Name, ID, GetType().Name);
         }
 
         /// <summary>
