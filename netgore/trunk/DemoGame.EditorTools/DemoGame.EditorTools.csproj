@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StatTypeConstDictionaryEditor.cs" />
+    <Compile Include="StatTypeConstDictionaryTypeConverter.cs" />
     <Compile Include="StatTypeConstDictionaryUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

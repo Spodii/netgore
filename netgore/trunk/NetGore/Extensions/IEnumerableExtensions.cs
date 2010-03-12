@@ -78,6 +78,7 @@ namespace NetGore
             }
 
             // Remove the last delimiter, or else our list will look like: a,b,c,d,f,
+            if (sb.Length >= 1)
             sb.Remove(sb.Length - 1, 1);
 
             // Return the built string
@@ -122,6 +123,7 @@ namespace NetGore
             }
 
             // Remove the last delimiter, or else our list will look like: a,b,c,d,f,
+            if (sb.Length >= delimiter.Length)
             sb.Remove(sb.Length - delimiter.Length, delimiter.Length);
 
             // Return the built string
@@ -148,6 +150,7 @@ namespace NetGore
             }
 
             // Remove the last delimiter, or else our list will look like: a,b,c,d,f,
+            if (sb.Length >= 1)
             sb.Remove(sb.Length - 1, 1);
 
             // Return the built string
@@ -174,7 +177,8 @@ namespace NetGore
             }
 
             // Remove the last delimiter, or else our list will look like: a,b,c,d,f,
-            sb.Remove(sb.Length - delimiter.Length, delimiter.Length);
+            if (sb.Length >= delimiter.Length)
+                sb.Remove(sb.Length - delimiter.Length, delimiter.Length);
 
             // Return the built string
             return sb.ToString();
