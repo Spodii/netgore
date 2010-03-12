@@ -17,38 +17,6 @@ namespace NetGore
         const string _defaultImplodeDelimiter = ", ";
 
         /// <summary>
-        /// Gets the smallest free value available.
-        /// </summary>
-        /// <param name="usedValues">The used values.</param>
-        /// <param name="minValue">The lowest acceptable value.</param>
-        /// <returns>The next free value available.</returns>
-        public static int NextFreeValue(this IEnumerable<int> usedValues, int minValue)
-        {
-            int expected = minValue;
-
-            // Loop through the sorted used values until we find a gap
-            foreach (var value in usedValues.OrderBy(x => x))
-            {
-                if (value <= expected)
-                    expected = value + 1;
-                else
-                    break;
-            }
-
-            return Math.Max(expected, minValue);
-        }
-
-        /// <summary>
-        /// Gets the smallest free value available.
-        /// </summary>
-        /// <param name="usedValues">The used values.</param>
-        /// <returns>The next free value available.</returns>
-        public static int NextFreeValue(this IEnumerable<int> usedValues)
-        {
-            return NextFreeValue(usedValues, 0);
-        }
-
-        /// <summary>
         /// Checks if two IEnumerables contain the exact same elements. Order does not matter.
         /// </summary>
         /// <typeparam name="T">The Type of object.</typeparam>
@@ -111,7 +79,7 @@ namespace NetGore
 
             // Remove the last delimiter, or else our list will look like: a,b,c,d,f,
             if (sb.Length >= 1)
-            sb.Remove(sb.Length - 1, 1);
+                sb.Remove(sb.Length - 1, 1);
 
             // Return the built string
             return sb.ToString();
@@ -156,7 +124,7 @@ namespace NetGore
 
             // Remove the last delimiter, or else our list will look like: a,b,c,d,f,
             if (sb.Length >= delimiter.Length)
-            sb.Remove(sb.Length - delimiter.Length, delimiter.Length);
+                sb.Remove(sb.Length - delimiter.Length, delimiter.Length);
 
             // Return the built string
             return sb.ToString();
@@ -183,7 +151,7 @@ namespace NetGore
 
             // Remove the last delimiter, or else our list will look like: a,b,c,d,f,
             if (sb.Length >= 1)
-            sb.Remove(sb.Length - 1, 1);
+                sb.Remove(sb.Length - 1, 1);
 
             // Return the built string
             return sb.ToString();
@@ -399,6 +367,38 @@ namespace NetGore
             where TCompare : IComparable<TCompare>
         {
             return MinElement(src, func, false);
+        }
+
+        /// <summary>
+        /// Gets the smallest free value available.
+        /// </summary>
+        /// <param name="usedValues">The used values.</param>
+        /// <param name="minValue">The lowest acceptable value.</param>
+        /// <returns>The next free value available.</returns>
+        public static int NextFreeValue(this IEnumerable<int> usedValues, int minValue)
+        {
+            int expected = minValue;
+
+            // Loop through the sorted used values until we find a gap
+            foreach (var value in usedValues.OrderBy(x => x))
+            {
+                if (value <= expected)
+                    expected = value + 1;
+                else
+                    break;
+            }
+
+            return Math.Max(expected, minValue);
+        }
+
+        /// <summary>
+        /// Gets the smallest free value available.
+        /// </summary>
+        /// <param name="usedValues">The used values.</param>
+        /// <returns>The next free value available.</returns>
+        public static int NextFreeValue(this IEnumerable<int> usedValues)
+        {
+            return NextFreeValue(usedValues, 0);
         }
 
         /// <summary>

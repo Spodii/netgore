@@ -25,6 +25,7 @@ namespace DemoGame.Client
         const string _mapGrhsNodeName = "MapGrhs";
         const string _particleEffectsNodeName = "ParticleEffects";
         const string _usedIndiciesNodeName = "UsedIndicies";
+        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
 
         static readonly SpriteBatchParticleRenderer _particleEffectRenderer = new SpriteBatchParticleRenderer();
 
@@ -74,6 +75,20 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets the size of the map. This properly is only added for usage in editors.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The size of the map in pixels.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DisplayName("Size")]
+        [Category("Map")]
+        public Vector2 _Size
+        {
+            get { return Size; }
+            set { SetDimensions(value); }
+        }
+
+        /// <summary>
         /// Gets or sets the ambient light color.
         /// </summary>
         [Browsable(true)]
@@ -85,23 +100,6 @@ namespace DemoGame.Client
             get { return _ambientLight; }
             set { _ambientLight = new Color(value.R, value.G, value.B, 255); }
         }
-
-        /// <summary>
-        /// Gets the ambient light color for the map based on whether or not the map is indoors
-        /// and the current game-time.
-        /// </summary>
-        /// <returns>The ambient light color for the map based on whether or not the map is indoors
-        /// and the current game-time.</returns>
-        public Color GetModifiedAmbientLight()
-        {
-            // Indoor maps are not affected by time
-            if (Indoors)
-                return AmbientLight;
-
-            return _gameTimeSettings.GetModifiedAmbientLight(AmbientLight);
-        }
-
-        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
 
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.
@@ -272,6 +270,21 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the ambient light color for the map based on whether or not the map is indoors
+        /// and the current game-time.
+        /// </summary>
+        /// <returns>The ambient light color for the map based on whether or not the map is indoors
+        /// and the current game-time.</returns>
+        public Color GetModifiedAmbientLight()
+        {
+            // Indoor maps are not affected by time
+            if (Indoors)
+                return AmbientLight;
+
+            return _gameTimeSettings.GetModifiedAmbientLight(AmbientLight);
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for. This should include
         /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
         /// </summary>
@@ -391,26 +404,6 @@ namespace DemoGame.Client
         {
             var bgImagesToWrite = _backgroundImages.Where(x => x != null);
             w.WriteManyNodes(_bgImagesNodeName, bgImagesToWrite, ((writer, item) => item.Write(writer)));
-        }
-
-        /// <summary>
-        /// Gets or sets the size of the map. This properly is only added for usage in editors.
-        /// </summary>
-        [Browsable(true)]
-        [Description("The size of the map in pixels.")]
-        [EditorBrowsable( EditorBrowsableState.Never)]
-        [DisplayName("Size")]
-        [Category("Map")]
-        public Vector2 _Size
-        {
-            get
-            {
-                return Size;
-            }
-            set
-            {
-                SetDimensions(value);
-            }
         }
 
         /// <summary>

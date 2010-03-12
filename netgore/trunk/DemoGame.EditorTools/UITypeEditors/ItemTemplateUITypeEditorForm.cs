@@ -25,40 +25,6 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the item that will be selected by default.
-        /// </summary>
-        /// <param name="items">The items to choose from.</param>
-        /// <returns>
-        /// The item that will be selected by default.
-        /// </returns>
-        protected override IItemTemplateTable SetDefaultSelectedItem(IEnumerable<IItemTemplateTable> items)
-        {
-            if (_selected == null)
-                return base.SetDefaultSelectedItem(items);
-
-            if (_selected is string)
-            {
-                var stringComp = StringComparer.Ordinal;
-                var asString = (string)_selected;
-                return items.FirstOrDefault(x => stringComp.Equals(x.Name, asString));
-            }
-
-            if (_selected is ItemTemplateID)
-            {
-                var asID = (ItemTemplateID)_selected;
-                return items.FirstOrDefault(x => x.ID == asID);
-            }
-
-            if (_selected is IItemTemplateTable)
-            {
-                var asTable = (IItemTemplateTable)_selected;
-                return items.FirstOrDefault(x => x == asTable);
-            }
-
-            return base.SetDefaultSelectedItem(items);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
         /// </summary>
         /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
@@ -96,6 +62,40 @@ namespace DemoGame.EditorTools
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the item that will be selected by default.
+        /// </summary>
+        /// <param name="items">The items to choose from.</param>
+        /// <returns>
+        /// The item that will be selected by default.
+        /// </returns>
+        protected override IItemTemplateTable SetDefaultSelectedItem(IEnumerable<IItemTemplateTable> items)
+        {
+            if (_selected == null)
+                return base.SetDefaultSelectedItem(items);
+
+            if (_selected is string)
+            {
+                var stringComp = StringComparer.Ordinal;
+                var asString = (string)_selected;
+                return items.FirstOrDefault(x => stringComp.Equals(x.Name, asString));
+            }
+
+            if (_selected is ItemTemplateID)
+            {
+                var asID = (ItemTemplateID)_selected;
+                return items.FirstOrDefault(x => x.ID == asID);
+            }
+
+            if (_selected is IItemTemplateTable)
+            {
+                var asTable = (IItemTemplateTable)_selected;
+                return items.FirstOrDefault(x => x == asTable);
+            }
+
+            return base.SetDefaultSelectedItem(items);
         }
     }
 }

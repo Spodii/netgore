@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NetGore.IO;
@@ -22,67 +21,6 @@ namespace NetGore.Tests.NetGore.IO
                 File.WriteAllText(f.FilePath, fileContents);
                 new MsgColl(f.FilePath);
             }
-        }
-
-        [Test]
-        public void InlineJScriptTest()
-        {
-            const string fileContents = @"A: ""Spodi says $0*$1 equals "" + $0 * $1 + """;
-
-            MsgColl c;
-            using (TempFile f = new TempFile())
-            {
-                File.WriteAllText(f.FilePath, fileContents);
-                c = new MsgColl(f.FilePath);
-            }
-
-            Assert.AreEqual("Spodi says 4*7 equals " + 4 * 7, c.GetMessage(MsgType.A, "4", "7"));
-        }
-
-        [Test]
-        public void MissingMessageTest()
-        {
-            const string fileContents =
-                @"A: ""Hi""";
-
-            MsgColl c;
-            using (TempFile f = new TempFile())
-            {
-                File.WriteAllText(f.FilePath, fileContents);
-                c = new MsgColl(f.FilePath);
-            }
-
-            Assert.IsNull(c.GetMessage(MsgType.C));
-            Assert.IsNull(c.GetMessage(MsgType.C, "asdf", "fda"));
-        }
-
-        [Test]
-        public void MissingMessageGrabFromSecondaryTest()
-        {
-            const string fileContentsA =
-                @"A: ""Spodi says: \""Hi\""""
-                                         B: ""Spodi hates you. >:|""";
-            const string fileContentsB =
-                @"A: ""boob says: \""Hi\""";
-
-            MsgColl cA;
-            MsgColl cB;
-            using (TempFile fA = new TempFile())
-            {
-                File.WriteAllText(fA.FilePath, fileContentsA);
-                cA = new MsgColl(fA.FilePath);
-                using (TempFile fB = new TempFile())
-                {
-                    File.WriteAllText(fB.FilePath, fileContentsB);
-                    cB = new MsgColl(fB.FilePath, cA);
-                }
-            }
-
-            Assert.AreEqual("Spodi says: \"Hi\"", cA.GetMessage(MsgType.A));
-            Assert.AreEqual("Spodi hates you. >:|", cA.GetMessage(MsgType.B));
-
-            Assert.AreEqual("boob says: \"Hi\"", cB.GetMessage(MsgType.A));
-            Assert.AreEqual("Spodi hates you. >:|", cB.GetMessage(MsgType.B));
         }
 
         [Test]
@@ -205,6 +143,65 @@ namespace NetGore.Tests.NetGore.IO
 
             msg = c.GetMessage(MsgType.B, "NetGore", "vbGORE", "breakfast");
             Assert.AreEqual("NetGore eats vbGORE for breakfast. Yummy.", msg);
+        }
+
+        [Test]
+        public void InlineJScriptTest()
+        {
+            const string fileContents = @"A: ""Spodi says $0*$1 equals "" + $0 * $1 + """;
+
+            MsgColl c;
+            using (TempFile f = new TempFile())
+            {
+                File.WriteAllText(f.FilePath, fileContents);
+                c = new MsgColl(f.FilePath);
+            }
+
+            Assert.AreEqual("Spodi says 4*7 equals " + 4 * 7, c.GetMessage(MsgType.A, "4", "7"));
+        }
+
+        [Test]
+        public void MissingMessageGrabFromSecondaryTest()
+        {
+            const string fileContentsA =
+                @"A: ""Spodi says: \""Hi\""""
+                                         B: ""Spodi hates you. >:|""";
+            const string fileContentsB = @"A: ""boob says: \""Hi\""";
+
+            MsgColl cA;
+            MsgColl cB;
+            using (TempFile fA = new TempFile())
+            {
+                File.WriteAllText(fA.FilePath, fileContentsA);
+                cA = new MsgColl(fA.FilePath);
+                using (TempFile fB = new TempFile())
+                {
+                    File.WriteAllText(fB.FilePath, fileContentsB);
+                    cB = new MsgColl(fB.FilePath, cA);
+                }
+            }
+
+            Assert.AreEqual("Spodi says: \"Hi\"", cA.GetMessage(MsgType.A));
+            Assert.AreEqual("Spodi hates you. >:|", cA.GetMessage(MsgType.B));
+
+            Assert.AreEqual("boob says: \"Hi\"", cB.GetMessage(MsgType.A));
+            Assert.AreEqual("Spodi hates you. >:|", cB.GetMessage(MsgType.B));
+        }
+
+        [Test]
+        public void MissingMessageTest()
+        {
+            const string fileContents = @"A: ""Hi""";
+
+            MsgColl c;
+            using (TempFile f = new TempFile())
+            {
+                File.WriteAllText(f.FilePath, fileContents);
+                c = new MsgColl(f.FilePath);
+            }
+
+            Assert.IsNull(c.GetMessage(MsgType.C));
+            Assert.IsNull(c.GetMessage(MsgType.C, "asdf", "fda"));
         }
 
         #endregion

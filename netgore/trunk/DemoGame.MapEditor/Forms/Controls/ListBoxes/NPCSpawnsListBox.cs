@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
@@ -32,6 +30,11 @@ namespace DemoGame.MapEditor
 
                 ReloadSpawns();
             }
+        }
+
+        public MapSpawnValues SelectedItemReal
+        {
+            get { return ((NPCSpawnsListBoxItem)SelectedItem).Value; }
         }
 
         public void AddNewItem()
@@ -88,11 +91,6 @@ namespace DemoGame.MapEditor
             {
                 yield return item.Value;
             }
-        }
-
-        public MapSpawnValues SelectedItemReal
-        {
-            get { return ((NPCSpawnsListBoxItem)SelectedItem).Value; }
         }
 
         void ReloadSpawns()

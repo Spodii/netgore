@@ -135,17 +135,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the unique index of the map.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Map")]
-        [Description("The unique index of the map.")]
-        public MapIndex Index
-        {
-            get { return _mapIndex; }
-        }
-
-        /// <summary>
         /// Gets or sets if this map represents the map of an area that is indoors.
         /// </summary>
         [Browsable(true)]
@@ -1160,6 +1149,17 @@ namespace DemoGame
         public float Height
         {
             get { return _height; }
+        }
+
+        /// <summary>
+        /// Gets the unique index of the map.
+        /// </summary>
+        [Browsable(true)]
+        [Category("Map")]
+        [Description("The unique index of the map.")]
+        public MapIndex Index
+        {
+            get { return _mapIndex; }
         }
 
         /// <summary>

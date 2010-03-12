@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore;
@@ -13,15 +11,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectMapQuery : DbQueryReader<MapIndex>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id",
-            MapTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", MapTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectMapQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
@@ -66,15 +62,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectMapIDsQuery : DbQueryReader
     {
-        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}`",
-            MapTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}`", MapTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectMapIDsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectMapIDsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectMapIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

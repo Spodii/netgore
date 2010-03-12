@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -28,7 +27,8 @@ namespace DemoGame.Server.Queries
 
             using (var r = ExecuteReader(id))
             {
-                if (!r.Read()) return null;
+                if (!r.Read())
+                    return null;
 
                 ret = new MapSpawnTable();
                 ret.ReadValues(r);

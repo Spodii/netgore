@@ -44,38 +44,6 @@ namespace DemoGame.Server
         protected abstract void DoUpdate();
 
         /// <summary>
-        /// Checks if the <paramref name="target"/> is valid.
-        /// </summary>
-        /// <param name="target">The target <see cref="Character"/>.</param>
-        /// <returns>True if the <paramref name="target"/> is valid; otherwise false.</returns>
-        protected virtual bool IsValidTarget(Character target)
-        {
-            if (target == null)
-                return false;
-
-            if (!target.IsAlive)
-                return false;
-
-            if (target.Map != Actor.Map)
-                return false;
-
-            if (target.IsDisposed)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Gets if the actor is hostile towards the given <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The character to check if the actor is hostile towards.</param>
-        /// <returns>True if the actor is hostile towards the <paramref name="character"/>; otherwise false.</returns>
-        protected virtual bool IsHostileTowards(Character character)
-        {
-            return Actor.Alliance.IsHostile(character.Alliance);
-        }
-
-        /// <summary>
         /// Gets the closest Character to this Actor that the Actor is hostile towards (as defined by
         /// the Actor's alliance). Only checks Characters in view of the Actor.
         /// </summary>
@@ -86,8 +54,7 @@ namespace DemoGame.Server
             var center = Actor.Center;
 
             // Get the characters that we are even hostile towards and are in view
-            var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea, 
-                x => IsHostileTowards(x) && x != Actor);
+            var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea, x => IsHostileTowards(x) && x != Actor);
             var closest = possibleChars.MinElementOrDefault(x => center.QuickDistance(x.Center));
 
             return closest;
@@ -108,6 +75,16 @@ namespace DemoGame.Server
             int h = (int)Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
 
             return new Rectangle(x, y, w, h);
+        }
+
+        /// <summary>
+        /// Gets if the actor is hostile towards the given <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The character to check if the actor is hostile towards.</param>
+        /// <returns>True if the actor is hostile towards the <paramref name="character"/>; otherwise false.</returns>
+        protected virtual bool IsHostileTowards(Character character)
+        {
+            return Actor.Alliance.IsHostile(character.Alliance);
         }
 
         /// <summary>
@@ -132,6 +109,28 @@ namespace DemoGame.Server
             dist = dist.Abs();
 
             return dist.IsLessThan(_halfScreenSize);
+        }
+
+        /// <summary>
+        /// Checks if the <paramref name="target"/> is valid.
+        /// </summary>
+        /// <param name="target">The target <see cref="Character"/>.</param>
+        /// <returns>True if the <paramref name="target"/> is valid; otherwise false.</returns>
+        protected virtual bool IsValidTarget(Character target)
+        {
+            if (target == null)
+                return false;
+
+            if (!target.IsAlive)
+                return false;
+
+            if (target.Map != Actor.Map)
+                return false;
+
+            if (target.IsDisposed)
+                return false;
+
+            return true;
         }
 
         /// <summary>

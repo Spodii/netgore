@@ -9,20 +9,10 @@ namespace NetGore
     /// </summary>
     public class AssemblyClassInvoker
     {
-        readonly string _className;
         readonly Assembly _assembly;
-        readonly Type _classType;
         readonly object _classInstance;
-
-        /// <summary>
-        /// Gets the <see cref="Assembly"/> that this <see cref="AssemblyClassInvoker"/> invokes.
-        /// </summary>
-        public Assembly Assembly { get { return _assembly; } }
-
-        /// <summary>
-        /// Gets the name of the class that this <see cref="AssemblyClassInvoker"/> invokes.
-        /// </summary>
-        public string ClassName { get { return _className; } }
+        readonly string _className;
+        readonly Type _classType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyClassInvoker"/> class.
@@ -39,6 +29,22 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the <see cref="Assembly"/> that this <see cref="AssemblyClassInvoker"/> invokes.
+        /// </summary>
+        public Assembly Assembly
+        {
+            get { return _assembly; }
+        }
+
+        /// <summary>
+        /// Gets the name of the class that this <see cref="AssemblyClassInvoker"/> invokes.
+        /// </summary>
+        public string ClassName
+        {
+            get { return _className; }
+        }
+
+        /// <summary>
         /// Invokes the specified method.
         /// </summary>
         /// <param name="method">The method.</param>
@@ -46,7 +52,7 @@ namespace NetGore
         /// <returns>The returned value from the invoked method.</returns>
         public object Invoke(string method, params object[] args)
         {
-            var result = _classType.InvokeMember(method, BindingFlags.InvokeMethod, null, _classInstance, args );
+            var result = _classType.InvokeMember(method, BindingFlags.InvokeMethod, null, _classInstance, args);
             return result;
         }
 

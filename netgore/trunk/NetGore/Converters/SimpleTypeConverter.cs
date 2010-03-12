@@ -134,13 +134,9 @@ namespace NetGore
             culture = culture ?? CultureInfo.CurrentCulture;
 
             if (destinationType == typeof(string) && value is T)
-            {
                 return ConvertToString((T)value);
-            }
             else if (destinationType == typeof(T))
-            {
                 return (T)value;
-            }
 
             return base.ConvertTo(context, culture, value, destinationType);
         }

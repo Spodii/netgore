@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using DemoGame;
 using NetGore.Features.GameTime;
 using NUnit.Framework;
 
@@ -11,15 +8,7 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class GameDateTimeTests
     {
-        [Test]
-        public void TimeOffsetTest()
-        {
-            DateTime clientTime = DateTime.Now;
-            DateTime serverTime = new DateTime(clientTime.Year, clientTime.Month, clientTime.Day, clientTime.Hour - 1, clientTime.Minute, clientTime.Second);
-            GameDateTime.SetServerTimeOffset(serverTime);
-
-            Assert.AreEqual(1, Math.Round(GameDateTime.ServerTimeOffset.TotalHours));
-        }
+        #region Unit tests
 
         [Test]
         public void AddOperatorTest()
@@ -29,15 +18,6 @@ namespace NetGore.Tests.NetGore
 
             Assert.AreEqual(new GameDateTime(75), a + b);
             Assert.AreEqual(new GameDateTime(75), b + a);
-        }
-
-        [Test]
-        public void SubtractOperatorTest()
-        {
-            var a = new GameDateTime(50);
-            var b = new GameDateTime(25);
-
-            Assert.AreEqual(new GameDateTime(25), a - b);
         }
 
         [Test]
@@ -54,16 +34,21 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void NotEqualsOperatorTest()
+        public void EqualsTest()
         {
             var a = new GameDateTime(512);
             var b = new GameDateTime(512);
             var c = new GameDateTime(312);
 
-            Assert.IsFalse(a != b);
-            Assert.IsFalse(b != a);
-            Assert.IsTrue(a != c);
-            Assert.IsTrue(b != c);
+            Assert.AreEqual(a, b);
+            Assert.AreEqual(b, a);
+            Assert.AreNotEqual(a, c);
+            Assert.AreNotEqual(b, c);
+
+            Assert.IsTrue(a.Equals(b));
+            Assert.IsTrue(b.Equals(a));
+            Assert.IsFalse(a.Equals(c));
+            Assert.IsFalse(b.Equals(c));
         }
 
         [Test]
@@ -90,6 +75,16 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void LessThanOperatorTest()
+        {
+            var less = new GameDateTime(100);
+            var more = new GameDateTime(200);
+
+            Assert.IsTrue(less < more);
+            Assert.IsFalse(more < less);
+        }
+
+        [Test]
         public void LessThanOrEqualToOperatorTest()
         {
             var less = new GameDateTime(100);
@@ -103,31 +98,36 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void LessThanOperatorTest()
-        {
-            var less = new GameDateTime(100);
-            var more = new GameDateTime(200);
-
-            Assert.IsTrue(less < more);
-            Assert.IsFalse(more < less);
-        }
-
-        [Test]
-        public void EqualsTest()
+        public void NotEqualsOperatorTest()
         {
             var a = new GameDateTime(512);
             var b = new GameDateTime(512);
             var c = new GameDateTime(312);
 
-            Assert.AreEqual(a, b);
-            Assert.AreEqual(b, a);
-            Assert.AreNotEqual(a, c);
-            Assert.AreNotEqual(b, c);
+            Assert.IsFalse(a != b);
+            Assert.IsFalse(b != a);
+            Assert.IsTrue(a != c);
+            Assert.IsTrue(b != c);
+        }
 
-            Assert.IsTrue(a.Equals(b));
-            Assert.IsTrue(b.Equals(a));
-            Assert.IsFalse(a.Equals(c));
-            Assert.IsFalse(b.Equals(c));
+        [Test]
+        public void SubtractOperatorTest()
+        {
+            var a = new GameDateTime(50);
+            var b = new GameDateTime(25);
+
+            Assert.AreEqual(new GameDateTime(25), a - b);
+        }
+
+        [Test]
+        public void TimeOffsetTest()
+        {
+            DateTime clientTime = DateTime.Now;
+            DateTime serverTime = new DateTime(clientTime.Year, clientTime.Month, clientTime.Day, clientTime.Hour - 1,
+                                               clientTime.Minute, clientTime.Second);
+            GameDateTime.SetServerTimeOffset(serverTime);
+
+            Assert.AreEqual(1, Math.Round(GameDateTime.ServerTimeOffset.TotalHours));
         }
 
         [Test]
@@ -138,5 +138,7 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(minutes, (int)gt.TotalRealMinutes);
             Assert.AreEqual(gt, new GameDateTime((int)gt.TotalRealMinutes));
         }
+
+        #endregion
     }
 }

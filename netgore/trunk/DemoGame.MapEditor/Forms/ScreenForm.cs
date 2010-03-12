@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
-using DemoGame.EditorTools;
 using DemoGame.Server;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
@@ -19,6 +18,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using Character=DemoGame.Client.Character;
+using CustomUITypeEditors=DemoGame.EditorTools.CustomUITypeEditors;
 using Map=DemoGame.Client.Map;
 using World=DemoGame.Client.World;
 
@@ -805,6 +805,40 @@ namespace DemoGame.MapEditor
                 SelectedObjs.SetSelected(lstMapParticleEffects.SelectedItem);
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstNPCSpawns control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstNPCSpawns_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpSpawns)
+                return;
+
+            var selected = lstNPCSpawns.SelectedItemReal;
+            if (selected == null)
+                return;
+
+            SelectedObjs.SetSelected(new EditorMapSpawnValues(selected, Map));
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstPersistentNPCs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpPersistent)
+                return;
+
+            var selected = lstPersistentNPCs.SelectedItem;
+            if (selected == null)
+                return;
+
+            SelectedObjs.SetSelected(selected);
+        }
+
         void lstSelected_Click(object sender, EventArgs e)
         {
             var current = lstSelected.SelectedItem as ISpatial;
@@ -830,6 +864,18 @@ namespace DemoGame.MapEditor
                 return;
 
             Camera.Scale = value;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            GrhInfo.Save(ContentPaths.Dev);
+            SettingsManager.Save();
+
+            base.OnFormClosing(e);
         }
 
         /// <summary>
@@ -935,73 +981,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.MapChanged"/>
-        /// event when possible.
-        /// </summary>
-        protected virtual void OnMapChanged(Map oldMap, Map newMap)
-        {
-            // Clear the selected item
-            SelectedObjs.Clear();
-
-            // Forward the change to some controls manually
-            Camera.Map = newMap;
-            MapDrawingExtensions.Map = newMap;
-
-            // Automatically update all the controls that implement IMapBoundControl
-            foreach (var c in _mapBoundControls)
-            {
-                c.IMap = newMap;
-            }
-
-            // Remove all lights for the old map from the light manager
-            if (oldMap != newMap)
-            {
-                if (oldMap != null)
-                {
-                    foreach (var light in oldMap.Lights)
-                    {
-                        DrawingManager.LightManager.Remove(light);
-                    }
-                }
-
-                // Add the lights from the new map
-                foreach (var light in newMap.Lights)
-                {
-                    DrawingManager.LightManager.Add(light);
-                }
-            }
-
-            pgMap.SelectedObject = newMap;
-        }
-
-        /// <summary>
-        /// Adds all the <see cref="IPersistable"/>s to the <see cref="SettingsManager"/>.
-        /// </summary>
-        void PopulateSettingsManager()
-        {
-            // Add the Controls that implement IPersistable
-            var persistableControls = this.GetPersistableControls();
-            var keyValuePairs =
-                persistableControls.Select(x => new KeyValuePair<string, IPersistable>("Control_" + x.Name, (IPersistable)x));
-            SettingsManager.Add(keyValuePairs);
-
-            // Manually add the other things that implement IPersistable
-            SettingsManager.Add("Grid", Grid);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            GrhInfo.Save(ContentPaths.Dev);
-            SettingsManager.Save();
-
-            base.OnFormClosing(e);
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -1073,15 +1052,69 @@ namespace DemoGame.MapEditor
             HandleSwitches(_switches);
 
             // Set the custom UITypeEditors
-            EditorTools.CustomUITypeEditors.AddEditors(_dbController);
+            CustomUITypeEditors.AddEditors(_dbController);
 
             _camera.Size = GameScreenSize;
         }
 
+        /// <summary>
+        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.MapChanged"/>
+        /// event when possible.
+        /// </summary>
+        protected virtual void OnMapChanged(Map oldMap, Map newMap)
+        {
+            // Clear the selected item
+            SelectedObjs.Clear();
+
+            // Forward the change to some controls manually
+            Camera.Map = newMap;
+            MapDrawingExtensions.Map = newMap;
+
+            // Automatically update all the controls that implement IMapBoundControl
+            foreach (var c in _mapBoundControls)
+            {
+                c.IMap = newMap;
+            }
+
+            // Remove all lights for the old map from the light manager
+            if (oldMap != newMap)
+            {
+                if (oldMap != null)
+                {
+                    foreach (var light in oldMap.Lights)
+                    {
+                        DrawingManager.LightManager.Remove(light);
+                    }
+                }
+
+                // Add the lights from the new map
+                foreach (var light in newMap.Lights)
+                {
+                    DrawingManager.LightManager.Add(light);
+                }
+            }
+
+            pgMap.SelectedObject = newMap;
+        }
+
+        /// <summary>
+        /// Adds all the <see cref="IPersistable"/>s to the <see cref="SettingsManager"/>.
+        /// </summary>
+        void PopulateSettingsManager()
+        {
+            // Add the Controls that implement IPersistable
+            var persistableControls = this.GetPersistableControls();
+            var keyValuePairs =
+                persistableControls.Select(x => new KeyValuePair<string, IPersistable>("Control_" + x.Name, (IPersistable)x));
+            SettingsManager.Add(keyValuePairs);
+
+            // Manually add the other things that implement IPersistable
+            SettingsManager.Add("Grid", Grid);
+        }
+
         void SelectedObjectsManager_FocusedChanged(SelectedObjectsManager<object> sender, object newFocused)
         {
-            scTabsAndSelected.Panel2Collapsed = (SelectedObjs.SelectedObjects.Count() == 0 &&
-                                                 SelectedObjs.Focused == null);
+            scTabsAndSelected.Panel2Collapsed = (SelectedObjs.SelectedObjects.Count() == 0 && SelectedObjs.Focused == null);
         }
 
         void SelectedObjectsManager_SelectedChanged(SelectedObjectsManager<object> sender)
@@ -1172,39 +1205,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the lstNPCSpawns control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstNPCSpawns_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpSpawns)
-                return;
-
-            var selected = lstNPCSpawns.SelectedItemReal;
-            if (selected == null)
-                return;
-
-            SelectedObjs.SetSelected(new EditorMapSpawnValues(selected, Map));
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the lstPersistentNPCs control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpPersistent)
-                return;
-
-            var selected = lstPersistentNPCs.SelectedItem;
-            if (selected == null)
-                return;
-
-            SelectedObjs.SetSelected(selected);
-        }
     }
 }

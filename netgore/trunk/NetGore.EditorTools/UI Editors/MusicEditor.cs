@@ -37,9 +37,7 @@ namespace NetGore.EditorTools
                     using (var editorForm = new MusicUITypeEditorForm(null, value as string))
                     {
                         if (svc.ShowDialog(editorForm) != DialogResult.OK)
-                        {
                             value = editorForm.SelectedItem.Name;
-                        }
                     }
                 }
                 else if (context.PropertyDescriptor.PropertyType == typeof(IMusic))
@@ -47,9 +45,7 @@ namespace NetGore.EditorTools
                     using (var editorForm = new MusicUITypeEditorForm(null, value as IMusic))
                     {
                         if (svc.ShowDialog(editorForm) != DialogResult.OK)
-                        {
                             value = editorForm.SelectedItem;
-                        }
                     }
                 }
             }

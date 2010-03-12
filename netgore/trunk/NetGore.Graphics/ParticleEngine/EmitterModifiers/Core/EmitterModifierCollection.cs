@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NetGore.Collections;
 using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -32,18 +31,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Reverts the changes from the <see cref="EmitterModifier"/>s.
-        /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert the changes on.</param>
-        public void RestoreEmitter(ParticleEmitter emitter)
-        {
-            foreach (var modifier in this.Reverse<EmitterModifier>())
-            {
-                modifier.Restore(emitter);
-            }
-        }
-
-        /// <summary>
         /// Reads the <see cref="EmitterModifierCollection"/> from an <see cref="IValueReader"/>.
         /// </summary>
         /// <param name="nodeName">The name of the collection node.</param>
@@ -56,6 +43,18 @@ namespace NetGore.Graphics.ParticleEngine
             // Clear the collection and add the created modifiers
             Clear();
             AddRange(modifiers);
+        }
+
+        /// <summary>
+        /// Reverts the changes from the <see cref="EmitterModifier"/>s.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert the changes on.</param>
+        public void RestoreEmitter(ParticleEmitter emitter)
+        {
+            foreach (var modifier in this.Reverse<EmitterModifier>())
+            {
+                modifier.Restore(emitter);
+            }
         }
 
         /// <summary>

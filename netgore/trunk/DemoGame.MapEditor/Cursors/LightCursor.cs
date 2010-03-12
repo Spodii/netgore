@@ -27,20 +27,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the delete button has been pressed.
-        /// </summary>
-        public override void PressDelete()
-        {
-            var light = Container.SelectedObjs.Focused as ILight;
-            if (light != null && light.Tag == Container.Map)
-            {
-                Container.Map.RemoveLight(light);
-                Container.DrawingManager.LightManager.Remove(light);
-                Container.SelectedObjs.Clear();
-            }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
         /// </summary>
         public override string Name
@@ -130,6 +116,20 @@ namespace DemoGame.MapEditor
         {
             _selectedLight = null;
             UpdateToolTip();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the delete button has been pressed.
+        /// </summary>
+        public override void PressDelete()
+        {
+            var light = Container.SelectedObjs.Focused as ILight;
+            if (light != null && light.Tag == Container.Map)
+            {
+                Container.Map.RemoveLight(light);
+                Container.DrawingManager.LightManager.Remove(light);
+                Container.SelectedObjs.Clear();
+            }
         }
 
         void UpdateToolTip()

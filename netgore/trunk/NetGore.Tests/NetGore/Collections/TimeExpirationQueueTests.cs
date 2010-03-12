@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.Collections;
 using NUnit.Framework;
 
@@ -10,40 +8,7 @@ namespace NetGore.Tests.NetGore.Collections
     [TestFixture]
     public class TimeExpirationQueueTests
     {
-        class TestQ : TimeExpirationQueue<string>
-        {
-            readonly List<string> _expired = new List<string>();
-
-            /// <summary>
-            /// Gets the items that have expired since the last call to this method.
-            /// </summary>
-            /// <returns>The items that have expired since the last call to this method.</returns>
-            public IEnumerable<string> GetRecentExpired()
-            {
-                var ret = _expired.ToArray();
-                _expired.Clear();
-                return ret;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the minimum amount of time in milliseconds that must elapsed
-            /// between calls to Update. If this amount of time has not elapsed, calls to Update will just return 0.
-            /// </summary>
-            protected override int UpdateRate
-            {
-                get { return 0; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, handles when an item has expired since it has been in this collection
-            /// for longer the allowed time.
-            /// </summary>
-            /// <param name="item">The item that has expired.</param>
-            protected override void ExpireItem(string item)
-            {
-                _expired.Add(item);
-            }
-        }
+        #region Unit tests
 
         [Test]
         public void AddTest()
@@ -71,6 +36,22 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.AreEqual(50, a.Value);
             Assert.AreEqual("b", b.Key);
             Assert.AreEqual(25, b.Value);
+        }
+
+        [Test]
+        public void RemoveTest()
+        {
+            TestQ q = new TestQ();
+
+            q.Add("abc", 0, 10);
+            Assert.AreEqual("abc", q.Items.First().Key);
+
+            q.Remove("abcd");
+            Assert.AreEqual("abc", q.Items.First().Key);
+            Assert.AreEqual(1, q.Items.Count());
+
+            q.Remove("abc");
+            Assert.IsTrue(q.Items.IsEmpty());
         }
 
         [Test]
@@ -116,20 +97,41 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.IsTrue(q.Items.IsEmpty());
         }
 
-        [Test]
-        public void RemoveTest()
+        #endregion
+
+        class TestQ : TimeExpirationQueue<string>
         {
-            TestQ q = new TestQ();
+            readonly List<string> _expired = new List<string>();
 
-            q.Add("abc", 0, 10);
-            Assert.AreEqual("abc", q.Items.First().Key);
+            /// <summary>
+            /// When overridden in the derived class, gets the minimum amount of time in milliseconds that must elapsed
+            /// between calls to Update. If this amount of time has not elapsed, calls to Update will just return 0.
+            /// </summary>
+            protected override int UpdateRate
+            {
+                get { return 0; }
+            }
 
-            q.Remove("abcd");
-            Assert.AreEqual("abc", q.Items.First().Key);
-            Assert.AreEqual(1, q.Items.Count());
+            /// <summary>
+            /// When overridden in the derived class, handles when an item has expired since it has been in this collection
+            /// for longer the allowed time.
+            /// </summary>
+            /// <param name="item">The item that has expired.</param>
+            protected override void ExpireItem(string item)
+            {
+                _expired.Add(item);
+            }
 
-            q.Remove("abc");
-            Assert.IsTrue(q.Items.IsEmpty());
+            /// <summary>
+            /// Gets the items that have expired since the last call to this method.
+            /// </summary>
+            /// <returns>The items that have expired since the last call to this method.</returns>
+            public IEnumerable<string> GetRecentExpired()
+            {
+                var ret = _expired.ToArray();
+                _expired.Clear();
+                return ret;
+            }
         }
     }
 }

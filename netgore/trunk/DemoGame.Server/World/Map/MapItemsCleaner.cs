@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using NetGore;
+﻿using System.Linq;
 using NetGore.Collections;
 
 namespace DemoGame.Server

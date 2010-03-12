@@ -22,14 +22,14 @@ namespace NetGore.EditorTools
     public class GraphicsDeviceService : IGraphicsDeviceService
     {
         /// <summary>
-        /// Keeps track of how many controls are sharing the singletonInstance
-        /// </summary>
-        static int _referenceCount;
-
-        /// <summary>
         /// Singleton device service instance
         /// </summary>
         static GraphicsDeviceService _instance;
+
+        /// <summary>
+        /// Keeps track of how many controls are sharing the singletonInstance
+        /// </summary>
+        static int _referenceCount;
 
         /// <summary>
         /// Current device settings

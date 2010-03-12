@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
@@ -21,7 +23,7 @@ namespace DemoGame.EditorTools
         /// <returns>
         /// true if this converter can perform the conversion; otherwise, false.
         /// </returns>
-        public override bool CanConvertTo(ITypeDescriptorContext context, System.Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(string))
                 return true;
@@ -45,15 +47,13 @@ namespace DemoGame.EditorTools
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter
         /// is null.</exception>
         /// <exception cref="T:System.NotSupportedException">The conversion cannot be performed. </exception>
-        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {
                 var v = value as IEnumerable<KeyValuePair<StatType, int>>;
                 if (v != null)
-                {
                     return v.Where(x => x.Value != 0).Implode();
-                }
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Collections
 {
     public class PriorityQueue<T>
     {
-        List<T> _list = new List<T>();
-        IComparer<T> _comparer;
+        readonly IComparer<T> _comparer;
+        readonly List<T> _list = new List<T>();
 
         /// <summary>
         /// Sets up a default PriorityQueue.
@@ -36,11 +34,39 @@ namespace NetGore.Collections
             _comparer = comparer;
         }
 
-        void Switch(int A, int B)
+        /// <summary>
+        /// Used for getting and setting values in the queue.
+        /// </summary>
+        /// <param name="idx">Index in queue.</param>
+        public T this[int idx]
         {
-            T C = _list[A];
-            _list[A] = _list[B];
-            _list[B] = C;
+            get { return _list[idx]; }
+            set
+            {
+                _list[idx] = value;
+                Update(idx);
+            }
+        }
+
+        /// <summary>
+        /// Returns the number of elements in the queue.
+        /// </summary>
+        public int Count
+        {
+            get { return _list.Count; }
+        }
+
+        /// <summary>
+        /// Clears the queue.
+        /// </summary>
+        public void Clear()
+        {
+            _list.Clear();
+        }
+
+        int OnCompare(int A, int B)
+        {
+            return _comparer.Compare(_list[A], _list[B]);
         }
 
         /// <summary>
@@ -49,12 +75,11 @@ namespace NetGore.Collections
         /// <returns>The smallest object in the queue.</returns>
         public T Peek()
         {
-
             if (_list.Count > 0)
                 return _list[0];
             return default(T);
         }
-        
+
         /// <summary>
         /// Gets the smallest object and removes it from the queue.
         /// </summary>
@@ -75,26 +100,21 @@ namespace NetGore.Collections
                 C = 2 * A + 2;
 
                 if (_list.Count > B && OnCompare(A, B) > 0)
-                {
                     A = B;
-                }
 
                 if (_list.Count > C && OnCompare(A, C) > 0)
-                {
                     A = C;
-                }
 
                 if (A == D)
                     break;
 
                 Switch(A, D);
-            } while (true);
+            }
+            while (true);
 
             return Result;
-
-
         }
-        
+
         /// <summary>
         /// Pushes an object onto the queue.
         /// </summary>
@@ -102,7 +122,6 @@ namespace NetGore.Collections
         /// <returns>The position of the Object when it is pushed onto the queue.</returns>
         public int Push(T Object)
         {
-
             int A = _list.Count;
             int B;
 
@@ -121,14 +140,13 @@ namespace NetGore.Collections
                     A = B;
                 }
                 else
-                {
                     break;
-                }
-            } while (true);
+            }
+            while (true);
 
             return A;
         }
-       
+
         /// <summary>
         /// Removes an object from the queue.
         /// </summary>
@@ -139,17 +157,20 @@ namespace NetGore.Collections
 
             for (int i = 0; i < _list.Count; i++)
             {
-
                 if (_comparer.Compare(_list[i], Object) == 0)
-                {
                     idx = i;
-                }
-
             }
 
             if (idx != -1)
                 _list.RemoveAt(idx);
-            }
+        }
+
+        void Switch(int A, int B)
+        {
+            T C = _list[A];
+            _list[A] = _list[B];
+            _list[B] = C;
+        }
 
         /// <summary>
         /// Notifies the queue that the object at position i has changed and needs to update.
@@ -167,7 +188,7 @@ namespace NetGore.Collections
                     break;
 
                 // Half of (index -1)
-                D = ((A - 1) /2);
+                D = ((A - 1) / 2);
 
                 // If A is less than D then we switch the positions
                 if (OnCompare(A, D) < 0)
@@ -176,10 +197,9 @@ namespace NetGore.Collections
                     A = D;
                 }
                 else
-                {
                     break;
-                }
-            } while (true);
+            }
+            while (true);
 
             if (A < i)
                 return;
@@ -193,15 +213,11 @@ namespace NetGore.Collections
 
                 // If C is less than _list.Count and if A is greater than C then A = C.
                 if (_list.Count > C && OnCompare(A, C) > 0)
-                {
                     A = C;
-                }
 
                 // If D is less than _list.Count and if A is greater than D then A = D.
                 if (_list.Count > D && OnCompare(A, D) > 0)
-                {
                     A = D;
-                }
 
                 // If A is equal to B then we've finished moving the elements.
                 if (A == B)
@@ -209,48 +225,8 @@ namespace NetGore.Collections
 
                 // Switch the element A to position B and vice versa.
                 Switch(A, B);
-            } while (true);
-
-
-        }
-
-        /// <summary>
-        /// Clears the queue.
-        /// </summary>
-        public void Clear()
-        {
-            _list.Clear();
-        }
-
-        /// <summary>
-        /// Returns the number of elements in the queue.
-        /// </summary>
-        public int Count
-        {
-            get { return _list.Count; }
-        }
-
-        private int OnCompare(int A, int B)
-        {
-            return _comparer.Compare(_list[A], _list[B]);
-        }
-
-        /// <summary>
-        /// Used for getting and setting values in the queue.
-        /// </summary>
-        /// <param name="idx">Index in queue.</param>
-        public T this[int idx]
-        {
-            get 
-            { 
-                return _list[idx]; 
             }
-            set
-            {
-                _list[idx] = value;
-                Update(idx);
-            }
+            while (true);
         }
-
     }
 }

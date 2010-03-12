@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools
@@ -27,7 +24,10 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets the selected item.
         /// </summary>
-        public T SelectedItem { get { return (T)lstItems.SelectedItem; } }
+        public T SelectedItem
+        {
+            get { return (T)lstItems.SelectedItem; }
+        }
 
         /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
@@ -44,6 +44,57 @@ namespace NetGore.EditorTools
 
             if (e.State == DrawItemState.Selected)
                 e.DrawFocusRectangle();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the items to add to the list.
+        /// </summary>
+        /// <returns>The items to add to the list.</returns>
+        protected virtual IEnumerable<T> GetListItems()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the return item has been selected.
+        /// </summary>
+        /// <param name="item">The item that was selected.</param>
+        protected virtual void HandleItemSelected(T item)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if the given <paramref name="item"/> is valid to be
+        /// used as the returned item.
+        /// </summary>
+        /// <param name="item">The item to validate.</param>
+        /// <returns>If the given <paramref name="item"/> is valid to be used as the returned item.</returns>
+        protected virtual bool IsItemValid(T item)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Handles the DoubleClick event of the lstItems control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstItems_DoubleClick(object sender, EventArgs e)
+        {
+            // Check for a valid selection range
+            if (lstItems.SelectedIndex < 0 || lstItems.SelectedIndex >= lstItems.Items.Count)
+                return;
+
+            // Get the item
+            var item = (T)lstItems.SelectedItem;
+
+            // Check for a valid item
+            if (!IsItemValid(item))
+                return;
+
+            HandleItemSelected(item);
+
+            DialogResult = DialogResult.OK;
         }
 
         /// <summary>
@@ -81,57 +132,6 @@ namespace NetGore.EditorTools
         protected virtual T SetDefaultSelectedItem(IEnumerable<T> items)
         {
             return items.FirstOrDefault();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if the given <paramref name="item"/> is valid to be
-        /// used as the returned item.
-        /// </summary>
-        /// <param name="item">The item to validate.</param>
-        /// <returns>If the given <paramref name="item"/> is valid to be used as the returned item.</returns>
-        protected virtual bool IsItemValid(T item)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the return item has been selected.
-        /// </summary>
-        /// <param name="item">The item that was selected.</param>
-        protected virtual void HandleItemSelected(T item)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the items to add to the list.
-        /// </summary>
-        /// <returns>The items to add to the list.</returns>
-        protected virtual IEnumerable<T> GetListItems()
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Handles the DoubleClick event of the lstItems control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstItems_DoubleClick(object sender, EventArgs e)
-        {
-            // Check for a valid selection range
-            if (lstItems.SelectedIndex < 0 || lstItems.SelectedIndex >= lstItems.Items.Count)
-                return;
-
-            // Get the item
-            var item = (T)lstItems.SelectedItem;
-
-            // Check for a valid item
-            if (!IsItemValid(item))
-                return;
-
-            HandleItemSelected(item);
-
-            DialogResult = DialogResult.OK;
         }
     }
 }

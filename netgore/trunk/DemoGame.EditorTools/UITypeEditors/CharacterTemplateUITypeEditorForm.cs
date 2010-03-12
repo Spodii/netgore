@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
 using DemoGame.Server;
-using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 
 namespace DemoGame.EditorTools
@@ -24,46 +23,6 @@ namespace DemoGame.EditorTools
         public CharacterTemplateUITypeEditorForm(object selected)
         {
             _selected = selected;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, sets the item that will be selected by default.
-        /// </summary>
-        /// <param name="items">The items to choose from.</param>
-        /// <returns>
-        /// The item that will be selected by default.
-        /// </returns>
-        protected override ICharacterTemplateTable SetDefaultSelectedItem(IEnumerable<ICharacterTemplateTable> items)
-        {
-            if (_selected == null)
-                return base.SetDefaultSelectedItem(items);
-
-            if (_selected is string)
-            {
-                var stringComp = StringComparer.Ordinal;
-                var asString = (string)_selected;
-                return items.FirstOrDefault(x => stringComp.Equals(x.Name, asString));
-            }
-
-            if (_selected is CharacterTemplateID)
-            {
-                var asID = (CharacterTemplateID)_selected;
-                return items.FirstOrDefault(x => x.ID == asID);
-            }
-
-            if (_selected is ICharacterTemplateTable)
-            {
-                var asTable = (ICharacterTemplateTable)_selected;
-                return items.FirstOrDefault(x => x == asTable);
-            }
-
-            if (_selected is CharacterTemplate)
-            {
-                var asTemplate = (CharacterTemplate)_selected;
-                return items.FirstOrDefault(x => x.ID == asTemplate.TemplateTable.ID);
-            }
-
-            return base.SetDefaultSelectedItem(items);
         }
 
         /// <summary>
@@ -104,6 +63,46 @@ namespace DemoGame.EditorTools
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the item that will be selected by default.
+        /// </summary>
+        /// <param name="items">The items to choose from.</param>
+        /// <returns>
+        /// The item that will be selected by default.
+        /// </returns>
+        protected override ICharacterTemplateTable SetDefaultSelectedItem(IEnumerable<ICharacterTemplateTable> items)
+        {
+            if (_selected == null)
+                return base.SetDefaultSelectedItem(items);
+
+            if (_selected is string)
+            {
+                var stringComp = StringComparer.Ordinal;
+                var asString = (string)_selected;
+                return items.FirstOrDefault(x => stringComp.Equals(x.Name, asString));
+            }
+
+            if (_selected is CharacterTemplateID)
+            {
+                var asID = (CharacterTemplateID)_selected;
+                return items.FirstOrDefault(x => x.ID == asID);
+            }
+
+            if (_selected is ICharacterTemplateTable)
+            {
+                var asTable = (ICharacterTemplateTable)_selected;
+                return items.FirstOrDefault(x => x == asTable);
+            }
+
+            if (_selected is CharacterTemplate)
+            {
+                var asTemplate = (CharacterTemplate)_selected;
+                return items.FirstOrDefault(x => x.ID == asTemplate.TemplateTable.ID);
+            }
+
+            return base.SetDefaultSelectedItem(items);
         }
     }
 }

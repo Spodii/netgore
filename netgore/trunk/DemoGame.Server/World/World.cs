@@ -26,6 +26,7 @@ namespace DemoGame.Server
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
         readonly GuildMemberPerformer _guildMemberPerformer;
         readonly DArray<Map> _maps;
+        readonly RespawnTaskList _respawnTaskList;
         readonly Server _server;
         readonly ItemEntity _unarmedWeapon;
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
@@ -162,8 +163,6 @@ namespace DemoGame.Server
 
             _respawnTaskList.Add(respawnable);
         }
-
-        readonly RespawnTaskList _respawnTaskList;
 
         /// <summary>
         /// Adds a user to the world
@@ -417,44 +416,6 @@ namespace DemoGame.Server
             }
         }
 
-        class RespawnTaskList : TaskList<IRespawnable>
-        {
-            readonly IGetTime _getTime;
-
-            int _currentTime;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="RespawnTaskList"/> class.
-            /// </summary>
-            /// <param name="getTime">The <see cref="IGetTime"/>.</param>
-            public RespawnTaskList(IGetTime getTime)
-            {
-                _getTime = getTime;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, allows for additional processing before tasks are processed.
-            /// </summary>
-            protected override void PreProcess()
-            {
-                _currentTime = _getTime.GetTime();
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, handles processing the given task.
-            /// </summary>
-            /// <param name="item">The value of the task to process.</param>
-            /// <returns>True if the <paramref name="item"/> is to be removed from the collection; otherwise false.</returns>
-            protected override bool ProcessItem(IRespawnable item)
-            {
-                if (!item.ReadyToRespawn(_currentTime))
-                    return false;
-
-                item.Respawn();
-                return true;
-            }
-        }
-
         /// <summary>
         /// Handles when a User is Disposed.
         /// </summary>
@@ -495,5 +456,43 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        class RespawnTaskList : TaskList<IRespawnable>
+        {
+            readonly IGetTime _getTime;
+
+            int _currentTime;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RespawnTaskList"/> class.
+            /// </summary>
+            /// <param name="getTime">The <see cref="IGetTime"/>.</param>
+            public RespawnTaskList(IGetTime getTime)
+            {
+                _getTime = getTime;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, allows for additional processing before tasks are processed.
+            /// </summary>
+            protected override void PreProcess()
+            {
+                _currentTime = _getTime.GetTime();
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, handles processing the given task.
+            /// </summary>
+            /// <param name="item">The value of the task to process.</param>
+            /// <returns>True if the <paramref name="item"/> is to be removed from the collection; otherwise false.</returns>
+            protected override bool ProcessItem(IRespawnable item)
+            {
+                if (!item.ReadyToRespawn(_currentTime))
+                    return false;
+
+                item.Respawn();
+                return true;
+            }
+        }
     }
 }
