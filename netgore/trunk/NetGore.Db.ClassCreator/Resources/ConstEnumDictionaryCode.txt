@@ -43,7 +43,13 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// Array containing the actual values. The index of this array is found through the value returned
     /// from the _lookupTable.
     /// </summary>
-    readonly [EXVALUETYPE][] _values;
+    readonly [INVALUETYPE][] _values;
+
+    /// <summary>
+    /// Gets the <see cref="Type"/> used internally to store the values. This may or may not be the same as the
+    /// type used to expose the values.
+    /// </summary>
+    public static Type InternalType { get { return typeof([INVALUETYPE]); } }
 
     /// <summary>
     /// Initializes the <see cref="[CLASSNAME]"/> class.
@@ -66,7 +72,7 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     public [CLASSNAME]()
     {
-        _values = new [EXVALUETYPE][_numEnumValues];
+        _values = new [INVALUETYPE][_numEnumValues];
     }
     
     /// <summary>
@@ -74,10 +80,21 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     /// </summary>
     /// <param name="key">The key for the value to get or set.</param>
     /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than <see cref="[INVALUETYPE].MinValue"/>
+    /// or greater than <see cref="[INVALUETYPE].MaxValue"/>.</exception>
     public [EXVALUETYPE] this[[KEYTYPE] key]
     {
-        get { return ([EXVALUETYPE])_values[_enumToValueIndex[(int)key]]; }
-        set { _values[_enumToValueIndex[(int)key]] = ([INVALUETYPE])value; }
+        get 
+        { 
+			return ([EXVALUETYPE])_values[_enumToValueIndex[(int)key]]; 
+		}
+        set 
+        {
+			if (value > [INVALUETYPE].MaxValue || value < [INVALUETYPE].MinValue)
+				throw new ArgumentOutOfRangeException("value", "Value must be between " + [INVALUETYPE].MinValue + " and " + [INVALUETYPE].MaxValue + ".");
+				 
+			_values[_enumToValueIndex[(int)key]] = ([INVALUETYPE])value; 
+		}
     }
 
     #region IEnumerable<KeyValuePair<[KEYTYPE],[EXVALUETYPE]>> Members
@@ -92,7 +109,7 @@ public class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collect
     {
         for (int i = 0; i < _values.Length; i++)
         {
-            yield return new KeyValuePair<[KEYTYPE], [EXVALUETYPE]>(_valueIndexToKey[i], ([INVALUETYPE])_values[i]);
+            yield return new KeyValuePair<[KEYTYPE], [EXVALUETYPE]>(_valueIndexToKey[i], ([EXVALUETYPE])_values[i]);
         }
     }
 

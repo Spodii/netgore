@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,12 +34,16 @@ namespace DemoGame.DbEditor
         {
             base.OnLoad(e);
 
+            // Don't try to load stuff when in design mode
+            if (DesignMode)
+                return;
+
             Show();
             Refresh();
 
             // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
             // pretty little pictures. :(
-            if (!GrhInfo.IsLoaded)
+            if (!GrhInfo.IsLoaded && false)
             {
                 var gdService = GraphicsDeviceService.AddRef(Handle, 640, 480);
                 var serviceContainer = new ServiceContainer();

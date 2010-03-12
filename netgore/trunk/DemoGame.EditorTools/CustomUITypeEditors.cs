@@ -1,5 +1,7 @@
-﻿using System.Drawing.Design;
+﻿using System.Collections.Generic;
+using System.Drawing.Design;
 using System.Linq;
+using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
@@ -39,7 +41,8 @@ namespace DemoGame.EditorTools
             NetGore.EditorTools.CustomUITypeEditors.AddEditorsHelper(
                 new EditorTypes(typeof(CharacterTemplateID), typeof(CharacterTemplateIDEditor)),
                 new EditorTypes(typeof(ItemTemplateID), typeof(ItemTemplateIDEditor)),
-                new EditorTypes(typeof(MapIndex), typeof(MapIndexEditor)));
+                new EditorTypes(typeof(MapIndex), typeof(MapIndexEditor)),
+                new EditorTypes(typeof(IEnumerable<KeyValuePair<StatType, int>>), typeof(StatTypeConstDictionaryEditor)));
 
             NetGore.EditorTools.CustomUITypeEditors.AddEditors();
         }
