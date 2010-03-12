@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using MySql.Data.MySqlClient;
 
 namespace NetGore.Db
 {
@@ -92,6 +93,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>Number of rows affected by the query.</returns>
+        /// <exception cref="DuplicateKeyException">Trying to insert a value who's primary key already exists.</exception>
         public virtual int Execute(T item)
         {
             int returnValue;
@@ -105,12 +107,28 @@ namespace NetGore.Db
                 var cmd = GetCommand(conn);
                 if (HasParameters)
                     SetParameters(new DbParameterValues(cmd.Parameters), item);
-
+                
                 // Execute the command
-                returnValue = cmd.ExecuteNonQuery();
+                try
+                {
+                    returnValue = cmd.ExecuteNonQuery();
+                }
+                catch (MySqlException ex)
+                {
+                    // Throw a custom exception for common errors
+                    if (ex.Number == 1062)
+                    {
+                        throw new DuplicateKeyException(ex);
+                    }
 
-                // Release the command so it can be used again later
-                ReleaseCommand(cmd);
+                    // Everything else, just throw the default exception
+                    throw;
+                }
+                finally
+                {
+                    // Release the command so it can be used again later
+                    ReleaseCommand(cmd);
+                }
             }
 
             // Return the value from ExecuteNonQuery

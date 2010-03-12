@@ -210,7 +210,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,0,NULL,'Test',1,NULL,NULL,NULL,391.6,244,NULL,50,50,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',2,NULL,NULL,NULL,704,1330,1,500,200,1,1800,4572,176,5250,853,77,50,300,50,7,12,20,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,800,349,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,696.799,732,2,500,250,1,1800,3012,12,810,527,4,5,5,5,5,5,0,5,5,5);
+INSERT INTO `character` VALUES (0,0,NULL,'Test',1,NULL,NULL,NULL,391.6,244,NULL,50,50,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',2,NULL,NULL,NULL,704,1330,1,500,200,1,1800,4572,176,5250,853,77,50,300,50,7,12,20,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,506,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -427,7 +427,7 @@ CREATE TABLE `character_template_equipped` (
 
 LOCK TABLES `character_template_equipped` WRITE;
 /*!40000 ALTER TABLE `character_template_equipped` DISABLE KEYS */;
-INSERT INTO `character_template_equipped` VALUES (0,1,5,3000),(1,1,4,3000),(2,1,3,60000);
+INSERT INTO `character_template_equipped` VALUES (0,1,5,3000),(2,1,3,60000);
 /*!40000 ALTER TABLE `character_template_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,7 +459,7 @@ CREATE TABLE `character_template_inventory` (
 
 LOCK TABLES `character_template_inventory` WRITE;
 /*!40000 ALTER TABLE `character_template_inventory` DISABLE KEYS */;
-INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(1,1,4,1,2,5000),(2,1,3,1,1,5000),(3,1,2,0,1,10000),(4,1,1,0,5,10000),(5,1,6,1,1,10000),(6,1,7,0,10,30000);
+INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(2,1,3,1,1,5000),(3,1,2,0,1,10000),(6,1,7,0,10,30000);
 /*!40000 ALTER TABLE `character_template_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -663,6 +663,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -676,12 +677,12 @@ DROP TABLE IF EXISTS `item_template`;
 CREATE TABLE `item_template` (
   `id` smallint(5) unsigned NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `weapon_type` tinyint(3) unsigned NOT NULL,
-  `range` smallint(5) unsigned NOT NULL,
+  `weapon_type` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `range` smallint(5) unsigned NOT NULL DEFAULT '10',
   `width` tinyint(3) unsigned NOT NULL DEFAULT '16',
   `height` tinyint(3) unsigned NOT NULL DEFAULT '16',
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL DEFAULT 'New item template',
+  `description` varchar(255) NOT NULL DEFAULT ' ',
   `graphic` smallint(5) unsigned NOT NULL DEFAULT '0',
   `value` int(11) NOT NULL DEFAULT '0',
   `hp` smallint(6) NOT NULL DEFAULT '0',
@@ -708,7 +709,7 @@ CREATE TABLE `item_template` (
 
 LOCK TABLES `item_template` WRITE;
 /*!40000 ALTER TABLE `item_template` DISABLE KEYS */;
-INSERT INTO `item_template` VALUES (0,2,1,10,16,16,'Unarmed','Unarmed',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(1,1,0,0,9,16,'Healing Potion','A healing potion',94,10,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(2,1,0,0,9,16,'Mana Potion','A mana potion',95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL);
+INSERT INTO `item_template` VALUES (0,2,1,10,16,16,'Unarmed','Unarmed',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(1,1,0,0,9,16,'Healing Potion','A healing potion',94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(2,1,0,0,9,16,'Mana Potion','A mana potion',95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL);
 /*!40000 ALTER TABLE `item_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -860,7 +861,7 @@ CREATE TABLE `quest_require_finish_item` (
 
 LOCK TABLES `quest_require_finish_item` WRITE;
 /*!40000 ALTER TABLE `quest_require_finish_item` DISABLE KEYS */;
-INSERT INTO `quest_require_finish_item` VALUES (0,4,1),(0,7,10);
+INSERT INTO `quest_require_finish_item` VALUES (0,7,10);
 /*!40000 ALTER TABLE `quest_require_finish_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -996,7 +997,7 @@ CREATE TABLE `quest_reward_item` (
 
 LOCK TABLES `quest_reward_item` WRITE;
 /*!40000 ALTER TABLE `quest_reward_item` DISABLE KEYS */;
-INSERT INTO `quest_reward_item` VALUES (0,1,1),(0,2,1),(0,3,1),(0,4,1),(0,7,10),(1,7,2);
+INSERT INTO `quest_reward_item` VALUES (0,2,1),(0,3,1),(0,7,10),(1,7,2);
 /*!40000 ALTER TABLE `quest_reward_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1041,7 +1042,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-03-10 19:29:56');
+INSERT INTO `server_time` VALUES ('2010-03-12 06:58:04');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1093,7 +1094,7 @@ CREATE TABLE `shop_item` (
 
 LOCK TABLES `shop_item` WRITE;
 /*!40000 ALTER TABLE `shop_item` DISABLE KEYS */;
-INSERT INTO `shop_item` VALUES (0,1),(1,1),(0,2),(1,2),(0,3),(0,4),(0,5);
+INSERT INTO `shop_item` VALUES (0,2),(1,2),(0,3),(0,5);
 /*!40000 ALTER TABLE `shop_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1305,4 +1306,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-03-11 14:31:39
+-- Dump completed on 2010-03-12  7:57:49

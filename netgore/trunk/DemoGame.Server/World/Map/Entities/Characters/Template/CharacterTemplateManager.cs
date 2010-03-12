@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
@@ -98,7 +99,7 @@ namespace DemoGame.Server
         /// <returns>The item loaded from the database.</returns>
         protected override CharacterTemplate LoadItem(CharacterTemplateID id)
         {
-            CharacterTemplateTable v = _selectCharacterTemplateQuery.Execute(id);
+            var v = _selectCharacterTemplateQuery.Execute(id);
             var itemValues = _selectInventoryQuery.Execute(id);
             var equippedValues = _selectEquippedQuery.Execute(id);
             var questValues = _selectQuestsQuery.Execute(id);

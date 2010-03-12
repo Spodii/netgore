@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
@@ -87,30 +88,33 @@ namespace DemoGame.DbEditor
                 clone = MessageBox.Show(cloneMsg, "Clone?", MessageBoxButtons.YesNo) == DialogResult.Yes;
             }
 
-            // Find the next free ID (and make sure it is actually free)
-            var usedIDs = _dbController.GetQuery<SelectCharacterTemplateIDsQuery>().Execute().Select(x => (int)x);
-            int idBase = 0;
-            int freeID;
-
-            do
-            {
-                freeID = usedIDs.NextFreeValue(idBase);
-                idBase = freeID + 1;
-            }
-            while (_dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(new CharacterTemplateID(freeID)) != null);
+            // Get the free ID
+            var freeID = ReserveFreeCharacterTemplateID(_dbController);
 
             // Create the template
             CharacterTemplateTable newItem;
             if (clone)
-                newItem = (CharacterTemplateTable)((ICharacterTemplateTable)pgCharacterTemplate.SelectedObject).DeepCopy();
+            {
+                // Clone from existing template
+                try
+                {
+                    newItem = (CharacterTemplateTable)((ICharacterTemplateTable)pgCharacterTemplate.SelectedObject).DeepCopy();
+                    newItem.ID = freeID;
+                }
+                catch (Exception)
+                {
+                    // If cloning fails, make sure we delete the ID we reserved before returning the exception
+                    _dbController.GetQuery<DeleteCharacterTemplateQuery>().Execute(freeID);
+                    throw;
+                }
+
+                _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(newItem);
+            }
             else
-                newItem = new CharacterTemplateTable();
-
-            // Set the new ID
-            newItem.ID = new CharacterTemplateID(freeID);
-
-            // Save
-            _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(newItem);
+            {
+                // Create new template using the default table values (the row already exists since we reserved it).
+                newItem = (CharacterTemplateTable)_dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(freeID);
+            }
 
             // Select the new item
             pgCharacterTemplate.SelectedObject = newItem;
@@ -157,6 +161,36 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Gets and reserves the next free <see cref="ItemTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="ItemTemplateID"/>.</returns>
+        public static ItemTemplateID ReserveFreeItemTemplateID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectItemTemplateIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
+
+            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
+                                   x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="CharacterTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="CharacterTemplateID"/>.</returns>
+        public static CharacterTemplateID ReserveFreeCharacterTemplateID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectCharacterTemplateIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
+
+            return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
+                                   x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnItemTemplateNew control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -174,30 +208,33 @@ namespace DemoGame.DbEditor
                 clone = MessageBox.Show(cloneMsg, "Clone?", MessageBoxButtons.YesNo) == DialogResult.Yes;
             }
 
-            // Find the next free ID (and make sure it is actually free)
-            var usedIDs = _dbController.GetQuery<SelectItemTemplateIDsQuery>().Execute().Select(x => (int)x);
-            int idBase = 0;
-            int freeID;
-
-            do
-            {
-                freeID = usedIDs.NextFreeValue(idBase);
-                idBase = freeID + 1;
-            }
-            while (_dbController.GetQuery<SelectItemTemplateQuery>().Execute(new ItemTemplateID(freeID)) != null);
+            // Get the free ID
+            var freeID = ReserveFreeItemTemplateID(_dbController);
 
             // Create the template
             ItemTemplateTable newItem;
             if (clone)
-                newItem = (ItemTemplateTable)((IItemTemplateTable)pgItemTemplate.SelectedObject).DeepCopy();
+            {
+                // Clone from existing template
+                try
+                {
+                    newItem = (ItemTemplateTable)((IItemTemplateTable)pgItemTemplate.SelectedObject).DeepCopy();
+                    newItem.ID = freeID;
+                }
+                catch (Exception)
+                {
+                    // If cloning fails, make sure we delete the ID we reserved before returning the exception
+                    _dbController.GetQuery<DeleteItemTemplateQuery>().Execute(freeID);
+                    throw;
+                }
+
+                _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(newItem);
+            }
             else
-                newItem = new ItemTemplateTable();
-
-            // Set the new ID
-            newItem.ID = new ItemTemplateID(freeID);
-
-            // Save
-            _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(newItem);
+            {
+                // Create new template using the default table values (the row already exists since we reserved it).
+                newItem = (ItemTemplateTable)_dbController.GetQuery<SelectItemTemplateQuery>().Execute(freeID);
+            }
 
             // Select the new item
             pgItemTemplate.SelectedObject = newItem;
@@ -205,6 +242,64 @@ namespace DemoGame.DbEditor
 
         void frmMain_Load(object sender, EventArgs e)
         {
+        }
+
+        /// <summary>
+        /// Gets the next free <see cref="ItemTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <param name="reserve">If true, the index will be reserved by inserting the default
+        /// values for the column at the given index.</param>
+        /// <returns>
+        /// The next free <see cref="ItemTemplateID"/>.
+        /// </returns>
+        public static T GetFreeID<T, TTemplate>(IDbController dbController, bool reserve, Func<int, T> intToT, Func<T, int> tToInt,
+                                                Func<IEnumerable<T>> getUsed, Func<T, TTemplate> selector, Action<T> inserter)
+            where TTemplate : class
+        {
+            // Get the used IDs as ints
+            var usedIDs = getUsed().Select(tToInt).ToImmutable();
+
+            // Start with ID 0
+            int idBase = 0;
+            int freeID;
+            T freeIDAsT;
+
+            // Loop until we successfully find an ID that has no template
+            bool success = false;
+            do
+            {
+                // Get the next free value
+                freeID = usedIDs.NextFreeValue(idBase);
+                freeIDAsT = intToT(freeID);
+
+                // Increase the base so that way, if it fails, we are forced to check a higher value
+                idBase = freeID + 1;
+
+                // Ensure the ID is free
+                if (selector(freeIDAsT) != null)
+                    continue;
+
+                // Reserve the ID if needed
+                if (reserve)
+                {
+                    try
+                    {
+                        inserter(freeIDAsT);
+                    }
+                    catch (DuplicateKeyException)
+                    {
+                        // Someone just grabbed the key - those jerks!
+                        continue;
+                    }
+                }
+
+                success = true;
+            }
+            while (!success);
+
+            // Return the value
+            return freeIDAsT;
         }
 
         /// <summary>
