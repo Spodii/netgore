@@ -121,7 +121,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsEmptyOnNullTest()
         {
-            List<int> l = null;
+            const List<int> l = null;
             Assert.IsTrue(l.IsEmpty());
         }
 
@@ -183,6 +183,21 @@ namespace NetGore.Tests.NetGore
         {
             var values = new int[] { 1, 2, 3, 4, 5, 6 };
             Assert.AreEqual(10, values.NextFreeValue(10));
+        }
+
+        [Test]
+        public void NextFreeValueEmptyTestB()
+        {
+            var values = new int[0];
+            Assert.AreEqual(10, values.NextFreeValue(10));
+        }
+
+
+        [Test]
+        public void NextFreeValueEmptyTestA()
+        {
+            var values = new int[0];
+            Assert.AreEqual(0, values.NextFreeValue());
         }
 
         [Test]
