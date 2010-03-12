@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -20,7 +21,7 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ArePrimaryKeys(CharacterTemplateTable.DbKeyColumns, "id");
         }
 
-        public CharacterTemplateTable Execute(CharacterTemplateID templateID)
+        public ICharacterTemplateTable Execute(CharacterTemplateID templateID)
         {
             CharacterTemplateTable ret;
 
