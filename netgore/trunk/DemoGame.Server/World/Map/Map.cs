@@ -566,6 +566,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Name + "[" + Index + "]";
+        }
+
+        /// <summary>
         /// Updates the map.
         /// </summary>
         /// <param name="deltaTime">The amount of time that elapsed since the last update.</param>
