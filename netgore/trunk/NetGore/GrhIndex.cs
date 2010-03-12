@@ -38,7 +38,7 @@ namespace NetGore
         /// <param name="value">Value to assign to the new GrhIndex.</param>
         public GrhIndex(int value)
         {
-            if (value < MinValue || value > MaxValue)
+            if ((value < MinValue || value > MaxValue) && value != Invalid._value)
                 throw new ArgumentOutOfRangeException("value");
 
             _value = (ushort)value;
