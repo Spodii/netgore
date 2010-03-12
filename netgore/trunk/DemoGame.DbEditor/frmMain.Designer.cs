@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tc = new System.Windows.Forms.TabControl();
             this.tpItemTemplate = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.txtItemTemplate = new System.Windows.Forms.TextBox();
@@ -52,7 +52,9 @@
             this.btnCharacterTemplateDelete = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.pgCharacterTemplate = new System.Windows.Forms.PropertyGrid();
-            this.tabControl1.SuspendLayout();
+            this.tpQuests = new System.Windows.Forms.TabPage();
+            this.tpAlliances = new System.Windows.Forms.TabPage();
+            this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,16 +68,18 @@
             this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // tc
             // 
-            this.tabControl1.Controls.Add(this.tpItemTemplate);
-            this.tabControl1.Controls.Add(this.tpCharacterTemplate);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(6, 6);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(464, 403);
-            this.tabControl1.TabIndex = 0;
+            this.tc.Controls.Add(this.tpItemTemplate);
+            this.tc.Controls.Add(this.tpCharacterTemplate);
+            this.tc.Controls.Add(this.tpQuests);
+            this.tc.Controls.Add(this.tpAlliances);
+            this.tc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tc.Location = new System.Drawing.Point(6, 6);
+            this.tc.Name = "tc";
+            this.tc.SelectedIndex = 0;
+            this.tc.Size = new System.Drawing.Size(464, 403);
+            this.tc.TabIndex = 0;
             // 
             // tpItemTemplate
             // 
@@ -358,17 +362,35 @@
             this.pgCharacterTemplate.SelectedObjectsChanged += new System.EventHandler(this.pgCharacterTemplate_SelectedObjectsChanged);
             this.pgCharacterTemplate.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.pgCharacterTemplate_PropertyValueChanged);
             // 
+            // tpQuests
+            // 
+            this.tpQuests.Location = new System.Drawing.Point(4, 22);
+            this.tpQuests.Name = "tpQuests";
+            this.tpQuests.Size = new System.Drawing.Size(456, 377);
+            this.tpQuests.TabIndex = 2;
+            this.tpQuests.Text = "Quests";
+            this.tpQuests.UseVisualStyleBackColor = true;
+            // 
+            // tpAlliances
+            // 
+            this.tpAlliances.Location = new System.Drawing.Point(4, 22);
+            this.tpAlliances.Name = "tpAlliances";
+            this.tpAlliances.Size = new System.Drawing.Size(456, 377);
+            this.tpAlliances.TabIndex = 3;
+            this.tpAlliances.Text = "Alliances";
+            this.tpAlliances.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(476, 415);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tc);
             this.Name = "frmMain";
             this.Padding = new System.Windows.Forms.Padding(6);
             this.Text = "NetGore Database Editor";
             this.Load += new System.EventHandler(this.frmMain_Load);
-            this.tabControl1.ResumeLayout(false);
+            this.tc.ResumeLayout(false);
             this.tpItemTemplate.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -389,7 +411,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tc;
         private System.Windows.Forms.TabPage tpItemTemplate;
         private System.Windows.Forms.TabPage tpCharacterTemplate;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -413,6 +435,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private System.Windows.Forms.TabPage tpQuests;
+        private System.Windows.Forms.TabPage tpAlliances;
     }
 }
 
