@@ -416,9 +416,7 @@ namespace DemoGame.Server.UI
                             lstLog.TopIndex = Math.Max(0, lstLog.Items.Count - numItems + 1);
                         }
                         else
-                        {
                             lstLog.TopIndex = lstLog.SelectedIndex;
-                        }
                     }
                     finally
                     {

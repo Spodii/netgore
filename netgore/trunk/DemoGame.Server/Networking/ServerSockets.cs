@@ -66,7 +66,9 @@ namespace DemoGame.Server
 
             // Send the current server time
             using (var pw = ServerPacket.SetGameTime(DateTime.Now))
+            {
                 conn.Send(pw);
+            }
         }
 
         /// <summary>

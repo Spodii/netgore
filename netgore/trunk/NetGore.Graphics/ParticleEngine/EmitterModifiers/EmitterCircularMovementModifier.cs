@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 
@@ -48,6 +47,17 @@ namespace NetGore.Graphics.ParticleEngine
         public int RestPeriod { get; set; }
 
         /// <summary>
+        /// When overridden in the derived class, handles reverting changes made to the <see cref="ParticleEmitter"/>
+        /// by this <see cref="EmitterModifier"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert the changes to.</param>
+        protected override void HandleRestore(ParticleEmitter emitter)
+        {
+            // Restore the release amount
+            emitter.ReleaseAmount = _emitterReleaseAmount;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles updating the <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to be modified.</param>
@@ -73,17 +83,6 @@ namespace NetGore.Graphics.ParticleEngine
 
                 _isBursting = !_isBursting;
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles reverting changes made to the <see cref="ParticleEmitter"/>
-        /// by this <see cref="EmitterModifier"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert the changes to.</param>
-        protected override void HandleRestore(ParticleEmitter emitter)
-        {
-            // Restore the release amount
-            emitter.ReleaseAmount = _emitterReleaseAmount;
         }
 
         /// <summary>

@@ -600,15 +600,6 @@ namespace DemoGame.Client
             character.CharacterSprite.SetPaperDollLayers(layers);
         }
 
-        [MessageHandler((byte)ServerPacketID.SetGameTime)]
-        void RecvSetGameTime(IIPSocket conn, BitStream r)
-        {
-            long serverTimeBinary = r.ReadLong();
-            var serverTime = DateTime.FromBinary(serverTimeBinary);
-
-            GameDateTime.SetServerTimeOffset(serverTime);
-        }
-
         [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]
         void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
         {
@@ -629,6 +620,15 @@ namespace DemoGame.Client
         {
             int exp = r.ReadInt();
             UserInfo.Exp = exp;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetGameTime)]
+        void RecvSetGameTime(IIPSocket conn, BitStream r)
+        {
+            long serverTimeBinary = r.ReadLong();
+            var serverTime = DateTime.FromBinary(serverTimeBinary);
+
+            GameDateTime.SetServerTimeOffset(serverTime);
         }
 
         [MessageHandler((byte)ServerPacketID.SetHP)]

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -25,7 +24,8 @@ namespace DemoGame.Server.Queries
 
             using (var r = ExecuteReader())
             {
-                if (!r.Read()) return null;
+                if (!r.Read())
+                    return null;
 
                 retSettings = new ServerSettingTable();
                 retSettings.ReadValues(r);

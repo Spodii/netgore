@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Collections
 {
@@ -17,15 +15,26 @@ namespace NetGore.Collections
         int _lastUpdateTime = int.MinValue;
 
         /// <summary>
+        /// Gets a deep copy of the items in this collection and the time at which they will expire.
+        /// </summary>
+        public IEnumerable<KeyValuePair<T, int>> Items
+        {
+            get { return _items.ToImmutable(); }
+        }
+
+        /// <summary>
+        /// Gets the time that this collection was last successfully updated.
+        /// </summary>
+        public int LastUpdated
+        {
+            get { return _lastUpdateTime; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the minimum amount of time in milliseconds that must elapsed
         /// between calls to Update. If this amount of time has not elapsed, calls to Update will just return 0.
         /// </summary>
         protected abstract int UpdateRate { get; }
-
-        /// <summary>
-        /// Gets a deep copy of the items in this collection and the time at which they will expire.
-        /// </summary>
-        public IEnumerable<KeyValuePair<T, int>> Items { get { return _items.ToImmutable(); } }
 
         /// <summary>
         /// Adds an item to start tracking. If the <paramref name="item"/> already exists in the collection, its
@@ -79,11 +88,6 @@ namespace NetGore.Collections
         {
             return _items.Remove(item);
         }
-
-        /// <summary>
-        /// Gets the time that this collection was last successfully updated.
-        /// </summary>
-        public int LastUpdated { get { return _lastUpdateTime; } }
 
         /// <summary>
         /// Removes the expired map items.

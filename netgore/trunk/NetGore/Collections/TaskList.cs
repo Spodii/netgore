@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.Collections
@@ -36,29 +35,22 @@ namespace NetGore.Collections
             // Set the node's values
             newHead.Value = value;
             newHead.Next = _first;
-            
+
             // Set as the new head
             _first = newHead;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles processing the given task.
-        /// </summary>
-        /// <param name="item">The value of the task to process.</param>
-        /// <returns>True if the <paramref name="item"/> is to be removed from the collection; otherwise false.</returns>
-        protected abstract bool ProcessItem(T item);
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional processing before tasks are processed.
-        /// </summary>
-        protected virtual void PreProcess()
-        {
         }
 
         /// <summary>
         /// When overridden in the derived class, allows for additional processing after all tasks have been processed.
         /// </summary>
         protected virtual void PostProcess()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional processing before tasks are processed.
+        /// </summary>
+        protected virtual void PreProcess()
         {
         }
 
@@ -112,6 +104,13 @@ namespace NetGore.Collections
 
             PostProcess();
         }
+
+        /// <summary>
+        /// When overridden in the derived class, handles processing the given task.
+        /// </summary>
+        /// <param name="item">The value of the task to process.</param>
+        /// <returns>True if the <paramref name="item"/> is to be removed from the collection; otherwise false.</returns>
+        protected abstract bool ProcessItem(T item);
 
         /// <summary>
         /// A <see cref="TaskList{T}"/> node that contains the value of the node, and the next node in the list.

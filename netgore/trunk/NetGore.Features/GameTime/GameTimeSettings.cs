@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Features.GameTime
@@ -11,39 +9,17 @@ namespace NetGore.Features.GameTime
     /// </summary>
     public class GameTimeSettings
     {
-        readonly int _nightStartHour;
-        readonly int _nightEndHour;
-        readonly float _minAmbientMultiplier;
-        readonly DateTime _baseTime;
-        readonly float _gameTimeMultiplier;
-        readonly byte _minAmbient;
-
         /// <summary>
         /// The settings instance.
         /// </summary>
         static GameTimeSettings _instance;
 
-        /// <summary>
-        /// Gets how much faster the game-time moves than real-world time. A value of 1.0f represents that a
-        /// minute in game-time is equal to a minute in real-world time, and 2.0f represents that the game-time
-        /// progresses twice as fast as real-world time.
-        /// </summary>
-        public float GameTimeMultiplier { get { return _gameTimeMultiplier; } }
-        
-        /// <summary>
-        /// Gets the minimum allowed ambient value for a map when applying the darkness. If the map's unmodified
-        /// ambient R, G, or B value is already less than this value, the map's ambient value will be used instead
-        /// for the respective color. That is, this value will not make a map lighter than it already is.
-        /// </summary>
-        public byte MinAmbient { get { return _minAmbient; } }
-
-        /// <summary>
-        /// Gets the <see cref="DateTime"/> that represents the real-world time at which the game's time
-        /// starts. This is the time used for when finding the total real-world minutes that have elapsed. Therefore, it
-        /// is only logical that the value is always less than the current time. To make the game time persist, this
-        /// value should be set to a constant date (such as the first day of year 2010).
-        /// </summary>
-        public DateTime BaseTime { get { return _baseTime; } }
+        readonly DateTime _baseTime;
+        readonly float _gameTimeMultiplier;
+        readonly byte _minAmbient;
+        readonly float _minAmbientMultiplier;
+        readonly int _nightEndHour;
+        readonly int _nightStartHour;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameTimeSettings"/> class.
@@ -54,11 +30,15 @@ namespace NetGore.Features.GameTime
         /// <param name="baseTime">The base time.</param>
         /// <param name="gameTimeMultiplier">The game time multiplier.</param>
         /// <param name="minAmbient"></param>
-        public GameTimeSettings(int nightStartHour, int nightEndHour, float minAmbientMultiplier, byte minAmbient, DateTime baseTime,
-            float gameTimeMultiplier)
+        public GameTimeSettings(int nightStartHour, int nightEndHour, float minAmbientMultiplier, byte minAmbient,
+                                DateTime baseTime, float gameTimeMultiplier)
         {
             if (nightStartHour < nightEndHour)
-                throw new ArgumentException("Night must begin on one day, and morning must begin on another day, just like in real life.", "nightStartHour");
+            {
+                throw new ArgumentException(
+                    "Night must begin on one day, and morning must begin on another day, just like in real life.",
+                    "nightStartHour");
+            }
 
             _nightStartHour = nightStartHour;
             _nightEndHour = nightEndHour;
@@ -66,6 +46,27 @@ namespace NetGore.Features.GameTime
             _minAmbient = minAmbient;
             _baseTime = baseTime;
             _gameTimeMultiplier = gameTimeMultiplier;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DateTime"/> that represents the real-world time at which the game's time
+        /// starts. This is the time used for when finding the total real-world minutes that have elapsed. Therefore, it
+        /// is only logical that the value is always less than the current time. To make the game time persist, this
+        /// value should be set to a constant date (such as the first day of year 2010).
+        /// </summary>
+        public DateTime BaseTime
+        {
+            get { return _baseTime; }
+        }
+
+        /// <summary>
+        /// Gets how much faster the game-time moves than real-world time. A value of 1.0f represents that a
+        /// minute in game-time is equal to a minute in real-world time, and 2.0f represents that the game-time
+        /// progresses twice as fast as real-world time.
+        /// </summary>
+        public float GameTimeMultiplier
+        {
+            get { return _gameTimeMultiplier; }
         }
 
         /// <summary>
@@ -77,21 +78,40 @@ namespace NetGore.Features.GameTime
         }
 
         /// <summary>
-        /// Gets the hour at which night time starts and sun begins to go down (the world starts getting darker).
+        /// Gets the minimum allowed ambient value for a map when applying the darkness. If the map's unmodified
+        /// ambient R, G, or B value is already less than this value, the map's ambient value will be used instead
+        /// for the respective color. That is, this value will not make a map lighter than it already is.
         /// </summary>
-        public virtual int NightStartHour { get { return _nightStartHour; } }
-
-        /// <summary>
-        /// Gets the hour at which night time ends and the sun has fully risen again (the world is back to full brightness).
-        /// </summary>
-        public virtual int NightEndHour { get { return _nightEndHour; } }
+        public byte MinAmbient
+        {
+            get { return _minAmbient; }
+        }
 
         /// <summary>
         /// Gets the lowest value that the light multiplier will reach. Note that 0 means that it will be pitch black.
         /// Having below 0 will mean that absolute darkness will last longer, and that we will move into and out
         /// of absolute darkness quicker.
         /// </summary>
-        public virtual float MinAmbientMultiplier { get { return _minAmbientMultiplier; } }
+        public virtual float MinAmbientMultiplier
+        {
+            get { return _minAmbientMultiplier; }
+        }
+
+        /// <summary>
+        /// Gets the hour at which night time ends and the sun has fully risen again (the world is back to full brightness).
+        /// </summary>
+        public virtual int NightEndHour
+        {
+            get { return _nightEndHour; }
+        }
+
+        /// <summary>
+        /// Gets the hour at which night time starts and sun begins to go down (the world starts getting darker).
+        /// </summary>
+        public virtual int NightStartHour
+        {
+            get { return _nightStartHour; }
+        }
 
         /// <summary>
         /// Applies the night multiplier to a <see cref="Color"/> to get the new ambient light value.
@@ -107,30 +127,6 @@ namespace NetGore.Features.GameTime
             const byte a = byte.MaxValue;
 
             return new Color(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Gets the modified ambient light <see cref="Color"/> for the current <see cref="GameDateTime"/>.
-        /// </summary>
-        /// <param name="ambient">The ambient light color.</param>
-        /// <returns>The modified ambient light.</returns>
-        public Color GetModifiedAmbientLight(Color ambient)
-        {
-            return GetModifiedAmbientLight(ambient, GameDateTime.Now);
-        }
-
-        /// <summary>
-        /// Gets the modified ambient light <see cref="Color"/> for the specified <see cref="GameDateTime"/>.
-        /// </summary>
-        /// <param name="ambient">The ambient light color.</param>
-        /// <param name="time">The game time to get the ambient light for.</param>
-        /// <returns>The modified ambient light for the specified <paramref name="time"/>.</returns>
-        public Color GetModifiedAmbientLight(Color ambient, GameDateTime time)
-        {
-            var multiplier = CalculateNightMultiplier(time);
-            var modAmbient = ApplyNightMultiplier(multiplier, ambient);
-
-            return modAmbient;
         }
 
         /// <summary>
@@ -172,9 +168,33 @@ namespace NetGore.Features.GameTime
             nightMultiplier = Math.Abs(nightMultiplier);
 
             // Finally, add the product of the night multiplier to the minMultiplier to "amplify" the darkness
-            nightMultiplier += (1-nightMultiplier) * MinAmbientMultiplier;
+            nightMultiplier += (1 - nightMultiplier) * MinAmbientMultiplier;
 
             return nightMultiplier;
+        }
+
+        /// <summary>
+        /// Gets the modified ambient light <see cref="Color"/> for the current <see cref="GameDateTime"/>.
+        /// </summary>
+        /// <param name="ambient">The ambient light color.</param>
+        /// <returns>The modified ambient light.</returns>
+        public Color GetModifiedAmbientLight(Color ambient)
+        {
+            return GetModifiedAmbientLight(ambient, GameDateTime.Now);
+        }
+
+        /// <summary>
+        /// Gets the modified ambient light <see cref="Color"/> for the specified <see cref="GameDateTime"/>.
+        /// </summary>
+        /// <param name="ambient">The ambient light color.</param>
+        /// <param name="time">The game time to get the ambient light for.</param>
+        /// <returns>The modified ambient light for the specified <paramref name="time"/>.</returns>
+        public Color GetModifiedAmbientLight(Color ambient, GameDateTime time)
+        {
+            var multiplier = CalculateNightMultiplier(time);
+            var modAmbient = ApplyNightMultiplier(multiplier, ambient);
+
+            return modAmbient;
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ namespace NetGore.Features.GameTime
     /// </summary>
     public struct GameDateTime
     {
+        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
         static TimeSpan _serverTimeOffset;
 
         /// <summary>
@@ -108,7 +109,6 @@ namespace NetGore.Features.GameTime
         /// Gets or sets the number of days per month in game-time.
         /// </summary>
         public static uint DaysPerMonth { get; set; }
-
 
         /// <summary>
         /// Gets the hour in game-time.
@@ -252,8 +252,6 @@ namespace NetGore.Features.GameTime
 
             return Equals((GameDateTime)obj);
         }
-
-        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
 
         /// <summary>
         /// Gets a <see cref="GameDateTime"/> for a <see cref="DateTime"/>.

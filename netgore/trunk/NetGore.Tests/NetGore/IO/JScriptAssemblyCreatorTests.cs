@@ -1,6 +1,5 @@
 using System.CodeDom.Compiler;
 using System.Linq;
-using NetGore.IO;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore.IO
@@ -8,6 +7,21 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class JScriptAssemblyCreatorTests
     {
+        #region Unit tests
+
+        [Test]
+        public void AddEmptyMethodTest()
+        {
+            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            c.AddMethod("TestM", "public", null, null, "");
+
+            CompilerResults r;
+            c.Compile(out r);
+
+            Assert.IsNotNull(r.CompiledAssembly);
+            Assert.AreEqual(0, r.Errors.Count);
+        }
+
         [Test]
         public void AddMethodNoParametersTest()
         {
@@ -34,17 +48,6 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual(0, r.Errors.Count);
         }
 
-        [Test]
-        public void AddEmptyMethodTest()
-        {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
-            c.AddMethod("TestM", "public", null, null, "");
-
-            CompilerResults r;
-            c.Compile(out r);
-
-            Assert.IsNotNull(r.CompiledAssembly);
-            Assert.AreEqual(0, r.Errors.Count);
-        }
+        #endregion
     }
 }

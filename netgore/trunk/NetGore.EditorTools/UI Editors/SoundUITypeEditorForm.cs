@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Audio;
@@ -26,14 +22,13 @@ namespace NetGore.EditorTools
             _cm = cm;
             _current = current;
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="cm">The cm.</param>
         /// <param name="current">The name of the currently selected <see cref="ISound"/>. Can be null.</param>
-        public SoundUITypeEditorForm(ContentManager cm, string current)
-            : this(cm, SoundManager.GetInstance(cm).GetItem(current))
+        public SoundUITypeEditorForm(ContentManager cm, string current) : this(cm, SoundManager.GetInstance(cm).GetItem(current))
         {
         }
 
@@ -53,6 +48,16 @@ namespace NetGore.EditorTools
             {
                 e.Graphics.DrawString(item.Index + ". " + item.Name, e.Font, brush, e.Bounds);
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the items to add to the list.
+        /// </summary>
+        /// <returns>The items to add to the list.</returns>
+        protected override IEnumerable<ISound> GetListItems()
+        {
+            var mm = SoundManager.GetInstance(_cm);
+            return mm.Items.OrderBy(x => x.Index);
         }
 
         /// <summary>
@@ -78,16 +83,6 @@ namespace NetGore.EditorTools
         protected override ISound SetDefaultSelectedItem(IEnumerable<ISound> items)
         {
             return _current;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the items to add to the list.
-        /// </summary>
-        /// <returns>The items to add to the list.</returns>
-        protected override IEnumerable<ISound> GetListItems()
-        {
-            var mm = SoundManager.GetInstance(_cm);
-            return mm.Items.OrderBy(x => x.Index);
         }
     }
 }

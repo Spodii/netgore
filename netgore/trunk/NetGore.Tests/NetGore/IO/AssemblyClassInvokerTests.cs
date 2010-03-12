@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NetGore.IO;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore.IO
@@ -10,6 +7,8 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class AssemblyClassInvokerTests
     {
+        #region Unit tests
+
         [Test]
         public void InvalidMethodTest()
         {
@@ -46,5 +45,7 @@ namespace NetGore.Tests.NetGore.IO
             var i = c.Compile();
             i.Invoke("TestM");
         }
+
+        #endregion
     }
 }

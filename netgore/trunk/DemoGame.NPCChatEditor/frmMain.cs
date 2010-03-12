@@ -467,73 +467,6 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            EditorNPCChatManager.SaveDialogs();
-
-            base.OnFormClosing(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            CustomUITypeEditors.AddEditors();
-
-            // Set controls that are initially disabled in the tab control to always be disabled
-            var controls = GetAllControls(tcChatDialogItem);
-            foreach (var control in controls)
-            {
-                if (control.Enabled == false)
-                    control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
-            }
-
-            // Disable conditional controls by default
-            SetConditionalsEnabled(false);
-
-            // Add the dialogs
-            cmbSelectedDialog.Items.Clear();
-            cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
-
-            // Select the first one
-            if (cmbSelectedDialog.Items.Count > 0)
-                cmbSelectedDialog.SelectedIndex = 0;
-
-            // Populate the evaluation types
-            var evaluationTypes = EnumHelper<NPCChatConditionalEvaluationType>.Values;
-            cmbEvaluateType.Items.Clear();
-            cmbEvaluateType.Items.AddRange(evaluationTypes.Select(x => (object)x).ToArray());
-
-            // Population the response action types
-            var actionTypes = NPCChatResponseActionBase.Conditionals.OrderBy(x => x.Name);
-            cmbAddAction.Items.Clear();
-            cmbAddAction.Items.AddRange(actionTypes.Select(x => (object)x).ToArray());
-
-            // Perform the initial resize
-            OnResize(new EventArgs());
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            gbSelectedNode.Top = ClientSize.Height - gbSelectedNode.Height - gbSelectedNode.Left;
-            gbSelectedNode.Width = ClientSize.Width - (gbSelectedNode.Left * 2);
-
-            npcChatDialogView.Width = ClientSize.Width - (npcChatDialogView.Left * 2);
-            npcChatDialogView.Height = gbSelectedNode.Top - npcChatDialogView.Top - 6;
-
-            button1.Left = ClientSize.Width - button1.Width - 3;
-        }
-
-        /// <summary>
         /// Gets all the Controls from the given <paramref name="root"/>.
         /// </summary>
         /// <param name="root">The root Control.</param>
@@ -603,6 +536,73 @@ namespace DemoGame.NPCChatEditor
         void npcChatDialogView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetEditingObject(e.Node.Tag);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            EditorNPCChatManager.SaveDialogs();
+
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            CustomUITypeEditors.AddEditors();
+
+            // Set controls that are initially disabled in the tab control to always be disabled
+            var controls = GetAllControls(tcChatDialogItem);
+            foreach (var control in controls)
+            {
+                if (control.Enabled == false)
+                    control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
+            }
+
+            // Disable conditional controls by default
+            SetConditionalsEnabled(false);
+
+            // Add the dialogs
+            cmbSelectedDialog.Items.Clear();
+            cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
+
+            // Select the first one
+            if (cmbSelectedDialog.Items.Count > 0)
+                cmbSelectedDialog.SelectedIndex = 0;
+
+            // Populate the evaluation types
+            var evaluationTypes = EnumHelper<NPCChatConditionalEvaluationType>.Values;
+            cmbEvaluateType.Items.Clear();
+            cmbEvaluateType.Items.AddRange(evaluationTypes.Select(x => (object)x).ToArray());
+
+            // Population the response action types
+            var actionTypes = NPCChatResponseActionBase.Conditionals.OrderBy(x => x.Name);
+            cmbAddAction.Items.Clear();
+            cmbAddAction.Items.AddRange(actionTypes.Select(x => (object)x).ToArray());
+
+            // Perform the initial resize
+            OnResize(new EventArgs());
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            gbSelectedNode.Top = ClientSize.Height - gbSelectedNode.Height - gbSelectedNode.Left;
+            gbSelectedNode.Width = ClientSize.Width - (gbSelectedNode.Left * 2);
+
+            npcChatDialogView.Width = ClientSize.Width - (npcChatDialogView.Left * 2);
+            npcChatDialogView.Height = gbSelectedNode.Top - npcChatDialogView.Top - 6;
+
+            button1.Left = ClientSize.Width - button1.Width - 3;
         }
 
         /// <summary>

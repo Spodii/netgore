@@ -866,25 +866,6 @@ namespace DemoGame.SkeletonEditor
             ks = e;
         }
 
-        void radioAnimate_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioAnimate.Checked)
-                SetAnimByTxt();
-        }
-
-        void RecursiveHookInput(Control rootC)
-        {
-            foreach (Control c in rootC.Controls)
-            {
-                if (c.GetType() != typeof(TextBoxBase) && c.GetType() != typeof(ListControl))
-                {
-                    c.KeyDown += KeyDownForward;
-                    c.KeyUp += KeyUpForward;
-                }
-                RecursiveHookInput(c);
-            }
-        }
-
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
@@ -910,8 +891,7 @@ namespace DemoGame.SkeletonEditor
             LoadBody(SkeletonBodyInfo.GetFilePath(SkeletonLoader.BasicSkeletonBodyName, ContentPaths.Dev));
 
             // Center lines
-            _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0),
-                                         Microsoft.Xna.Framework.Graphics.Color.Lime));
+            _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0), Microsoft.Xna.Framework.Graphics.Color.Lime));
             _centerLines.Add(new XNALine(new Vector2(0, -5), new Vector2(0, 5), Microsoft.Xna.Framework.Graphics.Color.Red));
 
             _watch.Start();
@@ -922,6 +902,25 @@ namespace DemoGame.SkeletonEditor
             radioAnimate.Checked = true;
             chkDrawSkel.Checked = false;
             _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
+        }
+
+        void radioAnimate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioAnimate.Checked)
+                SetAnimByTxt();
+        }
+
+        void RecursiveHookInput(Control rootC)
+        {
+            foreach (Control c in rootC.Controls)
+            {
+                if (c.GetType() != typeof(TextBoxBase) && c.GetType() != typeof(ListControl))
+                {
+                    c.KeyDown += KeyDownForward;
+                    c.KeyUp += KeyUpForward;
+                }
+                RecursiveHookInput(c);
+            }
         }
 
         void SetAnimByTxt()

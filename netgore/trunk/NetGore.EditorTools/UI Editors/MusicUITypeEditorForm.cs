@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Audio;
-using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
@@ -56,6 +51,16 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the items to add to the list.
+        /// </summary>
+        /// <returns>The items to add to the list.</returns>
+        protected override IEnumerable<IMusic> GetListItems()
+        {
+            var mm = MusicManager.GetInstance(_cm);
+            return mm.Items.OrderBy(x => x.Index);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets if the given <paramref name="item"/> is valid to be
         /// used as the returned item.
         /// </summary>
@@ -78,16 +83,6 @@ namespace NetGore.EditorTools
         protected override IMusic SetDefaultSelectedItem(IEnumerable<IMusic> items)
         {
             return _current;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the items to add to the list.
-        /// </summary>
-        /// <returns>The items to add to the list.</returns>
-        protected override IEnumerable<IMusic> GetListItems()
-        {
-            var mm = MusicManager.GetInstance(_cm);
-            return mm.Items.OrderBy(x => x.Index);
         }
     }
 }

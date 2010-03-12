@@ -377,13 +377,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetGameTime(DateTime serverTime)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetGameTime);
-            pw.Write(serverTime.ToBinary());
-            return pw;
-        }
-
         public static PacketWriter SetChatDialogPage(ushort pageIndex, IEnumerable<byte> responsesToSkip)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetChatDialogPage);
@@ -415,6 +408,13 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetExp);
             pw.Write(exp);
+            return pw;
+        }
+
+        public static PacketWriter SetGameTime(DateTime serverTime)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetGameTime);
+            pw.Write(serverTime.ToBinary());
             return pw;
         }
 

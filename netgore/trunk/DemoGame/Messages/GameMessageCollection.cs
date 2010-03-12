@@ -70,30 +70,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional code to be added to the generated JScript.
-        /// </summary>
-        /// <param name="file">The file that is being loaded.</param>
-        /// <param name="assemblyCreator">The assembly creator.</param>
-        protected override void LoadAdditionalJScriptMembers(string file, JScriptAssemblyCreator assemblyCreator)
-        {
-            // global.js
-            var globalFile = ContentPaths.Build.Languages.Join("global.js");
-            if (File.Exists(globalFile))
-            {
-                assemblyCreator.AddRawMember(File.ReadAllText(globalFile));
-            }
-
-            // language.js
-            var languageFile = file + ".js";
-            if (File.Exists(languageFile))
-            {
-                assemblyCreator.AddRawMember(File.ReadAllText(languageFile));
-            }
-
-            base.LoadAdditionalJScriptMembers(file, assemblyCreator);
-        }
-
-        /// <summary>
         /// Gets the name of this language.
         /// </summary>
         public string Language
@@ -136,6 +112,26 @@ namespace DemoGame
         protected override IEqualityComparer<GameMessage> GetEqualityComparer()
         {
             return EnumComparer<GameMessage>.Instance;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional code to be added to the generated JScript.
+        /// </summary>
+        /// <param name="file">The file that is being loaded.</param>
+        /// <param name="assemblyCreator">The assembly creator.</param>
+        protected override void LoadAdditionalJScriptMembers(string file, JScriptAssemblyCreator assemblyCreator)
+        {
+            // global.js
+            var globalFile = ContentPaths.Build.Languages.Join("global.js");
+            if (File.Exists(globalFile))
+                assemblyCreator.AddRawMember(File.ReadAllText(globalFile));
+
+            // language.js
+            var languageFile = file + ".js";
+            if (File.Exists(languageFile))
+                assemblyCreator.AddRawMember(File.ReadAllText(languageFile));
+
+            base.LoadAdditionalJScriptMembers(file, assemblyCreator);
         }
 
         /// <summary>

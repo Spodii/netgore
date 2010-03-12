@@ -305,7 +305,8 @@ namespace DemoGame.Client
             _infoBox.Draw(sb);
             GUIManager.Draw(sb);
             sb.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
-            sb.DrawString(_damageFont, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour , GameDateTime.Now.Minute), new Vector2(0, _damageFont.LineSpacing+1), Color.White);
+            sb.DrawString(_damageFont, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
+                          new Vector2(0, _damageFont.LineSpacing + 1), Color.White);
             DrawingManager.EndDrawGUI();
         }
 

@@ -20,19 +20,6 @@ namespace DemoGame.Server
         public const bool AllowRemoteConnections = false;
 
         /// <summary>
-        /// The maximum allowed distance allowed between two group members for them to be allowed to share rewards
-        /// with the other group members.
-        /// </summary>
-        public const float MaxGroupShareDistance = 1000;
-
-        /// <summary>
-        /// How often, in milliseconds, to wait between check to respawn <see cref="IRespawnable"/> entities.
-        /// Lower values will result in <see cref="IRespawnable"/>s respawning closer to their desired time, but
-        /// will require more overhead.
-        /// </summary>
-        public const int RespawnablesUpdateRate = 800;
-        
-        /// <summary>
         /// The amount of time an item may remain on the map before it is removed automatically.
         /// </summary>
         public const int DefaultMapItemLife = 1000 * 60 * 3;
@@ -44,6 +31,19 @@ namespace DemoGame.Server
         /// value greater than at least 10 seconds to avoid unneccesary performance overhead.
         /// </summary>
         public const int MapItemExpirationUpdateRate = 1000 * 30;
+
+        /// <summary>
+        /// The maximum allowed distance allowed between two group members for them to be allowed to share rewards
+        /// with the other group members.
+        /// </summary>
+        public const float MaxGroupShareDistance = 1000;
+
+        /// <summary>
+        /// How often, in milliseconds, to wait between check to respawn <see cref="IRespawnable"/> entities.
+        /// Lower values will result in <see cref="IRespawnable"/>s respawning closer to their desired time, but
+        /// will require more overhead.
+        /// </summary>
+        public const int RespawnablesUpdateRate = 800;
 
         /// <summary>
         /// How often, in milliseconds, to wait between calls to <see cref="User.SynchronizeExtraUserInformation"/>.

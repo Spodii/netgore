@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Audio;
 using NetGore.Graphics;
@@ -28,13 +26,12 @@ namespace NetGore.EditorTools
 
             _added = true;
 
-            AddEditorsHelper(new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)),
-                new EditorTypes(typeof(Grh), typeof(GrhEditor)),
-                new EditorTypes(typeof(MusicID), typeof(MusicEditor)),
-                new EditorTypes(typeof(SoundID), typeof(SoundEditor)),
-                new EditorTypes(typeof(Color), typeof(XnaColorEditor)),
-                new EditorTypes(typeof(ParticleModifierCollection), typeof(ParticleModifierCollectionEditor)),
-                new EditorTypes(typeof(EmitterModifierCollection), typeof(EmitterModifierCollectionEditor)));
+            AddEditorsHelper(new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)), new EditorTypes(typeof(Grh), typeof(GrhEditor)),
+                             new EditorTypes(typeof(MusicID), typeof(MusicEditor)),
+                             new EditorTypes(typeof(SoundID), typeof(SoundEditor)),
+                             new EditorTypes(typeof(Color), typeof(XnaColorEditor)),
+                             new EditorTypes(typeof(ParticleModifierCollection), typeof(ParticleModifierCollectionEditor)),
+                             new EditorTypes(typeof(EmitterModifierCollection), typeof(EmitterModifierCollectionEditor)));
         }
 
         /// <summary>
