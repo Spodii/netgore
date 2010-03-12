@@ -61,5 +61,20 @@ namespace DemoGame.DbEditor
 
             pgItemTemplate.SelectedObject = _dbController.GetQuery<SelectItemTemplateQuery>().Execute(new ItemTemplateID(1));
         }
+
+        /// <summary>
+        /// Handles the PropertyValueChanged event of the pgItemTemplate control.
+        /// </summary>
+        /// <param name="s">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.PropertyValueChangedEventArgs"/>
+        /// instance containing the event data.</param>
+        private void pgItemTemplate_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
+            if (v == null)
+                return;
+
+            _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
+        }
     }
 }
