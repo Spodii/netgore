@@ -53,7 +53,13 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     /// Array containing the actual values. The index of this array is found through the value returned
     /// from the _lookupTable.
     /// </summary>
-    readonly System.Int32[] _values;
+    readonly System.Int16[] _values;
+
+    /// <summary>
+    /// Gets the <see cref="Type"/> used internally to store the values. This may or may not be the same as the
+    /// type used to expose the values.
+    /// </summary>
+    public static Type InternalType { get { return typeof(System.Int16); } }
 
     /// <summary>
     /// Initializes the <see cref="StatTypeConstDictionary"/> class.
@@ -76,7 +82,7 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     /// </summary>
     public StatTypeConstDictionary()
     {
-        _values = new System.Int32[_numEnumValues];
+        _values = new System.Int16[_numEnumValues];
     }
     
     /// <summary>
@@ -84,10 +90,21 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     /// </summary>
     /// <param name="key">The key for the value to get or set.</param>
     /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than <see cref="System.Int16.MinValue"/>
+    /// or greater than <see cref="System.Int16.MaxValue"/>.</exception>
     public System.Int32 this[DemoGame.StatType key]
     {
-        get { return (System.Int32)_values[_enumToValueIndex[(int)key]]; }
-        set { _values[_enumToValueIndex[(int)key]] = (System.Int16)value; }
+        get 
+        { 
+			return (System.Int32)_values[_enumToValueIndex[(int)key]]; 
+		}
+        set 
+        {
+			if (value > System.Int16.MaxValue || value < System.Int16.MinValue)
+				throw new ArgumentOutOfRangeException("value", "Value must be between " + System.Int16.MinValue + " and " + System.Int16.MaxValue + ".");
+				 
+			_values[_enumToValueIndex[(int)key]] = (System.Int16)value; 
+		}
     }
 
     #region IEnumerable<KeyValuePair<DemoGame.StatType,System.Int32>> Members
@@ -102,7 +119,7 @@ public class StatTypeConstDictionary : System.Collections.Generic.IEnumerable<Sy
     {
         for (int i = 0; i < _values.Length; i++)
         {
-            yield return new KeyValuePair<DemoGame.StatType, System.Int32>(_valueIndexToKey[i], (System.Int16)_values[i]);
+            yield return new KeyValuePair<DemoGame.StatType, System.Int32>(_valueIndexToKey[i], (System.Int32)_values[i]);
         }
     }
 
