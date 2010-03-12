@@ -91,6 +91,7 @@
     <Compile Include="Extensions\Vector4Extensions.cs" />
     <Compile Include="InventorySlot.cs" />
     <Compile Include="InventorySlotTypeConverter.cs" />
+    <Compile Include="Network\ExternalIPParsingRule.cs" />
     <Compile Include="Scripting\AssemblyClassInvoker.cs" />
     <Compile Include="IO\Bits\BitStreamExtensions.cs" />
     <Compile Include="IO\IMessageCollection.cs" />

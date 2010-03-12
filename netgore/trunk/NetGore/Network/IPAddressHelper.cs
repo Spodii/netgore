@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NetGore.Network
 {
@@ -9,6 +12,88 @@ namespace NetGore.Network
     /// </summary>
     public static class IPAddressHelper
     {
+        static readonly IEnumerable<ExternalIPParser> _parsers;
+
+        /// <summary>
+        /// Initializes the <see cref="IPAddressHelper"/> class.
+        /// </summary>
+        static IPAddressHelper()
+        {
+            const string ipMatch = "(?<ip>\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})";
+            const RegexOptions regOpts = RegexOptions.IgnoreCase | RegexOptions.Singleline;
+
+            var rCheckMyIP = new Regex("Your local IP address is&nbsp;" + ipMatch, regOpts);
+
+            var rFaqs = new Regex("Your IP address is: " + ipMatch, regOpts);
+
+            _parsers = new ExternalIPParser[]
+            {
+                new ExternalIPParser("http://whatismyip.org/", null), new ExternalIPParser("http://www.faqs.org/ip.php", rFaqs),
+                new ExternalIPParser("http://www.checkmyip.com/", rCheckMyIP), new ExternalIPParser("http://icanhazip.com/", null)
+            };
+        }
+
+        /// <summary>
+        /// Gets the default <see cref="ExternalIPParser"/>s.
+        /// </summary>
+        public static IEnumerable<ExternalIPParser> DefaultExternalIPParsers
+        {
+            get { return _parsers; }
+        }
+
+        /// <summary>
+        /// Gets the external (public) IP address for this machine using the default <see cref="ExternalIPParser"/>s..
+        /// </summary>
+        /// <returns>The string representation of the external IP, or null if all of the parsers
+        /// failed.</returns>
+        public static string GetExternalIP()
+        {
+            return GetExternalIP(_parsers);
+        }
+
+        /// <summary>
+        /// Gets the external (public) IP address for this machine.
+        /// </summary>
+        /// <param name="parsers">The <see cref="ExternalIPParser"/>s to use to try to get the external IP.</param>
+        /// <returns>The string representation of the external IP, or null if all of the <paramref name="parsers"/>
+        /// failed.</returns>
+        public static string GetExternalIP(IEnumerable<ExternalIPParser> parsers)
+        {
+            using (var wc = new WebClient())
+            {
+                foreach (var p in parsers)
+                {
+                    try
+                    {
+                        var data = wc.DownloadString(p.Url);
+                        try
+                        {
+                            if (p.Parser == null)
+                                return data;
+
+                            var match = p.Parser.Match(data);
+                            if (match.Success)
+                            {
+                                var g = match.Groups["ip"];
+                                if (g.Success)
+                                    return g.Value;
+                            }
+                        }
+                        catch (ArgumentException)
+                        {
+                            continue;
+                        }
+                    }
+                    catch (WebException)
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Converts an IPv4 address to an unsigned int.
         /// </summary>
