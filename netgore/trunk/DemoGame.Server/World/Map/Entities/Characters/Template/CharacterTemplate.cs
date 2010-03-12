@@ -93,7 +93,7 @@ namespace DemoGame.Server
         /// </returns>
         public override string ToString()
         {
-            return TemplateTable.Name + " {" + TemplateTable.ID + "}";
+            return TemplateTable.Name + " [" + TemplateTable.ID + "]";
         }
     }
 }

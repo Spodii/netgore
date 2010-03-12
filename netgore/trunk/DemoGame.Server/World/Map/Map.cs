@@ -573,7 +573,7 @@ namespace DemoGame.Server
         /// </returns>
         public override string ToString()
         {
-            return Name + "[" + Index + "]";
+            return Name + " [" + Index + "]";
         }
 
         /// <summary>
