@@ -11,6 +11,7 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using NetGore;
+using NetGore.Network;
 
 namespace DemoGame.Server.UI
 {
@@ -486,24 +487,15 @@ namespace DemoGame.Server.UI
             w.DoWork += delegate
             {
                 hostName = Dns.GetHostName();
-
-                try
-                {
-                    using (var c = new WebClient())
-                    {
-                        externalIP = c.DownloadString(_externalIPSite);
-                    }
-                }
-                catch (WebException)
-                {
-                    externalIP = "Failed to get IP";
-                }
+                externalIP = IPAddressHelper.GetExternalIP();
+                if (string.IsNullOrEmpty(externalIP))
+                    externalIP = "[Failed to get external IP]";
             };
 
             // Create the updater
             w.RunWorkerCompleted += delegate
             {
-                lblIP.Text = string.Format("{0} ({1})", externalIP, hostName);
+                lblIP.Invoke((Action)delegate { lblIP.Text = string.Format("{0} ({1})", externalIP, hostName); });
                 w.Dispose();
             };
 
