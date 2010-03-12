@@ -28,8 +28,7 @@ namespace DemoGame.Server.Queries
 
             using (var r = ExecuteReader(id))
             {
-                if (!r.Read())
-                    throw new ArgumentException("id");
+                if (!r.Read()) return null;
 
                 ret = new MapSpawnTable();
                 ret.ReadValues(r);

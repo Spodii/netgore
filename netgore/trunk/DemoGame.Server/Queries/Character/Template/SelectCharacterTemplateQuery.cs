@@ -28,10 +28,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(templateID))
             {
                 if (!r.Read())
-                {
-                    const string errmsg = "No CharacterTemplate found for ID `{0}`.";
-                    throw new ArgumentException(string.Format(errmsg, templateID), "templateID");
-                }
+                    return null;
 
                 ret = new CharacterTemplateTable();
                 ret.ReadValues(r);

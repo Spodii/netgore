@@ -158,6 +158,104 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void NextFreeValueTestA()
+        {
+            var values = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            Assert.AreEqual(7, values.NextFreeValue(0));
+        }
+
+        [Test]
+        public void NextFreeValueTestB()
+        {
+            var values = new int[] { 1, 2, 3, 4, 5, 6 };
+            Assert.AreEqual(0, values.NextFreeValue(0));
+        }
+
+        [Test]
+        public void NextFreeValueTestC()
+        {
+            var values = new int[] { 1, 2, 3, 4, 5, 6 };
+            Assert.AreEqual(7, values.NextFreeValue(1));
+        }
+
+        [Test]
+        public void NextFreeValueTestD()
+        {
+            var values = new int[] { 1, 2, 3, 4, 5, 6 };
+            Assert.AreEqual(10, values.NextFreeValue(10));
+        }
+
+        [Test]
+        public void NextFreeValueTestE()
+        {
+            var values = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            Assert.AreEqual(-10, values.NextFreeValue(-10));
+        }
+
+        [Test]
+        public void NextFreeValueTestF()
+        {
+            var values = new int[] { 0, 1, 2, 4, 5, 6 };
+            Assert.AreEqual(3, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestG()
+        {
+            var values = new int[] { 0, 1, 2, 4, 6 };
+            Assert.AreEqual(3, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestH()
+        {
+            var values = new int[] { 0, 1, 2, 3, 4, 5 };
+            Assert.AreEqual(6, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestI()
+        {
+            var values = new int[] { 0, 0, 0, 0, 1, 1, 1, 2, 5, 6 };
+            Assert.AreEqual(3, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestJ()
+        {
+            var values = new int[] { 0, 0, 0, 2 };
+            Assert.AreEqual(1, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestK()
+        {
+            var values = new int[] { 0, 1, 1, 1, 3, 3, 3 };
+            Assert.AreEqual(2, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestL()
+        {
+            var values = new int[] { 0, 1, 1, 1, 3 };
+            Assert.AreEqual(2, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestM()
+        {
+            var values = new int[] { 0, 1, 1, 1 };
+            Assert.AreEqual(2, values.NextFreeValue());
+        }
+
+        [Test]
+        public void NextFreeValueTestN()
+        {
+            var values = new int[] { 5, 4, 3, 2, 1, 0 };
+            Assert.AreEqual(6, values.NextFreeValue());
+        }
+
+        [Test]
         public void ToImmutableTest()
         {
             int[] i = new int[] { 1, 2, 3 };

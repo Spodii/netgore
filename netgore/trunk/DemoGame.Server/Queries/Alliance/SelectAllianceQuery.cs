@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(id))
             {
                 if (!r.Read())
-                    throw new ArgumentOutOfRangeException("id", string.Format("No alliance found for id `{0}`.", id));
+                    return null;
 
                 ret = new AllianceTable();
                 ret.ReadValues(r);
