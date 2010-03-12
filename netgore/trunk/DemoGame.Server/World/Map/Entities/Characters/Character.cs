@@ -1732,7 +1732,7 @@ namespace DemoGame.Server
         {
             _updateModStats = false;
 
-            // FUTURE: This is called every goddamn Update(). That is WAY too much...
+            // Update all the mod stats
             foreach (var modStat in ModStats)
             {
                 modStat.Value = ModStatHelper<StatType>.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
