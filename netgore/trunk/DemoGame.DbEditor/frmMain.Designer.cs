@@ -127,6 +127,7 @@
             this.pgItemTemplate.Name = "pgItemTemplate";
             this.pgItemTemplate.Size = new System.Drawing.Size(422, 345);
             this.pgItemTemplate.TabIndex = 0;
+            this.pgItemTemplate.SelectedObjectsChanged += new System.EventHandler(this.PropertyGrid_ShrinkColumns);
             this.pgItemTemplate.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.pgItemTemplate_PropertyValueChanged);
             // 
             // tabPage2

@@ -28,6 +28,20 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Handles the Click event of the btnItemTemplate control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnItemTemplate_Click(object sender, EventArgs e)
+        {
+            using (var f = new ItemTemplateUITypeEditorForm(pgItemTemplate.SelectedObject))
+            {
+                if (f.ShowDialog(this) == DialogResult.OK)
+                    pgItemTemplate.SelectedObject = f.SelectedItem;
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -44,7 +58,7 @@ namespace DemoGame.DbEditor
 
             // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
             // pretty little pictures. :(
-            if (!GrhInfo.IsLoaded && false)
+            if (!GrhInfo.IsLoaded && false) // TODO: !! Temp removal...
             {
                 var gdService = GraphicsDeviceService.AddRef(Handle, 640, 480);
                 var serviceContainer = new ServiceContainer();
@@ -60,6 +74,7 @@ namespace DemoGame.DbEditor
             // Load the custom UITypeEditors
             CustomUITypeEditors.AddEditors(_dbController);
 
+            // TODO: !! Temp populating...
             pgItemTemplate.SelectedObject = _dbController.GetQuery<SelectItemTemplateQuery>().Execute(new ItemTemplateID(1));
         }
 
@@ -69,7 +84,7 @@ namespace DemoGame.DbEditor
         /// <param name="s">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.PropertyValueChangedEventArgs"/>
         /// instance containing the event data.</param>
-        private void pgItemTemplate_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        void pgItemTemplate_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
             if (v == null)
@@ -78,20 +93,16 @@ namespace DemoGame.DbEditor
             _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
         }
 
-        /// <summary>
-        /// Handles the Click event of the btnItemTemplate control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnItemTemplate_Click(object sender, EventArgs e)
+        private void PropertyGrid_ShrinkColumns(object sender, EventArgs e)
         {
-            using (var f = new ItemTemplateUITypeEditorForm(pgItemTemplate.SelectedObject))
-            {
-                if (f.ShowDialog(this) == DialogResult.OK)
-                {
-                    pgItemTemplate.SelectedObject = f.SelectedItem;
-                }
-            }
+            var pg = sender as PropertyGrid;
+            if (pg == null) return;
+
+            // First time a valid object is set, shrink the PropertyGrid
+            pgItemTemplate.ShrinkPropertiesColumn(10);
+
+            // Remove this event hook from the PropertyGrid to make it only happen on the first call
+            pg.SelectedObjectsChanged -= PropertyGrid_ShrinkColumns;
         }
     }
 }

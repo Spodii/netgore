@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
+    <Compile Include="Extensions\PropertyGridExtensions.cs" />
     <Compile Include="UI Editors\CustomUITypeEditors.cs" />
     <Compile Include="UI Editors\EditorTypes.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
