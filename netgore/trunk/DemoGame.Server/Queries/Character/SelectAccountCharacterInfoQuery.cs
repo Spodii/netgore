@@ -30,7 +30,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(id))
             {
                 if (!r.Read())
-                    throw new ArgumentException(string.Format("Failed to find Character with ID `{0}`.", id));
+                    return null;
 
                 var ct = new CharacterTable();
                 ct.TryReadValues(r);

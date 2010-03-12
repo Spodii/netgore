@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(id))
             {
                 if (!r.Read())
-                    throw new Exception(string.Format("No ItemTemplate found at ID `{0}`.", id));
+                    return null;
 
                 v.ReadValues(r);
             }

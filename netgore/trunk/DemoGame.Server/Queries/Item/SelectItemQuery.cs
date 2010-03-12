@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(id))
             {
                 if (!r.Read())
-                    throw new DataException(string.Format("Query contained no results for id `{0}`.", id));
+                    return null;
 
                 retValues = new ItemTable();
                 retValues.ReadValues(r);

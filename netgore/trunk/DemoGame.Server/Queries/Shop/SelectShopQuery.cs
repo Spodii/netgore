@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(id))
             {
                 if (!r.Read())
-                    throw new Exception(string.Format("No shop with id `{0}` found.", id));
+                    return null;
 
                 table = new ShopTable();
                 table.ReadValues(r);

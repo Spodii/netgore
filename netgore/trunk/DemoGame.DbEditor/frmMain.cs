@@ -6,6 +6,7 @@ using DemoGame.EditorTools;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.EditorTools;
@@ -37,7 +38,10 @@ namespace DemoGame.DbEditor
             using (var f = new ItemTemplateUITypeEditorForm(pgItemTemplate.SelectedObject))
             {
                 if (f.ShowDialog(this) == DialogResult.OK)
-                    pgItemTemplate.SelectedObject = f.SelectedItem;
+                {
+                    var item = f.SelectedItem;
+                    pgItemTemplate.SelectedObject = item;
+                }
             }
         }
 
@@ -74,8 +78,11 @@ namespace DemoGame.DbEditor
             // Load the custom UITypeEditors
             CustomUITypeEditors.AddEditors(_dbController);
 
-            // TODO: !! Temp populating...
-            pgItemTemplate.SelectedObject = _dbController.GetQuery<SelectItemTemplateQuery>().Execute(new ItemTemplateID(1));
+            // Hook PropertyGrid_ShrinkColumns to all PropertyGrids
+            foreach (var pg in this.GetControls().OfType<PropertyGrid>())
+            {
+                pg.SelectedObjectsChanged += PropertyGrid_ShrinkColumns;
+            }
         }
 
         /// <summary>
@@ -89,20 +96,110 @@ namespace DemoGame.DbEditor
             var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
             if (v == null)
                 return;
-
+            
             _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
         }
 
-        private void PropertyGrid_ShrinkColumns(object sender, EventArgs e)
+        /// <summary>
+        /// When attached to the <see cref="PropertyGrid.SelectedObjectsChanged"/> event on a <see cref="PropertyGrid"/>,
+        /// shrinks the <see cref="PropertyGrid"/>'s left column to fit the first item added to it, then detatches
+        /// itself from the event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void PropertyGrid_ShrinkColumns(object sender, EventArgs e)
         {
             var pg = sender as PropertyGrid;
-            if (pg == null) return;
+            if (pg == null)
+                return;
 
             // First time a valid object is set, shrink the PropertyGrid
             pgItemTemplate.ShrinkPropertiesColumn(10);
 
             // Remove this event hook from the PropertyGrid to make it only happen on the first call
             pg.SelectedObjectsChanged -= PropertyGrid_ShrinkColumns;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnItemTemplateNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnItemTemplateNew_Click(object sender, EventArgs e)
+        {
+            const string confirmMsg = "Are you sure you wish to create a new item template?";
+            if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            bool clone = false;
+            if (pgItemTemplate.SelectedObject != null)
+            {
+                const string cloneMsg = "Do you wish to copy the values from the currently selected item?";
+                clone = MessageBox.Show(cloneMsg, "Clone?", MessageBoxButtons.YesNo) == DialogResult.Yes;
+            }
+
+            // Find the next free ID (and make sure it is actually free)
+            var usedIDs = _dbController.GetQuery<SelectItemTemplateIDsQuery>().Execute().Select(x => (int)x);
+            int idBase = 0;
+            int freeID;
+
+            do
+            {
+                freeID = usedIDs.NextFreeValue(idBase);
+                idBase = freeID + 1;
+            } while (_dbController.GetQuery<SelectItemTemplateQuery>().Execute(new ItemTemplateID(freeID)) != null);
+
+            // Create the template
+            ItemTemplateTable newItem;
+            if (clone)
+                newItem = (ItemTemplateTable)((IItemTemplateTable)pgItemTemplate.SelectedObject).DeepCopy();
+            else
+                newItem = new ItemTemplateTable();
+
+            // Set the new ID
+            newItem.ID = new ItemTemplateID(freeID);
+
+            // Save
+            _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(newItem);
+
+            // Select the new item
+            pgItemTemplate.SelectedObject = newItem;
+        }
+
+        /// <summary>
+        /// Handles the SelectedObjectsChanged event of the pgItemTemplate control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void pgItemTemplate_SelectedObjectsChanged(object sender, EventArgs e)
+        {
+            var item = pgItemTemplate.SelectedObject as IItemTemplateTable;
+            if (item == null)
+                txtItemTemplate.Text = string.Empty;
+            else
+                txtItemTemplate.Text = string.Format("{0}. {1}", item.ID, item.Name);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnItemTemplateDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnItemTemplateDelete_Click(object sender, EventArgs e)
+        {
+            var item = pgItemTemplate.SelectedObject as IItemTemplateTable;
+            if (item == null)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to delete the item template {0} [ID: {1}]?";
+            if (MessageBox.Show(string.Format(confirmMsg, item.Name, item.ID), "Delete?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            _dbController.GetQuery<DeleteItemTemplateQuery>().Execute(item.ID);
+
+            MessageBox.Show(string.Format("Item template {0} [ID: {1}] successfully deleted.", item.Name, item.ID));
+
+            pgItemTemplate.SelectedObject = null;
         }
     }
 }

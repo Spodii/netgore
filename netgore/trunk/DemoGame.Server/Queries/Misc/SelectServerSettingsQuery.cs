@@ -25,8 +25,7 @@ namespace DemoGame.Server.Queries
 
             using (var r = ExecuteReader())
             {
-                if (!r.Read())
-                    throw new Exception("Failed to read server settings.");
+                if (!r.Read()) return null;
 
                 retSettings = new ServerSettingTable();
                 retSettings.ReadValues(r);
