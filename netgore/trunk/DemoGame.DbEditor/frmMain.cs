@@ -161,36 +161,6 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Gets and reserves the next free <see cref="ItemTemplateID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="ItemTemplateID"/>.</returns>
-        public static ItemTemplateID ReserveFreeItemTemplateID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectItemTemplateIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
-
-            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                                   x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
-        }
-
-        /// <summary>
-        /// Gets and reserves the next free <see cref="CharacterTemplateID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="CharacterTemplateID"/>.</returns>
-        public static CharacterTemplateID ReserveFreeCharacterTemplateID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectCharacterTemplateIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
-
-            return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                                   x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
-        }
-
-        /// <summary>
         /// Handles the Click event of the btnItemTemplateNew control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -436,6 +406,36 @@ namespace DemoGame.DbEditor
 
             // Remove this event hook from the PropertyGrid to make it only happen on the first call
             pg.SelectedObjectsChanged -= PropertyGrid_ShrinkColumns;
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="CharacterTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="CharacterTemplateID"/>.</returns>
+        public static CharacterTemplateID ReserveFreeCharacterTemplateID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectCharacterTemplateIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
+
+            return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
+                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="ItemTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="ItemTemplateID"/>.</returns>
+        public static ItemTemplateID ReserveFreeItemTemplateID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectItemTemplateIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
+
+            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
+                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
         }
     }
 }
