@@ -42,6 +42,7 @@ namespace DemoGame.EditorTools
             NetGore.EditorTools.CustomUITypeEditors.AddEditorsHelper(
                 new EditorTypes(typeof(CharacterTemplateID), typeof(CharacterTemplateIDEditor)),
                 new EditorTypes(typeof(ItemTemplateID), typeof(ItemTemplateIDEditor)),
+                new EditorTypes(typeof(AllianceID), typeof(AllianceIDEditor)),
                 new EditorTypes(typeof(MapIndex), typeof(MapIndexEditor)),
                 new EditorTypes(typeof(IEnumerable<KeyValuePair<StatType, int>>), typeof(StatTypeConstDictionaryEditor)),
                 new EditorTypes(typeof(StatTypeConstDictionary), typeof(StatTypeConstDictionaryEditor)));
