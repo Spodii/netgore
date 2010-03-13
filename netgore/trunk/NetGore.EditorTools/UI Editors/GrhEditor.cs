@@ -88,7 +88,7 @@ namespace NetGore.EditorTools
         /// where to paint it.</param>
         public override void PaintValue(PaintValueEventArgs e)
         {
-            var image = GrhImageList.TryGetImage(e.Value);
+            var image = GrhImageList.Instance.TryGetImage(e.Value);
             if (image != null)
                 e.Graphics.DrawImage(image, e.Bounds);
 
