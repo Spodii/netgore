@@ -4,14 +4,14 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using DemoGame.Server;
+using DemoGame.DbObjs;
 
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="CharacterTemplateID"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="AllianceID"/>.
     /// </summary>
-    public class CharacterTemplateIDEditor : UITypeEditor
+    public class AllianceIDEditor : UITypeEditor
     {
         /// <summary>
         /// Edits the specified object's value using the editor style indicated by the
@@ -32,13 +32,13 @@ namespace DemoGame.EditorTools
 
             if (svc != null)
             {
-                using (var editorForm = new CharacterTemplateUITypeEditorForm(value))
+                using (var editorForm = new AllianceUITypeEditorForm(value))
                 {
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplateID))
+                        if (context.PropertyDescriptor.PropertyType == typeof(AllianceID))
                             value = editorForm.SelectedItem.ID;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplate))
+                        else if (context.PropertyDescriptor.PropertyType == typeof(IAllianceTable))
                             value = editorForm.SelectedItem;
                         else if (context.PropertyDescriptor.PropertyType == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
