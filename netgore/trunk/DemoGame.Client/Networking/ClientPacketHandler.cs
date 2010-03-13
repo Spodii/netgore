@@ -749,7 +749,7 @@ namespace DemoGame.Client
             MapEntityIndex npcIndex = r.ReadMapEntityIndex();
             NPCChatDialogID dialogIndex = r.ReadNPCChatDialogID();
 
-            NPCChatDialogBase dialog = NPCChatManager.GetDialog(dialogIndex);
+            NPCChatDialogBase dialog = NPCChatManager.Instance[dialogIndex];
             GameplayScreen.ChatDialogForm.StartDialog(dialog);
         }
 

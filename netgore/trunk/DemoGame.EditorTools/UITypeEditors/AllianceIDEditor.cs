@@ -34,14 +34,20 @@ namespace DemoGame.EditorTools
             {
                 using (var editorForm = new AllianceUITypeEditorForm(value))
                 {
+                    var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (context.PropertyDescriptor.PropertyType == typeof(AllianceID))
+                        if (pt == typeof(AllianceID) || pt == typeof(AllianceID?))
                             value = editorForm.SelectedItem.ID;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(IAllianceTable))
+                        else if (pt == typeof(IAllianceTable))
                             value = editorForm.SelectedItem;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(string))
+                        else if (pt == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
+                    }
+                    else
+                    {
+                        if (pt == typeof(AllianceID?))
+                            value = null;
                     }
                 }
             }

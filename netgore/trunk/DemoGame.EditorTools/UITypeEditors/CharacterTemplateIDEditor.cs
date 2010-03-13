@@ -34,14 +34,20 @@ namespace DemoGame.EditorTools
             {
                 using (var editorForm = new CharacterTemplateUITypeEditorForm(value))
                 {
+                    var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplateID))
+                        if (pt == typeof(CharacterTemplateID) || pt == typeof(CharacterTemplateID?))
                             value = editorForm.SelectedItem.ID;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(CharacterTemplate))
+                        else if (pt == typeof(CharacterTemplate))
                             value = editorForm.SelectedItem;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(string))
+                        else if (pt == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
+                    }
+                    else
+                    {
+                        if (pt == typeof(CharacterTemplateID?))
+                            value = null;
                     }
                 }
             }

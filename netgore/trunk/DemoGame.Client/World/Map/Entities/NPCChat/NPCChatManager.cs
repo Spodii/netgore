@@ -13,21 +13,26 @@ namespace DemoGame.Client.NPCChat
         /// <summary>
         /// The NPCChatManagerBase implementation instance.
         /// </summary>
-        static readonly NPCChatManager _instance = new NPCChatManager();
+        static readonly NPCChatManager _instance;
+
+        /// <summary>
+        /// Gets the <see cref="NPCChatManager"/> instance.
+        /// </summary>
+        public static NPCChatManager Instance { get { return _instance; } }
+
+        /// <summary>
+        /// Initializes the <see cref="NPCChatManager"/> class.
+        /// </summary>
+        static NPCChatManager()
+        {
+            _instance = new NPCChatManager();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
         /// </summary>
         NPCChatManager() : base(true)
         {
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of all the NPC chat dialogs in this manager.
-        /// </summary>
-        public static IEnumerable<NPCChatDialogBase> Dialogs
-        {
-            get { return _instance; }
         }
 
         /// <summary>
@@ -38,16 +43,6 @@ namespace DemoGame.Client.NPCChat
         protected override NPCChatDialogBase CreateDialog(IValueReader reader)
         {
             return new NPCChatDialog(reader);
-        }
-
-        /// <summary>
-        /// Gets the NPCChatDialogBase for the dialog with the given index.
-        /// </summary>
-        /// <param name="dialogIndex">Index of the dialog to get.</param>
-        /// <returns>The NPCChatDialogBase for the dialog with the given index.</returns>
-        public static NPCChatDialogBase GetDialog(NPCChatDialogID dialogIndex)
-        {
-            return _instance[dialogIndex];
         }
     }
 }

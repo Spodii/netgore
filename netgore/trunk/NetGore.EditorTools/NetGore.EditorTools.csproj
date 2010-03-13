@@ -110,6 +110,10 @@
     <Compile Include="UI Editors\MusicUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI Editors\NPCChatDialogEditor.cs" />
+    <Compile Include="UI Editors\NPCChatDialogUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI Editors\SoundEditor.cs" />
     <Compile Include="UI Editors\SoundUITypeEditorForm.cs">
       <SubType>Form</SubType>

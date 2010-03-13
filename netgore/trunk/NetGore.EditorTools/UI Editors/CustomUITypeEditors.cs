@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
+using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
 {
@@ -15,9 +16,31 @@ namespace NetGore.EditorTools
     public static class CustomUITypeEditors
     {
         static bool _added = false;
+        static bool _addedNPCChatManager = false;
 
         /// <summary>
-        /// Adds all of the custom <see cref="UITypeEditor"/>s.
+        /// Adds the <see cref="NPCChatDialogBase"/> editor.
+        /// </summary>
+        /// <param name="chatManager">The <see cref="NPCChatManagerBase"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="chatManager"/> is null.</exception>
+        public static void AddNPCChatDialogEditor(NPCChatManagerBase chatManager)
+        {
+            if (chatManager == null)
+                throw new ArgumentNullException("chatManager");
+
+            if (_addedNPCChatManager)
+                return;
+
+            _addedNPCChatManager = true;
+
+            NPCChatDialogUITypeEditorForm.NPCChatManager = chatManager;
+
+            AddEditorsHelper(new EditorTypes(typeof(NPCChatDialogID), typeof(NPCChatDialogEditor)),
+                new EditorTypes(typeof(NPCChatDialogID?), typeof(NPCChatDialogEditor)));
+        }
+
+        /// <summary>
+        /// Adds all of the custom <see cref="UITypeEditor"/>s that do not require any additional parameters.
         /// </summary>
         public static void AddEditors()
         {
@@ -26,10 +49,11 @@ namespace NetGore.EditorTools
 
             _added = true;
 
-            AddEditorsHelper(new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)), new EditorTypes(typeof(Grh), typeof(GrhEditor)),
+            AddEditorsHelper(new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)),
                              new EditorTypes(typeof(MusicID), typeof(MusicEditor)),
                              new EditorTypes(typeof(SoundID), typeof(SoundEditor)),
                              new EditorTypes(typeof(Color), typeof(XnaColorEditor)),
+                             new EditorTypes(typeof(Grh), typeof(GrhEditor)),
                              new EditorTypes(typeof(ParticleModifierCollection), typeof(ParticleModifierCollectionEditor)),
                              new EditorTypes(typeof(EmitterModifierCollection), typeof(EmitterModifierCollectionEditor)));
         }
