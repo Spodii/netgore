@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using NetGore;
+using System.Data;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.NPCChat
 {
     [Serializable]
-    public struct NPCChatDialogItemID : IComparable<NPCChatDialogItemID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct NPCChatDialogItemID : IComparable<NPCChatDialogItemID>, IConvertible, IFormattable, IComparable<int>,
+                                        IEquatable<int>
     {
         /// <summary>
         /// Represents the largest possible value of <see cref="NPCChatDialogItemID"/>. This field is constant.
@@ -166,6 +165,30 @@ namespace NetGore.NPCChat
             bitStream.Write(_value);
         }
 
+        #region IComparable<int> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        public int CompareTo(int other)
+        {
+            return _value.CompareTo(other);
+        }
+
+        #endregion
+
         #region IComparable<NPCChatDialogItemID> Members
 
         /// <summary>
@@ -187,30 +210,6 @@ namespace NetGore.NPCChat
         public int CompareTo(NPCChatDialogItemID other)
         {
             return _value.CompareTo(other._value);
-        }
-
-        #endregion
-
-        #region IComparable<int> Members
-
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        public int CompareTo(int other)
-        {
-            return _value.CompareTo(other);
         }
 
         #endregion
@@ -242,32 +241,6 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent Unicode character using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// A Unicode character equivalent to the value of this instance.
-        /// </returns>
-        char IConvertible.ToChar(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToChar(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 8-bit signed integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 8-bit signed integer equivalent to the value of this instance.
-        /// </returns>
-        sbyte IConvertible.ToSByte(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToSByte(provider);
-        }
-
-        /// <summary>
         /// Converts the value of this instance to an equivalent 8-bit unsigned integer using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
@@ -281,107 +254,29 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent 16-bit signed integer using the specified culture-specific formatting information.
+        /// Converts the value of this instance to an equivalent Unicode character using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
         /// culture-specific formatting information.</param>
         /// <returns>
-        /// An 16-bit signed integer equivalent to the value of this instance.
+        /// A Unicode character equivalent to the value of this instance.
         /// </returns>
-        short IConvertible.ToInt16(IFormatProvider provider)
+        char IConvertible.ToChar(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt16(provider);
+            return ((IConvertible)_value).ToChar(provider);
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent 16-bit unsigned integer using the specified culture-specific formatting information.
+        /// Converts the value of this instance to an equivalent <see cref="T:System.DateTime"/> using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
         /// culture-specific formatting information.</param>
         /// <returns>
-        /// An 16-bit unsigned integer equivalent to the value of this instance.
+        /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
         /// </returns>
-        ushort IConvertible.ToUInt16(IFormatProvider provider)
+        DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt16(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 32-bit signed integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 32-bit signed integer equivalent to the value of this instance.
-        /// </returns>
-        int IConvertible.ToInt32(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToInt32(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 32-bit unsigned integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 32-bit unsigned integer equivalent to the value of this instance.
-        /// </returns>
-        uint IConvertible.ToUInt32(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToUInt32(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 64-bit signed integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 64-bit signed integer equivalent to the value of this instance.
-        /// </returns>
-        long IConvertible.ToInt64(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToInt64(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent 64-bit unsigned integer using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// An 64-bit unsigned integer equivalent to the value of this instance.
-        /// </returns>
-        ulong IConvertible.ToUInt64(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToUInt64(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent single-precision floating-point number using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information. </param>
-        /// <returns>
-        /// A single-precision floating-point number equivalent to the value of this instance.
-        /// </returns>
-        float IConvertible.ToSingle(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToSingle(provider);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to an equivalent double-precision floating-point number using the specified culture-specific formatting information.
-        /// </summary>
-        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
-        /// culture-specific formatting information.</param>
-        /// <returns>
-        /// A double-precision floating-point number equivalent to the value of this instance.
-        /// </returns>
-        double IConvertible.ToDouble(IFormatProvider provider)
-        {
-            return ((IConvertible)_value).ToDouble(provider);
+            return ((IConvertible)_value).ToDateTime(provider);
         }
 
         /// <summary>
@@ -398,16 +293,81 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Converts the value of this instance to an equivalent <see cref="T:System.DateTime"/> using the specified culture-specific formatting information.
+        /// Converts the value of this instance to an equivalent double-precision floating-point number using the specified culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
         /// culture-specific formatting information.</param>
         /// <returns>
-        /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
+        /// A double-precision floating-point number equivalent to the value of this instance.
         /// </returns>
-        DateTime IConvertible.ToDateTime(IFormatProvider provider)
+        double IConvertible.ToDouble(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDateTime(provider);
+            return ((IConvertible)_value).ToDouble(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 16-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 16-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        short IConvertible.ToInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt16(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 32-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 32-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        int IConvertible.ToInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt32(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 64-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 64-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        long IConvertible.ToInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt64(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 8-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 8-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        sbyte IConvertible.ToSByte(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToSByte(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent single-precision floating-point number using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information. </param>
+        /// <returns>
+        /// A single-precision floating-point number equivalent to the value of this instance.
+        /// </returns>
+        float IConvertible.ToSingle(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToSingle(provider);
         }
 
         /// <summary>
@@ -435,6 +395,45 @@ namespace NetGore.NPCChat
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
             return ((IConvertible)_value).ToType(conversionType, provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 16-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 16-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        ushort IConvertible.ToUInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt16(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 32-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 32-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        uint IConvertible.ToUInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt32(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 64-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies
+        /// culture-specific formatting information.</param>
+        /// <returns>
+        /// An 64-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        ulong IConvertible.ToUInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt64(provider);
         }
 
         #endregion
@@ -758,7 +757,7 @@ namespace NetGore.NPCChat
         /// <see cref="NPCChatDialogItemID"/>.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
-        /// <param name="dict">The <see cref="IDictionary{TKey, TValue}"/>.</param>
+        /// <param name="dict">The <see cref="IDictionary{TKey,TValue}"/>.</param>
         /// <param name="key">The key for the value to get.</param>
         /// <returns>The value at the given <paramref name="key"/> parsed as a <see cref="NPCChatDialogItemID"/>.</returns>
         public static NPCChatDialogItemID AsNPCChatDialogItemID<T>(this IDictionary<T, string> dict, T key)
@@ -777,7 +776,8 @@ namespace NetGore.NPCChat
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static NPCChatDialogItemID AsNPCChatDialogItemID<T>(this IDictionary<T, string> dict, T key, NPCChatDialogItemID defaultValue)
+        public static NPCChatDialogItemID AsNPCChatDialogItemID<T>(this IDictionary<T, string> dict, T key,
+                                                                   NPCChatDialogItemID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
@@ -788,42 +788,6 @@ namespace NetGore.NPCChat
                 return defaultValue;
 
             return parsed;
-        }
-
-        /// <summary>
-        /// Parses the <see cref="NPCChatDialogItemID"/> from a string.
-        /// </summary>
-        /// <param name="parser">The <see cref="Parser"/> to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The <see cref="NPCChatDialogItemID"/> parsed from the string.</returns>
-        public static NPCChatDialogItemID ParseNPCChatDialogItemID(this Parser parser, string value)
-        {
-            return new NPCChatDialogItemID(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the <see cref="NPCChatDialogItemID"/> from a string.
-        /// </summary>
-        /// <param name="parser">The <see cref="Parser"/> to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed <see cref="NPCChatDialogItemID"/>.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out NPCChatDialogItemID outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new NPCChatDialogItemID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the <see cref="NPCChatDialogItemID"/> from a <see cref="BitStream"/>.
-        /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="NPCChatDialogItemID"/> from.</param>
-        /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="BitStream"/>.</returns>
-        public static NPCChatDialogItemID ReadNPCChatDialogItemID(this BitStream bitStream)
-        {
-            return NPCChatDialogItemID.Read(bitStream);
         }
 
         /// <summary>
@@ -849,6 +813,27 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Parses the <see cref="NPCChatDialogItemID"/> from a string.
+        /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The <see cref="NPCChatDialogItemID"/> parsed from the string.</returns>
+        public static NPCChatDialogItemID ParseNPCChatDialogItemID(this Parser parser, string value)
+        {
+            return new NPCChatDialogItemID(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the <see cref="NPCChatDialogItemID"/> from a <see cref="BitStream"/>.
+        /// </summary>
+        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="NPCChatDialogItemID"/> from.</param>
+        /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="BitStream"/>.</returns>
+        public static NPCChatDialogItemID ReadNPCChatDialogItemID(this BitStream bitStream)
+        {
+            return NPCChatDialogItemID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the <see cref="NPCChatDialogItemID"/> from an IValueReader.
         /// </summary>
         /// <param name="valueReader"><see cref="IValueReader"/> to read the <see cref="NPCChatDialogItemID"/> from.</param>
@@ -857,6 +842,21 @@ namespace NetGore.NPCChat
         public static NPCChatDialogItemID ReadNPCChatDialogItemID(this IValueReader valueReader, string name)
         {
             return NPCChatDialogItemID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the <see cref="NPCChatDialogItemID"/> from a string.
+        /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed <see cref="NPCChatDialogItemID"/>.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out NPCChatDialogItemID outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new NPCChatDialogItemID(tmp);
+            return ret;
         }
 
         /// <summary>

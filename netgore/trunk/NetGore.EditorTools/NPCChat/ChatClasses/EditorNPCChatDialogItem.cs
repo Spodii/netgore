@@ -36,8 +36,7 @@ namespace NetGore.EditorTools.NPCChat
         /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
         /// </summary>
         /// <param name="id">The ID.</param>
-        public EditorNPCChatDialogItem(NPCChatDialogItemID id)
-            : this(id, string.Empty)
+        public EditorNPCChatDialogItem(NPCChatDialogItemID id) : this(id, string.Empty)
         {
         }
 

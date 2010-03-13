@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -97,8 +96,8 @@ namespace DemoGame.Client.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected override void SetReadValues(byte value, NPCChatDialogItemID page, string text, NPCChatConditionalCollectionBase conditionals,
-                                              NPCChatResponseActionBase[] actions)
+        protected override void SetReadValues(byte value, NPCChatDialogItemID page, string text,
+                                              NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string),
                          "Values were already set?");

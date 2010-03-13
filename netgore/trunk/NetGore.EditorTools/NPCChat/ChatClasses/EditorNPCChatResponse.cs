@@ -184,8 +184,8 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected override void SetReadValues(byte value, NPCChatDialogItemID page, string text, NPCChatConditionalCollectionBase conditionals,
-                                              NPCChatResponseActionBase[] actions)
+        protected override void SetReadValues(byte value, NPCChatDialogItemID page, string text,
+                                              NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions)
         {
             _value = value;
             _page = page;

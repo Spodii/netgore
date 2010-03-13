@@ -426,16 +426,19 @@ namespace DemoGame.NPCChatEditor
             var dialog = new EditorNPCChatDialog();
 
             var haveYouDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(0), "Have you done this quest?");
-            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "False"), new EditorNPCChatResponse(new NPCChatDialogItemID(2), "True"));
+            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "False"),
+                                             new EditorNPCChatResponse(new NPCChatDialogItemID(2), "True"));
 
             var hasNotDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(1), "Think you can help me out?");
-            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(3), "Yes"), new EditorNPCChatResponse(new NPCChatDialogItemID(4), "No"));
+            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(3), "Yes"),
+                                            new EditorNPCChatResponse(new NPCChatDialogItemID(4), "No"));
 
             var acceptHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(3), "Sweet, thanks!");
 
             var declineHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(4), "Fine. Screw you too, you selfish jerk!");
 
-            var hasDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(2), "Sorry dude, you already did this quest!");
+            var hasDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(2),
+                                                               "Sorry dude, you already did this quest!");
             hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "So? Just let me do it!"),
                                          new EditorNPCChatResponse("Ok, fine, whatever. Dick."));
 

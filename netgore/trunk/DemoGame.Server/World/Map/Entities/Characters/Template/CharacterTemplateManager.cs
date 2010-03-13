@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DemoGame.DbObjs;
-using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
 using NetGore.Db;

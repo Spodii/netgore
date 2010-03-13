@@ -9,20 +9,8 @@ namespace NetGore.Network
     /// </summary>
     public struct ExternalIPParser
     {
-        readonly string _url;
         readonly Regex _parser;
-
-        /// <summary>
-        /// Gets the Url to get the information from.
-        /// </summary>
-        public string Url { get { return _url; } }
-
-        /// <summary>
-        /// Gets the <see cref="Regex"/> used to parse the data retreived from the
-        /// <see cref="ExternalIPParser.Url"/>. Must contain a group named "ip", which will contain the results
-        /// to display. Can be null.
-        /// </summary>
-        public Regex Parser { get { return _parser; } }
+        readonly string _url;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExternalIPParser"/> struct.
@@ -42,6 +30,24 @@ namespace NetGore.Network
 
             _url = url;
             _parser = parser;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Regex"/> used to parse the data retreived from the
+        /// <see cref="ExternalIPParser.Url"/>. Must contain a group named "ip", which will contain the results
+        /// to display. Can be null.
+        /// </summary>
+        public Regex Parser
+        {
+            get { return _parser; }
+        }
+
+        /// <summary>
+        /// Gets the Url to get the information from.
+        /// </summary>
+        public string Url
+        {
+            get { return _url; }
         }
     }
 }

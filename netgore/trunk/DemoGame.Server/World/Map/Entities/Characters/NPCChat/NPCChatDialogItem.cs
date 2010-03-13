@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.NPCChat.Conditionals;
 using log4net;
-using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
