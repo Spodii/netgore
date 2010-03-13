@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -113,8 +112,8 @@ namespace DemoGame.Client.NPCChat
         protected override void SetReadValues(NPCChatDialogID id, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
             Debug.Assert(
-                _id == default(NPCChatDialogID) && _title == default(string) && _items == default(IEnumerable<NPCChatDialogItemBase>),
-                "Values were already set?");
+                _id == default(NPCChatDialogID) && _title == default(string) &&
+                _items == default(IEnumerable<NPCChatDialogItemBase>), "Values were already set?");
 
             _id = id;
             _title = title;

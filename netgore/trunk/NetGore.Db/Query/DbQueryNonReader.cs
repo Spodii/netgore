@@ -107,7 +107,7 @@ namespace NetGore.Db
                 var cmd = GetCommand(conn);
                 if (HasParameters)
                     SetParameters(new DbParameterValues(cmd.Parameters), item);
-                
+
                 // Execute the command
                 try
                 {
@@ -117,9 +117,7 @@ namespace NetGore.Db
                 {
                     // Throw a custom exception for common errors
                     if (ex.Number == 1062)
-                    {
                         throw new DuplicateKeyException(ex);
-                    }
 
                     // Everything else, just throw the default exception
                     throw;

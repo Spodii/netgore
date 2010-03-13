@@ -150,8 +150,8 @@ namespace NetGore.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected abstract void SetReadValues(byte value, NPCChatDialogItemID page, string text, NPCChatConditionalCollectionBase conditionals,
-                                              NPCChatResponseActionBase[] actions);
+        protected abstract void SetReadValues(byte value, NPCChatDialogItemID page, string text,
+                                              NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
