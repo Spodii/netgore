@@ -52,6 +52,7 @@
     <Compile Include="StatTypeConstDictionaryUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UITypeEditors\AllianceIDEditor.cs" />
     <Compile Include="UITypeEditors\AllianceUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
