@@ -11,14 +11,14 @@ namespace NetGore.NPCChat
     public abstract class NPCChatDialogBase
     {
         /// <summary>
-        /// NPCChatDialogBase constructor.
+        /// Initializes a new instance of the <see cref="NPCChatDialogBase"/> class.
         /// </summary>
         protected NPCChatDialogBase()
         {
         }
 
         /// <summary>
-        /// NPCChatDialogBase constructor.
+        /// Initializes a new instance of the <see cref="NPCChatDialogBase"/> class.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
         protected NPCChatDialogBase(IValueReader reader)
