@@ -32,20 +32,34 @@ namespace NetGore.EditorTools
 
             if (svc != null)
             {
-                if (context.PropertyDescriptor.PropertyType == typeof(string))
+                var pt = context.PropertyDescriptor.PropertyType;
+                if (pt == typeof(string))
                 {
                     using (var editorForm = new SoundUITypeEditorForm(null, value as string))
                     {
-                        if (svc.ShowDialog(editorForm) != DialogResult.OK)
+                        if (svc.ShowDialog(editorForm) == DialogResult.OK)
                             value = editorForm.SelectedItem.Name;
                     }
                 }
-                else if (context.PropertyDescriptor.PropertyType == typeof(ISound))
+                else if (pt == typeof(ISound))
                 {
                     using (var editorForm = new SoundUITypeEditorForm(null, value as ISound))
                     {
-                        if (svc.ShowDialog(editorForm) != DialogResult.OK)
+                        if (svc.ShowDialog(editorForm) == DialogResult.OK)
                             value = editorForm.SelectedItem;
+                    }
+                }
+                else if (pt == typeof(SoundID) || pt == typeof(SoundID?))
+                {
+                    using (var editorForm = new SoundUITypeEditorForm(null, (value == null ? string.Empty : value.ToString())))
+                    {
+                        if (svc.ShowDialog(editorForm) == DialogResult.OK)
+                            value = editorForm.SelectedItem.Index;
+                        else
+                        {
+                            if (pt == typeof(SoundID?))
+                                value = null;
+                        }
                     }
                 }
             }

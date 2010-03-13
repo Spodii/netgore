@@ -60,6 +60,8 @@ namespace DemoGame.Server
             LoadPersistentNPCTemplateInfo();
         }
 
+        static readonly NPCChatManagerBase _npcChatManager = NPCChatManager.Instance;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NPC"/> class.
         /// </summary>
@@ -82,7 +84,7 @@ namespace DemoGame.Server
             _giveExp = v.GiveExp;
             _giveCash = v.GiveCash;
             _quests = template.Quests;
-            _chatDialog = v.ChatDialog.HasValue ? NPCChatManager.GetDialog(v.ChatDialog.Value) : null;
+            _chatDialog = v.ChatDialog.HasValue ? _npcChatManager[v.ChatDialog.Value] : null;
             SetShopFromID(v.ShopID);
 
             RespawnMapIndex = map.Index;
@@ -230,7 +232,7 @@ namespace DemoGame.Server
         {
             base.HandleAdditionalLoading(v);
 
-            _chatDialog = v.ChatDialog.HasValue ? NPCChatManager.GetDialog(v.ChatDialog.Value) : null;
+            _chatDialog = v.ChatDialog.HasValue ? _npcChatManager[v.ChatDialog.Value] : null;
             SetShopFromID(v.ShopID);
         }
 
@@ -332,7 +334,7 @@ namespace DemoGame.Server
             _quests = template.Quests;
 
             if (v.ChatDialog.HasValue)
-                _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
+                _chatDialog = _npcChatManager[v.ChatDialog.Value];
             else
                 _chatDialog = null;
         }

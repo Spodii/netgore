@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
+using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Db;
@@ -51,6 +52,7 @@ namespace DemoGame.EditorTools
                                          new TypeConverterAttribute(typeof(StatTypeConstDictionaryTypeConverter)));
 
             NetGore.EditorTools.CustomUITypeEditors.AddEditors();
+            NetGore.EditorTools.CustomUITypeEditors.AddNPCChatDialogEditor(NPCChatManager.Instance);
         }
     }
 }

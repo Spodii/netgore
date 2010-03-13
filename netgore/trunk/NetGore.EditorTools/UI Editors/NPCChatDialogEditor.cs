@@ -4,14 +4,14 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using DemoGame.DbObjs;
+using NetGore.NPCChat;
 
-namespace DemoGame.EditorTools
+namespace NetGore.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="ItemTemplateID"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="NPCChatDialogBase"/>.
     /// </summary>
-    public class ItemTemplateIDEditor : UITypeEditor
+    public class NPCChatDialogEditor : UITypeEditor
     {
         /// <summary>
         /// Edits the specified object's value using the editor style indicated by the
@@ -32,21 +32,22 @@ namespace DemoGame.EditorTools
 
             if (svc != null)
             {
-                using (var editorForm = new ItemTemplateUITypeEditorForm(value))
+                using (var editorForm = new NPCChatDialogUITypeEditorForm(value))
                 {
                     var pt = context.PropertyDescriptor.PropertyType;
+
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (pt == typeof(IItemTemplateTable))
-                            value = editorForm.SelectedItem;
-                        else if (pt == typeof(ItemTemplateID) || pt == typeof(ItemTemplateID?))
+                        if (pt == typeof(NPCChatDialogID) || pt == typeof(NPCChatDialogID?))
                             value = editorForm.SelectedItem.ID;
+                        else if (pt == typeof(NPCChatDialogBase))
+                            value = editorForm.SelectedItem;
                         else if (pt == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
                     }
                     else
                     {
-                        if (pt == typeof(ItemTemplateID))
+                        if (pt == typeof(NPCChatDialogID?))
                             value = null;
                     }
                 }

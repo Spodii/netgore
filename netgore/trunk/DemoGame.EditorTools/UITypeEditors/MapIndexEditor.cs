@@ -35,14 +35,20 @@ namespace DemoGame.EditorTools
             {
                 using (var editorForm = new MapUITypeEditorForm(value))
                 {
+                    var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (context.PropertyDescriptor.PropertyType == typeof(MapIndex))
+                        if (pt == typeof(MapIndex) || pt == typeof(MapIndex?))
                             value = editorForm.SelectedItem.ID;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(Map))
+                        else if (pt == typeof(Map))
                             value = editorForm.SelectedItem;
-                        else if (context.PropertyDescriptor.PropertyType == typeof(string))
+                        else if (pt == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
+                    }
+                    else
+                    {
+                        if (pt == typeof(MapIndex?))
+                            value = null;
                     }
                 }
             }
