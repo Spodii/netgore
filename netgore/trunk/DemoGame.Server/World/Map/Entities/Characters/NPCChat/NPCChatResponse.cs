@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.NPCChat.Conditionals;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -15,7 +16,7 @@ namespace DemoGame.Server.NPCChat
     public class NPCChatResponse : NPCChatResponseBase
     {
         NPCChatConditionalCollectionBase _conditionals;
-        ushort _page;
+        NPCChatDialogItemID _page;
         byte _value;
         NPCChatResponseActionBase[] _actions;
 
@@ -59,7 +60,7 @@ namespace DemoGame.Server.NPCChat
         /// response is chosen. If this value is equal to the EndConversationPage constant, then the dialog
         /// will end instead of going to a new page.
         /// </summary>
-        public override ushort Page
+        public override NPCChatDialogItemID Page
         {
             get { return _page; }
         }
@@ -121,7 +122,7 @@ namespace DemoGame.Server.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
+        protected override void SetReadValues(byte value, NPCChatDialogItemID page, string text, NPCChatConditionalCollectionBase conditionals,
                                               NPCChatResponseActionBase[] actions)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort), "Values were already set?");

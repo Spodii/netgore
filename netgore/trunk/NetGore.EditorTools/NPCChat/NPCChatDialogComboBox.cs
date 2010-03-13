@@ -66,7 +66,7 @@ namespace NetGore.EditorTools.NPCChat
             public NPCChatDialogComboBoxItem(NPCChatDialogBase dialog)
             {
                 Dialog = dialog;
-                _toString = string.Format("{0}: {1}", Dialog.Index, Dialog.Title);
+                _toString = string.Format("{0}: {1}", Dialog.ID, Dialog.Title);
 
                 // TODO: Can likely get rid of this struct by overriding OnDrawItem
             }

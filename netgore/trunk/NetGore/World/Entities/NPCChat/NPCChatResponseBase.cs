@@ -13,7 +13,7 @@ namespace NetGore.NPCChat
         /// <summary>
         /// The page number used for responses to end the conversation.
         /// </summary>
-        public const ushort EndConversationPage = ushort.MaxValue;
+        public static readonly NPCChatDialogItemID EndConversationPage = (NPCChatDialogItemID)NPCChatDialogItemID.MaxValue;
 
         /// <summary>
         /// NPCChatResponseBase constructor.
@@ -59,7 +59,7 @@ namespace NetGore.NPCChat
         /// response is chosen. If this value is equal to the EndConversationPage constant, then the dialog
         /// will end instead of going to a new page.
         /// </summary>
-        public abstract ushort Page { get; }
+        public abstract NPCChatDialogItemID Page { get; }
 
         /// <summary>
         /// When overridden in the derived class, gets the text to display for this response.
@@ -124,7 +124,7 @@ namespace NetGore.NPCChat
         protected void Read(IValueReader reader)
         {
             var value = reader.ReadByte("Value");
-            var page = reader.ReadUShort("Page");
+            var page = reader.ReadNPCChatDialogItemID("Page");
             var text = reader.ReadString("Text");
             var actionNames = reader.ReadMany("Actions", ((r, name) => r.ReadString(name)));
             var actions = GetActionsFromNames(actionNames);
@@ -150,7 +150,7 @@ namespace NetGore.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected abstract void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
+        protected abstract void SetReadValues(byte value, NPCChatDialogItemID page, string text, NPCChatConditionalCollectionBase conditionals,
                                               NPCChatResponseActionBase[] actions);
 
         /// <summary>

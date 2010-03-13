@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -41,13 +42,13 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
-        /// Gets the NPCChatDialogBase for the dialog with the given index.
+        /// Gets the NPCChatDialogBase for the dialog with the given ID.
         /// </summary>
-        /// <param name="dialogIndex">Index of the dialog to get.</param>
-        /// <returns>The NPCChatDialogBase for the dialog with the given index.</returns>
-        public static NPCChatDialogBase GetDialog(int dialogIndex)
+        /// <param name="dialogID">ID of the dialog to get.</param>
+        /// <returns>The NPCChatDialogBase for the dialog with the given ID.</returns>
+        public static NPCChatDialogBase GetDialog(NPCChatDialogID dialogID)
         {
-            return _instance[dialogIndex];
+            return _instance[dialogID];
         }
     }
 }

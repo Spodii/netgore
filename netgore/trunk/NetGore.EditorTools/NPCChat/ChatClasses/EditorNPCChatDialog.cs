@@ -15,7 +15,8 @@ namespace NetGore.EditorTools.NPCChat
     public class EditorNPCChatDialog : NPCChatDialogBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        ushort _index;
+
+        NPCChatDialogID _id;
         EditorNPCChatDialogItem[] _items = new EditorNPCChatDialogItem[8];
         string _title;
 
@@ -43,9 +44,9 @@ namespace NetGore.EditorTools.NPCChat
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
         /// </summary>
-        public override ushort Index
+        public override NPCChatDialogID ID
         {
-            get { return _index; }
+            get { return _id; }
         }
 
         /// <summary>
@@ -83,12 +84,12 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="item">The <see cref="EditorNPCChatDialogItem"/> to add.</param>
         public void Add(EditorNPCChatDialogItem item)
         {
-            ResizeArrayToFitIndex(ref _items, item.Index);
+            ResizeArrayToFitIndex(ref _items, (int)item.ID);
 
-            if (_items[item.Index] == item)
+            if (_items[(int)item.ID] == item)
                 return;
 
-            _items[item.Index] = item;
+            _items[(int)item.ID] = item;
 
             if (Changed != null)
                 Changed(this);
@@ -107,38 +108,38 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
-        /// <param name="chatDialogItemIndex">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemIndex"/>, or null if
-        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemIndex"/> or if
-        /// the <paramref name="chatDialogItemIndex"/> is equal to
+        /// <param name="chatDialogItemID">The page number of the NPCChatDialogItemBase to get.</param>
+        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemID"/>, or null if
+        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemID"/> or if
+        /// the <paramref name="chatDialogItemID"/> is equal to
         /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
-        public override NPCChatDialogItemBase GetDialogItem(ushort chatDialogItemIndex)
+        public override NPCChatDialogItemBase GetDialogItem(NPCChatDialogItemID chatDialogItemID)
         {
-            return GetDialogItemCasted(chatDialogItemIndex);
+            return GetDialogItemCasted(chatDialogItemID);
         }
 
         /// <summary>
         /// Same as <see cref="GetDialogItem"/>, but gets the <see cref="NPCChatDialogItemBase"/> as a
         /// <see cref="EditorNPCChatDialogItem"/>.
         /// </summary>
-        /// <param name="chatDialogItemIndex">The <see cref="EditorNPCChatDialogItem"/> index.</param>
+        /// <param name="chatDialogItemID">The <see cref="EditorNPCChatDialogItem"/> index.</param>
         /// <returns>The <see cref="EditorNPCChatDialogItem"/> with the given index
-        /// <paramref name="chatDialogItemIndex"/>.</returns>
-        public EditorNPCChatDialogItem GetDialogItemCasted(ushort chatDialogItemIndex)
+        /// <paramref name="chatDialogItemID"/>.</returns>
+        public EditorNPCChatDialogItem GetDialogItemCasted(NPCChatDialogItemID chatDialogItemID)
         {
-            if (chatDialogItemIndex == NPCChatResponseBase.EndConversationPage)
+            if (chatDialogItemID == NPCChatResponseBase.EndConversationPage)
                 return null;
 
-            if (chatDialogItemIndex < 0 || chatDialogItemIndex >= _items.Length)
+            if (chatDialogItemID < 0 || chatDialogItemID >= _items.Length)
             {
                 const string errmsg = "Invalid NPCChatDialogItemBase index `{0}`.";
-                Debug.Fail(string.Format(errmsg, chatDialogItemIndex));
+                Debug.Fail(string.Format(errmsg, chatDialogItemID));
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, chatDialogItemIndex);
+                    log.ErrorFormat(errmsg, chatDialogItemID);
                 return null;
             }
 
-            return _items[chatDialogItemIndex];
+            return _items[(int)chatDialogItemID];
         }
 
         /// <summary>
@@ -155,15 +156,15 @@ namespace NetGore.EditorTools.NPCChat
         /// Gets the next free index for a <see cref="EditorNPCChatDialogItem"/>.
         /// </summary>
         /// <returns>The next free index for a <see cref="EditorNPCChatDialogItem"/>.</returns>
-        public ushort GetFreeDialogItemIndex()
+        public NPCChatDialogItemID GetFreeDialogItemID()
         {
             for (var i = 0; i < _items.Length; i++)
             {
                 if (_items[i] == null)
-                    return (ushort)i;
+                    return new NPCChatDialogItemID(i);
             }
 
-            return (ushort)_items.Length;
+            return new NPCChatDialogItemID(_items.Length);
         }
 
         /// <summary>
@@ -183,7 +184,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <returns>The initial EditorNPCChatDialogItem that is used at the start of a conversation.</returns>
         public EditorNPCChatDialogItem GetInitialDialogItemCasted()
         {
-            return GetDialogItemCasted(0);
+            return GetDialogItemCasted(new NPCChatDialogItemID(0));
         }
 
         /// <summary>
@@ -197,10 +198,10 @@ namespace NetGore.EditorTools.NPCChat
             var sourceResponses = GetSourceResponses(dialogItem).Cast<EditorNPCChatResponse>();
 
             // Remove the dialog from the collection
-            if (_items[dialogItem.Index] != dialogItem)
+            if (_items[(int)dialogItem.ID] != dialogItem)
                 return false;
 
-            _items[dialogItem.Index] = null;
+            _items[(int)dialogItem.ID] = null;
 
             // Remove references to the dialog
             foreach (var r in sourceResponses)
@@ -232,20 +233,23 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Sets the <see cref="Index"/>.
+        /// Sets the <see cref="ID"/>.
         /// </summary>
         /// <param name="value">The new value.</param>
-        public void SetIndex(ushort value)
+        public void SetID(NPCChatDialogID value)
         {
-            _index = value;
+            _id = value;
         }
 
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        protected override void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items)
+        /// <param name="id">The ID.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="items">The dialog items.</param>
+        protected override void SetReadValues(NPCChatDialogID id, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
-            _index = index;
+            _id = id;
             _title = title;
 
             // Clear the array

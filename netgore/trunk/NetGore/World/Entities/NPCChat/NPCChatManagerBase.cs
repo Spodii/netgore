@@ -34,30 +34,30 @@ namespace NetGore.NPCChat
         /// <summary>
         /// Gets the NPCChatDialogBase at the specified index.
         /// </summary>
-        /// <param name="index">Index of the NPCChatDialogBase.</param>
+        /// <param name="id">Index of the NPCChatDialogBase.</param>
         /// <returns>The NPCChatDialogBase at the specified index, or null if invalid.</returns>
-        public NPCChatDialogBase this[int index]
+        public NPCChatDialogBase this[NPCChatDialogID id]
         {
             get
             {
                 // Check for a valid index
-                if (!_npcChatDialogs.CanGet(index))
+                if (!_npcChatDialogs.CanGet((int)id))
                 {
                     const string errmsg = "Invalid NPC chat dialog index `{0}`.";
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, index);
-                    Debug.Fail(string.Format(errmsg, index));
+                        log.ErrorFormat(errmsg, id);
+                    Debug.Fail(string.Format(errmsg, id));
                     return null;
                 }
 
-                return _npcChatDialogs[index];
+                return _npcChatDialogs[(int)id];
             }
             set
             {
                 if (IsReadonly)
                     throw CreateReadonlyException();
 
-                _npcChatDialogs[index] = value;
+                _npcChatDialogs[(int)id] = value;
             }
         }
 
@@ -135,7 +135,7 @@ namespace NetGore.NPCChat
 
             foreach (var dialog in dialogs)
             {
-                _npcChatDialogs[dialog.Index] = dialog;
+                _npcChatDialogs[(int)dialog.ID] = dialog;
             }
         }
 

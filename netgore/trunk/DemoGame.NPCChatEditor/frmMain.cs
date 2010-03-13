@@ -122,12 +122,12 @@ namespace DemoGame.NPCChatEditor
             }
 
             // Create the new dialog characterID
-            var index = CurrentDialog.GetFreeDialogItemIndex();
-            var newDialogItem = new EditorNPCChatDialogItem(index, "New dialog characterID");
+            var id = CurrentDialog.GetFreeDialogItemID();
+            var newDialogItem = new EditorNPCChatDialogItem(id, "New dialog characterID");
             CurrentDialog.Add(newDialogItem);
 
             // Hook it to the response
-            EditingObjAsResponse.SetPage(index);
+            EditingObjAsResponse.SetPage(id);
 
             // Update the tree
             npcChatDialogView.UpdateTree();
@@ -156,7 +156,7 @@ namespace DemoGame.NPCChatEditor
             }
 
             // Set the redirection
-            EditingObjAsResponse.SetPage(0);
+            EditingObjAsResponse.SetPage(new NPCChatDialogItemID(0));
 
             // TODO: Properly update the tree
             button1_Click(null, null);
@@ -214,7 +214,7 @@ namespace DemoGame.NPCChatEditor
             }
 
             // Make sure this isn't the dialog
-            if (EditingObjAsDialogItem.Index == 0)
+            if (EditingObjAsDialogItem.ID == 0)
             {
                 MessageBox.Show("Cannot delete the root dialog characterID.");
                 return;
@@ -246,7 +246,7 @@ namespace DemoGame.NPCChatEditor
                 sb.AppendLine("Cannot delete this node because the following child node(s) are being redirect to:");
                 foreach (var item in redirectedToItems)
                 {
-                    sb.AppendLine(" " + item.Index + ": " + item.Title);
+                    sb.AppendLine(" " + item.ID + ": " + item.Title);
                 }
                 MessageBox.Show(sb.ToString());
                 return;
@@ -425,19 +425,19 @@ namespace DemoGame.NPCChatEditor
         {
             var dialog = new EditorNPCChatDialog();
 
-            var haveYouDoneThisQuest = new EditorNPCChatDialogItem(0, "Have you done this quest?");
-            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "False"), new EditorNPCChatResponse(2, "True"));
+            var haveYouDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(0), "Have you done this quest?");
+            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "False"), new EditorNPCChatResponse(new NPCChatDialogItemID(2), "True"));
 
-            var hasNotDoneThisQuest = new EditorNPCChatDialogItem(1, "Think you can help me out?");
-            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(3, "Yes"), new EditorNPCChatResponse(4, "No"));
+            var hasNotDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(1), "Think you can help me out?");
+            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(3), "Yes"), new EditorNPCChatResponse(new NPCChatDialogItemID(4), "No"));
 
-            var acceptHelp = new EditorNPCChatDialogItem(3, "Sweet, thanks!");
+            var acceptHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(3), "Sweet, thanks!");
 
-            var declineHelp = new EditorNPCChatDialogItem(4, "Fine. Screw you too, you selfish jerk!");
+            var declineHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(4), "Fine. Screw you too, you selfish jerk!");
 
-            var hasDoneThisQuest = new EditorNPCChatDialogItem(2, "Sorry dude, you already did this quest!");
-            hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "So? Just let me fucking do it!"),
-                                         new EditorNPCChatResponse("Ok, fine, whatever. Asshole."));
+            var hasDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(2), "Sorry dude, you already did this quest!");
+            hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "So? Just let me do it!"),
+                                         new EditorNPCChatResponse("Ok, fine, whatever. Dick."));
 
             dialog.Add(new EditorNPCChatDialogItem[]
             { haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest });
@@ -652,7 +652,7 @@ namespace DemoGame.NPCChatEditor
 
                 txtTitle.Text = EditingObjAsDialogItem.Title;
                 txtDialogText.Text = EditingObjAsDialogItem.Text;
-                txtDialogPage.Text = EditingObjAsDialogItem.Index.ToString();
+                txtDialogPage.Text = EditingObjAsDialogItem.ID.ToString();
                 chkIsBranch.Checked = EditingObjAsDialogItem.IsBranch;
 
                 if (EditingObjAsDialogItem.IsBranch)
@@ -686,7 +686,7 @@ namespace DemoGame.NPCChatEditor
 
                 var redirectTo = (EditorNPCChatDialogItem)EditingObjAsTreeNode.Tag;
                 txtTitle.Text = redirectTo.Text;
-                txtRedirectIndex.Text = redirectTo.Index.ToString();
+                txtRedirectID.Text = redirectTo.ID.ToString();
             }
             else
                 SetAllChildrenEnabled(tcChatDialogItem.Controls, false);
@@ -753,27 +753,27 @@ namespace DemoGame.NPCChatEditor
 
             if (_doNotUpdateObj)
             {
-                txtRedirectIndex.Text = response.Page.ToString();
+                txtRedirectID.Text = response.Page.ToString();
                 return;
             }
 
-            ushort newIndex;
-            if (!Parser.Current.TryParse(txtRedirectIndex.Text, out newIndex))
+            int newIndex;
+            if (!Parser.Current.TryParse(txtRedirectID.Text, out newIndex))
             {
                 MessageBox.Show("Invalid value entered.");
-                txtRedirectIndex.Focus();
+                txtRedirectID.Focus();
                 return;
             }
 
-            var newNode = CurrentDialog.GetDialogItem(newIndex);
+            var newNode = CurrentDialog.GetDialogItem(new NPCChatDialogItemID(newIndex));
             if (newNode == null)
             {
                 MessageBox.Show("Invalid node page index entered.");
-                txtRedirectIndex.Focus();
+                txtRedirectID.Focus();
                 return;
             }
 
-            response.SetPage(newIndex);
+            response.SetPage(new NPCChatDialogItemID(newIndex));
 
             // TODO: Properly update the view
             button1_Click(null, null);

@@ -19,7 +19,7 @@ namespace NetGore.EditorTools.NPCChat
         readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
 
         NPCChatConditionalCollectionBase _conditionals;
-        ushort _index;
+        NPCChatDialogItemID _id;
         bool _isBranch;
         string _text;
         string _title;
@@ -35,32 +35,33 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
         /// </summary>
-        /// <param name="index">The index.</param>
-        public EditorNPCChatDialogItem(ushort index) : this(index, string.Empty)
+        /// <param name="id">The ID.</param>
+        public EditorNPCChatDialogItem(NPCChatDialogItemID id)
+            : this(id, string.Empty)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
         /// </summary>
-        /// <param name="index">The index.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="text">The text.</param>
-        public EditorNPCChatDialogItem(ushort index, string text) : this(index, text, string.Empty)
+        public EditorNPCChatDialogItem(NPCChatDialogItemID id, string text) : this(id, text, string.Empty)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
         /// </summary>
-        /// <param name="index">The index.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="text">The text.</param>
         /// <param name="title">The title.</param>
-        public EditorNPCChatDialogItem(ushort index, string text, string title)
+        public EditorNPCChatDialogItem(NPCChatDialogItemID id, string text, string title)
         {
             SetText(text);
             SetTitle(title);
 
-            _index = index;
+            _id = id;
         }
 
         /// <summary>
@@ -83,9 +84,9 @@ namespace NetGore.EditorTools.NPCChat
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
         /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
         /// </summary>
-        public override ushort Index
+        public override NPCChatDialogItemID ID
         {
-            get { return _index; }
+            get { return _id; }
         }
 
         /// <summary>
@@ -208,7 +209,7 @@ namespace NetGore.EditorTools.NPCChat
             {
                 const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Count - 1);
+                    log.ErrorFormat(errmsg, responseIndex, ID, _responses.Count - 1);
                 return null;
             }
 
@@ -236,17 +237,17 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        /// <param name="page">The index.</param>
+        /// <param name="page">The ID.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
         /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="responses">The responses.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(ushort page, string title, string text, bool isBranch,
+        protected override void SetReadValues(NPCChatDialogItemID page, string title, string text, bool isBranch,
                                               IEnumerable<NPCChatResponseBase> responses,
                                               NPCChatConditionalCollectionBase conditionals)
         {
-            _index = page;
+            _id = page;
             _isBranch = isBranch;
             SetTitle(title);
             SetText(text);

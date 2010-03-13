@@ -63,7 +63,7 @@ namespace DemoGame.NPCChatEditor
             this.label2 = new System.Windows.Forms.Label();
             this.tpRedirect = new System.Windows.Forms.TabPage();
             this.btnDeleteRedirect = new System.Windows.Forms.Button();
-            this.txtRedirectIndex = new System.Windows.Forms.TextBox();
+            this.txtRedirectID = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -390,7 +390,7 @@ namespace DemoGame.NPCChatEditor
             // tpRedirect
             // 
             this.tpRedirect.Controls.Add(this.btnDeleteRedirect);
-            this.tpRedirect.Controls.Add(this.txtRedirectIndex);
+            this.tpRedirect.Controls.Add(this.txtRedirectID);
             this.tpRedirect.Controls.Add(this.label4);
             this.tpRedirect.Location = new System.Drawing.Point(4, 22);
             this.tpRedirect.Name = "tpRedirect";
@@ -411,12 +411,12 @@ namespace DemoGame.NPCChatEditor
             // 
             // txtRedirectIndex
             // 
-            this.txtRedirectIndex.Location = new System.Drawing.Point(45, 6);
-            this.txtRedirectIndex.Name = "txtRedirectIndex";
-            this.txtRedirectIndex.Size = new System.Drawing.Size(48, 20);
-            this.txtRedirectIndex.TabIndex = 6;
-            this.txtRedirectIndex.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtRedirectIndex_KeyDown);
-            this.txtRedirectIndex.Leave += new System.EventHandler(this.txtRedirectIndex_Leave);
+            this.txtRedirectID.Location = new System.Drawing.Point(45, 6);
+            this.txtRedirectID.Name = "txtRedirectID";
+            this.txtRedirectID.Size = new System.Drawing.Size(48, 20);
+            this.txtRedirectID.TabIndex = 6;
+            this.txtRedirectID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtRedirectIndex_KeyDown);
+            this.txtRedirectID.Leave += new System.EventHandler(this.txtRedirectIndex_Leave);
             // 
             // label4
             // 
@@ -521,7 +521,7 @@ namespace DemoGame.NPCChatEditor
         private System.Windows.Forms.TextBox txtDialogText;
         private System.Windows.Forms.TextBox txtResponseIndex;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtRedirectIndex;
+        private System.Windows.Forms.TextBox txtRedirectID;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtDialogPage;
         private System.Windows.Forms.Label label5;

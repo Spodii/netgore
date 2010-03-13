@@ -134,6 +134,7 @@ namespace DemoGame.DbClassCreator
                 generator.AddCustomType(typeof(GuildID), "*", "guild_id");
                 generator.AddCustomType(typeof(QuestID), "*", "quest_id", "req_quest_id");
                 generator.AddCustomType(typeof(WeaponType), "*", "weapon_type");
+                generator.AddCustomType(typeof(NPCChatDialogID), "*", "chat_dialog");
 
                 // Renaming
                 var formatter = generator.Formatter;

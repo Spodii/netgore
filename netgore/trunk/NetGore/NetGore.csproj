@@ -263,6 +263,8 @@
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
+    <Compile Include="World\Entities\NPCChat\NPCChatDialogID.cs" />
+    <Compile Include="World\Entities\NPCChat\NPCChatDialogItemID.cs" />
     <Compile Include="World\Map\MapEntityIndexTypeConverter.cs" />
     <Compile Include="World\Map\MapIndexTypeConverter.cs" />
     <Compile Include="World\Map\Spatial\DynamicGridSpatialCollection.cs" />

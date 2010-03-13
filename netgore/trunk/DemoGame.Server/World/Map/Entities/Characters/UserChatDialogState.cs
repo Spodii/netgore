@@ -320,7 +320,7 @@ namespace DemoGame.Server
             else
             {
                 // New page
-                using (PacketWriter pw = ServerPacket.SetChatDialogPage(_dialogItem.Index, GetResponsesToSkip()))
+                using (PacketWriter pw = ServerPacket.SetChatDialogPage(_dialogItem.ID, GetResponsesToSkip()))
                 {
                     _user.Send(pw);
                 }
@@ -341,7 +341,7 @@ namespace DemoGame.Server
             _chattingWith = npc;
 
             // Tell the client to open the dialog
-            using (PacketWriter pw = ServerPacket.StartChatDialog(npc.MapEntityIndex, ChatDialog.Index))
+            using (PacketWriter pw = ServerPacket.StartChatDialog(npc.MapEntityIndex, ChatDialog.ID))
             {
                 _user.Send(pw);
             }
