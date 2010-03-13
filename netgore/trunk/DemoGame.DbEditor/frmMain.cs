@@ -279,6 +279,18 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            // Ensure the GrhImageList's cache is updated
+            GrhImageList.Save();
+
+            base.OnClosing(e);
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
