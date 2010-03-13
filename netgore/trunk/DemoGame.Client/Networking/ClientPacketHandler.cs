@@ -603,7 +603,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]
         void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
         {
-            ushort pageIndex = r.ReadUShort();
+            var pageID = r.ReadNPCChatDialogItemID();
             byte skipCount = r.ReadByte();
 
             var responsesToSkip = new byte[skipCount];
@@ -612,7 +612,7 @@ namespace DemoGame.Client
                 responsesToSkip[i] = r.ReadByte();
             }
 
-            GameplayScreen.ChatDialogForm.SetPageIndex(pageIndex, responsesToSkip);
+            GameplayScreen.ChatDialogForm.SetPageIndex(pageID, responsesToSkip);
         }
 
         [MessageHandler((byte)ServerPacketID.SetExp)]
@@ -747,7 +747,7 @@ namespace DemoGame.Client
         void RecvStartChatDialog(IIPSocket conn, BitStream r)
         {
             MapEntityIndex npcIndex = r.ReadMapEntityIndex();
-            ushort dialogIndex = r.ReadUShort();
+            NPCChatDialogID dialogIndex = r.ReadNPCChatDialogID();
 
             NPCChatDialogBase dialog = NPCChatManager.GetDialog(dialogIndex);
             GameplayScreen.ChatDialogForm.StartDialog(dialog);

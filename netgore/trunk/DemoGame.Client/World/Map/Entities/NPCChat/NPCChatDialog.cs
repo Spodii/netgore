@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -15,7 +16,8 @@ namespace DemoGame.Client.NPCChat
     public class NPCChatDialog : NPCChatDialogBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        ushort _index;
+
+        NPCChatDialogID _id;
         NPCChatDialogItemBase[] _items;
         string _title;
 
@@ -31,9 +33,9 @@ namespace DemoGame.Client.NPCChat
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
         /// </summary>
-        public override ushort Index
+        public override NPCChatDialogID ID
         {
-            get { return _index; }
+            get { return _id; }
         }
 
         /// <summary>
@@ -58,26 +60,26 @@ namespace DemoGame.Client.NPCChat
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
-        /// <param name="chatDialogItemIndex">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemIndex"/>, or null if
-        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemIndex"/> or if
-        /// the <paramref name="chatDialogItemIndex"/> is equal to
+        /// <param name="chatDialogItemID">The page number of the NPCChatDialogItemBase to get.</param>
+        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemID"/>, or null if
+        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemID"/> or if
+        /// the <paramref name="chatDialogItemID"/> is equal to
         /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
-        public override NPCChatDialogItemBase GetDialogItem(ushort chatDialogItemIndex)
+        public override NPCChatDialogItemBase GetDialogItem(NPCChatDialogItemID chatDialogItemID)
         {
-            if (chatDialogItemIndex == NPCChatResponseBase.EndConversationPage)
+            if (chatDialogItemID == NPCChatResponseBase.EndConversationPage)
                 return null;
 
-            if (chatDialogItemIndex < 0 || chatDialogItemIndex >= _items.Length)
+            if (chatDialogItemID < 0 || chatDialogItemID >= _items.Length)
             {
-                const string errmsg = "Invalid NPCChatDialogItemBase index `{0}`.";
-                Debug.Fail(string.Format(errmsg, chatDialogItemIndex));
+                const string errmsg = "Invalid NPCChatDialogItemBase ID `{0}`.";
+                Debug.Fail(string.Format(errmsg, chatDialogItemID));
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, chatDialogItemIndex);
+                    log.ErrorFormat(errmsg, chatDialogItemID);
                 return null;
             }
 
-            return _items[chatDialogItemIndex];
+            return _items[(int)chatDialogItemID];
         }
 
         /// <summary>
@@ -105,16 +107,16 @@ namespace DemoGame.Client.NPCChat
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        /// <param name="index">The index.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="title">The title.</param>
         /// <param name="items">The dialog items.</param>
-        protected override void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items)
+        protected override void SetReadValues(NPCChatDialogID id, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
             Debug.Assert(
-                _index == default(ushort) && _title == default(string) && _items == default(IEnumerable<NPCChatDialogItemBase>),
+                _id == default(NPCChatDialogID) && _title == default(string) && _items == default(IEnumerable<NPCChatDialogItemBase>),
                 "Values were already set?");
 
-            _index = index;
+            _id = id;
             _title = title;
             _items = items.ToArray();
         }

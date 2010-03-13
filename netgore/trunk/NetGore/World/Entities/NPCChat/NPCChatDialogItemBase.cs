@@ -17,7 +17,7 @@ namespace NetGore.NPCChat
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// NPCChatDialogItemBase constructor.
+        /// Initializes a new instance of the <see cref="NPCChatDialogItemBase"/> class.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
         protected NPCChatDialogItemBase(IValueReader reader)
@@ -26,7 +26,7 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// NPCChatDialogItemBase constructor.
+        /// Initializes a new instance of the <see cref="NPCChatDialogItemBase"/> class.
         /// </summary>
         protected NPCChatDialogItemBase()
         {
@@ -44,7 +44,7 @@ namespace NetGore.NPCChat
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
         /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
         /// </summary>
-        public abstract ushort Index { get; }
+        public abstract NPCChatDialogItemID ID { get; }
 
         /// <summary>
         /// When overridden in the derived class, gets if this NPCChatDialogItemBase is a branch dialog or not. If
@@ -139,7 +139,7 @@ namespace NetGore.NPCChat
         protected ArgumentOutOfRangeException CreateInvalidResponseIndexException(string parameterName, ushort value)
         {
             const string errmsg = "Response index `{0}` was out of range for dialog item `{1}`.";
-            var err = string.Format(errmsg, value, Index);
+            var err = string.Format(errmsg, value, ID);
             if (log.IsErrorEnabled)
                 log.Error(err);
 
@@ -191,7 +191,7 @@ namespace NetGore.NPCChat
         /// <param name="reader">IValueReader to read the values from.</param>
         protected void Read(IValueReader reader)
         {
-            var index = reader.ReadUShort("Index");
+            var id = reader.ReadNPCChatDialogItemID("ID");
             var title = reader.ReadString("Title");
             var text = reader.ReadString("Text");
             var isBranch = reader.ReadBool("IsBranch");
@@ -211,7 +211,7 @@ namespace NetGore.NPCChat
                 }
             }
 
-            SetReadValues(index, title, text, isBranch, responses, conditionals);
+            SetReadValues(id, title, text, isBranch, responses, conditionals);
 
             AssertBranchHasTwoResponses();
             AssertNonBranchHasNoConditionals();
@@ -227,7 +227,7 @@ namespace NetGore.NPCChat
         /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="responses">The responses.</param>
-        protected abstract void SetReadValues(ushort page, string title, string text, bool isBranch,
+        protected abstract void SetReadValues(NPCChatDialogItemID page, string title, string text, bool isBranch,
                                               IEnumerable<NPCChatResponseBase> responses,
                                               NPCChatConditionalCollectionBase conditionals);
 
@@ -239,7 +239,7 @@ namespace NetGore.NPCChat
         /// </returns>
         public override string ToString()
         {
-            return string.Format(string.Format("{0} [Index: {1}, Title: {2}]", GetType().Name, Index, Title));
+            return string.Format(string.Format("{0} [ID: {1}, Title: {2}]", GetType().Name, ID, Title));
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace NetGore.NPCChat
             AssertNonBranchHasNoConditionals();
             AssertResponsesHaveValidValues();
 
-            writer.Write("Index", Index);
+            writer.Write("ID", ID);
             writer.Write("Title", Title ?? string.Empty);
             writer.Write("Text", Text ?? string.Empty);
             writer.Write("IsBranch", IsBranch);

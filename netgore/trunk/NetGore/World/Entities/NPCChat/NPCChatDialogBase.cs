@@ -30,7 +30,7 @@ namespace NetGore.NPCChat
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
         /// </summary>
-        public abstract ushort Index { get; }
+        public abstract NPCChatDialogID ID { get; }
 
         /// <summary>
         /// When overridden in the derived class, gets the title for this dialog. The title is primarily
@@ -57,13 +57,13 @@ namespace NetGore.NPCChat
             if (root == null)
                 throw new ArgumentNullException("root");
 
-            var foundItems = new SortedList<ushort, NPCChatDialogItemBase>();
+            var foundItems = new SortedList<NPCChatDialogItemID, NPCChatDialogItemBase>();
             GetChildDialogItems(root, foundItems);
 
             return foundItems.Values;
         }
 
-        void GetChildDialogItems(NPCChatDialogItemBase current, IDictionary<ushort, NPCChatDialogItemBase> found)
+        void GetChildDialogItems(NPCChatDialogItemBase current, IDictionary<NPCChatDialogItemID, NPCChatDialogItemBase> found)
         {
             foreach (var response in current.Responses)
             {
@@ -81,12 +81,12 @@ namespace NetGore.NPCChat
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
-        /// <param name="chatDialogItemIndex">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemIndex"/>, or null if
-        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemIndex"/> or if
-        /// the <paramref name="chatDialogItemIndex"/> is equal to
+        /// <param name="chatDialogItemID">The page number of the NPCChatDialogItemBase to get.</param>
+        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemID"/>, or null if
+        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemID"/> or if
+        /// the <paramref name="chatDialogItemID"/> is equal to
         /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
-        public abstract NPCChatDialogItemBase GetDialogItem(ushort chatDialogItemIndex);
+        public abstract NPCChatDialogItemBase GetDialogItem(NPCChatDialogItemID chatDialogItemID);
 
         /// <summary>
         /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
@@ -121,7 +121,7 @@ namespace NetGore.NPCChat
         public IEnumerable<NPCChatResponseBase> GetSourceResponses(NPCChatDialogItemBase dialogItem)
         {
             var responses = GetResponses();
-            return responses.Where(x => x.Page == dialogItem.Index);
+            return responses.Where(x => x.Page == dialogItem.ID);
         }
 
         /// <summary>
@@ -130,20 +130,20 @@ namespace NetGore.NPCChat
         /// <param name="reader">IValueReader to read the values from.</param>
         protected void Read(IValueReader reader)
         {
-            var index = reader.ReadUShort("Index");
+            var id = reader.ReadNPCChatDialogID("ID");
             var title = reader.ReadString("Title");
             var items = reader.ReadManyNodes("Items", x => CreateDialogItem(x));
 
-            SetReadValues(index, title, items);
+            SetReadValues(id, title, items);
         }
 
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        /// <param name="index">The index.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="title">The title.</param>
         /// <param name="items">The dialog items.</param>
-        protected abstract void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items);
+        protected abstract void SetReadValues(NPCChatDialogID id, string title, IEnumerable<NPCChatDialogItemBase> items);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -153,7 +153,7 @@ namespace NetGore.NPCChat
         /// </returns>
         public override string ToString()
         {
-            return string.Format(string.Format("{0} [Index: {1}, Title: {2}]", GetType().Name, Index, Title));
+            return string.Format(string.Format("{0} [ID: {1}, Title: {2}]", GetType().Name, ID, Title));
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace NetGore.NPCChat
         {
             var items = GetDialogItems();
 
-            writer.Write("Index", Index);
+            writer.Write("ID", ID);
             writer.Write("Title", Title);
             writer.WriteManyNodes("Items", items, ((w, item) => item.Write(w)));
         }

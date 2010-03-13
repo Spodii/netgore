@@ -2033,14 +2033,14 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `chat_dialog`.
         /// </summary>
-        ushort? ICharacterTable.ChatDialog
+        NPCChatDialogID? ICharacterTable.ChatDialog
         {
             get
             {
                 if (ChatDialog == null)
                     return null;
 
-                return ChatDialog.Index;
+                return ChatDialog.ID;
             }
         }
 

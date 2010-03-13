@@ -377,10 +377,10 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetChatDialogPage(ushort pageIndex, IEnumerable<byte> responsesToSkip)
+        public static PacketWriter SetChatDialogPage(NPCChatDialogItemID pageID, IEnumerable<byte> responsesToSkip)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetChatDialogPage);
-            pw.Write(pageIndex);
+            pw.Write(pageID);
 
             // Get the number of responses to skip
             byte skipCount;
@@ -538,11 +538,11 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter StartChatDialog(MapEntityIndex npcIndex, ushort dialogIndex)
+        public static PacketWriter StartChatDialog(MapEntityIndex npcIndex, NPCChatDialogID dialogID)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartChatDialog);
             pw.Write(npcIndex);
-            pw.Write(dialogIndex);
+            pw.Write(dialogID);
             return pw;
         }
 

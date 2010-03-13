@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.NPCChat.Conditionals;
 using log4net;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -17,8 +18,9 @@ namespace DemoGame.Server.NPCChat
     public class NPCChatDialogItem : NPCChatDialogItemBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         NPCChatConditionalCollectionBase _conditionals;
-        ushort _index;
+        NPCChatDialogItemID _id;
         bool _isBranch;
         NPCChatResponseBase[] _responses;
 
@@ -57,9 +59,9 @@ namespace DemoGame.Server.NPCChat
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
         /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
         /// </summary>
-        public override ushort Index
+        public override NPCChatDialogItemID ID
         {
-            get { return _index; }
+            get { return _id; }
         }
 
         /// <summary>
@@ -146,7 +148,7 @@ namespace DemoGame.Server.NPCChat
             {
                 const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Length - 1);
+                    log.ErrorFormat(errmsg, responseIndex, ID, _responses.Length - 1);
                 return null;
             }
 
@@ -162,14 +164,14 @@ namespace DemoGame.Server.NPCChat
         /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="responses">The responses.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(ushort page, string title, string text, bool isBranch,
+        protected override void SetReadValues(NPCChatDialogItemID page, string title, string text, bool isBranch,
                                               IEnumerable<NPCChatResponseBase> responses,
                                               NPCChatConditionalCollectionBase conditionals)
         {
-            Debug.Assert(_index == default(ushort) && _responses == default(IEnumerable<NPCChatResponseBase>),
+            Debug.Assert(_id == default(NPCChatDialogItemID) && _responses == default(IEnumerable<NPCChatResponseBase>),
                          "Values were already set?");
 
-            _index = page;
+            _id = page;
             _isBranch = isBranch;
             _responses = responses.ToArray();
             _conditionals = conditionals;
@@ -188,7 +190,7 @@ namespace DemoGame.Server.NPCChat
         /// </returns>
         public override string ToString()
         {
-            return string.Format(string.Format("{0} [Index: {1}]", GetType().Name, Index));
+            return string.Format(string.Format("{0} [Index: {1}]", GetType().Name, ID));
         }
     }
 }

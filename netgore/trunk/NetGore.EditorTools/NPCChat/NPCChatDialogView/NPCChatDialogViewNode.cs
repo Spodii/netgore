@@ -224,12 +224,12 @@ namespace NetGore.EditorTools.NPCChat
             switch (ChatItemType)
             {
                 case NPCChatDialogViewNodeItemType.DialogItem:
-                    if (ChatItemAsDialogItem.Index == dialogItemIndex)
+                    if (ChatItemAsDialogItem.ID == dialogItemIndex)
                         return true;
                     break;
 
                 case NPCChatDialogViewNodeItemType.Redirect:
-                    if (includeRedirects && ChatItemAsDialogItem.Index == dialogItemIndex)
+                    if (includeRedirects && ChatItemAsDialogItem.ID == dialogItemIndex)
                         return true;
                     break;
             }
@@ -373,13 +373,13 @@ namespace NetGore.EditorTools.NPCChat
             {
                 case NPCChatDialogViewNodeItemType.Redirect:
                     asDialogItem = ChatItemAsDialogItem;
-                    text = "[GOTO " + asDialogItem.Index + ": " + GetText(asDialogItem) + "]";
+                    text = "[GOTO " + asDialogItem.ID + ": " + GetText(asDialogItem) + "]";
                     foreColor = TreeViewCasted.NodeForeColorGoTo;
                     break;
 
                 case NPCChatDialogViewNodeItemType.DialogItem:
                     asDialogItem = ChatItemAsDialogItem;
-                    text = asDialogItem.Index + ": " + GetText(asDialogItem);
+                    text = asDialogItem.ID + ": " + GetText(asDialogItem);
                     foreColor = asDialogItem.IsBranch ? TreeViewCasted.NodeForeColorBranch : TreeViewCasted.NodeForeColorNormal;
                     break;
 

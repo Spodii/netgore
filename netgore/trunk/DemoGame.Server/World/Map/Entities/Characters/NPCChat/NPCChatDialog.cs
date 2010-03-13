@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -14,7 +15,7 @@ namespace DemoGame.Server.NPCChat
     /// </summary>
     public class NPCChatDialog : NPCChatDialogBase
     {
-        ushort _index;
+        NPCChatDialogID _id;
         NPCChatDialogItemBase[] _items;
 
 #if DEBUG
@@ -31,9 +32,9 @@ namespace DemoGame.Server.NPCChat
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
         /// </summary>
-        public override ushort Index
+        public override NPCChatDialogID ID
         {
-            get { return _index; }
+            get { return _id; }
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
-        /// NPCChatDialog constructor.
+        /// Initializes a new instance of the <see cref="NPCChatDialog"/> class.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
         internal NPCChatDialog(IValueReader reader) : base(reader)
@@ -76,7 +77,7 @@ namespace DemoGame.Server.NPCChat
         /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemIndex"/> or if
         /// the <paramref name="chatDialogItemIndex"/> is equal to
         /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
-        public override NPCChatDialogItemBase GetDialogItem(ushort chatDialogItemIndex)
+        public override NPCChatDialogItemBase GetDialogItem(NPCChatDialogItemID chatDialogItemIndex)
         {
             if (chatDialogItemIndex == NPCChatResponseBase.EndConversationPage)
                 return null;
@@ -90,7 +91,7 @@ namespace DemoGame.Server.NPCChat
                 return null;
             }
 
-            return _items[chatDialogItemIndex];
+            return _items[(int)chatDialogItemIndex];
         }
 
         /// <summary>
@@ -118,15 +119,15 @@ namespace DemoGame.Server.NPCChat
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        /// <param name="index">The index.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="title">The title.</param>
         /// <param name="items">The dialog items.</param>
-        protected override void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items)
+        protected override void SetReadValues(NPCChatDialogID id, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
-            Debug.Assert(_index == default(ushort) && _items == default(IEnumerable<NPCChatDialogItemBase>),
+            Debug.Assert(_id == default(NPCChatDialogID) && _items == default(IEnumerable<NPCChatDialogItemBase>),
                          "Values were already set?");
 
-            _index = index;
+            _id = id;
             _items = items.ToArray();
 
 #if DEBUG
@@ -142,7 +143,7 @@ namespace DemoGame.Server.NPCChat
         /// </returns>
         public override string ToString()
         {
-            return string.Format(string.Format("{0} [Index: {1}]", GetType().Name, Index));
+            return string.Format(string.Format("{0} [Index: {1}]", GetType().Name, ID));
         }
     }
 }

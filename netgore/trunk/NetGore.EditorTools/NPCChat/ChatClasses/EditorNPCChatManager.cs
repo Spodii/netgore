@@ -34,7 +34,7 @@ namespace NetGore.EditorTools.NPCChat
             _instance.Reorganize();
 
             // Add the new dialog
-            _instance[dialog.Index] = dialog;
+            _instance[dialog.ID] = dialog;
         }
 
         /// <summary>
@@ -48,19 +48,19 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Gets the EditorNPCChatDialog at the specified <paramref name="index"/>.
+        /// Gets the EditorNPCChatDialog at the specified <paramref name="id"/>.
         /// </summary>
-        /// <param name="index">The index of the EditorNPCChatDialog to get.</param>
-        /// <returns>The EditorNPCChatDialog at the specified <paramref name="index"/>.</returns>
-        public static EditorNPCChatDialog GetDialog(int index)
+        /// <param name="id">The ID of the EditorNPCChatDialog to get.</param>
+        /// <returns>The EditorNPCChatDialog at the specified <paramref name="id"/>.</returns>
+        public static EditorNPCChatDialog GetDialog(NPCChatDialogID id)
         {
-            var ret = _instance[index];
+            var ret = _instance[id];
 
             // If we grabbed the wrong one, or nothing, try reorganizing
-            if (ret == null || ret.Index != index)
+            if (ret == null || ret.ID != id)
             {
                 _instance.Reorganize();
-                ret = _instance[index];
+                ret = _instance[id];
             }
 
             // Return whatever we found, since its not like we can do anything else even if it is invalid

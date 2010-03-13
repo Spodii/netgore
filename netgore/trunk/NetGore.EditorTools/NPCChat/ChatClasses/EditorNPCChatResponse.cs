@@ -14,8 +14,9 @@ namespace NetGore.EditorTools.NPCChat
     public class EditorNPCChatResponse : NPCChatResponseBase
     {
         readonly List<NPCChatResponseActionBase> _actions = new List<NPCChatResponseActionBase>();
+
         NPCChatConditionalCollectionBase _conditionals;
-        ushort _page;
+        NPCChatDialogItemID _page;
         string _text;
         byte _value;
 
@@ -40,7 +41,7 @@ namespace NetGore.EditorTools.NPCChat
         /// </summary>
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
-        public EditorNPCChatResponse(ushort page, string text)
+        public EditorNPCChatResponse(NPCChatDialogItemID page, string text)
         {
             _page = page;
             _text = text;
@@ -100,7 +101,7 @@ namespace NetGore.EditorTools.NPCChat
         /// response is chosen. If this value is equal to the EndConversationPage constant, then the dialog
         /// will end instead of going to a new page.
         /// </summary>
-        public override ushort Page
+        public override NPCChatDialogItemID Page
         {
             get { return _page; }
         }
@@ -164,7 +165,7 @@ namespace NetGore.EditorTools.NPCChat
         /// Sets the Page property.
         /// </summary>
         /// <param name="page">The new page.</param>
-        public void SetPage(ushort page)
+        public void SetPage(NPCChatDialogItemID page)
         {
             if (_page == page)
                 return;
@@ -183,7 +184,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
+        protected override void SetReadValues(byte value, NPCChatDialogItemID page, string text, NPCChatConditionalCollectionBase conditionals,
                                               NPCChatResponseActionBase[] actions)
         {
             _value = value;

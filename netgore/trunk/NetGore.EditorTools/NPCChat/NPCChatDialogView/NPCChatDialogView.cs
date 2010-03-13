@@ -182,16 +182,16 @@ namespace NetGore.EditorTools.NPCChat
         /// Gets the NPCChatDialogViewNode for the given NPCChatDialogItemBase. Nodes that redirect to the
         /// given NPCChatDialogItemBase are not included.
         /// </summary>
-        /// <param name="dialogItemIndex">The index of the NPCChatDialogItemBase to find the NPCChatDialogViewNode for.</param>
-        /// <returns>The NPCChatDialogViewNode for the given <paramref name="dialogItemIndex"/>, or null if
-        /// no NPCChatDialogViewNode was found that handles the given <paramref name="dialogItemIndex"/> or
-        /// if the <paramref name="dialogItemIndex"/> was for an invalid NPCChatDialogItemBase.</returns>
-        public NPCChatDialogViewNode GetNodeForDialogItem(ushort dialogItemIndex)
+        /// <param name="dialogItemID">The index of the NPCChatDialogItemBase to find the NPCChatDialogViewNode for.</param>
+        /// <returns>The NPCChatDialogViewNode for the given <paramref name="dialogItemID"/>, or null if
+        /// no NPCChatDialogViewNode was found that handles the given <paramref name="dialogItemID"/> or
+        /// if the <paramref name="dialogItemID"/> was for an invalid NPCChatDialogItemBase.</returns>
+        public NPCChatDialogViewNode GetNodeForDialogItem(NPCChatDialogItemID dialogItemID)
         {
             if (NPCChatDialog == null)
                 return null;
 
-            var dialogItem = NPCChatDialog.GetDialogItem(dialogItemIndex);
+            var dialogItem = NPCChatDialog.GetDialogItem(dialogItemID);
             if (dialogItem == null)
                 return null;
 

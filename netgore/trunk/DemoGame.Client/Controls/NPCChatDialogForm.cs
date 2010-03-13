@@ -132,17 +132,17 @@ namespace DemoGame.Client
             Text = "NPC Chat";
         }
 
-        public void SetPageIndex(ushort pageIndex, IEnumerable<byte> responsesToSkip)
+        public void SetPageIndex(NPCChatDialogItemID pageID, IEnumerable<byte> responsesToSkip)
         {
-            _page = _dialog.GetDialogItem(pageIndex);
+            _page = _dialog.GetDialogItem(pageID);
 
             if (_page == null)
             {
                 const string errmsg =
                     "Page `{0}` in dialog `{1}` is null. The Client should never be trying to set an invalid page.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, pageIndex, _dialog);
-                Debug.Fail(string.Format(errmsg, pageIndex, _dialog));
+                    log.ErrorFormat(errmsg, pageID, _dialog);
+                Debug.Fail(string.Format(errmsg, pageID, _dialog));
                 EndDialog();
                 return;
             }

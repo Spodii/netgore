@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -16,7 +17,8 @@ namespace DemoGame.Client.NPCChat
     public class NPCChatDialogItem : NPCChatDialogItemBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        ushort _index;
+
+        NPCChatDialogItemID _id;
         NPCChatResponseBase[] _responses;
         string _text;
         string _title;
@@ -41,9 +43,9 @@ namespace DemoGame.Client.NPCChat
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
         /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
         /// </summary>
-        public override ushort Index
+        public override NPCChatDialogItemID ID
         {
-            get { return _index; }
+            get { return _id; }
         }
 
         /// <summary>
@@ -113,7 +115,7 @@ namespace DemoGame.Client.NPCChat
             {
                 const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Length - 1);
+                    log.ErrorFormat(errmsg, responseIndex, ID, _responses.Length - 1);
                 return null;
             }
 
@@ -129,15 +131,15 @@ namespace DemoGame.Client.NPCChat
         /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="responses">The responses.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(ushort page, string title, string text, bool isBranch,
+        protected override void SetReadValues(NPCChatDialogItemID page, string title, string text, bool isBranch,
                                               IEnumerable<NPCChatResponseBase> responses,
                                               NPCChatConditionalCollectionBase conditionals)
         {
             Debug.Assert(
-                _index == default(ushort) && _title == default(string) && _text == default(string) &&
+                _id == default(NPCChatDialogItemID) && _title == default(string) && _text == default(string) &&
                 _responses == default(IEnumerable<NPCChatResponseBase>), "Values were already set?");
 
-            _index = page;
+            _id = page;
             _title = title;
             _text = text;
             _responses = responses.ToArray();
