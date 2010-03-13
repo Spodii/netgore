@@ -247,9 +247,16 @@ namespace DemoGame.DbEditor
         /// <summary>
         /// Gets the next free <see cref="ItemTemplateID"/>.
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TTemplate">The type of the template.</typeparam>
         /// <param name="dbController">The db controller.</param>
         /// <param name="reserve">If true, the index will be reserved by inserting the default
         /// values for the column at the given index.</param>
+        /// <param name="intToT">The int to T.</param>
+        /// <param name="tToInt">The t to int.</param>
+        /// <param name="getUsed">The get used.</param>
+        /// <param name="selector">The selector.</param>
+        /// <param name="inserter">The inserter.</param>
         /// <returns>
         /// The next free <see cref="ItemTemplateID"/>.
         /// </returns>
@@ -262,7 +269,6 @@ namespace DemoGame.DbEditor
 
             // Start with ID 0
             int idBase = 0;
-            int freeID;
             T freeIDAsT;
 
             // Loop until we successfully find an ID that has no template
@@ -270,7 +276,7 @@ namespace DemoGame.DbEditor
             do
             {
                 // Get the next free value
-                freeID = usedIDs.NextFreeValue(idBase);
+                var freeID = usedIDs.NextFreeValue(idBase);
                 freeIDAsT = intToT(freeID);
 
                 // Increase the base so that way, if it fails, we are forced to check a higher value
@@ -350,6 +356,12 @@ namespace DemoGame.DbEditor
         /// instance containing the event data.</param>
         void pgCharacterTemplate_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
+            if (e.ChangedItem.Label != null && e.ChangedItem.Label.Equals("id", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("This value cannot be changed.");
+                return;
+            }
+
             var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
             if (v == null)
                 return;
@@ -379,6 +391,12 @@ namespace DemoGame.DbEditor
         /// instance containing the event data.</param>
         void pgItemTemplate_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
+            if (e.ChangedItem.Label != null && e.ChangedItem.Label.Equals("id", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("This value cannot be changed.");
+                return;
+            }
+
             var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
             if (v == null)
                 return;
