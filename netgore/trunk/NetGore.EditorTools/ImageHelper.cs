@@ -35,6 +35,12 @@ namespace NetGore.EditorTools
             if (texture == null)
                 return null;
 
+            if (log.IsDebugEnabled)
+            {
+                log.DebugFormat("Creating image from texture `{0}` at ({1},{2})-({3}x{4}) with size ({5}x{6})", texture.Name, x, y,
+                                width, height, destWidth, destHeight);
+            }
+
             // Write the texture to a file
             string filePath = Path.GetTempFileName();
             texture.Save(filePath, ImageFileFormat.Png);
@@ -106,8 +112,12 @@ namespace NetGore.EditorTools
         /// <returns>Image filled with the specified color.</returns>
         public static Image CreateSolid(int width, int height, Color color)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating solid image of size {0}x{1} with color {2}.", width, height, color);
+
             Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(72, 72);
+
             using (var g = System.Drawing.Graphics.FromImage(bmp))
             {
                 using (var pen = new Pen(color, width * 2))
@@ -115,6 +125,7 @@ namespace NetGore.EditorTools
                     g.DrawRectangle(pen, 0, 0, width, height);
                 }
             }
+
             return bmp;
         }
     }
