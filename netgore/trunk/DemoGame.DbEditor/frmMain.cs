@@ -285,7 +285,7 @@ namespace DemoGame.DbEditor
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             // Ensure the GrhImageList's cache is updated
-            GrhImageList.Save();
+            GrhImageList.Instance.Save();
 
             base.OnClosing(e);
         }
@@ -315,6 +315,9 @@ namespace DemoGame.DbEditor
                 ContentManager cm = new ContentManager(serviceContainer, ContentPaths.Build.Root);
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
+
+            // Prepare the GrhImageList to avoid stalling the loading later
+            GrhImageList.Prepare();
 
             // Create the database connection
             DbConnectionSettings settings = new DbConnectionSettings();

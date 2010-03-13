@@ -241,7 +241,7 @@ namespace NetGore.EditorTools
             if (disposing)
             {
                 if (!_compactMode)
-                    GrhImageList.Save();
+                    GrhImageList.Instance.Save();
 
                 if (_animTimer != null)
                 {
@@ -530,7 +530,7 @@ namespace NetGore.EditorTools
             TreeViewNodeSorter = this;
 
             // Create the ImageList containing the Grhs as an image
-            ImageList = GrhImageList.ImageList;
+            ImageList = GrhImageList.Instance.ImageList;
 
             // Iterate through all the GrhDatas
             foreach (GrhData grhData in GrhInfo.GrhDatas)

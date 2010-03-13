@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using log4net;
 using NetGore.EditorTools.Properties;
@@ -19,19 +21,40 @@ namespace NetGore.EditorTools
     /// Contains the <see cref="ImageList"/> used for the <see cref="GrhData"/>s to display the shrunken
     /// icon on the <see cref="GrhTreeView"/> or any other iconized <see cref="GrhData"/> preview.
     /// </summary>
-    public static class GrhImageList
+    public class GrhImageList
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static readonly Dictionary<string, GrhImageListCacheItem> _imageCache =
+        /// <summary>
+        /// Lock used when loading the <see cref="GrhImageList"/> instance to ensure it is only loaded once.
+        /// </summary>
+        static readonly object _loadSync = new object();
+
+        static GrhImageList _instance;
+
+        readonly Dictionary<string, GrhImageListCacheItem> _imageCache =
             new Dictionary<string, GrhImageListCacheItem>(StringComparer.OrdinalIgnoreCase);
 
-        static readonly ImageList _imageList = new ImageList();
+        readonly ImageList _imageList = new ImageList();
+
+        /// <summary>
+        /// If the cache is dirty. That is, if there is items that have been loaded into the <see cref="GrhImageList"/>
+        /// since the last call to <see cref="GrhImageList.Save()"/>.
+        /// </summary>
+        bool _dirty = false;
 
         /// <summary>
         /// Initializes the <see cref="GrhImageList"/> class.
         /// </summary>
         static GrhImageList()
+        {
+            _instance = new GrhImageList();
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="GrhImageList"/> class.
+        /// </summary>
+        GrhImageList()
         {
             ImageList.TransparentColor = Color.Magenta;
 
@@ -92,9 +115,33 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets the ImageList used for the GrhDatas.
         /// </summary>
-        public static ImageList ImageList
+        public ImageList ImageList
         {
             get { return _imageList; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GrhImageList"/> instance. If the value has not been set, the
+        /// default <see cref="GrhImageList"/> provider will be used. As a result, this property will never
+        /// return null.
+        /// </summary>
+        public static GrhImageList Instance
+        {
+            get
+            {
+                // Use a double-test lock method to only lock when the instance has to be created
+                if (_instance == null)
+                {
+                    lock (_loadSync)
+                    {
+                        if (_instance != null)
+                            _instance = new GrhImageList();
+                    }
+                }
+
+                return _instance;
+            }
+            set { _instance = value; }
         }
 
         /// <summary>
@@ -109,7 +156,7 @@ namespace NetGore.EditorTools
         /// Adds the image for a GrhData to the ImageList.
         /// </summary>
         /// <param name="grhData">GrhData to add.</param>
-        static void AddImage(StationaryGrhData grhData)
+        void AddImage(StationaryGrhData grhData)
         {
             if (grhData == null)
                 return;
@@ -145,7 +192,7 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="grhData">GrhData to create the image for.</param>
         /// <returns>The Image for the <paramref name="grhData"/>.</returns>
-        static Image CreateImage(StationaryGrhData grhData)
+        Image CreateImage(StationaryGrhData grhData)
         {
             if (grhData == null || grhData.TextureName == null)
                 return null;
@@ -217,7 +264,7 @@ namespace NetGore.EditorTools
         /// Handles when a GrhData is added to the global GrhData list.
         /// </summary>
         /// <param name="grhData">GrhData that was added.</param>
-        static void GrhInfo_Added(GrhData grhData)
+        void GrhInfo_Added(GrhData grhData)
         {
             if (grhData is StationaryGrhData)
             {
@@ -238,7 +285,7 @@ namespace NetGore.EditorTools
         /// Handles when a GrhData is removed from the global GrhData list.
         /// </summary>
         /// <param name="grhData">GrhData that was removed.</param>
-        static void GrhInfo_Removed(GrhData grhData)
+        void GrhInfo_Removed(GrhData grhData)
         {
             if (grhData is StationaryGrhData)
             {
@@ -288,16 +335,27 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// If the cache is dirty. That is, if there is items that have been loaded into the <see cref="GrhImageList"/>
-        /// since the last call to <see cref="GrhImageList.Save()"/>.
+        /// Asynchronously prepares the <see cref="GrhImageList"/> now so that it won't have to be loaded later.
+        /// This is not required to be called since if the instance has not been loaded when the
+        /// <see cref="GrhImageList.Instance"/> is called, it will be loaded on-demand.
         /// </summary>
-        static bool _dirty = false;
+        public static void Prepare()
+        {
+            // Check that the instance isn't loaded to avoid creating an unneeded thread
+            if (_instance != null)
+                return;
+
+            // Spawn a background thread to just grab the property since the property itself will handle loading
+            // the instance if it is not already loaded
+            Thread t = new Thread(() => Debug.Assert(Instance != null)) { IsBackground = true };
+            t.Start();
+        }
 
         /// <summary>
         /// Saves the <see cref="GrhImageList"/> information to a cache file so prevent having to recreate
         /// the images next time the <see cref="GrhImageList"/> is loaded.
         /// </summary>
-        public static void Save()
+        public void Save()
         {
             Save(false);
         }
@@ -309,7 +367,7 @@ namespace NetGore.EditorTools
         /// <param name="forced">By default, the <see cref="GrhImageList"/> will only be saved if there has
         /// been changes to it since the last save or the cache file does not exist. If this value is set
         /// to true, the file will be saved anyways.</param>
-        public static void Save(bool forced)
+        public void Save(bool forced)
         {
             if (!forced && !_dirty && File.Exists(CacheFilePath))
                 return;
@@ -352,7 +410,7 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="grh">The <see cref="Grh"/> to get the image for.</param>
         /// <returns>The <see cref="Image"/> for the <paramref name="grh"/>, or null if invalid.</returns>
-        public static Image TryGetImage(Grh grh)
+        public Image TryGetImage(Grh grh)
         {
             if (grh == null)
                 return null;
@@ -365,12 +423,16 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="grhData">The <see cref="GrhData"/> to get the image for.</param>
         /// <returns>The <see cref="Image"/> for the <paramref name="grhData"/>, or null if invalid.</returns>
-        public static Image TryGetImage(GrhData grhData)
+        public Image TryGetImage(GrhData grhData)
         {
             if (grhData == null)
                 return null;
 
-            return TryGetImage(grhData.Frames.FirstOrDefault());
+            var gd = grhData.Frames.FirstOrDefault();
+            if (gd == null)
+                return null;
+
+            return TryGetImage(gd.GrhIndex);
         }
 
         /// <summary>
@@ -378,7 +440,7 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="grhIndex">The <see cref="GrhIndex"/> to get the image for.</param>
         /// <returns>The <see cref="Image"/> for the <paramref name="grhIndex"/>, or null if invalid.</returns>
-        public static Image TryGetImage(GrhIndex grhIndex)
+        public Image TryGetImage(GrhIndex grhIndex)
         {
             var imageKey = GetImageKey(grhIndex);
             if (string.IsNullOrEmpty(imageKey))
@@ -396,7 +458,7 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="o">The object to get the <see cref="Image"/> for. Multiple types are supported.</param>
         /// <returns>The <see cref="Image"/> for the <paramref name="o"/>, or null if invalid.</returns>
-        public static Image TryGetImage(object o)
+        public Image TryGetImage(object o)
         {
             if (o is int)
                 return TryGetImage(new GrhIndex((int)o));
