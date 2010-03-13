@@ -10,6 +10,7 @@ using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Network;
+using NetGore.NPCChat;
 using NetGore.Stats;
 
 namespace DemoGame.Server

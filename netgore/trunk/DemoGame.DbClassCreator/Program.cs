@@ -8,6 +8,7 @@ using NetGore.Db.ClassCreator;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
+using NetGore.NPCChat;
 using NetGore.Stats;
 
 namespace DemoGame.DbClassCreator

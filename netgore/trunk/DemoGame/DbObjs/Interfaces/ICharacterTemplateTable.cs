@@ -40,7 +40,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `chat_dialog`.
 /// </summary>
-System.Nullable<NetGore.NPCChatDialogID> ChatDialog
+System.Nullable<NetGore.NPCChat.NPCChatDialogID> ChatDialog
 {
 get;
 }
