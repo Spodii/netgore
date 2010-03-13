@@ -87,7 +87,7 @@ source.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)(Sys
 
 i = dataReader.GetOrdinal("chat_dialog");
 
-source.ChatDialog = (System.Nullable<NetGore.NPCChatDialogID>)(System.Nullable<NetGore.NPCChatDialogID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ChatDialog = (System.Nullable<NetGore.NPCChat.NPCChatDialogID>)(System.Nullable<NetGore.NPCChat.NPCChatDialogID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("exp");
 
@@ -224,7 +224,7 @@ break;
 
 
 case "chat_dialog":
-source.ChatDialog = (System.Nullable<NetGore.NPCChatDialogID>)(System.Nullable<NetGore.NPCChatDialogID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ChatDialog = (System.Nullable<NetGore.NPCChat.NPCChatDialogID>)(System.Nullable<NetGore.NPCChat.NPCChatDialogID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 

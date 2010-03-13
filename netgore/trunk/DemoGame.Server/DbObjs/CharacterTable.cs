@@ -262,11 +262,11 @@ this._characterTemplateID = (System.Nullable<System.UInt16>)value;
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.Nullable<NetGore.NPCChatDialogID> ChatDialog
+public System.Nullable<NetGore.NPCChat.NPCChatDialogID> ChatDialog
 {
 get
 {
-return (System.Nullable<NetGore.NPCChatDialogID>)_chatDialog;
+return (System.Nullable<NetGore.NPCChat.NPCChatDialogID>)_chatDialog;
 }
 set
 {
@@ -583,14 +583,14 @@ public CharacterTable()
 /// <param name="statStr">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public CharacterTable(System.Nullable<DemoGame.AccountID> @accountID, System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyIndex @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.NPCChatDialogID> @chatDialog, System.Int32 @exp, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Byte @level, NetGore.MapIndex @mapID, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, System.Nullable<NetGore.MapIndex> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr, System.Single @x, System.Single @y)
+public CharacterTable(System.Nullable<DemoGame.AccountID> @accountID, System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyIndex @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Byte @level, NetGore.MapIndex @mapID, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, System.Nullable<NetGore.MapIndex> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr, System.Single @x, System.Single @y)
 {
 this.AccountID = (System.Nullable<DemoGame.AccountID>)@accountID;
 this.AIID = (System.Nullable<NetGore.AI.AIID>)@aIID;
 this.BodyID = (DemoGame.BodyIndex)@bodyID;
 this.Cash = (System.Int32)@cash;
 this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)@characterTemplateID;
-this.ChatDialog = (System.Nullable<NetGore.NPCChatDialogID>)@chatDialog;
+this.ChatDialog = (System.Nullable<NetGore.NPCChat.NPCChatDialogID>)@chatDialog;
 this.Exp = (System.Int32)@exp;
 this.HP = (DemoGame.SPValueType)@hP;
 this.ID = (DemoGame.CharacterID)@iD;
@@ -647,7 +647,7 @@ dic["@ai_id"] = (System.Nullable<NetGore.AI.AIID>)source.AIID;
 dic["@body_id"] = (DemoGame.BodyIndex)source.BodyID;
 dic["@cash"] = (System.Int32)source.Cash;
 dic["@character_template_id"] = (System.Nullable<DemoGame.CharacterTemplateID>)source.CharacterTemplateID;
-dic["@chat_dialog"] = (System.Nullable<NetGore.NPCChatDialogID>)source.ChatDialog;
+dic["@chat_dialog"] = (System.Nullable<NetGore.NPCChat.NPCChatDialogID>)source.ChatDialog;
 dic["@exp"] = (System.Int32)source.Exp;
 dic["@hp"] = (DemoGame.SPValueType)source.HP;
 dic["@id"] = (DemoGame.CharacterID)source.ID;
@@ -684,7 +684,7 @@ this.AIID = (System.Nullable<NetGore.AI.AIID>)source.AIID;
 this.BodyID = (DemoGame.BodyIndex)source.BodyID;
 this.Cash = (System.Int32)source.Cash;
 this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)source.CharacterTemplateID;
-this.ChatDialog = (System.Nullable<NetGore.NPCChatDialogID>)source.ChatDialog;
+this.ChatDialog = (System.Nullable<NetGore.NPCChat.NPCChatDialogID>)source.ChatDialog;
 this.Exp = (System.Int32)source.Exp;
 this.HP = (DemoGame.SPValueType)source.HP;
 this.ID = (DemoGame.CharacterID)source.ID;
@@ -843,7 +843,7 @@ this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)value;
 break;
 
 case "chat_dialog":
-this.ChatDialog = (System.Nullable<NetGore.NPCChatDialogID>)value;
+this.ChatDialog = (System.Nullable<NetGore.NPCChat.NPCChatDialogID>)value;
 break;
 
 case "exp":

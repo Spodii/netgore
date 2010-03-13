@@ -6,7 +6,7 @@ using System.IO;
 using NetGore;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.NPCChat
 {
     [Serializable]
     public struct NPCChatDialogItemID : IComparable<NPCChatDialogItemID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
