@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.AI;
 using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
@@ -17,6 +18,7 @@ namespace NetGore.EditorTools
     {
         static bool _added = false;
         static bool _addedNPCChatManager = false;
+        static bool _addedAIID = false;
 
         /// <summary>
         /// Adds all of the custom <see cref="UITypeEditor"/>s that do not require any additional parameters.
@@ -72,6 +74,27 @@ namespace NetGore.EditorTools
 
             AddEditorsHelper(new EditorTypes(typeof(NPCChatDialogID), typeof(NPCChatDialogEditor)),
                              new EditorTypes(typeof(NPCChatDialogID?), typeof(NPCChatDialogEditor)));
+        }
+
+        /// <summary>
+        /// Adds the <see cref="AIID"/> editor.
+        /// </summary>
+        /// <param name="aiFactory">The <see cref="IAIFactory"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="aiFactory"/> is null.</exception>
+        public static void AddAIIDEditor(IAIFactory aiFactory)
+        {
+            if (aiFactory == null)
+                throw new ArgumentNullException("aiFactory");
+
+            if (_addedAIID)
+                return;
+
+            _addedAIID = true;
+
+            AIIDUITypeEditorForm.AIFactory = aiFactory;
+
+            AddEditorsHelper(new EditorTypes(typeof(AIID), typeof(AIIDEditor)),
+                             new EditorTypes(typeof(AIID?), typeof(AIIDEditor)));
         }
     }
 }

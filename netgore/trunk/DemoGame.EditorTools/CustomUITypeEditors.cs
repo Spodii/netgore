@@ -5,6 +5,7 @@ using System.Drawing.Design;
 using System.Linq;
 using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
+using DemoGame.Server;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
@@ -92,6 +93,7 @@ namespace DemoGame.EditorTools
             // Add the custom UITypeEditors defined by the base engine
             NetGore.EditorTools.CustomUITypeEditors.AddEditors();
             NetGore.EditorTools.CustomUITypeEditors.AddNPCChatDialogEditor(NPCChatManager.Instance);
+            NetGore.EditorTools.CustomUITypeEditors.AddAIIDEditor(AIFactory.Instance);
 
             AddAdvancedClassTypeConverters();
         }

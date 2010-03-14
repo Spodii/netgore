@@ -397,6 +397,8 @@ namespace DemoGame.Server
             _ai = null;
         }
 
+        static readonly IAIFactory<Character> _aiFactory = AIFactory.Instance;
+
         /// <summary>
         /// Attempts to set the Character's AI.
         /// </summary>
@@ -406,7 +408,7 @@ namespace DemoGame.Server
         /// </returns>
         public override bool SetAI(AIID aiID)
         {
-            var newAI = AIFactory.Instance.Create(aiID, this);
+            var newAI = _aiFactory.Create(aiID, this);
             if (newAI == null)
             {
                 _ai = null;
@@ -428,7 +430,7 @@ namespace DemoGame.Server
         /// </returns>
         public override bool SetAI(string aiName)
         {
-            var newAI = AIFactory.Instance.Create(aiName, this);
+            var newAI = _aiFactory.Create(aiName, this);
             if (newAI == null)
             {
                 _ai = null;
