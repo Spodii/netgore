@@ -61,7 +61,7 @@
     <Compile Include="UITypeEditors\AllianceUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UITypeEditors\BodyInfoEditor.cs" />
+    <Compile Include="UITypeEditors\BodyPaperDollTypeEditor.cs" />
     <Compile Include="UITypeEditors\BodyPaperDollUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
