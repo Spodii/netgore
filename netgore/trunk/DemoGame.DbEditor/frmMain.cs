@@ -466,7 +466,7 @@ namespace DemoGame.DbEditor
                 return;
 
             // First time a valid object is set, shrink the PropertyGrid
-            pgItemTemplate.ShrinkPropertiesColumn(10);
+            pg.ShrinkPropertiesColumn(10);
 
             // Remove this event hook from the PropertyGrid to make it only happen on the first call
             pg.SelectedObjectsChanged -= PropertyGrid_ShrinkColumns;
