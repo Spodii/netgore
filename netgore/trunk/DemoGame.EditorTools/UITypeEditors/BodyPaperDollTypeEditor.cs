@@ -14,7 +14,7 @@ namespace DemoGame.EditorTools
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="BodyInfo"/>.
     /// </summary>
-    public class BodyInfoEditor : UITypeEditor
+    public class BodyPaperDollTypeEditor : UITypeEditor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -52,6 +52,8 @@ namespace DemoGame.EditorTools
                             Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));
                         }
                     }
+                    else
+                        value = null;
                 }
             }
 
