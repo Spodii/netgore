@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
@@ -10,37 +11,63 @@ namespace NetGore.EditorTools
     /// </summary>
     public partial class GrhUITypeEditorForm : Form
     {
-        readonly Grh _grh;
+        GrhIndex _selected = GrhIndex.Invalid;
+
+        /// <summary>
+        /// Gets the selected <see cref="GrhIndex"/>.
+        /// </summary>
+        public GrhIndex SelectedValue { get { return _selected; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhUITypeEditorForm"/> class.
         /// </summary>
-        /// <param name="grh">The GRH.</param>
-        public GrhUITypeEditorForm(Grh grh)
+        /// <param name="selected">The <see cref="GrhData"/> to select by default. Multiple values are supported.
+        /// Can be null.</param>
+        public GrhUITypeEditorForm(object selected)
         {
-            _grh = grh;
+            if (selected == null)
+                return;
+
+            if (selected is GrhIndex)
+            {
+                var s = (GrhIndex)selected;
+                _selected = s;
+            }
+            else if (selected is Grh)
+            {
+                var s = (Grh)selected;
+                if (s.GrhData != null)
+                    _selected = s.GrhData.GrhIndex;
+            }
+            else if (selected is GrhData)
+            {
+                var s = (GrhData)selected;
+                _selected = s.GrhIndex;
+            }
 
             InitializeComponent();
         }
 
         /// <summary>
-        /// Gets the <see cref="Grh"/> that is being edited.
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
-        public Grh Grh
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
-            get { return _grh; }
-        }
+            base.OnLoad(e);
 
-        /// <summary>
-        /// Handles the Load event of the <see cref="GrhUITypeEditorForm"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void GrhUITypeEditorForm_Load(object sender, EventArgs e)
-        {
+            // If we were given an invalid default value, just use whatever the first valid one we can find is
+            if (_selected == GrhIndex.Invalid)
+            {
+                var gd = GrhInfo.GrhDatas.FirstOrDefault();
+                if (gd != null)
+                    _selected = gd.GrhIndex;
+            }
+
+            // Load the GrhTreeView
             gtv.InitializeCompact();
             gtv.CollapseAll();
-            gtv.SelectedNode = gtv.FindGrhDataNode(Grh.GrhData);
+            gtv.SelectedNode = gtv.FindGrhDataNode(GrhInfo.GetData(_selected));
         }
 
         /// <summary>
@@ -54,9 +81,25 @@ namespace NetGore.EditorTools
             if (e == null || e.GrhData == null)
                 return;
 
-            _grh.SetGrh(e.GrhData, AnimType.Loop, _grh.LastUpdated);
+            _selected = e.GrhData.GrhIndex;
+            Debug.Assert(_selected != GrhIndex.Invalid);
 
             DialogResult = DialogResult.OK;
+        }
+
+        /// <summary>
+        /// Handles the GrhMouseClick event of the gtv control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.EditorTools.GrhTreeNodeMouseClickEventArgs"/> instance
+        /// containing the event data.</param>
+        private void gtv_GrhMouseClick(object sender, GrhTreeNodeMouseClickEventArgs e)
+        {
+            if (e == null || e.GrhData == null)
+                return;
+
+            _selected = e.GrhData.GrhIndex;
+            Debug.Assert(_selected != GrhIndex.Invalid);
         }
     }
 }
