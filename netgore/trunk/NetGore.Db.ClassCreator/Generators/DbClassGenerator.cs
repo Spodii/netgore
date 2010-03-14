@@ -23,6 +23,11 @@ namespace NetGore.Db.ClassCreator
         public const string CopyValuesFromMethodName = "CopyValuesFrom";
 
         /// <summary>
+        /// Name of the HasSameValues method in the generated code.
+        /// </summary>
+        public const string HasSameValuesMethodName = "HasSameValues";
+
+        /// <summary>
         /// Name of the CopyValues method in the generated code.
         /// </summary>
         public const string CopyValuesMethodName = "CopyValues";
@@ -428,6 +433,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodReadValues(cd));
                 sb.AppendLine(CreateMethodTryReadValues(cd));
                 sb.AppendLine(CreateMethodTryCopyValuesToDbParameterValues(cd));
+                sb.AppendLine(CreateMethodHasSameValues(cd));
             }
             sb.AppendLine(Formatter.CloseBrace);
 
@@ -621,6 +627,55 @@ namespace NetGore.Db.ClassCreator
                     sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, coll.InternalType)));
                 }
             }
+
+            return sb.ToString();
+        }
+        
+        protected virtual string CreateMethodHasSameValues(DbClassData cd)
+        {
+            const string otherName = "other";
+
+            var parameters = new MethodParameter[] { new MethodParameter(otherName, cd.InterfaceName) };
+            
+            var sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.HasSameValues.Summary, cd.InterfaceName),
+                string.Format(Comments.HasSameValues.Returns, cd.InterfaceName), new KeyValuePair<string, string>(otherName,
+                    string.Format(Comments.HasSameValues.OtherParameter, cd.InterfaceName))));
+
+            sb.AppendLine(Formatter.GetExtensionMethodHeader(HasSameValuesMethodName, new MethodParameter(_extensionParamName,
+                cd.InterfaceName), parameters,
+                typeof(bool)));
+                
+            // Body
+            var bodySB = new StringBuilder(2048);
+            bodySB.Append(Formatter.ReturnString + " ");
+            foreach (var column in cd.Columns)
+            {
+                var accStr = cd.GetColumnValueAccessor(column);
+                var left = _extensionParamName + "." + accStr;
+                var right = otherName + "." + accStr;
+
+                bodySB.Append("Equals");
+                bodySB.Append(Formatter.OpenParameterString);
+                bodySB.Append(left);
+                bodySB.Append(Formatter.ParameterSpacer);
+                bodySB.Append(right);
+                bodySB.Append(Formatter.CloseParameterString);
+
+                if (column != cd.Columns.Last())
+                {
+                    bodySB.Append(" && ");
+                    bodySB.AppendLine();
+                }
+                else
+                {
+                    bodySB.Append(Formatter.EndOfLine);
+                }
+            }
+
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
 
             return sb.ToString();
         }
@@ -851,7 +906,7 @@ namespace NetGore.Db.ClassCreator
 
             return sb.ToString();
         }
-
+       
         protected virtual string CreateMethodReadValues(DbClassData cd)
         {
             var sb = new StringBuilder(2048);

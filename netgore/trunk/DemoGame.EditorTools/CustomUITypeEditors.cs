@@ -4,6 +4,7 @@ using System.Drawing.Design;
 using System.Linq;
 using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
+using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
@@ -24,6 +25,16 @@ namespace DemoGame.EditorTools
         internal static IDbController DbController
         {
             get { return _dbController; }
+        }
+
+        /// <summary>
+        /// Adds the advanced class type converters.
+        /// </summary>
+        static void AddAdvancedClassTypeConverters()
+        {
+            AdvancedClassTypeConverter.AddTypes(typeof(CharacterTemplateTable), typeof(ItemTemplateTable));
+            AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");
+            AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(ItemTemplateTable), "ID");
         }
 
         /// <summary>
@@ -53,6 +64,8 @@ namespace DemoGame.EditorTools
 
             NetGore.EditorTools.CustomUITypeEditors.AddEditors();
             NetGore.EditorTools.CustomUITypeEditors.AddNPCChatDialogEditor(NPCChatManager.Instance);
+
+            AddAdvancedClassTypeConverters();
         }
     }
 }
