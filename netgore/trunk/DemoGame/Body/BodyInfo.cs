@@ -6,7 +6,8 @@ using NetGore.IO;
 namespace DemoGame
 {
     /// <summary>
-    /// Information for a character's body
+    /// Describes the body for a character, such as the size and what components to use to perform certain types
+    /// of animations.
     /// </summary>
     public class BodyInfo
     {
@@ -19,6 +20,10 @@ namespace DemoGame
         const string _standValueKey = "Stand";
         const string _walkValueKey = "Walk";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BodyInfo"/> class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public BodyInfo(IValueReader reader)
         {
             Index = reader.ReadBodyIndex(_indexValueKey);
