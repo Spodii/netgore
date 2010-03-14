@@ -15,6 +15,20 @@ namespace NetGore.AI
         IEnumerable<KeyValuePair<AIID, Type>> AIs { get; }
 
         /// <summary>
+        /// Gets the name of the AI for the given <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to get the AI name for.</param>
+        /// <returns>The name of the AI for the given <paramref name="type"/>.</returns>
+        string GetAIName(Type type);
+
+        /// <summary>
+        /// Gets the name of the AI for the given <see cref="AIID"/>.
+        /// </summary>
+        /// <param name="aiID">The <see cref="AIID"/> to get the AI name for.</param>
+        /// <returns>The name of the AI for the given <paramref name="aiID"/>.</returns>
+        string GetAIName(AIID aiID);
+
+        /// <summary>
         /// Gets the <see cref="Type"/> used to handle the specified <see cref="AIID"/>.
         /// </summary>
         /// <param name="aiID">The <see cref="AIID"/> to get the <see cref="Type"/> for.</param>
@@ -29,20 +43,6 @@ namespace NetGore.AI
         /// <returns>The <see cref="Type"/> of the class for handling the <paramref name="aiName"/>, or null
         /// if invalid or no value was found.</returns>
         Type GetAIType(string aiName);
-
-        /// <summary>
-        /// Gets the name of the AI for the given <see cref="Type"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="Type"/> to get the AI name for.</param>
-        /// <returns>The name of the AI for the given <paramref name="type"/>.</returns>
-        string GetAIName(Type type);
-
-        /// <summary>
-        /// Gets the name of the AI for the given <see cref="AIID"/>.
-        /// </summary>
-        /// <param name="aiID">The <see cref="AIID"/> to get the AI name for.</param>
-        /// <returns>The name of the AI for the given <paramref name="aiID"/>.</returns>
-        string GetAIName(AIID aiID);
     }
 
     /// <summary>

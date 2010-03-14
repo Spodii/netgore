@@ -79,6 +79,17 @@ namespace NetGore.Graphics
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the names of all the <see cref="SkeletonSet"/>s that exist in the specified <see cref="ContentPaths"/>.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
+        public static IEnumerable<string> GetSetNames(ContentPaths contentPath)
+        {
+            return
+                Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(
+                    x => Path.GetFileNameWithoutExtension(x));
+        }
+
         public void Read(IValueReader reader, ContentPaths contentPath)
         {
             var loadedFrames = reader.ReadManyNodes(_framesNodeName, x => new SkeletonFrame(x, contentPath));
@@ -88,15 +99,6 @@ namespace NetGore.Graphics
         public void Write(IValueWriter writer)
         {
             writer.WriteManyNodes(_framesNodeName, KeyFrames, ((w, item) => item.Write(w)));
-        }
-
-        /// <summary>
-        /// Gets the names of all the <see cref="SkeletonSet"/>s that exist in the specified <see cref="ContentPaths"/>.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
-        public static IEnumerable<string> GetSetNames(ContentPaths contentPath)
-        {
-            return Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(x => Path.GetFileNameWithoutExtension(x));
         }
 
         /// <summary>

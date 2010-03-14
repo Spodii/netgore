@@ -23,14 +23,6 @@ namespace NetGore.Graphics
         /// An array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
         /// </summary>
         SkeletonBodyItemInfo[] _items;
-        
-        /// <summary>
-        /// Gets the names of all the <see cref="SkeletonBodyInfo"/>s that exist in the specified <see cref="ContentPaths"/>.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
-        public static  IEnumerable<string> GetBodyNames(ContentPaths contentPath) {
-            return Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(x => Path.GetFileNameWithoutExtension(x));
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBodyInfo"/> class.
@@ -66,6 +58,17 @@ namespace NetGore.Graphics
         internal SkeletonBodyItemInfo[] Items
         {
             get { return _items; }
+        }
+
+        /// <summary>
+        /// Gets the names of all the <see cref="SkeletonBodyInfo"/>s that exist in the specified <see cref="ContentPaths"/>.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
+        public static IEnumerable<string> GetBodyNames(ContentPaths contentPath)
+        {
+            return
+                Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(
+                    x => Path.GetFileNameWithoutExtension(x));
         }
 
         /// <summary>

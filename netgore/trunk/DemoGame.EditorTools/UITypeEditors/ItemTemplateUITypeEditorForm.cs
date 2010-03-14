@@ -4,9 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
-using DemoGame.Server;
 using DemoGame.Server.Queries;
-using NetGore.AI;
 
 namespace DemoGame.EditorTools
 {

@@ -47,9 +47,7 @@ namespace NetGore.EditorTools
 
                         // Handle setting the value based on the type we are working with
                         if (pt == typeof(GrhIndex) || pt == typeof(GrhIndex?))
-                        {
                             value = sel;
-                        }
                         else if (pt == typeof(Grh))
                         {
                             var asGrh = value as Grh;
@@ -62,7 +60,8 @@ namespace NetGore.EditorTools
                             value = GrhInfo.GetData(sel);
                         else
                         {
-                            const string errmsg = "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
+                            const string errmsg =
+                                "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
                             if (log.IsErrorEnabled)
                                 log.ErrorFormat(errmsg, pt, value, editorForm.GetType());
                             Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));
