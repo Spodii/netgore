@@ -1,35 +1,40 @@
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore;
 using NetGore.Network;
 
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Contains and handles the collection of a single User's equipped items.
+    /// Contains and handles the collection of a single <see cref="User"/>'s equipped items.
     /// </summary>
     public class UserEquipped : CharacterEquipped
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        readonly User _user;
+        // ReSharper disable SuggestBaseTypeForParameter
 
         /// <summary>
-        /// UserEquipped constructor.
+        /// Initializes a new instance of the <see cref="UserEquipped"/> class.
         /// </summary>
         /// <param name="user">User that this UserEquipped belongs to.</param>
-        // ReSharper disable SuggestBaseTypeForParameter
-        public UserEquipped(User user) : base(user) // ReSharper restore SuggestBaseTypeForParameter
+        public UserEquipped(User user) : base(user)
         {
-            _user = user;
         }
 
+        // ReSharper restore SuggestBaseTypeForParameter
+
+        /// <summary>
+        /// Gets the <see cref="User"/> this <see cref="UserEquipped"/> belongs to.
+        /// </summary>
         User User
         {
-            get { return _user; }
+            get { return (User)Character; }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner of this object instance
+        /// that an equipment slot has changed.
+        /// </summary>
+        /// <param name="slot">The slot that changed.</param>
+        /// <param name="graphicIndex">The new graphic index of the slot.</param>
         protected override void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
             using (PacketWriter msg = ServerPacket.UpdateEquipmentSlot(slot, graphicIndex))
