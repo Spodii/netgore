@@ -74,6 +74,9 @@
     <Compile Include="UITypeEditors\MapUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UITypeEditors\ShopUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">

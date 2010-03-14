@@ -46,7 +46,7 @@ namespace DemoGame.EditorTools
                     }
                     else
                     {
-                        if (pt == typeof(ItemTemplateID))
+                        if (pt == typeof(ItemTemplateID?))
                             value = null;
                     }
                 }
