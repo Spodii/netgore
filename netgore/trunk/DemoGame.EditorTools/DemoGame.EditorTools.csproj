@@ -30,6 +30,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -74,6 +79,7 @@
     <Compile Include="UITypeEditors\MapUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UITypeEditors\ShopIDEditor.cs" />
     <Compile Include="UITypeEditors\ShopUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

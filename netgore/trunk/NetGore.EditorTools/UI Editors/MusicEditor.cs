@@ -1,9 +1,12 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using log4net;
 using NetGore.Audio;
 
 namespace NetGore.EditorTools
@@ -13,6 +16,8 @@ namespace NetGore.EditorTools
     /// </summary>
     public class MusicEditor : UITypeEditor
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Edits the specified object's value using the editor style indicated by the
         /// <see cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> method.
@@ -61,6 +66,13 @@ namespace NetGore.EditorTools
                                 value = null;
                         }
                     }
+                }
+                else
+                {
+                    const string errmsg = "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, pt, value, typeof(MusicUITypeEditorForm));
+                    Debug.Fail(string.Format(errmsg, pt, value, typeof(MusicUITypeEditorForm)));
                 }
             }
 

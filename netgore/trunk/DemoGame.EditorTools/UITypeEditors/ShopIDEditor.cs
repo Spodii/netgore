@@ -8,13 +8,14 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using DemoGame.DbObjs;
 using log4net;
+using NetGore.Features.Shops;
 
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="AllianceID"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="ShopID"/>.
     /// </summary>
-    public class AllianceIDEditor : UITypeEditor
+    public class ShopIDEditor : UITypeEditor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -37,14 +38,14 @@ namespace DemoGame.EditorTools
 
             if (svc != null)
             {
-                using (var editorForm = new AllianceUITypeEditorForm(value))
+                using (var editorForm = new ShopUITypeEditorForm(value))
                 {
                     var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (pt == typeof(AllianceID) || pt == typeof(AllianceID?))
+                        if (pt == typeof(ShopID) || pt == typeof(ShopID?))
                             value = editorForm.SelectedItem.ID;
-                        else if (pt == typeof(IAllianceTable))
+                        else if (pt == typeof(IShopTable))
                             value = editorForm.SelectedItem;
                         else if (pt == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
@@ -58,7 +59,7 @@ namespace DemoGame.EditorTools
                     }
                     else
                     {
-                        if (pt == typeof(AllianceID?))
+                        if (pt == typeof(ShopID?))
                             value = null;
                     }
                 }

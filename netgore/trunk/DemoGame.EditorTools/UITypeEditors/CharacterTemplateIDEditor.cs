@@ -1,10 +1,13 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using DemoGame.Server;
+using log4net;
 
 namespace DemoGame.EditorTools
 {
@@ -13,6 +16,8 @@ namespace DemoGame.EditorTools
     /// </summary>
     public class CharacterTemplateIDEditor : UITypeEditor
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Edits the specified object's value using the editor style indicated by the
         /// <see cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> method.
@@ -43,6 +48,13 @@ namespace DemoGame.EditorTools
                             value = editorForm.SelectedItem;
                         else if (pt == typeof(string))
                             value = editorForm.SelectedItem.ID.ToString();
+                        else
+                        {
+                            const string errmsg = "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, pt, value, editorForm.GetType());
+                            Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));
+                        }
                     }
                     else
                     {
