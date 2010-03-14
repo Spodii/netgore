@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 using NetGore.NPCChat;
@@ -16,13 +15,6 @@ namespace DemoGame.Server.NPCChat
         static readonly NPCChatManager _instance;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
-        /// </summary>
-        NPCChatManager() : base(true)
-        {
-        }
-
-        /// <summary>
         /// Initializes the <see cref="NPCChatManager"/> class.
         /// </summary>
         static NPCChatManager()
@@ -31,9 +23,19 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
+        /// </summary>
+        NPCChatManager() : base(true)
+        {
+        }
+
+        /// <summary>
         /// Gets the <see cref="NPCChatManager"/> instance.
         /// </summary>
-        public static NPCChatManager Instance { get { return _instance; } }
+        public static NPCChatManager Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.

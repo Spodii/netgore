@@ -12,12 +12,6 @@ namespace NetGore.EditorTools
         readonly object _selected;
 
         /// <summary>
-        /// Gets or sets the <see cref="NPCChatManagerBase"/> used to display the items in this form. Needs
-        /// to be set before using the <see cref="NPCChatDialogUITypeEditorForm"/>.
-        /// </summary>
-        public static NPCChatManagerBase NPCChatManager { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="selected">The currently selected <see cref="NPCChatDialogBase"/>.
@@ -31,20 +25,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Ensures the <see cref="NPCChatDialogUITypeEditorForm.NPCChatManager"/> is set.
+        /// Gets or sets the <see cref="NPCChatManagerBase"/> used to display the items in this form. Needs
+        /// to be set before using the <see cref="NPCChatDialogUITypeEditorForm"/>.
         /// </summary>
-        /// <returns>If false, the form will be unloaded.</returns>
-        bool EnsureNPCChatManagerSet()
-        {
-            if (NPCChatManager == null)
-            {
-                DialogResult = DialogResult.Abort;
-                Close();
-                return false;
-            }
-
-            return true;
-        }
+        public static NPCChatManagerBase NPCChatManager { get; set; }
 
         /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
@@ -62,6 +46,22 @@ namespace NetGore.EditorTools
             {
                 e.Graphics.DrawString(item.ID + ". " + item.Title, e.Font, brush, e.Bounds);
             }
+        }
+
+        /// <summary>
+        /// Ensures the <see cref="NPCChatDialogUITypeEditorForm.NPCChatManager"/> is set.
+        /// </summary>
+        /// <returns>If false, the form will be unloaded.</returns>
+        bool EnsureNPCChatManagerSet()
+        {
+            if (NPCChatManager == null)
+            {
+                DialogResult = DialogResult.Abort;
+                Close();
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

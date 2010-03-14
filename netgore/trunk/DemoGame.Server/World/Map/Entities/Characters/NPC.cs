@@ -24,6 +24,7 @@ namespace DemoGame.Server
     public class NPC : Character, IQuestProvider<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly NPCChatManagerBase _npcChatManager = NPCChatManager.Instance;
 
         IAI _ai;
         NPCChatDialogBase _chatDialog;
@@ -59,8 +60,6 @@ namespace DemoGame.Server
 
             LoadPersistentNPCTemplateInfo();
         }
-
-        static readonly NPCChatManagerBase _npcChatManager = NPCChatManager.Instance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPC"/> class.
