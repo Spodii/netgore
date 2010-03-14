@@ -181,13 +181,23 @@ namespace DemoGame.Server
                 item.Dispose();
         }
 
+        /// <summary>
+        /// When overridden in the derived class, notifies the owner of this object instance
+        /// that an equipment slot has changed.
+        /// </summary>
+        /// <param name="slot">The slot that changed.</param>
+        /// <param name="graphicIndex">The new graphic index of the slot.</param>
         protected virtual void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
         }
 
-        public void SynchronizePaperdollTo(User user)
+        /// <summary>
+        /// Sends the paper-doll information for this <see cref="Character"/> to a specific client.
+        /// </summary>
+        /// <param name="client">The client to send this <see cref="Character"/>'s paper-doll information to.</param>
+        public void SynchronizePaperdollTo(IClientCommunicator client)
         {
-            _paperDoll.SynchronizeBodyLayersTo(user);
+            _paperDoll.SynchronizeBodyLayersTo(client);
         }
 
         #region IDisposable Members
@@ -234,6 +244,9 @@ namespace DemoGame.Server
 
         #endregion
 
+        /// <summary>
+        /// Handles the synchronization of a <see cref="Character"/>'s paper-doll layers.
+        /// </summary>
         class EquippedPaperDoll
         {
             static readonly int _maxSlotValue = EnumHelper<EquipmentSlot>.MaxValue + 1;
@@ -241,58 +254,89 @@ namespace DemoGame.Server
             readonly string[] _bodies;
             readonly Character _character;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="EquippedPaperDoll"/> class.
+            /// </summary>
+            /// <param name="character">The <see cref="Character"/>.</param>
             public EquippedPaperDoll(Character character)
             {
                 _bodies = new string[_maxSlotValue];
                 _character = character;
             }
 
+            /// <summary>
+            /// Notifies this object when an item has been added into an <see cref="EquipmentSlot"/>.
+            /// </summary>
+            /// <param name="slot">The <see cref="EquipmentSlot"/> the item was added to.</param>
+            /// <param name="item">The item.</param>
             public void NotifyAdded(EquipmentSlot slot, IItemTable item)
             {
+                // Get the ID of the slot
                 var slotID = slot.GetValue();
 
+                // Check if there is a paper-doll item in the slot already. If so, remove it.
                 if (_bodies[slotID] != null)
                     NotifyRemoved(slot);
 
+                // Check that the new item has a paper-doll value
                 if (string.IsNullOrEmpty(item.EquippedBody))
                     return;
 
+                // The new item has a paper-doll value, so add it and synchronize
                 _bodies[slotID] = item.EquippedBody;
                 SynchronizeBodyLayers();
             }
 
+            /// <summary>
+            /// Notifies this object when an item has been removed from an <see cref="EquipmentSlot"/>.
+            /// </summary>
+            /// <param name="slot">The <see cref="EquipmentSlot"/> the item was removed from.</param>
             public void NotifyRemoved(EquipmentSlot slot)
             {
+                // Get the ID of the slot
                 var slotID = slot.GetValue();
 
+                // Check if there was a paper-doll item in the slot
                 if (_bodies[slotID] == null)
                     return;
 
+                // There was a paper-doll item in the slot, so remove it and synchronize
                 _bodies[slotID] = null;
                 SynchronizeBodyLayers();
             }
 
+            /// <summary>
+            /// Handles synchronizing the paper-doll information to other clients.
+            /// </summary>
             void SynchronizeBodyLayers()
             {
+                // Get the map
                 var map = _character.Map;
                 if (map == null)
                     return;
 
+                // Send the list of set paper-doll values
                 using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
                 {
                     _character.Map.Send(pw);
                 }
             }
 
-            internal void SynchronizeBodyLayersTo(User user)
+            /// <summary>
+            /// Handles synchronizing the paper-doll information to a single client.
+            /// </summary>
+            /// <param name="client">The client to send the information to</param>
+            internal void SynchronizeBodyLayersTo(IClientCommunicator client)
             {
+                // Get the values to send
                 var bodiesToSend = _bodies.Where(x => x != null);
                 if (bodiesToSend.Count() == 0)
                     return;
 
+                // Send the paper-doll information
                 using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, bodiesToSend))
                 {
-                    user.Send(pw);
+                    client.Send(pw);
                 }
             }
         }
