@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using DemoGame.DbObjs;
 using log4net;
 
 namespace DemoGame.EditorTools
@@ -46,7 +45,8 @@ namespace DemoGame.EditorTools
                             value = editorForm.SelectedItem;
                         else
                         {
-                            const string errmsg = "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
+                            const string errmsg =
+                                "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
                             if (log.IsErrorEnabled)
                                 log.ErrorFormat(errmsg, pt, value, editorForm.GetType());
                             Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));

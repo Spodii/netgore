@@ -14,11 +14,6 @@ namespace NetGore.EditorTools
         GrhIndex _selected = GrhIndex.Invalid;
 
         /// <summary>
-        /// Gets the selected <see cref="GrhIndex"/>.
-        /// </summary>
-        public GrhIndex SelectedValue { get { return _selected; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GrhUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="selected">The <see cref="GrhData"/> to select by default. Multiple values are supported.
@@ -49,25 +44,26 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// Gets the selected <see cref="GrhIndex"/>.
         /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
+        public GrhIndex SelectedValue
         {
-            base.OnLoad(e);
+            get { return _selected; }
+        }
 
-            // If we were given an invalid default value, just use whatever the first valid one we can find is
-            if (_selected == GrhIndex.Invalid)
-            {
-                var gd = GrhInfo.GrhDatas.FirstOrDefault();
-                if (gd != null)
-                    _selected = gd.GrhIndex;
-            }
+        /// <summary>
+        /// Handles the GrhMouseClick event of the gtv control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.EditorTools.GrhTreeNodeMouseClickEventArgs"/> instance
+        /// containing the event data.</param>
+        void gtv_GrhMouseClick(object sender, GrhTreeNodeMouseClickEventArgs e)
+        {
+            if (e == null || e.GrhData == null)
+                return;
 
-            // Load the GrhTreeView
-            gtv.InitializeCompact();
-            gtv.CollapseAll();
-            gtv.SelectedNode = gtv.FindGrhDataNode(GrhInfo.GetData(_selected));
+            _selected = e.GrhData.GrhIndex;
+            Debug.Assert(_selected != GrhIndex.Invalid);
         }
 
         /// <summary>
@@ -88,18 +84,25 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Handles the GrhMouseClick event of the gtv control.
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.EditorTools.GrhTreeNodeMouseClickEventArgs"/> instance
-        /// containing the event data.</param>
-        private void gtv_GrhMouseClick(object sender, GrhTreeNodeMouseClickEventArgs e)
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
-            if (e == null || e.GrhData == null)
-                return;
+            base.OnLoad(e);
 
-            _selected = e.GrhData.GrhIndex;
-            Debug.Assert(_selected != GrhIndex.Invalid);
+            // If we were given an invalid default value, just use whatever the first valid one we can find is
+            if (_selected == GrhIndex.Invalid)
+            {
+                var gd = GrhInfo.GrhDatas.FirstOrDefault();
+                if (gd != null)
+                    _selected = gd.GrhIndex;
+            }
+
+            // Load the GrhTreeView
+            gtv.InitializeCompact();
+            gtv.CollapseAll();
+            gtv.SelectedNode = gtv.FindGrhDataNode(GrhInfo.GetData(_selected));
         }
     }
 }

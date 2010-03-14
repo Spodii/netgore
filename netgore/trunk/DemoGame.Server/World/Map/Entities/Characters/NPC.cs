@@ -24,6 +24,7 @@ namespace DemoGame.Server
     public class NPC : Character, IQuestProvider<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly IAIFactory<Character> _aiFactory = AIFactory.Instance;
         static readonly NPCChatManagerBase _npcChatManager = NPCChatManager.Instance;
 
         IAI _ai;
@@ -396,8 +397,6 @@ namespace DemoGame.Server
         {
             _ai = null;
         }
-
-        static readonly IAIFactory<Character> _aiFactory = AIFactory.Instance;
 
         /// <summary>
         /// Attempts to set the Character's AI.

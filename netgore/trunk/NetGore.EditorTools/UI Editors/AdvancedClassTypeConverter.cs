@@ -14,16 +14,22 @@ namespace NetGore.EditorTools
     /// </summary>
     public class AdvancedClassTypeConverter : TypeConverter
     {
+        static readonly Dictionary<Type, List<KeyValuePair<string, UITypeEditor>>> _forcedEditor =
+            new Dictionary<Type, List<KeyValuePair<string, UITypeEditor>>>();
+
+        static readonly object _forcedEditorSync = new object();
         static readonly Dictionary<Type, List<string>> _forcedReadOnly = new Dictionary<Type, List<string>>();
         static readonly object _forcedReadOnlySync = new object();
 
         static readonly Dictionary<Type, List<KeyValuePair<string, TypeConverter>>> _forcedTypeConverter =
             new Dictionary<Type, List<KeyValuePair<string, TypeConverter>>>();
+
         static readonly object _forcedTypeConverterSync = new object();
 
-        static readonly Dictionary<Type, List<KeyValuePair<string, UITypeEditor>>> _forcedEditor =
-            new Dictionary<Type, List<KeyValuePair<string, UITypeEditor>>>();
-        static readonly object _forcedEditorSync = new object();
+        /// <summary>
+        /// Gets the <see cref="StringComparer"/> to use for comparing property names.
+        /// </summary>
+        static readonly StringComparer _propSC = StringComparer.Ordinal;
 
         /// <summary>
         /// Sets up multiple class <see cref="Type"/>s to use this <see cref="TypeConverter"/>.
@@ -100,11 +106,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the <see cref="StringComparer"/> to use for comparing property names.
-        /// </summary>
-        static readonly StringComparer _propSC = StringComparer.Ordinal;
-
-        /// <summary>
         /// Returns whether this object supports properties, using the specified context.
         /// </summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a
@@ -116,6 +117,36 @@ namespace NetGore.EditorTools
         public override bool GetPropertiesSupported(ITypeDescriptorContext context)
         {
             return true;
+        }
+
+        /// <summary>
+        /// Sets a property of a certain <see cref="Type"/> to be forced to use a certain <see cref="UITypeEditor"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the class to set the properties on.</param>
+        /// <param name="editors">The case-sensitive names of the properties and the <see cref="TypeConverter"/>
+        /// instance to use.</param>
+        public static void SetForceEditor(Type type, params KeyValuePair<string, UITypeEditor>[] editors)
+        {
+            lock (_forcedEditorSync)
+            {
+                List<KeyValuePair<string, UITypeEditor>> l;
+                if (!_forcedEditor.TryGetValue(type, out l))
+                {
+                    l = new List<KeyValuePair<string, UITypeEditor>>();
+                    _forcedEditor.Add(type, l);
+                }
+
+                foreach (var n in editors)
+                {
+                    var name = n.Key;
+
+                    // Remove existing values for the property with this name (which should be either 0 or 1)
+                    l.RemoveAll(x => _propSC.Equals(name, x.Key));
+
+                    // Add the new value
+                    l.Add(n);
+                }
+            }
         }
 
         /// <summary>
@@ -160,36 +191,6 @@ namespace NetGore.EditorTools
                 }
 
                 foreach (var n in typeConverters)
-                {
-                    var name = n.Key;
-
-                    // Remove existing values for the property with this name (which should be either 0 or 1)
-                    l.RemoveAll(x => _propSC.Equals(name, x.Key));
-
-                    // Add the new value
-                    l.Add(n);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets a property of a certain <see cref="Type"/> to be forced to use a certain <see cref="UITypeEditor"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="Type"/> of the class to set the properties on.</param>
-        /// <param name="editors">The case-sensitive names of the properties and the <see cref="TypeConverter"/>
-        /// instance to use.</param>
-        public static void SetForceEditor(Type type, params KeyValuePair<string, UITypeEditor>[] editors)
-        {
-            lock (_forcedEditorSync)
-            {
-                List<KeyValuePair<string, UITypeEditor>> l;
-                if (!_forcedEditor.TryGetValue(type, out l))
-                {
-                    l = new List<KeyValuePair<string, UITypeEditor>>();
-                    _forcedEditor.Add(type, l);
-                }
-
-                foreach (var n in editors)
                 {
                     var name = n.Key;
 

@@ -17,11 +17,6 @@ namespace DemoGame
         readonly Dictionary<BodyIndex, BodyInfo> _bodies = new Dictionary<BodyIndex, BodyInfo>();
 
         /// <summary>
-        /// Gets the <see cref="BodyInfo"/>s in this <see cref="BodyInfoManager"/>.
-        /// </summary>
-        public IEnumerable<BodyInfo> Bodies { get { return _bodies.Values; } }
-
-        /// <summary>
         /// Initializes the <see cref="BodyInfoManager"/> class.
         /// </summary>
         static BodyInfoManager()
@@ -36,6 +31,14 @@ namespace DemoGame
         BodyInfoManager(IValueReader reader)
         {
             Read(reader);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BodyInfo"/>s in this <see cref="BodyInfoManager"/>.
+        /// </summary>
+        public IEnumerable<BodyInfo> Bodies
+        {
+            get { return _bodies.Values; }
         }
 
         /// <summary>

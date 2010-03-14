@@ -51,7 +51,8 @@ namespace DemoGame.EditorTools
                             value = editorForm.SelectedItem.ID.ToString();
                         else
                         {
-                            const string errmsg = "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
+                            const string errmsg =
+                                "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
                             if (log.IsErrorEnabled)
                                 log.ErrorFormat(errmsg, pt, value, editorForm.GetType());
                             Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));
