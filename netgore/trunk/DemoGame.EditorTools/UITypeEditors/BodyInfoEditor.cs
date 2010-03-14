@@ -12,9 +12,9 @@ using log4net;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="AllianceID"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="BodyInfo"/>.
     /// </summary>
-    public class AllianceIDEditor : UITypeEditor
+    public class BodyInfoEditor : UITypeEditor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -37,17 +37,13 @@ namespace DemoGame.EditorTools
 
             if (svc != null)
             {
-                using (var editorForm = new AllianceUITypeEditorForm(value))
+                using (var editorForm = new BodyPaperDollUITypeEditorForm(value as string))
                 {
                     var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (pt == typeof(AllianceID) || pt == typeof(AllianceID?))
-                            value = editorForm.SelectedItem.ID;
-                        else if (pt == typeof(IAllianceTable))
+                        if (pt == typeof(string))
                             value = editorForm.SelectedItem;
-                        else if (pt == typeof(string))
-                            value = editorForm.SelectedItem.ID.ToString();
                         else
                         {
                             const string errmsg = "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
@@ -55,11 +51,6 @@ namespace DemoGame.EditorTools
                                 log.ErrorFormat(errmsg, pt, value, editorForm.GetType());
                             Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));
                         }
-                    }
-                    else
-                    {
-                        if (pt == typeof(AllianceID?))
-                            value = null;
                     }
                 }
             }
@@ -85,6 +76,4 @@ namespace DemoGame.EditorTools
             return UITypeEditorEditStyle.Modal;
         }
     }
-
-
 }

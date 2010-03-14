@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NetGore.Collections;
 using NetGore.IO;
@@ -11,6 +13,7 @@ namespace NetGore.Graphics
     public class SkeletonManager
     {
         static readonly ICache<ContentPaths, SkeletonManager> _skeletonManagerCache;
+
         readonly ICache<string, SkeletonBodyInfo> _bodyInfoCache;
         readonly ContentPaths _contentPath;
         readonly ICache<string, SkeletonSet> _setCache;
