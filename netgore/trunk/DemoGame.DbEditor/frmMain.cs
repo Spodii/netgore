@@ -459,7 +459,7 @@ namespace DemoGame.DbEditor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void PropertyGrid_ShrinkColumns(object sender, EventArgs e)
+        static void PropertyGrid_ShrinkColumns(object sender, EventArgs e)
         {
             var pg = sender as PropertyGrid;
             if (pg == null)
