@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
@@ -29,17 +30,39 @@ namespace NetGore.EditorTools
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-            var grh = value as Grh;
 
-            if (svc != null && grh != null)
+            if (svc != null)
             {
-                using (var editorForm = new GrhUITypeEditorForm(grh))
+                using (var editorForm = new GrhUITypeEditorForm(value))
                 {
-                    var originalGrhData = grh.GrhData;
-                    if (svc.ShowDialog(editorForm) != DialogResult.OK)
+                    var pt = context.PropertyDescriptor.PropertyType;
+
+                    if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        // Revert to the original
-                        grh.SetGrh(originalGrhData);
+                        var sel = editorForm.SelectedValue;
+
+                        // Handle setting the value based on the type we are working with
+                        if (pt == typeof(GrhIndex) || pt == typeof(GrhIndex?))
+                        {
+                            value = sel;
+                        }
+                        else if (pt == typeof(Grh))
+                        {
+                            var asGrh = value as Grh;
+                            if (asGrh != null)
+                                asGrh.SetGrh(sel);
+                            else
+                                value = new Grh(sel, AnimType.Loop, 0);
+                        }
+                        else if (pt == typeof(GrhData))
+                            value = GrhInfo.GetData(sel);
+                        else
+                            Debug.Fail("Unhandled editor source type...");
+                    }
+                    else
+                    {
+                        if (pt == typeof(GrhIndex?))
+                            value = null;
                     }
                 }
             }

@@ -39,6 +39,7 @@
             this.gtv.Name = "gtv";
             this.gtv.Size = new System.Drawing.Size(308, 494);
             this.gtv.TabIndex = 0;
+            this.gtv.GrhMouseClick += new NetGore.EditorTools.GrhTreeNodeMouseClickEvent(this.gtv_GrhMouseClick);
             this.gtv.GrhMouseDoubleClick += new NetGore.EditorTools.GrhTreeNodeMouseClickEvent(this.gtv_GrhMouseDoubleClick);
             // 
             // GrhUITypeEditorForm
@@ -53,7 +54,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select the new GrhData...";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.GrhUITypeEditorForm_Load);
             this.ResumeLayout(false);
 
         }
