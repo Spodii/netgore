@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Text;
+using System.Linq;
 
 namespace NetGore.EditorTools
 {
@@ -17,8 +17,7 @@ namespace NetGore.EditorTools
         /// <param name="descr">A <see cref="T:System.ComponentModel.MemberDescriptor"/> that contains the name of the property
         /// and its attributes.</param>
         /// <param name="component">The component.</param>
-        public AdvancedPropertyDescriptor(PropertyDescriptor descr, object component)
-            : base(descr)
+        public AdvancedPropertyDescriptor(PropertyDescriptor descr, object component) : base(descr)
         {
             _parent = descr;
 
@@ -26,9 +25,50 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// When overridden in a derived class, gets the type of the component this property is bound to.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Type"/> that represents the type of component this property is bound to
+        /// When the <see cref="M:System.ComponentModel.PropertyDescriptor.GetValue(System.Object)"/> or
+        /// <see cref="M:System.ComponentModel.PropertyDescriptor.SetValue(System.Object,System.Object)"/>
+        /// methods are invoked, the object specified might be an instance of this type.
+        /// </returns>
+        public override Type ComponentType
+        {
+            get { return _parent.ComponentType; }
+        }
+
+        /// <summary>
+        /// Gets or sets if this property will be forced to be read-only.
+        /// </summary>
+        public bool ForceReadOnly { get; set; }
+
+        /// <summary>
+        /// When overridden in a derived class, gets a value indicating whether this property is read-only.
+        /// </summary>
+        /// <returns>
+        /// true if the property is read-only; otherwise, false.
+        /// </returns>
+        public override bool IsReadOnly
+        {
+            get { return ForceReadOnly || _parent.IsReadOnly; }
+        }
+
+        /// <summary>
         /// Gets or sets the original value of this property.
         /// </summary>
         public object OriginalValue { get; set; }
+
+        /// <summary>
+        /// When overridden in a derived class, gets the type of the property.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Type"/> that represents the type of the property.
+        /// </returns>
+        public override Type PropertyType
+        {
+            get { return _parent.PropertyType; }
+        }
 
         /// <summary>
         /// When overridden in a derived class, returns whether resetting an object changes its value.
@@ -84,47 +124,6 @@ namespace NetGore.EditorTools
         public override bool ShouldSerializeValue(object component)
         {
             return !Equals(GetValue(component), OriginalValue);
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, gets the type of the component this property is bound to.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Type"/> that represents the type of component this property is bound to
-        /// When the <see cref="M:System.ComponentModel.PropertyDescriptor.GetValue(System.Object)"/> or
-        /// <see cref="M:System.ComponentModel.PropertyDescriptor.SetValue(System.Object,System.Object)"/>
-        /// methods are invoked, the object specified might be an instance of this type.
-        /// </returns>
-        public override Type ComponentType
-        {
-            get { return _parent.ComponentType; }
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, gets a value indicating whether this property is read-only.
-        /// </summary>
-        /// <returns>
-        /// true if the property is read-only; otherwise, false.
-        /// </returns>
-        public override bool IsReadOnly
-        {
-            get { return ForceReadOnly || _parent.IsReadOnly; }
-        }
-
-        /// <summary>
-        /// Gets or sets if this property will be forced to be read-only.
-        /// </summary>
-        public bool ForceReadOnly { get; set; }
-
-        /// <summary>
-        /// When overridden in a derived class, gets the type of the property.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Type"/> that represents the type of the property.
-        /// </returns>
-        public override Type PropertyType
-        {
-            get { return _parent.PropertyType; }
         }
     }
 }

@@ -19,27 +19,6 @@ namespace NetGore.EditorTools
         static bool _addedNPCChatManager = false;
 
         /// <summary>
-        /// Adds the <see cref="NPCChatDialogBase"/> editor.
-        /// </summary>
-        /// <param name="chatManager">The <see cref="NPCChatManagerBase"/> instance.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="chatManager"/> is null.</exception>
-        public static void AddNPCChatDialogEditor(NPCChatManagerBase chatManager)
-        {
-            if (chatManager == null)
-                throw new ArgumentNullException("chatManager");
-
-            if (_addedNPCChatManager)
-                return;
-
-            _addedNPCChatManager = true;
-
-            NPCChatDialogUITypeEditorForm.NPCChatManager = chatManager;
-
-            AddEditorsHelper(new EditorTypes(typeof(NPCChatDialogID), typeof(NPCChatDialogEditor)),
-                new EditorTypes(typeof(NPCChatDialogID?), typeof(NPCChatDialogEditor)));
-        }
-
-        /// <summary>
         /// Adds all of the custom <see cref="UITypeEditor"/>s that do not require any additional parameters.
         /// </summary>
         public static void AddEditors()
@@ -72,6 +51,27 @@ namespace NetGore.EditorTools
                 var attrib = new EditorAttribute(item.EditorType, typeof(UITypeEditor));
                 TypeDescriptor.AddAttributes(item.Type, attrib);
             }
+        }
+
+        /// <summary>
+        /// Adds the <see cref="NPCChatDialogBase"/> editor.
+        /// </summary>
+        /// <param name="chatManager">The <see cref="NPCChatManagerBase"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="chatManager"/> is null.</exception>
+        public static void AddNPCChatDialogEditor(NPCChatManagerBase chatManager)
+        {
+            if (chatManager == null)
+                throw new ArgumentNullException("chatManager");
+
+            if (_addedNPCChatManager)
+                return;
+
+            _addedNPCChatManager = true;
+
+            NPCChatDialogUITypeEditorForm.NPCChatManager = chatManager;
+
+            AddEditorsHelper(new EditorTypes(typeof(NPCChatDialogID), typeof(NPCChatDialogEditor)),
+                             new EditorTypes(typeof(NPCChatDialogID?), typeof(NPCChatDialogEditor)));
         }
     }
 }

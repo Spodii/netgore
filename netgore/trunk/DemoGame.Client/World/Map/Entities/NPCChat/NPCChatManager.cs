@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 using NetGore.NPCChat;
@@ -16,11 +15,6 @@ namespace DemoGame.Client.NPCChat
         static readonly NPCChatManager _instance;
 
         /// <summary>
-        /// Gets the <see cref="NPCChatManager"/> instance.
-        /// </summary>
-        public static NPCChatManager Instance { get { return _instance; } }
-
-        /// <summary>
         /// Initializes the <see cref="NPCChatManager"/> class.
         /// </summary>
         static NPCChatManager()
@@ -33,6 +27,14 @@ namespace DemoGame.Client.NPCChat
         /// </summary>
         NPCChatManager() : base(true)
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="NPCChatManager"/> instance.
+        /// </summary>
+        public static NPCChatManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

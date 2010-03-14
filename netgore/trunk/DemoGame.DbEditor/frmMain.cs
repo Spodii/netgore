@@ -21,6 +21,9 @@ namespace DemoGame.DbEditor
 {
     public partial class frmMain : Form
     {
+        const string _continueLoadLoseChangesMsg =
+            "Changes made to the current object will be lost. Continue loading the new object and lose changes to the current object?";
+
         IDbController _dbController;
         ICharacterTemplateTable _originalCharacterTemplateValues = null;
         IItemTemplateTable _originalItemTemplateValues = null;
@@ -32,8 +35,6 @@ namespace DemoGame.DbEditor
         {
             InitializeComponent();
         }
-
-        const string _continueLoadLoseChangesMsg = "Changes made to the current object will be lost. Continue loading the new object and lose changes to the current object?";
 
         /// <summary>
         /// Handles the Click event of the btnCharacterTemplate control.
@@ -133,6 +134,23 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Handles the Click event of the btnCharacterTemplateSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnCharacterTemplateSave_Click(object sender, EventArgs e)
+        {
+            var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
+            if (v == null)
+                return;
+
+            _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(v);
+            _originalCharacterTemplateValues = v.DeepCopy();
+
+            MessageBox.Show(v.Name + " successfully saved!");
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnItemTemplate control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -229,6 +247,23 @@ namespace DemoGame.DbEditor
             pgItemTemplate.SelectedObject = newItem;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnItemTemplateSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnItemTemplateSave_Click(object sender, EventArgs e)
+        {
+            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
+            if (v == null)
+                return;
+
+            _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
+            _originalItemTemplateValues = v.DeepCopy();
+
+            MessageBox.Show(v.Name + " successfully saved!");
+        }
+
         void frmMain_Load(object sender, EventArgs e)
         {
         }
@@ -298,19 +333,6 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Gets if the item template being edited has any unsaved changes.
-        /// </summary>
-        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
-        bool IsItemTemplateDirty()
-        {
-            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
-            if (_originalItemTemplateValues == null || v == null)
-                return false;
-
-            return !_originalItemTemplateValues.HasSameValues(v);
-        }
-
-        /// <summary>
         /// Gets if the character template being edited has any unsaved changes.
         /// </summary>
         /// <returns>True if there are any unsaved changes; otherwise false.</returns>
@@ -324,6 +346,19 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Gets if the item template being edited has any unsaved changes.
+        /// </summary>
+        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
+        bool IsItemTemplateDirty()
+        {
+            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
+            if (_originalItemTemplateValues == null || v == null)
+                return false;
+
+            return !_originalItemTemplateValues.HasSameValues(v);
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
@@ -331,7 +366,8 @@ namespace DemoGame.DbEditor
         {
             if (IsCharacterTemplateDirty() || IsItemTemplateDirty())
             {
-                const string quitMsg = "One or more open items have changes that have not been saved. If you quit without saving, these changes will be lost. Are you sure you wish to quit?";
+                const string quitMsg =
+                    "One or more open items have changes that have not been saved. If you quit without saving, these changes will be lost. Are you sure you wish to quit?";
                 if (MessageBox.Show(quitMsg, "Quit?", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
                     e.Cancel = true;
@@ -464,40 +500,6 @@ namespace DemoGame.DbEditor
 
             return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
                              x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnItemTemplateSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnItemTemplateSave_Click(object sender, EventArgs e)
-        {
-            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
-            if (v == null)
-                return;
-
-            _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
-            _originalItemTemplateValues = v.DeepCopy();
-
-            MessageBox.Show(v.Name + " successfully saved!");
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnCharacterTemplateSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnCharacterTemplateSave_Click(object sender, EventArgs e)
-        {
-            var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
-            if (v == null)
-                return;
-
-            _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(v);
-            _originalCharacterTemplateValues = v.DeepCopy();
-
-            MessageBox.Show(v.Name + " successfully saved!");
         }
     }
 }
