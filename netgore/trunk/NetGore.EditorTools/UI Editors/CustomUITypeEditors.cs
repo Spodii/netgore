@@ -17,8 +17,28 @@ namespace NetGore.EditorTools
     public static class CustomUITypeEditors
     {
         static bool _added = false;
-        static bool _addedNPCChatManager = false;
         static bool _addedAIID = false;
+        static bool _addedNPCChatManager = false;
+
+        /// <summary>
+        /// Adds the <see cref="AIID"/> editor.
+        /// </summary>
+        /// <param name="aiFactory">The <see cref="IAIFactory"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="aiFactory"/> is null.</exception>
+        public static void AddAIIDEditor(IAIFactory aiFactory)
+        {
+            if (aiFactory == null)
+                throw new ArgumentNullException("aiFactory");
+
+            if (_addedAIID)
+                return;
+
+            _addedAIID = true;
+
+            AIIDUITypeEditorForm.AIFactory = aiFactory;
+
+            AddEditorsHelper(new EditorTypes(typeof(AIID), typeof(AIIDEditor)), new EditorTypes(typeof(AIID?), typeof(AIIDEditor)));
+        }
 
         /// <summary>
         /// Adds all of the custom <see cref="UITypeEditor"/>s that do not require any additional parameters.
@@ -30,11 +50,13 @@ namespace NetGore.EditorTools
 
             _added = true;
 
-            AddEditorsHelper(new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)),
+            AddEditorsHelper(new EditorTypes(typeof(Grh), typeof(GrhEditor)),
+                             new EditorTypes(typeof(GrhIndex?), typeof(GrhEditor)),
+                             new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)),
+                             new EditorTypes(typeof(GrhData), typeof(GrhEditor)),
                              new EditorTypes(typeof(MusicID), typeof(MusicEditor)),
                              new EditorTypes(typeof(SoundID), typeof(SoundEditor)),
                              new EditorTypes(typeof(Color), typeof(XnaColorEditor)),
-                             new EditorTypes(typeof(Grh), typeof(GrhEditor)),
                              new EditorTypes(typeof(ParticleModifierCollection), typeof(ParticleModifierCollectionEditor)),
                              new EditorTypes(typeof(EmitterModifierCollection), typeof(EmitterModifierCollectionEditor)));
         }
@@ -74,27 +96,6 @@ namespace NetGore.EditorTools
 
             AddEditorsHelper(new EditorTypes(typeof(NPCChatDialogID), typeof(NPCChatDialogEditor)),
                              new EditorTypes(typeof(NPCChatDialogID?), typeof(NPCChatDialogEditor)));
-        }
-
-        /// <summary>
-        /// Adds the <see cref="AIID"/> editor.
-        /// </summary>
-        /// <param name="aiFactory">The <see cref="IAIFactory"/> instance.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="aiFactory"/> is null.</exception>
-        public static void AddAIIDEditor(IAIFactory aiFactory)
-        {
-            if (aiFactory == null)
-                throw new ArgumentNullException("aiFactory");
-
-            if (_addedAIID)
-                return;
-
-            _addedAIID = true;
-
-            AIIDUITypeEditorForm.AIFactory = aiFactory;
-
-            AddEditorsHelper(new EditorTypes(typeof(AIID), typeof(AIIDEditor)),
-                             new EditorTypes(typeof(AIID?), typeof(AIIDEditor)));
         }
     }
 }
