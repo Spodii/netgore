@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
     /// <summary>
     /// Provides access to the <see cref="AdvancedPropertyDescriptor"/> for a class's <see cref="TypeConverter"/>.
+    /// This class is primarily intended for improving the experience when working with types in the
+    /// <see cref="PropertyGrid"/> control.
     /// </summary>
     public class AdvancedClassTypeConverter : TypeConverter
     {

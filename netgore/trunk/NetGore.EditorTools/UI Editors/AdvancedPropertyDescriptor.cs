@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Linq;
 
@@ -123,7 +124,8 @@ namespace NetGore.EditorTools
         /// </returns>
         public override bool ShouldSerializeValue(object component)
         {
-            return !Equals(GetValue(component), OriginalValue);
+            var currentValue = GetValue(component);
+            return !Equals(currentValue, OriginalValue);
         }
     }
 }
