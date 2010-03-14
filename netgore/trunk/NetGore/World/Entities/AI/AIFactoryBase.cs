@@ -12,11 +12,59 @@ namespace NetGore.AI
     /// The base class for the AI factory.
     /// </summary>
     /// <typeparam name="T">The Type of DynamicEntity that uses the AI.</typeparam>
-    public abstract class AIFactoryBase<T> where T : DynamicEntity
+    public abstract class AIFactoryBase<T> : IAIFactory<T> where T : DynamicEntity
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly Dictionary<AIID, Type> _aiByID = new Dictionary<AIID, Type>();
         readonly TypeFactory _typeFactory;
+
+        /// <summary>
+        /// Gets all of the <see cref="AIID"/>s and the corresponding <see cref="Type"/> used to handle it.
+        /// </summary>
+        public IEnumerable<KeyValuePair<AIID, Type>> AIs { get { return _aiByID; } }
+
+        /// <summary>
+        /// Gets the <see cref="Type"/> used to handle the specified <see cref="AIID"/>.
+        /// </summary>
+        /// <param name="aiID">The <see cref="AIID"/> to get the <see cref="Type"/> for.</param>
+        /// <returns>The <see cref="Type"/> of the class for handling the <paramref name="aiID"/>, or null
+        /// if invalid or no value was found.</returns>
+        public Type GetAIType(AIID aiID)
+        {
+            return _aiByID[aiID];
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Type"/> used to handle the AI with the given name.
+        /// </summary>
+        /// <param name="aiName">The name of the AI to get the <see cref="Type"/> for.</param>
+        /// <returns>The <see cref="Type"/> of the class for handling the <paramref name="aiName"/>, or null
+        /// if invalid or no value was found.</returns>
+        public Type GetAIType(string aiName)
+        {
+            return _typeFactory[aiName];
+        }
+
+        /// <summary>
+        /// Gets the name of the AI for the given <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to get the AI name for.</param>
+        /// <returns>The name of the AI for the given <paramref name="type"/>.</returns>
+        public string GetAIName(Type type)
+        {
+            return _typeFactory[type];
+        }
+
+        /// <summary>
+        /// Gets the name of the AI for the given <see cref="AIID"/>.
+        /// </summary>
+        /// <param name="aiID">The <see cref="AIID"/> to get the AI name for.</param>
+        /// <returns>The name of the AI for the given <paramref name="aiID"/>.</returns>
+        public string GetAIName(AIID aiID)
+        {
+            return GetAIName(GetAIType(aiID));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AIFactoryBase{T}"/> class.
@@ -65,7 +113,7 @@ namespace NetGore.AI
         /// <returns>An <see cref="IAI"/> instance.</returns>
         public IAI Create(AIID id, T entity)
         {
-            var type = _aiByID[id];
+            var type = GetAIType(id);
             var instance = (IAI)TypeFactory.GetTypeInstance(type, new object[] { entity });
             Debug.Assert(instance.ID == id);
             return instance;

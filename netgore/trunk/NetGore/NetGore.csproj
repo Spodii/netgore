@@ -245,6 +245,7 @@
     <Compile Include="World\Alignment.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="ConsoleInputBuffer.cs" />
+    <Compile Include="World\Entities\AI\IAIFactory.cs" />
     <Compile Include="World\Entities\AI\IPathFinder.cs" />
     <Compile Include="World\Entities\AI\MemoryCell.cs" />
     <Compile Include="World\Entities\AI\MemoryMap.cs" />

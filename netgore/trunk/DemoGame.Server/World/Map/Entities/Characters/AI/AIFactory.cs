@@ -28,7 +28,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the <see cref="AIFactory"/> instance.
         /// </summary>
-        public static AIFactory Instance
+        public static IAIFactory<Character> Instance
         {
             get { return _instance; }
         }

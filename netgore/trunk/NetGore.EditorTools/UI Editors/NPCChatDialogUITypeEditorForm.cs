@@ -73,7 +73,7 @@ namespace NetGore.EditorTools
             if (!EnsureNPCChatManagerSet())
                 return base.GetListItems();
 
-            return NPCChatManager;
+            return NPCChatManager.OrderBy(x => (int)x.ID);
         }
 
         /// <summary>
