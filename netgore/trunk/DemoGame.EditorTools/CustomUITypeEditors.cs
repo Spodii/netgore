@@ -49,6 +49,8 @@ namespace DemoGame.EditorTools
             // Set the properties we want to force being readonly in the PropertyGrid
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(ItemTemplateTable), "ID");
+
+            AdvancedClassTypeConverter.SetForceEditor(typeof(ItemTemplateTable), new KeyValuePair<string, UITypeEditor>("EquippedBody", new BodyInfoEditor()));
         }
 
         /// <summary>

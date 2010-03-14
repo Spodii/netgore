@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.Linq;
 
 namespace NetGore.EditorTools
@@ -40,9 +40,44 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets an editor of the specified type.
+        /// </summary>
+        /// <param name="editorBaseType">The base type of editor, which is used to differentiate between multiple
+        /// editors that a property supports.</param>
+        /// <returns>
+        /// An instance of the requested editor type, or null if an editor cannot be found.
+        /// </returns>
+        public override object GetEditor(Type editorBaseType)
+        {
+            return ForceEditor ?? base.GetEditor(editorBaseType);
+        }
+
+        /// <summary>
+        /// Gets the type converter for this property.
+        /// </summary>
+        /// <returns>A <see cref="T:System.ComponentModel.TypeConverter"/> that is used to convert the <see cref="T:System.Type"/>
+        /// of this property.</returns>
+        public override TypeConverter Converter
+        {
+            get { return ForceTypeConverter ?? base.Converter; }
+        }
+
+        /// <summary>
         /// Gets or sets if this property will be forced to be read-only.
         /// </summary>
         public bool ForceReadOnly { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="UITypeEditor"/> to force this property to use. If null, the default
+        /// <see cref="UITypeEditor"/> will be used.
+        /// </summary>
+        public UITypeEditor ForceEditor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TypeConverter"/> to force this property to use. If null, the default
+        /// <see cref="TypeConverter"/> will be used.
+        /// </summary>
+        public TypeConverter ForceTypeConverter { get; set; }
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether this property is read-only.

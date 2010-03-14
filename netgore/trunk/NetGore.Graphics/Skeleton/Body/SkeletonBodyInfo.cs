@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NetGore.IO;
 
@@ -21,6 +23,14 @@ namespace NetGore.Graphics
         /// An array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
         /// </summary>
         SkeletonBodyItemInfo[] _items;
+        
+        /// <summary>
+        /// Gets the names of all the <see cref="SkeletonBodyInfo"/>s that exist in the specified <see cref="ContentPaths"/>.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
+        public static  IEnumerable<string> GetBodyNames(ContentPaths contentPath) {
+            return Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(x => Path.GetFileNameWithoutExtension(x));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBodyInfo"/> class.
@@ -31,11 +41,20 @@ namespace NetGore.Graphics
             _items = items;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonBodyInfo"/> class.
+        /// </summary>
+        /// <param name="skeletonBodyName">Name of the skeleton body.</param>
+        /// <param name="contentPath">The content path.</param>
         public SkeletonBodyInfo(string skeletonBodyName, ContentPaths contentPath)
             : this(new XmlValueReader(GetFilePath(skeletonBodyName, contentPath), _rootNodeName))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonBodyInfo"/> class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public SkeletonBodyInfo(IValueReader reader)
         {
             Read(reader);

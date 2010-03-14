@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NetGore.IO;
@@ -86,6 +88,15 @@ namespace NetGore.Graphics
         public void Write(IValueWriter writer)
         {
             writer.WriteManyNodes(_framesNodeName, KeyFrames, ((w, item) => item.Write(w)));
+        }
+
+        /// <summary>
+        /// Gets the names of all the <see cref="SkeletonSet"/>s that exist in the specified <see cref="ContentPaths"/>.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
+        public static IEnumerable<string> GetSetNames(ContentPaths contentPath)
+        {
+            return Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(x => Path.GetFileNameWithoutExtension(x));
         }
 
         /// <summary>
