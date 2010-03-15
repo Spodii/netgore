@@ -407,6 +407,9 @@ namespace DemoGame.DbEditor
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
 
+            pgItemTemplate.ContextMenu = new GeneralPropertyGridContextMenu();
+            pgCharacterTemplate.ContextMenu = new GeneralPropertyGridContextMenu();
+
             // Prepare the GrhImageList to avoid stalling the loading later
             GrhImageList.Prepare();
 
@@ -501,5 +504,6 @@ namespace DemoGame.DbEditor
             return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
                              x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
         }
+
     }
 }

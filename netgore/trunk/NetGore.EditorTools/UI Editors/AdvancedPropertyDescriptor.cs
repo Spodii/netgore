@@ -136,7 +136,7 @@ namespace NetGore.EditorTools
         /// <param name="component">The component with the property value that is to be reset to the default value. </param>
         public override void ResetValue(object component)
         {
-            _parent.ResetValue(component);
+            SetValue(component, OriginalValue);
         }
 
         /// <summary>
