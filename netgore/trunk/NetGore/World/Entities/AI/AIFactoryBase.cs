@@ -121,9 +121,15 @@ namespace NetGore.AI
         /// Gets the name of the AI for the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The <see cref="Type"/> to get the AI name for.</param>
-        /// <returns>The name of the AI for the given <paramref name="type"/>.</returns>
+        /// <returns>
+        /// The name of the AI for the given <paramref name="type"/>, or null if the
+        /// <paramref name="type"/> is invalid or does not correspond to an AI.
+        /// </returns>
         public string GetAIName(Type type)
         {
+            if (type == null)
+                return null;
+
             return _typeFactory[type];
         }
 
@@ -131,10 +137,14 @@ namespace NetGore.AI
         /// Gets the name of the AI for the given <see cref="AIID"/>.
         /// </summary>
         /// <param name="aiID">The <see cref="AIID"/> to get the AI name for.</param>
-        /// <returns>The name of the AI for the given <paramref name="aiID"/>.</returns>
+        /// <returns>
+        /// The name of the AI for the given <paramref name="aiID"/>, or null if the
+        /// <paramref name="aiID"/> is invalid or does not correspond to an AI.
+        /// </returns>
         public string GetAIName(AIID aiID)
         {
-            return GetAIName(GetAIType(aiID));
+            var type = GetAIType(aiID);
+            return GetAIName(type);
         }
 
         /// <summary>
@@ -145,7 +155,11 @@ namespace NetGore.AI
         /// if invalid or no value was found.</returns>
         public Type GetAIType(AIID aiID)
         {
-            return _aiByID[aiID];
+            Type ret;
+            if (!_aiByID.TryGetValue(aiID, out ret))
+                return null;
+
+            return ret;
         }
 
         /// <summary>

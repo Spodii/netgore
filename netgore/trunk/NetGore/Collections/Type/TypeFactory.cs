@@ -82,24 +82,34 @@ namespace NetGore.Collections
         /// Gets a Type from its name.
         /// </summary>
         /// <param name="typeName">Name of the Type to get.</param>
-        /// <returns>The Type with the specified name.</returns>
-        /// <exception cref="KeyNotFoundException">No Type with the given <paramref name="typeName"/> exists
-        /// in this <see cref="TypeFactory"/>.</exception>
+        /// <returns>The Type with the specified name, or null if the <paramref name="typeName"/> is invalid
+        /// or does not contain a corresponding <see cref="Type"/>.</returns>
         public Type this[string typeName]
         {
-            get { return _nameToType[typeName]; }
+            get
+            {
+                Type ret;
+                if (!_nameToType.TryGetValue(typeName, out ret))
+                    return null;
+
+                return ret;
+            }
         }
 
         /// <summary>
         /// Gets the name of a <see cref="Type"/>.
         /// </summary>
         /// <param name="type">Type to get the name of.</param>
-        /// <returns>The name of the Type.</returns>
-        /// <exception cref="KeyNotFoundException">The given <paramref name="type"/> does not exist
-        /// in this <see cref="TypeFactory"/>.</exception>
+        /// <returns>The name of the <paramref name="type"/>, or null if the <paramref name="type"/> is invalid
+        /// or is not part of this collection.</returns>
         public string this[Type type]
         {
-            get { return _typeToName[type]; }
+            get {
+                string ret;
+                if (!_typeToName.TryGetValue(type, out ret))
+                    return null;
+
+                return ret; }
         }
 
         /// <summary>
@@ -163,6 +173,9 @@ namespace NetGore.Collections
         public object GetTypeInstance(string typeName)
         {
             Type type = this[typeName];
+            if (type == null)
+                throw new KeyNotFoundException(string.Format("No Type with the name `{0}` exists in this TypeFactory.", typeName));
+
             return GetTypeInstance(type);
         }
 
@@ -177,6 +190,9 @@ namespace NetGore.Collections
         public object GetTypeInstance(string typeName, params object[] arguments)
         {
             Type type = this[typeName];
+            if (type == null)
+                throw new KeyNotFoundException(string.Format("No Type with the name `{0}` exists in this TypeFactory.", typeName));
+
             return GetTypeInstance(type, arguments);
         }
 

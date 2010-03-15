@@ -57,7 +57,10 @@ namespace NetGore
         /// Reads and constructs a <see cref="DynamicEntity"/> from a stream.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> to read the <see cref="DynamicEntity"/> from.</param>
-        /// <returns>The <see cref="DynamicEntity"/> created from the <paramref name="reader"/>.</returns>
+        /// <returns>
+        /// The <see cref="DynamicEntity"/> created from the <paramref name="reader"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="reader"/> is null.</exception>
         public DynamicEntity Read(IValueReader reader)
         {
             if (reader == null)
@@ -77,6 +80,10 @@ namespace NetGore
         /// </summary>
         /// <param name="writer"><see cref="IValueWriter"/> to write the <see cref="DynamicEntity"/> to.</param>
         /// <param name="dEntity"><see cref="DynamicEntity"/> to write to the stream.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dEntity"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="dEntity"/> is not of a valid that <see cref="Type"/>
+        /// that is supported by this factory.</exception>
         public void Write(IValueWriter writer, DynamicEntity dEntity)
         {
             if (writer == null)
@@ -86,6 +93,12 @@ namespace NetGore
 
             Type type = dEntity.GetType();
             string typeName = _typeCollection[type];
+
+            if (typeName == null)
+            {
+                throw new ArgumentException(string.Format("Failed to write. The specified DynamicEntity `{0}` is not of a supported type ({1}).",
+                    dEntity, dEntity.GetType()));
+            }
 
             writer.Write(TypeNameStringKey, typeName);
             dEntity.WriteAll(writer);
