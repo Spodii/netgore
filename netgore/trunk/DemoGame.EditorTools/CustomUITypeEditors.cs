@@ -82,6 +82,8 @@ namespace DemoGame.EditorTools
                 new EditorTypes(typeof(ItemTemplateID?), typeof(ItemTemplateIDEditor)),
                 new EditorTypes(typeof(AllianceID), typeof(AllianceIDEditor)),
                 new EditorTypes(typeof(AllianceID?), typeof(AllianceIDEditor)),
+                new EditorTypes(typeof(BodyIndex), typeof(BodyIndexEditor)),
+                new EditorTypes(typeof(BodyIndex?), typeof(BodyIndexEditor)), new EditorTypes(typeof(BodyInfo), typeof(BodyInfo)),
                 new EditorTypes(typeof(MapIndex), typeof(MapIndexEditor)),
                 new EditorTypes(typeof(MapIndex?), typeof(MapIndexEditor)), new EditorTypes(typeof(ShopID), typeof(ShopIDEditor)),
                 new EditorTypes(typeof(ShopID?), typeof(ShopIDEditor)),
