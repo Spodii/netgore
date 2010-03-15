@@ -38,42 +38,31 @@ namespace NetGore.EditorTools
             if (svc != null)
             {
                 var pt = context.PropertyDescriptor.PropertyType;
-                if (pt == typeof(string))
+
+                using (var editorForm = new MusicUITypeEditorForm(null, value))
                 {
-                    using (var editorForm = new MusicUITypeEditorForm(null, value as string))
+                    if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (svc.ShowDialog(editorForm) == DialogResult.OK)
+                        if (pt == typeof(string))
                             value = editorForm.SelectedItem.Name;
-                    }
-                }
-                else if (pt == typeof(IMusic))
-                {
-                    using (var editorForm = new MusicUITypeEditorForm(null, value as IMusic))
-                    {
-                        if (svc.ShowDialog(editorForm) == DialogResult.OK)
+                        else if (pt == typeof(IMusic))
                             value = editorForm.SelectedItem;
-                    }
-                }
-                else if (pt == typeof(MusicID) || pt == typeof(MusicID?))
-                {
-                    using (var editorForm = new MusicUITypeEditorForm(null, (value == null ? string.Empty : value.ToString())))
-                    {
-                        if (svc.ShowDialog(editorForm) == DialogResult.OK)
+                        else if (pt == typeof(MusicID) || pt == typeof(MusicID?))
                             value = editorForm.SelectedItem.Index;
                         else
                         {
-                            if (pt == typeof(MusicID?))
-                                value = null;
+                            const string errmsg =
+                                "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, pt, value, typeof(MusicUITypeEditorForm));
+                            Debug.Fail(string.Format(errmsg, pt, value, typeof(MusicUITypeEditorForm)));
                         }
                     }
-                }
-                else
-                {
-                    const string errmsg =
-                        "Don't know how to handle the source property type `{0}`. In value: {1}. Editor type: {2}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, pt, value, typeof(MusicUITypeEditorForm));
-                    Debug.Fail(string.Format(errmsg, pt, value, typeof(MusicUITypeEditorForm)));
+                    else
+                    {
+                        if (pt != typeof(MusicID))
+                            value = null;
+                    }
                 }
             }
 
