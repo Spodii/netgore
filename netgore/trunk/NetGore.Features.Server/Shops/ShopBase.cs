@@ -12,6 +12,7 @@ namespace NetGore.Features.Shops
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ShopSettings _shopSettings = ShopSettings.Instance;
+        static readonly TShopItem[] _emptyShopItems = new TShopItem[0];
 
         readonly bool _canBuy;
         readonly ShopID _id;
@@ -26,7 +27,7 @@ namespace NetGore.Features.Shops
             _id = id;
             _name = string.IsNullOrEmpty(name) ? "Unnamed Shop" : name;
             _canBuy = canBuy;
-            _shopItems = shopItems.ToArray();
+            _shopItems = shopItems == null ? _emptyShopItems : shopItems.ToArray();
 
             if (_shopItems.Length > _shopSettings.MaxShopItems)
             {

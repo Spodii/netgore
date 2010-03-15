@@ -21,7 +21,8 @@ namespace DemoGame.Server
         /// </summary>
         static ShopManager()
         {
-            _instance = new ShopManager(DbControllerBase.GetInstance());
+            var dbInstance = DbControllerBase.GetInstance();
+            _instance = new ShopManager(dbInstance);
         }
 
         /// <summary>
