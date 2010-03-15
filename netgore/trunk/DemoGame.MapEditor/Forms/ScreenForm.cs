@@ -1012,13 +1012,20 @@ namespace DemoGame.MapEditor
             _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
             DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
-            // Start the stopwatch for the elapsed time checking
-            _stopWatch.Start();
-
             // Hook all controls to forward camera movement keys Form
             KeyEventHandler kehDown = OnKeyDownForward;
             KeyEventHandler kehUp = OnKeyUpForward;
             HookFormKeyEvents(this, kehDown, kehUp);
+
+            // Set the custom UITypeEditors
+            CustomUITypeEditors.AddEditors(_dbController);
+
+            // Populate the SettingsManager
+            Show();
+            Refresh();
+            PopulateSettingsManager();
+
+            SelectedObjs.Clear();
 
             // Read the first map
             // ReSharper disable EmptyGeneralCatchClause
@@ -1032,6 +1039,9 @@ namespace DemoGame.MapEditor
             }
             // ReSharper restore EmptyGeneralCatchClause
 
+            // Start the stopwatch for the elapsed time checking
+            _stopWatch.Start();
+
             // Set up the MapDrawExtensionCollection
             CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);
             CreateMapDrawExtension<MapWallDrawer>(chkShowWalls);
@@ -1041,18 +1051,8 @@ namespace DemoGame.MapEditor
 
             _mapDrawingExtensions.Add(new MapPersistentNPCDrawer(lstPersistentNPCs));
 
-            // Populate the SettingsManager
-            Show();
-            Refresh();
-            PopulateSettingsManager();
-
-            SelectedObjs.Clear();
-
             // Handle any command-line switches
             HandleSwitches(_switches);
-
-            // Set the custom UITypeEditors
-            CustomUITypeEditors.AddEditors(_dbController);
 
             _camera.Size = GameScreenSize;
         }
