@@ -69,6 +69,7 @@ namespace DemoGame.EditorTools
             AdvancedPropertyDescriptor.SetExtraTextProvider<IAI>(ExtraTextProvider_IAI);
             AdvancedPropertyDescriptor.SetExtraTextProvider<AllianceID>(ExtraTextProvider_AllianceID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<Alliance>(ExtraTextProvider_Alliance);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<BodyIndex>(ExtraTextProvider_BodyIndex);
         }
 
         /// <summary>
@@ -84,6 +85,21 @@ namespace DemoGame.EditorTools
                 return null;
 
             return grhData.Categorization.ToString();
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="BodyIndex"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_BodyIndex(BodyIndex v)
+        {
+            var body = BodyInfoManager.Instance.GetBody(v);
+            if (body == null)
+                return null;
+
+            return body.Body + " - Size: " + body.Size.X + "x" + body.Size.Y;
         }
 
         /// <summary>
