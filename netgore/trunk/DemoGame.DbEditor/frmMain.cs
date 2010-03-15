@@ -410,9 +410,6 @@ namespace DemoGame.DbEditor
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
 
-            pgItemTemplate.ContextMenu = new GeneralPropertyGridContextMenu();
-            pgCharacterTemplate.ContextMenu = new GeneralPropertyGridContextMenu();
-
             // Prepare the GrhImageList to avoid stalling the loading later
             GrhImageList.Prepare();
 
@@ -423,10 +420,15 @@ namespace DemoGame.DbEditor
             // Load the custom UITypeEditors
             CustomUITypeEditors.AddEditors(_dbController);
 
-            // Hook PropertyGrid_ShrinkColumns to all PropertyGrids
+            // Process all the PropertyGrids
             foreach (var pg in this.GetControls().OfType<PropertyGrid>())
             {
+                // Hook the one-time shrinking
                 pg.SelectedObjectsChanged += PropertyGrid_ShrinkColumns;
+
+                // Add the context menu (only if one wasn't already provided)
+                if (pg.ContextMenu == null && pg.ContextMenuStrip == null)
+                    pg.ContextMenu = new GeneralPropertyGridContextMenu();
             }
         }
 
