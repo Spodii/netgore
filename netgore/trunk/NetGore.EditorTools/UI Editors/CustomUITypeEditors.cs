@@ -51,12 +51,15 @@ namespace NetGore.EditorTools
             _added = true;
 
             AddEditorsHelper(new EditorTypes(typeof(Grh), typeof(GrhEditor)),
-                             new EditorTypes(typeof(GrhIndex?), typeof(GrhEditor)),
                              new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)),
+                             new EditorTypes(typeof(GrhIndex?), typeof(GrhEditor)),
                              new EditorTypes(typeof(GrhData), typeof(GrhEditor)),
                              new EditorTypes(typeof(MusicID), typeof(MusicEditor)),
+                             new EditorTypes(typeof(MusicID?), typeof(MusicEditor)),
                              new EditorTypes(typeof(SoundID), typeof(SoundEditor)),
+                             new EditorTypes(typeof(SoundID?), typeof(SoundEditor)),
                              new EditorTypes(typeof(Color), typeof(XnaColorEditor)),
+                             new EditorTypes(typeof(Color?), typeof(XnaColorEditor)),
                              new EditorTypes(typeof(ParticleModifierCollection), typeof(ParticleModifierCollectionEditor)),
                              new EditorTypes(typeof(EmitterModifierCollection), typeof(EmitterModifierCollectionEditor)));
         }

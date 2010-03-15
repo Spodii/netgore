@@ -40,6 +40,40 @@ namespace NetGore.EditorTools
                 return new XnaColor(c.R, c.G, c.B, c.A);
             }
 
+            if (value is Color?)
+            {
+                Color? nc = (Color?)value;
+                if (!nc.HasValue)
+                {
+                    if (context.PropertyDescriptor.PropertyType == typeof(XnaColor))
+                        return new XnaColor();
+                    else
+                        return null;
+                }
+                else
+                {
+                    var c = nc.Value;
+                    return new XnaColor(c.R, c.G, c.B, c.A);
+                }
+            }
+
+            if (value is XnaColor?)
+            {
+                XnaColor? nc = (XnaColor?)value;
+                if (!nc.HasValue)
+                {
+                    if (context.PropertyDescriptor.PropertyType == typeof(XnaColor))
+                        return new XnaColor();
+                    else
+                        return null;
+                }
+                else
+                {
+                    var c = nc.Value;
+                    return new XnaColor(c.R, c.G, c.B, c.A);
+                }
+            }
+
             return base.EditValue(context, provider, value);
         }
 
