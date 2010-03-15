@@ -8,7 +8,7 @@ using NetGore.EditorTools;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="Form"/> for listing the <see cref="BodyIndex"/> information.
+    /// A <see cref="Form"/> for listing the <see cref="BodyInfo"/>.
     /// </summary>
     public class BodyInfoUITypeEditorForm : UITypeEditorListForm<BodyInfo>
     {
@@ -37,7 +37,7 @@ namespace DemoGame.EditorTools
 
             using (var brush = new SolidBrush(e.ForeColor))
             {
-                e.Graphics.DrawString(string.Format("{0}. {1}", item.Index, item.Body), e.Font, brush, e.Bounds);
+                e.Graphics.DrawString(string.Format("{0}. {1}", item.ID, item.Body), e.Font, brush, e.Bounds);
             }
 
             if (e.State == DrawItemState.Selected)
@@ -69,13 +69,13 @@ namespace DemoGame.EditorTools
             {
                 var stringComp = StringComparer.Ordinal;
                 var asString = (string)_selected;
-                return items.FirstOrDefault(x => stringComp.Equals(x.Index, asString));
+                return items.FirstOrDefault(x => stringComp.Equals(x.ID, asString));
             }
 
-            if (_selected is BodyIndex)
+            if (_selected is BodyID)
             {
-                var asID = (BodyIndex)_selected;
-                return items.FirstOrDefault(x => x.Index == asID);
+                var asID = (BodyID)_selected;
+                return items.FirstOrDefault(x => x.ID == asID);
             }
 
             if (_selected is BodyInfo)

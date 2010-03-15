@@ -15,7 +15,6 @@ namespace NetGore.Tests
             new GrhIndex(5);
             new GrhIndex(GrhIndex.MinValue);
             new GrhIndex(GrhIndex.MaxValue);
-            Assert.Throws<ArgumentOutOfRangeException>(() => new GrhIndex((int)GrhIndex.Invalid));
         }
 
         [Test]

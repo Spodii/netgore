@@ -11,9 +11,9 @@ using log4net;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="BodyIndex"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="BodyID"/>.
     /// </summary>
-    public class BodyIndexEditor : UITypeEditor
+    public class BodyIDEditor : UITypeEditor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -41,8 +41,8 @@ namespace DemoGame.EditorTools
                     var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (pt == typeof(BodyIndex) || pt == typeof(BodyIndex?))
-                            value = editorForm.SelectedItem.Index;
+                        if (pt == typeof(BodyID) || pt == typeof(BodyID?))
+                            value = editorForm.SelectedItem.ID;
                         else if (pt == typeof(BodyInfo))
                             value = editorForm.SelectedItem;
                         else
@@ -56,7 +56,7 @@ namespace DemoGame.EditorTools
                     }
                     else
                     {
-                        if (pt == typeof(BodyIndex?))
+                        if (pt == typeof(BodyID?))
                             value = null;
                     }
                 }

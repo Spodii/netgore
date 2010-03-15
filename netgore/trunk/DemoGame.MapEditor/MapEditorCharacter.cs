@@ -19,7 +19,7 @@ namespace DemoGame.MapEditor
             var dbController = DbControllerBase.GetInstance();
 
             var charInfo = dbController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
-            BodyInfoIndex = charInfo.BodyID;
+            BodyID = charInfo.BodyID;
             Teleport(new Vector2(charInfo.RespawnX, charInfo.RespawnY));
             Resize(BodyInfo.Size);
             Name = charInfo.Name;

@@ -25,7 +25,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `body_id`.
         /// </summary>
-        BodyIndex BodyID { get; }
+        BodyID BodyID { get; }
 
         /// <summary>
         /// Gets the value of the database column `cash`.

@@ -5,16 +5,16 @@ using NetGore.IO.PropertySync;
 namespace DemoGame
 {
     /// <summary>
-    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a BodyIndex.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="BodyID"/>.
     /// </summary>
-    [PropertySyncHandler(typeof(BodyIndex))]
-    public sealed class PropertySyncBodyIndex : PropertySyncBase<BodyIndex>
+    [PropertySyncHandler(typeof(BodyID))]
+    public sealed class PropertySyncBodyID : PropertySyncBase<BodyID>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncBodyIndex"/> class.
+        /// Initializes a new instance of the <see cref="PropertySyncBodyID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncBodyIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
+        public PropertySyncBodyID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -24,9 +24,9 @@ namespace DemoGame
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override BodyIndex Read(string name, IValueReader reader)
+        protected override BodyID Read(string name, IValueReader reader)
         {
-            var v = reader.ReadBodyIndex(name);
+            var v = reader.ReadBodyID(name);
             return v;
         }
 
@@ -36,7 +36,7 @@ namespace DemoGame
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, BodyIndex value)
+        protected override void Write(string name, IValueWriter writer, BodyID value)
         {
             writer.Write(name, value);
         }

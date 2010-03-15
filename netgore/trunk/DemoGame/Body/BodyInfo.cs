@@ -13,7 +13,7 @@ namespace DemoGame
     {
         const string _bodyValueKey = "Body";
         const string _fallValueKey = "Fall";
-        const string _indexValueKey = "Index";
+        const string _idValueKey = "ID";
         const string _jumpValueKey = "Jump";
         const string _punchValueKey = "Punch";
         const string _sizeValueKey = "Size";
@@ -26,7 +26,7 @@ namespace DemoGame
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public BodyInfo(IValueReader reader)
         {
-            Index = reader.ReadBodyIndex(_indexValueKey);
+            ID = reader.ReadBodyID(_idValueKey);
             Body = reader.ReadString(_bodyValueKey);
             Fall = reader.ReadString(_fallValueKey);
             Jump = reader.ReadString(_jumpValueKey);
@@ -38,7 +38,7 @@ namespace DemoGame
 
         public string Body { get; private set; }
         public string Fall { get; private set; }
-        public BodyIndex Index { get; private set; }
+        public BodyID ID { get; private set; }
         public string Jump { get; private set; }
         public string Punch { get; private set; }
         public Vector2 Size { get; private set; }
@@ -52,7 +52,7 @@ namespace DemoGame
 
         public void Write(IValueWriter writer)
         {
-            writer.Write(_indexValueKey, Index);
+            writer.Write(_idValueKey, ID);
             writer.Write(_bodyValueKey, Body);
             writer.Write(_fallValueKey, Fall);
             writer.Write(_jumpValueKey, Jump);

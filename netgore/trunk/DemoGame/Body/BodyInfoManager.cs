@@ -14,7 +14,7 @@ namespace DemoGame
         const string _rootNodeName = "Bodies";
         static readonly BodyInfoManager _instance;
 
-        readonly Dictionary<BodyIndex, BodyInfo> _bodies = new Dictionary<BodyIndex, BodyInfo>();
+        readonly Dictionary<BodyID, BodyInfo> _bodies = new Dictionary<BodyID, BodyInfo>();
 
         /// <summary>
         /// Initializes the <see cref="BodyInfoManager"/> class.
@@ -55,7 +55,7 @@ namespace DemoGame
         /// <param name="index">The index of the body to get.</param>
         /// <returns>The <see cref="BodyInfo"/> at the given <paramref name="index"/>, or null if the
         /// <paramref name="index"/> was invalid or no body exists for the given value.</returns>
-        public BodyInfo GetBody(BodyIndex index)
+        public BodyInfo GetBody(BodyID index)
         {
             BodyInfo ret;
             if (_bodies.TryGetValue(index, out ret))
@@ -114,7 +114,7 @@ namespace DemoGame
 
             foreach (var body in bodies)
             {
-                _bodies.Add(body.Index, body);
+                _bodies.Add(body.ID, body);
             }
         }
 

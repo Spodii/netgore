@@ -106,7 +106,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataReader.GetOrdinal("body_id");
 
-            source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
+            source.BodyID = (BodyID)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("cash");
 
@@ -373,7 +373,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "body_id":
-                        source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
+                        source.BodyID = (BodyID)dataReader.GetUInt16(i);
                         break;
 
                     case "cash":

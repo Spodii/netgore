@@ -2005,9 +2005,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `body_id`.
         /// </summary>
-        BodyIndex ICharacterTable.BodyID
+        BodyID ICharacterTable.BodyID
         {
-            get { return BodyInfo.Index; }
+            get { return BodyInfo.ID; }
         }
 
         /// <summary>
