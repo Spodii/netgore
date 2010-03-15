@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Collections;
 
 namespace NetGore.EditorTools
@@ -14,6 +17,7 @@ namespace NetGore.EditorTools
     /// </summary>
     public sealed class AdvancedPropertyDescriptor : PropertyDescriptor
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly Dictionary<Type, Func<object, string>> _extraTextProviders = new Dictionary<Type, Func<object, string>>();
         static readonly object _extraTextProvidersSync = new object();
 
@@ -310,7 +314,24 @@ namespace NetGore.EditorTools
 
                     // Get the extra text if a provider was found
                     if (extraTextProvider != null)
-                        extra = extraTextProvider(value);
+                    {
+                        try
+                        {
+                            extra = extraTextProvider(value);
+                        }
+                        catch (Exception ex)
+                        {
+                            // When there is an exception when trying to get the extra text, do not let it annoy the
+                            // end-user since its just, well, extra text. We will be fine without it. However, show it
+                            // in the logs and while Debug is defined so we can still debug it.
+                            const string errmsg = "Failed to acquire the extra text for type `{0}` on instance `{1}`. Reason: {2}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, value.GetType(), value, ex);
+                            Debug.Fail(string.Format(errmsg, value.GetType(), value, ex));
+
+                            extra = null;
+                        }
+                    }
                 }
 
                 // Append the extra text if we have it
