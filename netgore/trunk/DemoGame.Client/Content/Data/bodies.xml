@@ -3,7 +3,7 @@
   <Body>
     <Count>2</Count>
     <Item0>
-      <Index>1</Index>
+      <ID>1</ID>
       <Body>basic</Body>
       <Fall>fall</Fall>
       <Jump>jump</Jump>
@@ -13,7 +13,7 @@
       <Size>30,78</Size>
     </Item0>
     <Item1>
-      <Index>2</Index>
+      <ID>2</ID>
       <Body>zombie</Body>
       <Fall>fall</Fall>
       <Jump>jump</Jump>
