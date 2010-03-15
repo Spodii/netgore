@@ -228,7 +228,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="statStr">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public NpcCharacterTable(AccountID? @accountID, AIID? @aIID, BodyIndex @bodyID, Int32 @cash,
+        public NpcCharacterTable(AccountID? @accountID, AIID? @aIID, BodyID @bodyID, Int32 @cash,
                                  CharacterTemplateID? @characterTemplateID, NPCChatDialogID? @chatDialog, Int32 @exp,
                                  SPValueType @hP, Int32 @iD, Byte @level, MapIndex @mapID, SPValueType @mP, String @name,
                                  MapIndex? @respawnMap, Single @respawnX, Single @respawnY, ShopID? @shopID, Int32 @statPoints,
@@ -603,7 +603,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "body_id":
-                    BodyID = (BodyIndex)value;
+                    BodyID = (BodyID)value;
                     break;
 
                 case "cash":
@@ -740,9 +740,9 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
         /// </summary>
         [SyncValue]
-        public BodyIndex BodyID
+        public BodyID BodyID
         {
-            get { return (BodyIndex)_bodyID; }
+            get { return (BodyID)_bodyID; }
             set { _bodyID = (UInt16)value; }
         }
 

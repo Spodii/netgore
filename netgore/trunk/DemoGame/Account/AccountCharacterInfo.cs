@@ -8,7 +8,7 @@ namespace DemoGame
     /// </summary>
     public class AccountCharacterInfo
     {
-        const string _valueKeyBodyIndex = "BodyIndex";
+        const string _valueKeyBodyID = "BodyID";
         const string _valueKeyIndex = "Index";
         const string _valueKeyName = "Name";
 
@@ -17,12 +17,12 @@ namespace DemoGame
         /// </summary>
         /// <param name="index">The index.</param>
         /// <param name="name">The name.</param>
-        /// <param name="bodyIndex">Index of the body.</param>
-        public AccountCharacterInfo(byte index, string name, BodyIndex bodyIndex)
+        /// <param name="bodyID">The ID of the body.</param>
+        public AccountCharacterInfo(byte index, string name, BodyID bodyID)
         {
             Index = index;
             Name = name;
-            BodyIndex = bodyIndex;
+            BodyID = bodyID;
         }
 
         /// <summary>
@@ -31,12 +31,12 @@ namespace DemoGame
         /// <param name="r">The <see cref="IValueReader"/> used to read the object data from..</param>
         public AccountCharacterInfo(IValueReader r)
         {
-            Index = r.ReadByte("Index");
-            Name = r.ReadString("Name");
-            BodyIndex = r.ReadBodyIndex("BodyIndex");
+            Index = r.ReadByte(_valueKeyIndex);
+            Name = r.ReadString(_valueKeyName);
+            BodyID = r.ReadBodyID(_valueKeyBodyID);
         }
 
-        public BodyIndex BodyIndex { get; protected set; }
+        public BodyID BodyID { get; protected set; }
         public byte Index { get; protected set; }
         public string Name { get; protected set; }
 
@@ -44,7 +44,7 @@ namespace DemoGame
         {
             w.Write(_valueKeyIndex, Index);
             w.Write(_valueKeyName, Name);
-            w.Write(_valueKeyBodyIndex, BodyIndex);
+            w.Write(_valueKeyBodyID, BodyID);
         }
     }
 }

@@ -12,16 +12,16 @@ namespace DemoGame
     /// Represents the index of a BodyInfo.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(BodyIndexTypeConverter))]
-    public struct BodyIndex : IComparable<BodyIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    [TypeConverter(typeof(BodyIDTypeConverter))]
+    public struct BodyID : IComparable<BodyID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// Represents the largest possible value of BodyIndex. This field is constant.
+        /// Represents the largest possible value of BodyID. This field is constant.
         /// </summary>
         public const int MaxValue = ushort.MaxValue;
 
         /// <summary>
-        /// Represents the smallest possible value of BodyIndex. This field is constant.
+        /// Represents the smallest possible value of BodyID. This field is constant.
         /// </summary>
         public const int MinValue = ushort.MinValue;
 
@@ -31,10 +31,10 @@ namespace DemoGame
         readonly ushort _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BodyIndex"/> struct.
+        /// Initializes a new instance of the <see cref="BodyID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new BodyIndex.</param>
-        public BodyIndex(int value)
+        /// <param name="value">Value to assign to the new BodyID.</param>
+        public BodyID(int value)
         {
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
@@ -49,7 +49,7 @@ namespace DemoGame
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(BodyIndex other)
+        public bool Equals(BodyID other)
         {
             return other._value == _value;
         }
@@ -65,9 +65,9 @@ namespace DemoGame
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(BodyIndex))
+            if (obj.GetType() != typeof(BodyID))
                 return false;
-            return Equals((BodyIndex)obj);
+            return Equals((BodyID)obj);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the raw internal value of this BodyIndex.
+        /// Gets the raw internal value of this BodyID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
         public ushort GetRawValue()
@@ -91,53 +91,53 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an BodyIndex from an IValueReader.
+        /// Reads an BodyID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The BodyIndex read from the IValueReader.</returns>
-        public static BodyIndex Read(IValueReader reader, string name)
+        /// <returns>The BodyID read from the IValueReader.</returns>
+        public static BodyID Read(IValueReader reader, string name)
         {
             ushort value = reader.ReadUShort(name);
-            return new BodyIndex(value);
+            return new BodyID(value);
         }
 
         /// <summary>
-        /// Reads an BodyIndex from an IDataReader.
+        /// Reads an BodyID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The BodyIndex read from the IDataReader.</returns>
-        public static BodyIndex Read(IDataReader reader, int i)
+        /// <returns>The BodyID read from the IDataReader.</returns>
+        public static BodyID Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
             if (value is ushort)
-                return new BodyIndex((ushort)value);
+                return new BodyID((ushort)value);
 
             ushort convertedValue = Convert.ToUInt16(value);
-            return new BodyIndex(convertedValue);
+            return new BodyID(convertedValue);
         }
 
         /// <summary>
-        /// Reads an BodyIndex from an IDataReader.
+        /// Reads an BodyID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The BodyIndex read from the IDataReader.</returns>
-        public static BodyIndex Read(IDataReader reader, string name)
+        /// <returns>The BodyID read from the IDataReader.</returns>
+        public static BodyID Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an BodyIndex from an IValueReader.
+        /// Reads an BodyID from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The BodyIndex read from the BitStream.</returns>
-        public static BodyIndex Read(BitStream bitStream)
+        /// <returns>The BodyID read from the BitStream.</returns>
+        public static BodyID Read(BitStream bitStream)
         {
             ushort value = bitStream.ReadUShort();
-            return new BodyIndex(value);
+            return new BodyID(value);
         }
 
         /// <summary>
@@ -151,10 +151,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Writes the BodyIndex to an IValueWriter.
+        /// Writes the BodyID to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the BodyIndex that will be used to distinguish it
+        /// <param name="name">Unique name of the BodyID that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -162,7 +162,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Writes the BodyIndex to an IValueWriter.
+        /// Writes the BodyID to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -170,7 +170,7 @@ namespace DemoGame
             bitStream.Write(_value);
         }
 
-        #region IComparable<BodyIndex> Members
+        #region IComparable<BodyID> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -188,7 +188,7 @@ namespace DemoGame
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        public int CompareTo(BodyIndex other)
+        public int CompareTo(BodyID other)
         {
             return _value.CompareTo(other._value);
         }
@@ -485,21 +485,21 @@ namespace DemoGame
         /// <summary>
         /// Implements operator ++.
         /// </summary>
-        /// <param name="l">The BodyIndex to increment.</param>
-        /// <returns>The incremented BodyIndex.</returns>
-        public static BodyIndex operator ++(BodyIndex l)
+        /// <param name="l">The BodyID to increment.</param>
+        /// <returns>The incremented BodyID.</returns>
+        public static BodyID operator ++(BodyID l)
         {
-            return new BodyIndex(l._value + 1);
+            return new BodyID(l._value + 1);
         }
 
         /// <summary>
         /// Implements operator --.
         /// </summary>
-        /// <param name="l">The BodyIndex to decrement.</param>
-        /// <returns>The decremented BodyIndex.</returns>
-        public static BodyIndex operator --(BodyIndex l)
+        /// <param name="l">The BodyID to decrement.</param>
+        /// <returns>The decremented BodyID.</returns>
+        public static BodyID operator --(BodyID l)
         {
-            return new BodyIndex(l._value - 1);
+            return new BodyID(l._value - 1);
         }
 
         /// <summary>
@@ -508,9 +508,9 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static BodyIndex operator +(BodyIndex left, BodyIndex right)
+        public static BodyID operator +(BodyID left, BodyID right)
         {
-            return new BodyIndex(left._value + right._value);
+            return new BodyID(left._value + right._value);
         }
 
         /// <summary>
@@ -519,9 +519,9 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static BodyIndex operator -(BodyIndex left, BodyIndex right)
+        public static BodyID operator -(BodyID left, BodyID right)
         {
-            return new BodyIndex(left._value - right._value);
+            return new BodyID(left._value - right._value);
         }
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(BodyIndex left, int right)
+        public static bool operator ==(BodyID left, int right)
         {
             return left._value == right;
         }
@@ -541,7 +541,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(BodyIndex left, int right)
+        public static bool operator !=(BodyID left, int right)
         {
             return left._value != right;
         }
@@ -552,7 +552,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, BodyIndex right)
+        public static bool operator ==(int left, BodyID right)
         {
             return left == right._value;
         }
@@ -563,29 +563,29 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, BodyIndex right)
+        public static bool operator !=(int left, BodyID right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a BodyIndex to an Int32.
+        /// Casts a BodyID to an Int32.
         /// </summary>
-        /// <param name="BodyIndex">BodyIndex to cast.</param>
+        /// <param name="BodyID">BodyID to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(BodyIndex BodyIndex)
+        public static explicit operator int(BodyID BodyID)
         {
-            return BodyIndex._value;
+            return BodyID._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a BodyIndex.
+        /// Casts an Int32 to a BodyID.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The BodyIndex.</returns>
-        public static explicit operator BodyIndex(int value)
+        /// <returns>The BodyID.</returns>
+        public static explicit operator BodyID(int value)
         {
-            return new BodyIndex(value);
+            return new BodyID(value);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, BodyIndex right)
+        public static bool operator >(int left, BodyID right)
         {
             return left > right._value;
         }
@@ -605,7 +605,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, BodyIndex right)
+        public static bool operator <(int left, BodyID right)
         {
             return left < right._value;
         }
@@ -616,7 +616,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(BodyIndex left, BodyIndex right)
+        public static bool operator >(BodyID left, BodyID right)
         {
             return left._value > right._value;
         }
@@ -627,7 +627,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(BodyIndex left, BodyIndex right)
+        public static bool operator <(BodyID left, BodyID right)
         {
             return left._value < right._value;
         }
@@ -638,7 +638,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(BodyIndex left, int right)
+        public static bool operator >(BodyID left, int right)
         {
             return left._value > right;
         }
@@ -649,7 +649,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(BodyIndex left, int right)
+        public static bool operator <(BodyID left, int right)
         {
             return left._value < right;
         }
@@ -660,7 +660,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, BodyIndex right)
+        public static bool operator >=(int left, BodyID right)
         {
             return left >= right._value;
         }
@@ -671,7 +671,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, BodyIndex right)
+        public static bool operator <=(int left, BodyID right)
         {
             return left <= right._value;
         }
@@ -682,7 +682,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(BodyIndex left, int right)
+        public static bool operator >=(BodyID left, int right)
         {
             return left._value >= right;
         }
@@ -693,7 +693,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(BodyIndex left, int right)
+        public static bool operator <=(BodyID left, int right)
         {
             return left._value <= right;
         }
@@ -704,7 +704,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(BodyIndex left, BodyIndex right)
+        public static bool operator >=(BodyID left, BodyID right)
         {
             return left._value >= right._value;
         }
@@ -715,7 +715,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(BodyIndex left, BodyIndex right)
+        public static bool operator <=(BodyID left, BodyID right)
         {
             return left._value <= right._value;
         }
@@ -726,7 +726,7 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(BodyIndex left, BodyIndex right)
+        public static bool operator !=(BodyID left, BodyID right)
         {
             return left._value != right._value;
         }
@@ -737,33 +737,33 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(BodyIndex left, BodyIndex right)
+        public static bool operator ==(BodyID left, BodyID right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the BodyIndex.
-    /// All of the operations are implemented in the BodyIndex struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the BodyID.
+    /// All of the operations are implemented in the BodyID struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class BodyIndexReadWriteExtensions
+    public static class BodyIDReadWriteExtensions
     {
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type BodyIndex.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type BodyID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a BodyIndex.</returns>
-        public static BodyIndex AsBodyIndex<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a BodyID.</returns>
+        public static BodyID AsBodyID<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseBodyIndex(dict[key]);
+            return Parser.Invariant.ParseBodyID(dict[key]);
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type BodyIndex.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type BodyID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -772,13 +772,13 @@ namespace DemoGame
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static BodyIndex AsBodyIndex<T>(this IDictionary<T, string> dict, T key, BodyIndex defaultValue)
+        public static BodyID AsBodyID<T>(this IDictionary<T, string> dict, T key, BodyID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            BodyIndex parsed;
+            BodyID parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
@@ -786,92 +786,92 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the BodyIndex from an IDataReader.
+        /// Reads the BodyID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the BodyIndex from.</param>
+        /// <param name="dataReader">IDataReader to read the BodyID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The BodyIndex read from the IDataReader.</returns>
-        public static BodyIndex GetBodyIndex(this IDataReader dataReader, int i)
+        /// <returns>The BodyID read from the IDataReader.</returns>
+        public static BodyID GetBodyID(this IDataReader dataReader, int i)
         {
-            return BodyIndex.Read(dataReader, i);
+            return BodyID.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the BodyIndex from an IDataReader.
+        /// Reads the BodyID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the BodyIndex from.</param>
+        /// <param name="dataReader">IDataReader to read the BodyID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The BodyIndex read from the IDataReader.</returns>
-        public static BodyIndex GetBodyIndex(this IDataReader dataReader, string name)
+        /// <returns>The BodyID read from the IDataReader.</returns>
+        public static BodyID GetBodyID(this IDataReader dataReader, string name)
         {
-            return BodyIndex.Read(dataReader, name);
+            return BodyID.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Parses the BodyIndex from a string.
+        /// Parses the BodyID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The BodyIndex parsed from the string.</returns>
-        public static BodyIndex ParseBodyIndex(this Parser parser, string value)
+        /// <returns>The BodyID parsed from the string.</returns>
+        public static BodyID ParseBodyID(this Parser parser, string value)
         {
-            return new BodyIndex(parser.ParseUShort(value));
+            return new BodyID(parser.ParseUShort(value));
         }
 
         /// <summary>
-        /// Reads the BodyIndex from a BitStream.
+        /// Reads the BodyID from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the BodyIndex from.</param>
-        /// <returns>The BodyIndex read from the BitStream.</returns>
-        public static BodyIndex ReadBodyIndex(this BitStream bitStream)
+        /// <param name="bitStream">BitStream to read the BodyID from.</param>
+        /// <returns>The BodyID read from the BitStream.</returns>
+        public static BodyID ReadBodyID(this BitStream bitStream)
         {
-            return BodyIndex.Read(bitStream);
+            return BodyID.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the BodyIndex from an IValueReader.
+        /// Reads the BodyID from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the BodyIndex from.</param>
+        /// <param name="valueReader">IValueReader to read the BodyID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The BodyIndex read from the IValueReader.</returns>
-        public static BodyIndex ReadBodyIndex(this IValueReader valueReader, string name)
+        /// <returns>The BodyID read from the IValueReader.</returns>
+        public static BodyID ReadBodyID(this IValueReader valueReader, string name)
         {
-            return BodyIndex.Read(valueReader, name);
+            return BodyID.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Tries to parse the BodyIndex from a string.
+        /// Tries to parse the BodyID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed BodyIndex.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed BodyID.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out BodyIndex outValue)
+        public static bool TryParse(this Parser parser, string value, out BodyID outValue)
         {
             ushort tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new BodyIndex(tmp);
+            outValue = new BodyID(tmp);
             return ret;
         }
 
         /// <summary>
-        /// Writes a BodyIndex to a BitStream.
+        /// Writes a BodyID to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">BodyIndex to write.</param>
-        public static void Write(this BitStream bitStream, BodyIndex value)
+        /// <param name="value">BodyID to write.</param>
+        public static void Write(this BitStream bitStream, BodyID value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a BodyIndex to a IValueWriter.
+        /// Writes a BodyID to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the BodyIndex that will be used to distinguish it
+        /// <param name="name">Unique name of the BodyID that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">BodyIndex to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, BodyIndex value)
+        /// <param name="value">BodyID to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, BodyID value)
         {
             value.Write(valueWriter, name);
         }

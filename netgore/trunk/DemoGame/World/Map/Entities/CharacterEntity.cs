@@ -33,10 +33,10 @@ namespace DemoGame
         /// <summary>
         /// Synchronizes the BodyInfo index for the CharacterEntity.
         /// </summary>
-        [SyncValue("BodyIndex")]
-        protected internal BodyIndex BodyInfoIndex
+        [SyncValue("BodyID")]
+        protected internal BodyID BodyID
         {
-            get { return BodyInfo.Index; }
+            get { return BodyInfo.ID; }
             set { BodyInfo = BodyInfoManager.Instance.GetBody(value); }
         }
 

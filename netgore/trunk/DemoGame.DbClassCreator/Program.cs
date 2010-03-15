@@ -128,7 +128,7 @@ namespace DemoGame.DbClassCreator
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");
                 generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id");
                 generator.AddCustomType(typeof(ItemTemplateID), "*", "item_template_id");
-                generator.AddCustomType(typeof(BodyIndex), "*", "body_id");
+                generator.AddCustomType(typeof(BodyID), "*", "body_id");
                 generator.AddCustomType(typeof(SPValueType), "*", "hp", "mp");
                 generator.AddCustomType(typeof(ShopID), "*", "shop_id");
                 generator.AddCustomType(typeof(AIID), "*", "ai_id");

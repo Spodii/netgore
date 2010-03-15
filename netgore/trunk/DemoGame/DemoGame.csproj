@@ -71,7 +71,7 @@
     <Compile Include="Account\AccountCharacterInfo.cs" />
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
     <Compile Include="Account\AccountIDTypeConverter.cs" />
-    <Compile Include="Body\BodyIndexTypeConverter.cs" />
+    <Compile Include="Body\BodyIDTypeConverter.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountIpsTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceAttackableTable.cs" />
@@ -147,7 +147,7 @@
     <Compile Include="StatusEffect\StatusEffectInfoManager.cs" />
     <Compile Include="World\Map\IMapEntityCollectionExtensions.cs" />
     <Compile Include="IO\BitStreamExtensions.cs" />
-    <Compile Include="Body\BodyIndex.cs" />
+    <Compile Include="Body\BodyID.cs" />
     <Compile Include="Body\BodyInfo.cs" />
     <Compile Include="World\Map\Entities\CharacterEntity.cs" />
     <Compile Include="World\Map\Entities\CharacterState.cs" />

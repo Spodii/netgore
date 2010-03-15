@@ -70,7 +70,7 @@ namespace DemoGame.EditorTools
             AdvancedPropertyDescriptor.SetExtraTextProvider<IAI>(ExtraTextProvider_IAI);
             AdvancedPropertyDescriptor.SetExtraTextProvider<AllianceID>(ExtraTextProvider_AllianceID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<Alliance>(ExtraTextProvider_Alliance);
-            AdvancedPropertyDescriptor.SetExtraTextProvider<BodyIndex>(ExtraTextProvider_BodyIndex);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<BodyID>(ExtraTextProvider_BodyID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<NPCChatDialogID>(ExtraTextProvider_NPCChatDialogID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<ShopID>(ExtraTextProvider_ShopID);
         }
@@ -122,11 +122,11 @@ namespace DemoGame.EditorTools
 
         /// <summary>
         /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
-        /// <see cref="BodyIndex"/>.
+        /// <see cref="BodyID"/>.
         /// </summary>
         /// <param name="v">The value.</param>
         /// <returns>The extra text to display.</returns>
-        static string ExtraTextProvider_BodyIndex(BodyIndex v)
+        static string ExtraTextProvider_BodyID(BodyID v)
         {
             var body = BodyInfoManager.Instance.GetBody(v);
             if (body == null)
@@ -215,8 +215,8 @@ namespace DemoGame.EditorTools
                 new EditorTypes(typeof(ItemTemplateID?), typeof(ItemTemplateIDEditor)),
                 new EditorTypes(typeof(AllianceID), typeof(AllianceIDEditor)),
                 new EditorTypes(typeof(AllianceID?), typeof(AllianceIDEditor)),
-                new EditorTypes(typeof(BodyIndex), typeof(BodyIndexEditor)),
-                new EditorTypes(typeof(BodyIndex?), typeof(BodyIndexEditor)), new EditorTypes(typeof(BodyInfo), typeof(BodyInfo)),
+                new EditorTypes(typeof(BodyID), typeof(BodyIDEditor)),
+                new EditorTypes(typeof(BodyID?), typeof(BodyIDEditor)), new EditorTypes(typeof(BodyInfo), typeof(BodyInfo)),
                 new EditorTypes(typeof(MapIndex), typeof(MapIndexEditor)),
                 new EditorTypes(typeof(MapIndex?), typeof(MapIndexEditor)), new EditorTypes(typeof(ShopID), typeof(ShopIDEditor)),
                 new EditorTypes(typeof(ShopID?), typeof(ShopIDEditor)),
