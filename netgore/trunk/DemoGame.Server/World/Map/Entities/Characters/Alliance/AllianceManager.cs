@@ -53,6 +53,7 @@ namespace DemoGame.Server
                 Alliance ret;
                 if (_allianceFromName.TryGetValue(name, out ret))
                     return ret;
+
                 return null;
             }
         }
