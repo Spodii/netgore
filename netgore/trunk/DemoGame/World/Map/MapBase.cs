@@ -9,6 +9,7 @@ using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -43,7 +44,7 @@ namespace DemoGame
 
         const string _headerNodeHeightKey = "Height";
         const string _headerNodeIndoorsKey = "Indoors";
-        const string _headerNodeMusicKey = "Music";
+        const string _headerNodeMusicKey = "MusicID";
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeWidthKey = "Width";
@@ -168,9 +169,8 @@ namespace DemoGame
         /// </summary>
         [Browsable(true)]
         [Category("Map")]
-        [Description("The name of the music to play on the map.")]
-        [DefaultValue("")]
-        public string Music { get; set; }
+        [Description("The ID of the music to play on the map.")]
+        public MusicID MusicID { get; set; }
 
         /// <summary>
         /// Adds a DynamicEntity to the Map, using the pre-determined unique index.
@@ -763,7 +763,7 @@ namespace DemoGame
 
             // Read the values
             Name = nodeReader.ReadString(_headerNodeNameKey);
-            Music = nodeReader.ReadString(_headerNodeMusicKey);
+            MusicID = nodeReader.ReadMusicID(_headerNodeMusicKey);
             _width = nodeReader.ReadFloat(_headerNodeWidthKey);
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
             Indoors = nodeReader.ReadBool(_headerNodeIndoorsKey);
@@ -950,7 +950,7 @@ namespace DemoGame
             w.WriteStartNode(_headerNodeName);
             {
                 w.Write(_headerNodeNameKey, Name);
-                w.Write(_headerNodeMusicKey, Music);
+                w.Write(_headerNodeMusicKey, MusicID);
                 w.Write(_headerNodeWidthKey, Width);
                 w.Write(_headerNodeHeightKey, Height);
                 w.Write(_headerNodeIndoorsKey, Indoors);
