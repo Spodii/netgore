@@ -505,5 +505,17 @@ namespace DemoGame.DbEditor
                              x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
         }
 
+        /// <summary>
+        /// Handles the SelectedGridItemChanged event of the PropertyGrid control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.SelectedGridItemChangedEventArgs"/> instance containing the
+        /// event data.</param>
+        private void PropertyGrid_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        {
+            var pg = sender as PropertyGrid;
+            if (pg != null)
+                pg.Refresh();
+        }
     }
 }

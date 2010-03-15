@@ -192,6 +192,7 @@
             this.pgItemTemplate.Name = "pgItemTemplate";
             this.pgItemTemplate.Size = new System.Drawing.Size(450, 345);
             this.pgItemTemplate.TabIndex = 0;
+            this.pgItemTemplate.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.PropertyGrid_SelectedGridItemChanged);
             this.pgItemTemplate.SelectedObjectsChanged += new System.EventHandler(this.pgItemTemplate_SelectedObjectsChanged);
             // 
             // tpCharacterTemplate
@@ -302,6 +303,7 @@
             this.pgCharacterTemplate.Name = "pgCharacterTemplate";
             this.pgCharacterTemplate.Size = new System.Drawing.Size(450, 345);
             this.pgCharacterTemplate.TabIndex = 0;
+            this.pgCharacterTemplate.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.PropertyGrid_SelectedGridItemChanged);
             this.pgCharacterTemplate.SelectedObjectsChanged += new System.EventHandler(this.pgCharacterTemplate_SelectedObjectsChanged);
             // 
             // tpQuests

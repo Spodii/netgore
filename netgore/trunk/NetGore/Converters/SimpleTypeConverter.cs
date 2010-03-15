@@ -34,6 +34,17 @@ namespace NetGore
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the extended text to display in for the type
+        /// while it is in a PropertyGrid but is not the selected item.
+        /// </summary>
+        /// <param name="value">The object to get the extended text for.</param>
+        /// <returns>The extended text to display. Can be null.</returns>
+        protected virtual string GetExtendedText(object value)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Returns whether this converter can convert the object to the specified type, using the specified context.
         /// </summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/>
@@ -134,7 +145,18 @@ namespace NetGore
             culture = culture ?? CultureInfo.CurrentCulture;
 
             if (destinationType == typeof(string) && value is T)
-                return ConvertToString((T)value);
+            {
+                var ret = ConvertToString((T)value);
+
+                if (context.ShowExtendedText())
+                {
+                    var extendedText = GetExtendedText(value);
+                    if (!string.IsNullOrEmpty(extendedText))
+                        ret += " [" + extendedText + "]";
+                }
+
+                return ret;
+            }
             else if (destinationType == typeof(T))
                 return (T)value;
 
