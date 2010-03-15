@@ -2,9 +2,9 @@
 <Map>
   <Header>
     <Name>Desert 2</Name>
+	<HasMusic>True</HasMusic>
     <MusicID>1</MusicID>
-    <Width>1440</Width>
-    <Height>1440</Height>
+    <Size>1440,1440</Size>
     <Indoors>False</Indoors>
   </Header>
   <Walls>

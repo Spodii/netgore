@@ -42,12 +42,12 @@ namespace DemoGame
         /// </summary>
         const int _findValidPlacementPadding = 128;
 
-        const string _headerNodeHeightKey = "Height";
         const string _headerNodeIndoorsKey = "Indoors";
+        const string _headerNodeHasMusicKey = "HasMusic";
         const string _headerNodeMusicKey = "MusicID";
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
-        const string _headerNodeWidthKey = "Width";
+        const string _headerNodeSizeKey = "Size";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
         const string _wallsNodeName = "Walls";
@@ -81,10 +81,7 @@ namespace DemoGame
         /// </summary>
         readonly Stopwatch _updateStopWatch = new Stopwatch();
 
-        /// <summary>
-        /// Height of the map in pixels
-        /// </summary>
-        float _height = float.MinValue;
+        Vector2 _size = new Vector2(float.MinValue);
 
         /// <summary>
         /// If the map is actively updating (set to false to "pause" the physics)
@@ -95,11 +92,6 @@ namespace DemoGame
         /// Name of the map
         /// </summary>
         string _name = string.Empty;
-
-        /// <summary>
-        /// Width of the map in pixels
-        /// </summary>
-        float _width = float.MinValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -165,12 +157,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets or sets the name of the music to play for the map, or empty or null if there is no music.
+        /// Gets or sets the ID of the music to play for the map, or empty or null if there is no music.
         /// </summary>
         [Browsable(true)]
         [Category("Map")]
         [Description("The ID of the music to play on the map.")]
-        public MusicID MusicID { get; set; }
+        public MusicID? MusicID { get; set; }
 
         /// <summary>
         /// Adds a DynamicEntity to the Map, using the pre-determined unique index.
@@ -763,9 +755,13 @@ namespace DemoGame
 
             // Read the values
             Name = nodeReader.ReadString(_headerNodeNameKey);
+
+            bool hasMusic = nodeReader.ReadBool(_headerNodeHasMusicKey);
             MusicID = nodeReader.ReadMusicID(_headerNodeMusicKey);
-            _width = nodeReader.ReadFloat(_headerNodeWidthKey);
-            _height = nodeReader.ReadFloat(_headerNodeHeightKey);
+            if (!hasMusic)
+                MusicID = null;
+
+            _size = nodeReader.ReadVector2(_headerNodeSizeKey);
             Indoors = nodeReader.ReadBool(_headerNodeIndoorsKey);
 
             // Set the size for the spatial
@@ -950,9 +946,9 @@ namespace DemoGame
             w.WriteStartNode(_headerNodeName);
             {
                 w.Write(_headerNodeNameKey, Name);
-                w.Write(_headerNodeMusicKey, MusicID);
-                w.Write(_headerNodeWidthKey, Width);
-                w.Write(_headerNodeHeightKey, Height);
+                w.Write(_headerNodeHasMusicKey, MusicID.HasValue);
+                w.Write(_headerNodeMusicKey, MusicID.HasValue ? MusicID.Value : new MusicID(0));
+                w.Write(_headerNodeSizeKey, Size);
                 w.Write(_headerNodeIndoorsKey, Indoors);
             }
             w.WriteEndNode(_headerNodeName);
@@ -1001,8 +997,7 @@ namespace DemoGame
             }
 
             // Update the map's size
-            _width = newSize.X;
-            _height = newSize.Y;
+            _size = newSize;
 
             // Update the spatial's size
             Spatial.SetAreaSize(Size);
@@ -1148,7 +1143,7 @@ namespace DemoGame
         [Browsable(false)]
         public float Height
         {
-            get { return _height; }
+            get { return Size.Y; }
         }
 
         /// <summary>
@@ -1168,7 +1163,7 @@ namespace DemoGame
         [Browsable(false)]
         public Vector2 Size
         {
-            get { return new Vector2(Width, Height); }
+            get { return _size; }
         }
 
         /// <summary>
@@ -1186,7 +1181,7 @@ namespace DemoGame
         [Browsable(false)]
         public float Width
         {
-            get { return _width; }
+            get { return Size.X; }
         }
 
         /// <summary>

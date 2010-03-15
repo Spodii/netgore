@@ -587,9 +587,13 @@ namespace DemoGame.Client
             SoundManager.Stop();
 
             // Set the new music
-            if (!MusicManager.TryPlay(newMap.MusicID))
+            if (!newMap.MusicID.HasValue)
             {
-                IMusic musicTrack = MusicManager.GetItem(newMap.MusicID);
+                ScreenMusic = null;
+            }
+            else if (!MusicManager.TryPlay(newMap.MusicID.Value))
+            {
+                IMusic musicTrack = MusicManager.GetItem(newMap.MusicID.Value);
                 if (musicTrack == null)
                 {
                     const string errmsg = "Failed to play map music with ID `{0}`. No music with that ID could be found.";
