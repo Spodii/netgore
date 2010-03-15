@@ -17,19 +17,23 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="cm">The cm.</param>
         /// <param name="current">The currently selected <see cref="IMusic"/>. Can be null.</param>
-        public MusicUITypeEditorForm(ContentManager cm, IMusic current)
+        public MusicUITypeEditorForm(ContentManager cm, object current)
         {
             _cm = cm;
-            _current = current;
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MusicUITypeEditorForm"/> class.
-        /// </summary>
-        /// <param name="cm">The cm.</param>
-        /// <param name="current">The name of the currently selected <see cref="IMusic"/>. Can be null.</param>
-        public MusicUITypeEditorForm(ContentManager cm, string current) : this(cm, MusicManager.GetInstance(cm).GetItem(current))
-        {
+            var mm = MusicManager.GetInstance(cm);
+
+            if (current != null)
+            {
+                if (current is MusicID)
+                    _current = mm.GetItem((MusicID)current);
+                else if (current is MusicID? && ((MusicID?)current).HasValue)
+                    _current = mm.GetItem(((MusicID?)current).Value);
+                else if (current is IMusic)
+                    _current = (IMusic)current;
+                else
+                    _current = mm.GetItem(current.ToString());
+            }
         }
 
         /// <summary>

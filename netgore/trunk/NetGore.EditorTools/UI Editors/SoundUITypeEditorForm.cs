@@ -17,19 +17,23 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="cm">The cm.</param>
         /// <param name="current">The currently selected <see cref="ISound"/>. Can be null.</param>
-        public SoundUITypeEditorForm(ContentManager cm, ISound current)
+        public SoundUITypeEditorForm(ContentManager cm, object current)
         {
             _cm = cm;
-            _current = current;
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SoundUITypeEditorForm"/> class.
-        /// </summary>
-        /// <param name="cm">The cm.</param>
-        /// <param name="current">The name of the currently selected <see cref="ISound"/>. Can be null.</param>
-        public SoundUITypeEditorForm(ContentManager cm, string current) : this(cm, SoundManager.GetInstance(cm).GetItem(current))
-        {
+            var sm = SoundManager.GetInstance(cm);
+
+            if (current != null)
+            {
+                if (current is SoundID)
+                    _current = sm.GetItem((SoundID)current);
+                else if (current is SoundID? && ((SoundID?)current).HasValue)
+                    _current = sm.GetItem(((SoundID?)current).Value);
+                else if (current is ISound)
+                    _current = (ISound)current;
+                else
+                    _current = sm.GetItem(current.ToString());
+            }
         }
 
         /// <summary>
