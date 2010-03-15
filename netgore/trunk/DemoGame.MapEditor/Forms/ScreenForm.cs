@@ -441,7 +441,7 @@ namespace DemoGame.MapEditor
                                 "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            MapIndex index = MapBase.GetNextFreeIndex(ContentPaths.Dev);
+            MapID index = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
             var newMap = new Map(index, Camera, _world, GameScreen.GraphicsDevice);
             DbController.GetQuery<InsertMapQuery>().Execute(newMap);
@@ -466,7 +466,7 @@ namespace DemoGame.MapEditor
             }
 
             // Write the map
-            Map.Save(Map.Index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
+            Map.Save(Map.ID, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
 
             // Remove the extra walls
             foreach (WallEntityBase wall in extraWalls)
@@ -509,7 +509,7 @@ namespace DemoGame.MapEditor
                 return null;
             }
 
-            MapIndex index;
+            MapID index;
             if (!MapBase.TryGetIndexFromPath(filePath, out index))
             {
                 MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
@@ -702,7 +702,7 @@ namespace DemoGame.MapEditor
                 if (!MapBase.IsValidMapFile(file))
                     continue;
 
-                MapIndex index;
+                MapID index;
                 if (!MapBase.TryGetIndexFromPath(file, out index))
                     continue;
 
@@ -1024,7 +1024,7 @@ namespace DemoGame.MapEditor
             // ReSharper disable EmptyGeneralCatchClause
             try
             {
-                Map = new Map(new MapIndex(1), Camera, _world, GameScreen.GraphicsDevice);
+                Map = new Map(new MapID(1), Camera, _world, GameScreen.GraphicsDevice);
             }
             catch (Exception)
             {

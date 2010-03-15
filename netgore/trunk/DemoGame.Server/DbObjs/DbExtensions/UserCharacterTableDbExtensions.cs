@@ -132,7 +132,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataReader.GetOrdinal("map_id");
 
-            source.MapID = (MapIndex)dataReader.GetUInt16(i);
+            source.MapID = (MapID)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("mp");
 
@@ -144,7 +144,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataReader.GetOrdinal("respawn_map");
 
-            source.RespawnMap = (MapIndex?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            source.RespawnMap = (MapID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("respawn_x");
 
@@ -392,7 +392,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "map_id":
-                        source.MapID = (MapIndex)dataReader.GetUInt16(i);
+                        source.MapID = (MapID)dataReader.GetUInt16(i);
                         break;
 
                     case "mp":
@@ -404,7 +404,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "respawn_map":
-                        source.RespawnMap = (MapIndex?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        source.RespawnMap = (MapID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
                         break;
 
                     case "respawn_x":

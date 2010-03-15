@@ -268,7 +268,7 @@
     <Compile Include="World\Entities\NPCChat\NPCChatDialogID.cs" />
     <Compile Include="World\Entities\NPCChat\NPCChatDialogItemID.cs" />
     <Compile Include="World\Map\MapEntityIndexTypeConverter.cs" />
-    <Compile Include="World\Map\MapIndexTypeConverter.cs" />
+    <Compile Include="World\Map\MapIDTypeConverter.cs" />
     <Compile Include="World\Map\Spatial\DynamicGridSpatialCollection.cs" />
     <Compile Include="World\Map\Spatial\GridSpatialCollectionBase.cs" />
     <Compile Include="World\Map\Spatial\IGridSpatialCollectionSegment.cs" />
@@ -303,7 +303,7 @@
     <Compile Include="IO\PropertySync\Syncs\PropertySyncGrhIndex.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncLong.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncMapEntityIndex.cs" />
-    <Compile Include="IO\PropertySync\Syncs\PropertySyncMapIndex.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncMapID.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncSByte.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncShort.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncUInt.cs" />
@@ -339,7 +339,7 @@
     <Compile Include="Strings\StringRules.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="World\Map\MapEntityIndex.cs" />
-    <Compile Include="World\Map\MapIndex.cs" />
+    <Compile Include="World\Map\MapID.cs" />
     <Compile Include="World\Map\Spatial\SpatialMovedEventHandler.cs" />
     <Compile Include="World\Map\Spatial\StaticGridSpatialCollection.cs" />
   </ItemGroup>

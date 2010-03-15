@@ -69,7 +69,7 @@ namespace DemoGame
         /// <summary>
         /// Index of the map
         /// </summary>
-        readonly MapIndex _mapIndex;
+        readonly MapID _mapID;
 
         readonly ISpatialCollection _spatialCollection;
 
@@ -103,15 +103,15 @@ namespace DemoGame
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
         /// </summary>
-        /// <param name="mapIndex">Index of the map.</param>
+        /// <param name="mapID">ID of the map.</param>
         /// <param name="getTime">Interface used to get the time.</param>
-        protected MapBase(MapIndex mapIndex, IGetTime getTime)
+        protected MapBase(MapID mapID, IGetTime getTime)
         {
             if (getTime == null)
                 throw new ArgumentNullException("getTime");
 
             _getTime = getTime;
-            _mapIndex = mapIndex;
+            _mapID = mapID;
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _spatialCollection = CreateSpatialManager();
@@ -457,15 +457,15 @@ namespace DemoGame
         /// </summary>
         /// <param name="path">ContentPaths containing the maps.</param>
         /// <returns>Next free map index.</returns>
-        public static MapIndex GetNextFreeIndex(ContentPaths path)
+        public static MapID GetNextFreeIndex(ContentPaths path)
         {
             var mapFiles = GetMapFiles(path);
 
             // Get the used map indices
-            var usedIndices = new List<MapIndex>(mapFiles.Count());
+            var usedIndices = new List<MapID>(mapFiles.Count());
             foreach (var file in mapFiles)
             {
-                MapIndex o;
+                MapID o;
                 if (TryGetIndexFromPath(file, out o))
                     usedIndices.Add(o);
             }
@@ -477,12 +477,12 @@ namespace DemoGame
             for (var i = 0; i < usedIndices.Count; i++)
             {
                 if ((int)usedIndices[i] != expected)
-                    return new MapIndex(expected);
+                    return new MapID(expected);
 
                 expected++;
             }
 
-            return new MapIndex(expected);
+            return new MapID(expected);
         }
 
         /// <summary>
@@ -582,7 +582,7 @@ namespace DemoGame
                 return false;
 
             // Check if the file is named properly
-            MapIndex index;
+            MapID index;
             if (!Parser.Invariant.TryParse(Path.GetFileNameWithoutExtension(filePath), out index))
                 return false;
 
@@ -704,7 +704,7 @@ namespace DemoGame
         /// <see cref="DynamicEntity"/>s.</param>
         public void Load(ContentPaths contentPath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
-            string path = contentPath.Maps.Join(Index + "." + MapFileSuffix);
+            string path = contentPath.Maps.Join(ID + "." + MapFileSuffix);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
         }
 
@@ -894,13 +894,13 @@ namespace DemoGame
         /// <summary>
         /// Saves the map to a file to the specified content path.
         /// </summary>
-        /// <param name="mapIndex">Map index to save as.</param>
+        /// <param name="mapID">Map ID to save as.</param>
         /// <param name="contentPath">Content path to save the map file to.</param>
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
         /// <see cref="DynamicEntity"/>s.</param>
-        public void Save(MapIndex mapIndex, ContentPaths contentPath, IDynamicEntityFactory dynamicEntityFactory)
+        public void Save(MapID mapID, ContentPaths contentPath, IDynamicEntityFactory dynamicEntityFactory)
         {
-            var path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
+            var path = contentPath.Maps.Join(mapID + "." + MapFileSuffix);
             Save(path, dynamicEntityFactory);
 
             if (Saved != null)
@@ -1091,15 +1091,15 @@ namespace DemoGame
         /// Tries to get the Map's index from the file path.
         /// </summary>
         /// <param name="path">File path to the map.</param>
-        /// <param name="mapIndex">If this method returns true, contains the index of the map.</param>
+        /// <param name="mapID">If this method returns true, contains the index of the map.</param>
         /// <returns>True if the parsing was successful; otherwise false.</returns>
-        public static bool TryGetIndexFromPath(string path, out MapIndex mapIndex)
+        public static bool TryGetIndexFromPath(string path, out MapID mapID)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
             var fileName = Path.GetFileNameWithoutExtension(path);
-            return Parser.Invariant.TryParse(fileName, out mapIndex);
+            return Parser.Invariant.TryParse(fileName, out mapID);
         }
 
         /// <summary>
@@ -1152,14 +1152,14 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the unique index of the map.
+        /// Gets the ID of the map.
         /// </summary>
         [Browsable(true)]
         [Category("Map")]
-        [Description("The unique index of the map.")]
-        public MapIndex Index
+        [Description("The ID of the map.")]
+        public MapID ID
         {
-            get { return _mapIndex; }
+            get { return _mapID; }
         }
 
         /// <summary>
@@ -1259,9 +1259,9 @@ namespace DemoGame
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        MapIndex IMapTable.ID
+        MapID IMapTable.ID
         {
-            get { return Index; }
+            get { return ID; }
         }
 
         /// <summary>

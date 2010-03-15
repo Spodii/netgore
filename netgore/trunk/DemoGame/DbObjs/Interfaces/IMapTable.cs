@@ -12,7 +12,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        MapIndex ID { get; }
+        MapID ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `name`.

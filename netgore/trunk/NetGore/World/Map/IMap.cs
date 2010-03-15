@@ -20,9 +20,9 @@ namespace NetGore
         float Height { get; }
 
         /// <summary>
-        /// Gets the unique index of the map.
+        /// Gets the ID of the map.
         /// </summary>
-        MapIndex Index { get; }
+        MapID ID { get; }
 
         /// <summary>
         /// Gets the size of the map in pixels.

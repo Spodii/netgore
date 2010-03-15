@@ -24,7 +24,7 @@ namespace DemoGame.Server
 
         CharacterTemplateID _characterTemplateID;
         IDbController _dbController;
-        MapIndex _mapIndex;
+        MapID _mapID;
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
 
@@ -32,11 +32,11 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="MapSpawnValues"/> class.
         /// </summary>
         /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
-        /// <param name="mapIndex">The index of the Map that these values are for.</param>
+        /// <param name="mapID">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
-        public MapSpawnValues(IDbController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
+        public MapSpawnValues(IDbController dbController, MapID mapID, CharacterTemplateID characterTemplateID)
             : this(
-                dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
+                dbController, GetFreeID(dbController), mapID, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
             DbController.GetQuery<InsertMapSpawnQuery>().Execute(this);
         }
@@ -56,16 +56,16 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
         /// <param name="id">The unique ID of this MapSpawnValues.</param>
-        /// <param name="mapIndex">The index of the Map that these values are for.</param>
+        /// <param name="mapID">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         /// <param name="spawnAmount">The maximum number of Characters that will be spawned by this MapSpawnValues.</param>
         /// <param name="spawnRect">The area on the map the spawning will take place at.</param>
-        MapSpawnValues(IDbController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
+        MapSpawnValues(IDbController dbController, MapSpawnValuesID id, MapID mapID, CharacterTemplateID characterTemplateID,
                        byte spawnAmount, MapSpawnRect spawnRect)
         {
             _dbController = dbController;
             _id = id;
-            _mapIndex = mapIndex;
+            _mapID = mapID;
             _characterTemplateID = characterTemplateID;
             _spawnAmount = spawnAmount;
             _spawnArea = spawnRect;
@@ -81,18 +81,18 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the index of the Map that these values are for.
+        /// Gets or sets the ID of the Map that these values are for.
         /// </summary>
         [Browsable(false)]
-        public MapIndex MapIndex
+        public MapID MapID
         {
-            get { return _mapIndex; }
+            get { return _mapID; }
             set
             {
-                if (_mapIndex == value)
+                if (_mapID == value)
                     return;
 
-                _mapIndex = value;
+                _mapID = value;
                 UpdateDB();
             }
         }
@@ -176,19 +176,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads all of the MapSpawnValues for the given <paramref name="mapIndex"/> from the database.
+        /// Loads all of the MapSpawnValues for the given <paramref name="mapID"/> from the database.
         /// </summary>
         /// <param name="dbController">DbController used to communicate with the database.</param>
-        /// <param name="mapIndex">Index of the map to load the MapSpawnValues for.</param>
-        /// <returns>An IEnumerable of all of the MapSpawnValues for the given <paramref name="mapIndex"/>.</returns>
-        public static IEnumerable<MapSpawnValues> Load(IDbController dbController, MapIndex mapIndex)
+        /// <param name="mapID">Index of the map to load the MapSpawnValues for.</param>
+        /// <returns>An IEnumerable of all of the MapSpawnValues for the given <paramref name="mapID"/>.</returns>
+        public static IEnumerable<MapSpawnValues> Load(IDbController dbController, MapID mapID)
         {
             var ret = new List<MapSpawnValues>();
-            var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapIndex);
+            var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapID);
 
             foreach (IMapSpawnTable v in queryValues)
             {
-                Debug.Assert(v.MapID == mapIndex);
+                Debug.Assert(v.MapID == mapID);
                 ret.Add(new MapSpawnValues(dbController, v));
             }
 
@@ -198,21 +198,22 @@ namespace DemoGame.Server
         /// <summary>
         /// Sets the spawn area for this MapSpawnValues.
         /// </summary>
-        /// <param name="map">Instance of the Map with the MapIndex equal to the MapIndex handled by this MapSpawnValues.
-        /// This is to ensure that the <paramref name="newSpawnArea"/> given is in a valid map range.</param>
+        /// <param name="map">Instance of the Map with the <see cref="MapID"/> equal to the <see cref="MapID"/> handled by this
+        /// <see cref="MapSpawnValues"/>. This is to ensure that the <paramref name="newSpawnArea"/> given is in a
+        /// valid map range.</param>
         /// <param name="newSpawnArea">New MapSpawnRect values.</param>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="newSpawnArea"/> contains one or more
         /// values that are not in range of the <paramref name="map"/>.</exception>
-        /// <exception cref="ArgumentException">The <paramref name="map"/>'s MapIndex does not match this
-        /// MapSpawnValues's <see cref="MapIndex"/>.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="map"/>'s <see cref="MapID"/> does not match this
+        /// MapSpawnValues's <see cref="MapID"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
         public void SetSpawnArea(MapBase map, MapSpawnRect newSpawnArea)
         {
             if (map == null)
                 throw new ArgumentNullException("map");
 
-            if (map.Index != MapIndex)
-                throw new ArgumentException("The index of the specified map does not match this MapIndex", "map");
+            if (map.ID != MapID)
+                throw new ArgumentException("The ID of the specified map does not match this MapID", "map");
 
             if (newSpawnArea == SpawnArea)
                 return;
@@ -245,7 +246,7 @@ namespace DemoGame.Server
         /// </returns>
         public override string ToString()
         {
-            return string.Format("MapSpawnValues [ID: {0} Map: {1}]", ID, MapIndex);
+            return string.Format("MapSpawnValues [ID: {0} Map: {1}]", ID, MapID);
         }
 
         /// <summary>
@@ -320,9 +321,9 @@ namespace DemoGame.Server
         /// Gets the value of the database column `map_id`.
         /// </summary>
         [Browsable(false)]
-        MapIndex IMapSpawnTable.MapID
+        MapID IMapSpawnTable.MapID
         {
-            get { return MapIndex; }
+            get { return MapID; }
         }
 
         /// <summary>

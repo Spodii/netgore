@@ -8,7 +8,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectPersistentMapNPCsByRespawnMapQuery : DbQueryReader<MapIndex>
+    public class SelectPersistentMapNPCsByRespawnMapQuery : DbQueryReader<MapID>
     {
         static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `respawn_map`=@mapID",
                                                          NpcCharacterTable.TableName);
@@ -22,7 +22,7 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ContainsColumns(NpcCharacterTable.DbColumns, "id", "map_id");
         }
 
-        public IEnumerable<CharacterID> Execute(MapIndex map)
+        public IEnumerable<CharacterID> Execute(MapID map)
         {
             List<CharacterID> ret = new List<CharacterID>();
 
@@ -54,14 +54,14 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, MapIndex item)
+        protected override void SetParameters(DbParameterValues p, MapID item)
         {
             p["@mapID"] = (int)item;
         }
     }
 
     [DbControllerQuery]
-    public class SelectPersistentMapNPCsQuery : DbQueryReader<MapIndex>
+    public class SelectPersistentMapNPCsQuery : DbQueryReader<MapID>
     {
         static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `map_id`=@mapID",
                                                          NpcCharacterTable.TableName);
@@ -75,7 +75,7 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ContainsColumns(NpcCharacterTable.DbColumns, "id", "map_id");
         }
 
-        public IEnumerable<CharacterID> Execute(MapIndex map)
+        public IEnumerable<CharacterID> Execute(MapID map)
         {
             List<CharacterID> ret = new List<CharacterID>();
 
@@ -107,7 +107,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, MapIndex item)
+        protected override void SetParameters(DbParameterValues p, MapID item)
         {
             p["@mapID"] = (int)item;
         }

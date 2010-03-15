@@ -45,7 +45,7 @@ namespace DemoGame.MapEditor
                 return;
             }
 
-            MapSpawnValues newSpawn = new MapSpawnValues(DbControllerBase.GetInstance(), Map.Index, new CharacterTemplateID(1));
+            MapSpawnValues newSpawn = new MapSpawnValues(DbControllerBase.GetInstance(), Map.ID, new CharacterTemplateID(1));
             NPCSpawnsListBoxItem newItem = new NPCSpawnsListBoxItem(newSpawn);
 
             this.AddItemAndReselect(newItem);
@@ -100,7 +100,7 @@ namespace DemoGame.MapEditor
             if (Map == null)
                 return;
 
-            var spawnInfo = MapSpawnValues.Load(DbControllerBase.GetInstance(), Map.Index);
+            var spawnInfo = MapSpawnValues.Load(DbControllerBase.GetInstance(), Map.ID);
             var asArray = spawnInfo.Select(x => new NPCSpawnsListBoxItem(x)).ToArray();
             Items.AddRange(asArray);
         }

@@ -58,7 +58,7 @@ namespace DemoGame.DbObjs
         /// </summary>
         /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
-        public MapTable(MapIndex @iD, String @name)
+        public MapTable(MapID @iD, String @name)
         {
             ID = @iD;
             Name = @name;
@@ -185,7 +185,7 @@ namespace DemoGame.DbObjs
             switch (columnName)
             {
                 case "id":
-                    ID = (MapIndex)value;
+                    ID = (MapID)value;
                     break;
 
                 case "name":
@@ -204,9 +204,9 @@ namespace DemoGame.DbObjs
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
         [SyncValue]
-        public MapIndex ID
+        public MapID ID
         {
-            get { return (MapIndex)_iD; }
+            get { return (MapID)_iD; }
             set { _iD = (UInt16)value; }
         }
 

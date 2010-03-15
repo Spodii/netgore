@@ -13,9 +13,9 @@ using NetGore;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="MapIndex"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="MapID"/>.
     /// </summary>
-    public class MapIndexEditor : UITypeEditor
+    public class MapIDEditor : UITypeEditor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -43,7 +43,7 @@ namespace DemoGame.EditorTools
                     var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (pt == typeof(MapIndex) || pt == typeof(MapIndex?))
+                        if (pt == typeof(MapID) || pt == typeof(MapID?))
                             value = editorForm.SelectedItem.ID;
                         else if (pt == typeof(Map))
                             value = editorForm.SelectedItem;
@@ -60,7 +60,7 @@ namespace DemoGame.EditorTools
                     }
                     else
                     {
-                        if (pt == typeof(MapIndex?))
+                        if (pt == typeof(MapID?))
                             value = null;
                     }
                 }

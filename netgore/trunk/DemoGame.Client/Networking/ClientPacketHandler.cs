@@ -664,10 +664,10 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetMap)]
         void RecvSetMap(IIPSocket conn, BitStream r)
         {
-            MapIndex mapIndex = r.ReadMapIndex();
+            MapID mapID = r.ReadMapID();
 
             // Create the new map
-            Map newMap = new Map(mapIndex, World.Camera, World, GameplayScreen.ScreenManager.GraphicsDevice);
+            Map newMap = new Map(mapID, World.Camera, World, GameplayScreen.ScreenManager.GraphicsDevice);
             newMap.Load(ContentPaths.Build, false, _dynamicEntityFactory);
 
             // Clear quest requirements caches

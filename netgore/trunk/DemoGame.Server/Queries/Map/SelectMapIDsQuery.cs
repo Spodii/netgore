@@ -9,7 +9,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectMapQuery : DbQueryReader<MapIndex>
+    public class SelectMapQuery : DbQueryReader<MapID>
     {
         static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", MapTable.TableName);
 
@@ -21,7 +21,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IMapTable Execute(MapIndex id)
+        public IMapTable Execute(MapID id)
         {
             MapTable ret;
 
@@ -53,7 +53,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, MapIndex item)
+        protected override void SetParameters(DbParameterValues p, MapID item)
         {
             p["@id"] = (int)item;
         }
@@ -72,14 +72,14 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<MapIndex> Execute()
+        public IEnumerable<MapID> Execute()
         {
-            var ret = new List<MapIndex>();
+            var ret = new List<MapID>();
             using (var r = ExecuteReader())
             {
                 while (r.Read())
                 {
-                    var i = r.GetMapIndex(0);
+                    var i = r.GetMapID(0);
                     ret.Add(i);
                 }
             }

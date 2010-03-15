@@ -11,7 +11,7 @@ namespace DemoGame
     public abstract class TeleportEntityBase : DynamicEntity, IUsableEntity
     {
         Vector2 _destination;
-        MapIndex _destinationMap;
+        MapID _destinationMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
@@ -54,7 +54,7 @@ namespace DemoGame
         [DisplayName("DestinationMap")]
         [Description("Map to teleport the Entity that uses this Teleport to.")]
         [Browsable(true)]
-        public MapIndex DestinationMap
+        public MapID DestinationMap
         {
             get { return _destinationMap; }
             set { _destinationMap = value; }

@@ -62,11 +62,11 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
-        /// <param name="mapIndex">Index of the map.</param>
+        /// <param name="mapID">The ID of the map.</param>
         /// <param name="camera">The camera used to view the map.</param>
         /// <param name="getTime">The object used to get the current time.</param>
         /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
-        public Map(MapIndex mapIndex, ICamera2D camera, IGetTime getTime, GraphicsDevice graphics) : base(mapIndex, getTime)
+        public Map(MapID mapID, ICamera2D camera, IGetTime getTime, GraphicsDevice graphics) : base(mapID, getTime)
         {
             _camera = camera;
             _graphics = graphics;

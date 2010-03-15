@@ -388,13 +388,13 @@ namespace DemoGame.Server
         {
             base.Kill();
 
-            if (!RespawnMapIndex.HasValue)
+            if (!RespawnMapID.HasValue)
             {
                 // TODO: Have a global User respawn map/position that can be defined, then use that here
                 return;
             }
 
-            var spawnMap = World.GetMap(RespawnMapIndex.Value);
+            var spawnMap = World.GetMap(RespawnMapID.Value);
             Teleport(spawnMap, RespawnPosition);
 
             UpdateModStats();

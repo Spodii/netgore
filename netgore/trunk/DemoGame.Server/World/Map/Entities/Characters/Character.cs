@@ -662,11 +662,11 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the index of the Map the Character will respawn on.
         /// </summary>
-        public MapIndex? RespawnMapIndex { get; set; }
+        public MapID? RespawnMapID { get; set; }
 
         /// <summary>
         /// Gets or sets where the Character will respawn in their respawn map. Only valid if the
-        /// RespawnMapIndex is set to a non-null value.
+        /// <see cref="Character.RespawnMapID"/> is set to a non-null value.
         /// </summary>
         public Vector2 RespawnPosition { get; set; }
 
@@ -1422,7 +1422,7 @@ namespace DemoGame.Server
             _cash = v.Cash;
             _hp = new SPValueType(v.HP);
             _mp = new SPValueType(v.MP);
-            RespawnMapIndex = v.RespawnMap;
+            RespawnMapID = v.RespawnMap;
             RespawnPosition = new Vector2(v.RespawnX, v.RespawnY);
             StatPoints = v.StatPoints;
 
@@ -2128,9 +2128,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `map_id`.
         /// </summary>
-        MapIndex ICharacterTable.MapID
+        MapID ICharacterTable.MapID
         {
-            get { return Map.Index; }
+            get { return Map.ID; }
         }
 
         /// <summary>
@@ -2207,9 +2207,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `respawn_map`.
         /// </summary>
-        MapIndex? ICharacterTable.RespawnMap
+        MapID? ICharacterTable.RespawnMap
         {
-            get { return RespawnMapIndex; }
+            get { return RespawnMapID; }
         }
 
         /// <summary>
@@ -2345,7 +2345,7 @@ namespace DemoGame.Server
             IsAlive = true;
 
             // Set the map
-            if (!RespawnMapIndex.HasValue)
+            if (!RespawnMapID.HasValue)
             {
                 // If the respawn map is invalid, there is nothing we can do to spawn it, so dispose of it
                 if (log.IsInfoEnabled)
@@ -2356,7 +2356,7 @@ namespace DemoGame.Server
             }
             else
             {
-                Map respawnMap = World.GetMap(RespawnMapIndex.Value);
+                Map respawnMap = World.GetMap(RespawnMapID.Value);
                 if (respawnMap == null)
                 {
                     // TODO: Invalid respawn map? If a User, log them out. If a NPC... Dispose of it? In either case, a log.Fatal() is needed.
