@@ -14,6 +14,7 @@ using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
+using NetGore.NPCChat;
 
 namespace DemoGame.EditorTools
 {
@@ -70,6 +71,7 @@ namespace DemoGame.EditorTools
             AdvancedPropertyDescriptor.SetExtraTextProvider<AllianceID>(ExtraTextProvider_AllianceID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<Alliance>(ExtraTextProvider_Alliance);
             AdvancedPropertyDescriptor.SetExtraTextProvider<BodyIndex>(ExtraTextProvider_BodyIndex);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<NPCChatDialogID>(ExtraTextProvider_NPCChatDialogID);
         }
 
         /// <summary>
@@ -85,6 +87,21 @@ namespace DemoGame.EditorTools
                 return null;
 
             return grhData.Categorization.ToString();
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="NPCChatDialogID"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_NPCChatDialogID(NPCChatDialogID v)
+        {
+            var dialog = NPCChatManager.Instance[v];
+            if (dialog == null)
+                return null;
+
+            return dialog.Title;
         }
 
         /// <summary>
