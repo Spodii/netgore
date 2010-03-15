@@ -27,23 +27,5 @@ namespace DemoGame
 
             return new BodyIndex(1);
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the extended text to display in for the type
-        /// while it is in a PropertyGrid but is not the selected item.
-        /// </summary>
-        /// <param name="value">The object to get the extended text for.</param>
-        /// <returns>
-        /// The extended text to display. Can be null.
-        /// </returns>
-        protected override string GetExtendedText(object value)
-        {
-            if (value is BodyIndex)
-            {
-                return BodyInfoManager.Instance.GetBody((BodyIndex)value).Body;
-            }
-
-            return base.GetExtendedText(value);
-        }
     }
 }

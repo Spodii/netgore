@@ -11,6 +11,7 @@ using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Features.Shops;
+using NetGore.Graphics;
 
 namespace DemoGame.EditorTools
 {
@@ -54,6 +55,11 @@ namespace DemoGame.EditorTools
             AdvancedClassTypeConverter.SetForceEditor(typeof(ItemTemplateTable),
                                                       new KeyValuePair<string, UITypeEditor>("EquippedBody",
                                                                                              new BodyPaperDollTypeEditor()));
+        }
+
+        static void AddExtraTextProviders()
+        {
+            AdvancedPropertyDescriptor.SetExtraTextProvider<GrhIndex>(x => GrhInfo.GetData(x).Categorization.ToString());
         }
 
         /// <summary>
@@ -103,6 +109,7 @@ namespace DemoGame.EditorTools
             NetGore.EditorTools.CustomUITypeEditors.AddAIIDEditor(AIFactory.Instance);
 
             AddAdvancedClassTypeConverters();
+            AddExtraTextProviders();
         }
     }
 }
