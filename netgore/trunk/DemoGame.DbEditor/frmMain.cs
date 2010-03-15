@@ -396,6 +396,9 @@ namespace DemoGame.DbEditor
             Show();
             Refresh();
 
+            // Load the engine settings
+            EngineSettingsInitializer.Initialize();
+
             // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
             // pretty little pictures. :(
             if (!GrhInfo.IsLoaded)

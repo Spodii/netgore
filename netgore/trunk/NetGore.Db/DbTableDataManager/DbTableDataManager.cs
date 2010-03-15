@@ -41,10 +41,17 @@ namespace NetGore.Db
         /// Gets the item at the given <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The ID of the item to get.</param>
-        /// <returns>The item at the given <paramref name="id"/>.</returns>
+        /// <returns>The item at the given <paramref name="id"/>, or the default value of of <typeparamref name="TItem"/> if the
+        /// the <paramref name="id"/> is invalid or not item exists for the <paramref name="id"/>.</returns>
         public TItem this[TID id]
         {
-            get { return _items[IDToInt(id)]; }
+            get {
+                var i = IDToInt(id);
+                if (!_items.CanGet(i))
+                    return default(TItem);
+
+                return _items[i]; 
+            }
         }
 
         /// <summary>

@@ -72,6 +72,7 @@ namespace DemoGame.EditorTools
             AdvancedPropertyDescriptor.SetExtraTextProvider<Alliance>(ExtraTextProvider_Alliance);
             AdvancedPropertyDescriptor.SetExtraTextProvider<BodyIndex>(ExtraTextProvider_BodyIndex);
             AdvancedPropertyDescriptor.SetExtraTextProvider<NPCChatDialogID>(ExtraTextProvider_NPCChatDialogID);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<ShopID>(ExtraTextProvider_ShopID);
         }
 
         /// <summary>
@@ -87,6 +88,21 @@ namespace DemoGame.EditorTools
                 return null;
 
             return grhData.Categorization.ToString();
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="ShopID"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_ShopID(ShopID v)
+        {
+            var shop = ShopManager.Instance[v];
+            if (shop == null)
+                return null;
+
+            return shop.Name;
         }
 
         /// <summary>
