@@ -66,6 +66,7 @@ namespace DemoGame.EditorTools
         {
             AdvancedPropertyDescriptor.SetExtraTextProvider<GrhIndex>(ExtraTextProvider_GrhIndex);
             AdvancedPropertyDescriptor.SetExtraTextProvider<AIID>(ExtraTextProvider_AIID);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<IAI>(ExtraTextProvider_IAI);
         }
 
         /// <summary>
@@ -91,11 +92,21 @@ namespace DemoGame.EditorTools
         /// <returns>The extra text to display.</returns>
         static string ExtraTextProvider_AIID(AIID v)
         {
-            var aiName = AIFactory.Instance.GetAIName(v);
-            if (aiName == null)
+            return AIFactory.Instance.GetAIName(v);
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="IAI"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_IAI(IAI v)
+        {
+            if (v == null)
                 return null;
 
-            return aiName;
+            return AIFactory.Instance.GetAIName(v.ID);
         }
 
         /// <summary>
