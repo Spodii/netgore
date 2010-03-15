@@ -108,7 +108,7 @@ namespace DemoGame.DbClassCreator
                 generator.AddCustomType(typeof(GrhIndex), "item_template", "graphic");
                 generator.AddCustomType(typeof(ItemType), "item_template", "type");
 
-                generator.AddCustomType(typeof(MapIndex), "map", "id");
+                generator.AddCustomType(typeof(MapID), "map", "id");
 
                 generator.AddCustomType(typeof(MapSpawnValuesID), "map_spawn", "id");
 
@@ -124,7 +124,7 @@ namespace DemoGame.DbClassCreator
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
                 generator.AddCustomType(typeof(CharacterID), "*", "character_id", "target_character_id");
                 generator.AddCustomType(typeof(AccountID), "*", "account_id");
-                generator.AddCustomType(typeof(MapIndex), "*", "map_id", "respawn_map");
+                generator.AddCustomType(typeof(MapID), "*", "map_id", "respawn_map");
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");
                 generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id");
                 generator.AddCustomType(typeof(ItemTemplateID), "*", "item_template_id");

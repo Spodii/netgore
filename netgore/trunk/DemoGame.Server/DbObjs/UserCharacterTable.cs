@@ -230,8 +230,8 @@ namespace DemoGame.Server.DbObjs
         /// <param name="y">The initial value for the corresponding property.</param>
         public UserCharacterTable(AccountID? @accountID, AIID? @aIID, BodyID @bodyID, Int32 @cash,
                                   CharacterTemplateID? @characterTemplateID, NPCChatDialogID? @chatDialog, Int32 @exp,
-                                  SPValueType @hP, Int32 @iD, Byte @level, MapIndex @mapID, SPValueType @mP, String @name,
-                                  MapIndex? @respawnMap, Single @respawnX, Single @respawnY, ShopID? @shopID, Int32 @statPoints,
+                                  SPValueType @hP, Int32 @iD, Byte @level, MapID @mapID, SPValueType @mP, String @name,
+                                  MapID? @respawnMap, Single @respawnX, Single @respawnY, ShopID? @shopID, Int32 @statPoints,
                                   Int16 @statAgi, Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit, Int16 @statMaxhp,
                                   Int16 @statMaxmp, Int16 @statMinhit, Int16 @statStr, Single @x, Single @y)
         {
@@ -635,7 +635,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "map_id":
-                    MapID = (MapIndex)value;
+                    MapID = (MapID)value;
                     break;
 
                 case "mp":
@@ -647,7 +647,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "respawn_map":
-                    RespawnMap = (MapIndex?)value;
+                    RespawnMap = (MapID?)value;
                     break;
 
                 case "respawn_x":
@@ -850,9 +850,9 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
         /// </summary>
         [SyncValue]
-        public MapIndex MapID
+        public MapID MapID
         {
-            get { return (MapIndex)_mapID; }
+            get { return (MapID)_mapID; }
             set { _mapID = (UInt16)value; }
         }
 
@@ -883,9 +883,9 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
         [SyncValue]
-        public MapIndex? RespawnMap
+        public MapID? RespawnMap
         {
-            get { return (MapIndex?)_respawnMap; }
+            get { return (MapID?)_respawnMap; }
             set { _respawnMap = (ushort?)value; }
         }
 

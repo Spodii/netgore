@@ -4,9 +4,9 @@ using System.Linq;
 namespace NetGore
 {
     /// <summary>
-    /// A <see cref="TypeConverter"/> for the <see cref="MapIndex"/> type.
+    /// A <see cref="TypeConverter"/> for the <see cref="MapID"/> type.
     /// </summary>
-    public class MapIndexTypeConverter : SimpleTypeConverter<MapIndex>
+    public class MapIDTypeConverter : SimpleTypeConverter<MapID>
     {
         /// <summary>
         /// When overridden in the derived class, converts the <paramref name="value"/> to the output
@@ -16,15 +16,15 @@ namespace NetGore
         /// <param name="wasConverted">Contains true if the parsing was successful, or false if the
         /// parsing failed.</param>
         /// <returns>The object parsed from the <paramref name="value"/>.</returns>
-        protected override MapIndex ConvertFromString(string value, out bool wasConverted)
+        protected override MapID ConvertFromString(string value, out bool wasConverted)
         {
             int i;
             wasConverted = int.TryParse(value, out i);
 
             if (wasConverted)
-                return new MapIndex(i);
+                return new MapID(i);
 
-            return new MapIndex(1);
+            return new MapID(1);
         }
     }
 }

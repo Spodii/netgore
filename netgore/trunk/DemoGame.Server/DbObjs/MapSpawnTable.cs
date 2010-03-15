@@ -98,7 +98,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
         public MapSpawnTable(Byte @amount, CharacterTemplateID @characterTemplateID, ushort? @height, MapSpawnValuesID @iD,
-                             MapIndex @mapID, ushort? @width, ushort? @x, ushort? @y)
+                             MapID @mapID, ushort? @width, ushort? @x, ushort? @y)
         {
             Amount = @amount;
             CharacterTemplateID = @characterTemplateID;
@@ -296,7 +296,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "map_id":
-                    MapID = (MapIndex)value;
+                    MapID = (MapID)value;
                     break;
 
                 case "width":
@@ -367,9 +367,9 @@ namespace DemoGame.Server.DbObjs
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
         [SyncValue]
-        public MapIndex MapID
+        public MapID MapID
         {
-            get { return (MapIndex)_mapID; }
+            get { return (MapID)_mapID; }
             set { _mapID = (UInt16)value; }
         }
 

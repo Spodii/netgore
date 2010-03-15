@@ -75,7 +75,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataReader.GetOrdinal("map_id");
 
-            source.MapID = (MapIndex)dataReader.GetUInt16(i);
+            source.MapID = (MapID)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("width");
 
@@ -174,7 +174,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "map_id":
-                        source.MapID = (MapIndex)dataReader.GetUInt16(i);
+                        source.MapID = (MapID)dataReader.GetUInt16(i);
                         break;
 
                     case "width":

@@ -87,7 +87,7 @@ namespace DemoGame.Server
             _chatDialog = v.ChatDialog.HasValue ? _npcChatManager[v.ChatDialog.Value] : null;
             SetShopFromID(v.ShopID);
 
-            RespawnMapIndex = map.Index;
+            RespawnMapID = map.ID;
             RespawnPosition = position;
 
             LoadSpawnItems();
@@ -162,7 +162,7 @@ namespace DemoGame.Server
         /// </summary>
         public bool WillRespawn
         {
-            get { return RespawnMapIndex.HasValue; }
+            get { return RespawnMapID.HasValue; }
         }
 
         /// <summary>

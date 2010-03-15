@@ -51,7 +51,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataReader.GetOrdinal("id");
 
-            source.ID = (MapIndex)dataReader.GetUInt16(i);
+            source.ID = (MapID)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("name");
 
@@ -102,7 +102,7 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "id":
-                        source.ID = (MapIndex)dataReader.GetUInt16(i);
+                        source.ID = (MapID)dataReader.GetUInt16(i);
                         break;
 
                     case "name":

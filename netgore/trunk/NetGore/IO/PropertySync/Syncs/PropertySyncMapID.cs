@@ -3,16 +3,16 @@ using System.Linq;
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="MapIndex"/>.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="MapID"/>.
     /// </summary>
-    [PropertySyncHandler(typeof(MapIndex))]
-    public sealed class PropertySyncMapIndex : PropertySyncBase<MapIndex>
+    [PropertySyncHandler(typeof(MapID))]
+    public sealed class PropertySyncMapID : PropertySyncBase<MapID>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncMapIndex"/> class.
+        /// Initializes a new instance of the <see cref="PropertySyncMapID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncMapIndex(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
+        public PropertySyncMapID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 
@@ -22,9 +22,9 @@ namespace NetGore.IO.PropertySync
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override MapIndex Read(string name, IValueReader reader)
+        protected override MapID Read(string name, IValueReader reader)
         {
-            return reader.ReadMapIndex(name);
+            return reader.ReadMapID(name);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace NetGore.IO.PropertySync
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, MapIndex value)
+        protected override void Write(string name, IValueWriter writer, MapID value)
         {
             writer.Write(name, value);
         }

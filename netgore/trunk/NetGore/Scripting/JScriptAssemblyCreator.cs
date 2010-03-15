@@ -14,7 +14,7 @@ namespace NetGore
     public class JScriptAssemblyCreator
     {
         readonly List<string> _members = new List<string>();
-        readonly Regex _regexGetSafeFunction = new Regex(@"function\s+GetSafe\(.+,.+\)\s*:\*String", RegexOptions.IgnoreCase);
+        readonly Regex _regexGetSafeFunction = new Regex(@"function\s+GetSafe\s*\([^,]+,[^,]+\)\s*:\s*String", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Gets or sets the name of the class to generate. This value must be set before calling Compile().

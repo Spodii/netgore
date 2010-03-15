@@ -217,8 +217,8 @@ namespace DemoGame.EditorTools
                 new EditorTypes(typeof(AllianceID?), typeof(AllianceIDEditor)),
                 new EditorTypes(typeof(BodyID), typeof(BodyIDEditor)),
                 new EditorTypes(typeof(BodyID?), typeof(BodyIDEditor)), new EditorTypes(typeof(BodyInfo), typeof(BodyInfo)),
-                new EditorTypes(typeof(MapIndex), typeof(MapIndexEditor)),
-                new EditorTypes(typeof(MapIndex?), typeof(MapIndexEditor)), new EditorTypes(typeof(ShopID), typeof(ShopIDEditor)),
+                new EditorTypes(typeof(MapID), typeof(MapIDEditor)),
+                new EditorTypes(typeof(MapID?), typeof(MapIDEditor)), new EditorTypes(typeof(ShopID), typeof(ShopIDEditor)),
                 new EditorTypes(typeof(ShopID?), typeof(ShopIDEditor)),
                 new EditorTypes(typeof(IEnumerable<KeyValuePair<StatType, int>>), typeof(StatTypeConstDictionaryEditor)),
                 new EditorTypes(typeof(StatTypeConstDictionary), typeof(StatTypeConstDictionaryEditor)));

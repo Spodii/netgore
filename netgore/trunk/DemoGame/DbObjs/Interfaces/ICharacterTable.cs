@@ -66,7 +66,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `map_id`.
         /// </summary>
-        MapIndex MapID { get; }
+        MapID MapID { get; }
 
         /// <summary>
         /// Gets the value of the database column `move_speed`.
@@ -86,7 +86,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `respawn_map`.
         /// </summary>
-        MapIndex? RespawnMap { get; }
+        MapID? RespawnMap { get; }
 
         /// <summary>
         /// Gets the value of the database column `respawn_x`.

@@ -44,7 +44,7 @@ namespace DemoGame.MapEditor
 
             // Get the indicies of the characters set to spawn on this map from the database
             var dbController = DbControllerBase.GetInstance();
-            var persistentNPCIDs = dbController.GetQuery<SelectPersistentMapNPCsByRespawnMapQuery>().Execute(Map.Index);
+            var persistentNPCIDs = dbController.GetQuery<SelectPersistentMapNPCsByRespawnMapQuery>().Execute(Map.ID);
             var addedChars = new List<MapEditorCharacter>();
             foreach (var characterID in persistentNPCIDs)
             {

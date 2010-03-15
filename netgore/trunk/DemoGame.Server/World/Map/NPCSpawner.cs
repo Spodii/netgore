@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
+using NetGore;
 
 namespace DemoGame.Server
 {
@@ -27,10 +28,10 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="NPCSpawner"/> class.
         /// </summary>
         /// <param name="mapSpawnValues">The MapSpawnValues containing the values to use to create this NPCSpawner.</param>
-        /// <param name="map">The Map instance to do the spawning on. The MapIndex of this Map must be equal to the
-        /// MapIndex of the <paramref name="mapSpawnValues"/>.</param>
-        /// <exception cref="ArgumentException">The <paramref name="map"/>'s MapIndex does not match the
-        /// <paramref name="mapSpawnValues"/>'s MapIndex.</exception>
+        /// <param name="map">The Map instance to do the spawning on. The <see cref="MapID"/> of this Map must be equal to the
+        /// <see cref="MapID"/> of the <paramref name="mapSpawnValues"/>.</param>
+        /// <exception cref="ArgumentException">The <paramref name="map"/>'s <see cref="MapID"/> does not match the
+        /// <paramref name="mapSpawnValues"/>'s <see cref="MapID"/>.</exception>
         public NPCSpawner(IMapSpawnTable mapSpawnValues, Map map)
         {
             if (map == null)
@@ -38,8 +39,8 @@ namespace DemoGame.Server
             if (mapSpawnValues == null)
                 throw new ArgumentNullException("mapSpawnValues");
 
-            if (map.Index != mapSpawnValues.MapID)
-                throw new ArgumentException("The map's MapIndex and mapSpawnValues's MapIndex do not match.", "map");
+            if (map.ID != mapSpawnValues.MapID)
+                throw new ArgumentException("The map's MapID and mapSpawnValues's MapID do not match.", "map");
 
             _map = map;
             _characterTemplate = _characterTemplateManager[mapSpawnValues.CharacterTemplateID];
@@ -98,7 +99,7 @@ namespace DemoGame.Server
         /// <returns>IEnumerable of the <see cref="NPCSpawner"/>s that were loaded.</returns>
         public static IEnumerable<NPCSpawner> LoadSpawners(Map map)
         {
-            var queryValues = MapSpawnValues.Load(map.DbController, map.Index);
+            var queryValues = MapSpawnValues.Load(map.DbController, map.ID);
             var ret = new List<NPCSpawner>();
 
             foreach (MapSpawnValues queryValue in queryValues)
@@ -121,7 +122,7 @@ namespace DemoGame.Server
 
             Vector2 respawnPos = RandomSpawnPosition();
 
-            character.RespawnMapIndex = _map.Index;
+            character.RespawnMapID = _map.ID;
             character.RespawnPosition = respawnPos;
         }
 

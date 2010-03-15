@@ -8,19 +8,19 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Represents the index of a Map.
+    /// Represents the ID of a Map.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(MapIndexTypeConverter))]
-    public struct MapIndex : IComparable<MapIndex>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    [TypeConverter(typeof(MapIDTypeConverter))]
+    public struct MapID : IComparable<MapID>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// Represents the largest possible value of MapIndex. This field is constant.
+        /// Represents the largest possible value of MapID. This field is constant.
         /// </summary>
         public const int MaxValue = ushort.MaxValue;
 
         /// <summary>
-        /// Represents the smallest possible value of MapIndex. This field is constant.
+        /// Represents the smallest possible value of MapID. This field is constant.
         /// </summary>
         public const int MinValue = ushort.MinValue;
 
@@ -30,10 +30,10 @@ namespace NetGore
         readonly ushort _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapIndex"/> struct.
+        /// Initializes a new instance of the <see cref="MapID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new MapIndex.</param>
-        public MapIndex(int value)
+        /// <param name="value">Value to assign to the new <see cref="MapID"/>.</param>
+        public MapID(int value)
         {
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
@@ -48,7 +48,7 @@ namespace NetGore
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(MapIndex other)
+        public bool Equals(MapID other)
         {
             return other._value == _value;
         }
@@ -64,9 +64,9 @@ namespace NetGore
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(MapIndex))
+            if (obj.GetType() != typeof(MapID))
                 return false;
-            return Equals((MapIndex)obj);
+            return Equals((MapID)obj);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the raw internal value of this MapIndex.
+        /// Gets the raw internal value of this MapID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
         public ushort GetRawValue()
@@ -90,53 +90,53 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IValueReader.
+        /// Reads an MapID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The MapIndex read from the IValueReader.</returns>
-        public static MapIndex Read(IValueReader reader, string name)
+        /// <returns>The MapID read from the IValueReader.</returns>
+        public static MapID Read(IValueReader reader, string name)
         {
             ushort value = reader.ReadUShort(name);
-            return new MapIndex(value);
+            return new MapID(value);
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IDataReader.
+        /// Reads an MapID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The MapIndex read from the IDataReader.</returns>
-        public static MapIndex Read(IDataReader reader, int i)
+        /// <returns>The MapID read from the IDataReader.</returns>
+        public static MapID Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
             if (value is ushort)
-                return new MapIndex((ushort)value);
+                return new MapID((ushort)value);
 
             ushort convertedValue = Convert.ToUInt16(value);
-            return new MapIndex(convertedValue);
+            return new MapID(convertedValue);
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IDataReader.
+        /// Reads an MapID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The MapIndex read from the IDataReader.</returns>
-        public static MapIndex Read(IDataReader reader, string name)
+        /// <returns>The MapID read from the IDataReader.</returns>
+        public static MapID Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IValueReader.
+        /// Reads an MapID from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The MapIndex read from the BitStream.</returns>
-        public static MapIndex Read(BitStream bitStream)
+        /// <returns>The MapID read from the BitStream.</returns>
+        public static MapID Read(BitStream bitStream)
         {
             ushort value = bitStream.ReadUShort();
-            return new MapIndex(value);
+            return new MapID(value);
         }
 
         /// <summary>
@@ -150,10 +150,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes the MapIndex to an IValueWriter.
+        /// Writes the MapID to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the MapIndex that will be used to distinguish it
+        /// <param name="name">Unique name of the MapID that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -161,7 +161,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes the MapIndex to an IValueWriter.
+        /// Writes the MapID to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -193,7 +193,7 @@ namespace NetGore
 
         #endregion
 
-        #region IComparable<MapIndex> Members
+        #region IComparable<MapID> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -211,7 +211,7 @@ namespace NetGore
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        public int CompareTo(MapIndex other)
+        public int CompareTo(MapID other)
         {
             return _value.CompareTo(other._value);
         }
@@ -484,21 +484,21 @@ namespace NetGore
         /// <summary>
         /// Implements operator ++.
         /// </summary>
-        /// <param name="l">The MapIndex to increment.</param>
-        /// <returns>The incremented MapIndex.</returns>
-        public static MapIndex operator ++(MapIndex l)
+        /// <param name="l">The MapID to increment.</param>
+        /// <returns>The incremented MapID.</returns>
+        public static MapID operator ++(MapID l)
         {
-            return new MapIndex(l._value + 1);
+            return new MapID(l._value + 1);
         }
 
         /// <summary>
         /// Implements operator --.
         /// </summary>
-        /// <param name="l">The MapIndex to decrement.</param>
-        /// <returns>The decremented MapIndex.</returns>
-        public static MapIndex operator --(MapIndex l)
+        /// <param name="l">The MapID to decrement.</param>
+        /// <returns>The decremented MapID.</returns>
+        public static MapID operator --(MapID l)
         {
-            return new MapIndex(l._value - 1);
+            return new MapID(l._value - 1);
         }
 
         /// <summary>
@@ -507,9 +507,9 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static MapIndex operator +(MapIndex left, MapIndex right)
+        public static MapID operator +(MapID left, MapID right)
         {
-            return new MapIndex(left._value + right._value);
+            return new MapID(left._value + right._value);
         }
 
         /// <summary>
@@ -518,9 +518,9 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static MapIndex operator -(MapIndex left, MapIndex right)
+        public static MapID operator -(MapID left, MapID right)
         {
-            return new MapIndex(left._value - right._value);
+            return new MapID(left._value - right._value);
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapIndex left, int right)
+        public static bool operator ==(MapID left, int right)
         {
             return left._value == right;
         }
@@ -540,7 +540,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapIndex left, int right)
+        public static bool operator !=(MapID left, int right)
         {
             return left._value != right;
         }
@@ -551,7 +551,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, MapIndex right)
+        public static bool operator ==(int left, MapID right)
         {
             return left == right._value;
         }
@@ -562,29 +562,29 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, MapIndex right)
+        public static bool operator !=(int left, MapID right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a MapIndex to an Int32.
+        /// Casts a MapID to an Int32.
         /// </summary>
-        /// <param name="MapIndex">MapIndex to cast.</param>
+        /// <param name="MapID">MapID to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(MapIndex MapIndex)
+        public static explicit operator int(MapID MapID)
         {
-            return MapIndex._value;
+            return MapID._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a MapIndex.
+        /// Casts an Int32 to a MapID.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The MapIndex.</returns>
-        public static explicit operator MapIndex(int value)
+        /// <returns>The MapID.</returns>
+        public static explicit operator MapID(int value)
         {
-            return new MapIndex(value);
+            return new MapID(value);
         }
 
         /// <summary>
@@ -593,7 +593,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, MapIndex right)
+        public static bool operator >(int left, MapID right)
         {
             return left > right._value;
         }
@@ -604,7 +604,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, MapIndex right)
+        public static bool operator <(int left, MapID right)
         {
             return left < right._value;
         }
@@ -615,7 +615,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(MapIndex left, MapIndex right)
+        public static bool operator >(MapID left, MapID right)
         {
             return left._value > right._value;
         }
@@ -626,7 +626,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(MapIndex left, MapIndex right)
+        public static bool operator <(MapID left, MapID right)
         {
             return left._value < right._value;
         }
@@ -637,7 +637,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(MapIndex left, int right)
+        public static bool operator >(MapID left, int right)
         {
             return left._value > right;
         }
@@ -648,7 +648,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(MapIndex left, int right)
+        public static bool operator <(MapID left, int right)
         {
             return left._value < right;
         }
@@ -659,7 +659,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, MapIndex right)
+        public static bool operator >=(int left, MapID right)
         {
             return left >= right._value;
         }
@@ -670,7 +670,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, MapIndex right)
+        public static bool operator <=(int left, MapID right)
         {
             return left <= right._value;
         }
@@ -681,7 +681,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(MapIndex left, int right)
+        public static bool operator >=(MapID left, int right)
         {
             return left._value >= right;
         }
@@ -692,7 +692,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(MapIndex left, int right)
+        public static bool operator <=(MapID left, int right)
         {
             return left._value <= right;
         }
@@ -703,7 +703,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(MapIndex left, MapIndex right)
+        public static bool operator >=(MapID left, MapID right)
         {
             return left._value >= right._value;
         }
@@ -714,7 +714,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(MapIndex left, MapIndex right)
+        public static bool operator <=(MapID left, MapID right)
         {
             return left._value <= right._value;
         }
@@ -725,7 +725,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapIndex left, MapIndex right)
+        public static bool operator !=(MapID left, MapID right)
         {
             return left._value != right._value;
         }
@@ -736,33 +736,33 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapIndex left, MapIndex right)
+        public static bool operator ==(MapID left, MapID right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the MapIndex.
-    /// All of the operations are implemented in the MapIndex struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the MapID.
+    /// All of the operations are implemented in the MapID struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class MapIndexReadWriteExtensions
+    public static class MapIDReadWriteExtensions
     {
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapIndex.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a MapIndex.</returns>
-        public static MapIndex AsMapIndex<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a MapID.</returns>
+        public static MapID AsMapID<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseMapIndex(dict[key]);
+            return Parser.Invariant.ParseMapID(dict[key]);
         }
 
         /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapIndex.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapID.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The IDictionary.</param>
@@ -771,13 +771,13 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static MapIndex AsMapIndex<T>(this IDictionary<T, string> dict, T key, MapIndex defaultValue)
+        public static MapID AsMapID<T>(this IDictionary<T, string> dict, T key, MapID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            MapIndex parsed;
+            MapID parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
@@ -785,92 +785,92 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads the MapIndex from an IDataReader.
+        /// Reads the MapID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapIndex from.</param>
+        /// <param name="dataReader">IDataReader to read the MapID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The MapIndex read from the IDataReader.</returns>
-        public static MapIndex GetMapIndex(this IDataReader dataReader, int i)
+        /// <returns>The MapID read from the IDataReader.</returns>
+        public static MapID GetMapID(this IDataReader dataReader, int i)
         {
-            return MapIndex.Read(dataReader, i);
+            return MapID.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the MapIndex from an IDataReader.
+        /// Reads the MapID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapIndex from.</param>
+        /// <param name="dataReader">IDataReader to read the MapID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The MapIndex read from the IDataReader.</returns>
-        public static MapIndex GetMapIndex(this IDataReader dataReader, string name)
+        /// <returns>The MapID read from the IDataReader.</returns>
+        public static MapID GetMapID(this IDataReader dataReader, string name)
         {
-            return MapIndex.Read(dataReader, name);
+            return MapID.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Parses the MapIndex from a string.
+        /// Parses the MapID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The MapIndex parsed from the string.</returns>
-        public static MapIndex ParseMapIndex(this Parser parser, string value)
+        /// <returns>The MapID parsed from the string.</returns>
+        public static MapID ParseMapID(this Parser parser, string value)
         {
-            return new MapIndex(parser.ParseUShort(value));
+            return new MapID(parser.ParseUShort(value));
         }
 
         /// <summary>
-        /// Reads the MapIndex from a BitStream.
+        /// Reads the MapID from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the MapIndex from.</param>
-        /// <returns>The MapIndex read from the BitStream.</returns>
-        public static MapIndex ReadMapIndex(this BitStream bitStream)
+        /// <param name="bitStream">BitStream to read the MapID from.</param>
+        /// <returns>The MapID read from the BitStream.</returns>
+        public static MapID ReadMapID(this BitStream bitStream)
         {
-            return MapIndex.Read(bitStream);
+            return MapID.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the MapIndex from an IValueReader.
+        /// Reads the MapID from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the MapIndex from.</param>
+        /// <param name="valueReader">IValueReader to read the MapID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The MapIndex read from the IValueReader.</returns>
-        public static MapIndex ReadMapIndex(this IValueReader valueReader, string name)
+        /// <returns>The MapID read from the IValueReader.</returns>
+        public static MapID ReadMapID(this IValueReader valueReader, string name)
         {
-            return MapIndex.Read(valueReader, name);
+            return MapID.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Tries to parse the MapIndex from a string.
+        /// Tries to parse the MapID from a string.
         /// </summary>
         /// <param name="parser">The Parser to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed MapIndex.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed MapID.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out MapIndex outValue)
+        public static bool TryParse(this Parser parser, string value, out MapID outValue)
         {
             ushort tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new MapIndex(tmp);
+            outValue = new MapID(tmp);
             return ret;
         }
 
         /// <summary>
-        /// Writes a MapIndex to a BitStream.
+        /// Writes a MapID to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">MapIndex to write.</param>
-        public static void Write(this BitStream bitStream, MapIndex value)
+        /// <param name="value">MapID to write.</param>
+        public static void Write(this BitStream bitStream, MapID value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a MapIndex to a IValueWriter.
+        /// Writes a MapID to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the MapIndex that will be used to distinguish it
+        /// <param name="name">Unique name of the MapID that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">MapIndex to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, MapIndex value)
+        /// <param name="value">MapID to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, MapID value)
         {
             value.Write(valueWriter, name);
         }

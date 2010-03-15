@@ -68,12 +68,12 @@ namespace DemoGame.Server
             _maps = new DArray<Map>(mapFiles.Count() + 10, false);
             foreach (string mapFile in mapFiles)
             {
-                MapIndex mapIndex;
-                if (!MapBase.TryGetIndexFromPath(mapFile, out mapIndex))
-                    throw new Exception(string.Format("Failed to get the index of map file `{0}`.", mapFile));
+                MapID mapID;
+                if (!MapBase.TryGetIndexFromPath(mapFile, out mapID))
+                    throw new Exception(string.Format("Failed to get the ID of map file `{0}`.", mapFile));
 
-                Map m = new Map(mapIndex, this);
-                _maps[(int)mapIndex] = m;
+                Map m = new Map(mapID, this);
+                _maps[(int)mapID] = m;
                 m.Load();
             }
 
@@ -194,25 +194,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Returns a map by its index
+        /// Returns a map by its <see cref="MapID"/>.
         /// </summary>
-        /// <param name="mapIndex">Index of the map</param>
-        /// <returns>Map for the given index, or null if invalid</returns>
-        public Map GetMap(MapIndex mapIndex)
+        /// <param name="mapID">The ID of the map.</param>
+        /// <returns>Map for the given index, or null if invalid.</returns>
+        public Map GetMap(MapID mapID)
         {
             // If the map can be grabbed from the index, grab it
-            if (_maps.CanGet((int)mapIndex))
+            if (_maps.CanGet((int)mapID))
             {
                 // Check that the map is valid
-                Debug.Assert(_maps[(int)mapIndex] != null, "Tried to get a null map.");
+                Debug.Assert(_maps[(int)mapID] != null, "Tried to get a null map.");
 
                 // Return the map at the index
-                return _maps[(int)mapIndex];
+                return _maps[(int)mapID];
             }
 
             // Could not grab by index
             if (log.IsWarnEnabled)
-                log.WarnFormat("GetMap() on index {0} returned null because map does not exist.");
+                log.WarnFormat("GetMap() on ID `{0}` returned null because map does not exist.");
 
             return null;
         }

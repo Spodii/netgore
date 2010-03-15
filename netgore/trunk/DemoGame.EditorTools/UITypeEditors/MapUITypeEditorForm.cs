@@ -84,9 +84,9 @@ namespace DemoGame.EditorTools
                 return items.FirstOrDefault(x => stringComp.Equals(x.Name, asString));
             }
 
-            if (_selected is MapIndex)
+            if (_selected is MapID)
             {
-                var asID = (MapIndex)_selected;
+                var asID = (MapID)_selected;
                 return items.FirstOrDefault(x => x.ID == asID);
             }
 

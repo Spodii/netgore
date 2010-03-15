@@ -76,12 +76,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads a MapIndex from the BitStream.
+        /// Reads a <see cref="MapID"/> from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        public static MapIndex ReadMapIndex(this BitStream bitStream)
+        public static MapID ReadMapID(this BitStream bitStream)
         {
-            return bitStream.ReadMapIndex(null);
+            return bitStream.ReadMapID(null);
         }
 
         /// <summary>
@@ -257,13 +257,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Writes a MapIndex to the BitStream.
+        /// Writes a <see cref="MapID"/> to the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="mapIndex">MapIndex to write.</param>
-        public static void Write(this BitStream bitStream, MapIndex mapIndex)
+        /// <param name="mapID">MapID to write.</param>
+        public static void Write(this BitStream bitStream, MapID mapID)
         {
-            bitStream.Write(null, mapIndex);
+            bitStream.Write(null, mapID);
         }
 
         /// <summary>

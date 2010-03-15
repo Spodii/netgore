@@ -59,7 +59,7 @@ namespace DemoGame.Server
             if (DestinationMap > 0)
             {
                 Character c = (Character)charEntity;
-                if (c.Map.Index != DestinationMap)
+                if (c.Map.ID != DestinationMap)
                 {
                     Map newMap = c.World.GetMap(DestinationMap);
                     if (newMap == null)

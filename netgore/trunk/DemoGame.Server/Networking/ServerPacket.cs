@@ -462,16 +462,16 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static void SetMap(PacketWriter pw, MapIndex mapIndex)
+        public static void SetMap(PacketWriter pw, MapID mapID)
         {
             pw.Write(ServerPacketID.SetMap);
-            pw.Write(mapIndex);
+            pw.Write(mapID);
         }
 
-        public static PacketWriter SetMap(MapIndex mapIndex)
+        public static PacketWriter SetMap(MapID mapID)
         {
             PacketWriter pw = GetWriter();
-            SetMap(pw, mapIndex);
+            SetMap(pw, mapID);
             return pw;
         }
 

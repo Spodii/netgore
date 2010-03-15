@@ -52,9 +52,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
-        /// <param name="mapIndex">Index of the Map.</param>
+        /// <param name="mapID">ID of the Map.</param>
         /// <param name="world">World that the Map will be inside of.</param>
-        public Map(MapIndex mapIndex, World world) : base(mapIndex, world)
+        public Map(MapID mapID, World world) : base(mapID, world)
         {
             _world = world;
 
@@ -367,7 +367,7 @@ namespace DemoGame.Server
             _npcSpawners = NPCSpawner.LoadSpawners(this).ToCompact();
 
             // Spawn persistent NPCs
-            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(Index);
+            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(ID);
             foreach (var characterID in persistentNPCIDs)
             {
                 new NPC(World, characterID);
@@ -451,7 +451,7 @@ namespace DemoGame.Server
             using (PacketWriter pw = ServerPacket.GetWriter())
             {
                 // Tell the user to change the map
-                ServerPacket.SetMap(pw, Index);
+                ServerPacket.SetMap(pw, ID);
                 user.Send(pw);
 
                 // Send dynamic entities
@@ -573,7 +573,7 @@ namespace DemoGame.Server
         /// </returns>
         public override string ToString()
         {
-            return Name + " [" + Index + "]";
+            return Name + " [" + ID + "]";
         }
 
         /// <summary>

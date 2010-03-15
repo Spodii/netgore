@@ -197,7 +197,7 @@ namespace DemoGame.Server
             string s = c.ToString();
             s += "\t Map: ";
             if (c.Map != null)
-                s += c.Map.Index;
+                s += c.Map.ID;
             else
                 s += "null";
 
