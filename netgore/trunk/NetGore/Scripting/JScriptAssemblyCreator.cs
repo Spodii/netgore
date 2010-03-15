@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.JScript;
 
 namespace NetGore
@@ -13,11 +14,26 @@ namespace NetGore
     public class JScriptAssemblyCreator
     {
         readonly List<string> _members = new List<string>();
+        readonly Regex _regexGetSafeFunction = new Regex(@"function\s+GetSafe\(.+,.+\)\s*:\*String", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Gets or sets the name of the class to generate. This value must be set before calling Compile().
         /// </summary>
         public string ClassName { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the JScript GetSafe function is required to be defined. If true, then it will
+        /// be added to the generated source code if no GetSafe function is found. Default is true.
+        /// </summary>
+        public bool RequireGetSafeFunction { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JScriptAssemblyCreator"/> class.
+        /// </summary>
+        public JScriptAssemblyCreator()
+        {
+            RequireGetSafeFunction = true;
+        }
 
         /// <summary>
         /// Adds a method for a message script.
@@ -117,18 +133,39 @@ namespace NetGore
         /// <returns>The class source code.</returns>
         protected virtual string GetSourceCode(List<string> members)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(1024);
+
+            // Class header
             sb.AppendLine("class " + ClassName);
             sb.AppendLine("{");
 
+            // Check for the GetSafe function
+            if (RequireGetSafeFunction)
+            {
+                if (!members.Any(x => _regexGetSafeFunction.IsMatch(x)))
+                {
+                    AddDefaultGetSafeFunction();
+                }
+            }
+
+            // Add the members
             foreach (var member in members)
             {
                 sb.AppendLine(member);
             }
 
+            // Close the class
             sb.AppendLine("}");
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Adds the default GetSafe JScript function.
+        /// </summary>
+        protected virtual void AddDefaultGetSafeFunction()
+        {
+            AddMethod("GetSafe", "public", "String", "p, i : int", "return p.Length > i ? p[i] : \"<Param Missing>\";");
         }
 
         /// <summary>
