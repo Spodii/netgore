@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools
@@ -60,30 +61,31 @@ namespace NetGore.EditorTools
                                                                    Attribute[] attributes)
         {
             var ret = new List<AdvancedPropertyDescriptor>();
+            var valueType = value.GetType();
 
             // Get the properties to force as read-only for this type
             List<string> fro;
             lock (_forcedReadOnlySync)
             {
-                _forcedReadOnly.TryGetValue(value.GetType(), out fro);
+                _forcedReadOnly.TryGetValue(valueType, out fro);
             }
 
             // Get the properties to force to use a specific type converter
             List<KeyValuePair<string, TypeConverter>> ftc;
             lock (_forcedTypeConverterSync)
             {
-                _forcedTypeConverter.TryGetValue(value.GetType(), out ftc);
+                _forcedTypeConverter.TryGetValue(valueType, out ftc);
             }
 
             // Get the properties to force to use a specific editor
             List<KeyValuePair<string, UITypeEditor>> fe;
             lock (_forcedEditorSync)
             {
-                _forcedEditor.TryGetValue(value.GetType(), out fe);
+                _forcedEditor.TryGetValue(valueType, out fe);
             }
 
-            // Loop through all the properties of this type
-            foreach (var p in TypeDescriptor.GetProperties(value.GetType()).OfType<PropertyDescriptor>())
+            // Loop through all the properties to use our custom AdvancedPropertyDescriptor instead
+            foreach (var p in TypeDescriptor.GetProperties(value, attributes).OfType<PropertyDescriptor>())
             {
                 var pName = p.Name;
                 var propertyDescriptor = new AdvancedPropertyDescriptor(p, value);

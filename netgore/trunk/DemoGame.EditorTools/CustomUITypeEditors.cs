@@ -43,12 +43,29 @@ namespace DemoGame.EditorTools
             // a better PropertyGrid-based editing experience. Since it doesn't really matter if we add too many
             // types (since it is only really for the PropertyGrid), we just add EVERY table from the DbObjs.
             var filterCreator = new TypeFilterCreator
-            { IsClass = true, CustomFilter = (x => x.Name.EndsWith("Table") && x.Namespace.Contains("DbObjs")) };
+            { IsClass = true, IsAbstract = false, CustomFilter = (x => x.Name.EndsWith("Table") && x.Namespace.Contains("DbObjs")) };
             var filter = filterCreator.GetFilter();
 
-            var dbObjsTypes = TypeHelper.FindTypes(filter, Type.EmptyTypes);
+            var typesToAdd = TypeHelper.FindTypes(filter, null);
+            AdvancedClassTypeConverter.AddTypes(typesToAdd.ToArray());
 
-            AdvancedClassTypeConverter.AddTypes(dbObjsTypes.ToArray());
+            // Also automatically add all the instantiable types that derive from some of our base classes
+            Type[] baseTypes = new Type[] { typeof(Entity), typeof(MapBase)};
+            filterCreator = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                CustomFilter = (x => baseTypes.Any(bt => x.IsSubclassOf(bt)))
+            };
+            filter = filterCreator.GetFilter();
+
+            typesToAdd = TypeHelper.FindTypes(filter, null);
+            AdvancedClassTypeConverter.AddTypes(typesToAdd.ToArray());
+
+            // Manually add some other types we want to have use the AdvancedClassTypeConverter. Again, doesn't
+            // really matter what you add here. In general, you should just add to this when you notice that
+            // a PropertyGrid isn't using the AdvancedClassTypeConverter.
+            AdvancedClassTypeConverter.AddTypes( /* Nothing to add yet */ );
 
             // Set the properties we want to force being readonly in the PropertyGrid
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");
