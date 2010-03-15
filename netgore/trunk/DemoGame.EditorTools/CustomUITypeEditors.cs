@@ -65,6 +65,7 @@ namespace DemoGame.EditorTools
         static void AddExtraTextProviders()
         {
             AdvancedPropertyDescriptor.SetExtraTextProvider<GrhIndex>(ExtraTextProvider_GrhIndex);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<AIID>(ExtraTextProvider_AIID);
         }
 
         /// <summary>
@@ -76,10 +77,25 @@ namespace DemoGame.EditorTools
         static string ExtraTextProvider_GrhIndex(GrhIndex v)
         {
             var grhData = GrhInfo.GetData(v);
-            if (grhData != null)
-                return grhData.Categorization.ToString();
+            if (grhData == null)
+                return null;
 
-            return null;
+            return grhData.Categorization.ToString();
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="AIID"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_AIID(AIID v)
+        {
+            var aiName = AIFactory.Instance.GetAIName(v);
+            if (aiName == null)
+                return null;
+
+            return aiName;
         }
 
         /// <summary>
