@@ -52,13 +52,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StatTypeConstDictionaryEditor.cs" />
-    <Compile Include="StatTypeConstDictionaryTypeConverter.cs" />
-    <Compile Include="StatTypeConstDictionaryUITypeEditorForm.cs">
+    <Compile Include="UITypeEditors\StatTypeConstDictionaryEditor.cs" />
+    <Compile Include="UITypeEditors\StatTypeConstDictionaryTypeConverter.cs" />
+    <Compile Include="UITypeEditors\StatTypeConstDictionaryUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UITypeEditors\AllianceIDEditor.cs" />
     <Compile Include="UITypeEditors\AllianceUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\BodyIndexEditor.cs" />
+    <Compile Include="UITypeEditors\BodyInfoUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UITypeEditors\BodyPaperDollTypeEditor.cs" />
