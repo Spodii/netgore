@@ -101,6 +101,7 @@ namespace NetGore.Graphics
                 Grh grh = value as Grh;
                 if (grh == null || grh.GrhData == null)
                     return string.Empty;
+
                 return grh.GrhData.Categorization.ToString();
             }
 
